@@ -1,0 +1,43 @@
+<resources>
+    <string name="app_name">YTDLnis</string>
+    <string name="btn_streaming_example">Streaming Example</string>
+    <string name="btn_downloading_example">Downloading Example</string>
+    <string name="btn_command_example">Custom Command Example</string>
+    <string name="btn_update">Update yt-dlp</string>
+    <string name="btn_start_stream">Start Stream</string>
+    <string name="btn_start_download">Start Download</string>
+    <string name="url_hint">enter url here</string>
+    <string name="btn_run_command">Run Command</string>
+    <string name="command_hint">enter command here</string>
+    <string name="url_error">enter a valid url</string>
+    <string name="command_error">enter a valid command</string>
+    <string name="start">Do the thing</string>
+    <string name="example_command">Example command: --extract-audio --audio-format mp3 -o /sdcard/Download/youtubedl-android/%(title)s.%(ext)s https://www.youtube.com/watch?v=dQw4w9WgXcQ</string>
+    <string name="download_start">Starting Download</string>
+    <string name="download_complete">Download Complete</string>
+    <string name="download_failed">Download Failed</string>
+    <string name="command_start">Starting Command</string>
+    <string name="command_complete">Command Complete</string>
+    <string name="command_failed">Command Failed</string>
+    <string name="use_config_file">Use Config File?</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="search">Search</string>
+    <!-- Preference Titles -->
+    <string name="messages_header">Messages</string>
+    <string name="sync_header">Sync</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">Your signature</string>
+    <string name="reply_title">Default reply action</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">Sync email periodically</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails
+    </string>
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
+    <string name="shkarko">Shkarko</string>
+    <string name="shkruaj_url_e_youtube">Shkruaj URL e YouTube</string>
+    <string name="download_path">sdcard/Download</string>
+</resources>

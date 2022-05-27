@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/denis/Desktop/youtubedl-android-0.13.1/youtubedl-android-0.13.1/app/src/main/res/drawable/circlular_background.xml" value="0.1" />
+        <entry key="..\:/Users/denis/Desktop/youtubedl-android-0.13.1/youtubedl-android-0.13.1/app/src/main/res/drawable/ic_history.xml" value="0.1785" />
+        <entry key="..\:/Users/denis/Desktop/youtubedl-android-0.13.1/youtubedl-android-0.13.1/app/src/main/res/drawable/ic_home.xml" value="0.1785" />
+        <entry key="..\:/Users/denis/Desktop/youtubedl-android-0.13.1/youtubedl-android-0.13.1/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1" />
+        <entry key="..\:/Users/denis/Desktop/youtubedl-android-0.13.1/youtubedl-android-0.13.1/app/src/main/res/drawable/ic_music.xml" value="0.1" />
+        <entry key="..\:/Users/denis/Desktop/youtubedl-android-0.13.1/youtubedl-android-0.13.1/app/src/main/res/drawable/ic_search.xml" value="0.1275" />
+        <entry key="..\:/Users/denis/Desktop/youtubedl-android-0.13.1/youtubedl-android-0.13.1/app/src/main/res/drawable/ic_settings.xml" value="0.1785" />
+        <entry key="..\:/Users/denis/Desktop/youtubedl-android-0.13.1/youtubedl-android-0.13.1/app/src/main/res/layout/activity_command_example.xml" value="0.28888888888888886" />
+        <entry key="..\:/Users/denis/Desktop/youtubedl-android-0.13.1/youtubedl-android-0.13.1/app/src/main/res/layout/activity_downloading_example.xml" value="0.33" />
+        <entry key="..\:/Users/denis/Desktop/youtubedl-android-0.13.1/youtubedl-android-0.13.1/app/src/main/res/layout/activity_main.xml" value="0.2" />
+        <entry key="..\:/Users/denis/Desktop/youtubedl-android-0.13.1/youtubedl-android-0.13.1/app/src/main/res/layout/fragment_history.xml" value="0.28888888888888886" />
+        <entry key="..\:/Users/denis/Desktop/youtubedl-android-0.13.1/youtubedl-android-0.13.1/app/src/main/res/layout/fragment_history_list.xml" value="0.28888888888888886" />
+        <entry key="..\:/Users/denis/Desktop/youtubedl-android-0.13.1/youtubedl-android-0.13.1/app/src/main/res/layout/fragment_home.xml" value="0.27704147071398033" />
+        <entry key="..\:/Users/denis/Desktop/youtubedl-android-0.13.1/youtubedl-android-0.13.1/app/src/main/res/menu/bottom_nav_menu.xml" value="0.2675925925925926" />
+        <entry key="..\:/Users/denis/Desktop/youtubedl-android-0.13.1/youtubedl-android-0.13.1/app/src/main/res/menu/main_menu.xml" value="0.28888888888888886" />
+        <entry key="..\:/Users/denis/Desktop/youtubedl-android-0.13.1/youtubedl-android-0.13.1/app/src/main/res/xml/root_preferences.xml" value="0.33" />
+        <entry key="..\:/Users/denis/Desktop/ytdlnis/ytdlnis/app/src/main/res/drawable/ic_music.xml" value="0.1275" />
+        <entry key="..\:/Users/denis/Desktop/ytdlnis/ytdlnis/app/src/main/res/layout/activity_main.xml" value="0.27704147071398033" />
+        <entry key="..\:/Users/denis/Desktop/ytdlnis/ytdlnis/app/src/main/res/layout/fragment_history.xml" value="0.2057460611677479" />
+        <entry key="..\:/Users/denis/Desktop/ytdlnis/ytdlnis/app/src/main/res/layout/fragment_history_list.xml" value="0.2057460611677479" />
+        <entry key="..\:/Users/denis/Desktop/ytdlnis/ytdlnis/app/src/main/res/layout/fragment_home.xml" value="0.2057460611677479" />
+        <entry key="..\:/Users/denis/Desktop/ytdlnis/ytdlnis/app/src/main/res/menu/bottom_nav_menu.xml" value="0.2057460611677479" />
+        <entry key="..\:/Users/denis/Desktop/ytdlnis/ytdlnis/app/src/main/res/menu/main_menu.xml" value="0.2057460611677479" />
+        <entry key="..\:/Users/denis/Desktop/ytdlnis/ytdlnis/app/src/main/res/xml/root_preferences.xml" value="0.33" />
+        <entry key="..\:/Users/denis/Desktop/ytdlnis/ytdlnis/app/src/main/res/xml/shortcuts.xml" value="0.13852073535699017" />
+      </map>
+    </option>
+  </component>
+  <component name="ExternalStorageConfigurationManager" enabled="true" />
+  <component name="NullableNotNullManager">
+    <option name="myDefaultNullable" value="android.support.annotation.Nullable" />
+    <option name="myDefaultNotNull" value="android.support.annotation.NonNull" />
+    <option name="myNullables">
+      <value>
+        <list size="12">
+          <item index="0" class="java.lang.String" itemvalue="org.jetbrains.annotations.Nullable" />
+          <item index="1" class="java.lang.String" itemvalue="javax.annotation.Nullable" />
+          <item index="2" class="java.lang.String" itemvalue="javax.annotation.CheckForNull" />
+          <item index="3" class="java.lang.String" itemvalue="edu.umd.cs.findbugs.annotations.Nullable" />
+          <item index="4" class="java.lang.String" itemvalue="android.support.annotation.Nullable" />
+          <item index="5" class="java.lang.String" itemvalue="org.checkerframework.checker.nullness.compatqual.NullableDecl" />
+          <item index="6" class="java.lang.String" itemvalue="androidx.annotation.Nullable" />
+          <item index="7" class="java.lang.String" itemvalue="org.eclipse.jdt.annotation.Nullable" />
+          <item index="8" class="java.lang.String" itemvalue="com.android.annotations.Nullable" />
+          <item index="9" class="java.lang.String" itemvalue="androidx.annotation.RecentlyNullable" />
+          <item index="10" class="java.lang.String" itemvalue="org.checkerframework.checker.nullness.qual.Nullable" />
+          <item index="11" class="java.lang.String" itemvalue="org.checkerframework.checker.nullness.compatqual.NullableType" />
+        </list>
+      </value>
+    </option>
+    <option name="myNotNulls">
+      <value>
+        <list size="11">
+          <item index="0" class="java.lang.String" itemvalue="org.jetbrains.annotations.NotNull" />
+          <item index="1" class="java.lang.String" itemvalue="javax.annotation.Nonnull" />
+          <item index="2" class="java.lang.String" itemvalue="edu.umd.cs.findbugs.annotations.NonNull" />
+          <item index="3" class="java.lang.String" itemvalue="android.support.annotation.NonNull" />
+          <item index="4" class="java.lang.String" itemvalue="androidx.annotation.RecentlyNonNull" />
+          <item index="5" class="java.lang.String" itemvalue="org.checkerframework.checker.nullness.qual.NonNull" />
+          <item index="6" class="java.lang.String" itemvalue="com.android.annotations.NonNull" />
+          <item index="7" class="java.lang.String" itemvalue="androidx.annotation.NonNull" />
+          <item index="8" class="java.lang.String" itemvalue="org.checkerframework.checker.nullness.compatqual.NonNullType" />
+          <item index="9" class="java.lang.String" itemvalue="org.checkerframework.checker.nullness.compatqual.NonNullDecl" />
+          <item index="10" class="java.lang.String" itemvalue="org.eclipse.jdt.annotation.NonNull" />
+        </list>
+      </value>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>

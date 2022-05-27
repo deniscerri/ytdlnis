@@ -1,0 +1,40 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory app:title="Skedaret">
+        <Preference
+            app:key="music_path"
+            app:title="Direktoria e Muzikës"></Preference>
+
+        <Preference
+            app:key="video_path"
+            app:title="Direktoria e Videos"></Preference>
+
+
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="Perditesim">
+
+        <Preference
+            app:key="update"
+            app:summary="Provo kete cilesim nese paraqitesh me probleme ne shkarkim"
+            app:title="Perditeso Komponentin YoutubeDL"></Preference>
+
+    </PreferenceCategory>
+
+
+    <PreferenceCategory app:title="Rreth">
+
+        <Preference
+            app:key="rreth"
+            app:summary="https://github.com/deniscerri/ytdlnis"
+            app:title="Kodi">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="https://github.com/deniscerri/ytdlnis"
+                />
+        </Preference>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

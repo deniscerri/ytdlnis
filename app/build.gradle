@@ -1,0 +1,68 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 31
+    defaultConfig {
+        applicationId "com.deniscerri.ytdl"
+        minSdkVersion 23
+        targetSdkVersion 29
+        versionCode project.versionCode
+        versionName project.versionName
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        ndk {
+            abiFilters 'x86', 'x86_64', 'armeabi-v7a', 'arm64-v8a'
+        }
+
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    buildFeatures {
+        viewBinding true
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    splits {
+        abi {
+            enable true
+            reset()
+            include 'x86', 'x86_64', 'armeabi-v7a', 'arm64-v8a'
+            universalApk true
+        }
+    }
+
+}
+
+
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation project(":library")
+    implementation project(":ffmpeg")
+
+    implementation "androidx.appcompat:appcompat:$appCompatVer"
+    implementation "androidx.constraintlayout:constraintlayout:2.1.4"
+    implementation 'com.google.android.material:material:1.5.0'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.recyclerview:recyclerview:1.2.1'
+    implementation 'androidx.preference:preference:1.1.1'
+    testImplementation "junit:junit:$junitVer"
+    androidTestImplementation "androidx.test.ext:junit:$androidJunitVer"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVer"
+
+    implementation "io.reactivex.rxjava2:rxandroid:2.1.0"
+    implementation "com.devbrackets.android:exomedia:4.3.0"
+
+    implementation("androidx.cardview:cardview:1.0.0")
+    implementation("com.squareup.picasso:picasso:2.8")
+}

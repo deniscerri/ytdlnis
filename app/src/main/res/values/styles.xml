@@ -1,0 +1,27 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.Material3.DayNight">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/material_dynamic_primary50</item>
+        <item name="background">@color/white</item>
+        <item name="android:statusBarColor">@color/material_dynamic_secondary10</item>
+    </style>
+
+
+
+
+    <style name="Theme.MyApp" parent="Theme.MaterialComponents.Light" />
+
+    <style name="RoundedBg" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <style name="BottomNav" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+        <item name="android:color">@color/material_dynamic_primary50</item>
+    </style>
+
+</resources>
