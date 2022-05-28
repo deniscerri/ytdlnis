@@ -102,7 +102,7 @@ public class HistoryFragment extends Fragment {
 
         CardView card = new CardView(requireContext());
         card.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-        card.setRadius(50);
+        card.setRadius(getDp(10));
         card.setCardElevation(10);
         card.setMaxCardElevation(12);
         card.setPreventCornerOverlap(true);
@@ -129,22 +129,20 @@ public class HistoryFragment extends Fragment {
         videoTitle.setText(video.getTitle());
         videoTitle.setTextSize(getDp(5));
         videoTitle.setTextColor(ContextCompat.getColor(requireContext(), R.color.white));
-        videoTitle.setShadowLayer(1, 1, 1, ContextCompat.getColor(requireContext(), R.color.colorPrimaryDark));
         videoTitle.setTypeface(null, Typeface.BOLD);
-        videoTitle.setShadowLayer(1.5f, 4f, 4f, R.color.black);
+        videoTitle.setShadowLayer(2f, 4f, 4f, ContextCompat.getColor(requireContext(), R.color.black));
 
         // AUTHOR ----------------------------------
 
         TextView videoAuthor = new TextView(getContext());
         videoAuthor.setGravity(Gravity.BOTTOM);
-        videoAuthor.setLayoutParams(new RelativeLayout.LayoutParams(getDp(100), getDp(100)));
+        videoAuthor.setLayoutParams(new RelativeLayout.LayoutParams(getDp(150), getDp(100)));
         videoAuthor.setPadding(getDp(20), 0, 0, getDp(10));
-        videoAuthor.setShadowLayer(1.5f, 4f, 4f, R.color.black);
 
         videoAuthor.setText(video.getAuthor());
         videoAuthor.setTextSize(getDp(3));
         videoAuthor.setTextColor(ContextCompat.getColor(requireContext(), R.color.white));
-        videoAuthor.setShadowLayer(1, 1, 1, ContextCompat.getColor(requireContext(), R.color.colorPrimaryDark));
+        videoAuthor.setShadowLayer(2f, 4f, 4f, ContextCompat.getColor(requireContext(), R.color.black));
         videoAuthor.setTypeface(null, Typeface.BOLD);
 
         // DATE ---------------------------------------------
@@ -166,9 +164,9 @@ public class HistoryFragment extends Fragment {
 
         LinearLayout buttonLayout = new LinearLayout(requireContext());
         buttonLayout.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-        buttonLayout.setGravity(Gravity.BOTTOM);
+        buttonLayout.setGravity(Gravity.BOTTOM | Gravity.RIGHT);
         buttonLayout.setOrientation(LinearLayout.HORIZONTAL);
-        buttonLayout.setPadding(getDp(300), 0, getDp(20), getDp(40));
+        buttonLayout.setPadding(getDp(10), 0, getDp(20), getDp(40));
 
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                 getDp(48), getDp(48)

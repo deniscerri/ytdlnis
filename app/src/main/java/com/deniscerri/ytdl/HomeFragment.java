@@ -29,6 +29,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Px;
 import androidx.appcompat.widget.SearchView;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
@@ -355,7 +356,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
         CardView card = new CardView(requireContext());
         card.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-        card.setRadius(50);
+        card.setRadius(getDp(10));
         card.setCardElevation(10);
         card.setMaxCardElevation(12);
         card.setPreventCornerOverlap(true);
@@ -371,22 +372,21 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         videoTitle.setText("Shkarko të gjitha");
         videoTitle.setTextSize(getDp(5));
         videoTitle.setTextColor(ContextCompat.getColor(requireContext(), R.color.white));
-        videoTitle.setShadowLayer(1, 1, 1, ContextCompat.getColor(requireContext(), R.color.colorPrimaryDark));
         videoTitle.setTypeface(null, Typeface.BOLD);
-        videoTitle.setShadowLayer(1.5f, 4f, 4f, R.color.black);
+        videoTitle.setShadowLayer(2f, 4f, 4f, ContextCompat.getColor(requireContext(), R.color.black));
 
         // BUTTONS -------------------------------------------
         LinearLayout buttonLayout = new LinearLayout(requireContext());
         buttonLayout.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-        buttonLayout.setGravity(Gravity.BOTTOM);
+        buttonLayout.setGravity(Gravity.BOTTOM | Gravity.RIGHT);
         buttonLayout.setOrientation(LinearLayout.HORIZONTAL);
-        buttonLayout.setPadding(getDp(250), 0, getDp(20), getDp(10));
+        buttonLayout.setPadding(0, 0, getDp(20), getDp(10));
 
         Button musicBtn = new Button(getContext());
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                 getDp(48), getDp(48)
         );
-        params.setMargins(0,0, getDp(10), 0);
+        params.setMargins(10,0, 10, 10);
         musicBtn.setLayoutParams(params);
         //musicBtn.setIconSize(getDp(24));
         musicBtn.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.ic_music));
@@ -475,6 +475,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, getResources().getDisplayMetrics());
     }
 
+    private int getSp(int value){
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, value, getResources().getDisplayMetrics());
+    }
+
     private void createCard(Video video){
 
         RelativeLayout r = new RelativeLayout(getContext());
@@ -483,7 +487,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
         CardView card = new CardView(requireContext());
         card.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-        card.setRadius(50);
+        card.setRadius(getDp(10));
         card.setCardElevation(10);
         card.setMaxCardElevation(12);
         card.setPreventCornerOverlap(true);
@@ -511,11 +515,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
             title = title.substring(0, 40) + "...";
         }
         videoTitle.setText(title);
-        videoTitle.setTextSize(getDp(5));
+        videoTitle.setTextSize(getSp(5));
         videoTitle.setTextColor(ContextCompat.getColor(requireContext(), R.color.white));
-        videoTitle.setShadowLayer(1, 1, 1, ContextCompat.getColor(requireContext(), R.color.colorPrimaryDark));
         videoTitle.setTypeface(null, Typeface.BOLD);
-        videoTitle.setShadowLayer(1.5f, 4f, 4f, R.color.black);
+        videoTitle.setShadowLayer(2f, 4f, 4f, ContextCompat.getColor(requireContext(), R.color.black));
 
         // AUTHOR ----------------------------------
 
@@ -528,9 +531,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         String author = video.getAuthor();
 
         videoAuthor.setText(author);
-        videoAuthor.setTextSize(getDp(3));
+        videoAuthor.setTextSize(getSp(3));
         videoAuthor.setTextColor(ContextCompat.getColor(requireContext(), R.color.white));
-        videoAuthor.setShadowLayer(1, 1, 1, ContextCompat.getColor(requireContext(), R.color.colorPrimaryDark));
+        videoAuthor.setShadowLayer(2f, 4f, 4f, ContextCompat.getColor(requireContext(), R.color.black));
         videoAuthor.setTypeface(null, Typeface.BOLD);
 
         // BUTTONS ----------------------------------
@@ -539,9 +542,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
         LinearLayout buttonLayout = new LinearLayout(requireContext());
         buttonLayout.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-        buttonLayout.setGravity(Gravity.BOTTOM);
+        buttonLayout.setGravity(Gravity.BOTTOM | Gravity.RIGHT);
+
         buttonLayout.setOrientation(LinearLayout.HORIZONTAL);
-        buttonLayout.setPadding(getDp(250), 0, getDp(20), getDp(10));
+        buttonLayout.setPadding(getDp(10), 0, getDp(10), getDp(10));
 
         Button musicBtn = new Button(getContext());
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
@@ -570,10 +574,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         ProgressBar progressBar = new ProgressBar(requireContext(), null, android.R.attr.progressBarStyleHorizontal);
         progressBar.setVisibility(View.GONE);
         RelativeLayout.LayoutParams progressParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, getDp(5));
-        progressParams.setMargins(0, getDp(210), 0 ,0);
+        progressParams.setMargins(0, r.getLayoutParams().height - 70, 0 ,0);
         progressBar.setLayoutParams(progressParams);
         progressBar.setBackgroundTintMode(PorterDuff.Mode.SRC_IN);
         progressBar.setScaleY(2);
+
+        progressBar.setY(card.getY() - progressBar.getHeight() / 2);
         progressBar.setTag(videoID + "##progress");
 
         if(video.getDownloadedTime() != null){

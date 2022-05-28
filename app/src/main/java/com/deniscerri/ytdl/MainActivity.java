@@ -1,17 +1,22 @@
 package com.deniscerri.ytdl;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.WindowManager;
 
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ComplexColorCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import com.deniscerri.ytdl.databinding.ActivityMainBinding;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import io.reactivex.disposables.CompositeDisposable;
 
@@ -31,11 +36,30 @@ public class MainActivity extends AppCompatActivity{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.S){
+            this.setTheme(R.style.AppTheme);
+
+            ColorStateList list = new ColorStateList(
+              new int[][]{
+                new int[]{}
+              },
+              new int[]{
+                   ContextCompat.getColor(getApplicationContext(), R.color.material_dynamic_primary50)
+               }
+            );
+            binding.bottomNavigationView.setItemActiveIndicatorColor(list);
+            binding.bottomNavigationView.setItemRippleColor(list);
+            binding.bottomNavigationView.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.material_dynamic_neutral10));
+        }
+
         super.onCreate(savedInstanceState);
+
+
         setContentView(R.layout.activity_main);
 
 
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         homeFragment = new HomeFragment();
@@ -44,8 +68,6 @@ public class MainActivity extends AppCompatActivity{
 
 
         replaceFragment(homeFragment);
-
-
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
             switch(item.getItemId()){
                 case R.id.home:
