@@ -152,7 +152,7 @@ public class HistoryFragment extends Fragment {
         TextView date = new TextView(getContext());
         date.setGravity(Gravity.BOTTOM);
         date.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, getDp(100)));
-        date.setPadding(getDp(70), 0, getDp(100), getDp(10));
+        date.setPadding(getDp(250), 0, getDp(20), getDp(10));
         date.setShadowLayer(1.5f, 4f, 4f, R.color.black);
 
         date.setText(video.getDownloadedTime());
@@ -168,7 +168,7 @@ public class HistoryFragment extends Fragment {
         buttonLayout.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
         buttonLayout.setGravity(Gravity.BOTTOM);
         buttonLayout.setOrientation(LinearLayout.HORIZONTAL);
-        buttonLayout.setPadding(getDp(300), 0, getDp(20), getDp(30));
+        buttonLayout.setPadding(getDp(300), 0, getDp(20), getDp(40));
 
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                 getDp(48), getDp(48)
