@@ -5,14 +5,13 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.content.res.Resources;
 import android.graphics.PorterDuff;
 import android.graphics.Typeface;
+import android.media.MediaScannerConnection;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
 import android.util.TypedValue;
-import android.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -21,7 +20,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -31,23 +29,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.SearchView;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.preference.PreferenceManager;
 
 import com.deniscerri.ytdl.database.DBManager;
-import com.google.android.material.button.MaterialButton;
+import com.deniscerri.ytdl.database.Video;
 import com.squareup.picasso.Picasso;
 import com.yausername.youtubedl_android.DownloadProgressCallback;
 import com.yausername.youtubedl_android.YoutubeDL;
 import com.yausername.youtubedl_android.YoutubeDLRequest;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -57,11 +52,12 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.Locale;
+import java.util.Queue;
 import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -91,8 +87,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
     private static final String TAG = "HomeFragment";
 
-    private ArrayList<JSONObject> resultObjects;
+    private ArrayList<Video> resultObjects;
+    private Queue<Video> downloadQueue;
     private boolean hasResults = false;
+    private boolean isPlaylist = false;
+    private boolean downloadAll = false;
     private int[] positions = {0,0};
 
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
@@ -144,8 +143,14 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
         fragmentView.setOnScrollChangeListener((view, i, i1, i2, i3) -> positions = new int[]{i,i1});
 
-        if(hasResults){
+        dbManager = new DBManager(requireContext());
+        resultObjects = dbManager.merrRezultatet();
+
+        if(resultObjects != null){
             scrollView.post(() -> scrollView.scrollTo(positions[0], positions[1]));
+            if(resultObjects.size() > 1 && resultObjects.get(1).getIsPlaylistItem() == 1){
+                createDownloadAllCard();
+            }
             for(int i = 0; i < resultObjects.size(); i++){
                 createCard(resultObjects.get(i));
             }
@@ -205,7 +210,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
     private void parseQuery() {
         linearLayout.removeAllViews();
+
         resultObjects = new ArrayList<>();
+        dbManager = new DBManager(requireContext());
 
         String type = "Search";
         Pattern p = Pattern.compile("^(https?)://(www.)?youtu(.be)?");
@@ -216,6 +223,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
             if (inputQuery.contains("list=")) {
                 type = "Playlist";
+                isPlaylist = true;
             }
         }
 
@@ -244,10 +252,13 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                             videoID = element.getJSONObject("id").getString("videoId");
                             snippet.put("videoID", videoID);
                             snippet = fixThumbnail(snippet);
-                            resultObjects.add(snippet);
-                            createCard(snippet);
+                            Video video = createVideofromJSON(snippet);
+                            resultObjects.add(video);
+                            createCard(video);
                         }
                     }
+
+                    dbManager.shtoVideoRezultat(resultObjects);
                     break;
                 }case "Video": {
                     String[] el = inputQuery.split("/");
@@ -271,9 +282,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                     thread.join();
                     
                     hasResults = true;
-                    resultObjects.add(requestData);
                     requestData = fixThumbnail(requestData);
-                    createCard(requestData);
+                    Video video = createVideofromJSON(requestData);
+                    resultObjects.add(video);
+                    dbManager.shtoVideoRezultat(resultObjects);
+                    createCard(video);
                     break;
                 }case "Playlist": {
                     inputQuery = inputQuery.split("list=")[1];
@@ -287,18 +300,30 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                     thread.start();
                     thread.join();
 
+
                     JSONArray dataArray = requestData.getJSONArray("items");
                     hasResults = true;
                     for(int i = 0; i < dataArray.length(); i++){
                         JSONObject element = dataArray.getJSONObject(i);
                         JSONObject snippet = element.getJSONObject("snippet");
-                        videoID = element.getString("id");
                         if(snippet.getJSONObject("resourceId").getString("kind").equals("youtube#video")){
+                            videoID = snippet.getJSONObject("resourceId").getString("videoId");
                             snippet.put("videoID", videoID);
-                            resultObjects.add(snippet);
                             snippet = fixThumbnail(snippet);
-                            createCard(snippet);
+                            Video video = createVideofromJSON(snippet);
+                            video.setIsPlaylistItem(1);
+                            resultObjects.add(video);
                         }
+                    }
+                    dbManager.shtoVideoRezultat(resultObjects);
+
+                    // DOWNLOAD ALL BUTTON
+                    if(resultObjects.size() > 1){
+                        createDownloadAllCard();
+                    }
+
+                    for(int i  = 0 ; i < resultObjects.size(); i++){
+                        createCard(resultObjects.get(i));
                     }
                     break;
                 }
@@ -306,6 +331,87 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         }catch(Exception e){
            Log.e(TAG, e.toString());
         }
+
+    }
+
+    private Video createVideofromJSON(JSONObject obj){
+        Video video = null;
+        try{
+            String id = obj.getString("videoID");
+            String title = obj.getString("title");
+            String author = obj.getString("channelTitle");
+            String thumb = obj.getString("thumb");
+
+            video = new Video(id, title, author, thumb);
+        }catch(Exception ignored){}
+
+        return video;
+    }
+
+    private void createDownloadAllCard(){
+        RelativeLayout r = new RelativeLayout(getContext());
+        r.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+        r.getLayoutParams().height = getDp(90);
+
+        CardView card = new CardView(requireContext());
+        card.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+        card.setRadius(50);
+        card.setCardElevation(10);
+        card.setMaxCardElevation(12);
+        card.setPreventCornerOverlap(true);
+        card.setUseCompatPadding(true);
+        card.setCardBackgroundColor(ContextCompat.getColor(requireContext(), R.color.black));
+
+        // TITLE  ----------------------------------
+        TextView videoTitle = new TextView(getContext());
+        videoTitle.setLayoutParams(new RelativeLayout.LayoutParams(getDp(300), getDp(100)));
+        int padding = getDp(20);
+        videoTitle.setPadding(padding, padding, padding, padding);
+
+        videoTitle.setText("Shkarko të gjitha");
+        videoTitle.setTextSize(getDp(5));
+        videoTitle.setTextColor(ContextCompat.getColor(requireContext(), R.color.white));
+        videoTitle.setShadowLayer(1, 1, 1, ContextCompat.getColor(requireContext(), R.color.colorPrimaryDark));
+        videoTitle.setTypeface(null, Typeface.BOLD);
+        videoTitle.setShadowLayer(1.5f, 4f, 4f, R.color.black);
+
+        // BUTTONS -------------------------------------------
+        LinearLayout buttonLayout = new LinearLayout(requireContext());
+        buttonLayout.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+        buttonLayout.setGravity(Gravity.BOTTOM);
+        buttonLayout.setOrientation(LinearLayout.HORIZONTAL);
+        buttonLayout.setPadding(getDp(250), 0, getDp(20), getDp(10));
+
+        Button musicBtn = new Button(getContext());
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                getDp(48), getDp(48)
+        );
+        params.setMargins(0,0, getDp(10), 0);
+        musicBtn.setLayoutParams(params);
+        //musicBtn.setIconSize(getDp(24));
+        musicBtn.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.ic_music));
+        musicBtn.setTag("ALL##mp3");
+
+        Button videoBtn = new Button(requireContext());
+        videoBtn.setLayoutParams(params);
+        //videoBtn.setIconSize(getDp(24));
+        videoBtn.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.ic_video));
+        videoBtn.setTag("ALL##mp4");
+
+        buttonLayout.addView(musicBtn);
+        buttonLayout.addView(videoBtn);
+
+        musicBtn.setOnClickListener(this);
+        videoBtn.setOnClickListener(this);
+
+        card.addView(videoTitle);
+        card.addView(buttonLayout);
+
+        r.addView(card);
+
+        linearLayout.addView(r);
+
+
     }
 
     private JSONObject fixThumbnail(JSONObject o){
@@ -369,7 +475,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, getResources().getDisplayMetrics());
     }
 
-    private void createCard(JSONObject info){
+    private void createCard(Video video){
 
         RelativeLayout r = new RelativeLayout(getContext());
         r.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
@@ -388,11 +494,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
         ImageView thumbnail = new ImageView(getContext());
         thumbnail.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-        String imageURL= "";
-
-        try {
-            imageURL = info.getString("thumb");
-        }catch (Exception ignored){}
+        String imageURL= video.getThumb();
 
         Picasso.get().load(imageURL).into(thumbnail);
         thumbnail.setAdjustViewBounds(false);
@@ -403,12 +505,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         videoTitle.setLayoutParams(new RelativeLayout.LayoutParams(getDp(300), getDp(100)));
         int padding = getDp(20);
         videoTitle.setPadding(padding, padding, padding, padding);
-        String title;
-        try{
-            title = info.getString("title");
-        }catch(Exception e){
-            title = "";
-        }
+        String title = video.getTitle();
 
         if(title.length() > 50){
             title = title.substring(0, 40) + "...";
@@ -428,12 +525,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         videoAuthor.setPadding(getDp(20), 0, 0, getDp(10));
         videoAuthor.setShadowLayer(1.5f, 4f, 4f, R.color.black);
 
-        String author;
-        try{
-            author = info.getString("channelTitle");
-        }catch(Exception e){
-            author = "";
-        }
+        String author = video.getAuthor();
+
         videoAuthor.setText(author);
         videoAuthor.setTextSize(getDp(3));
         videoAuthor.setTextColor(ContextCompat.getColor(requireContext(), R.color.white));
@@ -441,12 +534,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         videoAuthor.setTypeface(null, Typeface.BOLD);
 
         // BUTTONS ----------------------------------
-        String videoID;
-        try{
-            videoID = info.getString("videoID");
-        }catch(Exception e){
-            videoID = "";
-        }
+        String videoID = video.getVideoId();
+
 
         LinearLayout buttonLayout = new LinearLayout(requireContext());
         buttonLayout.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
@@ -487,6 +576,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         progressBar.setScaleY(2);
         progressBar.setTag(videoID + "##progress");
 
+        if(video.getDownloadedTime() != null){
+            progressBar.setProgress(100);
+            progressBar.setVisibility(View.VISIBLE);
+        }
+
 
         // Adding all layouts to the card
 
@@ -495,6 +589,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         card.addView(videoAuthor);
         card.addView(buttonLayout);
         card.addView(progressBar);
+
+        card.setTag(videoID + "##card");
+
 
         r.addView(card);
 
@@ -510,15 +607,47 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         Log.e(TAG, viewIdName);
         if(viewIdName.contains("mp3") || viewIdName.contains("mp4")){
             String[] buttonData = viewIdName.split("##");
-            startDownload(buttonData[0], buttonData[1]);
+            downloadQueue = new LinkedList<>();
+            if(buttonData[0].equals("ALL")){
+                for (int i = 0; i < resultObjects.size(); i++){
+                    Video vid = findVideo(resultObjects.get(i).getVideoId());
+                    vid.setDownloadedType(buttonData[1]);
+                    downloadQueue.add(vid);
+                }
+
+            }else{
+                Video vid = findVideo(buttonData[0]);
+                vid.setDownloadedType(buttonData[1]);
+                downloadQueue.add(vid);
+            }
+
+            startDownload(downloadQueue);
+
         }
+    }
+
+    public Video findVideo(String id){
+        for(int i = 0; i < resultObjects.size(); i++){
+            Video v = resultObjects.get(i);
+            if((v.getVideoId()).equals(id)){
+                return v;
+            }
+        }
+
+        return null;
     }
 
 
 
 
+    private void startDownload(Queue<Video> videos) {
+        Video video = null;
+        try{
+            video = videos.remove();
+        }catch(Exception e){
+            return;
+        }
 
-    private void startDownload(String id, String type) {
         if (downloading) {
             Toast.makeText(getContext(), "Nuk mund te filloj! Nje shkarkim tjeter është në punë!", Toast.LENGTH_LONG).show();
             return;
@@ -528,13 +657,18 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
             Toast.makeText(getContext(), "Pranoje Lejen dhe provo përsëri!", Toast.LENGTH_LONG).show();
             return;
         }
+        String id = video.getVideoId();
         String url = "https://www.youtube.com/watch?v=" + id;
         YoutubeDLRequest request = new YoutubeDLRequest(url);
+        String type = video.getDownloadedType();
         File youtubeDLDir = getDownloadLocation(type);
 
         Log.e(TAG, youtubeDLDir.getAbsolutePath());
 
         if(type.equals("mp3")){
+            request.addOption("--embed-thumbnail");
+            request.addOption("--postprocessor-args", "-write_id3v1 1 -id3v2_version 3");
+            request.addOption("--add-metadata");
             request.addOption("--no-mtime");
             request.addOption("-x");
             request.addOption("--audio-format", "mp3");
@@ -543,20 +677,32 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         }
         request.addOption("-o", youtubeDLDir.getAbsolutePath() + "/%(title)s.%(ext)s");
 
+        View card = fragmentView.findViewWithTag(id+"##card");
+        int[] cardPosition = new int[2];
+        card.getLocationInWindow(cardPosition);
+        scrollView.post(() -> scrollView.scrollTo(cardPosition[0]-1000, cardPosition[1]-1000));
+
         progressBar = fragmentView.findViewWithTag(id+"##progress");
         progressBar.setVisibility(View.VISIBLE);
 
         showStart();
         downloading = true;
 
+        Video theVideo = video;
         Disposable disposable = Observable.fromCallable(() -> YoutubeDL.getInstance().execute(request, callback))
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(youtubeDLResponse -> {
                     progressBar.setProgress(100);
                     Toast.makeText(getContext(), "Shkarkimi i be me Sukses!", Toast.LENGTH_LONG).show();
-                    addToHistory(id, type, new Date());
+                    addToHistory(theVideo, new Date());
                     downloading = false;
+
+                    // MEDIA SCAN
+                    MediaScannerConnection.scanFile(requireContext(), new String[]{youtubeDLDir.getAbsolutePath()}, null, null);
+
+                    // SCAN NEXT IN QUEUE
+                    startDownload(videos);
                 }, e -> {
                     if(BuildConfig.DEBUG) Log.e(TAG,  "Deshtim ne shkarkim! :(", e);
                     Toast.makeText(getContext(), "Deshtim ne shkarkim! :(", Toast.LENGTH_LONG).show();
@@ -567,9 +713,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
     }
 
 
-    public void addToHistory(String id, String downloadedType, Date date){
-        JSONObject videoja = null;
-
+    public void addToHistory(Video video, Date date){
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         int day = cal.get(Calendar.DAY_OF_MONTH);
@@ -581,26 +725,20 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         String time = formatter.format(date);
         String downloadedTime = day + " " + month + " " + year + " " + time;
 
-        for(JSONObject o : resultObjects){
-            try{
-                if(o.getString("videoID").equals(id)){
-                    videoja = o;
-                }
-            }catch(Exception e){
-
-            }
-        }
-
-        System.err.println(videoja);
-        
-        if(videoja != null){
+        if(video != null){
             dbManager = new DBManager(requireContext());
             try{
-                String title = videoja.getString("title");
-                String author = videoja.getString("channelTitle");
-                String thumb = videoja.getString("thumb");
+                String id = video.getVideoId();
+                String title = video.getTitle();
+                String author = video.getAuthor();
+                String thumb = video.getThumb();
+                String downloadedType = video.getDownloadedType();
+                video.setDownloadedTime(downloadedTime);
 
-                dbManager.shtoVideo(id, title, author, thumb, downloadedType, downloadedTime);
+                dbManager.shtoVideoHistori(video);
+                dbManager.shkoKohenRezultatit(id, downloadedTime);
+
+
             }catch(Exception ignored){}
         }
     }

@@ -5,16 +5,24 @@ import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SearchView;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.InputType;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -51,7 +59,7 @@ public class HistoryFragment extends Fragment {
 
     // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
-    public static HistoryFragment newInstance(int columnCount) {
+    public static HistoryFragment newInstance() {
         HistoryFragment fragment = new HistoryFragment();
         Bundle args = new Bundle();
         return fragment;
@@ -71,7 +79,7 @@ public class HistoryFragment extends Fragment {
         initViews();
 
         dbManager = new DBManager(requireContext());
-        historyObjects = dbManager.merrVideot();
+        historyObjects = dbManager.merrHistorine();
 
         System.out.println(historyObjects);
 
@@ -199,5 +207,24 @@ public class HistoryFragment extends Fragment {
     private void initViews() {
         linearLayout = fragmentView.findViewById(R.id.linearLayout1);
         scrollView = fragmentView.findViewById(R.id.scrollView1);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
+        inflater.inflate(R.menu.history_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.delete_history:
+                dbManager.clearHistory();
+                linearLayout.removeAllViews();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+
+        }
     }
 }

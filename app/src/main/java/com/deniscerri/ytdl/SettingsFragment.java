@@ -14,6 +14,9 @@ import androidx.preference.PreferenceManager;
 
 import com.yausername.youtubedl_android.YoutubeDL;
 
+import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
+
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -105,8 +108,12 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         Log.e("TEST", data.toUri(0));
         String dataValue = data.getData().toString();
         dataValue = dataValue.replace("content://com.android.externalstorage.documents/tree/", "");
-        dataValue = dataValue.replace("%3A", "/");
-        dataValue = dataValue.replace("%2F", "/");
+        dataValue = dataValue.replaceAll("%3A", "/");
+
+        try{
+            dataValue = java.net.URLDecoder.decode(dataValue, StandardCharsets.UTF_8.name());
+        }catch(Exception ignored){}
+
         String[] pieces = dataValue.split("/");
 
         int index = 1;

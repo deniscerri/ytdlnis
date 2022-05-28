@@ -8,14 +8,26 @@ public class Video {
     private String thumb;
     private String downloadedType;
     private String downloadedTime;
+    private int isPlaylistItem;
 
-    public Video(String videoId, String title, String author, String thumb, String downloadedType, String downloadedTime) {
+    public Video(String videoId, String title, String author, String thumb, String downloadedType, String downloadedTime, int isPlaylistItem) {
         this.videoId = videoId;
         this.title = title;
         this.author = author;
         this.thumb = thumb;
         this.downloadedType = downloadedType;
         this.downloadedTime = downloadedTime;
+        this.isPlaylistItem = isPlaylistItem;
+    }
+
+    public Video(String videoId, String title, String author, String thumb) {
+        this.videoId = videoId;
+        this.title = title;
+        this.author = author;
+        this.thumb = thumb;
+        this.downloadedTime = null;
+        this.downloadedType = null;
+        this.isPlaylistItem = 0;
     }
 
     public int getId() {
@@ -72,5 +84,13 @@ public class Video {
 
     public void setDownloadedTime(String downloadedTime) {
         this.downloadedTime = downloadedTime;
+    }
+
+    public int getIsPlaylistItem() {
+        return isPlaylistItem;
+    }
+
+    public void setIsPlaylistItem(int playlistItem) {
+        this.isPlaylistItem = playlistItem;
     }
 }

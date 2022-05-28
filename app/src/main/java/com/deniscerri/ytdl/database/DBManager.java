@@ -6,13 +6,15 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class DBManager extends SQLiteOpenHelper {
 
     public static final String db_name = "ytdlnis";
     public static final int db_version = 1;
-    public static final String table_name = "video";
+    public static final String results_table_name = "videoResults";
+    public static final String history_table_name = "videoHistory";
     public static final String id = "id";
     public static final String videoId = "videoId";
     public static final String title = "title";
@@ -20,6 +22,7 @@ public class DBManager extends SQLiteOpenHelper {
     public static final String thumb = "thumb";
     public static final String type = "type";
     public static final String time = "time";
+    public static final String isPlaylistItem = "isPlaylistItem";
 
 
     public DBManager(Context context){
@@ -28,25 +31,71 @@ public class DBManager extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        String query = "CREATE TABLE " + table_name + " ("
+        String query = "CREATE TABLE " + results_table_name + " ("
                 + id + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + videoId + " TEXT,"
                 + title + " TEXT,"
                 + author + " TEXT,"
                 + thumb + " TEXT,"
                 + type + " TEXT,"
-                + time + " TEXT)";
+                + time + " TEXT,"
+                + isPlaylistItem + " INTENGER)";
+
+        sqLiteDatabase.execSQL(query);
+
+        query = "CREATE TABLE " + history_table_name + " ("
+                + id + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + videoId + " TEXT,"
+                + title + " TEXT,"
+                + author + " TEXT,"
+                + thumb + " TEXT,"
+                + type + " TEXT,"
+                + time + " TEXT,"
+                + isPlaylistItem + " INTEGER)";
 
         sqLiteDatabase.execSQL(query);
     }
 
+    public void recreateResultsTable(SQLiteDatabase sqLiteDatabase){
+        String query = "CREATE TABLE " + results_table_name + " ("
+                + id + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + videoId + " TEXT,"
+                + title + " TEXT,"
+                + author + " TEXT,"
+                + thumb + " TEXT,"
+                + type + " TEXT,"
+                + time + " TEXT,"
+                + isPlaylistItem + " BOOLEAN)";
+
+        sqLiteDatabase.execSQL(query);
+    }
+
+    public void clearHistory(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("DROP TABLE IF EXISTS " + history_table_name);
+
+        String query = "CREATE TABLE " + history_table_name + " ("
+                + id + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + videoId + " TEXT,"
+                + title + " TEXT,"
+                + author + " TEXT,"
+                + thumb + " TEXT,"
+                + type + " TEXT,"
+                + time + " TEXT,"
+                + isPlaylistItem + " BOOLEAN)";
+
+        db.execSQL(query);
+
+    }
+
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + table_name);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + results_table_name);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + history_table_name);
         onCreate(sqLiteDatabase);
     }
 
-    public ArrayList<Video> merrVideot(){
+    public ArrayList<Video> merrVideot(String table_name){
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + table_name, null);
         ArrayList<Video> list = new ArrayList<>();
@@ -59,44 +108,66 @@ public class DBManager extends SQLiteOpenHelper {
                         cursor.getString(3),
                         cursor.getString(4),
                         cursor.getString(5),
-                        cursor.getString(6)));
+                        cursor.getString(6),
+                        cursor.getInt(7)));
             } while (cursor.moveToNext());
         }
 
         cursor.close();
         return list;
     }
-//
-//    public Video merrVideonmeID(String id){
-//        SQLiteDatabase db = this.getReadableDatabase();
-//        Cursor cursor = db.rawQuery("SELECT * FROM " + table_name + " WHERE "+ id + " = table_name.videoId", null);
-//
-//        if(cursor.moveToFirst()){
-//            String title = cursor.getString(2);
-//            String author = cursor.getString(3);
-//            String thumb = cursor.getString(4);
-//
-//            return new Video(id, title, author, thumb);
-//        }
-//
-//        cursor.close();
-//
-//        return null;
-//    }
 
-    public void shtoVideo(String videoID, String videoTitle, String videoAuthor, String videoThumb, String downloadedType, String downloadedTime){
+    public ArrayList<Video> merrRezultatet(){
+        return merrVideot(results_table_name);
+    }
+
+    public ArrayList<Video> merrHistorine(){
+        return merrVideot(history_table_name);
+    }
+
+    public Video shkoKohenRezultatit(String id, String downloadedTime){
+        SQLiteDatabase db = this.getReadableDatabase();
+        ContentValues vlerat = new ContentValues();
+        vlerat.put(time, downloadedTime);
+
+        db.update(results_table_name, vlerat, "videoId = ?", new String[]{id});
+        return null;
+    }
+
+    public void shtoVideoRezultat(ArrayList<Video> videot){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues vlerat = new ContentValues();
 
-        vlerat.put(videoId, videoID);
-        vlerat.put(title, videoTitle);
-        vlerat.put(author, videoAuthor);
-        vlerat.put(thumb, videoThumb);
-        vlerat.put(type, downloadedType);
-        vlerat.put(time, downloadedTime);
+        db.execSQL("DROP TABLE IF EXISTS " + results_table_name);
+        recreateResultsTable(db);
 
-        db.insert(table_name, null, vlerat);
+        for(Video v : videot){
+            vlerat.put(videoId, v.getVideoId());
+            vlerat.put(title, v.getTitle());
+            vlerat.put(author, v.getAuthor());
+            vlerat.put(thumb, v.getThumb());
+            vlerat.put(type, v.getDownloadedType());
+            vlerat.put(time, v.getDownloadedTime());
+            vlerat.put(isPlaylistItem, v.getIsPlaylistItem());
 
+            db.insert(results_table_name, null, vlerat);
+        }
+
+        db.close();
+    }
+
+    public void shtoVideoHistori(Video v){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues vlerat = new ContentValues();
+
+        vlerat.put(videoId, v.getVideoId());
+        vlerat.put(title, v.getTitle());
+        vlerat.put(author, v.getAuthor());
+        vlerat.put(thumb, v.getThumb());
+        vlerat.put(type, v.getDownloadedType());
+        vlerat.put(time, v.getDownloadedTime());
+
+        db.insert(history_table_name, null, vlerat);
         db.close();
     }
 }
