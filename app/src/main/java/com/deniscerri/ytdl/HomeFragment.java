@@ -29,7 +29,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Px;
 import androidx.appcompat.widget.SearchView;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
@@ -90,19 +89,18 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
     private ArrayList<Video> resultObjects;
     private Queue<Video> downloadQueue;
-    private boolean hasResults = false;
-    private boolean isPlaylist = false;
-    private boolean downloadAll = false;
     private int[] positions = {0,0};
 
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
+
     private DBManager dbManager;
 
     private final DownloadProgressCallback callback = new DownloadProgressCallback() {
         @Override
         public void onProgressUpdate(float progress, long etaInSeconds, String line) {
-            requireActivity().runOnUiThread(() -> progressBar.setProgress((int) progress)
-            );
+            requireActivity().runOnUiThread(() -> {
+                progressBar.setProgress((int) progress);
+            });
         }
     };
 
@@ -138,11 +136,18 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                              Bundle savedInstanceState) {
 
         compositeDisposable = new CompositeDisposable();
+
         // Inflate the layout for this fragment
         fragmentView = inflater.inflate(R.layout.fragment_home, container, false);
         initViews();
 
         fragmentView.setOnScrollChangeListener((view, i, i1, i2, i3) -> positions = new int[]{i,i1});
+
+        if(inputQuery != null){
+            parseQuery();
+            inputQuery = null;
+            return fragmentView;
+        }
 
         dbManager = new DBManager(requireContext());
         resultObjects = dbManager.merrRezultatet();
@@ -169,6 +174,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
+        menu.clear();
         inflater.inflate(R.menu.main_menu, menu);
         super.onCreateOptionsMenu(menu, inflater);
 
@@ -204,9 +210,22 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         });
     }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.delete_results:
+                dbManager.clearResults();
+                linearLayout.removeAllViews();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+
+        }
+    }
+
+
     public void handleIntent(Intent intent){
         inputQuery = intent.getStringExtra(Intent.EXTRA_TEXT);
-        parseQuery();
     }
 
     private void parseQuery() {
@@ -224,7 +243,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
             if (inputQuery.contains("list=")) {
                 type = "Playlist";
-                isPlaylist = true;
             }
         }
 
@@ -248,7 +266,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                         JSONObject element = dataArray.getJSONObject(i);
                         JSONObject snippet = element.getJSONObject("snippet");
                         if(element.getJSONObject("id").getString("kind").equals("youtube#video")){
-                            hasResults = true;
 
                             videoID = element.getJSONObject("id").getString("videoId");
                             snippet.put("videoID", videoID);
@@ -282,7 +299,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                     thread.start();
                     thread.join();
                     
-                    hasResults = true;
                     requestData = fixThumbnail(requestData);
                     Video video = createVideofromJSON(requestData);
                     resultObjects.add(video);
@@ -303,7 +319,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
 
                     JSONArray dataArray = requestData.getJSONArray("items");
-                    hasResults = true;
                     for(int i = 0; i < dataArray.length(); i++){
                         JSONObject element = dataArray.getJSONObject(i);
                         JSONObject snippet = element.getJSONObject("snippet");
@@ -784,6 +799,5 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
             return false;
         }
     }
-
 
 }

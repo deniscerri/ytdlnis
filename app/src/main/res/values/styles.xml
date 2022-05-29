@@ -7,7 +7,6 @@
         <item name="colorPrimaryDark">@color/material_dynamic_primary20</item>
         <item name="colorAccent">@color/material_dynamic_primary40</item>
         <item name="background">@color/white</item>
-        <item name="android:statusBarColor">@color/material_dynamic_neutral10</item>
     </style>
 
     <!-- Base application theme less than android 12 -->

@@ -2,21 +2,17 @@ package com.deniscerri.ytdl;
 
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.WindowManager;
 
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.res.ComplexColorCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import com.deniscerri.ytdl.databinding.ActivityMainBinding;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import io.reactivex.disposables.CompositeDisposable;
 
@@ -33,6 +29,7 @@ public class MainActivity extends AppCompatActivity{
     private HistoryFragment historyFragment;
     private SettingsFragment settingsFragment;
     private Fragment lastFragment;
+    private FragmentManager fm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,23 +48,36 @@ public class MainActivity extends AppCompatActivity{
             );
             binding.bottomNavigationView.setItemActiveIndicatorColor(list);
             binding.bottomNavigationView.setItemRippleColor(list);
-            binding.bottomNavigationView.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.material_dynamic_neutral10));
+
+            int nightMode = getApplicationContext().getResources().getConfiguration().uiMode &
+                            Configuration.UI_MODE_NIGHT_MASK;
+            if(nightMode == Configuration.UI_MODE_NIGHT_YES){
+                binding.bottomNavigationView.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.material_dynamic_neutral10));
+            }
+
+            getWindow().setStatusBarColor(ContextCompat.getColor(getApplicationContext(), R.color.material_dynamic_neutral10));
         }
 
         super.onCreate(savedInstanceState);
 
-
         setContentView(R.layout.activity_main);
-
-
         setContentView(binding.getRoot());
 
         homeFragment = new HomeFragment();
         historyFragment = new HistoryFragment();
         settingsFragment = new SettingsFragment();
 
+        fm = getSupportFragmentManager();
+        fm.beginTransaction()
+                .replace(R.id.frame_layout, homeFragment)
+                .add(R.id.frame_layout, historyFragment)
+                .add(R.id.frame_layout, settingsFragment)
+                .hide(historyFragment)
+                .hide(settingsFragment)
+                .commit();
 
-        replaceFragment(homeFragment);
+        lastFragment = homeFragment;
+
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
             switch(item.getItemId()){
                 case R.id.home:
@@ -100,6 +110,7 @@ public class MainActivity extends AppCompatActivity{
         Log.e(TAG, action);
         if(Intent.ACTION_SEND.equals(action)){
             homeFragment.handleIntent(intent);
+            replaceFragment(homeFragment);
         }
     }
 
@@ -110,10 +121,8 @@ public class MainActivity extends AppCompatActivity{
     }
 
     private void replaceFragment(Fragment f){
-        FragmentManager fm = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fm.beginTransaction();
-        fragmentTransaction.replace(R.id.frame_layout, f);
-        fragmentTransaction.commit();
-
+        fm.beginTransaction().hide(lastFragment).show(f).commit();
+        lastFragment = f;
     }
+
 }

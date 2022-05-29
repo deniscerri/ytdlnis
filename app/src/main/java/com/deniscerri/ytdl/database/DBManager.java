@@ -88,6 +88,24 @@ public class DBManager extends SQLiteOpenHelper {
 
     }
 
+    public void clearResults(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("DROP TABLE IF EXISTS " + results_table_name);
+
+        String query = "CREATE TABLE " + results_table_name + " ("
+                + id + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + videoId + " TEXT,"
+                + title + " TEXT,"
+                + author + " TEXT,"
+                + thumb + " TEXT,"
+                + type + " TEXT,"
+                + time + " TEXT,"
+                + isPlaylistItem + " BOOLEAN)";
+
+        db.execSQL(query);
+
+    }
+
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + results_table_name);

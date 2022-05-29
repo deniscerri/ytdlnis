@@ -10,5 +10,11 @@
         app:showAsAction="ifRoom|collapseActionView"
         app:actionViewClass="androidx.appcompat.widget.SearchView"/>
 
+    <item
+        android:id="@+id/delete_results"
+        android:orderInCategory="100"
+        android:title="@string/fshi_rezultatet"
+        app:showAsAction="never" />
+
 </menu>
 
