@@ -63,11 +63,12 @@ public class MainActivity extends AppCompatActivity{
         setContentView(R.layout.activity_main);
         setContentView(binding.getRoot());
 
+        fm = getSupportFragmentManager();
+
         homeFragment = new HomeFragment();
         historyFragment = new HistoryFragment();
         settingsFragment = new SettingsFragment();
 
-        fm = getSupportFragmentManager();
         fm.beginTransaction()
                 .replace(R.id.frame_layout, homeFragment)
                 .add(R.id.frame_layout, historyFragment)
@@ -107,10 +108,24 @@ public class MainActivity extends AppCompatActivity{
 
     public void handleIntents(Intent intent){
         String action = intent.getAction();
-        Log.e(TAG, action);
         if(Intent.ACTION_SEND.equals(action)){
+            Log.e(TAG, action);
+
+
+            homeFragment = new HomeFragment();
+            historyFragment = new HistoryFragment();
+            settingsFragment = new SettingsFragment();
+
             homeFragment.handleIntent(intent);
-            replaceFragment(homeFragment);
+            fm.beginTransaction()
+                    .replace(R.id.frame_layout, homeFragment)
+                    .add(R.id.frame_layout, historyFragment)
+                    .add(R.id.frame_layout, settingsFragment)
+                    .hide(historyFragment)
+                    .hide(settingsFragment)
+                    .commit();
+
+            lastFragment = homeFragment;
         }
     }
 
