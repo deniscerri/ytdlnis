@@ -28,6 +28,11 @@
             </intent-filter>
 
         </activity>
+
+        <meta-data
+            android:name = "ytAPIkey"
+            android:value = "${ytAPI}"
+        />
     </application>
 
 </manifest>

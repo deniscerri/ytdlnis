@@ -82,6 +82,9 @@ public class MainActivity extends AppCompatActivity{
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
             switch(item.getItemId()){
                 case R.id.home:
+                    if(lastFragment == homeFragment){
+                        homeFragment.scrollToTop();
+                    }
                     replaceFragment(homeFragment);
                     break;
                 case R.id.history:

@@ -27,29 +27,23 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-
+import com.deniscerri.ytdl.api.YoutubeAPIManager;
 import com.deniscerri.ytdl.database.DBManager;
 import com.deniscerri.ytdl.database.Video;
 import com.squareup.picasso.Picasso;
 import com.yausername.youtubedl_android.DownloadProgressCallback;
 import com.yausername.youtubedl_android.YoutubeDL;
 import com.yausername.youtubedl_android.YoutubeDLRequest;
-
-import org.json.JSONArray;
 import org.json.JSONObject;
-
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -68,11 +62,7 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link HomeFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class HomeFragment extends Fragment implements View.OnClickListener{
 
     private boolean downloading = false;
@@ -81,9 +71,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
     private String inputQuery;
     private LinearLayout linearLayout;
     private ScrollView scrollView;
-
-    private JSONObject requestData;
-    private String videoID;
 
     private static final String TAG = "HomeFragment";
 
@@ -94,6 +81,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     private DBManager dbManager;
+    private YoutubeAPIManager youtubeAPIManager;
 
     private final DownloadProgressCallback callback = new DownloadProgressCallback() {
         @Override
@@ -109,6 +97,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+
 
     public HomeFragment() {
         // Required empty public constructor
@@ -139,6 +128,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
         // Inflate the layout for this fragment
         fragmentView = inflater.inflate(R.layout.fragment_home, container, false);
+
         initViews();
 
         fragmentView.setOnScrollChangeListener((view, i, i1, i2, i3) -> positions = new int[]{i,i1});
@@ -167,7 +157,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
     }
 
 
-    private void initViews() {
+    private void initViews(){
         linearLayout = fragmentView.findViewById(R.id.linearLayout1);
         scrollView = fragmentView.findViewById(R.id.scrollView1);
     }
@@ -228,11 +218,16 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         inputQuery = intent.getStringExtra(Intent.EXTRA_TEXT);
     }
 
+    public void scrollToTop(){
+        fragmentView.scrollTo(0,0);
+    }
+
     private void parseQuery() {
         linearLayout.removeAllViews();
 
         resultObjects = new ArrayList<>();
         dbManager = new DBManager(requireContext());
+        youtubeAPIManager = new YoutubeAPIManager(requireContext());
 
         String type = "Search";
         Pattern p = Pattern.compile("^(https?)://(www.)?youtu(.be)?");
@@ -240,7 +235,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
         if(m.find()){
             type = "Video";
-
             if (inputQuery.contains("list=")) {
                 type = "Playlist";
             }
@@ -253,29 +247,16 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                 case "Search": {
                     Thread thread = new Thread(() -> {
                         try {
-                            requestData =  makeRequest("https://ytdl.deniscerri.repl.co/search?Query=" + inputQuery);
+                            resultObjects = youtubeAPIManager.search(inputQuery);
                         }catch(Exception e){
                             Log.e(TAG, e.toString());
                         }
                     });
                     thread.start();
                     thread.join();
-
-                    JSONArray dataArray = requestData.getJSONArray("items");
-                    for(int i = 0; i < dataArray.length(); i++){
-                        JSONObject element = dataArray.getJSONObject(i);
-                        JSONObject snippet = element.getJSONObject("snippet");
-                        if(element.getJSONObject("id").getString("kind").equals("youtube#video")){
-
-                            videoID = element.getJSONObject("id").getString("videoId");
-                            snippet.put("videoID", videoID);
-                            snippet = fixThumbnail(snippet);
-                            Video video = createVideofromJSON(snippet);
-                            resultObjects.add(video);
-                            createCard(video);
-                        }
+                    for(int i = 0; i < resultObjects.size(); i++){
+                        createCard(resultObjects.get(i));
                     }
-
                     dbManager.shtoVideoRezultat(resultObjects);
                     break;
                 }case "Video": {
@@ -288,28 +269,22 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
                     Thread thread = new Thread(() -> {
                         try {
-                            requestData = makeRequest("https://ytdl.deniscerri.repl.co/video?id=" + inputQuery).getJSONArray("items").getJSONObject(0);
-                            videoID = requestData.getString("id");
-                            requestData = requestData.getJSONObject("snippet");
-                            requestData.put("videoID", videoID);
+                            resultObjects.add(youtubeAPIManager.getVideo(inputQuery));
                         }catch(Exception e){
                             Log.e(TAG, e.toString());
                         }
                     });
                     thread.start();
                     thread.join();
-                    
-                    requestData = fixThumbnail(requestData);
-                    Video video = createVideofromJSON(requestData);
-                    resultObjects.add(video);
+
                     dbManager.shtoVideoRezultat(resultObjects);
-                    createCard(video);
+                    createCard(resultObjects.get(0));
                     break;
                 }case "Playlist": {
                     inputQuery = inputQuery.split("list=")[1];
                     Thread thread = new Thread(() -> {
                         try {
-                            requestData = makeRequest("https://ytdl.deniscerri.repl.co/ytPlaylist?id=" + inputQuery);
+                            resultObjects = youtubeAPIManager.getPlaylist(inputQuery, "");
                         }catch(Exception e){
                             Log.e(TAG, e.toString());
                         }
@@ -317,20 +292,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                     thread.start();
                     thread.join();
 
-
-                    JSONArray dataArray = requestData.getJSONArray("items");
-                    for(int i = 0; i < dataArray.length(); i++){
-                        JSONObject element = dataArray.getJSONObject(i);
-                        JSONObject snippet = element.getJSONObject("snippet");
-                        if(snippet.getJSONObject("resourceId").getString("kind").equals("youtube#video")){
-                            videoID = snippet.getJSONObject("resourceId").getString("videoId");
-                            snippet.put("videoID", videoID);
-                            snippet = fixThumbnail(snippet);
-                            Video video = createVideofromJSON(snippet);
-                            video.setIsPlaylistItem(1);
-                            resultObjects.add(video);
-                        }
-                    }
                     dbManager.shtoVideoRezultat(resultObjects);
 
                     // DOWNLOAD ALL BUTTON
@@ -348,20 +309,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
            Log.e(TAG, e.toString());
         }
 
-    }
-
-    private Video createVideofromJSON(JSONObject obj){
-        Video video = null;
-        try{
-            String id = obj.getString("videoID");
-            String title = obj.getString("title");
-            String author = obj.getString("channelTitle");
-            String thumb = obj.getString("thumb");
-
-            video = new Video(id, title, author, thumb);
-        }catch(Exception ignored){}
-
-        return video;
     }
 
     private void createDownloadAllCard(){
@@ -429,63 +376,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
     }
 
-    private JSONObject fixThumbnail(JSONObject o){
-        String imageURL = "";
-        try{
-            JSONObject thumbs = o.getJSONObject("thumbnails");
-            imageURL = thumbs.getJSONObject("maxres").getString("url");
-        }catch(Exception e){
-            try {
-                JSONObject thumbs = o.getJSONObject("thumbnails");
-                imageURL = thumbs.getJSONObject("high").getString("url");
-            }catch(Exception ignored){}
-
-        }
-
-        try{
-            o.put("thumb", imageURL);
-        }catch(Exception ignored){}
-
-
-        return o;
-    }
-
-    private JSONObject makeRequest(String query){
-        Log.e(TAG, query);
-        BufferedReader reader;
-        String line;
-        StringBuilder responseContent = new StringBuilder();
-        HttpURLConnection conn;
-        JSONObject json = new JSONObject();
-
-        try{
-            URL url = new URL(query);
-            conn = (HttpURLConnection) url.openConnection();
-
-            conn.setRequestMethod("GET");
-            conn.setConnectTimeout(10000);
-            conn.setReadTimeout(5000);
-
-            if(conn.getResponseCode() < 300){
-                reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                while((line = reader.readLine()) != null){
-                    responseContent.append(line);
-                }
-
-                json = new JSONObject(responseContent.toString());
-                if(json.has("error")){
-                    throw new Exception();
-                }
-            }
-        }catch(Exception e){
-            Log.e(TAG, e.toString());
-        }
-
-
-
-        return json;
-    }
-
     private int getDp(int value){
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, getResources().getDisplayMetrics());
     }
@@ -521,14 +411,18 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
         // TITLE  ----------------------------------
         TextView videoTitle = new TextView(getContext());
-        videoTitle.setLayoutParams(new RelativeLayout.LayoutParams(getDp(300), getDp(100)));
+        videoTitle.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, getDp(100)));
         int padding = getDp(20);
         videoTitle.setPadding(padding, padding, padding, padding);
         String title = video.getTitle();
 
+        title = title.replace("&amp;", "&").replace("&quot;", "\"");
+
+
         if(title.length() > 50){
             title = title.substring(0, 40) + "...";
         }
+
         videoTitle.setText(title);
         videoTitle.setTextSize(getSp(5));
         videoTitle.setTextColor(ContextCompat.getColor(requireContext(), R.color.white));
@@ -618,7 +512,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
         linearLayout.addView(r);
     }
-
 
 
     @Override

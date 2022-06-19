@@ -23,10 +23,13 @@
         <entry key="..\:/Users/denis/Desktop/ytdlnis/ytdlnis/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1275" />
         <entry key="..\:/Users/denis/Desktop/ytdlnis/ytdlnis/app/src/main/res/drawable/ic_music.xml" value="0.1275" />
         <entry key="..\:/Users/denis/Desktop/ytdlnis/ytdlnis/app/src/main/res/drawable/ic_search.xml" value="0.1275" />
+        <entry key="..\:/Users/denis/Desktop/ytdlnis/ytdlnis/app/src/main/res/drawable/round_corner.xml" value="0.1275" />
         <entry key="..\:/Users/denis/Desktop/ytdlnis/ytdlnis/app/src/main/res/layout/activity_main.xml" value="0.27704147071398033" />
+        <entry key="..\:/Users/denis/Desktop/ytdlnis/ytdlnis/app/src/main/res/layout/download_all_card.xml" value="0.33" />
         <entry key="..\:/Users/denis/Desktop/ytdlnis/ytdlnis/app/src/main/res/layout/fragment_history.xml" value="0.2057460611677479" />
         <entry key="..\:/Users/denis/Desktop/ytdlnis/ytdlnis/app/src/main/res/layout/fragment_history_list.xml" value="0.2057460611677479" />
         <entry key="..\:/Users/denis/Desktop/ytdlnis/ytdlnis/app/src/main/res/layout/fragment_home.xml" value="0.2057460611677479" />
+        <entry key="..\:/Users/denis/Desktop/ytdlnis/ytdlnis/app/src/main/res/layout/result_card.xml" value="0.25" />
         <entry key="..\:/Users/denis/Desktop/ytdlnis/ytdlnis/app/src/main/res/menu/bottom_nav_menu.xml" value="0.2057460611677479" />
         <entry key="..\:/Users/denis/Desktop/ytdlnis/ytdlnis/app/src/main/res/menu/history_menu.xml" value="0.25" />
         <entry key="..\:/Users/denis/Desktop/ytdlnis/ytdlnis/app/src/main/res/menu/main_menu.xml" value="0.2057460611677479" />

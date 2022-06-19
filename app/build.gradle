@@ -1,4 +1,8 @@
-apply plugin: 'com.android.application'
+plugins {
+    id 'com.android.application'
+    id 'com.google.secrets_gradle_plugin' version '0.4'
+}
+
 
 android {
     compileSdkVersion 31
@@ -41,7 +45,6 @@ android {
     }
 
 }
-
 
 
 dependencies {
