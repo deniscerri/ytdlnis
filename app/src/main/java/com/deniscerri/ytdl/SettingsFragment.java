@@ -1,10 +1,13 @@
 package com.deniscerri.ytdl;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -34,7 +37,6 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 
     private static final String TAG = "SettingsFragment";
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
-
 
 
     @Override

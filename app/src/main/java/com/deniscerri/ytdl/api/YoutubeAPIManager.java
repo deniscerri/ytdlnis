@@ -97,8 +97,8 @@ public class YoutubeAPIManager {
 
     public Video getVideo(String id) throws JSONException {
         JSONObject res = genericRequest("https://youtube.googleapis.com/youtube/v3/videos?part=snippet&id="+id+"&key="+key);
-        res = res.getJSONObject("snippet");
-        res.put("videoID", res.getString("id"));
+        res = res.getJSONArray("items").getJSONObject(0).getJSONObject("snippet");
+        res.put("videoID", id);
         res = fixThumbnail(res);
 
         Video v = createVideofromJSON(res);

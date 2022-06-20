@@ -1,5 +1,6 @@
 package com.deniscerri.ytdl;
 
+import android.app.ActionBar;
 import android.content.Context;
 import android.graphics.PorterDuff;
 import android.graphics.Typeface;
@@ -15,8 +16,10 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.text.InputType;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -79,15 +82,25 @@ public class HistoryFragment extends Fragment {
         initViews();
 
         dbManager = new DBManager(requireContext());
+        initCards();
+
+        SwipeRefreshLayout swipeRefreshLayout = fragmentView.findViewById(R.id.swiperefresh);
+
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            initCards();
+            swipeRefreshLayout.setRefreshing(false);
+        });
+
+
+        return fragmentView;
+    }
+
+    private void initCards(){
+        linearLayout.removeAllViews();
         historyObjects = dbManager.merrHistorine();
-
-        System.out.println(historyObjects);
-
         for(int i = historyObjects.size()-1; i >= 0; i--){
             createCard(historyObjects.get(i));
         }
-
-        return fragmentView;
     }
 
     private int getDp(int value){

@@ -84,13 +84,17 @@ public class MainActivity extends AppCompatActivity{
                 case R.id.home:
                     if(lastFragment == homeFragment){
                         homeFragment.scrollToTop();
+                    }else{
+                        this.setTitle("YTDLnis");;
                     }
                     replaceFragment(homeFragment);
                     break;
                 case R.id.history:
+                    this.setTitle("Historia");;
                     replaceFragment(historyFragment);
                     break;
                 case R.id.settings:
+                    this.setTitle("Cilësimet");;
                     replaceFragment(settingsFragment);
                     break;
 
