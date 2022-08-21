@@ -1,40 +1,10 @@
 <resources>
-
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.Material3.DayNight">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/material_dynamic_primary60</item>
-        <item name="colorPrimaryDark">@color/material_dynamic_primary20</item>
-        <item name="colorAccent">@color/material_dynamic_primary40</item>
-        <item name="background">@color/white</item>
-    </style>
-
-    <!-- Base application theme less than android 12 -->
-    <style name="AppDefaultTheme" parent="Theme.Material3.DayNight">
+    <style name="AppDefaultTheme" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="colorPrimary">#228DFF</item>
         <item name="colorPrimaryDark">#1B6CC3</item>
-        <item name="colorAccent">#03A9F4</item>
-        <item name="android:statusBarColor">#000000</item>
+        <item name="android:windowLightStatusBar">?attr/isLightTheme</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:color">@android:color/transparent</item>
     </style>
-
-
-
-    <style name="Theme.MyApp" parent="Theme.MaterialComponents.Light" />
-
-    <style name="RoundedBg" parent="">
-        <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">50%</item>
-    </style>
-
-    <style name="BottomNav" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
-        <item name="android:color">@color/material_dynamic_primary50</item>
-    </style>
-
-    <style name="BottomNavDefault" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
-        <item name="android:color">#228DFF</item>
-    </style>
-
-
-
 
 </resources>

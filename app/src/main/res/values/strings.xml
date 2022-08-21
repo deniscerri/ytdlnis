@@ -1,45 +1,29 @@
 <resources>
-    <string name="app_name">YTDLnis</string>
-    <string name="btn_streaming_example">Streaming Example</string>
-    <string name="btn_downloading_example">Downloading Example</string>
-    <string name="btn_command_example">Custom Command Example</string>
-    <string name="btn_update">Update yt-dlp</string>
-    <string name="btn_start_stream">Start Stream</string>
-    <string name="btn_start_download">Start Download</string>
-    <string name="url_hint">enter url here</string>
-    <string name="btn_run_command">Run Command</string>
-    <string name="command_hint">enter command here</string>
-    <string name="url_error">enter a valid url</string>
-    <string name="command_error">enter a valid command</string>
-    <string name="start">Do the thing</string>
-    <string name="example_command">Example command: --extract-audio --audio-format mp3 -o /sdcard/Download/youtubedl-android/%(title)s.%(ext)s https://www.youtube.com/watch?v=dQw4w9WgXcQ</string>
-    <string name="download_start">Starting Download</string>
-    <string name="download_complete">Download Complete</string>
-    <string name="download_failed">Download Failed</string>
-    <string name="command_start">Starting Command</string>
-    <string name="command_complete">Command Complete</string>
-    <string name="command_failed">Command Failed</string>
-    <string name="use_config_file">Use Config File?</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="app_name" translatable="false">YTDLnis</string>
     <string name="search">Search</string>
-    <!-- Preference Titles -->
-    <string name="messages_header">Messages</string>
-    <string name="sync_header">Sync</string>
-
-    <!-- Messages Preferences -->
-    <string name="signature_title">Your signature</string>
-    <string name="reply_title">Default reply action</string>
-
-    <!-- Sync Preferences -->
-    <string name="sync_title">Sync email periodically</string>
-    <string name="attachment_title">Download incoming attachments</string>
-    <string name="attachment_summary_on">Automatically download attachments for incoming emails
-    </string>
-    <string name="attachment_summary_off">Only download attachments when manually requested</string>
-    <string name="shkarko">Shkarko</string>
-    <string name="shkruaj_url_e_youtube">Shkruaj URL e YouTube</string>
-    <string name="download_path">sdcard/Download</string>
-    <string name="fshi_historin">Fshi Historinë</string>
-    <string name="fshi_rezultatet">Fshi rezultatet</string>
+    <string name="fshi_historin">Clear history</string>
+    <string name="fshi_rezultatet">Clear Results</string>
+    <string name="Trending"><b>Trending</b></string>
+    <string name="end_of_results"><b>You reached the end of results</b></string>
+    <string name="download_all">Download All</string>
+    <string name="history">History</string>
+    <string name="settings">Settings</string>
+    <string name="home">Home</string>
+    <string name="directories">Directories</string>
+    <string name="music_directory">Music Directory</string>
+    <string name="video_directory">Video Directory</string>
+    <string name="updating">Updating</string>
+    <string name="ytdl_update_hint">Click this if you face download issues</string>
+    <string name="update_ytdl">Update YTDL</string>
+    <string name="about">About</string>
+    <string name="source_code">Source Code</string>
+    <string name="search_hint">Search from YouTube</string>
+    <string name="download_already_started">Can\'t Start Download! Another one is not done yet!</string>
+    <string name="try_again_after_permission">Try again after accepting the permission!</string>
+    <string name="download_success">Download Complete!</string>
+    <string name="failed_download">Failed Downloading! :(</string>
+    <string name="download_start">Download Started!</string>
+    <string name="download_notification_channel_name">File Downloads</string>
+    <string name="download_notification_channel_description">Notification that shows the download progress of audio and video files</string>
+    <string name="failed_making_directory">Failed to create the new Directory! :(</string>
 </resources>

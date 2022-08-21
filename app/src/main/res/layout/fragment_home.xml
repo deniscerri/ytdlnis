@@ -1,23 +1,123 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:backgroundTintMode="src_over"
-    tools:context=".HomeFragment"
-    android:id="@+id/scrollView1"
-    >
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/homecoordinator"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/linearLayout1"
-        android:layout_margin="10dp"
-        android:orientation="vertical" >
+        android:layout_height="match_parent"
+        android:id="@+id/home_big_linearlayout"
+        android:orientation="vertical"
+        >
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/home_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:title="@string/app_name"
+                app:menu="@menu/main_menu"
+                />
+
+        </com.google.android.material.appbar.AppBarLayout>
 
 
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swiperefreshhome"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <ScrollView
+                android:visibility="visible"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:backgroundTintMode="src_over"
+                tools:context=".HomeFragment"
+                android:id="@+id/scrollView1"
+                >
+
+                <LinearLayout
+                    android:id="@+id/home_main_linearlayout"
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/linearLayout1"
+                        android:layout_margin="10dp"
+                        android:orientation="vertical" >
+
+                        <include layout="@layout/download_all_card"
+                            android:visibility="gone" />
+
+                        <include layout="@layout/result_card"
+                            android:visibility="gone" />
+
+                    </LinearLayout>
+
+                    <com.facebook.shimmer.ShimmerFrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/shimmer_results_framelayout"
+                        android:orientation="vertical">
+
+
+                        <LinearLayout
+                            android:id="@+id/shimmer_linear_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:orientation="vertical">
+
+                            <include layout="@layout/result_card_shimmer" />
+
+                            <include layout="@layout/result_card_shimmer" />
+
+                            <include layout="@layout/result_card_shimmer" />
+
+                            <include layout="@layout/result_card_shimmer" />
+
+                            <include layout="@layout/result_card_shimmer" />
+
+                            <include layout="@layout/result_card_shimmer" />
+
+                            <include layout="@layout/result_card_shimmer" />
+
+                            <include layout="@layout/result_card_shimmer" />
+
+
+                        </LinearLayout>
+
+                    </com.facebook.shimmer.ShimmerFrameLayout>
+
+                </LinearLayout>
+
+            </ScrollView>
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     </LinearLayout>
 
-</ScrollView>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_home"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:visibility="invisible"
+        app:srcCompat="@drawable/ic_go_up"/>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

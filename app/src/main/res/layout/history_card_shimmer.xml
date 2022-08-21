@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:id="@+id/history_shimmer_relative_layout"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    app:layout_constraintDimensionRatio="H,2.66:1"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <androidx.cardview.widget.CardView
+        android:id="@+id/history_shimmer_card_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="10dp"
+        app:cardMaxElevation="12dp"
+        app:cardBackgroundColor="@color/black"
+        app:cardPreventCornerOverlap="true"
+        android:layout_margin="10dp">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/history_shimmer_image_view"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <TextView
+            android:id="@+id/history_shimmer_title"
+            android:layout_width="250dp"
+            android:background="@color/light_grey"
+            android:layout_height="10dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="10dp"
+            android:paddingBottom="20dp"
+            android:paddingLeft="20dp"
+            />
+
+        <TextView
+            android:id="@+id/history_shimmer_title2"
+            android:layout_width="150dp"
+            android:background="@color/light_grey"
+            android:layout_height="10dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginLeft="10dp"
+            android:paddingBottom="20dp"
+            android:paddingLeft="20dp"
+            />
+
+        <TextView
+            android:id="@+id/history_shimmer_bottom"
+            android:layout_width="100dp"
+            android:background="@color/light_grey"
+            android:layout_height="10dp"
+            android:layout_gravity="bottom"
+            android:gravity="bottom"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            android:paddingBottom="20dp"
+            android:paddingLeft="20dp"
+            />
+
+        <TextView
+            android:id="@+id/history_shimmer_date"
+            android:layout_width="100dp"
+            android:background="@color/light_grey"
+            android:layout_height="10dp"
+            android:layout_gravity="bottom|right"
+            android:gravity="bottom"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="10dp"
+            android:paddingBottom="20dp"
+            android:paddingLeft="20dp"
+            />
+
+        <TextView
+            android:id="@+id/history_shimmer_info_time"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="bottom|right"
+            android:paddingTop="10dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="10dp"
+            android:paddingLeft="20dp"
+            android:textSize="12sp"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:shadowRadius="1.5"
+            android:shadowDx="4"
+            android:shadowDy="4"
+            android:shadowColor="@color/black" />
+
+        <LinearLayout
+            android:id="@+id/history_shimmer_download_button_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center|right"
+            android:orientation="horizontal"
+            android:paddingBottom="10dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp">
+
+            <com.google.android.material.button.MaterialButton
+                style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton.Icon"
+                android:id="@+id/history_shimmer_download_button_type"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                app:cornerRadius="10dp"
+                android:layout_marginLeft="10dp"
+                />
+
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+</RelativeLayout>
+
+

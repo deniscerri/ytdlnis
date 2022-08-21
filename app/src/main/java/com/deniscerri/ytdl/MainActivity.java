@@ -1,19 +1,12 @@
 package com.deniscerri.ytdl;
 
 import android.content.Intent;
-import android.content.res.ColorStateList;
-import android.content.res.Configuration;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-
-
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import com.deniscerri.ytdl.databinding.ActivityMainBinding;
-
 import io.reactivex.disposables.CompositeDisposable;
 
 
@@ -34,30 +27,6 @@ public class MainActivity extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
-
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.S){
-            this.setTheme(R.style.AppTheme);
-
-            ColorStateList list = new ColorStateList(
-              new int[][]{
-                new int[]{}
-              },
-              new int[]{
-                   ContextCompat.getColor(getApplicationContext(), R.color.material_dynamic_primary50)
-               }
-            );
-            binding.bottomNavigationView.setItemActiveIndicatorColor(list);
-            binding.bottomNavigationView.setItemRippleColor(list);
-
-            int nightMode = getApplicationContext().getResources().getConfiguration().uiMode &
-                            Configuration.UI_MODE_NIGHT_MASK;
-            if(nightMode == Configuration.UI_MODE_NIGHT_YES){
-                binding.bottomNavigationView.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.material_dynamic_neutral10));
-            }
-
-            getWindow().setStatusBarColor(ContextCompat.getColor(getApplicationContext(), R.color.material_dynamic_neutral10));
-        }
-
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
@@ -85,26 +54,28 @@ public class MainActivity extends AppCompatActivity{
                     if(lastFragment == homeFragment){
                         homeFragment.scrollToTop();
                     }else{
-                        this.setTitle("YTDLnis");;
+                        this.setTitle(R.string.app_name);;
                     }
                     replaceFragment(homeFragment);
                     break;
                 case R.id.history:
-                    this.setTitle("Historia");;
+                    if(lastFragment == historyFragment){
+                        historyFragment.scrollToTop();
+                    }else {
+                        this.setTitle(getString(R.string.history));
+                    }
                     replaceFragment(historyFragment);
                     break;
                 case R.id.settings:
-                    this.setTitle("Cilësimet");;
+                    this.setTitle(getString(R.string.settings));;
                     replaceFragment(settingsFragment);
                     break;
 
             }
             return true;
         });
-
         Intent intent = getIntent();
         handleIntents(intent);
-
     }
 
     @Override

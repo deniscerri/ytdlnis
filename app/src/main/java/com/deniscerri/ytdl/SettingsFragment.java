@@ -1,25 +1,20 @@
 package com.deniscerri.ytdl;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
-import androidx.preference.PreferenceManager;
-
 import com.yausername.youtubedl_android.YoutubeDL;
-
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
-
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -36,15 +31,15 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     public static boolean updating;
 
     private static final String TAG = "SettingsFragment";
-    private CompositeDisposable compositeDisposable = new CompositeDisposable();
+    private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.root_preferences, rootKey);
 
-        musicPath = (Preference) findPreference("music_path");
-        videoPath = (Preference) findPreference("video_path");
+        musicPath = findPreference("music_path");
+        videoPath = findPreference("video_path");
 
         SharedPreferences preferences = requireContext().getSharedPreferences("root_preferences", Activity.MODE_PRIVATE);
         String music_path = preferences.getString("music_path", "");
@@ -59,7 +54,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         musicPath.setSummary(music_path);
         musicPath.setOnPreferenceClickListener(preference -> {
             Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
-            startActivityForResult(intent, MUSIC_PATH_CODE);
+            musicPathResultLauncher.launch(intent);
             return true;
         });
 
@@ -73,11 +68,11 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         videoPath.setSummary(video_path);
         videoPath.setOnPreferenceClickListener(preference -> {
             Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
-            startActivityForResult(intent, VIDEO_PATH_CODE);
+            videoPathResultLauncher.launch(intent);
             return true;
         });
 
-        update = (Preference) findPreference("update");
+        update = findPreference("update");
         if(update != null){
             update.setOnPreferenceClickListener(preference -> {
                 updateYoutubeDL();
@@ -88,23 +83,27 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode) {
-            case MUSIC_PATH_CODE:
-                if(resultCode == Activity.RESULT_OK){
-                    changePath(musicPath, data, requestCode);
+    ActivityResultLauncher<Intent> musicPathResultLauncher = registerForActivityResult(
+        new ActivityResultContracts.StartActivityForResult(),
+        new ActivityResultCallback<ActivityResult>() {
+            @Override
+            public void onActivityResult(ActivityResult result) {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    changePath(musicPath, result.getData(), MUSIC_PATH_CODE);
                 }
-                break;
-            case VIDEO_PATH_CODE:
-                if(resultCode == Activity.RESULT_OK){
-                    changePath(videoPath, data, requestCode);
-                }
-                break;
-        }
+            }
+    });
 
-    }
+    ActivityResultLauncher<Intent> videoPathResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        changePath(videoPath, result.getData(), VIDEO_PATH_CODE);
+                    }
+                }
+            });
 
     public void changePath(Preference p, Intent data, int requestCode){
         Log.e("TEST", data.toUri(0));

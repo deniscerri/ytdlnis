@@ -5,30 +5,41 @@ public class Video {
     private String videoId;
     private String title;
     private String author;
+    private String duration;
     private String thumb;
     private String downloadedType;
+    private int downloadedAudio;
+    private int downloadedVideo;
     private String downloadedTime;
     private int isPlaylistItem;
 
-    public Video(String videoId, String title, String author, String thumb, String downloadedType, String downloadedTime, int isPlaylistItem) {
+
+    // RESULTS OBJECT
+    public Video(String videoId, String title, String author, String duration, String thumb,
+                 int downloadedAudio, int downloadedVideo, int isPlaylistItem) {
         this.videoId = videoId;
         this.title = title;
         this.author = author;
+        this.duration = duration;
+        this.thumb = thumb;
+        this.downloadedVideo = downloadedVideo;
+        this.downloadedAudio = downloadedAudio;
+        this.isPlaylistItem = isPlaylistItem;
+    }
+
+    //HISTORY OBJECT
+    public Video(String videoId, String title, String author, String duration, String thumb,
+                  String downloadedType, String downloadedTime, int isPlaylistItem) {
+        this.videoId = videoId;
+        this.title = title;
+        this.author = author;
+        this.duration = duration;
         this.thumb = thumb;
         this.downloadedType = downloadedType;
         this.downloadedTime = downloadedTime;
         this.isPlaylistItem = isPlaylistItem;
     }
 
-    public Video(String videoId, String title, String author, String thumb) {
-        this.videoId = videoId;
-        this.title = title;
-        this.author = author;
-        this.thumb = thumb;
-        this.downloadedTime = null;
-        this.downloadedType = null;
-        this.isPlaylistItem = 0;
-    }
 
     public int getId() {
         return id;
@@ -40,10 +51,6 @@ public class Video {
 
     public String getVideoId() {
         return videoId;
-    }
-
-    public void setVideoId(String videoId) {
-        this.videoId = videoId;
     }
 
     public String getTitle() {
@@ -58,16 +65,12 @@ public class Video {
         return author;
     }
 
-    public void setAuthor(String author) {
-        this.author = author;
+    public String getDuration() {
+        return duration;
     }
 
     public String getThumb() {
         return thumb;
-    }
-
-    public void setThumb(String thumb) {
-        this.thumb = thumb;
     }
 
     public String getDownloadedType() {
@@ -92,5 +95,13 @@ public class Video {
 
     public void setIsPlaylistItem(int playlistItem) {
         this.isPlaylistItem = playlistItem;
+    }
+
+    public int isAudioDownloaded() {
+        return downloadedAudio;
+    }
+
+    public int isVideoDownloaded() {
+        return downloadedVideo;
     }
 }

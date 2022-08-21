@@ -23,7 +23,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="file:/$USER_HOME$/AppData/Local/Android/Sdk/icons/material/materialicons/keyboard_arrow_down/baseline_keyboard_arrow_down_24.xml" />
+                                      <entry key="url" value="file:/$USER_HOME$/AppData/Local/Android/Sdk/icons/material/materialicons/announcement/baseline_announcement_24.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -33,8 +33,8 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="color" value="ff4d00" />
-                            <entry key="outputName" value="ic_download" />
+                            <entry key="color" value="00a6ff" />
+                            <entry key="outputName" value="ic_announcement" />
                             <entry key="sourceFile" value="C:\Users\denis\Desktop\youtubedl-android-0.13.1\youtubedl-android-0.13.1" />
                           </map>
                         </option>

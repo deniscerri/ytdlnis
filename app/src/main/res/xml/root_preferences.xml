@@ -1,39 +1,40 @@
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
 
-    <PreferenceCategory app:title="Skedaret">
+    <Preference
+        android:layout="@layout/fragment_settings"/>
+
+    <PreferenceCategory app:title="@string/directories">
         <Preference
             app:key="music_path"
-            app:title="Direktoria e Muzikës"></Preference>
-
+            app:title="@string/music_directory" />
         <Preference
             app:key="video_path"
-            app:title="Direktoria e Videos"></Preference>
-
-
+            app:title="@string/video_directory" />
     </PreferenceCategory>
 
-    <PreferenceCategory app:title="Perditesim">
-
+    <PreferenceCategory app:title="@string/updating">
         <Preference
             app:key="update"
-            app:summary="Provo kete cilesim nese paraqitesh me probleme ne shkarkim"
-            app:title="Perditeso Komponentin YoutubeDL"></Preference>
-
+            app:summary="@string/ytdl_update_hint"
+            app:title="@string/update_ytdl" />
     </PreferenceCategory>
 
 
-    <PreferenceCategory app:title="Rreth">
+    <PreferenceCategory app:title="@string/about">
 
         <Preference
             app:key="rreth"
             app:summary="https://github.com/deniscerri/ytdlnis"
-            app:title="Kodi">
+            app:title="@string/source_code">
             <intent
                 android:action="android.intent.action.VIEW"
                 android:data="https://github.com/deniscerri/ytdlnis"
-                />
+            />
         </Preference>
+
 
     </PreferenceCategory>
 

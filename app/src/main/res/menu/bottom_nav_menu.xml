@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android" android:theme="@style/AppTheme">
+<menu xmlns:android="http://schemas.android.com/apk/res/android" android:theme="@style/AppDefaultTheme">
 
-    <item android:title="Kryesore"
+    <item android:title="@string/home"
         android:icon="@drawable/ic_home"
         android:id="@+id/home"/>
-    <item android:title="Historia"
+    <item android:title="@string/history"
         android:icon="@drawable/ic_history"
         android:id="@+id/history"/>
-    <item android:title="Cilësime"
+    <item android:title="@string/settings"
         android:icon="@drawable/ic_settings"
         android:id="@+id/settings"/>
 </menu>

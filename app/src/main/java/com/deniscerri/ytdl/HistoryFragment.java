@@ -1,23 +1,17 @@
 package com.deniscerri.ytdl;
 
-import android.app.ActionBar;
 import android.content.Context;
-import android.graphics.PorterDuff;
-import android.graphics.Typeface;
+import android.graphics.Color;
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
 import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
+import android.os.Handler;
+import android.os.Looper;
 import android.text.InputType;
 import android.util.Log;
 import android.util.TypedValue;
@@ -31,36 +25,39 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.deniscerri.ytdl.database.DBManager;
 import com.deniscerri.ytdl.database.Video;
-import com.deniscerri.ytdl.placeholder.PlaceholderContent;
+import com.facebook.shimmer.ShimmerFrameLayout;
+import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.squareup.picasso.Picasso;
-
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 
 /**
  * A fragment representing a list of Items.
  */
-public class HistoryFragment extends Fragment {
+public class HistoryFragment extends Fragment implements View.OnClickListener{
 
     private LinearLayout linearLayout;
     private ScrollView scrollView;
     private View fragmentView;
     private DBManager dbManager;
-    private ArrayList<Video> historyObjects;
+    Context context;
+    private LayoutInflater layoutinflater;
+    private ShimmerFrameLayout shimmerCards;
+    private MaterialToolbar topAppBar;
+
+    private static final String TAG = "HistoryFragment";
 
 
     public HistoryFragment() {
     }
 
-    // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
     public static HistoryFragment newInstance() {
         HistoryFragment fragment = new HistoryFragment();
@@ -79,163 +76,135 @@ public class HistoryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         fragmentView = inflater.inflate(R.layout.fragment_history, container, false);
-        initViews();
+        context = fragmentView.getContext();
+        layoutinflater = LayoutInflater.from(context);
+        linearLayout = fragmentView.findViewById(R.id.linearLayout1);
+        scrollView = fragmentView.findViewById(R.id.scrollView1);
+        shimmerCards = fragmentView.findViewById(R.id.shimmer_history_framelayout);
+        topAppBar = fragmentView.findViewById(R.id.history_toolbar);
 
-        dbManager = new DBManager(requireContext());
-        initCards();
+        dbManager = new DBManager(context);
 
         SwipeRefreshLayout swipeRefreshLayout = fragmentView.findViewById(R.id.swiperefresh);
-
         swipeRefreshLayout.setOnRefreshListener(() -> {
             initCards();
             swipeRefreshLayout.setRefreshing(false);
         });
 
-
+        FloatingActionButton fab = fragmentView.findViewById(R.id.fab_history);
+        fab.setOnClickListener(this);
+        scrollView.setOnScrollChangeListener((view, x, y, oldX, oldY) -> {
+            if( y > 500){
+                fab.show();
+            }else{
+                fab.hide();
+            }
+        });
+        initMenu();
+        initCards();
         return fragmentView;
     }
 
+
     private void initCards(){
+        shimmerCards.startShimmer();
+        shimmerCards.setVisibility(View.VISIBLE);
         linearLayout.removeAllViews();
-        historyObjects = dbManager.merrHistorine();
-        for(int i = historyObjects.size()-1; i >= 0; i--){
-            createCard(historyObjects.get(i));
+        try{
+            Thread thread = new Thread(() -> {
+                Handler uiHandler = new Handler(Looper.getMainLooper());
+                ArrayList<Video> historyObjects = dbManager.getHistory();
+                for(int i = historyObjects.size()-1; i >= 0; i--){
+                    createCard(historyObjects.get(i));
+                }
+                TextView padding = new TextView(context);
+                int dp = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 80, context.getResources().getDisplayMetrics());
+                padding.setHeight(dp);
+                padding.setGravity(Gravity.CENTER);
+
+                uiHandler.post(() -> {
+                    linearLayout.addView(padding);
+                    shimmerCards.stopShimmer();
+                    shimmerCards.setVisibility(View.GONE);
+                });
+            });
+            thread.start();
+        }catch(Exception e){
+            Log.e(TAG, e.toString());
         }
+
     }
 
-    private int getDp(int value){
-        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, getResources().getDisplayMetrics());
+    public void scrollToTop(){
+        scrollView.smoothScrollTo(0,0);
     }
 
-    private void createCard(Video video) {
+    private void createCard(Video video){
+        RelativeLayout r = new RelativeLayout(context);
+        layoutinflater.inflate(R.layout.history_card, r);
 
-        RelativeLayout r = new RelativeLayout(getContext());
-        r.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
-        r.getLayoutParams().height = getDp(130);
-
-        CardView card = new CardView(requireContext());
-        card.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-        card.setRadius(getDp(10));
-        card.setCardElevation(10);
-        card.setMaxCardElevation(12);
-        card.setPreventCornerOverlap(true);
-        card.setUseCompatPadding(true);
-        card.setCardBackgroundColor(ContextCompat.getColor(requireContext(), R.color.colorPrimaryDark));
-
+        CardView card = r.findViewById(R.id.history_card_view);
         // THUMBNAIL ----------------------------------
-
-        ImageView thumbnail = new ImageView(getContext());
-        thumbnail.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+        ImageView thumbnail = card.findViewById(R.id.history_image_view);
         String imageURL= video.getThumb();
 
-
-        Picasso.get().load(imageURL).into(thumbnail);
-        thumbnail.setAdjustViewBounds(false);
-        thumbnail.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        Handler uiHandler = new Handler(Looper.getMainLooper());
+        uiHandler.post(() -> Picasso.get().load(imageURL).into(thumbnail));
+        thumbnail.setColorFilter(Color.argb(70, 0, 0, 0));
 
         // TITLE  ----------------------------------
-        TextView videoTitle = new TextView(getContext());
-        videoTitle.setLayoutParams(new RelativeLayout.LayoutParams(getDp(300), getDp(100)));
-        int padding = getDp(20);
-        videoTitle.setPadding(padding, padding, padding, padding);
+        TextView videoTitle = card.findViewById(R.id.history_title);
+        String title = video.getTitle();
 
-        videoTitle.setText(video.getTitle());
-        videoTitle.setTextSize(getDp(5));
-        videoTitle.setTextColor(ContextCompat.getColor(requireContext(), R.color.white));
-        videoTitle.setTypeface(null, Typeface.BOLD);
-        videoTitle.setShadowLayer(2f, 4f, 4f, ContextCompat.getColor(requireContext(), R.color.black));
+        if(title.length() > 100){
+            title = title.substring(0, 40) + "...";
+        }
+        videoTitle.setText(title);
 
-        // AUTHOR ----------------------------------
+        // Bottom Info ----------------------------------
+        TextView bottomInfo = card.findViewById(R.id.history_info_bottom);
+        String info = video.getAuthor() + " • " + video.getDuration();
+        bottomInfo.setText(info);
 
-        TextView videoAuthor = new TextView(getContext());
-        videoAuthor.setGravity(Gravity.BOTTOM);
-        videoAuthor.setLayoutParams(new RelativeLayout.LayoutParams(getDp(150), getDp(100)));
-        videoAuthor.setPadding(getDp(20), 0, 0, getDp(10));
+        // TIME DOWNLOADED  ----------------------------------
+        TextView datetime = card.findViewById(R.id.history_info_time);
+        String downloadedTime = video.getDownloadedTime();
+        datetime.setText(downloadedTime);
 
-        videoAuthor.setText(video.getAuthor());
-        videoAuthor.setTextSize(getDp(3));
-        videoAuthor.setTextColor(ContextCompat.getColor(requireContext(), R.color.white));
-        videoAuthor.setShadowLayer(2f, 4f, 4f, ContextCompat.getColor(requireContext(), R.color.black));
-        videoAuthor.setTypeface(null, Typeface.BOLD);
-
-        // DATE ---------------------------------------------
-
-        TextView date = new TextView(getContext());
-        date.setGravity(Gravity.BOTTOM);
-        date.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, getDp(100)));
-        date.setPadding(getDp(250), 0, getDp(20), getDp(10));
-        date.setShadowLayer(1.5f, 4f, 4f, R.color.black);
-
-        date.setText(video.getDownloadedTime());
-        date.setTextSize(getDp(3));
-        date.setTextColor(ContextCompat.getColor(requireContext(), R.color.white));
-        date.setShadowLayer(1, 1, 1, ContextCompat.getColor(requireContext(), R.color.colorPrimaryDark));
-        date.setTypeface(null, Typeface.BOLD);
-
-        // BUTTONS -------------------------------------------
-
-
-        LinearLayout buttonLayout = new LinearLayout(requireContext());
-        buttonLayout.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-        buttonLayout.setGravity(Gravity.BOTTOM | Gravity.RIGHT);
-        buttonLayout.setOrientation(LinearLayout.HORIZONTAL);
-        buttonLayout.setPadding(getDp(10), 0, getDp(20), getDp(40));
-
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                getDp(48), getDp(48)
-        );
-
+        // BUTTON ----------------------------------
+        LinearLayout buttonLayout = card.findViewById(R.id.history_download_button_layout);
+        Button btn = buttonLayout.findViewById(R.id.history_download_button_type);
         if(video.getDownloadedType().equals("mp3")){
-            Button musicBtn = new Button(getContext());
-
-            params.setMargins(0,0, getDp(10), 0);
-            musicBtn.setLayoutParams(params);
-            //musicBtn.setIconSize(getDp(24));
-            musicBtn.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.ic_music));
-
-            buttonLayout.addView(musicBtn);
+            btn.setBackground(ContextCompat.getDrawable(context, R.drawable.ic_music));
         }else{
-            Button videoBtn = new Button(requireContext());
-            videoBtn.setLayoutParams(params);
-            //videoBtn.setIconSize(getDp(24));
-            videoBtn.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.ic_video));
-
-            buttonLayout.addView(videoBtn);
+            btn.setBackground(ContextCompat.getDrawable(context, R.drawable.ic_video));
         }
 
-        card.addView(thumbnail);
-        card.addView(videoTitle);
-        card.addView(videoAuthor);
-        card.addView(date);
-        card.addView(buttonLayout);
-
-        r.addView(card);
-
-        linearLayout.addView(r);
+        uiHandler.post(() -> linearLayout.addView(r));
     }
 
+    private void initMenu(){
+        topAppBar.setOnClickListener(view -> {
+            scrollToTop();
+        });
 
-    private void initViews() {
-        linearLayout = fragmentView.findViewById(R.id.linearLayout1);
-        scrollView = fragmentView.findViewById(R.id.scrollView1);
-    }
+        topAppBar.setOnMenuItemClickListener((MenuItem m) -> {
+            switch (m.getItemId()){
+                case R.id.delete_history:
+                    dbManager.clearHistory();
+                    linearLayout.removeAllViews();
+                    return true;
+            }
+            return true;
+        });
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
-        inflater.inflate(R.menu.history_menu, menu);
-        super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.delete_history:
-                dbManager.clearHistory();
-                linearLayout.removeAllViews();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-
+    public void onClick(View v) {
+        if (v.getId() == R.id.fab_history) {
+            scrollView.smoothScrollBy(0, 0);
+            scrollView.smoothScrollTo(0, 0);
         }
     }
 }

@@ -1,41 +1,43 @@
 package com.deniscerri.ytdl.api;
 
 import android.content.Context;
-import android.content.res.AssetManager;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
+import android.text.Html;
 import android.util.Log;
 import android.widget.Toast;
-
+import androidx.annotation.Nullable;
+import com.deniscerri.ytdl.database.DBManager;
 import com.deniscerri.ytdl.database.Video;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.sql.Array;
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Properties;
-
 
 public class YoutubeAPIManager {
     private static final String TAG = "API MANAGER";
+    private static String countryCODE = "US";
     private ArrayList<Video> videos;
     private String key;
-    Properties properties = new Properties();
+    private DBManager dbManager;
 
     public YoutubeAPIManager(Context context) {
-        AssetManager assetManager = context.getAssets();
+        @Nullable ApplicationInfo applicationInfo;
         try{
-            InputStream inputStream = assetManager.open("config.properties");
-            properties.load(inputStream);
-            key = properties.getProperty("ytAPI");
+            applicationInfo = context.getPackageManager().getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA);
+            key = applicationInfo.metaData.getString("ytAPIkey");
+            dbManager = new DBManager(context);
+
+            //get Locale
+            JSONObject country = genericRequest("https://ipwho.is/");
+            try{
+                countryCODE = country.getString("country_code");
+            }catch(Exception ignored){}
+
         }catch(Exception ignored){
             Toast.makeText(context, "Couldn't find API Key for the request", Toast.LENGTH_SHORT).show();
         }
@@ -44,47 +46,89 @@ public class YoutubeAPIManager {
     }
 
     public ArrayList<Video> search(String query) throws JSONException{
-        JSONObject res = genericRequest("https://youtube.googleapis.com/youtube/v3/search?part=snippet&q="+query+"&maxResults=25&regionCode=US&key="+key);
+        //short data
+        JSONObject res = genericRequest("https://youtube.googleapis.com/youtube/v3/search?part=snippet&q="+query+"&maxResults=25&regionCode="+countryCODE+"&key="+key);
         JSONArray dataArray = res.getJSONArray("items");
+
+        //extra data
+        String url2 = "https://www.googleapis.com/youtube/v3/videos?id=";
+        //getting all ids, for the extra data request
+        for(int i = 0; i < dataArray.length(); i++){
+            JSONObject element = dataArray.getJSONObject(i);
+            JSONObject snippet = element.getJSONObject("snippet");
+
+            if(element.getJSONObject("id").getString("kind").equals("youtube#video")){
+                String videoID = element.getJSONObject("id").getString("videoId");
+                url2 = url2 + videoID + ",";
+                snippet.put("videoID", videoID);
+            }
+        }
+        url2 = url2.substring(0, url2.length()-1) + "&part=contentDetails&regionCode="+countryCODE+"&key="+key;
+        JSONObject extra = genericRequest(url2);
+        int j = 0;
         for(int i = 0; i < dataArray.length(); i++){
             JSONObject element = dataArray.getJSONObject(i);
             JSONObject snippet = element.getJSONObject("snippet");
             if(element.getJSONObject("id").getString("kind").equals("youtube#video")){
-                snippet.put("videoID", element.getJSONObject("id").getString("videoId"));
-                snippet = fixThumbnail(snippet);
-                Video v = createVideofromJSON(snippet);
-                v.setTitle(v.getTitle().replace("&amp;", "&").replace("&quot;", "\""));
-                v.setAuthor(v.getAuthor().replace("&amp;", "&").replace("&quot;", "\""));
-                videos.add(createVideofromJSON(snippet));
-            }
-        }
-        return videos;
-    }
+                String duration = extra.getJSONArray("items").getJSONObject(j++).getJSONObject("contentDetails").getString("duration");
+                duration = formatDuration(duration);
+                if(duration.equals("0:00")){
+                    continue;
+                }
 
-    public ArrayList<Video> getPlaylist(String id, String nextPageToken) throws JSONException{
-        String url = "https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet&pageToken="+nextPageToken+"&maxResults=50&playlistId="+id+"&key="+key;
-        JSONObject res = genericRequest(url);
-        JSONArray dataArray = res.getJSONArray("items");
-
-        for(int i = 0; i < dataArray.length(); i++){
-            JSONObject element = dataArray.getJSONObject(i);
-            JSONObject snippet = element.getJSONObject("snippet");
-            if(snippet.getJSONObject("resourceId").getString("kind").equals("youtube#video")){
-                snippet.put("videoID", snippet.getJSONObject("resourceId").getString("videoId"));
+                snippet.put("duration", duration);
                 snippet = fixThumbnail(snippet);
                 Video v = createVideofromJSON(snippet);
 
                 if(v.getThumb().isEmpty()){
                     continue;
                 }
-
-                v.setIsPlaylistItem(1);
-                v.setTitle(v.getTitle().replace("&amp;", "&").replace("&quot;", "\""));
-                v.setAuthor(v.getAuthor().replace("&amp;", "&").replace("&quot;", "\""));
-
-                videos.add(v);
-
+                videos.add(createVideofromJSON(snippet));
             }
+        }
+
+
+        return videos;
+    }
+
+    public ArrayList<Video> getPlaylist(String id, String nextPageToken) throws JSONException{
+        String url = "https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet&pageToken="+nextPageToken+"&maxResults=50&regionCode="+countryCODE+"&playlistId="+id+"&key="+key;
+        //short data
+        JSONObject res = genericRequest(url);
+        JSONArray dataArray = res.getJSONArray("items");
+
+        //extra data
+        String url2 = "https://www.googleapis.com/youtube/v3/videos?id=";
+        //getting all ids, for the extra data request
+        for(int i = 0; i < dataArray.length(); i++){
+            JSONObject element = dataArray.getJSONObject(i);
+            JSONObject snippet = element.getJSONObject("snippet");
+            String videoID = snippet.getJSONObject("resourceId").getString("videoId");
+            url2 = url2 + videoID + ",";
+            snippet.put("videoID", videoID);
+        }
+        url2 = url2.substring(0, url2.length()-1) + "&part=contentDetails&regionCode="+countryCODE+"&key="+key;
+        JSONObject extra = genericRequest(url2);
+        JSONArray extraArray = extra.getJSONArray("items");
+        int j = 0;
+        int i;
+        for(i = 0; i < extraArray.length(); i++){
+            JSONObject element = dataArray.getJSONObject(i);
+            JSONObject snippet = element.getJSONObject("snippet");
+            String duration = extra.getJSONArray("items").getJSONObject(j).getJSONObject("contentDetails").getString("duration");
+            duration = formatDuration(duration);
+            snippet.put("duration", duration);
+            snippet = fixThumbnail(snippet);
+            Video v = createVideofromJSON(snippet);
+
+            if(v.getThumb().isEmpty()){
+                continue;
+            }else{
+                j++;
+            }
+
+            v.setIsPlaylistItem(1);
+            videos.add(v);
         }
         String next = res.optString("nextPageToken");
         if(next != ""){
@@ -96,16 +140,18 @@ public class YoutubeAPIManager {
 
 
     public Video getVideo(String id) throws JSONException {
-        JSONObject res = genericRequest("https://youtube.googleapis.com/youtube/v3/videos?part=snippet&id="+id+"&key="+key);
+        //short data
+        JSONObject res = genericRequest("https://youtube.googleapis.com/youtube/v3/videos?part=snippet,contentDetails&id="+id+"&key="+key);
+        String duration = res.getJSONArray("items").getJSONObject(0).getJSONObject("contentDetails").getString("duration");
+        duration = formatDuration(duration);
+
         res = res.getJSONArray("items").getJSONObject(0).getJSONObject("snippet");
+
         res.put("videoID", id);
+        res.put("duration", duration);
         res = fixThumbnail(res);
 
         Video v = createVideofromJSON(res);
-        v.setTitle(v.getTitle().replace("&amp;", "&").replace("&quot;", "\""));
-        v.setAuthor(v.getAuthor().replace("&amp;", "&").replace("&quot;", "\""));
-
-
         return v;
     }
 
@@ -113,13 +159,25 @@ public class YoutubeAPIManager {
         Video video = null;
         try{
             String id = obj.getString("videoID");
+
             String title = obj.getString("title");
+            title = Html.fromHtml(title).toString();
+
             String author = obj.getString("channelTitle");
+            author = Html.fromHtml(author).toString();
+
+            String duration = obj.getString("duration");
             String thumb = obj.getString("thumb");
 
-            video = new Video(id, title, author, thumb);
-        }catch(Exception ignored){}
+            int downloadedAudio = dbManager.checkDownloaded(id, "mp3");
+            int downloadedVideo = dbManager.checkDownloaded(id, "mp4");
 
+            int isPLaylist = 0;
+
+            video = new Video(id, title, author, duration, thumb, downloadedAudio, downloadedVideo, isPLaylist);
+        }catch(Exception e){
+            Log.e(TAG, e.toString());
+        }
         return video;
     }
 
@@ -185,6 +243,86 @@ public class YoutubeAPIManager {
 
 
         return o;
+    }
+
+    public ArrayList<Video> getTrending(Context context) throws JSONException{
+        String url = "https://www.googleapis.com/youtube/v3/videos?part=snippet&chart=mostPopular&regionCode="+countryCODE+"&maxResults=25&key="+key;
+        //short data
+        JSONObject res = genericRequest(url);
+        //extra data from the same videos
+        JSONObject contentDetails = genericRequest("https://www.googleapis.com/youtube/v3/videos?part=contentDetails&chart=mostPopular&regionCode="+countryCODE+"&maxResults=25&key="+key);
+
+        JSONArray dataArray = res.getJSONArray("items");
+        JSONArray extraDataArray = contentDetails.getJSONArray("items");
+        for(int i = 0; i < dataArray.length(); i++){
+            JSONObject element = dataArray.getJSONObject(i);
+            JSONObject snippet = element.getJSONObject("snippet");
+
+            String duration = extraDataArray.getJSONObject(i).getJSONObject("contentDetails").getString("duration");
+            duration = formatDuration(duration);
+
+            snippet.put("videoID", element.getString("id"));
+            snippet.put("duration", duration);
+            snippet = fixThumbnail(snippet);
+
+            Video v = createVideofromJSON(snippet);
+            if(v.getThumb().isEmpty()){
+                continue;
+            }
+            videos.add(v);
+        }
+
+        return videos;
+    }
+
+    public String formatDuration(String dur){
+        String duration = "";
+        String tmp = "";
+        String hours = "";
+        String minutes = "";
+        String seconds = "";
+        //removing P
+        dur = dur.substring(1);
+        for(int i = 0; i < dur.length(); i++){
+            char c = dur.charAt(i);
+            if(!Character.isDigit(c)){
+                int nr = Character.getNumericValue(c);
+                if(nr < 10){
+                    tmp = "0" + tmp;
+                }
+                if (c == 'D'){
+                    hours = String.valueOf(Integer.valueOf(tmp) * 24);
+                }else if(c == 'T'){
+                    continue;
+                }else if(c == 'H'){
+                    hours = tmp;
+                }else if(c == 'M'){
+                    minutes = tmp;
+                }else if(c == 'S'){
+                    seconds = tmp;
+                }
+                tmp = "";
+                continue;
+            }
+            tmp = tmp + c;
+        }
+
+        if(seconds.isEmpty()) seconds = "00";
+        else if(Integer.parseInt(seconds) < 10) seconds = "0" + seconds;
+        if(minutes.isEmpty()){
+            if(hours.isEmpty()){
+                minutes = "0";
+            }else{
+                minutes = "00";
+            }
+        }
+        duration = minutes + ":" + seconds;
+
+        if(!hours.isEmpty()){
+            duration = hours + ":" + minutes + ":" + seconds;
+        }
+
+        return duration;
     }
 
 

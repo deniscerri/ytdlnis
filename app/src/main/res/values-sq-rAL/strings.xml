@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="Trending"><b>Në Trend</b></string>
+    <string name="search">Kërko</string>
+    <string name="fshi_rezultatet">Pastro Rezultatet</string>
+    <string name="fshi_historin">Pastro Historinë</string>
+    <string name="end_of_results"><b>Arrite fundin e rezultateve</b></string>
+    <string name="download_all">Shkarko të gjitha</string>
+    <string name="history">Historia</string>
+    <string name="settings">Cilësime</string>
+    <string name="home">Kryesore</string>
+    <string name="directories">Direktoritë</string>
+    <string name="music_directory">Direktoria e Muzikës</string>
+    <string name="video_directory">Direktoria e Videos</string>
+    <string name="updating">Përditësim</string>
+    <string name="ytdl_update_hint">Kliko këtë nëse ke probleme me shkarkimin</string>
+    <string name="update_ytdl">Përditëso YTDL</string>
+    <string name="about">Rreth</string>
+    <string name="source_code">Kodi</string>
+    <string name="search_hint">Kërko nga YouTube</string>
+    <string name="download_already_started">Nuk mund te filloj! Nje shkarkim tjeter është në punë!</string>
+    <string name="try_again_after_permission">Provo përsëri pasi ke pranuar lejen!</string>
+    <string name="download_success">U shkarkua!</string>
+    <string name="failed_download">Dështim në shkarkim! :(</string>
+    <string name="download_start">Shkarkimi Filloi!</string>
+    <string name="download_notification_channel_name">Shkarkimet e Skedarëve</string>
+    <string name="download_notification_channel_description">Njoftimi i cili tregon progresin e shkarkimeve te skedarëve audio dhe video</string>
+    <string name="failed_making_directory">Dështim në krijimin e Direktorisë së re! :(</string>
+</resources>
