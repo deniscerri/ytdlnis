@@ -26,4 +26,10 @@
     <string name="download_notification_channel_name">Shkarkimet e Skedarëve</string>
     <string name="download_notification_channel_description">Njoftimi i cili tregon progresin e shkarkimeve te skedarëve audio dhe video</string>
     <string name="failed_making_directory">Dështim në krijimin e Direktorisë së re! :(</string>
+    <string name="you_are_in_latest_version">Je ne versionin e fundit</string>
+    <string name="ytld_update_success">Perditesimi u krye me sukses!</string>
+    <string name="ytdl_update_failed">Deshtim ne perditesim</string>
+    <string name="added_to_queue">U vendos në rradhë!</string>
+    <string name="ytdl_already_updating">Duke u përditësuar. Prisni!</string>
+    <string name="ytdl_updating_started">Filloi Perditesimi</string>
 </resources>

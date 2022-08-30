@@ -38,6 +38,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.deniscerri.ytdl.api.YoutubeAPIManager;
 import com.deniscerri.ytdl.database.DBManager;
@@ -99,20 +100,13 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         public void onProgressUpdate(float progress, long etaInSeconds, String line) {
             activity.runOnUiThread(() -> {
                 progressBar.setProgress((int) progress);
-
                 String contentText = "";
-                if(progressBar.getProgress() > 0){
-                    contentText += progressBar.getProgress() + "%";
-                }
-
-                String eta = convertETASecondsToTime(etaInSeconds);
-                if(!eta.equals("0sec")){
-                    contentText = contentText+ "  Estimated Time: " + eta;
-                }
 
                 if(downloadQueue.size() > 0){
-                    contentText = contentText + "\n" + downloadQueue.size() + " items left";
+                    contentText += "   " + downloadQueue.size() + " items left\n";
                 }
+
+                contentText += line.replaceAll("\\[.*?\\]", "");
 
 
                 download_notification.setProgress(100,(int) progress,false)
@@ -172,6 +166,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         shimmerCards = fragmentView.findViewById(R.id.shimmer_results_framelayout);
         topAppBar = fragmentView.findViewById(R.id.home_toolbar);
 
+        downloadQueue = new LinkedList<>();
+
         SwipeRefreshLayout swipeRefreshLayout = fragmentView.findViewById(R.id.swiperefreshhome);
         swipeRefreshLayout.setOnRefreshListener(() -> {
             initCards();
@@ -182,7 +178,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         fab.setOnClickListener(this);
 
         scrollView.setOnScrollChangeListener((view, x, y, oldX, oldY) -> {
-            if( y > 500){
+            if(y > 500){
                 fab.show();
             }else{
                 fab.hide();
@@ -246,9 +242,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                 }
 
                 uiHandler.post(() -> {
-                    addEndofResultsText();
                     shimmerCards.stopShimmer();
                     shimmerCards.setVisibility(View.GONE);
+                    if(resultObjects.size() > 1){
+                        addEndofResultsText();
+                    }
                 });
             });
             thread.start();
@@ -327,7 +325,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
         if(m.find()){
             type = "Video";
-            if (inputQuery.contains("list=")) {
+            if (inputQuery.contains("playlist?list=")) {
                 type = "Playlist";
             }
         }
@@ -372,6 +370,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                         inputQuery = inputQuery.substring(8);
                     }
 
+                    if(inputQuery.contains("&list=")){
+                        el = inputQuery.split("&list=");
+                        inputQuery = el[0];
+                    }
+
                     Thread thread = new Thread(new Runnable(){
                         private final String query;
                         {
@@ -385,8 +388,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                                 Log.e(TAG, e.toString());
                             }
 
-                            dbManager.addToResults(resultObjects);
                             createCard(resultObjects.get(0));
+                            dbManager.addToResults(resultObjects);
 
                             new Handler(Looper.getMainLooper()).post(() -> {
                                 shimmerCards.stopShimmer();
@@ -540,7 +543,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
             if(viewIdName.contains("mp3") || viewIdName.contains("mp4")){
                 Log.e(TAG, viewIdName);
                 String[] buttonData = viewIdName.split("##");
-                downloadQueue = new LinkedList<>();
                 if(buttonData[0].equals("ALL")){
                     for (int i = 0; i < resultObjects.size(); i++){
                         Video vid = findVideo(resultObjects.get(i).getVideoId());
@@ -552,6 +554,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                     Video vid = findVideo(buttonData[0]);
                     vid.setDownloadedType(buttonData[1]);
                     downloadQueue.add(vid);
+                }
+
+                if (downloading) {
+                    Toast.makeText(context, R.string.added_to_queue, Toast.LENGTH_LONG).show();
+                    return;
                 }
 
                 startDownload(downloadQueue);
@@ -587,11 +594,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
             return;
         }
 
-        if (downloading) {
-            Toast.makeText(context, R.string.download_already_started, Toast.LENGTH_LONG).show();
-            return;
-        }
-
         if (!isStoragePermissionGranted()) {
             Toast.makeText(context, R.string.try_again_after_permission, Toast.LENGTH_LONG).show();
             return;
@@ -608,6 +610,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
         if(type.equals("mp3")){
             request.addOption("--embed-thumbnail");
+            request.addOption("--sponsorblock-remove", "all");
             request.addOption("--postprocessor-args", "-write_id3v1 1 -id3v2_version 3");
             request.addOption("--add-metadata");
             request.addOption("--no-mtime");
@@ -616,6 +619,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
             clickedButton = linearLayout.findViewWithTag(id+"##mp3");
         }else if(type.equals("mp4")){
+            request.addOption("--embed-thumbnail");
+            request.addOption("--sponsorblock-mark", "all");
+            request.addOption("--embed-subs", "");
             request.addOption("-f", "bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best");
 
             clickedButton = linearLayout.findViewWithTag(id+"##mp4");
@@ -641,6 +647,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                     progressBar.setProgress(0);
                     progressBar.setVisibility(View.GONE);
 
+                    notificationManager.cancel(Integer.parseInt(App.DOWNLOAD_CHANNEL_ID));
                     download_notification.setContentText(getString(R.string.download_success))
                             .setSmallIcon(android.R.drawable.stat_sys_download_done)
                             .setLargeIcon(BitmapFactory.decodeResource(this.getResources(), android.R.drawable.stat_sys_download_done))

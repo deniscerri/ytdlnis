@@ -9,15 +9,18 @@
     <PreferenceCategory app:title="@string/directories">
         <Preference
             app:key="music_path"
+            app:icon="@drawable/ic_music_downloaded"
             app:title="@string/music_directory" />
         <Preference
             app:key="video_path"
+            app:icon="@drawable/ic_video_downloaded"
             app:title="@string/video_directory" />
     </PreferenceCategory>
 
     <PreferenceCategory app:title="@string/updating">
         <Preference
             app:key="update"
+            app:icon="@drawable/ic_update"
             app:summary="@string/ytdl_update_hint"
             app:title="@string/update_ytdl" />
     </PreferenceCategory>
@@ -27,6 +30,7 @@
 
         <Preference
             app:key="rreth"
+            app:icon="@drawable/ic_code"
             app:summary="https://github.com/deniscerri/ytdlnis"
             app:title="@string/source_code">
             <intent

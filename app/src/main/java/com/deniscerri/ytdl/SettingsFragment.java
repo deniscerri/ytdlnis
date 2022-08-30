@@ -118,27 +118,27 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         String[] pieces = dataValue.split("/");
 
         int index = 1;
-        String path = "/storage/";
+        StringBuilder path = new StringBuilder("/storage/");
         if(pieces[0].equals("primary")){
-            path+="emulated/0/";
+            path.append("emulated/0/");
         }else{
-            path+=pieces[0]+"/";
+            path.append(pieces[0]).append("/");
         }
 
         for(int i = index; i < pieces.length; i++){
-            path = path + pieces[i] + "/";
+            path.append(pieces[i]).append("/");
         }
 
-        Log.e("TEST", path);
-        p.setSummary(path);
+        Log.e("TEST", path.toString());
+        p.setSummary(path.toString());
         SharedPreferences sharedPreferences = requireContext().getSharedPreferences("root_preferences", Activity.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         switch (requestCode){
             case MUSIC_PATH_CODE:
-                editor.putString("music_path", path);
+                editor.putString("music_path", path.toString());
                 break;
             case VIDEO_PATH_CODE:
-                editor.putString("video_path", path);
+                editor.putString("video_path", path.toString());
                 break;
         }
         editor.apply();
@@ -146,11 +146,11 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 
     private void updateYoutubeDL() {
         if (updating) {
-            Toast.makeText(getContext(), "Perditesimi eshte kerkuar nje here!", Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), getString(R.string.ytdl_already_updating), Toast.LENGTH_LONG).show();
             return;
         }
 
-        Toast.makeText(getContext(), "Filloi Perditesimi", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), getString(R.string.ytdl_updating_started), Toast.LENGTH_SHORT).show();
 
         updating = true;
         Disposable disposable = Observable.fromCallable(() -> YoutubeDL.getInstance().updateYoutubeDL(getContext()))
@@ -159,10 +159,10 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                 .subscribe(status -> {
                     switch (status) {
                         case DONE:
-                            Toast.makeText(getContext(), "Perditesimi u krye me sukses!", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getContext(), getString(R.string.ytld_update_success), Toast.LENGTH_LONG).show();
                             break;
                         case ALREADY_UP_TO_DATE:
-                            Toast.makeText(getContext(), "Je ne versionin e fundit", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getContext(), getString(R.string.you_are_in_latest_version), Toast.LENGTH_LONG).show();
                             break;
                         default:
                             Toast.makeText(getContext(), status.toString(), Toast.LENGTH_LONG).show();
@@ -170,8 +170,8 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                     }
                     updating = false;
                 }, e -> {
-                    if(BuildConfig.DEBUG) Log.e(TAG, "Deshtim ne perditesim", e);
-                    Toast.makeText(getContext(), "Deshtim ne perditesim", Toast.LENGTH_LONG).show();
+                    if(BuildConfig.DEBUG) Log.e(TAG, getString(R.string.ytdl_update_failed), e);
+                    Toast.makeText(getContext(), getString(R.string.ytdl_update_failed), Toast.LENGTH_LONG).show();
                     updating = false;
                 });
         compositeDisposable.add(disposable);

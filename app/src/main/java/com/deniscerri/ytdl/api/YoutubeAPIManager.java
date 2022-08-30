@@ -203,12 +203,14 @@ public class YoutubeAPIManager {
                 while((line = reader.readLine()) != null){
                     responseContent.append(line);
                 }
+                reader.close();
 
                 json = new JSONObject(responseContent.toString());
                 if(json.has("error")){
                     throw new Exception();
                 }
             }
+            conn.disconnect();
         }catch(Exception e){
             Log.e(TAG, e.toString());
         }
@@ -312,13 +314,12 @@ public class YoutubeAPIManager {
         if(minutes.isEmpty()){
             if(hours.isEmpty()){
                 minutes = "0";
-            }else{
-                minutes = "00";
             }
         }
         duration = minutes + ":" + seconds;
 
         if(!hours.isEmpty()){
+            if(Integer.parseInt(minutes) < 10) minutes = "0" + minutes;
             duration = hours + ":" + minutes + ":" + seconds;
         }
 
