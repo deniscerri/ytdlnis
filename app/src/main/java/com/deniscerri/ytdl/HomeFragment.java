@@ -9,25 +9,20 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.media.MediaScannerConnection;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.InputType;
 import android.util.Log;
-import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -37,17 +32,17 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import com.deniscerri.ytdl.adapter.HomeRecyclerViewAdapter;
 import com.deniscerri.ytdl.api.YoutubeAPIManager;
 import com.deniscerri.ytdl.database.DBManager;
 import com.deniscerri.ytdl.database.Video;
 import com.facebook.shimmer.ShimmerFrameLayout;
+import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.squareup.picasso.Picasso;
 import com.yausername.youtubedl_android.DownloadProgressCallback;
 import com.yausername.youtubedl_android.YoutubeDL;
 import com.yausername.youtubedl_android.YoutubeDLRequest;
@@ -70,15 +65,18 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 
-public class HomeFragment extends Fragment implements View.OnClickListener{
+public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.OnItemClickListener, View.OnClickListener {
     private boolean downloading = false;
     private View fragmentView;
     private ProgressBar progressBar;
     private String inputQuery;
-    private LinearLayout linearLayout;
-    private ScrollView scrollView;
+    private LinearLayout homeLinearLayout;
+    private RecyclerView recyclerView;
+    private HomeRecyclerViewAdapter homeRecyclerViewAdapter;
+    private NestedScrollView scrollView;
     private ShimmerFrameLayout shimmerCards;
     private LayoutInflater layoutinflater;
+
     Context context;
     Activity activity;
     private MaterialToolbar topAppBar;
@@ -86,33 +84,22 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
     private static final String TAG = "HomeFragment";
 
     private ArrayList<Video> resultObjects;
-
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     private DBManager dbManager;
     private YoutubeAPIManager youtubeAPIManager;
-    private NotificationCompat.Builder download_notification;
-    private NotificationManagerCompat notificationManager;
     private Queue<Video> downloadQueue;
+
+    MainActivity mainActivity;
+    private static final NotificationUtil notificationUtil = App.notificationUtil;
 
     private final DownloadProgressCallback callback = new DownloadProgressCallback() {
         @Override
         public void onProgressUpdate(float progress, long etaInSeconds, String line) {
             activity.runOnUiThread(() -> {
                 progressBar.setProgress((int) progress);
-                String contentText = "";
-
-                if(downloadQueue.size() > 0){
-                    contentText += "   " + downloadQueue.size() + " items left\n";
-                }
-
-                contentText += line.replaceAll("\\[.*?\\]", "");
-
-
-                download_notification.setProgress(100,(int) progress,false)
-                                .setContentText(contentText);
-                notificationManager.notify(Integer.parseInt(App.DOWNLOAD_CHANNEL_ID), download_notification.build());
-
+                notificationUtil.updateDownloadNotification(NotificationUtil.DOWNLOAD_NOTIFICATION_ID,
+                        line, (int) progress, downloadQueue.size(), downloadQueue.peek().getTitle());
             });
         }
     };
@@ -129,81 +116,51 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         setHasOptionsMenu(true);
     }
 
-    public String convertETASecondsToTime(long eta){
-        String time = "";
-        int s = (int) eta;
-        int h = s / 3600;
-        int m = (s % 3600) / 60;
-        s %= 60;
-        if(h > 0){
-            time+=h+"hr ";
-        }else if(m > 0){
-            if(m < 10) time +="0";
-            time+=m+"min";
-        }
-        if(s < 10 && s > 0 && m > 0) time +="0";
-        if(s < 0) s = 0;
-        time+=s+"sec";
-
-        return time;
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         compositeDisposable = new CompositeDisposable();
+        downloadQueue = new LinkedList<>();
+        resultObjects = new ArrayList<>();
 
         // Inflate the layout for this fragment
         fragmentView = inflater.inflate(R.layout.fragment_home, container, false);
         context = fragmentView.getContext();
         activity = getActivity();
+        mainActivity = (MainActivity) activity;
         layoutinflater = LayoutInflater.from(context);
 
+
         //initViews
-        linearLayout = fragmentView.findViewById(R.id.linearLayout1);
-        scrollView = fragmentView.findViewById(R.id.scrollView1);
+        homeLinearLayout = fragmentView.findViewById(R.id.linearLayout1);
         shimmerCards = fragmentView.findViewById(R.id.shimmer_results_framelayout);
         topAppBar = fragmentView.findViewById(R.id.home_toolbar);
+        scrollView = fragmentView.findViewById(R.id.home_scrollview);
+        recyclerView = fragmentView.findViewById(R.id.recycler_view_home);
 
-        downloadQueue = new LinkedList<>();
-
-        SwipeRefreshLayout swipeRefreshLayout = fragmentView.findViewById(R.id.swiperefreshhome);
-        swipeRefreshLayout.setOnRefreshListener(() -> {
-            initCards();
-            swipeRefreshLayout.setRefreshing(false);
-        });
-
-        FloatingActionButton fab = fragmentView.findViewById(R.id.fab_home);
-        fab.setOnClickListener(this);
-
-        scrollView.setOnScrollChangeListener((view, x, y, oldX, oldY) -> {
-            if(y > 500){
-                fab.show();
-            }else{
-                fab.hide();
-            }
-        });
+        homeRecyclerViewAdapter = new HomeRecyclerViewAdapter(resultObjects, this, activity);
+        recyclerView.setAdapter(homeRecyclerViewAdapter);
+        recyclerView.setNestedScrollingEnabled(false);
 
         initMenu();
 
-        if(inputQuery != null){
+        if (inputQuery != null) {
             parseQuery();
             inputQuery = null;
-        }else{
+        } else {
             initCards();
         }
-
         return fragmentView;
     }
 
 
-
-    private void initCards(){
+    private void initCards() {
         shimmerCards.startShimmer();
         shimmerCards.setVisibility(View.VISIBLE);
-        linearLayout.removeAllViews();
-        try{
+        homeRecyclerViewAdapter.clear();
+        homeLinearLayout.removeAllViews();
+        try {
             Thread thread = new Thread(() -> {
                 Handler uiHandler = new Handler(Looper.getMainLooper());
                 dbManager = new DBManager(context);
@@ -211,51 +168,40 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                 resultObjects = dbManager.getResults();
                 boolean trending = false;
 
-                if(resultObjects.size() == 0){
+                if (resultObjects.size() == 0) {
                     trending = true;
                     try {
                         resultObjects = youtubeAPIManager.getTrending(context);
-                    }catch(Exception e){
+                    } catch (Exception e) {
                         Log.e(TAG, e.toString());
                     }
                 }
-
-                TextView trendingText = new TextView(context);
-
-                if(resultObjects != null){
+                if (resultObjects != null) {
                     scrollToTop();
 
-                    if(trending){
-                        trendingText.setText(R.string.Trending);
-                        trendingText.setPadding(30, 0 ,0 ,0);
-                        uiHandler.post(() -> linearLayout.addView(trendingText));
+                    if (trending) {
+                        uiHandler.post(this::addTrendingText);
 
-                    }else{
-                        if(resultObjects.size() > 1 && resultObjects.get(1).getIsPlaylistItem() == 1){
+                    } else {
+                        if (resultObjects.size() > 1 && resultObjects.get(1).getIsPlaylistItem() == 1) {
                             createDownloadAllCard();
                         }
-                    }
-
-                    for(int i = 0; i < resultObjects.size(); i++){
-                        createCard(resultObjects.get(i));
                     }
                 }
 
                 uiHandler.post(() -> {
+                    homeRecyclerViewAdapter.setVideoList(resultObjects);
                     shimmerCards.stopShimmer();
                     shimmerCards.setVisibility(View.GONE);
-                    if(resultObjects.size() > 1){
-                        addEndofResultsText();
-                    }
                 });
             });
             thread.start();
-        }catch(Exception e){
+        } catch (Exception e) {
             Log.e(TAG, e.toString());
         }
     }
 
-    private void initMenu(){
+    private void initMenu() {
         MenuItem.OnActionExpandListener onActionExpandListener = new MenuItem.OnActionExpandListener() {
             @Override
             public boolean onMenuItemActionExpand(MenuItem menuItem) {
@@ -290,31 +236,36 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         topAppBar.setOnClickListener(view -> scrollToTop());
 
         topAppBar.setOnMenuItemClickListener((MenuItem m) -> {
-            if (m.getItemId() == R.id.delete_results) {
-                dbManager.clearResults();
-                linearLayout.removeAllViews();
-                initCards();
-                return true;
+            switch (m.getItemId()){
+                case R.id.delete_results:
+                    dbManager.clearResults();
+                    recyclerView.removeAllViews();
+                    initCards();
+                    return true;
+                case R.id.refresh_results:
+                    recyclerView.removeAllViews();
+                    initCards();
             }
             return true;
         });
 
     }
 
-    public void handleIntent(Intent intent){
+    public void handleIntent(Intent intent) {
         inputQuery = intent.getStringExtra(Intent.EXTRA_TEXT);
     }
 
-    public void scrollToTop(){
-        scrollView.smoothScrollTo(0,0);
+    public void scrollToTop() {
+        scrollView.smoothScrollTo(-100,-100);
+        new Handler(Looper.getMainLooper()).post(() -> ((AppBarLayout) topAppBar.getParent()).setExpanded(true, true));
     }
 
     private void parseQuery() {
         shimmerCards.startShimmer();
         shimmerCards.setVisibility(View.VISIBLE);
-        linearLayout.removeAllViews();
+        homeRecyclerViewAdapter.clear();
+        homeLinearLayout.removeAllViews();
 
-        resultObjects = new ArrayList<>();
         dbManager = new DBManager(context);
         youtubeAPIManager = new YoutubeAPIManager(context);
         scrollToTop();
@@ -323,38 +274,37 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         Pattern p = Pattern.compile("^(https?)://(www.)?youtu(.be)?");
         Matcher m = p.matcher(inputQuery);
 
-        if(m.find()){
+        if (m.find()) {
             type = "Video";
             if (inputQuery.contains("playlist?list=")) {
                 type = "Playlist";
             }
         }
 
-        Log.e(TAG, inputQuery + " "+ type);
+        Log.e(TAG, inputQuery + " " + type);
 
         try {
             switch (type) {
                 case "Search": {
-                    Thread thread = new Thread(new Runnable(){
+                    Thread thread = new Thread(new Runnable() {
                         private final String query;
+
                         {
                             this.query = inputQuery;
                         }
+
                         @Override
-                        public void run(){
+                        public void run() {
                             try {
                                 resultObjects = youtubeAPIManager.search(query);
-                            }catch(Exception e){
+                            } catch (Exception e) {
                                 Log.e(TAG, e.toString());
                             }
-                            Log.e(TAG, resultObjects.toString());
 
-                            for(int i = 0; i < resultObjects.size(); i++){
-                                createCard(resultObjects.get(i));
-                            }
                             dbManager.addToResults(resultObjects);
                             new Handler(Looper.getMainLooper()).post(() -> {
-                                addEndofResultsText();
+                                homeRecyclerViewAdapter.setVideoList(resultObjects);
+                                //addEndofResultsText();
                                 shimmerCards.stopShimmer();
                                 shimmerCards.setVisibility(View.GONE);
                             });
@@ -362,36 +312,40 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                     });
                     thread.start();
                     break;
-                }case "Video": {
+                }
+                case "Video": {
                     String[] el = inputQuery.split("/");
-                    inputQuery = el[el.length -1];
+                    inputQuery = el[el.length - 1];
 
-                    if(inputQuery.contains("watch?v=")){
+                    if (inputQuery.contains("watch?v=")) {
                         inputQuery = inputQuery.substring(8);
                     }
 
-                    if(inputQuery.contains("&list=")){
+                    if (inputQuery.contains("&list=")) {
                         el = inputQuery.split("&list=");
                         inputQuery = el[0];
                     }
 
-                    Thread thread = new Thread(new Runnable(){
+                    Thread thread = new Thread(new Runnable() {
                         private final String query;
+
                         {
                             this.query = inputQuery;
                         }
+
                         @Override
-                        public void run(){
+                        public void run() {
                             try {
                                 resultObjects.add(youtubeAPIManager.getVideo(query));
-                            }catch(Exception e){
+                            } catch (Exception e) {
                                 Log.e(TAG, e.toString());
                             }
 
-                            createCard(resultObjects.get(0));
+
                             dbManager.addToResults(resultObjects);
 
                             new Handler(Looper.getMainLooper()).post(() -> {
+                                homeRecyclerViewAdapter.setVideoList(resultObjects);
                                 shimmerCards.stopShimmer();
                                 shimmerCards.setVisibility(View.GONE);
                             });
@@ -399,31 +353,32 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                     });
                     thread.start();
                     break;
-                }case "Playlist": {
+                }
+                case "Playlist": {
                     inputQuery = inputQuery.split("list=")[1];
                     Thread thread = new Thread(new Runnable() {
                         private final String query;
+
                         {
                             this.query = inputQuery;
                         }
 
                         @Override
-                        public void run(){
+                        public void run() {
                             try {
                                 resultObjects = youtubeAPIManager.getPlaylist(query, "");
-                            }catch(Exception e){
+                            } catch (Exception e) {
                                 Log.e(TAG, e.toString());
                             }
                             dbManager.addToResults(resultObjects);
                             // DOWNLOAD ALL BUTTON
-                            if(resultObjects.size() > 1){
+                            if (resultObjects.size() > 1) {
                                 createDownloadAllCard();
                             }
-                            for(int i  = 0 ; i < resultObjects.size(); i++){
-                                createCard(resultObjects.get(i));
-                            }
+
                             new Handler(Looper.getMainLooper()).post(() -> {
-                                addEndofResultsText();
+                                homeRecyclerViewAdapter.setVideoList(resultObjects);
+                                //addEndofResultsText();
                                 shimmerCards.stopShimmer();
                                 shimmerCards.setVisibility(View.GONE);
                             });
@@ -433,23 +388,20 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                     break;
                 }
             }
-        }catch(Exception e){
-           Log.e(TAG, e.toString());
+        } catch (Exception e) {
+            Log.e(TAG, e.toString());
         }
 
-
     }
 
-    private void addEndofResultsText(){
-        TextView padding = new TextView(context);
-        int dp = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 80, fragmentView.getResources().getDisplayMetrics());
-        padding.setHeight(dp);
-        padding.setText(R.string.end_of_results);
-        padding.setGravity(Gravity.CENTER);
-        linearLayout.addView(padding);
+    private void addTrendingText(){
+        TextView trendingText = new TextView(context);
+        trendingText.setText(R.string.Trending);
+        trendingText.setPadding(70, 0 , 0, 0);
+        homeLinearLayout.addView(trendingText);
     }
 
-    private void createDownloadAllCard(){
+    private void createDownloadAllCard() {
         RelativeLayout r = new RelativeLayout(context);
         layoutinflater.inflate(R.layout.download_all_card, r);
 
@@ -466,116 +418,13 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         videoBtn.setOnClickListener(this);
 
         Handler uiHandler = new Handler(Looper.getMainLooper());
-        uiHandler.post(() -> linearLayout.addView(r));
+        uiHandler.post(() -> homeLinearLayout.addView(r));
     }
 
-    private void createCard(Video video){
-        RelativeLayout r = new RelativeLayout(context);
-        layoutinflater.inflate(R.layout.result_card, r);
-
-        CardView card = r.findViewById(R.id.result_card_view);
-        // THUMBNAIL ----------------------------------
-        ImageView thumbnail = card.findViewById(R.id.result_image_view);
-        String imageURL= video.getThumb();
-
-        Handler uiHandler = new Handler(Looper.getMainLooper());
-        uiHandler.post(() -> Picasso.get().load(imageURL).into(thumbnail));
-        thumbnail.setColorFilter(Color.argb(70, 0, 0, 0));
-
-        // TITLE  ----------------------------------
-        TextView videoTitle = card.findViewById(R.id.result_title);
-        String title = video.getTitle();
-
-        if(title.length() > 100){
-            title = title.substring(0, 40) + "...";
-        }
-        videoTitle.setText(title);
-
-        // Bottom Info ----------------------------------
-
-        TextView bottomInfo = card.findViewById(R.id.result_info_bottom);
-        String info = video.getAuthor() + " • " + video.getDuration();
-        bottomInfo.setText(info);
-
-        // BUTTONS ----------------------------------
-        String videoID = video.getVideoId();
-
-        LinearLayout buttonLayout = card.findViewById(R.id.download_button_layout);
-
-        MaterialButton musicBtn = buttonLayout.findViewById(R.id.download_music);
-        musicBtn.setTag(videoID + "##mp3");
-
-        MaterialButton videoBtn = buttonLayout.findViewById(R.id.download_video);
-        videoBtn.setTag(videoID + "##mp4");
-
-        musicBtn.setOnClickListener(this);
-        videoBtn.setOnClickListener(this);
-
-        // PROGRESS BAR ----------------------------------------------------
-
-        ProgressBar progressBar = card.findViewById(R.id.download_progress);
-        progressBar.setVisibility(View.GONE);
-        progressBar.setTag(videoID + "##progress");
-
-        if(video.isAudioDownloaded() == 1){
-            musicBtn.setIcon(ContextCompat.getDrawable(activity, R.drawable.ic_music_downloaded));
-        }
-        if(video.isVideoDownloaded() == 1){
-            videoBtn.setIcon(ContextCompat.getDrawable(activity, R.drawable.ic_video_downloaded));
-        }
-
-        card.setTag(videoID + "##card");
-        uiHandler.post(() -> linearLayout.addView(r));
-    }
-
-
-    @Override
-    public void onClick(View v) {
-        //do what you want to do when button is clicked
-        String viewIdName;
-        try{
-            viewIdName = v.getTag().toString();
-        }catch(Exception e){
-            viewIdName = "";
-        }
-
-        if(!viewIdName.isEmpty()){
-            if(viewIdName.contains("mp3") || viewIdName.contains("mp4")){
-                Log.e(TAG, viewIdName);
-                String[] buttonData = viewIdName.split("##");
-                if(buttonData[0].equals("ALL")){
-                    for (int i = 0; i < resultObjects.size(); i++){
-                        Video vid = findVideo(resultObjects.get(i).getVideoId());
-                        vid.setDownloadedType(buttonData[1]);
-                        downloadQueue.add(vid);
-                    }
-
-                }else{
-                    Video vid = findVideo(buttonData[0]);
-                    vid.setDownloadedType(buttonData[1]);
-                    downloadQueue.add(vid);
-                }
-
-                if (downloading) {
-                    Toast.makeText(context, R.string.added_to_queue, Toast.LENGTH_LONG).show();
-                    return;
-                }
-
-                startDownload(downloadQueue);
-
-            }
-        }else{
-            if (v.getId() == R.id.fab_home) {
-                scrollView.smoothScrollBy(0, 0);
-                scrollToTop();
-            }
-        }
-    }
-
-    public Video findVideo(String id){
-        for(int i = 0; i < resultObjects.size(); i++){
+    public Video findVideo(String id) {
+        for (int i = 0; i < resultObjects.size(); i++) {
             Video v = resultObjects.get(i);
-            if((v.getVideoId()).equals(id)){
+            if ((v.getVideoId()).equals(id)) {
                 return v;
             }
         }
@@ -584,20 +433,25 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
     }
 
 
-
-
     private void startDownload(Queue<Video> videos) {
         Video video;
-        try{
+        if(videos.size() == 0){
+            mainActivity.stopDownloadService();
+            return;
+        }
+
+        try {
             video = videos.remove();
-        }catch(Exception e){
+        } catch (Exception e) {
             return;
         }
 
         if (!isStoragePermissionGranted()) {
             Toast.makeText(context, R.string.try_again_after_permission, Toast.LENGTH_LONG).show();
+            mainActivity.stopDownloadService();
             return;
         }
+
         String id = video.getVideoId();
         String url = "https://www.youtube.com/watch?v=" + id;
         YoutubeDLRequest request = new YoutubeDLRequest(url);
@@ -608,7 +462,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
         MaterialButton clickedButton = null;
 
-        if(type.equals("mp3")){
+        if (type.equals("mp3")) {
             request.addOption("--embed-thumbnail");
             request.addOption("--sponsorblock-remove", "all");
             request.addOption("--postprocessor-args", "-write_id3v1 1 -id3v2_version 3");
@@ -617,25 +471,24 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
             request.addOption("-x");
             request.addOption("--audio-format", "mp3");
 
-            clickedButton = linearLayout.findViewWithTag(id+"##mp3");
-        }else if(type.equals("mp4")){
+            clickedButton = recyclerView.findViewWithTag(id + "##mp3");
+        } else if (type.equals("mp4")) {
             request.addOption("--embed-thumbnail");
             request.addOption("--sponsorblock-mark", "all");
             request.addOption("--embed-subs", "");
             request.addOption("-f", "bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best");
 
-            clickedButton = linearLayout.findViewWithTag(id+"##mp4");
+            clickedButton = recyclerView.findViewWithTag(id + "##mp4");
         }
         request.addOption("-o", youtubeDLDir.getAbsolutePath() + "/%(title)s.%(ext)s");
 
-        progressBar = fragmentView.findViewWithTag(id+"##progress");
+        progressBar = fragmentView.findViewWithTag(id + "##progress");
         progressBar.setVisibility(View.VISIBLE);
 
         //scroll to Card
-        View view = fragmentView.findViewWithTag(id+"##progress");
-        view.getParent().requestChildFocus(view,view);
-
-        showStart(video);
+        View view = fragmentView.findViewWithTag(id + "##progress");
+        scrollView.requestChildFocus(view, view);
+        progressBar.setProgress(0);
         downloading = true;
 
         Video theVideo = video;
@@ -647,24 +500,21 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                     progressBar.setProgress(0);
                     progressBar.setVisibility(View.GONE);
 
-                    notificationManager.cancel(Integer.parseInt(App.DOWNLOAD_CHANNEL_ID));
-                    download_notification.setContentText(getString(R.string.download_success))
-                            .setSmallIcon(android.R.drawable.stat_sys_download_done)
-                            .setLargeIcon(BitmapFactory.decodeResource(this.getResources(), android.R.drawable.stat_sys_download_done))
-                            .setProgress(0,0,false);
-                    notificationManager.notify(Integer.parseInt(App.DOWNLOAD_CHANNEL_ID), download_notification.build());
+                    //TODO show download finished
 
-                    if(theClickedButton != null){
-                        if(type.equals("mp3")){
+                    if (theClickedButton != null) {
+                        if (type.equals("mp3")) {
                             theClickedButton.setIcon(ContextCompat.getDrawable(activity, R.drawable.ic_music_downloaded));
-                        }else{
+                        } else {
                             theClickedButton.setIcon(ContextCompat.getDrawable(activity, R.drawable.ic_video_downloaded));
                         }
                     }
 
+
                     addToHistory(theVideo, new Date());
                     updateDownloadStatusOnResult(theVideo, type);
                     downloading = false;
+
 
                     // MEDIA SCAN
                     MediaScannerConnection.scanFile(context, new String[]{youtubeDLDir.getAbsolutePath()}, null, null);
@@ -672,16 +522,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                     // SCAN NEXT IN QUEUE
                     startDownload(videos);
                 }, e -> {
-                    if(BuildConfig.DEBUG) Log.e(TAG,  getString(R.string.failed_download), e);
+                    if (BuildConfig.DEBUG) Log.e(TAG, getString(R.string.failed_download), e);
                     Toast.makeText(context, R.string.failed_download, Toast.LENGTH_LONG).show();
                     progressBar.setProgress(0);
                     progressBar.setVisibility(View.GONE);
 
-                    download_notification.setContentText(getString(R.string.failed_download))
-                            .setSmallIcon(android.R.drawable.stat_sys_download_done)
-                            .setProgress(0,0,false);
-                    notificationManager.notify(Integer.parseInt(App.DOWNLOAD_CHANNEL_ID), download_notification.build());
-
+                    //TODO notification failed
                     downloading = false;
 
                     // SCAN NEXT IN QUEUE
@@ -691,7 +537,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
     }
 
 
-    public void addToHistory(Video video, Date date){
+    public void addToHistory(Video video, Date date) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         int day = cal.get(Calendar.DAY_OF_MONTH);
@@ -703,78 +549,44 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         String time = formatter.format(date);
         String downloadedTime = day + " " + month + " " + year + " " + time;
 
-        if(video != null){
+        if (video != null) {
             dbManager = new DBManager(context);
-            try{
+            try {
                 video.setDownloadedTime(downloadedTime);
                 dbManager.addToHistory(video);
-            }catch(Exception ignored){}
+            } catch (Exception ignored) {
+            }
         }
     }
 
-    public void updateDownloadStatusOnResult(Video v, String type){
-        if(v != null){
+    public void updateDownloadStatusOnResult(Video v, String type) {
+        if (v != null) {
             dbManager = new DBManager(context);
-            try{
+            try {
                 dbManager.updateDownloadStatusOnResult(v.getVideoId(), type);
-            }catch(Exception ignored){}
+            } catch (Exception ignored) {
+            }
         }
     }
 
-
-    @Override
-    public void onDestroy() {
-        compositeDisposable.dispose();
-        super.onDestroy();
-    }
 
     @NonNull
     private File getDownloadLocation(String type) {
         SharedPreferences sharedPreferences = context.getSharedPreferences("root_preferences", Activity.MODE_PRIVATE);
         String downloadsDir;
-        if(type.equals("mp3")){
+        if (type.equals("mp3")) {
             downloadsDir = sharedPreferences.getString("music_path", "");
-        }else{
+        } else {
             downloadsDir = sharedPreferences.getString("video_path", "");
         }
         File youtubeDLDir = new File(downloadsDir);
-        if (!youtubeDLDir.exists()){
+        if (!youtubeDLDir.exists()) {
             boolean isDirCreated = youtubeDLDir.mkdir();
-            if(!isDirCreated){
+            if (!isDirCreated) {
                 Toast.makeText(context, R.string.failed_making_directory, Toast.LENGTH_LONG).show();
             }
         }
         return youtubeDLDir;
-    }
-
-    private void showStart(Video video) {
-        progressBar.setProgress(0);
-
-        //NOTIFICATION BUILDER
-        Intent intent = new Intent(context, MainActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        PendingIntent pendingIntent;
-        pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE);
-
-        int PROGRESS_MAX = 100;
-        int PROGRESS_CURR = progressBar.getProgress();
-
-        download_notification = new NotificationCompat.Builder(context, App.DOWNLOAD_CHANNEL_ID)
-                .setSmallIcon(android.R.drawable.stat_sys_download)
-                .setLargeIcon(BitmapFactory.decodeResource(this.getResources(), android.R.drawable.stat_sys_download))
-                .setContentTitle(video.getTitle())
-                .setContentText("")
-                .setPriority(NotificationCompat.PRIORITY_MAX)
-                .setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE)
-                .setContentIntent(pendingIntent)
-                .setAutoCancel(true)
-                .setCategory(NotificationCompat.CATEGORY_PROGRESS)
-                .setOnlyAlertOnce(true)
-                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                .setProgress(PROGRESS_MAX, PROGRESS_CURR, false);
-
-        notificationManager = NotificationManagerCompat.from(context);
-        notificationManager.notify(Integer.parseInt(App.DOWNLOAD_CHANNEL_ID), download_notification.build());
     }
 
     public boolean isStoragePermissionGranted() {
@@ -787,4 +599,56 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         }
     }
 
+    @Override
+    public void onButtonClick(int position, String type) {
+        Log.e(TAG, type);
+        Video vid = resultObjects.get(position);
+        vid.setDownloadedType(type);
+
+        downloadQueue.add(vid);
+
+        if (downloading) {
+            Toast.makeText(context, R.string.added_to_queue, Toast.LENGTH_LONG).show();
+            return;
+        }
+        mainActivity.startDownloadService(vid.getTitle());
+        startDownload(downloadQueue);
+    }
+
+    @Override
+    public void onCardClick(CardView card) {
+
+    }
+
+
+    @Override
+    public void onClick(View v) {
+        String viewIdName;
+        try {
+            viewIdName = v.getTag().toString();
+        } catch (Exception e) {
+            viewIdName = "";
+        }
+
+        if (!viewIdName.isEmpty()) {
+            if (viewIdName.contains("mp3") || viewIdName.contains("mp4")) {
+                Log.e(TAG, viewIdName);
+                String[] buttonData = viewIdName.split("##");
+                if (buttonData[0].equals("ALL")) {
+                    for (int i = 0; i < resultObjects.size(); i++) {
+                        Video vid = findVideo(resultObjects.get(i).getVideoId());
+                        vid.setDownloadedType(buttonData[1]);
+                        downloadQueue.add(vid);
+                    }
+
+                    if (downloading) {
+                        Toast.makeText(context, R.string.added_to_queue, Toast.LENGTH_LONG).show();
+                        return;
+                    }
+                    mainActivity.startDownloadService(downloadQueue.peek().getTitle());
+                    startDownload(downloadQueue);
+                }
+            }
+        }
+    }
 }

@@ -1,28 +1,50 @@
 package com.deniscerri.ytdl;
 
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
+import android.os.Binder;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.util.Log;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import com.deniscerri.ytdl.databinding.ActivityMainBinding;
-import io.reactivex.disposables.CompositeDisposable;
 
 
 
 public class MainActivity extends AppCompatActivity{
 
     ActivityMainBinding binding;
+    Context context;
 
     private static final String TAG = "MainActivity";
-    private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     private HomeFragment homeFragment;
     private HistoryFragment historyFragment;
     private SettingsFragment settingsFragment;
     private Fragment lastFragment;
     private FragmentManager fm;
+
+    private boolean isDownloadServiceRunning = false;
+    public DownloaderService downloaderService;
+
+    private final ServiceConnection serviceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName className, IBinder service) {
+            downloaderService = ((DownloaderService.LocalBinder) service).getService();
+            isDownloadServiceRunning = true;
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+            downloaderService = null;
+            isDownloadServiceRunning = false;
+        }
+    };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +53,8 @@ public class MainActivity extends AppCompatActivity{
 
         setContentView(R.layout.activity_main);
         setContentView(binding.getRoot());
+
+        context = getBaseContext();
 
         fm = getSupportFragmentManager();
 
@@ -107,15 +131,23 @@ public class MainActivity extends AppCompatActivity{
         }
     }
 
-    @Override
-    protected void onDestroy() {
-        compositeDisposable.dispose();
-        super.onDestroy();
-    }
-
     private void replaceFragment(Fragment f){
         fm.beginTransaction().hide(lastFragment).show(f).commit();
         lastFragment = f;
     }
+
+    public void startDownloadService(String title){
+        if(isDownloadServiceRunning) return;
+        Intent serviceIntent = new Intent(context, DownloaderService.class);
+        serviceIntent.putExtra("title", title);
+        context.getApplicationContext().bindService(serviceIntent, serviceConnection, Context.BIND_AUTO_CREATE);
+    }
+
+    public void stopDownloadService(){
+        if(!isDownloadServiceRunning) return;
+        context.getApplicationContext().unbindService(serviceConnection);
+        isDownloadServiceRunning = false;
+    }
+
 
 }

@@ -37,7 +37,7 @@ ext {
 }
 
 allprojects {
-    group = 'com.github.yausername'
+    group = 'com.github.deniscerri'
     version = versionName
 
     repositories {

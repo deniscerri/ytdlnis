@@ -32,4 +32,14 @@
     <string name="added_to_queue">U vendos në rradhë!</string>
     <string name="ytdl_already_updating">Duke u përditësuar. Prisni!</string>
     <string name="ytdl_updating_started">Filloi Perditesimi</string>
+    <string name="Open_Link">Hap Linkun</string>
+    <string name="Remove">Hiqe</string>
+    <string name="refresh_results">Rifresko Rezultatet</string>
+    <string name="refresh_history">Rifresko Historinë</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Anullo</string>
+    <string name="confirm_delete_history_desc">Kjo do të fshijë të gjithë elementet në histori! Nuk mund t\'i rikthesh më!</string>
+    <string name="confirm_delete_history">Konfirmo</string>
+    <string name="search_history_hint">Kërko nga Historia</string>
+    <string name="no_results">Nuk ka Rezultate</string>
 </resources>

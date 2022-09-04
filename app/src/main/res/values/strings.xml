@@ -32,4 +32,14 @@
     <string name="ytdl_update_failed">Failed Updating</string>
     <string name="ytdl_already_updating">Updating in Progress! Please Wait!</string>
     <string name="ytdl_updating_started">Updating Started</string>
+    <string name="Open_Link">Open link</string>
+    <string name="Remove">Remove</string>
+    <string name="refresh_results">Refresh Results</string>
+    <string name="refresh_history">Refresh History</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="confirm_delete_history_desc">This will delete every item on your history! You can\'t recover them!</string>
+    <string name="confirm_delete_history">Confirm</string>
+    <string name="search_history_hint">Search from History</string>
+    <string name="no_results">No Results</string>
 </resources>

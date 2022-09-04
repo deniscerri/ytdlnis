@@ -1,4 +1,4 @@
-package com.yausername.ytdl;
+package com.deniscerri.ytdl;
 
 import android.content.Context;
 import androidx.test.platform.app.InstrumentationRegistry;

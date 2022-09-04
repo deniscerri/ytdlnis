@@ -248,11 +248,11 @@ public class YoutubeAPIManager {
     }
 
     public ArrayList<Video> getTrending(Context context) throws JSONException{
-        String url = "https://www.googleapis.com/youtube/v3/videos?part=snippet&chart=mostPopular&regionCode="+countryCODE+"&maxResults=25&key="+key;
+        String url = "https://www.googleapis.com/youtube/v3/videos?part=snippet&chart=mostPopular&videoCategoryId=10&regionCode="+countryCODE+"&maxResults=25&key="+key;
         //short data
         JSONObject res = genericRequest(url);
         //extra data from the same videos
-        JSONObject contentDetails = genericRequest("https://www.googleapis.com/youtube/v3/videos?part=contentDetails&chart=mostPopular&regionCode="+countryCODE+"&maxResults=25&key="+key);
+        JSONObject contentDetails = genericRequest("https://www.googleapis.com/youtube/v3/videos?part=contentDetails&chart=mostPopular&videoCategoryId=10&regionCode="+countryCODE+"&maxResults=25&key="+key);
 
         JSONArray dataArray = res.getJSONArray("items");
         JSONArray extraDataArray = contentDetails.getJSONArray("items");
@@ -312,9 +312,7 @@ public class YoutubeAPIManager {
         if(seconds.isEmpty()) seconds = "00";
         else if(Integer.parseInt(seconds) < 10) seconds = "0" + seconds;
         if(minutes.isEmpty()){
-            if(hours.isEmpty()){
-                minutes = "0";
-            }
+            minutes = "0";
         }
         duration = minutes + ":" + seconds;
 
@@ -322,7 +320,6 @@ public class YoutubeAPIManager {
             if(Integer.parseInt(minutes) < 10) minutes = "0" + minutes;
             duration = hours + ":" + minutes + ":" + seconds;
         }
-
         return duration;
     }
 

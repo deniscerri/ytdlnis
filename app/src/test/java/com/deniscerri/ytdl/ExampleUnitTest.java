@@ -1,4 +1,4 @@
-package com.yausername.ytdl;
+package com.deniscerri.ytdl;
 
 import org.junit.Test;
 

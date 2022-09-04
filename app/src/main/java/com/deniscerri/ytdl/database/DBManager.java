@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class DBManager extends SQLiteOpenHelper {
 
     public static final String db_name = "ytdlnis_db";
-    public static final int db_version = 1;
+    public static final int db_version = 2;
     public static final String results_table_name = "results";
     public static final String history_table_name = "history";
     public static final String id = "id";
@@ -68,6 +68,24 @@ public class DBManager extends SQLiteOpenHelper {
                 " WHERE downloadedAudio=1 OR downloadedVideo=1");
     }
 
+    public void clearHistoryItem(Video video){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("DELETE FROM " + history_table_name + " WHERE id=" + video.getId());
+
+        String where = "";
+        switch(video.getDownloadedType()){
+            case "mp3":
+                where = " SET downloadedAudio=0 WHERE downloadedAudio=1 AND videoId='" + video.getVideoId()+"'";
+                break;
+            case "mp4":
+                where = " SET downloadedVideo=0 WHERE downloadedVideo=1 AND videoId='" + video.getVideoId()+"'";
+                break;
+        }
+
+        //remove downloaded status from results
+        db.execSQL("UPDATE "+results_table_name+ where);
+    }
+
     public void clearResults(){
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("DELETE FROM " + results_table_name);
@@ -104,15 +122,18 @@ public class DBManager extends SQLiteOpenHelper {
         return list;
     }
 
-    public ArrayList<Video> getHistory(){
+    public ArrayList<Video> getHistory(String query){
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM " + history_table_name, null);
+        Cursor cursor = db.rawQuery("SELECT * FROM " + history_table_name
+                        + " WHERE title LIKE '%"+query+"%'",
+                null);
         ArrayList<Video> list = new ArrayList<>();
 
         if(cursor.moveToFirst()){
             do {
                 // on below line we are adding the data from cursor to our array list.
-                list.add(new Video(cursor.getString(1),
+                list.add(new Video(cursor.getInt(0),
+                        cursor.getString(1),
                         cursor.getString(2),
                         cursor.getString(3),
                         cursor.getString(4),

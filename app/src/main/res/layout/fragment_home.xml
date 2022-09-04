@@ -6,104 +6,75 @@
     android:id="@+id/homecoordinator"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <LinearLayout
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/home_scrollview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/home_big_linearlayout"
-        android:orientation="vertical"
-        android:layout_marginTop="?attr/actionBarSize"
-        >
+        android:scrollbars="vertical"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
-        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/swiperefreshhome"
+        <LinearLayout
+            android:id="@+id/home_main_linearlayout"
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent">
 
-            <ScrollView
-                android:visibility="visible"
+            <LinearLayout
+                android:id="@+id/linearLayout1"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:backgroundTintMode="src_over"
-                tools:context=".HomeFragment"
-                android:id="@+id/scrollView1"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:id="@+id/recycler_view_home"
+                android:orientation="vertical"
+                android:layout_height="wrap_content"
+                android:scrollbars="vertical"
+                android:nestedScrollingEnabled="false"
+                android:layout_margin="10dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 >
 
+            </androidx.recyclerview.widget.RecyclerView>
+
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/shimmer_results_framelayout"
+                android:orientation="vertical">
+
+
                 <LinearLayout
-                    android:id="@+id/home_main_linearlayout"
-                    android:orientation="vertical"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:id="@+id/shimmer_linear_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:orientation="vertical">
 
+                    <include layout="@layout/result_card_shimmer" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/linearLayout1"
-                        android:layout_margin="10dp"
-                        android:orientation="vertical" >
+                    <include layout="@layout/result_card_shimmer" />
 
-                        <include layout="@layout/download_all_card"
-                            android:visibility="gone" />
+                    <include layout="@layout/result_card_shimmer" />
 
-                        <include layout="@layout/result_card"
-                            android:visibility="gone" />
+                    <include layout="@layout/result_card_shimmer" />
 
-                    </LinearLayout>
+                    <include layout="@layout/result_card_shimmer" />
 
-                    <com.facebook.shimmer.ShimmerFrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:id="@+id/shimmer_results_framelayout"
-                        android:orientation="vertical">
-
-
-                        <LinearLayout
-                            android:id="@+id/shimmer_linear_layout"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="10dp"
-                            android:orientation="vertical">
-
-                            <include layout="@layout/result_card_shimmer" />
-
-                            <include layout="@layout/result_card_shimmer" />
-
-                            <include layout="@layout/result_card_shimmer" />
-
-                            <include layout="@layout/result_card_shimmer" />
-
-                            <include layout="@layout/result_card_shimmer" />
-
-                            <include layout="@layout/result_card_shimmer" />
-
-                            <include layout="@layout/result_card_shimmer" />
-
-                            <include layout="@layout/result_card_shimmer" />
-
-
-                        </LinearLayout>
-
-                    </com.facebook.shimmer.ShimmerFrameLayout>
 
                 </LinearLayout>
 
-            </ScrollView>
+            </com.facebook.shimmer.ShimmerFrameLayout>
 
-        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+        </LinearLayout>
 
-    </LinearLayout>
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_home"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="16dp"
-        android:visibility="invisible"
-        app:srcCompat="@drawable/ic_go_up"/>
-
+    </androidx.core.widget.NestedScrollView>
+    
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/home_appbarlayout"
+        app:liftOnScroll="false"
+        android:background="@android:color/transparent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 

@@ -1,10 +1,6 @@
 package com.deniscerri.ytdl;
 
 import android.app.Application;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.content.res.Configuration;
-import android.os.Build;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -13,7 +9,6 @@ import com.google.android.material.color.DynamicColors;
 import com.yausername.ffmpeg.FFmpeg;
 import com.yausername.youtubedl_android.YoutubeDL;
 import com.yausername.youtubedl_android.YoutubeDLException;
-import com.deniscerri.ytdl.databinding.ActivityMainBinding;
 
 import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -25,15 +20,16 @@ import io.reactivex.schedulers.Schedulers;
 public class App extends Application {
 
     private static final String TAG = "App";
-    public static final String DOWNLOAD_CHANNEL_ID = "1";
-    ActivityMainBinding binding;
-
+    public static NotificationUtil notificationUtil;
 
     @Override
     public void onCreate() {
         super.onCreate();
         DynamicColors.applyToActivitiesIfAvailable(this);
-        createNotificationChannel();
+
+        notificationUtil = new NotificationUtil(this);
+        createNotificationChannels();
+
         configureRxJavaErrorHandler();
         Completable.fromAction(this::initLibraries).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new DisposableCompletableObserver() {
             @Override
@@ -71,15 +67,7 @@ public class App extends Application {
         FFmpeg.getInstance().init(this);
     }
 
-    private void createNotificationChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence name = getString(R.string.download_notification_channel_name);
-            String description = getString(R.string.download_notification_channel_description);
-            int importance = NotificationManager.IMPORTANCE_HIGH;
-            NotificationChannel channel = new NotificationChannel(DOWNLOAD_CHANNEL_ID, name, importance);
-            channel.setDescription(description);
-            NotificationManager notificationManager = getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
-        }
+    private void createNotificationChannels() {
+        notificationUtil.createNotificationChannel();
     }
 }

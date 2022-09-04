@@ -11,8 +11,13 @@
         app:actionViewClass="androidx.appcompat.widget.SearchView"/>
 
     <item
+        android:id="@+id/refresh_results"
+        android:icon="@drawable/ic_refresh"
+        android:title="@string/refresh_results"
+        app:showAsAction="ifRoom" />
+
+    <item
         android:id="@+id/delete_results"
-        android:orderInCategory="100"
         android:title="@string/fshi_rezultatet"
         app:showAsAction="never" />
 

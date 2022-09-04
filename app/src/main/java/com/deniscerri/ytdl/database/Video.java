@@ -28,8 +28,9 @@ public class Video {
     }
 
     //HISTORY OBJECT
-    public Video(String videoId, String title, String author, String duration, String thumb,
+    public Video(int id, String videoId, String title, String author, String duration, String thumb,
                   String downloadedType, String downloadedTime, int isPlaylistItem) {
+        this.id = id;
         this.videoId = videoId;
         this.title = title;
         this.author = author;
