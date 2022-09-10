@@ -23,6 +23,7 @@
                 android:id="@+id/historylinearLayout1"
                 android:layout_width="match_parent"
                 android:layout_gravity="center"
+
                 android:layout_height="match_parent"
                 android:orientation="vertical" />
 
@@ -99,6 +100,7 @@
             app:layout_scrollFlags="scroll|enterAlways|snap"
             app:title="@string/history"
             app:menu="@menu/history_menu"
+            android:theme="@style/Toolbar"
             />
 
     </com.google.android.material.appbar.AppBarLayout>

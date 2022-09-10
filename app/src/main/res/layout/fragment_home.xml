@@ -85,6 +85,7 @@
             app:layout_scrollFlags="scroll|enterAlways|snap"
             app:title="@string/app_name"
             app:menu="@menu/main_menu"
+            android:theme="@style/Toolbar"
             />
 
     </com.google.android.material.appbar.AppBarLayout>

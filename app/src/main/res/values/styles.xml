@@ -7,4 +7,13 @@
         <item name="android:color">@android:color/transparent</item>
     </style>
 
+    <style name="Toolbar" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="searchViewStyle">@style/searchStyle</item>
+    </style>
+
+    <style name="searchStyle" parent="Widget.AppCompat.SearchView.ActionBar">
+        <item name="android:queryHint">@string/search</item>
+        <item name="android:searchIcon">@null</item>
+    </style>
+
 </resources>

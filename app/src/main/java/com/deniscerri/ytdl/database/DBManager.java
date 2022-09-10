@@ -125,7 +125,7 @@ public class DBManager extends SQLiteOpenHelper {
     public ArrayList<Video> getHistory(String query){
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + history_table_name
-                        + " WHERE title LIKE '%"+query+"%'",
+                        + " WHERE title LIKE '%"+query+"%' ORDER BY id DESC",
                 null);
         ArrayList<Video> list = new ArrayList<>();
 

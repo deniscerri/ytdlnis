@@ -55,6 +55,7 @@ public class HistoryFragment extends Fragment implements HistoryRecyclerViewAdap
     private RecyclerView recyclerView;
     private HistoryRecyclerViewAdapter historyRecyclerViewAdapter;
     private BottomSheetDialog bottomSheet;
+    private Handler uiHandler;
 
     private ArrayList<Video> historyObjects;
     private static final String TAG = "HistoryFragment";
@@ -87,6 +88,7 @@ public class HistoryFragment extends Fragment implements HistoryRecyclerViewAdap
         linearLayout = fragmentView.findViewById(R.id.historylinearLayout1);
         shimmerCards = fragmentView.findViewById(R.id.shimmer_history_framelayout);
         topAppBar = fragmentView.findViewById(R.id.history_toolbar);
+        uiHandler = new Handler(Looper.getMainLooper());
 
         dbManager = new DBManager(context);
         historyObjects = new ArrayList<>();
@@ -110,9 +112,7 @@ public class HistoryFragment extends Fragment implements HistoryRecyclerViewAdap
         linearLayout.removeAllViews();
         try{
             Thread thread = new Thread(() -> {
-                Handler uiHandler = new Handler(Looper.getMainLooper());
                 historyObjects = dbManager.getHistory("");
-
                 uiHandler.post(() -> {
                     historyRecyclerViewAdapter.setVideoList(historyObjects);
                     shimmerCards.stopShimmer();
@@ -120,11 +120,7 @@ public class HistoryFragment extends Fragment implements HistoryRecyclerViewAdap
                 });
 
                 if(historyObjects.size() == 0){
-                    uiHandler.post(() -> {
-                        RelativeLayout no_results = new RelativeLayout(context);
-                        layoutinflater.inflate(R.layout.history_no_results, no_results);
-                        linearLayout.addView(no_results);
-                    });
+                    uiHandler.post(this::addNoResultsView);
                 }
             });
             thread.start();
@@ -254,6 +250,10 @@ public class HistoryFragment extends Fragment implements HistoryRecyclerViewAdap
             historyRecyclerViewAdapter.notifyItemRemoved(position);
             historyRecyclerViewAdapter.notifyItemRangeChanged(position, historyObjects.size());
             dbManager.clearHistoryItem(v);
+
+            if(historyObjects.size() == 0){
+                uiHandler.post(this::addNoResultsView);
+            }
         });
         delete_dialog.show();
     }
