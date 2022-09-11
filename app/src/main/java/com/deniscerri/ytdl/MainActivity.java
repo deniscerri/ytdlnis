@@ -12,7 +12,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import com.deniscerri.ytdl.databinding.ActivityMainBinding;
-
+import com.deniscerri.ytdl.page.HistoryFragment;
+import com.deniscerri.ytdl.page.HomeFragment;
+import com.deniscerri.ytdl.page.SettingsFragment;
+import com.deniscerri.ytdl.service.DownloaderService;
 
 
 public class MainActivity extends AppCompatActivity{

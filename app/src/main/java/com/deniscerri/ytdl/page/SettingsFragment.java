@@ -1,4 +1,4 @@
-package com.deniscerri.ytdl;
+package com.deniscerri.ytdl.page;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -13,6 +13,9 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
+
+import com.deniscerri.ytdl.BuildConfig;
+import com.deniscerri.ytdl.R;
 import com.yausername.youtubedl_android.YoutubeDL;
 import java.nio.charset.StandardCharsets;
 import io.reactivex.Observable;

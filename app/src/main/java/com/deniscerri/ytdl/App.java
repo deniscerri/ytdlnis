@@ -17,6 +17,8 @@ import io.reactivex.observers.DisposableCompletableObserver;
 import io.reactivex.plugins.RxJavaPlugins;
 import io.reactivex.schedulers.Schedulers;
 
+import com.deniscerri.ytdl.util.NotificationUtil;
+
 public class App extends Application {
 
     private static final String TAG = "App";

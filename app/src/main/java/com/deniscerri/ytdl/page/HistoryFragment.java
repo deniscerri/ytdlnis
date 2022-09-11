@@ -1,16 +1,12 @@
-package com.deniscerri.ytdl;
+package com.deniscerri.ytdl.page;
 
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-
 import androidx.appcompat.widget.SearchView;
-import androidx.cardview.widget.CardView;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -30,6 +26,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.deniscerri.ytdl.R;
 import com.deniscerri.ytdl.adapter.HistoryRecyclerViewAdapter;
 import com.deniscerri.ytdl.database.DBManager;
 import com.deniscerri.ytdl.database.Video;

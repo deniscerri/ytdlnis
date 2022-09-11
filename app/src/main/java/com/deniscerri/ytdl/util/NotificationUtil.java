@@ -1,4 +1,4 @@
-package com.deniscerri.ytdl;
+package com.deniscerri.ytdl.util;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -10,6 +10,8 @@ import android.graphics.BitmapFactory;
 import android.os.Build;
 
 import androidx.core.app.NotificationCompat;
+
+import com.deniscerri.ytdl.R;
 
 public class NotificationUtil {
     Context context;
