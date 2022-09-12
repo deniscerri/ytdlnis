@@ -4,7 +4,6 @@ import android.app.Application;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.devbrackets.android.exomedia.BuildConfig;
 import com.google.android.material.color.DynamicColors;
 import com.yausername.ffmpeg.FFmpeg;
 import com.yausername.youtubedl_android.YoutubeDL;
@@ -17,12 +16,12 @@ import io.reactivex.observers.DisposableCompletableObserver;
 import io.reactivex.plugins.RxJavaPlugins;
 import io.reactivex.schedulers.Schedulers;
 
-import com.deniscerri.ytdl.util.NotificationUtil;
-
 public class App extends Application {
 
     private static final String TAG = "App";
     public static NotificationUtil notificationUtil;
+    public static String arch = System.getProperty("os.arch");
+    public static String versionName = BuildConfig.VERSION_NAME;
 
     @Override
     public void onCreate() {

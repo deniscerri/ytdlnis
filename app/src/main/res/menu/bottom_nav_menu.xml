@@ -7,7 +7,13 @@
     <item android:title="@string/history"
         android:icon="@drawable/ic_history"
         android:id="@+id/history"/>
-    <item android:title="@string/settings"
-        android:icon="@drawable/ic_settings"
-        android:id="@+id/settings"/>
+    <item android:title="@string/music_editor"
+        android:icon="@drawable/ic_music_downloaded"
+        android:id="@+id/music_editor"/>
+    <item android:title="@string/cli"
+        android:icon="@drawable/ic_code"
+        android:id="@+id/cli"/>
+    <item android:title="@string/more"
+        android:icon="@drawable/ic_more"
+        android:id="@+id/more"/>
 </menu>

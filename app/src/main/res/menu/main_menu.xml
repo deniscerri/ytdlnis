@@ -14,11 +14,16 @@
         android:id="@+id/refresh_results"
         android:icon="@drawable/ic_refresh"
         android:title="@string/refresh_results"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="never" />
 
     <item
         android:id="@+id/delete_results"
         android:title="@string/fshi_rezultatet"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/open_settings"
+        android:title="@string/settings"
         app:showAsAction="never" />
 
 </menu>

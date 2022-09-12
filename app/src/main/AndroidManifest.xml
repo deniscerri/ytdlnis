@@ -28,6 +28,10 @@
             </intent-filter>
 
         </activity>
+        <activity
+            android:name=".page.settings.SettingsActivity"
+            android:parentActivityName=".MainActivity"
+            />
         <service
             android:name=".DownloaderService"
             android:enabled="true"

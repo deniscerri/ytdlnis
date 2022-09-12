@@ -1,4 +1,4 @@
-package com.deniscerri.ytdl.util;
+package com.deniscerri.ytdl;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -62,7 +62,7 @@ public class NotificationUtil {
 
     public void updateDownloadNotification(int id, String desc, int progress, int queue, String title){
         String contentText = "";
-        if (queue > 0) contentText += queue + " items left\n";
+        if (queue > 1) contentText += queue + " items left\n";
         contentText += desc.replaceAll("\\[.*?\\]", "");
 
         notificationBuilder.setProgress(100, (int) progress, false)

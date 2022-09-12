@@ -4,7 +4,6 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.os.Binder;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
@@ -14,8 +13,6 @@ import androidx.fragment.app.FragmentManager;
 import com.deniscerri.ytdl.databinding.ActivityMainBinding;
 import com.deniscerri.ytdl.page.HistoryFragment;
 import com.deniscerri.ytdl.page.HomeFragment;
-import com.deniscerri.ytdl.page.SettingsFragment;
-import com.deniscerri.ytdl.service.DownloaderService;
 
 
 public class MainActivity extends AppCompatActivity{
@@ -27,7 +24,6 @@ public class MainActivity extends AppCompatActivity{
 
     private HomeFragment homeFragment;
     private HistoryFragment historyFragment;
-    private SettingsFragment settingsFragment;
     private Fragment lastFragment;
     private FragmentManager fm;
 
@@ -63,14 +59,11 @@ public class MainActivity extends AppCompatActivity{
 
         homeFragment = new HomeFragment();
         historyFragment = new HistoryFragment();
-        settingsFragment = new SettingsFragment();
 
         fm.beginTransaction()
                 .replace(R.id.frame_layout, homeFragment)
                 .add(R.id.frame_layout, historyFragment)
-                .add(R.id.frame_layout, settingsFragment)
                 .hide(historyFragment)
-                .hide(settingsFragment)
                 .commit();
 
         lastFragment = homeFragment;
@@ -93,11 +86,6 @@ public class MainActivity extends AppCompatActivity{
                     }
                     replaceFragment(historyFragment);
                     break;
-                case R.id.settings:
-                    this.setTitle(getString(R.string.settings));;
-                    replaceFragment(settingsFragment);
-                    break;
-
             }
             return true;
         });
@@ -119,15 +107,12 @@ public class MainActivity extends AppCompatActivity{
 
             homeFragment = new HomeFragment();
             historyFragment = new HistoryFragment();
-            settingsFragment = new SettingsFragment();
 
             homeFragment.handleIntent(intent);
             fm.beginTransaction()
                     .replace(R.id.frame_layout, homeFragment)
                     .add(R.id.frame_layout, historyFragment)
-                    .add(R.id.frame_layout, settingsFragment)
                     .hide(historyFragment)
-                    .hide(settingsFragment)
                     .commit();
 
             lastFragment = homeFragment;

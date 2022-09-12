@@ -42,4 +42,9 @@
     <string name="confirm_delete_history">Confirm</string>
     <string name="search_history_hint">Search from History</string>
     <string name="no_results">No Results</string>
+    <string name="music_editor">TAG Editor</string>
+    <string name="cli">Commands</string>
+    <string name="more">More</string>
+    <string name="update_app">Update App</string>
+    <string name="download_latest_version">Download the latest version of the app</string>
 </resources>

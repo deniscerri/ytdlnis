@@ -1,4 +1,4 @@
-package com.deniscerri.ytdl.service;
+package com.deniscerri.ytdl;
 
 import android.app.Notification;
 import android.app.PendingIntent;
@@ -8,10 +8,6 @@ import android.os.Binder;
 import android.os.IBinder;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
-
-import com.deniscerri.ytdl.App;
-import com.deniscerri.ytdl.MainActivity;
-import com.deniscerri.ytdl.util.NotificationUtil;
 
 public class DownloaderService extends Service {
 

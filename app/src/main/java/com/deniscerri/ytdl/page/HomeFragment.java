@@ -39,7 +39,8 @@ import com.deniscerri.ytdl.adapter.HomeRecyclerViewAdapter;
 import com.deniscerri.ytdl.api.YoutubeAPIManager;
 import com.deniscerri.ytdl.database.DBManager;
 import com.deniscerri.ytdl.database.Video;
-import com.deniscerri.ytdl.util.NotificationUtil;
+import com.deniscerri.ytdl.NotificationUtil;
+import com.deniscerri.ytdl.page.settings.SettingsActivity;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.MaterialToolbar;
@@ -249,6 +250,10 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
                 case R.id.refresh_results:
                     recyclerView.removeAllViews();
                     initCards();
+                    return true;
+                case R.id.open_settings:
+                    Intent intent = new Intent(context, SettingsActivity.class);
+                    startActivity(intent);
             }
             return true;
         });
@@ -445,7 +450,7 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
         }
 
         try {
-            video = videos.remove();
+            video = videos.peek();
         } catch (Exception e) {
             return;
         }
@@ -466,24 +471,57 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
 
         MaterialButton clickedButton = null;
 
+        SharedPreferences sharedPreferences = context.getSharedPreferences("root_preferences", Activity.MODE_PRIVATE);
+
+        int concurrentFragments = sharedPreferences.getInt("concurrent_fragments", 1);
+        request.addOption("-N", concurrentFragments);
+
+        String limitRate = sharedPreferences.getString("limit_rate", "");
+        if(!limitRate.equals("")){
+            request.addOption("-r", limitRate);
+        }
+
+        boolean writeThumbnail = sharedPreferences.getBoolean("write_thumbnail", false);
+        if(writeThumbnail){
+            request.addOption("--write-thumbnail");
+        }
+
         if (type.equals("mp3")) {
-            request.addOption("--embed-thumbnail");
-            request.addOption("--sponsorblock-remove", "all");
+            boolean embedThumb = sharedPreferences.getBoolean("embed_thumbnail", false);
+            if(embedThumb){
+                request.addOption("--embed-thumbnail");
+            }
+            boolean removeNonMusic = sharedPreferences.getBoolean("remove_non_music", false);
+            if(removeNonMusic){
+                request.addOption("--sponsorblock-remove", "all");
+            }
             request.addOption("--postprocessor-args", "-write_id3v1 1 -id3v2_version 3");
             request.addOption("--add-metadata");
             request.addOption("--no-mtime");
             request.addOption("-x");
-            request.addOption("--audio-format", "mp3");
+            String format = sharedPreferences.getString("audio_format", "");
+            request.addOption("--audio-format", format);
 
             clickedButton = recyclerView.findViewWithTag(id + "##mp3");
         } else if (type.equals("mp4")) {
-            request.addOption("--embed-thumbnail");
-            request.addOption("--sponsorblock-mark", "all");
-            request.addOption("--embed-subs", "");
-            request.addOption("-f", "bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best");
+            boolean embedThumb = sharedPreferences.getBoolean("embed_thumbnail", false);
+            if(embedThumb){
+                request.addOption("--embed-thumbnail");
+            }
+            boolean addChapters = sharedPreferences.getBoolean("add_chapters", false);
+            if(addChapters){
+                request.addOption("--sponsorblock-mark", "all");
+            }
+            boolean embedSubs = sharedPreferences.getBoolean("embed_subtitles", false);
+            if(embedSubs){
+                request.addOption("--embed-subs", "");
+            }
+            String format = sharedPreferences.getString("video_format", "");
+            request.addOption("-f", "bestvideo[ext="+format+"]+bestaudio[ext=m4a]/best[ext="+format+"]/best");
 
             clickedButton = recyclerView.findViewWithTag(id + "##mp4");
         }
+
         request.addOption("-o", youtubeDLDir.getAbsolutePath() + "/%(title)s.%(ext)s");
 
         progressBar = fragmentView.findViewWithTag(id + "##progress");
@@ -524,6 +562,7 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
                     MediaScannerConnection.scanFile(context, new String[]{youtubeDLDir.getAbsolutePath()}, null, null);
 
                     // SCAN NEXT IN QUEUE
+                    videos.remove();
                     startDownload(videos);
                 }, e -> {
                     if (BuildConfig.DEBUG) Log.e(TAG, getString(R.string.failed_download), e);
@@ -535,6 +574,7 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
                     downloading = false;
 
                     // SCAN NEXT IN QUEUE
+                    videos.remove();
                     startDownload(videos);
                 });
         compositeDisposable.add(disposable);

@@ -3,39 +3,130 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     >
 
-    <Preference
-        android:layout="@layout/fragment_settings"/>
+    <PreferenceCategory android:title="@string/directories">
+        <Preference
+            app:key="music_path"
+            app:icon="@drawable/ic_music_downloaded"
+            app:title="@string/music_directory" />
 
-    <Preference />
+        <Preference
+            app:key="video_path"
+            app:icon="@drawable/ic_video_downloaded"
+            app:title="@string/video_directory" />
+    </PreferenceCategory>
 
-    <Preference
-        app:key="music_path"
-        app:allowDividerAbove="true"
-        app:icon="@drawable/ic_music_downloaded"
-        app:title="@string/music_directory" />
-
-    <Preference
-        app:key="video_path"
-        app:icon="@drawable/ic_video_downloaded"
-        app:title="@string/video_directory" />
-
-    <Preference
-        app:key="update"
-        app:allowDividerAbove="true"
-        app:icon="@drawable/ic_update"
-        app:summary="@string/ytdl_update_hint"
-        app:title="@string/update_ytdl" />
-
-    <Preference
-        app:key="rreth"
-        app:allowDividerAbove="true"
-        app:icon="@drawable/ic_code"
-        app:summary="https://github.com/deniscerri/ytdlnis"
-        app:title="@string/source_code">
-        <intent
-            android:action="android.intent.action.VIEW"
-            android:data="https://github.com/deniscerri/ytdlnis"
+    <PreferenceCategory app:title="Downloading">
+        <SeekBarPreference
+            app:key="concurrent_fragments"
+            app:title="Concurrent Fragments"
+            android:icon="@drawable/ic_lines"
+            app:summary=" Number of fragments of a dash/hlsnative video that should be downloaded concurrently"
+            android:defaultValue="1"
+            android:max="10"
+            app:min="1"
+            app:showSeekBarValue="true"
             />
-    </Preference>
+
+        <EditTextPreference
+            app:key="limit_rate"
+            android:icon="@drawable/ic_down"
+            app:title="Limit Rate"
+            app:summary="Maximum download rate in bytes per second, e.g. 50K or 4.2M"
+            />
+
+    </PreferenceCategory>
+
+
+   <PreferenceCategory android:title="Processing">
+       <SwitchPreferenceCompat
+           app:key="remove_non_music"
+           app:icon="@drawable/ic_music"
+           app:defaultValue="true"
+           app:title="Remove non music parts" />
+
+       <SwitchPreferenceCompat
+           app:key="embed_subtitles"
+           app:defaultValue="true"
+           app:summary="Embed subtitles in the video (only for mp4,webm and mkv videos)"
+           app:icon="@drawable/ic_subtitles"
+           app:title="Embed Subtitles on Videos" />
+
+       <SwitchPreferenceCompat
+           app:key="embed_thumbnail"
+           app:defaultValue="true"
+           app:icon="@drawable/ic_image"
+           app:summary="Embed thumbnail as cover art"
+           app:title="Embed Thumbnail" />
+
+       <SwitchPreferenceCompat
+           app:key="add_chapters"
+           app:defaultValue="true"
+           app:icon="@drawable/ic_chapters"
+           app:title="Add Chapters on Videos" />
+
+       <SwitchPreferenceCompat
+           app:key="write_thumbnail"
+           app:defaultValue="false"
+           app:icon="@drawable/ic_image"
+           app:title="Write Thumbnail to disk" />
+
+       <ListPreference
+           app:key="audio_format"
+           app:title="Audio Format"
+           android:defaultValue="mp3"
+           android:icon="@drawable/ic_code"
+           android:entries="@array/music_formats"
+           android:entryValues="@array/music_formats" />
+
+       <ListPreference
+           app:key="video_format"
+           app:title="Video Format"
+           android:defaultValue="mp4"
+           android:icon="@drawable/ic_code"
+           android:entries="@array/video_formats"
+           android:entryValues="@array/video_formats" />
+
+
+       <SeekBarPreference
+           app:key="audio_quality"
+           app:title="Audio Quality"
+           android:icon="@drawable/ic_music"
+           app:summary="0 (Best) 10 (Worst)"
+           android:defaultValue="5"
+           android:max="10"
+           app:min="0"
+           app:showSeekBarValue="true"
+           />
+
+   </PreferenceCategory>
+
+
+    <PreferenceCategory android:title="@string/updating">
+        <Preference
+            app:key="update_ytdl"
+            app:icon="@drawable/ic_update"
+            app:summary="@string/ytdl_update_hint"
+            app:title="@string/update_ytdl" />
+
+        <Preference
+            app:key="update_app"
+            app:icon="@drawable/ic_update_app"
+            app:summary="@string/download_latest_version"
+            app:title="@string/update_app" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/about">
+        <Preference
+            app:key="rreth"
+            app:icon="@drawable/ic_code"
+            app:summary="https://github.com/deniscerri/ytdlnis"
+            app:title="@string/source_code">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="https://github.com/deniscerri/ytdlnis"
+                />
+        </Preference>
+    </PreferenceCategory>
+
 
 </PreferenceScreen>
