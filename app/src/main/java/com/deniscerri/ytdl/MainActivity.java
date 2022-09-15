@@ -13,6 +13,9 @@ import androidx.fragment.app.FragmentManager;
 import com.deniscerri.ytdl.databinding.ActivityMainBinding;
 import com.deniscerri.ytdl.page.HistoryFragment;
 import com.deniscerri.ytdl.page.HomeFragment;
+import com.deniscerri.ytdl.page.MoreFragment;
+import com.deniscerri.ytdl.page.MusicEditorFragment;
+import com.deniscerri.ytdl.page.settings.SettingsActivity;
 
 
 public class MainActivity extends AppCompatActivity{
@@ -24,6 +27,9 @@ public class MainActivity extends AppCompatActivity{
 
     private HomeFragment homeFragment;
     private HistoryFragment historyFragment;
+    private MusicEditorFragment musicEditorFragment;
+    private MoreFragment moreFragment;
+
     private Fragment lastFragment;
     private FragmentManager fm;
 
@@ -59,33 +65,37 @@ public class MainActivity extends AppCompatActivity{
 
         homeFragment = new HomeFragment();
         historyFragment = new HistoryFragment();
+        moreFragment = new MoreFragment();
+        musicEditorFragment = new MusicEditorFragment();
 
-        fm.beginTransaction()
-                .replace(R.id.frame_layout, homeFragment)
-                .add(R.id.frame_layout, historyFragment)
-                .hide(historyFragment)
-                .commit();
-
-        lastFragment = homeFragment;
+        initFragments();
 
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
-            switch(item.getItemId()){
-                case R.id.home:
-                    if(lastFragment == homeFragment){
-                        homeFragment.scrollToTop();
-                    }else{
-                        this.setTitle(R.string.app_name);;
-                    }
-                    replaceFragment(homeFragment);
-                    break;
-                case R.id.history:
-                    if(lastFragment == historyFragment){
-                        historyFragment.scrollToTop();
-                    }else {
-                        this.setTitle(getString(R.string.history));
-                    }
-                    replaceFragment(historyFragment);
-                    break;
+            int id = item.getItemId();
+            if(id == R.id.home){
+                if(lastFragment == homeFragment){
+                    homeFragment.scrollToTop();
+                }else{
+                    this.setTitle(R.string.app_name);;
+                }
+                replaceFragment(homeFragment);
+            }else if(id == R.id.history){
+                if(lastFragment == historyFragment){
+                    historyFragment.scrollToTop();
+                }else {
+                    this.setTitle(getString(R.string.history));
+                }
+                replaceFragment(historyFragment);
+            }else if(id == R.id.more){
+                if(lastFragment == moreFragment){
+                    Intent intent = new Intent(context, SettingsActivity.class);
+                    startActivity(intent);
+                }else{
+                    this.setTitle(getString(R.string.more));
+                }
+                replaceFragment(moreFragment);
+            }else if(id == R.id.music_editor){
+                replaceFragment(musicEditorFragment);
             }
             return true;
         });
@@ -109,14 +119,22 @@ public class MainActivity extends AppCompatActivity{
             historyFragment = new HistoryFragment();
 
             homeFragment.handleIntent(intent);
-            fm.beginTransaction()
-                    .replace(R.id.frame_layout, homeFragment)
-                    .add(R.id.frame_layout, historyFragment)
-                    .hide(historyFragment)
-                    .commit();
-
-            lastFragment = homeFragment;
+            initFragments();
         }
+    }
+
+    private void initFragments(){
+        fm.beginTransaction()
+                .replace(R.id.frame_layout, homeFragment)
+                .add(R.id.frame_layout, historyFragment)
+                .add(R.id.frame_layout, moreFragment)
+                .add(R.id.frame_layout, musicEditorFragment)
+                .hide(historyFragment)
+                .hide(moreFragment)
+                .hide(musicEditorFragment)
+                .commit();
+
+        lastFragment = homeFragment;
     }
 
     private void replaceFragment(Fragment f){
@@ -124,10 +142,11 @@ public class MainActivity extends AppCompatActivity{
         lastFragment = f;
     }
 
-    public void startDownloadService(String title){
+    public void startDownloadService(String title, int id){
         if(isDownloadServiceRunning) return;
         Intent serviceIntent = new Intent(context, DownloaderService.class);
         serviceIntent.putExtra("title", title);
+        serviceIntent.putExtra("id", id);
         context.getApplicationContext().bindService(serviceIntent, serviceConnection, Context.BIND_AUTO_CREATE);
     }
 

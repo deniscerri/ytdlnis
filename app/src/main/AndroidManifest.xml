@@ -1,22 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.deniscerri.ytdl">
+    package="com.deniscerri.ytdl" >
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
 
     <application
         android:name=".App"
         android:allowBackup="false"
+        android:extractNativeLibs="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppDefaultTheme"
-        android:extractNativeLibs="true"
-        android:requestLegacyExternalStorage="true">
-        <activity android:name=".MainActivity">
+        android:theme="@style/AppDefaultTheme" >
+        <activity android:name=".MainActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -26,20 +27,31 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <data android:mimeType="text/plain" />
             </intent-filter>
-
         </activity>
         <activity
             android:name=".page.settings.SettingsActivity"
-            android:parentActivityName=".MainActivity"
-            />
+            android:parentActivityName=".MainActivity" >
+            <intent-filter>
+                <action android:name="ytdlnis.settings.SettingsActivity" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".page.CustomCommandActivity"
+            android:theme="@style/AppDefaultTheme"
+            android:parentActivityName=".MainActivity">
+            <intent-filter>
+                <action android:name="ytdlnis.page.CustomCommandActivity" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <service
             android:name=".DownloaderService"
             android:enabled="true"
             android:exported="false" />
         <meta-data
-            android:name = "ytAPIkey"
-            android:value = "${ytAPI}"
-        />
+            android:name="ytAPIkey"
+            android:value="${ytAPI}" />
     </application>
 
 </manifest>

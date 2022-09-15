@@ -6,6 +6,8 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
+import android.widget.Toast;
+
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
@@ -21,9 +23,10 @@ public class DownloaderService extends Service {
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, theIntent, PendingIntent.FLAG_IMMUTABLE);
 
         String title = intent.getStringExtra("title");
+        int id = intent.getIntExtra("id", 1);
 
         Notification notification = App.notificationUtil.createDownloadServiceNotification(pendingIntent,title);
-        startForeground(NotificationUtil.DOWNLOAD_NOTIFICATION_ID, notification);
+        startForeground(id, notification);
         return binder;
     }
 

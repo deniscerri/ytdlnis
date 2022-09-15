@@ -39,8 +39,8 @@ import com.deniscerri.ytdl.adapter.HomeRecyclerViewAdapter;
 import com.deniscerri.ytdl.api.YoutubeAPIManager;
 import com.deniscerri.ytdl.database.DBManager;
 import com.deniscerri.ytdl.database.Video;
-import com.deniscerri.ytdl.NotificationUtil;
 import com.deniscerri.ytdl.page.settings.SettingsActivity;
+import com.deniscerri.ytdl.util.NotificationUtil;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.MaterialToolbar;
@@ -487,10 +487,6 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
         }
 
         if (type.equals("mp3")) {
-            boolean embedThumb = sharedPreferences.getBoolean("embed_thumbnail", false);
-            if(embedThumb){
-                request.addOption("--embed-thumbnail");
-            }
             boolean removeNonMusic = sharedPreferences.getBoolean("remove_non_music", false);
             if(removeNonMusic){
                 request.addOption("--sponsorblock-remove", "all");
@@ -502,12 +498,15 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
             String format = sharedPreferences.getString("audio_format", "");
             request.addOption("--audio-format", format);
 
+            if(format.equals("mp3") || format.equals("m4a") || format.equals("flac")){
+                boolean embedThumb = sharedPreferences.getBoolean("embed_thumbnail", false);
+                if(embedThumb){
+                    request.addOption("--embed-thumbnail");
+                }
+            }
+
             clickedButton = recyclerView.findViewWithTag(id + "##mp3");
         } else if (type.equals("mp4")) {
-            boolean embedThumb = sharedPreferences.getBoolean("embed_thumbnail", false);
-            if(embedThumb){
-                request.addOption("--embed-thumbnail");
-            }
             boolean addChapters = sharedPreferences.getBoolean("add_chapters", false);
             if(addChapters){
                 request.addOption("--sponsorblock-mark", "all");
@@ -516,8 +515,16 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
             if(embedSubs){
                 request.addOption("--embed-subs", "");
             }
+            request.addOption("-f", "bestvideo+bestaudio/best");
             String format = sharedPreferences.getString("video_format", "");
-            request.addOption("-f", "bestvideo[ext="+format+"]+bestaudio[ext=m4a]/best[ext="+format+"]/best");
+            request.addOption("--merge-output-format", format);
+
+            if(!format.equals("webm")){
+                boolean embedThumb = sharedPreferences.getBoolean("embed_thumbnail", false);
+                if(embedThumb){
+                    request.addOption("--embed-thumbnail");
+                }
+            }
 
             clickedButton = recyclerView.findViewWithTag(id + "##mp4");
         }
@@ -655,7 +662,7 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
             Toast.makeText(context, R.string.added_to_queue, Toast.LENGTH_LONG).show();
             return;
         }
-        mainActivity.startDownloadService(vid.getTitle());
+        mainActivity.startDownloadService(vid.getTitle(), NotificationUtil.DOWNLOAD_NOTIFICATION_ID);
         startDownload(downloadQueue);
     }
 
@@ -689,7 +696,7 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
                         Toast.makeText(context, R.string.added_to_queue, Toast.LENGTH_LONG).show();
                         return;
                     }
-                    mainActivity.startDownloadService(downloadQueue.peek().getTitle());
+                    mainActivity.startDownloadService(downloadQueue.peek().getTitle(), NotificationUtil.DOWNLOAD_NOTIFICATION_ID);
                     startDownload(downloadQueue);
                 }
             }

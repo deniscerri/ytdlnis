@@ -1,4 +1,4 @@
-package com.deniscerri.ytdl;
+package com.deniscerri.ytdl.util;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -17,6 +17,10 @@ public class NotificationUtil {
     Context context;
     public static final String DOWNLOAD_SERVICE_CHANNEL_ID = "1";
     public static final int DOWNLOAD_NOTIFICATION_ID = 1;
+
+    public static final String COMMAND_DOWNLOAD_SERVICE_CHANNEL_ID = "2";
+    public static final int COMMAND_DOWNLOAD_NOTIFICATION_ID = 2;
+
     public static NotificationCompat.Builder notificationBuilder;
     private static int PROGRESS_MAX = 100;
     private static int PROGRESS_CURR = 0;
@@ -30,12 +34,21 @@ public class NotificationUtil {
 
     public void createNotificationChannel(){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
+
+            //gui downloads
             CharSequence name = context.getString(R.string.download_notification_channel_name);
             String description = context.getString(R.string.download_notification_channel_description);
             int importance = NotificationManager.IMPORTANCE_HIGH;
             NotificationChannel channel = new NotificationChannel(DOWNLOAD_SERVICE_CHANNEL_ID, name, importance);
             channel.setDescription(description);
-            NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+
+            //command downloads
+            name = "Command Downloads";
+            description = "Notification that shows the download progress of a yt-dlp command";
+            channel = new NotificationChannel(COMMAND_DOWNLOAD_SERVICE_CHANNEL_ID, name, importance);
+            channel.setDescription(description);
             notificationManager.createNotificationChannel(channel);
         }
     }

@@ -33,6 +33,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 
     Preference musicPath;
     Preference videoPath;
+    Preference commandPath;
 
     SeekBarPreference concurrentFragments;
     EditTextPreference limitRate;
@@ -46,17 +47,13 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     ListPreference videoFormat;
     SeekBarPreference audioQuality;
 
-    Preference updateYTDL;
-    Preference updateApp;
+    Preference version;
 
     public static final int MUSIC_PATH_CODE = 33333;
     public static final int VIDEO_PATH_CODE = 55555;
-    public static boolean updatingYTDL;
-    public static boolean updatingApp;
+    public static final int COMMAND_PATH_CODE = 77777;
     private static boolean firstRun = true;
-
     private static final String TAG = "SettingsFragment";
-    private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
 
     @Override
@@ -65,6 +62,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 
         musicPath = findPreference("music_path");
         videoPath = findPreference("video_path");
+        commandPath = findPreference("command_path");
 
         concurrentFragments = findPreference("concurrent_fragments");
         limitRate = findPreference("limit_rate");
@@ -78,9 +76,8 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         videoFormat = findPreference("video_format");
         audioQuality = findPreference("audio_quality");
 
-
-        updateYTDL = findPreference("update_ytdl");
-        updateApp = findPreference("update_app");
+        version = findPreference("version");
+        version.setSummary(BuildConfig.VERSION_NAME);
 
         if(firstRun){
             initPreferences();
@@ -97,6 +94,9 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         }
         if(preferences.getString("video_path", "").isEmpty()){
             editor.putString("video_path", "/storage/emulated/0/Movies/");
+        }
+        if(preferences.getString("command_path", "").isEmpty()){
+            editor.putString("command_path", "/storage/emulated/0/Download");
         }
 
         editor.putInt("concurrent_fragments", concurrentFragments.getValue());
@@ -129,6 +129,13 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         videoPath.setOnPreferenceClickListener(preference -> {
             Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
             videoPathResultLauncher.launch(intent);
+            return true;
+        });
+
+        commandPath.setSummary(preferences.getString("command_path", ""));
+        commandPath.setOnPreferenceClickListener(preference -> {
+            Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+            commandPathResultLauncher.launch(intent);
             return true;
         });
 
@@ -180,14 +187,18 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             return true;
         });
 
+        audioFormat.setSummary(preferences.getString("audio_format", ""));
         audioFormat.setOnPreferenceChangeListener((preference, newValue) -> {
             editor.putString("audio_format", String.valueOf(newValue));
+            audioFormat.setSummary(String.valueOf(newValue));
             editor.apply();
             return true;
         });
 
+        videoFormat.setSummary(preferences.getString("video_format", ""));
         videoFormat.setOnPreferenceChangeListener((preference, newValue) -> {
             editor.putString("video_format", String.valueOf(newValue));
+            videoFormat.setSummary(String.valueOf(newValue));
             editor.apply();
             return true;
         });
@@ -198,15 +209,6 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             return true;
         });
 
-        updateYTDL.setOnPreferenceClickListener(preference -> {
-            updateYoutubeDL();
-            return true;
-        });
-
-        updateApp.setOnPreferenceClickListener(preference -> {
-            updateApp();
-            return true;
-        });
     }
 
     ActivityResultLauncher<Intent> musicPathResultLauncher = registerForActivityResult(
@@ -227,6 +229,17 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                 public void onActivityResult(ActivityResult result) {
                     if (result.getResultCode() == Activity.RESULT_OK) {
                         changePath(videoPath, result.getData(), VIDEO_PATH_CODE);
+                    }
+                }
+            });
+
+    ActivityResultLauncher<Intent> commandPathResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        changePath(commandPath, result.getData(), COMMAND_PATH_CODE);
                     }
                 }
             });
@@ -255,7 +268,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             path.append(pieces[i]).append("/");
         }
 
-        Log.e("TEST", path.toString());
+        Log.e(TAG, path.toString());
         p.setSummary(path.toString());
         SharedPreferences sharedPreferences = requireContext().getSharedPreferences("root_preferences", Activity.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -266,76 +279,10 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             case VIDEO_PATH_CODE:
                 editor.putString("video_path", path.toString());
                 break;
+            case COMMAND_PATH_CODE:
+                editor.putString("command_path", path.toString());
+                break;
         }
         editor.apply();
     }
-
-    private void updateYoutubeDL() {
-        if (updatingYTDL) {
-            Toast.makeText(getContext(), getString(R.string.ytdl_already_updating), Toast.LENGTH_LONG).show();
-            return;
-        }
-
-        Toast.makeText(getContext(), getString(R.string.ytdl_updating_started), Toast.LENGTH_SHORT).show();
-
-        updatingYTDL = true;
-        Disposable disposable = Observable.fromCallable(() -> YoutubeDL.getInstance().updateYoutubeDL(getContext()))
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(status -> {
-                    switch (status) {
-                        case DONE:
-                            Toast.makeText(getContext(), getString(R.string.ytld_update_success), Toast.LENGTH_LONG).show();
-                            break;
-                        case ALREADY_UP_TO_DATE:
-                            Toast.makeText(getContext(), getString(R.string.you_are_in_latest_version), Toast.LENGTH_LONG).show();
-                            break;
-                        default:
-                            Toast.makeText(getContext(), status.toString(), Toast.LENGTH_LONG).show();
-                            break;
-                    }
-                    updatingYTDL = false;
-                }, e -> {
-                    if(BuildConfig.DEBUG) Log.e(TAG, getString(R.string.ytdl_update_failed), e);
-                    Toast.makeText(getContext(), getString(R.string.ytdl_update_failed), Toast.LENGTH_LONG).show();
-                    updatingYTDL = false;
-                });
-        compositeDisposable.add(disposable);
-    }
-
-
-    private void updateApp(){
-        if (updatingApp) {
-            Toast.makeText(getContext(), getString(R.string.ytdl_already_updating), Toast.LENGTH_LONG).show();
-            return;
-        }
-
-        Toast.makeText(getContext(), getString(R.string.ytdl_updating_started), Toast.LENGTH_SHORT).show();
-
-        updatingApp = true;
-        Disposable disposable = Observable.fromCallable(() -> YoutubeDL.getInstance().updateYoutubeDL(getContext()))
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(status -> {
-                    switch (status) {
-                        case DONE:
-                            Toast.makeText(getContext(), getString(R.string.ytld_update_success), Toast.LENGTH_LONG).show();
-                            break;
-                        case ALREADY_UP_TO_DATE:
-                            Toast.makeText(getContext(), getString(R.string.you_are_in_latest_version), Toast.LENGTH_LONG).show();
-                            break;
-                        default:
-                            Toast.makeText(getContext(), status.toString(), Toast.LENGTH_LONG).show();
-                            break;
-                    }
-                    updatingApp = false;
-                }, e -> {
-                    if(BuildConfig.DEBUG) Log.e(TAG, getString(R.string.ytdl_update_failed), e);
-                    Toast.makeText(getContext(), getString(R.string.ytdl_update_failed), Toast.LENGTH_LONG).show();
-                    updatingApp = false;
-                });
-        compositeDisposable.add(disposable);
-    }
-
-
 }

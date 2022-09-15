@@ -4,6 +4,7 @@ import android.app.Application;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.deniscerri.ytdl.util.NotificationUtil;
 import com.google.android.material.color.DynamicColors;
 import com.yausername.ffmpeg.FFmpeg;
 import com.yausername.youtubedl_android.YoutubeDL;
@@ -20,8 +21,6 @@ public class App extends Application {
 
     private static final String TAG = "App";
     public static NotificationUtil notificationUtil;
-    public static String arch = System.getProperty("os.arch");
-    public static String versionName = BuildConfig.VERSION_NAME;
 
     @Override
     public void onCreate() {

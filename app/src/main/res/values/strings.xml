@@ -42,9 +42,19 @@
     <string name="confirm_delete_history">Confirm</string>
     <string name="search_history_hint">Search from History</string>
     <string name="no_results">No Results</string>
-    <string name="music_editor">TAG Editor</string>
+    <string name="music_editor">Music Editor</string>
     <string name="cli">Commands</string>
     <string name="more">More</string>
     <string name="update_app">Update App</string>
     <string name="download_latest_version">Download the latest version of the app</string>
+    <string name="version">Version</string>
+    <string name="custom_command">Run Custom Command</string>
+    <string name="write_ytdlp_command">Write yt-dlp command</string>
+    <string name="run">Run</string>
+    <string name="running_ytdlp_command">Running yt-dlp Custom Command</string>
+    <string name="command_directory">Custom Command Directory</string>
+    <string name="you_are_running_latest_version">You are running the latest version!</string>
+    <string name="error_checking_latest_version">Error checking for latest version!</string>
+    <string name="couldnt_find_apk">Couldn\'t find a suitable apk!</string>
+    <string name="downloading_update">Downloading Update</string>
 </resources>

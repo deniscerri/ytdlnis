@@ -1,0 +1,52 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <Preference
+        android:layout="@layout/fragment_more"/>
+
+    <PreferenceCategory android:title="@string/updating">
+        <Preference
+            app:icon="@drawable/ic_update"
+            app:key="update_ytdl"
+            app:summary="@string/ytdl_update_hint"
+            app:title="@string/update_ytdl" />
+
+        <Preference
+            app:icon="@drawable/ic_update_app"
+            app:key="update_app"
+            app:summary="@string/download_latest_version"
+            app:title="@string/update_app" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/about">
+        <Preference
+            app:icon="@drawable/ic_code"
+            app:key="rreth"
+            app:summary="https://github.com/deniscerri/ytdlnis"
+            app:title="@string/source_code">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="https://github.com/deniscerri/ytdlnis" />
+        </Preference>
+    </PreferenceCategory>
+
+
+    <Preference
+        app:icon="@drawable/ic_baseline_keyboard_arrow_right_24"
+        app:allowDividerAbove="true"
+        app:allowDividerBelow="true"
+        app:key="run_command"
+        app:title="@string/custom_command">
+        <intent android:action="ytdlnis.page.CustomCommandActivity" />
+    </Preference>
+
+
+    <Preference
+        app:icon="@drawable/ic_settings"
+        app:key="open_settings"
+        app:title="@string/settings">
+        <intent android:action="ytdlnis.settings.SettingsActivity" />
+    </Preference>
+
+
+</PreferenceScreen>

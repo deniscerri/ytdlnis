@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import androidx.appcompat.widget.SearchView;
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -31,6 +32,7 @@ import com.deniscerri.ytdl.adapter.HistoryRecyclerViewAdapter;
 import com.deniscerri.ytdl.database.DBManager;
 import com.deniscerri.ytdl.database.Video;
 import com.facebook.shimmer.ShimmerFrameLayout;
+import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -50,6 +52,7 @@ public class HistoryFragment extends Fragment implements HistoryRecyclerViewAdap
     private ShimmerFrameLayout shimmerCards;
     private MaterialToolbar topAppBar;
     private RecyclerView recyclerView;
+    private NestedScrollView scrollView;
     private HistoryRecyclerViewAdapter historyRecyclerViewAdapter;
     private BottomSheetDialog bottomSheet;
     private Handler uiHandler;
@@ -91,6 +94,7 @@ public class HistoryFragment extends Fragment implements HistoryRecyclerViewAdap
         historyObjects = new ArrayList<>();
 
         recyclerView = fragmentView.findViewById(R.id.recycler_view_history);
+        scrollView = fragmentView.findViewById(R.id.history_scrollview);
 
         historyRecyclerViewAdapter = new HistoryRecyclerViewAdapter(historyObjects, this, context);
         recyclerView.setAdapter(historyRecyclerViewAdapter);
@@ -128,7 +132,8 @@ public class HistoryFragment extends Fragment implements HistoryRecyclerViewAdap
     }
 
     public void scrollToTop(){
-        recyclerView.smoothScrollToPosition(0);
+        scrollView.smoothScrollTo(-100,-100);
+        new Handler(Looper.getMainLooper()).post(() -> ((AppBarLayout) topAppBar.getParent()).setExpanded(true, true));
     }
 
     private void addNoResultsView(){
