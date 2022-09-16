@@ -42,4 +42,19 @@
     <string name="confirm_delete_history">Konfirmo</string>
     <string name="search_history_hint">Kërko nga Historia</string>
     <string name="no_results">Nuk ka Rezultate</string>
+    <string name="music_editor">Redaktori i Muzikës</string>
+    <string name="cli">Komanda</string>
+    <string name="more">Më Shumë</string>
+    <string name="update_app">Përditëso Aplikacionin</string>
+    <string name="download_latest_version">Shkarko versionin e fundit të aplikacionit</string>
+    <string name="version">Versioni</string>
+    <string name="custom_command">Ekzekuto Komandën</string>
+    <string name="write_ytdlp_command">Shkruaj komandën yt-dlp</string>
+    <string name="run">Ekzekuto</string>
+    <string name="running_ytdlp_command">Duke Ekzekutuar Komandën yt-dlp</string>
+    <string name="command_directory">Direktoria e Komandës</string>
+    <string name="you_are_running_latest_version">Ti je në versionin e fundit</string>
+    <string name="error_checking_latest_version">Gabim në kontrollin e versionit!</string>
+    <string name="couldnt_find_apk">Nuk u gjet një apk e vlefshme!</string>
+    <string name="downloading_update">Duke Përditësuar</string>
 </resources>
