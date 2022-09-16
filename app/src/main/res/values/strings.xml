@@ -57,4 +57,12 @@
     <string name="error_checking_latest_version">Error checking for latest version!</string>
     <string name="couldnt_find_apk">Couldn\'t find a suitable apk!</string>
     <string name="downloading_update">Downloading Update</string>
+    <string name="chooose_range">Choose Range</string>
+    <string name="audio">Audio</string>
+    <string name="video">Video</string>
+    <string name="first">First</string>
+    <string name="last">Last</string>
+    <string name="choose_range_desc">Write the range to download from the playlist. Leave as it is to download everything!</string>
+    <string name="last_cant_be_smaller_than_first">Last index cannot be smaller than the first!</string>
+    <string name="first_cant_be_larger_than_last">First index cannot be larger than the last!</string>
 </resources>

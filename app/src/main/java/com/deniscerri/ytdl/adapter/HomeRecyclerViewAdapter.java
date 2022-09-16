@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.deniscerri.ytdl.R;
 import com.deniscerri.ytdl.database.Video;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.card.MaterialCardView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -41,7 +42,7 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private CardView cardView;
+        private MaterialCardView cardView;
 
         public ViewHolder(@NonNull View itemView, OnItemClickListener onItemClickListener) {
             super(itemView);
@@ -62,7 +63,7 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Video video = videoList.get(position);
 
-        CardView card = holder.cardView;
+        MaterialCardView card = holder.cardView;
         // THUMBNAIL ----------------------------------
         ImageView thumbnail = card.findViewById(R.id.result_image_view);
         String imageURL= video.getThumb();
@@ -112,8 +113,18 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
         if(video.isVideoDownloaded() == 1){
             videoBtn.setIcon(ContextCompat.getDrawable(activity, R.drawable.ic_video_downloaded));
         }
-
+        card.setChecked(false);
+        card.setStrokeWidth(0);
         card.setTag(videoID + "##card");
+        card.setOnClickListener(view -> {
+            if(card.isChecked()){
+                card.setStrokeWidth(0);
+            }else{
+                card.setStrokeWidth(5);
+            }
+            card.setChecked(!card.isChecked());
+            onItemClickListener.onCardClick(position, card.isChecked());
+        });
     }
 
     @Override
@@ -123,7 +134,7 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
 
     public interface OnItemClickListener {
         void onButtonClick(int position, String type);
-        void onCardClick(CardView card);
+        void onCardClick(int position, boolean add);
     }
 
     public void setVideoList(ArrayList<Video> videoList){

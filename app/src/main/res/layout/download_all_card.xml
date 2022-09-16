@@ -27,7 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="@string/download_all"
-            android:gravity="left|center"
+            android:gravity="center"
             android:paddingTop="15dp"
             android:paddingRight="20dp"
             android:paddingBottom="20dp"
@@ -39,38 +39,6 @@
             android:shadowDx="4"
             android:shadowDy="4"
             android:shadowColor="@color/black" />
-
-        <LinearLayout
-            android:id="@+id/downloadall_button_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="bottom|right"
-            android:orientation="horizontal"
-            android:paddingBottom="16dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp">
-
-            <com.google.android.material.button.MaterialButton
-                style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton.Icon"
-                android:id="@+id/downloadall_music"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                app:cornerRadius="10dp"
-                app:icon="@drawable/ic_music"
-                android:layout_marginLeft="10dp"
-                />
-
-            <com.google.android.material.button.MaterialButton
-                style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton.Icon"
-                android:id="@+id/downloadall_video"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                app:cornerRadius="10dp"
-                app:icon="@drawable/ic_video"
-                android:layout_marginLeft="10dp"
-                />
-
-        </LinearLayout>
 
     </androidx.cardview.widget.CardView>
 </RelativeLayout>

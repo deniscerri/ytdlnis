@@ -156,5 +156,4 @@ public class MainActivity extends AppCompatActivity{
         isDownloadServiceRunning = false;
     }
 
-
 }

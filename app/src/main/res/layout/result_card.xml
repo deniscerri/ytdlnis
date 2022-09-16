@@ -16,7 +16,7 @@
         app:layout_constraintTop_toTopOf="parent"
         xmlns:app="http://schemas.android.com/apk/res-auto">
 
-        <androidx.cardview.widget.CardView
+        <com.google.android.material.card.MaterialCardView
             android:id="@+id/result_card_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -25,6 +25,8 @@
             app:cardMaxElevation="12dp"
             app:cardBackgroundColor="@color/black"
             app:cardPreventCornerOverlap="true"
+            android:checkable="true"
+            app:strokeWidth="0dp"
             android:layout_margin="10dp">
 
             <androidx.appcompat.widget.AppCompatImageView
@@ -109,7 +111,7 @@
                 style="@style/Widget.AppCompat.ProgressBar.Horizontal"
                 android:scaleY="2" />
 
-        </androidx.cardview.widget.CardView>
+        </com.google.android.material.card.MaterialCardView>
     </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

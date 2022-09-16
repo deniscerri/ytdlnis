@@ -64,10 +64,10 @@
         <entry key="..\:/Users/denis/Documents/GitHub/ytdlnis/app/src/main/res/layout/activity_custom_command.xml" value="0.15940685820203893" />
         <entry key="..\:/Users/denis/Documents/GitHub/ytdlnis/app/src/main/res/layout/activity_main.xml" value="0.18" />
         <entry key="..\:/Users/denis/Documents/GitHub/ytdlnis/app/src/main/res/layout/activity_settings.xml" value="0.16875" />
-        <entry key="..\:/Users/denis/Documents/GitHub/ytdlnis/app/src/main/res/layout/download_all_card.xml" value="0.3375" />
+        <entry key="..\:/Users/denis/Documents/GitHub/ytdlnis/app/src/main/res/layout/download_all_card.xml" value="0.25" />
         <entry key="..\:/Users/denis/Documents/GitHub/ytdlnis/app/src/main/res/layout/empty_history_hint.xml" value="0.2" />
         <entry key="..\:/Users/denis/Documents/GitHub/ytdlnis/app/src/main/res/layout/fragment_history.xml" value="0.2" />
-        <entry key="..\:/Users/denis/Documents/GitHub/ytdlnis/app/src/main/res/layout/fragment_home.xml" value="0.2" />
+        <entry key="..\:/Users/denis/Documents/GitHub/ytdlnis/app/src/main/res/layout/fragment_home.xml" value="0.25" />
         <entry key="..\:/Users/denis/Documents/GitHub/ytdlnis/app/src/main/res/layout/fragment_more.xml" value="0.33" />
         <entry key="..\:/Users/denis/Documents/GitHub/ytdlnis/app/src/main/res/layout/fragment_music_editor.xml" value="0.16875" />
         <entry key="..\:/Users/denis/Documents/GitHub/ytdlnis/app/src/main/res/layout/fragment_settings.xml" value="0.16875" />
@@ -75,6 +75,8 @@
         <entry key="..\:/Users/denis/Documents/GitHub/ytdlnis/app/src/main/res/layout/history_card.xml" value="0.1" />
         <entry key="..\:/Users/denis/Documents/GitHub/ytdlnis/app/src/main/res/layout/history_card_shimmer.xml" value="0.22" />
         <entry key="..\:/Users/denis/Documents/GitHub/ytdlnis/app/src/main/res/layout/history_no_results.xml" value="0.21" />
+        <entry key="..\:/Users/denis/Documents/GitHub/ytdlnis/app/src/main/res/layout/home_download_all_bottom_sheet.xml" value="0.33" />
+        <entry key="..\:/Users/denis/Documents/GitHub/ytdlnis/app/src/main/res/layout/home_video_bottom_sheet.xml" value="0.1703125" />
         <entry key="..\:/Users/denis/Documents/GitHub/ytdlnis/app/src/main/res/layout/result_card.xml" value="0.33" />
         <entry key="..\:/Users/denis/Documents/GitHub/ytdlnis/app/src/main/res/layout/result_card_shimmer.xml" value="0.1" />
         <entry key="..\:/Users/denis/Documents/GitHub/ytdlnis/app/src/main/res/layout/search_result.xml" value="0.33" />

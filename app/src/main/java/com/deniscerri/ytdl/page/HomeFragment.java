@@ -12,10 +12,12 @@ import android.os.Handler;
 import android.os.Looper;
 import android.text.InputType;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -25,6 +27,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
 import androidx.cardview.widget.CardView;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
@@ -44,7 +47,11 @@ import com.deniscerri.ytdl.util.NotificationUtil;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.textfield.TextInputLayout;
 import com.yausername.youtubedl_android.DownloadProgressCallback;
 import com.yausername.youtubedl_android.YoutubeDL;
 import com.yausername.youtubedl_android.YoutubeDLRequest;
@@ -77,6 +84,8 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
     private HomeRecyclerViewAdapter homeRecyclerViewAdapter;
     private NestedScrollView scrollView;
     private ShimmerFrameLayout shimmerCards;
+    private CoordinatorLayout downloadFabs;
+    private BottomSheetDialog bottomSheet;
     private LayoutInflater layoutinflater;
 
     Context context;
@@ -86,6 +95,7 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
     private static final String TAG = "HomeFragment";
 
     private ArrayList<Video> resultObjects;
+    private ArrayList<Video> selectedObjects;
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     private DBManager dbManager;
@@ -125,6 +135,7 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
         compositeDisposable = new CompositeDisposable();
         downloadQueue = new LinkedList<>();
         resultObjects = new ArrayList<>();
+        selectedObjects = new ArrayList<>();
 
         // Inflate the layout for this fragment
         fragmentView = inflater.inflate(R.layout.fragment_home, container, false);
@@ -140,6 +151,7 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
         topAppBar = fragmentView.findViewById(R.id.home_toolbar);
         scrollView = fragmentView.findViewById(R.id.home_scrollview);
         recyclerView = fragmentView.findViewById(R.id.recycler_view_home);
+        downloadFabs = fragmentView.findViewById(R.id.home_download_fabs);
 
         homeRecyclerViewAdapter = new HomeRecyclerViewAdapter(resultObjects, this, activity);
         recyclerView.setAdapter(homeRecyclerViewAdapter);
@@ -153,6 +165,15 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
         } else {
             initCards();
         }
+
+        FloatingActionButton music_fab = downloadFabs.findViewById(R.id.audio_fab);
+        FloatingActionButton video_fab = downloadFabs.findViewById(R.id.video_fab);
+        music_fab.setTag("SELECT##mp3");
+        video_fab.setTag("SELECT##mp4");
+
+        music_fab.setOnClickListener(this);
+        video_fab.setOnClickListener(this);
+
         return fragmentView;
     }
 
@@ -415,16 +436,8 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
         layoutinflater.inflate(R.layout.download_all_card, r);
 
         CardView card = r.findViewById(R.id.downloadall_card_view);
-
-        LinearLayout buttonLayout = card.findViewById(R.id.downloadall_button_layout);
-        Button musicBtn = buttonLayout.findViewById(R.id.downloadall_music);
-        musicBtn.setTag("ALL##mp3");
-
-        Button videoBtn = buttonLayout.findViewById(R.id.downloadall_video);
-        videoBtn.setTag("ALL##mp4");
-
-        musicBtn.setOnClickListener(this);
-        videoBtn.setOnClickListener(this);
+        card.setTag("downloadAll");
+        card.setOnClickListener(this);
 
         Handler uiHandler = new Handler(Looper.getMainLooper());
         uiHandler.post(() -> homeLinearLayout.addView(r));
@@ -667,9 +680,12 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
     }
 
     @Override
-    public void onCardClick(CardView card) {
-
+    public void onCardClick(int position, boolean add) {
+        Video video = resultObjects.get(position);
+        if (add) selectedObjects.add(video); else selectedObjects.remove(video);
+        if(selectedObjects.size() > 1) downloadFabs.setVisibility(View.VISIBLE); else downloadFabs.setVisibility(View.GONE);
     }
+
 
 
     @Override
@@ -685,12 +701,15 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
             if (viewIdName.contains("mp3") || viewIdName.contains("mp4")) {
                 Log.e(TAG, viewIdName);
                 String[] buttonData = viewIdName.split("##");
-                if (buttonData[0].equals("ALL")) {
-                    for (int i = 0; i < resultObjects.size(); i++) {
-                        Video vid = findVideo(resultObjects.get(i).getVideoId());
+                if (buttonData[0].equals("SELECT")) {
+                    for (int i = 0; i < selectedObjects.size(); i++) {
+                        Video vid = findVideo(selectedObjects.get(i).getVideoId());
                         vid.setDownloadedType(buttonData[1]);
+                        homeRecyclerViewAdapter.notifyItemChanged(resultObjects.indexOf(vid));
                         downloadQueue.add(vid);
                     }
+                    selectedObjects = new ArrayList<>();
+                    downloadFabs.setVisibility(View.GONE);
 
                     if (downloading) {
                         Toast.makeText(context, R.string.added_to_queue, Toast.LENGTH_LONG).show();
@@ -700,6 +719,70 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
                     startDownload(downloadQueue);
                 }
             }
+            if (viewIdName.equals("downloadAll")){
+                //remove previously selected
+                for (int i = 0; i < selectedObjects.size(); i++) {
+                    Video vid = findVideo(selectedObjects.get(i).getVideoId());
+                    homeRecyclerViewAdapter.notifyItemChanged(resultObjects.indexOf(vid));
+                }
+                selectedObjects = new ArrayList<>();
+                downloadFabs.setVisibility(View.GONE);
+
+                bottomSheet = new BottomSheetDialog(context);
+                bottomSheet.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                bottomSheet.setContentView(R.layout.home_download_all_bottom_sheet);
+
+                TextInputLayout first = bottomSheet.findViewById(R.id.first_textinput);
+                first.getEditText().setText(String.valueOf(1));
+
+                TextInputLayout last = bottomSheet.findViewById(R.id.last_textinput);
+                last.getEditText().setText(String.valueOf(resultObjects.size()));
+
+
+                Button audio = bottomSheet.findViewById(R.id.bottomsheet_audio_button);
+                audio.setOnClickListener(view -> {
+                    int start = Integer.parseInt(first.getEditText().getText().toString());
+                    int end = Integer.parseInt(last.getEditText().getText().toString());
+                    initDownloadAll(bottomSheet, start, end, "mp3");
+                });
+
+                Button video = bottomSheet.findViewById(R.id.bottomsheet_video_button);
+                video.setOnClickListener(view -> {
+                    int start = Integer.parseInt(first.getEditText().getText().toString());
+                    int end = Integer.parseInt(last.getEditText().getText().toString());
+                    initDownloadAll(bottomSheet, start, end, "mp4");
+                });
+
+                bottomSheet.show();
+                bottomSheet.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT);
+            }
         }
+    }
+
+    private void initDownloadAll(BottomSheetDialog bottomSheet, int start, int end, String type){
+        if(start > end){
+            TextInputLayout first = bottomSheet.findViewById(R.id.first_textinput);
+            first.setError(getString(R.string.first_cant_be_larger_than_last));
+
+            TextInputLayout last = bottomSheet.findViewById(R.id.last_textinput);
+            last.setError(getString(R.string.last_cant_be_smaller_than_first));
+            return;
+        }
+
+        bottomSheet.cancel();
+        if (start <= 1) start = 0;
+
+        for (int i = start; i < end; i++){
+            Video vid = findVideo(resultObjects.get(i).getVideoId());
+            vid.setDownloadedType(type);
+            downloadQueue.add(vid);
+        }
+
+        if (downloading) {
+            Toast.makeText(context, R.string.added_to_queue, Toast.LENGTH_LONG).show();
+            return;
+        }
+        mainActivity.startDownloadService(downloadQueue.peek().getTitle(), NotificationUtil.DOWNLOAD_NOTIFICATION_ID);
+        startDownload(downloadQueue);
     }
 }

@@ -75,7 +75,7 @@ public class NotificationUtil {
 
     public void updateDownloadNotification(int id, String desc, int progress, int queue, String title){
         String contentText = "";
-        if (queue > 1) contentText += queue + " items left\n";
+        if (queue > 1) contentText += queue - 1 + " item(s) left\n";
         contentText += desc.replaceAll("\\[.*?\\]", "");
 
         notificationBuilder.setProgress(100, (int) progress, false)
