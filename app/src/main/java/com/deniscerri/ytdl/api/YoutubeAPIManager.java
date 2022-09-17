@@ -14,6 +14,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
@@ -46,6 +47,7 @@ public class YoutubeAPIManager {
     }
 
     public ArrayList<Video> search(String query) throws JSONException{
+        videos = new ArrayList<>();
         //short data
         JSONObject res = genericRequest("https://youtube.googleapis.com/youtube/v3/search?part=snippet&q="+query+"&maxResults=25&regionCode="+countryCODE+"&key="+key);
         JSONArray dataArray = res.getJSONArray("items");
@@ -91,7 +93,9 @@ public class YoutubeAPIManager {
         return videos;
     }
 
-    public ArrayList<Video> getPlaylist(String id, String nextPageToken) throws JSONException{
+    public PlaylistTuple getPlaylist(String id, String nextPageToken) throws JSONException{
+        videos = new ArrayList<>();
+
         String url = "https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet&pageToken="+nextPageToken+"&maxResults=50&regionCode="+countryCODE+"&playlistId="+id+"&key="+key;
         //short data
         JSONObject res = genericRequest(url);
@@ -131,11 +135,7 @@ public class YoutubeAPIManager {
             videos.add(v);
         }
         String next = res.optString("nextPageToken");
-        if(next != ""){
-            ArrayList<Video> nextPage = getPlaylist(id,next);
-        }
-
-        return videos;
+        return new PlaylistTuple(next, videos);
     }
 
 
@@ -323,5 +323,62 @@ public class YoutubeAPIManager {
         return duration;
     }
 
+//    public ArrayList<String> getSearchHints(String query){
+//        String url = "https://google.com/complete/search?client=youtube&q="+query;
+//        ArrayList<String> searchHints = new ArrayList<>();
+//
+//        BufferedReader reader;
+//        String line;
+//        StringBuilder responseContent = new StringBuilder();
+//        HttpURLConnection conn;
+//        JSONArray json;
+//
+//        try{
+//            URL req = new URL(url);
+//            conn = (HttpURLConnection) req.openConnection();
+//
+//            conn.setRequestMethod("GET");
+//            conn.setConnectTimeout(10000);
+//            conn.setReadTimeout(5000);
+//
+//            if(conn.getResponseCode() < 300){
+//                reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+//                while((line = reader.readLine()) != null){
+//                    responseContent.append(line);
+//                }
+//                reader.close();
+//                String content  = responseContent.substring(19, responseContent.length()-1);
+//
+//                json = new JSONArray(content);
+//                JSONArray hints = (JSONArray) json.get(1);
+//                for (int i = 0; i < hints.length(); i++){
+//                    searchHints.add(hints.getJSONArray(i).get(0).toString());
+//                }
+//            }
+//            conn.disconnect();
+//        }catch(Exception e){
+//            Log.e(TAG, e.toString());
+//        }
+//        return searchHints;
+//    }
+
+    public class PlaylistTuple {
+        String nextPageToken;
+        ArrayList<Video> videos;
+
+        PlaylistTuple(String token, ArrayList<Video> videos){
+            nextPageToken = token;
+            this.videos = videos;
+        }
+
+        public String getNextPageToken() {
+            return nextPageToken;
+        }
+
+        public ArrayList<Video> getVideos() {
+            return videos;
+        }
+    }
 
 }
+

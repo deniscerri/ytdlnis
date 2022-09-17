@@ -23,6 +23,7 @@ import androidx.core.app.ActivityCompat;
 import com.deniscerri.ytdl.BuildConfig;
 import com.deniscerri.ytdl.DownloaderService;
 import com.deniscerri.ytdl.R;
+import com.deniscerri.ytdl.page.settings.SettingsFragment;
 import com.deniscerri.ytdl.util.NotificationUtil;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
@@ -113,12 +114,6 @@ public class CustomCommandActivity extends AppCompatActivity {
         startDownloadService(getString(R.string.running_ytdlp_command), NotificationUtil.COMMAND_DOWNLOAD_NOTIFICATION_ID);
         text = text.substring(6).trim();
 
-        if (!isStoragePermissionGranted()) {
-            Toast.makeText(context, R.string.try_again_after_permission, Toast.LENGTH_LONG).show();
-            stopDownloadService();
-            return;
-        }
-
         YoutubeDLRequest request = new YoutubeDLRequest(Collections.emptyList());
         String commandRegex = "\"([^\"]*)\"|(\\S+)";
         Matcher m = Pattern.compile(commandRegex).matcher(text);
@@ -131,7 +126,7 @@ public class CustomCommandActivity extends AppCompatActivity {
         }
 
         SharedPreferences sharedPreferences = context.getSharedPreferences("root_preferences", Activity.MODE_PRIVATE);
-        String downloadsDir = sharedPreferences.getString("command_path", "");
+        String downloadsDir = sharedPreferences.getString("command_path", getString(R.string.command_path));
         File youtubeDLDir = new File(downloadsDir);
         if (!youtubeDLDir.exists()) {
             boolean isDirCreated = youtubeDLDir.mkdir();
@@ -163,16 +158,6 @@ public class CustomCommandActivity extends AppCompatActivity {
                     input.setEnabled(true);
                 });
         compositeDisposable.add(disposable);
-    }
-
-    public boolean isStoragePermissionGranted() {
-        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                == PackageManager.PERMISSION_GRANTED) {
-            return true;
-        } else {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-            return false;
-        }
     }
 
     public void startDownloadService(String title, int id){

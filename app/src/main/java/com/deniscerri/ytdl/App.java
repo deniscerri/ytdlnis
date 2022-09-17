@@ -1,14 +1,23 @@
 package com.deniscerri.ytdl;
 
 import android.app.Application;
+import android.os.Environment;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.preference.PreferenceManager;
+
 import com.deniscerri.ytdl.util.NotificationUtil;
+import com.deniscerri.ytdl.util.UpdateUtil;
 import com.google.android.material.color.DynamicColors;
 import com.yausername.ffmpeg.FFmpeg;
 import com.yausername.youtubedl_android.YoutubeDL;
 import com.yausername.youtubedl_android.YoutubeDLException;
+
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -30,6 +39,7 @@ public class App extends Application {
         notificationUtil = new NotificationUtil(this);
         createNotificationChannels();
 
+        PreferenceManager.setDefaultValues(this, "root_preferences", this.MODE_PRIVATE, R.xml.root_preferences, false);
         configureRxJavaErrorHandler();
         Completable.fromAction(this::initLibraries).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new DisposableCompletableObserver() {
             @Override

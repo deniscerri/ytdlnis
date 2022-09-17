@@ -44,7 +44,6 @@ import java.util.ArrayList;
  */
 public class HistoryFragment extends Fragment implements HistoryRecyclerViewAdapter.OnItemClickListener, View.OnClickListener{
 
-    private LinearLayout linearLayout;
     private View fragmentView;
     private DBManager dbManager;
     Context context;
@@ -52,10 +51,10 @@ public class HistoryFragment extends Fragment implements HistoryRecyclerViewAdap
     private ShimmerFrameLayout shimmerCards;
     private MaterialToolbar topAppBar;
     private RecyclerView recyclerView;
-    private NestedScrollView scrollView;
     private HistoryRecyclerViewAdapter historyRecyclerViewAdapter;
     private BottomSheetDialog bottomSheet;
     private Handler uiHandler;
+    private RelativeLayout no_results;
 
     private ArrayList<Video> historyObjects;
     private static final String TAG = "HistoryFragment";
@@ -85,16 +84,15 @@ public class HistoryFragment extends Fragment implements HistoryRecyclerViewAdap
         fragmentView = inflater.inflate(R.layout.fragment_history, container, false);
         context = fragmentView.getContext();
         layoutinflater = LayoutInflater.from(context);
-        linearLayout = fragmentView.findViewById(R.id.historylinearLayout1);
         shimmerCards = fragmentView.findViewById(R.id.shimmer_history_framelayout);
         topAppBar = fragmentView.findViewById(R.id.history_toolbar);
+        no_results = fragmentView.findViewById(R.id.history_no_results);
         uiHandler = new Handler(Looper.getMainLooper());
 
         dbManager = new DBManager(context);
         historyObjects = new ArrayList<>();
 
         recyclerView = fragmentView.findViewById(R.id.recycler_view_history);
-        scrollView = fragmentView.findViewById(R.id.history_scrollview);
 
         historyRecyclerViewAdapter = new HistoryRecyclerViewAdapter(historyObjects, this, context);
         recyclerView.setAdapter(historyRecyclerViewAdapter);
@@ -110,7 +108,7 @@ public class HistoryFragment extends Fragment implements HistoryRecyclerViewAdap
         shimmerCards.startShimmer();
         shimmerCards.setVisibility(View.VISIBLE);
         historyRecyclerViewAdapter.clear();
-        linearLayout.removeAllViews();
+        no_results.setVisibility(View.GONE);
         try{
             Thread thread = new Thread(() -> {
                 historyObjects = dbManager.getHistory("");
@@ -121,7 +119,7 @@ public class HistoryFragment extends Fragment implements HistoryRecyclerViewAdap
                 });
 
                 if(historyObjects.size() == 0){
-                    uiHandler.post(this::addNoResultsView);
+                    uiHandler.post(() -> no_results.setVisibility(View.VISIBLE));
                 }
             });
             thread.start();
@@ -132,14 +130,8 @@ public class HistoryFragment extends Fragment implements HistoryRecyclerViewAdap
     }
 
     public void scrollToTop(){
-        scrollView.smoothScrollTo(-100,-100);
+        recyclerView.scrollToPosition(0);
         new Handler(Looper.getMainLooper()).post(() -> ((AppBarLayout) topAppBar.getParent()).setExpanded(true, true));
-    }
-
-    private void addNoResultsView(){
-        RelativeLayout no_results = new RelativeLayout(context);
-        layoutinflater.inflate(R.layout.history_no_results, no_results);
-        linearLayout.addView(no_results);
     }
 
     private void initMenu(){
@@ -168,7 +160,7 @@ public class HistoryFragment extends Fragment implements HistoryRecyclerViewAdap
                 historyRecyclerViewAdapter.clear();
                 historyRecyclerViewAdapter.setVideoList(historyObjects);
 
-                if(historyObjects.size() == 0) addNoResultsView();
+                if(historyObjects.size() == 0) no_results.setVisibility(View.VISIBLE);
                 return true;
             }
 
@@ -180,9 +172,10 @@ public class HistoryFragment extends Fragment implements HistoryRecyclerViewAdap
                 historyRecyclerViewAdapter.setVideoList(historyObjects);
 
                 if (historyObjects.size() == 0) {
-                    linearLayout.removeAllViews();
-                    addNoResultsView();
-                }else linearLayout.removeAllViews();
+                    no_results.setVisibility(View.VISIBLE);
+                }else{
+                    no_results.setVisibility(View.GONE);
+                }
 
                 return true;
             }
@@ -207,7 +200,7 @@ public class HistoryFragment extends Fragment implements HistoryRecyclerViewAdap
                     delete_dialog.setPositiveButton(getString(R.string.ok), (dialogInterface, i) -> {
                         dbManager.clearHistory();
                         historyRecyclerViewAdapter.clear();
-                        addNoResultsView();
+                        no_results.setVisibility(View.VISIBLE);
                     });
                     delete_dialog.show();
                     return true;
@@ -254,7 +247,7 @@ public class HistoryFragment extends Fragment implements HistoryRecyclerViewAdap
             dbManager.clearHistoryItem(v);
 
             if(historyObjects.size() == 0){
-                uiHandler.post(this::addNoResultsView);
+                uiHandler.post(() -> no_results.setVisibility(View.VISIBLE));
             }
         });
         delete_dialog.show();

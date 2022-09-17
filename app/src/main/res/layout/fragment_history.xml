@@ -6,86 +6,6 @@
     android:id="@+id/historycoordinator"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/history_scrollview"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scrollbars="vertical"
-        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
-
-        <LinearLayout
-            android:id="@+id/home_main_linearlayout"
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <LinearLayout
-                android:id="@+id/historylinearLayout1"
-                android:layout_width="match_parent"
-                android:layout_gravity="center"
-
-                android:layout_height="match_parent"
-                android:orientation="vertical" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:layout_width="match_parent"
-                android:id="@+id/recycler_view_history"
-                android:orientation="vertical"
-                android:layout_height="wrap_content"
-                android:scrollbars="vertical"
-                android:nestedScrollingEnabled="false"
-                android:layout_margin="10dp"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                >
-
-            </androidx.recyclerview.widget.RecyclerView>
-
-            <com.facebook.shimmer.ShimmerFrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/shimmer_history_framelayout"
-                android:orientation="vertical">
-
-
-                <LinearLayout
-                    android:id="@+id/shimmer_history_linear_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:orientation="vertical">
-
-                    <include layout="@layout/history_card_shimmer" />
-
-                    <include layout="@layout/history_card_shimmer" />
-
-                    <include layout="@layout/history_card_shimmer" />
-
-                    <include layout="@layout/history_card_shimmer" />
-
-                    <include layout="@layout/history_card_shimmer" />
-
-                    <include layout="@layout/history_card_shimmer" />
-
-                    <include layout="@layout/history_card_shimmer" />
-
-                    <include layout="@layout/history_card_shimmer" />
-
-                    <include layout="@layout/history_card_shimmer" />
-
-                    <include layout="@layout/history_card_shimmer" />
-
-
-
-
-                </LinearLayout>
-
-            </com.facebook.shimmer.ShimmerFrameLayout>
-
-        </LinearLayout>
-
-    </androidx.core.widget.NestedScrollView>
-
-
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/history_appbarlayout"
         app:liftOnScroll="false"
@@ -105,6 +25,64 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:id="@+id/recycler_view_history"
+        android:orientation="vertical"
+        android:layout_height="wrap_content"
+        android:scrollbars="vertical"
+        android:nestedScrollingEnabled="false"
+        android:layout_margin="10dp"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        >
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <include layout="@layout/history_no_results"
+        android:visibility="gone" />
+
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:id="@+id/shimmer_history_framelayout"
+        android:orientation="vertical">
+
+
+        <LinearLayout
+            android:id="@+id/shimmer_history_linear_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:orientation="vertical">
+
+            <include layout="@layout/history_card_shimmer" />
+
+            <include layout="@layout/history_card_shimmer" />
+
+            <include layout="@layout/history_card_shimmer" />
+
+            <include layout="@layout/history_card_shimmer" />
+
+            <include layout="@layout/history_card_shimmer" />
+
+            <include layout="@layout/history_card_shimmer" />
+
+            <include layout="@layout/history_card_shimmer" />
+
+            <include layout="@layout/history_card_shimmer" />
+
+            <include layout="@layout/history_card_shimmer" />
+
+            <include layout="@layout/history_card_shimmer" />
+
+
+
+
+        </LinearLayout>
+
+    </com.facebook.shimmer.ShimmerFrameLayout>
 
     <include layout="@layout/history_bottom_sheet"
         android:visibility="gone" />

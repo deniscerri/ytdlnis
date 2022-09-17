@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,11 +28,13 @@ import java.util.ArrayList;
 
 public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerViewAdapter.ViewHolder> {
     private ArrayList<Video> videoList;
+    private ArrayList<MaterialCardView> checkedVideos;
     private final OnItemClickListener onItemClickListener;
     private Activity activity;
 
     public HomeRecyclerViewAdapter(ArrayList<Video> videos, OnItemClickListener onItemClickListener, Activity activity){
         this.videoList = videos;
+        this.checkedVideos = new ArrayList<>();
         this.onItemClickListener = onItemClickListener;
         this.activity = activity;
     }
@@ -56,6 +59,7 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
         View cardView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.result_card, parent, false);
 
+        checkedVideos = new ArrayList<>();
         return new HomeRecyclerViewAdapter.ViewHolder(cardView, onItemClickListener);
     }
 
@@ -116,15 +120,27 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
         card.setChecked(false);
         card.setStrokeWidth(0);
         card.setTag(videoID + "##card");
-        card.setOnClickListener(view -> {
-            if(card.isChecked()){
-                card.setStrokeWidth(0);
-            }else{
-                card.setStrokeWidth(5);
-            }
-            card.setChecked(!card.isChecked());
-            onItemClickListener.onCardClick(position, card.isChecked());
+        card.setOnLongClickListener(view -> {
+            checkCard(card, position);
+            return true;
         });
+        card.setOnClickListener(view -> {
+            if(checkedVideos.size() > 0){
+                checkCard(card, position);
+            }
+        });
+    }
+
+    private void checkCard(MaterialCardView card, int position){
+        if(card.isChecked()){
+            card.setStrokeWidth(0);
+            checkedVideos.remove(card);
+        }else{
+            card.setStrokeWidth(5);
+            checkedVideos.add(card);
+        }
+        card.setChecked(!card.isChecked());
+        onItemClickListener.onCardClick(position, card.isChecked());
     }
 
     @Override
@@ -137,9 +153,13 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
         void onCardClick(int position, boolean add);
     }
 
-    public void setVideoList(ArrayList<Video> videoList){
-        this.videoList = videoList;
-        notifyDataSetChanged();
+    public void setVideoList(ArrayList<Video> list, boolean reset){
+        int size = videoList.size();
+        if(reset || size == 0){
+            videoList = new ArrayList<>();
+        }
+        videoList.addAll(list);
+        notifyItemRangeInserted(size, videoList.size());
     }
 
     public void clear(){

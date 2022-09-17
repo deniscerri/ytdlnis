@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
-        assertEquals("com.yausername.youtubedl_android_example", appContext.getPackageName());
+        assertEquals("com.deniscerri.ytdl", appContext.getPackageName());
     }
 }

@@ -10,12 +10,15 @@ import android.util.Log;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.preference.PreferenceManager;
+
 import com.deniscerri.ytdl.databinding.ActivityMainBinding;
 import com.deniscerri.ytdl.page.HistoryFragment;
 import com.deniscerri.ytdl.page.HomeFragment;
 import com.deniscerri.ytdl.page.MoreFragment;
-import com.deniscerri.ytdl.page.MusicEditorFragment;
 import com.deniscerri.ytdl.page.settings.SettingsActivity;
+import com.deniscerri.ytdl.page.settings.SettingsFragment;
+import com.deniscerri.ytdl.util.UpdateUtil;
 
 
 public class MainActivity extends AppCompatActivity{
@@ -27,7 +30,6 @@ public class MainActivity extends AppCompatActivity{
 
     private HomeFragment homeFragment;
     private HistoryFragment historyFragment;
-    private MusicEditorFragment musicEditorFragment;
     private MoreFragment moreFragment;
 
     private Fragment lastFragment;
@@ -58,15 +60,15 @@ public class MainActivity extends AppCompatActivity{
 
         setContentView(R.layout.activity_main);
         setContentView(binding.getRoot());
-
         context = getBaseContext();
+
+        checkUpdate();
 
         fm = getSupportFragmentManager();
 
         homeFragment = new HomeFragment();
         historyFragment = new HistoryFragment();
         moreFragment = new MoreFragment();
-        musicEditorFragment = new MusicEditorFragment();
 
         initFragments();
 
@@ -94,8 +96,6 @@ public class MainActivity extends AppCompatActivity{
                     this.setTitle(getString(R.string.more));
                 }
                 replaceFragment(moreFragment);
-            }else if(id == R.id.music_editor){
-                replaceFragment(musicEditorFragment);
             }
             return true;
         });
@@ -114,9 +114,9 @@ public class MainActivity extends AppCompatActivity{
         if(Intent.ACTION_SEND.equals(action)){
             Log.e(TAG, action);
 
-
             homeFragment = new HomeFragment();
             historyFragment = new HistoryFragment();
+            moreFragment = new MoreFragment();
 
             homeFragment.handleIntent(intent);
             initFragments();
@@ -128,10 +128,8 @@ public class MainActivity extends AppCompatActivity{
                 .replace(R.id.frame_layout, homeFragment)
                 .add(R.id.frame_layout, historyFragment)
                 .add(R.id.frame_layout, moreFragment)
-                .add(R.id.frame_layout, musicEditorFragment)
                 .hide(historyFragment)
                 .hide(moreFragment)
-                .hide(musicEditorFragment)
                 .commit();
 
         lastFragment = homeFragment;
@@ -156,4 +154,8 @@ public class MainActivity extends AppCompatActivity{
         isDownloadServiceRunning = false;
     }
 
+    private void checkUpdate(){
+        UpdateUtil updateUtil = new UpdateUtil(this);
+        updateUtil.updateApp();
+    }
 }

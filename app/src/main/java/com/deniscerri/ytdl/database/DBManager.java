@@ -153,8 +153,6 @@ public class DBManager extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
-        db.execSQL("DELETE FROM " + results_table_name);
-
         for(Video v : videot){
             values.put(videoId, v.getVideoId());
             values.put(title, v.getTitle());

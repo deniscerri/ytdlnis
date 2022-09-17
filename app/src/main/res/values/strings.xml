@@ -53,7 +53,6 @@
     <string name="run">Run</string>
     <string name="running_ytdlp_command">Running yt-dlp Custom Command</string>
     <string name="command_directory">Custom Command Directory</string>
-    <string name="you_are_running_latest_version">You are running the latest version!</string>
     <string name="error_checking_latest_version">Error checking for latest version!</string>
     <string name="couldnt_find_apk">Couldn\'t find a suitable apk!</string>
     <string name="downloading_update">Downloading Update</string>
@@ -65,4 +64,7 @@
     <string name="choose_range_desc">Write the range to download from the playlist. Leave as it is to download everything!</string>
     <string name="last_cant_be_smaller_than_first">Last index cannot be smaller than the first!</string>
     <string name="first_cant_be_larger_than_last">First index cannot be larger than the last!</string>
+    <string name="music_path" translatable="false">/storage/emulated/0/Download</string>
+    <string name="video_path" translatable="false">/storage/emulated/0/Download</string>
+    <string name="command_path" translatable="false">/storage/emulated/0/Download</string>
 </resources>

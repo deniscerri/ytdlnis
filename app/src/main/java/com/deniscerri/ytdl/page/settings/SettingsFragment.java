@@ -1,8 +1,11 @@
 package com.deniscerri.ytdl.page.settings;
 
+import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
@@ -12,6 +15,7 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.preference.EditTextPreference;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
@@ -20,6 +24,7 @@ import androidx.preference.SeekBarPreference;
 import androidx.preference.SwitchPreferenceCompat;
 import com.deniscerri.ytdl.BuildConfig;
 import com.deniscerri.ytdl.R;
+import com.deniscerri.ytdl.util.UpdateUtil;
 import com.yausername.youtubedl_android.YoutubeDL;
 import java.nio.charset.StandardCharsets;
 
@@ -49,16 +54,27 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 
     Preference version;
 
+    private UpdateUtil updateUtil;
+
     public static final int MUSIC_PATH_CODE = 33333;
     public static final int VIDEO_PATH_CODE = 55555;
     public static final int COMMAND_PATH_CODE = 77777;
-    private static boolean firstRun = true;
     private static final String TAG = "SettingsFragment";
 
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.root_preferences, rootKey);
+
+        updateUtil = new UpdateUtil(requireContext());
+
+        initPreferences();
+        initListeners();
+    }
+
+    private void initPreferences(){
+        SharedPreferences preferences = requireContext().getSharedPreferences("root_preferences", Activity.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
 
         musicPath = findPreference("music_path");
         videoPath = findPreference("video_path");
@@ -79,24 +95,14 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         version = findPreference("version");
         version.setSummary(BuildConfig.VERSION_NAME);
 
-        if(firstRun){
-            initPreferences();
+        if (preferences.getString("music_path", "").isEmpty()){
+            editor.putString("music_path", getString(R.string.music_path));
         }
-        initListeners();
-    }
-
-    private void initPreferences(){
-        SharedPreferences preferences = requireContext().getSharedPreferences("root_preferences", Activity.MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-
-        if(preferences.getString("music_path", "").isEmpty()){
-            editor.putString("music_path", "/storage/emulated/0/Music/");
+        if (preferences.getString("video_path", "").isEmpty()){
+            editor.putString("video_path", getString(R.string.video_path));
         }
-        if(preferences.getString("video_path", "").isEmpty()){
-            editor.putString("video_path", "/storage/emulated/0/Movies/");
-        }
-        if(preferences.getString("command_path", "").isEmpty()){
-            editor.putString("command_path", "/storage/emulated/0/Download");
+        if (preferences.getString("command_path", "").isEmpty()){
+            editor.putString("command_path", getString(R.string.command_path));
         }
 
         editor.putInt("concurrent_fragments", concurrentFragments.getValue());
@@ -111,7 +117,6 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         editor.putInt("audio_quality", audioQuality.getValue());
 
         editor.apply();
-        firstRun = false;
     }
 
     private void initListeners(){
@@ -206,6 +211,11 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         audioQuality.setOnPreferenceChangeListener((preference, newValue) -> {
             editor.putInt("audio_format", Integer.parseInt(String.valueOf(newValue)));
             editor.apply();
+            return true;
+        });
+
+        version.setOnPreferenceClickListener(preference -> {
+            updateUtil.updateApp();
             return true;
         });
 

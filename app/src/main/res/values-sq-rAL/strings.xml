@@ -53,8 +53,15 @@
     <string name="run">Ekzekuto</string>
     <string name="running_ytdlp_command">Duke Ekzekutuar Komandën yt-dlp</string>
     <string name="command_directory">Direktoria e Komandës</string>
-    <string name="you_are_running_latest_version">Ti je në versionin e fundit</string>
     <string name="error_checking_latest_version">Gabim në kontrollin e versionit!</string>
     <string name="couldnt_find_apk">Nuk u gjet një apk e vlefshme!</string>
     <string name="downloading_update">Duke Përditësuar</string>
+    <string name="chooose_range">Zgjidh Shtrirjen</string>
+    <string name="audio">Audio</string>
+    <string name="video">Video</string>
+    <string name="first">E para</string>
+    <string name="last">E fundit</string>
+    <string name="choose_range_desc">Cilëso cilën pjesë të listës do të shkarkosh. Lëre siç është që t\'i shkarkosh të gjitha</string>
+    <string name="last_cant_be_smaller_than_first">Indeksi i fundit nuk mund të jetë më i vogël se indeksi i parë</string>
+    <string name="first_cant_be_larger_than_last">Indeksi i parë nuk mund të jetë më i madh se indeksi i fundit</string>
 </resources>
