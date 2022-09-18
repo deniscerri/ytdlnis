@@ -67,4 +67,26 @@
     <string name="music_path" translatable="false">/storage/emulated/0/Download</string>
     <string name="video_path" translatable="false">/storage/emulated/0/Download</string>
     <string name="command_path" translatable="false">/storage/emulated/0/Download</string>
+    <string name="concurrent_fragments_summary">Number of fragments of a dash/hlsnative video that should be downloaded concurrently</string>
+    <string name="concurrent_fragments">Concurrent Fragments</string>
+    <string name="downloading">Downloading</string>
+    <string name="limit_rate">Limit Rate</string>
+    <string name="limit_rate_summary">Maximum download rate in bytes per second, e.g. 50K or 4.2M</string>
+    <string name="aria2_summary">Use Aria2c as a downloader instead of the default one</string>
+    <string name="remove_non_music">Remove non music parts</string>
+    <string name="remove_non_music_summary">Remove SponsorBlock segments that contain non music parts for audio files</string>
+    <string name="processing">Processing</string>
+    <string name="embed_subs">Embed Subtitles on Videos</string>
+    <string name="embed_subs_summary">Embed subtitles in the video (only for mp4,webm and mkv videos)</string>
+    <string name="embed_thumb">Embed Thumbnail</string>
+    <string name="embed_thumb_summary">Embed thumbnail as cover art</string>
+    <string name="add_chapters">Add Chapters on Videos</string>
+    <string name="add_chapters_summary">Mark Youtube / Sponsorblock segments as chapters for the video</string>
+    <string name="save_thumb">Save Thumbnail</string>
+    <string name="save_thumb_summary">Write Video Thumbnail as a file on the Download Directory</string>
+    <string name="audio_format">Audio Format</string>
+    <string name="video_format">Video Format</string>
+    <string name="audio_quality">Audio Quality</string>
+    <string name="audio_quality_summary">0 (Best) 10 (Worst)</string>
+    <string name="cancel_download">Cancel Download</string>
 </resources>

@@ -42,6 +42,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 
     SeekBarPreference concurrentFragments;
     EditTextPreference limitRate;
+    SwitchPreferenceCompat aria2;
 
     SwitchPreferenceCompat removeNonMusic;
     SwitchPreferenceCompat embedSubtitles;
@@ -82,6 +83,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 
         concurrentFragments = findPreference("concurrent_fragments");
         limitRate = findPreference("limit_rate");
+        aria2 = findPreference("aria2");
 
         removeNonMusic = findPreference("remove_non_music");
         embedSubtitles = findPreference("embed_subtitles");
@@ -107,6 +109,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 
         editor.putInt("concurrent_fragments", concurrentFragments.getValue());
         editor.putString("limit_rate", limitRate.getText());
+        editor.putBoolean("aria2", aria2.isChecked());
         editor.putBoolean("remove_non_music", removeNonMusic.isChecked());
         editor.putBoolean("embed_subtitles", embedSubtitles.isChecked());
         editor.putBoolean("embed_thumbnail", embedThumbnail.isChecked());
@@ -153,6 +156,13 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 
         limitRate.setOnPreferenceChangeListener((preference, newValue) -> {
             editor.putString("limit_rate", String.valueOf(newValue));
+            editor.apply();
+            return true;
+        });
+
+        aria2.setOnPreferenceChangeListener((preference, newValue) -> {
+            boolean enable = (Boolean) newValue;
+            editor.putBoolean("aria2", enable);
             editor.apply();
             return true;
         });

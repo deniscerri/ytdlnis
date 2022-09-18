@@ -22,59 +22,71 @@
 
     </PreferenceCategory>
 
-    <PreferenceCategory app:title="Downloading">
+    <PreferenceCategory app:title="@string/downloading">
         <SeekBarPreference
+            app:dependency="aria2"
             android:defaultValue="1"
             android:icon="@drawable/ic_lines"
             android:max="10"
             app:key="concurrent_fragments"
             app:min="1"
             app:showSeekBarValue="true"
-            app:summary=" Number of fragments of a dash/hlsnative video that should be downloaded concurrently"
-            app:title="Concurrent Fragments" />
+            android:dependency="aria2"
+            app:summary="@string/concurrent_fragments_summary"
+            app:title="@string/concurrent_fragments" />
 
         <EditTextPreference
             android:icon="@drawable/ic_down"
             app:key="limit_rate"
-            app:summary="Maximum download rate in bytes per second, e.g. 50K or 4.2M"
-            app:title="Limit Rate" />
+            app:summary="@string/limit_rate_summary"
+            app:title="@string/limit_rate" />
+
+        <SwitchPreferenceCompat
+            app:defaultValue="false"
+            android:icon="@drawable/ic_speed"
+            android:key="aria2"
+            app:summary="@string/aria2_summary"
+            android:disableDependentsState="true"
+            app:title="Aria2" />
 
     </PreferenceCategory>
 
 
-    <PreferenceCategory android:title="Processing">
+    <PreferenceCategory android:title="@string/processing">
         <SwitchPreferenceCompat
             app:defaultValue="true"
             app:icon="@drawable/ic_music"
             app:key="remove_non_music"
-            app:summary="Remove SponsorBlock segments that contain non music parts and others"
-            app:title="Remove non music parts" />
+            app:summary="@string/remove_non_music_summary"
+            app:title="@string/remove_non_music" />
 
         <SwitchPreferenceCompat
             app:defaultValue="true"
             app:icon="@drawable/ic_subtitles"
             app:key="embed_subtitles"
-            app:summary="Embed subtitles in the video (only for mp4,webm and mkv videos)"
-            app:title="Embed Subtitles on Videos" />
+            app:summary="@string/embed_subs_summary"
+            app:title="@string/embed_subs" />
 
         <SwitchPreferenceCompat
             app:defaultValue="true"
             app:icon="@drawable/ic_image"
             app:key="embed_thumbnail"
-            app:summary="Embed thumbnail as cover art"
-            app:title="Embed Thumbnail" />
+            app:summary="@string/embed_thumb_summary"
+            app:title="@string/embed_thumb" />
 
         <SwitchPreferenceCompat
             app:defaultValue="true"
             app:icon="@drawable/ic_chapters"
             app:key="add_chapters"
-            app:title="Add Chapters on Videos" />
+            app:summary="@string/add_chapters_summary"
+            app:title="@string/add_chapters" />
 
         <SwitchPreferenceCompat
             app:defaultValue="false"
             app:icon="@drawable/ic_image"
             app:key="write_thumbnail"
-            app:title="Write Thumbnail to disk" />
+            app:summary="@string/save_thumb_summary"
+            app:title="@string/save_thumb" />
 
         <ListPreference
             android:defaultValue="mp3"
@@ -83,16 +95,16 @@
             android:icon="@drawable/ic_code"
             app:key="audio_format"
             app:summary="mp3"
-            app:title="Audio Format" />
+            app:title="@string/audio_format" />
 
         <ListPreference
-            android:defaultValue="mp4"
+            android:defaultValue="mkv"
             android:entries="@array/video_formats"
             android:entryValues="@array/video_formats"
             android:icon="@drawable/ic_code"
             app:key="video_format"
-            app:summary="mp4"
-            app:title="Video Format" />
+            app:summary="mkv"
+            app:title="@string/video_format" />
 
 
         <SeekBarPreference
@@ -102,8 +114,8 @@
             app:key="audio_quality"
             app:min="0"
             app:showSeekBarValue="true"
-            app:summary="0 (Best) 10 (Worst)"
-            app:title="Audio Quality" />
+            app:summary="@string/audio_quality_summary"
+            app:title="@string/audio_quality" />
 
     </PreferenceCategory>
 

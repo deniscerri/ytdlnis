@@ -52,15 +52,18 @@
         <entry key="..\:/Users/denis/Documents/GitHub/ytdlnis/app/src/main/res/drawable/ic_more.xml" value="0.109" />
         <entry key="..\:/Users/denis/Documents/GitHub/ytdlnis/app/src/main/res/drawable/ic_music.xml" value="0.1275" />
         <entry key="..\:/Users/denis/Documents/GitHub/ytdlnis/app/src/main/res/drawable/ic_music_downloaded.xml" value="0.1275" />
+        <entry key="..\:/Users/denis/Documents/GitHub/ytdlnis/app/src/main/res/drawable/ic_music_stopped.xml" value="0.14" />
         <entry key="..\:/Users/denis/Documents/GitHub/ytdlnis/app/src/main/res/drawable/ic_no_results.xml" value="0.109" />
         <entry key="..\:/Users/denis/Documents/GitHub/ytdlnis/app/src/main/res/drawable/ic_refresh.xml" value="0.109" />
         <entry key="..\:/Users/denis/Documents/GitHub/ytdlnis/app/src/main/res/drawable/ic_search.xml" value="0.1275" />
         <entry key="..\:/Users/denis/Documents/GitHub/ytdlnis/app/src/main/res/drawable/ic_settings.xml" value="0.109" />
+        <entry key="..\:/Users/denis/Documents/GitHub/ytdlnis/app/src/main/res/drawable/ic_speed.xml" value="0.14" />
         <entry key="..\:/Users/denis/Documents/GitHub/ytdlnis/app/src/main/res/drawable/ic_subtitles.xml" value="0.109" />
         <entry key="..\:/Users/denis/Documents/GitHub/ytdlnis/app/src/main/res/drawable/ic_update.xml" value="0.1275" />
         <entry key="..\:/Users/denis/Documents/GitHub/ytdlnis/app/src/main/res/drawable/ic_update_app.xml" value="0.109" />
         <entry key="..\:/Users/denis/Documents/GitHub/ytdlnis/app/src/main/res/drawable/ic_video.xml" value="0.1275" />
         <entry key="..\:/Users/denis/Documents/GitHub/ytdlnis/app/src/main/res/drawable/ic_video_downloaded.xml" value="0.1275" />
+        <entry key="..\:/Users/denis/Documents/GitHub/ytdlnis/app/src/main/res/drawable/ic_video_stopped.xml" value="0.14" />
         <entry key="..\:/Users/denis/Documents/GitHub/ytdlnis/app/src/main/res/layout/activity_custom_command.xml" value="0.15940685820203893" />
         <entry key="..\:/Users/denis/Documents/GitHub/ytdlnis/app/src/main/res/layout/activity_main.xml" value="0.18" />
         <entry key="..\:/Users/denis/Documents/GitHub/ytdlnis/app/src/main/res/layout/activity_settings.xml" value="0.16875" />

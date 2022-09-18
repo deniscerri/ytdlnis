@@ -73,64 +73,72 @@
     </com.facebook.shimmer.ShimmerFrameLayout>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:id="@+id/download_all_coordinator"
+        android:id="@+id/home_fabs"
         android:layout_width="match_parent"
-        android:visibility="gone"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent" >
 
-        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-            android:id="@+id/download_all_fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:layout_gravity="bottom|end"
-            android:text="@string/download_all"
-            app:icon="@drawable/ic_down"/>
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:id="@+id/download_all_coordinator"
+            android:layout_width="match_parent"
+            android:visibility="gone"
+            android:layout_height="match_parent">
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:id="@+id/download_selected_coordinator"
-        android:layout_width="match_parent"
-        android:visibility="gone"
-        android:layout_height="match_parent">
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            app:cardCornerRadius="20dp"
-            android:layout_margin="16dp"
-            >
-
-            <LinearLayout
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                android:id="@+id/download_all_fab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="?attr/colorPrimaryContainer"
-                android:orientation="horizontal">
+                android:layout_margin="16dp"
+                android:layout_gravity="bottom|end"
+                android:text="@string/download_all"
+                app:icon="@drawable/ic_down"/>
 
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/audio_fab"
-                    app:elevation="0dp"
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:id="@+id/download_selected_coordinator"
+            android:layout_width="match_parent"
+            android:visibility="gone"
+            android:layout_height="match_parent">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                app:cardCornerRadius="20dp"
+                android:layout_margin="16dp"
+                >
+
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="bottom|end"
-                    android:layout_marginRight="5dp"
-                    app:srcCompat="@drawable/ic_music"/>
+                    android:background="?attr/colorPrimaryContainer"
+                    android:orientation="horizontal">
 
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/video_fab"
-                    app:elevation="0dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom|end"
-                    android:layout_marginLeft="5dp"
-                    app:srcCompat="@drawable/ic_video"/>
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        android:id="@+id/audio_fab"
+                        app:elevation="0dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom|end"
+                        android:layout_marginRight="5dp"
+                        app:srcCompat="@drawable/ic_music"/>
 
-            </LinearLayout>
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        android:id="@+id/video_fab"
+                        app:elevation="0dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom|end"
+                        android:layout_marginLeft="5dp"
+                        app:srcCompat="@drawable/ic_video"/>
+
+                </LinearLayout>
 
 
-        </androidx.cardview.widget.CardView>
+            </androidx.cardview.widget.CardView>
+
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
