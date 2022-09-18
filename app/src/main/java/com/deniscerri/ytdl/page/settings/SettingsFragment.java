@@ -225,7 +225,9 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         });
 
         version.setOnPreferenceClickListener(preference -> {
-            updateUtil.updateApp();
+            if(!updateUtil.updateApp()){
+                Toast.makeText(getContext(), R.string.you_are_in_latest_version, Toast.LENGTH_SHORT).show();
+            }
             return true;
         });
 

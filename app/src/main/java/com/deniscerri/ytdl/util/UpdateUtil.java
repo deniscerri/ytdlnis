@@ -45,10 +45,10 @@ public class UpdateUtil {
         downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
     }
 
-    public void updateApp(){
+    public boolean updateApp(){
         if (updatingApp) {
             Toast.makeText(context, context.getString(R.string.ytdl_already_updating), Toast.LENGTH_LONG).show();
-            return;
+            return true;
         }
         AtomicReference<JSONObject> res = new AtomicReference<>(new JSONObject());
         try{
@@ -71,8 +71,7 @@ public class UpdateUtil {
         } catch (JSONException ignored) {}
 
         if(version.equals("v"+BuildConfig.VERSION_NAME)){
-            Toast.makeText(context, R.string.you_are_in_latest_version, Toast.LENGTH_SHORT).show();
-            return;
+            return false;
         }
 
         MaterialAlertDialogBuilder updateDialog = new MaterialAlertDialogBuilder(context)
@@ -82,6 +81,8 @@ public class UpdateUtil {
                 .setNegativeButton("Cancel", (dialogInterface, i) -> {})
                 .setPositiveButton("Update", (dialogInterface, i) -> startAppUpdate(res.get()));
         updateDialog.show();
+
+        return true;
     }
 
 
