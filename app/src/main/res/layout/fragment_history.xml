@@ -33,6 +33,8 @@
         android:scrollbars="vertical"
         android:nestedScrollingEnabled="false"
         android:layout_margin="10dp"
+        android:clipToPadding="false"
+        android:paddingBottom="150dp"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         >
