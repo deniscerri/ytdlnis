@@ -181,9 +181,9 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
 
 
     private void initCards() {
+        homeRecyclerViewAdapter.clear();
         shimmerCards.startShimmer();
         shimmerCards.setVisibility(View.VISIBLE);
-        homeRecyclerViewAdapter.clear();
         try {
             Thread thread = new Thread(() -> {
                 Handler uiHandler = new Handler(Looper.getMainLooper());
@@ -203,6 +203,7 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
                         uiHandler.post(() -> downloadAllFab.setVisibility(View.VISIBLE));
                     }
                 }
+
 
                 uiHandler.post(() -> {
                     homeRecyclerViewAdapter.setVideoList(resultObjects, true);
@@ -233,6 +234,10 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
             }
         };
 
+        if(mainActivity.isDownloadServiceRunning()){
+            topAppBar.getMenu().findItem(R.id.cancel_download).setVisible(true);
+        }
+
         topAppBar.getMenu().findItem(R.id.search).setOnActionExpandListener(onActionExpandListener);
         SearchView searchView = (SearchView) topAppBar.getMenu().findItem(R.id.search).getActionView();
         searchView.setInputType(InputType.TYPE_TEXT_VARIATION_URI);
@@ -260,28 +265,30 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
             int itemId = m.getItemId();
             if(itemId == R.id.delete_results){
                 dbManager.clearResults();
-                recyclerView.removeAllViews();
                 selectedObjects = new ArrayList<>();
                 downloadAllFab.setVisibility(View.GONE);
+                downloadFabs.setVisibility(View.GONE);
                 initCards();
             }else if(itemId == R.id.cancel_download){
-                compositeDisposable.clear();
-                mainActivity.stopDownloadService();
-                topAppBar.getMenu().findItem(itemId).setVisible(false);
-                downloadQueue = new LinkedList<>();
-                downloading = false;
+                try{
+                    compositeDisposable.clear();
+                    mainActivity.stopDownloadService();
+                    topAppBar.getMenu().findItem(itemId).setVisible(false);
+                    downloadQueue = new LinkedList<>();
+                    downloading = false;
 
-                String id = progressBar.getTag().toString().split("##progress")[0];
-                String type = findVideo(id).getDownloadedType();
-                MaterialButton theClickedButton = recyclerView.findViewWithTag(id + "##"+type);
+                    String id = progressBar.getTag().toString().split("##progress")[0];
+                    String type = findVideo(id).getDownloadedType();
+                    MaterialButton theClickedButton = recyclerView.findViewWithTag(id + "##"+type);
 
-                if (theClickedButton != null) {
-                    if (type.equals("mp3")) {
-                        theClickedButton.setIcon(ContextCompat.getDrawable(activity, R.drawable.ic_music_stopped));
-                    } else {
-                        theClickedButton.setIcon(ContextCompat.getDrawable(activity, R.drawable.ic_video_stopped));
+                    if (theClickedButton != null) {
+                        if (type.equals("mp3")) {
+                            theClickedButton.setIcon(ContextCompat.getDrawable(activity, R.drawable.ic_music_stopped));
+                        } else {
+                            theClickedButton.setIcon(ContextCompat.getDrawable(activity, R.drawable.ic_video_stopped));
+                        }
                     }
-                }
+                }catch(Exception ignored){}
             }
             return true;
         });

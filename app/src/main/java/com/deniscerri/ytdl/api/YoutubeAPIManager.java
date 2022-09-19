@@ -252,6 +252,8 @@ public class YoutubeAPIManager {
     }
 
     public ArrayList<Video> getTrending(Context context) throws JSONException{
+        videos = new ArrayList<>();
+
         String url = "https://www.googleapis.com/youtube/v3/videos?part=snippet&chart=mostPopular&videoCategoryId=10&regionCode="+countryCODE+"&maxResults=25&key="+key;
         //short data
         JSONObject res = genericRequest(url);
@@ -277,7 +279,6 @@ public class YoutubeAPIManager {
             }
             videos.add(v);
         }
-
         return videos;
     }
 
@@ -366,7 +367,7 @@ public class YoutubeAPIManager {
 //        return searchHints;
 //    }
 
-    public class PlaylistTuple {
+    public static class PlaylistTuple {
         String nextPageToken;
         ArrayList<Video> videos;
 
