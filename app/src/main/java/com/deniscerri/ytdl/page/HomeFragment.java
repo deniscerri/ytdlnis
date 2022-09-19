@@ -418,7 +418,6 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
                                         shimmerCards.stopShimmer();
                                         shimmerCards.setVisibility(View.GONE);
                                     });
-                                    Thread.sleep(1000);
                                     dbManager.addToResults(tmp_vids);
                                     if (tmp_token.isEmpty()) break;
                                     if (tmp_token.equals(nextPageToken)) break;

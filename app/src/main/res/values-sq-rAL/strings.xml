@@ -86,4 +86,5 @@
     <string name="audio_quality">Kualiteti i Audios</string>
     <string name="audio_quality_summary">0 (Më i miri) 10 (Më i keqi)</string>
     <string name="cancel_download">Anulo Shkarkimin</string>
+    <string name="run_command">Ekzekuto Komandën</string>
 </resources>
