@@ -64,4 +64,26 @@
     <string name="choose_range_desc">Cilëso cilën pjesë të listës do të shkarkosh. Lëre siç është që t\'i shkarkosh të gjitha</string>
     <string name="last_cant_be_smaller_than_first">Indeksi i fundit nuk mund të jetë më i vogël se indeksi i parë</string>
     <string name="first_cant_be_larger_than_last">Indeksi i parë nuk mund të jetë më i madh se indeksi i fundit</string>
+    <string name="concurrent_fragments_summary">Numri i fragmenteve të një videoje që duhen shkarkuar në të njëjtën kohë</string>
+    <string name="concurrent_fragments">Fragmentet e njëkohëshme</string>
+    <string name="downloading">Shkarkimet</string>
+    <string name="limit_rate">Limito Shpejtësinë</string>
+    <string name="limit_rate_summary">Shpejtësia maksimale e shkarkimit në byte për sekond, p.sh 50K ose 4.2M</string>
+    <string name="aria2_summary">Përdor Aria2c si shkarkues në vend të atij normal</string>
+    <string name="remove_non_music">Hiq pjesët pa muzikë</string>
+    <string name="remove_non_music_summary">Hiq segmentet e SponsorBlock që përmbajnë pjesë pa muzikë në skedarët audio</string>
+    <string name="processing">Proçesimi</string>
+    <string name="embed_subs">Vendos Titrat në Video</string>
+    <string name="embed_subs_summary">Vendos titra brenda videos por vetëm për formatet mp4, webm dhe mkv</string>
+    <string name="embed_thumb">Vendos Thumbnail</string>
+    <string name="embed_thumb_summary">Vendos thumbnail si pamje e pare e videos</string>
+    <string name="add_chapters">Vendos Kapituj në Video</string>
+    <string name="add_chapters_summary">Merr Kapitujt / Segmentet e YouTube ose Sponsorblock dhe vendosi si kapituj për videon</string>
+    <string name="save_thumb">Ruaj Thumbnail</string>
+    <string name="save_thumb_summary">Vendos Thumbnail si skedar tek direktoria ku është shkarkuar sendi</string>
+    <string name="audio_format">Formati i Audios</string>
+    <string name="video_format">Formati i Videos</string>
+    <string name="audio_quality">Kualiteti i Audios</string>
+    <string name="audio_quality_summary">0 (Më i miri) 10 (Më i keqi)</string>
+    <string name="cancel_download">Anulo Shkarkimin</string>
 </resources>

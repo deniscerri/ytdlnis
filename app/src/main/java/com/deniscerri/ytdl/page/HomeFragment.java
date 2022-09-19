@@ -342,7 +342,6 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
                             dbManager.addToResults(resultObjects);
                             new Handler(Looper.getMainLooper()).post(() -> {
                                 homeRecyclerViewAdapter.setVideoList(resultObjects, true);
-                                //addEndofResultsText();
                                 shimmerCards.stopShimmer();
                                 shimmerCards.setVisibility(View.GONE);
                             });
@@ -374,6 +373,7 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
                         @Override
                         public void run() {
                             try {
+                                resultObjects.clear();
                                 resultObjects.add(youtubeAPIManager.getVideo(query));
                             } catch (Exception e) {
                                 Log.e(TAG, e.toString());
@@ -484,7 +484,6 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
 
         SharedPreferences sharedPreferences = context.getSharedPreferences("root_preferences", Activity.MODE_PRIVATE);
 
-
         boolean aria2 = sharedPreferences.getBoolean("aria2", false);
         if(aria2){
             request.addOption("--downloader", "libaria2c.so");
@@ -494,17 +493,13 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
             request.addOption("-N", concurrentFragments);
         }
 
-
-
         String limitRate = sharedPreferences.getString("limit_rate", "");
-        if(!limitRate.equals("")){
-            request.addOption("-r", limitRate);
-        }
+        if(!limitRate.equals("")) request.addOption("-r", limitRate);
 
         boolean writeThumbnail = sharedPreferences.getBoolean("write_thumbnail", false);
-        if(writeThumbnail){
-            request.addOption("--write-thumbnail");
-        }
+        if(writeThumbnail) request.addOption("--write-thumbnail");
+
+        request.addOption("--no-mtime");
 
         if (type.equals("mp3")) {
             boolean removeNonMusic = sharedPreferences.getBoolean("remove_non_music", false);
@@ -513,7 +508,6 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
             }
             request.addOption("--postprocessor-args", "-write_id3v1 1 -id3v2_version 3");
             request.addOption("--add-metadata");
-            request.addOption("--no-mtime");
             request.addOption("-x");
             String format = sharedPreferences.getString("audio_format", "");
             request.addOption("--audio-format", format);

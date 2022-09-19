@@ -89,4 +89,5 @@
     <string name="audio_quality">Audio Quality</string>
     <string name="audio_quality_summary">0 (Best) 10 (Worst)</string>
     <string name="cancel_download">Cancel Download</string>
+    <string name="run_command">Run Command</string>
 </resources>

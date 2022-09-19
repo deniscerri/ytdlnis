@@ -33,11 +33,14 @@ public class YoutubeAPIManager {
             key = applicationInfo.metaData.getString("ytAPIkey");
             dbManager = new DBManager(context);
 
-            //get Locale
-            JSONObject country = genericRequest("https://ipwho.is/");
-            try{
-                countryCODE = country.getString("country_code");
-            }catch(Exception ignored){}
+            Thread thread = new Thread(() -> {
+                //get Locale
+                JSONObject country = genericRequest("https://ipwho.is/");
+                try{
+                    countryCODE = country.getString("country_code");
+                }catch(Exception ignored){}
+            });
+            thread.start();
 
         }catch(Exception ignored){
             Toast.makeText(context, "Couldn't find API Key for the request", Toast.LENGTH_SHORT).show();

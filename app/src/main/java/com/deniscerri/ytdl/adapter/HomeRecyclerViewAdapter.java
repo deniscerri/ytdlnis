@@ -155,9 +155,8 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
 
     public void setVideoList(ArrayList<Video> list, boolean reset){
         int size = videoList.size();
-        if(reset || size == 0){
-            videoList = new ArrayList<>();
-        }
+        if(reset || size == 0) clear();
+        Log.e("TAG", String.valueOf(videoList.size()));
         videoList.addAll(list);
         notifyItemRangeInserted(size, videoList.size());
     }

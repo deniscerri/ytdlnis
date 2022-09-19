@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,6 +33,7 @@ import com.yausername.youtubedl_android.YoutubeDL;
 import com.yausername.youtubedl_android.YoutubeDLRequest;
 import java.io.File;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import io.reactivex.Observable;
@@ -50,10 +52,11 @@ public class CustomCommandActivity extends AppCompatActivity {
     private TextView output;
     private EditText input;
     private ExtendedFloatingActionButton fab;
+    private ExtendedFloatingActionButton cancelFab;
     Context context;
 
     private final DownloadProgressCallback callback = (progress, etaInSeconds, line) -> CustomCommandActivity.this.runOnUiThread(() -> {
-        output.append(line);
+        output.append("\n"+line);
         notificationUtil.updateDownloadNotification(NotificationUtil.COMMAND_DOWNLOAD_NOTIFICATION_ID,
                 line, (int) progress, 0, getString(R.string.running_ytdlp_command));
     });
@@ -88,9 +91,28 @@ public class CustomCommandActivity extends AppCompatActivity {
 
         fab = findViewById(R.id.command_fab);
         fab.setOnClickListener(view -> {
-            runCommand(input.getText().toString());
+            if (isStoragePermissionGranted()){
+                runCommand(input.getText().toString());
+            }
+        });
+
+        cancelFab = findViewById(R.id.cancel_command_fab);
+        cancelFab.setOnClickListener(view -> {
+            compositeDisposable.clear();
+            stopDownloadService();
+            swapFabs();
+            running = false;
+            input.setEnabled(true);
         });
     }
+
+    private void swapFabs(){
+        int cancel = cancelFab.getVisibility();
+        int start = fab.getVisibility();
+        cancelFab.setVisibility(start);
+        fab.setVisibility(cancel);
+    }
+
 
     @Override
     public void onBackPressed() {
@@ -106,10 +128,7 @@ public class CustomCommandActivity extends AppCompatActivity {
             Toast.makeText(context, "Wrong input! Try Again!", Toast.LENGTH_SHORT).show();
             return;
         }
-
-        fab.hide();
         input.setEnabled(false);
-
         output.setText("");
         startDownloadService(getString(R.string.running_ytdlp_command), NotificationUtil.COMMAND_DOWNLOAD_NOTIFICATION_ID);
         text = text.substring(6).trim();
@@ -137,6 +156,7 @@ public class CustomCommandActivity extends AppCompatActivity {
         request.addOption("-o", youtubeDLDir.getAbsolutePath() + "/%(title)s.%(ext)s");
 
         running = true;
+        swapFabs();
 
         Disposable disposable = Observable.fromCallable(() -> YoutubeDL.getInstance().execute(request, callback))
                 .subscribeOn(Schedulers.newThread())
@@ -147,14 +167,14 @@ public class CustomCommandActivity extends AppCompatActivity {
                     stopDownloadService();
                     // MEDIA SCAN
                     MediaScannerConnection.scanFile(context, new String[]{"/storage"}, null, null);
-                    fab.show();
                     input.setEnabled(true);
+                    swapFabs();
                 }, e -> {
                     if (BuildConfig.DEBUG) Log.e(TAG, getString(R.string.failed_download), e);
                     output.append(e.getMessage());
                     running = false;
                     stopDownloadService();
-                    fab.show();
+                    swapFabs();
                     input.setEnabled(true);
                 });
         compositeDisposable.add(disposable);
@@ -172,5 +192,15 @@ public class CustomCommandActivity extends AppCompatActivity {
         if(!isDownloadServiceRunning) return;
         context.getApplicationContext().unbindService(serviceConnection);
         isDownloadServiceRunning = false;
+    }
+
+    public boolean isStoragePermissionGranted() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                == PackageManager.PERMISSION_GRANTED) {
+            return true;
+        }else{
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+            return false;
+        }
     }
 }

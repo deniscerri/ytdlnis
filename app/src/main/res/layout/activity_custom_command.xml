@@ -32,11 +32,20 @@
                 android:gravity="start"
                 android:maxLines="5" />
 
-            <TextView
-                android:id="@+id/custom_command_output"
+            <ScrollView
                 android:layout_width="match_parent"
-                android:gravity="bottom"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:paddingBottom="150dp"
+                >
+
+                <TextView
+                    android:id="@+id/custom_command_output"
+                    android:layout_width="match_parent"
+                    android:gravity="bottom"
+                    android:layout_height="wrap_content" />
+
+            </ScrollView>
 
         </LinearLayout>
 
@@ -68,8 +77,19 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
-        android:text="Run Command"
+        android:text="@string/run_command"
         app:icon="@drawable/ic_baseline_keyboard_arrow_right_24"
+        />
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/cancel_command_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:text="@string/cancel_download"
+        android:visibility="gone"
+        app:icon="@drawable/ic_delete_all"
         />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
