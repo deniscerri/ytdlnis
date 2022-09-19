@@ -163,7 +163,7 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
 
     public void clear(){
         int size = videoList.size();
-        videoList.clear();
+        videoList = new ArrayList<>();
         notifyItemRangeRemoved(0, size);
     }
 

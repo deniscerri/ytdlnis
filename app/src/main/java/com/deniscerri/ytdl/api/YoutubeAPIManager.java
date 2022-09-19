@@ -41,6 +41,7 @@ public class YoutubeAPIManager {
                 }catch(Exception ignored){}
             });
             thread.start();
+            thread.join();
 
         }catch(Exception ignored){
             Toast.makeText(context, "Couldn't find API Key for the request", Toast.LENGTH_SHORT).show();

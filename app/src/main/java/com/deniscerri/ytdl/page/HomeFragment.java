@@ -131,6 +131,7 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
         resultObjects = new ArrayList<>();
         selectedObjects = new ArrayList<>();
 
+
         // Inflate the layout for this fragment
         fragmentView = inflater.inflate(R.layout.fragment_home, container, false);
         context = fragmentView.getContext();
@@ -147,6 +148,8 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
         recyclerView.setAdapter(homeRecyclerViewAdapter);
         recyclerView.setNestedScrollingEnabled(false);
 
+
+        youtubeAPIManager = new YoutubeAPIManager(context);
         initMenu();
 
         if (inputQuery != null) {
@@ -185,7 +188,6 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
             Thread thread = new Thread(() -> {
                 Handler uiHandler = new Handler(Looper.getMainLooper());
                 dbManager = new DBManager(context);
-                youtubeAPIManager = new YoutubeAPIManager(context);
                 resultObjects = dbManager.getResults();
 
                 if (resultObjects.size() == 0) {
@@ -215,8 +217,6 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
     }
 
     private void initMenu() {
-        youtubeAPIManager = new YoutubeAPIManager(context);
-
         MenuItem.OnActionExpandListener onActionExpandListener = new MenuItem.OnActionExpandListener() {
             @Override
             public boolean onMenuItemActionExpand(MenuItem menuItem) {
@@ -305,7 +305,6 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
         Log.e(TAG, String.valueOf(homeRecyclerViewAdapter.getItemCount()));
 
         dbManager = new DBManager(context);
-        youtubeAPIManager = new YoutubeAPIManager(context);
         scrollToTop();
 
         String type = "Search";
@@ -406,6 +405,7 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
                             try {
                                 String nextPageToken = "";
                                 dbManager.clearResults();
+                                resultObjects.clear();
                                 homeRecyclerViewAdapter.setVideoList(new ArrayList<>(), true);
                                 do {
                                     YoutubeAPIManager.PlaylistTuple tmp = youtubeAPIManager.getPlaylist(query, nextPageToken);
@@ -414,7 +414,6 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
                                     resultObjects.addAll(tmp_vids);
                                     new Handler(Looper.getMainLooper()).post(() -> {
                                         homeRecyclerViewAdapter.setVideoList(tmp_vids, false);
-                                        //addEndofResultsText();
                                         shimmerCards.stopShimmer();
                                         shimmerCards.setVisibility(View.GONE);
                                     });
