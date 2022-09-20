@@ -234,10 +234,6 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
             }
         };
 
-        if(mainActivity.isDownloadServiceRunning()){
-            topAppBar.getMenu().findItem(R.id.cancel_download).setVisible(true);
-        }
-
         topAppBar.getMenu().findItem(R.id.search).setOnActionExpandListener(onActionExpandListener);
         SearchView searchView = (SearchView) topAppBar.getMenu().findItem(R.id.search).getActionView();
         searchView.setInputType(InputType.TYPE_TEXT_VARIATION_URI);
