@@ -77,7 +77,7 @@
     <string name="remove_non_music_summary">Remove SponsorBlock segments that contain non music parts for audio files</string>
     <string name="processing">Processing</string>
     <string name="embed_subs">Embed Subtitles on Videos</string>
-    <string name="embed_subs_summary">Embed subtitles in the video (only for mp4,webm and mkv videos)</string>
+    <string name="embed_subs_summary">Embed subtitles in the video</string>
     <string name="embed_thumb">Embed Thumbnail</string>
     <string name="embed_thumb_summary">Embed thumbnail as cover art</string>
     <string name="add_chapters">Add Chapters on Videos</string>

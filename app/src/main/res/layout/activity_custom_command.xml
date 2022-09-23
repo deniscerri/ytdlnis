@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.deniscerri.ytdl.page.CustomCommandActivity">
+    tools:context="com.deniscerri.ytdlnis.page.CustomCommandActivity">
 
     <FrameLayout
         android:id="@+id/custom_command_frame_layout"

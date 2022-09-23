@@ -74,7 +74,7 @@
     <string name="remove_non_music_summary">Hiq segmentet e SponsorBlock që përmbajnë pjesë pa muzikë në skedarët audio</string>
     <string name="processing">Proçesimi</string>
     <string name="embed_subs">Vendos Titrat në Video</string>
-    <string name="embed_subs_summary">Vendos titra brenda videos por vetëm për formatet mp4, webm dhe mkv</string>
+    <string name="embed_subs_summary">Vendos titra brenda videos</string>
     <string name="embed_thumb">Vendos Thumbnail</string>
     <string name="embed_thumb_summary">Vendos thumbnail si pamje e pare e videos</string>
     <string name="add_chapters">Vendos Kapituj në Video</string>

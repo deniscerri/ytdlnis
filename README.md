@@ -1,23 +1,56 @@
-# ytdlnis
-Android App for downloading youtube videos
 
-Created as a project for the class, Mobile Programming.
+<h1 align="center">
+	ytldnis
+</h1>
+<p align="center">
+	Android App for downloading videos using yt-dlp
+</p>
+<p align="center">
+	Created as a project for the class, Mobile Programming. Continued to update it because why not.
+</p>
 
-Features:
----
-- [x] download audio  
-- [x] download video
-- [x] download full playlist in audio or video format
-- [x] use custom download paths for each format
-- [x] download history
-- [x] search from the app
-- [x] works with youtube links
-- [x] share videos / playlists from the Youtube App using the share menu
-- [x] heads-up download notifications
+## Download
 
-|![image](https://user-images.githubusercontent.com/64997243/185808455-0b04f573-afe5-43d8-b6c8-6481b799e474.png)|![image](https://user-images.githubusercontent.com/64997243/185808467-7fcc9938-f124-45c1-8b29-3384269fb693.png)|
-|:-------------------------:|:-------------------------:|
-![image](https://user-images.githubusercontent.com/64997243/185808474-5df57756-6e27-4c03-9870-3c47f782bfb9.png)|![image](https://user-images.githubusercontent.com/64997243/185808477-073a8ea8-70ae-4702-9865-317149f2bb25.png)|
-![image](https://user-images.githubusercontent.com/64997243/185808483-9b5e62c3-f28b-4bfb-9caf-adbb899ce702.png)|![image](https://user-images.githubusercontent.com/64997243/185808495-9930312c-34df-43f1-b7f3-e519d1231c09.png)|
+[Get Latest Release Here](https://github.com/deniscerri/ytdlnis/releases/)
+
+## Features:
+
+- download audio and video files
+- download full playlists
+- download selected videos on a list and add to a queue
+- use custom download paths for each format
+- remove non music parts from youtube audio files
+- embed subtitles on videos
+- add chapters to youtube videos by using sponsorblock chapters 
+- select different download formats
+- share any yt-dlp compatible link into the app and start downloading
+- foreground download services which work even if app is cleared from recents and updates ui when u go back
+- search from the app
+- material you interface
+- really easy to use
+- run terminal commands for more flexibility
+
+## Screenshots
+
+<div>
+<img src="fastlane/metadata/android/en-US/images/screenshots/1.png" width="30%" />
+<img src="fastlane/metadata/android/en-US/images/screenshots/2.png" width="30%" />
+<img src="fastlane/metadata/android/en-US/images/screenshots/3.png" width="30%" />
+<img src="fastlane/metadata/android/en-US/images/screenshots/4.png" width="30%" />
+<img src="fastlane/metadata/android/en-US/images/screenshots/5.png" width="30%" />
+<img src="fastlane/metadata/android/en-US/images/screenshots/6.png" width="30%" />
+</div>
 
 
+## License
+
+[GNU GPL v3.0](https://github.com/deniscerri/ytdlnis/blob/main/LICENSE)
+
+## Thanks
+
+- [yt-dlp](https://github.com/yt-dlp/yt-dlp) and its contributors for making this tool possible. Without it this app wouldn't exist.
+- [youtubedl-android](https://github.com/yausername/youtubedl-android) for porting yt-dlp to android 
+- [dvd](https://github.com/yausername/dvd) for showing how to implement youtubedl-android
+- [seal](https://github.com/JunkFood02/Seal) for certain design elements and features i wanted to use aswell in this app
+
+and alot of other internet forum strangers.

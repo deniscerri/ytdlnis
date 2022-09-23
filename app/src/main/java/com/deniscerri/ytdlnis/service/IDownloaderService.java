@@ -1,0 +1,13 @@
+package com.deniscerri.ytdlnis.service;
+
+import android.app.Activity;
+import com.deniscerri.ytdlnis.database.Video;
+import java.util.ArrayList;
+
+public interface IDownloaderService {
+    DownloadInfo getDownloadInfo();
+    void addActivity(Activity activity, IDownloaderListener callback);
+    void removeActivity(Activity activity);
+    void updateQueue(ArrayList<Video> queue);
+    void cancelDownload();
+}

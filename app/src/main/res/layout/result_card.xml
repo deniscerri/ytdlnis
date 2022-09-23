@@ -41,9 +41,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:paddingTop="10dp"
-                android:paddingRight="20dp"
+                android:paddingEnd="20dp"
                 android:paddingBottom="20dp"
-                android:paddingLeft="10dp"
+                android:paddingStart="10dp"
                 android:textSize="18sp"
                 android:textColor="@color/white"
                 android:textStyle="bold"
@@ -58,9 +58,9 @@
                 android:layout_height="match_parent"
                 android:gravity="bottom"
                 android:paddingTop="10dp"
-                android:paddingRight="20dp"
+                android:paddingEnd="20dp"
                 android:paddingBottom="20dp"
-                android:paddingLeft="10dp"
+                android:paddingStart="10dp"
                 android:textSize="12sp"
                 android:textColor="@color/white"
                 android:textStyle="bold"
@@ -73,30 +73,30 @@
                 android:id="@+id/download_button_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="bottom|right"
+                android:gravity="bottom|end"
                 android:orientation="horizontal"
                 android:paddingBottom="16dp"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp">
 
                 <com.google.android.material.button.MaterialButton
-                    style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton.Icon"
+                    style="@style/Widget.Material3.ExtendedFloatingActionButton.Icon.Secondary"
                     android:id="@+id/download_music"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
+                    android:layout_width="55dp"
+                    android:layout_height="55dp"
                     app:cornerRadius="10dp"
                     app:icon="@drawable/ic_music"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
                     />
 
                 <com.google.android.material.button.MaterialButton
-                    style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton.Icon"
+                    style="@style/Widget.Material3.ExtendedFloatingActionButton.Icon.Secondary"
                     android:id="@+id/download_video"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
+                    android:layout_width="55dp"
+                    android:layout_height="55dp"
                     app:cornerRadius="10dp"
                     app:icon="@drawable/ic_video"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
                     />
 
             </LinearLayout>
@@ -104,7 +104,7 @@
             <ProgressBar
                 android:id="@+id/download_progress"
                 android:layout_width="match_parent"
-                android:layout_height="7dp"
+                android:layout_height="4dp"
                 android:layout_gravity="bottom"
                 android:backgroundTintMode="src_in"
                 android:progress="0"

@@ -108,7 +108,7 @@
 
 
         <SeekBarPreference
-            android:defaultValue="5"
+            android:defaultValue="0"
             android:icon="@drawable/ic_music"
             android:max="10"
             app:key="audio_quality"

@@ -1,0 +1,10 @@
+Download audio and video files on different formats through yt-dlp.
+Download videos, playlists, multi-select items.
+Really user friendly.
+Download History.
+Command Line Functionality.
+Material You Compatible.
+Foreground Download Service.
+Share links directly to the app.
+Built in search functionality.
+Automatically checks for app updates.
