@@ -1,4 +1,3 @@
-
 <h1 align="center">
 	ytldnis
 </h1>
@@ -21,7 +20,7 @@
 - use custom download paths for each format
 - remove non music parts from youtube audio files
 - embed subtitles on videos
-- add chapters to youtube videos by using sponsorblock chapters 
+- add chapters to youtube videos by using sponsorblock chapters
 - select different download formats
 - share any yt-dlp compatible link into the app and start downloading
 - foreground download services which work even if app is cleared from recents and updates ui when u go back
@@ -33,14 +32,13 @@
 ## Screenshots
 
 <div>
-<img src="fastlane/metadata/android/en-US/images/screenshots/1.png" width="30%" />
-<img src="fastlane/metadata/android/en-US/images/screenshots/2.png" width="30%" />
-<img src="fastlane/metadata/android/en-US/images/screenshots/3.png" width="30%" />
-<img src="fastlane/metadata/android/en-US/images/screenshots/4.png" width="30%" />
-<img src="fastlane/metadata/android/en-US/images/screenshots/5.png" width="30%" />
-<img src="fastlane/metadata/android/en-US/images/screenshots/6.png" width="30%" />
+<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/1.png" width="33%" />
+<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/2.png" width="33%" />
+<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/3.png" width="33%" />
+<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/4.png" width="33%" />
+<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/5.png" width="33%" />
+<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/6.png" width="33%" />
 </div>
-
 
 ## License
 
@@ -49,7 +47,7 @@
 ## Thanks
 
 - [yt-dlp](https://github.com/yt-dlp/yt-dlp) and its contributors for making this tool possible. Without it this app wouldn't exist.
-- [youtubedl-android](https://github.com/yausername/youtubedl-android) for porting yt-dlp to android 
+- [youtubedl-android](https://github.com/yausername/youtubedl-android) for porting yt-dlp to android
 - [dvd](https://github.com/yausername/dvd) for showing how to implement youtubedl-android
 - [seal](https://github.com/JunkFood02/Seal) for certain design elements and features i wanted to use aswell in this app
 

@@ -1,0 +1,14 @@
+changed folder structure to ytdlnis instead of ytdl
+when downloads are finished, history fragment updates itself
+changed video duration of livestreams to LIVE
+Fixed update dialog showing when you dont have internet
+removed download functionality from home fragment and put it all on downloadservice. This makes the download stateless and the ui can be updated when you go back to the app
+did the same for custom command activity
+slight changes on result card ui
+added fastlane metadata
+added support for other yt-dlp videos instead of just focusing on youtube. Youtube is still the main focus
+updated database
+slight design changes
+made bottom navigation bar the same color as the background
+changed download buttons background colors inside cards
+fixed result items changing download status icons when scrolling through recyclerview
