@@ -1,8 +1,8 @@
 <h1 align="center">
-	ytldnis
+	ytdlnis
 </h1>
 <p align="center">
-	Android App for downloading videos using yt-dlp
+	Android App for downloading audio and videos using yt-dlp
 </p>
 <p align="center">
 	Created as a project for the class, Mobile Programming. Continued to update it because why not.
