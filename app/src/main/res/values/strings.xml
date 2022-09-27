@@ -90,4 +90,7 @@
     <string name="audio_quality_summary">0 (Best) 10 (Worst)</string>
     <string name="cancel_download">Cancel Download</string>
     <string name="run_command">Run Command</string>
+    <string name="command_download_notification_channel_name">Command Downloads</string>
+    <string name="command_download_notification_channel_description">Notification that shows the download progress of a yt-dlp command</string>
+    <string name="items_left">item(s) left</string>
 </resources>

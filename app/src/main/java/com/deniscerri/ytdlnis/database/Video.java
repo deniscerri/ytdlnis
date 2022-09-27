@@ -1,8 +1,9 @@
 package com.deniscerri.ytdlnis.database;
 
-import java.io.Serializable;
+import android.os.Parcel;
+import android.os.Parcelable;
 
-public class Video implements Serializable {
+public class Video implements Parcelable {
     private int id;
     private String videoId;
     private String title;
@@ -46,6 +47,34 @@ public class Video implements Serializable {
         this.isPlaylistItem = isPlaylistItem;
     }
 
+
+    protected Video(Parcel in) {
+        id = in.readInt();
+        videoId = in.readString();
+        title = in.readString();
+        author = in.readString();
+        duration = in.readString();
+        thumb = in.readString();
+        url = in.readString();
+        downloadedType = in.readString();
+        downloadedAudio = in.readInt();
+        downloadedVideo = in.readInt();
+        downloadedTime = in.readString();
+        isPlaylistItem = in.readInt();
+        website = in.readString();
+    }
+
+    public static final Creator<Video> CREATOR = new Creator<Video>() {
+        @Override
+        public Video createFromParcel(Parcel in) {
+            return new Video(in);
+        }
+
+        @Override
+        public Video[] newArray(int size) {
+            return new Video[size];
+        }
+    };
 
     public int getId() {
         return id;
@@ -118,4 +147,27 @@ public class Video implements Serializable {
     public String getWebsite() { return website; }
 
     public void setWebsite(String site){ this.website = site; }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(id);
+        parcel.writeString(videoId);
+        parcel.writeString(title);
+        parcel.writeString(author);
+        parcel.writeString(duration);
+        parcel.writeString(thumb);
+        parcel.writeString(url);
+        parcel.writeString(downloadedType);
+        parcel.writeInt(downloadedAudio);
+        parcel.writeInt(downloadedVideo);
+        parcel.writeString(downloadedTime);
+        parcel.writeInt(isPlaylistItem);
+        parcel.writeString(website);
+    }
+
 }

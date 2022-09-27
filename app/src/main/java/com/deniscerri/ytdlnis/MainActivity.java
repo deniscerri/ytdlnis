@@ -166,7 +166,7 @@ public class MainActivity extends AppCompatActivity{
         }
         listener = awaitingListener;
         Intent serviceIntent = new Intent(context, DownloaderService.class);
-        serviceIntent.putExtra("queue", downloadQueue);
+        serviceIntent.putParcelableArrayListExtra("queue", downloadQueue);
         context.getApplicationContext().bindService(serviceIntent, serviceConnection, Context.BIND_AUTO_CREATE);
     }
 

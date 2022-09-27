@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -41,6 +42,8 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
+
+import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -80,28 +83,29 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
     public IDownloaderListener listener = new IDownloaderListener() {
 
         public void onDownloadStart(DownloadInfo downloadInfo) {
-            if(downloadInfo != null){
-                String id = downloadInfo.getVideo().getVideoId();
-                String type = downloadInfo.getVideo().getDownloadedType();
-                MaterialButton clickedButton = recyclerView.findViewWithTag(id + "##"+type);
+            try{
+                if(downloadInfo != null){
+                    String id = downloadInfo.getVideo().getVideoId();
+                    String type = downloadInfo.getVideo().getDownloadedType();
 
-                progressBar = fragmentView.findViewWithTag(id + "##progress");
-                progressBar.setVisibility(View.VISIBLE);
+                    recyclerView.smoothScrollToPosition(resultObjects.indexOf(findVideo(id)));
+                    MaterialButton clickedButton = recyclerView.findViewWithTag(id + "##"+type);
+                    progressBar = recyclerView.findViewWithTag(id + "##progress");
+                    progressBar.setVisibility(View.VISIBLE);
+                    progressBar.setIndeterminate(true);
+                    progressBar.setProgress(0);
+                    downloading = true;
+                    topAppBar.getMenu().findItem(R.id.cancel_download).setVisible(true);
 
-                //scroll to Card
-                recyclerView.scrollToPosition(resultObjects.indexOf(findVideo(id)));
-                progressBar.setProgress(0);
-                downloading = true;
-                topAppBar.getMenu().findItem(R.id.cancel_download).setVisible(true);
-
-                if (clickedButton != null) {
-                    if (type.equals("mp3")) {
-                        clickedButton.setIcon(ContextCompat.getDrawable(activity, R.drawable.ic_music));
-                    } else {
-                        clickedButton.setIcon(ContextCompat.getDrawable(activity, R.drawable.ic_video));
+                    if (clickedButton != null) {
+                        if (type.equals("audio")) {
+                            clickedButton.setIcon(ContextCompat.getDrawable(activity, R.drawable.ic_music));
+                        } else {
+                            clickedButton.setIcon(ContextCompat.getDrawable(activity, R.drawable.ic_video));
+                        }
                     }
                 }
-            }
+            }catch(Exception ignored){}
         }
 
         public void onDownloadProgress(DownloadInfo info) {
@@ -109,6 +113,7 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
                 try{
                     progressBar = fragmentView.findViewWithTag(info.getVideo().getVideoId()+"##progress");
                     progressBar.setVisibility(View.VISIBLE);
+                    progressBar.setIndeterminate(false);
                     progressBar.setProgress(info.getProgress());
                 }catch(Exception ignored){}
             });
@@ -135,12 +140,13 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
                 MaterialButton theClickedButton = recyclerView.findViewWithTag(id + "##"+type);
 
                 if (theClickedButton != null) {
-                    if (type.equals("mp3")) {
+                    if (type.equals("audio")) {
                         theClickedButton.setIcon(ContextCompat.getDrawable(activity, R.drawable.ic_music_downloaded));
                     } else {
                         theClickedButton.setIcon(ContextCompat.getDrawable(activity, R.drawable.ic_video_downloaded));
                     }
                 }
+
 
                 addToHistory(item, new Date());
                 updateDownloadStatusOnResult(item, type);
@@ -148,7 +154,18 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
                 topAppBar.getMenu().findItem(R.id.cancel_download).setVisible(false);
 
                 // MEDIA SCAN
-                MediaScannerConnection.scanFile(context, new String[]{downloadInfo.getDownloadPath()}, null, null);
+                ArrayList<File> files = new ArrayList<>();
+                String title = downloadInfo.getVideo().getTitle();
+
+                File path = new File(downloadInfo.getDownloadPath());
+                for( File file : path.listFiles() ){
+                    if(file.isFile() && file.getAbsolutePath().contains(title)) files.add(file);
+                }
+
+                String[] paths = new String[files.size()];
+                for (int i = 0; i < files.size(); i++) paths[i] = files.get(i).getAbsolutePath();
+
+                MediaScannerConnection.scanFile(context, paths, null, null);
                 mainActivity.updateHistoryFragment();
             }catch(Exception ignored){}
         }
@@ -182,7 +199,7 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
 
         // Inflate the layout for this fragment
         fragmentView = inflater.inflate(R.layout.fragment_home, container, false);
-        context = fragmentView.getContext();
+        context = fragmentView.getContext().getApplicationContext();
         activity = getActivity();
         mainActivity = (MainActivity) activity;
 
@@ -194,7 +211,6 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
 
         homeRecyclerViewAdapter = new HomeRecyclerViewAdapter(resultObjects, this, activity);
         recyclerView.setAdapter(homeRecyclerViewAdapter);
-        recyclerView.setNestedScrollingEnabled(false);
 
 
         youtubeAPIManager = new YoutubeAPIManager(context);
@@ -213,8 +229,8 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
 
         FloatingActionButton music_fab = downloadFabs.findViewById(R.id.audio_fab);
         FloatingActionButton video_fab = downloadFabs.findViewById(R.id.video_fab);
-        music_fab.setTag("SELECT##mp3");
-        video_fab.setTag("SELECT##mp4");
+        music_fab.setTag("SELECT##audio");
+        video_fab.setTag("SELECT##video");
 
         music_fab.setOnClickListener(this);
         video_fab.setOnClickListener(this);
@@ -329,7 +345,7 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
                     MaterialButton theClickedButton = recyclerView.findViewWithTag(id + "##"+type);
 
                     if (theClickedButton != null) {
-                        if (type.equals("mp3")) {
+                        if (type.equals("audio")) {
                             theClickedButton.setIcon(ContextCompat.getDrawable(activity, R.drawable.ic_music_stopped));
                         } else {
                             theClickedButton.setIcon(ContextCompat.getDrawable(activity, R.drawable.ic_video_stopped));
@@ -583,7 +599,6 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
         int year = cal.get(Calendar.YEAR);
 
         DateFormat formatter = new SimpleDateFormat("HH:mm", Locale.getDefault());
-        formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
         String time = formatter.format(date);
         String downloadedTime = day + " " + month + " " + year + " " + time;
 
@@ -634,17 +649,18 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
         }
 
         if (!viewIdName.isEmpty()) {
-            if (viewIdName.contains("mp3") || viewIdName.contains("mp4")) {
+            if (viewIdName.contains("audio") || viewIdName.contains("video")) {
                 Log.e(TAG, viewIdName);
                 String[] buttonData = viewIdName.split("##");
                 if (buttonData[0].equals("SELECT")) {
+
                     for (int i = 0; i < selectedObjects.size(); i++) {
                         Video vid = findVideo(selectedObjects.get(i).getVideoId());
                         vid.setDownloadedType(buttonData[1]);
-                        homeRecyclerViewAdapter.notifyItemChanged(resultObjects.indexOf(vid));
                         downloadQueue.add(vid);
                     }
                     selectedObjects = new ArrayList<>();
+                    homeRecyclerViewAdapter.clearCheckedVideos();
                     downloadFabs.setVisibility(View.GONE);
 
                     if (downloading) {
@@ -681,14 +697,14 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
                 audio.setOnClickListener(view -> {
                     int start = Integer.parseInt(first.getEditText().getText().toString());
                     int end = Integer.parseInt(last.getEditText().getText().toString());
-                    initDownloadAll(bottomSheet, start, end, "mp3");
+                    initDownloadAll(bottomSheet, start, end, "audio");
                 });
 
                 Button video = bottomSheet.findViewById(R.id.bottomsheet_video_button);
                 video.setOnClickListener(view -> {
                     int start = Integer.parseInt(first.getEditText().getText().toString());
                     int end = Integer.parseInt(last.getEditText().getText().toString());
-                    initDownloadAll(bottomSheet, start, end, "mp4");
+                    initDownloadAll(bottomSheet, start, end, "video");
                 });
 
                 bottomSheet.show();

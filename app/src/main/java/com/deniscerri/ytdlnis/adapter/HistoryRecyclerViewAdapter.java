@@ -91,7 +91,7 @@ public class HistoryRecyclerViewAdapter extends RecyclerView.Adapter<HistoryRecy
         // BUTTON ----------------------------------
         LinearLayout buttonLayout = card.findViewById(R.id.history_download_button_layout);
         Button btn = buttonLayout.findViewById(R.id.history_download_button_type);
-        if(video.getDownloadedType().equals("mp3")){
+        if(video.getDownloadedType().equals("audio") || video.getDownloadedType().equals("mp3")){
             btn.setBackground(ContextCompat.getDrawable(context, R.drawable.ic_music));
         }else{
             btn.setBackground(ContextCompat.getDrawable(context, R.drawable.ic_video));

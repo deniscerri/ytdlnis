@@ -1,7 +1,6 @@
 package com.deniscerri.ytdlnis.page;
 
 import android.Manifest;
-import android.app.ActivityManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -12,23 +11,19 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
-import android.view.View;
 import android.widget.EditText;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import com.deniscerri.ytdlnis.R;
 import com.deniscerri.ytdlnis.DownloaderService;
-import com.deniscerri.ytdlnis.database.Video;
 import com.deniscerri.ytdlnis.service.DownloadInfo;
 import com.deniscerri.ytdlnis.service.IDownloaderListener;
 import com.deniscerri.ytdlnis.service.IDownloaderService;
 import com.deniscerri.ytdlnis.util.NotificationUtil;
 import com.google.android.material.appbar.MaterialToolbar;
-import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
-import java.util.Date;
 
 public class CustomCommandActivity extends AppCompatActivity {
     private static final String TAG = "CustomCommandActivity";
@@ -40,6 +35,7 @@ public class CustomCommandActivity extends AppCompatActivity {
     private ExtendedFloatingActionButton fab;
     private ExtendedFloatingActionButton cancelFab;
     private IDownloaderService iDownloaderService;
+    private ScrollView scrollView;
     Context context;
 
     private final ServiceConnection serviceConnection = new ServiceConnection() {
@@ -74,18 +70,23 @@ public class CustomCommandActivity extends AppCompatActivity {
 
         public void onDownloadProgress(DownloadInfo info) {
             output.append("\n" + info.getOutputLine());
+            scrollView.scrollTo(0, scrollView.getMaxScrollAmount());
         }
 
         public void onDownloadError(DownloadInfo info) {
             output.append("\n" + info.getOutputLine());
+            scrollView.scrollTo(0, scrollView.getMaxScrollAmount());
+            input.setText("yt-dlp ");
             input.setEnabled(true);
             swapFabs();
         }
 
         public void onDownloadEnd(DownloadInfo info) {
             output.append(info.getOutputLine());
+            scrollView.scrollTo(0, scrollView.getMaxScrollAmount());
             // MEDIA SCAN
             MediaScannerConnection.scanFile(context, new String[]{"/storage"}, null, null);
+            input.setText("yt-dlp ");
             input.setEnabled(true);
             swapFabs();
         }
@@ -102,6 +103,7 @@ public class CustomCommandActivity extends AppCompatActivity {
         setContentView(R.layout.activity_custom_command);
 
         context = getBaseContext();
+        scrollView = findViewById(R.id.custom_command_scrollview);
         topAppBar = findViewById(R.id.custom_command_toolbar);
         topAppBar.setNavigationOnClickListener(view -> onBackPressed());
         output = findViewById(R.id.custom_command_output);
@@ -148,7 +150,6 @@ public class CustomCommandActivity extends AppCompatActivity {
     }
 
     public void stopDownloadService(){
-        Log.e(TAG, String.valueOf(isDownloadServiceRunning));
         if(!isDownloadServiceRunning) return;
         iDownloaderService.removeActivity(this);
         context.getApplicationContext().unbindService(serviceConnection);

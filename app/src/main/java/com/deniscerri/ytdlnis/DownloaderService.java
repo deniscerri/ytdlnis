@@ -7,15 +7,14 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.media.MediaScannerConnection;
 import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.deniscerri.ytdlnis.database.Video;
+import com.deniscerri.ytdlnis.page.CustomCommandActivity;
 import com.deniscerri.ytdlnis.service.DownloadInfo;
 import com.deniscerri.ytdlnis.service.IDownloaderListener;
 import com.deniscerri.ytdlnis.service.IDownloaderService;
@@ -24,6 +23,7 @@ import com.yausername.youtubedl_android.DownloadProgressCallback;
 import com.yausername.youtubedl_android.YoutubeDL;
 import com.yausername.youtubedl_android.YoutubeDLRequest;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -31,7 +31,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -48,15 +47,19 @@ public class DownloaderService extends Service {
     private final NotificationUtil notificationUtil = App.notificationUtil;
     private Context context;
     public String downloadProcessID = "processID";
-
     private static final String TAG = "DownloaderService";
+    private int downloadNotificationID;
 
     private final DownloadProgressCallback callback = (progress, etaInSeconds, line) -> {
         downloadInfo.setProgress((int) progress);
         downloadInfo.setOutputLine(line);
         downloadInfo.setDownloadQueue(downloadQueue);
-        notificationUtil.updateDownloadNotification(NotificationUtil.DOWNLOAD_NOTIFICATION_ID,
-                line, (int) progress, downloadQueue.size(), downloadQueue.peek().getTitle());
+        String title = getString(R.string.running_ytdlp_command);
+        if (!downloadQueue.isEmpty()){
+            title = downloadQueue.peek().getTitle();
+        }
+        notificationUtil.updateDownloadNotification(downloadNotificationID,
+                line, (int) progress, downloadQueue.size(), title);
 
         try{
             for (Activity activity: activities.keySet()){
@@ -79,8 +82,8 @@ public class DownloaderService extends Service {
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
-        Intent theIntent = new Intent(this, MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, theIntent, PendingIntent.FLAG_IMMUTABLE);
+        Intent theIntent;
+        PendingIntent pendingIntent;
 
         if(intent.getBooleanExtra("rebind", false)){
             return binder;
@@ -89,20 +92,28 @@ public class DownloaderService extends Service {
         int id = intent.getIntExtra("id", 1);
         switch (id){
             case NotificationUtil.DOWNLOAD_NOTIFICATION_ID:
-                ArrayList queue = (ArrayList<Video>) intent.getSerializableExtra("queue");
+                theIntent = new Intent(this, MainActivity.class);
+                pendingIntent = PendingIntent.getActivity(this, 0, theIntent, PendingIntent.FLAG_IMMUTABLE);
+                downloadNotificationID = id;
+
+                ArrayList<? extends Video> queue = intent.getParcelableArrayListExtra("queue");
                 downloadQueue = new LinkedList<>();
                 downloadQueue.addAll(queue);
                 downloadInfo.setDownloadQueue(downloadQueue);
 
                 String title = downloadInfo.getVideo().getTitle();
                 Notification notification = App.notificationUtil.createDownloadServiceNotification(pendingIntent,title);
-                startForeground(NotificationUtil.DOWNLOAD_NOTIFICATION_ID, notification);
+                startForeground(downloadNotificationID, notification);
                 startDownload(downloadQueue);
                 break;
             case NotificationUtil.COMMAND_DOWNLOAD_NOTIFICATION_ID:
+                theIntent = new Intent(this, CustomCommandActivity.class);
+                pendingIntent = PendingIntent.getActivity(this, 0, theIntent, PendingIntent.FLAG_IMMUTABLE);
+                downloadNotificationID = id;
+
                 String command = intent.getStringExtra("command");
                 Notification command_notification = App.notificationUtil.createDownloadServiceNotification(pendingIntent,getString(R.string.running_ytdlp_command));
-                startForeground(NotificationUtil.COMMAND_DOWNLOAD_NOTIFICATION_ID, command_notification);
+                startForeground(downloadNotificationID, command_notification);
                 startCommandDownload(command);
                 break;
         }
@@ -180,6 +191,17 @@ public class DownloaderService extends Service {
             return;
         }
 
+        try{
+            for (Activity activity: activities.keySet()){
+                activity.runOnUiThread(() -> {
+                    IDownloaderListener callback = activities.get(activity);
+                    callback.onDownloadStart(downloadInfo);
+                });
+            }
+        }catch (Exception err){
+            err.printStackTrace();
+        }
+
 
         String url = video.getURL();
         YoutubeDLRequest request = new YoutubeDLRequest(url);
@@ -201,29 +223,40 @@ public class DownloaderService extends Service {
         if(!limitRate.equals("")) request.addOption("-r", limitRate);
 
         boolean writeThumbnail = sharedPreferences.getBoolean("write_thumbnail", false);
-        if(writeThumbnail) request.addOption("--write-thumbnail");
+        if(writeThumbnail) {
+            request.addOption("--write-thumbnail");
+            request.addOption("--convert-thumbnails", "png");
+        }
 
         request.addOption("--no-mtime");
 
-        if (type.equals("mp3")) {
-            boolean removeNonMusic = sharedPreferences.getBoolean("remove_non_music", false);
-            if(removeNonMusic){
-                request.addOption("--sponsorblock-remove", "all");
-            }
-            request.addOption("--postprocessor-args", "-write_id3v1 1 -id3v2_version 3");
-            request.addOption("--add-metadata");
+        if (type.equals("audio")) {
             request.addOption("-x");
             String format = sharedPreferences.getString("audio_format", "");
             request.addOption("--audio-format", format);
-
+            request.addOption("--embed-metadata");
             if(format.equals("mp3") || format.equals("m4a") || format.equals("flac")){
                 boolean embedThumb = sharedPreferences.getBoolean("embed_thumbnail", false);
                 if(embedThumb){
                     request.addOption("--embed-thumbnail");
+                    request.addOption("--convert-thumbnails", "png");
+                    try{
+                        File config = new File(getCacheDir(), "config.txt");
+                        String config_data = "--ppa \"ffmpeg: -c:v png -vf crop=\\\"'if(gt(ih,iw),iw,ih)':'if(gt(iw,ih),ih,iw)'\\\"\"";
+                        FileOutputStream stream = new FileOutputStream(config);
+                        stream.write(config_data.getBytes());
+                        stream.close();
+                        request.addOption("--config", config.getAbsolutePath());
+                    }catch(Exception ignored){}
                 }
             }
 
-        } else if (type.equals("mp4")) {
+            boolean removeNonMusic = sharedPreferences.getBoolean("remove_non_music", false);
+            if(removeNonMusic){
+                request.addOption("--sponsorblock-remove", "all");
+            }
+
+        } else if (type.equals("video")) {
             boolean addChapters = sharedPreferences.getBoolean("add_chapters", false);
             if(addChapters){
                 request.addOption("--sponsorblock-mark", "all");
@@ -251,6 +284,7 @@ public class DownloaderService extends Service {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(youtubeDLResponse -> {
                     downloadInfo.setDownloadPath(youtubeDLDir.getAbsolutePath());
+
                     try{
                         for (Activity activity: activities.keySet()){
                             activity.runOnUiThread(() -> {
@@ -283,6 +317,7 @@ public class DownloaderService extends Service {
 
                     // SCAN NEXT IN QUEUE
                     videos.remove();
+                    downloadInfo.setDownloadQueue(videos);
                     startDownload(videos);
                 });
         compositeDisposable.add(disposable);
@@ -341,6 +376,7 @@ public class DownloaderService extends Service {
                             activity.runOnUiThread(() -> {
                                 IDownloaderListener callback = activities.get(activity);
                                 callback.onDownloadError(downloadInfo);
+                                callback.onDownloadServiceEnd();
                             });
                         }
                     }catch (Exception err){
@@ -355,7 +391,7 @@ public class DownloaderService extends Service {
     private File getDownloadLocation(String type) {
         SharedPreferences sharedPreferences = context.getSharedPreferences("root_preferences", Activity.MODE_PRIVATE);
         String downloadsDir;
-        if (type.equals("mp3")) {
+        if (type.equals("audio")) {
             downloadsDir = sharedPreferences.getString("music_path", getString(R.string.music_path));
         } else {
             downloadsDir = sharedPreferences.getString("video_path", getString(R.string.video_path));

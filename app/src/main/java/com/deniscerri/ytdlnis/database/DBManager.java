@@ -78,10 +78,10 @@ public class DBManager extends SQLiteOpenHelper {
 
         String where = "";
         switch(video.getDownloadedType()){
-            case "mp3":
+            case "audio":
                 where = " SET downloadedAudio=0 WHERE downloadedAudio=1 AND videoId='" + video.getVideoId()+"'";
                 break;
-            case "mp4":
+            case "video":
                 where = " SET downloadedVideo=0 WHERE downloadedVideo=1 AND videoId='" + video.getVideoId()+"'";
                 break;
         }
@@ -198,10 +198,10 @@ public class DBManager extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
 
         switch (type){
-            case "mp3":
+            case "audio":
                 values.put(downloadedAudio, 1);
                 break;
-            case "mp4":
+            case "video":
                 values.put(downloadedVideo, 1);
                 break;
         }

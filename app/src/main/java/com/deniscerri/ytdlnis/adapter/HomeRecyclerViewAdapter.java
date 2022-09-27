@@ -95,12 +95,12 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
         LinearLayout buttonLayout = card.findViewById(R.id.download_button_layout);
 
         MaterialButton musicBtn = buttonLayout.findViewById(R.id.download_music);
-        musicBtn.setTag(videoID + "##mp3");
-        musicBtn.setOnClickListener(view -> onItemClickListener.onButtonClick(position, "mp3"));
+        musicBtn.setTag(videoID + "##audio");
+        musicBtn.setOnClickListener(view -> onItemClickListener.onButtonClick(position, "audio"));
 
         MaterialButton videoBtn = buttonLayout.findViewById(R.id.download_video);
-        videoBtn.setTag(videoID + "##mp4");
-        videoBtn.setOnClickListener(view -> onItemClickListener.onButtonClick(position, "mp4"));
+        videoBtn.setTag(videoID + "##video");
+        videoBtn.setOnClickListener(view -> onItemClickListener.onButtonClick(position, "video"));
 
 
         // PROGRESS BAR ----------------------------------------------------
@@ -143,7 +143,7 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
     private void checkCard(MaterialCardView card, int position){
         if(card.isChecked()){
             card.setStrokeWidth(0);
-            checkedVideos.remove(position);
+            checkedVideos.remove(Integer.valueOf(position));
         }else{
             card.setStrokeWidth(5);
             checkedVideos.add(position);
@@ -167,6 +167,15 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
         if(reset || size == 0) clear();
         videoList.addAll(list);
         notifyItemRangeInserted(size, videoList.size());
+    }
+
+    public void clearCheckedVideos(){
+        int size = checkedVideos.size();
+        for (int i = 0; i < size; i++){
+            int position = checkedVideos.get(i);
+            notifyItemChanged(position);
+        }
+        checkedVideos.clear();
     }
 
     public void clear(){

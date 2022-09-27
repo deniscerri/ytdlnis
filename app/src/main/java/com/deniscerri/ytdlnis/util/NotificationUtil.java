@@ -38,14 +38,14 @@ public class NotificationUtil {
             //gui downloads
             CharSequence name = context.getString(R.string.download_notification_channel_name);
             String description = context.getString(R.string.download_notification_channel_description);
-            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            int importance = NotificationManager.IMPORTANCE_LOW;
             NotificationChannel channel = new NotificationChannel(DOWNLOAD_SERVICE_CHANNEL_ID, name, importance);
             channel.setDescription(description);
             notificationManager.createNotificationChannel(channel);
 
             //command downloads
-            name = "Command Downloads";
-            description = "Notification that shows the download progress of a yt-dlp command";
+            name = context.getString(R.string.command_download_notification_channel_name);
+            description = context.getString(R.string.command_download_notification_channel_description);
             channel = new NotificationChannel(COMMAND_DOWNLOAD_SERVICE_CHANNEL_ID, name, importance);
             channel.setDescription(description);
             notificationManager.createNotificationChannel(channel);
@@ -61,7 +61,6 @@ public class NotificationUtil {
                 .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), android.R.drawable.stat_sys_download))
                 .setContentText("")
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setOnlyAlertOnce(true)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setProgress(PROGRESS_MAX, PROGRESS_CURR, false)
                 .setContentIntent(pendingIntent)
@@ -73,12 +72,12 @@ public class NotificationUtil {
 
     public void updateDownloadNotification(int id, String desc, int progress, int queue, String title){
         String contentText = "";
-        if (queue > 1) contentText += queue - 1 + " item(s) left\n";
-        contentText += desc.replaceAll("\\[.*?\\]", "");
+        if (queue > 1) contentText += queue - 1 + " " + context.getString(R.string.items_left) + "\n";
+        contentText += desc.replaceAll("\\[.*?\\] ", "");
 
         notificationBuilder.setProgress(100, (int) progress, false)
-                .setContentTitle(title)
-                .setStyle(new NotificationCompat.BigTextStyle().bigText(contentText));
+            .setContentTitle(title)
+            .setStyle(new NotificationCompat.BigTextStyle().bigText(contentText));
         notificationManager.notify(id, notificationBuilder.build());
     }
 

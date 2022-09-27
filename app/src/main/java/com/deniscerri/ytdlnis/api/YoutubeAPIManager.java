@@ -179,8 +179,8 @@ public class YoutubeAPIManager {
             String duration = obj.getString("duration");
             String thumb = obj.getString("thumb");
 
-            int downloadedAudio = dbManager.checkDownloaded(id, "mp3");
-            int downloadedVideo = dbManager.checkDownloaded(id, "mp4");
+            int downloadedAudio = dbManager.checkDownloaded(id, "audio");
+            int downloadedVideo = dbManager.checkDownloaded(id, "video");
             String url = "https://www.youtube.com/watch?v=" + id;
             int isPLaylist = 0;
 
@@ -270,8 +270,8 @@ public class YoutubeAPIManager {
                     streamInfo.getUploader(),
                     formatIntegerDuration(streamInfo.getDuration()),
                     streamInfo.getThumbnail(),
-                    dbManager.checkDownloaded(id, "mp3"),
-                    dbManager.checkDownloaded(id, "mp4"),
+                    dbManager.checkDownloaded(id, "audio"),
+                    dbManager.checkDownloaded(id, "video"),
                     0,
                     streamInfo.getWebpageUrlBasename()
             );
@@ -335,7 +335,7 @@ public class YoutubeAPIManager {
                     tmp = "0" + tmp;
                 }
                 if (c == 'D'){
-                    hours = String.valueOf(Integer.valueOf(tmp) * 24);
+                    hours = String.valueOf(Integer.parseInt(tmp) * 24);
                 }else if(c == 'T'){
                     continue;
                 }else if(c == 'H'){
