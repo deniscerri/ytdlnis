@@ -246,7 +246,7 @@ public class HistoryFragment extends Fragment implements HistoryRecyclerViewAdap
     private void copyLinkToClipBoard(int position){
         String url = historyObjects.get(position).getURL();
         ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
-        ClipData clip = ClipData.newPlainText(getString(R.string.youtube_url), url);
+        ClipData clip = ClipData.newPlainText(getString(R.string.url), url);
         clipboard.setPrimaryClip(clip);
         if(bottomSheet != null) bottomSheet.hide();
         Toast.makeText(context, getString(R.string.link_copied_to_clipboard), Toast.LENGTH_SHORT).show();

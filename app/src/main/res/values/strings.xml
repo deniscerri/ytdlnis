@@ -95,7 +95,7 @@
     <string name="items_left">item(s) left</string>
     <string name="history_is_empty">History is Empty!</string>
     <string name="you_are_going_to_delete">You are going to delete</string>
-    <string name="youtube_url">Youtube URL</string>
+    <string name="url">URL</string>
     <string name="link_copied_to_clipboard">Link copied to clipboard</string>
     <string name="api_key">YouTube API Key</string>
     <string name="api_key_summary">Use an api key to get faster results from YouTube</string>

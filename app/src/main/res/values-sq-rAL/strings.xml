@@ -90,4 +90,10 @@
     <string name="command_download_notification_channel_name">Shkarkimet e Skedarëve nga Komanda</string>
     <string name="command_download_notification_channel_description">Njoftimi i cili tregon progresin e shkarkimeve te skedarëve audio dhe video nga komanda</string>
     <string name="items_left">element(e) në rradhë</string>
+    <string name="history_is_empty">Historia është bosh!</string>
+    <string name="you_are_going_to_delete">Jeni duke fshirë</string>
+    <string name="url">URL</string>
+    <string name="link_copied_to_clipboard">Linku u kopjua</string>
+    <string name="api_key">Çelësi API i YouTube</string>
+    <string name="api_key_summary">Përdor një çelës api për të marrë rezultate më të shpejta nga YouTube</string>
 </resources>
