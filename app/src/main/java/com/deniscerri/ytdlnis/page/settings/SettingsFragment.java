@@ -29,6 +29,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     Preference videoPath;
     Preference commandPath;
 
+    EditTextPreference apiKey;
     SeekBarPreference concurrentFragments;
     EditTextPreference limitRate;
     SwitchPreferenceCompat aria2;
@@ -70,6 +71,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         videoPath = findPreference("video_path");
         commandPath = findPreference("command_path");
 
+        apiKey = findPreference("api_key");
         concurrentFragments = findPreference("concurrent_fragments");
         limitRate = findPreference("limit_rate");
         aria2 = findPreference("aria2");
@@ -96,6 +98,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             editor.putString("command_path", getString(R.string.command_path));
         }
 
+        editor.putString("api_key", apiKey.getText());
         editor.putInt("concurrent_fragments", concurrentFragments.getValue());
         editor.putString("limit_rate", limitRate.getText());
         editor.putBoolean("aria2", aria2.isChecked());
@@ -133,6 +136,12 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         commandPath.setOnPreferenceClickListener(preference -> {
             Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
             commandPathResultLauncher.launch(intent);
+            return true;
+        });
+
+        apiKey.setOnPreferenceChangeListener((preference, newValue) -> {
+            editor.putString("api_key", String.valueOf(newValue));
+            editor.apply();
             return true;
         });
 

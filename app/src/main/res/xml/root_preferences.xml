@@ -23,6 +23,13 @@
     </PreferenceCategory>
 
     <PreferenceCategory app:title="@string/downloading">
+        <EditTextPreference
+            android:icon="@drawable/ic_key"
+            app:key="api_key"
+            app:defaultValue=""
+            app:summary="@string/api_key_summary"
+            app:title="@string/api_key" />
+
         <SeekBarPreference
             app:dependency="aria2"
             android:defaultValue="1"

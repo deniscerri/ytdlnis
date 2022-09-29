@@ -16,6 +16,7 @@ public class Video implements Parcelable {
     private int downloadedVideo;
     private String downloadedTime;
     private int isPlaylistItem;
+    private String downloadPath;
     private String website;
 
     // RESULTS OBJECT
@@ -34,17 +35,18 @@ public class Video implements Parcelable {
     }
 
     //HISTORY OBJECT
-    public Video(int id, String videoId, String title, String author, String duration, String thumb,
-                  String downloadedType, String downloadedTime, int isPlaylistItem) {
+    public Video(int id, String url, String title, String author, String duration, String thumb,
+                  String downloadedType, String downloadedTime, String downloadPath, String website) {
         this.id = id;
-        this.videoId = videoId;
+        this.url = url;
         this.title = title;
         this.author = author;
         this.duration = duration;
         this.thumb = thumb;
         this.downloadedType = downloadedType;
         this.downloadedTime = downloadedTime;
-        this.isPlaylistItem = isPlaylistItem;
+        this.downloadPath = downloadPath;
+        this.website = website;
     }
 
 
@@ -61,6 +63,7 @@ public class Video implements Parcelable {
         downloadedVideo = in.readInt();
         downloadedTime = in.readString();
         isPlaylistItem = in.readInt();
+        downloadPath = in.readString();
         website = in.readString();
     }
 
@@ -148,6 +151,54 @@ public class Video implements Parcelable {
 
     public void setWebsite(String site){ this.website = site; }
 
+    public void setVideoId(String videoId) {
+        this.videoId = videoId;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public void setDuration(String duration) {
+        this.duration = duration;
+    }
+
+    public void setThumb(String thumb) {
+        this.thumb = thumb;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public int getDownloadedAudio() {
+        return downloadedAudio;
+    }
+
+    public void setDownloadedAudio(int downloadedAudio) {
+        this.downloadedAudio = downloadedAudio;
+    }
+
+    public int getDownloadedVideo() {
+        return downloadedVideo;
+    }
+
+    public void setDownloadedVideo(int downloadedVideo) {
+        this.downloadedVideo = downloadedVideo;
+    }
+
+    public String getDownloadPath() {
+        return downloadPath;
+    }
+
+    public void setDownloadPath(String downloadPath) {
+        this.downloadPath = downloadPath;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -167,6 +218,7 @@ public class Video implements Parcelable {
         parcel.writeInt(downloadedVideo);
         parcel.writeString(downloadedTime);
         parcel.writeInt(isPlaylistItem);
+        parcel.writeString(downloadPath);
         parcel.writeString(website);
     }
 

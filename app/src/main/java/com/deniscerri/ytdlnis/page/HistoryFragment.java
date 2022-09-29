@@ -44,6 +44,7 @@ public class HistoryFragment extends Fragment implements HistoryRecyclerViewAdap
     private View fragmentView;
     private DBManager dbManager;
     Context context;
+    Context fragmentContext;
     private LayoutInflater layoutinflater;
     private ShimmerFrameLayout shimmerCards;
     private MaterialToolbar topAppBar;
@@ -52,10 +53,8 @@ public class HistoryFragment extends Fragment implements HistoryRecyclerViewAdap
     private BottomSheetDialog bottomSheet;
     private Handler uiHandler;
     private RelativeLayout no_results;
-
     private ArrayList<Video> historyObjects;
     private static final String TAG = "HistoryFragment";
-    private static final String youtubeVideoURL = "https://www.youtube.com/watch?v=";
 
     public HistoryFragment() {
     }
@@ -79,7 +78,8 @@ public class HistoryFragment extends Fragment implements HistoryRecyclerViewAdap
                              Bundle savedInstanceState) {
 
         fragmentView = inflater.inflate(R.layout.fragment_history, container, false);
-        context = fragmentView.getContext();
+        context = fragmentView.getContext().getApplicationContext();
+        fragmentContext = fragmentView.getContext();
         layoutinflater = LayoutInflater.from(context);
         shimmerCards = fragmentView.findViewById(R.id.shimmer_history_framelayout);
         topAppBar = fragmentView.findViewById(R.id.history_toolbar);
@@ -181,29 +181,27 @@ public class HistoryFragment extends Fragment implements HistoryRecyclerViewAdap
         topAppBar.setOnClickListener(view -> scrollToTop());
 
         topAppBar.setOnMenuItemClickListener((MenuItem m) -> {
-            switch (m.getItemId()){
-                case R.id.delete_history:
-                    if(historyObjects.size() == 0){
-                        Toast.makeText(context, "History is Empty!", Toast.LENGTH_SHORT).show();
-                        return true;
-                    }
+            int itemID = m.getItemId();
+            if(itemID == R.id.delete_history){
+                if(historyObjects.size() == 0){
+                    Toast.makeText(context, R.string.history_is_empty, Toast.LENGTH_SHORT).show();
+                    return true;
+                }
 
-                    MaterialAlertDialogBuilder delete_dialog = new MaterialAlertDialogBuilder(context);
-                    delete_dialog.setTitle(getString(R.string.confirm_delete_history));
-                    delete_dialog.setMessage(getString(R.string.confirm_delete_history_desc));
-                    delete_dialog.setNegativeButton(getString(R.string.cancel), (dialogInterface, i) -> {
-                        dialogInterface.cancel();
-                    });
-                    delete_dialog.setPositiveButton(getString(R.string.ok), (dialogInterface, i) -> {
-                        dbManager.clearHistory();
-                        historyRecyclerViewAdapter.clear();
-                        no_results.setVisibility(View.VISIBLE);
-                    });
-                    delete_dialog.show();
-                    return true;
-                case R.id.refresh_history:
-                    initCards();
-                    return true;
+                MaterialAlertDialogBuilder delete_dialog = new MaterialAlertDialogBuilder(context);
+                delete_dialog.setTitle(getString(R.string.confirm_delete_history));
+                delete_dialog.setMessage(getString(R.string.confirm_delete_history_desc));
+                delete_dialog.setNegativeButton(getString(R.string.cancel), (dialogInterface, i) -> {
+                    dialogInterface.cancel();
+                });
+                delete_dialog.setPositiveButton(getString(R.string.ok), (dialogInterface, i) -> {
+                    dbManager.clearHistory();
+                    historyRecyclerViewAdapter.clear();
+                    no_results.setVisibility(View.VISIBLE);
+                });
+                delete_dialog.show();
+            }else if(itemID == R.id.refresh_history){
+                initCards();
             }
             return true;
         });
@@ -213,16 +211,12 @@ public class HistoryFragment extends Fragment implements HistoryRecyclerViewAdap
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        switch (id){
-            case R.id.bottomsheet_remove_button:
-                removeHistoryItem((Integer) v.getTag());
-                break;
-            case R.id.bottom_sheet_link:
-                copyLinkToClipBoard((Integer) v.getTag());
-                break;
-            case R.id.bottomsheet_open_link_button:
-                openLinkIntent((Integer) v.getTag());
-                break;
+        if(id == R.id.bottomsheet_remove_button){
+            removeHistoryItem((Integer) v.getTag());
+        }else if(id == R.id.bottom_sheet_link){
+            copyLinkToClipBoard((Integer) v.getTag());
+        }else if(id == R.id.bottomsheet_open_link_button){
+            openLinkIntent((Integer) v.getTag());
         }
     }
 
@@ -232,7 +226,7 @@ public class HistoryFragment extends Fragment implements HistoryRecyclerViewAdap
         Video v = historyObjects.get(position);
         MaterialAlertDialogBuilder delete_dialog = new MaterialAlertDialogBuilder(context);
         delete_dialog.setTitle(getString(R.string.confirm_delete_history));
-        delete_dialog.setMessage("You are going to delete \""+v.getTitle()+"\"!");
+        delete_dialog.setMessage(getString(R.string.you_are_going_to_delete) + " \""+v.getTitle()+"\"!");
         delete_dialog.setNegativeButton(getString(R.string.cancel), (dialogInterface, i) -> {
             dialogInterface.cancel();
         });
@@ -250,16 +244,16 @@ public class HistoryFragment extends Fragment implements HistoryRecyclerViewAdap
     }
 
     private void copyLinkToClipBoard(int position){
-        String url = youtubeVideoURL + historyObjects.get(position).getVideoId();
+        String url = historyObjects.get(position).getURL();
         ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
-        ClipData clip = ClipData.newPlainText("Youtube URL", url);
+        ClipData clip = ClipData.newPlainText(getString(R.string.youtube_url), url);
         clipboard.setPrimaryClip(clip);
         if(bottomSheet != null) bottomSheet.hide();
-        Toast.makeText(context, "Link copied to clipboard", Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, getString(R.string.link_copied_to_clipboard), Toast.LENGTH_SHORT).show();
     }
 
     private void openLinkIntent(int position){
-        String url = youtubeVideoURL + historyObjects.get(position).getVideoId();
+        String url =historyObjects.get(position).getURL();
         Intent i = new Intent(Intent.ACTION_VIEW);
         i.setData(Uri.parse(url));
         if(bottomSheet != null) bottomSheet.hide();
@@ -268,7 +262,7 @@ public class HistoryFragment extends Fragment implements HistoryRecyclerViewAdap
 
     @Override
     public void onCardClick(int position) {
-        bottomSheet = new BottomSheetDialog(context);
+        bottomSheet = new BottomSheetDialog(fragmentContext);
         bottomSheet.requestWindowFeature(Window.FEATURE_NO_TITLE);
         bottomSheet.setContentView(R.layout.history_bottom_sheet);
         Video video = historyObjects.get(position);
@@ -280,7 +274,7 @@ public class HistoryFragment extends Fragment implements HistoryRecyclerViewAdap
         author.setText(video.getAuthor());
 
         Button link = bottomSheet.findViewById(R.id.bottom_sheet_link);
-        String url = youtubeVideoURL+video.getVideoId();
+        String url = video.getURL();
         link.setText(url);
         link.setTag(position);
         link.setOnClickListener(this);

@@ -15,7 +15,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -29,7 +28,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.deniscerri.ytdlnis.MainActivity;
 import com.deniscerri.ytdlnis.R;
 import com.deniscerri.ytdlnis.adapter.HomeRecyclerViewAdapter;
-import com.deniscerri.ytdlnis.api.YoutubeAPIManager;
+import com.deniscerri.ytdlnis.util.InfoUtil;
 import com.deniscerri.ytdlnis.database.DBManager;
 import com.deniscerri.ytdlnis.database.Video;
 import com.deniscerri.ytdlnis.service.DownloadInfo;
@@ -50,7 +49,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -68,6 +66,7 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
     private CoordinatorLayout homeFabs;
     private BottomSheetDialog bottomSheet;
     Context context;
+    Context fragmentContext;
     Activity activity;
     private MaterialToolbar topAppBar;
 
@@ -76,7 +75,7 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
     private ArrayList<Video> resultObjects;
     public ArrayList<Video> selectedObjects;
     private DBManager dbManager;
-    private YoutubeAPIManager youtubeAPIManager;
+    private InfoUtil infoUtil;
     private ArrayList<Video> downloadQueue;
     MainActivity mainActivity;
 
@@ -147,9 +146,6 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
                     }
                 }
 
-
-                addToHistory(item, new Date());
-                updateDownloadStatusOnResult(item, type);
                 downloading = false;
                 topAppBar.getMenu().findItem(R.id.cancel_download).setVisible(false);
 
@@ -166,6 +162,8 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
                 for (int i = 0; i < files.size(); i++) paths[i] = files.get(i).getAbsolutePath();
 
                 MediaScannerConnection.scanFile(context, paths, null, null);
+                addToHistory(item, new Date(), paths);
+                updateDownloadStatusOnResult(item, type);
                 mainActivity.updateHistoryFragment();
             }catch(Exception ignored){}
         }
@@ -200,6 +198,7 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
         // Inflate the layout for this fragment
         fragmentView = inflater.inflate(R.layout.fragment_home, container, false);
         context = fragmentView.getContext().getApplicationContext();
+        fragmentContext = fragmentView.getContext();
         activity = getActivity();
         mainActivity = (MainActivity) activity;
 
@@ -212,8 +211,6 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
         homeRecyclerViewAdapter = new HomeRecyclerViewAdapter(resultObjects, this, activity);
         recyclerView.setAdapter(homeRecyclerViewAdapter);
 
-
-        youtubeAPIManager = new YoutubeAPIManager(context);
         initMenu();
 
         if (inputQuery != null) {
@@ -253,10 +250,10 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
                 Handler uiHandler = new Handler(Looper.getMainLooper());
                 dbManager = new DBManager(context);
                 resultObjects = dbManager.getResults();
-
                 if (resultObjects.size() == 0) {
                     try {
-                        resultObjects = youtubeAPIManager.getTrending(context);
+                        infoUtil = new InfoUtil(context);
+                        resultObjects = infoUtil.getTrending(context);
                     } catch (Exception e) {
                         Log.e(TAG, e.toString());
                     }
@@ -372,8 +369,7 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
         shimmerCards.startShimmer();
         shimmerCards.setVisibility(View.VISIBLE);
         homeRecyclerViewAdapter.clear();
-        Log.e(TAG, String.valueOf(homeRecyclerViewAdapter.getItemCount()));
-
+        infoUtil = new InfoUtil(context);
         dbManager = new DBManager(context);
         scrollToTop();
 
@@ -405,7 +401,7 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
                         @Override
                         public void run() {
                             try {
-                                resultObjects = youtubeAPIManager.search(query);
+                                resultObjects = infoUtil.search(query);
                             } catch (Exception e) {
                                 Log.e(TAG, e.toString());
                             }
@@ -445,7 +441,7 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
                         public void run() {
                             try {
                                 resultObjects.clear();
-                                resultObjects.add(youtubeAPIManager.getVideo(query));
+                                resultObjects.add(infoUtil.getVideo(query));
                             } catch (Exception e) {
                                 Log.e(TAG, e.toString());
                             }
@@ -480,7 +476,7 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
                                 resultObjects.clear();
                                 homeRecyclerViewAdapter.setVideoList(new ArrayList<>(), true);
                                 do {
-                                    YoutubeAPIManager.PlaylistTuple tmp = youtubeAPIManager.getPlaylist(query, nextPageToken);
+                                    InfoUtil.PlaylistTuple tmp = infoUtil.getPlaylist(query, nextPageToken);
                                     ArrayList<Video> tmp_vids = tmp.getVideos();
                                     String tmp_token = tmp.getNextPageToken();
                                     resultObjects.addAll(tmp_vids);
@@ -520,9 +516,9 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
                         public void run() {
                             try {
                                 resultObjects.clear();
-                                Video video = youtubeAPIManager.getFromYTDL(query);
+                                ArrayList<Video> video = infoUtil.getFromYTDL(query);
                                 if (video != null) {
-                                    resultObjects.add(video);
+                                    resultObjects.addAll(video);
                                     dbManager.clearResults();
                                     dbManager.addToResults(resultObjects);
                                 }
@@ -591,7 +587,7 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
     }
 
 
-    public void addToHistory(Video video, Date date) {
+    public void addToHistory(Video video, Date date, String[] paths) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         int day = cal.get(Calendar.DAY_OF_MONTH);
@@ -602,10 +598,18 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
         String time = formatter.format(date);
         String downloadedTime = day + " " + month + " " + year + " " + time;
 
+        String path = "";
+        try{
+            path = paths[0];
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
         if (video != null) {
             dbManager = new DBManager(context);
             try {
                 video.setDownloadedTime(downloadedTime);
+                video.setDownloadPath(path);
                 dbManager.addToHistory(video);
             } catch (Exception ignored) {
             }
@@ -682,7 +686,7 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
                 selectedObjects = new ArrayList<>();
                 downloadFabs.setVisibility(View.GONE);
 
-                bottomSheet = new BottomSheetDialog(context);
+                bottomSheet = new BottomSheetDialog(fragmentContext);
                 bottomSheet.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 bottomSheet.setContentView(R.layout.home_download_all_bottom_sheet);
 

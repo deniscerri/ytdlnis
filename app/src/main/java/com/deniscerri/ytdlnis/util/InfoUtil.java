@@ -1,8 +1,9 @@
-package com.deniscerri.ytdlnis.api;
+package com.deniscerri.ytdlnis.util;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
 import android.text.Html;
 import android.util.Log;
 import android.widget.Toast;
@@ -12,8 +13,6 @@ import com.deniscerri.ytdlnis.database.Video;
 import com.yausername.youtubedl_android.YoutubeDL;
 import com.yausername.youtubedl_android.YoutubeDLRequest;
 import com.yausername.youtubedl_android.YoutubeDLResponse;
-import com.yausername.youtubedl_android.mapper.VideoInfo;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -24,19 +23,18 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Locale;
 
-public class YoutubeAPIManager {
+public class InfoUtil {
     private static final String TAG = "API MANAGER";
     private static String countryCODE = "US";
     private ArrayList<Video> videos;
     private String key;
     private DBManager dbManager;
-    private YoutubeDLRequest youtubeDLRequest;
 
-    public YoutubeAPIManager(Context context) {
+    public InfoUtil(Context context) {
         @Nullable ApplicationInfo applicationInfo;
         try{
-            applicationInfo = context.getPackageManager().getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA);
-            key = applicationInfo.metaData.getString("ytAPIkey");
+            SharedPreferences sharedPreferences = context.getSharedPreferences("root_preferences", Activity.MODE_PRIVATE);
+            key = sharedPreferences.getString("api_key", "");
             dbManager = new DBManager(context);
 
             Thread thread = new Thread(() -> {
@@ -57,6 +55,8 @@ public class YoutubeAPIManager {
     }
 
     public ArrayList<Video> search(String query) throws JSONException{
+        if (key.isEmpty()) return getFromYTDL(query);
+
         videos = new ArrayList<>();
         //short data
         JSONObject res = genericRequest("https://youtube.googleapis.com/youtube/v3/search?part=snippet&q="+query+"&maxResults=25&regionCode="+countryCODE+"&key="+key);
@@ -104,6 +104,7 @@ public class YoutubeAPIManager {
     }
 
     public PlaylistTuple getPlaylist(String id, String nextPageToken) throws JSONException{
+        if (key.isEmpty()) return new PlaylistTuple("", getFromYTDL("https://www.youtube.com/playlist?list="+id));
         videos = new ArrayList<>();
 
         String url = "https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet&pageToken="+nextPageToken+"&maxResults=50&regionCode="+countryCODE+"&playlistId="+id+"&key="+key;
@@ -150,6 +151,8 @@ public class YoutubeAPIManager {
 
 
     public Video getVideo(String id) throws JSONException {
+        if (key.isEmpty()) return getFromYTDL("https://www.youtube.com/watch?v="+id).get(0);
+
         //short data
         JSONObject res = genericRequest("https://youtube.googleapis.com/youtube/v3/videos?part=snippet,contentDetails&id="+id+"&key="+key);
         String duration = res.getJSONArray("items").getJSONObject(0).getJSONObject("contentDetails").getString("duration");
@@ -178,10 +181,9 @@ public class YoutubeAPIManager {
 
             String duration = obj.getString("duration");
             String thumb = obj.getString("thumb");
-
-            int downloadedAudio = dbManager.checkDownloaded(id, "audio");
-            int downloadedVideo = dbManager.checkDownloaded(id, "video");
             String url = "https://www.youtube.com/watch?v=" + id;
+            int downloadedAudio = dbManager.checkDownloaded(url, "audio");
+            int downloadedVideo = dbManager.checkDownloaded(url, "video");
             int isPLaylist = 0;
 
             video = new Video(id, url, title, author, duration, thumb, downloadedAudio, downloadedVideo, isPLaylist, "youtube");
@@ -257,33 +259,74 @@ public class YoutubeAPIManager {
         return o;
     }
 
-    public Video getFromYTDL(String query){
-        Video video = null;
+    public ArrayList<Video> getFromYTDL(String query){
+        videos = new ArrayList<>();
         try {
-            VideoInfo streamInfo = YoutubeDL.getInstance().getInfo(query);
-            String id = streamInfo.getId();
+            YoutubeDLRequest request = new YoutubeDLRequest(query);
+            request.addOption("--flat-playlist");
+            request.addOption("-J");
+            request.addOption("--skip-download");
+            if (!query.contains("http")) request.addOption("--default-search",  "ytsearch25");
 
-            video = new Video(
-                    id,
-                    streamInfo.getUrl(),
-                    streamInfo.getTitle(),
-                    streamInfo.getUploader(),
-                    formatIntegerDuration(streamInfo.getDuration()),
-                    streamInfo.getThumbnail(),
-                    dbManager.checkDownloaded(id, "audio"),
-                    dbManager.checkDownloaded(id, "video"),
-                    0,
-                    streamInfo.getWebpageUrlBasename()
-            );
+            YoutubeDLResponse youtubeDLResponse = YoutubeDL.getInstance().execute(request);
+            JSONObject jsonObject = new JSONObject(youtubeDLResponse.getOut());
+
+            if(!jsonObject.has("entries")){
+                String url = jsonObject.getString("webpage_url");
+                videos.add(new Video(
+                        jsonObject.getString("id"),
+                        url,
+                        jsonObject.getString("title"),
+                        jsonObject.getString("uploader"),
+                        formatIntegerDuration(jsonObject.getInt("duration")),
+                        jsonObject.getString("thumbnail"),
+                        dbManager.checkDownloaded(url, "audio"),
+                        dbManager.checkDownloaded(url, "video"),
+                        0,
+                        jsonObject.getString("extractor"))
+                );
+            }else{
+                JSONArray jsonArray = jsonObject.getJSONArray("entries");
+
+                for (int i = 0; i < jsonArray.length(); i++){
+                    jsonObject = jsonArray.getJSONObject(i);
+                    String url = jsonObject.getString("url");
+                    String thumb = "";
+                    if (jsonObject.has("thumbnail")){
+                        thumb = jsonObject.getString("thumbnail");
+                    }else {
+                        JSONArray thumbs = jsonObject.getJSONArray("thumbnails");
+                        thumb = thumbs.getJSONObject(thumbs.length()-1).getString("url");
+                    }
+                    String website = "";
+                    if (jsonObject.has("ie_key")) website = jsonObject.getString("ie_key");
+                    else website = jsonObject.getString("extractor");
+
+                    videos.add(new Video(
+                            jsonObject.getString("id"),
+                            url,
+                            jsonObject.getString("title"),
+                            jsonObject.getString("uploader"),
+                            formatIntegerDuration(jsonObject.getInt("duration")),
+                            thumb,
+                            dbManager.checkDownloaded(url, "audio"),
+                            dbManager.checkDownloaded(url, "video"),
+                            0,
+                            website)
+                    );
+                }
+            }
 
         }catch(Exception e){
             e.printStackTrace();
         }
 
-        return video;
+        return videos;
     }
 
     public ArrayList<Video> getTrending(Context context) throws JSONException{
+        if (key.isEmpty()) return new ArrayList<>();
+
         videos = new ArrayList<>();
 
         String url = "https://www.googleapis.com/youtube/v3/videos?part=snippet&chart=mostPopular&videoCategoryId=10&regionCode="+countryCODE+"&maxResults=25&key="+key;
@@ -371,12 +414,13 @@ public class YoutubeAPIManager {
     }
 
     public String formatIntegerDuration(int dur){
+        String format = String.format(Locale.getDefault(), "%02d:%02d:%02d", (dur/3600), ((dur % 3600)/60), (dur % 60));
+        // 00:00:00
+        if (dur < 600) format = format.substring(4);
+        else if (dur < 3600) format = format.substring(3);
+        else if (dur < 36000) format = format.substring(1);
 
-        int hours = dur / 10000;
-        int minutes = (dur % 10000) / 100;
-        int seconds = dur % 100;
-
-        return String.format(Locale.ENGLISH, "%02d:%02d:%02d", hours, minutes, seconds);
+        return format;
     }
 
 //    public ArrayList<String> getSearchHints(String query){

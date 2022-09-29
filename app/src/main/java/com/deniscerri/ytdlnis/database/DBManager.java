@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class DBManager extends SQLiteOpenHelper {
 
     public static final String db_name = "ytdlnis_db";
-    public static final int db_version = 6;
+    public static final int db_version = 7;
     public static final String results_table_name = "results";
     public static final String history_table_name = "history";
     public static final String id = "id";
@@ -26,6 +26,7 @@ public class DBManager extends SQLiteOpenHelper {
     public static final String time = "time";
     public static final String isPlaylistItem = "isPlaylistItem";
     public static final String website = "website";
+    public static final String downloadPath = "downloadPath";
 
 
     public DBManager(Context context){
@@ -51,14 +52,15 @@ public class DBManager extends SQLiteOpenHelper {
 
         query = "CREATE TABLE " + history_table_name + " ("
                 + id + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + videoId + " TEXT,"
+                + url + " TEXT,"
                 + title + " TEXT,"
                 + author + " TEXT,"
                 + duration + " TEXT,"
                 + thumb + " TEXT,"
                 + type + " TEXT,"
                 + time + " TEXT,"
-                + isPlaylistItem + " INTENGER)";
+                + downloadPath + " TEXT,"
+                + website + " TEXT)";
 
         sqLiteDatabase.execSQL(query);
     }
@@ -96,7 +98,7 @@ public class DBManager extends SQLiteOpenHelper {
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
+    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVer, int newVer) {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + results_table_name);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + history_table_name);
         onCreate(sqLiteDatabase);
@@ -146,7 +148,8 @@ public class DBManager extends SQLiteOpenHelper {
                         cursor.getString(5),
                         cursor.getString(6),
                         cursor.getString(7),
-                        cursor.getInt(8)));
+                        cursor.getString(8),
+                        cursor.getString(9)));
             } while (cursor.moveToNext());
         }
 
@@ -181,13 +184,15 @@ public class DBManager extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
-        values.put(videoId, v.getVideoId());
+        values.put(url, v.getURL());
         values.put(title, v.getTitle());
         values.put(author, v.getAuthor());
         values.put(duration, v.getDuration());
         values.put(thumb, v.getThumb());
         values.put(type, v.getDownloadedType());
         values.put(time, v.getDownloadedTime());
+        values.put(downloadPath, v.getDownloadPath());
+        values.put(website, v.getWebsite());
 
         db.insert(history_table_name, null, values);
         db.close();
@@ -209,10 +214,10 @@ public class DBManager extends SQLiteOpenHelper {
         db.update(results_table_name, values, "videoId = ?", new String[]{id});
     }
 
-    public int checkDownloaded(String id, String downloadType){
+    public int checkDownloaded(String url, String downloadType){
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM " + history_table_name + " WHERE videoId='" +
-                id + "' AND type='"+downloadType + "' LIMIT 1", null);
+        Cursor cursor = db.rawQuery("SELECT * FROM " + history_table_name + " WHERE url='" +
+                url + "' AND type='"+downloadType + "' LIMIT 1", null);
 
         if(cursor.moveToFirst()){
            return 1;
