@@ -45,8 +45,7 @@
     <string name="music_editor">Music Editor</string>
     <string name="cli">Commands</string>
     <string name="more">More</string>
-    <string name="update_app">Update App</string>
-    <string name="download_latest_version">Download the latest version of the app</string>
+    <string name="update_app">Check for updates</string>
     <string name="version">Version</string>
     <string name="custom_command">Run Custom Command</string>
     <string name="write_ytdlp_command">Write yt-dlp command</string>
@@ -99,4 +98,6 @@
     <string name="link_copied_to_clipboard">Link copied to clipboard</string>
     <string name="api_key">YouTube API Key</string>
     <string name="api_key_summary">Use an api key to get faster results from YouTube</string>
+    <string name="update_app_summary">Let you know when updates are available right when you open the application</string>
+    <string name="downloads">Downloads</string>
 </resources>

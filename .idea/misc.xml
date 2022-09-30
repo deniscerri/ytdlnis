@@ -37,6 +37,7 @@
         <entry key="..\:/Users/denis/Desktop/ytdlnis/ytdlnis/app/src/main/res/xml/shortcuts.xml" value="0.13852073535699017" />
         <entry key="..\:/Users/denis/Documents/GitHub/ytdlnis/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.22" />
         <entry key="..\:/Users/denis/Documents/GitHub/ytdlnis/app/src/main/res/drawable/ic_announcement.xml" value="0.1275" />
+        <entry key="..\:/Users/denis/Documents/GitHub/ytdlnis/app/src/main/res/drawable/ic_app_icon.xml" value="0.1965" />
         <entry key="..\:/Users/denis/Documents/GitHub/ytdlnis/app/src/main/res/drawable/ic_back.xml" value="0.109" />
         <entry key="..\:/Users/denis/Documents/GitHub/ytdlnis/app/src/main/res/drawable/ic_baseline_keyboard_arrow_right_24.xml" value="0.109" />
         <entry key="..\:/Users/denis/Documents/GitHub/ytdlnis/app/src/main/res/drawable/ic_chapters.xml" value="0.109" />
@@ -45,6 +46,7 @@
         <entry key="..\:/Users/denis/Documents/GitHub/ytdlnis/app/src/main/res/drawable/ic_delete_all.xml" value="0.109" />
         <entry key="..\:/Users/denis/Documents/GitHub/ytdlnis/app/src/main/res/drawable/ic_down.xml" value="0.109" />
         <entry key="..\:/Users/denis/Documents/GitHub/ytdlnis/app/src/main/res/drawable/ic_download.xml" value="0.1275" />
+        <entry key="..\:/Users/denis/Documents/GitHub/ytdlnis/app/src/main/res/drawable/ic_downloads.xml" value="0.2395" />
         <entry key="..\:/Users/denis/Documents/GitHub/ytdlnis/app/src/main/res/drawable/ic_go_up.xml" value="0.1275" />
         <entry key="..\:/Users/denis/Documents/GitHub/ytdlnis/app/src/main/res/drawable/ic_home.xml" value="0.1275" />
         <entry key="..\:/Users/denis/Documents/GitHub/ytdlnis/app/src/main/res/drawable/ic_image.xml" value="0.109" />
@@ -70,6 +72,7 @@
         <entry key="..\:/Users/denis/Documents/GitHub/ytdlnis/app/src/main/res/drawable/ic_video_stopped.xml" value="0.14" />
         <entry key="..\:/Users/denis/Documents/GitHub/ytdlnis/app/src/main/res/drawable/transparent_background.xml" value="0.1965" />
         <entry key="..\:/Users/denis/Documents/GitHub/ytdlnis/app/src/main/res/layout/activity_custom_command.xml" value="0.15940685820203893" />
+        <entry key="..\:/Users/denis/Documents/GitHub/ytdlnis/app/src/main/res/layout/activity_download_queue.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/denis/Documents/GitHub/ytdlnis/app/src/main/res/layout/activity_main.xml" value="0.18" />
         <entry key="..\:/Users/denis/Documents/GitHub/ytdlnis/app/src/main/res/layout/activity_settings.xml" value="0.16875" />
         <entry key="..\:/Users/denis/Documents/GitHub/ytdlnis/app/src/main/res/layout/download_all_card.xml" value="0.25" />
@@ -96,7 +99,7 @@
         <entry key="..\:/Users/denis/Documents/GitHub/ytdlnis/app/src/main/res/xml/about_preferences.xml" value="0.16875" />
         <entry key="..\:/Users/denis/Documents/GitHub/ytdlnis/app/src/main/res/xml/display_preferences.xml" value="0.16875" />
         <entry key="..\:/Users/denis/Documents/GitHub/ytdlnis/app/src/main/res/xml/download_preferences.xml" value="0.16875" />
-        <entry key="..\:/Users/denis/Documents/GitHub/ytdlnis/app/src/main/res/xml/more_preferences.xml" value="0.20555555555555555" />
+        <entry key="..\:/Users/denis/Documents/GitHub/ytdlnis/app/src/main/res/xml/more_preferences.xml" value="0.22" />
         <entry key="..\:/Users/denis/Documents/GitHub/ytdlnis/app/src/main/res/xml/notification_preferences.xml" value="0.16875" />
         <entry key="..\:/Users/denis/Documents/GitHub/ytdlnis/app/src/main/res/xml/root_preferences.xml" value="0.25" />
         <entry key="..\:/Users/denis/Documents/GitHub/ytdlnis/app/src/main/res/xml/update_preferences.xml" value="0.16875" />

@@ -45,8 +45,7 @@
     <string name="music_editor">Redaktori i Muzikës</string>
     <string name="cli">Komanda</string>
     <string name="more">Më Shumë</string>
-    <string name="update_app">Përditëso Aplikacionin</string>
-    <string name="download_latest_version">Shkarko versionin e fundit të aplikacionit</string>
+    <string name="update_app">Kontrollo për përditësime</string>
     <string name="version">Versioni</string>
     <string name="custom_command">Ekzekuto Komandën</string>
     <string name="write_ytdlp_command">Shkruaj komandën yt-dlp</string>
@@ -96,4 +95,6 @@
     <string name="link_copied_to_clipboard">Linku u kopjua</string>
     <string name="api_key">Çelësi API i YouTube</string>
     <string name="api_key_summary">Përdor një çelës api për të marrë rezultate më të shpejta nga YouTube</string>
+    <string name="update_app_summary">Njoftohu kur një përditësim është i vlefshëm</string>
+    <string name="downloads">Shkarkimet</string>
 </resources>

@@ -4,9 +4,9 @@
     <item android:title="@string/home"
         android:icon="@drawable/ic_home"
         android:id="@+id/home"/>
-    <item android:title="@string/history"
-        android:icon="@drawable/ic_history"
-        android:id="@+id/history"/>
+    <item android:title="@string/downloads"
+        android:icon="@drawable/ic_downloads"
+        android:id="@+id/downloads"/>
     <item android:title="@string/more"
         android:icon="@drawable/ic_more"
         android:id="@+id/more"/>

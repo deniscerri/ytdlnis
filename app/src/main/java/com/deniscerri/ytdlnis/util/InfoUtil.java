@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.text.Html;
 import android.util.Log;
 import android.widget.Toast;
@@ -35,6 +36,9 @@ public class InfoUtil {
         try{
             SharedPreferences sharedPreferences = context.getSharedPreferences("root_preferences", Activity.MODE_PRIVATE);
             key = sharedPreferences.getString("api_key", "");
+            applicationInfo = context.getPackageManager().getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA);
+            if (key.isEmpty()) key = applicationInfo.metaData.getString("ytAPIkey");
+            Log.e(TAG, key);
             dbManager = new DBManager(context);
 
             Thread thread = new Thread(() -> {
@@ -60,6 +64,7 @@ public class InfoUtil {
         videos = new ArrayList<>();
         //short data
         JSONObject res = genericRequest("https://youtube.googleapis.com/youtube/v3/search?part=snippet&q="+query+"&maxResults=25&regionCode="+countryCODE+"&key="+key);
+        if (!res.has("items")) return getFromYTDL(query);
         JSONArray dataArray = res.getJSONArray("items");
 
         //extra data
@@ -110,6 +115,7 @@ public class InfoUtil {
         String url = "https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet&pageToken="+nextPageToken+"&maxResults=50&regionCode="+countryCODE+"&playlistId="+id+"&key="+key;
         //short data
         JSONObject res = genericRequest(url);
+        if (!res.has("items")) return new PlaylistTuple("", getFromYTDL("https://www.youtube.com/playlist?list="+id));
         JSONArray dataArray = res.getJSONArray("items");
 
         //extra data
@@ -155,6 +161,7 @@ public class InfoUtil {
 
         //short data
         JSONObject res = genericRequest("https://youtube.googleapis.com/youtube/v3/videos?part=snippet,contentDetails&id="+id+"&key="+key);
+        if (!res.has("items")) return getFromYTDL("https://www.youtube.com/watch?v="+id).get(0);
         String duration = res.getJSONArray("items").getJSONObject(0).getJSONObject("contentDetails").getString("duration");
         duration = formatDuration(duration);
 
@@ -264,59 +271,57 @@ public class InfoUtil {
         try {
             YoutubeDLRequest request = new YoutubeDLRequest(query);
             request.addOption("--flat-playlist");
-            request.addOption("-J");
+            request.addOption("-j");
             request.addOption("--skip-download");
+            request.addOption("-R", "1");
+            request.addOption("--socket-timeout", "5");
             if (!query.contains("http")) request.addOption("--default-search",  "ytsearch25");
 
             YoutubeDLResponse youtubeDLResponse = YoutubeDL.getInstance().execute(request);
-            JSONObject jsonObject = new JSONObject(youtubeDLResponse.getOut());
+            String[] results;
+            try {
+                results = youtubeDLResponse.getOut().split(System.getProperty("line.separator"));
+            }catch(Exception e){
+                results = new String[]{youtubeDLResponse.getOut()};
+            }
 
-            if(!jsonObject.has("entries")){
+            int isPlaylist = 0;
+            JSONObject pl = new JSONObject(results[0]);
+            if (pl.has("playlist")){
+                if (! pl.getString("playlist").equals(query)) isPlaylist = 1;
+            }
+
+            for (String result : results) {
+                JSONObject jsonObject = new JSONObject(result);
+                if (jsonObject.getString("title").equals("[Private video]")) continue;
+
                 String url = jsonObject.getString("webpage_url");
+                String thumb = "";
+                if (jsonObject.has("thumbnail")){
+                    thumb = jsonObject.getString("thumbnail");
+                }else {
+                    JSONArray thumbs = jsonObject.getJSONArray("thumbnails");
+                    thumb = thumbs.getJSONObject(thumbs.length()-1).getString("url");
+                }
+
+                String website = "";
+                if (jsonObject.has("ie_key")) website = jsonObject.getString("ie_key");
+                else website = jsonObject.getString("extractor");
+
+
                 videos.add(new Video(
                         jsonObject.getString("id"),
                         url,
                         jsonObject.getString("title"),
                         jsonObject.getString("uploader"),
                         formatIntegerDuration(jsonObject.getInt("duration")),
-                        jsonObject.getString("thumbnail"),
+                        thumb,
                         dbManager.checkDownloaded(url, "audio"),
                         dbManager.checkDownloaded(url, "video"),
-                        0,
-                        jsonObject.getString("extractor"))
+                        isPlaylist,
+                        website)
                 );
-            }else{
-                JSONArray jsonArray = jsonObject.getJSONArray("entries");
-
-                for (int i = 0; i < jsonArray.length(); i++){
-                    jsonObject = jsonArray.getJSONObject(i);
-                    String url = jsonObject.getString("url");
-                    String thumb = "";
-                    if (jsonObject.has("thumbnail")){
-                        thumb = jsonObject.getString("thumbnail");
-                    }else {
-                        JSONArray thumbs = jsonObject.getJSONArray("thumbnails");
-                        thumb = thumbs.getJSONObject(thumbs.length()-1).getString("url");
-                    }
-                    String website = "";
-                    if (jsonObject.has("ie_key")) website = jsonObject.getString("ie_key");
-                    else website = jsonObject.getString("extractor");
-
-                    videos.add(new Video(
-                            jsonObject.getString("id"),
-                            url,
-                            jsonObject.getString("title"),
-                            jsonObject.getString("uploader"),
-                            formatIntegerDuration(jsonObject.getInt("duration")),
-                            thumb,
-                            dbManager.checkDownloaded(url, "audio"),
-                            dbManager.checkDownloaded(url, "video"),
-                            0,
-                            website)
-                    );
-                }
             }
-
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -334,6 +339,8 @@ public class InfoUtil {
         JSONObject res = genericRequest(url);
         //extra data from the same videos
         JSONObject contentDetails = genericRequest("https://www.googleapis.com/youtube/v3/videos?part=contentDetails&chart=mostPopular&videoCategoryId=10&regionCode="+countryCODE+"&maxResults=25&key="+key);
+
+        if(!contentDetails.has("items")) return new ArrayList<>();
 
         JSONArray dataArray = res.getJSONArray("items");
         JSONArray extraDataArray = contentDetails.getJSONArray("items");
@@ -358,55 +365,30 @@ public class InfoUtil {
     }
 
     public String formatDuration(String dur){
-
         if(dur.equals("P0D")){
             return "LIVE";
         }
 
+        boolean hours = false;
         String duration = "";
-        String tmp = "";
-        String hours = "";
-        String minutes = "";
-        String seconds = "";
-        //removing P
-        dur = dur.substring(1);
-        for(int i = 0; i < dur.length(); i++){
-            char c = dur.charAt(i);
-            if(!Character.isDigit(c)){
-                int nr = Character.getNumericValue(c);
-                if(nr < 10){
-                    tmp = "0" + tmp;
-                }
-                if (c == 'D'){
-                    hours = String.valueOf(Integer.parseInt(tmp) * 24);
-                }else if(c == 'T'){
-                    continue;
-                }else if(c == 'H'){
-                    hours = tmp;
-                }else if(c == 'M'){
-                    minutes = tmp;
-                }else if(c == 'S'){
-                    seconds = tmp;
-                }
-                tmp = "";
-                continue;
-            }
-            tmp = tmp + c;
+        dur = dur.substring(2);
+        if (dur.contains("H")) {
+            hours = true;
+            duration += String.format(Locale.getDefault(), "%02d", Integer.parseInt(dur.substring(0, dur.indexOf("H")))) + ":";
+            dur = dur.substring(dur.indexOf("H")+1);
+        }
+        if (dur.contains("M")) {
+            duration += String.format(Locale.getDefault(), "%02d", Integer.parseInt(dur.substring(0, dur.indexOf("M")))) + ":";
+            dur = dur.substring(dur.indexOf("M")+1);
+        }else if(hours) duration += "00:";
+        if (dur.contains("S")){
+            if(duration.isEmpty()) duration = "00:";
+            duration += String.format(Locale.getDefault(), "%02d", Integer.parseInt(dur.substring(0, dur.indexOf("S"))));
+        }else{
+            duration += "00";
         }
 
-        if(seconds.isEmpty()) seconds = "00";
-        else if(Integer.parseInt(seconds) < 10) seconds = "0" + seconds;
-        if(minutes.isEmpty()){
-            minutes = "0";
-        }
-        duration = minutes + ":" + seconds;
-
-        if(!hours.isEmpty()){
-            if(Integer.parseInt(minutes) < 10) minutes = "0" + minutes;
-            duration = hours + ":" + minutes + ":" + seconds;
-        }
-
-        if(duration.equals("0:00:00")){
+        if(duration.equals("00:00")){
             duration = "";
         }
 

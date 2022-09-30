@@ -43,6 +43,8 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     ListPreference videoFormat;
     SeekBarPreference audioQuality;
 
+    Preference updateYTDL;
+    SwitchPreferenceCompat updateApp;
     Preference version;
 
     private UpdateUtil updateUtil;
@@ -58,7 +60,6 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         setPreferencesFromResource(R.xml.root_preferences, rootKey);
 
         updateUtil = new UpdateUtil(requireContext());
-
         initPreferences();
         initListeners();
     }
@@ -85,6 +86,8 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         videoFormat = findPreference("video_format");
         audioQuality = findPreference("audio_quality");
 
+        updateYTDL = findPreference("update_ytdl");
+        updateApp = findPreference("update_app");
         version = findPreference("version");
         version.setSummary(BuildConfig.VERSION_NAME);
 
@@ -110,6 +113,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         editor.putString("audio_format", audioFormat.getValue());
         editor.putString("video_format", videoFormat.getValue());
         editor.putInt("audio_quality", audioQuality.getValue());
+        editor.putBoolean("update_app", updateApp.isChecked());
 
         editor.apply();
     }
@@ -218,6 +222,18 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 
         audioQuality.setOnPreferenceChangeListener((preference, newValue) -> {
             editor.putInt("audio_format", Integer.parseInt(String.valueOf(newValue)));
+            editor.apply();
+            return true;
+        });
+
+        updateYTDL.setOnPreferenceClickListener(preference -> {
+            updateUtil.updateYoutubeDL();
+            return true;
+        });
+
+        updateApp.setOnPreferenceChangeListener((preference, newValue) -> {
+            boolean enable = (Boolean) newValue;
+            editor.putBoolean("update_app", enable);
             editor.apply();
             return true;
         });

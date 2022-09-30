@@ -2,6 +2,8 @@ package com.deniscerri.ytdlnis.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.LayoutInflater;
@@ -21,6 +23,7 @@ import com.deniscerri.ytdlnis.R;
 import com.deniscerri.ytdlnis.database.Video;
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class HistoryRecyclerViewAdapter extends RecyclerView.Adapter<HistoryRecyclerViewAdapter.ViewHolder> {
@@ -95,6 +98,12 @@ public class HistoryRecyclerViewAdapter extends RecyclerView.Adapter<HistoryRecy
             btn.setBackground(ContextCompat.getDrawable(context, R.drawable.ic_music));
         }else{
             btn.setBackground(ContextCompat.getDrawable(context, R.drawable.ic_video));
+        }
+
+        File file = new File(video.getDownloadPath());
+        if(!file.exists()){
+            thumbnail.setColorFilter(new ColorMatrixColorFilter(new ColorMatrix(){{setSaturation(0f);}}));
+            thumbnail.setAlpha(0.7f);
         }
 
         card.setOnClickListener(view -> onItemClickListener.onCardClick(position));

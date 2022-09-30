@@ -1,10 +1,12 @@
 package com.deniscerri.ytdlnis;
 
+import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
@@ -13,7 +15,6 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-
 import com.deniscerri.ytdlnis.database.Video;
 import com.deniscerri.ytdlnis.databinding.ActivityMainBinding;
 import com.deniscerri.ytdlnis.page.HistoryFragment;
@@ -99,11 +100,11 @@ public class MainActivity extends AppCompatActivity{
                     this.setTitle(R.string.app_name);;
                 }
                 replaceFragment(homeFragment);
-            }else if(id == R.id.history){
+            }else if(id == R.id.downloads){
                 if(lastFragment == historyFragment){
                     historyFragment.scrollToTop();
                 }else {
-                    this.setTitle(getString(R.string.history));
+                    this.setTitle(getString(R.string.downloads));
                 }
                 replaceFragment(historyFragment);
             }else if(id == R.id.more){
@@ -215,8 +216,11 @@ public class MainActivity extends AppCompatActivity{
     }
 
     private void checkUpdate(){
-        UpdateUtil updateUtil = new UpdateUtil(this);
-        updateUtil.updateApp();
+        SharedPreferences preferences = context.getSharedPreferences("root_preferences", Activity.MODE_PRIVATE);
+        if(preferences.getBoolean("update_app", false)){
+            UpdateUtil updateUtil = new UpdateUtil(this);
+            updateUtil.updateApp();
+        }
     }
 
     public void updateHistoryFragment(){

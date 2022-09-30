@@ -110,10 +110,13 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
         public void onDownloadProgress(DownloadInfo info) {
             activity.runOnUiThread(() -> {
                 try{
+                    int progress = info.getProgress();
                     progressBar = fragmentView.findViewWithTag(info.getVideo().getVideoId()+"##progress");
                     progressBar.setVisibility(View.VISIBLE);
-                    progressBar.setIndeterminate(false);
-                    progressBar.setProgress(info.getProgress());
+                    if (progress > 1){
+                        progressBar.setIndeterminate(false);
+                        progressBar.setProgress(info.getProgress());
+                    }
                 }catch(Exception ignored){}
             });
         }

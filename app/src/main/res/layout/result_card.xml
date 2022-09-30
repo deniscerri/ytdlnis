@@ -36,6 +36,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
+            <ProgressBar
+                android:id="@+id/download_progress"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="bottom"
+                android:backgroundTintMode="src_in"
+                android:progress="0"
+                android:alpha="0.7"
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                android:scaleY="100" />
+
             <TextView
                 android:id="@+id/result_title"
                 android:layout_width="match_parent"
@@ -100,16 +111,6 @@
                     />
 
             </LinearLayout>
-
-            <ProgressBar
-                android:id="@+id/download_progress"
-                android:layout_width="match_parent"
-                android:layout_height="4dp"
-                android:layout_gravity="bottom"
-                android:backgroundTintMode="src_in"
-                android:progress="0"
-                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-                android:scaleY="2" />
 
         </com.google.android.material.card.MaterialCardView>
     </RelativeLayout>

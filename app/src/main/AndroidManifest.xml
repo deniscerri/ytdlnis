@@ -49,6 +49,10 @@
             android:name=".DownloaderService"
             android:enabled="true"
             android:exported="false" />
+        <meta-data
+            android:name = "ytAPIkey"
+            android:value = "${ytAPI}"
+        />
     </application>
 
 </manifest>
