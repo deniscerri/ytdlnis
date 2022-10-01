@@ -40,6 +40,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.io.File;
@@ -56,7 +57,7 @@ import java.util.regex.Pattern;
 public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.OnItemClickListener, View.OnClickListener {
     private boolean downloading = false;
     private View fragmentView;
-    private ProgressBar progressBar;
+    private LinearProgressIndicator progressBar;
     private String inputQuery;
     private RecyclerView recyclerView;
     private HomeRecyclerViewAdapter homeRecyclerViewAdapter;
@@ -91,8 +92,6 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
                     MaterialButton clickedButton = recyclerView.findViewWithTag(id + "##"+type);
                     progressBar = recyclerView.findViewWithTag(id + "##progress");
                     progressBar.setVisibility(View.VISIBLE);
-                    progressBar.setIndeterminate(true);
-                    progressBar.setProgress(0);
                     downloading = true;
                     topAppBar.getMenu().findItem(R.id.cancel_download).setVisible(true);
 
@@ -111,12 +110,12 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
             activity.runOnUiThread(() -> {
                 try{
                     int progress = info.getProgress();
-                    progressBar = fragmentView.findViewWithTag(info.getVideo().getVideoId()+"##progress");
-                    progressBar.setVisibility(View.VISIBLE);
-                    if (progress > 1){
-                        progressBar.setIndeterminate(false);
-                        progressBar.setProgress(info.getProgress());
+                    if (progress > 0) {
+                        progressBar = fragmentView.findViewWithTag(info.getVideo().getVideoId()+"##progress");
+                        progressBar.setVisibility(View.VISIBLE);
+                        progressBar.setProgressCompat(progress, true);
                     }
+
                 }catch(Exception ignored){}
             });
         }
@@ -154,16 +153,20 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
 
                 // MEDIA SCAN
                 ArrayList<File> files = new ArrayList<>();
-                String title = downloadInfo.getVideo().getTitle();
-
+                String title = downloadInfo.getVideo().getTitle().replaceAll("[^a-zA-Z0-9]","");
+                String pathTmp = "";
                 File path = new File(downloadInfo.getDownloadPath());
                 for( File file : path.listFiles() ){
-                    if(file.isFile() && file.getAbsolutePath().contains(title)) files.add(file);
+                    if(file.isFile()){
+                        pathTmp = file.getAbsolutePath().replaceAll("[^a-zA-Z0-9]","");
+                        if (pathTmp.contains(title)){
+                            files.add(file);
+                        }
+                    }
                 }
 
                 String[] paths = new String[files.size()];
                 for (int i = 0; i < files.size(); i++) paths[i] = files.get(i).getAbsolutePath();
-
                 MediaScannerConnection.scanFile(context, paths, null, null);
                 addToHistory(item, new Date(), paths);
                 updateDownloadStatusOnResult(item, type);

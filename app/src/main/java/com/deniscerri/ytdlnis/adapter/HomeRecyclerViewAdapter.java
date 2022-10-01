@@ -10,17 +10,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.deniscerri.ytdlnis.R;
 import com.deniscerri.ytdlnis.database.Video;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -105,7 +103,7 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
 
         // PROGRESS BAR ----------------------------------------------------
 
-        ProgressBar progressBar = card.findViewById(R.id.download_progress);
+        LinearProgressIndicator progressBar = card.findViewById(R.id.download_progress);
         progressBar.setVisibility(View.GONE);
         progressBar.setTag(videoID + "##progress");
 

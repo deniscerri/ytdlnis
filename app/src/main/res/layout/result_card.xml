@@ -36,15 +36,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
-            <ProgressBar
+            <com.google.android.material.progressindicator.LinearProgressIndicator
                 android:id="@+id/download_progress"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="bottom"
-                android:backgroundTintMode="src_in"
-                android:progress="0"
+                android:indeterminate="true"
                 android:alpha="0.7"
-                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
                 android:scaleY="100" />
 
             <TextView

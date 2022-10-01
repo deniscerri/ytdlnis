@@ -10,11 +10,10 @@
         app:showAsAction="collapseActionView|always"
         app:actionViewClass="androidx.appcompat.widget.SearchView"/>
 
-
     <item
-        android:id="@+id/refresh_history"
-        android:icon="@drawable/ic_refresh"
-        android:title="@string/refresh_history"
+        android:id="@+id/filter_history"
+        android:icon="@drawable/ic_filter"
+        android:title="@string/filter_history"
         app:showAsAction="ifRoom" />
 
     <item

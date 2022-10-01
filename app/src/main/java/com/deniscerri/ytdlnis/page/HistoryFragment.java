@@ -188,7 +188,7 @@ public class HistoryFragment extends Fragment implements HistoryRecyclerViewAdap
                     return true;
                 }
 
-                MaterialAlertDialogBuilder delete_dialog = new MaterialAlertDialogBuilder(context);
+                MaterialAlertDialogBuilder delete_dialog = new MaterialAlertDialogBuilder(fragmentContext);
                 delete_dialog.setTitle(getString(R.string.confirm_delete_history));
                 delete_dialog.setMessage(getString(R.string.confirm_delete_history_desc));
                 delete_dialog.setNegativeButton(getString(R.string.cancel), (dialogInterface, i) -> {
@@ -200,8 +200,34 @@ public class HistoryFragment extends Fragment implements HistoryRecyclerViewAdap
                     no_results.setVisibility(View.VISIBLE);
                 });
                 delete_dialog.show();
-            }else if(itemID == R.id.refresh_history){
-                initCards();
+            }else if(itemID == R.id.filter_history){
+//                bottomSheet = new BottomSheetDialog(fragmentContext);
+//                bottomSheet.requestWindowFeature(Window.FEATURE_NO_TITLE);
+//                bottomSheet.setContentView(R.layout.history_bottom_sheet);
+//                Video video = historyObjects.get(position);
+//
+//                TextView title = bottomSheet.findViewById(R.id.bottom_sheet_title);
+//                title.setText(video.getTitle());
+//
+//                TextView author = bottomSheet.findViewById(R.id.bottom_sheet_author);
+//                author.setText(video.getAuthor());
+//
+//                Button link = bottomSheet.findViewById(R.id.bottom_sheet_link);
+//                String url = video.getURL();
+//                link.setText(url);
+//                link.setTag(position);
+//                link.setOnClickListener(this);
+//
+//                Button remove = bottomSheet.findViewById(R.id.bottomsheet_remove_button);
+//                remove.setTag(position);
+//                remove.setOnClickListener(this);
+//
+//                Button openLink = bottomSheet.findViewById(R.id.bottomsheet_open_link_button);
+//                openLink.setTag(position);
+//                openLink.setOnClickListener(this);
+//
+//                bottomSheet.show();
+//                bottomSheet.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT);
             }
             return true;
         });
@@ -224,7 +250,7 @@ public class HistoryFragment extends Fragment implements HistoryRecyclerViewAdap
         if(bottomSheet != null) bottomSheet.hide();
 
         Video v = historyObjects.get(position);
-        MaterialAlertDialogBuilder delete_dialog = new MaterialAlertDialogBuilder(context);
+        MaterialAlertDialogBuilder delete_dialog = new MaterialAlertDialogBuilder(fragmentContext);
         delete_dialog.setTitle(getString(R.string.confirm_delete_history));
         delete_dialog.setMessage(getString(R.string.you_are_going_to_delete) + " \""+v.getTitle()+"\"!");
         delete_dialog.setNegativeButton(getString(R.string.cancel), (dialogInterface, i) -> {

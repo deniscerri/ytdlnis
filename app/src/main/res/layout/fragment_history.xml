@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:layout_scrollFlags="scroll|enterAlways|snap"
-            app:title="@string/history"
+            app:title="@string/downloads"
             app:menu="@menu/history_menu"
             android:theme="@style/Toolbar"
             />

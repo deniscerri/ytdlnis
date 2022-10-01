@@ -47,6 +47,7 @@
         <entry key="..\:/Users/denis/Documents/GitHub/ytdlnis/app/src/main/res/drawable/ic_down.xml" value="0.109" />
         <entry key="..\:/Users/denis/Documents/GitHub/ytdlnis/app/src/main/res/drawable/ic_download.xml" value="0.1275" />
         <entry key="..\:/Users/denis/Documents/GitHub/ytdlnis/app/src/main/res/drawable/ic_downloads.xml" value="0.2395" />
+        <entry key="..\:/Users/denis/Documents/GitHub/ytdlnis/app/src/main/res/drawable/ic_filter.xml" value="0.1965" />
         <entry key="..\:/Users/denis/Documents/GitHub/ytdlnis/app/src/main/res/drawable/ic_go_up.xml" value="0.1275" />
         <entry key="..\:/Users/denis/Documents/GitHub/ytdlnis/app/src/main/res/drawable/ic_home.xml" value="0.1275" />
         <entry key="..\:/Users/denis/Documents/GitHub/ytdlnis/app/src/main/res/drawable/ic_image.xml" value="0.109" />
@@ -85,6 +86,7 @@
         <entry key="..\:/Users/denis/Documents/GitHub/ytdlnis/app/src/main/res/layout/history_bottom_sheet.xml" value="0.16875" />
         <entry key="..\:/Users/denis/Documents/GitHub/ytdlnis/app/src/main/res/layout/history_card.xml" value="0.33" />
         <entry key="..\:/Users/denis/Documents/GitHub/ytdlnis/app/src/main/res/layout/history_card_shimmer.xml" value="0.33" />
+        <entry key="..\:/Users/denis/Documents/GitHub/ytdlnis/app/src/main/res/layout/history_filter_sheet.xml" value="0.33" />
         <entry key="..\:/Users/denis/Documents/GitHub/ytdlnis/app/src/main/res/layout/history_no_results.xml" value="0.21" />
         <entry key="..\:/Users/denis/Documents/GitHub/ytdlnis/app/src/main/res/layout/home_download_all_bottom_sheet.xml" value="0.33" />
         <entry key="..\:/Users/denis/Documents/GitHub/ytdlnis/app/src/main/res/layout/home_video_bottom_sheet.xml" value="0.1703125" />
