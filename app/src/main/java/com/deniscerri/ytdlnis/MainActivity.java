@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity{
 
     private boolean isDownloadServiceRunning = false;
     public DownloaderService downloaderService;
-    private IDownloaderListener listener = null;
+    private ArrayList<IDownloaderListener> listeners = null;
     private IDownloaderService iDownloaderService;
 
     private final ServiceConnection serviceConnection = new ServiceConnection() {
@@ -54,8 +54,11 @@ public class MainActivity extends AppCompatActivity{
             iDownloaderService = (IDownloaderService) service;
             isDownloadServiceRunning = true;
             try{
-                iDownloaderService.addActivity(MainActivity.this, listener);
-                listener.onDownloadStart(iDownloaderService.getDownloadInfo());
+                for (int i = 0; i < listeners.size(); i++){
+                    IDownloaderListener listener = listeners.get(i);
+                    iDownloaderService.addActivity(MainActivity.this, listener);
+                    listener.onDownloadStart(iDownloaderService.getDownloadInfo());
+                }
             }catch(Exception e){
                 e.printStackTrace();
             }
@@ -86,8 +89,6 @@ public class MainActivity extends AppCompatActivity{
         homeFragment = new HomeFragment();
         historyFragment = new HistoryFragment();
         moreFragment = new MoreFragment();
-
-        listener = homeFragment.listener;
 
         initFragments();
 
@@ -152,6 +153,10 @@ public class MainActivity extends AppCompatActivity{
                 .commit();
 
         lastFragment = homeFragment;
+
+        listeners = new ArrayList<>();
+        listeners.add(homeFragment.listener);
+        listeners.add(historyFragment.listener);
     }
 
     private void replaceFragment(Fragment f){
@@ -162,10 +167,9 @@ public class MainActivity extends AppCompatActivity{
     public void startDownloadService(ArrayList<Video> downloadQueue, IDownloaderListener awaitingListener){
         if(isDownloadServiceRunning){
             iDownloaderService.updateQueue(downloadQueue);
-            Toast.makeText(context, getString(R.string.added_to_queue), Toast.LENGTH_SHORT).show();
             return;
         }
-        listener = awaitingListener;
+        if(!listeners.contains(awaitingListener)) listeners.add(awaitingListener);
         Intent serviceIntent = new Intent(context, DownloaderService.class);
         serviceIntent.putParcelableArrayListExtra("queue", downloadQueue);
         context.getApplicationContext().bindService(serviceIntent, serviceConnection, Context.BIND_AUTO_CREATE);
@@ -184,6 +188,10 @@ public class MainActivity extends AppCompatActivity{
         if(!isDownloadServiceRunning) return;
         iDownloaderService.cancelDownload();
         stopDownloadService();
+    }
+
+    public void removeItemFromDownloadQueue(Video video){
+        iDownloaderService.removeItemFromDownloadQueue(video);
     }
 
     public boolean isDownloadServiceRunning() {

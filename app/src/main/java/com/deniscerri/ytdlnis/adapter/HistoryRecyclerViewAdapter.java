@@ -106,18 +106,13 @@ public class HistoryRecyclerViewAdapter extends RecyclerView.Adapter<HistoryRecy
         // BUTTON ----------------------------------
         LinearLayout buttonLayout = card.findViewById(R.id.history_download_button_layout);
         MaterialButton btn = buttonLayout.findViewById(R.id.history_download_button_type);
+
         if(video.getDownloadedType().equals("audio")){
             if (filePresent) btn.setIcon(ContextCompat.getDrawable(context, R.drawable.ic_music_downloaded));
-            else {
-                btn.setIcon(ContextCompat.getDrawable(context, R.drawable.ic_music));
-                btn.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#707a7e")));
-            }
+            else btn.setIcon(ContextCompat.getDrawable(context, R.drawable.ic_music));
         }else{
             if (filePresent) btn.setIcon(ContextCompat.getDrawable(context, R.drawable.ic_video_downloaded));
-            else {
-                btn.setIcon(ContextCompat.getDrawable(context, R.drawable.ic_video));
-                btn.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#707a7e")));
-            }
+            else btn.setIcon(ContextCompat.getDrawable(context, R.drawable.ic_video));
         }
 
         card.setOnClickListener(view -> onItemClickListener.onCardClick(position));

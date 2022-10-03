@@ -222,4 +222,24 @@ public class Video implements Parcelable {
         parcel.writeString(website);
     }
 
+    @Override
+    public String toString() {
+        return "Video{" +
+                "id=" + id +
+                ", videoId='" + videoId + '\'' +
+                ", title='" + title + '\'' +
+                ", author='" + author + '\'' +
+                ", duration='" + duration + '\'' +
+                ", thumb='" + thumb + '\'' +
+                ", url='" + url + '\'' +
+                ", downloadedType='" + downloadedType + '\'' +
+                ", downloadedAudio=" + downloadedAudio +
+                ", downloadedVideo=" + downloadedVideo +
+                ", downloadedTime='" + downloadedTime + '\'' +
+                ", isPlaylistItem=" + isPlaylistItem +
+                ", downloadPath='" + downloadPath + '\'' +
+                ", website='" + website + '\'' +
+                '}';
+    }
+
 }

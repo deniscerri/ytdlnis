@@ -17,7 +17,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 import androidx.appcompat.widget.SearchView;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -42,13 +41,13 @@ import com.google.android.material.floatingactionbutton.ExtendedFloatingActionBu
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.android.material.textfield.TextInputLayout;
-
 import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -79,57 +78,75 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
     private InfoUtil infoUtil;
     private ArrayList<Video> downloadQueue;
     MainActivity mainActivity;
+    private DownloadInfo downloadInfo;
 
     public IDownloaderListener listener = new IDownloaderListener() {
 
-        public void onDownloadStart(DownloadInfo downloadInfo) {
+        public void onDownloadStart(DownloadInfo info) {
+            downloadInfo = info;
             try{
                 if(downloadInfo != null){
                     String id = downloadInfo.getVideo().getVideoId();
                     String type = downloadInfo.getVideo().getDownloadedType();
 
                     recyclerView.smoothScrollToPosition(resultObjects.indexOf(findVideo(id)));
-                    MaterialButton clickedButton = recyclerView.findViewWithTag(id + "##"+type);
+                    MaterialButton clickedButton = recyclerView.findViewWithTag(id +"##"+type);
                     progressBar = recyclerView.findViewWithTag(id + "##progress");
                     progressBar.setVisibility(View.VISIBLE);
                     downloading = true;
                     topAppBar.getMenu().findItem(R.id.cancel_download).setVisible(true);
 
-                    if (clickedButton != null) {
-                        if (type.equals("audio")) {
-                            clickedButton.setIcon(ContextCompat.getDrawable(activity, R.drawable.ic_music));
-                        } else {
-                            clickedButton.setIcon(ContextCompat.getDrawable(activity, R.drawable.ic_video));
-                        }
-                    }
+                    clickedButton.setIcon(ContextCompat.getDrawable(activity, R.drawable.ic_cancel));
+                    clickedButton.setTag(R.id.cancelDownload, "true");
                 }
             }catch(Exception ignored){}
         }
 
         public void onDownloadProgress(DownloadInfo info) {
+            downloadInfo = info;
+            downloading = true;
             activity.runOnUiThread(() -> {
                 try{
-                    int progress = info.getProgress();
+                    int progress = downloadInfo.getProgress();
                     if (progress > 0) {
-                        progressBar = fragmentView.findViewWithTag(info.getVideo().getVideoId()+"##progress");
+                        progressBar = fragmentView.findViewWithTag(downloadInfo.getVideo().getVideoId()+"##progress");
                         progressBar.setVisibility(View.VISIBLE);
                         progressBar.setProgressCompat(progress, true);
                     }
-
+                    String id = downloadInfo.getVideo().getVideoId();
+                    String type = downloadInfo.getVideo().getDownloadedType();
+                    MaterialButton clickedButton = recyclerView.findViewWithTag(id + "##"+type);
+                    clickedButton.setIcon(ContextCompat.getDrawable(activity, R.drawable.ic_cancel));
+                    clickedButton.setTag(R.id.cancelDownload, "true");
                 }catch(Exception ignored){}
             });
         }
 
         public void onDownloadError(DownloadInfo info){
+            downloadInfo = info;
             try{
                 progressBar.setProgress(0);
                 progressBar.setVisibility(View.GONE);
                 downloading = false;
                 topAppBar.getMenu().findItem(R.id.cancel_download).setVisible(false);
+
+                Video item = downloadInfo.getVideo();
+                String id = item.getVideoId();
+                String type = item.getDownloadedType();
+                MaterialButton theClickedButton = recyclerView.findViewWithTag(id + "##"+type);
+                if (theClickedButton != null) {
+                    if (type.equals("audio")) {
+                        theClickedButton.setIcon(ContextCompat.getDrawable(activity, R.drawable.ic_music_downloaded));
+                    } else {
+                        theClickedButton.setIcon(ContextCompat.getDrawable(activity, R.drawable.ic_video_downloaded));
+                    }
+                    theClickedButton.setTag(R.id.cancelDownload, "false");
+                }
             }catch(Exception ignored){}
         }
 
-        public void onDownloadEnd(DownloadInfo downloadInfo) {
+        public void onDownloadEnd(DownloadInfo info) {
+            downloadInfo = info;
             try{
                 progressBar.setProgress(0);
                 progressBar.setVisibility(View.GONE);
@@ -146,6 +163,7 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
                     } else {
                         theClickedButton.setIcon(ContextCompat.getDrawable(activity, R.drawable.ic_video_downloaded));
                     }
+                    theClickedButton.setTag(R.id.cancelDownload, "false");
                 }
 
                 downloading = false;
@@ -179,7 +197,6 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
             mainActivity.stopDownloadService();
         }
     };
-
 
     public HomeFragment() {
         // Required empty public constructor
@@ -344,6 +361,7 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
                     downloading = false;
 
                     String id = progressBar.getTag().toString().split("##progress")[0];
+                    progressBar.setVisibility(View.GONE);
                     String type = findVideo(id).getDownloadedType();
                     MaterialButton theClickedButton = recyclerView.findViewWithTag(id + "##"+type);
 
@@ -568,13 +586,21 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
         Log.e(TAG, type);
         Video vid = resultObjects.get(position);
         vid.setDownloadedType(type);
-
-        downloadQueue.add(vid);
-
-        if (downloading) {
-            Toast.makeText(context, R.string.added_to_queue, Toast.LENGTH_LONG).show();
-            return;
+        MaterialButton btn = recyclerView.findViewWithTag(vid.getVideoId()+"##"+type);
+        if (downloading){
+           try {
+               if (btn.getTag(R.id.cancelDownload).equals("true")){
+                   mainActivity.removeItemFromDownloadQueue(vid);
+                   int icon = (type.equals("audio")) ? R.drawable.ic_music : R.drawable.ic_video;
+                   btn.setIcon(ContextCompat.getDrawable(activity, icon));
+                   btn.setTag(R.id.cancelDownload, "false");
+                   return;
+               }
+           }catch (Exception ignored){}
         }
+        downloadQueue.add(vid);
+        btn.setTag(R.id.cancelDownload, "true");
+        btn.setIcon(ContextCompat.getDrawable(activity, R.drawable.ic_cancel));
         if (isStoragePermissionGranted()){
             mainActivity.startDownloadService(downloadQueue, listener);
             downloadQueue.clear();

@@ -25,7 +25,7 @@
     <string name="download_notification_channel_name">File Downloads</string>
     <string name="download_notification_channel_description">Notification that shows the download progress of audio and video files</string>
     <string name="failed_making_directory">Failed to create the new Directory! :(</string>
-    <string name="added_to_queue">Item added to the Queue!</string>
+    <string name="added_to_queue">Added to the Queue!</string>
     <string name="you_are_in_latest_version">You are at the latest version</string>
     <string name="ytld_update_success">Updated Succesfully</string>
     <string name="ytdl_update_failed">Failed Updating</string>
@@ -100,4 +100,6 @@
     <string name="update_app_summary">Let you know when updates are available right when you open the application</string>
     <string name="downloads">Downloads</string>
     <string name="filter_history">Filter History</string>
+    <string name="removed_from_queue">removed from queue!</string>
+    <item type="id" name="cancelDownload" />
 </resources>

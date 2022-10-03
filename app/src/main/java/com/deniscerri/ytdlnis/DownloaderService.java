@@ -68,9 +68,7 @@ public class DownloaderService extends Service {
                     callback.onDownloadProgress(downloadInfo);
                 });
             }
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+        }catch (Exception ignored){}
     };
 
     @Override
@@ -149,17 +147,38 @@ public class DownloaderService extends Service {
 
         public void updateQueue(ArrayList<Video> queue){
             downloadQueue.addAll(queue);
+            if (downloadQueue.size() == queue.size()){
+                downloadInfo.setDownloadQueue(downloadQueue);
+                startDownload(downloadQueue);
+            }else{
+                downloadInfo.setDownloadQueue(downloadQueue);
+                Toast.makeText(context, getString(R.string.added_to_queue), Toast.LENGTH_SHORT).show();
+            }
         }
 
         public void cancelDownload(){
             try{
                 YoutubeDL.getInstance().destroyProcessById(downloadProcessID);
+                compositeDisposable.clear();
+                //stopForeground(true);
+                onDownloadEnd();
             }catch(Exception err){
                 Log.e(TAG, err.getMessage());
             }
-            compositeDisposable.clear();
         }
 
+        public void removeItemFromDownloadQueue(Video video){
+            //if its the same video with the same download type as the current downloading one
+            if (downloadInfo.getVideo().getURL().equals(video.getURL()) && downloadInfo.getVideo().getDownloadedType().equals(video.getDownloadedType())){
+                cancelDownload();
+                downloadQueue.pop();
+                downloadInfo.setDownloadQueue(downloadQueue);
+                startDownload(downloadQueue);
+            }else {
+                downloadQueue.remove(video);
+            }
+            Toast.makeText(context, video.getTitle() + " " + getString(R.string.removed_from_queue), Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void finishService(){
@@ -175,7 +194,18 @@ public class DownloaderService extends Service {
         }
     }
 
-
+    private void onDownloadEnd(){
+        try{
+            for (Activity activity: activities.keySet()){
+                activity.runOnUiThread(() -> {
+                    IDownloaderListener callback = activities.get(activity);
+                    callback.onDownloadEnd(downloadInfo);
+                });
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
 
     private void startDownload(LinkedList<Video> videos) {
         Video video;
@@ -216,7 +246,7 @@ public class DownloaderService extends Service {
             request.addOption("--external-downloader-args", "aria2c:\"--summary-interval=1\"");
         }else{
             int concurrentFragments = sharedPreferences.getInt("concurrent_fragments", 1);
-            request.addOption("-N", concurrentFragments);
+            if (concurrentFragments > 1) request.addOption("-N", concurrentFragments);
         }
 
         String limitRate = sharedPreferences.getString("limit_rate", "");
@@ -284,7 +314,6 @@ public class DownloaderService extends Service {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(youtubeDLResponse -> {
                     downloadInfo.setDownloadPath(youtubeDLDir.getAbsolutePath());
-
                     try{
                         for (Activity activity: activities.keySet()){
                             activity.runOnUiThread(() -> {

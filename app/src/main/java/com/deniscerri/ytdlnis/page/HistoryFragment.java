@@ -1,12 +1,15 @@
 package com.deniscerri.ytdlnis.page;
 
+import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
 import androidx.appcompat.widget.SearchView;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -28,13 +31,18 @@ import com.deniscerri.ytdlnis.R;
 import com.deniscerri.ytdlnis.adapter.HistoryRecyclerViewAdapter;
 import com.deniscerri.ytdlnis.database.DBManager;
 import com.deniscerri.ytdlnis.database.Video;
+import com.deniscerri.ytdlnis.service.DownloadInfo;
+import com.deniscerri.ytdlnis.service.IDownloaderListener;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * A fragment representing a list of Items.
@@ -44,6 +52,7 @@ public class HistoryFragment extends Fragment implements HistoryRecyclerViewAdap
     private View fragmentView;
     private DBManager dbManager;
     Context context;
+    Activity activity;
     Context fragmentContext;
     private LayoutInflater layoutinflater;
     private ShimmerFrameLayout shimmerCards;
@@ -55,6 +64,39 @@ public class HistoryFragment extends Fragment implements HistoryRecyclerViewAdap
     private RelativeLayout no_results;
     private ArrayList<Video> historyObjects;
     private static final String TAG = "HistoryFragment";
+
+
+    public IDownloaderListener listener = new IDownloaderListener() {
+
+        public void onDownloadStart(DownloadInfo downloadInfo) {
+            try{
+
+            }catch(Exception ignored){}
+        }
+
+        public void onDownloadProgress(DownloadInfo info) {
+            activity.runOnUiThread(() -> {
+                try{
+
+                }catch(Exception ignored){}
+            });
+        }
+
+        public void onDownloadError(DownloadInfo info){
+            try{
+
+            }catch(Exception ignored){}
+        }
+
+        public void onDownloadEnd(DownloadInfo downloadInfo) {
+            try{
+
+            }catch(Exception ignored){}
+        }
+
+        public void onDownloadServiceEnd() {}
+    };
+
 
     public HistoryFragment() {
     }
@@ -79,6 +121,7 @@ public class HistoryFragment extends Fragment implements HistoryRecyclerViewAdap
 
         fragmentView = inflater.inflate(R.layout.fragment_history, container, false);
         context = fragmentView.getContext().getApplicationContext();
+        activity = getActivity();
         fragmentContext = fragmentView.getContext();
         layoutinflater = LayoutInflater.from(context);
         shimmerCards = fragmentView.findViewById(R.id.shimmer_history_framelayout);
