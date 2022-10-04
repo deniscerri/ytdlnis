@@ -5,5 +5,6 @@ public interface IDownloaderListener {
     void onDownloadProgress(DownloadInfo downloadInfo);
     void onDownloadError(DownloadInfo downloadInfo);
     void onDownloadEnd(DownloadInfo downloadInfo);
+    void onDownloadCancel(DownloadInfo downloadInfo);
     void onDownloadServiceEnd();
 }

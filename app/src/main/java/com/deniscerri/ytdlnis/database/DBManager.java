@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class DBManager extends SQLiteOpenHelper {
 
     public static final String db_name = "ytdlnis_db";
-    public static final int db_version = 7;
+    public static final int db_version = 9;
     public static final String results_table_name = "results";
     public static final String history_table_name = "history";
     public static final String id = "id";
@@ -27,6 +27,8 @@ public class DBManager extends SQLiteOpenHelper {
     public static final String isPlaylistItem = "isPlaylistItem";
     public static final String website = "website";
     public static final String downloadPath = "downloadPath";
+    public static final String downloadingAudio = "downloadingAudio";
+    public static final String downloadingVideo = "downloadingVideo";
 
 
     public DBManager(Context context){
@@ -46,7 +48,9 @@ public class DBManager extends SQLiteOpenHelper {
                 + downloadedAudio + " INTEGER,"
                 + downloadedVideo + " INTEGER,"
                 + isPlaylistItem + " INTENGER,"
-                + website + " TEXT)";
+                + website + " TEXT,"
+                + downloadingAudio + " INTEGER,"
+                + downloadingVideo + " INTEGER)";
 
         sqLiteDatabase.execSQL(query);
 
@@ -113,7 +117,7 @@ public class DBManager extends SQLiteOpenHelper {
         if(cursor.moveToFirst()){
             do {
                 // on below line we are adding the data from cursor to our array list.
-                list.add(new Video(cursor.getString(1), //id
+                list.add(new Video(cursor.getString(1), //videoId
                         cursor.getString(2), //url
                         cursor.getString(3), //title
                         cursor.getString(4), //author
@@ -122,7 +126,9 @@ public class DBManager extends SQLiteOpenHelper {
                         cursor.getInt(7), //downloadedAudio
                         cursor.getInt(8), //downloadedVideo
                         cursor.getInt(9), //isPlaylistItem
-                        cursor.getString(10))); //website
+                        cursor.getString(10), //website
+                        cursor.getInt(11), //isDownloadingAudio
+                        cursor.getInt(12))); //isDownloadingVideo
             } while (cursor.moveToNext());
         }
 
@@ -173,6 +179,8 @@ public class DBManager extends SQLiteOpenHelper {
             values.put(downloadedVideo, v.isVideoDownloaded());
             values.put(isPlaylistItem, v.getIsPlaylistItem());
             values.put(website, v.getWebsite());
+            values.put(downloadingAudio, 0);
+            values.put(downloadingVideo, 0);
 
             db.insert(results_table_name, null, values);
         }
@@ -198,18 +206,30 @@ public class DBManager extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void updateDownloadStatusOnResult(String id, String type){
+    public void updateDownloadStatusOnResult(String id, String type, boolean downloaded){
         SQLiteDatabase db = this.getReadableDatabase();
         ContentValues values = new ContentValues();
 
         switch (type){
             case "audio":
-                values.put(downloadedAudio, 1);
+                if (downloaded) values.put(downloadedAudio, 1);
+                values.put(downloadingAudio, 0);
                 break;
             case "video":
-                values.put(downloadedVideo, 1);
+                if (downloaded) values.put(downloadedVideo, 1);
+                values.put(downloadingVideo, 0);
                 break;
         }
+
+        db.update(results_table_name, values, "videoId = ?", new String[]{id});
+    }
+
+    public void updateDownloadingStatusOnResult(String id, String type, boolean downloading){
+        SQLiteDatabase db = this.getReadableDatabase();
+        ContentValues values = new ContentValues();
+        type = (type.equals("audio")) ? downloadingAudio : downloadingVideo;
+        int value = (downloading) ? 1 : 0;
+        values.put(type, value);
 
         db.update(results_table_name, values, "videoId = ?", new String[]{id});
     }

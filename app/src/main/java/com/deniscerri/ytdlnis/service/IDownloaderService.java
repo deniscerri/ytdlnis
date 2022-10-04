@@ -9,6 +9,6 @@ public interface IDownloaderService {
     void addActivity(Activity activity, IDownloaderListener callback);
     void removeActivity(Activity activity);
     void updateQueue(ArrayList<Video> queue);
-    void cancelDownload();
+    void cancelDownload(boolean cancelAll);
     void removeItemFromDownloadQueue(Video video);
 }

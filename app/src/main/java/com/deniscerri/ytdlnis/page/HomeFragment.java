@@ -86,18 +86,16 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
             downloadInfo = info;
             try{
                 if(downloadInfo != null){
-                    String id = downloadInfo.getVideo().getVideoId();
-                    String type = downloadInfo.getVideo().getDownloadedType();
-
-                    recyclerView.smoothScrollToPosition(resultObjects.indexOf(findVideo(id)));
-                    MaterialButton clickedButton = recyclerView.findViewWithTag(id +"##"+type);
-                    progressBar = recyclerView.findViewWithTag(id + "##progress");
-                    progressBar.setVisibility(View.VISIBLE);
+                    Video video = downloadInfo.getVideo();
+                    String id = video.getVideoId();
+                    video = findVideo(id);
+                    int index = resultObjects.indexOf(video);
+                    recyclerView.smoothScrollToPosition(index);
+                    updateDownloadingStatusOnResult(video, video.getDownloadedType(), true);
+                    homeRecyclerViewAdapter.notifyItemChanged(index);
                     downloading = true;
+                    progressBar = fragmentView.findViewWithTag(downloadInfo.getVideo().getVideoId()+"##progress");
                     topAppBar.getMenu().findItem(R.id.cancel_download).setVisible(true);
-
-                    clickedButton.setIcon(ContextCompat.getDrawable(activity, R.drawable.ic_cancel));
-                    clickedButton.setTag(R.id.cancelDownload, "true");
                 }
             }catch(Exception ignored){}
         }
@@ -110,14 +108,8 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
                     int progress = downloadInfo.getProgress();
                     if (progress > 0) {
                         progressBar = fragmentView.findViewWithTag(downloadInfo.getVideo().getVideoId()+"##progress");
-                        progressBar.setVisibility(View.VISIBLE);
                         progressBar.setProgressCompat(progress, true);
                     }
-                    String id = downloadInfo.getVideo().getVideoId();
-                    String type = downloadInfo.getVideo().getDownloadedType();
-                    MaterialButton clickedButton = recyclerView.findViewWithTag(id + "##"+type);
-                    clickedButton.setIcon(ContextCompat.getDrawable(activity, R.drawable.ic_cancel));
-                    clickedButton.setTag(R.id.cancelDownload, "true");
                 }catch(Exception ignored){}
             });
         }
@@ -125,46 +117,31 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
         public void onDownloadError(DownloadInfo info){
             downloadInfo = info;
             try{
-                progressBar.setProgress(0);
-                progressBar.setVisibility(View.GONE);
-                downloading = false;
-                topAppBar.getMenu().findItem(R.id.cancel_download).setVisible(false);
-
                 Video item = downloadInfo.getVideo();
                 String id = item.getVideoId();
                 String type = item.getDownloadedType();
-                MaterialButton theClickedButton = recyclerView.findViewWithTag(id + "##"+type);
-                if (theClickedButton != null) {
-                    if (type.equals("audio")) {
-                        theClickedButton.setIcon(ContextCompat.getDrawable(activity, R.drawable.ic_music_downloaded));
-                    } else {
-                        theClickedButton.setIcon(ContextCompat.getDrawable(activity, R.drawable.ic_video_downloaded));
-                    }
-                    theClickedButton.setTag(R.id.cancelDownload, "false");
-                }
+                updateDownloadStatusOnResult(item, type, false);
+
+                item = findVideo(id);
+                if (type.equals("audio")) item.setDownloadingAudio(false);
+                else if (type.equals("video")) item.setDownloadingVideo(false);
+                homeRecyclerViewAdapter.notifyItemChanged(resultObjects.indexOf(item));
+
+                downloading = false;
+                topAppBar.getMenu().findItem(R.id.cancel_download).setVisible(false);
             }catch(Exception ignored){}
         }
 
         public void onDownloadEnd(DownloadInfo info) {
             downloadInfo = info;
             try{
-                progressBar.setProgress(0);
-                progressBar.setVisibility(View.GONE);
-
                 Video item = downloadInfo.getVideo();
                 String id = item.getVideoId();
                 String type = item.getDownloadedType();
 
-                MaterialButton theClickedButton = recyclerView.findViewWithTag(id + "##"+type);
-
-                if (theClickedButton != null) {
-                    if (type.equals("audio")) {
-                        theClickedButton.setIcon(ContextCompat.getDrawable(activity, R.drawable.ic_music_downloaded));
-                    } else {
-                        theClickedButton.setIcon(ContextCompat.getDrawable(activity, R.drawable.ic_video_downloaded));
-                    }
-                    theClickedButton.setTag(R.id.cancelDownload, "false");
-                }
+                item = findVideo(id);
+                updateDownloadingStatusOnResult(item, type, false);
+                homeRecyclerViewAdapter.notifyItemChanged(resultObjects.indexOf(item));
 
                 downloading = false;
                 topAppBar.getMenu().findItem(R.id.cancel_download).setVisible(false);
@@ -187,8 +164,28 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
                 for (int i = 0; i < files.size(); i++) paths[i] = files.get(i).getAbsolutePath();
                 MediaScannerConnection.scanFile(context, paths, null, null);
                 addToHistory(item, new Date(), paths);
-                updateDownloadStatusOnResult(item, type);
+                updateDownloadStatusOnResult(item, type, true);
                 mainActivity.updateHistoryFragment();
+            }catch(Exception ignored){}
+        }
+
+        @Override
+        public void onDownloadCancel(DownloadInfo info) {
+            downloadInfo = info;
+            try{
+                while (!info.getDownloadQueue().isEmpty()){
+                    Video item = downloadInfo.getDownloadQueue().pop();
+                    String id = item.getVideoId();
+                    String type = item.getDownloadedType();
+
+                    item = findVideo(id);
+                    updateDownloadingStatusOnResult(item, type, false);
+                    homeRecyclerViewAdapter.notifyItemChanged(resultObjects.indexOf(item));
+                }
+
+                downloading = false;
+                topAppBar.getMenu().findItem(R.id.cancel_download).setVisible(false);
+
             }catch(Exception ignored){}
         }
 
@@ -277,17 +274,18 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
                     try {
                         infoUtil = new InfoUtil(context);
                         resultObjects = infoUtil.getTrending(context);
+                        dbManager.addToResults(resultObjects);
                     } catch (Exception e) {
                         Log.e(TAG, e.toString());
                     }
                 }
+                dbManager.close();
                 if (resultObjects != null) {
                     uiHandler.post(this::scrollToTop);
                     if (resultObjects.size() > 1 && resultObjects.get(1).getIsPlaylistItem() == 1) {
                         uiHandler.post(() -> downloadAllFab.setVisibility(View.VISIBLE));
                     }
                 }
-
 
                 uiHandler.post(() -> {
                     homeRecyclerViewAdapter.setVideoList(resultObjects, true);
@@ -327,6 +325,8 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
         searchView.setInputType(InputType.TYPE_TEXT_VARIATION_URI);
         searchView.setQueryHint(getString(R.string.search_hint));
 
+        dbManager = new DBManager(context);
+
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -349,6 +349,7 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
             int itemId = m.getItemId();
             if(itemId == R.id.delete_results){
                 dbManager.clearResults();
+                dbManager.close();
                 selectedObjects = new ArrayList<>();
                 downloadAllFab.setVisibility(View.GONE);
                 downloadFabs.setVisibility(View.GONE);
@@ -357,21 +358,14 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
                 try{
                     mainActivity.cancelDownloadService();
                     topAppBar.getMenu().findItem(itemId).setVisible(false);
+                    for (int i = 0; i < downloadInfo.getDownloadQueue().size(); i++){
+                        Video vid = downloadInfo.getDownloadQueue().get(i);
+                        String type = vid.getDownloadedType();
+                        updateDownloadingStatusOnResult(vid, type, false);
+                        homeRecyclerViewAdapter.notifyItemChanged(resultObjects.indexOf(vid));
+                    }
                     downloadQueue = new ArrayList<>();
                     downloading = false;
-
-                    String id = progressBar.getTag().toString().split("##progress")[0];
-                    progressBar.setVisibility(View.GONE);
-                    String type = findVideo(id).getDownloadedType();
-                    MaterialButton theClickedButton = recyclerView.findViewWithTag(id + "##"+type);
-
-                    if (theClickedButton != null) {
-                        if (type.equals("audio")) {
-                            theClickedButton.setIcon(ContextCompat.getDrawable(activity, R.drawable.ic_music_stopped));
-                        } else {
-                            theClickedButton.setIcon(ContextCompat.getDrawable(activity, R.drawable.ic_video_stopped));
-                        }
-                    }
                 }catch(Exception ignored){}
             }
             return true;
@@ -431,6 +425,7 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
                             }
                             dbManager.clearResults();
                             dbManager.addToResults(resultObjects);
+                            dbManager.close();
                             new Handler(Looper.getMainLooper()).post(() -> {
                                 homeRecyclerViewAdapter.setVideoList(resultObjects, true);
                                 shimmerCards.stopShimmer();
@@ -472,7 +467,7 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
 
                             dbManager.clearResults();
                             dbManager.addToResults(resultObjects);
-
+                            dbManager.close();
                             new Handler(Looper.getMainLooper()).post(() -> {
                                 homeRecyclerViewAdapter.setVideoList(resultObjects, true);
                                 shimmerCards.stopShimmer();
@@ -497,6 +492,7 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
                             try {
                                 String nextPageToken = "";
                                 dbManager.clearResults();
+                                dbManager.close();
                                 resultObjects.clear();
                                 homeRecyclerViewAdapter.setVideoList(new ArrayList<>(), true);
                                 do {
@@ -510,6 +506,7 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
                                         shimmerCards.setVisibility(View.GONE);
                                     });
                                     dbManager.addToResults(tmp_vids);
+                                    dbManager.close();
                                     if (tmp_token.isEmpty()) break;
                                     if (tmp_token.equals(nextPageToken)) break;
                                     nextPageToken = tmp_token;
@@ -545,6 +542,7 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
                                     resultObjects.addAll(video);
                                     dbManager.clearResults();
                                     dbManager.addToResults(resultObjects);
+                                    dbManager.close();
                                 }
 
                                 new Handler(Looper.getMainLooper()).post(() -> {
@@ -591,16 +589,15 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
            try {
                if (btn.getTag(R.id.cancelDownload).equals("true")){
                    mainActivity.removeItemFromDownloadQueue(vid);
-                   int icon = (type.equals("audio")) ? R.drawable.ic_music : R.drawable.ic_video;
-                   btn.setIcon(ContextCompat.getDrawable(activity, icon));
-                   btn.setTag(R.id.cancelDownload, "false");
+                   updateDownloadingStatusOnResult(vid, type, false);
+                   homeRecyclerViewAdapter.notifyItemChanged(position);
                    return;
                }
            }catch (Exception ignored){}
         }
         downloadQueue.add(vid);
-        btn.setTag(R.id.cancelDownload, "true");
-        btn.setIcon(ContextCompat.getDrawable(activity, R.drawable.ic_cancel));
+        updateDownloadingStatusOnResult(vid, type, true);
+        homeRecyclerViewAdapter.notifyItemChanged(position);
         if (isStoragePermissionGranted()){
             mainActivity.startDownloadService(downloadQueue, listener);
             downloadQueue.clear();
@@ -643,22 +640,35 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
                 video.setDownloadedTime(downloadedTime);
                 video.setDownloadPath(path);
                 dbManager.addToHistory(video);
+                dbManager.close();
             } catch (Exception ignored) {
             }
         }
     }
 
-    public void updateDownloadStatusOnResult(Video v, String type) {
+    public void updateDownloadStatusOnResult(Video v, String type, boolean downloaded) {
         if (v != null) {
             dbManager = new DBManager(context);
             try {
-                dbManager.updateDownloadStatusOnResult(v.getVideoId(), type);
+                dbManager.updateDownloadStatusOnResult(v.getVideoId(), type, downloaded);
+                dbManager.close();
             } catch (Exception ignored) {
             }
         }
     }
 
-
+    public void updateDownloadingStatusOnResult(Video v, String type, boolean downloading) {
+        if (v != null) {
+            if (type.equals("audio")) v.setDownloadingAudio(downloading);
+            else if (type.equals("video")) v.setDownloadingVideo(downloading);
+            homeRecyclerViewAdapter.updateVideoListItem(v, resultObjects.indexOf(v));
+            dbManager = new DBManager(context);
+            try {
+                dbManager.updateDownloadingStatusOnResult(v.getVideoId(), type, downloading);
+                dbManager.close();
+            } catch (Exception ignored) {}
+        }
+    }
 
     @Override
     public void onCardClick(int position, boolean add) {
@@ -693,6 +703,8 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
                     for (int i = 0; i < selectedObjects.size(); i++) {
                         Video vid = findVideo(selectedObjects.get(i).getVideoId());
                         vid.setDownloadedType(buttonData[1]);
+                        updateDownloadingStatusOnResult(vid, buttonData[1], true);
+                        homeRecyclerViewAdapter.notifyItemChanged(resultObjects.indexOf(vid));
                         downloadQueue.add(vid);
                     }
                     selectedObjects = new ArrayList<>();
@@ -765,13 +777,11 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
         for (int i = start; i < end; i++){
             Video vid = findVideo(resultObjects.get(i).getVideoId());
             vid.setDownloadedType(type);
+            updateDownloadingStatusOnResult(vid, type, true);
+            homeRecyclerViewAdapter.notifyItemChanged(resultObjects.indexOf(vid));
             downloadQueue.add(vid);
         }
 
-        if (downloading) {
-            Toast.makeText(context, R.string.added_to_queue, Toast.LENGTH_LONG).show();
-            return;
-        }
         if(isStoragePermissionGranted()){
             mainActivity.startDownloadService(downloadQueue, listener);
             downloadQueue.clear();

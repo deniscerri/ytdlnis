@@ -94,6 +94,11 @@ public class HistoryFragment extends Fragment implements HistoryRecyclerViewAdap
             }catch(Exception ignored){}
         }
 
+        @Override
+        public void onDownloadCancel(DownloadInfo downloadInfo) {
+
+        }
+
         public void onDownloadServiceEnd() {}
     };
 

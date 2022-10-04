@@ -156,12 +156,13 @@ public class DownloaderService extends Service {
             }
         }
 
-        public void cancelDownload(){
+        public void cancelDownload(boolean cancelAll){
             try{
                 YoutubeDL.getInstance().destroyProcessById(downloadProcessID);
                 compositeDisposable.clear();
                 //stopForeground(true);
-                onDownloadEnd();
+                if (cancelAll) onDownloadCancel();
+                else onDownloadEnd();
             }catch(Exception err){
                 Log.e(TAG, err.getMessage());
             }
@@ -170,7 +171,7 @@ public class DownloaderService extends Service {
         public void removeItemFromDownloadQueue(Video video){
             //if its the same video with the same download type as the current downloading one
             if (downloadInfo.getVideo().getURL().equals(video.getURL()) && downloadInfo.getVideo().getDownloadedType().equals(video.getDownloadedType())){
-                cancelDownload();
+                cancelDownload(false);
                 downloadQueue.pop();
                 downloadInfo.setDownloadQueue(downloadQueue);
                 startDownload(downloadQueue);
@@ -187,6 +188,19 @@ public class DownloaderService extends Service {
                 activity.runOnUiThread(() -> {
                     IDownloaderListener callback = activities.get(activity);
                     callback.onDownloadServiceEnd();
+                });
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    private void onDownloadCancel(){
+        try{
+            for (Activity activity: activities.keySet()){
+                activity.runOnUiThread(() -> {
+                    IDownloaderListener callback = activities.get(activity);
+                    callback.onDownloadCancel(downloadInfo);
                 });
             }
         }catch (Exception e){

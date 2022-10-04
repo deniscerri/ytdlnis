@@ -18,10 +18,12 @@ public class Video implements Parcelable {
     private int isPlaylistItem;
     private String downloadPath;
     private String website;
+    private boolean downloadingAudio;
+    private boolean downloadingVideo;
 
     // RESULTS OBJECT
     public Video(String videoId, String url, String title, String author, String duration, String thumb,
-                 int downloadedAudio, int downloadedVideo, int isPlaylistItem, String website) {
+                 int downloadedAudio, int downloadedVideo, int isPlaylistItem, String website, int downloadingAudio, int downloadingVideo) {
         this.videoId = videoId;
         this.url = url;
         this.title = title;
@@ -32,6 +34,8 @@ public class Video implements Parcelable {
         this.downloadedAudio = downloadedAudio;
         this.isPlaylistItem = isPlaylistItem;
         this.website = website;
+        this.downloadingAudio = intToBoolean(downloadingAudio);
+        this.downloadingVideo = intToBoolean(downloadingVideo);
     }
 
     //HISTORY OBJECT
@@ -49,6 +53,9 @@ public class Video implements Parcelable {
         this.website = website;
     }
 
+    private boolean intToBoolean(int i){
+        return i == 1;
+    }
 
     protected Video(Parcel in) {
         id = in.readInt();
@@ -199,6 +206,26 @@ public class Video implements Parcelable {
         this.downloadPath = downloadPath;
     }
 
+    public boolean isDownloadingAudio() {
+        return downloadingAudio;
+    }
+
+    public void setDownloadingAudio(boolean downloadingAudio) {
+        this.downloadingAudio = downloadingAudio;
+    }
+
+    public boolean isDownloadingVideo() {
+        return downloadingVideo;
+    }
+
+    public void setDownloadingVideo(boolean downloadingVideo) {
+        this.downloadingVideo = downloadingVideo;
+    }
+
+    public boolean isDownloading() {
+        return this.downloadingAudio || this.downloadingVideo;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -239,7 +266,8 @@ public class Video implements Parcelable {
                 ", isPlaylistItem=" + isPlaylistItem +
                 ", downloadPath='" + downloadPath + '\'' +
                 ", website='" + website + '\'' +
+                ", downloadingAudio=" + downloadingAudio +
+                ", downloadingVideo=" + downloadingVideo +
                 '}';
     }
-
 }

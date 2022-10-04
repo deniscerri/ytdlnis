@@ -94,28 +94,42 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
 
         MaterialButton musicBtn = buttonLayout.findViewById(R.id.download_music);
         musicBtn.setTag(videoID + "##audio");
+        musicBtn.setTag(R.id.cancelDownload, "false");
         musicBtn.setOnClickListener(view -> onItemClickListener.onButtonClick(position, "audio"));
 
         MaterialButton videoBtn = buttonLayout.findViewById(R.id.download_video);
         videoBtn.setTag(videoID + "##video");
+        videoBtn.setTag(R.id.cancelDownload, "false");
         videoBtn.setOnClickListener(view -> onItemClickListener.onButtonClick(position, "video"));
 
 
         // PROGRESS BAR ----------------------------------------------------
 
         LinearProgressIndicator progressBar = card.findViewById(R.id.download_progress);
-        progressBar.setVisibility(View.GONE);
         progressBar.setTag(videoID + "##progress");
 
-        if(video.isAudioDownloaded() == 1){
-            musicBtn.setIcon(ContextCompat.getDrawable(activity, R.drawable.ic_music_downloaded));
-        }else{
-            musicBtn.setIcon(ContextCompat.getDrawable(activity, R.drawable.ic_music));
-        }
-        if(video.isVideoDownloaded() == 1){
-            videoBtn.setIcon(ContextCompat.getDrawable(activity, R.drawable.ic_video_downloaded));
-        }else{
-            videoBtn.setIcon(ContextCompat.getDrawable(activity, R.drawable.ic_video));
+        if (video.isDownloading()){
+            progressBar.setVisibility(View.VISIBLE);
+            if (video.isDownloadingAudio()){
+                musicBtn.setIcon(ContextCompat.getDrawable(activity, R.drawable.ic_cancel));
+                musicBtn.setTag(R.id.cancelDownload, "true");
+            }else if (video.isDownloadingVideo()){
+                videoBtn.setIcon(ContextCompat.getDrawable(activity, R.drawable.ic_cancel));
+                videoBtn.setTag(R.id.cancelDownload, "true");
+            }
+        }else {
+            progressBar.setVisibility(View.GONE);
+            progressBar.setIndeterminate(true);
+            if(video.isAudioDownloaded() == 1){
+                musicBtn.setIcon(ContextCompat.getDrawable(activity, R.drawable.ic_music_downloaded));
+            }else{
+                musicBtn.setIcon(ContextCompat.getDrawable(activity, R.drawable.ic_music));
+            }
+            if(video.isVideoDownloaded() == 1){
+                videoBtn.setIcon(ContextCompat.getDrawable(activity, R.drawable.ic_video_downloaded));
+            }else{
+                videoBtn.setIcon(ContextCompat.getDrawable(activity, R.drawable.ic_video));
+            }
         }
 
         if(checkedVideos.contains(position)){
@@ -165,6 +179,10 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
         if(reset || size == 0) clear();
         videoList.addAll(list);
         notifyItemRangeInserted(size, videoList.size());
+    }
+
+    public void updateVideoListItem(Video v, int position){
+        videoList.set(position, v);
     }
 
     public void clearCheckedVideos(){

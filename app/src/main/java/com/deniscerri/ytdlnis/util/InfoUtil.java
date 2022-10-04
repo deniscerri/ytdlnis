@@ -193,7 +193,7 @@ public class InfoUtil {
             int downloadedVideo = dbManager.checkDownloaded(url, "video");
             int isPLaylist = 0;
 
-            video = new Video(id, url, title, author, duration, thumb, downloadedAudio, downloadedVideo, isPLaylist, "youtube");
+            video = new Video(id, url, title, author, duration, thumb, downloadedAudio, downloadedVideo, isPLaylist, "youtube", 0, 0);
         }catch(Exception e){
             Log.e(TAG, e.toString());
         }
@@ -319,7 +319,9 @@ public class InfoUtil {
                         dbManager.checkDownloaded(url, "audio"),
                         dbManager.checkDownloaded(url, "video"),
                         isPlaylist,
-                        website)
+                        website,
+                        0,
+                        0)
                 );
             }
         }catch(Exception e){

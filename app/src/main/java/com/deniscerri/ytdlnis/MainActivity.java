@@ -186,7 +186,7 @@ public class MainActivity extends AppCompatActivity{
 
     public void cancelDownloadService(){
         if(!isDownloadServiceRunning) return;
-        iDownloaderService.cancelDownload();
+        iDownloaderService.cancelDownload(true);
         stopDownloadService();
     }
 

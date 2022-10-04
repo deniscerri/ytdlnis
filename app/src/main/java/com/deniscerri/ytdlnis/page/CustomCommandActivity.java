@@ -91,6 +91,9 @@ public class CustomCommandActivity extends AppCompatActivity {
             swapFabs();
         }
 
+        @Override
+        public void onDownloadCancel(DownloadInfo downloadInfo) {}
+
 
         public void onDownloadServiceEnd() {
             stopDownloadService();
@@ -160,7 +163,7 @@ public class CustomCommandActivity extends AppCompatActivity {
 
     public void cancelDownloadService(){
         if(!isDownloadServiceRunning) return;
-        iDownloaderService.cancelDownload();
+        iDownloaderService.cancelDownload(false);
         stopDownloadService();
     }
 
