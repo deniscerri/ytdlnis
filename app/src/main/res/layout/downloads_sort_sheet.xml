@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:id="@+id/downloads_element_bottom_sheet"
+    style="@style/Widget.Material3.BottomSheet"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:padding="10dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/newest"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:text="@string/newest_first"
+            android:drawablePadding="20dp"
+            android:paddingBottom="20dp"
+            app:drawableLeftCompat="@drawable/ic_up" />
+
+        <TextView
+            android:id="@+id/oldest"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:text="@string/oldest_first"
+            android:drawablePadding="20dp"
+            android:paddingBottom="20dp"
+            app:drawableLeftCompat="@drawable/ic_down" />
+
+        <View style="@style/Divider.Horizontal"/>
+
+        <TextView
+            android:id="@+id/cancel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            app:icon="@drawable/ic_link"
+            android:text="@string/cancel"
+            android:drawablePadding="20dp"
+            app:drawableLeftCompat="@drawable/ic_cancel" />
+
+    </LinearLayout>
+
+
+</FrameLayout>

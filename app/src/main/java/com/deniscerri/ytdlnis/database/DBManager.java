@@ -5,6 +5,12 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
+
+import com.deniscerri.ytdlnis.R;
+
+import java.io.File;
 import java.util.ArrayList;
 
 public class DBManager extends SQLiteOpenHelper {
@@ -96,6 +102,31 @@ public class DBManager extends SQLiteOpenHelper {
         db.execSQL("UPDATE "+results_table_name+ where);
     }
 
+    public void clearDeletedHistory(){
+        ArrayList<Video> videos = getHistory("","","","");
+        for (int i = 0; i < videos.size(); i++){
+            Video video = videos.get(i);
+            String path = video.getDownloadPath();
+            File file = new File(path);
+            if(!file.exists() && !path.isEmpty()){
+                clearHistoryItem(video);
+            }
+        }
+    }
+
+    public void clearDuplicateHistory(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL(
+                "DELETE FROM " + history_table_name +
+                " WHERE id > (SELECT MIN(h.id) FROM history h WHERE h.url = " + history_table_name + ".url" +
+                " AND h.type = " + history_table_name + ".type);"
+        );
+
+        //remove downloaded statuses from results
+        db.execSQL("UPDATE "+results_table_name+ " SET downloadedAudio=0, downloadedVideo=0" +
+                " WHERE downloadedAudio=1 OR downloadedVideo=1");
+    }
+
     public void clearResults(){
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("DELETE FROM " + results_table_name);
@@ -136,10 +167,15 @@ public class DBManager extends SQLiteOpenHelper {
         return list;
     }
 
-    public ArrayList<Video> getHistory(String query){
+    public ArrayList<Video> getHistory(String query, String format, String website, String sort){
         SQLiteDatabase db = this.getReadableDatabase();
+
+        if (sort == null || sort.isEmpty()) sort = "DESC";
         Cursor cursor = db.rawQuery("SELECT * FROM " + history_table_name
-                        + " WHERE title LIKE '%"+query+"%' ORDER BY id DESC",
+                        + " WHERE title LIKE '%"+query+"%'"+
+                        " AND type LIKE '%"+format+"%'"+
+                        " AND website LIKE '%"+website+"%'"+
+                        " ORDER BY id "+sort,
                 null);
         ArrayList<Video> list = new ArrayList<>();
 
@@ -162,7 +198,6 @@ public class DBManager extends SQLiteOpenHelper {
         cursor.close();
         return list;
     }
-
 
     public void addToResults(ArrayList<Video> videot){
         SQLiteDatabase db = this.getWritableDatabase();

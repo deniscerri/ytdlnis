@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name" translatable="false">YTDLnis</string>
     <string name="search">Search</string>
-    <string name="fshi_historin">Clear history</string>
-    <string name="fshi_rezultatet">Clear Results</string>
+    <string name="remove_all">Remove All</string>
+    <string name="remove_results">Clear Results</string>
     <string name="Trending"><b>Trending</b></string>
     <string name="end_of_results"><b>You reached the end of results</b></string>
     <string name="download_all">Download All</string>
@@ -38,6 +38,8 @@
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="confirm_delete_history_desc">This will delete every item on your history! You can\'t recover them!</string>
+    <string name="confirm_delete_history_deleted_desc">This will delete any item in your history that doesn\'t find a file matching it\'s download path!</string>
+    <string name="confirm_delete_history_duplicates_desc">This will delete every duplicate in your history (same url and download type), and keeping the latest version!</string>
     <string name="confirm_delete_history">Confirm</string>
     <string name="search_history_hint">Search from History</string>
     <string name="no_results">No Results</string>
@@ -101,5 +103,10 @@
     <string name="downloads">Downloads</string>
     <string name="filter_history">Filter History</string>
     <string name="removed_from_queue">removed from queue!</string>
+    <string name="remove_deleted">Remove Deleted</string>
+    <string name="remove_duplicates">Remove Duplicates</string>
+    <string name="sort_by">Sort by</string>
+    <string name="newest_first">Newest First</string>
+    <string name="oldest_first">Oldest First</string>
     <item type="id" name="cancelDownload" />
 </resources>

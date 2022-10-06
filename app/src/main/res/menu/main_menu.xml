@@ -12,7 +12,7 @@
 
     <item
         android:id="@+id/delete_results"
-        android:title="@string/fshi_rezultatet"
+        android:title="@string/remove_results"
         app:showAsAction="never" />
 
     <item

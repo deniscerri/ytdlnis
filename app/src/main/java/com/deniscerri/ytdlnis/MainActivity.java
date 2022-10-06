@@ -10,14 +10,13 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import com.deniscerri.ytdlnis.database.Video;
 import com.deniscerri.ytdlnis.databinding.ActivityMainBinding;
-import com.deniscerri.ytdlnis.page.HistoryFragment;
+import com.deniscerri.ytdlnis.page.DownloadsFragment;
 import com.deniscerri.ytdlnis.page.HomeFragment;
 import com.deniscerri.ytdlnis.page.MoreFragment;
 import com.deniscerri.ytdlnis.page.settings.SettingsActivity;
@@ -36,7 +35,7 @@ public class MainActivity extends AppCompatActivity{
     private static final String TAG = "MainActivity";
 
     private HomeFragment homeFragment;
-    private HistoryFragment historyFragment;
+    private DownloadsFragment downloadsFragment;
     private MoreFragment moreFragment;
 
     private Fragment lastFragment;
@@ -87,7 +86,7 @@ public class MainActivity extends AppCompatActivity{
         fm = getSupportFragmentManager();
 
         homeFragment = new HomeFragment();
-        historyFragment = new HistoryFragment();
+        downloadsFragment = new DownloadsFragment();
         moreFragment = new MoreFragment();
 
         initFragments();
@@ -102,12 +101,12 @@ public class MainActivity extends AppCompatActivity{
                 }
                 replaceFragment(homeFragment);
             }else if(id == R.id.downloads){
-                if(lastFragment == historyFragment){
-                    historyFragment.scrollToTop();
+                if(lastFragment == downloadsFragment){
+                    downloadsFragment.scrollToTop();
                 }else {
                     this.setTitle(getString(R.string.downloads));
                 }
-                replaceFragment(historyFragment);
+                replaceFragment(downloadsFragment);
             }else if(id == R.id.more){
                 if(lastFragment == moreFragment){
                     Intent intent = new Intent(context, SettingsActivity.class);
@@ -135,7 +134,7 @@ public class MainActivity extends AppCompatActivity{
             Log.e(TAG, action);
 
             homeFragment = new HomeFragment();
-            historyFragment = new HistoryFragment();
+            downloadsFragment = new DownloadsFragment();
             moreFragment = new MoreFragment();
 
             homeFragment.handleIntent(intent);
@@ -146,9 +145,9 @@ public class MainActivity extends AppCompatActivity{
     private void initFragments(){
         fm.beginTransaction()
                 .replace(R.id.frame_layout, homeFragment)
-                .add(R.id.frame_layout, historyFragment)
+                .add(R.id.frame_layout, downloadsFragment)
                 .add(R.id.frame_layout, moreFragment)
-                .hide(historyFragment)
+                .hide(downloadsFragment)
                 .hide(moreFragment)
                 .commit();
 
@@ -156,7 +155,7 @@ public class MainActivity extends AppCompatActivity{
 
         listeners = new ArrayList<>();
         listeners.add(homeFragment.listener);
-        listeners.add(historyFragment.listener);
+        listeners.add(downloadsFragment.listener);
     }
 
     private void replaceFragment(Fragment f){
@@ -232,7 +231,7 @@ public class MainActivity extends AppCompatActivity{
     }
 
     public void updateHistoryFragment(){
-        historyFragment.initCards();
+        downloadsFragment.initCards();
     }
 
 }

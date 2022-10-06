@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout android:id="@+id/history_shimmer_relative_layout"
+<RelativeLayout android:id="@+id/downloads_shimmer_relative_layout"
     android:layout_width="match_parent"
     android:layout_height="150dp"
     app:layout_constraintDimensionRatio="H,2.66:1"
@@ -9,7 +9,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <androidx.cardview.widget.CardView
-        android:id="@+id/history_shimmer_card_view"
+        android:id="@+id/downloads_shimmer_card_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:cardCornerRadius="10dp"
@@ -20,14 +20,14 @@
         android:layout_margin="10dp">
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/history_shimmer_image_view"
+            android:id="@+id/downloads_shimmer_image_view"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
         <TextView
-            android:id="@+id/history_shimmer_title"
+            android:id="@+id/downloads_shimmer_title"
             android:layout_width="250dp"
             android:background="@color/light_grey"
             android:layout_height="10dp"
@@ -38,7 +38,7 @@
             />
 
         <TextView
-            android:id="@+id/history_shimmer_title2"
+            android:id="@+id/downloads_shimmer_title2"
             android:layout_width="150dp"
             android:background="@color/light_grey"
             android:layout_height="10dp"
@@ -49,7 +49,7 @@
             />
 
         <TextView
-            android:id="@+id/history_shimmer_bottom"
+            android:id="@+id/downloads_shimmer_bottom"
             android:layout_width="100dp"
             android:background="@color/light_grey"
             android:layout_height="10dp"
@@ -62,7 +62,7 @@
             />
 
         <TextView
-            android:id="@+id/history_shimmer_date"
+            android:id="@+id/downloads_shimmer_date"
             android:layout_width="100dp"
             android:background="@color/light_grey"
             android:layout_height="10dp"
@@ -75,7 +75,7 @@
             />
 
         <TextView
-            android:id="@+id/history_shimmer_info_time"
+            android:id="@+id/downloads_shimmer_info_time"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="bottom|right"
@@ -92,7 +92,7 @@
             android:shadowColor="@color/black" />
 
         <LinearLayout
-            android:id="@+id/history_shimmer_download_button_layout"
+            android:id="@+id/downloads_shimmer_download_button_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center|right"
@@ -103,7 +103,7 @@
 
             <com.google.android.material.button.MaterialButton
                 style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton.Icon"
-                android:id="@+id/history_shimmer_download_button_type"
+                android:id="@+id/downloads_shimmer_download_button_type"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 app:cornerRadius="10dp"

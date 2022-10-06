@@ -1,0 +1,32 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".MainActivity" >
+
+    <item
+        android:id="@+id/search_downloads"
+        android:title="@string/search"
+        android:icon="@drawable/ic_search"
+        app:showAsAction="collapseActionView|always"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"/>
+
+    <item
+        android:id="@+id/remove_downloads"
+        android:icon="@drawable/ic_delete_all"
+        android:title="@string/remove_all"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/remove_deleted_downloads"
+        android:icon="@drawable/ic_delete_all"
+        android:title="@string/remove_deleted"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/remove_duplicates"
+        android:icon="@drawable/ic_delete_all"
+        android:title="@string/remove_duplicates"
+        app:showAsAction="never" />
+
+</menu>
+

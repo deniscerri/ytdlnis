@@ -2,8 +2,8 @@
 <resources>
     <string name="Trending"><b>Në Trend</b></string>
     <string name="search">Kërko</string>
-    <string name="fshi_rezultatet">Pastro Rezultatet</string>
-    <string name="fshi_historin">Pastro Historinë</string>
+    <string name="remove_results">Pastro Rezultatet</string>
+    <string name="remove_all">Hiqi të gjitha</string>
     <string name="end_of_results"><b>Arrite fundin e rezultateve</b></string>
     <string name="download_all">Shkarko të gjitha</string>
     <string name="settings">Cilësime</string>
