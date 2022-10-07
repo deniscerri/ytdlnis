@@ -9,6 +9,8 @@ import android.text.Html;
 import android.util.Log;
 import android.widget.Toast;
 import androidx.annotation.Nullable;
+
+import com.deniscerri.ytdlnis.R;
 import com.deniscerri.ytdlnis.database.DBManager;
 import com.deniscerri.ytdlnis.database.Video;
 import com.yausername.youtubedl_android.YoutubeDL;
@@ -191,9 +193,9 @@ public class InfoUtil {
             String url = "https://www.youtube.com/watch?v=" + id;
             int downloadedAudio = dbManager.checkDownloaded(url, "audio");
             int downloadedVideo = dbManager.checkDownloaded(url, "video");
-            int isPLaylist = 0;
+            int isPlaylist = 0;
 
-            video = new Video(id, url, title, author, duration, thumb, downloadedAudio, downloadedVideo, isPLaylist, "youtube", 0, 0);
+            video = new Video(id, url, title, author, duration, thumb, downloadedAudio, downloadedVideo, isPlaylist, "youtube", 0, 0, "");
         }catch(Exception e){
             Log.e(TAG, e.toString());
         }
@@ -308,6 +310,8 @@ public class InfoUtil {
                 if (jsonObject.has("ie_key")) website = jsonObject.getString("ie_key");
                 else website = jsonObject.getString("extractor");
 
+                String playlistTitle = "";
+                if (jsonObject.has("playlist")) playlistTitle = jsonObject.getString("playlist");
 
                 videos.add(new Video(
                         jsonObject.getString("id"),
@@ -321,7 +325,8 @@ public class InfoUtil {
                         isPlaylist,
                         website,
                         0,
-                        0)
+                        0,
+                        playlistTitle)
                 );
             }
         }catch(Exception e){
@@ -361,6 +366,7 @@ public class InfoUtil {
             if(v.getThumb().isEmpty()){
                 continue;
             }
+            v.setPlaylistTitle(context.getString(R.string.trendingPlaylist));
             videos.add(v);
         }
         return videos;

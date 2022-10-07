@@ -11,6 +11,7 @@ public class DownloadInfo {
     private String outputLine;
     private String downloadStatus;
     private String downloadPath;
+    private String downloadType;
 
     public DownloadInfo(){}
 
@@ -63,4 +64,11 @@ public class DownloadInfo {
         this.downloadPath = path;
     }
 
+    public String getDownloadType() {
+        return downloadType;
+    }
+
+    public void setDownloadType(String downloadType) {
+        this.downloadType = downloadType;
+    }
 }

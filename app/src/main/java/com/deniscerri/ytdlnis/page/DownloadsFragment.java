@@ -270,6 +270,8 @@ public class DownloadsFragment extends Fragment implements DownloadsRecyclerView
                 delete_dialog.setPositiveButton(getString(R.string.ok), (dialogInterface, i) -> {
                     dbManager.clearHistory();
                     downloadsRecyclerViewAdapter.clear();
+                    downloadsObjects.clear();
+                    downloadsRecyclerViewAdapter.setVideoList(downloadsObjects);
                     no_results.setVisibility(View.VISIBLE);
                     selectionChips.setVisibility(View.GONE);
                     websiteGroup.removeAllViews();
@@ -437,6 +439,7 @@ public class DownloadsFragment extends Fragment implements DownloadsRecyclerView
         delete_dialog.setPositiveButton(getString(R.string.ok), (dialogInterface, i) -> {
             downloadsObjects.remove(position);
             downloadsRecyclerViewAdapter.notifyItemRemoved(position);
+            downloadsRecyclerViewAdapter.setVideoList(downloadsObjects);
             downloadsRecyclerViewAdapter.setWebsiteList();
             updateWebsiteChips();
             dbManager.clearHistoryItem(v);

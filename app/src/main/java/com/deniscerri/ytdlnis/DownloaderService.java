@@ -328,6 +328,7 @@ public class DownloaderService extends Service {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(youtubeDLResponse -> {
                     downloadInfo.setDownloadPath(youtubeDLDir.getAbsolutePath());
+                    downloadInfo.setDownloadType(type);
                     try{
                         for (Activity activity: activities.keySet()){
                             activity.runOnUiThread(() -> {

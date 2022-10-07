@@ -134,14 +134,15 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
 
         public void onDownloadEnd(DownloadInfo info) {
             downloadInfo = info;
+            Video item = downloadInfo.getVideo();
+            String id = item.getVideoId();
+            String type = downloadInfo.getDownloadType();
+            item = findVideo(id);
             try{
-                Video item = downloadInfo.getVideo();
-                String id = item.getVideoId();
-                String type = item.getDownloadedType();
-
-                item = findVideo(id);
                 updateDownloadingStatusOnResult(item, type, false);
-                homeRecyclerViewAdapter.notifyItemChanged(resultObjects.indexOf(item));
+                if (type.equals("audio")) item.setDownloadedAudio(1);
+                else item.setDownloadedVideo(1);
+                homeRecyclerViewAdapter.notifyItemChanged(resultObjects.indexOf(findVideo(id)));
 
                 // MEDIA SCAN
                 ArrayList<File> files = new ArrayList<>();
@@ -160,7 +161,11 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
                 String[] paths = new String[files.size()];
                 for (int i = 0; i < files.size(); i++) paths[i] = files.get(i).getAbsolutePath();
                 MediaScannerConnection.scanFile(context, paths, null, null);
+
+                String typeTmp = item.getDownloadedType();
+                item.setDownloadedType(type);
                 addToHistory(item, new Date(), paths);
+                item.setDownloadedType(typeTmp);
                 updateDownloadStatusOnResult(item, type, true);
                 mainActivity.updateHistoryFragment();
 
@@ -269,7 +274,11 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
                 Handler uiHandler = new Handler(Looper.getMainLooper());
                 dbManager = new DBManager(context);
                 resultObjects = dbManager.getResults();
-                if (resultObjects.size() == 0) {
+                String playlistTitle = "";
+                try {
+                    playlistTitle = resultObjects.get(0).getPlaylistTitle();
+                }catch(Exception ignored){}
+                if (resultObjects.size() == 0 || (playlistTitle.equals(getString(R.string.trendingPlaylist)) && !downloading)) {
                     try {
                         infoUtil = new InfoUtil(context);
                         resultObjects = infoUtil.getTrending(context);
@@ -279,6 +288,7 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
                     }
                 }else {
                     if (!downloading){
+                        homeRecyclerViewAdapter.setVideoList(resultObjects, true);
                         for (int i = 0; i < resultObjects.size(); i++){
                             Video tmp = resultObjects.get(i);
                             if(tmp.isDownloading()){
@@ -642,7 +652,6 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
         }catch(Exception e){
             e.printStackTrace();
         }
-
         if (video != null) {
             dbManager = new DBManager(context);
             try {
@@ -666,14 +675,14 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
         }
     }
 
-    public void updateDownloadingStatusOnResult(Video v, String type, boolean downloading) {
+    public void updateDownloadingStatusOnResult(Video v, String type, boolean isDownloading) {
         if (v != null) {
-            if (type.equals("audio")) v.setDownloadingAudio(downloading);
-            else if (type.equals("video")) v.setDownloadingVideo(downloading);
+            if (type.equals("audio")) v.setDownloadingAudio(isDownloading);
+            else if (type.equals("video")) v.setDownloadingVideo(isDownloading);
             homeRecyclerViewAdapter.updateVideoListItem(v, resultObjects.indexOf(v));
             dbManager = new DBManager(context);
             try {
-                dbManager.updateDownloadingStatusOnResult(v.getVideoId(), type, downloading);
+                dbManager.updateDownloadingStatusOnResult(v.getVideoId(), type, isDownloading);
                 dbManager.close();
             } catch (Exception ignored) {}
         }

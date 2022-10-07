@@ -110,27 +110,33 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
 
         if (video.isDownloading()){
             progressBar.setVisibility(View.VISIBLE);
-            if (video.isDownloadingAudio()){
-                musicBtn.setIcon(ContextCompat.getDrawable(activity, R.drawable.ic_cancel));
-                musicBtn.setTag(R.id.cancelDownload, "true");
-            }else if (video.isDownloadingVideo()){
-                videoBtn.setIcon(ContextCompat.getDrawable(activity, R.drawable.ic_cancel));
-                videoBtn.setTag(R.id.cancelDownload, "true");
-            }
         }else {
             progressBar.setVisibility(View.GONE);
             progressBar.setIndeterminate(true);
+        }
+
+        if (video.isDownloadingAudio()) {
+            musicBtn.setIcon(ContextCompat.getDrawable(activity, R.drawable.ic_cancel));
+            musicBtn.setTag(R.id.cancelDownload, "true");
+        }else{
             if(video.isAudioDownloaded() == 1){
                 musicBtn.setIcon(ContextCompat.getDrawable(activity, R.drawable.ic_music_downloaded));
             }else{
                 musicBtn.setIcon(ContextCompat.getDrawable(activity, R.drawable.ic_music));
             }
+        }
+
+        if (video.isDownloadingVideo()){
+            videoBtn.setIcon(ContextCompat.getDrawable(activity, R.drawable.ic_cancel));
+            videoBtn.setTag(R.id.cancelDownload, "true");
+        }else{
             if(video.isVideoDownloaded() == 1){
                 videoBtn.setIcon(ContextCompat.getDrawable(activity, R.drawable.ic_video_downloaded));
             }else{
                 videoBtn.setIcon(ContextCompat.getDrawable(activity, R.drawable.ic_video));
             }
         }
+
 
         if(checkedVideos.contains(position)){
             card.setChecked(true);

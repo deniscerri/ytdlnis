@@ -1,5 +1,6 @@
 package com.deniscerri.ytdlnis.database;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -7,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
+import android.util.Log;
 
 import com.deniscerri.ytdlnis.R;
 
@@ -16,7 +18,7 @@ import java.util.ArrayList;
 public class DBManager extends SQLiteOpenHelper {
 
     public static final String db_name = "ytdlnis_db";
-    public static final int db_version = 9;
+    public static final int db_version = 10;
     public static final String results_table_name = "results";
     public static final String history_table_name = "history";
     public static final String id = "id";
@@ -35,6 +37,7 @@ public class DBManager extends SQLiteOpenHelper {
     public static final String downloadPath = "downloadPath";
     public static final String downloadingAudio = "downloadingAudio";
     public static final String downloadingVideo = "downloadingVideo";
+    public static final String playlistTitle = "playlistTitle";
 
 
     public DBManager(Context context){
@@ -56,7 +59,8 @@ public class DBManager extends SQLiteOpenHelper {
                 + isPlaylistItem + " INTENGER,"
                 + website + " TEXT,"
                 + downloadingAudio + " INTEGER,"
-                + downloadingVideo + " INTEGER)";
+                + downloadingVideo + " INTEGER,"
+                + playlistTitle + " TEXT)";
 
         sqLiteDatabase.execSQL(query);
 
@@ -140,6 +144,7 @@ public class DBManager extends SQLiteOpenHelper {
     }
 
 
+    @SuppressLint("Range")
     public ArrayList<Video> getResults(){
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + results_table_name, null);
@@ -148,18 +153,19 @@ public class DBManager extends SQLiteOpenHelper {
         if(cursor.moveToFirst()){
             do {
                 // on below line we are adding the data from cursor to our array list.
-                list.add(new Video(cursor.getString(1), //videoId
-                        cursor.getString(2), //url
-                        cursor.getString(3), //title
-                        cursor.getString(4), //author
-                        cursor.getString(5), //duration
-                        cursor.getString(6), //thumb
-                        cursor.getInt(7), //downloadedAudio
-                        cursor.getInt(8), //downloadedVideo
-                        cursor.getInt(9), //isPlaylistItem
-                        cursor.getString(10), //website
-                        cursor.getInt(11), //isDownloadingAudio
-                        cursor.getInt(12))); //isDownloadingVideo
+                list.add(new Video(cursor.getString(cursor.getColumnIndex(videoId)),
+                        cursor.getString(cursor.getColumnIndex(url)),
+                        cursor.getString(cursor.getColumnIndex(title)),
+                        cursor.getString(cursor.getColumnIndex(author)),
+                        cursor.getString(cursor.getColumnIndex(duration)),
+                        cursor.getString(cursor.getColumnIndex(thumb)),
+                        cursor.getInt(cursor.getColumnIndex(downloadedAudio)),
+                        cursor.getInt(cursor.getColumnIndex(downloadedVideo)),
+                        cursor.getInt(cursor.getColumnIndex(isPlaylistItem)),
+                        cursor.getString(cursor.getColumnIndex(website)),
+                        cursor.getInt(cursor.getColumnIndex(downloadedAudio)),
+                        cursor.getInt(cursor.getColumnIndex(downloadingVideo)),
+                        cursor.getString(cursor.getColumnIndex(playlistTitle))));
             } while (cursor.moveToNext());
         }
 
@@ -167,14 +173,15 @@ public class DBManager extends SQLiteOpenHelper {
         return list;
     }
 
-    public ArrayList<Video> getHistory(String query, String format, String website, String sort){
+    @SuppressLint("Range")
+    public ArrayList<Video> getHistory(String query, String format, String site, String sort){
         SQLiteDatabase db = this.getReadableDatabase();
 
         if (sort == null || sort.isEmpty()) sort = "DESC";
         Cursor cursor = db.rawQuery("SELECT * FROM " + history_table_name
                         + " WHERE title LIKE '%"+query+"%'"+
                         " AND type LIKE '%"+format+"%'"+
-                        " AND website LIKE '%"+website+"%'"+
+                        " AND website LIKE '%"+site+"%'"+
                         " ORDER BY id "+sort,
                 null);
         ArrayList<Video> list = new ArrayList<>();
@@ -182,16 +189,16 @@ public class DBManager extends SQLiteOpenHelper {
         if(cursor.moveToFirst()){
             do {
                 // on below line we are adding the data from cursor to our array list.
-                list.add(new Video(cursor.getInt(0),
-                        cursor.getString(1),
-                        cursor.getString(2),
-                        cursor.getString(3),
-                        cursor.getString(4),
-                        cursor.getString(5),
-                        cursor.getString(6),
-                        cursor.getString(7),
-                        cursor.getString(8),
-                        cursor.getString(9)));
+                list.add(new Video(cursor.getInt(cursor.getColumnIndex(id)),
+                        cursor.getString(cursor.getColumnIndex(url)),
+                        cursor.getString(cursor.getColumnIndex(title)),
+                        cursor.getString(cursor.getColumnIndex(author)),
+                        cursor.getString(cursor.getColumnIndex(duration)),
+                        cursor.getString(cursor.getColumnIndex(thumb)),
+                        cursor.getString(cursor.getColumnIndex(type)),
+                        cursor.getString(cursor.getColumnIndex(time)),
+                        cursor.getString(cursor.getColumnIndex(downloadPath)),
+                        cursor.getString(cursor.getColumnIndex(website))));
             } while (cursor.moveToNext());
         }
 
@@ -216,6 +223,7 @@ public class DBManager extends SQLiteOpenHelper {
             values.put(website, v.getWebsite());
             values.put(downloadingAudio, 0);
             values.put(downloadingVideo, 0);
+            values.put(playlistTitle, v.getPlaylistTitle());
 
             db.insert(results_table_name, null, values);
         }
@@ -275,7 +283,13 @@ public class DBManager extends SQLiteOpenHelper {
                 url + "' AND type='"+downloadType + "' LIMIT 1", null);
 
         if(cursor.moveToFirst()){
-           return 1;
+            String path = cursor.getString(8);
+            File file = new File(path);
+            if(!file.exists() && !path.isEmpty()){
+                return 0;
+            }else {
+                return 1;
+            }
         }
         return 0;
     }

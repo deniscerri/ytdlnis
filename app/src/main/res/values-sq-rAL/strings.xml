@@ -98,4 +98,11 @@
     <string name="downloads">Shkarkimet</string>
     <string name="filter_history">Filtro Historinë</string>
     <string name="removed_from_queue">u hoq nga rradha!</string>
+    <string name="confirm_delete_history_deleted_desc">Kjo do të fshijë çdo element të historisë që nuk gjendet si skedar!</string>
+    <string name="confirm_delete_history_duplicates_desc">Kjo do të fshijë çdo element duplikat të historisë (url dhe tipi i njëjtë), duke mbajtur versionin e fundit!</string>
+    <string name="remove_deleted">Hiq të fshirat</string>
+    <string name="remove_duplicates">Hiq duplikatet</string>
+    <string name="sort_by">Rendit</string>
+    <string name="newest_first">Të rejat në fillim</string>
+    <string name="oldest_first">Të vjetrat në fillim</string>
 </resources>

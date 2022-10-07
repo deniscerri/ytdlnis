@@ -20,10 +20,11 @@ public class Video implements Parcelable {
     private String website;
     private boolean downloadingAudio;
     private boolean downloadingVideo;
+    private String playlistTitle;
 
     // RESULTS OBJECT
     public Video(String videoId, String url, String title, String author, String duration, String thumb,
-                 int downloadedAudio, int downloadedVideo, int isPlaylistItem, String website, int downloadingAudio, int downloadingVideo) {
+                 int downloadedAudio, int downloadedVideo, int isPlaylistItem, String website, int downloadingAudio, int downloadingVideo, String playlistTitle) {
         this.videoId = videoId;
         this.url = url;
         this.title = title;
@@ -36,6 +37,7 @@ public class Video implements Parcelable {
         this.website = website;
         this.downloadingAudio = intToBoolean(downloadingAudio);
         this.downloadingVideo = intToBoolean(downloadingVideo);
+        this.playlistTitle = playlistTitle;
     }
 
     //HISTORY OBJECT
@@ -72,6 +74,7 @@ public class Video implements Parcelable {
         isPlaylistItem = in.readInt();
         downloadPath = in.readString();
         website = in.readString();
+        playlistTitle = in.readString();
     }
 
     public static final Creator<Video> CREATOR = new Creator<Video>() {
@@ -224,6 +227,14 @@ public class Video implements Parcelable {
 
     public boolean isDownloading() {
         return this.downloadingAudio || this.downloadingVideo;
+    }
+
+    public String getPlaylistTitle() {
+        return playlistTitle;
+    }
+
+    public void setPlaylistTitle(String playlistTitle) {
+        this.playlistTitle = playlistTitle;
     }
 
     @Override
