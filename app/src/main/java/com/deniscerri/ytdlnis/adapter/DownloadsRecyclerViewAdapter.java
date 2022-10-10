@@ -1,17 +1,20 @@
 package com.deniscerri.ytdlnis.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -21,6 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.deniscerri.ytdlnis.R;
 import com.deniscerri.ytdlnis.database.Video;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -30,13 +34,13 @@ public class DownloadsRecyclerViewAdapter extends RecyclerView.Adapter<Downloads
     private ArrayList<Video> videoList;
     private ArrayList<String> websites;
     private final OnItemClickListener onItemClickListener;
-    private Context context;
+    private Activity activity;
 
-    public DownloadsRecyclerViewAdapter(ArrayList<Video> videos, OnItemClickListener onItemClickListener, Context context){
+    public DownloadsRecyclerViewAdapter(ArrayList<Video> videos, OnItemClickListener onItemClickListener, Activity activity){
         this.videoList = videos;
         this.websites = new ArrayList<>();
         this.onItemClickListener = onItemClickListener;
-        this.context = context;
+        this.activity = activity;
     }
 
     @Override
@@ -91,30 +95,47 @@ public class DownloadsRecyclerViewAdapter extends RecyclerView.Adapter<Downloads
         // TIME DOWNLOADED  ----------------------------------
         TextView datetime = card.findViewById(R.id.downloads_info_time);
         String downloadedTime = video.getDownloadedTime();
+        if (downloadedTime == null) downloadedTime = activity.getString(R.string.currently_downloading) + " " + video.getDownloadedType();
         datetime.setText(downloadedTime);
-
-        //IS IN THE FILE SYSTEM?
-        String path = video.getDownloadPath();
-        File file = new File(path);
-        boolean filePresent = true;
-        if(!file.exists() && !path.isEmpty()){
-            filePresent = false;
-            thumbnail.setColorFilter(new ColorMatrixColorFilter(new ColorMatrix(){{setSaturation(0f);}}));
-            thumbnail.setAlpha(0.7f);
-        }
 
         // BUTTON ----------------------------------
         LinearLayout buttonLayout = card.findViewById(R.id.downloads_download_button_layout);
         MaterialButton btn = buttonLayout.findViewById(R.id.downloads_download_button_type);
 
-        if(video.getDownloadedType() != null){
-            if(video.getDownloadedType().equals("audio")){
-                if (filePresent) btn.setIcon(ContextCompat.getDrawable(context, R.drawable.ic_music_downloaded));
-                else btn.setIcon(ContextCompat.getDrawable(context, R.drawable.ic_music));
-            }else{
-                if (filePresent) btn.setIcon(ContextCompat.getDrawable(context, R.drawable.ic_video_downloaded));
-                else btn.setIcon(ContextCompat.getDrawable(context, R.drawable.ic_video));
+        // PROGRESS BAR ----------------------------------------------------
+        LinearProgressIndicator progressBar = card.findViewById(R.id.download_progress);
+        progressBar.setTag(video.getURL()+video.getDownloadedType()+"##progress");
+
+        if (video.isQueuedDownload()){
+            progressBar.setVisibility(View.VISIBLE);
+            btn.setOnClickListener(view -> onItemClickListener.onButtonClick(position));
+            btn.setIcon(ContextCompat.getDrawable(activity, R.drawable.ic_cancel));
+        }else {
+            progressBar.setVisibility(View.GONE);
+            progressBar.setIndeterminate(true);
+
+            //IS IN THE FILE SYSTEM?
+            String path = video.getDownloadPath();
+            File file = new File(path);
+            boolean filePresent = true;
+            if(!file.exists() && !path.isEmpty()){
+                filePresent = false;
+                thumbnail.setColorFilter(new ColorMatrixColorFilter(new ColorMatrix(){{setSaturation(0f);}}));
+                thumbnail.setAlpha(0.7f);
             }
+
+            if(video.getDownloadedType() != null){
+                if(video.getDownloadedType().equals("audio")){
+                    if (filePresent) btn.setIcon(ContextCompat.getDrawable(activity, R.drawable.ic_music_downloaded));
+                    else btn.setIcon(ContextCompat.getDrawable(activity, R.drawable.ic_music));
+                }else{
+                    if (filePresent) btn.setIcon(ContextCompat.getDrawable(activity, R.drawable.ic_video_downloaded));
+                    else btn.setIcon(ContextCompat.getDrawable(activity, R.drawable.ic_video));
+                }
+            }
+
+            if (btn.hasOnClickListeners()) btn.setOnClickListener(null);
+
         }
 
         card.setOnClickListener(view -> onItemClickListener.onCardClick(position));
@@ -127,6 +148,7 @@ public class DownloadsRecyclerViewAdapter extends RecyclerView.Adapter<Downloads
 
     public interface OnItemClickListener {
         void onCardClick(int position);
+        void onButtonClick(int position);
     }
 
     public void setVideoList(ArrayList<Video> videoList){

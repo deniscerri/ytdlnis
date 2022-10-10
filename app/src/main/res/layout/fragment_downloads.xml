@@ -25,7 +25,7 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -33,6 +33,7 @@
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
         <HorizontalScrollView
+            android:id="@+id/chips_recycler_horizontalscrollview"
             android:layout_width="wrap_content"
             android:scrollbars="none"
             android:layout_height="wrap_content">
@@ -44,7 +45,9 @@
 
                 <com.google.android.material.chip.ChipGroup
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    app:selectionRequired="false"
+                    app:singleSelection="false">
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/sort_chip"
@@ -101,6 +104,7 @@
             android:id="@+id/recycler_view_downloads"
             android:orientation="vertical"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/chips_recycler_horizontalscrollview"
             android:scrollbars="vertical"
             android:nestedScrollingEnabled="false"
             android:clipToPadding="false"
@@ -110,54 +114,72 @@
 
         </androidx.recyclerview.widget.RecyclerView>
 
-    </LinearLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:id="@+id/recycler_view_progress_downloads"
+            android:orientation="vertical"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/chips_recycler_horizontalscrollview"
+            android:scrollbars="vertical"
+            android:nestedScrollingEnabled="false"
+            android:clipToPadding="false"
+            android:paddingBottom="150dp"
+            android:visibility="gone"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            >
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:layout_width="match_parent"
+            android:visibility="gone"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/chips_recycler_horizontalscrollview"
+            android:id="@+id/shimmer_downloads_framelayout"
+            android:orientation="vertical">
+
+
+            <LinearLayout
+                android:id="@+id/shimmer_downloads_linear_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:orientation="vertical">
+
+                <include layout="@layout/downloads_card_shimmer" />
+
+                <include layout="@layout/downloads_card_shimmer" />
+
+                <include layout="@layout/downloads_card_shimmer" />
+
+                <include layout="@layout/downloads_card_shimmer" />
+
+                <include layout="@layout/downloads_card_shimmer" />
+
+                <include layout="@layout/downloads_card_shimmer" />
+
+                <include layout="@layout/downloads_card_shimmer" />
+
+                <include layout="@layout/downloads_card_shimmer" />
+
+                <include layout="@layout/downloads_card_shimmer" />
+
+                <include layout="@layout/downloads_card_shimmer" />
+
+
+
+
+            </LinearLayout>
+
+        </com.facebook.shimmer.ShimmerFrameLayout>
+
+    </RelativeLayout>
 
 
     <include layout="@layout/downloads_no_results"
         android:visibility="gone" />
 
-    <com.facebook.shimmer.ShimmerFrameLayout
-        android:layout_width="match_parent"
-        android:visibility="gone"
-        android:layout_height="match_parent"
-        android:layout_marginTop="?attr/actionBarSize"
-        android:id="@+id/shimmer_downloads_framelayout"
-        android:orientation="vertical">
-
-
-        <LinearLayout
-            android:id="@+id/shimmer_downloads_linear_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:orientation="vertical">
-
-            <include layout="@layout/downloads_card_shimmer" />
-
-            <include layout="@layout/downloads_card_shimmer" />
-
-            <include layout="@layout/downloads_card_shimmer" />
-
-            <include layout="@layout/downloads_card_shimmer" />
-
-            <include layout="@layout/downloads_card_shimmer" />
-
-            <include layout="@layout/downloads_card_shimmer" />
-
-            <include layout="@layout/downloads_card_shimmer" />
-
-            <include layout="@layout/downloads_card_shimmer" />
-
-            <include layout="@layout/downloads_card_shimmer" />
-
-            <include layout="@layout/downloads_card_shimmer" />
-
-
-
-
-        </LinearLayout>
-
-    </com.facebook.shimmer.ShimmerFrameLayout>
 
     <include layout="@layout/downloads_bottom_sheet"
         android:visibility="gone" />

@@ -105,4 +105,5 @@
     <string name="sort_by">Rendit</string>
     <string name="newest_first">Të rejat në fillim</string>
     <string name="oldest_first">Të vjetrat në fillim</string>
+    <string name="currently_downloading">Duke Shkarkuar</string>
 </resources>

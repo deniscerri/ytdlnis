@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public interface IDownloaderService {
     DownloadInfo getDownloadInfo();
-    void addActivity(Activity activity, IDownloaderListener callback);
+    void addActivity(Activity activity, ArrayList<IDownloaderListener> callback);
     void removeActivity(Activity activity);
     void updateQueue(ArrayList<Video> queue);
     void cancelDownload(boolean cancelAll);

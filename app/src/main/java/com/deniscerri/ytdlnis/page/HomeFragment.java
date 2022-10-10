@@ -143,32 +143,7 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
                 if (type.equals("audio")) item.setDownloadedAudio(1);
                 else item.setDownloadedVideo(1);
                 homeRecyclerViewAdapter.notifyItemChanged(resultObjects.indexOf(findVideo(id)));
-
-                // MEDIA SCAN
-                ArrayList<File> files = new ArrayList<>();
-                String title = downloadInfo.getVideo().getTitle().replaceAll("[^a-zA-Z0-9]","");
-                String pathTmp = "";
-                File path = new File(downloadInfo.getDownloadPath());
-                for( File file : path.listFiles() ){
-                    if(file.isFile()){
-                        pathTmp = file.getAbsolutePath().replaceAll("[^a-zA-Z0-9]","");
-                        if (pathTmp.contains(title)){
-                            files.add(file);
-                        }
-                    }
-                }
-
-                String[] paths = new String[files.size()];
-                for (int i = 0; i < files.size(); i++) paths[i] = files.get(i).getAbsolutePath();
-                MediaScannerConnection.scanFile(context, paths, null, null);
-
-                String typeTmp = item.getDownloadedType();
-                item.setDownloadedType(type);
-                addToHistory(item, new Date(), paths);
-                item.setDownloadedType(typeTmp);
                 updateDownloadStatusOnResult(item, type, true);
-                mainActivity.updateHistoryFragment();
-
                 downloading = false;
                 topAppBar.getMenu().findItem(R.id.cancel_download).setVisible(false);
             }catch(Exception ignored){}

@@ -18,7 +18,7 @@ import java.util.ArrayList;
 public class DBManager extends SQLiteOpenHelper {
 
     public static final String db_name = "ytdlnis_db";
-    public static final int db_version = 10;
+    public static final int db_version = 7;
     public static final String results_table_name = "results";
     public static final String history_table_name = "history";
     public static final String id = "id";
@@ -38,7 +38,7 @@ public class DBManager extends SQLiteOpenHelper {
     public static final String downloadingAudio = "downloadingAudio";
     public static final String downloadingVideo = "downloadingVideo";
     public static final String playlistTitle = "playlistTitle";
-
+    public static final String isQueuedDownload = "isQueuedDownload";
 
     public DBManager(Context context){
         super(context, db_name, null, db_version);
@@ -74,7 +74,8 @@ public class DBManager extends SQLiteOpenHelper {
                 + type + " TEXT,"
                 + time + " TEXT,"
                 + downloadPath + " TEXT,"
-                + website + " TEXT)";
+                + website + " TEXT,"
+                + isQueuedDownload + " INTEGER)";
 
         sqLiteDatabase.execSQL(query);
     }
@@ -198,7 +199,8 @@ public class DBManager extends SQLiteOpenHelper {
                         cursor.getString(cursor.getColumnIndex(type)),
                         cursor.getString(cursor.getColumnIndex(time)),
                         cursor.getString(cursor.getColumnIndex(downloadPath)),
-                        cursor.getString(cursor.getColumnIndex(website))));
+                        cursor.getString(cursor.getColumnIndex(website)),
+                        cursor.getInt(cursor.getColumnIndex(isQueuedDownload))));
             } while (cursor.moveToNext());
         }
 
@@ -244,8 +246,29 @@ public class DBManager extends SQLiteOpenHelper {
         values.put(time, v.getDownloadedTime());
         values.put(downloadPath, v.getDownloadPath());
         values.put(website, v.getWebsite());
+        values.put(isQueuedDownload, (v.isQueuedDownload()) ? 1 : 0);
 
         db.insert(history_table_name, null, values);
+        db.close();
+    }
+
+    public void updateHistoryItem(Video v){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put(url, v.getURL());
+        values.put(title, v.getTitle());
+        values.put(author, v.getAuthor());
+        values.put(duration, v.getDuration());
+        values.put(thumb, v.getThumb());
+        values.put(type, v.getDownloadedType());
+        values.put(time, v.getDownloadedTime());
+        values.put(downloadPath, v.getDownloadPath());
+        values.put(website, v.getWebsite());
+        values.put(isQueuedDownload, (v.isQueuedDownload()) ? 1 : 0);
+
+        String where = url + "='"+v.getURL()+"' AND "+isQueuedDownload+"=1 AND "+type+"='"+v.getDownloadedType()+"'";
+        db.update(history_table_name, values, where, null);
         db.close();
     }
 

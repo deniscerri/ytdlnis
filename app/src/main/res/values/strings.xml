@@ -110,4 +110,5 @@
     <string name="oldest_first">Oldest First</string>
     <item type="id" name="cancelDownload" />
     <string name="trendingPlaylist" translatable="false">ytdlnis-TRENDING</string>
+    <string name="currently_downloading">Downloading</string>
 </resources>

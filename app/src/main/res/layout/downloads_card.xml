@@ -32,6 +32,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
+            <com.google.android.material.progressindicator.LinearProgressIndicator
+                android:id="@+id/download_progress"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="bottom"
+                android:indeterminate="true"
+                android:visibility="gone"
+                android:alpha="0.7"
+                android:scaleY="100" />
+
             <TextView
                 android:id="@+id/downloads_title"
                 android:layout_width="300dp"
@@ -93,12 +103,12 @@
                 android:paddingRight="20dp">
 
                 <com.google.android.material.button.MaterialButton
-                    style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton.Icon"
+                    style="@style/Widget.Material3.ExtendedFloatingActionButton.Icon.Secondary"
                     android:id="@+id/downloads_download_button_type"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
+                    android:layout_width="55dp"
+                    android:layout_height="55dp"
                     app:cornerRadius="10dp"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
                     />
 
 

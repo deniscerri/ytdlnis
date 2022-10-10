@@ -14,6 +14,8 @@ import android.util.Log;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+
+import com.deniscerri.ytdlnis.database.DBManager;
 import com.deniscerri.ytdlnis.database.Video;
 import com.deniscerri.ytdlnis.databinding.ActivityMainBinding;
 import com.deniscerri.ytdlnis.page.DownloadsFragment;
@@ -24,7 +26,12 @@ import com.deniscerri.ytdlnis.service.IDownloaderListener;
 import com.deniscerri.ytdlnis.service.IDownloaderService;
 import com.deniscerri.ytdlnis.util.UpdateUtil;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 
 public class MainActivity extends AppCompatActivity{
@@ -53,9 +60,9 @@ public class MainActivity extends AppCompatActivity{
             iDownloaderService = (IDownloaderService) service;
             isDownloadServiceRunning = true;
             try{
+                iDownloaderService.addActivity(MainActivity.this, listeners);
                 for (int i = 0; i < listeners.size(); i++){
                     IDownloaderListener listener = listeners.get(i);
-                    iDownloaderService.addActivity(MainActivity.this, listener);
                     listener.onDownloadStart(iDownloaderService.getDownloadInfo());
                 }
             }catch(Exception e){
@@ -164,6 +171,7 @@ public class MainActivity extends AppCompatActivity{
     }
 
     public void startDownloadService(ArrayList<Video> downloadQueue, IDownloaderListener awaitingListener){
+        addQueueToDownloads(downloadQueue);
         if(isDownloadServiceRunning){
             iDownloaderService.updateQueue(downloadQueue);
             return;
@@ -172,6 +180,21 @@ public class MainActivity extends AppCompatActivity{
         Intent serviceIntent = new Intent(context, DownloaderService.class);
         serviceIntent.putParcelableArrayListExtra("queue", downloadQueue);
         context.getApplicationContext().bindService(serviceIntent, serviceConnection, Context.BIND_AUTO_CREATE);
+    }
+
+    public void addQueueToDownloads(ArrayList<Video> downloadQueue) {
+        try {
+            DBManager dbManager = new DBManager(context);
+            for (int i = downloadQueue.size() - 1; i >= 0; i--){
+                Video v = downloadQueue.get(i);
+                v.setQueuedDownload(true);
+                dbManager.addToHistory(v);
+            }
+            dbManager.close();
+            downloadsFragment.initCards();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void stopDownloadService(){
@@ -228,10 +251,6 @@ public class MainActivity extends AppCompatActivity{
             UpdateUtil updateUtil = new UpdateUtil(this);
             updateUtil.updateApp();
         }
-    }
-
-    public void updateHistoryFragment(){
-        downloadsFragment.initCards();
     }
 
 }

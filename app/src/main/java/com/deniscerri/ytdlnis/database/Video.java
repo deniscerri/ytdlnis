@@ -20,6 +20,7 @@ public class Video implements Parcelable {
     private String website;
     private boolean downloadingAudio;
     private boolean downloadingVideo;
+    private boolean queuedDownload;
     private String playlistTitle;
 
     // RESULTS OBJECT
@@ -42,7 +43,7 @@ public class Video implements Parcelable {
 
     //HISTORY OBJECT
     public Video(int id, String url, String title, String author, String duration, String thumb,
-                  String downloadedType, String downloadedTime, String downloadPath, String website) {
+                  String downloadedType, String downloadedTime, String downloadPath, String website, int queued) {
         this.id = id;
         this.url = url;
         this.title = title;
@@ -53,6 +54,7 @@ public class Video implements Parcelable {
         this.downloadedTime = downloadedTime;
         this.downloadPath = downloadPath;
         this.website = website;
+        this.queuedDownload = (queued == 1);
     }
 
     private boolean intToBoolean(int i){
@@ -235,6 +237,14 @@ public class Video implements Parcelable {
 
     public void setPlaylistTitle(String playlistTitle) {
         this.playlistTitle = playlistTitle;
+    }
+
+    public boolean isQueuedDownload() {
+        return queuedDownload;
+    }
+
+    public void setQueuedDownload(boolean queuedDownload) {
+        this.queuedDownload = queuedDownload;
     }
 
     @Override

@@ -34,15 +34,10 @@ public class InfoUtil {
     private DBManager dbManager;
 
     public InfoUtil(Context context) {
-        @Nullable ApplicationInfo applicationInfo;
         try{
             SharedPreferences sharedPreferences = context.getSharedPreferences("root_preferences", Activity.MODE_PRIVATE);
             key = sharedPreferences.getString("api_key", "");
-            applicationInfo = context.getPackageManager().getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA);
-            if (key.isEmpty()) key = applicationInfo.metaData.getString("ytAPIkey");
-            Log.e(TAG, key);
             dbManager = new DBManager(context);
-
             Thread thread = new Thread(() -> {
                 //get Locale
                 JSONObject country = genericRequest("https://ipwho.is/");

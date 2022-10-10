@@ -5,15 +5,13 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
 import androidx.appcompat.widget.SearchView;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.os.Handler;
 import android.os.Looper;
 import android.text.InputType;
@@ -28,7 +26,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import com.deniscerri.ytdlnis.MainActivity;
 import com.deniscerri.ytdlnis.R;
 import com.deniscerri.ytdlnis.adapter.DownloadsRecyclerViewAdapter;
 import com.deniscerri.ytdlnis.database.DBManager;
@@ -42,8 +40,16 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.progressindicator.LinearProgressIndicator;
 
+import java.io.File;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.Locale;
 
 /**
  * A fragment representing a list of Items.
@@ -54,6 +60,7 @@ public class DownloadsFragment extends Fragment implements DownloadsRecyclerView
     private DBManager dbManager;
     Context context;
     Activity activity;
+    MainActivity mainActivity;
     Context fragmentContext;
     private LayoutInflater layoutinflater;
     private ShimmerFrameLayout shimmerCards;
@@ -67,6 +74,7 @@ public class DownloadsFragment extends Fragment implements DownloadsRecyclerView
     private LinearLayout selectionChips;
     private ChipGroup websiteGroup;
     private ArrayList<Video> downloadsObjects;
+    private LinearProgressIndicator progressBar;
     private String format = "";
     private String website = "";
     private String sort = "DESC";
@@ -79,27 +87,90 @@ public class DownloadsFragment extends Fragment implements DownloadsRecyclerView
 
         public void onDownloadStart(DownloadInfo downloadInfo) {
             try{
-
+                if(downloadInfo != null){
+                    Video v = downloadInfo.getVideo();
+                    progressBar = fragmentView.findViewWithTag(v.getURL()+v.getDownloadedType()+"##progress");
+                }
             }catch(Exception ignored){}
         }
 
         public void onDownloadProgress(DownloadInfo info) {
             activity.runOnUiThread(() -> {
                 try{
-
-                }catch(Exception ignored){}
+                    int progress = info.getProgress();
+                    Video v = info.getVideo();
+                    if (progress > 0) {
+                        progressBar = fragmentView.findViewWithTag(v.getURL()+v.getDownloadedType()+"##progress");
+                        progressBar.setProgressCompat(progress, true);
+                    }
+                }catch(Exception ignored){
+                }
             });
         }
 
         public void onDownloadError(DownloadInfo info){
             try{
-
+                int position = downloadsObjects.indexOf(info.getVideo());
+                Video v = downloadsObjects.get(position);
+                dbManager = new DBManager(context);
+                dbManager.clearHistoryItem(v);
+                downloadsRecyclerViewAdapter.notifyItemRemoved(position);
             }catch(Exception ignored){}
         }
 
         public void onDownloadEnd(DownloadInfo downloadInfo) {
+            Video item = downloadInfo.getVideo();
+            String url = item.getURL();
+            String type = downloadInfo.getDownloadType();
+            item = findVideo(url, type);
             try{
+                // MEDIA SCAN
+                ArrayList<File> files = new ArrayList<>();
+                String title = downloadInfo.getVideo().getTitle().replaceAll("[^a-zA-Z0-9]","");
+                String pathTmp = "";
+                File path = new File(downloadInfo.getDownloadPath());
+                for( File file : path.listFiles() ){
+                    if(file.isFile()){
+                        pathTmp = file.getAbsolutePath().replaceAll("[^a-zA-Z0-9]","");
+                        if (pathTmp.contains(title)){
+                            files.add(file);
+                        }
+                    }
+                }
 
+                String[] paths = new String[files.size()];
+                for (int i = 0; i < files.size(); i++) paths[i] = files.get(i).getAbsolutePath();
+                MediaScannerConnection.scanFile(context, paths, null, null);
+                item.setDownloadedType(type);
+
+                Calendar cal = Calendar.getInstance();
+                Date date = new Date();
+                cal.setTime(date);
+                int day = cal.get(Calendar.DAY_OF_MONTH);
+                String month = cal.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault());
+                int year = cal.get(Calendar.YEAR);
+
+                DateFormat formatter = new SimpleDateFormat("HH:mm", Locale.getDefault());
+                String time = formatter.format(date);
+                String downloadedTime = day + " " + month + " " + year + " " + time;
+
+                String downloadPath = "";
+                try{
+                    downloadPath = paths[0];
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
+
+                dbManager = new DBManager(context);
+                try {
+                    item.setDownloadedTime(downloadedTime);
+                    item.setDownloadPath(downloadPath);
+                    item.setQueuedDownload(false);
+                    dbManager.updateHistoryItem(item);
+                    dbManager.close();
+                    downloadsRecyclerViewAdapter.notifyItemChanged(downloadsObjects.indexOf(item));
+                } catch (Exception ignored) {
+                }
             }catch(Exception ignored){}
         }
 
@@ -136,6 +207,7 @@ public class DownloadsFragment extends Fragment implements DownloadsRecyclerView
         fragmentView = inflater.inflate(R.layout.fragment_downloads, container, false);
         context = fragmentView.getContext().getApplicationContext();
         activity = getActivity();
+        mainActivity = (MainActivity) activity;
         fragmentContext = fragmentView.getContext();
         layoutinflater = LayoutInflater.from(context);
         shimmerCards = fragmentView.findViewById(R.id.shimmer_downloads_framelayout);
@@ -149,8 +221,7 @@ public class DownloadsFragment extends Fragment implements DownloadsRecyclerView
         downloadsObjects = new ArrayList<>();
 
         recyclerView = fragmentView.findViewById(R.id.recycler_view_downloads);
-
-        downloadsRecyclerViewAdapter = new DownloadsRecyclerViewAdapter(downloadsObjects, this, context);
+        downloadsRecyclerViewAdapter = new DownloadsRecyclerViewAdapter(downloadsObjects, this, activity);
         recyclerView.setAdapter(downloadsRecyclerViewAdapter);
         recyclerView.setNestedScrollingEnabled(false);
 
@@ -159,7 +230,6 @@ public class DownloadsFragment extends Fragment implements DownloadsRecyclerView
         initCards();
         return fragmentView;
     }
-
 
     public void initCards(){
         shimmerCards.startShimmer();
@@ -209,6 +279,8 @@ public class DownloadsFragment extends Fragment implements DownloadsRecyclerView
                 return true;
             }
         };
+
+        MaterialToolbar toolbar = fragmentView.findViewById(R.id.downloads_toolbar);
 
         topAppBar.getMenu().findItem(R.id.search_downloads).setOnActionExpandListener(onActionExpandListener);
         SearchView searchView = (SearchView) topAppBar.getMenu().findItem(R.id.search_downloads).getActionView();
@@ -318,7 +390,7 @@ public class DownloadsFragment extends Fragment implements DownloadsRecyclerView
     }
 
     private void initChips(){
-        //sort
+        //sort and history/downloading switch
         Chip sortChip = fragmentView.findViewById(R.id.sort_chip);
         sortChip.setOnClickListener(view -> {
             sortSheet = new BottomSheetDialog(fragmentContext);
@@ -358,6 +430,9 @@ public class DownloadsFragment extends Fragment implements DownloadsRecyclerView
         audio.setOnClickListener(view -> {
             if (audio.isChecked()) {
                 format = "audio";
+                if (recyclerView.getVisibility() == View.GONE){
+
+                }
                 downloadsObjects = dbManager.getHistory(searchQuery,format,website,sort);
                 audio.setChecked(true);
             }else {
@@ -387,6 +462,8 @@ public class DownloadsFragment extends Fragment implements DownloadsRecyclerView
         });
 
     }
+
+
 
     private void updateWebsiteChips(){
         websiteGroup.removeAllViews();
@@ -503,5 +580,27 @@ public class DownloadsFragment extends Fragment implements DownloadsRecyclerView
         bottomSheet.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT);
     }
 
+    @Override
+    public void onButtonClick(int position) {
+        try {
+            Video vid = downloadsObjects.get(position);
+            downloadsObjects.remove(position);
+            dbManager = new DBManager(context);
+            dbManager.clearHistoryItem(vid);
+            downloadsRecyclerViewAdapter.setVideoList(downloadsObjects);
+            mainActivity.removeItemFromDownloadQueue(vid);
+        }catch (Exception ignored){}
+    }
+
+    public Video findVideo(String url, String type) {
+        for (int i = 0; i < downloadsObjects.size(); i++) {
+            Video v = downloadsObjects.get(i);
+            if ((v.getURL()).equals(url) && v.getDownloadedType().equals(type) && v.isQueuedDownload()) {
+                return v;
+            }
+        }
+
+        return null;
+    }
 
 }

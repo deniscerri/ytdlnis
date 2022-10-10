@@ -25,6 +25,9 @@ import com.deniscerri.ytdlnis.util.NotificationUtil;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 public class CustomCommandActivity extends AppCompatActivity {
     private static final String TAG = "CustomCommandActivity";
     private MaterialToolbar topAppBar;
@@ -45,7 +48,9 @@ public class CustomCommandActivity extends AppCompatActivity {
             iDownloaderService = (IDownloaderService) service;
             isDownloadServiceRunning = true;
             try{
-                iDownloaderService.addActivity(CustomCommandActivity.this, listener);
+                ArrayList<IDownloaderListener> listeners = new ArrayList<>();
+                listeners.add(listener);
+                iDownloaderService.addActivity(CustomCommandActivity.this, listeners);
                 listener.onDownloadStart(iDownloaderService.getDownloadInfo());
             }catch(Exception e){
                 e.printStackTrace();

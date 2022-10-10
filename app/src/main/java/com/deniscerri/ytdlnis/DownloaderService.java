@@ -40,7 +40,7 @@ import io.reactivex.schedulers.Schedulers;
 public class DownloaderService extends Service {
 
     private LocalBinder binder = new LocalBinder();
-    private Map<Activity, IDownloaderListener> activities = new ConcurrentHashMap<>();
+    private Map<Activity, ArrayList<IDownloaderListener>> activities = new ConcurrentHashMap<>();
     private DownloadInfo downloadInfo = new DownloadInfo();
     private LinkedList<Video> downloadQueue = new LinkedList<>();
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
@@ -60,12 +60,15 @@ public class DownloaderService extends Service {
         }
         notificationUtil.updateDownloadNotification(downloadNotificationID,
                 line, (int) progress, downloadQueue.size(), title);
-
         try{
             for (Activity activity: activities.keySet()){
                 activity.runOnUiThread(() -> {
-                    IDownloaderListener callback = activities.get(activity);
-                    callback.onDownloadProgress(downloadInfo);
+                    if (activities.get(activity) != null){
+                        for (int i = 0; i < activities.get(activity).size(); i++){
+                            IDownloaderListener callback = activities.get(activity).get(i);
+                            callback.onDownloadProgress(downloadInfo);
+                        }
+                    }
                 });
             }
         }catch (Exception ignored){}
@@ -135,9 +138,9 @@ public class DownloaderService extends Service {
             return downloadInfo;
         }
 
-        public void addActivity(Activity activity, IDownloaderListener callback) {
+        public void addActivity(Activity activity, ArrayList<IDownloaderListener> callbacks) {
             if(!activities.containsKey(activity)){
-                activities.put(activity, callback);
+                activities.put(activity, callbacks);
             }
         }
 
@@ -186,8 +189,10 @@ public class DownloaderService extends Service {
         try{
             for (Activity activity: activities.keySet()){
                 activity.runOnUiThread(() -> {
-                    IDownloaderListener callback = activities.get(activity);
-                    callback.onDownloadServiceEnd();
+                    for (int i = 0; i < activities.get(activity).size(); i++){
+                        IDownloaderListener callback = activities.get(activity).get(i);
+                        callback.onDownloadServiceEnd();
+                    }
                 });
             }
         }catch (Exception e){
@@ -199,8 +204,10 @@ public class DownloaderService extends Service {
         try{
             for (Activity activity: activities.keySet()){
                 activity.runOnUiThread(() -> {
-                    IDownloaderListener callback = activities.get(activity);
-                    callback.onDownloadCancel(downloadInfo);
+                    for (int i = 0; i < activities.get(activity).size(); i++){
+                        IDownloaderListener callback = activities.get(activity).get(i);
+                        callback.onDownloadCancel(downloadInfo);
+                    }
                 });
             }
         }catch (Exception e){
@@ -212,8 +219,10 @@ public class DownloaderService extends Service {
         try{
             for (Activity activity: activities.keySet()){
                 activity.runOnUiThread(() -> {
-                    IDownloaderListener callback = activities.get(activity);
-                    callback.onDownloadEnd(downloadInfo);
+                    for (int i = 0; i < activities.get(activity).size(); i++){
+                        IDownloaderListener callback = activities.get(activity).get(i);
+                        callback.onDownloadEnd(downloadInfo);
+                    }
                 });
             }
         }catch (Exception e){
@@ -238,14 +247,15 @@ public class DownloaderService extends Service {
         try{
             for (Activity activity: activities.keySet()){
                 activity.runOnUiThread(() -> {
-                    IDownloaderListener callback = activities.get(activity);
-                    callback.onDownloadStart(downloadInfo);
+                    for (int i = 0; i < activities.get(activity).size(); i++){
+                        IDownloaderListener callback = activities.get(activity).get(i);
+                        callback.onDownloadStart(downloadInfo);
+                    }
                 });
             }
         }catch (Exception err){
             err.printStackTrace();
         }
-
 
         String url = video.getURL();
         YoutubeDLRequest request = new YoutubeDLRequest(url);
@@ -332,8 +342,10 @@ public class DownloaderService extends Service {
                     try{
                         for (Activity activity: activities.keySet()){
                             activity.runOnUiThread(() -> {
-                                IDownloaderListener callback = activities.get(activity);
-                                callback.onDownloadEnd(downloadInfo);
+                                for (int i = 0; i < activities.get(activity).size(); i++){
+                                    IDownloaderListener callback = activities.get(activity).get(i);
+                                    callback.onDownloadEnd(downloadInfo);
+                                }
                             });
                         }
                     }catch (Exception e){
@@ -351,8 +363,10 @@ public class DownloaderService extends Service {
                     try{
                         for (Activity activity: activities.keySet()){
                             activity.runOnUiThread(() -> {
-                                IDownloaderListener callback = activities.get(activity);
-                                callback.onDownloadError(downloadInfo);
+                                for (int i = 0; i < activities.get(activity).size(); i++){
+                                    IDownloaderListener callback = activities.get(activity).get(i);
+                                    callback.onDownloadError(downloadInfo);
+                                }
                             });
                         }
                     }catch (Exception err){
@@ -405,9 +419,11 @@ public class DownloaderService extends Service {
                     try{
                         for (Activity activity: activities.keySet()){
                             activity.runOnUiThread(() -> {
-                                IDownloaderListener callback = activities.get(activity);
-                                callback.onDownloadEnd(downloadInfo);
-                                callback.onDownloadServiceEnd();
+                                for (int i = 0; i < activities.get(activity).size(); i++){
+                                    IDownloaderListener callback = activities.get(activity).get(i);
+                                    callback.onDownloadEnd(downloadInfo);
+                                    callback.onDownloadServiceEnd();
+                                }
                             });
                         }
                     }catch (Exception e){
@@ -418,9 +434,11 @@ public class DownloaderService extends Service {
                     try{
                         for (Activity activity: activities.keySet()){
                             activity.runOnUiThread(() -> {
-                                IDownloaderListener callback = activities.get(activity);
-                                callback.onDownloadError(downloadInfo);
-                                callback.onDownloadServiceEnd();
+                                for (int i = 0; i < activities.get(activity).size(); i++){
+                                    IDownloaderListener callback = activities.get(activity).get(i);
+                                    callback.onDownloadError(downloadInfo);
+                                    callback.onDownloadServiceEnd();
+                                }
                             });
                         }
                     }catch (Exception err){
