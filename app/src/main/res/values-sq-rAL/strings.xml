@@ -106,4 +106,6 @@
     <string name="newest_first">Të rejat në fillim</string>
     <string name="oldest_first">Të vjetrat në fillim</string>
     <string name="currently_downloading">Duke Shkarkuar</string>
+    <string name="remove_downloading">Hiq në shkarkim</string>
+    <string name="confirm_delete_downloading_desc">Jeni duke hequr të gjithë elementet që kanë gjendje shkarkimi dhe anuluar shërbimin e shkarkimit!</string>
 </resources>

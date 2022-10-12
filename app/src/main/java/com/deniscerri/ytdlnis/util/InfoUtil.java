@@ -94,7 +94,7 @@ public class InfoUtil {
                 snippet = fixThumbnail(snippet);
                 Video v = createVideofromJSON(snippet);
 
-                if(v.getThumb().isEmpty()){
+                if(v == null || v.getThumb().isEmpty()){
                     continue;
                 }
                 videos.add(createVideofromJSON(snippet));
@@ -139,7 +139,7 @@ public class InfoUtil {
             snippet = fixThumbnail(snippet);
             Video v = createVideofromJSON(snippet);
 
-            if(v.getThumb().isEmpty()){
+            if(v == null || v.getThumb().isEmpty()){
                 continue;
             }else{
                 j++;
@@ -185,6 +185,7 @@ public class InfoUtil {
 
             String duration = obj.getString("duration");
             String thumb = obj.getString("thumb");
+
             String url = "https://www.youtube.com/watch?v=" + id;
             int downloadedAudio = dbManager.checkDownloaded(url, "audio");
             int downloadedVideo = dbManager.checkDownloaded(url, "video");
@@ -358,7 +359,7 @@ public class InfoUtil {
             snippet = fixThumbnail(snippet);
 
             Video v = createVideofromJSON(snippet);
-            if(v.getThumb().isEmpty()){
+            if(v == null || v.getThumb().isEmpty()){
                 continue;
             }
             v.setPlaylistTitle(context.getString(R.string.trendingPlaylist));

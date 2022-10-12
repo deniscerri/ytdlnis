@@ -119,6 +119,16 @@ public class DBManager extends SQLiteOpenHelper {
         }
     }
 
+    public void clearDownloadingHistory(){
+        ArrayList<Video> videos = getHistory("","","","");
+        for (int i = 0; i < videos.size(); i++){
+            Video video = videos.get(i);
+            if(video.isQueuedDownload()){
+                clearHistoryItem(video);
+            }
+        }
+    }
+
     public void clearDuplicateHistory(){
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL(

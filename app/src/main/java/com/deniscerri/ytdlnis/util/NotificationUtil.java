@@ -75,10 +75,16 @@ public class NotificationUtil {
         if (queue > 1) contentText += queue - 1 + " " + context.getString(R.string.items_left) + "\n";
         contentText += desc.replaceAll("\\[.*?\\] ", "");
 
-        notificationBuilder.setProgress(100, (int) progress, false)
-            .setContentTitle(title)
-            .setStyle(new NotificationCompat.BigTextStyle().bigText(contentText));
-        notificationManager.notify(id, notificationBuilder.build());
+        try {
+            notificationBuilder.setProgress(100, (int) progress, false)
+                    .setContentTitle(title)
+                    .setStyle(new NotificationCompat.BigTextStyle().bigText(contentText));
+            notificationManager.notify(id, notificationBuilder.build());
+        }catch (Exception ignored){}
+    }
+
+    public void cancelDownloadNotification(int id){
+        notificationManager.cancel(id);
     }
 
 }

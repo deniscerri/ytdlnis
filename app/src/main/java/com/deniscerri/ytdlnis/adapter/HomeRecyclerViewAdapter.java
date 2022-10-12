@@ -189,6 +189,7 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
 
     public void updateVideoListItem(Video v, int position){
         videoList.set(position, v);
+        notifyItemChanged(position);
     }
 
     public void clearCheckedVideos(){

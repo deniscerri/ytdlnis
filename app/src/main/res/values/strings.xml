@@ -111,4 +111,6 @@
     <item type="id" name="cancelDownload" />
     <string name="trendingPlaylist" translatable="false">ytdlnis-TRENDING</string>
     <string name="currently_downloading">Downloading</string>
+    <string name="remove_downloading">Remove Downloading</string>
+    <string name="confirm_delete_downloading_desc">You are going to remove all items that have a downloading state and then cancel the download service!</string>
 </resources>

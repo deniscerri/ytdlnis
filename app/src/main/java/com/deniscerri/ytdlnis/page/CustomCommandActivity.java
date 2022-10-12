@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import com.deniscerri.ytdlnis.R;
 import com.deniscerri.ytdlnis.DownloaderService;
+import com.deniscerri.ytdlnis.database.Video;
 import com.deniscerri.ytdlnis.service.DownloadInfo;
 import com.deniscerri.ytdlnis.service.IDownloaderListener;
 import com.deniscerri.ytdlnis.service.IDownloaderService;
@@ -99,6 +100,8 @@ public class CustomCommandActivity extends AppCompatActivity {
         @Override
         public void onDownloadCancel(DownloadInfo downloadInfo) {}
 
+        @Override
+        public void onDownloadCancelAll(DownloadInfo downloadInfo){}
 
         public void onDownloadServiceEnd() {
             stopDownloadService();

@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -24,6 +25,7 @@ import com.deniscerri.ytdlnis.page.MoreFragment;
 import com.deniscerri.ytdlnis.page.settings.SettingsActivity;
 import com.deniscerri.ytdlnis.service.IDownloaderListener;
 import com.deniscerri.ytdlnis.service.IDownloaderService;
+import com.deniscerri.ytdlnis.util.NotificationUtil;
 import com.deniscerri.ytdlnis.util.UpdateUtil;
 
 import java.text.DateFormat;
@@ -203,6 +205,8 @@ public class MainActivity extends AppCompatActivity{
         context.getApplicationContext().unbindService(serviceConnection);
         downloaderService.stopForeground(true);
         downloaderService.stopSelf();
+        NotificationUtil notificationUtil = new NotificationUtil(context.getApplicationContext());
+        notificationUtil.cancelDownloadNotification(NotificationUtil.DOWNLOAD_NOTIFICATION_ID);
         isDownloadServiceRunning = false;
     }
 
@@ -212,8 +216,8 @@ public class MainActivity extends AppCompatActivity{
         stopDownloadService();
     }
 
-    public void removeItemFromDownloadQueue(Video video){
-        iDownloaderService.removeItemFromDownloadQueue(video);
+    public void removeItemFromDownloadQueue(Video video, String type){
+        iDownloaderService.removeItemFromDownloadQueue(video, type);
     }
 
     public boolean isDownloadServiceRunning() {

@@ -3,7 +3,7 @@ package com.deniscerri.ytdlnis.database;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class Video implements Parcelable {
+public class Video implements Parcelable, Cloneable {
     private int id;
     private String videoId;
     private String title;
@@ -245,6 +245,11 @@ public class Video implements Parcelable {
 
     public void setQueuedDownload(boolean queuedDownload) {
         this.queuedDownload = queuedDownload;
+    }
+
+    public Object clone() throws CloneNotSupportedException
+    {
+        return super.clone();
     }
 
     @Override

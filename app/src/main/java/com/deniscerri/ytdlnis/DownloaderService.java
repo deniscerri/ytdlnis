@@ -25,6 +25,7 @@ import com.yausername.youtubedl_android.YoutubeDLRequest;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Map;
@@ -149,13 +150,19 @@ public class DownloaderService extends Service {
         }
 
         public void updateQueue(ArrayList<Video> queue){
-            downloadQueue.addAll(queue);
-            if (downloadQueue.size() == queue.size()){
-                downloadInfo.setDownloadQueue(downloadQueue);
-                startDownload(downloadQueue);
-            }else{
-                downloadInfo.setDownloadQueue(downloadQueue);
-                Toast.makeText(context, getString(R.string.added_to_queue), Toast.LENGTH_SHORT).show();
+            try{
+                for (int i = 0; i < queue.size(); i++){
+                    downloadQueue.add((Video) queue.get(i).clone());
+                }
+                if (downloadQueue.size() == queue.size()){
+                    downloadInfo.setDownloadQueue(downloadQueue);
+                    startDownload(downloadQueue);
+                }else{
+                    downloadInfo.setDownloadQueue(downloadQueue);
+                    Toast.makeText(context, getString(R.string.added_to_queue), Toast.LENGTH_SHORT).show();
+                }
+            }catch (Exception e){
+                Toast.makeText(context, "Couldn't update download queue! :(", Toast.LENGTH_SHORT).show();
             }
         }
 
@@ -164,22 +171,31 @@ public class DownloaderService extends Service {
                 YoutubeDL.getInstance().destroyProcessById(downloadProcessID);
                 compositeDisposable.clear();
                 //stopForeground(true);
-                if (cancelAll) onDownloadCancel();
-                else onDownloadEnd();
+                if (cancelAll) onDownloadCancelAll();
             }catch(Exception err){
                 Log.e(TAG, err.getMessage());
             }
         }
 
-        public void removeItemFromDownloadQueue(Video video){
+        public void removeItemFromDownloadQueue(Video video, String type){
             //if its the same video with the same download type as the current downloading one
             if (downloadInfo.getVideo().getURL().equals(video.getURL()) && downloadInfo.getVideo().getDownloadedType().equals(video.getDownloadedType())){
                 cancelDownload(false);
+
+                downloadInfo.setDownloadType(type);
+                onDownloadCancel(downloadInfo);
+
                 downloadQueue.pop();
                 downloadInfo.setDownloadQueue(downloadQueue);
                 startDownload(downloadQueue);
             }else {
                 downloadQueue.remove(video);
+                try{
+                    DownloadInfo info = new DownloadInfo();
+                    info.setVideo(video);
+                    info.setDownloadType(type);
+                    onDownloadCancel(info);
+                }catch(Exception ignored){}
             }
             Toast.makeText(context, video.getTitle() + " " + getString(R.string.removed_from_queue), Toast.LENGTH_SHORT).show();
         }
@@ -195,24 +211,20 @@ public class DownloaderService extends Service {
                     }
                 });
             }
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+        }catch (Exception ignored){}
     }
 
-    private void onDownloadCancel(){
+    private void onDownloadCancelAll(){
         try{
             for (Activity activity: activities.keySet()){
                 activity.runOnUiThread(() -> {
                     for (int i = 0; i < activities.get(activity).size(); i++){
                         IDownloaderListener callback = activities.get(activity).get(i);
-                        callback.onDownloadCancel(downloadInfo);
+                        callback.onDownloadCancelAll(downloadInfo);
                     }
                 });
             }
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+        }catch (Exception ignored){}
     }
 
     private void onDownloadEnd(){
@@ -228,6 +240,19 @@ public class DownloaderService extends Service {
         }catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    private void onDownloadCancel(DownloadInfo cancelInfo){
+        try{
+            for (Activity activity: activities.keySet()){
+                activity.runOnUiThread(() -> {
+                    for (int i = 0; i < activities.get(activity).size(); i++){
+                        IDownloaderListener callback = activities.get(activity).get(i);
+                        callback.onDownloadCancel(cancelInfo);
+                    }
+                });
+            }
+        }catch (Exception ignored){}
     }
 
     private void startDownload(LinkedList<Video> videos) {

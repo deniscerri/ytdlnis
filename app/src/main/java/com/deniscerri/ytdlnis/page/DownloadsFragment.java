@@ -169,15 +169,24 @@ public class DownloadsFragment extends Fragment implements DownloadsRecyclerView
                     dbManager.updateHistoryItem(item);
                     dbManager.close();
                     downloadsRecyclerViewAdapter.notifyItemChanged(downloadsObjects.indexOf(item));
-                } catch (Exception ignored) {
-                }
+                } catch (Exception ignored) {}
             }catch(Exception ignored){}
         }
 
         @Override
-        public void onDownloadCancel(DownloadInfo downloadInfo) {
-
+        public void onDownloadCancel(DownloadInfo info) {
+            Video v = info.getVideo();
+            v = findVideo(v.getURL(), v.getDownloadedType());
+            try {
+                downloadsObjects.remove(v);
+                dbManager = new DBManager(context);
+                dbManager.clearHistoryItem(v);
+                downloadsRecyclerViewAdapter.setVideoList(downloadsObjects);
+            }catch (Exception ignored){}
         }
+
+        @Override
+        public void onDownloadCancelAll(DownloadInfo downloadInfo){}
 
         public void onDownloadServiceEnd() {}
     };
@@ -383,6 +392,24 @@ public class DownloadsFragment extends Fragment implements DownloadsRecyclerView
                     initCards();
                 });
                 delete_dialog.show();
+            }else if (itemID == R.id.remove_downloading){
+                if (downloadsObjects.size() == 0) {
+                    Toast.makeText(context, R.string.history_is_empty, Toast.LENGTH_SHORT).show();
+                    return true;
+                }
+
+                MaterialAlertDialogBuilder delete_dialog = new MaterialAlertDialogBuilder(fragmentContext);
+                delete_dialog.setTitle(getString(R.string.confirm_delete_history));
+                delete_dialog.setMessage(getString(R.string.confirm_delete_downloading_desc));
+                delete_dialog.setNegativeButton(getString(R.string.cancel), (dialogInterface, i) -> {
+                    dialogInterface.cancel();
+                });
+                delete_dialog.setPositiveButton(getString(R.string.ok), (dialogInterface, i) -> {
+                    dbManager.clearDownloadingHistory();
+                    mainActivity.cancelDownloadService();
+                    initCards();
+                });
+                delete_dialog.show();
             }
             return true;
         });
@@ -582,14 +609,15 @@ public class DownloadsFragment extends Fragment implements DownloadsRecyclerView
 
     @Override
     public void onButtonClick(int position) {
+        Video vid = downloadsObjects.get(position);
         try {
-            Video vid = downloadsObjects.get(position);
-            downloadsObjects.remove(position);
-            dbManager = new DBManager(context);
-            dbManager.clearHistoryItem(vid);
-            downloadsRecyclerViewAdapter.setVideoList(downloadsObjects);
-            mainActivity.removeItemFromDownloadQueue(vid);
-        }catch (Exception ignored){}
+            mainActivity.removeItemFromDownloadQueue(vid, vid.getDownloadedType());
+        }catch (Exception e){
+            DownloadInfo info = new DownloadInfo();
+            info.setVideo(vid);
+            info.setDownloadType(vid.getDownloadedType());
+            listener.onDownloadCancel(info);
+        }
     }
 
     public Video findVideo(String url, String type) {
