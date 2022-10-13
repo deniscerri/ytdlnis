@@ -154,6 +154,11 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
                 Video video = findVideo(info.getVideo().getURL());
                 String type = info.getDownloadType();
                 updateDownloadingStatusOnResult(video, type, false);
+
+                if (info.getDownloadQueue().size() == 1){
+                    downloading = false;
+                    topAppBar.getMenu().findItem(R.id.cancel_download).setVisible(false);
+                }
             }catch (Exception e){
                 e.printStackTrace();
             }
@@ -615,36 +620,6 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
             downloadQueue = new ArrayList<>();
             ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
             return false;
-        }
-    }
-
-
-    public void addToHistory(Video video, Date date, String[] paths) {
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(date);
-        int day = cal.get(Calendar.DAY_OF_MONTH);
-        String month = cal.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault());
-        int year = cal.get(Calendar.YEAR);
-
-        DateFormat formatter = new SimpleDateFormat("HH:mm", Locale.getDefault());
-        String time = formatter.format(date);
-        String downloadedTime = day + " " + month + " " + year + " " + time;
-
-        String path = "";
-        try{
-            path = paths[0];
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-        if (video != null) {
-            dbManager = new DBManager(context);
-            try {
-                video.setDownloadedTime(downloadedTime);
-                video.setDownloadPath(path);
-                dbManager.addToHistory(video);
-                dbManager.close();
-            } catch (Exception ignored) {
-            }
         }
     }
 

@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.deniscerri.ytdlnis.R;
 
@@ -16,6 +17,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 public class DBManager extends SQLiteOpenHelper {
+    Context context;
 
     public static final String db_name = "ytdlnis_db";
     public static final int db_version = 7;
@@ -42,6 +44,7 @@ public class DBManager extends SQLiteOpenHelper {
 
     public DBManager(Context context){
         super(context, db_name, null, db_version);
+        this.context = context;
     }
 
     @Override
@@ -89,8 +92,28 @@ public class DBManager extends SQLiteOpenHelper {
                 " WHERE downloadedAudio=1 OR downloadedVideo=1");
     }
 
-    public void clearHistoryItem(Video video){
+    @SuppressLint("Range")
+    public void clearHistoryItem(Video video, boolean delete_file){
         SQLiteDatabase db = this.getWritableDatabase();
+
+        if (delete_file){
+            try{
+                Cursor cursor = db.rawQuery("SELECT * FROM " + history_table_name + " WHERE url='" +
+                        video.getURL() + "' AND type='"+video.getDownloadedType() + "' LIMIT 1", null);
+
+                if(cursor.moveToFirst()){
+                    String path = cursor.getString(cursor.getColumnIndex(downloadPath));
+                    File file = new File(path);
+                    if(file.exists()){
+                        file.delete();
+                    }
+                }
+            }catch (Exception e){
+                Toast.makeText(context, R.string.error_deleting_file, Toast.LENGTH_SHORT).show();
+            }
+        }
+
+
         db.execSQL("DELETE FROM " + history_table_name + " WHERE id=" + video.getId());
 
         String where = "";
@@ -114,7 +137,7 @@ public class DBManager extends SQLiteOpenHelper {
             String path = video.getDownloadPath();
             File file = new File(path);
             if(!file.exists() && !path.isEmpty()){
-                clearHistoryItem(video);
+                clearHistoryItem(video, false);
             }
         }
     }
@@ -124,7 +147,7 @@ public class DBManager extends SQLiteOpenHelper {
         for (int i = 0; i < videos.size(); i++){
             Video video = videos.get(i);
             if(video.isQueuedDownload()){
-                clearHistoryItem(video);
+                clearHistoryItem(video, false);
             }
         }
     }
@@ -310,13 +333,14 @@ public class DBManager extends SQLiteOpenHelper {
         db.update(results_table_name, values, "videoId = ?", new String[]{id});
     }
 
+    @SuppressLint("Range")
     public int checkDownloaded(String url, String downloadType){
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + history_table_name + " WHERE url='" +
                 url + "' AND type='"+downloadType + "' LIMIT 1", null);
 
         if(cursor.moveToFirst()){
-            String path = cursor.getString(8);
+            String path = cursor.getString(cursor.getColumnIndex(downloadPath));
             File file = new File(path);
             if(!file.exists() && !path.isEmpty()){
                 return 0;

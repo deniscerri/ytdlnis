@@ -29,6 +29,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     Preference videoPath;
     Preference commandPath;
 
+    SwitchPreferenceCompat incognito;
     EditTextPreference apiKey;
     SeekBarPreference concurrentFragments;
     EditTextPreference limitRate;
@@ -72,6 +73,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         videoPath = findPreference("video_path");
         commandPath = findPreference("command_path");
 
+        incognito = findPreference("incognito");
         apiKey = findPreference("api_key");
         concurrentFragments = findPreference("concurrent_fragments");
         limitRate = findPreference("limit_rate");
@@ -101,6 +103,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             editor.putString("command_path", getString(R.string.command_path));
         }
 
+        editor.putBoolean("incognito", incognito.isChecked());
         editor.putString("api_key", apiKey.getText());
         editor.putInt("concurrent_fragments", concurrentFragments.getValue());
         editor.putString("limit_rate", limitRate.getText());
@@ -140,6 +143,13 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         commandPath.setOnPreferenceClickListener(preference -> {
             Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
             commandPathResultLauncher.launch(intent);
+            return true;
+        });
+
+        incognito.setOnPreferenceChangeListener((preference, newValue) -> {
+            boolean enable = (Boolean) newValue;
+            editor.putBoolean("incognito", enable);
+            editor.apply();
             return true;
         });
 

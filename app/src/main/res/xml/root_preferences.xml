@@ -23,6 +23,13 @@
     </PreferenceCategory>
 
     <PreferenceCategory app:title="@string/downloading">
+        <SwitchPreferenceCompat
+            app:defaultValue="false"
+            android:icon="@drawable/ic_incognito"
+            android:key="incognito"
+            app:summary="@string/incognito_summary"
+            app:title="Incognito" />
+
         <EditTextPreference
             android:icon="@drawable/ic_key"
             app:key="api_key"

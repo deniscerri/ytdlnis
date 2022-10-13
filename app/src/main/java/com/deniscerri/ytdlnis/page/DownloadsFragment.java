@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
@@ -113,7 +114,7 @@ public class DownloadsFragment extends Fragment implements DownloadsRecyclerView
                 int position = downloadsObjects.indexOf(info.getVideo());
                 Video v = downloadsObjects.get(position);
                 dbManager = new DBManager(context);
-                dbManager.clearHistoryItem(v);
+                dbManager.clearHistoryItem(v, false);
                 downloadsRecyclerViewAdapter.notifyItemRemoved(position);
             }catch(Exception ignored){}
         }
@@ -180,7 +181,7 @@ public class DownloadsFragment extends Fragment implements DownloadsRecyclerView
             try {
                 downloadsObjects.remove(v);
                 dbManager = new DBManager(context);
-                dbManager.clearHistoryItem(v);
+                dbManager.clearHistoryItem(v,false);
                 downloadsRecyclerViewAdapter.setVideoList(downloadsObjects);
             }catch (Exception ignored){}
         }
@@ -532,11 +533,12 @@ public class DownloadsFragment extends Fragment implements DownloadsRecyclerView
 
     private void removedownloadsItem(int position){
         if(bottomSheet != null) bottomSheet.hide();
+        final boolean[] delete_file = {false};
 
         Video v = downloadsObjects.get(position);
         MaterialAlertDialogBuilder delete_dialog = new MaterialAlertDialogBuilder(fragmentContext);
-        delete_dialog.setTitle(getString(R.string.confirm_delete_history));
-        delete_dialog.setMessage(getString(R.string.you_are_going_to_delete) + " \""+v.getTitle()+"\"!");
+        delete_dialog.setTitle(getString(R.string.you_are_going_to_delete) + " \""+v.getTitle()+"\"!");
+        delete_dialog.setMultiChoiceItems(new String[]{getString(R.string.delete_file_too)}, new boolean[]{false}, (dialogInterface, i, b) -> delete_file[0] = b);
         delete_dialog.setNegativeButton(getString(R.string.cancel), (dialogInterface, i) -> {
             dialogInterface.cancel();
         });
@@ -546,7 +548,7 @@ public class DownloadsFragment extends Fragment implements DownloadsRecyclerView
             downloadsRecyclerViewAdapter.setVideoList(downloadsObjects);
             downloadsRecyclerViewAdapter.setWebsiteList();
             updateWebsiteChips();
-            dbManager.clearHistoryItem(v);
+            dbManager.clearHistoryItem(v, delete_file[0]);
 
             if(downloadsObjects.size() == 0){
                 uiHandler.post(() -> {

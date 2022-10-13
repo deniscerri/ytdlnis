@@ -186,14 +186,17 @@ public class MainActivity extends AppCompatActivity{
 
     public void addQueueToDownloads(ArrayList<Video> downloadQueue) {
         try {
-            DBManager dbManager = new DBManager(context);
-            for (int i = downloadQueue.size() - 1; i >= 0; i--){
-                Video v = downloadQueue.get(i);
-                v.setQueuedDownload(true);
-                dbManager.addToHistory(v);
+            SharedPreferences sharedPreferences = context.getSharedPreferences("root_preferences", Activity.MODE_PRIVATE);
+            if (!sharedPreferences.getBoolean("incognito", false)) {
+                DBManager dbManager = new DBManager(context);
+                for (int i = downloadQueue.size() - 1; i >= 0; i--){
+                    Video v = downloadQueue.get(i);
+                    v.setQueuedDownload(true);
+                    dbManager.addToHistory(v);
+                }
+                dbManager.close();
+                downloadsFragment.initCards();
             }
-            dbManager.close();
-            downloadsFragment.initCards();
         } catch (Exception e) {
             e.printStackTrace();
         }
