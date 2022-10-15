@@ -132,6 +132,17 @@ public class MainActivity extends AppCompatActivity{
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        try {
+            iDownloaderService.removeActivity(this);
+            context.getApplicationContext().unbindService(serviceConnection);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         handleIntents(intent);
@@ -181,6 +192,7 @@ public class MainActivity extends AppCompatActivity{
         if(!listeners.contains(awaitingListener)) listeners.add(awaitingListener);
         Intent serviceIntent = new Intent(context, DownloaderService.class);
         serviceIntent.putParcelableArrayListExtra("queue", downloadQueue);
+        context.getApplicationContext().startService(serviceIntent);
         context.getApplicationContext().bindService(serviceIntent, serviceConnection, Context.BIND_AUTO_CREATE);
     }
 
@@ -195,6 +207,7 @@ public class MainActivity extends AppCompatActivity{
                     dbManager.addToHistory(v);
                 }
                 dbManager.close();
+                downloadsFragment.setDownloading(true);
                 downloadsFragment.initCards();
             }
         } catch (Exception e) {
@@ -204,12 +217,11 @@ public class MainActivity extends AppCompatActivity{
 
     public void stopDownloadService(){
         if(!isDownloadServiceRunning) return;
-        iDownloaderService.removeActivity(this);
-        context.getApplicationContext().unbindService(serviceConnection);
-        downloaderService.stopForeground(true);
-        downloaderService.stopSelf();
-        NotificationUtil notificationUtil = new NotificationUtil(context.getApplicationContext());
-        notificationUtil.cancelDownloadNotification(NotificationUtil.DOWNLOAD_NOTIFICATION_ID);
+        try {
+            iDownloaderService.removeActivity(this);
+            context.getApplicationContext().unbindService(serviceConnection);
+            context.getApplicationContext().stopService(new Intent(context.getApplicationContext(), DownloaderService.class));
+        }catch (Exception ignored){}
         isDownloadServiceRunning = false;
     }
 
@@ -226,8 +238,10 @@ public class MainActivity extends AppCompatActivity{
     public boolean isDownloadServiceRunning() {
         ActivityManager.RunningServiceInfo service = getService(DownloaderService.class);
         if(service != null){
-            isDownloadServiceRunning = true;
-            return true;
+            if (service.foreground) {
+                isDownloadServiceRunning = true;
+                return true;
+            }
         }
         return false;
     }

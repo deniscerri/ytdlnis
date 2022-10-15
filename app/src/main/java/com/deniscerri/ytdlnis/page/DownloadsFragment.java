@@ -56,7 +56,7 @@ import java.util.Locale;
  * A fragment representing a list of Items.
  */
 public class DownloadsFragment extends Fragment implements DownloadsRecyclerViewAdapter.OnItemClickListener, View.OnClickListener{
-
+    private boolean downloading = false;
     private View fragmentView;
     private DBManager dbManager;
     Context context;
@@ -93,6 +93,7 @@ public class DownloadsFragment extends Fragment implements DownloadsRecyclerView
                     progressBar = fragmentView.findViewWithTag(v.getURL()+v.getDownloadedType()+"##progress");
                 }
             }catch(Exception ignored){}
+            downloading = true;
         }
 
         public void onDownloadProgress(DownloadInfo info) {
@@ -116,6 +117,7 @@ public class DownloadsFragment extends Fragment implements DownloadsRecyclerView
                 dbManager = new DBManager(context);
                 dbManager.clearHistoryItem(v, false);
                 downloadsRecyclerViewAdapter.notifyItemRemoved(position);
+                downloading = false;
             }catch(Exception ignored){}
         }
 
@@ -171,6 +173,7 @@ public class DownloadsFragment extends Fragment implements DownloadsRecyclerView
                     dbManager.close();
                     downloadsRecyclerViewAdapter.notifyItemChanged(downloadsObjects.indexOf(item));
                 } catch (Exception ignored) {}
+                downloading = false;
             }catch(Exception ignored){}
         }
 
@@ -182,15 +185,40 @@ public class DownloadsFragment extends Fragment implements DownloadsRecyclerView
                 downloadsObjects.remove(v);
                 dbManager = new DBManager(context);
                 dbManager.clearHistoryItem(v,false);
+                dbManager.close();
                 downloadsRecyclerViewAdapter.setVideoList(downloadsObjects);
+
+                if (downloadsObjects.isEmpty()) initCards();
+                downloading = false;
             }catch (Exception ignored){}
         }
 
         @Override
-        public void onDownloadCancelAll(DownloadInfo downloadInfo){}
+        public void onDownloadCancelAll(DownloadInfo downloadInfo){
+            try {
+                dbManager = new DBManager(context);
+                while (downloadsObjects.size() > 0){
+                    Video v = downloadsObjects.get(0);
+                    if (v.isQueuedDownload()){
+                        dbManager.clearHistoryItem(v, false);
+                        downloadsObjects.remove(v);
+                        downloadsRecyclerViewAdapter.setVideoList(downloadsObjects);
+                    }else{
+                        break;
+                    }
+                }
+                dbManager.close();
+                if (downloadsObjects.isEmpty()) initCards();
+                downloading = false;
+            }catch (Exception ignored){}
+        }
 
         public void onDownloadServiceEnd() {}
     };
+
+    public void setDownloading(boolean d){
+        downloading = d;
+    }
 
 
     public DownloadsFragment() {
@@ -226,9 +254,8 @@ public class DownloadsFragment extends Fragment implements DownloadsRecyclerView
         selectionChips = fragmentView.findViewById(R.id.downloads_selection_chips);
         websiteGroup = fragmentView.findViewById(R.id.website_chip_group);
         uiHandler = new Handler(Looper.getMainLooper());
-
-        dbManager = new DBManager(context);
         downloadsObjects = new ArrayList<>();
+        downloading = mainActivity.isDownloadServiceRunning();
 
         recyclerView = fragmentView.findViewById(R.id.recycler_view_downloads);
         downloadsRecyclerViewAdapter = new DownloadsRecyclerViewAdapter(downloadsObjects, this, activity);
@@ -247,8 +274,11 @@ public class DownloadsFragment extends Fragment implements DownloadsRecyclerView
         downloadsRecyclerViewAdapter.clear();
         no_results.setVisibility(View.GONE);
         selectionChips.setVisibility(View.VISIBLE);
+
+        dbManager = new DBManager(context);
         try{
             Thread thread = new Thread(() -> {
+                if (!downloading) dbManager.clearDownloadingHistory();
                 downloadsObjects = dbManager.getHistory("", format,website,sort);
                 uiHandler.post(() -> {
                     downloadsRecyclerViewAdapter.setVideoList(downloadsObjects);
@@ -264,6 +294,7 @@ public class DownloadsFragment extends Fragment implements DownloadsRecyclerView
                         websiteGroup.removeAllViews();
                     });
                 }
+                dbManager.close();
             });
             thread.start();
         }catch(Exception e){
@@ -296,6 +327,8 @@ public class DownloadsFragment extends Fragment implements DownloadsRecyclerView
         SearchView searchView = (SearchView) topAppBar.getMenu().findItem(R.id.search_downloads).getActionView();
         searchView.setInputType(InputType.TYPE_CLASS_TEXT);
         searchView.setQueryHint(getString(R.string.search_history_hint));
+
+        dbManager = new DBManager(context);
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override

@@ -124,10 +124,10 @@ public class DownloaderService extends Service {
 
 
     @Override
-    public boolean onUnbind(Intent intent) {
+    public void onDestroy() {
+        super.onDestroy();
         stopForeground(true);
         stopSelf();
-        return super.onUnbind(intent);
     }
 
     public class LocalBinder extends Binder implements IDownloaderService {
@@ -171,7 +171,9 @@ public class DownloaderService extends Service {
                 YoutubeDL.getInstance().destroyProcessById(downloadProcessID);
                 compositeDisposable.clear();
                 //stopForeground(true);
-                if (cancelAll) onDownloadCancelAll();
+                if (cancelAll) {
+                    onDownloadCancelAll();
+                }
             }catch(Exception err){
                 Log.e(TAG, err.getMessage());
             }

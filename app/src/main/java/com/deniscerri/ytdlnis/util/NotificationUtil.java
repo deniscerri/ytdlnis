@@ -5,12 +5,14 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 
 import androidx.core.app.NotificationCompat;
 
 import com.deniscerri.ytdlnis.R;
+import com.deniscerri.ytdlnis.receiver.NotificationReceiver;
 
 public class NotificationUtil {
     Context context;
@@ -53,6 +55,16 @@ public class NotificationUtil {
     }
 
     public Notification createDownloadServiceNotification(PendingIntent pendingIntent, String title){
+        Intent intent = new Intent(context, NotificationReceiver.class);
+        intent.putExtra("cancel", "");
+
+        PendingIntent cancelNotificationPendingIntent = PendingIntent.getBroadcast(
+                context,
+                0,
+                intent,
+                PendingIntent.FLAG_IMMUTABLE
+        );
+
         Notification notification = notificationBuilder
                 .setContentTitle(title)
                 .setOngoing(true)
@@ -65,6 +77,8 @@ public class NotificationUtil {
                 .setProgress(PROGRESS_MAX, PROGRESS_CURR, false)
                 .setContentIntent(pendingIntent)
                 .setForegroundServiceBehavior(NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE)
+                .clearActions()
+                .addAction(0, context.getString(R.string.cancel), cancelNotificationPendingIntent)
                 .build();
 
         return notification;

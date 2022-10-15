@@ -179,7 +179,9 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
                 downloading = false;
                 topAppBar.getMenu().findItem(R.id.cancel_download).setVisible(false);
 
-            }catch(Exception ignored){}
+            }catch(Exception e){
+                e.printStackTrace();
+            }
         }
 
 
@@ -257,9 +259,9 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
         homeRecyclerViewAdapter.clear();
         shimmerCards.startShimmer();
         shimmerCards.setVisibility(View.VISIBLE);
+        Handler uiHandler = new Handler(Looper.getMainLooper());
         try {
             Thread thread = new Thread(() -> {
-                Handler uiHandler = new Handler(Looper.getMainLooper());
                 dbManager = new DBManager(context);
                 resultObjects = dbManager.getResults();
                 String playlistTitle = "";
@@ -271,12 +273,6 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
                         infoUtil = new InfoUtil(context);
                         resultObjects = infoUtil.getTrending(context);
                         dbManager.addToResults(resultObjects);
-
-                        uiHandler.post(() -> {
-                            homeRecyclerViewAdapter.setVideoList(resultObjects, true);
-                            shimmerCards.stopShimmer();
-                            shimmerCards.setVisibility(View.GONE);
-                        });
 
                     } catch (Exception e) {
                         Log.e(TAG, e.toString());
@@ -291,12 +287,15 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
                                 updateDownloadingStatusOnResult(tmp, "video", false);
                             }
                         }
-                        uiHandler.post(() -> {
-                            shimmerCards.stopShimmer();
-                            shimmerCards.setVisibility(View.GONE);
-                        });
                     }
                 }
+
+                uiHandler.post(() -> {
+                    homeRecyclerViewAdapter.setVideoList(resultObjects, true);
+                    shimmerCards.stopShimmer();
+                    shimmerCards.setVisibility(View.GONE);
+                });
+
                 dbManager.close();
                 if (resultObjects != null) {
                     uiHandler.post(this::scrollToTop);
@@ -308,6 +307,10 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
             thread.start();
         } catch (Exception e) {
             Log.e(TAG, e.toString());
+            uiHandler.post(() -> {
+                shimmerCards.stopShimmer();
+                shimmerCards.setVisibility(View.GONE);
+            });
         }
     }
 
@@ -328,7 +331,7 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
             }
         };
 
-        if(mainActivity.isDownloadServiceRunning()){
+        if(downloading){
             topAppBar.getMenu().findItem(R.id.cancel_download).setVisible(true);
         }
 
