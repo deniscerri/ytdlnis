@@ -116,4 +116,14 @@
     <string name="error_deleting_file">Error on deleting file! :(</string>
     <string name="delete_file_too">Delete the file from the system</string>
     <string name="incognito_summary">Download privately without a download history</string>
+    <string name="download_audio">Download Audio</string>
+    <string name="configure_download">Configure Download</string>
+    <string name="title">Title</string>
+    <string name="author">Author</string>
+    <string name="download">Download</string>
+    <string name="download_video">Download Video</string>
+    <string name="album">Album</string>
+    <string name="video_quality">Video Quality</string>
+    <string name="embed_subtitles">Embed Subtitles</string>
+    <string name="add_chapter">Add Chapters</string>
 </resources>

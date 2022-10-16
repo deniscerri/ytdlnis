@@ -1,5 +1,4 @@
 <resources>
-    <!-- Reply Preference -->
     <string-array name="music_formats">
         <item>mp3</item>
         <item>m4a</item>
@@ -11,20 +10,20 @@
         <item>wav</item>
     </string-array>
 
-
     <string-array name="video_formats">
         <item>mp4</item>
         <item>mkv</item>
         <item>webm</item>
     </string-array>
-    <!-- Reply Preference -->
-    <string-array name="reply_entries">
-        <item>Reply</item>
-        <item>Reply to all</item>
+
+    <string-array name="video_quality">
+        <item>Best Quality</item>
+        <item>2160p</item>
+        <item>1440p</item>
+        <item>1080p</item>
+        <item>720p</item>
+        <item>480p</item>
+        <item>360p</item>
     </string-array>
 
-    <string-array name="reply_values">
-        <item>reply</item>
-        <item>reply_all</item>
-    </string-array>
 </resources>

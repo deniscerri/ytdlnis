@@ -25,7 +25,7 @@
                 android:textSize="25sp"
                 android:textColor="?attr/colorOnSurface"
                 android:layout_height="wrap_content"
-                android:text="@string/chooose_range" />
+                android:text="@string/download_audio" />
 
             <TextView
                 android:id="@+id/bottom_sheet_author"
@@ -33,7 +33,7 @@
                 android:paddingTop="5dp"
                 android:textSize="15sp"
                 android:layout_height="wrap_content"
-                android:text="@string/choose_range_desc" />
+                android:text="@string/configure_download" />
 
         </LinearLayout>
 
@@ -41,47 +41,83 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:orientation="horizontal"
+            android:paddingTop="30dp"
+            android:orientation="vertical"
             android:baselineAligned="false">
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/first_textinput"
-                android:layout_width="0dp"
+                android:id="@+id/title_textinput"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="45"
-                android:layout_marginStart="30dp"
                 app:errorEnabled="true"
-                android:hint="@string/first"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+                android:hint="@string/title"
+                style="@style/Widget.Material3.TextInputLayout.FilledBox">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
-                    android:inputType="numberDecimal"
+                    android:inputType="text"
                     android:layout_height="wrap_content"
                     />
 
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/last_textinput"
-                android:layout_width="0dp"
+                android:id="@+id/album_textinput"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="45"
-                android:layout_marginRight="30dp"
-                android:layout_marginLeft="30dp"
                 app:errorEnabled="true"
-                android:hint="@string/last"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+                android:hint="@string/album"
+                style="@style/Widget.Material3.TextInputLayout.FilledBox">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
-                    android:inputType="numberDecimal"
+                    android:inputType="text"
                     android:layout_height="wrap_content"
                     />
 
             </com.google.android.material.textfield.TextInputLayout>
 
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/author_textinput"
+                android:layout_width="0dp"
+                android:layout_weight="45"
+                android:layout_height="wrap_content"
+                app:errorEnabled="true"
+                android:hint="@string/author"
+                style="@style/Widget.Material3.TextInputLayout.FilledBox">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:inputType="text"
+                    android:layout_height="wrap_content"
+                    />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/audio_format"
+                style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
+                android:layout_width="0dp"
+                android:paddingStart="10dp"
+                android:layout_weight="45"
+                android:layout_height="wrap_content"
+                android:hint="@string/audio_format">
+
+                <AutoCompleteTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none"
+                    app:simpleItems="@array/music_formats"
+                    />
+
+            </com.google.android.material.textfield.TextInputLayout>
 
 
 
@@ -96,21 +132,21 @@
             android:orientation="horizontal">
 
             <Button
-                style="@style/Widget.Material3.Button.ElevatedButton.Icon"
+                style="@style/Widget.Material3.Button.OutlinedButton.Icon"
                 android:id="@+id/bottomsheet_audio_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
-                app:icon="@drawable/ic_music"
-                android:text="@string/audio" />
+                app:icon="@drawable/ic_cancel"
+                android:text="@string/cancel" />
 
             <Button
                 style="@style/Widget.Material3.Button.ElevatedButton.Icon"
                 android:id="@+id/bottomsheet_video_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/video"
-                app:icon="@drawable/ic_video"
+                android:text="@string/download"
+                app:icon="@drawable/ic_down"
                 android:autoLink="all"/>
 
         </LinearLayout>

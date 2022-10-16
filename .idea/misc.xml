@@ -102,6 +102,8 @@
         <entry key="..\:/Users/denis/Documents/GitHub/ytdlnis/app/src/main/res/layout/history_filter_sheet.xml" value="0.33" />
         <entry key="..\:/Users/denis/Documents/GitHub/ytdlnis/app/src/main/res/layout/history_no_results.xml" value="0.21" />
         <entry key="..\:/Users/denis/Documents/GitHub/ytdlnis/app/src/main/res/layout/home_download_all_bottom_sheet.xml" value="0.33" />
+        <entry key="..\:/Users/denis/Documents/GitHub/ytdlnis/app/src/main/res/layout/home_download_audio_bottom_sheet.xml" value="0.33" />
+        <entry key="..\:/Users/denis/Documents/GitHub/ytdlnis/app/src/main/res/layout/home_download_video_bottom_sheet.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/denis/Documents/GitHub/ytdlnis/app/src/main/res/layout/home_video_bottom_sheet.xml" value="0.1703125" />
         <entry key="..\:/Users/denis/Documents/GitHub/ytdlnis/app/src/main/res/layout/result_card.xml" value="0.33" />
         <entry key="..\:/Users/denis/Documents/GitHub/ytdlnis/app/src/main/res/layout/result_card_shimmer.xml" value="0.1" />

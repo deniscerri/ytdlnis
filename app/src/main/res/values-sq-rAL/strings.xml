@@ -108,4 +108,17 @@
     <string name="currently_downloading">Duke Shkarkuar</string>
     <string name="remove_downloading">Hiq në shkarkim</string>
     <string name="confirm_delete_downloading_desc">Jeni duke hequr të gjithë elementet që kanë gjendje shkarkimi dhe anuluar shërbimin e shkarkimit!</string>
+    <string name="error_deleting_file">Gabim në fshirjen e skedarit! :(</string>
+    <string name="delete_file_too">Fshije skedarin nga sistemi</string>
+    <string name="incognito_summary">Shkarko privatësisht pa histori shkarkimi</string>
+    <string name="download_audio">Shkarko Audion</string>
+    <string name="configure_download">Konfiguro Shkarkimin</string>
+    <string name="title">Titulli</string>
+    <string name="author">Autori</string>
+    <string name="download">Shkarko</string>
+    <string name="download_video">Shkako Videon</string>
+    <string name="album">Albumi</string>
+    <string name="video_quality">Kualiteti i Videos</string>
+    <string name="embed_subtitles">Vendos Titrat</string>
+    <string name="add_chapter">Vendos Kapituj</string>
 </resources>
