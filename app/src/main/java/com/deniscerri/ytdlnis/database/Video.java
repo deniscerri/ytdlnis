@@ -22,6 +22,9 @@ public class Video implements Parcelable, Cloneable {
     private boolean downloadingVideo;
     private boolean queuedDownload;
     private String playlistTitle;
+    private String audioFormat;
+    private String videoFormat;
+    private String videoQuality;
 
     // RESULTS OBJECT
     public Video(String videoId, String url, String title, String author, String duration, String thumb,
@@ -77,6 +80,9 @@ public class Video implements Parcelable, Cloneable {
         downloadPath = in.readString();
         website = in.readString();
         playlistTitle = in.readString();
+        audioFormat = in.readString();
+        videoFormat = in.readString();
+        videoQuality = in.readString();
     }
 
     public static final Creator<Video> CREATOR = new Creator<Video>() {
@@ -247,6 +253,30 @@ public class Video implements Parcelable, Cloneable {
         this.queuedDownload = queuedDownload;
     }
 
+    public String getAudioFormat() {
+        return audioFormat;
+    }
+
+    public void setAudioFormat(String audioFormat) {
+        this.audioFormat = audioFormat;
+    }
+
+    public String getVideoFormat() {
+        return videoFormat;
+    }
+
+    public void setVideoFormat(String videoFormat) {
+        this.videoFormat = videoFormat;
+    }
+
+    public String getVideoQuality() {
+        return videoQuality;
+    }
+
+    public void setVideoQuality(String videoQuality) {
+        this.videoQuality = videoQuality;
+    }
+
     public Object clone() throws CloneNotSupportedException
     {
         return super.clone();
@@ -273,6 +303,10 @@ public class Video implements Parcelable, Cloneable {
         parcel.writeInt(isPlaylistItem);
         parcel.writeString(downloadPath);
         parcel.writeString(website);
+        parcel.writeString(playlistTitle);
+        parcel.writeString(audioFormat);
+        parcel.writeString(videoFormat);
+        parcel.writeString(videoQuality);
     }
 
     @Override
@@ -294,6 +328,11 @@ public class Video implements Parcelable, Cloneable {
                 ", website='" + website + '\'' +
                 ", downloadingAudio=" + downloadingAudio +
                 ", downloadingVideo=" + downloadingVideo +
+                ", queuedDownload=" + queuedDownload +
+                ", playlistTitle='" + playlistTitle + '\'' +
+                ", audioFormat='" + audioFormat + '\'' +
+                ", videoFormat='" + videoFormat + '\'' +
+                ", videoQuality='" + videoQuality + '\'' +
                 '}';
     }
 }

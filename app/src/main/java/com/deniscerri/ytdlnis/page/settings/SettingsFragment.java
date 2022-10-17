@@ -30,6 +30,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     Preference commandPath;
 
     SwitchPreferenceCompat incognito;
+    SwitchPreferenceCompat downloadCard;
     EditTextPreference apiKey;
     SeekBarPreference concurrentFragments;
     EditTextPreference limitRate;
@@ -43,6 +44,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     ListPreference audioFormat;
     ListPreference videoFormat;
     SeekBarPreference audioQuality;
+    ListPreference videoQuality;
 
     Preference updateYTDL;
     SwitchPreferenceCompat updateApp;
@@ -74,6 +76,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         commandPath = findPreference("command_path");
 
         incognito = findPreference("incognito");
+        downloadCard = findPreference("download_card");
         apiKey = findPreference("api_key");
         concurrentFragments = findPreference("concurrent_fragments");
         limitRate = findPreference("limit_rate");
@@ -87,6 +90,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         audioFormat = findPreference("audio_format");
         videoFormat = findPreference("video_format");
         audioQuality = findPreference("audio_quality");
+        videoQuality = findPreference("video_quality");
 
         updateYTDL = findPreference("update_ytdl");
         updateApp = findPreference("update_app");
@@ -104,6 +108,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         }
 
         editor.putBoolean("incognito", incognito.isChecked());
+        editor.putBoolean("download_card", downloadCard.isChecked());
         editor.putString("api_key", apiKey.getText());
         editor.putInt("concurrent_fragments", concurrentFragments.getValue());
         editor.putString("limit_rate", limitRate.getText());
@@ -116,6 +121,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         editor.putString("audio_format", audioFormat.getValue());
         editor.putString("video_format", videoFormat.getValue());
         editor.putInt("audio_quality", audioQuality.getValue());
+        editor.putString("video_quality", videoQuality.getValue());
         editor.putBoolean("update_app", updateApp.isChecked());
 
         editor.apply();
@@ -149,6 +155,13 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         incognito.setOnPreferenceChangeListener((preference, newValue) -> {
             boolean enable = (Boolean) newValue;
             editor.putBoolean("incognito", enable);
+            editor.apply();
+            return true;
+        });
+
+        downloadCard.setOnPreferenceChangeListener((preference, newValue) -> {
+            boolean enable = (Boolean) newValue;
+            editor.putBoolean("download_card", enable);
             editor.apply();
             return true;
         });
@@ -232,6 +245,14 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 
         audioQuality.setOnPreferenceChangeListener((preference, newValue) -> {
             editor.putInt("audio_format", Integer.parseInt(String.valueOf(newValue)));
+            editor.apply();
+            return true;
+        });
+
+        videoQuality.setSummary(preferences.getString("video_quality", ""));
+        videoQuality.setOnPreferenceChangeListener((preference, newValue) -> {
+            editor.putString("video_quality", String.valueOf(newValue));
+            videoQuality.setSummary(String.valueOf(newValue));
             editor.apply();
             return true;
         });

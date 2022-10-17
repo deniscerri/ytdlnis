@@ -337,6 +337,11 @@ public class DownloaderService extends Service {
                 request.addOption("--sponsorblock-remove", "all");
             }
 
+            request.addOption("--replace-in-metadata", "title \"[ ]\" \""+video.getTitle()+"\"");
+            request.addOption("--parse-metadata", "meta_title:%(title)s");
+            request.addOption("--parse-metadata", "title:%(title)s");
+            request.addOption("--parse-metadata", "meta_artist:\""+video.getAuthor()+"\"");
+
         } else if (type.equals("video")) {
             boolean addChapters = sharedPreferences.getBoolean("add_chapters", false);
             if(addChapters){
@@ -346,7 +351,13 @@ public class DownloaderService extends Service {
             if(embedSubs){
                 request.addOption("--embed-subs", "");
             }
-            request.addOption("-f", "bestvideo+bestaudio/best");
+            String videoQuality = sharedPreferences.getString("video_quality", "");
+            String formatArgument = "bestvideo+bestaudio/best";
+            if (!videoQuality.isEmpty() && !videoQuality.equals("Best Quality")) {
+                formatArgument = "bestvideo[height<="+videoQuality.substring(0, videoQuality.length()-1)+"]+bestaudio/best";
+            }
+            Toast.makeText(context, formatArgument, Toast.LENGTH_LONG).show();
+            request.addOption("-f", formatArgument);
             String format = sharedPreferences.getString("video_format", "");
             request.addOption("--merge-output-format", format);
 
@@ -356,6 +367,10 @@ public class DownloaderService extends Service {
                     request.addOption("--embed-thumbnail");
                 }
             }
+
+            request.addOption("--add-metadata");
+            request.addOption("--postprocessor-args", "-metadata title=\""+video.getTitle()+"\"");
+
         }
 
         request.addOption("-o", youtubeDLDir.getAbsolutePath() + "/%(title)s.%(ext)s");
@@ -386,7 +401,7 @@ public class DownloaderService extends Service {
                     if (BuildConfig.DEBUG) Log.e(TAG, getString(R.string.failed_download), e);
                     notificationUtil.updateDownloadNotification(NotificationUtil.DOWNLOAD_NOTIFICATION_ID,
                             getString(R.string.failed_download), 0, 0, downloadQueue.peek().getTitle());
-
+                    downloadInfo.setDownloadType(type);
                     try{
                         for (Activity activity: activities.keySet()){
                             activity.runOnUiThread(() -> {

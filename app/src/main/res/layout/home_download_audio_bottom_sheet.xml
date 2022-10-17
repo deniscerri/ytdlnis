@@ -133,7 +133,7 @@
 
             <Button
                 style="@style/Widget.Material3.Button.OutlinedButton.Icon"
-                android:id="@+id/bottomsheet_audio_button"
+                android:id="@+id/bottomsheet_cancel_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
@@ -142,7 +142,7 @@
 
             <Button
                 style="@style/Widget.Material3.Button.ElevatedButton.Icon"
-                android:id="@+id/bottomsheet_video_button"
+                android:id="@+id/bottomsheet_download_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/download"

@@ -1,9 +1,11 @@
 package com.deniscerri.ytdlnis.page;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.media.MediaScannerConnection;
 import android.os.Bundle;
@@ -16,6 +18,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.Toast;
 import androidx.appcompat.widget.SearchView;
@@ -37,6 +42,7 @@ import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.chip.Chip;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
@@ -592,7 +598,7 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
         return null;
     }
 
-
+    @SuppressLint("ResourceType")
     @Override
     public void onButtonClick(int position, String type) {
         Log.e(TAG, type);
@@ -607,11 +613,120 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
                }
            }catch (Exception ignored){}
         }
-        downloadQueue.add(vid);
-        updateDownloadingStatusOnResult(vid, type, true);
-        if (isStoragePermissionGranted()){
-            mainActivity.startDownloadService(downloadQueue, listener);
-            downloadQueue.clear();
+
+        SharedPreferences sharedPreferences = context.getSharedPreferences("root_preferences", Activity.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        if (sharedPreferences.getBoolean("download_card", true)){
+            bottomSheet = new BottomSheetDialog(fragmentContext);
+            bottomSheet.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+            if (type.equals("audio")){
+                bottomSheet.setContentView(R.layout.home_download_audio_bottom_sheet);
+
+                TextInputLayout title = bottomSheet.findViewById(R.id.title_textinput);
+                title.getEditText().setText(vid.getTitle());
+
+                TextInputLayout album = bottomSheet.findViewById(R.id.album_textinput);
+                album.getEditText().setText(vid.getPlaylistTitle());
+
+                TextInputLayout author = bottomSheet.findViewById(R.id.author_textinput);
+                author.getEditText().setText(vid.getAuthor());
+
+                String[] audioFormats = context.getResources().getStringArray(R.array.music_formats);
+
+                TextInputLayout audioFormat = bottomSheet.findViewById(R.id.audio_format);
+                audioFormat.getEditText().setText(sharedPreferences.getString("audio_format", ""));
+                ((AutoCompleteTextView)audioFormat.getEditText()).setOnItemClickListener((adapterView, view, i, l) -> {
+                    vid.setAudioFormat(audioFormats[i]);
+                    editor.putString("audio_format", vid.getAudioFormat());
+                    editor.apply();
+                });
+
+            }else {
+                bottomSheet.setContentView(R.layout.home_download_video_bottom_sheet);
+
+                TextInputLayout title = bottomSheet.findViewById(R.id.title_textinput);
+                title.getEditText().setText(vid.getTitle());
+
+                String[] videoFormats = context.getResources().getStringArray(R.array.video_formats);
+                String[] videoQualities = context.getResources().getStringArray(R.array.video_quality);
+
+                TextInputLayout videoFormat = bottomSheet.findViewById(R.id.video_format);
+                videoFormat.getEditText().setText(sharedPreferences.getString("video_format", ""));
+                ((AutoCompleteTextView)videoFormat.getEditText()).setOnItemClickListener((adapterView, view, i, l) -> {
+                    vid.setVideoFormat(videoFormats[i]);
+                    editor.putString("video_format", vid.getVideoFormat());
+                    editor.apply();
+                });
+
+                TextInputLayout videoQuality = bottomSheet.findViewById(R.id.video_quality);
+                videoQuality.getEditText().setText(sharedPreferences.getString("video_quality", ""));
+                ((AutoCompleteTextView)videoQuality.getEditText()).setOnItemClickListener((adapterView, view, i, l) -> {
+                    vid.setVideoQuality(videoQualities[i]);
+                    editor.putString("video_quality", vid.getVideoQuality());
+                    editor.apply();
+                });
+
+                Chip embedSubs = bottomSheet.findViewById(R.id.embed_subtitles);
+                embedSubs.setChecked(sharedPreferences.getBoolean("embed_subtitles", false));
+                embedSubs.setOnClickListener(view -> {
+                    if (embedSubs.isChecked()){
+                        editor.putBoolean("embed_subtitles", true);
+                    }else{
+                        editor.putBoolean("embed_subtitles", false);
+                    }
+                    editor.apply();
+                });
+
+                Chip addChapters = bottomSheet.findViewById(R.id.add_chapters);
+                addChapters.setChecked(sharedPreferences.getBoolean("add_chapters", false));
+                addChapters.setOnClickListener(view -> {
+                    if (addChapters.isChecked()){
+                        editor.putBoolean("add_chapters", true);
+                    }else{
+                        editor.putBoolean("add_chapters", false);
+                    }
+                    editor.apply();
+                });
+
+                Chip saveThumbnail = bottomSheet.findViewById(R.id.save_thumbnail);
+                saveThumbnail.setChecked(sharedPreferences.getBoolean("write_thumbnail", false));
+                saveThumbnail.setOnClickListener(view -> {
+                    if (saveThumbnail.isChecked()){
+                        editor.putBoolean("write_thumbnail", true);
+                    }else{
+                        editor.putBoolean("write_thumbnail", false);
+                    }
+                    editor.apply();
+                });
+            }
+
+            Button cancel = bottomSheet.findViewById(R.id.bottomsheet_cancel_button);
+            cancel.setOnClickListener(view -> {
+                bottomSheet.cancel();
+            });
+
+            Button download = bottomSheet.findViewById(R.id.bottomsheet_download_button);
+            download.setOnClickListener(view -> {
+                downloadQueue.add(vid);
+                updateDownloadingStatusOnResult(vid, type, true);
+                if (isStoragePermissionGranted()){
+                    mainActivity.startDownloadService(downloadQueue, listener);
+                    downloadQueue.clear();
+                }
+                bottomSheet.cancel();
+            });
+
+            bottomSheet.show();
+            bottomSheet.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT);
+        }else{
+            downloadQueue.add(vid);
+            updateDownloadingStatusOnResult(vid, type, true);
+            if (isStoragePermissionGranted()){
+                mainActivity.startDownloadService(downloadQueue, listener);
+                downloadQueue.clear();
+            }
         }
     }
 

@@ -30,6 +30,13 @@
             app:summary="@string/incognito_summary"
             app:title="Incognito" />
 
+        <SwitchPreferenceCompat
+            app:defaultValue="true"
+            android:icon="@drawable/ic_card"
+            android:key="download_card"
+            app:summary="@string/download_card_summary"
+            app:title="@string/show_download_card" />
+
         <EditTextPreference
             android:icon="@drawable/ic_key"
             app:key="api_key"
@@ -130,6 +137,15 @@
             app:showSeekBarValue="true"
             app:summary="@string/audio_quality_summary"
             app:title="@string/audio_quality" />
+
+        <ListPreference
+            android:defaultValue="Best Quality"
+            android:entries="@array/video_quality"
+            android:entryValues="@array/video_quality"
+            android:icon="@drawable/ic_video"
+            app:key="video_quality"
+            app:summary="Best Quality"
+            app:title="@string/video_quality" />
 
     </PreferenceCategory>
 

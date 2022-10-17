@@ -112,13 +112,23 @@ public class DownloadsFragment extends Fragment implements DownloadsRecyclerView
 
         public void onDownloadError(DownloadInfo info){
             try{
-                int position = downloadsObjects.indexOf(info.getVideo());
-                Video v = downloadsObjects.get(position);
+                Video item = info.getVideo();
+                Log.e(TAG, item.toString());
+                String url = item.getURL();
+                String type = info.getDownloadType();
+                Video v = findVideo(url, type);
+                Log.e(TAG, v.toString());
                 dbManager = new DBManager(context);
                 dbManager.clearHistoryItem(v, false);
+                int position = downloadsObjects.indexOf(v);
+                downloadsObjects.remove(v);
                 downloadsRecyclerViewAdapter.notifyItemRemoved(position);
+
+                if (downloadsObjects.isEmpty()) initCards();
                 downloading = false;
-            }catch(Exception ignored){}
+            }catch(Exception e){
+                e.printStackTrace();
+            }
         }
 
         public void onDownloadEnd(DownloadInfo downloadInfo) {
