@@ -80,9 +80,6 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:inputType="text"
-                    android:background="@color/grey"
-                    android:focusableInTouchMode="false"
-                    android:longClickable="false"
                     android:layout_height="wrap_content"
                     />
 

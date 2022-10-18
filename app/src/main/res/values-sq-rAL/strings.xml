@@ -121,4 +121,6 @@
     <string name="video_quality">Kualiteti i Videos</string>
     <string name="embed_subtitles">Vendos Titrat</string>
     <string name="add_chapter">Vendos Kapituj</string>
+    <string name="show_download_card">Shfaq kartën e shkarkimit</string>
+    <string name="download_card_summary">Konfiguro videon përpara se sa ta shkarkosh</string>
 </resources>

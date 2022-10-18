@@ -25,8 +25,10 @@ import com.yausername.youtubedl_android.YoutubeDLRequest;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
@@ -337,10 +339,8 @@ public class DownloaderService extends Service {
                 request.addOption("--sponsorblock-remove", "all");
             }
 
-            request.addOption("--replace-in-metadata", "title");
-            request.addOption(".*.", video.getTitle());
-//            request.addOption("--replace-in-metadata", "uploader");
-//            request.addOption(".*.", video.getAuthor());
+            request.addCommands(Arrays.asList("--replace-in-metadata","title",".*.",video.getTitle()));
+            request.addCommands(Arrays.asList("--replace-in-metadata","uploader",".*.",video.getAuthor()));
 
             request.addOption("-o", youtubeDLDir.getAbsolutePath() + "/"+video.getTitle()+"."+format);
         } else if (type.equals("video")) {
