@@ -11,7 +11,9 @@ import android.media.MediaScannerConnection;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.text.Editable;
 import android.text.InputType;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -46,14 +48,17 @@ import com.google.android.material.chip.Chip;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -626,17 +631,37 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
 
                 TextInputLayout title = bottomSheet.findViewById(R.id.title_textinput);
                 title.getEditText().setText(vid.getTitle());
+                title.getEditText().addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
 
-                TextInputLayout album = bottomSheet.findViewById(R.id.album_textinput);
-                album.getEditText().setText(vid.getPlaylistTitle());
+                    @Override
+                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+                    @Override
+                    public void afterTextChanged(Editable editable) {
+                        vid.setTitle(editable.toString());
+                    }
+                });
 
                 TextInputLayout author = bottomSheet.findViewById(R.id.author_textinput);
                 author.getEditText().setText(vid.getAuthor());
+                author.getEditText().addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+                    @Override
+                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+                    @Override
+                    public void afterTextChanged(Editable editable) {
+                        vid.setAuthor(editable.toString());
+                    }
+                });
 
                 String[] audioFormats = context.getResources().getStringArray(R.array.music_formats);
 
                 TextInputLayout audioFormat = bottomSheet.findViewById(R.id.audio_format);
-                audioFormat.getEditText().setText(sharedPreferences.getString("audio_format", ""));
                 ((AutoCompleteTextView)audioFormat.getEditText()).setOnItemClickListener((adapterView, view, i, l) -> {
                     vid.setAudioFormat(audioFormats[i]);
                     editor.putString("audio_format", vid.getAudioFormat());
@@ -648,12 +673,24 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
 
                 TextInputLayout title = bottomSheet.findViewById(R.id.title_textinput);
                 title.getEditText().setText(vid.getTitle());
+                title.getEditText().addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+                    @Override
+                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+                    @Override
+                    public void afterTextChanged(Editable editable) {
+                        vid.setTitle(editable.toString());
+                    }
+                });
+
 
                 String[] videoFormats = context.getResources().getStringArray(R.array.video_formats);
                 String[] videoQualities = context.getResources().getStringArray(R.array.video_quality);
 
                 TextInputLayout videoFormat = bottomSheet.findViewById(R.id.video_format);
-                videoFormat.getEditText().setText(sharedPreferences.getString("video_format", ""));
                 ((AutoCompleteTextView)videoFormat.getEditText()).setOnItemClickListener((adapterView, view, i, l) -> {
                     vid.setVideoFormat(videoFormats[i]);
                     editor.putString("video_format", vid.getVideoFormat());
@@ -661,7 +698,6 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
                 });
 
                 TextInputLayout videoQuality = bottomSheet.findViewById(R.id.video_quality);
-                videoQuality.getEditText().setText(sharedPreferences.getString("video_quality", ""));
                 ((AutoCompleteTextView)videoQuality.getEditText()).setOnItemClickListener((adapterView, view, i, l) -> {
                     vid.setVideoQuality(videoQualities[i]);
                     editor.putString("video_quality", vid.getVideoQuality());

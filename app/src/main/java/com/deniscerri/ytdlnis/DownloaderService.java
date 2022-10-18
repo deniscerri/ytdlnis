@@ -25,7 +25,6 @@ import com.yausername.youtubedl_android.YoutubeDLRequest;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Map;
@@ -313,7 +312,8 @@ public class DownloaderService extends Service {
 
         if (type.equals("audio")) {
             request.addOption("-x");
-            String format = sharedPreferences.getString("audio_format", "");
+            String format = video.getAudioFormat();
+            if (format == null) format = sharedPreferences.getString("audio_format", "");
             request.addOption("--audio-format", format);
             request.addOption("--embed-metadata");
             if(format.equals("mp3") || format.equals("m4a") || format.equals("flac")){
@@ -337,11 +337,12 @@ public class DownloaderService extends Service {
                 request.addOption("--sponsorblock-remove", "all");
             }
 
-            request.addOption("--replace-in-metadata", "title \"[ ]\" \""+video.getTitle()+"\"");
-            request.addOption("--parse-metadata", "meta_title:%(title)s");
-            request.addOption("--parse-metadata", "title:%(title)s");
-            request.addOption("--parse-metadata", "meta_artist:\""+video.getAuthor()+"\"");
+            request.addOption("--replace-in-metadata", "title");
+            request.addOption(".*.", video.getTitle());
+//            request.addOption("--replace-in-metadata", "uploader");
+//            request.addOption(".*.", video.getAuthor());
 
+            request.addOption("-o", youtubeDLDir.getAbsolutePath() + "/"+video.getTitle()+"."+format);
         } else if (type.equals("video")) {
             boolean addChapters = sharedPreferences.getBoolean("add_chapters", false);
             if(addChapters){
@@ -351,14 +352,15 @@ public class DownloaderService extends Service {
             if(embedSubs){
                 request.addOption("--embed-subs", "");
             }
-            String videoQuality = sharedPreferences.getString("video_quality", "");
+            String videoQuality = video.getVideoQuality();
+            if (videoQuality == null) videoQuality = sharedPreferences.getString("video_quality", "");
             String formatArgument = "bestvideo+bestaudio/best";
             if (!videoQuality.isEmpty() && !videoQuality.equals("Best Quality")) {
                 formatArgument = "bestvideo[height<="+videoQuality.substring(0, videoQuality.length()-1)+"]+bestaudio/best";
             }
-            Toast.makeText(context, formatArgument, Toast.LENGTH_LONG).show();
             request.addOption("-f", formatArgument);
-            String format = sharedPreferences.getString("video_format", "");
+            String format = video.getVideoFormat();
+            if (format == null) format = sharedPreferences.getString("audio_format", "");
             request.addOption("--merge-output-format", format);
 
             if(!format.equals("webm")){
@@ -367,13 +369,8 @@ public class DownloaderService extends Service {
                     request.addOption("--embed-thumbnail");
                 }
             }
-
-            request.addOption("--add-metadata");
-            request.addOption("--postprocessor-args", "-metadata title=\""+video.getTitle()+"\"");
-
+            request.addOption("-o", youtubeDLDir.getAbsolutePath() + "/"+video.getTitle()+"."+format);
         }
-
-        request.addOption("-o", youtubeDLDir.getAbsolutePath() + "/%(title)s.%(ext)s");
 
         Disposable disposable = Observable.fromCallable(() -> YoutubeDL.getInstance().execute(request, downloadProcessID, callback))
                 .subscribeOn(Schedulers.newThread())
@@ -381,6 +378,7 @@ public class DownloaderService extends Service {
                 .subscribe(youtubeDLResponse -> {
                     downloadInfo.setDownloadPath(youtubeDLDir.getAbsolutePath());
                     downloadInfo.setDownloadType(type);
+
                     try{
                         for (Activity activity: activities.keySet()){
                             activity.runOnUiThread(() -> {
@@ -393,6 +391,7 @@ public class DownloaderService extends Service {
                     }catch (Exception e){
                         e.printStackTrace();
                     }
+
                     // SCAN NEXT IN QUEUE
                     videos.remove();
                     downloadInfo.setDownloadQueue(videos);
