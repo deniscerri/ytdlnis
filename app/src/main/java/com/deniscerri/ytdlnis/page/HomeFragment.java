@@ -281,10 +281,10 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
                 }catch(Exception ignored){}
                 if (resultObjects.size() == 0 || (playlistTitle.equals(getString(R.string.trendingPlaylist)) && !downloading)) {
                     try {
+                        dbManager.clearResults();
                         infoUtil = new InfoUtil(context);
                         resultObjects = infoUtil.getTrending(context);
                         dbManager.addToResults(resultObjects);
-
                     } catch (Exception e) {
                         Log.e(TAG, e.toString());
                     }
@@ -829,25 +829,7 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
             if (viewIdName.contains("audio") || viewIdName.contains("video")) {
                 String[] buttonData = viewIdName.split("##");
                 if (buttonData[0].equals("SELECT")) {
-                    for (int i = 0; i < selectedObjects.size(); i++) {
-                        Video vid = findVideo(selectedObjects.get(i).getURL());
-                        vid.setDownloadedType(buttonData[1]);
-                        updateDownloadingStatusOnResult(vid, buttonData[1], true);
-                        homeRecyclerViewAdapter.notifyItemChanged(resultObjects.indexOf(vid));
-                        downloadQueue.add(vid);
-                    }
-                    selectedObjects = new ArrayList<>();
-                    homeRecyclerViewAdapter.clearCheckedVideos();
-                    downloadFabs.setVisibility(View.GONE);
-
-                    if (downloading) {
-                        Toast.makeText(context, R.string.added_to_queue, Toast.LENGTH_LONG).show();
-                        return;
-                    }
-                    if(isStoragePermissionGranted()){
-                        mainActivity.startDownloadService(downloadQueue, listener);
-                        downloadQueue.clear();
-                    }
+                    initSelectedDownload(buttonData[1]);
                 }
             }
             if (viewIdName.equals("downloadAll")){
@@ -899,20 +881,291 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
             last.setError(getString(R.string.last_cant_be_smaller_than_first));
             return;
         }
-
         bottomSheet.cancel();
         if (start <= 1) start = 0;
 
-        for (int i = start; i < end; i++){
-            Video vid = findVideo(resultObjects.get(i).getURL());
-            vid.setDownloadedType(type);
-            updateDownloadingStatusOnResult(vid, type, true);
-            downloadQueue.add(vid);
-        }
+        SharedPreferences sharedPreferences = context.getSharedPreferences("root_preferences", Activity.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
 
-        if(isStoragePermissionGranted()){
-            mainActivity.startDownloadService(downloadQueue, listener);
-            downloadQueue.clear();
+        if (sharedPreferences.getBoolean("download_card", true)){
+
+            BottomSheetDialog downloadTypeBottomSheet = new BottomSheetDialog(fragmentContext);
+            downloadTypeBottomSheet.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+            if (type.equals("audio")){
+                downloadTypeBottomSheet.setContentView(R.layout.home_download_audio_bottom_sheet);
+
+                TextInputLayout title = downloadTypeBottomSheet.findViewById(R.id.title_textinput);
+                title.getEditText().setText(getString(R.string.mutliple_titles));
+                title.getEditText().setClickable(false);
+                title.getEditText().setLongClickable(false);
+
+                TextInputLayout author = downloadTypeBottomSheet.findViewById(R.id.author_textinput);
+                author.getEditText().setText(getString(R.string.mutliple_authors));
+                author.getEditText().setClickable(false);
+                author.getEditText().setLongClickable(false);
+
+                String[] audioFormats = context.getResources().getStringArray(R.array.music_formats);
+
+                TextInputLayout audioFormat = downloadTypeBottomSheet.findViewById(R.id.audio_format);
+                int finalStart = start;
+                ((AutoCompleteTextView)audioFormat.getEditText()).setOnItemClickListener((adapterView, view, index, l) -> {
+                    for (int i = finalStart; i < end; i++){
+                        Video vid = findVideo(resultObjects.get(i).getURL());
+                        vid.setAudioFormat(audioFormats[index]);
+                    }
+                    editor.putString("audio_format", audioFormats[index]);
+                    editor.apply();
+                });
+
+            }else {
+                downloadTypeBottomSheet.setContentView(R.layout.home_download_video_bottom_sheet);
+
+                TextInputLayout title = downloadTypeBottomSheet.findViewById(R.id.title_textinput);
+                title.getEditText().setText(getString(R.string.mutliple_titles));
+                title.getEditText().setClickable(false);
+                title.getEditText().setLongClickable(false);
+
+                String[] videoFormats = context.getResources().getStringArray(R.array.video_formats);
+                String[] videoQualities = context.getResources().getStringArray(R.array.video_quality);
+
+                TextInputLayout videoFormat = downloadTypeBottomSheet.findViewById(R.id.video_format);
+                int finalStart1 = start;
+                ((AutoCompleteTextView)videoFormat.getEditText()).setOnItemClickListener((adapterView, view, index, l) -> {
+                    for (int i = finalStart1; i < end; i++){
+                        Video vid = findVideo(resultObjects.get(i).getURL());
+                        vid.setVideoFormat(videoFormats[index]);
+                    }
+                    editor.putString("video_format", videoFormats[index]);
+                    editor.apply();
+                });
+
+                TextInputLayout videoQuality = downloadTypeBottomSheet.findViewById(R.id.video_quality);
+                ((AutoCompleteTextView)videoQuality.getEditText()).setOnItemClickListener((adapterView, view, index, l) -> {
+                    for (int i = finalStart1; i < end; i++){
+                        Video vid = findVideo(resultObjects.get(i).getURL());
+                        vid.setVideoQuality(videoQualities[index]);
+                    }
+                    editor.putString("video_quality", videoQualities[index]);
+                    editor.apply();
+                });
+
+                Chip embedSubs = downloadTypeBottomSheet.findViewById(R.id.embed_subtitles);
+                embedSubs.setChecked(sharedPreferences.getBoolean("embed_subtitles", false));
+                embedSubs.setOnClickListener(view -> {
+                    if (embedSubs.isChecked()){
+                        editor.putBoolean("embed_subtitles", true);
+                    }else{
+                        editor.putBoolean("embed_subtitles", false);
+                    }
+                    editor.apply();
+                });
+
+                Chip addChapters = downloadTypeBottomSheet.findViewById(R.id.add_chapters);
+                addChapters.setChecked(sharedPreferences.getBoolean("add_chapters", false));
+                addChapters.setOnClickListener(view -> {
+                    if (addChapters.isChecked()){
+                        editor.putBoolean("add_chapters", true);
+                    }else{
+                        editor.putBoolean("add_chapters", false);
+                    }
+                    editor.apply();
+                });
+
+                Chip saveThumbnail = downloadTypeBottomSheet.findViewById(R.id.save_thumbnail);
+                saveThumbnail.setChecked(sharedPreferences.getBoolean("write_thumbnail", false));
+                saveThumbnail.setOnClickListener(view -> {
+                    if (saveThumbnail.isChecked()){
+                        editor.putBoolean("write_thumbnail", true);
+                    }else{
+                        editor.putBoolean("write_thumbnail", false);
+                    }
+                    editor.apply();
+                });
+            }
+
+            Button cancel = downloadTypeBottomSheet.findViewById(R.id.bottomsheet_cancel_button);
+            cancel.setOnClickListener(view -> {
+                downloadTypeBottomSheet.cancel();
+            });
+
+            Button download = downloadTypeBottomSheet.findViewById(R.id.bottomsheet_download_button);
+            int finalStart2 = start;
+            download.setOnClickListener(view -> {
+                for (int i = finalStart2; i < end; i++){
+                    Video vid = findVideo(resultObjects.get(i).getURL());
+                    vid.setDownloadedType(type);
+                    updateDownloadingStatusOnResult(vid, type, true);
+                    downloadQueue.add(vid);
+                }
+
+                if(isStoragePermissionGranted()){
+                    mainActivity.startDownloadService(downloadQueue, listener);
+                    downloadQueue.clear();
+                }
+                downloadTypeBottomSheet.cancel();
+            });
+
+            downloadTypeBottomSheet.show();
+            downloadTypeBottomSheet.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT);
+        }else{
+            for (int i = start; i < end; i++){
+                Video vid = findVideo(resultObjects.get(i).getURL());
+                vid.setDownloadedType(type);
+                updateDownloadingStatusOnResult(vid, type, true);
+                downloadQueue.add(vid);
+            }
+
+            if(isStoragePermissionGranted()){
+                mainActivity.startDownloadService(downloadQueue, listener);
+                downloadQueue.clear();
+            }
+        }
+    }
+
+    private void initSelectedDownload(String type){
+
+        SharedPreferences sharedPreferences = context.getSharedPreferences("root_preferences", Activity.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        if (sharedPreferences.getBoolean("download_card", true)){
+            bottomSheet = new BottomSheetDialog(fragmentContext);
+            bottomSheet.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+            if (type.equals("audio")){
+                bottomSheet.setContentView(R.layout.home_download_audio_bottom_sheet);
+
+                TextInputLayout title = bottomSheet.findViewById(R.id.title_textinput);
+                title.getEditText().setText(getString(R.string.mutliple_titles));
+                title.getEditText().setClickable(false);
+                title.getEditText().setLongClickable(false);
+
+                TextInputLayout author = bottomSheet.findViewById(R.id.author_textinput);
+                author.getEditText().setText(getString(R.string.mutliple_authors));
+                author.getEditText().setClickable(false);
+                author.getEditText().setLongClickable(false);
+
+                String[] audioFormats = context.getResources().getStringArray(R.array.music_formats);
+
+                TextInputLayout audioFormat = bottomSheet.findViewById(R.id.audio_format);
+                ((AutoCompleteTextView)audioFormat.getEditText()).setOnItemClickListener((adapterView, view, index, l) -> {
+                    for (int i = 0; i < selectedObjects.size(); i++) {
+                        Video vid = findVideo(selectedObjects.get(i).getURL());
+                        vid.setAudioFormat(audioFormats[index]);
+                    }
+                    editor.putString("audio_format", audioFormats[index]);
+                    editor.apply();
+                });
+
+            }else {
+                bottomSheet.setContentView(R.layout.home_download_video_bottom_sheet);
+
+                TextInputLayout title = bottomSheet.findViewById(R.id.title_textinput);
+                title.getEditText().setText(getString(R.string.mutliple_titles));
+                title.getEditText().setClickable(false);
+                title.getEditText().setLongClickable(false);
+
+
+                String[] videoFormats = context.getResources().getStringArray(R.array.video_formats);
+                String[] videoQualities = context.getResources().getStringArray(R.array.video_quality);
+
+                TextInputLayout videoFormat = bottomSheet.findViewById(R.id.video_format);
+                ((AutoCompleteTextView)videoFormat.getEditText()).setOnItemClickListener((adapterView, view, index, l) -> {
+                    for (int i = 0; i < selectedObjects.size(); i++) {
+                        Video vid = findVideo(selectedObjects.get(i).getURL());
+                        vid.setVideoFormat(videoFormats[index]);
+                    }
+                    editor.putString("video_format", videoFormats[index]);
+                    editor.apply();
+                });
+
+                TextInputLayout videoQuality = bottomSheet.findViewById(R.id.video_quality);
+                ((AutoCompleteTextView)videoQuality.getEditText()).setOnItemClickListener((adapterView, view, index, l) -> {
+                    for (int i = 0; i < selectedObjects.size(); i++) {
+                        Video vid = findVideo(selectedObjects.get(i).getURL());
+                        vid.setVideoQuality(videoQualities[index]);
+                    }
+                    editor.putString("video_quality", videoQualities[index]);
+                    editor.apply();
+                });
+
+                Chip embedSubs = bottomSheet.findViewById(R.id.embed_subtitles);
+                embedSubs.setChecked(sharedPreferences.getBoolean("embed_subtitles", false));
+                embedSubs.setOnClickListener(view -> {
+                    if (embedSubs.isChecked()){
+                        editor.putBoolean("embed_subtitles", true);
+                    }else{
+                        editor.putBoolean("embed_subtitles", false);
+                    }
+                    editor.apply();
+                });
+
+                Chip addChapters = bottomSheet.findViewById(R.id.add_chapters);
+                addChapters.setChecked(sharedPreferences.getBoolean("add_chapters", false));
+                addChapters.setOnClickListener(view -> {
+                    if (addChapters.isChecked()){
+                        editor.putBoolean("add_chapters", true);
+                    }else{
+                        editor.putBoolean("add_chapters", false);
+                    }
+                    editor.apply();
+                });
+
+                Chip saveThumbnail = bottomSheet.findViewById(R.id.save_thumbnail);
+                saveThumbnail.setChecked(sharedPreferences.getBoolean("write_thumbnail", false));
+                saveThumbnail.setOnClickListener(view -> {
+                    if (saveThumbnail.isChecked()){
+                        editor.putBoolean("write_thumbnail", true);
+                    }else{
+                        editor.putBoolean("write_thumbnail", false);
+                    }
+                    editor.apply();
+                });
+            }
+
+            Button cancel = bottomSheet.findViewById(R.id.bottomsheet_cancel_button);
+            cancel.setOnClickListener(view -> {
+                bottomSheet.cancel();
+            });
+
+            Button download = bottomSheet.findViewById(R.id.bottomsheet_download_button);
+            download.setOnClickListener(view -> {
+                for (int i = 0; i < selectedObjects.size(); i++) {
+                    Video vid = findVideo(selectedObjects.get(i).getURL());
+                    vid.setDownloadedType(type);
+                    updateDownloadingStatusOnResult(vid, type, true);
+                    homeRecyclerViewAdapter.notifyItemChanged(resultObjects.indexOf(vid));
+                    downloadQueue.add(vid);
+                }
+                selectedObjects = new ArrayList<>();
+                homeRecyclerViewAdapter.clearCheckedVideos();
+                downloadFabs.setVisibility(View.GONE);
+
+                if(isStoragePermissionGranted()){
+                    mainActivity.startDownloadService(downloadQueue, listener);
+                    downloadQueue.clear();
+                }
+                bottomSheet.cancel();
+            });
+
+            bottomSheet.show();
+            bottomSheet.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT);
+        }else{
+            for (int i = 0; i < selectedObjects.size(); i++) {
+                Video vid = findVideo(selectedObjects.get(i).getURL());
+                vid.setDownloadedType(type);
+                updateDownloadingStatusOnResult(vid, type, true);
+                homeRecyclerViewAdapter.notifyItemChanged(resultObjects.indexOf(vid));
+                downloadQueue.add(vid);
+            }
+            selectedObjects = new ArrayList<>();
+            homeRecyclerViewAdapter.clearCheckedVideos();
+            downloadFabs.setVisibility(View.GONE);
+
+            if(isStoragePermissionGranted()){
+                mainActivity.startDownloadService(downloadQueue, listener);
+                downloadQueue.clear();
+            }
         }
     }
 

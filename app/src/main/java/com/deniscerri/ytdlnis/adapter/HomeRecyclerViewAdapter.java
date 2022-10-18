@@ -111,8 +111,8 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
         if (video.isDownloading()){
             progressBar.setVisibility(View.VISIBLE);
         }else {
-            progressBar.setVisibility(View.GONE);
             progressBar.setIndeterminate(true);
+            progressBar.setVisibility(View.GONE);
         }
 
         if (video.isDownloadingAudio()) {

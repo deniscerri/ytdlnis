@@ -128,4 +128,6 @@
     <string name="add_chapter">Add Chapters</string>
     <string name="show_download_card">Show Download Card</string>
     <string name="download_card_summary">Configure the item before downloading it</string>
+    <string name="mutliple_titles">Multiple Titles</string>
+    <string name="mutliple_authors">Multiple Authors</string>
 </resources>

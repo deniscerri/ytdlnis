@@ -203,20 +203,13 @@ public class DownloadsFragment extends Fragment implements DownloadsRecyclerView
         public void onDownloadCancelAll(DownloadInfo downloadInfo){
             try {
                 dbManager = new DBManager(context);
-                while (downloadsObjects.size() > 0){
-                    Video v = downloadsObjects.get(0);
-                    if (v.isQueuedDownload()){
-                        dbManager.clearHistoryItem(v, false);
-                        downloadsObjects.remove(v);
-                        downloadsRecyclerViewAdapter.setVideoList(downloadsObjects);
-                    }else{
-                        break;
-                    }
-                }
+                dbManager.clearDownloadingHistory();
                 dbManager.close();
-                if (downloadsObjects.isEmpty()) initCards();
+                initCards();
                 downloading = false;
-            }catch (Exception ignored){}
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         }
 
         public void onDownloadServiceEnd() {}

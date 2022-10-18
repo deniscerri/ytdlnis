@@ -360,7 +360,7 @@ public class DownloaderService extends Service {
             }
             request.addOption("-f", formatArgument);
             String format = video.getVideoFormat();
-            if (format == null) format = sharedPreferences.getString("audio_format", "");
+            if (format == null) format = sharedPreferences.getString("video_format", "");
             request.addOption("--merge-output-format", format);
 
             if(!format.equals("webm")){
