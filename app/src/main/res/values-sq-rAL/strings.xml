@@ -129,4 +129,5 @@
     <string name="delete_selected">Fshi të zgjedhurat</string>
     <string name="you_are_going_to_delete_multiple_items">Je duke fshirë disa elementë</string>
     <string name="delete_files_too">Fshi skedarët nga sistemi</string>
+    <string name="finished_loading">U ngarkuan të gjitha!</string>
 </resources>

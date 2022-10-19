@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
@@ -28,6 +29,12 @@ import com.deniscerri.ytdlnis.service.IDownloaderService;
 import com.deniscerri.ytdlnis.util.NotificationUtil;
 import com.deniscerri.ytdlnis.util.UpdateUtil;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -150,14 +157,32 @@ public class MainActivity extends AppCompatActivity{
 
     public void handleIntents(Intent intent){
         String action = intent.getAction();
-        if(Intent.ACTION_SEND.equals(action)){
+        String type = intent.getType();
+        if(Intent.ACTION_SEND.equals(action) && type != null){
             Log.e(TAG, action);
 
             homeFragment = new HomeFragment();
             downloadsFragment = new DownloadsFragment();
             moreFragment = new MoreFragment();
-
-            homeFragment.handleIntent(intent);
+            if (type.equalsIgnoreCase("application/txt")){
+                try{
+                    Uri uri = intent.getParcelableExtra(Intent.EXTRA_STREAM);
+                    InputStream is = getContentResolver().openInputStream(uri);
+                    StringBuilder textBuilder = new StringBuilder();
+                    Reader reader = new BufferedReader(new InputStreamReader
+                            (is, Charset.forName(StandardCharsets.UTF_8.name())));
+                    int c = 0;
+                    while ((c = reader.read()) != -1) {
+                        textBuilder.append((char) c);
+                    }
+                    String[] lines = textBuilder.toString().split("\n");
+                    homeFragment.handleFileIntent(lines);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }else{
+                homeFragment.handleIntent(intent);
+            }
             initFragments();
         }
     }

@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.media.MediaScannerConnection;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -20,15 +19,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.Toast;
+
 import androidx.appcompat.widget.SearchView;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import com.deniscerri.ytdlnis.MainActivity;
@@ -48,18 +45,8 @@ import com.google.android.material.chip.Chip;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
-import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
-import java.io.File;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -69,6 +56,7 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
     private View fragmentView;
     private LinearProgressIndicator progressBar;
     private String inputQuery;
+    private String[] inputQueries;
     private RecyclerView recyclerView;
     private HomeRecyclerViewAdapter homeRecyclerViewAdapter;
     private ShimmerFrameLayout shimmerCards;
@@ -238,13 +226,6 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
 
         initMenu();
 
-        if (inputQuery != null) {
-            parseQuery();
-            inputQuery = null;
-        } else {
-            initCards();
-        }
-
         homeFabs = fragmentView.findViewById(R.id.home_fabs);
         downloadFabs = homeFabs.findViewById(R.id.download_selected_coordinator);
         downloadAllFab = homeFabs.findViewById(R.id.download_all_coordinator);
@@ -261,6 +242,22 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
         ExtendedFloatingActionButton download_all_fab = downloadAllFab.findViewById(R.id.download_all_fab);
         download_all_fab.setTag("downloadAll");
         download_all_fab.setOnClickListener(this);
+
+        if (inputQueries != null) {
+            dbManager = new DBManager(context);
+            dbManager.clearResults();
+            dbManager.close();
+            for (int i = 0; i < inputQueries.length; i++){
+                inputQuery = inputQueries[i];
+                activity.runOnUiThread(() -> parseQuery(true));
+            }
+            if (inputQueries.length > 1){
+                Toast.makeText(context, getString(R.string.finished_loading), Toast.LENGTH_SHORT).show();
+            }
+            inputQueries = null;
+        } else {
+            initCards();
+        }
 
         return fragmentView;
     }
@@ -361,7 +358,7 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
                 downloadFabs.setVisibility(View.GONE);
                 selectedObjects = new ArrayList<>();
                 inputQuery = query.trim();
-                parseQuery();
+                parseQuery(true);
                 return true;
             }
 
@@ -400,7 +397,11 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
 
 
     public void handleIntent(Intent intent) {
-        inputQuery = intent.getStringExtra(Intent.EXTRA_TEXT);
+        inputQueries = new String[]{intent.getStringExtra(Intent.EXTRA_TEXT)};
+    }
+
+    public void handleFileIntent(String[] lines) {
+        inputQueries = lines;
     }
 
     public void scrollToTop() {
@@ -408,7 +409,7 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
         new Handler(Looper.getMainLooper()).post(() -> ((AppBarLayout) topAppBar.getParent()).setExpanded(true, true));
     }
 
-    private void parseQuery() {
+    private void parseQuery(boolean resetResults) {
         shimmerCards.startShimmer();
         shimmerCards.setVisibility(View.VISIBLE);
         homeRecyclerViewAdapter.clear();
@@ -444,11 +445,12 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
                         @Override
                         public void run() {
                             try {
-                                resultObjects = infoUtil.search(query);
+                                if (resetResults) resultObjects.clear();
+                                resultObjects.addAll(infoUtil.search(query));
                             } catch (Exception e) {
                                 Log.e(TAG, e.toString());
                             }
-                            dbManager.clearResults();
+                            if (resetResults) dbManager.clearResults();
                             dbManager.addToResults(resultObjects);
                             dbManager.close();
                             new Handler(Looper.getMainLooper()).post(() -> {
@@ -484,13 +486,13 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
                         @Override
                         public void run() {
                             try {
-                                resultObjects.clear();
+                                if (resetResults) resultObjects.clear();
                                 resultObjects.add(infoUtil.getVideo(query));
                             } catch (Exception e) {
                                 Log.e(TAG, e.toString());
                             }
 
-                            dbManager.clearResults();
+                            if (resetResults) dbManager.clearResults();
                             dbManager.addToResults(resultObjects);
                             dbManager.close();
                             new Handler(Looper.getMainLooper()).post(() -> {
@@ -516,10 +518,12 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
                         public void run() {
                             try {
                                 String nextPageToken = "";
-                                dbManager.clearResults();
+                                if (resetResults) dbManager.clearResults();
                                 dbManager.close();
-                                resultObjects.clear();
-                                homeRecyclerViewAdapter.setVideoList(new ArrayList<>(), true);
+                                if (resetResults){
+                                    resultObjects.clear();
+                                    homeRecyclerViewAdapter.setVideoList(new ArrayList<>(), true);
+                                }
                                 do {
                                     InfoUtil.PlaylistTuple tmp = infoUtil.getPlaylist(query, nextPageToken);
                                     ArrayList<Video> tmp_vids = tmp.getVideos();
@@ -561,11 +565,11 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
                         @Override
                         public void run() {
                             try {
-                                resultObjects.clear();
+                                if (resetResults) resultObjects.clear();
                                 ArrayList<Video> video = infoUtil.getFromYTDL(query);
                                 if (video != null) {
                                     resultObjects.addAll(video);
-                                    dbManager.clearResults();
+                                    if (resetResults) dbManager.clearResults();
                                     dbManager.addToResults(resultObjects);
                                     dbManager.close();
                                 }
