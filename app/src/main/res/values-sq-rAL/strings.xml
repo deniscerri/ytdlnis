@@ -123,4 +123,10 @@
     <string name="add_chapter">Vendos Kapituj</string>
     <string name="show_download_card">Shfaq kartën e shkarkimit</string>
     <string name="download_card_summary">Konfiguro videon përpara se sa ta shkarkosh</string>
+    <string name="mutliple_titles">Disa Tituj</string>
+    <string name="mutliple_authors">Disa Autorë</string>
+    <string name="Open_File">Hap Skedarin</string>
+    <string name="delete_selected">Fshi të zgjedhurat</string>
+    <string name="you_are_going_to_delete_multiple_items">Je duke fshirë disa elementë</string>
+    <string name="delete_files_too">Fshi skedarët nga sistemi</string>
 </resources>

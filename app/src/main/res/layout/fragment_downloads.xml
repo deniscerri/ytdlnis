@@ -100,36 +100,18 @@
         </HorizontalScrollView>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:layout_width="match_parent"
             android:id="@+id/recycler_view_downloads"
-            android:orientation="vertical"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/chips_recycler_horizontalscrollview"
-            android:scrollbars="vertical"
-            android:nestedScrollingEnabled="false"
-            android:clipToPadding="false"
-            android:paddingBottom="150dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            >
-
-        </androidx.recyclerview.widget.RecyclerView>
-
-        <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
-            android:id="@+id/recycler_view_progress_downloads"
-            android:orientation="vertical"
             android:layout_height="wrap_content"
             android:layout_below="@+id/chips_recycler_horizontalscrollview"
-            android:scrollbars="vertical"
-            android:nestedScrollingEnabled="false"
             android:clipToPadding="false"
+            android:nestedScrollingEnabled="false"
+            android:orientation="vertical"
             android:paddingBottom="150dp"
-            android:visibility="gone"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            >
+            android:scrollbars="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
 
         </androidx.recyclerview.widget.RecyclerView>
-
 
         <com.facebook.shimmer.ShimmerFrameLayout
             android:layout_width="match_parent"
@@ -175,6 +157,24 @@
         </com.facebook.shimmer.ShimmerFrameLayout>
 
     </RelativeLayout>
+
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/delete_selected_coordinator"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/delete_selected_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:visibility="gone"
+            android:layout_gravity="bottom|end"
+            android:text="@string/delete_selected"
+            app:icon="@drawable/ic_delete_all"/>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 
     <include layout="@layout/downloads_no_results"

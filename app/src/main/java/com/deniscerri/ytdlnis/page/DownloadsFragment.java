@@ -9,6 +9,7 @@ import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
 import androidx.appcompat.widget.SearchView;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import android.os.Handler;
@@ -39,6 +40,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
 import java.io.File;
 import java.text.DateFormat;
@@ -51,7 +53,7 @@ import java.util.Locale;
 /**
  * A fragment representing a list of Items.
  */
-public class DownloadsFragment extends Fragment implements DownloadsRecyclerViewAdapter.OnItemClickListener, View.OnClickListener{
+public class DownloadsFragment extends Fragment implements DownloadsRecyclerViewAdapter.OnItemClickListener, View.OnClickListener, View.OnLongClickListener{
     private boolean downloading = false;
     private View fragmentView;
     private DBManager dbManager;
@@ -71,7 +73,9 @@ public class DownloadsFragment extends Fragment implements DownloadsRecyclerView
     private LinearLayout selectionChips;
     private ChipGroup websiteGroup;
     private ArrayList<Video> downloadsObjects;
+    public ArrayList<Video> selectedObjects;
     private LinearProgressIndicator progressBar;
+    private ExtendedFloatingActionButton deleteFab;
     private String format = "";
     private String website = "";
     private String sort = "DESC";
@@ -252,8 +256,14 @@ public class DownloadsFragment extends Fragment implements DownloadsRecyclerView
         no_results = fragmentView.findViewById(R.id.downloads_no_results);
         selectionChips = fragmentView.findViewById(R.id.downloads_selection_chips);
         websiteGroup = fragmentView.findViewById(R.id.website_chip_group);
+        deleteFab = fragmentView.findViewById(R.id.delete_selected_fab);
+
+        deleteFab.setTag("deleteSelected");
+        deleteFab.setOnClickListener(this);
+
         uiHandler = new Handler(Looper.getMainLooper());
         downloadsObjects = new ArrayList<>();
+        selectedObjects = new ArrayList<>();
         downloading = mainActivity.isDownloadServiceRunning();
 
         recyclerView = fragmentView.findViewById(R.id.recycler_view_downloads);
@@ -557,15 +567,65 @@ public class DownloadsFragment extends Fragment implements DownloadsRecyclerView
         if(id == R.id.bottomsheet_remove_button){
             removedownloadsItem((Integer) v.getTag());
         }else if(id == R.id.bottom_sheet_link){
-            copyLinkToClipBoard((Integer) v.getTag());
-        }else if(id == R.id.bottomsheet_open_link_button){
             openLinkIntent((Integer) v.getTag());
+        }else if(id == R.id.bottomsheet_open_file_button){
+            openFileIntent((Integer) v.getTag());
+        }else if (id == R.id.delete_selected_fab){
+            removeSelectedItems();
         }
+    }
+
+    @Override
+    public boolean onLongClick(View v) {
+        int id = v.getId();
+        if(id == R.id.bottom_sheet_link){
+            copyLinkToClipBoard((Integer) v.getTag());
+            return true;
+        }
+        return false;
+    }
+
+    private void removeSelectedItems(){
+        if(bottomSheet != null) bottomSheet.hide();
+        final boolean[] delete_file = {false};
+        dbManager = new DBManager(context);
+
+        MaterialAlertDialogBuilder delete_dialog = new MaterialAlertDialogBuilder(fragmentContext);
+        delete_dialog.setTitle(getString(R.string.you_are_going_to_delete_multiple_items));
+        delete_dialog.setMultiChoiceItems(new String[]{getString(R.string.delete_files_too)}, new boolean[]{false}, (dialogInterface, i, b) -> delete_file[0] = b);
+        delete_dialog.setNegativeButton(getString(R.string.cancel), (dialogInterface, i) -> {
+            dialogInterface.cancel();
+        });
+        delete_dialog.setPositiveButton(getString(R.string.ok), (dialogInterface, i) -> {
+            for (int j = 0; j < selectedObjects.size(); j++){
+                Video v = selectedObjects.get(j);
+                int position = downloadsObjects.indexOf(v);
+                downloadsObjects.remove(v);
+                downloadsRecyclerViewAdapter.notifyItemRemoved(position);
+                downloadsRecyclerViewAdapter.setVideoList(downloadsObjects);
+                dbManager.clearHistoryItem(v, delete_file[0]);
+            }
+            updateWebsiteChips();
+            dbManager.close();
+            selectedObjects = new ArrayList<>();
+            downloadsRecyclerViewAdapter.clearCheckedVideos();
+            deleteFab.setVisibility(View.GONE);
+
+            if(downloadsObjects.size() == 0){
+                uiHandler.post(() -> {
+                    no_results.setVisibility(View.VISIBLE);
+                    selectionChips.setVisibility(View.GONE);
+                    websiteGroup.removeAllViews();
+                });
+            }
+        });
+        delete_dialog.show();
     }
 
     private void removedownloadsItem(int position){
         if(bottomSheet != null) bottomSheet.hide();
         final boolean[] delete_file = {false};
+        dbManager = new DBManager(context);
 
         Video v = downloadsObjects.get(position);
         MaterialAlertDialogBuilder delete_dialog = new MaterialAlertDialogBuilder(fragmentContext);
@@ -578,9 +638,9 @@ public class DownloadsFragment extends Fragment implements DownloadsRecyclerView
             downloadsObjects.remove(position);
             downloadsRecyclerViewAdapter.notifyItemRemoved(position);
             downloadsRecyclerViewAdapter.setVideoList(downloadsObjects);
-            downloadsRecyclerViewAdapter.setWebsiteList();
             updateWebsiteChips();
             dbManager.clearHistoryItem(v, delete_file[0]);
+            dbManager.close();
 
             if(downloadsObjects.size() == 0){
                 uiHandler.post(() -> {
@@ -610,8 +670,22 @@ public class DownloadsFragment extends Fragment implements DownloadsRecyclerView
         startActivity(i);
     }
 
+    private void openFileIntent(int position){
+        String downloadPath =downloadsObjects.get(position).getDownloadPath();
+        File file = new File(downloadPath);
+
+        Uri uri = FileProvider.getUriForFile(fragmentContext, fragmentContext.getPackageName() + ".fileprovider", file);
+        String mime = mainActivity.getContentResolver().getType(uri);
+
+        Intent i = new Intent(Intent.ACTION_VIEW);
+        i.setDataAndType(uri, mime);
+        i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        if(bottomSheet != null) bottomSheet.hide();
+        startActivity(i);
+    }
+
     @Override
-    public void onCardClick(int position) {
+    public void onCardClick(int position, boolean isFilePresent) {
         bottomSheet = new BottomSheetDialog(fragmentContext);
         bottomSheet.requestWindowFeature(Window.FEATURE_NO_TITLE);
         bottomSheet.setContentView(R.layout.downloads_bottom_sheet);
@@ -628,17 +702,30 @@ public class DownloadsFragment extends Fragment implements DownloadsRecyclerView
         link.setText(url);
         link.setTag(position);
         link.setOnClickListener(this);
+        link.setOnLongClickListener(this);
 
         Button remove = bottomSheet.findViewById(R.id.bottomsheet_remove_button);
         remove.setTag(position);
         remove.setOnClickListener(this);
 
-        Button openLink = bottomSheet.findViewById(R.id.bottomsheet_open_link_button);
-        openLink.setTag(position);
-        openLink.setOnClickListener(this);
+        Button openFile = bottomSheet.findViewById(R.id.bottomsheet_open_file_button);
+        openFile.setTag(position);
+        openFile.setOnClickListener(this);
+        if (!isFilePresent) openFile.setVisibility(View.GONE);
 
         bottomSheet.show();
         bottomSheet.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT);
+    }
+
+    @Override
+    public void onCardSelect(int position, boolean add) {
+        Video video = downloadsObjects.get(position);
+        if (add) selectedObjects.add(video); else selectedObjects.remove(video);
+        if(selectedObjects.size() > 1){
+            deleteFab.setVisibility(View.VISIBLE);
+        } else {
+            deleteFab.setVisibility(View.GONE);
+        }
     }
 
     @Override

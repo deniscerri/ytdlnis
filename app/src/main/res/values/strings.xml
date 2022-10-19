@@ -130,4 +130,8 @@
     <string name="download_card_summary">Configure the item before downloading it</string>
     <string name="mutliple_titles">Multiple Titles</string>
     <string name="mutliple_authors">Multiple Authors</string>
+    <string name="Open_File">Open File</string>
+    <string name="delete_selected">Delete Selected</string>
+    <string name="you_are_going_to_delete_multiple_items">You are going to delete multiple items</string>
+    <string name="delete_files_too">Delete the files from the system</string>
 </resources>

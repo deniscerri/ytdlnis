@@ -14,7 +14,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         xmlns:app="http://schemas.android.com/apk/res-auto">
-        <androidx.cardview.widget.CardView
+
+        <com.google.android.material.card.MaterialCardView
             android:id="@+id/downloads_card_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -22,6 +23,8 @@
             app:cardElevation="10dp"
             app:cardMaxElevation="12dp"
             app:cardBackgroundColor="@color/black"
+            android:checkable="true"
+            app:strokeWidth="0dp"
             app:cardPreventCornerOverlap="true"
             android:layout_margin="10dp">
 
@@ -111,10 +114,9 @@
                     android:layout_marginStart="10dp"
                     />
 
-
             </LinearLayout>
 
-        </androidx.cardview.widget.CardView>
+        </com.google.android.material.card.MaterialCardView>
     </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -50,8 +50,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:gravity="right"
-            android:layout_margin="20dp"
+            android:gravity="end"
+            android:layout_margin="10dp"
             android:orientation="horizontal">
 
             <Button
@@ -59,18 +59,18 @@
                 android:id="@+id/bottomsheet_remove_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
+                android:layout_marginEnd="10dp"
                 app:icon="@drawable/ic_baseline_delete_outline_24"
                 android:text="@string/Remove" />
 
             <Button
-                style="@style/Widget.Material3.Button.TonalButton.Icon"
-                android:id="@+id/bottomsheet_open_link_button"
+                style="@style/Widget.Material3.Button.ElevatedButton.Icon"
+                android:id="@+id/bottomsheet_open_file_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/Open_Link"
-                app:icon="@drawable/ic_baseline_open_in_new_24"
-                android:autoLink="all"/>
+                android:text="@string/Open_File"
+                app:icon="@drawable/ic_baseline_file_open_24"
+                />
 
         </LinearLayout>
 

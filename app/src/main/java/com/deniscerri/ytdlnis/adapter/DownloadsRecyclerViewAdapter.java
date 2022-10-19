@@ -24,6 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.deniscerri.ytdlnis.R;
 import com.deniscerri.ytdlnis.database.Video;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.squareup.picasso.Picasso;
 
@@ -32,6 +33,7 @@ import java.util.ArrayList;
 
 public class DownloadsRecyclerViewAdapter extends RecyclerView.Adapter<DownloadsRecyclerViewAdapter.ViewHolder> {
     private ArrayList<Video> videoList;
+    private ArrayList<Integer> checkedVideos;
     private ArrayList<String> websites;
     private final OnItemClickListener onItemClickListener;
     private Activity activity;
@@ -39,6 +41,7 @@ public class DownloadsRecyclerViewAdapter extends RecyclerView.Adapter<Downloads
     public DownloadsRecyclerViewAdapter(ArrayList<Video> videos, OnItemClickListener onItemClickListener, Activity activity){
         this.videoList = videos;
         this.websites = new ArrayList<>();
+        this.checkedVideos = new ArrayList<>();
         this.onItemClickListener = onItemClickListener;
         this.activity = activity;
     }
@@ -49,7 +52,7 @@ public class DownloadsRecyclerViewAdapter extends RecyclerView.Adapter<Downloads
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private CardView cardView;
+        private MaterialCardView cardView;
 
         public ViewHolder(@NonNull View itemView, OnItemClickListener onItemClickListener) {
             super(itemView);
@@ -69,7 +72,7 @@ public class DownloadsRecyclerViewAdapter extends RecyclerView.Adapter<Downloads
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Video video = videoList.get(position);
-        CardView card = holder.cardView;
+        MaterialCardView card = holder.cardView;
         // THUMBNAIL ----------------------------------
         ImageView thumbnail = card.findViewById(R.id.downloads_image_view);
         String imageURL= video.getThumb();
@@ -106,6 +109,8 @@ public class DownloadsRecyclerViewAdapter extends RecyclerView.Adapter<Downloads
         LinearProgressIndicator progressBar = card.findViewById(R.id.download_progress);
         progressBar.setTag(video.getURL()+video.getDownloadedType()+"##progress");
 
+        boolean filePresent = true;
+
         if (video.isQueuedDownload()){
             progressBar.setVisibility(View.VISIBLE);
             btn.setOnClickListener(view -> onItemClickListener.onButtonClick(position));
@@ -117,7 +122,6 @@ public class DownloadsRecyclerViewAdapter extends RecyclerView.Adapter<Downloads
             //IS IN THE FILE SYSTEM?
             String path = video.getDownloadPath();
             File file = new File(path);
-            boolean filePresent = true;
             if(!file.exists() && !path.isEmpty()){
                 filePresent = false;
                 thumbnail.setColorFilter(new ColorMatrixColorFilter(new ColorMatrix(){{setSaturation(0f);}}));
@@ -138,7 +142,38 @@ public class DownloadsRecyclerViewAdapter extends RecyclerView.Adapter<Downloads
 
         }
 
-        card.setOnClickListener(view -> onItemClickListener.onCardClick(position));
+        if(checkedVideos.contains(position)){
+            card.setChecked(true);
+            card.setStrokeWidth(5);
+        }else{
+            card.setChecked(false);
+            card.setStrokeWidth(0);
+        }
+
+        boolean finalFilePresent = filePresent;
+        card.setOnLongClickListener(view -> {
+            checkCard(card, position);
+            return true;
+        });
+        card.setOnClickListener(view -> {
+            if(checkedVideos.size() > 0){
+                checkCard(card, position);
+            }else{
+                onItemClickListener.onCardClick(position, finalFilePresent);
+            }
+        });
+    }
+
+    private void checkCard(MaterialCardView card, int position){
+        if(card.isChecked()){
+            card.setStrokeWidth(0);
+            checkedVideos.remove(Integer.valueOf(position));
+        }else{
+            card.setStrokeWidth(5);
+            checkedVideos.add(position);
+        }
+        card.setChecked(!card.isChecked());
+        onItemClickListener.onCardSelect(position, card.isChecked());
     }
 
     @Override
@@ -147,7 +182,8 @@ public class DownloadsRecyclerViewAdapter extends RecyclerView.Adapter<Downloads
     }
 
     public interface OnItemClickListener {
-        void onCardClick(int position);
+        void onCardClick(int position, boolean isPresent);
+        void onCardSelect(int position, boolean isChecked);
         void onButtonClick(int position);
     }
 
@@ -173,6 +209,15 @@ public class DownloadsRecyclerViewAdapter extends RecyclerView.Adapter<Downloads
         videoList.clear();
         websites.clear();
         notifyItemRangeRemoved(0, size);
+    }
+
+    public void clearCheckedVideos(){
+        int size = checkedVideos.size();
+        for (int i = 0; i < size; i++){
+            int position = checkedVideos.get(i);
+            notifyItemChanged(position);
+        }
+        checkedVideos.clear();
     }
 
 }
