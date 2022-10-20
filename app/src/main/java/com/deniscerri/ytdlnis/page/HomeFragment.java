@@ -47,6 +47,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.android.material.textfield.TextInputLayout;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -56,7 +57,8 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
     private View fragmentView;
     private LinearProgressIndicator progressBar;
     private String inputQuery;
-    private String[] inputQueries;
+    private LinkedList<String> inputQueries;
+    private int inputQueriesLength = 0;
     private RecyclerView recyclerView;
     private HomeRecyclerViewAdapter homeRecyclerViewAdapter;
     private ShimmerFrameLayout shimmerCards;
@@ -247,14 +249,30 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
             dbManager = new DBManager(context);
             dbManager.clearResults();
             dbManager.close();
-            for (int i = 0; i < inputQueries.length; i++){
-                inputQuery = inputQueries[i];
-                activity.runOnUiThread(() -> parseQuery(true));
-            }
-            if (inputQueries.length > 1){
-                Toast.makeText(context, getString(R.string.finished_loading), Toast.LENGTH_SHORT).show();
-            }
-            inputQueries = null;
+            inputQueriesLength = inputQueries.size();
+
+            shimmerCards.startShimmer();
+            shimmerCards.setVisibility(View.VISIBLE);
+            Thread thread = new Thread(() -> {
+                while(!inputQueries.isEmpty()){
+                    inputQuery = inputQueries.pop();
+                    parseQuery(false);
+                }
+
+                try{
+                    new Handler(Looper.getMainLooper()).post(() -> {
+                        // DOWNLOAD ALL BUTTON
+                        if (resultObjects.get(0).getIsPlaylistItem() == 1 || inputQueriesLength > 1) {
+                            downloadAllFab.setVisibility(View.VISIBLE);
+                        }
+                        dbManager = new DBManager(context);
+                        dbManager.clearResults();
+                        for (Video v : resultObjects) v.setIsPlaylistItem(1);
+                        dbManager.addToResults(resultObjects);
+                    });
+                }catch (Exception ignored){}
+            });
+            thread.start();
         } else {
             initCards();
         }
@@ -272,6 +290,7 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
             Thread thread = new Thread(() -> {
                 dbManager = new DBManager(context);
                 resultObjects = dbManager.getResults();
+                Log.e(TAG, resultObjects.toString());
                 String playlistTitle = "";
                 try {
                     playlistTitle = resultObjects.get(0).getPlaylistTitle();
@@ -358,7 +377,19 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
                 downloadFabs.setVisibility(View.GONE);
                 selectedObjects = new ArrayList<>();
                 inputQuery = query.trim();
-                parseQuery(true);
+
+
+                shimmerCards.startShimmer();
+                shimmerCards.setVisibility(View.VISIBLE);
+                homeRecyclerViewAdapter.clear();
+                Thread thread = new Thread(() -> {
+                    parseQuery(true);
+                    // DOWNLOAD ALL BUTTON
+                    if (resultObjects.get(0).getIsPlaylistItem() == 1) {
+                        new Handler(Looper.getMainLooper()).post(() -> downloadAllFab.setVisibility(View.VISIBLE));
+                    }
+                });
+                thread.start();
                 return true;
             }
 
@@ -397,10 +428,11 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
 
 
     public void handleIntent(Intent intent) {
-        inputQueries = new String[]{intent.getStringExtra(Intent.EXTRA_TEXT)};
+        inputQueries = new LinkedList<>();
+        inputQueries.add(intent.getStringExtra(Intent.EXTRA_TEXT));
     }
 
-    public void handleFileIntent(String[] lines) {
+    public void handleFileIntent(LinkedList<String> lines) {
         inputQueries = lines;
     }
 
@@ -410,12 +442,9 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
     }
 
     private void parseQuery(boolean resetResults) {
-        shimmerCards.startShimmer();
-        shimmerCards.setVisibility(View.VISIBLE);
-        homeRecyclerViewAdapter.clear();
-        infoUtil = new InfoUtil(context);
         dbManager = new DBManager(context);
-        scrollToTop();
+        infoUtil = new InfoUtil(context);
+        new Handler(Looper.getMainLooper()).post(this::scrollToTop);
 
         String type = "Search";
         Pattern p = Pattern.compile("^(https?)://(www.)?youtu(.be)?");
@@ -435,32 +464,19 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
         try {
             switch (type) {
                 case "Search": {
-                    Thread thread = new Thread(new Runnable() {
-                        private final String query;
-
-                        {
-                            this.query = inputQuery;
-                        }
-
-                        @Override
-                        public void run() {
-                            try {
-                                if (resetResults) resultObjects.clear();
-                                resultObjects.addAll(infoUtil.search(query));
-                            } catch (Exception e) {
-                                Log.e(TAG, e.toString());
-                            }
-                            if (resetResults) dbManager.clearResults();
-                            dbManager.addToResults(resultObjects);
-                            dbManager.close();
-                            new Handler(Looper.getMainLooper()).post(() -> {
-                                homeRecyclerViewAdapter.setVideoList(resultObjects, true);
-                                shimmerCards.stopShimmer();
-                                shimmerCards.setVisibility(View.GONE);
-                            });
-                        }
+                    try {
+                        if (resetResults) resultObjects.clear();
+                        resultObjects.addAll(infoUtil.search(inputQuery));
+                    } catch (Exception e) {
+                        Log.e(TAG, e.toString());
+                    }
+                    new Handler(Looper.getMainLooper()).post(() -> {
+                        if (resetResults) dbManager.clearResults();
+                        dbManager.addToResults(resultObjects);
+                        homeRecyclerViewAdapter.setVideoList(resultObjects, true);
+                        shimmerCards.stopShimmer();
+                        shimmerCards.setVisibility(View.GONE);
                     });
-                    thread.start();
                     break;
                 }
                 case "Video": {
@@ -476,116 +492,68 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
                         inputQuery = el[0];
                     }
 
-                    Thread thread = new Thread(new Runnable() {
-                        private final String query;
+                    try {
+                        if (resetResults) resultObjects.clear();
+                        resultObjects.add(infoUtil.getVideo(inputQuery));
+                    } catch (Exception e) {
+                        Log.e(TAG, e.toString());
+                    }
 
-                        {
-                            this.query = inputQuery;
-                        }
-
-                        @Override
-                        public void run() {
-                            try {
-                                if (resetResults) resultObjects.clear();
-                                resultObjects.add(infoUtil.getVideo(query));
-                            } catch (Exception e) {
-                                Log.e(TAG, e.toString());
-                            }
-
-                            if (resetResults) dbManager.clearResults();
-                            dbManager.addToResults(resultObjects);
-                            dbManager.close();
-                            new Handler(Looper.getMainLooper()).post(() -> {
-                                homeRecyclerViewAdapter.setVideoList(resultObjects, true);
-                                shimmerCards.stopShimmer();
-                                shimmerCards.setVisibility(View.GONE);
-                            });
-                        }
+                    new Handler(Looper.getMainLooper()).post(() -> {
+                        if (resetResults) dbManager.clearResults();
+                        dbManager.addToResults(resultObjects);
+                        homeRecyclerViewAdapter.setVideoList(resultObjects, true);
+                        shimmerCards.stopShimmer();
+                        shimmerCards.setVisibility(View.GONE);
                     });
-                    thread.start();
                     break;
                 }
                 case "Playlist": {
                     inputQuery = inputQuery.split("list=")[1];
-                    Thread thread = new Thread(new Runnable() {
-                        private final String query;
-
-                        {
-                            this.query = inputQuery;
-                        }
-
-                        @Override
-                        public void run() {
-                            try {
-                                String nextPageToken = "";
-                                if (resetResults) dbManager.clearResults();
-                                dbManager.close();
-                                if (resetResults){
-                                    resultObjects.clear();
-                                    homeRecyclerViewAdapter.setVideoList(new ArrayList<>(), true);
-                                }
-                                do {
-                                    InfoUtil.PlaylistTuple tmp = infoUtil.getPlaylist(query, nextPageToken);
-                                    ArrayList<Video> tmp_vids = tmp.getVideos();
-                                    String tmp_token = tmp.getNextPageToken();
-                                    resultObjects.addAll(tmp_vids);
-                                    new Handler(Looper.getMainLooper()).post(() -> {
-                                        homeRecyclerViewAdapter.setVideoList(tmp_vids, false);
-                                        shimmerCards.stopShimmer();
-                                        shimmerCards.setVisibility(View.GONE);
-                                    });
-                                    dbManager.addToResults(tmp_vids);
-                                    dbManager.close();
-                                    if (tmp_token.isEmpty()) break;
-                                    if (tmp_token.equals(nextPageToken)) break;
-                                    nextPageToken = tmp_token;
-                                }while (true);
-
-                                // DOWNLOAD ALL BUTTON
-                                if (resultObjects.size() > 1) {
-                                    new Handler(Looper.getMainLooper()).post(() -> downloadAllFab.setVisibility(View.VISIBLE));
-                                }
-
-                            } catch (Exception e) {
-                                Log.e(TAG, e.toString());
-                            }
-                        }
-                    });
-                    thread.start();
+                    String nextPageToken = "";
+                    if (resetResults) dbManager.clearResults();
+                    if (resetResults){
+                        resultObjects.clear();
+                        homeRecyclerViewAdapter.setVideoList(new ArrayList<>(), true);
+                    }
+                    do {
+                        InfoUtil.PlaylistTuple tmp = infoUtil.getPlaylist(inputQuery, nextPageToken);
+                        ArrayList<Video> tmp_vids = tmp.getVideos();
+                        String tmp_token = tmp.getNextPageToken();
+                        resultObjects.addAll(tmp_vids);
+                        new Handler(Looper.getMainLooper()).post(() -> {
+                            dbManager.addToResults(tmp_vids);
+                            homeRecyclerViewAdapter.setVideoList(tmp_vids, false);
+                            shimmerCards.stopShimmer();
+                            shimmerCards.setVisibility(View.GONE);
+                        });
+                        if (tmp_token.isEmpty()) break;
+                        if (tmp_token.equals(nextPageToken)) break;
+                        nextPageToken = tmp_token;
+                    }while (true);
                     break;
                 }
                 case "Default" : {
-                    Thread thread = new Thread(new Runnable() {
-                        private final String query;
-
-                        {
-                            this.query = inputQuery;
+                    try {
+                        if (resetResults) resultObjects.clear();
+                        ArrayList<Video> video = infoUtil.getFromYTDL(inputQuery);
+                        if (video != null) {
+                            resultObjects.addAll(video);
+                            new Handler(Looper.getMainLooper()).post(() -> {
+                                if (resetResults) dbManager.clearResults();
+                                dbManager.addToResults(resultObjects);
+                            });
                         }
 
-                        @Override
-                        public void run() {
-                            try {
-                                if (resetResults) resultObjects.clear();
-                                ArrayList<Video> video = infoUtil.getFromYTDL(query);
-                                if (video != null) {
-                                    resultObjects.addAll(video);
-                                    if (resetResults) dbManager.clearResults();
-                                    dbManager.addToResults(resultObjects);
-                                    dbManager.close();
-                                }
+                        new Handler(Looper.getMainLooper()).post(() -> {
+                            homeRecyclerViewAdapter.setVideoList(resultObjects, true);
+                            shimmerCards.stopShimmer();
+                            shimmerCards.setVisibility(View.GONE);
+                        });
 
-                                new Handler(Looper.getMainLooper()).post(() -> {
-                                    homeRecyclerViewAdapter.setVideoList(resultObjects, true);
-                                    shimmerCards.stopShimmer();
-                                    shimmerCards.setVisibility(View.GONE);
-                                });
-
-                            } catch (Exception e) {
-                                Log.e(TAG, e.toString());
-                            }
-                        }
-                    });
-                    thread.start();
+                    } catch (Exception e) {
+                        Log.e(TAG, e.toString());
+                    }
                     break;
                 }
             }
@@ -593,6 +561,7 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
             Log.e(TAG, e.toString());
         }
 
+        dbManager.close();
     }
 
 

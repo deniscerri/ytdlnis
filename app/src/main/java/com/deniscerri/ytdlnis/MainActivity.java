@@ -38,8 +38,11 @@ import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Locale;
 
 
@@ -175,7 +178,8 @@ public class MainActivity extends AppCompatActivity{
                     while ((c = reader.read()) != -1) {
                         textBuilder.append((char) c);
                     }
-                    String[] lines = textBuilder.toString().split("\n");
+                    List<String> l = Arrays.asList(textBuilder.toString().split("\n"));
+                    LinkedList<String> lines = new LinkedList<>(l);
                     homeFragment.handleFileIntent(lines);
                 }catch (Exception e){
                     e.printStackTrace();
