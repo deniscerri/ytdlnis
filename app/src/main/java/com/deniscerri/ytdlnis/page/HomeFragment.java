@@ -438,7 +438,7 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
 
     public void scrollToTop() {
         recyclerView.scrollToPosition(0);
-        new Handler(Looper.getMainLooper()).post(() -> ((AppBarLayout) topAppBar.getParent()).setExpanded(true, true));
+        ((AppBarLayout) topAppBar.getParent()).setExpanded(true, true);
     }
 
     private void parseQuery(boolean resetResults) {
@@ -523,7 +523,7 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
                         resultObjects.addAll(tmp_vids);
                         new Handler(Looper.getMainLooper()).post(() -> {
                             dbManager.addToResults(tmp_vids);
-                            homeRecyclerViewAdapter.setVideoList(tmp_vids, false);
+                            homeRecyclerViewAdapter.setVideoList(resultObjects, true);
                             shimmerCards.stopShimmer();
                             shimmerCards.setVisibility(View.GONE);
                         });
@@ -855,6 +855,8 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
             return;
         }
         bottomSheet.cancel();
+        start--;
+        end--;
         if (start <= 1) start = 0;
 
         SharedPreferences sharedPreferences = context.getSharedPreferences("root_preferences", Activity.MODE_PRIVATE);
@@ -882,8 +884,9 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
 
                 TextInputLayout audioFormat = downloadTypeBottomSheet.findViewById(R.id.audio_format);
                 int finalStart = start;
+                int finalEnd = end;
                 ((AutoCompleteTextView)audioFormat.getEditText()).setOnItemClickListener((adapterView, view, index, l) -> {
-                    for (int i = finalStart; i < end; i++){
+                    for (int i = finalStart; i <= finalEnd; i++){
                         Video vid = findVideo(resultObjects.get(i).getURL());
                         vid.setAudioFormat(audioFormats[index]);
                     }
@@ -904,8 +907,9 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
 
                 TextInputLayout videoFormat = downloadTypeBottomSheet.findViewById(R.id.video_format);
                 int finalStart1 = start;
+                int finalEnd1 = end;
                 ((AutoCompleteTextView)videoFormat.getEditText()).setOnItemClickListener((adapterView, view, index, l) -> {
-                    for (int i = finalStart1; i < end; i++){
+                    for (int i = finalStart1; i <= finalEnd1; i++){
                         Video vid = findVideo(resultObjects.get(i).getURL());
                         vid.setVideoFormat(videoFormats[index]);
                     }
@@ -915,7 +919,7 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
 
                 TextInputLayout videoQuality = downloadTypeBottomSheet.findViewById(R.id.video_quality);
                 ((AutoCompleteTextView)videoQuality.getEditText()).setOnItemClickListener((adapterView, view, index, l) -> {
-                    for (int i = finalStart1; i < end; i++){
+                    for (int i = finalStart1; i <= finalEnd1; i++){
                         Video vid = findVideo(resultObjects.get(i).getURL());
                         vid.setVideoQuality(videoQualities[index]);
                     }
@@ -964,8 +968,9 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
 
             Button download = downloadTypeBottomSheet.findViewById(R.id.bottomsheet_download_button);
             int finalStart2 = start;
+            int finalEnd2 = end;
             download.setOnClickListener(view -> {
-                for (int i = finalStart2; i < end; i++){
+                for (int i = finalStart2; i <= finalEnd2; i++){
                     Video vid = findVideo(resultObjects.get(i).getURL());
                     vid.setDownloadedType(type);
                     updateDownloadingStatusOnResult(vid, type, true);
@@ -982,7 +987,7 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
             downloadTypeBottomSheet.show();
             downloadTypeBottomSheet.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT);
         }else{
-            for (int i = start; i < end; i++){
+            for (int i = start; i <= end; i++){
                 Video vid = findVideo(resultObjects.get(i).getURL());
                 vid.setDownloadedType(type);
                 updateDownloadingStatusOnResult(vid, type, true);

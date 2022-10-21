@@ -680,7 +680,6 @@ public class DownloadsFragment extends Fragment implements DownloadsRecyclerView
         Intent i = new Intent(Intent.ACTION_VIEW);
         i.setDataAndType(uri, mime);
         i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        if(bottomSheet != null) bottomSheet.hide();
         startActivity(i);
     }
 
