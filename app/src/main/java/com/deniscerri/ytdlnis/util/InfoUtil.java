@@ -291,13 +291,30 @@ public class InfoUtil {
 
             for (String result : results) {
                 JSONObject jsonObject = new JSONObject(result);
-                if (jsonObject.getString("title").equals("[Private video]")) continue;
+
+                String title = "";
+                if (jsonObject.has("title")){
+                    if (jsonObject.getString("title").equals("[Private video]")) continue;
+                    title = jsonObject.getString("title");
+                }else{
+                    title = jsonObject.getString("webpage_url_basename");
+                }
+
+                String author = "";
+                if (jsonObject.has("uploader")){
+                    author = jsonObject.getString("uploader");
+                }
+
+                String duration = "";
+                if (jsonObject.has("duration")){
+                    duration = formatIntegerDuration(jsonObject.getInt("duration"));
+                }
 
                 String url = jsonObject.getString("webpage_url");
                 String thumb = "";
                 if (jsonObject.has("thumbnail")){
                     thumb = jsonObject.getString("thumbnail");
-                }else {
+                }else if (jsonObject.has("thumbnails")){
                     JSONArray thumbs = jsonObject.getJSONArray("thumbnails");
                     thumb = thumbs.getJSONObject(thumbs.length()-1).getString("url");
                 }
@@ -312,9 +329,9 @@ public class InfoUtil {
                 videos.add(new Video(
                         jsonObject.getString("id"),
                         url,
-                        jsonObject.getString("title"),
-                        jsonObject.getString("uploader"),
-                        formatIntegerDuration(jsonObject.getInt("duration")),
+                        title,
+                        author,
+                        duration,
                         thumb,
                         dbManager.checkDownloaded(url, "audio"),
                         dbManager.checkDownloaded(url, "video"),

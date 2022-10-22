@@ -262,7 +262,7 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
                 try{
                     new Handler(Looper.getMainLooper()).post(() -> {
                         // DOWNLOAD ALL BUTTON
-                        if (resultObjects.get(0).getIsPlaylistItem() == 1 || inputQueriesLength > 1) {
+                        if ((resultObjects.size() > 1 && resultObjects.get(1).getIsPlaylistItem() == 1) || inputQueriesLength > 1) {
                             downloadAllFab.setVisibility(View.VISIBLE);
                         }
                         dbManager = new DBManager(context);
@@ -385,7 +385,7 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
                 Thread thread = new Thread(() -> {
                     parseQuery(true);
                     // DOWNLOAD ALL BUTTON
-                    if (resultObjects.get(0).getIsPlaylistItem() == 1) {
+                    if (resultObjects.size() > 1 && resultObjects.get(1).getIsPlaylistItem() == 1) {
                         new Handler(Looper.getMainLooper()).post(() -> downloadAllFab.setVisibility(View.VISIBLE));
                     }
                 });

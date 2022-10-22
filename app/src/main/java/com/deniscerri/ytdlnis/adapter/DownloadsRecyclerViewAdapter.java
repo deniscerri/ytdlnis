@@ -77,9 +77,15 @@ public class DownloadsRecyclerViewAdapter extends RecyclerView.Adapter<Downloads
         ImageView thumbnail = card.findViewById(R.id.downloads_image_view);
         String imageURL= video.getThumb();
 
-        Handler uiHandler = new Handler(Looper.getMainLooper());
-        uiHandler.post(() -> Picasso.get().load(imageURL).into(thumbnail));
-        thumbnail.setColorFilter(Color.argb(70, 0, 0, 0));
+        if (!imageURL.isEmpty()){
+            Handler uiHandler = new Handler(Looper.getMainLooper());
+            uiHandler.post(() -> Picasso.get().load(imageURL).into(thumbnail));
+            thumbnail.setColorFilter(Color.argb(70, 0, 0, 0));
+        }else {
+            Handler uiHandler = new Handler(Looper.getMainLooper());
+            uiHandler.post(() -> Picasso.get().load(R.color.black).into(thumbnail));
+            thumbnail.setColorFilter(Color.argb(70, 0, 0, 0));
+        }
 
         // TITLE  ----------------------------------
         TextView videoTitle = card.findViewById(R.id.downloads_title);
@@ -92,7 +98,11 @@ public class DownloadsRecyclerViewAdapter extends RecyclerView.Adapter<Downloads
 
         // Bottom Info ----------------------------------
         TextView bottomInfo = card.findViewById(R.id.downloads_info_bottom);
-        String info = video.getAuthor() + " • " + video.getDuration();
+        String info = video.getAuthor();
+        if (!video.getDuration().isEmpty()){
+            if (!video.getAuthor().isEmpty()) info += " • ";
+            info += video.getDuration();
+        }
         bottomInfo.setText(info);
 
         // TIME DOWNLOADED  ----------------------------------
