@@ -4,16 +4,16 @@
     <string name="remove_all">Remove All</string>
     <string name="remove_results">Clear Results</string>
     <string name="Trending"><b>Trending</b></string>
-    <string name="end_of_results"><b>You reached the end of results</b></string>
+    <string name="end_of_results"><b>No more results</b></string>
     <string name="download_all">Download All</string>
     <string name="settings">Settings</string>
     <string name="home">Home</string>
-    <string name="directories">Directories</string>
-    <string name="music_directory">Music Directory</string>
-    <string name="video_directory">Video Directory</string>
+    <string name="directories">Folders</string>
+    <string name="music_directory">Music Folder</string>
+    <string name="video_directory">Video Folder</string>
     <string name="updating">Updating</string>
     <string name="ytdl_update_hint">Useful if you have problems downloading</string>
-    <string name="update_ytdl">Update YTDL</string>
+    <string name="update_ytdl">Install new version of youtube-dl</string>
     <string name="about">About</string>
     <string name="source_code">Copylefted Libre (GPLv3+) Source Code</string>
     <string name="search_hint">Search from YouTube</string>
@@ -24,7 +24,7 @@
     <string name="download_start">Downloading…</string>
     <string name="download_notification_channel_name">File Downloads</string>
     <string name="download_notification_channel_description">Notification showing the progress of downloading audio and video files</string>
-    <string name="failed_making_directory">Could not creat the new folder.</string>
+    <string name="failed_making_directory">Could not create the new folder.</string>
     <string name="added_to_queue">Enqueued.</string>
     <string name="you_are_in_latest_version">Using the latest version</string>
     <string name="ytld_update_success">New version installed</string>
@@ -51,8 +51,8 @@
     <string name="custom_command">Run Custom Command</string>
     <string name="write_ytdlp_command">Write yt-dlp command</string>
     <string name="run">Run</string>
-    <string name="running_ytdlp_command">Running yt-dlp Custom Command</string>
-    <string name="command_directory">Custom Command Directory</string>
+    <string name="running_ytdlp_command">Running custom yt-dlp command…</string>
+    <string name="command_directory">Folder for Custom Command</string>
     <string name="error_checking_latest_version">Could not check for latest version.</string>
     <string name="couldnt_find_apk">Could not find a suitable APK.</string>
     <string name="downloading_update">Downloading new version…</string>
@@ -111,8 +111,8 @@
     <item type="id" name="cancelDownload" />
     <string name="trendingPlaylist" translatable="false">ytdlnis-TRENDING</string>
     <string name="currently_downloading">Downloading</string>
-    <string name="remove_downloading">Remove Downloading</string>
-    <string name="confirm_delete_downloading_desc">Removing all items with a downloading state and then cancelling the download service!</string>
+    <string name="remove_downloading">Cancel Downloads</string>
+    <string name="confirm_delete_downloading_desc">Remove all items being downloaded and stop the downloading service?</string>
     <string name="error_deleting_file">Could not delete file.</string>
     <string name="incognito_summary">Download without adding to history</string>
     <string name="download_audio">Download Audio</string>
@@ -131,7 +131,7 @@
     <string name="mutliple_authors">Multiple Authors</string>
     <string name="Open_File">Open File</string>
     <string name="delete_selected">Delete Selected</string>
-    <string name="you_are_going_to_delete_multiple_items">You are deleting multiple items</string>
+    <string name="you_are_going_to_delete_multiple_items">Deleting multiple items…</string>
     <string name="delete_file_too">Delete the file from the device</string>
     <string name="delete_files_too">Delete the files from the device</string>
     <string name="finished_loading">Loaded.</string>
