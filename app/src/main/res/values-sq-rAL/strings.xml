@@ -26,7 +26,7 @@
     <string name="download_notification_channel_description">Njoftimi i cili tregon progresin e shkarkimeve te skedarëve audio dhe video</string>
     <string name="failed_making_directory">Dështim në krijimin e Direktorisë së re! :(</string>
     <string name="you_are_in_latest_version">Je ne versionin e fundit</string>
-    <string name="ytld_update_success">Perditesimi u krye me sukses!</string>
+    <string name="ytld_update_success">Perditesimi u krye me sukses</string>
     <string name="ytdl_update_failed">Deshtim ne perditesim</string>
     <string name="added_to_queue">U vendos në rradhë!</string>
     <string name="ytdl_already_updating">Duke u përditësuar. Prisni!</string>
@@ -59,9 +59,9 @@
     <string name="video">Video</string>
     <string name="first">E para</string>
     <string name="last">E fundit</string>
-    <string name="choose_range_desc">Cilëso cilën pjesë të listës do të shkarkosh. Lëre siç është që t\'i shkarkosh të gjitha</string>
-    <string name="last_cant_be_smaller_than_first">Indeksi i fundit nuk mund të jetë më i vogël se indeksi i parë</string>
-    <string name="first_cant_be_larger_than_last">Indeksi i parë nuk mund të jetë më i madh se indeksi i fundit</string>
+    <string name="choose_range_desc">Cilëso cilën pjesë të listës do të shkarkosh. Lëre siç është që t\'i shkarkosh të gjitha!</string>
+    <string name="last_cant_be_smaller_than_first">Indeksi i fundit nuk mund të jetë më i vogël se indeksi i parë!</string>
+    <string name="first_cant_be_larger_than_last">Indeksi i parë nuk mund të jetë më i madh se indeksi i fundit!</string>
     <string name="concurrent_fragments_summary">Numri i fragmenteve të një videoje që duhen shkarkuar në të njëjtën kohë</string>
     <string name="concurrent_fragments">Fragmentet e njëkohëshme</string>
     <string name="downloading">Shkarkimet</string>
