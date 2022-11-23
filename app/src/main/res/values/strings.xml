@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name" translatable="false">YTDLnis</string>
     <string name="search">Search</string>
@@ -15,17 +16,17 @@
     <string name="ytdl_update_hint">Useful if you have problems downloading</string>
     <string name="update_ytdl">Install new version of youtube-dl</string>
     <string name="about">About</string>
-    <string name="source_code">Copylefted Libre (GPLv3+) Source Code</string>
+    <string name="source_code">Source Code</string>
     <string name="search_hint">Search from YouTube</string>
     <string name="download_already_started">Waiting for other download to finish before starting this one…</string>
     <string name="try_again_after_permission">Retry after granting the permission.</string>
-    <string name="download_success">Downloaded.</string>
+    <string name="download_success">Downloaded</string>
     <string name="failed_download">Could not download file.</string>
     <string name="download_start">Downloading…</string>
     <string name="download_notification_channel_name">File Downloads</string>
     <string name="download_notification_channel_description">Notification showing the progress of downloading audio and video files</string>
     <string name="failed_making_directory">Could not create the new folder.</string>
-    <string name="added_to_queue">Enqueued.</string>
+    <string name="added_to_queue">Enqueued</string>
     <string name="you_are_in_latest_version">Using the latest version</string>
     <string name="ytld_update_success">New version installed</string>
     <string name="ytdl_update_failed">Could not install the new version</string>
@@ -83,7 +84,7 @@
     <string name="add_chapters">Chapters in Videos</string>
     <string name="add_chapters_summary">Marks YouTube / SponsorBlock segments as chapters for the video</string>
     <string name="save_thumb">Save Thumbnail</string>
-    <string name="save_thumb_summary">Adds an extra file in the download folder</string>
+    <string name="save_thumb_summary">Save the thumbnail in the download folder</string>
     <string name="audio_format">Audio Format</string>
     <string name="video_format">Video Format</string>
     <string name="audio_quality">Audio Quality</string>
@@ -102,13 +103,13 @@
     <string name="update_app_summary">Announces new versions of the app when it is opened</string>
     <string name="downloads">Downloads</string>
     <string name="filter_history">Filter History</string>
-    <string name="removed_from_queue">Removed from queue.</string>
+    <string name="removed_from_queue">removed from queue.</string>
     <string name="remove_deleted">Remove Deleted</string>
     <string name="remove_duplicates">Remove Duplicates</string>
     <string name="sort_by">Sorting</string>
     <string name="newest_first">Newest</string>
     <string name="oldest_first">Oldest</string>
-    <item type="id" name="cancelDownload" />
+    <item type="id" name="cancelDownload"/>
     <string name="trendingPlaylist" translatable="false">ytdlnis-TRENDING</string>
     <string name="currently_downloading">Downloading</string>
     <string name="remove_downloading">Cancel Downloads</string>
@@ -125,8 +126,8 @@
     <string name="video_quality">Video Quality</string>
     <string name="embed_subtitles">Embed Subtitles</string>
     <string name="add_chapter">Add Chapters</string>
-    <string name="show_download_card">Options for Downloading</string>
-    <string name="download_card_summary">Settings for how to download an items</string>
+    <string name="show_download_card">Show Options for Downloading</string>
+    <string name="download_card_summary">Settings for how to download items</string>
     <string name="mutliple_titles">Multiple Titles</string>
     <string name="mutliple_authors">Multiple Authors</string>
     <string name="Open_File">Open File</string>
