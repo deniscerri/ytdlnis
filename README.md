@@ -58,6 +58,11 @@ Copy the key that appears and paste it in this app's settings.
 
 The App's package name is com.deniscerri.ytdl
 
+## Help Translate on Weblate
+
+<a href="https://hosted.weblate.org/engage/ytdlnis/">
+<img src="https://hosted.weblate.org/widgets/ytdlnis/-/multi-auto.svg" alt="Translation status" />
+
 ## License
 
 [GNU GPL v3.0](https://github.com/deniscerri/ytdlnis/blob/main/LICENSE)
