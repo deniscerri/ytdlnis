@@ -62,6 +62,7 @@ The App's package name is com.deniscerri.ytdl
 
 <a href="https://hosted.weblate.org/engage/ytdlnis/">
 <img src="https://hosted.weblate.org/widgets/ytdlnis/-/multi-auto.svg" alt="Translation status" />
+</a>
 
 ## License
 
