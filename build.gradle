@@ -17,7 +17,7 @@ buildscript {
 
 def versionMajor = 1
 def versionMinor = 4
-def versionPatch = 1
+def versionPatch = 2
 def versionBuild = 0 // bump for dogfood builds, public betas, etc.
 
 ext {
@@ -33,7 +33,7 @@ ext {
     commonsIoVer = '2.5'
     // supports java 1.6
     commonsCompressVer = '1.12'
-    youtubedlAndroidVer = "0.14.0"
+    youtubedlAndroidVer = "master-SNAPSHOT"
 
 }
 

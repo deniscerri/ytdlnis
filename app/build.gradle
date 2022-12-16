@@ -5,6 +5,14 @@ plugins {
 
 
 android {
+    signingConfigs {
+        debug {
+            storeFile file('C:\\Users\\denis\\androidkeystore\\androidstudio.jks')
+            storePassword 'realniggajeffery'
+            keyAlias 'ytdlniskey'
+            keyPassword 'realniggajeffery'
+        }
+    }
     compileSdkVersion 31
     defaultConfig {
         applicationId "com.deniscerri.ytdl"
@@ -23,6 +31,8 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            debuggable true
+            signingConfig signingConfigs.debug
         }
     }
 

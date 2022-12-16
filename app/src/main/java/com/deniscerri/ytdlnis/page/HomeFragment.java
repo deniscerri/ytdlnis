@@ -21,8 +21,6 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.Toast;
-
 import androidx.appcompat.widget.SearchView;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.app.ActivityCompat;
@@ -283,8 +281,6 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
 
     private void initCards() {
         homeRecyclerViewAdapter.clear();
-        shimmerCards.startShimmer();
-        shimmerCards.setVisibility(View.VISIBLE);
         Handler uiHandler = new Handler(Looper.getMainLooper());
         try {
             Thread thread = new Thread(() -> {
@@ -298,6 +294,10 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
                 if (resultObjects.size() == 0 || (playlistTitle.equals(getString(R.string.trendingPlaylist)) && !downloading)) {
                     try {
                         dbManager.clearResults();
+                        uiHandler.post(() -> {
+                            shimmerCards.startShimmer();
+                            shimmerCards.setVisibility(View.VISIBLE);
+                        });
                         infoUtil = new InfoUtil(context);
                         resultObjects = infoUtil.getTrending(context);
                         dbManager.addToResults(resultObjects);
@@ -680,22 +680,14 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
                 Chip embedSubs = bottomSheet.findViewById(R.id.embed_subtitles);
                 embedSubs.setChecked(sharedPreferences.getBoolean("embed_subtitles", false));
                 embedSubs.setOnClickListener(view -> {
-                    if (embedSubs.isChecked()){
-                        editor.putBoolean("embed_subtitles", true);
-                    }else{
-                        editor.putBoolean("embed_subtitles", false);
-                    }
+                    editor.putBoolean("embed_subtitles", embedSubs.isChecked());
                     editor.apply();
                 });
 
                 Chip addChapters = bottomSheet.findViewById(R.id.add_chapters);
                 addChapters.setChecked(sharedPreferences.getBoolean("add_chapters", false));
                 addChapters.setOnClickListener(view -> {
-                    if (addChapters.isChecked()){
-                        editor.putBoolean("add_chapters", true);
-                    }else{
-                        editor.putBoolean("add_chapters", false);
-                    }
+                    editor.putBoolean("add_chapters", addChapters.isChecked());
                     editor.apply();
                 });
 
@@ -930,33 +922,21 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
                 Chip embedSubs = downloadTypeBottomSheet.findViewById(R.id.embed_subtitles);
                 embedSubs.setChecked(sharedPreferences.getBoolean("embed_subtitles", false));
                 embedSubs.setOnClickListener(view -> {
-                    if (embedSubs.isChecked()){
-                        editor.putBoolean("embed_subtitles", true);
-                    }else{
-                        editor.putBoolean("embed_subtitles", false);
-                    }
+                    editor.putBoolean("embed_subtitles", embedSubs.isChecked());
                     editor.apply();
                 });
 
                 Chip addChapters = downloadTypeBottomSheet.findViewById(R.id.add_chapters);
                 addChapters.setChecked(sharedPreferences.getBoolean("add_chapters", false));
                 addChapters.setOnClickListener(view -> {
-                    if (addChapters.isChecked()){
-                        editor.putBoolean("add_chapters", true);
-                    }else{
-                        editor.putBoolean("add_chapters", false);
-                    }
+                    editor.putBoolean("add_chapters", addChapters.isChecked());
                     editor.apply();
                 });
 
                 Chip saveThumbnail = downloadTypeBottomSheet.findViewById(R.id.save_thumbnail);
                 saveThumbnail.setChecked(sharedPreferences.getBoolean("write_thumbnail", false));
                 saveThumbnail.setOnClickListener(view -> {
-                    if (saveThumbnail.isChecked()){
-                        editor.putBoolean("write_thumbnail", true);
-                    }else{
-                        editor.putBoolean("write_thumbnail", false);
-                    }
+                    editor.putBoolean("write_thumbnail", saveThumbnail.isChecked());
                     editor.apply();
                 });
             }
