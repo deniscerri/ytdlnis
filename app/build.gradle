@@ -1,16 +1,23 @@
+import java.util.regex.Pattern
+
 plugins {
     id 'com.android.application'
     id 'com.google.secrets_gradle_plugin' version '0.4'
 }
 
+def properties = new Properties()
+try {
+    def propertiesFile = rootProject.file("local.properties")
+    properties.load(new FileInputStream(propertiesFile))
+}catch(IOException ignored){}
 
 android {
     signingConfigs {
         debug {
-            storeFile file('C:\\Users\\denis\\androidkeystore\\androidstudio.jks')
-            storePassword 'realniggajeffery'
-            keyAlias 'ytdlniskey'
-            keyPassword 'realniggajeffery'
+            storeFile file(properties["signingConfig.storeFile"])
+            storePassword properties["signingConfig.storePassword"]
+            keyAlias properties["signingConfig.keyAlias"]
+            keyPassword properties["signingConfig.keyPassword"]
         }
     }
     compileSdkVersion 31
