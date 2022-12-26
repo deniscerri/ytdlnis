@@ -136,4 +136,7 @@
     <string name="delete_file_too">Delete the file from the device</string>
     <string name="delete_files_too">Delete the files from the device</string>
     <string name="finished_loading">Loaded.</string>
+    <string name="request_permission_desc">This app needs File Permissions to save downloads on the device</string>
+    <string name="exit_app">Exit App</string>
+    <string name="warning">Warning</string>
 </resources>

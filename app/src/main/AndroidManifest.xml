@@ -17,7 +17,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppDefaultTheme" >
-        <activity android:name=".MainActivity" >
+        <activity android:name=".MainActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -35,7 +36,8 @@
         </activity>
         <activity
             android:name=".page.settings.SettingsActivity"
-            android:parentActivityName=".MainActivity" >
+            android:parentActivityName=".MainActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="ytdlnis.settings.SettingsActivity" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -44,7 +46,8 @@
         <activity
             android:name=".page.CustomCommandActivity"
             android:theme="@style/AppDefaultTheme"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName=".MainActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="ytdlnis.page.CustomCommandActivity" />
                 <category android:name="android.intent.category.DEFAULT" />

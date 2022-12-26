@@ -7,10 +7,8 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
 import com.deniscerri.ytdlnis.DownloaderService;
-import com.deniscerri.ytdlnis.MainActivity;
 import com.deniscerri.ytdlnis.service.IDownloaderListener;
 import com.deniscerri.ytdlnis.service.IDownloaderService;
-import com.deniscerri.ytdlnis.util.NotificationUtil;
 
 import java.util.ArrayList;
 

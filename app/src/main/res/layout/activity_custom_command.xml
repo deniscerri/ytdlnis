@@ -35,7 +35,7 @@
             <ScrollView
                 android:id="@+id/custom_command_scrollview"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:clipToPadding="false"
                 android:paddingBottom="150dp"
                 >

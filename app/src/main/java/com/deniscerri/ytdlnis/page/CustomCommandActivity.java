@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -75,8 +76,9 @@ public class CustomCommandActivity extends AppCompatActivity {
         }
 
         public void onDownloadProgress(DownloadInfo info) {
-            output.append("\n" + info.getOutputLine());
-            scrollView.scrollTo(0, scrollView.getMaxScrollAmount());
+            output.append("\n" + info.getOutputLine() + "\n");
+            output.scrollTo(0, output.getHeight());
+            scrollView.fullScroll(View.FOCUS_DOWN);
         }
 
         public void onDownloadError(DownloadInfo info) {

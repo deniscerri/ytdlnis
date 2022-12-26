@@ -3,16 +3,13 @@ package com.deniscerri.ytdlnis;
 import android.app.Application;
 import android.util.Log;
 import android.widget.Toast;
-
 import androidx.preference.PreferenceManager;
-
 import com.deniscerri.ytdlnis.util.NotificationUtil;
 import com.google.android.material.color.DynamicColors;
 import com.yausername.aria2c.Aria2c;
 import com.yausername.ffmpeg.FFmpeg;
 import com.yausername.youtubedl_android.YoutubeDL;
 import com.yausername.youtubedl_android.YoutubeDLException;
-
 import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.exceptions.UndeliverableException;

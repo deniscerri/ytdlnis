@@ -1,5 +1,6 @@
 package com.deniscerri.ytdlnis;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.ComponentName;
@@ -7,13 +8,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.provider.Settings;
 import android.util.Log;
-import android.widget.Toast;
-
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
@@ -26,25 +29,18 @@ import com.deniscerri.ytdlnis.page.MoreFragment;
 import com.deniscerri.ytdlnis.page.settings.SettingsActivity;
 import com.deniscerri.ytdlnis.service.IDownloaderListener;
 import com.deniscerri.ytdlnis.service.IDownloaderService;
-import com.deniscerri.ytdlnis.util.NotificationUtil;
 import com.deniscerri.ytdlnis.util.UpdateUtil;
-
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Locale;
-
 
 public class MainActivity extends AppCompatActivity{
 
@@ -65,7 +61,7 @@ public class MainActivity extends AppCompatActivity{
     private ArrayList<IDownloaderListener> listeners = null;
     private IDownloaderService iDownloaderService;
 
-    private final ServiceConnection serviceConnection = new ServiceConnection() {
+    public final ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName className, IBinder service) {
             downloaderService = ((DownloaderService.LocalBinder) service).getService();
@@ -137,6 +133,9 @@ public class MainActivity extends AppCompatActivity{
             }
             return true;
         });
+
+        askPermissions();
+
         Intent intent = getIntent();
         handleIntents(intent);
     }
@@ -301,6 +300,48 @@ public class MainActivity extends AppCompatActivity{
             UpdateUtil updateUtil = new UpdateUtil(this);
             updateUtil.updateApp();
         }
+    }
+
+
+    private void askPermissions(){
+        if(!checkFilePermission()){
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        Log.e(TAG, String.valueOf(grantResults[0]));
+        for(int i = 0; i < permissions.length; i++){
+            if(grantResults[i] == PackageManager.PERMISSION_DENIED){
+                createPermissionRequestDialog();
+            }
+        }
+    }
+
+    private void exit(){
+        this.finishAffinity();
+        System.exit(0);
+    }
+
+    private boolean checkFilePermission(){
+        return ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                == PackageManager.PERMISSION_GRANTED;
+    }
+
+    private void createPermissionRequestDialog(){
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
+        dialog.setTitle(getString(R.string.warning));
+        dialog.setMessage(getString(R.string.request_permission_desc));
+        dialog.setOnCancelListener(dialogInterface -> exit());
+        dialog.setNegativeButton(getString(R.string.exit_app), (dialogInterface, i) -> exit());
+        dialog.setPositiveButton(getString(R.string.ok), (dialogInterface, i) -> {
+            Intent intent  = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.fromParts("package", getPackageName(), null));
+            startActivity(intent);
+            System.exit(0);
+        });
+        dialog.show();
     }
 
 }
