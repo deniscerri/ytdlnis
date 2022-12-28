@@ -130,4 +130,7 @@
     <string name="you_are_going_to_delete_multiple_items">Fshi disa elementë…</string>
     <string name="delete_files_too">Fshi skedarët nga paisja</string>
     <string name="finished_loading">U ngarkuan të gjitha.</string>
+    <string name="request_permission_desc">Ky aplikacion ka nevojë për lejen e Skedarëve për të ruajtur shkarkimet në paisje</string>
+    <string name="exit_app">Dil</string>
+    <string name="warning">Kujdes</string>
 </resources>
