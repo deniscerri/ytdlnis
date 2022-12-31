@@ -124,7 +124,7 @@
             android:entryValues="@array/video_formats"
             android:icon="@drawable/ic_code"
             app:key="video_format"
-            app:summary="mkv"
+            app:summary="DEFAULT"
             app:title="@string/video_format" />
 
 

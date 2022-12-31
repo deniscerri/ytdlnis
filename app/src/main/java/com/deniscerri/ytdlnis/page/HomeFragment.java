@@ -635,6 +635,10 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
                 String[] audioFormats = context.getResources().getStringArray(R.array.music_formats);
 
                 TextInputLayout audioFormat = bottomSheet.findViewById(R.id.audio_format);
+                AutoCompleteTextView autoCompleteTextView = bottomSheet.findViewById(R.id.audio_format_textview);
+                String preference = sharedPreferences.getString("audio_format", "mp3");
+                autoCompleteTextView.setText(preference, false);
+
                 ((AutoCompleteTextView)audioFormat.getEditText()).setOnItemClickListener((adapterView, view, i, l) -> {
                     vid.setAudioFormat(audioFormats[i]);
                     editor.putString("audio_format", vid.getAudioFormat());
@@ -664,6 +668,10 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
                 String[] videoQualities = context.getResources().getStringArray(R.array.video_quality);
 
                 TextInputLayout videoFormat = bottomSheet.findViewById(R.id.video_format);
+                AutoCompleteTextView autoCompleteTextView = bottomSheet.findViewById(R.id.video_format_textview);
+                String preference = sharedPreferences.getString("video_format", "webm");
+                autoCompleteTextView.setText(preference, false);
+
                 ((AutoCompleteTextView)videoFormat.getEditText()).setOnItemClickListener((adapterView, view, i, l) -> {
                     vid.setVideoFormat(videoFormats[i]);
                     editor.putString("video_format", vid.getVideoFormat());
@@ -671,6 +679,9 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
                 });
 
                 TextInputLayout videoQuality = bottomSheet.findViewById(R.id.video_quality);
+                autoCompleteTextView = bottomSheet.findViewById(R.id.video_quality_textview);
+                preference = sharedPreferences.getString("video_quality", "Best Quality");
+                autoCompleteTextView.setText(preference, false);
                 ((AutoCompleteTextView)videoQuality.getEditText()).setOnItemClickListener((adapterView, view, i, l) -> {
                     vid.setVideoQuality(videoQualities[i]);
                     editor.putString("video_quality", vid.getVideoQuality());

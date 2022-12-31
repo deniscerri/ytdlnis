@@ -11,6 +11,7 @@
     </string-array>
 
     <string-array name="video_formats">
+        <item>DEFAULT</item>
         <item>mp4</item>
         <item>mkv</item>
         <item>webm</item>
@@ -24,6 +25,7 @@
         <item>720p</item>
         <item>480p</item>
         <item>360p</item>
+        <item>Worst Quality</item>
     </string-array>
 
 </resources>

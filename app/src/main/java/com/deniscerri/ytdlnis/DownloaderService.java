@@ -311,6 +311,8 @@ public class DownloaderService extends Service {
         }
 
         request.addOption("--no-mtime");
+        video.setTitle(video.getTitle().replaceAll(":|'|\"|[.]|,", ""));
+        video.setAuthor(video.getAuthor().replaceAll(":|'|\"|[.]|,", ""));
 
         if (type.equals("audio")) {
             request.addOption("-x");
@@ -355,13 +357,16 @@ public class DownloaderService extends Service {
             String videoQuality = video.getVideoQuality();
             if (videoQuality == null) videoQuality = sharedPreferences.getString("video_quality", "");
             String formatArgument = "bestvideo+bestaudio/best";
-            if (!videoQuality.isEmpty() && !videoQuality.equals("Best Quality")) {
+            if(videoQuality.equals("Worst Quality")){
+                formatArgument = "worst";
+            }else if (!videoQuality.isEmpty() && !videoQuality.equals("Best Quality")) {
                 formatArgument = "bestvideo[height<="+videoQuality.substring(0, videoQuality.length()-1)+"]+bestaudio/best";
             }
+
             request.addOption("-f", formatArgument);
             String format = video.getVideoFormat();
             if (format == null) format = sharedPreferences.getString("video_format", "");
-            request.addOption("--merge-output-format", format);
+            if(!format.equals("DEFAULT")) request.addOption("--merge-output-format", format);
 
             if(!format.equals("webm")){
                 boolean embedThumb = sharedPreferences.getBoolean("embed_thumbnail", false);
@@ -369,7 +374,7 @@ public class DownloaderService extends Service {
                     request.addOption("--embed-thumbnail");
                 }
             }
-            request.addOption("-o", youtubeDLDir.getAbsolutePath() + "/"+video.getTitle()+"."+format);
+            request.addOption("-o", youtubeDLDir.getAbsolutePath() + "/"+video.getAuthor() + " - " + video.getTitle()+"."+format);
         }
 
         Disposable disposable = Observable.fromCallable(() -> YoutubeDL.getInstance().execute(request, downloadProcessID, callback))
