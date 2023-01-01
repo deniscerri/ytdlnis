@@ -27,6 +27,21 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
+    <ScrollView
+        android:id="@+id/search_suggestions_scroll_view"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:id="@+id/search_suggestions_linear_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <include layout="@layout/search_suggestion_item" />
+        </LinearLayout>
+    </ScrollView>
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"

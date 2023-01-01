@@ -228,6 +228,7 @@ public class DownloaderService extends Service {
                 });
             }
         }catch (Exception ignored){}
+        onDestroy();
     }
 
     private void onDownloadEnd(){

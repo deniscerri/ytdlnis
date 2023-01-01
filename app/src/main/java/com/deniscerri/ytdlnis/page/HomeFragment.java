@@ -21,7 +21,12 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
+import android.widget.TextView;
+
 import androidx.appcompat.widget.SearchView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
@@ -44,6 +49,9 @@ import com.google.android.material.floatingactionbutton.ExtendedFloatingActionBu
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.android.material.textview.MaterialTextView;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.regex.Matcher;
@@ -59,6 +67,8 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
     private int inputQueriesLength = 0;
     private RecyclerView recyclerView;
     private HomeRecyclerViewAdapter homeRecyclerViewAdapter;
+    private ScrollView searchSuggestions;
+    private LinearLayout searchSuggestionsLinearLayout;
     private ShimmerFrameLayout shimmerCards;
     private CoordinatorLayout downloadFabs;
     private CoordinatorLayout downloadAllFab;
@@ -220,6 +230,8 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
         shimmerCards = fragmentView.findViewById(R.id.shimmer_results_framelayout);
         topAppBar = fragmentView.findViewById(R.id.home_toolbar);
         recyclerView = fragmentView.findViewById(R.id.recycler_view_home);
+        searchSuggestions = fragmentView.findViewById(R.id.search_suggestions_scroll_view);
+        searchSuggestionsLinearLayout = fragmentView.findViewById(R.id.search_suggestions_linear_layout);
 
         homeRecyclerViewAdapter = new HomeRecyclerViewAdapter(resultObjects, this, activity);
         recyclerView.setAdapter(homeRecyclerViewAdapter);
@@ -347,6 +359,7 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
             public boolean onMenuItemActionExpand(MenuItem menuItem) {
                 homeFabs.setVisibility(View.GONE);
                 recyclerView.setVisibility(View.GONE);
+                searchSuggestions.setVisibility(View.VISIBLE);
                 return true;
             }
 
@@ -354,6 +367,7 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
             public boolean onMenuItemActionCollapse(MenuItem menuItem) {
                 homeFabs.setVisibility(View.VISIBLE);
                 recyclerView.setVisibility(View.VISIBLE);
+                searchSuggestions.setVisibility(View.GONE);
                 return true;
             }
         };
@@ -368,6 +382,7 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
         searchView.setQueryHint(getString(R.string.search_hint));
 
         dbManager = new DBManager(context);
+        infoUtil = new InfoUtil(context);
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -394,7 +409,25 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
             }
 
             @Override
-            public boolean onQueryTextChange(String newText) { return false; }
+            public boolean onQueryTextChange(String newText) {
+                searchSuggestionsLinearLayout.removeAllViews();
+                if (newText.isEmpty()) return false;
+                Thread thread = new Thread(() -> {
+                    ArrayList<String> suggestions = infoUtil.getSearchSuggestions(newText);
+                    for (int i = 0; i < suggestions.size();i++){
+                        View v = LayoutInflater.from(fragmentContext).inflate(R.layout.search_suggestion_item, null);
+                        TextView textView = v.findViewById(R.id.suggestion_text);
+                        textView.setText(suggestions.get(i));
+                        new Handler(Looper.getMainLooper()).post(() ->  searchSuggestionsLinearLayout.addView(v));
+                        textView.setOnClickListener(view -> onQueryTextSubmit(textView.getText().toString()));
+
+                        MaterialButton mb = v.findViewById(R.id.set_search_query_button);
+                        mb.setOnClickListener(view -> searchView.setQuery(textView.getText(), false));
+                    }
+                });
+                thread.start();
+                return false;
+            }
         });
 
         topAppBar.setOnClickListener(view -> scrollToTop());

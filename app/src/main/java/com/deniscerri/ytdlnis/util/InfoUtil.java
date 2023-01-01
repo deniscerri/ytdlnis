@@ -28,9 +28,11 @@ import java.util.Locale;
 
 public class InfoUtil {
     private static final String TAG = "API MANAGER";
-    private static String countryCODE = "US";
+    private static final String invidousURL = "https://invidious.baczek.me/api/v1/";
+    private static String countryCODE;
     private ArrayList<Video> videos;
     private String key;
+    private boolean useInvidous;
     private DBManager dbManager;
 
     public InfoUtil(Context context) {
@@ -43,22 +45,33 @@ public class InfoUtil {
                 JSONObject country = genericRequest("https://ipwho.is/");
                 try{
                     countryCODE = country.getString("country_code");
-                }catch(Exception ignored){}
+                }catch(Exception e){
+                    countryCODE = "US";
+                }
+
+                JSONObject res = genericRequest(invidousURL + "stats");
+                if(res.length() == 0) useInvidous = false;
+                else useInvidous = true;
             });
             thread.start();
             thread.join();
-
-        }catch(Exception ignored){
-            Toast.makeText(context, "Couldn't find API Key for the request", Toast.LENGTH_SHORT).show();
+        }catch(Exception e){
+            e.printStackTrace();
         }
 
         videos = new ArrayList<>();
     }
 
     public ArrayList<Video> search(String query) throws JSONException{
-        if (key.isEmpty()) return getFromYTDL(query);
-
         videos = new ArrayList<>();
+        if (key.isEmpty()) {
+             if(useInvidous) return searchFromInvidous(query);
+             else return getFromYTDL(query);
+        }
+        return searchFromKey(query);
+    }
+
+    public ArrayList<Video> searchFromKey(String query) throws JSONException{
         //short data
         JSONObject res = genericRequest("https://youtube.googleapis.com/youtube/v3/search?part=snippet&q="+query+"&maxResults=25&regionCode="+countryCODE+"&key="+key);
         if (!res.has("items")) return getFromYTDL(query);
@@ -91,7 +104,7 @@ public class InfoUtil {
                 }
 
                 snippet.put("duration", duration);
-                snippet = fixThumbnail(snippet);
+                fixThumbnail(snippet);
                 Video v = createVideofromJSON(snippet);
 
                 if(v == null || v.getThumb().isEmpty()){
@@ -99,6 +112,32 @@ public class InfoUtil {
                 }
                 videos.add(createVideofromJSON(snippet));
             }
+        }
+
+
+        return videos;
+    }
+
+    public ArrayList<Video> searchFromInvidous(String query) throws JSONException{
+        JSONObject res = genericRequest(invidousURL + "search?q="+query);
+        if(res.length() == 0) return getFromYTDL(query);
+        JSONArray dataArray = res.getJSONArray("");
+
+        int j = 0;
+        for(int i = 0; i < dataArray.length(); i++){
+            JSONObject element = dataArray.getJSONObject(i);
+            String duration = formatIntegerDuration(element.getInt("lengthSeconds"));
+            if(duration.equals("0:00")){
+                continue;
+            }
+            element.put("duration", duration);
+            element.put("thumb", element.getJSONArray("videoThumbnails").getJSONObject(0).getString("url"));
+            Video v = createVideofromInvidiousJSON(element);
+
+            if(v == null || v.getThumb().isEmpty()){
+                continue;
+            }
+            videos.add(v);
         }
 
 
@@ -136,7 +175,7 @@ public class InfoUtil {
             String duration = extra.getJSONArray("items").getJSONObject(j).getJSONObject("contentDetails").getString("duration");
             duration = formatDuration(duration);
             snippet.put("duration", duration);
-            snippet = fixThumbnail(snippet);
+            fixThumbnail(snippet);
             Video v = createVideofromJSON(snippet);
 
             if(v == null || v.getThumb().isEmpty()){
@@ -152,9 +191,16 @@ public class InfoUtil {
         return new PlaylistTuple(next, videos);
     }
 
-
     public Video getVideo(String id) throws JSONException {
-        if (key.isEmpty()) return getFromYTDL("https://www.youtube.com/watch?v="+id).get(0);
+        if (key.isEmpty()) {
+            if (useInvidous){
+                JSONObject res = genericRequest(invidousURL + "videos/"+id);
+                if (res.length() == 0) return getFromYTDL("https://www.youtube.com/watch?v="+id).get(0);
+                return createVideofromInvidiousJSON(res);
+            }else{
+                return getFromYTDL("https://www.youtube.com/watch?v="+id).get(0);
+            }
+        }
 
         //short data
         JSONObject res = genericRequest("https://youtube.googleapis.com/youtube/v3/videos?part=snippet,contentDetails&id="+id+"&key="+key);
@@ -166,10 +212,9 @@ public class InfoUtil {
 
         res.put("videoID", id);
         res.put("duration", duration);
-        res = fixThumbnail(res);
+        fixThumbnail(res);
 
-        Video v = createVideofromJSON(res);
-        return v;
+        return createVideofromJSON(res);
     }
 
     private Video createVideofromJSON(JSONObject obj){
@@ -185,6 +230,31 @@ public class InfoUtil {
 
             String duration = obj.getString("duration");
             String thumb = obj.getString("thumb");
+
+            String url = "https://www.youtube.com/watch?v=" + id;
+            int downloadedAudio = dbManager.checkDownloaded(url, "audio");
+            int downloadedVideo = dbManager.checkDownloaded(url, "video");
+            int isPlaylist = 0;
+
+            video = new Video(id, url, title, author, duration, thumb, downloadedAudio, downloadedVideo, isPlaylist, "youtube", 0, 0, "");
+        }catch(Exception e){
+            Log.e(TAG, e.toString());
+        }
+        return video;
+    }
+
+    private Video createVideofromInvidiousJSON(JSONObject obj){
+        Video video = null;
+        try{
+            String id = obj.getString("videoId");
+            String title = obj.getString("title");
+            title = Html.fromHtml(title).toString();
+            String author = obj.getString("author");
+            author = Html.fromHtml(author).toString();
+
+            String duration = formatIntegerDuration(obj.getInt("lengthSeconds"));
+            String thumb = "https://i.ytimg.com/vi/"+id+"/hqdefault.jpg";
+
 
             String url = "https://www.youtube.com/watch?v=" + id;
             int downloadedAudio = dbManager.checkDownloaded(url, "audio");
@@ -231,10 +301,39 @@ public class InfoUtil {
         }catch(Exception e){
             Log.e(TAG, e.toString());
         }
+        return json;
+    }
 
+    private JSONArray genericArrayRequest(String url){
+        Log.e(TAG, url);
 
+        BufferedReader reader;
+        String line;
+        StringBuilder responseContent = new StringBuilder();
+        HttpURLConnection conn;
+        JSONArray json = new JSONArray();
 
+        try{
+            URL req = new URL(url);
+            conn = (HttpURLConnection) req.openConnection();
 
+            conn.setRequestMethod("GET");
+            conn.setConnectTimeout(10000);
+            conn.setReadTimeout(5000);
+
+            if(conn.getResponseCode() < 300){
+                reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                while((line = reader.readLine()) != null){
+                    responseContent.append(line);
+                }
+                reader.close();
+
+                json = new JSONArray(responseContent.toString());
+            }
+            conn.disconnect();
+        }catch(Exception e){
+            Log.e(TAG, e.toString());
+        }
         return json;
     }
 
@@ -262,6 +361,66 @@ public class InfoUtil {
 
 
         return o;
+    }
+
+
+    public ArrayList<Video> getTrending(Context context) throws JSONException{
+        videos = new ArrayList<>();
+        if (key.isEmpty()) {
+            if (useInvidous) return getTrendingFromInvidous(context);
+            else return new ArrayList<>();
+        }
+        return getTrendingFromKey(context);
+    }
+
+    public ArrayList<Video> getTrendingFromKey(Context context) throws JSONException{
+        String url = "https://www.googleapis.com/youtube/v3/videos?part=snippet&chart=mostPopular&videoCategoryId=10&regionCode="+countryCODE+"&maxResults=25&key="+key;
+        //short data
+        JSONObject res = genericRequest(url);
+        //extra data from the same videos
+        JSONObject contentDetails = genericRequest("https://www.googleapis.com/youtube/v3/videos?part=contentDetails&chart=mostPopular&videoCategoryId=10&regionCode="+countryCODE+"&maxResults=25&key="+key);
+
+        if(!contentDetails.has("items")) return new ArrayList<>();
+
+        JSONArray dataArray = res.getJSONArray("items");
+        JSONArray extraDataArray = contentDetails.getJSONArray("items");
+        for(int i = 0; i < dataArray.length(); i++){
+            JSONObject element = dataArray.getJSONObject(i);
+            JSONObject snippet = element.getJSONObject("snippet");
+
+            String duration = extraDataArray.getJSONObject(i).getJSONObject("contentDetails").getString("duration");
+            duration = formatDuration(duration);
+
+            snippet.put("videoID", element.getString("id"));
+            snippet.put("duration", duration);
+            fixThumbnail(snippet);
+
+            Video v = createVideofromJSON(snippet);
+            if(v == null || v.getThumb().isEmpty()){
+                continue;
+            }
+            v.setPlaylistTitle(context.getString(R.string.trendingPlaylist));
+            videos.add(v);
+        }
+        return videos;
+    }
+
+    public ArrayList<Video> getTrendingFromInvidous(Context context) {
+        String url = invidousURL + "trending?type=music&region="+countryCODE;
+        JSONArray res = genericArrayRequest(url);
+        try{
+            for(int i = 0; i < res.length(); i++){
+                JSONObject element = res.getJSONObject(i);
+                if(!element.getString("type").equals("video")) continue;
+                Video v = createVideofromInvidiousJSON(element);
+                if(v == null || v.getThumb().isEmpty()) continue;
+                v.setPlaylistTitle(context.getString(R.string.trendingPlaylist));
+                videos.add(v);
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return videos;
     }
 
     public ArrayList<Video> getFromYTDL(String query){
@@ -349,41 +508,25 @@ public class InfoUtil {
         return videos;
     }
 
-    public ArrayList<Video> getTrending(Context context) throws JSONException{
-        if (key.isEmpty()) return new ArrayList<>();
 
-        videos = new ArrayList<>();
 
-        String url = "https://www.googleapis.com/youtube/v3/videos?part=snippet&chart=mostPopular&videoCategoryId=10&regionCode="+countryCODE+"&maxResults=25&key="+key;
-        //short data
+    public ArrayList<String> getSearchSuggestions(String query){
+        if (!useInvidous) return new ArrayList<>();
+        String url = invidousURL + "search/suggestions?q="+query;
         JSONObject res = genericRequest(url);
-        //extra data from the same videos
-        JSONObject contentDetails = genericRequest("https://www.googleapis.com/youtube/v3/videos?part=contentDetails&chart=mostPopular&videoCategoryId=10&regionCode="+countryCODE+"&maxResults=25&key="+key);
+        if(res.length() == 0) return new ArrayList<>();
 
-        if(!contentDetails.has("items")) return new ArrayList<>();
-
-        JSONArray dataArray = res.getJSONArray("items");
-        JSONArray extraDataArray = contentDetails.getJSONArray("items");
-        for(int i = 0; i < dataArray.length(); i++){
-            JSONObject element = dataArray.getJSONObject(i);
-            JSONObject snippet = element.getJSONObject("snippet");
-
-            String duration = extraDataArray.getJSONObject(i).getJSONObject("contentDetails").getString("duration");
-            duration = formatDuration(duration);
-
-            snippet.put("videoID", element.getString("id"));
-            snippet.put("duration", duration);
-            snippet = fixThumbnail(snippet);
-
-            Video v = createVideofromJSON(snippet);
-            if(v == null || v.getThumb().isEmpty()){
-                continue;
+        ArrayList<String> suggestionList = new ArrayList<>();
+        try{
+            JSONArray suggestions = res.getJSONArray("suggestions");
+            for (int i = 0; i < suggestions.length(); i++){
+                suggestionList.add(suggestions.getString(i));
             }
-            v.setPlaylistTitle(context.getString(R.string.trendingPlaylist));
-            videos.add(v);
-        }
-        return videos;
+        }catch(Exception ignored){}
+
+        return suggestionList;
     }
+
 
     public String formatDuration(String dur){
         if(dur.equals("P0D")){
@@ -425,45 +568,6 @@ public class InfoUtil {
 
         return format;
     }
-
-//    public ArrayList<String> getSearchHints(String query){
-//        String url = "https://google.com/complete/search?client=youtube&q="+query;
-//        ArrayList<String> searchHints = new ArrayList<>();
-//
-//        BufferedReader reader;
-//        String line;
-//        StringBuilder responseContent = new StringBuilder();
-//        HttpURLConnection conn;
-//        JSONArray json;
-//
-//        try{
-//            URL req = new URL(url);
-//            conn = (HttpURLConnection) req.openConnection();
-//
-//            conn.setRequestMethod("GET");
-//            conn.setConnectTimeout(10000);
-//            conn.setReadTimeout(5000);
-//
-//            if(conn.getResponseCode() < 300){
-//                reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-//                while((line = reader.readLine()) != null){
-//                    responseContent.append(line);
-//                }
-//                reader.close();
-//                String content  = responseContent.substring(19, responseContent.length()-1);
-//
-//                json = new JSONArray(content);
-//                JSONArray hints = (JSONArray) json.get(1);
-//                for (int i = 0; i < hints.length(); i++){
-//                    searchHints.add(hints.getJSONArray(i).get(0).toString());
-//                }
-//            }
-//            conn.disconnect();
-//        }catch(Exception e){
-//            Log.e(TAG, e.toString());
-//        }
-//        return searchHints;
-//    }
 
     public static class PlaylistTuple {
         String nextPageToken;

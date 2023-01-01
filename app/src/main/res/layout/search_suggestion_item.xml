@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/search_suggestions_constraintLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <RelativeLayout
+        android:id="@+id/downloads_relative_layout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="H,8:1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/downloads_card_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:cardBackgroundColor="@android:color/transparent"
+            android:checkable="true"
+            app:strokeWidth="0dp"
+            app:cardPreventCornerOverlap="true"
+            android:layout_margin="10dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    style="@style/Widget.Material3.Button.IconButton"
+                    android:layout_width="40dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.01"
+                    app:icon="@drawable/ic_search"
+                    />
+
+                <TextView
+                    android:id="@+id/suggestion_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center_vertical"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <com.google.android.material.button.MaterialButton
+                    style="@style/Widget.Material3.Button.IconButton"
+                    android:id="@+id/set_search_query_button"
+                    android:layout_width="40dp"
+                    android:layout_height="match_parent"
+                    app:icon="@drawable/ic_arrow_up"
+                    android:layout_weight="0.01"
+                    />
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+    </RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

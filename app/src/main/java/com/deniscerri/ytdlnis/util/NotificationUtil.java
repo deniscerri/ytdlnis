@@ -78,7 +78,7 @@ public class NotificationUtil {
                 .setContentIntent(pendingIntent)
                 .setForegroundServiceBehavior(NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE)
                 .clearActions()
-                //.addAction(0, context.getString(R.string.cancel), cancelNotificationPendingIntent)
+                .addAction(0, context.getString(R.string.cancel), cancelNotificationPendingIntent)
                 .build();
 
         return notification;

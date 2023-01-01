@@ -14,9 +14,13 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.provider.Settings;
 import android.util.Log;
+import android.view.View;
+import android.view.WindowInsets;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
@@ -132,6 +136,14 @@ public class MainActivity extends AppCompatActivity{
                 replaceFragment(moreFragment);
             }
             return true;
+        });
+
+        getWindow().getDecorView().setOnApplyWindowInsetsListener((view, windowInsets) -> {
+            WindowInsetsCompat windowInsetsCompat = WindowInsetsCompat.toWindowInsetsCompat(windowInsets, view);
+            boolean isImeVisible = windowInsetsCompat.isVisible(WindowInsetsCompat.Type.ime());
+            binding.bottomNavigationView.setVisibility(isImeVisible ? View.GONE : View.VISIBLE);
+            view.onApplyWindowInsets(windowInsets);
+            return windowInsets;
         });
 
         askPermissions();
