@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
@@ -190,13 +192,6 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
         void onCardClick(int position, boolean add);
     }
 
-    public void setVideoList(ArrayList<Video> list, boolean reset){
-        int size = videoList.size();
-        if(reset || size == 0) clear();
-        videoList.addAll(list);
-        notifyItemRangeInserted(size, videoList.size());
-    }
-
     public void updateVideoListItem(Video v, int position){
         videoList.set(position, v);
         notifyItemChanged(position);
@@ -217,4 +212,9 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
         notifyItemRangeRemoved(0, size);
     }
 
+    public void add(ArrayList<Video> vids){
+        int position = videoList.size() + 1;
+        videoList.addAll(vids);
+        notifyItemRangeInserted(position, vids.size());
+    }
 }

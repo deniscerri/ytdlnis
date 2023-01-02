@@ -197,17 +197,11 @@ public class DownloadsRecyclerViewAdapter extends RecyclerView.Adapter<Downloads
         void onButtonClick(int position);
     }
 
-    public void setVideoList(ArrayList<Video> videoList){
-        this.videoList = videoList;
-        setWebsiteList();
-        notifyDataSetChanged();
-    }
-
     public ArrayList<String> getWebsites(){
         return websites;
     }
 
-    public void setWebsiteList(){
+    public void updateWebsiteList(){
         websites = new ArrayList<>();
         for (Video video : videoList){
             if (!websites.contains(video.getWebsite())) websites.add(video.getWebsite());
@@ -228,6 +222,19 @@ public class DownloadsRecyclerViewAdapter extends RecyclerView.Adapter<Downloads
             notifyItemChanged(position);
         }
         checkedVideos.clear();
+    }
+
+    public void add(ArrayList<Video> vids){
+        int position = videoList.size() + 1;
+        videoList.addAll(vids);
+        notifyItemRangeInserted(position, vids.size());
+        updateWebsiteList();
+    }
+
+    public void remove(int index){
+        videoList.remove(index);
+        notifyItemRemoved(index);
+        updateWebsiteList();
     }
 
 }

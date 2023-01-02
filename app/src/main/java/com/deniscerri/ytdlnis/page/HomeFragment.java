@@ -260,6 +260,7 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
             dbManager.clearResults();
             dbManager.close();
             inputQueriesLength = inputQueries.size();
+            homeRecyclerViewAdapter.clear();
 
             shimmerCards.startShimmer();
             shimmerCards.setVisibility(View.VISIBLE);
@@ -318,7 +319,7 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
                     }
                 }else {
                     if (!downloading){
-                        homeRecyclerViewAdapter.setVideoList(resultObjects, true);
+                        homeRecyclerViewAdapter.add(resultObjects);
                         for (int i = 0; i < resultObjects.size(); i++){
                             Video tmp = resultObjects.get(i);
                             if(tmp.isDownloading()){
@@ -330,7 +331,7 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
                 }
 
                 uiHandler.post(() -> {
-                    homeRecyclerViewAdapter.setVideoList(resultObjects, true);
+                    homeRecyclerViewAdapter.add(resultObjects);
                     shimmerCards.stopShimmer();
                     shimmerCards.setVisibility(View.GONE);
                 });
@@ -499,17 +500,22 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
                 case "Search": {
                     try {
                         if (resetResults) resultObjects.clear();
-                        resultObjects.addAll(infoUtil.search(inputQuery));
+                        ArrayList<Video> res = infoUtil.search(inputQuery);
+                        resultObjects.addAll(res);
+                        new Handler(Looper.getMainLooper()).post(() -> {
+                            if (resetResults) dbManager.clearResults();
+                            dbManager.addToResults(resultObjects);
+                            homeRecyclerViewAdapter.add(res);
+                            shimmerCards.stopShimmer();
+                            shimmerCards.setVisibility(View.GONE);
+                        });
                     } catch (Exception e) {
                         Log.e(TAG, e.toString());
+                        new Handler(Looper.getMainLooper()).post(() -> {
+                            shimmerCards.stopShimmer();
+                            shimmerCards.setVisibility(View.GONE);
+                        });
                     }
-                    new Handler(Looper.getMainLooper()).post(() -> {
-                        if (resetResults) dbManager.clearResults();
-                        dbManager.addToResults(resultObjects);
-                        homeRecyclerViewAdapter.setVideoList(resultObjects, true);
-                        shimmerCards.stopShimmer();
-                        shimmerCards.setVisibility(View.GONE);
-                    });
                     break;
                 }
                 case "Video": {
@@ -527,18 +533,24 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
 
                     try {
                         if (resetResults) resultObjects.clear();
-                        resultObjects.add(infoUtil.getVideo(inputQuery));
+                        Video v = infoUtil.getVideo(inputQuery);
+                        ArrayList<Video> res = new ArrayList<>();
+                        res.add(v);
+                        resultObjects.add(v);
+                        new Handler(Looper.getMainLooper()).post(() -> {
+                            if (resetResults) dbManager.clearResults();
+                            dbManager.addToResults(resultObjects);
+                            homeRecyclerViewAdapter.add(res);
+                            shimmerCards.stopShimmer();
+                            shimmerCards.setVisibility(View.GONE);
+                        });
                     } catch (Exception e) {
                         Log.e(TAG, e.toString());
+                        new Handler(Looper.getMainLooper()).post(() -> {
+                            shimmerCards.stopShimmer();
+                            shimmerCards.setVisibility(View.GONE);
+                        });
                     }
-
-                    new Handler(Looper.getMainLooper()).post(() -> {
-                        if (resetResults) dbManager.clearResults();
-                        dbManager.addToResults(resultObjects);
-                        homeRecyclerViewAdapter.setVideoList(resultObjects, true);
-                        shimmerCards.stopShimmer();
-                        shimmerCards.setVisibility(View.GONE);
-                    });
                     break;
                 }
                 case "Playlist": {
@@ -547,7 +559,7 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
                     if (resetResults) dbManager.clearResults();
                     if (resetResults){
                         resultObjects.clear();
-                        homeRecyclerViewAdapter.setVideoList(new ArrayList<>(), true);
+                        homeRecyclerViewAdapter.clear();
                     }
                     do {
                         InfoUtil.PlaylistTuple tmp = infoUtil.getPlaylist(inputQuery, nextPageToken);
@@ -556,7 +568,7 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
                         resultObjects.addAll(tmp_vids);
                         new Handler(Looper.getMainLooper()).post(() -> {
                             dbManager.addToResults(tmp_vids);
-                            homeRecyclerViewAdapter.setVideoList(resultObjects, true);
+                            homeRecyclerViewAdapter.add(tmp_vids);
                             shimmerCards.stopShimmer();
                             shimmerCards.setVisibility(View.GONE);
                         });
@@ -574,12 +586,12 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
                             resultObjects.addAll(video);
                             new Handler(Looper.getMainLooper()).post(() -> {
                                 if (resetResults) dbManager.clearResults();
+                                homeRecyclerViewAdapter.add(video);
                                 dbManager.addToResults(resultObjects);
                             });
                         }
 
                         new Handler(Looper.getMainLooper()).post(() -> {
-                            homeRecyclerViewAdapter.setVideoList(resultObjects, true);
                             shimmerCards.stopShimmer();
                             shimmerCards.setVisibility(View.GONE);
                         });

@@ -145,9 +145,12 @@ public class InfoUtil {
     }
 
     public PlaylistTuple getPlaylist(String id, String nextPageToken) throws JSONException{
-        if (key.isEmpty()) return new PlaylistTuple("", getFromYTDL("https://www.youtube.com/playlist?list="+id));
         videos = new ArrayList<>();
 
+        if (key.isEmpty()) {
+            if (useInvidous) return getPlaylistFromInvidous(id);
+            else return new PlaylistTuple("", getFromYTDL("https://www.youtube.com/playlist?list="+id));
+        }
         String url = "https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet&pageToken="+nextPageToken+"&maxResults=50&regionCode="+countryCODE+"&playlistId="+id+"&key="+key;
         //short data
         JSONObject res = genericRequest(url);
@@ -189,6 +192,25 @@ public class InfoUtil {
         }
         String next = res.optString("nextPageToken");
         return new PlaylistTuple(next, videos);
+    }
+
+    public PlaylistTuple getPlaylistFromInvidous(String id){
+        String url = invidousURL + "playlists/"+id;
+        JSONObject res = genericRequest(url);
+        if (res.length() == 0) return new PlaylistTuple("", getFromYTDL("https://www.youtube.com/playlist?list="+id));
+        try{
+            JSONArray vids = res.getJSONArray("videos");
+            for(int i = 0; i < vids.length(); i++){
+                JSONObject element = vids.getJSONObject(i);
+                Video v = createVideofromInvidiousJSON(element);
+                if(v == null || v.getThumb().isEmpty()) continue;
+                v.setPlaylistTitle(res.getString("title"));
+                videos.add(v);
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return new PlaylistTuple("", videos);
     }
 
     public Video getVideo(String id) throws JSONException {

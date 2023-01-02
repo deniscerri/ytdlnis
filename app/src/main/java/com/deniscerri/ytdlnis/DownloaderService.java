@@ -318,7 +318,6 @@ public class DownloaderService extends Service {
         video.setAuthor(video.getAuthor().replaceAll(":|'|\"|[.]|,", ""));
 
         String sponsorBlockFilters = sharedPreferences.getString("sponsorblock_filter", "");
-        Toast.makeText(context, sponsorBlockFilters, Toast.LENGTH_LONG).show();
         if (!sponsorBlockFilters.isEmpty()){
             request.addOption("--sponsorblock-remove", sponsorBlockFilters);
         }

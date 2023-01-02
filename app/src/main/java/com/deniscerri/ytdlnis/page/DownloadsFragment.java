@@ -196,7 +196,7 @@ public class DownloadsFragment extends Fragment implements DownloadsRecyclerView
                 dbManager = new DBManager(context);
                 dbManager.clearHistoryItem(v,false);
                 dbManager.close();
-                downloadsRecyclerViewAdapter.setVideoList(downloadsObjects);
+                downloadsRecyclerViewAdapter.notifyItemRemoved(downloadsObjects.indexOf(v));
 
                 if (downloadsObjects.isEmpty()) initCards();
                 downloading = false;
@@ -283,14 +283,13 @@ public class DownloadsFragment extends Fragment implements DownloadsRecyclerView
         downloadsRecyclerViewAdapter.clear();
         no_results.setVisibility(View.GONE);
         selectionChips.setVisibility(View.VISIBLE);
-
         dbManager = new DBManager(context);
         try{
             Thread thread = new Thread(() -> {
                 if (!downloading) dbManager.clearDownloadingHistory();
                 downloadsObjects = dbManager.getHistory("", format,website,sort);
                 uiHandler.post(() -> {
-                    downloadsRecyclerViewAdapter.setVideoList(downloadsObjects);
+                    downloadsRecyclerViewAdapter.add(downloadsObjects);
                     shimmerCards.stopShimmer();
                     shimmerCards.setVisibility(View.GONE);
                     updateWebsiteChips();
@@ -346,7 +345,7 @@ public class DownloadsFragment extends Fragment implements DownloadsRecyclerView
                 topAppBar.getMenu().findItem(R.id.search_downloads).collapseActionView();
                 downloadsObjects = dbManager.getHistory(query, format,website,sort);
                 downloadsRecyclerViewAdapter.clear();
-                downloadsRecyclerViewAdapter.setVideoList(downloadsObjects);
+                downloadsRecyclerViewAdapter.add(downloadsObjects);
 
                 if(downloadsObjects.size() == 0) {
                     no_results.setVisibility(View.VISIBLE);
@@ -361,7 +360,7 @@ public class DownloadsFragment extends Fragment implements DownloadsRecyclerView
                 searchQuery = newText;
                 downloadsObjects = dbManager.getHistory(newText, format,website,sort);
                 downloadsRecyclerViewAdapter.clear();
-                downloadsRecyclerViewAdapter.setVideoList(downloadsObjects);
+                downloadsRecyclerViewAdapter.add(downloadsObjects);
 
                 if (downloadsObjects.size() == 0) {
                     no_results.setVisibility(View.VISIBLE);
@@ -395,7 +394,6 @@ public class DownloadsFragment extends Fragment implements DownloadsRecyclerView
                     dbManager.clearHistory();
                     downloadsRecyclerViewAdapter.clear();
                     downloadsObjects.clear();
-                    downloadsRecyclerViewAdapter.setVideoList(downloadsObjects);
                     no_results.setVisibility(View.VISIBLE);
                     selectionChips.setVisibility(View.GONE);
                     websiteGroup.removeAllViews();
@@ -474,7 +472,7 @@ public class DownloadsFragment extends Fragment implements DownloadsRecyclerView
                 sort = "DESC";
                 downloadsObjects = dbManager.getHistory(searchQuery, format,website,sort);
                 downloadsRecyclerViewAdapter.clear();
-                downloadsRecyclerViewAdapter.setVideoList(downloadsObjects);
+                downloadsRecyclerViewAdapter.add(downloadsObjects);
                 sortSheet.cancel();
             });
 
@@ -482,7 +480,7 @@ public class DownloadsFragment extends Fragment implements DownloadsRecyclerView
                 sort = "ASC";
                 downloadsObjects = dbManager.getHistory(searchQuery, format,website,sort);
                 downloadsRecyclerViewAdapter.clear();
-                downloadsRecyclerViewAdapter.setVideoList(downloadsObjects);
+                downloadsRecyclerViewAdapter.add(downloadsObjects);
                 sortSheet.cancel();
             });
 
@@ -512,7 +510,7 @@ public class DownloadsFragment extends Fragment implements DownloadsRecyclerView
             }
 
             downloadsRecyclerViewAdapter.clear();
-            downloadsRecyclerViewAdapter.setVideoList(downloadsObjects);
+            downloadsRecyclerViewAdapter.add(downloadsObjects);
         });
 
         Chip video = fragmentView.findViewById(R.id.video_chip);
@@ -528,7 +526,7 @@ public class DownloadsFragment extends Fragment implements DownloadsRecyclerView
             }
 
             downloadsRecyclerViewAdapter.clear();
-            downloadsRecyclerViewAdapter.setVideoList(downloadsObjects);
+            downloadsRecyclerViewAdapter.add(downloadsObjects);
         });
 
     }
@@ -555,7 +553,7 @@ public class DownloadsFragment extends Fragment implements DownloadsRecyclerView
                     websiteGroup.clearCheck();
                 }
                 downloadsRecyclerViewAdapter.clear();
-                downloadsRecyclerViewAdapter.setVideoList(downloadsObjects);
+                downloadsRecyclerViewAdapter.add(downloadsObjects);
             });
             websiteGroup.addView(tmp);
         }
@@ -601,8 +599,7 @@ public class DownloadsFragment extends Fragment implements DownloadsRecyclerView
                 Video v = selectedObjects.get(j);
                 int position = downloadsObjects.indexOf(v);
                 downloadsObjects.remove(v);
-                downloadsRecyclerViewAdapter.notifyItemRemoved(position);
-                downloadsRecyclerViewAdapter.setVideoList(downloadsObjects);
+                downloadsRecyclerViewAdapter.remove(position);
                 dbManager.clearHistoryItem(v, delete_file[0]);
             }
             updateWebsiteChips();
@@ -636,8 +633,7 @@ public class DownloadsFragment extends Fragment implements DownloadsRecyclerView
         });
         delete_dialog.setPositiveButton(getString(R.string.ok), (dialogInterface, i) -> {
             downloadsObjects.remove(position);
-            downloadsRecyclerViewAdapter.notifyItemRemoved(position);
-            downloadsRecyclerViewAdapter.setVideoList(downloadsObjects);
+            downloadsRecyclerViewAdapter.remove(position);
             updateWebsiteChips();
             dbManager.clearHistoryItem(v, delete_file[0]);
             dbManager.close();
