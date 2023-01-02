@@ -13,15 +13,19 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.preference.EditTextPreference;
 import androidx.preference.ListPreference;
+import androidx.preference.MultiSelectListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.SeekBarPreference;
 import androidx.preference.SwitchPreferenceCompat;
+
 import com.deniscerri.ytdlnis.BuildConfig;
 import com.deniscerri.ytdlnis.R;
 import com.deniscerri.ytdlnis.util.UpdateUtil;
 
 import java.nio.charset.StandardCharsets;
+import java.util.HashSet;
+import java.util.Set;
 
 public class SettingsFragment extends PreferenceFragmentCompat {
 
@@ -36,7 +40,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     EditTextPreference limitRate;
     SwitchPreferenceCompat aria2;
 
-    SwitchPreferenceCompat removeNonMusic;
+    MultiSelectListPreference sponsorblockFilters;
     SwitchPreferenceCompat embedSubtitles;
     SwitchPreferenceCompat embedThumbnail;
     SwitchPreferenceCompat addChapters;
@@ -82,7 +86,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         limitRate = findPreference("limit_rate");
         aria2 = findPreference("aria2");
 
-        removeNonMusic = findPreference("remove_non_music");
+        sponsorblockFilters = findPreference("sponsorblock_filter");
         embedSubtitles = findPreference("embed_subtitles");
         embedThumbnail = findPreference("embed_thumbnail");
         addChapters = findPreference("add_chapters");
@@ -113,7 +117,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         editor.putInt("concurrent_fragments", concurrentFragments.getValue());
         editor.putString("limit_rate", limitRate.getText());
         editor.putBoolean("aria2", aria2.isChecked());
-        editor.putBoolean("remove_non_music", removeNonMusic.isChecked());
+        editor.putString("sponsorblock_filter", String.join(",", sponsorblockFilters.getValues()));
         editor.putBoolean("embed_subtitles", embedSubtitles.isChecked());
         editor.putBoolean("embed_thumbnail", embedThumbnail.isChecked());
         editor.putBoolean("add_chapters", addChapters.isChecked());
@@ -192,9 +196,9 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             return true;
         });
 
-        removeNonMusic.setOnPreferenceChangeListener((preference, newValue) -> {
-            boolean remove = (Boolean) newValue;
-            editor.putBoolean("remove_non_music", remove);
+        sponsorblockFilters.setOnPreferenceChangeListener((preference, newValue) -> {
+            sponsorblockFilters.setValues((Set<String>) newValue);
+            editor.putString("sponsorblock_filter", String.join(",", (Set<String>)newValue));
             editor.apply();
             return true;
         });

@@ -28,4 +28,29 @@
         <item>Worst Quality</item>
     </string-array>
 
+    <string-array name="sponsorblock_settings_entries">
+        <item>@string/sponsorblock_nonmusic</item>
+        <item>@string/sponsorblock_sponsors</item>
+        <item>@string/sponsorblock_intro</item>
+        <item>@string/sponsorblock_outro</item>
+        <item>@string/sponsorblock_promos</item>
+        <item>@string/sponsorblock_previews</item>
+        <item>@string/sponsorblock_fillers</item>
+        <item>@string/sponsorblock_reminders</item>
+    </string-array>
+
+    <string-array name="sponsorblock_settings_values">
+        <item>music_offtopic</item>
+        <item>sponsor</item>
+        <item>intro</item>
+        <item>outro</item>
+        <item>selfpromo</item>
+        <item>preview</item>
+        <item>filler</item>
+        <item>interaction</item>
+    </string-array>
+
+    <string-array name="sponsorblock_settings_default">
+        <item>music_offtopic</item>
+    </string-array>
 </resources>

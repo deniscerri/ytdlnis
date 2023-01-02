@@ -27,9 +27,11 @@ import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -315,6 +317,12 @@ public class DownloaderService extends Service {
         video.setTitle(video.getTitle().replaceAll(":|'|\"|[.]|,", ""));
         video.setAuthor(video.getAuthor().replaceAll(":|'|\"|[.]|,", ""));
 
+        String sponsorBlockFilters = sharedPreferences.getString("sponsorblock_filter", "");
+        Toast.makeText(context, sponsorBlockFilters, Toast.LENGTH_LONG).show();
+        if (!sponsorBlockFilters.isEmpty()){
+            request.addOption("--sponsorblock-remove", sponsorBlockFilters);
+        }
+
         if (type.equals("audio")) {
             request.addOption("-x");
             String format = video.getAudioFormat();
@@ -335,11 +343,6 @@ public class DownloaderService extends Service {
                         request.addOption("--config", config.getAbsolutePath());
                     }catch(Exception ignored){}
                 }
-            }
-
-            boolean removeNonMusic = sharedPreferences.getBoolean("remove_non_music", false);
-            if(removeNonMusic){
-                request.addOption("--sponsorblock-remove", "all");
             }
 
             request.addCommands(Arrays.asList("--replace-in-metadata","title",".*.",video.getTitle()));

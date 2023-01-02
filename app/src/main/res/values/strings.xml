@@ -139,4 +139,13 @@
     <string name="request_permission_desc">This app needs File Permissions to save downloads on the device</string>
     <string name="exit_app">Exit App</string>
     <string name="warning">Warning</string>
+    <string name="sponsorblock_nonmusic">Non-Music and OffTopic portions</string>
+    <string name="sponsorblock_sponsors">Sponsors</string>
+    <string name="sponsorblock_intro">Intro</string>
+    <string name="sponsorblock_outro">Outro</string>
+    <string name="sponsorblock_promos">Self Promos</string>
+    <string name="sponsorblock_previews">Previews</string>
+    <string name="sponsorblock_fillers">Fillers</string>
+    <string name="sponsorblock_reminders">Subscription Reminders</string>
+    <string name="select_sponsorblock_filtering">Select SponsorBlock Filtering</string>
 </resources>

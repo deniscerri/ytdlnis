@@ -74,12 +74,15 @@
 
 
     <PreferenceCategory android:title="@string/processing">
-        <SwitchPreferenceCompat
-            app:defaultValue="true"
-            app:icon="@drawable/ic_music"
-            app:key="remove_non_music"
-            app:summary="@string/remove_non_music_summary"
-            app:title="@string/remove_non_music" />
+        <MultiSelectListPreference
+            app:defaultValue="@array/sponsorblock_settings_default"
+            app:icon="@drawable/ic_money"
+            app:dialogTitle="@string/select_sponsorblock_filtering"
+            app:entries="@array/sponsorblock_settings_entries"
+            app:entryValues="@array/sponsorblock_settings_values"
+            app:key="sponsorblock_filter"
+            app:summary="@string/select_sponsorblock_filtering"
+            app:title="SponsorBlock" />
 
         <SwitchPreferenceCompat
             app:defaultValue="true"
