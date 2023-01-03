@@ -314,8 +314,6 @@ public class DownloaderService extends Service {
         }
 
         request.addOption("--no-mtime");
-        video.setTitle(video.getTitle().replaceAll(":|'|\"|[.]|,", ""));
-        video.setAuthor(video.getAuthor().replaceAll(":|'|\"|[.]|,", ""));
 
         String sponsorBlockFilters = sharedPreferences.getString("sponsorblock_filter", "");
         if (!sponsorBlockFilters.isEmpty()){
@@ -347,7 +345,7 @@ public class DownloaderService extends Service {
             request.addCommands(Arrays.asList("--replace-in-metadata","title",".*.",video.getTitle()));
             request.addCommands(Arrays.asList("--replace-in-metadata","uploader",".*.",video.getAuthor()));
 
-            request.addOption("-o", youtubeDLDir.getAbsolutePath() + "/"+video.getTitle()+"."+format);
+            request.addOption("-o", youtubeDLDir.getAbsolutePath() + "/%(uploader)s - %(title)s.%(ext)s");
         } else if (type.equals("video")) {
             boolean addChapters = sharedPreferences.getBoolean("add_chapters", false);
             if(addChapters){
@@ -377,7 +375,7 @@ public class DownloaderService extends Service {
                     request.addOption("--embed-thumbnail");
                 }
             }
-            request.addOption("-o", youtubeDLDir.getAbsolutePath() + "/"+video.getAuthor() + " - " + video.getTitle()+"."+format);
+            request.addOption("-o", youtubeDLDir.getAbsolutePath() + "/%(uploader)s - %(title)s.%(ext)s");
         }
 
         Disposable disposable = Observable.fromCallable(() -> YoutubeDL.getInstance().execute(request, downloadProcessID, callback))

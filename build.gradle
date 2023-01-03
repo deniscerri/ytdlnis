@@ -34,7 +34,7 @@ ext {
     // supports java 1.6
     commonsCompressVer = '1.12'
     youtubedlAndroidVer = "master-SNAPSHOT"
-
+    workVer = "2.7.1"
 }
 
 allprojects {

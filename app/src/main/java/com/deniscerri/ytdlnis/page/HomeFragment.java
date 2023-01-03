@@ -24,6 +24,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.SearchView;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -638,145 +639,10 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
         }
 
         SharedPreferences sharedPreferences = context.getSharedPreferences("root_preferences", Activity.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-
         if (sharedPreferences.getBoolean("download_card", true)){
-            bottomSheet = new BottomSheetDialog(fragmentContext);
-            bottomSheet.requestWindowFeature(Window.FEATURE_NO_TITLE);
-
-            if (type.equals("audio")){
-                bottomSheet.setContentView(R.layout.home_download_audio_bottom_sheet);
-
-                TextInputLayout title = bottomSheet.findViewById(R.id.title_textinput);
-                title.getEditText().setText(vid.getTitle());
-                title.getEditText().addTextChangedListener(new TextWatcher() {
-                    @Override
-                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
-
-                    @Override
-                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
-
-                    @Override
-                    public void afterTextChanged(Editable editable) {
-                        vid.setTitle(editable.toString());
-                    }
-                });
-
-                TextInputLayout author = bottomSheet.findViewById(R.id.author_textinput);
-                author.getEditText().setText(vid.getAuthor());
-                author.getEditText().addTextChangedListener(new TextWatcher() {
-                    @Override
-                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
-
-                    @Override
-                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
-
-                    @Override
-                    public void afterTextChanged(Editable editable) {
-                        vid.setAuthor(editable.toString());
-                    }
-                });
-
-                String[] audioFormats = context.getResources().getStringArray(R.array.music_formats);
-
-                TextInputLayout audioFormat = bottomSheet.findViewById(R.id.audio_format);
-                AutoCompleteTextView autoCompleteTextView = bottomSheet.findViewById(R.id.audio_format_textview);
-                String preference = sharedPreferences.getString("audio_format", "mp3");
-                autoCompleteTextView.setText(preference, false);
-
-                ((AutoCompleteTextView)audioFormat.getEditText()).setOnItemClickListener((adapterView, view, i, l) -> {
-                    vid.setAudioFormat(audioFormats[i]);
-                    editor.putString("audio_format", vid.getAudioFormat());
-                    editor.apply();
-                });
-
-            }else {
-                bottomSheet.setContentView(R.layout.home_download_video_bottom_sheet);
-
-                TextInputLayout title = bottomSheet.findViewById(R.id.title_textinput);
-                title.getEditText().setText(vid.getTitle());
-                title.getEditText().addTextChangedListener(new TextWatcher() {
-                    @Override
-                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
-
-                    @Override
-                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
-
-                    @Override
-                    public void afterTextChanged(Editable editable) {
-                        vid.setTitle(editable.toString());
-                    }
-                });
-
-
-                String[] videoFormats = context.getResources().getStringArray(R.array.video_formats);
-                String[] videoQualities = context.getResources().getStringArray(R.array.video_quality);
-
-                TextInputLayout videoFormat = bottomSheet.findViewById(R.id.video_format);
-                AutoCompleteTextView autoCompleteTextView = bottomSheet.findViewById(R.id.video_format_textview);
-                String preference = sharedPreferences.getString("video_format", "webm");
-                autoCompleteTextView.setText(preference, false);
-
-                ((AutoCompleteTextView)videoFormat.getEditText()).setOnItemClickListener((adapterView, view, i, l) -> {
-                    vid.setVideoFormat(videoFormats[i]);
-                    editor.putString("video_format", vid.getVideoFormat());
-                    editor.apply();
-                });
-
-                TextInputLayout videoQuality = bottomSheet.findViewById(R.id.video_quality);
-                autoCompleteTextView = bottomSheet.findViewById(R.id.video_quality_textview);
-                preference = sharedPreferences.getString("video_quality", "Best Quality");
-                autoCompleteTextView.setText(preference, false);
-                ((AutoCompleteTextView)videoQuality.getEditText()).setOnItemClickListener((adapterView, view, i, l) -> {
-                    vid.setVideoQuality(videoQualities[i]);
-                    editor.putString("video_quality", vid.getVideoQuality());
-                    editor.apply();
-                });
-
-                Chip embedSubs = bottomSheet.findViewById(R.id.embed_subtitles);
-                embedSubs.setChecked(sharedPreferences.getBoolean("embed_subtitles", false));
-                embedSubs.setOnClickListener(view -> {
-                    editor.putBoolean("embed_subtitles", embedSubs.isChecked());
-                    editor.apply();
-                });
-
-                Chip addChapters = bottomSheet.findViewById(R.id.add_chapters);
-                addChapters.setChecked(sharedPreferences.getBoolean("add_chapters", false));
-                addChapters.setOnClickListener(view -> {
-                    editor.putBoolean("add_chapters", addChapters.isChecked());
-                    editor.apply();
-                });
-
-                Chip saveThumbnail = bottomSheet.findViewById(R.id.save_thumbnail);
-                saveThumbnail.setChecked(sharedPreferences.getBoolean("write_thumbnail", false));
-                saveThumbnail.setOnClickListener(view -> {
-                    if (saveThumbnail.isChecked()){
-                        editor.putBoolean("write_thumbnail", true);
-                    }else{
-                        editor.putBoolean("write_thumbnail", false);
-                    }
-                    editor.apply();
-                });
-            }
-
-            Button cancel = bottomSheet.findViewById(R.id.bottomsheet_cancel_button);
-            cancel.setOnClickListener(view -> {
-                bottomSheet.cancel();
-            });
-
-            Button download = bottomSheet.findViewById(R.id.bottomsheet_download_button);
-            download.setOnClickListener(view -> {
-                downloadQueue.add(vid);
-                updateDownloadingStatusOnResult(vid, type, true);
-                if (isStoragePermissionGranted()){
-                    mainActivity.startDownloadService(downloadQueue, listener);
-                    downloadQueue.clear();
-                }
-                bottomSheet.cancel();
-            });
-
-            bottomSheet.show();
-            bottomSheet.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT);
+            selectedObjects.clear();
+            selectedObjects.add(resultObjects.get(position));
+            showConfigureDownloadCard(type);
         }else{
             downloadQueue.add(vid);
             updateDownloadingStatusOnResult(vid, type, true);
@@ -908,120 +774,11 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
         if (start <= 1) start = 0;
 
         SharedPreferences sharedPreferences = context.getSharedPreferences("root_preferences", Activity.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
 
         if (sharedPreferences.getBoolean("download_card", true)){
-
-            BottomSheetDialog downloadTypeBottomSheet = new BottomSheetDialog(fragmentContext);
-            downloadTypeBottomSheet.requestWindowFeature(Window.FEATURE_NO_TITLE);
-
-            if (type.equals("audio")){
-                downloadTypeBottomSheet.setContentView(R.layout.home_download_audio_bottom_sheet);
-
-                TextInputLayout title = downloadTypeBottomSheet.findViewById(R.id.title_textinput);
-                title.getEditText().setText(getString(R.string.mutliple_titles));
-                title.getEditText().setClickable(false);
-                title.getEditText().setLongClickable(false);
-
-                TextInputLayout author = downloadTypeBottomSheet.findViewById(R.id.author_textinput);
-                author.getEditText().setText(getString(R.string.mutliple_authors));
-                author.getEditText().setClickable(false);
-                author.getEditText().setLongClickable(false);
-
-                String[] audioFormats = context.getResources().getStringArray(R.array.music_formats);
-
-                TextInputLayout audioFormat = downloadTypeBottomSheet.findViewById(R.id.audio_format);
-                int finalStart = start;
-                int finalEnd = end;
-                ((AutoCompleteTextView)audioFormat.getEditText()).setOnItemClickListener((adapterView, view, index, l) -> {
-                    for (int i = finalStart; i <= finalEnd; i++){
-                        Video vid = findVideo(resultObjects.get(i).getURL());
-                        vid.setAudioFormat(audioFormats[index]);
-                    }
-                    editor.putString("audio_format", audioFormats[index]);
-                    editor.apply();
-                });
-
-            }else {
-                downloadTypeBottomSheet.setContentView(R.layout.home_download_video_bottom_sheet);
-
-                TextInputLayout title = downloadTypeBottomSheet.findViewById(R.id.title_textinput);
-                title.getEditText().setText(getString(R.string.mutliple_titles));
-                title.getEditText().setClickable(false);
-                title.getEditText().setLongClickable(false);
-
-                String[] videoFormats = context.getResources().getStringArray(R.array.video_formats);
-                String[] videoQualities = context.getResources().getStringArray(R.array.video_quality);
-
-                TextInputLayout videoFormat = downloadTypeBottomSheet.findViewById(R.id.video_format);
-                int finalStart1 = start;
-                int finalEnd1 = end;
-                ((AutoCompleteTextView)videoFormat.getEditText()).setOnItemClickListener((adapterView, view, index, l) -> {
-                    for (int i = finalStart1; i <= finalEnd1; i++){
-                        Video vid = findVideo(resultObjects.get(i).getURL());
-                        vid.setVideoFormat(videoFormats[index]);
-                    }
-                    editor.putString("video_format", videoFormats[index]);
-                    editor.apply();
-                });
-
-                TextInputLayout videoQuality = downloadTypeBottomSheet.findViewById(R.id.video_quality);
-                ((AutoCompleteTextView)videoQuality.getEditText()).setOnItemClickListener((adapterView, view, index, l) -> {
-                    for (int i = finalStart1; i <= finalEnd1; i++){
-                        Video vid = findVideo(resultObjects.get(i).getURL());
-                        vid.setVideoQuality(videoQualities[index]);
-                    }
-                    editor.putString("video_quality", videoQualities[index]);
-                    editor.apply();
-                });
-
-                Chip embedSubs = downloadTypeBottomSheet.findViewById(R.id.embed_subtitles);
-                embedSubs.setChecked(sharedPreferences.getBoolean("embed_subtitles", false));
-                embedSubs.setOnClickListener(view -> {
-                    editor.putBoolean("embed_subtitles", embedSubs.isChecked());
-                    editor.apply();
-                });
-
-                Chip addChapters = downloadTypeBottomSheet.findViewById(R.id.add_chapters);
-                addChapters.setChecked(sharedPreferences.getBoolean("add_chapters", false));
-                addChapters.setOnClickListener(view -> {
-                    editor.putBoolean("add_chapters", addChapters.isChecked());
-                    editor.apply();
-                });
-
-                Chip saveThumbnail = downloadTypeBottomSheet.findViewById(R.id.save_thumbnail);
-                saveThumbnail.setChecked(sharedPreferences.getBoolean("write_thumbnail", false));
-                saveThumbnail.setOnClickListener(view -> {
-                    editor.putBoolean("write_thumbnail", saveThumbnail.isChecked());
-                    editor.apply();
-                });
-            }
-
-            Button cancel = downloadTypeBottomSheet.findViewById(R.id.bottomsheet_cancel_button);
-            cancel.setOnClickListener(view -> {
-                downloadTypeBottomSheet.cancel();
-            });
-
-            Button download = downloadTypeBottomSheet.findViewById(R.id.bottomsheet_download_button);
-            int finalStart2 = start;
-            int finalEnd2 = end;
-            download.setOnClickListener(view -> {
-                for (int i = finalStart2; i <= finalEnd2; i++){
-                    Video vid = findVideo(resultObjects.get(i).getURL());
-                    vid.setDownloadedType(type);
-                    updateDownloadingStatusOnResult(vid, type, true);
-                    downloadQueue.add(vid);
-                }
-
-                if(isStoragePermissionGranted()){
-                    mainActivity.startDownloadService(downloadQueue, listener);
-                    downloadQueue.clear();
-                }
-                downloadTypeBottomSheet.cancel();
-            });
-
-            downloadTypeBottomSheet.show();
-            downloadTypeBottomSheet.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT);
+            selectedObjects.clear();
+            selectedObjects.addAll(resultObjects.subList(start, end + 1));
+            showConfigureDownloadCard(type);
         }else{
             for (int i = start; i <= end; i++){
                 Video vid = findVideo(resultObjects.get(i).getURL());
@@ -1043,6 +800,31 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
         if (sharedPreferences.getBoolean("download_card", true)){
+            showConfigureDownloadCard(type);
+        }else{
+            for (int i = 0; i < selectedObjects.size(); i++) {
+                Video vid = findVideo(selectedObjects.get(i).getURL());
+                vid.setDownloadedType(type);
+                updateDownloadingStatusOnResult(vid, type, true);
+                homeRecyclerViewAdapter.notifyItemChanged(resultObjects.indexOf(vid));
+                downloadQueue.add(vid);
+            }
+            selectedObjects = new ArrayList<>();
+            homeRecyclerViewAdapter.clearCheckedVideos();
+            downloadFabs.setVisibility(View.GONE);
+
+            if(isStoragePermissionGranted()){
+                mainActivity.startDownloadService(downloadQueue, listener);
+                downloadQueue.clear();
+            }
+        }
+    }
+
+    private void showConfigureDownloadCard(String type){
+        SharedPreferences sharedPreferences = context.getSharedPreferences("root_preferences", Activity.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        try{
             bottomSheet = new BottomSheetDialog(fragmentContext);
             bottomSheet.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
@@ -1050,18 +832,55 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
                 bottomSheet.setContentView(R.layout.home_download_audio_bottom_sheet);
 
                 TextInputLayout title = bottomSheet.findViewById(R.id.title_textinput);
-                title.getEditText().setText(getString(R.string.mutliple_titles));
-                title.getEditText().setClickable(false);
-                title.getEditText().setLongClickable(false);
+                if (selectedObjects.size() > 1){
+                    title.getEditText().setText(getString(R.string.mutliple_titles));
+                    title.getEditText().setClickable(false);
+                    title.getEditText().setLongClickable(false);
+                }else{
+                    title.getEditText().setText(selectedObjects.get(0).getTitle());
+                    title.getEditText().addTextChangedListener(new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+                        @Override
+                        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+                        @Override
+                        public void afterTextChanged(Editable editable) {
+                            int index = resultObjects.indexOf(selectedObjects.get(0));
+                            resultObjects.get(index).setTitle(editable.toString());
+                        }
+                    });
+                }
 
                 TextInputLayout author = bottomSheet.findViewById(R.id.author_textinput);
-                author.getEditText().setText(getString(R.string.mutliple_authors));
-                author.getEditText().setClickable(false);
-                author.getEditText().setLongClickable(false);
+                if (selectedObjects.size() > 1){
+                    author.getEditText().setText(getString(R.string.mutliple_authors));
+                    author.getEditText().setClickable(false);
+                    author.getEditText().setLongClickable(false);
+                }else{
+                    author.getEditText().setText(selectedObjects.get(0).getAuthor());
+                    author.getEditText().addTextChangedListener(new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+                        @Override
+                        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+                        @Override
+                        public void afterTextChanged(Editable editable) {
+                            int index = resultObjects.indexOf(selectedObjects.get(0));
+                            resultObjects.get(index).setAuthor(editable.toString());
+                        }
+                    });
+                }
+
 
                 String[] audioFormats = context.getResources().getStringArray(R.array.music_formats);
-
                 TextInputLayout audioFormat = bottomSheet.findViewById(R.id.audio_format);
+                AutoCompleteTextView autoCompleteTextView = bottomSheet.findViewById(R.id.audio_format_textview);
+                String preference = sharedPreferences.getString("audio_format", "mp3");
+                autoCompleteTextView.setText(preference, false);
                 ((AutoCompleteTextView)audioFormat.getEditText()).setOnItemClickListener((adapterView, view, index, l) -> {
                     for (int i = 0; i < selectedObjects.size(); i++) {
                         Video vid = findVideo(selectedObjects.get(i).getURL());
@@ -1075,15 +894,34 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
                 bottomSheet.setContentView(R.layout.home_download_video_bottom_sheet);
 
                 TextInputLayout title = bottomSheet.findViewById(R.id.title_textinput);
-                title.getEditText().setText(getString(R.string.mutliple_titles));
-                title.getEditText().setClickable(false);
-                title.getEditText().setLongClickable(false);
+                if (selectedObjects.size() > 1){
+                    title.getEditText().setText(getString(R.string.mutliple_titles));
+                    title.getEditText().setClickable(false);
+                    title.getEditText().setLongClickable(false);
+                }else{
+                    title.getEditText().setText(selectedObjects.get(0).getTitle());
+                    title.getEditText().addTextChangedListener(new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
 
+                        @Override
+                        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+                        @Override
+                        public void afterTextChanged(Editable editable) {
+                            int index = resultObjects.indexOf(selectedObjects.get(0));
+                            resultObjects.get(index).setTitle(editable.toString());
+                        }
+                    });
+                }
 
                 String[] videoFormats = context.getResources().getStringArray(R.array.video_formats);
                 String[] videoQualities = context.getResources().getStringArray(R.array.video_quality);
 
                 TextInputLayout videoFormat = bottomSheet.findViewById(R.id.video_format);
+                AutoCompleteTextView autoCompleteTextView = bottomSheet.findViewById(R.id.video_format_textview);
+                String preference = sharedPreferences.getString("video_format", "webm");
+                autoCompleteTextView.setText(preference, false);
                 ((AutoCompleteTextView)videoFormat.getEditText()).setOnItemClickListener((adapterView, view, index, l) -> {
                     for (int i = 0; i < selectedObjects.size(); i++) {
                         Video vid = findVideo(selectedObjects.get(i).getURL());
@@ -1094,6 +932,9 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
                 });
 
                 TextInputLayout videoQuality = bottomSheet.findViewById(R.id.video_quality);
+                autoCompleteTextView = bottomSheet.findViewById(R.id.video_quality_textview);
+                preference = sharedPreferences.getString("video_quality", "Best Quality");
+                autoCompleteTextView.setText(preference, false);
                 ((AutoCompleteTextView)videoQuality.getEditText()).setOnItemClickListener((adapterView, view, index, l) -> {
                     for (int i = 0; i < selectedObjects.size(); i++) {
                         Video vid = findVideo(selectedObjects.get(i).getURL());
@@ -1164,23 +1005,8 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
 
             bottomSheet.show();
             bottomSheet.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT);
-        }else{
-            for (int i = 0; i < selectedObjects.size(); i++) {
-                Video vid = findVideo(selectedObjects.get(i).getURL());
-                vid.setDownloadedType(type);
-                updateDownloadingStatusOnResult(vid, type, true);
-                homeRecyclerViewAdapter.notifyItemChanged(resultObjects.indexOf(vid));
-                downloadQueue.add(vid);
-            }
-            selectedObjects = new ArrayList<>();
-            homeRecyclerViewAdapter.clearCheckedVideos();
-            downloadFabs.setVisibility(View.GONE);
-
-            if(isStoragePermissionGranted()){
-                mainActivity.startDownloadService(downloadQueue, listener);
-                downloadQueue.clear();
-            }
+        }catch (Exception e){
+            Toast.makeText(fragmentContext, e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
-
 }
