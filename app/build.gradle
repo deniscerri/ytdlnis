@@ -1,8 +1,8 @@
-import java.util.regex.Pattern
-
 plugins {
     id 'com.android.application'
-    id 'com.google.secrets_gradle_plugin' version '0.4'
+    id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin' version '2.0.1'
+    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
 }
 
 def properties = new Properties()
@@ -20,7 +20,7 @@ android {
             keyPassword properties["signingConfig.keyPassword"]
         }
     }
-    compileSdkVersion 31
+    compileSdkVersion 33
     defaultConfig {
         applicationId "com.deniscerri.ytdl"
         minSdkVersion 23
@@ -32,8 +32,22 @@ android {
         ndk {
             abiFilters 'armeabi-v7a', 'arm64-v8a'
         }
+        vectorDrawables {
+            useSupportLibrary true
+        }
+
+        kapt {
+            arguments {
+                arg("room.schemaLocation", "$projectDir/schemas")
+            }
+        }
 
     }
+
+    sourceSets {
+        androidTest.assets.srcDirs += files("$projectDir/schemas".toString())
+    }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -53,6 +67,9 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
 
     splits {
         abi {
@@ -62,9 +79,9 @@ android {
             universalApk true
         }
     }
-
-
-
+    composeOptions {
+        kotlinCompilerExtensionVersion composeVer
+    }
 }
 
 
@@ -80,13 +97,14 @@ dependencies {
 
     implementation "androidx.appcompat:appcompat:$appCompatVer"
     implementation "androidx.constraintlayout:constraintlayout:2.1.4"
-    implementation 'com.google.android.material:material:1.6.1'
+    implementation 'com.google.android.material:material:1.7.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.core:core:1.8.0'
+    implementation 'androidx.core:core:1.9.0'
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
     implementation 'androidx.preference:preference:1.2.0'
-    implementation 'androidx.navigation:navigation-fragment:2.5.2'
-    implementation 'androidx.navigation:navigation-ui:2.5.2'
+    implementation 'androidx.navigation:navigation-fragment:2.5.3'
+    implementation 'androidx.navigation:navigation-ui:2.5.3'
+    implementation 'androidx.core:core-ktx:1.9.0'
     testImplementation "junit:junit:$junitVer"
     androidTestImplementation "androidx.test.ext:junit:$androidJunitVer"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVer"
@@ -102,4 +120,14 @@ dependencies {
     implementation 'com.facebook.shimmer:shimmer:0.5.0'
 
     implementation "androidx.work:work-runtime:$workVer"
+
+    implementation "androidx.room:room-runtime:2.4.3"
+    implementation "androidx.room:room-ktx:2.4.3"
+    kapt "androidx.room:room-compiler:2.4.3"
+    androidTestImplementation "androidx.room:room-testing:2.4.3"
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.1'
+    implementation "androidx.compose.runtime:runtime:$composeVer"
+
+
+    androidTestImplementation "com.google.truth:truth:1.1.3"
 }

@@ -26,10 +26,8 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         DynamicColors.applyToActivitiesIfAvailable(this);
-
         notificationUtil = new NotificationUtil(this);
         createNotificationChannels();
-
         PreferenceManager.setDefaultValues(this, "root_preferences", this.MODE_PRIVATE, R.xml.root_preferences, false);
         configureRxJavaErrorHandler();
         Completable.fromAction(this::initLibraries).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new DisposableCompletableObserver() {

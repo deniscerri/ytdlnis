@@ -6,9 +6,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.graphics.ColorMatrix;
-import android.graphics.ColorMatrixColorFilter;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.deniscerri.ytdlnis.R;
@@ -16,7 +13,7 @@ import com.deniscerri.ytdlnis.R;
 import java.io.File;
 import java.util.ArrayList;
 
-public class DBManager extends SQLiteOpenHelper {
+public class DatabaseManager extends SQLiteOpenHelper {
     Context context;
 
     public static final String db_name = "ytdlnis_db";
@@ -42,7 +39,7 @@ public class DBManager extends SQLiteOpenHelper {
     public static final String playlistTitle = "playlistTitle";
     public static final String isQueuedDownload = "isQueuedDownload";
 
-    public DBManager(Context context){
+    public DatabaseManager(Context context){
         super(context, db_name, null, db_version);
         this.context = context;
     }

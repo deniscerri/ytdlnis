@@ -3,15 +3,11 @@ package com.deniscerri.ytdlnis.util;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
 import android.text.Html;
 import android.util.Log;
-import android.widget.Toast;
-import androidx.annotation.Nullable;
 
 import com.deniscerri.ytdlnis.R;
-import com.deniscerri.ytdlnis.database.DBManager;
+import com.deniscerri.ytdlnis.database.DatabaseManager;
 import com.deniscerri.ytdlnis.database.Video;
 import com.yausername.youtubedl_android.YoutubeDL;
 import com.yausername.youtubedl_android.YoutubeDLRequest;
@@ -33,13 +29,13 @@ public class InfoUtil {
     private ArrayList<Video> videos;
     private String key;
     private boolean useInvidous;
-    private DBManager dbManager;
+    private DatabaseManager databaseManager;
 
     public InfoUtil(Context context) {
         try{
             SharedPreferences sharedPreferences = context.getSharedPreferences("root_preferences", Activity.MODE_PRIVATE);
             key = sharedPreferences.getString("api_key", "");
-            dbManager = new DBManager(context);
+            databaseManager = new DatabaseManager(context);
             Thread thread = new Thread(() -> {
                 //get Locale
                 JSONObject country = genericRequest("https://ipwho.is/");
@@ -254,8 +250,8 @@ public class InfoUtil {
             String thumb = obj.getString("thumb");
 
             String url = "https://www.youtube.com/watch?v=" + id;
-            int downloadedAudio = dbManager.checkDownloaded(url, "audio");
-            int downloadedVideo = dbManager.checkDownloaded(url, "video");
+            int downloadedAudio = databaseManager.checkDownloaded(url, "audio");
+            int downloadedVideo = databaseManager.checkDownloaded(url, "video");
             int isPlaylist = 0;
 
             video = new Video(id, url, title, author, duration, thumb, downloadedAudio, downloadedVideo, isPlaylist, "youtube", 0, 0, "");
@@ -279,8 +275,8 @@ public class InfoUtil {
 
 
             String url = "https://www.youtube.com/watch?v=" + id;
-            int downloadedAudio = dbManager.checkDownloaded(url, "audio");
-            int downloadedVideo = dbManager.checkDownloaded(url, "video");
+            int downloadedAudio = databaseManager.checkDownloaded(url, "audio");
+            int downloadedVideo = databaseManager.checkDownloaded(url, "video");
             int isPlaylist = 0;
 
             video = new Video(id, url, title, author, duration, thumb, downloadedAudio, downloadedVideo, isPlaylist, "youtube", 0, 0, "");
@@ -514,8 +510,8 @@ public class InfoUtil {
                         author,
                         duration,
                         thumb,
-                        dbManager.checkDownloaded(url, "audio"),
-                        dbManager.checkDownloaded(url, "video"),
+                        databaseManager.checkDownloaded(url, "audio"),
+                        databaseManager.checkDownloaded(url, "video"),
                         isPlaylist,
                         website,
                         0,

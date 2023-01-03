@@ -27,7 +27,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.SearchView;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
@@ -36,7 +35,7 @@ import com.deniscerri.ytdlnis.MainActivity;
 import com.deniscerri.ytdlnis.R;
 import com.deniscerri.ytdlnis.adapter.HomeRecyclerViewAdapter;
 import com.deniscerri.ytdlnis.util.InfoUtil;
-import com.deniscerri.ytdlnis.database.DBManager;
+import com.deniscerri.ytdlnis.database.DatabaseManager;
 import com.deniscerri.ytdlnis.database.Video;
 import com.deniscerri.ytdlnis.service.DownloadInfo;
 import com.deniscerri.ytdlnis.service.IDownloaderListener;
@@ -50,9 +49,7 @@ import com.google.android.material.floatingactionbutton.ExtendedFloatingActionBu
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.android.material.textfield.TextInputLayout;
-import com.google.android.material.textview.MaterialTextView;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.regex.Matcher;
@@ -84,7 +81,7 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
 
     private ArrayList<Video> resultObjects;
     public ArrayList<Video> selectedObjects;
-    private DBManager dbManager;
+    private DatabaseManager databaseManager;
     private InfoUtil infoUtil;
     private ArrayList<Video> downloadQueue;
     MainActivity mainActivity;
@@ -257,9 +254,9 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
         download_all_fab.setOnClickListener(this);
 
         if (inputQueries != null) {
-            dbManager = new DBManager(context);
-            dbManager.clearResults();
-            dbManager.close();
+            databaseManager = new DatabaseManager(context);
+            databaseManager.clearResults();
+            databaseManager.close();
             inputQueriesLength = inputQueries.size();
             homeRecyclerViewAdapter.clear();
 
@@ -277,10 +274,10 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
                         if ((resultObjects.size() > 1 && resultObjects.get(1).getIsPlaylistItem() == 1) || inputQueriesLength > 1) {
                             downloadAllFab.setVisibility(View.VISIBLE);
                         }
-                        dbManager = new DBManager(context);
-                        dbManager.clearResults();
+                        databaseManager = new DatabaseManager(context);
+                        databaseManager.clearResults();
                         for (Video v : resultObjects) v.setIsPlaylistItem(1);
-                        dbManager.addToResults(resultObjects);
+                        databaseManager.addToResults(resultObjects);
                     });
                 }catch (Exception ignored){}
             });
@@ -298,8 +295,8 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
         Handler uiHandler = new Handler(Looper.getMainLooper());
         try {
             Thread thread = new Thread(() -> {
-                dbManager = new DBManager(context);
-                resultObjects = dbManager.getResults();
+                databaseManager = new DatabaseManager(context);
+                resultObjects = databaseManager.getResults();
                 Log.e(TAG, resultObjects.toString());
                 String playlistTitle = "";
                 try {
@@ -307,14 +304,14 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
                 }catch(Exception ignored){}
                 if (resultObjects.size() == 0 || (playlistTitle.equals(getString(R.string.trendingPlaylist)) && !downloading)) {
                     try {
-                        dbManager.clearResults();
+                        databaseManager.clearResults();
                         uiHandler.post(() -> {
                             shimmerCards.startShimmer();
                             shimmerCards.setVisibility(View.VISIBLE);
                         });
                         infoUtil = new InfoUtil(context);
                         resultObjects = infoUtil.getTrending(context);
-                        dbManager.addToResults(resultObjects);
+                        databaseManager.addToResults(resultObjects);
                     } catch (Exception e) {
                         Log.e(TAG, e.toString());
                     }
@@ -337,7 +334,7 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
                     shimmerCards.setVisibility(View.GONE);
                 });
 
-                dbManager.close();
+                databaseManager.close();
                 if (resultObjects != null) {
                     uiHandler.post(this::scrollToTop);
                     if (resultObjects.size() > 1 && resultObjects.get(1).getIsPlaylistItem() == 1) {
@@ -383,7 +380,7 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
         searchView.setInputType(InputType.TYPE_TEXT_VARIATION_URI);
         searchView.setQueryHint(getString(R.string.search_hint));
 
-        dbManager = new DBManager(context);
+        databaseManager = new DatabaseManager(context);
         infoUtil = new InfoUtil(context);
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -437,8 +434,8 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
         topAppBar.setOnMenuItemClickListener((MenuItem m) -> {
             int itemId = m.getItemId();
             if(itemId == R.id.delete_results){
-                dbManager.clearResults();
-                dbManager.close();
+                databaseManager.clearResults();
+                databaseManager.close();
                 selectedObjects = new ArrayList<>();
                 downloadAllFab.setVisibility(View.GONE);
                 downloadFabs.setVisibility(View.GONE);
@@ -477,7 +474,7 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
     }
 
     private void parseQuery(boolean resetResults) {
-        dbManager = new DBManager(context);
+        databaseManager = new DatabaseManager(context);
         infoUtil = new InfoUtil(context);
         new Handler(Looper.getMainLooper()).post(this::scrollToTop);
 
@@ -504,8 +501,8 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
                         ArrayList<Video> res = infoUtil.search(inputQuery);
                         resultObjects.addAll(res);
                         new Handler(Looper.getMainLooper()).post(() -> {
-                            if (resetResults) dbManager.clearResults();
-                            dbManager.addToResults(resultObjects);
+                            if (resetResults) databaseManager.clearResults();
+                            databaseManager.addToResults(resultObjects);
                             homeRecyclerViewAdapter.add(res);
                             shimmerCards.stopShimmer();
                             shimmerCards.setVisibility(View.GONE);
@@ -539,8 +536,8 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
                         res.add(v);
                         resultObjects.add(v);
                         new Handler(Looper.getMainLooper()).post(() -> {
-                            if (resetResults) dbManager.clearResults();
-                            dbManager.addToResults(resultObjects);
+                            if (resetResults) databaseManager.clearResults();
+                            databaseManager.addToResults(resultObjects);
                             homeRecyclerViewAdapter.add(res);
                             shimmerCards.stopShimmer();
                             shimmerCards.setVisibility(View.GONE);
@@ -557,7 +554,7 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
                 case "Playlist": {
                     inputQuery = inputQuery.split("list=")[1];
                     String nextPageToken = "";
-                    if (resetResults) dbManager.clearResults();
+                    if (resetResults) databaseManager.clearResults();
                     if (resetResults){
                         resultObjects.clear();
                         homeRecyclerViewAdapter.clear();
@@ -568,7 +565,7 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
                         String tmp_token = tmp.getNextPageToken();
                         resultObjects.addAll(tmp_vids);
                         new Handler(Looper.getMainLooper()).post(() -> {
-                            dbManager.addToResults(tmp_vids);
+                            databaseManager.addToResults(tmp_vids);
                             homeRecyclerViewAdapter.add(tmp_vids);
                             shimmerCards.stopShimmer();
                             shimmerCards.setVisibility(View.GONE);
@@ -586,9 +583,9 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
                         if (video != null) {
                             resultObjects.addAll(video);
                             new Handler(Looper.getMainLooper()).post(() -> {
-                                if (resetResults) dbManager.clearResults();
+                                if (resetResults) databaseManager.clearResults();
                                 homeRecyclerViewAdapter.add(video);
-                                dbManager.addToResults(resultObjects);
+                                databaseManager.addToResults(resultObjects);
                             });
                         }
 
@@ -607,7 +604,7 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
             Log.e(TAG, e.toString());
         }
 
-        dbManager.close();
+        databaseManager.close();
     }
 
 
@@ -666,10 +663,10 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
 
     public void updateDownloadStatusOnResult(Video v, String type, boolean downloaded) {
         if (v != null) {
-            dbManager = new DBManager(context);
+            databaseManager = new DatabaseManager(context);
             try {
-                dbManager.updateDownloadStatusOnResult(v.getVideoId(), type, downloaded);
-                dbManager.close();
+                databaseManager.updateDownloadStatusOnResult(v.getVideoId(), type, downloaded);
+                databaseManager.close();
             } catch (Exception ignored) {
             }
         }
@@ -680,10 +677,10 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
             if (type.equals("audio")) v.setDownloadingAudio(isDownloading);
             else if (type.equals("video")) v.setDownloadingVideo(isDownloading);
             homeRecyclerViewAdapter.updateVideoListItem(v, resultObjects.indexOf(v));
-            dbManager = new DBManager(context);
+            databaseManager = new DatabaseManager(context);
             try {
-                dbManager.updateDownloadingStatusOnResult(v.getVideoId(), type, isDownloading);
-                dbManager.close();
+                databaseManager.updateDownloadingStatusOnResult(v.getVideoId(), type, isDownloading);
+                databaseManager.close();
             } catch (Exception ignored) {}
         }
     }

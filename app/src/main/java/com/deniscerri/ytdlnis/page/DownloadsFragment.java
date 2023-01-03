@@ -29,7 +29,7 @@ import android.widget.Toast;
 import com.deniscerri.ytdlnis.MainActivity;
 import com.deniscerri.ytdlnis.R;
 import com.deniscerri.ytdlnis.adapter.DownloadsRecyclerViewAdapter;
-import com.deniscerri.ytdlnis.database.DBManager;
+import com.deniscerri.ytdlnis.database.DatabaseManager;
 import com.deniscerri.ytdlnis.database.Video;
 import com.deniscerri.ytdlnis.service.DownloadInfo;
 import com.deniscerri.ytdlnis.service.IDownloaderListener;
@@ -56,7 +56,7 @@ import java.util.Locale;
 public class DownloadsFragment extends Fragment implements DownloadsRecyclerViewAdapter.OnItemClickListener, View.OnClickListener, View.OnLongClickListener{
     private boolean downloading = false;
     private View fragmentView;
-    private DBManager dbManager;
+    private DatabaseManager databaseManager;
     Context context;
     Activity activity;
     MainActivity mainActivity;
@@ -118,8 +118,8 @@ public class DownloadsFragment extends Fragment implements DownloadsRecyclerView
                 String type = info.getDownloadType();
                 Video v = findVideo(url, type);
                 Log.e(TAG, v.toString());
-                dbManager = new DBManager(context);
-                dbManager.clearHistoryItem(v, false);
+                databaseManager = new DatabaseManager(context);
+                databaseManager.clearHistoryItem(v, false);
                 int position = downloadsObjects.indexOf(v);
                 downloadsObjects.remove(v);
                 downloadsRecyclerViewAdapter.notifyItemRemoved(position);
@@ -174,13 +174,13 @@ public class DownloadsFragment extends Fragment implements DownloadsRecyclerView
                     e.printStackTrace();
                 }
 
-                dbManager = new DBManager(context);
+                databaseManager = new DatabaseManager(context);
                 try {
                     item.setDownloadedTime(downloadedTime);
                     item.setDownloadPath(downloadPath);
                     item.setQueuedDownload(false);
-                    dbManager.updateHistoryItem(item);
-                    dbManager.close();
+                    databaseManager.updateHistoryItem(item);
+                    databaseManager.close();
                     downloadsRecyclerViewAdapter.notifyItemChanged(downloadsObjects.indexOf(item));
                 } catch (Exception ignored) {}
                 downloading = false;
@@ -193,9 +193,9 @@ public class DownloadsFragment extends Fragment implements DownloadsRecyclerView
             v = findVideo(v.getURL(), v.getDownloadedType());
             try {
                 downloadsObjects.remove(v);
-                dbManager = new DBManager(context);
-                dbManager.clearHistoryItem(v,false);
-                dbManager.close();
+                databaseManager = new DatabaseManager(context);
+                databaseManager.clearHistoryItem(v,false);
+                databaseManager.close();
                 downloadsRecyclerViewAdapter.notifyItemRemoved(downloadsObjects.indexOf(v));
 
                 if (downloadsObjects.isEmpty()) initCards();
@@ -206,9 +206,9 @@ public class DownloadsFragment extends Fragment implements DownloadsRecyclerView
         @Override
         public void onDownloadCancelAll(DownloadInfo downloadInfo){
             try {
-                dbManager = new DBManager(context);
-                dbManager.clearDownloadingHistory();
-                dbManager.close();
+                databaseManager = new DatabaseManager(context);
+                databaseManager.clearDownloadingHistory();
+                databaseManager.close();
                 initCards();
                 downloading = false;
             }catch (Exception e){
@@ -283,11 +283,11 @@ public class DownloadsFragment extends Fragment implements DownloadsRecyclerView
         downloadsRecyclerViewAdapter.clear();
         no_results.setVisibility(View.GONE);
         selectionChips.setVisibility(View.VISIBLE);
-        dbManager = new DBManager(context);
+        databaseManager = new DatabaseManager(context);
         try{
             Thread thread = new Thread(() -> {
-                if (!downloading) dbManager.clearDownloadingHistory();
-                downloadsObjects = dbManager.getHistory("", format,website,sort);
+                if (!downloading) databaseManager.clearDownloadingHistory();
+                downloadsObjects = databaseManager.getHistory("", format,website,sort);
                 uiHandler.post(() -> {
                     downloadsRecyclerViewAdapter.add(downloadsObjects);
                     shimmerCards.stopShimmer();
@@ -302,7 +302,7 @@ public class DownloadsFragment extends Fragment implements DownloadsRecyclerView
                         websiteGroup.removeAllViews();
                     });
                 }
-                dbManager.close();
+                databaseManager.close();
             });
             thread.start();
         }catch(Exception e){
@@ -336,14 +336,14 @@ public class DownloadsFragment extends Fragment implements DownloadsRecyclerView
         searchView.setInputType(InputType.TYPE_CLASS_TEXT);
         searchView.setQueryHint(getString(R.string.search_history_hint));
 
-        dbManager = new DBManager(context);
+        databaseManager = new DatabaseManager(context);
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 searchQuery = query;
                 topAppBar.getMenu().findItem(R.id.search_downloads).collapseActionView();
-                downloadsObjects = dbManager.getHistory(query, format,website,sort);
+                downloadsObjects = databaseManager.getHistory(query, format,website,sort);
                 downloadsRecyclerViewAdapter.clear();
                 downloadsRecyclerViewAdapter.add(downloadsObjects);
 
@@ -358,7 +358,7 @@ public class DownloadsFragment extends Fragment implements DownloadsRecyclerView
             @Override
             public boolean onQueryTextChange(String newText) {
                 searchQuery = newText;
-                downloadsObjects = dbManager.getHistory(newText, format,website,sort);
+                downloadsObjects = databaseManager.getHistory(newText, format,website,sort);
                 downloadsRecyclerViewAdapter.clear();
                 downloadsRecyclerViewAdapter.add(downloadsObjects);
 
@@ -391,7 +391,7 @@ public class DownloadsFragment extends Fragment implements DownloadsRecyclerView
                     dialogInterface.cancel();
                 });
                 delete_dialog.setPositiveButton(getString(R.string.ok), (dialogInterface, i) -> {
-                    dbManager.clearHistory();
+                    databaseManager.clearHistory();
                     downloadsRecyclerViewAdapter.clear();
                     downloadsObjects.clear();
                     no_results.setVisibility(View.VISIBLE);
@@ -412,7 +412,7 @@ public class DownloadsFragment extends Fragment implements DownloadsRecyclerView
                     dialogInterface.cancel();
                 });
                 delete_dialog.setPositiveButton(getString(R.string.ok), (dialogInterface, i) -> {
-                    dbManager.clearDeletedHistory();
+                    databaseManager.clearDeletedHistory();
                     initCards();
                 });
                 delete_dialog.show();
@@ -429,7 +429,7 @@ public class DownloadsFragment extends Fragment implements DownloadsRecyclerView
                     dialogInterface.cancel();
                 });
                 delete_dialog.setPositiveButton(getString(R.string.ok), (dialogInterface, i) -> {
-                    dbManager.clearDuplicateHistory();
+                    databaseManager.clearDuplicateHistory();
                     initCards();
                 });
                 delete_dialog.show();
@@ -446,7 +446,7 @@ public class DownloadsFragment extends Fragment implements DownloadsRecyclerView
                     dialogInterface.cancel();
                 });
                 delete_dialog.setPositiveButton(getString(R.string.ok), (dialogInterface, i) -> {
-                    dbManager.clearDownloadingHistory();
+                    databaseManager.clearDownloadingHistory();
                     mainActivity.cancelDownloadService();
                     initCards();
                 });
@@ -470,7 +470,7 @@ public class DownloadsFragment extends Fragment implements DownloadsRecyclerView
 
             newest.setOnClickListener(view1 -> {
                 sort = "DESC";
-                downloadsObjects = dbManager.getHistory(searchQuery, format,website,sort);
+                downloadsObjects = databaseManager.getHistory(searchQuery, format,website,sort);
                 downloadsRecyclerViewAdapter.clear();
                 downloadsRecyclerViewAdapter.add(downloadsObjects);
                 sortSheet.cancel();
@@ -478,7 +478,7 @@ public class DownloadsFragment extends Fragment implements DownloadsRecyclerView
 
             oldest.setOnClickListener(view1 -> {
                 sort = "ASC";
-                downloadsObjects = dbManager.getHistory(searchQuery, format,website,sort);
+                downloadsObjects = databaseManager.getHistory(searchQuery, format,website,sort);
                 downloadsRecyclerViewAdapter.clear();
                 downloadsRecyclerViewAdapter.add(downloadsObjects);
                 sortSheet.cancel();
@@ -501,11 +501,11 @@ public class DownloadsFragment extends Fragment implements DownloadsRecyclerView
                 if (recyclerView.getVisibility() == View.GONE){
 
                 }
-                downloadsObjects = dbManager.getHistory(searchQuery,format,website,sort);
+                downloadsObjects = databaseManager.getHistory(searchQuery,format,website,sort);
                 audio.setChecked(true);
             }else {
                 format = "";
-                downloadsObjects = dbManager.getHistory(searchQuery,format,website,sort);
+                downloadsObjects = databaseManager.getHistory(searchQuery,format,website,sort);
                 audio.setChecked(false);
             }
 
@@ -517,11 +517,11 @@ public class DownloadsFragment extends Fragment implements DownloadsRecyclerView
         video.setOnClickListener(view -> {
             if (video.isChecked()) {
                 format = "video";
-                downloadsObjects = dbManager.getHistory(searchQuery,format,website,sort);
+                downloadsObjects = databaseManager.getHistory(searchQuery,format,website,sort);
                 video.setChecked(true);
             }else {
                 format = "";
-                downloadsObjects = dbManager.getHistory(searchQuery,format,website,sort);
+                downloadsObjects = databaseManager.getHistory(searchQuery,format,website,sort);
                 video.setChecked(false);
             }
 
@@ -545,11 +545,11 @@ public class DownloadsFragment extends Fragment implements DownloadsRecyclerView
             tmp.setOnClickListener(view -> {
                 if (tmp.isChecked()){
                     website = (String) tmp.getText();
-                    downloadsObjects = dbManager.getHistory(searchQuery,format,website,sort);
+                    downloadsObjects = databaseManager.getHistory(searchQuery,format,website,sort);
                     websiteGroup.check(view.getId());
                 }else{
                     website = "";
-                    downloadsObjects = dbManager.getHistory(searchQuery,format,website,sort);
+                    downloadsObjects = databaseManager.getHistory(searchQuery,format,website,sort);
                     websiteGroup.clearCheck();
                 }
                 downloadsRecyclerViewAdapter.clear();
@@ -586,7 +586,7 @@ public class DownloadsFragment extends Fragment implements DownloadsRecyclerView
     private void removeSelectedItems(){
         if(bottomSheet != null) bottomSheet.hide();
         final boolean[] delete_file = {false};
-        dbManager = new DBManager(context);
+        databaseManager = new DatabaseManager(context);
 
         MaterialAlertDialogBuilder delete_dialog = new MaterialAlertDialogBuilder(fragmentContext);
         delete_dialog.setTitle(getString(R.string.you_are_going_to_delete_multiple_items));
@@ -600,10 +600,10 @@ public class DownloadsFragment extends Fragment implements DownloadsRecyclerView
                 int position = downloadsObjects.indexOf(v);
                 downloadsObjects.remove(v);
                 downloadsRecyclerViewAdapter.remove(position);
-                dbManager.clearHistoryItem(v, delete_file[0]);
+                databaseManager.clearHistoryItem(v, delete_file[0]);
             }
             updateWebsiteChips();
-            dbManager.close();
+            databaseManager.close();
             selectedObjects = new ArrayList<>();
             downloadsRecyclerViewAdapter.clearCheckedVideos();
             deleteFab.setVisibility(View.GONE);
@@ -622,7 +622,7 @@ public class DownloadsFragment extends Fragment implements DownloadsRecyclerView
     private void removedownloadsItem(int position){
         if(bottomSheet != null) bottomSheet.hide();
         final boolean[] delete_file = {false};
-        dbManager = new DBManager(context);
+        databaseManager = new DatabaseManager(context);
 
         Video v = downloadsObjects.get(position);
         MaterialAlertDialogBuilder delete_dialog = new MaterialAlertDialogBuilder(fragmentContext);
@@ -635,8 +635,8 @@ public class DownloadsFragment extends Fragment implements DownloadsRecyclerView
             downloadsObjects.remove(position);
             downloadsRecyclerViewAdapter.remove(position);
             updateWebsiteChips();
-            dbManager.clearHistoryItem(v, delete_file[0]);
-            dbManager.close();
+            databaseManager.clearHistoryItem(v, delete_file[0]);
+            databaseManager.close();
 
             if(downloadsObjects.size() == 0){
                 uiHandler.post(() -> {
