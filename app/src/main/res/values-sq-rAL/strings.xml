@@ -133,4 +133,13 @@
     <string name="request_permission_desc">Ky aplikacion ka nevojë për lejen e Skedarëve për të ruajtur shkarkimet në paisje</string>
     <string name="exit_app">Dil</string>
     <string name="warning">Kujdes</string>
+    <string name="sponsorblock_nonmusic">Pjesë pa Muzikë dhe Jashtë Teme</string>
+    <string name="sponsorblock_sponsors">Sponsorizimet</string>
+    <string name="sponsorblock_intro">Hyrjet</string>
+    <string name="sponsorblock_outro">Përfundimi</string>
+    <string name="sponsorblock_promos">Vetë-Promovimet</string>
+    <string name="sponsorblock_previews">Pamjet Paraprake</string>
+    <string name="sponsorblock_fillers">Pjesë Shtesë</string>
+    <string name="sponsorblock_reminders">Përkujtuesit e Abonimit</string>
+    <string name="select_sponsorblock_filtering">Zgjidh Filtrimin e SponsorBlock</string>
 </resources>
