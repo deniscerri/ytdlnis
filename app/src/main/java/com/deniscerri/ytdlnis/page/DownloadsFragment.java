@@ -192,12 +192,11 @@ public class DownloadsFragment extends Fragment implements DownloadsRecyclerView
             Video v = info.getVideo();
             v = findVideo(v.getURL(), v.getDownloadedType());
             try {
-                downloadsObjects.remove(v);
                 databaseManager = new DatabaseManager(context);
                 databaseManager.clearHistoryItem(v,false);
                 databaseManager.close();
                 downloadsRecyclerViewAdapter.notifyItemRemoved(downloadsObjects.indexOf(v));
-
+                downloadsObjects.remove(v);
                 if (downloadsObjects.isEmpty()) initCards();
                 downloading = false;
             }catch (Exception ignored){}

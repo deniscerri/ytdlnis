@@ -79,6 +79,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setContentView(binding.root)
         context = baseContext
+        askPermissions()
         reconnectDownloadService()
         checkUpdate()
         fm = supportFragmentManager
@@ -126,7 +127,6 @@ class MainActivity : AppCompatActivity() {
             view.onApplyWindowInsets(windowInsets)
             windowInsets
         }
-        askPermissions()
         val intent = intent
         handleIntents(intent)
     }
