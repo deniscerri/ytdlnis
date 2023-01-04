@@ -1,16 +1,19 @@
 <h1 align="center">
-	ytdlnis
+	<img src="app/src/main/ic_launcher-playstore.png" width="15%" /> <br>
+	YTDLnis
 </h1>
-<p align="center">
-	Android App for downloading audio and videos using yt-dlp
-</p>
-<p align="center">
-	Created as a project for the class, Mobile Programming. Continued to update it because why not.
-</p>
 
-## Download
+<h3 align="center">
+	YTDLnis is a free and open source video/audio downloader using yt-dlp for Android 6.0 and above.
+</h3>
 
-[Get Latest Release Here](https://github.com/deniscerri/ytdlnis/releases/)
+<div align="center">
+
+| Build | Latest Release | Contribute |
+|-------|----------|------------|
+| ![CI](https://github.com/deniscerri/ytdlnis/actions/workflows/android.yml/badge.svg?branch=main&event=pull) | [![stable release](https://img.shields.io/github/release/deniscerri/ytdlnis.svg?maxAge=3600&label=download)](https://github.com/deniscerri/ytdlnis/releases) | [![Translation status](https://hosted.weblate.org/widgets/ytdlnis/-/svg-badge.svg)](https://hosted.weblate.org/engage/ytdlnis/?utm_source=widget) |
+
+</div>
 
 ## Features:
 
