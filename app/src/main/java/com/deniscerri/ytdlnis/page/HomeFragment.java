@@ -529,6 +529,11 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
                         inputQuery = el[0];
                     }
 
+                    if (inputQuery.contains("?feature=share")){
+                        el = inputQuery.split("\\?feature=share");
+                        inputQuery = el[0];
+                    }
+
                     try {
                         if (resetResults) resultObjects.clear();
                         Video v = infoUtil.getVideo(inputQuery);
