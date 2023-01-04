@@ -523,17 +523,10 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
                     if (inputQuery.contains("watch?v=")) {
                         inputQuery = inputQuery.substring(8);
                     }
-
-                    if (inputQuery.contains("&list=")) {
-                        el = inputQuery.split("&list=");
-                        inputQuery = el[0];
-                    }
-
-                    if (inputQuery.contains("?feature=share")){
-                        el = inputQuery.split("\\?feature=share");
-                        inputQuery = el[0];
-                    }
-
+                    el = inputQuery.split("&");
+                    inputQuery = el[0];
+                    el = inputQuery.split("\\?");
+                    inputQuery = el[0];
                     try {
                         if (resetResults) resultObjects.clear();
                         Video v = infoUtil.getVideo(inputQuery);
