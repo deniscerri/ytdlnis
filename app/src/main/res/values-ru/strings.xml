@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="remove_results">Удалить результаты</string>
+    <string name="search">Поиск</string>
+    <string name="remove_all">Удалить все</string>
+</resources>
