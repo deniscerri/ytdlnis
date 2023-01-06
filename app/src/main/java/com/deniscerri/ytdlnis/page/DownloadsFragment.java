@@ -33,6 +33,7 @@ import com.deniscerri.ytdlnis.database.DatabaseManager;
 import com.deniscerri.ytdlnis.database.Video;
 import com.deniscerri.ytdlnis.service.DownloadInfo;
 import com.deniscerri.ytdlnis.service.IDownloaderListener;
+import com.deniscerri.ytdlnis.util.FileUtil;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.MaterialToolbar;
@@ -76,6 +77,7 @@ public class DownloadsFragment extends Fragment implements DownloadsRecyclerView
     public ArrayList<Video> selectedObjects;
     private LinearProgressIndicator progressBar;
     private ExtendedFloatingActionButton deleteFab;
+    private FileUtil fileUtil;
     private String format = "";
     private String website = "";
     private String sort = "DESC";
@@ -135,27 +137,12 @@ public class DownloadsFragment extends Fragment implements DownloadsRecyclerView
             Video item = downloadInfo.getVideo();
             String url = item.getURL();
             String type = downloadInfo.getDownloadType();
+            String path = downloadInfo.getDownloadPath();
             item = findVideo(url, type);
+            int index = downloadsObjects.indexOf(item);
             try{
-                // MEDIA SCAN
-                ArrayList<File> files = new ArrayList<>();
-                String title = downloadInfo.getVideo().getTitle().replaceAll("[^a-zA-Z0-9]","");
-                String pathTmp = "";
-                File path = new File(downloadInfo.getDownloadPath());
-                for( File file : path.listFiles() ){
-                    if(file.isFile()){
-                        pathTmp = file.getAbsolutePath().replaceAll("[^a-zA-Z0-9]","");
-                        if (pathTmp.contains(title)){
-                            files.add(file);
-                        }
-                    }
-                }
-
-                String[] paths = new String[files.size()];
-                for (int i = 0; i < files.size(); i++) paths[i] = files.get(i).getAbsolutePath();
-                MediaScannerConnection.scanFile(context, paths, null, null);
                 item.setDownloadedType(type);
-
+                item.setDownloadPath(path);
                 Calendar cal = Calendar.getInstance();
                 Date date = new Date();
                 cal.setTime(date);
@@ -169,7 +156,7 @@ public class DownloadsFragment extends Fragment implements DownloadsRecyclerView
 
                 String downloadPath = "";
                 try{
-                    downloadPath = paths[0];
+                    downloadPath = fileUtil.scanMedia(item, context);
                 }catch(Exception e){
                     e.printStackTrace();
                 }
@@ -181,7 +168,7 @@ public class DownloadsFragment extends Fragment implements DownloadsRecyclerView
                     item.setQueuedDownload(false);
                     databaseManager.updateHistoryItem(item);
                     databaseManager.close();
-                    downloadsRecyclerViewAdapter.notifyItemChanged(downloadsObjects.indexOf(item));
+                    downloadsRecyclerViewAdapter.notifyItemChanged(index);
                 } catch (Exception ignored) {}
                 downloading = false;
             }catch(Exception ignored){}
@@ -256,6 +243,7 @@ public class DownloadsFragment extends Fragment implements DownloadsRecyclerView
         selectionChips = fragmentView.findViewById(R.id.downloads_selection_chips);
         websiteGroup = fragmentView.findViewById(R.id.website_chip_group);
         deleteFab = fragmentView.findViewById(R.id.delete_selected_fab);
+        fileUtil = new FileUtil();
 
         deleteFab.setTag("deleteSelected");
         deleteFab.setOnClickListener(this);

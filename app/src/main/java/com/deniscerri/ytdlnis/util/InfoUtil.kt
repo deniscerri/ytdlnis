@@ -29,28 +29,30 @@ class InfoUtil(context: Context) {
                 context.getSharedPreferences("root_preferences", Activity.MODE_PRIVATE)
             key = sharedPreferences.getString("api_key", "")
             databaseManager = DatabaseManager(context)
-            val thread = Thread {
-
-                //get Locale
-                val country = genericRequest("https://ipwho.is/")
-                countryCODE = try {
-                    country.getString("country_code")
-                } catch (e: Exception) {
-                    "US"
-                }
-                val res = genericRequest(invidousURL + "stats")
-                useInvidous = res.length() != 0
-            }
-            thread.start()
-            thread.join()
         } catch (e: Exception) {
             e.printStackTrace()
         }
         videos = ArrayList()
     }
 
+    private fun init(){
+        if (countryCODE == null){
+            val country = genericRequest("https://ipwho.is/")
+            countryCODE = try {
+                country.getString("country_code")
+            } catch (e: Exception) {
+                "US"
+            }
+        }
+        if (useInvidous == false){
+            val res = genericRequest(invidousURL + "stats")
+            useInvidous = res.length() != 0
+        }
+    }
+
     @Throws(JSONException::class)
     fun search(query: String): ArrayList<Video?> {
+        init()
         videos = ArrayList()
         return if (key!!.isEmpty()) {
             if (useInvidous) searchFromInvidous(query) else getFromYTDL(query)
@@ -133,6 +135,7 @@ class InfoUtil(context: Context) {
 
     @Throws(JSONException::class)
     fun getPlaylist(id: String, nextPageToken: String): PlaylistTuple {
+        init()
         videos = ArrayList()
         if (key!!.isEmpty()) {
             return if (useInvidous) getPlaylistFromInvidous(id) else PlaylistTuple(
@@ -216,6 +219,7 @@ class InfoUtil(context: Context) {
 
     @Throws(JSONException::class)
     fun getVideo(id: String): Video? {
+        init()
         if (key!!.isEmpty()) {
             return if (useInvidous) {
                 val res = genericRequest(invidousURL + "videos/" + id)
@@ -392,6 +396,7 @@ class InfoUtil(context: Context) {
 
     @Throws(JSONException::class)
     fun getTrending(context: Context): ArrayList<Video?> {
+        init()
         videos = ArrayList()
         return if (key!!.isEmpty()) {
             if (useInvidous) getTrendingFromInvidous(context) else ArrayList()
@@ -447,6 +452,7 @@ class InfoUtil(context: Context) {
     }
 
     fun getFromYTDL(query: String): ArrayList<Video?> {
+        init()
         videos = ArrayList()
         try {
             val request = YoutubeDLRequest(query)

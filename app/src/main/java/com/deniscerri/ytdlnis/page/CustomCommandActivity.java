@@ -53,7 +53,7 @@ public class CustomCommandActivity extends AppCompatActivity {
                 ArrayList<IDownloaderListener> listeners = new ArrayList<>();
                 listeners.add(listener);
                 iDownloaderService.addActivity(CustomCommandActivity.this, listeners);
-                listener.onDownloadStart(iDownloaderService.getDownloadInfo());
+                listener.onDownloadStart(iDownloaderService.getInfo());
             }catch(Exception e){
                 e.printStackTrace();
             }

@@ -5,7 +5,10 @@
         <item name="android:windowLightStatusBar">?attr/isLightTheme</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:color">@android:color/transparent</item>
+        <item name="android:windowIsTranslucent">true</item>
     </style>
+
+    <style name="AppTheme" parent="AppDefaultTheme" />
 
     <style name="Toolbar" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="searchViewStyle">@style/searchStyle</item>

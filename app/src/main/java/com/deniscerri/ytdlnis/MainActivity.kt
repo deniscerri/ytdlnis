@@ -59,7 +59,7 @@ class MainActivity : AppCompatActivity() {
                 iDownloaderService!!.addActivity(this@MainActivity, listeners)
                 for (i in listeners.indices) {
                     val listener = listeners[i]
-                    listener.onDownloadStart(iDownloaderService!!.downloadInfo)
+                    listener.onDownloadStart(iDownloaderService!!.info)
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
