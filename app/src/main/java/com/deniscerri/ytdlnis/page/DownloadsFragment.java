@@ -121,8 +121,8 @@ public class DownloadsFragment extends Fragment implements DownloadsRecyclerView
                 databaseManager = new DatabaseManager(context);
                 databaseManager.clearHistoryItem(v, false);
                 int position = downloadsObjects.indexOf(v);
-                downloadsObjects.remove(v);
                 downloadsRecyclerViewAdapter.notifyItemRemoved(position);
+                downloadsObjects.remove(v);
 
                 if (downloadsObjects.isEmpty()) initCards();
                 downloading = false;

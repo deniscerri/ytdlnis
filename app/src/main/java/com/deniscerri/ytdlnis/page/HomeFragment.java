@@ -297,7 +297,6 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
             Thread thread = new Thread(() -> {
                 databaseManager = new DatabaseManager(context);
                 resultObjects = databaseManager.getResults();
-                Log.e(TAG, resultObjects.toString());
                 String playlistTitle = "";
                 try {
                     playlistTitle = resultObjects.get(0).getPlaylistTitle();
@@ -329,7 +328,9 @@ public class HomeFragment extends Fragment implements HomeRecyclerViewAdapter.On
                 }
 
                 uiHandler.post(() -> {
-                    homeRecyclerViewAdapter.add(resultObjects);
+                    if (homeRecyclerViewAdapter.getItemCount() != resultObjects.size()){
+                        homeRecyclerViewAdapter.add(resultObjects);
+                    }
                     shimmerCards.stopShimmer();
                     shimmerCards.setVisibility(View.GONE);
                 });
