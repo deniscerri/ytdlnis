@@ -7,10 +7,17 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Binder
+import android.os.Build
 import android.os.IBinder
+import android.os.SystemClock
 import android.provider.DocumentsContract
+import android.provider.Settings.Global
 import android.util.Log
 import android.widget.Toast
+import androidx.work.ExistingWorkPolicy
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
+import androidx.work.workDataOf
 import com.deniscerri.ytdlnis.database.Video
 import com.deniscerri.ytdlnis.page.CustomCommandActivity
 import com.deniscerri.ytdlnis.service.DownloadInfo
@@ -18,6 +25,10 @@ import com.deniscerri.ytdlnis.service.IDownloaderListener
 import com.deniscerri.ytdlnis.service.IDownloaderService
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.NotificationUtil
+import com.deniscerri.ytdlnis.work.FileTransferWorker
+import com.deniscerri.ytdlnis.work.FileTransferWorker.Companion.originDir
+import com.deniscerri.ytdlnis.work.FileTransferWorker.Companion.title
+import com.deniscerri.ytdlnis.work.FileTransferWorker.Companion.downLocation
 import com.yausername.youtubedl_android.DownloadProgressCallback
 import com.yausername.youtubedl_android.YoutubeDL
 import com.yausername.youtubedl_android.YoutubeDLRequest
@@ -26,6 +37,7 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.*
 import java.io.File
 import java.io.FileOutputStream
 import java.util.*
@@ -46,6 +58,8 @@ class DownloaderService : Service() {
     private var context: Context? = null
     var downloadProcessID = "processID"
     private var downloadNotificationID = 0
+    private lateinit var notificationChannelID : String
+    private lateinit var workManager : WorkManager
 
     private val callback: (Float, Long?, String?) -> Unit =
         { progress: Float, _: Long?, line: String? ->
@@ -58,7 +72,8 @@ class DownloaderService : Service() {
             }
             notificationUtil.updateDownloadNotification(
                 downloadNotificationID,
-                line!!, progress.toInt(), downloadQueue.size, title
+                line!!, progress.toInt(), downloadQueue.size, title,
+                notificationChannelID
             )
             try {
                 for (activity in activities.keys) {
@@ -74,17 +89,11 @@ class DownloaderService : Service() {
             } catch (ignored: Exception) {
             }
         }
-//    private val callback = object : DownloadProgressCallback {
-//        override fun onProgressUpdate(progress: Float, etaInSeconds: Long, line: String?) {
-//            override fun onProgressUpdate(progress: Float, etaInSeconds: Long, line: String?) {
-//
-//            }
-//        }
-//    }
 
     override fun onCreate() {
         super.onCreate()
         context = this
+        this.workManager = WorkManager.getInstance(context!!.applicationContext)
     }
 
     override fun onBind(intent: Intent): IBinder? {
@@ -93,9 +102,9 @@ class DownloaderService : Service() {
         if (intent.getBooleanExtra("rebind", false)) {
             return binder
         }
-        val id = intent.getIntExtra("id", 1)
-        when (id) {
+        when (val id = intent.getIntExtra("id", 1)) {
             NotificationUtil.DOWNLOAD_NOTIFICATION_ID -> {
+                notificationChannelID = NotificationUtil.DOWNLOAD_SERVICE_CHANNEL_ID
                 theIntent = Intent(this, MainActivity::class.java)
                 pendingIntent =
                     PendingIntent.getActivity(this, 0, theIntent, PendingIntent.FLAG_IMMUTABLE)
@@ -106,21 +115,23 @@ class DownloaderService : Service() {
                 downloadInfo.downloadQueue = downloadQueue
                 val title = downloadInfo.video.title
                 val notification =
-                    App.notificationUtil.createDownloadServiceNotification(pendingIntent, title)
+                    App.notificationUtil.createDownloadServiceNotification(pendingIntent, title, NotificationUtil.DOWNLOAD_SERVICE_CHANNEL_ID)
                 startForeground(downloadNotificationID, notification)
                 startDownload(downloadQueue)
             }
             NotificationUtil.COMMAND_DOWNLOAD_NOTIFICATION_ID -> {
+                notificationChannelID = NotificationUtil.COMMAND_DOWNLOAD_SERVICE_CHANNEL_ID
                 theIntent = Intent(this, CustomCommandActivity::class.java)
                 pendingIntent =
                     PendingIntent.getActivity(this, 0, theIntent, PendingIntent.FLAG_IMMUTABLE)
                 downloadNotificationID = id
                 val command = intent.getStringExtra("command")
-                val command_notification = App.notificationUtil.createDownloadServiceNotification(
+                val commandNotification = App.notificationUtil.createDownloadServiceNotification(
                     pendingIntent,
-                    getString(R.string.running_ytdlp_command)
+                    getString(R.string.running_ytdlp_command),
+                    NotificationUtil.COMMAND_DOWNLOAD_SERVICE_CHANNEL_ID
                 )
-                startForeground(downloadNotificationID, command_notification)
+                startForeground(downloadNotificationID, commandNotification)
                 startCommandDownload(command)
             }
         }
@@ -129,7 +140,11 @@ class DownloaderService : Service() {
 
     override fun onDestroy() {
         super.onDestroy()
-        stopForeground(true)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
+            stopForeground(STOP_FOREGROUND_REMOVE)
+        }else{
+            stopForeground(true)
+        }
         stopSelf()
     }
 
@@ -294,6 +309,11 @@ class DownloaderService : Service() {
         val url = video.getURL()
         val request = YoutubeDLRequest(url)
         val type = video.downloadedType
+        val downloadLocation = getDownloadLocation(type)
+
+        var tempFileDir = File(cacheDir.absolutePath + """/${video.title}##${video.downloadedType}""")
+        tempFileDir.delete()
+        tempFileDir.mkdir()
 
         val sharedPreferences = context!!.getSharedPreferences("root_preferences", MODE_PRIVATE)
         val aria2 = sharedPreferences.getBoolean("aria2", false)
@@ -312,11 +332,16 @@ class DownloaderService : Service() {
             request.addOption("--convert-thumbnails", "png")
         }
         request.addOption("--no-mtime")
-        val sponsorBlockFilters = sharedPreferences.getString("sponsorblock_filter", "")
-        if (!sponsorBlockFilters!!.isEmpty()) {
-            request.addOption("--sponsorblock-remove", sponsorBlockFilters)
+        val sponsorBlockFilters = sharedPreferences.getStringSet("sponsorblock_filters", emptySet())
+        if (sponsorBlockFilters!!.isNotEmpty()) {
+            val filters = java.lang.String.join(",", sponsorBlockFilters)
+            request.addOption("--sponsorblock-remove", filters)
         }
         if (type == "audio") {
+            if (downloadLocation.equals(getString(R.string.music_path))){
+                tempFileDir = File(getString(R.string.music_path))
+            }
+
             request.addOption("-x")
             var format = video.audioFormat
             if (format == null) format = sharedPreferences.getString("audio_format", "")
@@ -348,8 +373,12 @@ class DownloaderService : Service() {
                     video.author
                 )
             )
-            request.addOption("-o", filesDir.absolutePath + "/%(uploader)s - %(title)s.%(ext)s")
+            request.addOption("-o", tempFileDir.absolutePath + "/%(uploader)s - %(title)s.%(ext)s")
         } else if (type == "video") {
+            if (downloadLocation.equals(getString(R.string.video_path))){
+                tempFileDir = File(getString(R.string.video_path))
+            }
+
             val addChapters = sharedPreferences.getBoolean("add_chapters", false)
             if (addChapters) {
                 request.addOption("--sponsorblock-mark", "all")
@@ -380,7 +409,7 @@ class DownloaderService : Service() {
                     request.addOption("--embed-thumbnail")
                 }
             }
-            request.addOption("-o", filesDir.absolutePath + "/%(uploader)s - %(title)s.%(ext)s")
+            request.addOption("-o", tempFileDir.absolutePath + "/%(uploader)s - %(title)s.%(ext)s")
         }
 
         val disposable = Observable.fromCallable {
@@ -389,10 +418,22 @@ class DownloaderService : Service() {
             .subscribeOn(Schedulers.newThread())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                val destDir = Uri.parse(getDownloadLocation(type)).run {
-                    DocumentsContract.buildChildDocumentsUriUsingTree(this, DocumentsContract.getTreeDocumentId(this))
-                }
-                fileUtil.moveFile(filesDir, context!!, destDir)
+                val workTag = video.getURL()
+                val workData = workDataOf(
+                    originDir to tempFileDir.absolutePath,
+                    downLocation to downloadLocation,
+                    title to video.title
+                )
+                val fileTransferWorkRequest = OneTimeWorkRequestBuilder<FileTransferWorker>()
+                    .addTag(workTag)
+                    .setInputData(workData)
+                    .build()
+                workManager.enqueueUniqueWork(
+                    workTag,
+                    ExistingWorkPolicy.KEEP,
+                    fileTransferWorkRequest
+                )
+
                 downloadInfo.downloadPath = fileUtil.formatPath(getDownloadLocation(type)!!)
                 Log.e(TAG, downloadInfo.downloadPath)
                 downloadInfo.downloadType = type
@@ -416,10 +457,15 @@ class DownloaderService : Service() {
                 downloadInfo.downloadQueue = videos
                 startDownload(videos)
             }) { e: Throwable? ->
-                if (BuildConfig.DEBUG) Log.e(TAG, getString(R.string.failed_download), e)
+                tempFileDir.delete()
+                if (BuildConfig.DEBUG) {
+                    Toast.makeText(context, e!!.message, Toast.LENGTH_LONG).show()
+                    Log.e(TAG, getString(R.string.failed_download), e)
+                }
                 notificationUtil.updateDownloadNotification(
                     NotificationUtil.DOWNLOAD_NOTIFICATION_ID,
-                    getString(R.string.failed_download), 0, 0, downloadQueue.peek()?.title
+                    getString(R.string.failed_download), 0, 0, downloadQueue.peek()?.title,
+                    NotificationUtil.DOWNLOAD_SERVICE_CHANNEL_ID
                 )
                 downloadInfo.downloadType = type
                 try {
@@ -445,9 +491,22 @@ class DownloaderService : Service() {
 
     private fun startCommandDownload(text: String?) {
         var text = text
-        if (text!!.startsWith("yt-dlp")) {
-            text = text.substring(5).trim { it <= ' ' }
+        if (text!!.startsWith("yt-dlp ")) {
+            text = text.substring(6).trim { it <= ' ' }
         }
+
+        val sharedPreferences = context!!.getSharedPreferences("root_preferences", MODE_PRIVATE)
+        val downloadLocation = sharedPreferences.getString("command_path", getString(R.string.command_path))
+
+        var tempFileDir = File(cacheDir.absolutePath + "/command")
+        tempFileDir.delete()
+        tempFileDir.mkdir()
+
+        if (downloadLocation.equals(getString(R.string.command_path))){
+            tempFileDir = File(getString(R.string.command_path))
+        }
+
+
         val request = YoutubeDLRequest(emptyList())
         val commandRegex = "\"([^\"]*)\"|(\\S+)"
         val m = Pattern.compile(commandRegex).matcher(text)
@@ -458,8 +517,7 @@ class DownloaderService : Service() {
                 request.addOption(m.group(2))
             }
         }
-        val sharedPreferences = context!!.getSharedPreferences("root_preferences", MODE_PRIVATE)
-        request.addOption("-o", filesDir.absolutePath + "/%(title)s.%(ext)s")
+        request.addOption("-o", tempFileDir.absolutePath + "/%(title)s.%(ext)s")
         val disposable = Observable.fromCallable {
             YoutubeDL.getInstance().execute(request, downloadProcessID, callback)
         }
@@ -467,12 +525,22 @@ class DownloaderService : Service() {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ youtubeDLResponse: YoutubeDLResponse ->
                 downloadInfo.outputLine = youtubeDLResponse.out
-                val downloadsDir = sharedPreferences.getString("command_path", getString(R.string.command_path))
-                val destDir = Uri.parse(downloadsDir).run {
-                    DocumentsContract.buildChildDocumentsUriUsingTree(this, DocumentsContract.getTreeDocumentId(this))
-                }
-                fileUtil.moveFile(filesDir, context!!, destDir)
-                downloadInfo.outputLine += "\n\nMoved File to ${fileUtil.formatPath(downloadsDir!!)}"
+
+                val workTag = SystemClock.uptimeMillis().toString()
+                val workData = workDataOf(
+                    originDir to tempFileDir.absolutePath,
+                    downLocation to downloadLocation,
+                    title to ""
+                )
+                val fileTransferWorkRequest = OneTimeWorkRequestBuilder<FileTransferWorker>()
+                    .addTag(workTag)
+                    .setInputData(workData)
+                    .build()
+                workManager.enqueueUniqueWork(
+                    workTag,
+                    ExistingWorkPolicy.KEEP,
+                    fileTransferWorkRequest
+                )
 
                 try {
                     for (activity in activities.keys) {
@@ -489,6 +557,7 @@ class DownloaderService : Service() {
                 }
             }) { e: Throwable ->
                 downloadInfo.outputLine = e.message
+                tempFileDir.delete()
                 try {
                     for (activity in activities.keys) {
                         activity.runOnUiThread {

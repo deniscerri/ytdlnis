@@ -65,9 +65,9 @@
     <string name="choose_range_desc">Pick a range to download from the playlist (to not download everything).</string>
     <string name="last_cant_be_smaller_than_first">Last index cannot be smaller than the first.</string>
     <string name="first_cant_be_larger_than_last">First index cannot be larger than the last.</string>
-    <string name="music_path" translatable="false">/storage/emulated/0/Download</string>
-    <string name="video_path" translatable="false">/storage/emulated/0/Download</string>
-    <string name="command_path" translatable="false">/storage/emulated/0/Download</string>
+    <string name="music_path" translatable="false">/storage/emulated/0/Download/YTDLnis/Audio</string>
+    <string name="video_path" translatable="false">/storage/emulated/0/Download/YTDLnis/Video</string>
+    <string name="command_path" translatable="false">/storage/emulated/0/Download/YTDLnis/Command</string>
     <string name="concurrent_fragments_summary">Number of fragments of a DASH/HLS native video to download concurrently</string>
     <string name="concurrent_fragments">Concurrent Fragments</string>
     <string name="downloading">Downloading</string>
@@ -149,4 +149,6 @@
     <string name="sponsorblock_reminders">Subscription Reminders</string>
     <string name="select_sponsorblock_filtering">Select SponsorBlock Filtering</string>
     <string name="unfound_file" translatable="false">/404.404</string>
+    <string name="file_transfer_notification_channel_name">File Transfers</string>
+    <string name="file_transfer_notification_channel_description">Notification showing the progress of moving files from the temporary folder to set destination</string>
 </resources>

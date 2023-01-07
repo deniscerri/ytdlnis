@@ -22,7 +22,6 @@
         android:theme="@style/AppTheme" >
         <activity android:name=".MainActivity"
             android:windowSoftInputMode="adjustResize"
-            android:label="@string/download"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

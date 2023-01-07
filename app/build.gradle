@@ -119,7 +119,7 @@ dependencies {
     implementation 'androidx.coordinatorlayout:coordinatorlayout:1.2.0'
     implementation 'com.facebook.shimmer:shimmer:0.5.0'
 
-    implementation "androidx.work:work-runtime:$workVer"
+    implementation "androidx.work:work-runtime-ktx:$workVer"
 
     implementation "androidx.room:room-runtime:2.4.3"
     implementation "androidx.room:room-ktx:2.4.3"
@@ -127,7 +127,8 @@ dependencies {
     androidTestImplementation "androidx.room:room-testing:2.4.3"
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.1'
     implementation "androidx.compose.runtime:runtime:$composeVer"
-
-
     androidTestImplementation "com.google.truth:truth:1.1.3"
+
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutineVer"
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVer"
 }

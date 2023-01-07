@@ -30,6 +30,7 @@ import com.deniscerri.ytdlnis.service.IDownloaderService
 import com.deniscerri.ytdlnis.util.UpdateUtil
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.io.BufferedReader
+import java.io.File
 import java.io.InputStreamReader
 import java.io.Reader
 import java.nio.charset.Charset
@@ -315,6 +316,17 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+
+    private fun createDefaultFolders(){
+        val audio = File(getString(R.string.music_path))
+        val video = File(getString(R.string.video_path))
+        val command = File(getString(R.string.command_path))
+
+        audio.mkdirs()
+        video.mkdirs()
+        command.mkdirs()
+    }
+
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<String>,
@@ -325,6 +337,8 @@ class MainActivity : AppCompatActivity() {
         for (i in permissions.indices) {
             if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
                 createPermissionRequestDialog()
+            }else{
+                createDefaultFolders()
             }
         }
     }

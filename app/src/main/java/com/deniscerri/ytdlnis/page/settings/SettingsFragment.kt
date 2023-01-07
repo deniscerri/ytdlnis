@@ -85,10 +85,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         editor.putInt("concurrent_fragments", concurrentFragments!!.value)
         editor.putString("limit_rate", limitRate!!.text)
         editor.putBoolean("aria2", aria2!!.isChecked)
-        editor.putString(
-            "sponsorblock_filter",
-            java.lang.String.join(",", sponsorblockFilters!!.values)
-        )
+        editor.putStringSet("sponsorblock_filters", sponsorblockFilters!!.values)
         editor.putBoolean("embed_subtitles", embedSubtitles!!.isChecked)
         editor.putBoolean("embed_thumbnail", embedThumbnail!!.isChecked)
         editor.putBoolean("add_chapters", addChapters!!.isChecked)
@@ -178,7 +175,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         sponsorblockFilters!!.onPreferenceChangeListener =
             Preference.OnPreferenceChangeListener { _: Preference?, newValue: Any? ->
                 sponsorblockFilters!!.values = newValue as Set<String?>?
-                editor.putString("sponsorblock_filter", java.lang.String.join(",", newValue))
+                editor.putStringSet("sponsorblock_filters", newValue)
                 editor.apply()
                 true
             }

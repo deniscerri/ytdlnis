@@ -25,6 +25,7 @@ buildscript {
         workVer = "2.7.1"
         composeVer = "1.3.2"
         kotlinVer = "1.7.20"
+        coroutineVer = "1.6.4"
     }
     repositories {
         mavenCentral()

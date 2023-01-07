@@ -76,7 +76,14 @@ public class CustomCommandActivity extends AppCompatActivity {
         }
 
         public void onDownloadProgress(DownloadInfo info) {
-            output.append("\n" + info.getOutputLine() + "\n");
+            String newInfo = info.getOutputLine();
+            if (newInfo.contains("[download]")){
+                String temp = output.getText().toString();
+                output.setText(
+                        temp.substring(0, temp.lastIndexOf(System.getProperty("line.separator")) - 2)
+                );
+            }
+            output.append(info.getOutputLine() + " \n");
             output.scrollTo(0, output.getHeight());
             scrollView.fullScroll(View.FOCUS_DOWN);
         }

@@ -3,13 +3,17 @@ package com.deniscerri.ytdlnis.util
 import android.content.Context
 import android.media.MediaScannerConnection
 import android.net.Uri
+import android.os.FileUtils
 import android.provider.DocumentsContract
 import android.util.Log
 import android.webkit.MimeTypeMap
+import android.widget.Toast
 import com.deniscerri.ytdlnis.DownloaderService
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.Video
 import java.io.File
+import java.io.InputStream
+import java.io.OutputStream
 import java.net.URLDecoder
 import java.nio.charset.StandardCharsets
 
@@ -77,9 +81,8 @@ class FileUtil() {
 
         return context.getString(R.string.unfound_file);
     }
-
-    fun moveFile(originDir : File, context:Context, destDir : Uri){
-        originDir.listFiles().forEach {
+     fun moveFile(originDir : File, context:Context, destDir : Uri, progress: (p: Int) -> Unit){
+        originDir.listFiles()?.forEach {
             val mimeType =
                 MimeTypeMap.getSingleton().getMimeTypeFromExtension(it.extension) ?: "*/*"
 
@@ -96,13 +99,28 @@ class FileUtil() {
             ) ?: return@forEach
 
             val inputStream = it.inputStream()
-            val outputStream =
-                context.contentResolver.openOutputStream(destUri) ?: return@forEach
-            inputStream.copyTo(outputStream)
+            val outputStream = context.contentResolver.openOutputStream(destUri) ?: return@forEach
+            val fileLength = it.length()
+            var bytesCopied: Long = 0
+            val buffer = ByteArray(DEFAULT_BUFFER_SIZE)
+            var bytes = inputStream.read(buffer)
+
+            try {
+                while (bytes >= 0) {
+                    outputStream.write(buffer, 0, bytes)
+                    bytesCopied += bytes
+                    progress((bytesCopied * 100 / fileLength).toInt())
+                    bytes = inputStream.read(buffer)
+                }
+            }catch (e : Exception){
+                Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
+            }
+
             inputStream.close()
             outputStream.close()
 
             it.delete()
         }
+         originDir.delete()
     }
 }

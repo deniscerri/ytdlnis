@@ -162,6 +162,7 @@ public class DownloadsFragment extends Fragment implements DownloadsRecyclerView
                 }
 
                 databaseManager = new DatabaseManager(context);
+                //TODO observe file transfer worker here and then update, but first you need to turn this to kotlin and implement proper mvvm
                 try {
                     item.setDownloadedTime(downloadedTime);
                     item.setDownloadPath(downloadPath);
