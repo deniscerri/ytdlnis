@@ -30,6 +30,7 @@
             app:layout_scrollFlags="scroll|enterAlways|snap"
             app:title="@string/settings"
             android:layout_width="match_parent"
+            app:navigationIcon="@drawable/ic_back"
             android:layout_height="match_parent"/>
 
 

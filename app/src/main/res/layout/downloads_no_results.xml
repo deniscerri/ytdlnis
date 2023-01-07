@@ -7,21 +7,18 @@
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="100dp"
-        android:layout_marginTop="200dp"
-        android:layout_marginEnd="100dp"
         android:layout_centerInParent="true"
-        android:layout_marginBottom="200dp"
         android:gravity="center"
         android:orientation="vertical"
         tools:ignore="MissingConstraints">
 
         <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="200sp"
+            android:layout_height="150sp"
             android:layout_gravity="center"
+            android:scaleType="centerInside"
             android:background="@drawable/ic_no_results" />
 
         <TextView

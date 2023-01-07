@@ -33,11 +33,9 @@
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:layout_marginStart="100dp"
         android:layout_marginTop="?attr/actionBarSize"
-        android:layout_marginEnd="100dp"
         android:gravity="top"
         android:orientation="vertical"
         tools:ignore="MissingConstraints">
@@ -46,16 +44,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:background="@drawable/ic_app_icon" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/no_results"
-            android:textAlignment="center"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
+            android:background="@drawable/ic_app_icon"
+            android:scaleType="center" />
     </LinearLayout>
 
 

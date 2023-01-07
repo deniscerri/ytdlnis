@@ -24,9 +24,7 @@ public class SettingsActivity extends AppCompatActivity{
                 context = getBaseContext();
                 topAppBar = findViewById(R.id.settings_toolbar);
                 topAppBar.setNavigationOnClickListener(view -> onBackPressed());
-
                 fm = getSupportFragmentManager();
-
                 fm.beginTransaction()
                         .replace(R.id.settings_frame_layout, new SettingsFragment())
                         .commit();

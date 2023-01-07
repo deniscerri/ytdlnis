@@ -1,7 +1,0 @@
-<resources>
-
-    <style name="AppTheme" parent="AppDefaultTheme">
-        <item name="android:windowSplashScreenAnimationDuration">0</item>
-    </style>
-
-</resources>
