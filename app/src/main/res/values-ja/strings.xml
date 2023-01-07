@@ -130,4 +130,16 @@
     <string name="oldest_first">最古</string>
     <string name="newest_first">最新</string>
     <string name="Open_File">ファイルを開く</string>
+    <string name="select_sponsorblock_filtering">SponsorBlock フィルタリングの選択</string>
+    <string name="sponsorblock_sponsors">スポンサー</string>
+    <string name="sponsorblock_intro">イントロ</string>
+    <string name="sponsorblock_fillers">フィラー</string>
+    <string name="sponsorblock_promos">セルフプロモーション</string>
+    <string name="sponsorblock_nonmusic">非音楽部分とオフトピック</string>
+    <string name="sponsorblock_reminders">チャンネル登録リマインダー</string>
+    <string name="sponsorblock_outro">アウトロ</string>
+    <string name="sponsorblock_previews">プレビュー</string>
+    <string name="request_permission_desc">ダウンロードしたファイルをデバイスに保存するために、ファイル権限が必要です</string>
+    <string name="exit_app">アプリを終了</string>
+    <string name="warning">警告</string>
 </resources>
