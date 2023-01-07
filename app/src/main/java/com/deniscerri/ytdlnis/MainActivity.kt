@@ -125,7 +125,6 @@ class MainActivity : AppCompatActivity() {
             binding.bottomNavigationView.visibility =
                 if (isImeVisible) View.GONE else View.VISIBLE
             view.onApplyWindowInsets(windowInsets)
-            windowInsets
         }
         val intent = intent
         handleIntents(intent)
