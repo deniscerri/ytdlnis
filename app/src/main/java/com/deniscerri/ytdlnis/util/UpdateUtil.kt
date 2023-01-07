@@ -176,7 +176,7 @@ class UpdateUtil(var context: Context) {
                     else -> Toast.makeText(context, status.toString(), Toast.LENGTH_LONG).show()
                 }
                 updatingYTDL = false
-            }) { e: Throwable? ->
+            } as ((UpdateStatus?) -> Unit)?) { e: Throwable? ->
                 if (BuildConfig.DEBUG) Log.e(tag, context.getString(R.string.ytdl_update_failed), e)
                 Toast.makeText(
                     context,

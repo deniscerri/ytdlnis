@@ -7,14 +7,10 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Binder
-import android.os.Environment
 import android.os.IBinder
 import android.provider.DocumentsContract
 import android.util.Log
-import android.webkit.MimeTypeMap
 import android.widget.Toast
-import androidx.core.content.FileProvider
-import androidx.core.net.toUri
 import com.deniscerri.ytdlnis.database.Video
 import com.deniscerri.ytdlnis.page.CustomCommandActivity
 import com.deniscerri.ytdlnis.service.DownloadInfo
@@ -31,12 +27,12 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import java.io.File
-import java.io.FileInputStream
 import java.io.FileOutputStream
-import java.io.InputStream
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 import java.util.regex.Pattern
+import kotlin.jvm.functions.Function3
+
 
 class DownloaderService : Service() {
     private val binder = LocalBinder()
@@ -50,8 +46,9 @@ class DownloaderService : Service() {
     private var context: Context? = null
     var downloadProcessID = "processID"
     private var downloadNotificationID = 0
-    private val callback =
-        DownloadProgressCallback { progress: Float, etaInSeconds: Long, line: String? ->
+
+    private val callback: (Float, Long?, String?) -> Unit =
+        { progress: Float, _: Long?, line: String? ->
             downloadInfo.progress = progress.toInt()
             downloadInfo.outputLine = line
             downloadInfo.downloadQueue = downloadQueue
@@ -77,6 +74,13 @@ class DownloaderService : Service() {
             } catch (ignored: Exception) {
             }
         }
+//    private val callback = object : DownloadProgressCallback {
+//        override fun onProgressUpdate(progress: Float, etaInSeconds: Long, line: String?) {
+//            override fun onProgressUpdate(progress: Float, etaInSeconds: Long, line: String?) {
+//
+//            }
+//        }
+//    }
 
     override fun onCreate() {
         super.onCreate()
@@ -318,23 +322,23 @@ class DownloaderService : Service() {
             if (format == null) format = sharedPreferences.getString("audio_format", "")
             request.addOption("--audio-format", format!!)
             request.addOption("--embed-metadata")
-            if (format == "mp3" || format == "m4a" || format == "flac") {
-                val embedThumb = sharedPreferences.getBoolean("embed_thumbnail", false)
-                if (embedThumb) {
-                    request.addOption("--embed-thumbnail")
-                    request.addOption("--convert-thumbnails", "png")
-                    try {
-                        val config = File(cacheDir, "config.txt")
-                        val config_data =
-                            "--ppa \"ffmpeg: -c:v png -vf crop=\\\"'if(gt(ih,iw),iw,ih)':'if(gt(iw,ih),ih,iw)'\\\"\""
-                        val stream = FileOutputStream(config)
-                        stream.write(config_data.toByteArray())
-                        stream.close()
-                        request.addOption("--config", config.absolutePath)
-                    } catch (ignored: Exception) {
-                    }
+
+            val embedThumb = sharedPreferences.getBoolean("embed_thumbnail", false)
+            if (embedThumb) {
+                request.addOption("--embed-thumbnail")
+                request.addOption("--convert-thumbnails", "png")
+                try {
+                    val config = File(cacheDir, "config.txt")
+                    val config_data =
+                        "--ppa \"ffmpeg: -c:v png -vf crop=\\\"'if(gt(ih,iw),iw,ih)':'if(gt(iw,ih),ih,iw)'\\\"\""
+                    val stream = FileOutputStream(config)
+                    stream.write(config_data.toByteArray())
+                    stream.close()
+                    request.addOption("--config", config.absolutePath)
+                } catch (ignored: Exception) {
                 }
             }
+
             request.addCommands(Arrays.asList("--replace-in-metadata", "title", ".*.", video.title))
             request.addCommands(
                 Arrays.asList(
@@ -441,12 +445,9 @@ class DownloaderService : Service() {
 
     private fun startCommandDownload(text: String?) {
         var text = text
-        if (!text!!.startsWith("yt-dlp ")) {
-            Toast.makeText(context, "Wrong input! Try Again!", Toast.LENGTH_SHORT).show()
-            finishService()
-            return
+        if (text!!.startsWith("yt-dlp")) {
+            text = text.substring(5).trim { it <= ' ' }
         }
-        text = text.substring(6).trim { it <= ' ' }
         val request = YoutubeDLRequest(emptyList())
         val commandRegex = "\"([^\"]*)\"|(\\S+)"
         val m = Pattern.compile(commandRegex).matcher(text)

@@ -6,7 +6,6 @@
         <item>alac</item>
         <item>flac</item>
         <item>opus</item>
-        <item>vorbis</item>
         <item>wav</item>
     </string-array>
 

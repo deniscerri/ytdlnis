@@ -91,9 +91,9 @@ dependencies {
 //    implementation project(":library")
 //    implementation project(":ffmpeg")
 
-    implementation "com.github.yausername.youtubedl-android:library:$youtubedlAndroidVer"
-    implementation "com.github.yausername.youtubedl-android:ffmpeg:$youtubedlAndroidVer"
-    implementation "com.github.yausername.youtubedl-android:aria2c:$youtubedlAndroidVer"
+    implementation "com.github.JunkFood02.youtubedl-android:library:$youtubedlAndroidVer"
+    implementation "com.github.JunkFood02.youtubedl-android:ffmpeg:$youtubedlAndroidVer"
+    implementation "com.github.JunkFood02.youtubedl-android:aria2c:$youtubedlAndroidVer"
 
     implementation "androidx.appcompat:appcompat:$appCompatVer"
     implementation "androidx.constraintlayout:constraintlayout:2.1.4"

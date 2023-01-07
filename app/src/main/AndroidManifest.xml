@@ -22,6 +22,7 @@
         android:theme="@style/AppTheme" >
         <activity android:name=".MainActivity"
             android:windowSoftInputMode="adjustResize"
+            android:label="@string/download"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -51,10 +52,16 @@
             android:name=".page.CustomCommandActivity"
             android:theme="@style/AppDefaultTheme"
             android:parentActivityName=".MainActivity"
+            android:label="@string/run_command"
             android:exported="true">
             <intent-filter>
                 <action android:name="ytdlnis.page.CustomCommandActivity" />
                 <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain" />
             </intent-filter>
         </activity>
         <service

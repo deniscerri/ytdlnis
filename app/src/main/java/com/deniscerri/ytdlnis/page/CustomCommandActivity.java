@@ -138,6 +138,25 @@ public class CustomCommandActivity extends AppCompatActivity {
             swapFabs();
             input.setEnabled(true);
         });
+        handleIntent(getIntent());
+    }
+
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        handleIntent(intent);
+    }
+
+    private void handleIntent(Intent intent){
+        String action = intent.getAction();
+        String type = intent.getType();
+        Log.e(TAG, action + " " + type);
+        if (action.equals(Intent.ACTION_SEND) && type != null) {
+            Log.e(TAG, action);
+            String txt = "yt-dlp " + intent.getStringExtra(Intent.EXTRA_TEXT);
+            input.setText(txt);
+        }
     }
 
     private void swapFabs(){
