@@ -113,7 +113,7 @@ dependencies {
     implementation "com.devbrackets.android:exomedia:4.3.0"
 
     implementation("androidx.cardview:cardview:1.0.0")
-    implementation("com.squareup.picasso:picasso:2.8")
+    implementation("com.squareup.picasso:picasso:2.71828")
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
 
     implementation 'androidx.coordinatorlayout:coordinatorlayout:1.2.0'
@@ -131,4 +131,10 @@ dependencies {
 
     api "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutineVer"
     api "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVer"
+
+    implementation "com.squareup.retrofit2:retrofit:$retrofitVer"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofitVer"
+
+    implementation "org.kodein.di:kodein-di-generic-jvm:6.4.0"
+    implementation "org.kodein.di:kodein-di-framework-android-x:$kodeinVer"
 }

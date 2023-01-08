@@ -1,4 +1,4 @@
-package com.deniscerri.ytdlnis.page;
+package com.deniscerri.ytdlnis.ui;
 
 import android.Manifest;
 import android.content.ComponentName;
@@ -19,7 +19,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import com.deniscerri.ytdlnis.R;
 import com.deniscerri.ytdlnis.DownloaderService;
-import com.deniscerri.ytdlnis.database.Video;
 import com.deniscerri.ytdlnis.service.DownloadInfo;
 import com.deniscerri.ytdlnis.service.IDownloaderListener;
 import com.deniscerri.ytdlnis.service.IDownloaderService;
@@ -27,7 +26,6 @@ import com.deniscerri.ytdlnis.util.NotificationUtil;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class CustomCommandActivity extends AppCompatActivity {

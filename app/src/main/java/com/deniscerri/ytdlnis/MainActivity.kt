@@ -21,10 +21,10 @@ import com.deniscerri.ytdlnis.DownloaderService.LocalBinder
 import com.deniscerri.ytdlnis.database.DatabaseManager
 import com.deniscerri.ytdlnis.database.Video
 import com.deniscerri.ytdlnis.databinding.ActivityMainBinding
-import com.deniscerri.ytdlnis.page.DownloadsFragment
-import com.deniscerri.ytdlnis.page.HomeFragment
-import com.deniscerri.ytdlnis.page.MoreFragment
-import com.deniscerri.ytdlnis.page.settings.SettingsActivity
+import com.deniscerri.ytdlnis.ui.DownloadsFragment
+import com.deniscerri.ytdlnis.ui.HomeFragment
+import com.deniscerri.ytdlnis.ui.MoreFragment
+import com.deniscerri.ytdlnis.ui.settings.SettingsActivity
 import com.deniscerri.ytdlnis.service.IDownloaderListener
 import com.deniscerri.ytdlnis.service.IDownloaderService
 import com.deniscerri.ytdlnis.util.UpdateUtil

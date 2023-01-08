@@ -1,4 +1,4 @@
-package com.deniscerri.ytdlnis.page;
+package com.deniscerri.ytdlnis.ui;
 
 import android.Manifest;
 import android.annotation.SuppressLint;

@@ -1,4 +1,4 @@
-package com.deniscerri.ytdlnis.page.settings
+package com.deniscerri.ytdlnis.ui.settings
 
 import android.app.Activity
 import android.content.Intent

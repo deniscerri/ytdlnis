@@ -5,13 +5,10 @@ import android.app.PendingIntent
 import android.app.Service
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Binder
 import android.os.Build
 import android.os.IBinder
 import android.os.SystemClock
-import android.provider.DocumentsContract
-import android.provider.Settings.Global
 import android.util.Log
 import android.widget.Toast
 import androidx.work.ExistingWorkPolicy
@@ -19,7 +16,7 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.workDataOf
 import com.deniscerri.ytdlnis.database.Video
-import com.deniscerri.ytdlnis.page.CustomCommandActivity
+import com.deniscerri.ytdlnis.ui.CustomCommandActivity
 import com.deniscerri.ytdlnis.service.DownloadInfo
 import com.deniscerri.ytdlnis.service.IDownloaderListener
 import com.deniscerri.ytdlnis.service.IDownloaderService
@@ -29,7 +26,6 @@ import com.deniscerri.ytdlnis.work.FileTransferWorker
 import com.deniscerri.ytdlnis.work.FileTransferWorker.Companion.originDir
 import com.deniscerri.ytdlnis.work.FileTransferWorker.Companion.title
 import com.deniscerri.ytdlnis.work.FileTransferWorker.Companion.downLocation
-import com.yausername.youtubedl_android.DownloadProgressCallback
 import com.yausername.youtubedl_android.YoutubeDL
 import com.yausername.youtubedl_android.YoutubeDLRequest
 import com.yausername.youtubedl_android.YoutubeDLResponse
@@ -37,13 +33,11 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
-import kotlinx.coroutines.*
 import java.io.File
 import java.io.FileOutputStream
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 import java.util.regex.Pattern
-import kotlin.jvm.functions.Function3
 
 
 class DownloaderService : Service() {

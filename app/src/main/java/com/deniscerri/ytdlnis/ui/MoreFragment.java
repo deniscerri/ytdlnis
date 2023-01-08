@@ -1,4 +1,4 @@
-package com.deniscerri.ytdlnis.page;
+package com.deniscerri.ytdlnis.ui;
 
 import android.os.Bundle;
 import androidx.preference.PreferenceFragmentCompat;

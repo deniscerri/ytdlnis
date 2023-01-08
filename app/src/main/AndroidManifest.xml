@@ -39,7 +39,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".page.settings.SettingsActivity"
+            android:name=".ui.settings.SettingsActivity"
             android:parentActivityName=".MainActivity"
             android:exported="true">
             <intent-filter>
@@ -48,7 +48,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".page.CustomCommandActivity"
+            android:name=".ui.CustomCommandActivity"
             android:theme="@style/AppDefaultTheme"
             android:parentActivityName=".MainActivity"
             android:label="@string/run_command"
