@@ -30,7 +30,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         archivesBaseName = "YTDLnis-$versionName"
         ndk {
-            abiFilters 'x86', 'x86_64', 'armeabi-v7a', 'arm64-v8a'
+            abiFilters 'armeabi-v7a', 'arm64-v8a'
         }
         vectorDrawables {
             useSupportLibrary true
@@ -75,7 +75,7 @@ android {
         abi {
             enable true
             reset()
-            include 'x86', 'x86_64', 'armeabi-v7a', 'arm64-v8a'
+            include 'armeabi-v7a', 'arm64-v8a'
             universalApk true
         }
     }
@@ -91,9 +91,9 @@ dependencies {
 //    implementation project(":library")
 //    implementation project(":ffmpeg")
 
-    implementation "com.github.JunkFood02.youtubedl-android:library:$youtubedlAndroidVer"
-    implementation "com.github.JunkFood02.youtubedl-android:ffmpeg:$youtubedlAndroidVer"
-    implementation "com.github.JunkFood02.youtubedl-android:aria2c:$youtubedlAndroidVer"
+    implementation "com.github.yausername.youtubedl-android:library:$youtubedlAndroidVer"
+    implementation "com.github.yausername.youtubedl-android:ffmpeg:$youtubedlAndroidVer"
+    implementation "com.github.yausername.youtubedl-android:aria2c:$youtubedlAndroidVer"
 
     implementation "androidx.appcompat:appcompat:$appCompatVer"
     implementation "androidx.constraintlayout:constraintlayout:2.1.4"
@@ -119,7 +119,7 @@ dependencies {
     implementation 'androidx.coordinatorlayout:coordinatorlayout:1.2.0'
     implementation 'com.facebook.shimmer:shimmer:0.5.0'
 
-    implementation "androidx.work:work-runtime-ktx:$workVer"
+    implementation "androidx.work:work-runtime:$workVer"
 
     implementation "androidx.room:room-runtime:2.4.3"
     implementation "androidx.room:room-ktx:2.4.3"
@@ -127,8 +127,7 @@ dependencies {
     androidTestImplementation "androidx.room:room-testing:2.4.3"
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.1'
     implementation "androidx.compose.runtime:runtime:$composeVer"
-    androidTestImplementation "com.google.truth:truth:1.1.3"
 
-    api "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutineVer"
-    api "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVer"
+
+    androidTestImplementation "com.google.truth:truth:1.1.3"
 }

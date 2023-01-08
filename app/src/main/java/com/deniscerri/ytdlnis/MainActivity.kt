@@ -60,7 +60,7 @@ class MainActivity : AppCompatActivity() {
                 iDownloaderService!!.addActivity(this@MainActivity, listeners)
                 for (i in listeners.indices) {
                     val listener = listeners[i]
-                    listener.onDownloadStart(iDownloaderService!!.info)
+                    listener.onDownloadStart(iDownloaderService!!.downloadInfo)
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -316,17 +316,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-
-    private fun createDefaultFolders(){
-        val audio = File(getString(R.string.music_path))
-        val video = File(getString(R.string.video_path))
-        val command = File(getString(R.string.command_path))
-
-        audio.mkdirs()
-        video.mkdirs()
-        command.mkdirs()
-    }
-
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<String>,
@@ -338,10 +327,21 @@ class MainActivity : AppCompatActivity() {
             if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
                 createPermissionRequestDialog()
             }else{
-                createDefaultFolders()
+                createDefaultFolders();
             }
         }
     }
+
+    private fun createDefaultFolders(){
+        val audio = File(getString(R.string.music_path))
+        val video = File(getString(R.string.video_path))
+        val command = File(getString(R.string.command_path))
+
+        audio.mkdirs()
+        video.mkdirs()
+        command.mkdirs()
+    }
+
 
     private fun exit() {
         finishAffinity()

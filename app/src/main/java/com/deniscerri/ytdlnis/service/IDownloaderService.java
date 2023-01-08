@@ -5,7 +5,7 @@ import com.deniscerri.ytdlnis.database.Video;
 import java.util.ArrayList;
 
 public interface IDownloaderService {
-    DownloadInfo getInfo();
+    DownloadInfo getDownloadInfo();
     void addActivity(Activity activity, ArrayList<IDownloaderListener> callback);
     void removeActivity(Activity activity);
     void updateQueue(ArrayList<Video> queue);

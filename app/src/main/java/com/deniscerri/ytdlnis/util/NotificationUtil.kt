@@ -13,9 +13,8 @@ import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.receiver.NotificationReceiver
 
 class NotificationUtil(var context: Context) {
-    private val downloadNotificationBuilder: NotificationCompat.Builder = NotificationCompat.Builder(context, DOWNLOAD_SERVICE_CHANNEL_ID)
-    private val commandDownloadNotificationBuilder: NotificationCompat.Builder = NotificationCompat.Builder(context, COMMAND_DOWNLOAD_SERVICE_CHANNEL_ID)
-    private val fileTransferNotificationBuilder: NotificationCompat.Builder = NotificationCompat.Builder(context, FILE_TRANSFER_CHANNEL_ID)
+    private var notificationBuilder: NotificationCompat.Builder =
+        NotificationCompat.Builder(context, DOWNLOAD_SERVICE_CHANNEL_ID)
     private val notificationManager: NotificationManager = context.getSystemService(NotificationManager::class.java)
 
     fun createNotificationChannel() {
@@ -39,63 +38,13 @@ class NotificationUtil(var context: Context) {
             channel = NotificationChannel(COMMAND_DOWNLOAD_SERVICE_CHANNEL_ID, name, importance)
             channel.description = description
             notificationManager.createNotificationChannel(channel)
-
-            //file transfers
-            name = context.getString(R.string.file_transfer_notification_channel_name)
-            description = context.getString(R.string.file_transfer_notification_channel_description)
-            channel = NotificationChannel(FILE_TRANSFER_CHANNEL_ID, name, importance)
-            channel.description = description
-            notificationManager.createNotificationChannel(channel)
         }
     }
-
-    fun createFileTransferNotification(
-        pendingIntent: PendingIntent?,
-        title: String?,
-    ) : Notification {
-        val intent = Intent(context, NotificationReceiver::class.java)
-
-        return fileTransferNotificationBuilder
-            .setContentTitle(title)
-            .setCategory(Notification.CATEGORY_PROGRESS)
-            .setSmallIcon(R.drawable.ic_app_icon)
-            .setContentText("")
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-            .setProgress(PROGRESS_MAX, PROGRESS_CURR, false)
-            .setContentIntent(pendingIntent)
-            .setForegroundServiceBehavior(NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE)
-            .build()
-    }
-
-    fun updateFileTransferNotification(
-        id: Int,
-        progress: Int
-    ) {
-        try {
-            fileTransferNotificationBuilder.setProgress(100, progress, false)
-            notificationManager.notify(id, fileTransferNotificationBuilder.build())
-        } catch (ignored: Exception) {
-        }
-    }
-
-    private fun getBuilder(channel: String) : NotificationCompat.Builder {
-        when(channel) {
-            DOWNLOAD_SERVICE_CHANNEL_ID -> { return downloadNotificationBuilder}
-            COMMAND_DOWNLOAD_SERVICE_CHANNEL_ID -> { return commandDownloadNotificationBuilder }
-            FILE_TRANSFER_CHANNEL_ID -> { return fileTransferNotificationBuilder }
-        }
-        return downloadNotificationBuilder
-    }
-
 
     fun createDownloadServiceNotification(
         pendingIntent: PendingIntent?,
-        title: String?,
-        channel: String
+        title: String?
     ): Notification {
-        val notificationBuilder = getBuilder(channel)
-
         val intent = Intent(context, NotificationReceiver::class.java)
         intent.putExtra("cancel", "")
         val cancelNotificationPendingIntent = PendingIntent.getBroadcast(
@@ -131,21 +80,17 @@ class NotificationUtil(var context: Context) {
         desc: String,
         progress: Int,
         queue: Int,
-        title: String?,
-        channel : String
+        title: String?
     ) {
-
-        val notificationBuilder = getBuilder(channel)
         var contentText = ""
-        if (queue > 1) contentText += """${queue - 1} ${context.getString(R.string.items_left)}""" + "\n"
+        if (queue > 1) contentText += """${queue - 1} ${context.getString(R.string.items_left)}"""
         contentText += desc.replace("\\[.*?\\] ".toRegex(), "")
         try {
             notificationBuilder.setProgress(100, progress, false)
                 .setContentTitle(title)
                 .setStyle(NotificationCompat.BigTextStyle().bigText(contentText))
             notificationManager.notify(id, notificationBuilder.build())
-        } catch (e: Exception) {
-            e.printStackTrace()
+        } catch (ignored: Exception) {
         }
     }
 
@@ -158,7 +103,6 @@ class NotificationUtil(var context: Context) {
         const val DOWNLOAD_NOTIFICATION_ID = 1
         const val COMMAND_DOWNLOAD_SERVICE_CHANNEL_ID = "2"
         const val COMMAND_DOWNLOAD_NOTIFICATION_ID = 2
-        const val FILE_TRANSFER_CHANNEL_ID = "3"
         private const val PROGRESS_MAX = 100
         private const val PROGRESS_CURR = 0
     }

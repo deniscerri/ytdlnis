@@ -24,7 +24,6 @@ import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
 import java.util.concurrent.atomic.AtomicReference
-import java.io.File
 
 class UpdateUtil(var context: Context) {
     private val tag = "UpdateUtil"
@@ -164,12 +163,11 @@ class UpdateUtil(var context: Context) {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ status: UpdateStatus ->
                 when (status) {
-                    UpdateStatus.DONE ->
-                        Toast.makeText(
-                            context,
-                            context.getString(R.string.ytld_update_success),
-                            Toast.LENGTH_LONG
-                        ).show()
+                    UpdateStatus.DONE -> Toast.makeText(
+                        context,
+                        context.getString(R.string.ytld_update_success),
+                        Toast.LENGTH_LONG
+                    ).show()
                     UpdateStatus.ALREADY_UP_TO_DATE -> Toast.makeText(
                         context,
                         context.getString(R.string.you_are_in_latest_version),
@@ -178,7 +176,7 @@ class UpdateUtil(var context: Context) {
                     else -> Toast.makeText(context, status.toString(), Toast.LENGTH_LONG).show()
                 }
                 updatingYTDL = false
-            } as ((UpdateStatus?) -> Unit)?) { e: Throwable? ->
+            }) { e: Throwable? ->
                 if (BuildConfig.DEBUG) Log.e(tag, context.getString(R.string.ytdl_update_failed), e)
                 Toast.makeText(
                     context,

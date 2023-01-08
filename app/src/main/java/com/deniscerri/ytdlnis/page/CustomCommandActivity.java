@@ -53,7 +53,7 @@ public class CustomCommandActivity extends AppCompatActivity {
                 ArrayList<IDownloaderListener> listeners = new ArrayList<>();
                 listeners.add(listener);
                 iDownloaderService.addActivity(CustomCommandActivity.this, listeners);
-                listener.onDownloadStart(iDownloaderService.getInfo());
+                listener.onDownloadStart(iDownloaderService.getDownloadInfo());
             }catch(Exception e){
                 e.printStackTrace();
             }
@@ -76,14 +76,7 @@ public class CustomCommandActivity extends AppCompatActivity {
         }
 
         public void onDownloadProgress(DownloadInfo info) {
-            String newInfo = info.getOutputLine();
-            if (newInfo.contains("[download]")){
-                String temp = output.getText().toString();
-                output.setText(
-                        temp.substring(0, temp.lastIndexOf(System.getProperty("line.separator")) - 2)
-                );
-            }
-            output.append(info.getOutputLine() + " \n");
+            output.append("\n" + info.getOutputLine() + "\n");
             output.scrollTo(0, output.getHeight());
             scrollView.fullScroll(View.FOCUS_DOWN);
         }
@@ -147,7 +140,6 @@ public class CustomCommandActivity extends AppCompatActivity {
         });
         handleIntent(getIntent());
     }
-
 
     @Override
     protected void onNewIntent(Intent intent) {
