@@ -4,12 +4,12 @@
     <string name="search">Поиск</string>
     <string name="remove_all">Удалить все</string>
     <string name="Trending"><b>Популярное</b></string>
-    <string name="music_directory">Папка с музыкой</string>
+    <string name="music_directory">Папка с аудио</string>
     <string name="home">Главная</string>
     <string name="about">Подробнее</string>
     <string name="source_code">Исходный код</string>
     <string name="search_hint">Поиск в YouTube</string>
-    <string name="update_ytdl">Установите новую версию yt-dlp</string>
+    <string name="update_ytdl">Установка новой версии yt-dlp</string>
     <string name="try_again_after_permission">Повторите после выдачи разрешения.</string>
     <string name="failed_download">Невозможно загрузить файл.</string>
     <string name="download_start">Загружается…</string>
@@ -45,7 +45,7 @@
     <string name="last_cant_be_smaller_than_first">Последнее значение не может быть меньше первого.</string>
     <string name="concurrent_fragments_summary">Количество фрагментов оригинального видео DASH/HLS для одновременной загрузки</string>
     <string name="downloading">Загрузка</string>
-    <string name="limit_rate">Лимит скорости загрузки</string>
+    <string name="limit_rate">Ограничение скорости загрузки</string>
     <string name="remove_non_music">Удалить немузыкальные части</string>
     <string name="remove_non_music_summary">Удаляет немузыкальные части аудиофайлов с помощью SponsorBlock</string>
     <string name="processing">Обработка</string>
@@ -53,11 +53,11 @@
     <string name="embed_thumb">Обложки миниатюр</string>
     <string name="add_chapters">Главы в видео</string>
     <string name="add_chapters_summary">Отмечает сегменты YouTube / SponsorBlock как главы видео</string>
-    <string name="save_thumb">Сохранить миниатюру</string>
-    <string name="audio_format">Формат аудио</string>
-    <string name="video_format">Формат видео</string>
+    <string name="save_thumb">Сохранить обложку видео</string>
+    <string name="audio_format">Аудиоформат</string>
+    <string name="video_format">Видеоформат</string>
     <string name="audio_quality">Качество аудио</string>
-    <string name="audio_quality_summary">0 (лучший) 10 (худший)</string>
+    <string name="audio_quality_summary">0 (лучшее) 10 (худшее)</string>
     <string name="cancel_download">Отменить загрузку</string>
     <string name="run_command">Запустить команду</string>
     <string name="items_left">файлов осталось</string>
@@ -102,15 +102,15 @@
     <string name="ytdl_already_updating">Установка новой версии…</string>
     <string name="refresh_results">Обновить результаты</string>
     <string name="cli">Команды</string>
-    <string name="confirm_delete_history_duplicates_desc">Удаляет все дубликаты в вашей истории (тот же URL и тип загрузки) и сохраняет последнюю версию.</string>
+    <string name="confirm_delete_history_duplicates_desc">Удаляет все дубликаты в вашей истории (с одинаковым URL и типом загрузки) и сохраняет последнюю версию.</string>
     <string name="chooose_range">Ограничить загрузку до …</string>
     <string name="write_ytdlp_command">Написать команду yt-dlp</string>
     <string name="command_directory">Папка для пользовательской команды</string>
-    <string name="save_thumb_summary">Сохраните миниатюру в папке загрузки</string>
+    <string name="save_thumb_summary">Сохраните обложку видео в папке загрузки</string>
     <string name="last">Последний</string>
     <string name="choose_range_desc">Выберите диапазон для загрузки из списка воспроизведения (чтобы не загружать все).</string>
     <string name="first_cant_be_larger_than_last">Первое значение не может быть больше последнего.</string>
-    <string name="limit_rate_summary">Максимальная скорость загрузки (в байтах в секунду), например. 50К или 4,2М</string>
+    <string name="limit_rate_summary">Максимальная скорость загрузки (в байтах в секунду), например. 50К или 4.2М</string>
     <string name="embed_subs">Субтитры в видео</string>
     <string name="concurrent_fragments">Параллельные фрагменты</string>
     <string name="aria2_summary">Использовать aria2c вместо стандартного загрузчика</string>
@@ -132,7 +132,7 @@
     <string name="download_video">Загрузить видео</string>
     <string name="embed_subtitles">Добавить субтитры</string>
     <string name="show_download_card">Показать параметры загрузки</string>
-    <string name="download_card_summary">Параметры загрузки элементов</string>
+    <string name="download_card_summary">Параметры загрузки файлов</string>
     <string name="mutliple_titles">Несколько заголовков</string>
     <string name="delete_files_too">Удалить файлы с устройства</string>
     <string name="Open_File">Открыть файл</string>
@@ -140,6 +140,6 @@
     <string name="delete_selected">Удалить выбранное</string>
     <string name="delete_file_too">Удалить файл с устройства</string>
     <string name="request_permission_desc">Приложению необходим доступ к файлам для сохранения загрузок на устройстве</string>
-    <string name="download_notification_channel_description">Уведомление показывает процесс загрузки аудио и видео файлов</string>
+    <string name="download_notification_channel_description">Уведомление показывает процесс загрузки аудио- и видеофайлов</string>
     <string name="sponsorblock_sponsors">Реклама</string>
 </resources>
