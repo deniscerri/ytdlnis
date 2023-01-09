@@ -149,6 +149,4 @@
     <string name="sponsorblock_reminders">Subscription Reminders</string>
     <string name="select_sponsorblock_filtering">Select SponsorBlock Filtering</string>
     <string name="unfound_file" translatable="false">/404.404</string>
-    <string name="file_transfer_notification_channel_name">File Transfers</string>
-    <string name="file_transfer_notification_channel_description">Notification showing the progress of moving files from the temporary folder to set destination</string>
 </resources>
