@@ -33,4 +33,15 @@
     <string name="cancel">Batalkan</string>
     <string name="confirm_delete_history_deleted_desc">Menghapus butir apa pun yang ada di dalam riwayatmu tanpa adanya keberadaan berkas yang cocok dengan jalur unduhannya.</string>
     <string name="confirm_delete_history_duplicates_desc">Menghapus setiap duplikat yang ada di dalam riwayatmu (URL dan jenis unduhan yang sama), dan menyimpan versi yang terkini.</string>
+    <string name="cli">Perintah</string>
+    <string name="more">Lebih banyak</string>
+    <string name="update_app">Periksa pemutakhiran</string>
+    <string name="version">Versi</string>
+    <string name="run">Jalankan</string>
+    <string name="running_ytdlp_command">Menjalankan perintah yt-dlp kustom…</string>
+    <string name="error_checking_latest_version">Tidak bisa memeriksa versi yang terkini.</string>
+    <string name="downloading_update">Mengunduh versi yang baru…</string>
+    <string name="custom_command">Jalankan Perintah Kustom</string>
+    <string name="write_ytdlp_command">Tulis perintah yt-dlp</string>
+    <string name="command_directory">Folder untuk Perintah Kustom</string>
 </resources>
