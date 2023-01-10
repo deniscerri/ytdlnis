@@ -52,6 +52,8 @@
                 android:layout_height="100dp"
                 android:paddingTop="10dp"
                 android:paddingEnd="20dp"
+                android:maxLines="2"
+                android:ellipsize="end"
                 android:paddingBottom="20dp"
                 android:paddingStart="10dp"
                 android:textSize="18sp"

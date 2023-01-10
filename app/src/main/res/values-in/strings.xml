@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="remove_results">Kosongkan Hasil</string>
-    <string name="end_of_results"><b>Tidak ada lagi hasil lainnya</b></string>
     <string name="updating">Pemutakhiran</string>
     <string name="you_are_in_latest_version">Versi yang terkini sedang digunakan</string>
     <string name="confirm_delete_history_desc">Hapus seluruh riwayat, secara permanen.</string>
@@ -9,39 +8,29 @@
     <string name="search_history_hint">Telusuri dari Riwayat</string>
     <string name="no_results">Tidak ada hasil</string>
     <string name="remove_all">Bersihkan semua</string>
-    <string name="Trending"><b>Sedang nge-tren</b></string>
     <string name="download_all">Unduh Semua</string>
     <string name="settings">Penyetelan</string>
     <string name="search">Telusuri</string>
     <string name="failed_download">Tidak bisa mengunduh berkas.</string>
-    <string name="download_start">Mengunduh…</string>
     <string name="download_notification_channel_name">Unduhan Berkas</string>
     <string name="download_notification_channel_description">Notifikasi yang memperlihatkan kemajuan pengunduhan berkas audio dan video</string>
     <string name="added_to_queue">Diantrekan</string>
     <string name="home">Beranda</string>
     <string name="directories">Folder</string>
-    <string name="try_again_after_permission">Mencoba lagi setelah pemberian izin.</string>
     <string name="music_directory">Folder Musik</string>
     <string name="ytdl_update_hint">Berguna apabila kamu mengalami masalah saat mengunduh</string>
     <string name="video_directory">Folder Video</string>
     <string name="update_ytdl">Pasang youtube-dl versi yang baru</string>
-    <string name="about">Perihal</string>
     <string name="source_code">Kode Sumber</string>
     <string name="search_hint">Telusuri dari YouTube</string>
-    <string name="download_already_started">Menunggu unduhan lainnya selesai sebelum memulai yang ini…</string>
     <string name="ytld_update_success">Versi yang baru terpasang</string>
-    <string name="download_success">Diunduh</string>
     <string name="failed_making_directory">Tidak bisa membuat folder baru.</string>
     <string name="ytdl_update_failed">Tidak bisa memasang versi yang baru</string>
     <string name="ytdl_already_updating">Memasang versi yang baru…</string>
     <string name="ytdl_updating_started">Mengunduh versi yang baru…</string>
     <string name="Remove">Bersihkan</string>
-    <string name="Open_Link">Buka tautan</string>
-    <string name="remove_non_music">Hilangkan bagian non-musik</string>
-    <string name="refresh_results">Segarkan Kembali Hasil</string>
     <string name="ok">OK</string>
     <string name="cancel">Batalkan</string>
-    <string name="refresh_history">Segarkan Kembali Riwayat</string>
     <string name="confirm_delete_history_deleted_desc">Menghapus butir apa pun yang ada di dalam riwayatmu tanpa adanya keberadaan berkas yang cocok dengan jalur unduhannya.</string>
     <string name="confirm_delete_history_duplicates_desc">Menghapus setiap duplikat yang ada di dalam riwayatmu (URL dan jenis unduhan yang sama), dan menyimpan versi yang terkini.</string>
 </resources>

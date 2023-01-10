@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="Trending"><b>Në Trend</b></string>
     <string name="search">Kërko</string>
     <string name="remove_results">Pastro Rezultatet</string>
     <string name="remove_all">Hiqi të gjitha</string>
-    <string name="end_of_results"><b>Arrite fundin e rezultateve</b></string>
     <string name="download_all">Shkarko të gjitha</string>
     <string name="settings">Cilësime</string>
     <string name="home">Kryesore</string>
@@ -14,14 +12,9 @@
     <string name="updating">Përditësim</string>
     <string name="ytdl_update_hint">Nëse ke probleme me shkarkimin</string>
     <string name="update_ytdl">Instalo versionin e ri te youtube-dl</string>
-    <string name="about">Rreth</string>
     <string name="source_code">Kodi</string>
     <string name="search_hint">Kërko nga YouTube</string>
-    <string name="download_already_started">Nuk mund te filloj pasi nje shkarkim tjeter është në punë…</string>
-    <string name="try_again_after_permission">Provo përsëri pasi ke pranuar lejen.</string>
-    <string name="download_success">U shkarkua</string>
     <string name="failed_download">Dështim në shkarkim.</string>
-    <string name="download_start">Duke Shkarkuar…</string>
     <string name="download_notification_channel_name">Shkarkimet e Skedarëve</string>
     <string name="download_notification_channel_description">Njoftimi i cili tregon progresin e shkarkimeve te skedarëve audio dhe video</string>
     <string name="failed_making_directory">Dështim në krijimin e Direktorisë së re.</string>
@@ -31,27 +24,19 @@
     <string name="added_to_queue">U vendos në rradhë</string>
     <string name="ytdl_already_updating">Duke u përditësuar…</string>
     <string name="ytdl_updating_started">Filloi Perditesimi…</string>
-    <string name="Open_Link">Hap Linkun</string>
     <string name="Remove">Hiqe</string>
-    <string name="refresh_results">Rifresko Rezultatet</string>
-    <string name="refresh_history">Rifresko Historinë</string>
     <string name="ok">OK</string>
     <string name="cancel">Anullo</string>
     <string name="confirm_delete_history_desc">Fshi komplet historinë, përgjithmonë.</string>
     <string name="confirm_delete_history">Konfirmo</string>
     <string name="search_history_hint">Kërko nga Historia</string>
     <string name="no_results">Nuk ka Rezultate</string>
-    <string name="music_editor">Redaktori i Muzikës</string>
-    <string name="cli">Komanda</string>
     <string name="more">Më Shumë</string>
     <string name="update_app">Kontrollo për përditësime</string>
     <string name="version">Versioni</string>
     <string name="custom_command">Ekzekuto Komandën</string>
-    <string name="write_ytdlp_command">Shkruaj komandën yt-dlp</string>
-    <string name="run">Ekzekuto</string>
     <string name="running_ytdlp_command">Duke Ekzekutuar Komandën yt-dlp…</string>
     <string name="command_directory">Direktoria e Komandës</string>
-    <string name="error_checking_latest_version">Nuk kontrollova dot pë versionin e fundit.</string>
     <string name="couldnt_find_apk">Nuk u gjet një APK e vlefshme.</string>
     <string name="downloading_update">Duke Përditësuar…</string>
     <string name="chooose_range">Limito shkarkimin me …</string>
@@ -68,8 +53,6 @@
     <string name="limit_rate">Limito Shpejtësinë</string>
     <string name="limit_rate_summary">Shpejtësia maksimale e shkarkimit (në byte për sekond), p.sh 50K ose 4.2M</string>
     <string name="aria2_summary">Përdor Aria2c si shkarkues në vend të atij normal</string>
-    <string name="remove_non_music">Hiq pjesët pa muzikë</string>
-    <string name="remove_non_music_summary">Hiq segmentet që përmbajnë pjesë pa muzikë në skedarët audio me SponsorBlock</string>
     <string name="processing">Proçesimi</string>
     <string name="embed_subs">Titra në Video</string>
     <string name="embed_subs_summary">Vendos titra brenda videos</string>
@@ -96,7 +79,6 @@
     <string name="api_key_summary">Rezultate më të shpejta nga YouTube</string>
     <string name="update_app_summary">Njoftohu kur një përditësim është i vlefshëm</string>
     <string name="downloads">Shkarkimet</string>
-    <string name="filter_history">Filtro Historinë</string>
     <string name="removed_from_queue">u hoq nga rradha.</string>
     <string name="confirm_delete_history_deleted_desc">Fshin çdo element në histori që nuk ka një skedar si vendi i shkarkimit.</string>
     <string name="confirm_delete_history_duplicates_desc">Kjo do të fshijë çdo element duplikat të historisë (url dhe tipi i njëjtë), duke mbajtur versionin e fundit.</string>
@@ -117,7 +99,6 @@
     <string name="author">Autori</string>
     <string name="download">Shkarko</string>
     <string name="download_video">Shkako Videon</string>
-    <string name="album">Albumi</string>
     <string name="video_quality">Kualiteti i Videos</string>
     <string name="embed_subtitles">Vendos Titrat</string>
     <string name="add_chapter">Vendos Kapituj</string>
@@ -129,7 +110,6 @@
     <string name="delete_selected">Fshi të zgjedhurat</string>
     <string name="you_are_going_to_delete_multiple_items">Fshi disa elementë…</string>
     <string name="delete_files_too">Fshi skedarët nga paisja</string>
-    <string name="finished_loading">U ngarkuan të gjitha.</string>
     <string name="request_permission_desc">Ky aplikacion ka nevojë për lejen e Skedarëve për të ruajtur shkarkimet në paisje</string>
     <string name="exit_app">Dil</string>
     <string name="warning">Kujdes</string>

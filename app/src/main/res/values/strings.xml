@@ -4,8 +4,6 @@
     <string name="search">Search</string>
     <string name="remove_all">Remove All</string>
     <string name="remove_results">Clear Results</string>
-    <string name="Trending"><b>Trending</b></string>
-    <string name="end_of_results"><b>No more results</b></string>
     <string name="download_all">Download All</string>
     <string name="settings">Settings</string>
     <string name="home">Home</string>
@@ -15,14 +13,9 @@
     <string name="updating">Updating</string>
     <string name="ytdl_update_hint">Useful if you have problems downloading</string>
     <string name="update_ytdl">Install new version of youtube-dl</string>
-    <string name="about">About</string>
     <string name="source_code">Source Code</string>
     <string name="search_hint">Search from YouTube</string>
-    <string name="download_already_started">Waiting for other download to finish before starting this one…</string>
-    <string name="try_again_after_permission">Retry after granting the permission.</string>
-    <string name="download_success">Downloaded</string>
     <string name="failed_download">Could not download file.</string>
-    <string name="download_start">Downloading…</string>
     <string name="download_notification_channel_name">File Downloads</string>
     <string name="download_notification_channel_description">Notification showing the progress of downloading audio and video files</string>
     <string name="failed_making_directory">Could not create the new folder.</string>
@@ -32,10 +25,7 @@
     <string name="ytdl_update_failed">Could not install the new version</string>
     <string name="ytdl_already_updating">Installing new version…</string>
     <string name="ytdl_updating_started">Downloading new version…</string>
-    <string name="Open_Link">Open link</string>
     <string name="Remove">Remove</string>
-    <string name="refresh_results">Refresh Results</string>
-    <string name="refresh_history">Refresh History</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="confirm_delete_history_desc">Delete the entire history, permanently.</string>
@@ -44,17 +34,12 @@
     <string name="confirm_delete_history">Confirm</string>
     <string name="search_history_hint">Search from History</string>
     <string name="no_results">No Results</string>
-    <string name="music_editor">Music Editor</string>
-    <string name="cli">Commands</string>
     <string name="more">More</string>
     <string name="update_app">Check for updates</string>
     <string name="version">Version</string>
     <string name="custom_command">Run Custom Command</string>
-    <string name="write_ytdlp_command">Write yt-dlp command</string>
-    <string name="run">Run</string>
     <string name="running_ytdlp_command">Running custom yt-dlp command…</string>
     <string name="command_directory">Folder for Custom Command</string>
-    <string name="error_checking_latest_version">Could not check for latest version.</string>
     <string name="couldnt_find_apk">Could not find a suitable APK.</string>
     <string name="downloading_update">Downloading new version…</string>
     <string name="chooose_range">Limit download to …</string>
@@ -74,8 +59,6 @@
     <string name="limit_rate">Limit Rate</string>
     <string name="limit_rate_summary">Maximum download rate (in bytes per second), e.g. 50K or 4.2M</string>
     <string name="aria2_summary">Use aria2c as downloader instead of the default</string>
-    <string name="remove_non_music">Remove non-music parts</string>
-    <string name="remove_non_music_summary">Strips non-music parts of audio files with SponsorBlock</string>
     <string name="processing">Processing</string>
     <string name="embed_subs">Subtitles in Videos</string>
     <string name="embed_subs_summary">Adds subtitles in the video</string>
@@ -102,7 +85,6 @@
     <string name="api_key_summary">Faster results from YouTube</string>
     <string name="update_app_summary">Announces new versions of the app when it is opened</string>
     <string name="downloads">Downloads</string>
-    <string name="filter_history">Filter History</string>
     <string name="removed_from_queue">removed from queue.</string>
     <string name="remove_deleted">Remove Deleted</string>
     <string name="remove_duplicates">Remove Duplicates</string>
@@ -122,7 +104,6 @@
     <string name="author">Author</string>
     <string name="download">Download</string>
     <string name="download_video">Download Video</string>
-    <string name="album">Album</string>
     <string name="video_quality">Video Quality</string>
     <string name="embed_subtitles">Embed Subtitles</string>
     <string name="add_chapter">Add Chapters</string>
@@ -135,7 +116,6 @@
     <string name="you_are_going_to_delete_multiple_items">Deleting multiple items…</string>
     <string name="delete_file_too">Delete the file from the device</string>
     <string name="delete_files_too">Delete the files from the device</string>
-    <string name="finished_loading">Loaded.</string>
     <string name="request_permission_desc">This app needs File Permissions to save downloads on the device</string>
     <string name="exit_app">Exit App</string>
     <string name="warning">Warning</string>
@@ -148,5 +128,4 @@
     <string name="sponsorblock_fillers">Fillers</string>
     <string name="sponsorblock_reminders">Subscription Reminders</string>
     <string name="select_sponsorblock_filtering">Select SponsorBlock Filtering</string>
-    <string name="unfound_file" translatable="false">/404.404</string>
 </resources>
