@@ -12,7 +12,7 @@ interface HistoryDao {
             "CASE WHEN :sort = 'ASC' THEN id END ASC," +
             "CASE WHEN :sort = 'DESC' THEN id END DESC," +
             "CASE WHEN :sort = '' THEN id END DESC ")
-    suspend fun getHistory(query : String, format : String, site : String, sort : String) : LiveData<List<HistoryItem>>
+    fun getHistory(query : String, format : String, site : String, sort : String) : LiveData<List<HistoryItem>>
 
     @Query("SELECT * FROM history")
     fun getAllHistory() : LiveData<List<HistoryItem>>

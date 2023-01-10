@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 
 class HistoryViewModel(application: Application) : AndroidViewModel(application) {
     private val repository : HistoryRepository
-    private val allHistory : LiveData<List<HistoryItem>>
+    val allHistory : LiveData<List<HistoryItem>>
 
     init {
         val dao = DBManager.getInstance(application).historyDao

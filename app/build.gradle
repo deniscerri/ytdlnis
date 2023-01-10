@@ -134,7 +134,6 @@ dependencies {
 
     implementation "com.squareup.retrofit2:retrofit:$retrofitVer"
     implementation "com.squareup.retrofit2:converter-gson:$retrofitVer"
-
-    implementation "org.kodein.di:kodein-di-generic-jvm:6.4.0"
-    implementation "org.kodein.di:kodein-di-framework-android-x:$kodeinVer"
+    implementation "com.squareup.okhttp3:okhttp:5.0.0-alpha.10"
+    implementation "com.squareup.okhttp3:logging-interceptor:4.7.2"
 }

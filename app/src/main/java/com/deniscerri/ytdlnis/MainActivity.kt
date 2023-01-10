@@ -194,7 +194,6 @@ class MainActivity : AppCompatActivity() {
         lastFragment = homeFragment
         listeners = ArrayList()
         listeners.add(homeFragment.listener)
-        listeners.add(downloadsFragment.listener)
     }
 
     private fun replaceFragment(f: Fragment) {
@@ -229,8 +228,7 @@ class MainActivity : AppCompatActivity() {
                     databaseManager.addToHistory(v)
                 }
                 databaseManager.close()
-                downloadsFragment.setDownloading(true)
-                downloadsFragment.initCards()
+                //downloadsFragment.initCards()
             }
         } catch (e: Exception) {
             e.printStackTrace()
