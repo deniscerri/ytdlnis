@@ -428,7 +428,7 @@ public class DownloaderService extends Service {
     }
 
     private void startCommandDownload(String text){
-        if(!text.startsWith("yt-dlp ")){
+        if(text.startsWith("yt-dlp ")){
             text = text.substring(6).trim();
         }
 

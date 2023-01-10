@@ -43,6 +43,7 @@
                 <TextView
                     android:id="@+id/custom_command_output"
                     android:layout_width="match_parent"
+                    android:textIsSelectable="true"
                     android:gravity="bottom"
                     android:layout_height="wrap_content" />
 
