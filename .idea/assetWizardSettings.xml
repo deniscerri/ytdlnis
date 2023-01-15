@@ -320,7 +320,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="file:/$USER_HOME$/AppData/Local/Android/Sdk/icons/material/materialicons/attach_money/baseline_attach_money_24.xml" />
+                                      <entry key="url" value="file:/$USER_HOME$/AppData/Local/Android/Sdk/icons/material/materialicons/download/baseline_download_24.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -331,7 +331,7 @@
                         <option name="values">
                           <map>
                             <entry key="color" value="00a6ff" />
-                            <entry key="outputName" value="ic_money" />
+                            <entry key="outputName" value="ic_downloads" />
                             <entry key="sourceFile" value="C:\Users\denis\Desktop\adaptiveproduct_youtube_foreground_color_108 (1).svg" />
                           </map>
                         </option>

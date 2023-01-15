@@ -1,7 +1,6 @@
 package com.deniscerri.ytdlnis.adapter;
 
 import android.app.Activity;
-import android.content.Context;
 import android.graphics.Color;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
@@ -14,39 +13,50 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.deniscerri.ytdlnis.R;
-import com.deniscerri.ytdlnis.database.Video;
 import com.deniscerri.ytdlnis.database.models.HistoryItem;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
-import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
-public class DownloadsRecyclerViewAdapter extends RecyclerView.Adapter<DownloadsRecyclerViewAdapter.ViewHolder> {
-    private List<HistoryItem> videoList;
-    private ArrayList<Integer> checkedVideos;
-    private ArrayList<String> websites;
+public class HistoryRecyclerViewAdapter extends ListAdapter<HistoryItem, HistoryRecyclerViewAdapter.ViewHolder> {
+    private ArrayList<Integer> checkedItems;
     private final OnItemClickListener onItemClickListener;
     private Activity activity;
 
-    public DownloadsRecyclerViewAdapter(OnItemClickListener onItemClickListener, Activity activity){
-        this.videoList = new ArrayList<>();
-        this.websites = new ArrayList<>();
-        this.checkedVideos = new ArrayList<>();
+    public HistoryRecyclerViewAdapter(OnItemClickListener onItemClickListener, Activity activity) {
+        super(DIFF_CALLBACK);
+        this.checkedItems = new ArrayList<>();
         this.onItemClickListener = onItemClickListener;
         this.activity = activity;
     }
+
+    private static final DiffUtil.ItemCallback<HistoryItem> DIFF_CALLBACK = new DiffUtil.ItemCallback<HistoryItem>() {
+        @Override
+        public boolean areItemsTheSame(@NonNull HistoryItem oldItem, @NonNull HistoryItem newItem) {
+            return oldItem.getId() == newItem.getId();
+        }
+
+        @Override
+        public boolean areContentsTheSame(@NonNull HistoryItem oldItem, @NonNull HistoryItem newItem) {
+            return oldItem.getTime() == newItem.getTime();
+        }
+    };
 
     @Override
     public int getItemViewType(int position) {
@@ -68,27 +78,25 @@ public class DownloadsRecyclerViewAdapter extends RecyclerView.Adapter<Downloads
         View cardView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.downloads_card, parent, false);
 
-        return new DownloadsRecyclerViewAdapter.ViewHolder(cardView, onItemClickListener);
+        return new HistoryRecyclerViewAdapter.ViewHolder(cardView, onItemClickListener);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        HistoryItem video = videoList.get(position);
-        Log.e("AAA", video.toString());
+        HistoryItem video = getItem(position);
+        Log.e("AAA", String.valueOf(position));
         MaterialCardView card = holder.cardView;
         // THUMBNAIL ----------------------------------
         ImageView thumbnail = card.findViewById(R.id.downloads_image_view);
         String imageURL= video.getThumb();
 
+        Handler uiHandler = new Handler(Looper.getMainLooper());
         if (!imageURL.isEmpty()){
-            Handler uiHandler = new Handler(Looper.getMainLooper());
             uiHandler.post(() -> Picasso.get().load(imageURL).into(thumbnail));
-            thumbnail.setColorFilter(Color.argb(70, 0, 0, 0));
         }else {
-            Handler uiHandler = new Handler(Looper.getMainLooper());
             uiHandler.post(() -> Picasso.get().load(R.color.black).into(thumbnail));
-            thumbnail.setColorFilter(Color.argb(70, 0, 0, 0));
         }
+        thumbnail.setColorFilter(Color.argb(95, 0, 0, 0));
 
         // TITLE  ----------------------------------
         TextView videoTitle = card.findViewById(R.id.downloads_title);
@@ -110,8 +118,22 @@ public class DownloadsRecyclerViewAdapter extends RecyclerView.Adapter<Downloads
 
         // TIME DOWNLOADED  ----------------------------------
         TextView datetime = card.findViewById(R.id.downloads_info_time);
-        String downloadedTime = video.getTime();
-        if (downloadedTime.isEmpty()) downloadedTime = activity.getString(R.string.currently_downloading) + " " + video.getType();
+        long time = video.getTime();
+        String downloadedTime;
+        if (time == 0){
+            downloadedTime = activity.getString(R.string.currently_downloading) + " " + video.getType();
+        }else{
+            Calendar cal = Calendar.getInstance();
+            Date date = new Date(time*1000L);
+            cal.setTime(date);
+            int day = cal.get(Calendar.DAY_OF_MONTH);
+            String month = cal.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault());
+            int year = cal.get(Calendar.YEAR);
+
+            DateFormat formatter = new SimpleDateFormat("HH:mm", Locale.getDefault());
+            String timeString = formatter.format(date);
+            downloadedTime = day + " " + month + " " + year + " - " + timeString;
+        }
         datetime.setText(downloadedTime);
 
         // BUTTON ----------------------------------
@@ -141,7 +163,7 @@ public class DownloadsRecyclerViewAdapter extends RecyclerView.Adapter<Downloads
 
         if (btn.hasOnClickListeners()) btn.setOnClickListener(null);
 
-        if(checkedVideos.contains(position)){
+        if(checkedItems.contains(position)){
             card.setChecked(true);
             card.setStrokeWidth(5);
         }else{
@@ -155,35 +177,25 @@ public class DownloadsRecyclerViewAdapter extends RecyclerView.Adapter<Downloads
             return true;
         });
         card.setOnClickListener(view -> {
-            if(checkedVideos.size() > 0){
-                checkCard(card, position);
+            if(checkedItems.size() > 0){
+                checkCard(card, video.getId());
             }else{
-                onItemClickListener.onCardClick(position, finalFilePresent);
+                onItemClickListener.onCardClick(video.getId(), finalFilePresent);
             }
         });
     }
 
-    public void setVideoList(List<HistoryItem> list){
-        videoList.clear();
-        videoList.addAll(list);
-        notifyDataSetChanged();
-    }
 
-    private void checkCard(MaterialCardView card, int position){
+    private void checkCard(MaterialCardView card, int videoID){
         if(card.isChecked()){
             card.setStrokeWidth(0);
-            checkedVideos.remove(Integer.valueOf(position));
+            checkedItems.remove(videoID);
         }else{
             card.setStrokeWidth(5);
-            checkedVideos.add(position);
+            checkedItems.add(videoID);
         }
         card.setChecked(!card.isChecked());
-        onItemClickListener.onCardSelect(position, card.isChecked());
-    }
-
-    @Override
-    public int getItemCount() {
-        return videoList.size();
+        onItemClickListener.onCardSelect(videoID, card.isChecked());
     }
 
     public interface OnItemClickListener {
@@ -192,44 +204,12 @@ public class DownloadsRecyclerViewAdapter extends RecyclerView.Adapter<Downloads
         void onButtonClick(int position);
     }
 
-    public ArrayList<String> getWebsites(){
-        return websites;
-    }
-
-    public void updateWebsiteList(){
-        websites = new ArrayList<>();
-        for (HistoryItem video : videoList){
-            if (!websites.contains(video.getWebsite())) websites.add(video.getWebsite());
-        }
-    }
-
-    public void clear(){
-        int size = videoList.size();
-        videoList.clear();
-        websites.clear();
-        notifyItemRangeRemoved(0, size);
-    }
-
     public void clearCheckedVideos(){
-        int size = checkedVideos.size();
+        int size = checkedItems.size();
         for (int i = 0; i < size; i++){
-            int position = checkedVideos.get(i);
+            int position = checkedItems.get(i);
             notifyItemChanged(position);
         }
-        checkedVideos.clear();
+        checkedItems.clear();
     }
-
-    public void add(ArrayList<HistoryItem> vids){
-        int position = videoList.size() + 1;
-        videoList.addAll(vids);
-        notifyItemRangeInserted(position, vids.size());
-        updateWebsiteList();
-    }
-
-    public void remove(int index){
-        videoList.remove(index);
-        notifyItemRemoved(index);
-        updateWebsiteList();
-    }
-
 }

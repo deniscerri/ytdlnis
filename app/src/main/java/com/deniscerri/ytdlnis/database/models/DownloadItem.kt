@@ -12,7 +12,9 @@ data class DownloadItem(
     val author: String,
     val duration: String,
     val thumb: String,
-    val type: String,
+    val formatId: Int,
+    val formatDesc: String,
     val downloadPath: String,
-    val website: String
+    val website: String,
+    val downloadSize: String
 )

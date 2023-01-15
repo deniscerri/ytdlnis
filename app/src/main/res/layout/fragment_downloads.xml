@@ -50,12 +50,13 @@
                     app:singleSelection="false">
 
                     <com.google.android.material.chip.Chip
-                        android:id="@+id/sort_chip"
+                        android:id="@+id/sortChip"
                         style="@style/Widget.Material3.Chip.Assist"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:chipIcon="@drawable/ic_down"
-                        android:text="@string/sort_by"/>
+                        android:onClick="sortBy"
+                        android:text="@string/sort_by"
+                        app:chipIcon="@drawable/ic_down" />
 
                 </com.google.android.material.chip.ChipGroup>
 

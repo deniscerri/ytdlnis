@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "12ee531d801d7e6e3fd888f4907adc81",
+    "identityHash": "1709c1d446102722d4dc7f2cb96cd40e",
     "entities": [
       {
         "tableName": "results",
@@ -68,7 +68,7 @@
       },
       {
         "tableName": "history",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `url` TEXT NOT NULL, `title` TEXT NOT NULL, `author` TEXT NOT NULL, `duration` TEXT NOT NULL, `thumb` TEXT NOT NULL, `type` TEXT NOT NULL, `time` TEXT NOT NULL, `downloadPath` TEXT NOT NULL, `website` TEXT NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `url` TEXT NOT NULL, `title` TEXT NOT NULL, `author` TEXT NOT NULL, `duration` TEXT NOT NULL, `thumb` TEXT NOT NULL, `type` TEXT NOT NULL, `time` INTEGER NOT NULL, `downloadPath` TEXT NOT NULL, `website` TEXT NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -115,7 +115,7 @@
           {
             "fieldPath": "time",
             "columnName": "time",
-            "affinity": "TEXT",
+            "affinity": "INTEGER",
             "notNull": true
           },
           {
@@ -142,7 +142,7 @@
       },
       {
         "tableName": "downloads",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `url` TEXT NOT NULL, `title` TEXT NOT NULL, `author` TEXT NOT NULL, `duration` TEXT NOT NULL, `thumb` TEXT NOT NULL, `type` TEXT NOT NULL, `downloadPath` TEXT NOT NULL, `website` TEXT NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `url` TEXT NOT NULL, `title` TEXT NOT NULL, `author` TEXT NOT NULL, `duration` TEXT NOT NULL, `thumb` TEXT NOT NULL, `formatId` INTEGER NOT NULL, `formatDesc` TEXT NOT NULL, `downloadPath` TEXT NOT NULL, `website` TEXT NOT NULL, `downloadSize` TEXT NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -181,8 +181,14 @@
             "notNull": true
           },
           {
-            "fieldPath": "type",
-            "columnName": "type",
+            "fieldPath": "formatId",
+            "columnName": "formatId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "formatDesc",
+            "columnName": "formatDesc",
             "affinity": "TEXT",
             "notNull": true
           },
@@ -195,6 +201,12 @@
           {
             "fieldPath": "website",
             "columnName": "website",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "downloadSize",
+            "columnName": "downloadSize",
             "affinity": "TEXT",
             "notNull": true
           }
@@ -212,7 +224,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '12ee531d801d7e6e3fd888f4907adc81')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '1709c1d446102722d4dc7f2cb96cd40e')"
     ]
   }
 }
