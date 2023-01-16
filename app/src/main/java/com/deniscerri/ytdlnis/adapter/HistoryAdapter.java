@@ -34,12 +34,12 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-public class HistoryRecyclerViewAdapter extends ListAdapter<HistoryItem, HistoryRecyclerViewAdapter.ViewHolder> {
+public class HistoryAdapter extends ListAdapter<HistoryItem, HistoryAdapter.ViewHolder> {
     private ArrayList<Integer> checkedItems;
     private final OnItemClickListener onItemClickListener;
     private Activity activity;
 
-    public HistoryRecyclerViewAdapter(OnItemClickListener onItemClickListener, Activity activity) {
+    public HistoryAdapter(OnItemClickListener onItemClickListener, Activity activity) {
         super(DIFF_CALLBACK);
         this.checkedItems = new ArrayList<>();
         this.onItemClickListener = onItemClickListener;
@@ -78,7 +78,7 @@ public class HistoryRecyclerViewAdapter extends ListAdapter<HistoryItem, History
         View cardView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.downloads_card, parent, false);
 
-        return new HistoryRecyclerViewAdapter.ViewHolder(cardView, onItemClickListener);
+        return new HistoryAdapter.ViewHolder(cardView, onItemClickListener);
     }
 
     @Override

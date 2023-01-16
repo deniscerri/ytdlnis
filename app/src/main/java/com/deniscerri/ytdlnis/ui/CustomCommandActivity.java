@@ -125,7 +125,7 @@ public class CustomCommandActivity extends AppCompatActivity {
         topAppBar = findViewById(R.id.custom_command_toolbar);
         topAppBar.setNavigationOnClickListener(view -> onBackPressed());
         output = findViewById(R.id.custom_command_output);
-        output.setMovementMethod(new ScrollingMovementMethod());
+        output.setTextIsSelectable(true);
 
         input = findViewById(R.id.command_edittext);
         input.requestFocus();

@@ -4,14 +4,12 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -25,13 +23,13 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerViewAdapter.ViewHolder> {
+public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     private ArrayList<Video> videoList;
     private ArrayList<Integer> checkedVideos;
     private final OnItemClickListener onItemClickListener;
     private Activity activity;
 
-    public HomeRecyclerViewAdapter(ArrayList<Video> videos, OnItemClickListener onItemClickListener, Activity activity){
+    public HomeAdapter(ArrayList<Video> videos, OnItemClickListener onItemClickListener, Activity activity){
         this.videoList = videos;
         this.checkedVideos = new ArrayList<>();
         this.onItemClickListener = onItemClickListener;
@@ -58,7 +56,7 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View cardView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.result_card, parent, false);
-        return new HomeRecyclerViewAdapter.ViewHolder(cardView, onItemClickListener);
+        return new HomeAdapter.ViewHolder(cardView, onItemClickListener);
     }
 
     @Override
@@ -90,13 +88,13 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
 
         // Bottom Info ----------------------------------
 
-        TextView bottomInfo = card.findViewById(R.id.result_info_bottom);
-        String info = video.getAuthor();
+        TextView author = card.findViewById(R.id.author);
+        author.setText(video.getAuthor());
+
+        TextView duration = card.findViewById(R.id.duration);
         if (!video.getDuration().isEmpty()){
-            if (!video.getAuthor().isEmpty()) info += " • ";
-            info += video.getDuration();
+            duration.setText(video.getDuration());
         }
-        bottomInfo.setText(info);
 
         // BUTTONS ----------------------------------
         String videoID = video.getVideoId();

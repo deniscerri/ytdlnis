@@ -19,7 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
-import com.deniscerri.ytdlnis.adapter.HistoryRecyclerViewAdapter
+import com.deniscerri.ytdlnis.adapter.HistoryAdapter
 import com.deniscerri.ytdlnis.database.DatabaseManager
 import com.deniscerri.ytdlnis.database.models.HistoryItem
 import com.deniscerri.ytdlnis.database.repository.HistoryRepository.HistorySort
@@ -39,7 +39,7 @@ import java.io.File
 /**
  * A fragment representing a list of Items.
  */
-class DownloadsFragment : Fragment(), HistoryRecyclerViewAdapter.OnItemClickListener,
+class DownloadsFragment : Fragment(), HistoryAdapter.OnItemClickListener,
     OnClickListener, OnLongClickListener {
     private lateinit var historyViewModel : HistoryViewModel
 
@@ -53,7 +53,7 @@ class DownloadsFragment : Fragment(), HistoryRecyclerViewAdapter.OnItemClickList
     private var shimmerCards: ShimmerFrameLayout? = null
     private var topAppBar: MaterialToolbar? = null
     private var recyclerView: RecyclerView? = null
-    private var historyRecyclerViewAdapter: HistoryRecyclerViewAdapter? = null
+    private var historyAdapter: HistoryAdapter? = null
     private var bottomSheet: BottomSheetDialog? = null
     private var sortSheet: BottomSheetDialog? = null
     private var uiHandler: Handler? = null
@@ -102,14 +102,14 @@ class DownloadsFragment : Fragment(), HistoryRecyclerViewAdapter.OnItemClickList
         downloadsList = mutableListOf()
         allDownloadsList = mutableListOf()
 
-        historyRecyclerViewAdapter =
-            HistoryRecyclerViewAdapter(
+        historyAdapter =
+            HistoryAdapter(
                 this,
                 activity
             )
         recyclerView = view.findViewById(R.id.recyclerviewdownloadss)
         recyclerView?.layoutManager = LinearLayoutManager(context)
-        recyclerView?.adapter = historyRecyclerViewAdapter
+        recyclerView?.adapter = historyAdapter
 
         noResults?.visibility = GONE
         selectionChips?.visibility = VISIBLE
@@ -131,7 +131,7 @@ class DownloadsFragment : Fragment(), HistoryRecyclerViewAdapter.OnItemClickList
         }
 
         historyViewModel.getFilteredList().observe(viewLifecycleOwner) {
-            historyRecyclerViewAdapter!!.submitList(it)
+            historyAdapter!!.submitList(it)
             downloadsList = it
         }
 
@@ -347,7 +347,7 @@ class DownloadsFragment : Fragment(), HistoryRecyclerViewAdapter.OnItemClickList
                 historyViewModel.delete(item, deleteFile[0])
             }
             selectedObjects = ArrayList()
-            historyRecyclerViewAdapter!!.clearCheckedVideos()
+            historyAdapter!!.clearCheckedVideos()
             deleteFab!!.visibility = GONE
         }
         deleteDialog.show()
