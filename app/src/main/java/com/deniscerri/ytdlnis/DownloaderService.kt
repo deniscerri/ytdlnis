@@ -16,16 +16,16 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.workDataOf
 import com.deniscerri.ytdlnis.database.Video
-import com.deniscerri.ytdlnis.ui.CustomCommandActivity
 import com.deniscerri.ytdlnis.service.DownloadInfo
 import com.deniscerri.ytdlnis.service.IDownloaderListener
 import com.deniscerri.ytdlnis.service.IDownloaderService
+import com.deniscerri.ytdlnis.ui.CustomCommandActivity
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.NotificationUtil
 import com.deniscerri.ytdlnis.work.FileTransferWorker
+import com.deniscerri.ytdlnis.work.FileTransferWorker.Companion.downLocation
 import com.deniscerri.ytdlnis.work.FileTransferWorker.Companion.originDir
 import com.deniscerri.ytdlnis.work.FileTransferWorker.Companion.title
-import com.deniscerri.ytdlnis.work.FileTransferWorker.Companion.downLocation
 import com.yausername.youtubedl_android.YoutubeDL
 import com.yausername.youtubedl_android.YoutubeDLRequest
 import com.yausername.youtubedl_android.YoutubeDLResponse
@@ -347,26 +347,26 @@ class DownloaderService : Service() {
                 request.addOption("--embed-thumbnail")
                 request.addOption("--convert-thumbnails", "png")
                 try {
-                    val config = File(cacheDir, "config.txt")
+                    val config = File(cacheDir, "config" + video.videoId + ".txt")
                     val config_data =
                         "--ppa \"ffmpeg: -c:v png -vf crop=\\\"'if(gt(ih,iw),iw,ih)':'if(gt(iw,ih),ih,iw)'\\\"\""
                     val stream = FileOutputStream(config)
                     stream.write(config_data.toByteArray())
                     stream.close()
                     request.addOption("--config", config.absolutePath)
-                } catch (ignored: Exception) {
+                } catch (ignored: java.lang.Exception) {
                 }
             }
-
+            request.addOption("--parse-metadata", "%(release_year,upload_date)s:%(meta_date)s")
             request.addCommands(Arrays.asList("--replace-in-metadata", "title", ".*.", video.title))
-            request.addCommands(
-                Arrays.asList(
-                    "--replace-in-metadata",
-                    "uploader",
-                    ".*.",
-                    video.author
-                )
-            )
+            request.addCommands(Arrays.asList("--replace-in-metadata", "uploader", ".*.", video.author))
+
+            if (!video.playlistTitle.isEmpty()) {
+                request.addOption("--parse-metadata", "%(album,playlist,title)s:%(meta_album)s")
+                request.addOption("--parse-metadata", "%(track_number,playlist_index)d:%(meta_track)s")
+            } else {
+                request.addOption("--parse-metadata", "%(album,title)s:%(meta_album)s")
+            }
             request.addOption("-o", tempFileDir.absolutePath + "/%(uploader)s - %(title)s.%(ext)s")
         } else if (type == "video") {
             if (downloadLocation.equals(getString(R.string.video_path))){
