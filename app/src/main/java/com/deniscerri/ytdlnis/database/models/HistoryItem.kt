@@ -5,8 +5,6 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "history")
 data class HistoryItem(
-    @PrimaryKey(autoGenerate = true)
-    var id: Int,
     val url: String,
     val title: String,
     val author: String,
@@ -16,5 +14,7 @@ data class HistoryItem(
     val time: Long,
     val downloadPath: String,
     val website: String
-    //val isQueuedDownload: Int
-)
+){
+    @PrimaryKey(autoGenerate = true)
+    var id: Int? = null
+}

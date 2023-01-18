@@ -67,7 +67,7 @@
             android:name=".DownloaderService"
             android:enabled="true"
             android:exported="false" />
-        <receiver android:name=".receiver.NotificationReceiver" />
+        <receiver android:name=".receiver.CancelDownloadNotificationReceiver" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

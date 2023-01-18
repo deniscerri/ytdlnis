@@ -9,6 +9,7 @@ import android.provider.DocumentsContract
 import androidx.work.CoroutineWorker
 import androidx.work.ForegroundInfo
 import androidx.work.WorkerParameters
+import androidx.work.workDataOf
 import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.NotificationUtil
@@ -39,6 +40,7 @@ class FileTransferWorker(
         setForeground(foregroundInfo)
 
         fileUtil.moveFile(originDir, context, destDir){ progress ->
+            setProgressAsync(workDataOf("progress" to progress))
             notificationUtil.updateFileTransferNotification(id, progress)
         }
 

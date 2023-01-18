@@ -1,5 +1,6 @@
 package com.deniscerri.ytdlnis.database.models
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
@@ -10,15 +11,21 @@ data class DownloadItem(
     val url: String,
     val title: String,
     val author: String,
-    val startTime: String,
-    val endTime: String,
     val thumb: String,
-    val formatId: Int,
+    val duration: String,
+    val type: String,
+    val audioQualityId: String,
+    val videoQualityId: String,
+    val customTemplateId: Int,
+    val audioFormat: String,
+    val videoFormat: String,
     val formatDesc: String,
+    @ColumnInfo(defaultValue = "0")
+    val removeAudio: Boolean,
     val downloadPath: String,
     val website: String,
     val downloadSize: String,
-    val progress: Float,
-    val custom: Boolean,
-    val customTemplateId: Int
+    val playlistTitle: String,
+    @ColumnInfo(defaultValue = "Queued")
+    var status: String
 )

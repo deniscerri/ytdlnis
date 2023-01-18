@@ -10,7 +10,7 @@ import android.graphics.BitmapFactory
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import com.deniscerri.ytdlnis.R
-import com.deniscerri.ytdlnis.receiver.NotificationReceiver
+import com.deniscerri.ytdlnis.receiver.CancelDownloadNotificationReceiver
 
 class NotificationUtil(var context: Context) {
     private val downloadNotificationBuilder: NotificationCompat.Builder = NotificationCompat.Builder(context, DOWNLOAD_SERVICE_CHANNEL_ID)
@@ -53,7 +53,7 @@ class NotificationUtil(var context: Context) {
         pendingIntent: PendingIntent?,
         title: String?,
     ) : Notification {
-        val intent = Intent(context, NotificationReceiver::class.java)
+        val intent = Intent(context, CancelDownloadNotificationReceiver::class.java)
 
         return fileTransferNotificationBuilder
             .setContentTitle(title)
@@ -92,12 +92,14 @@ class NotificationUtil(var context: Context) {
     fun createDownloadServiceNotification(
         pendingIntent: PendingIntent?,
         title: String?,
+        workID: Int,
         channel: String
     ): Notification {
         val notificationBuilder = getBuilder(channel)
 
-        val intent = Intent(context, NotificationReceiver::class.java)
+        val intent = Intent(context, CancelDownloadNotificationReceiver::class.java)
         intent.putExtra("cancel", "")
+        intent.putExtra("workID", workID)
         val cancelNotificationPendingIntent = PendingIntent.getBroadcast(
             context,
             0,

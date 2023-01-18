@@ -10,10 +10,13 @@ import com.deniscerri.ytdlnis.util.FileUtil
 interface DownloadDao {
 
     @Query("SELECT * FROM downloads")
-    fun getAllDownloads() : LiveData<List<DownloadItem>>
+    fun getAllDownloads() : List<DownloadItem>
+
+    @Query("SELECT * FROM downloads WHERE status='Queued'")
+    fun getQueuedDownloads() : List<DownloadItem>
 
     @Query("SELECT * FROM downloads WHERE id=:id LIMIT 1")
-    suspend fun getDownloadById(id: Int) : DownloadItem
+    fun getDownloadById(id: Int) : DownloadItem
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(item: DownloadItem)

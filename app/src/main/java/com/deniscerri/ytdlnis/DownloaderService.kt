@@ -432,6 +432,8 @@ class DownloaderService : Service() {
                 Log.e(TAG, downloadInfo.downloadPath)
                 downloadInfo.downloadType = type
 
+
+
                 try {
                     for (activity in activities.keys) {
                         activity.runOnUiThread {
