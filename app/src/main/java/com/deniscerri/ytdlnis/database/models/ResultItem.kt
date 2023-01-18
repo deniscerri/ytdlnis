@@ -8,13 +8,14 @@ import com.yausername.youtubedl_android.mapper.VideoInfo
 
 @Entity(tableName = "results")
 data class ResultItem(
-    @PrimaryKey(autoGenerate = true)
-    val id: Int,
     val url: String,
     val title: String,
     val author: String,
     val duration: String,
     val thumb: String,
     val website: String,
-    val playlistTitle: String
-)
+    var playlistTitle: String
+){
+    @PrimaryKey(autoGenerate = true)
+    var id: Int? = null
+}

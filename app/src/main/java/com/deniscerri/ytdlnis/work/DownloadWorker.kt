@@ -50,7 +50,7 @@ class DownloadWorker(
         setForeground(foregroundInfo)
 
         while (queue.isNotEmpty()){
-            val item = dao.getDownloadById(queue[0].id)
+            val item = dao.getDownloadById(queue[0].id!!)
             queue.removeFirst()
             val url = item.url
             val request = YoutubeDLRequest(url)

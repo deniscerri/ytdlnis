@@ -9,6 +9,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.widget.Toast;
 
 import com.deniscerri.ytdlnis.R;
+import com.deniscerri.ytdlnis.database.models.HistoryItem;
+import com.deniscerri.ytdlnis.database.models.ResultItem;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -90,63 +92,63 @@ public class DatabaseManager extends SQLiteOpenHelper {
     }
 
     @SuppressLint("Range")
-    public void clearHistoryItem(Video video, boolean delete_file){
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        if (delete_file){
-            try{
-                Cursor cursor = db.rawQuery("SELECT * FROM " + history_table_name + " WHERE url='" +
-                        video.getURL() + "' AND type='"+video.getDownloadedType() + "' LIMIT 1", null);
-
-                if(cursor.moveToFirst()){
-                    String path = cursor.getString(cursor.getColumnIndex(downloadPath));
-                    File file = new File(path);
-                    if(file.exists()){
-                        file.delete();
-                    }
-                }
-            }catch (Exception e){
-                Toast.makeText(context, R.string.error_deleting_file, Toast.LENGTH_SHORT).show();
-            }
-        }
-
-
-        db.execSQL("DELETE FROM " + history_table_name + " WHERE id=" + video.getId());
-
-        String where = "";
-        switch(video.getDownloadedType()){
-            case "audio":
-                where = " SET downloadedAudio=0 WHERE downloadedAudio=1 AND videoId='" + video.getVideoId()+"'";
-                break;
-            case "video":
-                where = " SET downloadedVideo=0 WHERE downloadedVideo=1 AND videoId='" + video.getVideoId()+"'";
-                break;
-        }
-
-        //remove downloaded status from results
-        db.execSQL("UPDATE "+results_table_name+ where);
+    public void clearHistoryItem(HistoryItem video, boolean delete_file){
+//        SQLiteDatabase db = this.getWritableDatabase();
+//
+//        if (delete_file){
+//            try{
+//                Cursor cursor = db.rawQuery("SELECT * FROM " + history_table_name + " WHERE url='" +
+//                        video.getURL() + "' AND type='"+video.getDownloadedType() + "' LIMIT 1", null);
+//
+//                if(cursor.moveToFirst()){
+//                    String path = cursor.getString(cursor.getColumnIndex(downloadPath));
+//                    File file = new File(path);
+//                    if(file.exists()){
+//                        file.delete();
+//                    }
+//                }
+//            }catch (Exception e){
+//                Toast.makeText(context, R.string.error_deleting_file, Toast.LENGTH_SHORT).show();
+//            }
+//        }
+//
+//
+//        db.execSQL("DELETE FROM " + history_table_name + " WHERE id=" + video.getId());
+//
+//        String where = "";
+//        switch(video.getDownloadedType()){
+//            case "audio":
+//                where = " SET downloadedAudio=0 WHERE downloadedAudio=1 AND videoId='" + video.getVideoId()+"'";
+//                break;
+//            case "video":
+//                where = " SET downloadedVideo=0 WHERE downloadedVideo=1 AND videoId='" + video.getVideoId()+"'";
+//                break;
+//        }
+//
+//        //remove downloaded status from results
+//        db.execSQL("UPDATE "+results_table_name+ where);
     }
 
     public void clearDeletedHistory(){
-        ArrayList<Video> videos = getHistory("","","","");
-        for (int i = 0; i < videos.size(); i++){
-            Video video = videos.get(i);
-            String path = video.getDownloadPath();
-            File file = new File(path);
-            if(!file.exists() && !path.isEmpty()){
-                clearHistoryItem(video, false);
-            }
-        }
+//        ArrayList<ResultItem> videos = getHistory("","","","");
+//        for (int i = 0; i < videos.size(); i++){
+//            ResultItem video = videos.get(i);
+//            String path = video.getDownloadPath();
+//            File file = new File(path);
+//            if(!file.exists() && !path.isEmpty()){
+//                clearHistoryItem(video, false);
+//            }
+//        }
     }
 
     public void clearDownloadingHistory(){
-        ArrayList<Video> videos = getHistory("","","","");
-        for (int i = 0; i < videos.size(); i++){
-            Video video = videos.get(i);
-            if(video.isQueuedDownload()){
-                clearHistoryItem(video, false);
-            }
-        }
+//        ArrayList<ResultItem> videos = getHistory("","","","");
+//        for (int i = 0; i < videos.size(); i++){
+//            ResultItem video = videos.get(i);
+//            if(video.isQueuedDownload()){
+//                clearHistoryItem(video, false);
+//            }
+//        }
     }
 
     public void clearDuplicateHistory(){
@@ -176,36 +178,36 @@ public class DatabaseManager extends SQLiteOpenHelper {
 
 
     @SuppressLint("Range")
-    public ArrayList<Video> getResults(){
+    public ArrayList<ResultItem> getResults(){
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + results_table_name, null);
-        ArrayList<Video> list = new ArrayList<>();
+        ArrayList<ResultItem> list = new ArrayList<>();
 
-        if(cursor.moveToFirst()){
-            do {
-                // on below line we are adding the data from cursor to our array list.
-                list.add(new Video(cursor.getString(cursor.getColumnIndex(videoId)),
-                        cursor.getString(cursor.getColumnIndex(url)),
-                        cursor.getString(cursor.getColumnIndex(title)),
-                        cursor.getString(cursor.getColumnIndex(author)),
-                        cursor.getString(cursor.getColumnIndex(duration)),
-                        cursor.getString(cursor.getColumnIndex(thumb)),
-                        cursor.getInt(cursor.getColumnIndex(downloadedAudio)),
-                        cursor.getInt(cursor.getColumnIndex(downloadedVideo)),
-                        cursor.getInt(cursor.getColumnIndex(isPlaylistItem)),
-                        cursor.getString(cursor.getColumnIndex(website)),
-                        cursor.getInt(cursor.getColumnIndex(downloadedAudio)),
-                        cursor.getInt(cursor.getColumnIndex(downloadingVideo)),
-                        cursor.getString(cursor.getColumnIndex(playlistTitle))));
-            } while (cursor.moveToNext());
-        }
-
-        cursor.close();
+//        if(cursor.moveToFirst()){
+//            do {
+//                // on below line we are adding the data from cursor to our array list.
+//                list.add(new ResultItem(cursor.getString(cursor.getColumnIndex(videoId)),
+//                        cursor.getString(cursor.getColumnIndex(url)),
+//                        cursor.getString(cursor.getColumnIndex(title)),
+//                        cursor.getString(cursor.getColumnIndex(author)),
+//                        cursor.getString(cursor.getColumnIndex(duration)),
+//                        cursor.getString(cursor.getColumnIndex(thumb)),
+//                        cursor.getInt(cursor.getColumnIndex(downloadedAudio)),
+//                        cursor.getInt(cursor.getColumnIndex(downloadedVideo)),
+//                        cursor.getInt(cursor.getColumnIndex(isPlaylistItem)),
+//                        cursor.getString(cursor.getColumnIndex(website)),
+//                        cursor.getInt(cursor.getColumnIndex(downloadedAudio)),
+//                        cursor.getInt(cursor.getColumnIndex(downloadingVideo)),
+//                        cursor.getString(cursor.getColumnIndex(playlistTitle))));
+//            } while (cursor.moveToNext());
+//        }
+//
+//        cursor.close();
         return list;
     }
 
     @SuppressLint("Range")
-    public ArrayList<Video> getHistory(String query, String format, String site, String sort){
+    public ArrayList<ResultItem> getHistory(String query, String format, String site, String sort){
         SQLiteDatabase db = this.getReadableDatabase();
 
         if (sort == null || sort.isEmpty()) sort = "DESC";
@@ -215,91 +217,91 @@ public class DatabaseManager extends SQLiteOpenHelper {
                         " AND website LIKE '%"+site+"%'"+
                         " ORDER BY id "+sort,
                 null);
-        ArrayList<Video> list = new ArrayList<>();
-
-        if(cursor.moveToFirst()){
-            do {
-                // on below line we are adding the data from cursor to our array list.
-                list.add(new Video(cursor.getInt(cursor.getColumnIndex(id)),
-                        cursor.getString(cursor.getColumnIndex(url)),
-                        cursor.getString(cursor.getColumnIndex(title)),
-                        cursor.getString(cursor.getColumnIndex(author)),
-                        cursor.getString(cursor.getColumnIndex(duration)),
-                        cursor.getString(cursor.getColumnIndex(thumb)),
-                        cursor.getString(cursor.getColumnIndex(type)),
-                        cursor.getString(cursor.getColumnIndex(time)),
-                        cursor.getString(cursor.getColumnIndex(downloadPath)),
-                        cursor.getString(cursor.getColumnIndex(website)),
-                        cursor.getInt(cursor.getColumnIndex(isQueuedDownload))));
-            } while (cursor.moveToNext());
-        }
-
-        cursor.close();
+        ArrayList<ResultItem> list = new ArrayList<>();
+//
+//        if(cursor.moveToFirst()){
+//            do {
+//                // on below line we are adding the data from cursor to our array list.
+//                list.add(new ResultItem(cursor.getInt(cursor.getColumnIndex(id)),
+//                        cursor.getString(cursor.getColumnIndex(url)),
+//                        cursor.getString(cursor.getColumnIndex(title)),
+//                        cursor.getString(cursor.getColumnIndex(author)),
+//                        cursor.getString(cursor.getColumnIndex(duration)),
+//                        cursor.getString(cursor.getColumnIndex(thumb)),
+//                        cursor.getString(cursor.getColumnIndex(type)),
+//                        cursor.getString(cursor.getColumnIndex(time)),
+//                        cursor.getString(cursor.getColumnIndex(downloadPath)),
+//                        cursor.getString(cursor.getColumnIndex(website)),
+//                        cursor.getInt(cursor.getColumnIndex(isQueuedDownload))));
+//            } while (cursor.moveToNext());
+//        }
+//
+//        cursor.close();
         return list;
     }
 
-    public void addToResults(ArrayList<Video> videot){
+    public void addToResults(ArrayList<ResultItem> videot){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
-        for(Video v : videot){
-            values.put(videoId, v.getVideoId());
-            values.put(url, v.getURL());
-            values.put(title, v.getTitle());
-            values.put(author, v.getAuthor());
-            values.put(duration, v.getDuration());
-            values.put(thumb, v.getThumb());
-            values.put(downloadedAudio, v.isAudioDownloaded());
-            values.put(downloadedVideo, v.isVideoDownloaded());
-            values.put(isPlaylistItem, v.getIsPlaylistItem());
-            values.put(website, v.getWebsite());
-            values.put(downloadingAudio, 0);
-            values.put(downloadingVideo, 0);
-            values.put(playlistTitle, v.getPlaylistTitle());
-
-            db.insert(results_table_name, null, values);
-        }
-
-        db.close();
+//        for(ResultItem v : videot){
+//            values.put(videoId, v.getVideoId());
+//            values.put(url, v.getURL());
+//            values.put(title, v.getTitle());
+//            values.put(author, v.getAuthor());
+//            values.put(duration, v.getDuration());
+//            values.put(thumb, v.getThumb());
+//            values.put(downloadedAudio, v.isAudioDownloaded());
+//            values.put(downloadedVideo, v.isVideoDownloaded());
+//            values.put(isPlaylistItem, v.getIsPlaylistItem());
+//            values.put(website, v.getWebsite());
+//            values.put(downloadingAudio, 0);
+//            values.put(downloadingVideo, 0);
+//            values.put(playlistTitle, v.getPlaylistTitle());
+//
+//            db.insert(results_table_name, null, values);
+//        }
+//
+//        db.close();
     }
 
-    public void addToHistory(Video v){
+    public void addToHistory(ResultItem v){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-
-        values.put(url, v.getURL());
-        values.put(title, v.getTitle());
-        values.put(author, v.getAuthor());
-        values.put(duration, v.getDuration());
-        values.put(thumb, v.getThumb());
-        values.put(type, v.getDownloadedType());
-        values.put(time, v.getDownloadedTime());
-        values.put(downloadPath, v.getDownloadPath());
-        values.put(website, v.getWebsite());
-        values.put(isQueuedDownload, (v.isQueuedDownload()) ? 1 : 0);
-
-        db.insert(history_table_name, null, values);
-        db.close();
+//
+//        values.put(url, v.getURL());
+//        values.put(title, v.getTitle());
+//        values.put(author, v.getAuthor());
+//        values.put(duration, v.getDuration());
+//        values.put(thumb, v.getThumb());
+//        values.put(type, v.getDownloadedType());
+//        values.put(time, v.getDownloadedTime());
+//        values.put(downloadPath, v.getDownloadPath());
+//        values.put(website, v.getWebsite());
+//        values.put(isQueuedDownload, (v.isQueuedDownload()) ? 1 : 0);
+//
+//        db.insert(history_table_name, null, values);
+//        db.close();
     }
 
-    public void updateHistoryItem(Video v){
+    public void updateHistoryItem(ResultItem v){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
-        values.put(url, v.getURL());
-        values.put(title, v.getTitle());
-        values.put(author, v.getAuthor());
-        values.put(duration, v.getDuration());
-        values.put(thumb, v.getThumb());
-        values.put(type, v.getDownloadedType());
-        values.put(time, v.getDownloadedTime());
-        values.put(downloadPath, v.getDownloadPath());
-        values.put(website, v.getWebsite());
-        values.put(isQueuedDownload, (v.isQueuedDownload()) ? 1 : 0);
-
-        String where = url + "='"+v.getURL()+"' AND "+isQueuedDownload+"=1 AND "+type+"='"+v.getDownloadedType()+"'";
-        db.update(history_table_name, values, where, null);
-        db.close();
+//        values.put(url, v.getURL());
+//        values.put(title, v.getTitle());
+//        values.put(author, v.getAuthor());
+//        values.put(duration, v.getDuration());
+//        values.put(thumb, v.getThumb());
+//        values.put(type, v.getDownloadedType());
+//        values.put(time, v.getDownloadedTime());
+//        values.put(downloadPath, v.getDownloadPath());
+//        values.put(website, v.getWebsite());
+//        values.put(isQueuedDownload, (v.isQueuedDownload()) ? 1 : 0);
+//
+//        String where = url + "='"+v.getURL()+"' AND "+isQueuedDownload+"=1 AND "+type+"='"+v.getDownloadedType()+"'";
+//        db.update(history_table_name, values, where, null);
+//        db.close();
     }
 
     public void updateDownloadStatusOnResult(String id, String type, boolean downloaded){

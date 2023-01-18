@@ -5,6 +5,7 @@ import com.deniscerri.ytdlnis.database.dao.DownloadDao
 import com.deniscerri.ytdlnis.database.models.DownloadItem
 
 class DownloadRepository(private val downloadDao: DownloadDao) {
+    val allDownloads : LiveData<List<DownloadItem>> = downloadDao.getAllDownloads()
 
     suspend fun insert(item: DownloadItem){
         downloadDao.insert(item)
@@ -19,7 +20,7 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
     }
 
     suspend fun getQueuedDownloads() : List<DownloadItem>{
-        var items = downloadDao.getQueuedDownloads();
+        val items = downloadDao.getQueuedDownloads()
         for (i in items){
             i.status = "Downloading"
             downloadDao.update(i)

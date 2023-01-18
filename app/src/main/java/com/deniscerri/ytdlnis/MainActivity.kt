@@ -19,7 +19,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.deniscerri.ytdlnis.DownloaderService.LocalBinder
 import com.deniscerri.ytdlnis.database.DatabaseManager
-import com.deniscerri.ytdlnis.database.Video
+import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.deniscerri.ytdlnis.databinding.ActivityMainBinding
 import com.deniscerri.ytdlnis.ui.DownloadsFragment
 import com.deniscerri.ytdlnis.ui.HomeFragment
@@ -193,7 +193,6 @@ class MainActivity : AppCompatActivity() {
             .commit()
         lastFragment = homeFragment
         listeners = ArrayList()
-        listeners.add(homeFragment.listener)
     }
 
     private fun replaceFragment(f: Fragment) {
@@ -202,37 +201,38 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun startDownloadService(
-        downloadQueue: ArrayList<Video>,
+        downloadQueue: ArrayList<ResultItem>,
         awaitingListener: IDownloaderListener
     ) {
-        addQueueToDownloads(downloadQueue)
-        if (isDownloadServiceRunning) {
-            iDownloaderService?.updateQueue(downloadQueue)
-            return
-        }
-        if (!listeners.contains(awaitingListener)) listeners.add(awaitingListener)
-        val serviceIntent = Intent(context, DownloaderService::class.java)
-        serviceIntent.putParcelableArrayListExtra("queue", downloadQueue)
-        context.applicationContext.startService(serviceIntent)
-        context.applicationContext.bindService(serviceIntent, serviceConnection, BIND_AUTO_CREATE)
+//        addQueueToDownloads(downloadQueue)
+//        if (isDownloadServiceRunning) {
+//            iDownloaderService?.updateQueue(downloadQueue)
+//            return
+//        }
+//        if (!listeners.contains(awaitingListener)) listeners.add(awaitingListener)
+//        val serviceIntent = Intent(context, DownloaderService::class.java)
+//        serviceIntent.putParcelableArrayListExtra("queue", downloadQueue)
+//        context.applicationContext.startService(serviceIntent)
+//        context.applicationContext.bindService(serviceIntent, serviceConnection, BIND_AUTO_CREATE)
+
     }
 
-    private fun addQueueToDownloads(downloadQueue: ArrayList<Video>) {
-        try {
-            val sharedPreferences = context.getSharedPreferences("root_preferences", MODE_PRIVATE)
-            if (!sharedPreferences.getBoolean("incognito", false)) {
-                val databaseManager = DatabaseManager(context)
-                for (i in downloadQueue.indices.reversed()) {
-                    val v = downloadQueue[i]
-                    v.isQueuedDownload = true
-                    databaseManager.addToHistory(v)
-                }
-                databaseManager.close()
-                //downloadsFragment.initCards()
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
+    private fun addQueueToDownloads(downloadQueue: ArrayList<ResultItem>) {
+//        try {
+//            val sharedPreferences = context.getSharedPreferences("root_preferences", MODE_PRIVATE)
+//            if (!sharedPreferences.getBoolean("incognito", false)) {
+//                val databaseManager = DatabaseManager(context)
+//                for (i in downloadQueue.indices.reversed()) {
+//                    val v = downloadQueue[i]
+//                    v.isQueuedDownload = true
+//                    databaseManager.addToHistory(v)
+//                }
+//                databaseManager.close()
+//                //downloadsFragment.initCards()
+//            }
+//        } catch (e: Exception) {
+//            e.printStackTrace()
+//        }
     }
 
     fun stopDownloadService() {
@@ -257,7 +257,7 @@ class MainActivity : AppCompatActivity() {
         stopDownloadService()
     }
 
-    fun removeItemFromDownloadQueue(video: Video?, type: String?) {
+    fun removeItemFromDownloadQueue(video: ResultItem?, type: String?) {
         iDownloaderService!!.removeItemFromDownloadQueue(video, type)
     }
 

@@ -82,6 +82,7 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion composeVer
     }
+    namespace 'com.deniscerri.ytdlnis'
 }
 
 

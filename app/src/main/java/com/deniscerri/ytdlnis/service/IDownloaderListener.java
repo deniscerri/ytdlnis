@@ -1,7 +1,5 @@
 package com.deniscerri.ytdlnis.service;
 
-import com.deniscerri.ytdlnis.database.Video;
-
 public interface IDownloaderListener {
     void onDownloadStart(DownloadInfo downloadInfo);
     void onDownloadProgress(DownloadInfo downloadInfo);

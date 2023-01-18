@@ -10,7 +10,7 @@ import com.deniscerri.ytdlnis.util.FileUtil
 interface DownloadDao {
 
     @Query("SELECT * FROM downloads")
-    fun getAllDownloads() : List<DownloadItem>
+    fun getAllDownloads() : LiveData<List<DownloadItem>>
 
     @Query("SELECT * FROM downloads WHERE status='Queued'")
     fun getQueuedDownloads() : List<DownloadItem>

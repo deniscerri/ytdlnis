@@ -6,8 +6,6 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "downloads")
 data class DownloadItem(
-    @PrimaryKey(autoGenerate = true)
-    val id: Int,
     val url: String,
     val title: String,
     val author: String,
@@ -28,4 +26,7 @@ data class DownloadItem(
     val playlistTitle: String,
     @ColumnInfo(defaultValue = "Queued")
     var status: String
-)
+){
+    @PrimaryKey(autoGenerate = true)
+    var id: Int? = null
+}

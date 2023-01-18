@@ -3,17 +3,13 @@ package com.deniscerri.ytdlnis.util
 import android.content.Context
 import android.media.MediaScannerConnection
 import android.net.Uri
-import android.os.FileUtils
 import android.provider.DocumentsContract
-import android.util.Log
 import android.webkit.MimeTypeMap
 import android.widget.Toast
-import com.deniscerri.ytdlnis.DownloaderService
 import com.deniscerri.ytdlnis.R
-import com.deniscerri.ytdlnis.database.Video
+import com.deniscerri.ytdlnis.database.models.DownloadItem
+import com.deniscerri.ytdlnis.database.models.ResultItem
 import java.io.File
-import java.io.InputStream
-import java.io.OutputStream
 import java.net.URLDecoder
 import java.nio.charset.StandardCharsets
 
@@ -55,7 +51,7 @@ class FileUtil() {
         return formattedPath.toString()
     }
 
-    fun scanMedia(video: Video, context: Context) : String {
+    fun scanMedia(video: DownloadItem, context: Context) : String {
         val files = ArrayList<File>()
         val title: String = video.title.replace("[^a-zA-Z0-9]".toRegex(), "")
         var pathTmp: String

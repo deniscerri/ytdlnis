@@ -15,7 +15,7 @@ import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.workDataOf
-import com.deniscerri.ytdlnis.database.Video
+import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.deniscerri.ytdlnis.service.DownloadInfo
 import com.deniscerri.ytdlnis.service.IDownloaderListener
 import com.deniscerri.ytdlnis.service.IDownloaderService
@@ -46,7 +46,7 @@ class DownloaderService : Service() {
         ConcurrentHashMap()
     private val fileUtil = FileUtil()
     private val downloadInfo = DownloadInfo()
-    private var downloadQueue = LinkedList<Video>()
+    private var downloadQueue = LinkedList<ResultItem>()
     private val compositeDisposable = CompositeDisposable()
     private val notificationUtil = App.notificationUtil
     private var context: Context? = null
@@ -91,44 +91,45 @@ class DownloaderService : Service() {
     }
 
     override fun onBind(intent: Intent): IBinder? {
-        val theIntent: Intent
-        val pendingIntent: PendingIntent
-        if (intent.getBooleanExtra("rebind", false)) {
-            return binder
-        }
-        when (val id = intent.getIntExtra("id", 1)) {
-            NotificationUtil.DOWNLOAD_NOTIFICATION_ID -> {
-                notificationChannelID = NotificationUtil.DOWNLOAD_SERVICE_CHANNEL_ID
-                theIntent = Intent(this, MainActivity::class.java)
-                pendingIntent =
-                    PendingIntent.getActivity(this, 0, theIntent, PendingIntent.FLAG_IMMUTABLE)
-                downloadNotificationID = id
-                val queue: ArrayList<out Video>? = intent.getParcelableArrayListExtra("queue")
-                downloadQueue = LinkedList()
-                downloadQueue.addAll(queue!!)
-                downloadInfo.downloadQueue = downloadQueue
-                val title = downloadInfo.video.title
-                val notification =
-                    App.notificationUtil.createDownloadServiceNotification(pendingIntent, title, NotificationUtil.DOWNLOAD_SERVICE_CHANNEL_ID)
-                startForeground(downloadNotificationID, notification)
-                startDownload(downloadQueue)
-            }
-            NotificationUtil.COMMAND_DOWNLOAD_NOTIFICATION_ID -> {
-                notificationChannelID = NotificationUtil.COMMAND_DOWNLOAD_SERVICE_CHANNEL_ID
-                theIntent = Intent(this, CustomCommandActivity::class.java)
-                pendingIntent =
-                    PendingIntent.getActivity(this, 0, theIntent, PendingIntent.FLAG_IMMUTABLE)
-                downloadNotificationID = id
-                val command = intent.getStringExtra("command")
-                val commandNotification = App.notificationUtil.createDownloadServiceNotification(
-                    pendingIntent,
-                    getString(R.string.running_ytdlp_command),
-                    NotificationUtil.COMMAND_DOWNLOAD_SERVICE_CHANNEL_ID
-                )
-                startForeground(downloadNotificationID, commandNotification)
-                startCommandDownload(command)
-            }
-        }
+//        val theIntent: Intent
+//        val pendingIntent: PendingIntent
+//        if (intent.getBooleanExtra("rebind", false)) {
+//            return binder
+//        }
+//        when (val id = intent.getIntExtra("id", 1)) {
+//            NotificationUtil.DOWNLOAD_NOTIFICATION_ID -> {
+//                notificationChannelID = NotificationUtil.DOWNLOAD_SERVICE_CHANNEL_ID
+//                theIntent = Intent(this, MainActivity::class.java)
+//                pendingIntent =
+//                    PendingIntent.getActivity(this, 0, theIntent, PendingIntent.FLAG_IMMUTABLE)
+//                downloadNotificationID = id
+//                val queue: ArrayList<out ResultItem>? = intent.getParcelableArrayListExtra("queue")
+//                downloadQueue = LinkedList()
+//                downloadQueue.addAll(queue!!)
+//                downloadInfo.downloadQueue = downloadQueue
+//                val title = downloadInfo.video.title
+//                val notification =
+//                    App.notificationUtil.createDownloadServiceNotification(pendingIntent, title, 1, NotificationUtil.DOWNLOAD_SERVICE_CHANNEL_ID)
+//                startForeground(downloadNotificationID, notification)
+//                startDownload(downloadQueue)
+//            }
+//            NotificationUtil.COMMAND_DOWNLOAD_NOTIFICATION_ID -> {
+//                notificationChannelID = NotificationUtil.COMMAND_DOWNLOAD_SERVICE_CHANNEL_ID
+//                theIntent = Intent(this, CustomCommandActivity::class.java)
+//                pendingIntent =
+//                    PendingIntent.getActivity(this, 0, theIntent, PendingIntent.FLAG_IMMUTABLE)
+//                downloadNotificationID = id
+//                val command = intent.getStringExtra("command")
+//                val commandNotification = App.notificationUtil.createDownloadServiceNotification(
+//                    pendingIntent,
+//                    getString(R.string.running_ytdlp_command),
+//                    1,
+//                    NotificationUtil.COMMAND_DOWNLOAD_SERVICE_CHANNEL_ID
+//                )
+//                startForeground(downloadNotificationID, commandNotification)
+//                startCommandDownload(command)
+//            }
+//        }
         return binder
     }
 
@@ -160,23 +161,24 @@ class DownloaderService : Service() {
             activities.remove(activity)
         }
 
-        override fun updateQueue(queue: ArrayList<Video>) {
-            try {
-                for (i in queue.indices) {
-                    downloadQueue.add(queue[i].clone() as Video)
-                }
-                if (downloadQueue.size == queue.size) {
-                    downloadInfo.downloadQueue = downloadQueue
-                    startDownload(downloadQueue)
-                } else {
-                    downloadInfo.downloadQueue = downloadQueue
-                    Toast.makeText(context, getString(R.string.added_to_queue), Toast.LENGTH_SHORT)
-                        .show()
-                }
-            } catch (e: Exception) {
-                Toast.makeText(context, "Couldn't update download queue! :(", Toast.LENGTH_SHORT)
-                    .show()
-            }
+
+        override fun updateQueue(queue: ArrayList<ResultItem>) {
+//            try {
+//                for (i in queue.indices) {
+//                    downloadQueue.add(queue[i].clone() as ResultItem)
+//                }
+//                if (downloadQueue.size == queue.size) {
+//                    downloadInfo.downloadQueue = downloadQueue
+//                    startDownload(downloadQueue)
+//                } else {
+//                    downloadInfo.downloadQueue = downloadQueue
+//                    Toast.makeText(context, getString(R.string.added_to_queue), Toast.LENGTH_SHORT)
+//                        .show()
+//                }
+//            } catch (e: Exception) {
+//                Toast.makeText(context, "Couldn't update download queue! :(", Toast.LENGTH_SHORT)
+//                    .show()
+//            }
         }
 
         override fun cancelDownload(cancelAll: Boolean) {
@@ -192,30 +194,31 @@ class DownloaderService : Service() {
             }
         }
 
-        override fun removeItemFromDownloadQueue(video: Video, type: String) {
-            //if its the same video with the same download type as the current downloading one
-            if (downloadInfo.video.getURL() == video.getURL() && downloadInfo.video.downloadedType == video.downloadedType) {
-                cancelDownload(false)
-                downloadInfo.downloadType = type
-                onDownloadCancel(downloadInfo)
-                downloadQueue.pop()
-                downloadInfo.downloadQueue = downloadQueue
-                startDownload(downloadQueue)
-            } else {
-                downloadQueue.remove(video)
-                try {
-                    val info = DownloadInfo()
-                    info.video = video
-                    info.downloadType = type
-                    onDownloadCancel(info)
-                } catch (ignored: Exception) {
-                }
-            }
-            Toast.makeText(
-                context,
-                video.title + " " + getString(R.string.removed_from_queue),
-                Toast.LENGTH_SHORT
-            ).show()
+
+        override fun removeItemFromDownloadQueue(video: ResultItem?, type: String?) {
+//            //if its the same video with the same download type as the current downloading one
+//            if (downloadInfo.video.url == video.url && downloadInfo.video.type == video.downloadedType) {
+//                cancelDownload(false)
+//                downloadInfo.downloadType = type
+//                onDownloadCancel(downloadInfo)
+//                downloadQueue.pop()
+//                downloadInfo.downloadQueue = downloadQueue
+//                startDownload(downloadQueue)
+//            } else {
+//                downloadQueue.remove(video)
+//                try {
+//                    val info = DownloadInfo()
+//                    info.video = video
+//                    info.downloadType = type
+//                    onDownloadCancel(info)
+//                } catch (ignored: Exception) {
+//                }
+//            }
+//            Toast.makeText(
+//                context,
+//                video.title + " " + getString(R.string.removed_from_queue),
+//                Toast.LENGTH_SHORT
+//            ).show()
         }
     }
 
@@ -277,212 +280,212 @@ class DownloaderService : Service() {
         }
     }
 
-    private fun startDownload(videos: LinkedList<Video>) {
-        if (videos.size == 0) {
-            finishService()
-            return
-        }
-        val video: Video = try {
-            videos.peek() as Video
-        } catch (e: Exception) {
-            finishService()
-            return
-        }
-        try {
-            for (activity in activities.keys) {
-                activity.runOnUiThread {
-                    for (i in activities[activity]!!.indices) {
-                        val callback = activities[activity]!![i]
-                        callback.onDownloadStart(downloadInfo)
-                    }
-                }
-            }
-        } catch (err: Exception) {
-            err.printStackTrace()
-        }
-        val url = video.getURL()
-        val request = YoutubeDLRequest(url)
-        val type = video.downloadedType
-        val downloadLocation = getDownloadLocation(type)
-
-        var tempFileDir = File(cacheDir.absolutePath + """/${video.title}##${video.downloadedType}""")
-        tempFileDir.delete()
-        tempFileDir.mkdir()
-
-        val sharedPreferences = context!!.getSharedPreferences("root_preferences", MODE_PRIVATE)
-        val aria2 = sharedPreferences.getBoolean("aria2", false)
-        if (aria2) {
-            request.addOption("--downloader", "libaria2c.so")
-            request.addOption("--external-downloader-args", "aria2c:\"--summary-interval=1\"")
-        } else {
-            val concurrentFragments = sharedPreferences.getInt("concurrent_fragments", 1)
-            if (concurrentFragments > 1) request.addOption("-N", concurrentFragments)
-        }
-        val limitRate = sharedPreferences.getString("limit_rate", "")
-        if (limitRate != "") request.addOption("-r", limitRate!!)
-        val writeThumbnail = sharedPreferences.getBoolean("write_thumbnail", false)
-        if (writeThumbnail) {
-            request.addOption("--write-thumbnail")
-            request.addOption("--convert-thumbnails", "png")
-        }
-        request.addOption("--no-mtime")
-        val sponsorBlockFilters = sharedPreferences.getStringSet("sponsorblock_filters", emptySet())
-        if (sponsorBlockFilters!!.isNotEmpty()) {
-            val filters = java.lang.String.join(",", sponsorBlockFilters)
-            request.addOption("--sponsorblock-remove", filters)
-        }
-        if (type == "audio") {
-            if (downloadLocation.equals(getString(R.string.music_path))){
-                tempFileDir = File(getString(R.string.music_path))
-            }
-
-            request.addOption("-x")
-            var format = video.audioFormat
-            if (format == null) format = sharedPreferences.getString("audio_format", "")
-            request.addOption("--audio-format", format!!)
-            request.addOption("--embed-metadata")
-
-            val embedThumb = sharedPreferences.getBoolean("embed_thumbnail", false)
-            if (embedThumb) {
-                request.addOption("--embed-thumbnail")
-                request.addOption("--convert-thumbnails", "png")
-                try {
-                    val config = File(cacheDir, "config" + video.videoId + ".txt")
-                    val config_data =
-                        "--ppa \"ffmpeg: -c:v png -vf crop=\\\"'if(gt(ih,iw),iw,ih)':'if(gt(iw,ih),ih,iw)'\\\"\""
-                    val stream = FileOutputStream(config)
-                    stream.write(config_data.toByteArray())
-                    stream.close()
-                    request.addOption("--config", config.absolutePath)
-                } catch (ignored: java.lang.Exception) {
-                }
-            }
-            request.addOption("--parse-metadata", "%(release_year,upload_date)s:%(meta_date)s")
-            request.addCommands(Arrays.asList("--replace-in-metadata", "title", ".*.", video.title))
-            request.addCommands(Arrays.asList("--replace-in-metadata", "uploader", ".*.", video.author))
-
-            if (!video.playlistTitle.isEmpty()) {
-                request.addOption("--parse-metadata", "%(album,playlist,title)s:%(meta_album)s")
-                request.addOption("--parse-metadata", "%(track_number,playlist_index)d:%(meta_track)s")
-            } else {
-                request.addOption("--parse-metadata", "%(album,title)s:%(meta_album)s")
-            }
-            request.addOption("-o", tempFileDir.absolutePath + "/%(uploader)s - %(title)s.%(ext)s")
-        } else if (type == "video") {
-            if (downloadLocation.equals(getString(R.string.video_path))){
-                tempFileDir = File(getString(R.string.video_path))
-            }
-
-            val addChapters = sharedPreferences.getBoolean("add_chapters", false)
-            if (addChapters) {
-                request.addOption("--sponsorblock-mark", "all")
-            }
-            val embedSubs = sharedPreferences.getBoolean("embed_subtitles", false)
-            if (embedSubs) {
-                request.addOption("--embed-subs", "")
-            }
-            var videoQuality = video.videoQuality
-            if (videoQuality == null) videoQuality =
-                sharedPreferences.getString("video_quality", "")
-            var formatArgument = "bestvideo+bestaudio/best"
-            if (videoQuality == "Worst Quality") {
-                formatArgument = "worst"
-            } else if (!videoQuality!!.isEmpty() && videoQuality != "Best Quality") {
-                formatArgument = "bestvideo[height<=" + videoQuality.substring(
-                    0,
-                    videoQuality.length - 1
-                ) + "]+bestaudio/best"
-            }
-            request.addOption("-f", formatArgument)
-            var format = video.videoFormat
-            if (format == null) format = sharedPreferences.getString("video_format", "")
-            if (format != "DEFAULT") request.addOption("--merge-output-format", format!!)
-            if (format != "webm") {
-                val embedThumb = sharedPreferences.getBoolean("embed_thumbnail", false)
-                if (embedThumb) {
-                    request.addOption("--embed-thumbnail")
-                }
-            }
-            request.addOption("-o", tempFileDir.absolutePath + "/%(uploader)s - %(title)s.%(ext)s")
-        }
-
-        val disposable = Observable.fromCallable {
-            YoutubeDL.getInstance().execute(request, downloadProcessID, callback)
-        }
-            .subscribeOn(Schedulers.newThread())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                val workTag = video.getURL()
-                val workData = workDataOf(
-                    originDir to tempFileDir.absolutePath,
-                    downLocation to downloadLocation,
-                    title to video.title
-                )
-                val fileTransferWorkRequest = OneTimeWorkRequestBuilder<FileTransferWorker>()
-                    .addTag(workTag)
-                    .setInputData(workData)
-                    .build()
-                workManager.enqueueUniqueWork(
-                    workTag,
-                    ExistingWorkPolicy.KEEP,
-                    fileTransferWorkRequest
-                )
-
-                downloadInfo.downloadPath = fileUtil.formatPath(getDownloadLocation(type)!!)
-                Log.e(TAG, downloadInfo.downloadPath)
-                downloadInfo.downloadType = type
-
-
-
-                try {
-                    for (activity in activities.keys) {
-                        activity.runOnUiThread {
-                            for (i in activities[activity]!!.indices) {
-                                val callback = activities[activity]!![i]
-                                callback.onDownloadEnd(downloadInfo)
-                            }
-                        }
-                    }
-                } catch (e: Exception) {
-                    Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
-                    e.printStackTrace()
-                }
-
-                // SCAN NEXT IN QUEUE
-                videos.remove()
-                downloadInfo.downloadQueue = videos
-                startDownload(videos)
-            }) { e: Throwable? ->
-                tempFileDir.delete()
-                if (BuildConfig.DEBUG) {
-                    Toast.makeText(context, e!!.message, Toast.LENGTH_LONG).show()
-                    Log.e(TAG, getString(R.string.failed_download), e)
-                }
-                notificationUtil.updateDownloadNotification(
-                    NotificationUtil.DOWNLOAD_NOTIFICATION_ID,
-                    getString(R.string.failed_download), 0, 0, downloadQueue.peek()?.title,
-                    NotificationUtil.DOWNLOAD_SERVICE_CHANNEL_ID
-                )
-                downloadInfo.downloadType = type
-                try {
-                    for (activity in activities.keys) {
-                        activity.runOnUiThread {
-                            for (i in activities[activity]!!.indices) {
-                                val callback = activities[activity]!![i]
-                                callback.onDownloadError(downloadInfo)
-                            }
-                        }
-                    }
-                } catch (err: Exception) {
-                    err.printStackTrace()
-                }
-
-                // SCAN NEXT IN QUEUE
-                videos.remove()
-                downloadInfo.downloadQueue = videos
-                startDownload(videos)
-            }
-        compositeDisposable.add(disposable)
+    private fun startDownload(videos: LinkedList<ResultItem>) {
+//        if (videos.size == 0) {
+//            finishService()
+//            return
+//        }
+//        val video: ResultItem = try {
+//            videos.peek() as ResultItem
+//        } catch (e: Exception) {
+//            finishService()
+//            return
+//        }
+//        try {
+//            for (activity in activities.keys) {
+//                activity.runOnUiThread {
+//                    for (i in activities[activity]!!.indices) {
+//                        val callback = activities[activity]!![i]
+//                        callback.onDownloadStart(downloadInfo)
+//                    }
+//                }
+//            }
+//        } catch (err: Exception) {
+//            err.printStackTrace()
+//        }
+//        val url = video.getURL()
+//        val request = YoutubeDLRequest(url)
+//        val type = video.downloadedType
+//        val downloadLocation = getDownloadLocation(type)
+//
+//        var tempFileDir = File(cacheDir.absolutePath + """/${video.title}##${video.downloadedType}""")
+//        tempFileDir.delete()
+//        tempFileDir.mkdir()
+//
+//        val sharedPreferences = context!!.getSharedPreferences("root_preferences", MODE_PRIVATE)
+//        val aria2 = sharedPreferences.getBoolean("aria2", false)
+//        if (aria2) {
+//            request.addOption("--downloader", "libaria2c.so")
+//            request.addOption("--external-downloader-args", "aria2c:\"--summary-interval=1\"")
+//        } else {
+//            val concurrentFragments = sharedPreferences.getInt("concurrent_fragments", 1)
+//            if (concurrentFragments > 1) request.addOption("-N", concurrentFragments)
+//        }
+//        val limitRate = sharedPreferences.getString("limit_rate", "")
+//        if (limitRate != "") request.addOption("-r", limitRate!!)
+//        val writeThumbnail = sharedPreferences.getBoolean("write_thumbnail", false)
+//        if (writeThumbnail) {
+//            request.addOption("--write-thumbnail")
+//            request.addOption("--convert-thumbnails", "png")
+//        }
+//        request.addOption("--no-mtime")
+//        val sponsorBlockFilters = sharedPreferences.getStringSet("sponsorblock_filters", emptySet())
+//        if (sponsorBlockFilters!!.isNotEmpty()) {
+//            val filters = java.lang.String.join(",", sponsorBlockFilters)
+//            request.addOption("--sponsorblock-remove", filters)
+//        }
+//        if (type == "audio") {
+//            if (downloadLocation.equals(getString(R.string.music_path))){
+//                tempFileDir = File(getString(R.string.music_path))
+//            }
+//
+//            request.addOption("-x")
+//            var format = video.audioFormat
+//            if (format == null) format = sharedPreferences.getString("audio_format", "")
+//            request.addOption("--audio-format", format!!)
+//            request.addOption("--embed-metadata")
+//
+//            val embedThumb = sharedPreferences.getBoolean("embed_thumbnail", false)
+//            if (embedThumb) {
+//                request.addOption("--embed-thumbnail")
+//                request.addOption("--convert-thumbnails", "png")
+//                try {
+//                    val config = File(cacheDir, "config" + video.videoId + ".txt")
+//                    val config_data =
+//                        "--ppa \"ffmpeg: -c:v png -vf crop=\\\"'if(gt(ih,iw),iw,ih)':'if(gt(iw,ih),ih,iw)'\\\"\""
+//                    val stream = FileOutputStream(config)
+//                    stream.write(config_data.toByteArray())
+//                    stream.close()
+//                    request.addOption("--config", config.absolutePath)
+//                } catch (ignored: java.lang.Exception) {
+//                }
+//            }
+//            request.addOption("--parse-metadata", "%(release_year,upload_date)s:%(meta_date)s")
+//            request.addCommands(Arrays.asList("--replace-in-metadata", "title", ".*.", video.title))
+//            request.addCommands(Arrays.asList("--replace-in-metadata", "uploader", ".*.", video.author))
+//
+//            if (!video.playlistTitle.isEmpty()) {
+//                request.addOption("--parse-metadata", "%(album,playlist,title)s:%(meta_album)s")
+//                request.addOption("--parse-metadata", "%(track_number,playlist_index)d:%(meta_track)s")
+//            } else {
+//                request.addOption("--parse-metadata", "%(album,title)s:%(meta_album)s")
+//            }
+//            request.addOption("-o", tempFileDir.absolutePath + "/%(uploader)s - %(title)s.%(ext)s")
+//        } else if (type == "video") {
+//            if (downloadLocation.equals(getString(R.string.video_path))){
+//                tempFileDir = File(getString(R.string.video_path))
+//            }
+//
+//            val addChapters = sharedPreferences.getBoolean("add_chapters", false)
+//            if (addChapters) {
+//                request.addOption("--sponsorblock-mark", "all")
+//            }
+//            val embedSubs = sharedPreferences.getBoolean("embed_subtitles", false)
+//            if (embedSubs) {
+//                request.addOption("--embed-subs", "")
+//            }
+//            var videoQuality = video.videoQuality
+//            if (videoQuality == null) videoQuality =
+//                sharedPreferences.getString("video_quality", "")
+//            var formatArgument = "bestvideo+bestaudio/best"
+//            if (videoQuality == "Worst Quality") {
+//                formatArgument = "worst"
+//            } else if (!videoQuality!!.isEmpty() && videoQuality != "Best Quality") {
+//                formatArgument = "bestvideo[height<=" + videoQuality.substring(
+//                    0,
+//                    videoQuality.length - 1
+//                ) + "]+bestaudio/best"
+//            }
+//            request.addOption("-f", formatArgument)
+//            var format = video.videoFormat
+//            if (format == null) format = sharedPreferences.getString("video_format", "")
+//            if (format != "DEFAULT") request.addOption("--merge-output-format", format!!)
+//            if (format != "webm") {
+//                val embedThumb = sharedPreferences.getBoolean("embed_thumbnail", false)
+//                if (embedThumb) {
+//                    request.addOption("--embed-thumbnail")
+//                }
+//            }
+//            request.addOption("-o", tempFileDir.absolutePath + "/%(uploader)s - %(title)s.%(ext)s")
+//        }
+//
+//        val disposable = Observable.fromCallable {
+//            YoutubeDL.getInstance().execute(request, downloadProcessID, callback)
+//        }
+//            .subscribeOn(Schedulers.newThread())
+//            .observeOn(AndroidSchedulers.mainThread())
+//            .subscribe({
+//                val workTag = video.getURL()
+//                val workData = workDataOf(
+//                    originDir to tempFileDir.absolutePath,
+//                    downLocation to downloadLocation,
+//                    title to video.title
+//                )
+//                val fileTransferWorkRequest = OneTimeWorkRequestBuilder<FileTransferWorker>()
+//                    .addTag(workTag)
+//                    .setInputData(workData)
+//                    .build()
+//                workManager.enqueueUniqueWork(
+//                    workTag,
+//                    ExistingWorkPolicy.KEEP,
+//                    fileTransferWorkRequest
+//                )
+//
+//                downloadInfo.downloadPath = fileUtil.formatPath(getDownloadLocation(type)!!)
+//                Log.e(TAG, downloadInfo.downloadPath)
+//                downloadInfo.downloadType = type
+//
+//
+//
+//                try {
+//                    for (activity in activities.keys) {
+//                        activity.runOnUiThread {
+//                            for (i in activities[activity]!!.indices) {
+//                                val callback = activities[activity]!![i]
+//                                callback.onDownloadEnd(downloadInfo)
+//                            }
+//                        }
+//                    }
+//                } catch (e: Exception) {
+//                    Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
+//                    e.printStackTrace()
+//                }
+//
+//                // SCAN NEXT IN QUEUE
+//                videos.remove()
+//                downloadInfo.downloadQueue = videos
+//                startDownload(videos)
+//            }) { e: Throwable? ->
+//                tempFileDir.delete()
+//                if (BuildConfig.DEBUG) {
+//                    Toast.makeText(context, e!!.message, Toast.LENGTH_LONG).show()
+//                    Log.e(TAG, getString(R.string.failed_download), e)
+//                }
+//                notificationUtil.updateDownloadNotification(
+//                    NotificationUtil.DOWNLOAD_NOTIFICATION_ID,
+//                    getString(R.string.failed_download), 0, 0, downloadQueue.peek()?.title,
+//                    NotificationUtil.DOWNLOAD_SERVICE_CHANNEL_ID
+//                )
+//                downloadInfo.downloadType = type
+//                try {
+//                    for (activity in activities.keys) {
+//                        activity.runOnUiThread {
+//                            for (i in activities[activity]!!.indices) {
+//                                val callback = activities[activity]!![i]
+//                                callback.onDownloadError(downloadInfo)
+//                            }
+//                        }
+//                    }
+//                } catch (err: Exception) {
+//                    err.printStackTrace()
+//                }
+//
+//                // SCAN NEXT IN QUEUE
+//                videos.remove()
+//                downloadInfo.downloadQueue = videos
+//                startDownload(videos)
+//            }
+//        compositeDisposable.add(disposable)
     }
 
     private fun startCommandDownload(text: String?) {

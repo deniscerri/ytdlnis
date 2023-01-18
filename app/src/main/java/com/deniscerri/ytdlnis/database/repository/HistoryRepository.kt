@@ -30,7 +30,7 @@ class HistoryRepository(private val historyDao: HistoryDao) {
     }
 
     suspend fun delete(item: HistoryItem, deleteFile: Boolean){
-        historyDao.delete(item.id)
+        historyDao.delete(item.id!!)
         if (deleteFile){
             val fileUtil = FileUtil()
             fileUtil.deleteFile(item.downloadPath)
@@ -53,7 +53,7 @@ class HistoryRepository(private val historyDao: HistoryDao) {
         val fileUtil = FileUtil()
         items.value?.forEach { item ->
             if (!fileUtil.exists(item.downloadPath)){
-                historyDao.delete(item.id)
+                historyDao.delete(item.id!!)
             }
         }
     }

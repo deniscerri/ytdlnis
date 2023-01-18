@@ -45,7 +45,7 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
-        android:id="@+id/recycler_view_home"
+        android:id="@+id/recyclerViewHome"
         android:nestedScrollingEnabled="false"
         android:orientation="vertical"
         android:layout_height="match_parent"

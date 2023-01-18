@@ -5,7 +5,7 @@ import android.content.Context
 import android.util.Log
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.DatabaseManager
-import com.deniscerri.ytdlnis.database.Video
+import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.yausername.youtubedl_android.YoutubeDL
 import com.yausername.youtubedl_android.YoutubeDLRequest
 import org.json.JSONArray
@@ -16,9 +16,10 @@ import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
 import java.util.*
+import kotlin.collections.ArrayList
 
 class InfoUtil(context: Context) {
-    private var videos: ArrayList<Video?>
+    private var items: ArrayList<ResultItem?>
     private var key: String? = null
     private var useInvidous = false
     private var databaseManager: DatabaseManager? = null
@@ -32,7 +33,7 @@ class InfoUtil(context: Context) {
         } catch (e: Exception) {
             e.printStackTrace()
         }
-        videos = ArrayList()
+        items = ArrayList()
     }
 
     private fun init(){
@@ -51,16 +52,16 @@ class InfoUtil(context: Context) {
     }
 
     @Throws(JSONException::class)
-    fun search(query: String): ArrayList<Video?> {
+    fun search(query: String): ArrayList<ResultItem?> {
         init()
-        videos = ArrayList()
+        items = ArrayList()
         return if (key!!.isEmpty()) {
             if (useInvidous) searchFromInvidous(query) else getFromYTDL(query)
         } else searchFromKey(query)
     }
 
     @Throws(JSONException::class)
-    fun searchFromKey(query: String): ArrayList<Video?> {
+    fun searchFromKey(query: String): ArrayList<ResultItem?> {
         //short data
         val res =
             genericRequest("https://youtube.googleapis.com/youtube/v3/search?part=snippet&q=$query&maxResults=25&regionCode=$countryCODE&key=$key")
@@ -102,14 +103,14 @@ class InfoUtil(context: Context) {
                 if (v == null || v.thumb.isEmpty()) {
                     continue
                 }
-                videos.add(createVideofromJSON(snippet))
+                items.add(createVideofromJSON(snippet))
             }
         }
-        return videos
+        return items
     }
 
     @Throws(JSONException::class)
-    fun searchFromInvidous(query: String): ArrayList<Video?> {
+    fun searchFromInvidous(query: String): ArrayList<ResultItem?> {
         val dataArray = genericArrayRequest(invidousURL + "search?q=" + query + "?type=video")
         if (dataArray.length() == 0) return getFromYTDL(query)
         for (i in 0 until dataArray.length()) {
@@ -128,15 +129,15 @@ class InfoUtil(context: Context) {
             if (v == null || v.thumb.isEmpty()) {
                 continue
             }
-            videos.add(v)
+            items.add(v)
         }
-        return videos
+        return items
     }
 
     @Throws(JSONException::class)
     fun getPlaylist(id: String, nextPageToken: String): PlaylistTuple {
         init()
-        videos = ArrayList()
+        items = ArrayList()
         if (key!!.isEmpty()) {
             return if (useInvidous) getPlaylistFromInvidous(id) else PlaylistTuple(
                 "",
@@ -186,12 +187,12 @@ class InfoUtil(context: Context) {
             } else {
                 j++
             }
-            v.isPlaylistItem = 1
-            videos.add(v)
+            v.playlistTitle = "YTDLnis"
+            items.add(v)
             i++
         }
         val next = res.optString("nextPageToken")
-        return PlaylistTuple(next, videos)
+        return PlaylistTuple(next, items)
     }
 
     private fun getPlaylistFromInvidous(id: String): PlaylistTuple {
@@ -208,17 +209,16 @@ class InfoUtil(context: Context) {
                 val v = createVideofromInvidiousJSON(element)
                 if (v == null || v.thumb.isEmpty()) continue
                 v.playlistTitle = res.getString("title")
-                v.isPlaylistItem = 1
-                videos.add(v)
+                items.add(v)
             }
         } catch (e: Exception) {
             e.printStackTrace()
         }
-        return PlaylistTuple("", videos)
+        return PlaylistTuple("", items)
     }
 
     @Throws(JSONException::class)
-    fun getVideo(id: String): Video? {
+    fun getVideo(id: String): ResultItem? {
         init()
         if (key!!.isEmpty()) {
             return if (useInvidous) {
@@ -245,8 +245,8 @@ class InfoUtil(context: Context) {
         return createVideofromJSON(res)
     }
 
-    private fun createVideofromJSON(obj: JSONObject): Video? {
-        var video: Video? = null
+    private fun createVideofromJSON(obj: JSONObject): ResultItem? {
+        var video: ResultItem? = null
         try {
             val id = obj.getString("videoID")
             val title = obj.getString("title").toString()
@@ -257,20 +257,14 @@ class InfoUtil(context: Context) {
             val downloadedAudio = databaseManager!!.checkDownloaded(url, "audio")
             val downloadedVideo = databaseManager!!.checkDownloaded(url, "video")
             val isPlaylist = 0
-            video = Video(
+            video = ResultItem(
                 id,
                 url,
                 title,
                 author,
                 duration,
                 thumb,
-                downloadedAudio,
-                downloadedVideo,
-                isPlaylist,
-                "youtube",
-                0,
-                0,
-                ""
+                "youtube"
             )
         } catch (e: Exception) {
             Log.e(TAG, e.toString())
@@ -278,8 +272,8 @@ class InfoUtil(context: Context) {
         return video
     }
 
-    private fun createVideofromInvidiousJSON(obj: JSONObject): Video? {
-        var video: Video? = null
+    private fun createVideofromInvidiousJSON(obj: JSONObject): ResultItem? {
+        var video: ResultItem? = null
         try {
             val id = obj.getString("videoId")
             val title = obj.getString("title").toString()
@@ -290,20 +284,14 @@ class InfoUtil(context: Context) {
             val downloadedAudio = databaseManager!!.checkDownloaded(url, "audio")
             val downloadedVideo = databaseManager!!.checkDownloaded(url, "video")
             val isPlaylist = 0
-            video = Video(
+            video = ResultItem(
                 id,
                 url,
                 title,
                 author,
                 duration,
                 thumb,
-                downloadedAudio,
-                downloadedVideo,
-                isPlaylist,
-                "youtube",
-                0,
-                0,
-                ""
+                "youtube"
             )
         } catch (e: Exception) {
             Log.e(TAG, e.toString())
@@ -395,16 +383,16 @@ class InfoUtil(context: Context) {
     }
 
     @Throws(JSONException::class)
-    fun getTrending(context: Context): ArrayList<Video?> {
+    fun getTrending(context: Context): ArrayList<ResultItem?> {
         init()
-        videos = ArrayList()
+        items = ArrayList()
         return if (key!!.isEmpty()) {
             if (useInvidous) getTrendingFromInvidous(context) else ArrayList()
         } else getTrendingFromKey(context)
     }
 
     @Throws(JSONException::class)
-    fun getTrendingFromKey(context: Context): ArrayList<Video?> {
+    fun getTrendingFromKey(context: Context): ArrayList<ResultItem?> {
         val url = "https://www.googleapis.com/youtube/v3/videos?part=snippet&chart=mostPopular&videoCategoryId=10&regionCode=$countryCODE&maxResults=25&key=$key"
         //short data
         val res = genericRequest(url)
@@ -428,12 +416,12 @@ class InfoUtil(context: Context) {
                 continue
             }
             v.playlistTitle = context.getString(R.string.trendingPlaylist)
-            videos.add(v)
+            items.add(v)
         }
-        return videos
+        return items
     }
 
-    private fun getTrendingFromInvidous(context: Context): ArrayList<Video?> {
+    private fun getTrendingFromInvidous(context: Context): ArrayList<ResultItem?> {
         val url = invidousURL + "trending?type=music&region=" + countryCODE
         val res = genericArrayRequest(url)
         try {
@@ -443,17 +431,17 @@ class InfoUtil(context: Context) {
                 val v = createVideofromInvidiousJSON(element)
                 if (v == null || v.thumb.isEmpty()) continue
                 v.playlistTitle = context.getString(R.string.trendingPlaylist)
-                videos.add(v)
+                items.add(v)
             }
         } catch (e: Exception) {
             e.printStackTrace()
         }
-        return videos
+        return items
     }
 
-    fun getFromYTDL(query: String): ArrayList<Video?> {
+    fun getFromYTDL(query: String): ArrayList<ResultItem?> {
         init()
-        videos = ArrayList()
+        items = ArrayList()
         try {
             val request = YoutubeDLRequest(query)
             request.addOption("--flat-playlist")
@@ -501,28 +489,22 @@ class InfoUtil(context: Context) {
                 val website = if (jsonObject.has("ie_key")) jsonObject.getString("ie_key") else jsonObject.getString("extractor")
                 var playlistTitle: String? = ""
                 if (jsonObject.has("playlist")) playlistTitle = jsonObject.getString("playlist")
-                videos.add(
-                    Video(
-                        jsonObject.getString("id"),
+                items.add(
+                    ResultItem(
                         url,
                         title,
-                        author,
+                        author!!,
                         duration,
-                        thumb,
-                        databaseManager!!.checkDownloaded(url, "audio"),
-                        databaseManager!!.checkDownloaded(url, "video"),
-                        isPlaylist,
+                        thumb!!,
                         website,
-                        0,
-                        0,
-                        playlistTitle
+                        playlistTitle!!
                     )
                 )
             }
         } catch (e: Exception) {
             e.printStackTrace()
         }
-        return videos
+        return items
     }
 
     fun getSearchSuggestions(query: String): ArrayList<String> {
@@ -598,7 +580,7 @@ class InfoUtil(context: Context) {
 
     class PlaylistTuple internal constructor(
         var nextPageToken: String,
-        var videos: ArrayList<Video?>
+        var videos: ArrayList<ResultItem?>
     )
 
     companion object {

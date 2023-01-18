@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,10 +13,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.deniscerri.ytdlnis.R;
-import com.deniscerri.ytdlnis.database.Video;
+import com.deniscerri.ytdlnis.database.models.ResultItem;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
@@ -23,18 +26,32 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
-    private ArrayList<Video> videoList;
-    private ArrayList<Integer> checkedVideos;
+public class HomeAdapter extends ListAdapter<ResultItem, HomeAdapter.ViewHolder> {
+    private final ArrayList<Integer> checkedVideos;
     private final OnItemClickListener onItemClickListener;
     private Activity activity;
 
-    public HomeAdapter(ArrayList<Video> videos, OnItemClickListener onItemClickListener, Activity activity){
-        this.videoList = videos;
+    public HomeAdapter(HomeAdapter.OnItemClickListener onItemClickListener, Activity activity){
+        super(DIFF_CALLBACK);
         this.checkedVideos = new ArrayList<>();
         this.onItemClickListener = onItemClickListener;
         this.activity = activity;
+        Log.e("TAG", "adapter");
     }
+
+    private static final DiffUtil.ItemCallback<ResultItem> DIFF_CALLBACK = new DiffUtil.ItemCallback<ResultItem>() {
+        @Override
+        public boolean areItemsTheSame(@NonNull ResultItem oldItem, @NonNull ResultItem newItem) {
+            Log.e("TAG", "adapter2");
+            return oldItem.getId() == newItem.getId();
+        }
+
+        @Override
+        public boolean areContentsTheSame(@NonNull ResultItem oldItem, @NonNull ResultItem newItem) {
+            Log.e("TAG", "adapter3");
+            return oldItem.getUrl().equals(newItem.getUrl());
+        }
+    };
 
     @Override
     public int getItemViewType(int position) {
@@ -61,8 +78,8 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Video video = videoList.get(position);
-
+        ResultItem video = getItem(position);
+        Log.e("TAG", "adapter4");
         MaterialCardView card = holder.cardView;
         // THUMBNAIL ----------------------------------
         ImageView thumbnail = card.findViewById(R.id.result_image_view);
@@ -97,7 +114,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         }
 
         // BUTTONS ----------------------------------
-        String videoID = video.getVideoId();
+        int videoID = video.getId();
 
         LinearLayout buttonLayout = card.findViewById(R.id.download_button_layout);
 
@@ -116,39 +133,42 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
         LinearProgressIndicator progressBar = card.findViewById(R.id.download_progress);
         progressBar.setTag(videoID + "##progress");
+        progressBar.setProgress(0);
+        progressBar.setIndeterminate(true);
+        progressBar.setVisibility(View.GONE);
 
-        if (video.isDownloading()){
-            progressBar.setVisibility(View.VISIBLE);
-        }else {
-            progressBar.setProgress(0);
-            progressBar.setIndeterminate(true);
-            progressBar.setVisibility(View.GONE);
-        }
+//        if (video.isDownloading()){
+//            progressBar.setVisibility(View.VISIBLE);
+//        }else {
+//            progressBar.setProgress(0);
+//            progressBar.setIndeterminate(true);
+//            progressBar.setVisibility(View.GONE);
+//        }
+//
+//        if (video.isDownloadingAudio()) {
+//            musicBtn.setIcon(ContextCompat.getDrawable(activity, R.drawable.ic_cancel));
+//            musicBtn.setTag(R.id.cancelDownload, "true");
+//        }else{
+//            if(video.isAudioDownloaded() == 1){
+//                musicBtn.setIcon(ContextCompat.getDrawable(activity, R.drawable.ic_music_downloaded));
+//            }else{
+//                musicBtn.setIcon(ContextCompat.getDrawable(activity, R.drawable.ic_music));
+//            }
+//        }
+//
+//        if (video.isDownloadingVideo()){
+//            videoBtn.setIcon(ContextCompat.getDrawable(activity, R.drawable.ic_cancel));
+//            videoBtn.setTag(R.id.cancelDownload, "true");
+//        }else{
+//            if(video.isVideoDownloaded() == 1){
+//                videoBtn.setIcon(ContextCompat.getDrawable(activity, R.drawable.ic_video_downloaded));
+//            }else{
+//                videoBtn.setIcon(ContextCompat.getDrawable(activity, R.drawable.ic_video));
+//            }
+//        }
 
-        if (video.isDownloadingAudio()) {
-            musicBtn.setIcon(ContextCompat.getDrawable(activity, R.drawable.ic_cancel));
-            musicBtn.setTag(R.id.cancelDownload, "true");
-        }else{
-            if(video.isAudioDownloaded() == 1){
-                musicBtn.setIcon(ContextCompat.getDrawable(activity, R.drawable.ic_music_downloaded));
-            }else{
-                musicBtn.setIcon(ContextCompat.getDrawable(activity, R.drawable.ic_music));
-            }
-        }
 
-        if (video.isDownloadingVideo()){
-            videoBtn.setIcon(ContextCompat.getDrawable(activity, R.drawable.ic_cancel));
-            videoBtn.setTag(R.id.cancelDownload, "true");
-        }else{
-            if(video.isVideoDownloaded() == 1){
-                videoBtn.setIcon(ContextCompat.getDrawable(activity, R.drawable.ic_video_downloaded));
-            }else{
-                videoBtn.setIcon(ContextCompat.getDrawable(activity, R.drawable.ic_video));
-            }
-        }
-
-
-        if(checkedVideos.contains(position)){
+        if(checkedVideos.contains(videoID)){
             card.setChecked(true);
             card.setStrokeWidth(5);
         }else{
@@ -158,41 +178,32 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
         card.setTag(videoID + "##card");
         card.setOnLongClickListener(view -> {
-            checkCard(card, position);
+            checkCard(card, videoID);
             return true;
         });
         card.setOnClickListener(view -> {
             if(checkedVideos.size() > 0){
-                checkCard(card, position);
+                checkCard(card, videoID);
             }
         });
     }
 
-    private void checkCard(MaterialCardView card, int position){
+    private void checkCard(MaterialCardView card, int videoID){
         if(card.isChecked()){
             card.setStrokeWidth(0);
-            checkedVideos.remove(Integer.valueOf(position));
+            checkedVideos.remove(Integer.valueOf(videoID));
         }else{
             card.setStrokeWidth(5);
-            checkedVideos.add(position);
+            checkedVideos.add(videoID);
         }
         card.setChecked(!card.isChecked());
-        onItemClickListener.onCardClick(position, card.isChecked());
+        onItemClickListener.onCardClick(videoID, card.isChecked());
     }
 
-    @Override
-    public int getItemCount() {
-        return videoList.size();
-    }
 
     public interface OnItemClickListener {
-        void onButtonClick(int position, String type);
-        void onCardClick(int position, boolean add);
-    }
-
-    public void updateVideoListItem(Video v, int position){
-        videoList.set(position, v);
-        notifyItemChanged(position);
+        void onButtonClick(int videoID, String type);
+        void onCardClick(int videoID, boolean add);
     }
 
     public void clearCheckedVideos(){
@@ -202,17 +213,5 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             notifyItemChanged(position);
         }
         checkedVideos.clear();
-    }
-
-    public void clear(){
-        int size = videoList.size();
-        videoList = new ArrayList<>();
-        notifyItemRangeRemoved(0, size);
-    }
-
-    public void add(ArrayList<Video> vids){
-        int position = videoList.size() + 1;
-        videoList.addAll(vids);
-        notifyItemRangeInserted(position, vids.size());
     }
 }

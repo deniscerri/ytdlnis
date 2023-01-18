@@ -1,13 +1,13 @@
 package com.deniscerri.ytdlnis.service;
 
-import com.deniscerri.ytdlnis.database.Video;
+import com.deniscerri.ytdlnis.database.models.ResultItem;
 
 import java.util.LinkedList;
 
 public class DownloadInfo {
-    private Video video;
+    private ResultItem video;
     private int progress;
-    private LinkedList<Video> downloadQueue;
+    private LinkedList<ResultItem> downloadQueue;
     private String outputLine;
     private String downloadStatus;
     private String downloadPath;
@@ -15,11 +15,11 @@ public class DownloadInfo {
 
     public DownloadInfo(){}
 
-    public Video getVideo() {
+    public ResultItem getVideo() {
         return video;
     }
 
-    public void setVideo(Video video) {
+    public void setVideo(ResultItem video) {
         this.video = video;
     }
 
@@ -31,11 +31,11 @@ public class DownloadInfo {
         this.progress = progress;
     }
 
-    public LinkedList<Video> getDownloadQueue() {
+    public LinkedList<ResultItem> getDownloadQueue() {
         return downloadQueue;
     }
 
-    public void setDownloadQueue(LinkedList<Video> downloadQueue) {
+    public void setDownloadQueue(LinkedList<ResultItem> downloadQueue) {
         this.downloadQueue = downloadQueue;
         this.video = downloadQueue.peek();
     }

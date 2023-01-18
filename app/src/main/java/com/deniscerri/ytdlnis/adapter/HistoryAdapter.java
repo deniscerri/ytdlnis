@@ -84,7 +84,6 @@ public class HistoryAdapter extends ListAdapter<HistoryItem, HistoryAdapter.View
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         HistoryItem video = getItem(position);
-        Log.e("AAA", String.valueOf(position));
         MaterialCardView card = holder.cardView;
         // THUMBNAIL ----------------------------------
         ImageView thumbnail = card.findViewById(R.id.downloads_image_view);
