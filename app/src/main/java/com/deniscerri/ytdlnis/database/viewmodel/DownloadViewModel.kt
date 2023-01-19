@@ -20,6 +20,13 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
         allDownloads = repository.allDownloads
     }
 
+    fun startWork(items: List<DownloadItem>){
+        items.forEach {
+            insertDownload(it)
+        }
+
+    }
+
     fun insertDownload(item: DownloadItem) = viewModelScope.launch(Dispatchers.IO){
         repository.insert(item)
     }

@@ -6,9 +6,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.widget.Toast;
 
-import com.deniscerri.ytdlnis.R;
 import com.deniscerri.ytdlnis.database.models.HistoryItem;
 import com.deniscerri.ytdlnis.database.models.ResultItem;
 

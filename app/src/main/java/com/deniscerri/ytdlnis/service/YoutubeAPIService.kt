@@ -1,10 +1,5 @@
 package com.deniscerri.ytdlnis.service
 
-import androidx.room.Query
-import androidx.room.Room
-import com.deniscerri.ytdlnis.database.DBManager
-import com.deniscerri.ytdlnis.database.models.ResultItem
-import com.deniscerri.ytdlnis.util.InfoUtil
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import retrofit2.Response

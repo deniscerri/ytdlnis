@@ -15,8 +15,8 @@
         tools:ignore="MissingConstraints">
 
         <ImageView
-            android:layout_width="200sp"
-            android:layout_height="150sp"
+            android:layout_width="150sp"
+            android:layout_height="100sp"
             android:layout_gravity="center"
             android:scaleType="centerInside"
             android:background="@drawable/ic_no_results" />

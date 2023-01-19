@@ -1,23 +1,19 @@
 package com.deniscerri.ytdlnis.ui
 
-import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.text.InputType
-import android.util.Log
 import android.view.*
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.*
 import androidx.appcompat.widget.SearchView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -27,7 +23,6 @@ import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.adapter.HomeAdapter
 import com.deniscerri.ytdlnis.database.DatabaseManager
 import com.deniscerri.ytdlnis.database.models.ResultItem
-import com.deniscerri.ytdlnis.database.viewmodel.HistoryViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdlnis.databinding.FragmentDownloadsBinding
 import com.deniscerri.ytdlnis.service.DownloadInfo
@@ -44,8 +39,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.android.material.textfield.TextInputLayout
 import java.util.*
-import java.util.regex.Pattern
-import kotlin.collections.ArrayList
 
 class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickListener {
     private var progressBar: LinearProgressIndicator? = null
@@ -75,7 +68,6 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
     private var topAppBar: MaterialToolbar? = null
     private var recyclerView: RecyclerView? = null
     private var bottomSheet: BottomSheetDialog? = null
-    private var sortSheet: BottomSheetDialog? = null
     private var uiHandler: Handler? = null
     private var noResults: RelativeLayout? = null
     private var selectionChips: LinearLayout? = null
@@ -116,7 +108,6 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
         selectedObjects = ArrayList()
         downloading = mainActivity!!.isDownloadServiceRunning()
 
-
         downloadQueue = ArrayList()
         resultsList = mutableListOf()
         selectedObjects = ArrayList()
@@ -140,8 +131,23 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
         resultViewModel.items.observe(viewLifecycleOwner) {
             homeAdapter!!.submitList(it)
             resultsList = it
-            shimmerCards!!.stopShimmer()
-            shimmerCards!!.visibility = GONE
+            if(it.size > 1){
+                if (it[0].playlistTitle.isNotEmpty() || it[0].playlistTitle != "ytdlnis-TRENDING"){
+                    downloadAllFabCoordinator!!.visibility = VISIBLE
+                }
+            }
+        }
+
+        resultViewModel.loadingItems.observe(viewLifecycleOwner){
+            if (it){
+                recyclerView?.setPadding(0,0,0,0)
+                shimmerCards!!.startShimmer()
+                shimmerCards!!.visibility = VISIBLE
+            }else{
+                recyclerView?.setPadding(0,0,0,100)
+                shimmerCards!!.stopShimmer()
+                shimmerCards!!.visibility = GONE
+            }
         }
 
         initMenu()
@@ -163,12 +169,11 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
         if (inputQueries != null) {
             resultViewModel.deleteAll()
             inputQueriesLength = inputQueries!!.size
-            shimmerCards!!.startShimmer()
-            shimmerCards!!.visibility = VISIBLE
+            Handler(Looper.getMainLooper()).post { scrollToTop() }
             val thread = Thread {
                 while (!inputQueries!!.isEmpty()) {
                     inputQuery = inputQueries!!.pop()
-                    parseQuery(false)
+                    resultViewModel.parseQuery(inputQuery!!, false)
                 }
                 try {
                     Handler(Looper.getMainLooper()).post {
@@ -187,11 +192,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
             }
             thread.start()
         } else {
-            if (resultViewModel.checkTrending()){
-                shimmerCards!!.startShimmer()
-                shimmerCards!!.visibility = VISIBLE
-                resultViewModel.getTrending()
-            }
+            resultViewModel.checkTrending()
         }
     }
 
@@ -261,16 +262,16 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
         val onActionExpandListener: MenuItem.OnActionExpandListener =
             object : MenuItem.OnActionExpandListener {
                 override fun onMenuItemActionExpand(menuItem: MenuItem): Boolean {
-                    homeFabs!!.visibility = View.GONE
-                    recyclerView!!.visibility = View.GONE
-                    searchSuggestions!!.visibility = View.VISIBLE
+                    homeFabs!!.visibility = GONE
+                    recyclerView!!.visibility = GONE
+                    searchSuggestions!!.visibility = VISIBLE
                     return true
                 }
 
                 override fun onMenuItemActionCollapse(menuItem: MenuItem): Boolean {
-                    homeFabs!!.visibility = View.VISIBLE
-                    recyclerView!!.visibility = View.VISIBLE
-                    searchSuggestions!!.visibility = View.GONE
+                    homeFabs!!.visibility = VISIBLE
+                    recyclerView!!.visibility = VISIBLE
+                    searchSuggestions!!.visibility = GONE
                     return true
                 }
             }
@@ -287,20 +288,12 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
             override fun onQueryTextSubmit(query: String): Boolean {
                 topAppBar!!.menu.findItem(R.id.search).collapseActionView()
                 downloadAllFabCoordinator!!.visibility = GONE
-                downloadFabs!!.visibility = View.GONE
+                downloadFabs!!.visibility = GONE
                 selectedObjects = ArrayList()
                 inputQuery = query.trim { it <= ' ' }
-                shimmerCards!!.startShimmer()
-                shimmerCards!!.visibility = View.VISIBLE
                 resultViewModel.deleteAll()
                 val thread = Thread {
-                    parseQuery(true)
-                    // DOWNLOAD ALL BUTTON
-                    if (resultsList!!.size > 1 && resultsList!![1]!!.playlistTitle.isNotEmpty()) {
-                        Handler(Looper.getMainLooper()).post {
-                            downloadAllFabCoordinator!!.visibility = View.VISIBLE
-                        }
-                    }
+                    resultViewModel.parseQuery(inputQuery!!, true)
                 }
                 thread.start()
                 return true
@@ -335,14 +328,14 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
                 return false
             }
         })
-        topAppBar!!.setOnClickListener { view: View? -> scrollToTop() }
+        topAppBar!!.setOnClickListener { scrollToTop() }
         topAppBar!!.setOnMenuItemClickListener { m: MenuItem ->
             val itemId = m.itemId
             if (itemId == R.id.delete_results) {
                 resultViewModel.getTrending()
                 selectedObjects = ArrayList()
-                downloadAllFabCoordinator!!.visibility = View.GONE
-                downloadFabs!!.visibility = View.GONE
+                downloadAllFabCoordinator!!.visibility = GONE
+                downloadFabs!!.visibility = GONE
             }
 //            } else if (itemId == R.id.cancel_download) {
 //                try {
@@ -376,114 +369,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
         (topAppBar!!.parent as AppBarLayout).setExpanded(true, true)
     }
 
-    private fun parseQuery(resetResults: Boolean) {
-        databaseManager = DatabaseManager(context)
-        infoUtil = InfoUtil(requireContext())
-        Handler(Looper.getMainLooper()).post { scrollToTop() }
-        var type = "Search"
-        val p = Pattern.compile("^(https?)://(www.)?youtu(.be)?")
-        val m = p.matcher(inputQuery!!)
-        if (m.find()) {
-            type = "Video"
-            if (inputQuery!!.contains("playlist?list=")) {
-                type = "Playlist"
-            }
-        } else if (inputQuery!!.contains("http")) {
-            type = "Default"
-        }
-        Log.e(TAG, "$inputQuery $type")
-        try {
-            when (type) {
-                "Search" -> {
-                    try {
-                        val res = infoUtil!!.search(
-                            inputQuery!!
-                        )
-                        Handler(Looper.getMainLooper()).post {
-                            if (resetResults) resultViewModel.deleteAll()
-                            resultViewModel.insert(res)
-                        }
-                    } catch (e: Exception) {
-                        Log.e(TAG, e.toString())
-                        Handler(Looper.getMainLooper()).post {
-                            shimmerCards!!.stopShimmer()
-                            shimmerCards!!.visibility = View.GONE
-                        }
-                    }
-                }
-                "Video" -> {
-                    var el: Array<String?> =
-                        inputQuery!!.split("/".toRegex()).dropLastWhile { it.isEmpty() }
-                            .toTypedArray()
-                    inputQuery = el[el.size - 1]
-                    if (inputQuery!!.contains("watch?v=")) {
-                        inputQuery = inputQuery!!.substring(8)
-                    }
-                    el = inputQuery!!.split("&".toRegex()).dropLastWhile { it.isEmpty() }
-                        .toTypedArray()
-                    inputQuery = el[0]
-                    el = inputQuery!!.split("\\?".toRegex()).dropLastWhile { it.isEmpty() }
-                        .toTypedArray()
-                    inputQuery = el[0]
-                    try {
-                        val v = infoUtil!!.getVideo(inputQuery!!)
-                        val res = ArrayList<ResultItem?>()
-                        res.add(v)
-                        Handler(Looper.getMainLooper()).post {
-                            if (resetResults) resultViewModel.deleteAll()
-                            resultViewModel.insert(res)
-                        }
-                    } catch (e: Exception) {
-                        Log.e(TAG, e.toString())
-                        Handler(Looper.getMainLooper()).post {
-                            shimmerCards!!.stopShimmer()
-                            shimmerCards!!.visibility = View.GONE
-                        }
-                    }
-                }
-                "Playlist" -> {
-                    inputQuery =
-                        inputQuery!!.split("list=".toRegex()).dropLastWhile { it.isEmpty() }
-                            .toTypedArray()[1]
-                    var nextPageToken = ""
-                    if (resetResults) resultViewModel.deleteAll()
-                    do {
-                        val tmp = infoUtil!!.getPlaylist(inputQuery!!, nextPageToken)
-                        val tmp_vids = tmp.videos
-                        val tmp_token = tmp.nextPageToken
-                        Handler(Looper.getMainLooper()).post {
-                            resultViewModel.insert(tmp_vids)
-                        }
-                        if (tmp_token.isEmpty()) break
-                        if (tmp_token == nextPageToken) break
-                        nextPageToken = tmp_token
-                    } while (true)
-                }
-                "Default" -> {
-                    try {
-                        val video = infoUtil!!.getFromYTDL(
-                            inputQuery!!
-                        )
-                        Handler(Looper.getMainLooper()).post {
-                            if (resetResults) resultViewModel.deleteAll()
-                            resultViewModel.insert(video)
-                        }
-                        Handler(Looper.getMainLooper()).post {
-                            shimmerCards!!.stopShimmer()
-                            shimmerCards!!.visibility = View.GONE
-                        }
-                    } catch (e: Exception) {
-                        Log.e(TAG, e.toString())
-                    }
-                }
-            }
-        } catch (e: Exception) {
-            Log.e(TAG, e.toString())
-        }
-        databaseManager!!.close()
-    }
-
-    fun findVideo(url: String): ResultItem? {
+    private fun findVideo(url: String): ResultItem? {
         for (i in resultsList!!.indices) {
             val v = resultsList!![i]
             if (v!!.url == url) {
@@ -524,23 +410,6 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
 //        }
     }
 
-    private val isStoragePermissionGranted: Boolean
-        get() = if (ActivityCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.WRITE_EXTERNAL_STORAGE
-            )
-            == PackageManager.PERMISSION_GRANTED
-        ) {
-            true
-        } else {
-            downloadQueue = ArrayList()
-            ActivityCompat.requestPermissions(
-                requireActivity(),
-                arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
-                1
-            )
-            false
-        }
 
     fun updateDownloadStatusOnResult(v: ResultItem?, type: String?, downloaded: Boolean) {
 //        if (v != null) {
@@ -571,19 +440,18 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
         val item = resultsList!![position]
         if (add) selectedObjects!!.add(item!!) else selectedObjects!!.remove(item)
         if (selectedObjects!!.size > 1) {
-            downloadAllFabCoordinator!!.visibility = View.GONE
-            downloadFabs!!.visibility = View.VISIBLE
+            downloadAllFabCoordinator!!.visibility = GONE
+            downloadFabs!!.visibility = VISIBLE
         } else {
-            downloadFabs!!.visibility = View.GONE
+            downloadFabs!!.visibility = GONE
             if (resultsList!!.size > 1 && resultsList!![1]!!.playlistTitle.isNotEmpty()) {
-                downloadAllFabCoordinator!!.visibility = View.VISIBLE
+                downloadAllFabCoordinator!!.visibility = VISIBLE
             }
         }
     }
 
     override fun onClick(v: View) {
-        val viewIdName: String
-        viewIdName = try {
+        val viewIdName: String = try {
             v.tag.toString()
         } catch (e: Exception) {
             ""
@@ -600,12 +468,12 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
                 //remove previously selected
                 for (i in selectedObjects!!.indices) {
                     val vid = findVideo(
-                        selectedObjects!![i]!!.url
+                        selectedObjects!![i].url
                     )
                     homeAdapter!!.notifyItemChanged(resultsList!!.indexOf(vid))
                 }
                 selectedObjects = ArrayList()
-                downloadFabs!!.visibility = View.GONE
+                downloadFabs!!.visibility = GONE
                 bottomSheet = BottomSheetDialog(fragmentContext!!)
                 bottomSheet!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
                 bottomSheet!!.setContentView(R.layout.home_download_all_bottom_sheet)
@@ -614,13 +482,13 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
                 val last = bottomSheet!!.findViewById<TextInputLayout>(R.id.last_textinput)
                 last!!.editText!!.setText(resultsList!!.size.toString())
                 val audio = bottomSheet!!.findViewById<Button>(R.id.bottomsheet_audio_button)
-                audio!!.setOnClickListener { view: View? ->
+                audio!!.setOnClickListener {
                     val start = first.editText!!.text.toString().toInt()
                     val end = last.editText!!.text.toString().toInt()
                     initDownloadAll(bottomSheet!!, start, end, "audio")
                 }
                 val video = bottomSheet!!.findViewById<Button>(R.id.bottomsheet_video_button)
-                video!!.setOnClickListener { view: View? ->
+                video!!.setOnClickListener {
                     val start = first.editText!!.text.toString().toInt()
                     val end = last.editText!!.text.toString().toInt()
                     initDownloadAll(bottomSheet!!, start, end, "video")

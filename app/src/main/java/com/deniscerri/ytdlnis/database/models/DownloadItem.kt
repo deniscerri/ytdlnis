@@ -25,7 +25,8 @@ data class DownloadItem(
     val downloadSize: String,
     val playlistTitle: String,
     @ColumnInfo(defaultValue = "Queued")
-    var status: String
+    val status: String,
+    val workID: Int
 ){
     @PrimaryKey(autoGenerate = true)
     var id: Int? = null

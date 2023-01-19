@@ -41,7 +41,7 @@ class DownloadWorker(
         val commandTemplateDao = dbManager.commandTemplateDao
         val historyDao = dbManager.historyDao
 
-        queue = repository.getQueuedDownloads() as MutableList<DownloadItem>
+        queue = repository.getDownloadsByWorkID(workID) as MutableList<DownloadItem>
 
         val intent = Intent(context, MainActivity::class.java)
         val pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE)

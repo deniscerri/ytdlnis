@@ -8,7 +8,6 @@ import android.webkit.MimeTypeMap
 import android.widget.Toast
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.DownloadItem
-import com.deniscerri.ytdlnis.database.models.ResultItem
 import java.io.File
 import java.net.URLDecoder
 import java.nio.charset.StandardCharsets

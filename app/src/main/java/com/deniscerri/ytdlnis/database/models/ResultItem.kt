@@ -2,9 +2,6 @@ package com.deniscerri.ytdlnis.database.models
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.google.gson.annotations.SerializedName
-import com.yausername.youtubedl_android.mapper.VideoFormat
-import com.yausername.youtubedl_android.mapper.VideoInfo
 
 @Entity(tableName = "results")
 data class ResultItem(

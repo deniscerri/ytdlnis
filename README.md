@@ -9,9 +9,10 @@
 
 <div align="center">
 
-| Build | Latest Release | Downloads | Contribute |
-|-------|----------|------------|------------|
-| ![CI](https://github.com/deniscerri/ytdlnis/actions/workflows/android.yml/badge.svg?branch=main&event=pull) | [![stable release](https://img.shields.io/github/release/deniscerri/ytdlnis.svg?maxAge=3600&label=download)](https://github.com/deniscerri/ytdlnis/releases/latest) | [![downloads](https://img.shields.io/github/downloads/deniscerri/ytdlnis/total?style=flat-square)](https://github.com/deniscerri/ytdlnis/releases) | [![Translation status](https://hosted.weblate.org/widgets/ytdlnis/-/svg-badge.svg)](https://hosted.weblate.org/engage/ytdlnis/?utm_source=widget) |
+![CI](https://github.com/deniscerri/ytdlnis/actions/workflows/android.yml/badge.svg?branch=main&event=pull) [![stable release](https://img.shields.io/github/release/deniscerri/ytdlnis.svg?maxAge=3600&label=download)](https://github.com/deniscerri/ytdlnis/releases/latest) [![downloads](https://img.shields.io/github/downloads/deniscerri/ytdlnis/total?style=flat-square)](https://github.com/deniscerri/ytdlnis/releases) [![Translation status](https://hosted.weblate.org/widgets/ytdlnis/-/svg-badge.svg)](https://hosted.weblate.org/engage/ytdlnis/?utm_source=widget) [![community](https://img.shields.io/badge/Discord-YTDLnis-blueviolet?style=flat-square&logo=discord)](https://discord.gg/WW3KYWxAPm)
+
+
+
 
 </div>
 

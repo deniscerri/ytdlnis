@@ -1,7 +1,6 @@
 package com.deniscerri.ytdlnis
 
 import android.app.Activity
-import android.app.PendingIntent
 import android.app.Service
 import android.content.Context
 import android.content.Intent
@@ -10,7 +9,6 @@ import android.os.Build
 import android.os.IBinder
 import android.os.SystemClock
 import android.util.Log
-import android.widget.Toast
 import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
@@ -19,9 +17,7 @@ import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.deniscerri.ytdlnis.service.DownloadInfo
 import com.deniscerri.ytdlnis.service.IDownloaderListener
 import com.deniscerri.ytdlnis.service.IDownloaderService
-import com.deniscerri.ytdlnis.ui.CustomCommandActivity
 import com.deniscerri.ytdlnis.util.FileUtil
-import com.deniscerri.ytdlnis.util.NotificationUtil
 import com.deniscerri.ytdlnis.work.FileTransferWorker
 import com.deniscerri.ytdlnis.work.FileTransferWorker.Companion.downLocation
 import com.deniscerri.ytdlnis.work.FileTransferWorker.Companion.originDir
@@ -34,7 +30,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import java.io.File
-import java.io.FileOutputStream
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 import java.util.regex.Pattern

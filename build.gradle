@@ -12,10 +12,10 @@ buildscript {
         versionCode = versionMajor * 100000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
         versionName = "${versionMajor}.${versionMinor}.${versionPatch}"
         // dependency versions
-        appCompatVer = '1.5.1'
+        appCompatVer = '1.6.0'
         junitVer = '4.13.2'
-        androidJunitVer = '1.1.1'
-        espressoVer = '3.2.0'
+        androidJunitVer = '1.1.5'
+        espressoVer = '3.5.1'
         jacksonVer = '2.9.8'
         // supports java 1.6
         commonsIoVer = '2.5'

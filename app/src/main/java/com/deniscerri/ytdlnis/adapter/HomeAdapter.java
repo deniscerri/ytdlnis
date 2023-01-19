@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,19 +35,16 @@ public class HomeAdapter extends ListAdapter<ResultItem, HomeAdapter.ViewHolder>
         this.checkedVideos = new ArrayList<>();
         this.onItemClickListener = onItemClickListener;
         this.activity = activity;
-        Log.e("TAG", "adapter");
     }
 
     private static final DiffUtil.ItemCallback<ResultItem> DIFF_CALLBACK = new DiffUtil.ItemCallback<ResultItem>() {
         @Override
         public boolean areItemsTheSame(@NonNull ResultItem oldItem, @NonNull ResultItem newItem) {
-            Log.e("TAG", "adapter2");
             return oldItem.getId() == newItem.getId();
         }
 
         @Override
         public boolean areContentsTheSame(@NonNull ResultItem oldItem, @NonNull ResultItem newItem) {
-            Log.e("TAG", "adapter3");
             return oldItem.getUrl().equals(newItem.getUrl());
         }
     };
@@ -79,7 +75,6 @@ public class HomeAdapter extends ListAdapter<ResultItem, HomeAdapter.ViewHolder>
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         ResultItem video = getItem(position);
-        Log.e("TAG", "adapter4");
         MaterialCardView card = holder.cardView;
         // THUMBNAIL ----------------------------------
         ImageView thumbnail = card.findViewById(R.id.result_image_view);
