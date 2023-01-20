@@ -151,4 +151,11 @@
     <string name="unfound_file" translatable="false">/404.404</string>
     <string name="file_transfer_notification_channel_name">File Transfers</string>
     <string name="file_transfer_notification_channel_description">Notification showing the progress of moving files from the temporary folder to set destination</string>
+    <string name="save_dir">Save dir</string>
+    <string name="new_template">New template</string>
+    <string name="adjust_templates">Adjust templates</string>
+    <string name="edit_selected">Edit selected</string>
+    <string name="adjust_video">Adjust video</string>
+    <string name="remove_audio">Remove Audio</string>
+    <string name="schedule">Schedule</string>
 </resources>

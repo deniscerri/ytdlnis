@@ -30,8 +30,8 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <com.google.android.material.button.MaterialButton
-                    style="@style/Widget.Material3.Button.IconButton"
+                <Button
+                    style="?attr/materialIconButtonStyle"
                     android:layout_width="40dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.01"
@@ -50,8 +50,8 @@
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
-                <com.google.android.material.button.MaterialButton
-                    style="@style/Widget.Material3.Button.IconButton"
+                <Button
+                    style="?attr/materialIconButtonStyle"
                     android:id="@+id/set_search_query_button"
                     android:layout_width="40dp"
                     android:layout_height="match_parent"

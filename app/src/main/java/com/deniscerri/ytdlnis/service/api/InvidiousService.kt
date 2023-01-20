@@ -1,4 +1,4 @@
-package com.deniscerri.ytdlnis.service
+package com.deniscerri.ytdlnis.service.api
 
 import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.google.gson.JsonArray

@@ -79,7 +79,7 @@ class ResultRepository(private val resultDao: ResultDao, private val formatDao: 
             val tmpVids = tmp.videos
             val tmpToken = tmp.nextPageToken
             tmpVids.forEach {
-                val id = resultDao.insert(it!!.resultItem);
+                val id = resultDao.insert(it!!.resultItem)
                 addFormats(it.formats,id)
             }
             if (tmpToken.isEmpty()) break
@@ -94,7 +94,7 @@ class ResultRepository(private val resultDao: ResultDao, private val formatDao: 
             if (resetResults) deleteAll()
             val items = infoUtil.getFromYTDL(inputQuery)
             items.forEach {
-                val id = resultDao.insert(it!!.resultItem);
+                val id = resultDao.insert(it!!.resultItem)
                 addFormats(it.formats,id)
             }
         } catch (e: Exception) {
@@ -104,7 +104,7 @@ class ResultRepository(private val resultDao: ResultDao, private val formatDao: 
 
     private suspend fun addFormats(formats : ArrayList<Format>, id: Long){
         formats.forEach { f ->
-            if (f.filesize == 0.toLong()) return@forEach
+            if (f.filesize == 0L) return@forEach
             f.itemId = id.toInt()
             formatDao.insert(f)
         }

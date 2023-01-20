@@ -288,6 +288,16 @@ class InfoUtil(context: Context) {
             val duration = formatIntegerDuration(obj.getInt("lengthSeconds"))
             val thumb = "https://i.ytimg.com/vi/$id/hqdefault.jpg"
             val url = "https://www.youtube.com/watch?v=$id"
+            val formats : ArrayList<Format> = ArrayList()
+            if (obj.has("adaptiveFormats")){
+                val formatsInJSON = obj.getJSONArray("adaptiveFormats");
+                for (f in 0 until formatsInJSON.length()){
+                    val format = formatsInJSON.getJSONObject(f)
+                    if(!format.has("container")) continue
+                    formats.add(Gson().fromJson(format.toString(), Format::class.java))
+                }
+            }
+
             video = ResultItemWithFormats(
                 ResultItem(
                     url,
@@ -298,7 +308,7 @@ class InfoUtil(context: Context) {
                     "youtube",
                     "",
                 ),
-                ArrayList()
+                formats
             )
         } catch (e: Exception) {
             Log.e(TAG, e.toString())
@@ -606,7 +616,7 @@ class InfoUtil(context: Context) {
 
     companion object {
         private const val TAG = "API MANAGER"
-        private const val invidousURL = "https://invidious.baczek.me/api/vvvvvv/"
+        private const val invidousURL = "https://invidious.nerdvpn.de/api/v1/"
         private var countryCODE: String? = null
     }
 }

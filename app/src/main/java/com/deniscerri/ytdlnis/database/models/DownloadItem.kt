@@ -24,6 +24,9 @@ data class DownloadItem(
     val website: String,
     val downloadSize: String,
     val playlistTitle: String,
+    val embedSubs: Boolean,
+    val addChapters: Boolean,
+    val SaveThumb: Boolean,
     @ColumnInfo(defaultValue = "Queued")
     val status: String,
     val workID: Int
