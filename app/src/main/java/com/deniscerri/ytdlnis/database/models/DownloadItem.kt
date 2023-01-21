@@ -27,8 +27,10 @@ data class DownloadItem(
     val embedSubs: Boolean,
     val addChapters: Boolean,
     val SaveThumb: Boolean,
+    var ext: String,
+    var filesize: String,
     @ColumnInfo(defaultValue = "Queued")
-    val status: String,
+    var status: String,
     val workID: Int
 ){
     @PrimaryKey(autoGenerate = true)

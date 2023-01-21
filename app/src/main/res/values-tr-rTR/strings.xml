@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name" translatable="false">YTDLnis</string>
     <string name="search">Ara</string>
     <string name="remove_all"> Tümünü Kaldır</string>
     <string name="remove_results"> Clear Results</string>
@@ -65,9 +64,6 @@
     <string name="choose_range_desc">Çalma listesinden indirmek için bir aralık seçin (her şeyi indirmemek için).</string>
     <string name="last_cant_be_smaller_than_first">Son dizin ilkinden daha küçük olamaz.</string>
     <string name="first_cant_be_larger_than_last">İlk dizin son dizinden büyük olamaz.</string>
-    <string name="music_path" translatable="false">/storage/emulated/0/Download</string>
-    <string name="video_path" translatable="false">/storage/emulated/0/Download</string>
-    <string name="command_path" translatable="false">/storage/emulated/0/Download</string>
     <string name="concurrent_fragments_summary">Eşzamanlı olarak indirilecek DASH/HLS yerel video parçalarının sayısı</string>
     <string name="concurrent_fragments">Eşzamanlı Parçalar</string>
     <string name="downloading">İndirme</string>
@@ -110,7 +106,6 @@
     <string name="newest_first">En yeni</string>
     <string name="oldest_first">En eski</string>
     <item type="id" name="cancelDownload"/>
-    <string name="trendingPlaylist" translatable="false">ytdlnis-TRENDING</string>
     <string name="currently_downloading">İndiriliyor</string>
     <string name="remove_downloading">İndirmeleri İptal Et</string>
     <string name="confirm_delete_downloading_desc">İndirilmekte olan tüm öğeleri kaldırın ve indirme hizmetini durdurun?</string>

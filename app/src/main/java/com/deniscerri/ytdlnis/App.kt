@@ -9,6 +9,8 @@ import android.os.Build
 import android.util.Log
 import android.widget.Toast
 import androidx.preference.PreferenceManager
+import androidx.work.Configuration
+import androidx.work.WorkManager
 import com.deniscerri.ytdlnis.util.NotificationUtil
 import com.deniscerri.ytdlnis.util.UpdateUtil
 import com.google.android.material.color.DynamicColors
@@ -23,12 +25,12 @@ import io.reactivex.observers.DisposableCompletableObserver
 import io.reactivex.plugins.RxJavaPlugins
 import io.reactivex.schedulers.Schedulers
 import java.io.File
+import java.util.concurrent.Executors
 
 class App : Application() {
     override fun onCreate() {
         super.onCreate()
         DynamicColors.applyToActivitiesIfAvailable(this)
-        notificationUtil = NotificationUtil(this)
         createNotificationChannels()
         PreferenceManager.setDefaultValues(
             this,
@@ -37,6 +39,15 @@ class App : Application() {
             R.xml.root_preferences,
             false
         )
+
+        WorkManager.initialize(
+            this@App,
+            Configuration.Builder()
+                .setExecutor(Executors.newFixedThreadPool(
+                    getSharedPreferences("root_preferences", MODE_PRIVATE)
+                        .getInt("concurrent_downloads", 1)))
+                .build())
+
         configureRxJavaErrorHandler()
         Completable.fromAction { initLibraries() }.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -79,12 +90,11 @@ class App : Application() {
     }
 
     private fun createNotificationChannels() {
+        val notificationUtil = NotificationUtil(this)
         notificationUtil.createNotificationChannel()
     }
 
     companion object {
         private const val TAG = "App"
-        @SuppressLint("StaticFieldLeak")
-        lateinit var notificationUtil: NotificationUtil
     }
 }

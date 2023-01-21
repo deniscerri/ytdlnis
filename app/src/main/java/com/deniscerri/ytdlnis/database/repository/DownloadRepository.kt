@@ -8,6 +8,10 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
     val allDownloads : LiveData<List<DownloadItem>> = downloadDao.getAllDownloads()
     val activeDownloads : LiveData<List<DownloadItem>> = downloadDao.getActiveDownloads()
 
+    enum class status {
+        Active, Queued, Errored
+    }
+
     suspend fun insert(item: DownloadItem){
         downloadDao.insert(item)
     }
@@ -20,9 +24,17 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
         downloadDao.update(item)
     }
 
-    fun getDownloadsByWorkID(workID: Int) : List<DownloadItem>{
-        return downloadDao.getDownloadsByWorkId(workID)
+    fun getDownloadByWorkID(workID: Int) : DownloadItem{
+        return downloadDao.getDownloadByWorkId(workID)
     }
 
+    fun getQueuedDownloads() : List<DownloadItem>{
+        return downloadDao.getQueuedDownloads()
+    }
+
+    suspend fun setDownloadStatus(item: DownloadItem, status: status){
+        item.status = status.toString()
+        update(item);
+    }
 
 }

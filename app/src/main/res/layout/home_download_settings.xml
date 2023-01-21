@@ -21,7 +21,7 @@
             android:textSize="25sp"
             android:textColor="?attr/colorOnSurface"
             android:layout_height="wrap_content"
-            android:text="@string/download" />
+            android:text="@string/configure_download" />
 
         <include layout="@layout/home_download_settings_components" />
 
@@ -35,29 +35,21 @@
             android:orientation="horizontal">
 
             <Button
-                style="?attr/materialIconButtonOutlinedStyle"
-                android:id="@+id/bottomsheet_cancel_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
-                app:icon="@drawable/ic_cancel" />
-
-            <Button
-                style="@style/Widget.Material3.Button.ElevatedButton.Icon"
+                style="@style/Widget.Material3.Button.OutlinedButton.Icon"
                 android:id="@+id/bottomsheet_schedule_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
-                app:icon="@drawable/ic_clock"
-                android:text="@string/schedule" />
+                app:icon="@drawable/ic_cancel"
+                android:text="@string/cancel" />
 
             <Button
                 style="@style/Widget.Material3.Button.ElevatedButton.Icon"
                 android:id="@+id/bottomsheet_download_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/download"
-                app:icon="@drawable/ic_down"
+                android:text="@string/ok"
+                app:icon="@drawable/ic_check"
                 android:autoLink="all"/>
 
         </LinearLayout>

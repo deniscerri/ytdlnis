@@ -7,6 +7,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -36,7 +37,6 @@
                 android:text="@string/choose_range_desc" />
 
         </LinearLayout>
-
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -87,33 +87,10 @@
 
         </LinearLayout>
 
-        <LinearLayout
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/download_multiple_recyclerview"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:gravity="end"
-            android:layout_margin="20dp"
-            android:orientation="horizontal">
-
-            <Button
-                style="@style/Widget.Material3.Button.ElevatedButton.Icon"
-                android:id="@+id/bottomsheet_audio_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
-                app:icon="@drawable/ic_music"
-                android:text="@string/audio" />
-
-            <Button
-                style="@style/Widget.Material3.Button.ElevatedButton.Icon"
-                android:id="@+id/bottomsheet_video_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/video"
-                app:icon="@drawable/ic_video"
-                android:autoLink="all"/>
-
-        </LinearLayout>
+            android:layout_height="match_parent" />
 
     </LinearLayout>
 

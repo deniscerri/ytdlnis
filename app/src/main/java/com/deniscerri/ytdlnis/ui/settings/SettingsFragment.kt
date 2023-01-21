@@ -20,6 +20,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
     private var downloadCard: SwitchPreferenceCompat? = null
     private var apiKey: EditTextPreference? = null
     private var concurrentFragments: SeekBarPreference? = null
+    private var concurrentDownloads: SeekBarPreference? = null
     private var limitRate: EditTextPreference? = null
     private var aria2: SwitchPreferenceCompat? = null
     private var sponsorblockFilters: MultiSelectListPreference? = null
@@ -55,6 +56,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         downloadCard = findPreference("download_card")
         apiKey = findPreference("api_key")
         concurrentFragments = findPreference("concurrent_fragments")
+        concurrentDownloads = findPreference("concurrent_downloads")
         limitRate = findPreference("limit_rate")
         aria2 = findPreference("aria2")
         sponsorblockFilters = findPreference("sponsorblock_filter")
@@ -83,6 +85,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         editor.putBoolean("download_card", downloadCard!!.isChecked)
         editor.putString("api_key", apiKey!!.text)
         editor.putInt("concurrent_fragments", concurrentFragments!!.value)
+        editor.putInt("concurrent_downloads", concurrentDownloads!!.value)
         editor.putString("limit_rate", limitRate!!.text)
         editor.putBoolean("aria2", aria2!!.isChecked)
         editor.putStringSet("sponsorblock_filters", sponsorblockFilters!!.values)
@@ -156,6 +159,13 @@ class SettingsFragment : PreferenceFragmentCompat() {
             Preference.OnPreferenceChangeListener { _: Preference?, newValue: Any ->
                 val value = newValue.toString().toInt()
                 editor.putInt("concurrent_fragments", value)
+                editor.apply()
+                true
+            }
+        concurrentDownloads!!.onPreferenceChangeListener =
+            Preference.OnPreferenceChangeListener { _: Preference?, newValue: Any ->
+                val value = newValue.toString().toInt()
+                editor.putInt("concurrent_downloads", value)
                 editor.apply()
                 true
             }

@@ -9,10 +9,7 @@ import android.os.Build
 import android.os.IBinder
 import android.os.SystemClock
 import android.util.Log
-import androidx.work.ExistingWorkPolicy
-import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.WorkManager
-import androidx.work.workDataOf
+import androidx.work.*
 import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.deniscerri.ytdlnis.service.DownloadInfo
 import com.deniscerri.ytdlnis.service.IDownloaderListener
@@ -32,6 +29,7 @@ import io.reactivex.schedulers.Schedulers
 import java.io.File
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.Executors
 import java.util.regex.Pattern
 
 
@@ -43,7 +41,6 @@ class DownloaderService : Service() {
     private val downloadInfo = DownloadInfo()
     private var downloadQueue = LinkedList<ResultItem>()
     private val compositeDisposable = CompositeDisposable()
-    private val notificationUtil = App.notificationUtil
     private var context: Context? = null
     var downloadProcessID = "processID"
     private var downloadNotificationID = 0
@@ -59,11 +56,11 @@ class DownloaderService : Service() {
             if (!downloadQueue.isEmpty()) {
                 title = downloadQueue.peek()?.title
             }
-            notificationUtil.updateDownloadNotification(
-                downloadNotificationID,
-                line!!, progress.toInt(), downloadQueue.size, title,
-                notificationChannelID
-            )
+//            notificationUtil.updateDownloadNotification(
+//                downloadNotificationID,
+//                line!!, progress.toInt(), downloadQueue.size, title,
+//                notificationChannelID
+//            )
             try {
                 for (activity in activities.keys) {
                     activity.runOnUiThread {

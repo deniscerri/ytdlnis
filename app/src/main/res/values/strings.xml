@@ -158,4 +158,6 @@
     <string name="adjust_video">Adjust video</string>
     <string name="remove_audio">Remove Audio</string>
     <string name="schedule">Schedule</string>
+    <string name="concurrent_downloads">Concurrent Downloads</string>
+    <string name="concurrent_downloads_summary">Number of downloads executing at the same time</string>
 </resources>

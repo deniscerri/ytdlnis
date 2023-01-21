@@ -56,6 +56,17 @@
             app:summary="@string/concurrent_fragments_summary"
             app:title="@string/concurrent_fragments" />
 
+        <SeekBarPreference
+            android:defaultValue="1"
+            android:icon="@drawable/ic_concurrent_downloads"
+            android:max="5"
+            app:key="concurrent_downloads"
+            app:min="1"
+            app:showSeekBarValue="true"
+            android:dependency="aria2"
+            app:summary="@string/concurrent_downloads_summary"
+            app:title="@string/concurrent_downloads" />
+
         <EditTextPreference
             android:icon="@drawable/ic_down"
             app:key="limit_rate"
