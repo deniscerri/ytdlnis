@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings">الأعدادات</string>
+    <string name="search">البحث</string>
+    <string name="remove_all">إزالة الكل</string>
+    <string name="remove_results">تفريغ النتائج</string>
+    <string name="download_all">تنزيل الكل</string>
+    <string name="home">الرئيسية</string>
+    <string name="directories">المجلدات</string>
+    <string name="music_directory">مجلد الموسيقى</string>
+    <string name="video_directory">مجلد الفيديو</string>
+    <string name="updating">التحديثات</string>
+    <string name="ytdl_update_hint">يفيدك ان كنت تواجه مشاكل في التنزيل</string>
+</resources>
