@@ -9,75 +9,85 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/title_textinput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            app:errorEnabled="true"
+            android:hint="@string/title"
+            style="@style/Widget.Material3.TextInputLayout.FilledBox">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:inputType="text"
+                android:layout_height="wrap_content"
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/author_textinput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:errorEnabled="true"
+            android:hint="@string/author"
+            style="@style/Widget.Material3.TextInputLayout.FilledBox">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:inputType="text"
+                android:layout_height="wrap_content"
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            >
+            android:paddingBottom="15dp"
+            android:orientation="horizontal">
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/title_textinput"
-                android:layout_width="match_parent"
+                android:id="@+id/downloadContainer"
+                style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
+                android:layout_width="0dp"
+                android:layout_weight="30"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                app:errorEnabled="true"
-                android:hint="@string/title"
-                style="@style/Widget.Material3.TextInputLayout.FilledBox">
+                android:hint="@string/container">
 
-                <com.google.android.material.textfield.TextInputEditText
+                <AutoCompleteTextView
+                    android:id="@+id/container_textview"
                     android:layout_width="match_parent"
-                    android:inputType="text"
                     android:layout_height="wrap_content"
+                    android:inputType="none"
+                    app:simpleItems="@array/audio_containers"
                     />
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/format"
+                style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
+                android:layout_width="0dp"
+                android:paddingStart="10dp"
+                android:layout_weight="65"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:hint="@string/format">
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/author_textinput"
-                    android:layout_width="0dp"
-                    android:layout_weight="45"
+                <AutoCompleteTextView
+                    android:id="@+id/format_textview"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:errorEnabled="true"
-                    android:hint="@string/author"
-                    style="@style/Widget.Material3.TextInputLayout.FilledBox">
+                    android:inputType="none"
+                    app:simpleItems="@array/audio_formats"
+                    />
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:layout_width="match_parent"
-                        android:inputType="text"
-                        android:layout_height="wrap_content"
-                        />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/audio_format"
-                    style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
-                    android:layout_width="0dp"
-                    android:paddingStart="10dp"
-                    android:layout_weight="45"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/audio_format">
-
-                    <AutoCompleteTextView
-                        android:id="@+id/audio_format_textview"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="none"
-                        app:simpleItems="@array/music_formats"
-                        />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-
-
-            </LinearLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
         </LinearLayout>
+
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/outputPath_textinput"

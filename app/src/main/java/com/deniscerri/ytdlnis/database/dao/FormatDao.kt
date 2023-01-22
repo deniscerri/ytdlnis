@@ -7,8 +7,8 @@ import com.deniscerri.ytdlnis.database.models.ResultItem
 
 @Dao
 interface FormatDao {
-    @Query("SELECT * FROM formats")
-    fun getFormatsByItemId() : LiveData<List<Format>>
+    @Query("SELECT * FROM formats WHERE itemId=:itemId")
+    fun getFormatsByItemId(itemId: Int) : List<Format>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(item: Format)

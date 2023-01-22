@@ -30,7 +30,9 @@ abstract class DBManager : RoomDatabase(){
                     context.applicationContext,
                     DBManager::class.java,
                     "YTDLnisDatabase"
-                ).build()
+                )
+                        .allowMainThreadQueries()
+                        .build()
                 instance = dbInstance
                 dbInstance
             }

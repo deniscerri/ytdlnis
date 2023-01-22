@@ -7,13 +7,17 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.text.Editable
 import android.text.InputType
+import android.text.TextWatcher
+import android.util.Log
 import android.view.*
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.*
 import androidx.appcompat.widget.SearchView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.text.trimmedLength
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -22,6 +26,7 @@ import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.adapter.HomeAdapter
 import com.deniscerri.ytdlnis.database.DatabaseManager
+import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.deniscerri.ytdlnis.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdlnis.databinding.FragmentDownloadsBinding
@@ -38,7 +43,11 @@ import com.google.android.material.floatingactionbutton.ExtendedFloatingActionBu
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.android.material.textfield.TextInputLayout
+import kotlinx.coroutines.runBlocking
+import java.text.DecimalFormat
 import java.util.*
+import kotlin.math.log10
+import kotlin.math.pow
 
 class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickListener {
     private var progressBar: LinearProgressIndicator? = null
@@ -121,7 +130,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
         homeAdapter =
             HomeAdapter(
                 this,
-                activity
+                requireActivity()
             )
         recyclerView = view.findViewById(R.id.recyclerViewHome)
         recyclerView?.layoutManager = LinearLayoutManager(context)
@@ -336,11 +345,10 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
                 selectedObjects = ArrayList()
                 downloadAllFabCoordinator!!.visibility = GONE
                 downloadFabs!!.visibility = GONE
-            }
-//            } else if (itemId == R.id.cancel_download) {
-//                try {
-//                    mainActivity!!.cancelDownloadService()
-//                    topAppBar!!.menu.findItem(itemId).isVisible = false
+            } else if (itemId == R.id.cancel_download) {
+                try {
+                    mainActivity!!.cancelAllDownloads()
+                    topAppBar!!.menu.findItem(itemId).isVisible = false
 //                    for (i in downloadInfo!!.downloadQueue.indices) {
 //                        val vid = downloadInfo!!.downloadQueue[i]
 //                        val type = vid.downloadedType
@@ -348,9 +356,9 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
 //                    }
 //                    downloadQueue = ArrayList()
 //                    downloading = false
-//                } catch (ignored: Exception) {
-//                }
-//            }
+                } catch (ignored: Exception) {
+                }
+            }
             true
         }
     }
@@ -380,11 +388,11 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
     }
 
     @SuppressLint("ResourceType")
-    override fun onButtonClick(position: Int, type: String) {
-//        Log.e(TAG, type)
-//        val vid = resultsList!![position]
-//        vid!!.downloadedType = type
-//        val btn = recyclerView!!.findViewWithTag<MaterialButton>(vid.videoId + "##" + type)
+    override fun onButtonClick(videoURL: String, type: String?) {
+        Log.e(TAG, type!! + " " + videoURL)
+        val item = resultsList!!.find { it?.url == videoURL }
+        Log.e(TAG, resultsList!![0].toString() + " " + videoURL)
+        val btn = recyclerView!!.findViewWithTag<MaterialButton>("""${item?.url}##$type""")
 //        if (downloading) {
 //            try {
 //                if (btn.getTag(R.id.cancelDownload) == "true") {
@@ -394,20 +402,20 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
 //            } catch (ignored: Exception) {
 //            }
 //        }
-//        val sharedPreferences =
-//            context!!.getSharedPreferences("root_preferences", Activity.MODE_PRIVATE)
-//        if (sharedPreferences.getBoolean("download_card", true)) {
+        val sharedPreferences =
+            requireContext().getSharedPreferences("root_preferences", Activity.MODE_PRIVATE)
+        if (sharedPreferences.getBoolean("download_card", true)) {
 //            selectedObjects!!.clear()
-//            selectedObjects!!.add(resultsList!![position])
-//            showConfigureDownloadCard(type)
-//        } else {
+//            selectedObjects!!.add(item!!)
+            showConfigureSingleDownloadCard(item!!, type)
+        } else {
 //            downloadQueue!!.add(vid)
 //            updateDownloadingStatusOnResult(vid, type, true)
 //            if (isStoragePermissionGranted) {
 //                mainActivity!!.startDownloadService(downloadQueue, listener)
 //                downloadQueue!!.clear()
 //            }
-//        }
+        }
     }
 
 
@@ -436,8 +444,8 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
 //        }
     }
 
-    override fun onCardClick(position: Int, add: Boolean) {
-        val item = resultsList!![position]
+    override fun onCardClick(videoURL: String, add: Boolean) {
+        val item = resultsList?.find { it -> it?.url == videoURL }
         if (add) selectedObjects!!.add(item!!) else selectedObjects!!.remove(item)
         if (selectedObjects!!.size > 1) {
             downloadAllFabCoordinator!!.visibility = GONE
@@ -456,7 +464,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
         } catch (e: Exception) {
             ""
         }
-        if (!viewIdName.isEmpty()) {
+        if (viewIdName.isNotEmpty()) {
             if (viewIdName.contains("audio") || viewIdName.contains("video")) {
                 val buttonData =
                     viewIdName.split("##".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
@@ -465,39 +473,39 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
                 }
             }
             if (viewIdName == "downloadAll") {
-                //remove previously selected
-                for (i in selectedObjects!!.indices) {
-                    val vid = findVideo(
-                        selectedObjects!![i].url
-                    )
-                    homeAdapter!!.notifyItemChanged(resultsList!!.indexOf(vid))
-                }
-                selectedObjects = ArrayList()
-                downloadFabs!!.visibility = GONE
-                bottomSheet = BottomSheetDialog(fragmentContext!!)
-                bottomSheet!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
-                bottomSheet!!.setContentView(R.layout.home_download_all_bottom_sheet)
-                val first = bottomSheet!!.findViewById<TextInputLayout>(R.id.first_textinput)
-                first!!.editText!!.setText(1.toString())
-                val last = bottomSheet!!.findViewById<TextInputLayout>(R.id.last_textinput)
-                last!!.editText!!.setText(resultsList!!.size.toString())
-                val audio = bottomSheet!!.findViewById<Button>(R.id.bottomsheet_audio_button)
-                audio!!.setOnClickListener {
-                    val start = first.editText!!.text.toString().toInt()
-                    val end = last.editText!!.text.toString().toInt()
-                    initDownloadAll(bottomSheet!!, start, end, "audio")
-                }
-                val video = bottomSheet!!.findViewById<Button>(R.id.bottomsheet_video_button)
-                video!!.setOnClickListener {
-                    val start = first.editText!!.text.toString().toInt()
-                    val end = last.editText!!.text.toString().toInt()
-                    initDownloadAll(bottomSheet!!, start, end, "video")
-                }
-                bottomSheet!!.show()
-                bottomSheet!!.window!!.setLayout(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.MATCH_PARENT
-                )
+//                //remove previously selected
+//                for (i in selectedObjects!!.indices) {
+//                    val vid = findVideo(
+//                        selectedObjects!![i].url
+//                    )
+//                    homeAdapter!!.notifyItemChanged(resultsList!!.indexOf(vid))
+//                }
+//                selectedObjects = ArrayList()
+//                downloadFabs!!.visibility = GONE
+//                bottomSheet = BottomSheetDialog(fragmentContext!!)
+//                bottomSheet!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
+//                bottomSheet!!.setContentView(R.layout.home_download_all_bottom_sheet)
+//                val first = bottomSheet!!.findViewById<TextInputLayout>(R.id.first_textinput)
+//                first!!.editText!!.setText(1.toString())
+//                val last = bottomSheet!!.findViewById<TextInputLayout>(R.id.last_textinput)
+//                last!!.editText!!.setText(resultsList!!.size.toString())
+//                val audio = bottomSheet!!.findViewById<Button>(R.id.bottomsheet_audio_button)
+//                audio!!.setOnClickListener {
+//                    val start = first.editText!!.text.toString().toInt()
+//                    val end = last.editText!!.text.toString().toInt()
+//                    initDownloadAll(bottomSheet!!, start, end, "audio")
+//                }
+//                val video = bottomSheet!!.findViewById<Button>(R.id.bottomsheet_video_button)
+//                video!!.setOnClickListener {
+//                    val start = first.editText!!.text.toString().toInt()
+//                    val end = last.editText!!.text.toString().toInt()
+//                    initDownloadAll(bottomSheet!!, start, end, "video")
+//                }
+//                bottomSheet!!.show()
+//                bottomSheet!!.window!!.setLayout(
+//                    ViewGroup.LayoutParams.MATCH_PARENT,
+//                    ViewGroup.LayoutParams.MATCH_PARENT
+//                )
             }
         }
     }
@@ -569,75 +577,122 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
 //        }
     }
 
-    private fun showConfigureDownloadCard(type: String) {
-//        val sharedPreferences =
-//            context!!.getSharedPreferences("root_preferences", Activity.MODE_PRIVATE)
-//        val editor = sharedPreferences.edit()
-//        try {
-//            bottomSheet = BottomSheetDialog(fragmentContext!!)
-//            bottomSheet!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
+    private fun showConfigureSingleDownloadCard(item: ResultItem, type: String) {
+        val sharedPreferences =
+                requireContext().getSharedPreferences("root_preferences", Activity.MODE_PRIVATE)
+        val embedSubs = sharedPreferences.getBoolean("embed_subtitles", false)
+        val addChapters = sharedPreferences.getBoolean("add_chapters", false)
+        val saveThumb = sharedPreferences.getBoolean("write_thumbnail", false)
+
+        var downloadItem = DownloadItem(
+                item.url,
+                item.title,
+                item.author,
+                item.thumb,
+                item.duration,
+                type,
+                "", "", "", "", 0, "", false,
+                "", item.website, "", item.playlistTitle, embedSubs, addChapters, saveThumb, "",
+                "", "", 0
+        )
+
+        val editor = sharedPreferences.edit()
+        try {
+            bottomSheet = BottomSheetDialog(fragmentContext!!)
+            bottomSheet!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            bottomSheet!!.setContentView(R.layout.home_download_single_bottom_sheet)
+            val title = bottomSheet!!.findViewById<TextInputLayout>(R.id.title_textinput)
+            title!!.editText!!.setText(item.title)
+            title.editText!!.addTextChangedListener(object: TextWatcher {
+                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+                override fun afterTextChanged(p0: Editable?) {
+                    downloadItem.title = p0.toString()
+                    item.title = p0.toString()
+                    resultViewModel.update(item)
+                }
+            })
+
+            val author = bottomSheet!!.findViewById<TextInputLayout>(R.id.author_textinput)
+            author!!.editText!!.setText(item.author)
+            author.editText!!.addTextChangedListener(object: TextWatcher {
+                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+                override fun afterTextChanged(p0: Editable?) {
+                    downloadItem.author = p0.toString()
+                    item.author = p0.toString()
+                    resultViewModel.update(item)
+                }
+            })
+
+            var formats = resultViewModel.getFormats(item, type)
+            Log.e(TAG, formats.toString())
+            val formatTitles = formats.map {
+                if (it.format_note.contains("AUDIO_QUALITY_"))
+                    it.format_note.replace("AUDIO_QUALITY_", "") +
+                            if (it.filesize == 0L) "" else " / " + convertFileSize(it.filesize)
+                else it.format_note +
+                        if (it.filesize == 0L) "" else " / " + convertFileSize(it.filesize)}
+
+            val format = bottomSheet!!.findViewById<TextInputLayout>(R.id.format)
+            val autoCompleteTextView = bottomSheet!!.findViewById<AutoCompleteTextView>(R.id.format_textview)
+            autoCompleteTextView?.setAdapter(ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, formatTitles))
+            autoCompleteTextView!!.setText(formatTitles[formats.lastIndex], false)
+            (format!!.editText as AutoCompleteTextView?)!!.onItemClickListener =
+                    AdapterView.OnItemClickListener { _: AdapterView<*>?, _: View?, index: Int, _: Long ->
+                        when(type){
+                            "audio" -> {
+                                downloadItem.audioFormat = formats[index].format
+                                downloadItem.audioFormatId = formats[index].format_id
+                            }
+
+                            "video" -> {
+                                downloadItem.videoFormat = formats[index].format
+                                downloadItem.videoFormatId = formats[index].format_id
+                            }
+
+                            "command" -> {
+                                downloadItem.customTemplateId = formats[index].format_id.toInt()
+                            }
+                        }
+                    }
+
+            lateinit var selectedContainer : String
+            val containers = when (type){
+                "audio" -> requireContext().resources.getStringArray(R.array.audio_containers)
+                "video" -> requireContext().resources.getStringArray(R.array.video_containers)
+                else -> null
+            }
+            val container = bottomSheet!!.findViewById<TextInputLayout>(R.id.downloadContainer)
+            val containerAutoCompleteTextView = bottomSheet!!.findViewById<AutoCompleteTextView>(R.id.container_textview)
+            if (containers == null){
+                containerAutoCompleteTextView!!.setText(getString(R.string.custom_command), false)
+                containerAutoCompleteTextView.isClickable = false
+                containerAutoCompleteTextView.isLongClickable = false
+            }else{
+//                val containerTitles = containers.map {
+//                    if (it.format_note.contains("AUDIO_QUALITY_"))
+//                        it.format_note.replace("AUDIO_QUALITY_", "") + " / " + convertFileSize(it.filesize)
+//                    else it.format_note + " / " + convertFileSize(it.filesize) }
+
+                selectedContainer = when(type){
+                    "audio" -> formats.find { downloadItem.audioFormat == it.format }?.ext ?: sharedPreferences.getString("audio_format", "mp3")!!
+                    else -> formats.find { downloadItem.videoFormat == it.format }?.ext ?: sharedPreferences.getString("video_format", "DEFAULT")!!
+                }
+                containerAutoCompleteTextView!!.setText(selectedContainer, false)
+                (container!!.editText as AutoCompleteTextView?)!!.onItemClickListener =
+                        AdapterView.OnItemClickListener { _: AdapterView<*>?, _: View?, index: Int, _: Long ->
+                            downloadItem.ext = containers[index]
+                        }
+            }
+
+//            when(type) {
+//                "audio" -> {
+//
+//                }
+//            }
 //            if (type == "audio") {
-//                bottomSheet!!.setContentView(R.layout.home_download_audio_bottom_sheet)
-//                val title = bottomSheet!!.findViewById<TextInputLayout>(R.id.title_textinput)
-//                if (selectedObjects!!.size > 1) {
-//                    title!!.editText!!.setText(getString(R.string.mutliple_titles))
-//                    title.editText!!.isClickable = false
-//                    title.editText!!.isLongClickable = false
-//                } else {
-//                    title!!.editText!!.setText(selectedObjects!![0]!!.title)
-//                    title.editText!!.addTextChangedListener(object : TextWatcher {
-//                        override fun beforeTextChanged(
-//                            charSequence: CharSequence,
-//                            i: Int,
-//                            i1: Int,
-//                            i2: Int
-//                        ) {
-//                        }
 //
-//                        override fun onTextChanged(
-//                            charSequence: CharSequence,
-//                            i: Int,
-//                            i1: Int,
-//                            i2: Int
-//                        ) {
-//                        }
-//
-//                        override fun afterTextChanged(editable: Editable) {
-//                            val index = resultsList!!.indexOf(selectedObjects!![0])
-//                            resultsList!![index]!!.title = editable.toString()
-//                        }
-//                    })
-//                }
-//                val author = bottomSheet!!.findViewById<TextInputLayout>(R.id.author_textinput)
-//                if (selectedObjects!!.size > 1) {
-//                    author!!.editText!!.setText(getString(R.string.mutliple_authors))
-//                    author.editText!!.isClickable = false
-//                    author.editText!!.isLongClickable = false
-//                } else {
-//                    author!!.editText!!.setText(selectedObjects!![0]!!.author)
-//                    author.editText!!.addTextChangedListener(object : TextWatcher {
-//                        override fun beforeTextChanged(
-//                            charSequence: CharSequence,
-//                            i: Int,
-//                            i1: Int,
-//                            i2: Int
-//                        ) {
-//                        }
-//
-//                        override fun onTextChanged(
-//                            charSequence: CharSequence,
-//                            i: Int,
-//                            i1: Int,
-//                            i2: Int
-//                        ) {
-//                        }
-//
-//                        override fun afterTextChanged(editable: Editable) {
-//                            val index = resultsList!!.indexOf(selectedObjects!![0])
-//                            resultsList!![index]!!.author = editable.toString()
-//                        }
-//                    })
-//                }
 //                val audioFormats = context!!.resources.getStringArray(R.array.music_formats)
 //                val audioFormat = bottomSheet!!.findViewById<TextInputLayout>(R.id.audio_format)
 //                val autoCompleteTextView =
@@ -687,8 +742,8 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
 //                        }
 //                    })
 //                }
-//                val videoFormats = context!!.resources.getStringArray(R.array.video_formats)
-//                val videoQualities = context!!.resources.getStringArray(R.array.video_quality)
+//                val videoFormats = context!!.resources.getStringArray(R.array.video_containers)
+//                val videoQualities = context!!.resources.getStringArray(R.array.video_formats)
 //                val videoFormat = bottomSheet!!.findViewById<TextInputLayout>(R.id.video_format)
 //                var autoCompleteTextView =
 //                    bottomSheet!!.findViewById<AutoCompleteTextView>(R.id.video_format_textview)
@@ -773,14 +828,21 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
 //                }
 //                bottomSheet!!.cancel()
 //            }
-//            bottomSheet!!.show()
-//            bottomSheet!!.window!!.setLayout(
-//                ViewGroup.LayoutParams.MATCH_PARENT,
-//                ViewGroup.LayoutParams.MATCH_PARENT
-//            )
-//        } catch (e: Exception) {
-//            Toast.makeText(fragmentContext, e.message, Toast.LENGTH_LONG).show()
-//        }
+            bottomSheet!!.show()
+            bottomSheet!!.window!!.setLayout(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT
+            )
+        } catch (e: Exception) {
+            Log.e(TAG, e.printStackTrace().toString());
+        }
+    }
+
+    private fun convertFileSize(s: Long): String{
+        if (s <= 0) return "0"
+        val units = arrayOf("B", "kB", "MB", "GB", "TB")
+        val digitGroups = (log10(s.toDouble()) / log10(1024.0)).toInt()
+        return DecimalFormat("#,##0.#").format(s / 1024.0.pow(digitGroups.toDouble())) + " " + units[digitGroups]
     }
 
     companion object {

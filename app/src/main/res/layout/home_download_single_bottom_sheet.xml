@@ -31,34 +31,51 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:gravity="end"
+            android:paddingTop="10dp"
             android:orientation="horizontal">
 
-            <Button
-                style="?attr/materialIconButtonOutlinedStyle"
-                android:id="@+id/bottomsheet_cancel_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
-                app:icon="@drawable/ic_cancel" />
 
             <Button
                 style="@style/Widget.Material3.Button.ElevatedButton.Icon"
+                android:textSize="11sp"
                 android:id="@+id/bottomsheet_schedule_button"
+                android:padding="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
                 app:icon="@drawable/ic_clock"
                 android:text="@string/schedule" />
 
-            <Button
-                style="@style/Widget.Material3.Button.ElevatedButton.Icon"
-                android:id="@+id/bottomsheet_download_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/download"
-                app:icon="@drawable/ic_down"
-                android:autoLink="all"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="bottom"
+                android:gravity="end"
+                android:orientation="horizontal">
+
+                <Button
+                    style="@style/Widget.Material3.Button.OutlinedButton.Icon"
+                    android:textSize="11sp"
+                    android:padding="10dp"
+                    android:id="@+id/bottomsheet_cancel_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/cancel"
+                    android:layout_marginEnd="10dp"
+                    app:icon="@drawable/ic_cancel" />
+
+                <Button
+                    style="@style/Widget.Material3.Button.ElevatedButton.Icon"
+                    android:textSize="11sp"
+                    android:padding="10dp"
+                    android:id="@+id/bottomsheet_download_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/download"
+                    app:icon="@drawable/ic_down"
+                    android:autoLink="all"/>
+
+            </LinearLayout>
 
         </LinearLayout>
 

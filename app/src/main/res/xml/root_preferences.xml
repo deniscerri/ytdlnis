@@ -125,8 +125,8 @@
 
         <ListPreference
             android:defaultValue="mp3"
-            android:entries="@array/music_formats"
-            android:entryValues="@array/music_formats"
+            android:entries="@array/audio_containers"
+            android:entryValues="@array/audio_containers"
             android:icon="@drawable/ic_code"
             app:key="audio_format"
             app:summary="mp3"
@@ -134,8 +134,8 @@
 
         <ListPreference
             android:defaultValue="mkv"
-            android:entries="@array/video_formats"
-            android:entryValues="@array/video_formats"
+            android:entries="@array/video_containers"
+            android:entryValues="@array/video_containers"
             android:icon="@drawable/ic_code"
             app:key="video_format"
             app:summary="DEFAULT"
@@ -154,8 +154,8 @@
 
         <ListPreference
             android:defaultValue="Best Quality"
-            android:entries="@array/video_quality"
-            android:entryValues="@array/video_quality"
+            android:entries="@array/video_formats"
+            android:entryValues="@array/video_formats"
             android:icon="@drawable/ic_video"
             app:key="video_quality"
             app:summary="Best Quality"

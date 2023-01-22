@@ -17,6 +17,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import androidx.work.WorkManager
 import com.deniscerri.ytdlnis.DownloaderService.LocalBinder
 import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.deniscerri.ytdlnis.databinding.ActivityMainBinding
@@ -38,17 +39,14 @@ import java.util.*
 import kotlin.system.exitProcess
 
 class MainActivity : AppCompatActivity() {
+
     private lateinit var binding: ActivityMainBinding
     lateinit var context: Context
     private lateinit var homeFragment: HomeFragment
     private lateinit var downloadsFragment: DownloadsFragment
-    private lateinit var moreFragment: MoreFragment
-    private lateinit var lastFragment: Fragment
-    private lateinit var fm: FragmentManager
-    private var isDownloadServiceRunning = false
     var downloaderService: DownloaderService? = null
-    private lateinit var listeners: ArrayList<IDownloaderListener>
-    private var iDownloaderService: IDownloaderService? = null
+    private lateinit var workManager: WorkManager
+
 
     private val serviceConnection: ServiceConnection = object : ServiceConnection {
         override fun onServiceConnected(className: ComponentName, service: IBinder) {
@@ -83,6 +81,8 @@ class MainActivity : AppCompatActivity() {
         reconnectDownloadService()
         checkUpdate()
         fm = supportFragmentManager
+        workManager = WorkManager.getInstance(context)
+
         homeFragment = HomeFragment()
         downloadsFragment = DownloadsFragment()
         moreFragment = MoreFragment()
@@ -256,6 +256,10 @@ class MainActivity : AppCompatActivity() {
         stopDownloadService()
     }
 
+    fun cancelAllDownloads() {
+        workManager.cancelAllWork();
+    }
+
     fun removeItemFromDownloadQueue(video: ResultItem?, type: String?) {
         iDownloaderService!!.removeItemFromDownloadQueue(video, type)
     }
@@ -368,5 +372,11 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         private const val TAG = "MainActivity"
+        private lateinit var moreFragment: MoreFragment
+        private lateinit var lastFragment: Fragment
+        private lateinit var fm: FragmentManager
+        private var isDownloadServiceRunning = false
+        private lateinit var listeners: ArrayList<IDownloaderListener>
+        private var iDownloaderService: IDownloaderService? = null
     }
 }

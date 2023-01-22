@@ -105,7 +105,7 @@ class DownloadsFragment : Fragment(), HistoryAdapter.OnItemClickListener,
         historyAdapter =
             HistoryAdapter(
                 this,
-                activity
+                requireActivity()
             )
         recyclerView = view.findViewById(R.id.recyclerviewdownloadss)
         recyclerView?.layoutManager = LinearLayoutManager(context)

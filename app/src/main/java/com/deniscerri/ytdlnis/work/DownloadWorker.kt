@@ -59,8 +59,8 @@ class DownloadWorker(
 
         val tempFolder = StringBuilder(context.cacheDir.absolutePath + """/${downloadItem.title}##${downloadItem.type}""")
         when(type){
-            "audio" -> tempFolder.append("##${downloadItem.audioQualityId}")
-            "video" -> tempFolder.append("##${downloadItem.videoQualityId}")
+            "audio" -> tempFolder.append("##${downloadItem.audioFormatId}")
+            "video" -> tempFolder.append("##${downloadItem.videoFormatId}")
             "command" -> tempFolder.append("##${downloadItem.customTemplateId}")
         }
         var tempFileDir = File(tempFolder.toString())
@@ -95,7 +95,7 @@ class DownloadWorker(
         when(type){
             "audio" -> {
                 request.addOption("-x")
-                var audioQualityId : String = downloadItem.audioQualityId
+                var audioQualityId : String = downloadItem.audioFormatId
                 if (audioQualityId == "0") audioQualityId = "ba"
                 var format = downloadItem.audioFormat
                 if (format.isEmpty()){
@@ -110,7 +110,7 @@ class DownloadWorker(
                     request.addOption("--embed-thumbnail")
                     request.addOption("--convert-thumbnails", "png")
                     try {
-                        val config = File(context.cacheDir, "config" + downloadItem.title + "##" + downloadItem.audioQualityId + ".txt")
+                        val config = File(context.cacheDir, "config" + downloadItem.title + "##" + downloadItem.audioFormatId + ".txt")
                         val configData =
                             "--ppa \"ffmpeg: -c:v png -vf crop=\\\"'if(gt(ih,iw),iw,ih)':'if(gt(iw,ih),ih,iw)'\\\"\""
                         config.writeText(configData)
@@ -142,8 +142,8 @@ class DownloadWorker(
                 if (embedSubs) {
                     request.addOption("--embed-subs", "")
                 }
-                var videoQualityId = downloadItem.videoQualityId
-                val audioQualityId = downloadItem.audioQualityId
+                var videoQualityId = downloadItem.videoFormatId
+                val audioQualityId = downloadItem.audioFormatId
                 if (videoQualityId.isEmpty()) videoQualityId = "bestvideo"
                 val formatArgument = StringBuilder(videoQualityId)
                 if (videoQualityId != "worst"){

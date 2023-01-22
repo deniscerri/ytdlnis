@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "5939be553c41327f4f64e1d62d008968",
+    "identityHash": "c8effa77edcd8cf5e46a79fd1a791535",
     "entities": [
       {
         "tableName": "results",
@@ -198,7 +198,7 @@
       },
       {
         "tableName": "downloads",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`url` TEXT NOT NULL, `title` TEXT NOT NULL, `author` TEXT NOT NULL, `thumb` TEXT NOT NULL, `duration` TEXT NOT NULL, `type` TEXT NOT NULL, `audioQualityId` TEXT NOT NULL, `videoQualityId` TEXT NOT NULL, `customTemplateId` INTEGER NOT NULL, `audioFormat` TEXT NOT NULL, `videoFormat` TEXT NOT NULL, `formatDesc` TEXT NOT NULL, `removeAudio` INTEGER NOT NULL DEFAULT 0, `downloadPath` TEXT NOT NULL, `website` TEXT NOT NULL, `downloadSize` TEXT NOT NULL, `playlistTitle` TEXT NOT NULL, `embedSubs` INTEGER NOT NULL, `addChapters` INTEGER NOT NULL, `SaveThumb` INTEGER NOT NULL, `status` TEXT NOT NULL DEFAULT 'Queued', `workID` INTEGER NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`url` TEXT NOT NULL, `title` TEXT NOT NULL, `author` TEXT NOT NULL, `thumb` TEXT NOT NULL, `duration` TEXT NOT NULL, `type` TEXT NOT NULL, `audioFormat` TEXT NOT NULL, `videoFormat` TEXT NOT NULL, `audioFormatId` TEXT NOT NULL, `videoFormatId` TEXT NOT NULL, `customTemplateId` INTEGER NOT NULL, `formatDesc` TEXT NOT NULL, `removeAudio` INTEGER NOT NULL DEFAULT 0, `downloadPath` TEXT NOT NULL, `website` TEXT NOT NULL, `downloadSize` TEXT NOT NULL, `playlistTitle` TEXT NOT NULL, `embedSubs` INTEGER NOT NULL, `addChapters` INTEGER NOT NULL, `SaveThumb` INTEGER NOT NULL, `ext` TEXT NOT NULL, `filesize` TEXT NOT NULL, `status` TEXT NOT NULL DEFAULT 'Queued', `workID` INTEGER NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT)",
         "fields": [
           {
             "fieldPath": "url",
@@ -237,24 +237,6 @@
             "notNull": true
           },
           {
-            "fieldPath": "audioQualityId",
-            "columnName": "audioQualityId",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "videoQualityId",
-            "columnName": "videoQualityId",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "customTemplateId",
-            "columnName": "customTemplateId",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
             "fieldPath": "audioFormat",
             "columnName": "audioFormat",
             "affinity": "TEXT",
@@ -264,6 +246,24 @@
             "fieldPath": "videoFormat",
             "columnName": "videoFormat",
             "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "audioFormatId",
+            "columnName": "audioFormatId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "videoFormatId",
+            "columnName": "videoFormatId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "customTemplateId",
+            "columnName": "customTemplateId",
+            "affinity": "INTEGER",
             "notNull": true
           },
           {
@@ -319,6 +319,18 @@
             "fieldPath": "SaveThumb",
             "columnName": "SaveThumb",
             "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "ext",
+            "columnName": "ext",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "filesize",
+            "columnName": "filesize",
+            "affinity": "TEXT",
             "notNull": true
           },
           {
@@ -386,7 +398,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '5939be553c41327f4f64e1d62d008968')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'c8effa77edcd8cf5e46a79fd1a791535')"
     ]
   }
 }

@@ -1,5 +1,5 @@
 <resources>
-    <string-array name="music_formats">
+    <string-array name="audio_containers">
         <item>mp3</item>
         <item>m4a</item>
         <item>aac</item>
@@ -9,22 +9,27 @@
         <item>wav</item>
     </string-array>
 
-    <string-array name="video_formats">
-        <item>DEFAULT</item>
+    <string-array name="audio_formats">
+        <item>@string/worst</item>
+        <item>@string/best</item>
+    </string-array>
+
+    <string-array name="video_containers">
+        <item>@string/defaultValue</item>
         <item>mp4</item>
         <item>mkv</item>
         <item>webm</item>
     </string-array>
 
-    <string-array name="video_quality">
-        <item>Best Quality</item>
-        <item>2160p</item>
-        <item>1440p</item>
-        <item>1080p</item>
-        <item>720p</item>
-        <item>480p</item>
-        <item>360p</item>
+    <string-array name="video_formats">
         <item>Worst Quality</item>
+        <item>360p</item>
+        <item>480p</item>
+        <item>720p</item>
+        <item>1080p</item>
+        <item>1440p</item>
+        <item>2160p</item>
+        <item>Best Quality</item>
     </string-array>
 
     <string-array name="sponsorblock_settings_entries">
