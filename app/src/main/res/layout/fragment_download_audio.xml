@@ -78,7 +78,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="10dp"
-            android:hint="@string/format">
+            android:hint="@string/audio_format">
 
             <AutoCompleteTextView
                 android:id="@+id/format_textview"

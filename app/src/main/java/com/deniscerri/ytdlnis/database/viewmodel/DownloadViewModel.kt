@@ -45,7 +45,7 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
         repository.update(item);
     }
 
-    fun getLatest() : DownloadItem {
-        return repository.getLatest()
+    fun getItemByID(id: Long) : DownloadItem {
+        return repository.getItemByID(id)
     }
 }

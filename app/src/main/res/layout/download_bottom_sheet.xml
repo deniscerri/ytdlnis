@@ -8,17 +8,8 @@
     <TextView
         android:id="@+id/bottom_sheet_title"
         android:layout_width="wrap_content"
-        android:textSize="20sp"
-        android:paddingTop="10dp"
-        android:layout_gravity="center"
-        android:layout_height="wrap_content"
-        android:text="@string/download" />
-
-    <TextView
-        android:id="@+id/bottom_sheet_subtitle"
-        android:layout_width="wrap_content"
-        android:textSize="15sp"
-        android:paddingBottom="10dp"
+        android:textSize="25sp"
+        android:padding="20dp"
         android:layout_gravity="center"
         android:layout_height="wrap_content"
         android:text="@string/configure_download" />

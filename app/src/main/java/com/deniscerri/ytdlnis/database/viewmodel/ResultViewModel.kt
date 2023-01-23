@@ -34,7 +34,12 @@ class ResultViewModel(application: Application) : AndroidViewModel(application) 
     fun checkTrending() = viewModelScope.launch(Dispatchers.IO){
         try {
             val item = repository.getFirstResult()
-            if (item.playlistTitle == "ytdlnis-TRENDING") getTrending()
+            if (
+                item.playlistTitle == getApplication<App>().getString(R.string.trendingPlaylist)
+                && item.creationTime < (System.currentTimeMillis() / 1000) - 86400
+            ){
+                getTrending()
+            }
         }catch (e : Exception){
             getTrending()
         }
@@ -58,7 +63,6 @@ class ResultViewModel(application: Application) : AndroidViewModel(application) 
         } else if (inputQuery!!.contains("http")) {
             type = "Default"
         }
-        Log.e(tag, "$inputQuery $type")
         try {
             when (type) {
                 "Search" -> {
@@ -102,12 +106,7 @@ class ResultViewModel(application: Application) : AndroidViewModel(application) 
 
         when(type){
             "audio" -> {
-                list = list.filter { it.format_note.contains("audio", ignoreCase = true) }
-                if (list.isEmpty()) {
-                    audioFormats.forEach { formats.add(Format(0, item.id, it, "", 0, it, "")) }
-                    return formats
-                }
-                return list
+                return list.filter { it.format_note.contains("audio", ignoreCase = true) }
             }
             "video" -> {
                 list = list.filter { !it.format_note.contains("audio", ignoreCase = true) }

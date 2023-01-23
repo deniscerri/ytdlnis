@@ -313,8 +313,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
     }
 
     private fun changePath(p: Preference?, data: Intent?, requestCode: Int) {
-        Log.e("TEST", data!!.toUri(0))
-        val path = data.data.toString()
+        val path = data!!.data.toString()
         p!!.summary = fileUtil?.formatPath(data.data.toString())
         val sharedPreferences =
             requireContext().getSharedPreferences("root_preferences", Activity.MODE_PRIVATE)

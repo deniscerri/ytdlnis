@@ -34,15 +34,12 @@ class HistoryViewModel(application: Application) : AndroidViewModel(application)
             filter(queryFilter.value!!, formatFilter.value!!, websiteFilter.value!!, sortType.value!!)
         })
         _items.addSource(formatFilter, Observer {
-            Log.e("aa", "audio");
             filter(queryFilter.value!!, formatFilter.value!!, websiteFilter.value!!, sortType.value!!)
         })
         _items.addSource(sortType, Observer {
-            Log.e("aa", "asssssssssssss");
             filter(queryFilter.value!!, formatFilter.value!!, websiteFilter.value!!, sortType.value!!)
         })
         _items.addSource(websiteFilter, Observer {
-            Log.e("Aa", "website")
             filter(queryFilter.value!!, formatFilter.value!!, websiteFilter.value!!, sortType.value!!)
         })
         _items.addSource(queryFilter, Observer {
@@ -56,7 +53,6 @@ class HistoryViewModel(application: Application) : AndroidViewModel(application)
     }
 
     fun setSorting(sort: HistorySort){
-        Log.e("aa", "asssssssssssss");
         sortType.value = sort
     }
 
@@ -69,7 +65,6 @@ class HistoryViewModel(application: Application) : AndroidViewModel(application)
     }
 
     fun setFormatFilter(filter: String){
-        Log.e("aa", "audio");
         formatFilter.value = filter
     }
 

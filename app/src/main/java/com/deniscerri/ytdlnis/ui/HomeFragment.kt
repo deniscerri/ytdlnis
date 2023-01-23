@@ -37,6 +37,7 @@ import com.deniscerri.ytdlnis.util.InfoUtil
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.chip.ChipGroup
@@ -86,6 +87,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
     private var selectedObjects: ArrayList<ResultItem>? = null
     private var deleteFab: ExtendedFloatingActionButton? = null
     private var fileUtil: FileUtil? = null
+    private var firstBoot = true
 
     private var _binding : FragmentHomeBinding? = null
 
@@ -144,10 +146,15 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
             homeAdapter!!.submitList(it)
             resultsList = it
             if(it.size > 1){
-                if (it[0].playlistTitle.isNotEmpty() || it[0].playlistTitle != getString(R.string.trendingPlaylist)){
+                if (it[0].playlistTitle.isNotEmpty() && it[0].playlistTitle != getString(R.string.trendingPlaylist)){
                     downloadAllFabCoordinator!!.visibility = VISIBLE
+                }else{
+                    downloadAllFabCoordinator!!.visibility = GONE
                 }
+            }else if(it.size == 1 && !firstBoot && parentFragmentManager.findFragmentByTag("bottomSheet") == null){
+                showSingleDownloadSheet(it[0], "audio")
             }
+            firstBoot = false
         }
 
         resultViewModel.loadingItems.observe(viewLifecycleOwner){
@@ -349,9 +356,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
 //            selectedObjects!!.clear()
 //            selectedObjects!!.add(item!!)
             //showConfigureSingleDownloadCard(createDownloadItem(item!!, type), item)
-            createDownloadItem(item!!, type){
-                showSingleDownloadSheet(it)
-            }
+            showSingleDownloadSheet(item!!, type)
         } else {
 //            downloadQueue!!.add(vid)
 //            updateDownloadingStatusOnResult(vid, type, true)
@@ -362,12 +367,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
         }
     }
 
-    private fun showSingleDownloadSheet(item : DownloadItem){
-        val bottomSheet = DownloadBottomSheetDialog(item)
-        bottomSheet.show(parentFragmentManager, null)
-    }
-
-    private fun createDownloadItem(item: ResultItem, type: String, itemCreated: (DownloadItem) -> Unit) : DownloadItem {
+    private fun showSingleDownloadSheet(resultItem : ResultItem, type: String){
         val sharedPreferences =
             requireContext().getSharedPreferences("root_preferences", Activity.MODE_PRIVATE)
         val embedSubs = sharedPreferences.getBoolean("embed_subtitles", false)
@@ -376,22 +376,22 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
 
 
         val downloadItem = DownloadItem(0,
-            item.url,
-            item.title,
-            item.author,
-            item.thumb,
-            item.duration,
+            resultItem.url,
+            resultItem.title,
+            resultItem.author,
+            resultItem.thumb,
+            resultItem.duration,
             type,
             "", "",  0, "", false,
-            "", item.website, "", item.playlistTitle, embedSubs, addChapters, saveThumb, "",
+            "", resultItem.website, "", resultItem.playlistTitle, embedSubs, addChapters, saveThumb, "",
             "", DownloadRepository.status.Processing.toString(), 0
         )
 
         downloadViewModel.insertDownload(downloadItem).observe(viewLifecycleOwner) {
             downloadItem.id = it
-            itemCreated(downloadItem)
+            val bottomSheet = DownloadBottomSheetDialog(downloadItem)
+            bottomSheet.show(parentFragmentManager, "bottomSheet")
         }
-        return downloadItem
     }
 
 

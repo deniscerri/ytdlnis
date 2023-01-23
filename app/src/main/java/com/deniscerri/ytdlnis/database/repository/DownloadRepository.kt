@@ -38,8 +38,8 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
         update(item);
     }
 
-    fun getLatest() : DownloadItem {
-        return downloadDao.getLatest()
+    fun getItemByID(id: Long) : DownloadItem {
+        return downloadDao.getDownloadById(id)
     }
 
 }

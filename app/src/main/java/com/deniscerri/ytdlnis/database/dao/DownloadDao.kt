@@ -22,7 +22,7 @@ interface DownloadDao {
     fun getDownloadByWorkId(workID: Int) : DownloadItem
 
     @Query("SELECT * FROM downloads WHERE id=:id LIMIT 1")
-    fun getDownloadById(id: Int) : DownloadItem
+    fun getDownloadById(id: Long) : DownloadItem
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(item: DownloadItem) : Long

@@ -474,11 +474,7 @@ class InfoUtil(context: Context) {
             } catch (e: Exception) {
                 arrayOf(youtubeDLResponse.out)
             }
-            var isPlaylist = 0
             val pl = JSONObject(results[0]!!)
-            if (pl.has("playlist")) {
-                if (pl.getString("playlist") != query) isPlaylist = 1
-            }
             for (result in results) {
                 val jsonObject = JSONObject(result!!)
                 val title = if (jsonObject.has("title")) {
@@ -506,6 +502,7 @@ class InfoUtil(context: Context) {
                 val website = if (jsonObject.has("ie_key")) jsonObject.getString("ie_key") else jsonObject.getString("extractor")
                 var playlistTitle: String? = ""
                 if (jsonObject.has("playlist_title")) playlistTitle = jsonObject.getString("playlist_title")
+                if(playlistTitle.equals(query)) playlistTitle = ""
                 val formatsInJSON = if (jsonObject.has("formats")) jsonObject.getJSONArray("formats") else null
                 val formats : ArrayList<Format> = ArrayList()
                 if (formatsInJSON != null) {

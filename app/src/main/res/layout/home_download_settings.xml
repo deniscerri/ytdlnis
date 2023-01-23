@@ -23,7 +23,6 @@
             android:layout_height="wrap_content"
             android:text="@string/configure_download" />
 
-        <include layout="@layout/home_download_settings_components" />
 
         <View style="@style/Divider.Horizontal"/>
 

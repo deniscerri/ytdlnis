@@ -65,9 +65,9 @@
     <string name="choose_range_desc">Pick a range to download from the playlist (to not download everything).</string>
     <string name="last_cant_be_smaller_than_first">Last index cannot be smaller than the first.</string>
     <string name="first_cant_be_larger_than_last">First index cannot be larger than the last.</string>
-    <string name="music_path" translatable="false">/storage/emulated/0/Download/YTDLnis/Audio</string>
-    <string name="video_path" translatable="false">/storage/emulated/0/Download/YTDLnis/Video</string>
-    <string name="command_path" translatable="false">/storage/emulated/0/Download/YTDLnis/Command</string>
+    <string name="music_path" translatable="false">content://com.android.externalstorage.documents/tree/primary%3ADownload%2FYTDLnis%2FAudio</string>
+    <string name="video_path" translatable="false">content://com.android.externalstorage.documents/tree/primary%3ADownload%2FYTDLnis%2FVideo</string>
+    <string name="command_path" translatable="false">content://com.android.externalstorage.documents/tree/primary%3ADownload%2FYTDLnis%2FCommand</string>
     <string name="concurrent_fragments_summary">Number of fragments of a DASH/HLS native video to download concurrently</string>
     <string name="concurrent_fragments">Concurrent Fragments</string>
     <string name="downloading">Downloading</string>
@@ -163,7 +163,6 @@
     <string name="best">Best</string>
     <string name="worst">Worst</string>
     <string name="defaultValue">Default</string>
-    <string name="format">Format</string>
     <string name="container">Container</string>
     <string name="template">Template</string>
     <string name="history">History</string>

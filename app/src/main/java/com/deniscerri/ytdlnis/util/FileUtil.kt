@@ -32,6 +32,7 @@ class FileUtil() {
 
     fun formatPath(path: String) : String {
         var dataValue = path
+        if (dataValue.startsWith("/storage/")) return dataValue
         dataValue = dataValue.replace("content://com.android.externalstorage.documents/tree/", "")
         dataValue = dataValue.replace("%3A".toRegex(), "/")
         try {
@@ -123,7 +124,7 @@ class FileUtil() {
     }
 
     fun convertFileSize(s: Long): String{
-        if (s <= 0) return "0"
+        if (s <= 0) return "?"
         val units = arrayOf("B", "kB", "MB", "GB", "TB")
         val digitGroups = (log10(s.toDouble()) / log10(1024.0)).toInt()
         return DecimalFormat("#,##0.#").format(s / 1024.0.pow(digitGroups.toDouble())) + " " + units[digitGroups]

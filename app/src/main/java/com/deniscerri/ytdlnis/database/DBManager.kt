@@ -31,7 +31,6 @@ abstract class DBManager : RoomDatabase(){
                     DBManager::class.java,
                     "YTDLnisDatabase"
                 )
-                        .allowMainThreadQueries()
                         .build()
                 instance = dbInstance
                 dbInstance

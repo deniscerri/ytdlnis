@@ -20,7 +20,7 @@ data class DownloadItem(
     var formatDesc: String,
     @ColumnInfo(defaultValue = "0")
     val removeAudio: Boolean,
-    val downloadPath: String,
+    var downloadPath: String,
     val website: String,
     val downloadSize: String,
     val playlistTitle: String,
