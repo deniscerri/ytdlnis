@@ -4,12 +4,11 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.text.Editable
 import android.text.InputType
-import android.text.TextWatcher
 import android.util.Log
 import android.view.*
 import android.view.View.GONE
@@ -17,7 +16,6 @@ import android.view.View.VISIBLE
 import android.widget.*
 import androidx.appcompat.widget.SearchView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.core.text.trimmedLength
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -28,9 +26,12 @@ import com.deniscerri.ytdlnis.adapter.HomeAdapter
 import com.deniscerri.ytdlnis.database.DatabaseManager
 import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.models.ResultItem
+import com.deniscerri.ytdlnis.database.repository.DownloadRepository
+import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.ResultViewModel
-import com.deniscerri.ytdlnis.databinding.FragmentDownloadsBinding
+import com.deniscerri.ytdlnis.databinding.FragmentHomeBinding
 import com.deniscerri.ytdlnis.service.DownloadInfo
+import com.deniscerri.ytdlnis.ui.downloadcard.DownloadBottomSheetDialog
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.InfoUtil
 import com.facebook.shimmer.ShimmerFrameLayout
@@ -43,7 +44,6 @@ import com.google.android.material.floatingactionbutton.ExtendedFloatingActionBu
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.android.material.textfield.TextInputLayout
-import kotlinx.coroutines.runBlocking
 import java.text.DecimalFormat
 import java.util.*
 import kotlin.math.log10
@@ -65,6 +65,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
     private var downloadInfo: DownloadInfo? = null
 
     private lateinit var resultViewModel : ResultViewModel
+    private lateinit var downloadViewModel : DownloadViewModel
 
     private var downloading = false
     private var fragmentView: View? = null
@@ -86,13 +87,13 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
     private var deleteFab: ExtendedFloatingActionButton? = null
     private var fileUtil: FileUtil? = null
 
-    private var _binding : FragmentDownloadsBinding? = null
+    private var _binding : FragmentHomeBinding? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentDownloadsBinding.inflate(inflater, container, false)
+        _binding = FragmentHomeBinding.inflate(inflater, container, false)
         fragmentView = inflater.inflate(R.layout.fragment_home, container, false)
         activity = getActivity()
         mainActivity = activity as MainActivity?
@@ -116,6 +117,8 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
         uiHandler = Handler(Looper.getMainLooper())
         selectedObjects = ArrayList()
         downloading = mainActivity!!.isDownloadServiceRunning()
+
+        downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
 
         downloadQueue = ArrayList()
         resultsList = mutableListOf()
@@ -141,7 +144,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
             homeAdapter!!.submitList(it)
             resultsList = it
             if(it.size > 1){
-                if (it[0].playlistTitle.isNotEmpty() || it[0].playlistTitle != "ytdlnis-TRENDING"){
+                if (it[0].playlistTitle.isNotEmpty() || it[0].playlistTitle != getString(R.string.trendingPlaylist)){
                     downloadAllFabCoordinator!!.visibility = VISIBLE
                 }
             }
@@ -204,68 +207,6 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
             resultViewModel.checkTrending()
         }
     }
-
-//
-//    private fun initCards() {
-//        val uiHandler = Handler(Looper.getMainLooper())
-//        try {
-//            val thread = Thread {
-//                databaseManager = DatabaseManager(context)
-//                resultsList = databaseManager!!.results
-//                var playlistTitle = ""
-//                try {
-//                    playlistTitle = resultsList.get(0).playlistTitle
-//                } catch (ignored: Exception) {
-//                }
-//                if (resultsList.size == 0 || playlistTitle == getString(R.string.trendingPlaylist) && !downloading) {
-//                    try {
-//                        databaseManager!!.clearResults()
-//                        uiHandler.post {
-//                            shimmerCards!!.startShimmer()
-//                            shimmerCards!!.visibility = View.VISIBLE
-//                        }
-//                        infoUtil = InfoUtil(context!!)
-//                        resultsList = infoUtil!!.getTrending(context!!)
-//                        databaseManager!!.addToResults(resultsList)
-//                    } catch (e: Exception) {
-//                        Log.e(TAG, e.toString())
-//                    }
-//                } else {
-//                    if (!downloading) {
-//                        homeAdapter!!.add(resultsList)
-//                        for (i in resultsList.indices) {
-//                            val tmp = resultsList.get(i)
-//                            if (tmp!!.isDownloading) {
-//                                updateDownloadingStatusOnResult(tmp, "audio", false)
-//                                updateDownloadingStatusOnResult(tmp, "video", false)
-//                            }
-//                        }
-//                    }
-//                }
-//                uiHandler.post {
-//                    if (homeAdapter!!.itemCount != resultsList.size) {
-//                        homeAdapter!!.add(resultsList)
-//                    }
-//                    shimmerCards!!.stopShimmer()
-//                    shimmerCards!!.visibility = View.GONE
-//                }
-//                databaseManager!!.close()
-//                if (resultsList != null) {
-//                    uiHandler.post { scrollToTop() }
-//                    if (resultsList!!.size > 1 && resultsList!![1]!!.isPlaylistItem == 1) {
-//                        uiHandler.post { downloadAllFabCoordinator!!.visibility = View.VISIBLE }
-//                    }
-//                }
-//            }
-//            thread.start()
-//        } catch (e: Exception) {
-//            Log.e(TAG, e.toString())
-//            uiHandler.post {
-//                shimmerCards!!.stopShimmer()
-//                shimmerCards!!.visibility = View.GONE
-//            }
-//        }
-//    }
 
     private fun initMenu() {
         val onActionExpandListener: MenuItem.OnActionExpandListener =
@@ -407,7 +348,10 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
         if (sharedPreferences.getBoolean("download_card", true)) {
 //            selectedObjects!!.clear()
 //            selectedObjects!!.add(item!!)
-            showConfigureSingleDownloadCard(item!!, type)
+            //showConfigureSingleDownloadCard(createDownloadItem(item!!, type), item)
+            createDownloadItem(item!!, type){
+                showSingleDownloadSheet(it)
+            }
         } else {
 //            downloadQueue!!.add(vid)
 //            updateDownloadingStatusOnResult(vid, type, true)
@@ -416,6 +360,38 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
 //                downloadQueue!!.clear()
 //            }
         }
+    }
+
+    private fun showSingleDownloadSheet(item : DownloadItem){
+        val bottomSheet = DownloadBottomSheetDialog(item)
+        bottomSheet.show(parentFragmentManager, null)
+    }
+
+    private fun createDownloadItem(item: ResultItem, type: String, itemCreated: (DownloadItem) -> Unit) : DownloadItem {
+        val sharedPreferences =
+            requireContext().getSharedPreferences("root_preferences", Activity.MODE_PRIVATE)
+        val embedSubs = sharedPreferences.getBoolean("embed_subtitles", false)
+        val addChapters = sharedPreferences.getBoolean("add_chapters", false)
+        val saveThumb = sharedPreferences.getBoolean("write_thumbnail", false)
+
+
+        val downloadItem = DownloadItem(0,
+            item.url,
+            item.title,
+            item.author,
+            item.thumb,
+            item.duration,
+            type,
+            "", "",  0, "", false,
+            "", item.website, "", item.playlistTitle, embedSubs, addChapters, saveThumb, "",
+            "", DownloadRepository.status.Processing.toString(), 0
+        )
+
+        downloadViewModel.insertDownload(downloadItem).observe(viewLifecycleOwner) {
+            downloadItem.id = it
+            itemCreated(downloadItem)
+        }
+        return downloadItem
     }
 
 
@@ -576,275 +552,6 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
 //            }
 //        }
     }
-
-    private fun showConfigureSingleDownloadCard(item: ResultItem, type: String) {
-        val sharedPreferences =
-                requireContext().getSharedPreferences("root_preferences", Activity.MODE_PRIVATE)
-        val embedSubs = sharedPreferences.getBoolean("embed_subtitles", false)
-        val addChapters = sharedPreferences.getBoolean("add_chapters", false)
-        val saveThumb = sharedPreferences.getBoolean("write_thumbnail", false)
-
-        var downloadItem = DownloadItem(
-                item.url,
-                item.title,
-                item.author,
-                item.thumb,
-                item.duration,
-                type,
-                "", "", "", "", 0, "", false,
-                "", item.website, "", item.playlistTitle, embedSubs, addChapters, saveThumb, "",
-                "", "", 0
-        )
-
-        val editor = sharedPreferences.edit()
-        try {
-            bottomSheet = BottomSheetDialog(fragmentContext!!)
-            bottomSheet!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
-            bottomSheet!!.setContentView(R.layout.home_download_single_bottom_sheet)
-            val title = bottomSheet!!.findViewById<TextInputLayout>(R.id.title_textinput)
-            title!!.editText!!.setText(item.title)
-            title.editText!!.addTextChangedListener(object: TextWatcher {
-                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-                override fun afterTextChanged(p0: Editable?) {
-                    downloadItem.title = p0.toString()
-                    item.title = p0.toString()
-                    resultViewModel.update(item)
-                }
-            })
-
-            val author = bottomSheet!!.findViewById<TextInputLayout>(R.id.author_textinput)
-            author!!.editText!!.setText(item.author)
-            author.editText!!.addTextChangedListener(object: TextWatcher {
-                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-                override fun afterTextChanged(p0: Editable?) {
-                    downloadItem.author = p0.toString()
-                    item.author = p0.toString()
-                    resultViewModel.update(item)
-                }
-            })
-
-            var formats = resultViewModel.getFormats(item, type)
-            Log.e(TAG, formats.toString())
-            val formatTitles = formats.map {
-                if (it.format_note.contains("AUDIO_QUALITY_"))
-                    it.format_note.replace("AUDIO_QUALITY_", "") +
-                            if (it.filesize == 0L) "" else " / " + convertFileSize(it.filesize)
-                else it.format_note +
-                        if (it.filesize == 0L) "" else " / " + convertFileSize(it.filesize)}
-
-            val format = bottomSheet!!.findViewById<TextInputLayout>(R.id.format)
-            val autoCompleteTextView = bottomSheet!!.findViewById<AutoCompleteTextView>(R.id.format_textview)
-            autoCompleteTextView?.setAdapter(ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, formatTitles))
-            autoCompleteTextView!!.setText(formatTitles[formats.lastIndex], false)
-            (format!!.editText as AutoCompleteTextView?)!!.onItemClickListener =
-                    AdapterView.OnItemClickListener { _: AdapterView<*>?, _: View?, index: Int, _: Long ->
-                        when(type){
-                            "audio" -> {
-                                downloadItem.audioFormat = formats[index].format
-                                downloadItem.audioFormatId = formats[index].format_id
-                            }
-
-                            "video" -> {
-                                downloadItem.videoFormat = formats[index].format
-                                downloadItem.videoFormatId = formats[index].format_id
-                            }
-
-                            "command" -> {
-                                downloadItem.customTemplateId = formats[index].format_id.toInt()
-                            }
-                        }
-                    }
-
-            lateinit var selectedContainer : String
-            val containers = when (type){
-                "audio" -> requireContext().resources.getStringArray(R.array.audio_containers)
-                "video" -> requireContext().resources.getStringArray(R.array.video_containers)
-                else -> null
-            }
-            val container = bottomSheet!!.findViewById<TextInputLayout>(R.id.downloadContainer)
-            val containerAutoCompleteTextView = bottomSheet!!.findViewById<AutoCompleteTextView>(R.id.container_textview)
-            if (containers == null){
-                containerAutoCompleteTextView!!.setText(getString(R.string.custom_command), false)
-                containerAutoCompleteTextView.isClickable = false
-                containerAutoCompleteTextView.isLongClickable = false
-            }else{
-//                val containerTitles = containers.map {
-//                    if (it.format_note.contains("AUDIO_QUALITY_"))
-//                        it.format_note.replace("AUDIO_QUALITY_", "") + " / " + convertFileSize(it.filesize)
-//                    else it.format_note + " / " + convertFileSize(it.filesize) }
-
-                selectedContainer = when(type){
-                    "audio" -> formats.find { downloadItem.audioFormat == it.format }?.ext ?: sharedPreferences.getString("audio_format", "mp3")!!
-                    else -> formats.find { downloadItem.videoFormat == it.format }?.ext ?: sharedPreferences.getString("video_format", "DEFAULT")!!
-                }
-                containerAutoCompleteTextView!!.setText(selectedContainer, false)
-                (container!!.editText as AutoCompleteTextView?)!!.onItemClickListener =
-                        AdapterView.OnItemClickListener { _: AdapterView<*>?, _: View?, index: Int, _: Long ->
-                            downloadItem.ext = containers[index]
-                        }
-            }
-
-//            when(type) {
-//                "audio" -> {
-//
-//                }
-//            }
-//            if (type == "audio") {
-//
-//                val audioFormats = context!!.resources.getStringArray(R.array.music_formats)
-//                val audioFormat = bottomSheet!!.findViewById<TextInputLayout>(R.id.audio_format)
-//                val autoCompleteTextView =
-//                    bottomSheet!!.findViewById<AutoCompleteTextView>(R.id.audio_format_textview)
-//                val preference = sharedPreferences.getString("audio_format", "mp3")
-//                autoCompleteTextView!!.setText(preference, false)
-//                (audioFormat!!.editText as AutoCompleteTextView?)!!.onItemClickListener =
-//                    AdapterView.OnItemClickListener { adapterView: AdapterView<*>?, view: View?, index: Int, l: Long ->
-//                        for (i in selectedObjects!!.indices) {
-//                            val vid = findVideo(
-//                                selectedObjects!![i]!!.getURL()
-//                            )
-//                            vid!!.audioFormat = audioFormats[index]
-//                        }
-//                        editor.putString("audio_format", audioFormats[index])
-//                        editor.apply()
-//                    }
-//            } else {
-//                bottomSheet!!.setContentView(R.layout.home_download_video_bottom_sheet)
-//                val title = bottomSheet!!.findViewById<TextInputLayout>(R.id.title_textinput)
-//                if (selectedObjects!!.size > 1) {
-//                    title!!.editText!!.setText(getString(R.string.mutliple_titles))
-//                    title.editText!!.isClickable = false
-//                    title.editText!!.isLongClickable = false
-//                } else {
-//                    title!!.editText!!.setText(selectedObjects!![0]!!.title)
-//                    title.editText!!.addTextChangedListener(object : TextWatcher {
-//                        override fun beforeTextChanged(
-//                            charSequence: CharSequence,
-//                            i: Int,
-//                            i1: Int,
-//                            i2: Int
-//                        ) {
-//                        }
-//
-//                        override fun onTextChanged(
-//                            charSequence: CharSequence,
-//                            i: Int,
-//                            i1: Int,
-//                            i2: Int
-//                        ) {
-//                        }
-//
-//                        override fun afterTextChanged(editable: Editable) {
-//                            val index = resultsList!!.indexOf(selectedObjects!![0])
-//                            resultsList!![index]!!.title = editable.toString()
-//                        }
-//                    })
-//                }
-//                val videoFormats = context!!.resources.getStringArray(R.array.video_containers)
-//                val videoQualities = context!!.resources.getStringArray(R.array.video_formats)
-//                val videoFormat = bottomSheet!!.findViewById<TextInputLayout>(R.id.video_format)
-//                var autoCompleteTextView =
-//                    bottomSheet!!.findViewById<AutoCompleteTextView>(R.id.video_format_textview)
-//                var preference = sharedPreferences.getString("video_format", "webm")
-//                autoCompleteTextView!!.setText(preference, false)
-//                (videoFormat!!.editText as AutoCompleteTextView?)!!.onItemClickListener =
-//                    AdapterView.OnItemClickListener { adapterView: AdapterView<*>?, view: View?, index: Int, l: Long ->
-//                        for (i in selectedObjects!!.indices) {
-//                            val vid = findVideo(
-//                                selectedObjects!![i]!!.getURL()
-//                            )
-//                            vid!!.videoFormat = videoFormats[index]
-//                        }
-//                        editor.putString("video_format", videoFormats[index])
-//                        editor.apply()
-//                    }
-//                val videoQuality = bottomSheet!!.findViewById<TextInputLayout>(R.id.video_quality)
-//                autoCompleteTextView = bottomSheet!!.findViewById(R.id.video_quality_textview)
-//                preference = sharedPreferences.getString("video_quality", "Best Quality")
-//                autoCompleteTextView!!.setText(preference, false)
-//                (videoQuality!!.editText as AutoCompleteTextView?)!!.onItemClickListener =
-//                    AdapterView.OnItemClickListener { adapterView: AdapterView<*>?, view: View?, index: Int, l: Long ->
-//                        for (i in selectedObjects!!.indices) {
-//                            val vid = findVideo(
-//                                selectedObjects!![i]!!.getURL()
-//                            )
-//                            vid!!.videoQuality = videoQualities[index]
-//                        }
-//                        editor.putString("video_quality", videoQualities[index])
-//                        editor.apply()
-//                    }
-//                val embedSubs = bottomSheet!!.findViewById<Chip>(R.id.embed_subtitles)
-//                embedSubs!!.isChecked = sharedPreferences.getBoolean("embed_subtitles", false)
-//                embedSubs.setOnClickListener { view: View? ->
-//                    if (embedSubs.isChecked) {
-//                        editor.putBoolean("embed_subtitles", true)
-//                    } else {
-//                        editor.putBoolean("embed_subtitles", false)
-//                    }
-//                    editor.apply()
-//                }
-//                val addChapters = bottomSheet!!.findViewById<Chip>(R.id.add_chapters)
-//                addChapters!!.isChecked = sharedPreferences.getBoolean("add_chapters", false)
-//                addChapters.setOnClickListener { view: View? ->
-//                    if (addChapters.isChecked) {
-//                        editor.putBoolean("add_chapters", true)
-//                    } else {
-//                        editor.putBoolean("add_chapters", false)
-//                    }
-//                    editor.apply()
-//                }
-//                val saveThumbnail = bottomSheet!!.findViewById<Chip>(R.id.save_thumbnail)
-//                saveThumbnail!!.isChecked = sharedPreferences.getBoolean("write_thumbnail", false)
-//                saveThumbnail.setOnClickListener { view: View? ->
-//                    if (saveThumbnail.isChecked) {
-//                        editor.putBoolean("write_thumbnail", true)
-//                    } else {
-//                        editor.putBoolean("write_thumbnail", false)
-//                    }
-//                    editor.apply()
-//                }
-//            }
-//            val cancel = bottomSheet!!.findViewById<Button>(R.id.bottomsheet_cancel_button)
-//            cancel!!.setOnClickListener { view: View? -> bottomSheet!!.cancel() }
-//            val download = bottomSheet!!.findViewById<Button>(R.id.bottomsheet_download_button)
-//            download!!.setOnClickListener { view: View? ->
-//                for (i in selectedObjects!!.indices) {
-//                    val vid = findVideo(
-//                        selectedObjects!![i]!!.getURL()
-//                    )
-//                    vid!!.downloadedType = type
-//                    updateDownloadingStatusOnResult(vid, type, true)
-//                    homeAdapter!!.notifyItemChanged(resultsList!!.indexOf(vid))
-//                    downloadQueue!!.add(vid)
-//                }
-//                selectedObjects = ArrayList()
-//                homeAdapter!!.clearCheckedVideos()
-//                downloadFabs!!.visibility = View.GONE
-//                if (isStoragePermissionGranted) {
-//                    mainActivity!!.startDownloadService(downloadQueue, listener)
-//                    downloadQueue!!.clear()
-//                }
-//                bottomSheet!!.cancel()
-//            }
-            bottomSheet!!.show()
-            bottomSheet!!.window!!.setLayout(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT
-            )
-        } catch (e: Exception) {
-            Log.e(TAG, e.printStackTrace().toString());
-        }
-    }
-
-    private fun convertFileSize(s: Long): String{
-        if (s <= 0) return "0"
-        val units = arrayOf("B", "kB", "MB", "GB", "TB")
-        val digitGroups = (log10(s.toDouble()) / log10(1024.0)).toInt()
-        return DecimalFormat("#,##0.#").format(s / 1024.0.pow(digitGroups.toDouble())) + " " + units[digitGroups]
-    }
-
     companion object {
         private const val TAG = "HomeFragment"
     }

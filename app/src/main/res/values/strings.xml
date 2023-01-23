@@ -165,4 +165,6 @@
     <string name="defaultValue">Default</string>
     <string name="format">Format</string>
     <string name="container">Container</string>
+    <string name="template">Template</string>
+    <string name="history">History</string>
 </resources>

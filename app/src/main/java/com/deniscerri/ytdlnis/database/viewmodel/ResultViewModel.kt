@@ -95,29 +95,38 @@ class ResultViewModel(application: Application) : AndroidViewModel(application) 
     }
 
     fun getFormats(item: ResultItem, type: String) : List<Format> {
-        val list = repository.getFormats(item)
+        var list = repository.getFormats(item)
         val formats = mutableListOf<Format>()
-        if (list.isEmpty()){
-            when(type){
-                "audio" -> {
-                    val audioFormats = getApplication<App>().resources.getStringArray(R.array.audio_formats)
-                    audioFormats.forEach { formats.add(Format(item.id!!, it, "", "", 0, it)) }
-                }
-                "video" -> {
-                    val videoFormats = getApplication<App>().resources.getStringArray(R.array.video_formats)
-                    videoFormats.forEach { formats.add(Format(item.id!!, it, "", "", 0, it)) }
-                }
-            }
-            return formats
-        }
+        val audioFormats = getApplication<App>().resources.getStringArray(R.array.audio_formats)
+        val videoFormats = getApplication<App>().resources.getStringArray(R.array.video_formats)
+
         when(type){
-            "audio" -> return list.filter { it.format.contains("audio", ignoreCase = true) }
-            "video" -> return list.filter { !it.format.contains("audio", ignoreCase = true) }
+            "audio" -> {
+                list = list.filter { it.format_note.contains("audio", ignoreCase = true) }
+                if (list.isEmpty()) {
+                    audioFormats.forEach { formats.add(Format(0, item.id, it, "", 0, it, "")) }
+                    return formats
+                }
+                return list
+            }
+            "video" -> {
+                list = list.filter { !it.format_note.contains("audio", ignoreCase = true) }
+                if (list.isEmpty()) {
+                    videoFormats.forEach { formats.add(Format(0, item.id, it, "", 0, it, "")) }
+                    return formats
+                }
+                return list
+            }
         }
+
         val templates = repository.getTemplates()
         templates.forEach {
-            formats.add(Format(item.id!!, it.title, it.id.toString(), "", 0, it.content))
+            formats.add(Format(0, item.id, it.title, "",  0, it.content, ""))
         }
         return formats
+    }
+
+    fun getItemByURL(url: String) : ResultItem {
+        return repository.getItemByURL(url)
     }
 }

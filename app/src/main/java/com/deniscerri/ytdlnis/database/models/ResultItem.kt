@@ -5,14 +5,13 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "results")
 data class ResultItem(
-        val url: String,
-        var title: String,
-        var author: String,
-        val duration: String,
-        val thumb: String,
-        val website: String,
-        var playlistTitle: String
-){
     @PrimaryKey(autoGenerate = true)
-    var id: Int? = null
-}
+    var id: Long,
+    val url: String,
+    var title: String,
+    var author: String,
+    val duration: String,
+    val thumb: String,
+    val website: String,
+    var playlistTitle: String
+)

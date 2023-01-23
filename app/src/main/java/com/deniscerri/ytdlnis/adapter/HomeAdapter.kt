@@ -179,7 +179,7 @@ class HomeAdapter(onItemClickListener: OnItemClickListener, activity: Activity) 
             }
 
             override fun areContentsTheSame(oldItem: ResultItem, newItem: ResultItem): Boolean {
-                return oldItem.url == newItem.url
+                return oldItem.url == newItem.url && oldItem.title == newItem.title && oldItem.author == newItem.author
             }
         }
     }

@@ -1,5 +1,6 @@
 package com.deniscerri.ytdlnis.adapter
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.graphics.Color
 import android.graphics.ColorMatrix
@@ -28,7 +29,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class HistoryAdapter(onItemClickListener: OnItemClickListener, activity: Activity) : ListAdapter<HistoryItem?, HistoryAdapter.ViewHolder>(AsyncDifferConfig.Builder(DIFF_CALLBACK).build()) {
-    private val checkedItems: ArrayList<Int>
+    private val checkedItems: ArrayList<Long>
     private val onItemClickListener: OnItemClickListener
     private val activity: Activity
 
@@ -48,16 +49,16 @@ class HistoryAdapter(onItemClickListener: OnItemClickListener, activity: Activit
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val cardView = LayoutInflater.from(parent.context)
-                .inflate(R.layout.downloads_card, parent, false)
+                .inflate(R.layout.history_card, parent, false)
         return ViewHolder(cardView, onItemClickListener)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val video = getItem(position)
+        val item = getItem(position)
         val card = holder.cardView
         // THUMBNAIL ----------------------------------
         val thumbnail = card.findViewById<ImageView>(R.id.downloads_image_view)
-        val imageURL = video!!.thumb
+        val imageURL = item!!.thumb
         val uiHandler = Handler(Looper.getMainLooper())
         if (imageURL.isNotEmpty()) {
             uiHandler.post { Picasso.get().load(imageURL).into(thumbnail) }
@@ -67,28 +68,28 @@ class HistoryAdapter(onItemClickListener: OnItemClickListener, activity: Activit
         thumbnail.setColorFilter(Color.argb(95, 0, 0, 0))
 
         // TITLE  ----------------------------------
-        val videoTitle = card.findViewById<TextView>(R.id.downloads_title)
-        var title = video.title
+        val itemTitle = card.findViewById<TextView>(R.id.downloads_title)
+        var title = item.title
         if (title.length > 100) {
             title = title.substring(0, 40) + "..."
         }
-        videoTitle.text = title
+        itemTitle.text = title
 
         // Bottom Info ----------------------------------
         val bottomInfo = card.findViewById<TextView>(R.id.downloads_info_bottom)
-        var info = video.author
-        if (video.duration.isNotEmpty()) {
-            if (video.author.isNotEmpty()) info += " • "
-            info += video.duration
+        var info = item.author
+        if (item.duration.isNotEmpty()) {
+            if (item.author.isNotEmpty()) info += " • "
+            info += item.duration
         }
         bottomInfo.text = info
 
         // TIME DOWNLOADED  ----------------------------------
         val datetime = card.findViewById<TextView>(R.id.downloads_info_time)
-        val time = video.time
+        val time = item.time
         val downloadedTime: String
         if (time == 0L) {
-            downloadedTime = activity.getString(R.string.currently_downloading) + " " + video.type
+            downloadedTime = activity.getString(R.string.currently_downloading) + " " + item.type
         } else {
             val cal = Calendar.getInstance()
             val date = Date(time * 1000L)
@@ -108,7 +109,7 @@ class HistoryAdapter(onItemClickListener: OnItemClickListener, activity: Activit
         var filePresent = true
 
         //IS IN THE FILE SYSTEM?
-        val path = video.downloadPath
+        val path = item.downloadPath
         val file = File(path)
         if (!file.exists() && path.isNotEmpty()) {
             filePresent = false
@@ -119,15 +120,15 @@ class HistoryAdapter(onItemClickListener: OnItemClickListener, activity: Activit
             })
             thumbnail.alpha = 0.7f
         }
-        if (video.type.isNotEmpty()) {
-            if (video.type == "audio") {
+        if (item.type.isNotEmpty()) {
+            if (item.type == "audio") {
                 if (filePresent) btn.icon = ContextCompat.getDrawable(activity, R.drawable.ic_music_downloaded) else btn.icon = ContextCompat.getDrawable(activity, R.drawable.ic_music)
             } else {
                 if (filePresent) btn.icon = ContextCompat.getDrawable(activity, R.drawable.ic_video_downloaded) else btn.icon = ContextCompat.getDrawable(activity, R.drawable.ic_video)
             }
         }
         if (btn.hasOnClickListeners()) btn.setOnClickListener(null)
-        if (checkedItems.contains(position)) {
+        if (checkedItems.contains(item.id)) {
             card.isChecked = true
             card.strokeWidth = 5
         } else {
@@ -136,49 +137,54 @@ class HistoryAdapter(onItemClickListener: OnItemClickListener, activity: Activit
         }
         val finalFilePresent = filePresent
         card.setOnLongClickListener {
-            checkCard(card, position)
+            checkCard(card, item.id)
             true
         }
         card.setOnClickListener {
             if (checkedItems.size > 0) {
-                checkCard(card, video.id!!)
+                checkCard(card, item.id)
             } else {
-                onItemClickListener.onCardClick(video.id!!, finalFilePresent)
+                onItemClickListener.onCardClick(item.id, finalFilePresent)
             }
         }
     }
 
-    private fun checkCard(card: MaterialCardView, videoID: Int) {
+    private fun checkCard(card: MaterialCardView, itemID: Long) {
         if (card.isChecked) {
             card.strokeWidth = 0
-            checkedItems.removeAt(videoID)
+            checkedItems.remove(itemID)
         } else {
             card.strokeWidth = 5
-            checkedItems.add(videoID)
+            checkedItems.add(itemID)
         }
         card.isChecked = !card.isChecked
-        onItemClickListener.onCardSelect(videoID, card.isChecked)
+        onItemClickListener.onCardSelect(itemID, card.isChecked)
     }
 
     interface OnItemClickListener {
-        fun onCardClick(position: Int, isPresent: Boolean)
-        fun onCardSelect(position: Int, isChecked: Boolean)
+        fun onCardClick(itemID: Long, isPresent: Boolean)
+        fun onCardSelect(itemID: Long, isChecked: Boolean)
         fun onButtonClick(position: Int)
     }
 
-    fun clearCheckedVideos() {
-        val size = checkedItems.size
-        for (i in 0 until size) {
-            val position = checkedItems[i]
-            notifyItemChanged(position)
+    @SuppressLint("NotifyDataSetChanged")
+    fun clearCheckeditems() {
+        for (i in 0 until itemCount){
+            val item = getItem(i)
+            if (checkedItems.find { it == item?.id } != null){
+                checkedItems.remove(item?.id)
+                notifyItemChanged(i)
+            }
         }
+
         checkedItems.clear()
     }
 
     companion object {
         private val DIFF_CALLBACK: DiffUtil.ItemCallback<HistoryItem> = object : DiffUtil.ItemCallback<HistoryItem>() {
             override fun areItemsTheSame(oldItem: HistoryItem, newItem: HistoryItem): Boolean {
-                return oldItem.id === newItem.id
+                val ranged = arrayListOf(oldItem.id, newItem.id)
+                return ranged[0] == ranged[1]
             }
 
             override fun areContentsTheSame(oldItem: HistoryItem, newItem: HistoryItem): Boolean {

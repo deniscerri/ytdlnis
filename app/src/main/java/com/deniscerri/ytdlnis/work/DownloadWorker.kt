@@ -97,12 +97,9 @@ class DownloadWorker(
                 request.addOption("-x")
                 var audioQualityId : String = downloadItem.audioFormatId
                 if (audioQualityId == "0") audioQualityId = "ba"
-                var format = downloadItem.audioFormat
-                if (format.isEmpty()){
-                    format = sharedPreferences.getString("audio_format", "")!!
-                }
+                var ext = downloadItem.ext
                 request.addOption("-f", audioQualityId)
-                request.addOption("--audio-format", format)
+                request.addOption("--audio-format", ext)
                 request.addOption("--embed-metadata")
 
                 val embedThumb = sharedPreferences.getBoolean("embed_thumbnail", false)
@@ -142,15 +139,13 @@ class DownloadWorker(
                 if (embedSubs) {
                     request.addOption("--embed-subs", "")
                 }
-                var videoQualityId = downloadItem.videoFormatId
-                val audioQualityId = downloadItem.audioFormatId
-                if (videoQualityId.isEmpty()) videoQualityId = "bestvideo"
-                val formatArgument = StringBuilder(videoQualityId)
-                if (videoQualityId != "worst"){
-                    if (audioQualityId != "0") formatArgument.append("+", audioQualityId, "/best")
-                }
+                var videoFormatID = downloadItem.videoFormatId
+                val audioFormatID = downloadItem.audioFormatId
+                if (videoFormatID.isEmpty()) videoFormatID = "bestvideo"
+                val formatArgument = StringBuilder(videoFormatID)
+                if (audioFormatID != "0") formatArgument.append("+", audioFormatID, "/best")
                 request.addOption("-f", formatArgument.toString())
-                var format = downloadItem.videoFormat
+                var format = downloadItem.ext
                 if (format.isNotEmpty()) {
                     format = sharedPreferences.getString("video_format", "")!!
                     if (format != "DEFAULT") request.addOption("--merge-output-format", format)
@@ -166,7 +161,7 @@ class DownloadWorker(
             }
             "command" -> {
                 val commandRegex = "\"([^\"]*)\"|(\\S+)"
-                val command = commandTemplateDao.getTemplateById(downloadItem.customTemplateId)
+                val command = commandTemplateDao.getTemplate(downloadItem.customTemplateId)
                 val m = Pattern.compile(commandRegex).matcher(command.content)
                 while (m.find()) {
                     if (m.group(1) != null) {
@@ -198,7 +193,7 @@ class DownloadWorker(
             val incognito = sharedPreferences.getBoolean("incognito", false)
             if (!incognito) {
                 val unixtime = System.currentTimeMillis() / 1000
-                val historyItem = HistoryItem(downloadItem.url, downloadItem.title, downloadItem.author, downloadItem.duration, downloadItem.thumb, downloadItem.type, unixtime, downloadItem.downloadPath, downloadItem.website)
+                val historyItem = HistoryItem(0, downloadItem.url, downloadItem.title, downloadItem.author, downloadItem.duration, downloadItem.thumb, downloadItem.type, unixtime, downloadItem.downloadPath, downloadItem.website)
                 runBlocking {
                     historyDao.insert(historyItem)
                 }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
@@ -7,13 +8,14 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:padding="10dp"
         android:orientation="vertical">
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/title_textinput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
             app:errorEnabled="true"
             android:hint="@string/title"
             style="@style/Widget.Material3.TextInputLayout.FilledBox">
@@ -75,7 +77,7 @@
             style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="20dp"
+            android:paddingBottom="10dp"
             android:hint="@string/format">
 
             <AutoCompleteTextView
@@ -104,50 +106,111 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.chip.ChipGroup
-            android:id="@+id/downloadChipGroup"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/adjust_video"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:selectionRequired="true"
-            app:singleLine="true"
-            app:singleSelection="true">
+            android:orientation="vertical"
+            >
 
-            <com.google.android.material.chip.Chip
-                android:id="@+id/audioChip"
-                style="@style/Widget.Material3.Chip.Assist"
+            <TextView
+                android:layout_width="wrap_content"
+                android:paddingBottom="5dp"
+                android:textSize="15sp"
+                android:layout_height="wrap_content"
+                android:text="@string/adjust_video" />
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipGroup"
+                android:layout_width="wrap_content"
+                app:singleLine="true"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/embed_subtitles"
+                    style="@style/Widget.Material3.Chip.Filter.Elevated"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="false"
+                    android:text="@string/embed_subtitles"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/add_chapters"
+                    style="@style/Widget.Material3.Chip.Filter.Elevated"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="false"
+                    android:text="@string/add_chapter"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/save_thumbnail"
+                    style="@style/Widget.Material3.Chip.Filter.Elevated"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="false"
+                    android:text="@string/save_thumb"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/remove_audio"
+                    style="@style/Widget.Material3.Chip.Filter.Elevated"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="false"
+                    android:text="@string/remove_audio"/>
+
+
+            </com.google.android.material.chip.ChipGroup>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:paddingTop="10dp"
+            android:orientation="horizontal">
+
+
+            <Button
+                style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
+                android:id="@+id/bottomsheet_schedule_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:checkable="true"
-                app:checkedIcon="@drawable/ic_check"
-                android:text="@string/audio"
-                app:chipIcon="@drawable/ic_music" />
+                android:layout_marginEnd="10dp"
+                app:icon="@drawable/ic_clock" />
 
-            <com.google.android.material.chip.Chip
-                android:id="@+id/videoChip"
-                style="@style/Widget.Material3.Chip.Assist"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/video"
-                android:checkable="true"
-                app:checkedIcon="@drawable/ic_check"
-                app:chipIcon="@drawable/ic_video" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="bottom"
+                android:gravity="end"
+                android:orientation="horizontal">
 
-            <com.google.android.material.chip.Chip
-                android:id="@+id/commandChip"
-                style="@style/Widget.Material3.Chip.Assist"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/run_command"
-                android:checkable="true"
-                app:checkedIcon="@drawable/ic_check"
-                app:chipIcon="@drawable/ic_baseline_keyboard_arrow_right_24" />
+                <Button
+                    style="@style/Widget.Material3.Button.OutlinedButton.Icon"
+                    android:id="@+id/bottomsheet_cancel_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/cancel"
+                    android:layout_marginEnd="10dp"
+                    app:icon="@drawable/ic_cancel" />
 
-        </com.google.android.material.chip.ChipGroup>
+                <Button
+                    style="@style/Widget.Material3.Button.ElevatedButton.Icon"
+                    android:id="@+id/bottomsheet_download_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/download"
+                    app:icon="@drawable/ic_down"
+                    android:autoLink="all"/>
 
+            </LinearLayout>
 
-
+        </LinearLayout>
 
 
     </LinearLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

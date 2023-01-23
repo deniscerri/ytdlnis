@@ -11,6 +11,9 @@ import com.deniscerri.ytdlnis.database.models.DownloadItem
 import java.io.File
 import java.net.URLDecoder
 import java.nio.charset.StandardCharsets
+import java.text.DecimalFormat
+import kotlin.math.log10
+import kotlin.math.pow
 
 class FileUtil() {
 
@@ -117,5 +120,12 @@ class FileUtil() {
             it.delete()
         }
          originDir.delete()
+    }
+
+    fun convertFileSize(s: Long): String{
+        if (s <= 0) return "0"
+        val units = arrayOf("B", "kB", "MB", "GB", "TB")
+        val digitGroups = (log10(s.toDouble()) / log10(1024.0)).toInt()
+        return DecimalFormat("#,##0.#").format(s / 1024.0.pow(digitGroups.toDouble())) + " " + units[digitGroups]
     }
 }

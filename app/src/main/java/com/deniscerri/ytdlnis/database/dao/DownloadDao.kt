@@ -24,8 +24,8 @@ interface DownloadDao {
     @Query("SELECT * FROM downloads WHERE id=:id LIMIT 1")
     fun getDownloadById(id: Int) : DownloadItem
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insert(item: DownloadItem)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insert(item: DownloadItem) : Long
 
     @Query("DELETE FROM downloads")
     suspend fun deleteAll()
@@ -35,4 +35,7 @@ interface DownloadDao {
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
     suspend fun update(item: DownloadItem)
+
+    @Query("SELECT * FROM downloads ORDER BY id DESC LIMIT 1")
+    fun getLatest() : DownloadItem
 }

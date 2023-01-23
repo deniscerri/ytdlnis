@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/bottom_sheet_title"
+        android:layout_width="wrap_content"
+        android:textSize="20sp"
+        android:paddingTop="10dp"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content"
+        android:text="@string/download" />
+
+    <TextView
+        android:id="@+id/bottom_sheet_subtitle"
+        android:layout_width="wrap_content"
+        android:textSize="15sp"
+        android:paddingBottom="10dp"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content"
+        android:text="@string/configure_download" />
+
+    <com.google.android.material.tabs.TabLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@android:color/transparent"
+        app:tabMode="scrollable"
+        app:tabGravity="center"
+        android:id="@+id/download_tablayout" >
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/audio" />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/video" />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/run_command" />
+
+
+
+    </com.google.android.material.tabs.TabLayout>
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/download_viewpager" />
+
+</LinearLayout>

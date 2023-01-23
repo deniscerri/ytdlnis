@@ -101,13 +101,13 @@ class ConfigureMultipleDownloadsAdapter(onItemClickListener: OnItemClickListener
         }
 
         card.setOnClickListener {
-            onItemClickListener.onCardClick(item.id!!)
+            onItemClickListener.onCardClick(item.id)
         }
     }
 
 
     interface OnItemClickListener {
-        fun onCardClick(itemID: Int)
+        fun onCardClick(itemID: Long)
     }
 
     companion object {

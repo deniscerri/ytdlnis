@@ -1,5 +1,6 @@
 package com.deniscerri.ytdlnis.database.repository
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import com.deniscerri.ytdlnis.database.dao.DownloadDao
 import com.deniscerri.ytdlnis.database.models.DownloadItem
@@ -9,11 +10,11 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
     val activeDownloads : LiveData<List<DownloadItem>> = downloadDao.getActiveDownloads()
 
     enum class status {
-        Active, Queued, Errored
+        Active, Queued, Errored, Processing
     }
 
-    suspend fun insert(item: DownloadItem){
-        downloadDao.insert(item)
+    suspend fun insert(item: DownloadItem) : Long {
+        return downloadDao.insert(item)
     }
 
     suspend fun delete(item: DownloadItem){
@@ -35,6 +36,10 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
     suspend fun setDownloadStatus(item: DownloadItem, status: status){
         item.status = status.toString()
         update(item);
+    }
+
+    fun getLatest() : DownloadItem {
+        return downloadDao.getLatest()
     }
 
 }

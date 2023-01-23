@@ -107,7 +107,7 @@ class ResultRepository(private val resultDao: ResultDao, private val formatDao: 
     private suspend fun addFormats(formats : ArrayList<Format>, id: Long){
         formats.forEach { f ->
             if (f.filesize == 0L) return@forEach
-            f.itemId = id.toInt()
+            f.itemId = id
             formatDao.insert(f)
         }
     }
@@ -122,11 +122,15 @@ class ResultRepository(private val resultDao: ResultDao, private val formatDao: 
     }
 
     fun getFormats(item: ResultItem): List<Format> {
-        return formatDao.getFormatsByItemId(item.id!!)
+        return formatDao.getFormatsByItemId(item.id)
     }
 
     fun getTemplates() : List<CommandTemplate> {
         return commandTemplateDao.getAllTemplates()
+    }
+
+    fun getItemByURL(url: String): ResultItem {
+        return resultDao.getResultByURL(url)
     }
 
 }

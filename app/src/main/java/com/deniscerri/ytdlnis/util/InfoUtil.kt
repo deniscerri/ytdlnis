@@ -262,7 +262,7 @@ class InfoUtil(context: Context) {
             val downloadedVideo = databaseManager!!.checkDownloaded(url, "video")
             val isPlaylist = 0
             video = ResultItemWithFormats(
-                ResultItem(
+                ResultItem(0,
                     url,
                     title,
                     author,
@@ -299,7 +299,7 @@ class InfoUtil(context: Context) {
             }
 
             video = ResultItemWithFormats(
-                ResultItem(
+                ResultItem(0,
                     url,
                     title,
                     author,
@@ -514,8 +514,9 @@ class InfoUtil(context: Context) {
                         formats.add(Gson().fromJson(format, Format::class.java))
                     }
                 }
+                Log.e(TAG, formats.toString())
                 items.add(ResultItemWithFormats(
-                    ResultItem(
+                    ResultItem(0,
                         url,
                         title,
                         author!!,

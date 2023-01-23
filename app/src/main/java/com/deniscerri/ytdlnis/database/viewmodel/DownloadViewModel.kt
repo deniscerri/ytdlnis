@@ -3,6 +3,7 @@ package com.deniscerri.ytdlnis.database.viewmodel
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.deniscerri.ytdlnis.database.DBManager
 import com.deniscerri.ytdlnis.database.models.DownloadItem
@@ -27,8 +28,13 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
 
     }
 
-    fun insertDownload(item: DownloadItem) = viewModelScope.launch(Dispatchers.IO){
-        repository.insert(item)
+    fun insertDownload(item: DownloadItem) : LiveData<Long> {
+        val result = MutableLiveData<Long>()
+        viewModelScope.launch(Dispatchers.IO){
+            val id = repository.insert(item)
+            result.postValue(id)
+        }
+        return result
     }
 
     fun deleteDownload(item: DownloadItem) = viewModelScope.launch(Dispatchers.IO) {
@@ -37,5 +43,9 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
 
     fun updateDownload(item: DownloadItem) = viewModelScope.launch(Dispatchers.IO){
         repository.update(item);
+    }
+
+    fun getLatest() : DownloadItem {
+        return repository.getLatest()
     }
 }

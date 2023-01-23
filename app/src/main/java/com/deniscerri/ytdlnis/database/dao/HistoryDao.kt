@@ -23,7 +23,7 @@ interface HistoryDao {
     suspend fun insert(item: HistoryItem)
 
     @Query("DELETE FROM history WHERE id=:id")
-    suspend fun delete(id: Int)
+    suspend fun delete(id: Long)
 
     @Query("DELETE FROM history")
     suspend fun deleteAll()

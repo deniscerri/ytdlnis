@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:layout_scrollFlags="scroll|enterAlways|snap"
-            app:title="@string/downloads"
+            app:title="@string/history"
             app:menu="@menu/downloads_menu"
             android:theme="@style/Toolbar"
             />
@@ -130,25 +130,25 @@
                 android:layout_margin="10dp"
                 android:orientation="vertical">
 
-                <include layout="@layout/downloads_card_shimmer" />
+                <include layout="@layout/history_card_shimmer" />
 
-                <include layout="@layout/downloads_card_shimmer" />
+                <include layout="@layout/history_card_shimmer" />
 
-                <include layout="@layout/downloads_card_shimmer" />
+                <include layout="@layout/history_card_shimmer" />
 
-                <include layout="@layout/downloads_card_shimmer" />
+                <include layout="@layout/history_card_shimmer" />
 
-                <include layout="@layout/downloads_card_shimmer" />
+                <include layout="@layout/history_card_shimmer" />
 
-                <include layout="@layout/downloads_card_shimmer" />
+                <include layout="@layout/history_card_shimmer" />
 
-                <include layout="@layout/downloads_card_shimmer" />
+                <include layout="@layout/history_card_shimmer" />
 
-                <include layout="@layout/downloads_card_shimmer" />
+                <include layout="@layout/history_card_shimmer" />
 
-                <include layout="@layout/downloads_card_shimmer" />
+                <include layout="@layout/history_card_shimmer" />
 
-                <include layout="@layout/downloads_card_shimmer" />
+                <include layout="@layout/history_card_shimmer" />
 
 
 
@@ -178,11 +178,11 @@
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 
-    <include layout="@layout/downloads_no_results"
+    <include layout="@layout/history_no_results"
         android:visibility="gone" />
 
 
-    <include layout="@layout/downloads_bottom_sheet"
+    <include layout="@layout/history_item_details_bottom_sheet"
         android:visibility="gone" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

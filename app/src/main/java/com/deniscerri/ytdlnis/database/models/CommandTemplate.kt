@@ -6,9 +6,8 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "commandTemplates")
 data class CommandTemplate(
+    @PrimaryKey(autoGenerate = true)
+    var id: Long,
     val title: String,
     val content: String
-){
-    @PrimaryKey(autoGenerate = true)
-    var id: Int? = null
-}
+)

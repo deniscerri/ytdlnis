@@ -53,7 +53,7 @@ class HistoryRepository(private val historyDao: HistoryDao) {
         val fileUtil = FileUtil()
         items.value?.forEach { item ->
             if (!fileUtil.exists(item.downloadPath)){
-                historyDao.delete(item.id!!)
+                historyDao.delete(item.id)
             }
         }
     }
