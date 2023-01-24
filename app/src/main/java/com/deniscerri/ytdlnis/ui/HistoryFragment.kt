@@ -20,7 +20,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.adapter.HistoryAdapter
-import com.deniscerri.ytdlnis.database.DatabaseManager
 import com.deniscerri.ytdlnis.database.models.HistoryItem
 import com.deniscerri.ytdlnis.database.repository.HistoryRepository.HistorySort
 import com.deniscerri.ytdlnis.database.viewmodel.HistoryViewModel
@@ -45,7 +44,6 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener,
 
     private var downloading = false
     private var fragmentView: View? = null
-    private var databaseManager: DatabaseManager? = null
     private var activity: Activity? = null
     private var mainActivity: MainActivity? = null
     private var fragmentContext: Context? = null
@@ -165,7 +163,6 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener,
         val searchView = topAppBar!!.menu.findItem(R.id.search_downloads).actionView as SearchView?
         searchView!!.inputType = InputType.TYPE_CLASS_TEXT
         searchView.queryHint = getString(R.string.search_history_hint)
-        databaseManager = DatabaseManager(context)
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
                 topAppBar!!.menu.findItem(R.id.search_downloads).collapseActionView()

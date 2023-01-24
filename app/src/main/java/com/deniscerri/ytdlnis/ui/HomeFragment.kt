@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -23,7 +22,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.adapter.HomeAdapter
-import com.deniscerri.ytdlnis.database.DatabaseManager
 import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.deniscerri.ytdlnis.database.repository.DownloadRepository
@@ -37,18 +35,13 @@ import com.deniscerri.ytdlnis.util.InfoUtil
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.MaterialToolbar
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.progressindicator.LinearProgressIndicator
-import com.google.android.material.textfield.TextInputLayout
-import java.text.DecimalFormat
 import java.util.*
-import kotlin.math.log10
-import kotlin.math.pow
 
 class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickListener {
     private var progressBar: LinearProgressIndicator? = null
@@ -70,7 +63,6 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
 
     private var downloading = false
     private var fragmentView: View? = null
-    private var databaseManager: DatabaseManager? = null
     private var activity: Activity? = null
     private var mainActivity: MainActivity? = null
     private var fragmentContext: Context? = null
@@ -239,7 +231,6 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
         val searchView = topAppBar!!.menu.findItem(R.id.search).actionView as SearchView?
         searchView!!.inputType = InputType.TYPE_TEXT_VARIATION_URI
         searchView.queryHint = getString(R.string.search_hint)
-        databaseManager = DatabaseManager(context)
         infoUtil = InfoUtil(requireContext())
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
@@ -390,7 +381,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
         downloadViewModel.insertDownload(downloadItem).observe(viewLifecycleOwner) {
             downloadItem.id = it
             val bottomSheet = DownloadBottomSheetDialog(downloadItem)
-            bottomSheet.show(parentFragmentManager, "bottomSheet")
+            bottomSheet.show(parentFragmentManager, "downloadSingleSheet")
         }
     }
 

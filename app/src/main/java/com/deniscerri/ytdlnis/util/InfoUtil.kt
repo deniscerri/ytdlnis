@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Context
 import android.util.Log
 import com.deniscerri.ytdlnis.R
-import com.deniscerri.ytdlnis.database.DatabaseManager
 import com.deniscerri.ytdlnis.database.models.Format
 import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.deniscerri.ytdlnis.database.models.ResultItemWithFormats
@@ -26,14 +25,12 @@ class InfoUtil(context: Context) {
     private var items: ArrayList<ResultItemWithFormats?>
     private var key: String? = null
     private var useInvidous = false
-    private var databaseManager: DatabaseManager? = null
 
     init {
         try {
             val sharedPreferences =
                 context.getSharedPreferences("root_preferences", Activity.MODE_PRIVATE)
             key = sharedPreferences.getString("api_key", "")
-            databaseManager = DatabaseManager(context)
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -258,9 +255,6 @@ class InfoUtil(context: Context) {
             val duration = obj.getString("duration")
             val thumb = obj.getString("thumb")
             val url = "https://www.youtube.com/watch?v=$id"
-            val downloadedAudio = databaseManager!!.checkDownloaded(url, "audio")
-            val downloadedVideo = databaseManager!!.checkDownloaded(url, "video")
-            val isPlaylist = 0
             video = ResultItemWithFormats(
                 ResultItem(0,
                     url,

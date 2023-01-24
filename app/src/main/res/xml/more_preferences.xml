@@ -1,6 +1,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+
     <Preference
         app:enabled="false"
         android:layout="@layout/fragment_more"/>
@@ -9,6 +10,7 @@
         app:icon="@drawable/ic_code"
         app:key="rreth"
         app:summary="https://github.com/deniscerri/ytdlnis"
+        app:allowDividerBelow="true"
         app:title="@string/source_code">
         <intent
             android:action="android.intent.action.VIEW"
@@ -17,11 +19,17 @@
 
     <Preference
         app:icon="@drawable/ic_baseline_keyboard_arrow_right_24"
-        app:allowDividerAbove="true"
-        app:allowDividerBelow="true"
         app:key="run_command"
         app:title="@string/custom_command">
         <intent android:action="ytdlnis.page.CustomCommandActivity" />
+    </Preference>
+
+    <Preference
+        app:icon="@drawable/ic_baseline_file_open_24"
+        app:key="download_logs"
+        app:allowDividerBelow="true"
+        app:title="@string/logs">
+        <intent android:action="ytdlnis.page.DownloadLogsActivity" />
     </Preference>
 
     <Preference
@@ -30,6 +38,7 @@
         app:title="@string/settings">
         <intent android:action="ytdlnis.settings.SettingsActivity" />
     </Preference>
+
 
 
 </PreferenceScreen>

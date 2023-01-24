@@ -6,6 +6,7 @@ import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.findFragment
 import androidx.lifecycle.ViewModelProvider
@@ -13,6 +14,8 @@ import androidx.viewpager2.widget.ViewPager2
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.tabs.TabLayout
 
@@ -28,11 +31,18 @@ class DownloadBottomSheetDialog(item: DownloadItem) : BottomSheetDialogFragment(
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val behavior = BottomSheetBehavior.from(view.parent as View)
+        behavior.state = BottomSheetBehavior.STATE_EXPANDED
+    }
+
     @SuppressLint("RestrictedApi")
     override fun setupDialog(dialog: Dialog, style: Int) {
         super.setupDialog(dialog, style)
         val view = LayoutInflater.from(context).inflate(R.layout.download_bottom_sheet, null)
         dialog.setContentView(view)
+        //view.minimumHeight = resources.displayMetrics.heightPixels
 
         tabLayout = view.findViewById(R.id.download_tablayout)
         viewPager2 = view.findViewById(R.id.download_viewpager)
@@ -79,7 +89,7 @@ class DownloadBottomSheetDialog(item: DownloadItem) : BottomSheetDialogFragment(
 
     override fun onCancel(dialog: DialogInterface) {
         super.onCancel(dialog)
-        parentFragmentManager.beginTransaction().remove(parentFragmentManager.findFragmentByTag("bottomSheet")!!).commit()
+        parentFragmentManager.beginTransaction().remove(parentFragmentManager.findFragmentByTag("downloadSingleSheet")!!).commit()
         for (i in 0 until viewPager2.adapter?.itemCount!!){
             if (parentFragmentManager.findFragmentByTag("f${i}") != null){
                 parentFragmentManager.beginTransaction().remove(parentFragmentManager.findFragmentByTag("f$i")!!).commit()

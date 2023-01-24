@@ -166,4 +166,5 @@
     <string name="container">Container</string>
     <string name="template">Template</string>
     <string name="history">History</string>
+    <string name="logs">Logs</string>
 </resources>
