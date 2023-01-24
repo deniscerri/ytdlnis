@@ -63,10 +63,10 @@
                 <data android:mimeType="text/plain" />
             </intent-filter>
         </activity>
-        <service
-            android:name=".DownloaderService"
-            android:enabled="true"
-            android:exported="false" />
+<!--        <service-->
+<!--            android:name=".DownloaderService"-->
+<!--            android:enabled="true"-->
+<!--            android:exported="false" />-->
         <receiver android:name=".receiver.CancelDownloadNotificationReceiver" />
 
         <provider

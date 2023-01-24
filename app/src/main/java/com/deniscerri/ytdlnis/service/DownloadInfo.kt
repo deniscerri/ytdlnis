@@ -7,7 +7,6 @@ class DownloadInfo {
     var video: ResultItem? = null
     var progress = 0
     var downloadQueue: LinkedList<ResultItem>? = null
-        private set
     var outputLine: String? = null
     var downloadStatus: String? = null
     var downloadPath: String? = null

@@ -2,11 +2,12 @@ package com.deniscerri.ytdlnis
 
 import android.Manifest
 import android.app.ActivityManager
-import android.content.*
+import android.content.Context
+import android.content.DialogInterface
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
-import android.os.IBinder
 import android.provider.Settings
 import android.util.Log
 import android.view.MenuItem
@@ -18,15 +19,14 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.work.WorkManager
-import com.deniscerri.ytdlnis.DownloaderService.LocalBinder
 import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.deniscerri.ytdlnis.databinding.ActivityMainBinding
+import com.deniscerri.ytdlnis.service.IDownloaderListener
+import com.deniscerri.ytdlnis.service.IDownloaderService
 import com.deniscerri.ytdlnis.ui.HistoryFragment
 import com.deniscerri.ytdlnis.ui.HomeFragment
 import com.deniscerri.ytdlnis.ui.MoreFragment
 import com.deniscerri.ytdlnis.ui.settings.SettingsActivity
-import com.deniscerri.ytdlnis.service.IDownloaderListener
-import com.deniscerri.ytdlnis.service.IDownloaderService
 import com.deniscerri.ytdlnis.util.UpdateUtil
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.io.BufferedReader
@@ -44,32 +44,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var context: Context
     private lateinit var homeFragment: HomeFragment
     private lateinit var historyFragment: HistoryFragment
-    var downloaderService: DownloaderService? = null
     private lateinit var workManager: WorkManager
-
-
-    private val serviceConnection: ServiceConnection = object : ServiceConnection {
-        override fun onServiceConnected(className: ComponentName, service: IBinder) {
-            downloaderService = (service as LocalBinder).service
-            iDownloaderService = service
-            isDownloadServiceRunning = true
-            try {
-                iDownloaderService!!.addActivity(this@MainActivity, listeners)
-                for (i in listeners.indices) {
-                    val listener = listeners[i]
-                    listener.onDownloadStart(iDownloaderService!!.info)
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        }
-
-        override fun onServiceDisconnected(componentName: ComponentName) {
-            downloaderService = null
-            iDownloaderService = null
-            isDownloadServiceRunning = false
-        }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -78,7 +53,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         context = baseContext
         askPermissions()
-        reconnectDownloadService()
         checkUpdate()
         fm = supportFragmentManager
         workManager = WorkManager.getInstance(context)
@@ -128,16 +102,6 @@ class MainActivity : AppCompatActivity() {
         }
         val intent = intent
         handleIntents(intent)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        try {
-            iDownloaderService!!.removeActivity(this)
-            context.applicationContext.unbindService(serviceConnection)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
     }
 
     override fun onNewIntent(intent: Intent) {
@@ -235,19 +199,19 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun stopDownloadService() {
-        if (!isDownloadServiceRunning) return
-        try {
-            iDownloaderService!!.removeActivity(this)
-            context.applicationContext.unbindService(serviceConnection)
-            context.applicationContext.stopService(
-                Intent(
-                    context.applicationContext,
-                    DownloaderService::class.java
-                )
-            )
-        } catch (ignored: Exception) {
-        }
-        isDownloadServiceRunning = false
+//        if (!isDownloadServiceRunning) return
+//        try {
+//            iDownloaderService!!.removeActivity(this)
+//            context.applicationContext.unbindService(serviceConnection)
+//            context.applicationContext.stopService(
+//                Intent(
+//                    context.applicationContext,
+//                    DownloaderService::class.java
+//                )
+//            )
+//        } catch (ignored: Exception) {
+//        }
+//        isDownloadServiceRunning = false
     }
 
     fun cancelDownloadService() {
@@ -265,28 +229,28 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun isDownloadServiceRunning(): Boolean {
-        val service = getService(DownloaderService::class.java)
-        if (service != null) {
-            if (service.foreground) {
-                isDownloadServiceRunning = true
-                return true
-            }
-        }
+//        val service = getService(DownloaderService::class.java)
+//        if (service != null) {
+//            if (service.foreground) {
+//                isDownloadServiceRunning = true
+//                return true
+//            }
+//        }
         return false
     }
 
     private fun reconnectDownloadService() {
-        val service = getService(DownloaderService::class.java)
-        if (service != null) {
-            val serviceIntent = Intent(context.applicationContext, DownloaderService::class.java)
-            serviceIntent.putExtra("rebind", true)
-            context.applicationContext.bindService(
-                serviceIntent,
-                serviceConnection,
-                BIND_AUTO_CREATE
-            )
-            isDownloadServiceRunning = true
-        }
+//        val service = getService(DownloaderService::class.java)
+//        if (service != null) {
+//            val serviceIntent = Intent(context.applicationContext, DownloaderService::class.java)
+//            serviceIntent.putExtra("rebind", true)
+//            context.applicationContext.bindService(
+//                serviceIntent,
+//                serviceConnection,
+//                BIND_AUTO_CREATE
+//            )
+//            isDownloadServiceRunning = true
+//        }
     }
 
     private fun getService(className: Class<*>): ActivityManager.RunningServiceInfo? {
