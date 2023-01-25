@@ -4,10 +4,12 @@ import android.app.Activity
 import android.graphics.Color
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.AsyncDifferConfig
@@ -16,12 +18,13 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.DownloadItem
+import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
+import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.squareup.picasso.Picasso
 
-class ConfigureMultipleDownloadsAdapter(onItemClickListener: OnItemClickListener, activity: Activity) :
-    ListAdapter<DownloadItem?, ConfigureMultipleDownloadsAdapter.ViewHolder?>(AsyncDifferConfig.Builder(DIFF_CALLBACK).build()) {
+class ConfigureMultipleDownloadsAdapter(onItemClickListener: OnItemClickListener, activity: Activity) : ListAdapter<DownloadItem?, ConfigureMultipleDownloadsAdapter.ViewHolder>(AsyncDifferConfig.Builder(DIFF_CALLBACK).build()) {
     private val onItemClickListener: OnItemClickListener
     private val activity: Activity
 
@@ -30,18 +33,17 @@ class ConfigureMultipleDownloadsAdapter(onItemClickListener: OnItemClickListener
         this.activity = activity
     }
 
-    class ViewHolder(itemView: View, onItemClickListener: OnItemClickListener?) :
-        RecyclerView.ViewHolder(itemView) {
+    class ViewHolder(itemView: View, onItemClickListener: OnItemClickListener?) : RecyclerView.ViewHolder(itemView) {
         val cardView: MaterialCardView
 
         init {
-            cardView = itemView.findViewById(R.id.download_multiple_card_view)
+            cardView = itemView.findViewById(R.id.download_card_view)
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val cardView = LayoutInflater.from(parent.context)
-            .inflate(R.layout.home_download_multiple_card, parent, false)
+            .inflate(R.layout.download_card, parent, false)
         return ViewHolder(cardView, onItemClickListener)
     }
 
@@ -49,7 +51,7 @@ class ConfigureMultipleDownloadsAdapter(onItemClickListener: OnItemClickListener
         val item = getItem(position)
         val card = holder.cardView
         // THUMBNAIL ----------------------------------
-        val thumbnail = card.findViewById<ImageView>(R.id.result_image_view)
+        val thumbnail = card.findViewById<ImageView>(R.id.downloads_image_view)
         val imageURL = item!!.thumb
         if (imageURL.isNotEmpty()) {
             val uiHandler = Handler(Looper.getMainLooper())
@@ -62,7 +64,7 @@ class ConfigureMultipleDownloadsAdapter(onItemClickListener: OnItemClickListener
         }
 
         // TITLE  ----------------------------------
-        val itemTitle = card.findViewById<TextView>(R.id.result_title)
+        val itemTitle = card.findViewById<TextView>(R.id.title)
         var title = item.title
         if (title.length > 100) {
             title = title.substring(0, 40) + "..."
@@ -73,20 +75,16 @@ class ConfigureMultipleDownloadsAdapter(onItemClickListener: OnItemClickListener
         val author = card.findViewById<TextView>(R.id.author)
         author.text = item.author
 
-        // Format
-        val format = card.findViewById<TextView>(R.id.format)
-        format.text = item.ext
-
-        // Quality
-        val quality = card.findViewById<TextView>(R.id.quality)
-        quality.text = item.formatDesc
+        // Container ----------------------------------
+        val container = card.findViewById<TextView>(R.id.container)
+        container.text = item.ext
 
         // File Size
         val fileSize = card.findViewById<TextView>(R.id.filesize)
         fileSize.text = item.filesize
 
         // Type Icon Button
-        val btn = card.findViewById<MaterialButton>(R.id.download_type)
+        val btn = card.findViewById<MaterialButton>(R.id.downloads_download_button_type)
 
         when(item.type) {
             "audio" -> {
@@ -105,21 +103,20 @@ class ConfigureMultipleDownloadsAdapter(onItemClickListener: OnItemClickListener
         }
     }
 
-
     interface OnItemClickListener {
+        fun onButtonClick(videoURL: String, type: String?)
         fun onCardClick(itemID: Long)
     }
 
     companion object {
-        private val DIFF_CALLBACK: DiffUtil.ItemCallback<DownloadItem> =
-            object : DiffUtil.ItemCallback<DownloadItem>() {
-                override fun areItemsTheSame(oldItem: DownloadItem, newItem: DownloadItem): Boolean {
-                    return oldItem.id === newItem.id
-                }
-
-                override fun areContentsTheSame(oldItem: DownloadItem, newItem: DownloadItem): Boolean {
-                    return oldItem.url == newItem.url
-                }
+        private val DIFF_CALLBACK: DiffUtil.ItemCallback<DownloadItem> = object : DiffUtil.ItemCallback<DownloadItem>() {
+            override fun areItemsTheSame(oldItem: DownloadItem, newItem: DownloadItem): Boolean {
+                return oldItem.id === newItem.id
             }
+
+            override fun areContentsTheSame(oldItem: DownloadItem, newItem: DownloadItem): Boolean {
+                return oldItem.url == newItem.url && oldItem.title == newItem.title && oldItem.author == newItem.author
+            }
+        }
     }
 }

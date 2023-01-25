@@ -23,13 +23,16 @@ import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.adapter.HomeAdapter
 import com.deniscerri.ytdlnis.database.models.DownloadItem
+import com.deniscerri.ytdlnis.database.models.Format
 import com.deniscerri.ytdlnis.database.models.ResultItem
+import com.deniscerri.ytdlnis.database.models.ResultItemWithFormats
 import com.deniscerri.ytdlnis.database.repository.DownloadRepository
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdlnis.databinding.FragmentHomeBinding
 import com.deniscerri.ytdlnis.service.DownloadInfo
 import com.deniscerri.ytdlnis.ui.downloadcard.DownloadBottomSheetDialog
+import com.deniscerri.ytdlnis.ui.downloadcard.DownloadMultipleBottomSheetDialog
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.InfoUtil
 import com.facebook.shimmer.ShimmerFrameLayout
@@ -42,6 +45,7 @@ import com.google.android.material.floatingactionbutton.ExtendedFloatingActionBu
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import java.util.*
+import kotlin.collections.ArrayList
 
 class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickListener {
     private var progressBar: LinearProgressIndicator? = null
@@ -166,12 +170,9 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
         homeFabs = view.findViewById(R.id.home_fabs)
         downloadFabs = homeFabs!!.findViewById(R.id.download_selected_coordinator)
         downloadAllFabCoordinator = homeFabs!!.findViewById(R.id.download_all_coordinator)
-        val musicFab = downloadFabs!!.findViewById<FloatingActionButton>(R.id.audio_fab)
-        val videoFab = downloadFabs!!.findViewById<FloatingActionButton>(R.id.video_fab)
-        musicFab.tag = "SELECT##audio"
-        videoFab.tag = "SELECT##video"
-        musicFab.setOnClickListener(this)
-        videoFab.setOnClickListener(this)
+        val downloadSelectedFab = downloadFabs!!.findViewById<ExtendedFloatingActionButton>(R.id.download_selected_fab)
+        downloadSelectedFab.tag = "downloadSelected"
+        downloadSelectedFab.setOnClickListener(this)
         val downloadAllFab =
             downloadAllFabCoordinator!!.findViewById<ExtendedFloatingActionButton>(R.id.download_all_fab)
         downloadAllFab.tag = "downloadAll"
@@ -359,25 +360,11 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
     }
 
     private fun showSingleDownloadSheet(resultItem : ResultItem, type: String){
-        val sharedPreferences =
-            requireContext().getSharedPreferences("root_preferences", Activity.MODE_PRIVATE)
-        val embedSubs = sharedPreferences.getBoolean("embed_subtitles", false)
-        val addChapters = sharedPreferences.getBoolean("add_chapters", false)
-        val saveThumb = sharedPreferences.getBoolean("write_thumbnail", false)
-
-
-        val downloadItem = DownloadItem(0,
-            resultItem.url,
-            resultItem.title,
-            resultItem.author,
-            resultItem.thumb,
-            resultItem.duration,
-            type,
-            "", "",  0, "", false,
-            "", resultItem.website, "", resultItem.playlistTitle, embedSubs, addChapters, saveThumb, "",
-            "", DownloadRepository.status.Processing.toString(), 0
+        val item = ResultItemWithFormats(
+            resultItem,
+            resultViewModel.getFormats(resultItem, "video") as ArrayList<Format>
         )
-
+        val downloadItem = downloadViewModel.createDownloadItemFromResult(resultItem, "video")
         downloadViewModel.insertDownload(downloadItem).observe(viewLifecycleOwner) {
             downloadItem.id = it
             val bottomSheet = DownloadBottomSheetDialog(downloadItem)
@@ -428,51 +415,27 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
     override fun onClick(v: View) {
         val viewIdName: String = try {
             v.tag.toString()
-        } catch (e: Exception) {
-            ""
-        }
+        } catch (e: Exception) {""}
         if (viewIdName.isNotEmpty()) {
-            if (viewIdName.contains("audio") || viewIdName.contains("video")) {
-                val buttonData =
-                    viewIdName.split("##".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-                if (buttonData[0] == "SELECT") {
-                    initSelectedDownload(buttonData[1])
+            if (viewIdName == "downloadSelected") {
+                val downloadList = downloadViewModel.turnResultItemstoDownloadItems(selectedObjects!!)
+                downloadViewModel.putDownloadsForProcessing(selectedObjects!!).observe(viewLifecycleOwner) {
+                    it.forEachIndexed { i, itemID ->
+                        downloadList[i].id = itemID
+                    }
+                    val bottomSheet = DownloadMultipleBottomSheetDialog(downloadList)
+                    bottomSheet.show(parentFragmentManager, "downloadMultipleSheet")
                 }
             }
             if (viewIdName == "downloadAll") {
-//                //remove previously selected
-//                for (i in selectedObjects!!.indices) {
-//                    val vid = findVideo(
-//                        selectedObjects!![i].url
-//                    )
-//                    homeAdapter!!.notifyItemChanged(resultsList!!.indexOf(vid))
-//                }
-//                selectedObjects = ArrayList()
-//                downloadFabs!!.visibility = GONE
-//                bottomSheet = BottomSheetDialog(fragmentContext!!)
-//                bottomSheet!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
-//                bottomSheet!!.setContentView(R.layout.home_download_all_bottom_sheet)
-//                val first = bottomSheet!!.findViewById<TextInputLayout>(R.id.first_textinput)
-//                first!!.editText!!.setText(1.toString())
-//                val last = bottomSheet!!.findViewById<TextInputLayout>(R.id.last_textinput)
-//                last!!.editText!!.setText(resultsList!!.size.toString())
-//                val audio = bottomSheet!!.findViewById<Button>(R.id.bottomsheet_audio_button)
-//                audio!!.setOnClickListener {
-//                    val start = first.editText!!.text.toString().toInt()
-//                    val end = last.editText!!.text.toString().toInt()
-//                    initDownloadAll(bottomSheet!!, start, end, "audio")
-//                }
-//                val video = bottomSheet!!.findViewById<Button>(R.id.bottomsheet_video_button)
-//                video!!.setOnClickListener {
-//                    val start = first.editText!!.text.toString().toInt()
-//                    val end = last.editText!!.text.toString().toInt()
-//                    initDownloadAll(bottomSheet!!, start, end, "video")
-//                }
-//                bottomSheet!!.show()
-//                bottomSheet!!.window!!.setLayout(
-//                    ViewGroup.LayoutParams.MATCH_PARENT,
-//                    ViewGroup.LayoutParams.MATCH_PARENT
-//                )
+                val downloadList = downloadViewModel.turnResultItemstoDownloadItems(resultsList!!)
+                downloadViewModel.putDownloadsForProcessing(resultsList!!).observe(viewLifecycleOwner) {
+                    it.forEachIndexed { i, itemID ->
+                        downloadList[i].id = itemID
+                    }
+                    val bottomSheet = DownloadMultipleBottomSheetDialog(downloadList)
+                    bottomSheet.show(parentFragmentManager, "downloadMultipleSheet")
+                }
             }
         }
     }
@@ -518,31 +481,6 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
 //        }
     }
 
-    private fun initSelectedDownload(type: String) {
-//        val sharedPreferences =
-//            context!!.getSharedPreferences("root_preferences", Activity.MODE_PRIVATE)
-//        val editor = sharedPreferences.edit()
-//        if (sharedPreferences.getBoolean("download_card", true)) {
-//            showConfigureDownloadCard(type)
-//        } else {
-//            for (i in selectedObjects!!.indices) {
-//                val vid = findVideo(
-//                    selectedObjects!![i]!!.getURL()
-//                )
-//                vid!!.downloadedType = type
-//                updateDownloadingStatusOnResult(vid, type, true)
-//                homeAdapter!!.notifyItemChanged(resultsList!!.indexOf(vid))
-//                downloadQueue!!.add(vid)
-//            }
-//            selectedObjects = ArrayList()
-//            homeAdapter!!.clearCheckedVideos()
-//            downloadFabs!!.visibility = View.GONE
-//            if (isStoragePermissionGranted) {
-//                mainActivity!!.startDownloadService(downloadQueue, listener)
-//                downloadQueue!!.clear()
-//            }
-//        }
-    }
     companion object {
         private const val TAG = "HomeFragment"
     }

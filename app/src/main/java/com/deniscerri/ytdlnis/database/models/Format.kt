@@ -7,16 +7,14 @@ import com.google.gson.annotations.SerializedName
 @Entity(tableName = "formats")
 data class Format(
     @PrimaryKey(autoGenerate = true)
-    var id: Long,
-    var itemId: Long,
+    var id: Long = -1,
+    var itemId: Long = 0,
     @SerializedName(value = "format_id", alternate = ["itag"])
-    val format_id: String,
+    val format_id: String = "",
     @SerializedName(value = "ext", alternate = ["container"])
-    val container: String,
+    val container: String = "",
     @SerializedName(value = "filesize", alternate = ["clen", "filesize_approx"])
-    val filesize: Long,
+    val filesize: Long = 0,
     @SerializedName(value = "format_note", alternate = ["resolution", "audioQuality"])
-    val format_note: String,
-    @SerializedName(value = "encoding", alternate = ["vcodec", "acodec", "video_ext"])
-    val encoding: String
+    val format_note: String = ""
 )

@@ -1,36 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/downloads_card_constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
     >
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/materialButton"
         style="@style/Widget.Material3.Button.IconButton"
-        android:layout_width="wrap_content"
+        android:layout_width="28dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="end"
         android:padding="0dp"
-        app:icon="@drawable/ic_handle" />
+        app:icon="@drawable/ic_handle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/download_card_view"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/download_card_view"
-        android:layout_width="match_parent"
-        android:layout_height="95dp"
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
         android:layout_margin="10dp"
         android:checkable="true"
         app:cardCornerRadius="10dp"
-        app:cardElevation="10dp"
         app:cardMaxElevation="12dp"
         app:cardPreventCornerOverlap="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/materialButton"
         app:layout_constraintTop_toTopOf="parent"
         app:strokeWidth="0dp">
 
@@ -55,60 +56,59 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/title"
-                android:layout_width="296dp"
-                android:layout_height="41dp"
-                android:paddingStart="10dp"
-                android:paddingTop="10dp"
-                android:paddingEnd="10dp"
-                android:shadowColor="@color/black"
-                android:shadowDx="4"
-                android:shadowDy="4"
-                android:shadowRadius="2"
-                android:textColor="@color/white"
-                android:textSize="17sp"
-                android:textStyle="bold"
+            <LinearLayout
+                android:id="@+id/title_author"
+                android:layout_width="300dp"
+                android:layout_height="70dp"
+                android:orientation="vertical"
                 app:layout_constraintEnd_toStartOf="@+id/downloads_download_button_type"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:id="@+id/author"
-                android:layout_width="296dp"
-                android:layout_height="23dp"
-                android:gravity="bottom"
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp"
-                android:paddingBottom="5dp"
-                android:shadowColor="@color/black"
-                android:shadowDx="4"
-                android:shadowDy="4"
-                android:shadowRadius="1.5"
-                android:textColor="@color/white"
-                android:textSize="12sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toStartOf="@+id/downloads_download_button_type"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/title" />
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="10dp"
+                    android:paddingTop="10dp"
+                    android:paddingEnd="10dp"
+                    android:shadowColor="@color/black"
+                    android:shadowDx="4"
+                    android:shadowDy="4"
+                    android:shadowRadius="2"
+                    android:textColor="@color/white"
+                    android:textSize="17sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/author"
+                    android:layout_width="296dp"
+                    android:layout_height="23dp"
+                    android:gravity="bottom"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:paddingBottom="5dp"
+                    android:shadowColor="@color/black"
+                    android:shadowDx="4"
+                    android:shadowDy="4"
+                    android:shadowRadius="1.5"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+
+            </LinearLayout>
+
 
             <TextView
                 android:id="@+id/container"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="5dp"
+                android:text="Mp4"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/author"
-                app:layout_constraintVertical_bias="1.0" />
-
-            <TextView
-                android:id="@+id/encoding"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="5dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/container" />
+                app:layout_constraintEnd_toStartOf="@+id/filesize"
+                app:layout_constraintTop_toBottomOf="@+id/downloads_download_button_type" />
 
             <TextView
                 android:id="@+id/filesize"
@@ -116,7 +116,7 @@
                 android:layout_height="wrap_content"
                 android:padding="5dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/encoding" />
+                app:layout_constraintEnd_toEndOf="parent" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/downloads_download_button_type"
@@ -124,15 +124,16 @@
                 android:layout_width="55dp"
                 android:layout_height="55dp"
                 android:layout_margin="10dp"
+                android:layout_marginEnd="8dp"
                 app:cornerRadius="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.155" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-
     </com.google.android.material.card.MaterialCardView>
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

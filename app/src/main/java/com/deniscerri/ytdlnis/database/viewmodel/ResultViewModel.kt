@@ -10,6 +10,7 @@ import com.deniscerri.ytdlnis.database.DBManager
 import com.deniscerri.ytdlnis.database.dao.FormatDao
 import com.deniscerri.ytdlnis.database.models.Format
 import com.deniscerri.ytdlnis.database.models.ResultItem
+import com.deniscerri.ytdlnis.database.repository.DownloadRepository
 import com.deniscerri.ytdlnis.database.repository.ResultRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -111,7 +112,7 @@ class ResultViewModel(application: Application) : AndroidViewModel(application) 
             "video" -> {
                 list = list.filter { !it.format_note.contains("audio", ignoreCase = true) }
                 if (list.isEmpty()) {
-                    videoFormats.forEach { formats.add(Format(0, item.id, it, "", 0, it, "")) }
+                    videoFormats.forEach { formats.add(Format(0, item.id, it, "", 0, it)) }
                     return formats
                 }
                 return list
@@ -120,7 +121,7 @@ class ResultViewModel(application: Application) : AndroidViewModel(application) 
 
         val templates = repository.getTemplates()
         templates.forEach {
-            formats.add(Format(0, item.id, it.title, "",  0, it.content, ""))
+            formats.add(Format(0, item.id, it.title, "",  0, it.content))
         }
         return formats
     }

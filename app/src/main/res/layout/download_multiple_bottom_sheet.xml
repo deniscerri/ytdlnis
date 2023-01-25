@@ -1,16 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="10dp">
+        android:padding="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/bottom_sheet_title"
@@ -48,22 +52,44 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/download_multiple_recyclerview"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/coordinatorLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/downloadMultipleRecyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="150dp"
+                android:focusableInTouchMode="true"
+                android:orientation="vertical"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+        </RelativeLayout>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
+        android:orientation="horizontal"
         android:padding="10dp"
-        android:orientation="horizontal">
+        app:layout_constraintBottom_toBottomOf="parent">
 
 
         <Button
-            style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
             android:id="@+id/bottomsheet_schedule_button"
+            style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
@@ -77,25 +103,25 @@
             android:orientation="horizontal">
 
             <Button
-                style="@style/Widget.Material3.Button.OutlinedButton.Icon"
                 android:id="@+id/bottomsheet_cancel_button"
+                style="@style/Widget.Material3.Button.OutlinedButton.Icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/cancel"
                 android:layout_marginEnd="10dp"
+                android:text="@string/cancel"
                 app:icon="@drawable/ic_cancel" />
 
             <Button
-                style="@style/Widget.Material3.Button.ElevatedButton.Icon"
                 android:id="@+id/bottomsheet_download_button"
+                style="@style/Widget.Material3.Button.ElevatedButton.Icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:autoLink="all"
                 android:text="@string/download"
-                app:icon="@drawable/ic_down"
-                android:autoLink="all"/>
+                app:icon="@drawable/ic_down" />
 
         </LinearLayout>
 
     </LinearLayout>
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -177,10 +177,9 @@ class DownloadWorker(
             YoutubeDL.getInstance().execute(request, downloadItem.id.toString()){ progress, _, line ->
                 setProgressAsync(workDataOf("progress" to progress.toInt()))
                 val title: String = downloadItem.title
-                val queue = dao.getQueuedDownloads()
                 notificationUtil.updateDownloadNotification(
                     workID,
-                    line, progress.toInt(), queue.size, title,
+                    line, progress.toInt(), 0, title,
                     NotificationUtil.DOWNLOAD_SERVICE_CHANNEL_ID
                 )
             }

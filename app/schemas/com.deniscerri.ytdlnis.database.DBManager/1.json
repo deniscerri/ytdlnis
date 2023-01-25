@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "2c0fdec170ca54d97ef928dfe28a6992",
+    "identityHash": "db5c9df3e43ddd5a5131bbd372a7c92b",
     "entities": [
       {
         "tableName": "results",
@@ -74,7 +74,7 @@
       },
       {
         "tableName": "formats",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `itemId` INTEGER NOT NULL, `format_id` TEXT NOT NULL, `container` TEXT NOT NULL, `filesize` INTEGER NOT NULL, `format_note` TEXT NOT NULL, `encoding` TEXT NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `itemId` INTEGER NOT NULL, `format_id` TEXT NOT NULL, `container` TEXT NOT NULL, `filesize` INTEGER NOT NULL, `format_note` TEXT NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -109,12 +109,6 @@
           {
             "fieldPath": "format_note",
             "columnName": "format_note",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "encoding",
-            "columnName": "encoding",
             "affinity": "TEXT",
             "notNull": true
           }
@@ -392,7 +386,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '2c0fdec170ca54d97ef928dfe28a6992')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'db5c9df3e43ddd5a5131bbd372a7c92b')"
     ]
   }
 }

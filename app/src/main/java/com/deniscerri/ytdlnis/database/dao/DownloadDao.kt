@@ -9,14 +9,17 @@ import com.deniscerri.ytdlnis.util.FileUtil
 @Dao
 interface DownloadDao {
 
-    @Query("SELECT * FROM downloads")
+    @Query("SELECT * FROM downloads ORDER BY status")
     fun getAllDownloads() : LiveData<List<DownloadItem>>
 
     @Query("SELECT * FROM downloads WHERE status='Active'")
     fun getActiveDownloads() : LiveData<List<DownloadItem>>
 
     @Query("SELECT * FROM downloads WHERE status='Queued'")
-    fun getQueuedDownloads() : List<DownloadItem>
+    fun getQueuedDownloads() : LiveData<List<DownloadItem>>
+
+    @Query("SELECT * FROM downloads WHERE status='Processing'")
+    fun getProcessingDownloads() : LiveData<List<DownloadItem>>
 
     @Query("SELECT * FROM downloads WHERE workID=:workID")
     fun getDownloadByWorkId(workID: Int) : DownloadItem
@@ -32,6 +35,9 @@ interface DownloadDao {
 
     @Delete
     suspend fun delete(item: DownloadItem)
+
+    @Query("DELETE FROM downloads WHERE status='Processing'")
+    suspend fun deleteProcessing()
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
     suspend fun update(item: DownloadItem)

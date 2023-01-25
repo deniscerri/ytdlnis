@@ -3,11 +3,16 @@ package com.deniscerri.ytdlnis.database.repository
 import android.util.Log
 import androidx.lifecycle.LiveData
 import com.deniscerri.ytdlnis.database.dao.DownloadDao
+import com.deniscerri.ytdlnis.database.dao.FormatDao
 import com.deniscerri.ytdlnis.database.models.DownloadItem
+import com.deniscerri.ytdlnis.database.models.Format
+import com.deniscerri.ytdlnis.database.models.ResultItem
 
 class DownloadRepository(private val downloadDao: DownloadDao) {
     val allDownloads : LiveData<List<DownloadItem>> = downloadDao.getAllDownloads()
     val activeDownloads : LiveData<List<DownloadItem>> = downloadDao.getActiveDownloads()
+    val queuedDownloads : LiveData<List<DownloadItem>> = downloadDao.getQueuedDownloads()
+    val processingDownloads : LiveData<List<DownloadItem>> = downloadDao.getProcessingDownloads()
 
     enum class status {
         Active, Queued, Errored, Processing
@@ -29,9 +34,6 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
         return downloadDao.getDownloadByWorkId(workID)
     }
 
-    fun getQueuedDownloads() : List<DownloadItem>{
-        return downloadDao.getQueuedDownloads()
-    }
 
     suspend fun setDownloadStatus(item: DownloadItem, status: status){
         item.status = status.toString()
@@ -42,4 +44,7 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
         return downloadDao.getDownloadById(id)
     }
 
+    suspend fun deleteProcessing(){
+        downloadDao.deleteProcessing()
+    }
 }
