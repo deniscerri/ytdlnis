@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -142,11 +143,7 @@ class DownloadVideoFragment(private val downloadItem: DownloadItem) : Fragment()
                 }
 
                 val formatTitles = formats.map {
-                    if (it.format_note.contains("AUDIO_QUALITY_"))
-                        it.format_note.replace("AUDIO_QUALITY_", "") +
-                                if (it.filesize == 0L) "" else " / " + fileUtil.convertFileSize(it.filesize)
-                    else it.format_note +
-                            if (it.filesize == 0L) "" else " / " + fileUtil.convertFileSize(it.filesize)
+                    it.format_note + if (it.filesize == 0L) "" else " / " + fileUtil.convertFileSize(it.filesize)
                 }
 
                 val format = view.findViewById<TextInputLayout>(R.id.format)
@@ -166,6 +163,8 @@ class DownloadVideoFragment(private val downloadItem: DownloadItem) : Fragment()
                     AdapterView.OnItemClickListener { _: AdapterView<*>?, _: View?, index: Int, _: Long ->
                         downloadItem.format.format_note = formats[index].format_note
                         downloadItem.format.format_id = formats[index].format_id
+                        downloadItem.format.filesize = formats[index].filesize
+                        downloadViewModel.updateDownload(downloadItem)
                     }
 
                 val containers = requireContext().resources.getStringArray(R.array.video_containers)
@@ -181,13 +180,15 @@ class DownloadVideoFragment(private val downloadItem: DownloadItem) : Fragment()
                         containers
                     )
                 )
-                val selectedContainer: String =
-                    formats.find { downloadItem.format.format_note == it.format_note }?.container
-                        ?: sharedPreferences.getString("video_format", "DEFAULT")!!
+                var selectedContainer: String = downloadItem.format.container
+                if (selectedContainer.isEmpty()){
+                    selectedContainer = sharedPreferences.getString("video_format", "Default")!!
+                }
                 containerAutoCompleteTextView!!.setText(selectedContainer, false)
                 (container!!.editText as AutoCompleteTextView?)!!.onItemClickListener =
                     AdapterView.OnItemClickListener { _: AdapterView<*>?, _: View?, index: Int, _: Long ->
-                        downloadItem.ext = containers[index]
+                        downloadItem.format.container = containers[index]
+                        downloadViewModel.updateDownload(downloadItem)
                     }
 
                 val embedSubs = view.findViewById<Chip>(R.id.embed_subtitles)
@@ -198,32 +199,6 @@ class DownloadVideoFragment(private val downloadItem: DownloadItem) : Fragment()
 
                 val saveThumbnail = view.findViewById<Chip>(R.id.save_thumbnail)
                 saveThumbnail!!.isChecked = sharedPreferences.getBoolean("write_thumbnail", false)
-
-
-                val cancel = view.findViewById<Button>(R.id.bottomsheet_cancel_button)
-                cancel!!.setOnClickListener {
-                    (parentFragmentManager.findFragmentByTag("bottomSheet") as DownloadBottomSheetDialog).dismissSelf()
-                }
-                val download = view.findViewById<Button>(R.id.bottomsheet_download_button)
-                download!!.setOnClickListener {
-//                for (i in selectedObjects!!.indices) {
-//                    val vid = findVideo(
-//                        selectedObjects!![i]!!.getURL()
-//                    )
-//                    vid!!.downloadedType = type
-//                    updateDownloadingStatusOnResult(vid, type, true)
-//                    homeAdapter!!.notifyItemChanged(resultsList!!.indexOf(vid))
-//                    downloadQueue!!.add(vid)
-//                }
-//                selectedObjects = ArrayList()
-//                homeAdapter!!.clearCheckedVideos()
-//                downloadFabs!!.visibility = View.GONE
-//                if (isStoragePermissionGranted) {
-//                    mainActivity!!.startDownloadService(downloadQueue, listener)
-//                    downloadQueue!!.clear()
-//                }
-                    (parentFragmentManager.findFragmentByTag("bottomSheet") as DownloadBottomSheetDialog).dismissSelf()
-                }
 
             } catch (e: Exception) {
                 e.printStackTrace()

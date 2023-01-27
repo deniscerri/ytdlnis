@@ -24,8 +24,6 @@ data class DownloadItem(
     val embedSubs: Boolean,
     val addChapters: Boolean,
     val SaveThumb: Boolean,
-    var ext: String,
-    var filesize: String,
     @ColumnInfo(defaultValue = "Queued")
     var status: String,
     val workID: Int

@@ -7,33 +7,38 @@ import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.Adapter
 import android.widget.Button
-import android.widget.LinearLayout
-import androidx.core.view.get
 import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.findFragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
+import com.deniscerri.ytdlnis.database.viewmodel.ResultViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.tabs.TabLayout
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
-class DownloadBottomSheetDialog(item: DownloadItem) : BottomSheetDialogFragment() {
+class ConfigureDownloadBottomSheetDialog(private val downloadItem: DownloadItem) : BottomSheetDialogFragment() {
     private lateinit var tabLayout: TabLayout
     private lateinit var viewPager2: ViewPager2
     private lateinit var fragmentAdapter : DownloadFragmentAdapter
-    private val downloadItem = item
+    private val currentItem = downloadItem.copy()
+
     private lateinit var downloadViewModel: DownloadViewModel
+    private lateinit var resultViewModel: ResultViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
+        resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -45,8 +50,9 @@ class DownloadBottomSheetDialog(item: DownloadItem) : BottomSheetDialogFragment(
     @SuppressLint("RestrictedApi")
     override fun setupDialog(dialog: Dialog, style: Int) {
         super.setupDialog(dialog, style)
-        val view = LayoutInflater.from(context).inflate(R.layout.download_bottom_sheet, null)
+        val view = LayoutInflater.from(context).inflate(R.layout.configure_download_bottom_sheet, null)
         dialog.setContentView(view)
+        //view.minimumHeight = resources.displayMetrics.heightPixels
 
         tabLayout = view.findViewById(R.id.download_tablayout)
         viewPager2 = view.findViewById(R.id.download_viewpager)
@@ -90,35 +96,22 @@ class DownloadBottomSheetDialog(item: DownloadItem) : BottomSheetDialogFragment(
             }
         })
 
+
         val cancelBtn = view.findViewById<MaterialButton>(R.id.bottomsheet_cancel_button)
         cancelBtn.setOnClickListener{
+            returnPreviousState();
             dismiss()
         }
 
-        val download = view.findViewById<Button>(R.id.bottomsheet_download_button)
+        val download = view.findViewById<Button>(R.id.bottom_sheet_ok)
         download!!.setOnClickListener {
-//                for (i in selectedObjects!!.indices) {
-//                    val vid = findVideo(
-//                        selectedObjects!![i]!!.getURL()
-//                    )
-//                    vid!!.downloadedType = type
-//                    updateDownloadingStatusOnResult(vid, type, true)
-//                    homeAdapter!!.notifyItemChanged(resultsList!!.indexOf(vid))
-//                    downloadQueue!!.add(vid)
-//                }
-//                selectedObjects = ArrayList()
-//                homeAdapter!!.clearCheckedVideos()
-//                downloadFabs!!.visibility = View.GONE
-//                if (isStoragePermissionGranted) {
-//                    mainActivity!!.startDownloadService(downloadQueue, listener)
-//                    downloadQueue!!.clear()
-//                }
             dismiss()
         }
     }
 
     override fun onCancel(dialog: DialogInterface) {
         super.onCancel(dialog)
+        returnPreviousState();
         cleanUp()
     }
 
@@ -127,15 +120,25 @@ class DownloadBottomSheetDialog(item: DownloadItem) : BottomSheetDialogFragment(
         cleanUp()
     }
 
+    private fun returnPreviousState(){
+        lifecycleScope.launch{
+            val result = withContext(Dispatchers.IO){
+                resultViewModel.getItemByURL(currentItem.url)
+            }
+            result.title = currentItem.title
+            result.author = currentItem.author
+            resultViewModel.update(result)
+            downloadViewModel.updateDownload(currentItem)
+        }
+    }
 
     private fun cleanUp(){
-        parentFragmentManager.beginTransaction().remove(parentFragmentManager.findFragmentByTag("downloadSingleSheet")!!).commit()
+        parentFragmentManager.beginTransaction().remove(parentFragmentManager.findFragmentByTag("configureDownloadSingleSheet")!!).commit()
         for (i in 0 until viewPager2.adapter?.itemCount!!){
             if (parentFragmentManager.findFragmentByTag("f${i}") != null){
                 parentFragmentManager.beginTransaction().remove(parentFragmentManager.findFragmentByTag("f$i")!!).commit()
             }
         }
-        downloadViewModel.deleteDownload(downloadItem)
     }
 
 }

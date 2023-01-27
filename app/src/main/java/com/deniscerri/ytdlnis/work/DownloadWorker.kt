@@ -93,7 +93,7 @@ class DownloadWorker(
                 request.addOption("-x")
                 var audioQualityId : String = downloadItem.format.format_id
                 if (audioQualityId == "0") audioQualityId = "ba"
-                var ext = downloadItem.ext
+                var ext = downloadItem.format.container
                 request.addOption("-f", audioQualityId)
                 request.addOption("--audio-format", ext)
                 request.addOption("--embed-metadata")
@@ -140,7 +140,7 @@ class DownloadWorker(
                 val formatArgument = StringBuilder(videoFormatID)
                 formatArgument.append("+bestaudio/best")
                 request.addOption("-f", formatArgument.toString())
-                var format = downloadItem.ext
+                var format = downloadItem.format.container
                 if (format.isNotEmpty()) {
                     format = sharedPreferences.getString("video_format", "")!!
                     if (format != "DEFAULT") request.addOption("--merge-output-format", format)

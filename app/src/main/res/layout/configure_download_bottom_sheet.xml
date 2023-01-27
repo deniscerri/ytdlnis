@@ -54,14 +54,6 @@
         android:orientation="horizontal">
 
 
-        <Button
-            style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
-            android:id="@+id/bottomsheet_schedule_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
-            app:icon="@drawable/ic_clock" />
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -80,11 +72,11 @@
 
             <Button
                 style="@style/Widget.Material3.Button.ElevatedButton.Icon"
-                android:id="@+id/bottomsheet_download_button"
+                android:id="@+id/bottom_sheet_ok"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/download"
-                app:icon="@drawable/ic_down"
+                android:text="@string/ok"
+                app:icon="@drawable/ic_check"
                 android:autoLink="all"/>
 
         </LinearLayout>

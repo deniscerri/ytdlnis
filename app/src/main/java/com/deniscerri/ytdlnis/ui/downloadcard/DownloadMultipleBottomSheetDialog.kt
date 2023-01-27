@@ -12,6 +12,7 @@ import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.findFragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
@@ -26,6 +27,9 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.tabs.TabLayout
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class DownloadMultipleBottomSheetDialog(private val items: List<DownloadItem>) : BottomSheetDialogFragment(), ConfigureMultipleDownloadsAdapter.OnItemClickListener, View.OnClickListener {
     private lateinit var downloadViewModel: DownloadViewModel
@@ -116,7 +120,13 @@ class DownloadMultipleBottomSheetDialog(private val items: List<DownloadItem>) :
     }
 
     override fun onCardClick(itemID: Long) {
-        TODO("Not yet implemented")
+        lifecycleScope.launch{
+            val downloadItem = withContext(Dispatchers.IO){
+                downloadViewModel.getItemByID(itemID)
+            }
+            val bottomSheet = ConfigureDownloadBottomSheetDialog(downloadItem)
+            bottomSheet.show(parentFragmentManager, "configureDownloadSingleSheet")
+        }
     }
 
     override fun onClick(p0: View?) {

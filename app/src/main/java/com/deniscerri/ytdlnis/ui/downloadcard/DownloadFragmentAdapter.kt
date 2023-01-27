@@ -31,6 +31,7 @@ class DownloadFragmentAdapter (item : DownloadItem, fragmentManager : FragmentMa
         return DownloadCommandFragment(clone(downloadItem))
     }
 
+
     private fun clone(item: DownloadItem) : DownloadItem {
         val stringItem = Gson().toJson(item, DownloadItem::class.java)
         return Gson().fromJson(stringItem, DownloadItem::class.java)

@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "eddd8d0408b9e321c902948a418e6c92",
+    "identityHash": "d658de0453c49534c5971583f41854db",
     "entities": [
       {
         "tableName": "results",
@@ -160,7 +160,7 @@
       },
       {
         "tableName": "downloads",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `url` TEXT NOT NULL, `title` TEXT NOT NULL, `author` TEXT NOT NULL, `thumb` TEXT NOT NULL, `duration` TEXT NOT NULL, `type` TEXT NOT NULL, `format` TEXT NOT NULL, `removeAudio` INTEGER NOT NULL DEFAULT 0, `downloadPath` TEXT NOT NULL, `website` TEXT NOT NULL, `downloadSize` TEXT NOT NULL, `playlistTitle` TEXT NOT NULL, `embedSubs` INTEGER NOT NULL, `addChapters` INTEGER NOT NULL, `SaveThumb` INTEGER NOT NULL, `ext` TEXT NOT NULL, `filesize` TEXT NOT NULL, `status` TEXT NOT NULL DEFAULT 'Queued', `workID` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `url` TEXT NOT NULL, `title` TEXT NOT NULL, `author` TEXT NOT NULL, `thumb` TEXT NOT NULL, `duration` TEXT NOT NULL, `type` TEXT NOT NULL, `format` TEXT NOT NULL, `removeAudio` INTEGER NOT NULL DEFAULT 0, `downloadPath` TEXT NOT NULL, `website` TEXT NOT NULL, `downloadSize` TEXT NOT NULL, `playlistTitle` TEXT NOT NULL, `embedSubs` INTEGER NOT NULL, `addChapters` INTEGER NOT NULL, `SaveThumb` INTEGER NOT NULL, `status` TEXT NOT NULL DEFAULT 'Queued', `workID` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -260,18 +260,6 @@
             "notNull": true
           },
           {
-            "fieldPath": "ext",
-            "columnName": "ext",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "filesize",
-            "columnName": "filesize",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
             "fieldPath": "status",
             "columnName": "status",
             "affinity": "TEXT",
@@ -330,7 +318,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'eddd8d0408b9e321c902948a418e6c92')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'd658de0453c49534c5971583f41854db')"
     ]
   }
 }

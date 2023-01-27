@@ -280,7 +280,7 @@ class MainActivity : AppCompatActivity() {
                 arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
                 1
             )
-        }else{
+        }else if (!checkNotificationPermission()){
             ActivityCompat.requestPermissions(
                 this,
                 arrayOf(Manifest.permission.POST_NOTIFICATIONS),
@@ -307,6 +307,7 @@ class MainActivity : AppCompatActivity() {
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         for (i in permissions.indices) {
+            if (permissions.contains(Manifest.permission.POST_NOTIFICATIONS)) break
             if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
                 createPermissionRequestDialog()
             }else{
@@ -322,6 +323,11 @@ class MainActivity : AppCompatActivity() {
 
     private fun checkFilePermission(): Boolean {
         return (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                == PackageManager.PERMISSION_GRANTED)
+    }
+
+    private fun checkNotificationPermission(): Boolean {
+        return (ActivityCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
                 == PackageManager.PERMISSION_GRANTED)
     }
 

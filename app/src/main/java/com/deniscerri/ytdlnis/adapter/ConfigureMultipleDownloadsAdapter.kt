@@ -19,18 +19,22 @@ import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.models.ResultItem
+import com.deniscerri.ytdlnis.util.FileUtil
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.squareup.picasso.Picasso
+import java.util.*
 
 class ConfigureMultipleDownloadsAdapter(onItemClickListener: OnItemClickListener, activity: Activity) : ListAdapter<DownloadItem?, ConfigureMultipleDownloadsAdapter.ViewHolder>(AsyncDifferConfig.Builder(DIFF_CALLBACK).build()) {
     private val onItemClickListener: OnItemClickListener
     private val activity: Activity
+    private val fileUtil: FileUtil
 
     init {
         this.onItemClickListener = onItemClickListener
         this.activity = activity
+        this.fileUtil = FileUtil()
     }
 
     class ViewHolder(itemView: View, onItemClickListener: OnItemClickListener?) : RecyclerView.ViewHolder(itemView) {
@@ -77,11 +81,16 @@ class ConfigureMultipleDownloadsAdapter(onItemClickListener: OnItemClickListener
 
         // Container ----------------------------------
         val container = card.findViewById<TextView>(R.id.container)
-        container.text = item.ext
+        container.text = item.format.container.uppercase(Locale.getDefault())
 
         // File Size
         val fileSize = card.findViewById<TextView>(R.id.filesize)
-        fileSize.text = item.filesize
+        val formattedSize = fileUtil.convertFileSize(item.format.filesize)
+        fileSize.text = if (formattedSize == "?") "" else formattedSize.uppercase(Locale.getDefault())
+
+        // Quality
+        val quality = card.findViewById<TextView>(R.id.quality)
+        quality.text = item.format.format_note
 
         // Type Icon Button
         val btn = card.findViewById<MaterialButton>(R.id.downloads_download_button_type)
@@ -115,7 +124,7 @@ class ConfigureMultipleDownloadsAdapter(onItemClickListener: OnItemClickListener
             }
 
             override fun areContentsTheSame(oldItem: DownloadItem, newItem: DownloadItem): Boolean {
-                return oldItem.url == newItem.url && oldItem.title == newItem.title && oldItem.author == newItem.author
+                return oldItem.url == newItem.url && oldItem.title == newItem.title && oldItem.author == newItem.author && oldItem.type == newItem.type && oldItem.format == newItem.format
             }
         }
     }

@@ -19,7 +19,7 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
     }
 
     suspend fun delete(item: DownloadItem){
-        downloadDao.delete(item)
+        downloadDao.delete(item.id)
     }
 
     suspend fun update(item: DownloadItem){

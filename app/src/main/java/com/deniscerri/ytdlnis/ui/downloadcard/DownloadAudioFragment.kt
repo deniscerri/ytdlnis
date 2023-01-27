@@ -17,6 +17,7 @@ import androidx.lifecycle.lifecycleScope
 import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.DownloadItem
+import com.deniscerri.ytdlnis.database.models.Format
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdlnis.databinding.FragmentHomeBinding
@@ -136,6 +137,7 @@ class DownloadAudioFragment(private val downloadItem: DownloadItem) : Fragment()
                 val format = view.findViewById<TextInputLayout>(R.id.format)
                 if (formats.isEmpty()) {
                     format.visibility = View.GONE
+                    downloadItem.format = Format()
                 } else {
                     val formatTitles = formats.map {
                         if (it.format_note.contains("AUDIO_QUALITY_")) {
@@ -166,6 +168,7 @@ class DownloadAudioFragment(private val downloadItem: DownloadItem) : Fragment()
                         AdapterView.OnItemClickListener { _: AdapterView<*>?, _: View?, index: Int, _: Long ->
                             downloadItem.format.format_note = formats[index].format_note
                             downloadItem.format.format_id = formats[index].format_id
+                            downloadViewModel.updateDownload(downloadItem)
                         }
                 }
 
@@ -187,36 +190,11 @@ class DownloadAudioFragment(private val downloadItem: DownloadItem) : Fragment()
                 containerAutoCompleteTextView!!.setText(selectedContainer, false)
                 (container!!.editText as AutoCompleteTextView?)!!.onItemClickListener =
                     AdapterView.OnItemClickListener { _: AdapterView<*>?, _: View?, index: Int, _: Long ->
-                        downloadItem.ext = containers[index]
+                        downloadItem.format.container = containers[index]
+                        downloadViewModel.updateDownload(downloadItem)
                     }
 
-
-                val cancelBtn = view.findViewById<MaterialButton>(R.id.bottomsheet_cancel_button)
-                cancelBtn.setOnClickListener{
-                    (parentFragmentManager.findFragmentByTag("bottomSheet") as DownloadBottomSheetDialog).dismissSelf()
-                }
-
-                val download = view.findViewById<Button>(R.id.bottomsheet_download_button)
-                download!!.setOnClickListener {
-//                for (i in selectedObjects!!.indices) {
-//                    val vid = findVideo(
-//                        selectedObjects!![i]!!.getURL()
-//                    )
-//                    vid!!.downloadedType = type
-//                    updateDownloadingStatusOnResult(vid, type, true)
-//                    homeAdapter!!.notifyItemChanged(resultsList!!.indexOf(vid))
-//                    downloadQueue!!.add(vid)
-//                }
-//                selectedObjects = ArrayList()
-//                homeAdapter!!.clearCheckedVideos()
-//                downloadFabs!!.visibility = View.GONE
-//                if (isStoragePermissionGranted) {
-//                    mainActivity!!.startDownloadService(downloadQueue, listener)
-//                    downloadQueue!!.clear()
-//                }
-                    (parentFragmentManager.findFragmentByTag("bottomSheet") as DownloadBottomSheetDialog).dismissSelf()
-                }
-
+                downloadViewModel.updateDownload(downloadItem)
             }catch (e : Exception){
                 e.printStackTrace()
             }
