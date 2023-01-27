@@ -15,5 +15,6 @@ data class HistoryItem(
     val type: String,
     val time: Long,
     val downloadPath: String,
-    val website: String
+    val website: String,
+    val format: Format
 )

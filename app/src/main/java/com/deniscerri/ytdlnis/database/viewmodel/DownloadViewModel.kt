@@ -24,7 +24,6 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
 
     init {
         val dao = DBManager.getInstance(application).downloadDao
-        val formatDao = DBManager.getInstance(application).formatDao
         repository = DownloadRepository(dao)
         allDownloads = repository.allDownloads
         queuedDownloads = repository.queuedDownloads
@@ -74,7 +73,7 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
             resultItem.thumb,
             resultItem.duration,
             type,
-            "", "",  0, "", false,
+            Format(),   false,
             "", resultItem.website, "", resultItem.playlistTitle, embedSubs, addChapters, saveThumb, "",
             "", DownloadRepository.status.Processing.toString(), 0
         )

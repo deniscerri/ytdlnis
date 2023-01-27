@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.DownloadItem
+import com.deniscerri.ytdlnis.database.models.Format
 import com.deniscerri.ytdlnis.databinding.FragmentHomeBinding
 
 class DownloadCommandFragment(item: DownloadItem) : Fragment() {
@@ -28,5 +29,12 @@ class DownloadCommandFragment(item: DownloadItem) : Fragment() {
         activity = getActivity()
         mainActivity = activity as MainActivity?
         return fragmentView
+
+
+        //get formats
+//        val templates = repository.getTemplates()
+//        templates.forEach {
+//            formats.add(Format(0, item.id, it.title, "",  0, it.content))
+//        }
     }
 }

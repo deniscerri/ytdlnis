@@ -58,11 +58,7 @@ class DownloadWorker(
         val downloadLocation = downloadItem.downloadPath
 
         val tempFolder = StringBuilder(context.cacheDir.absolutePath + """/${downloadItem.title}##${downloadItem.type}""")
-        when(type){
-            "audio" -> tempFolder.append("##${downloadItem.audioFormatId}")
-            "video" -> tempFolder.append("##${downloadItem.videoFormatId}")
-            "command" -> tempFolder.append("##${downloadItem.customTemplateId}")
-        }
+        tempFolder.append("##${downloadItem.format.format_id}")
         var tempFileDir = File(tempFolder.toString())
         tempFileDir.delete()
         tempFileDir.mkdir()
@@ -95,7 +91,7 @@ class DownloadWorker(
         when(type){
             "audio" -> {
                 request.addOption("-x")
-                var audioQualityId : String = downloadItem.audioFormatId
+                var audioQualityId : String = downloadItem.format.format_id
                 if (audioQualityId == "0") audioQualityId = "ba"
                 var ext = downloadItem.ext
                 request.addOption("-f", audioQualityId)
@@ -107,7 +103,7 @@ class DownloadWorker(
                     request.addOption("--embed-thumbnail")
                     request.addOption("--convert-thumbnails", "png")
                     try {
-                        val config = File(context.cacheDir, "config" + downloadItem.title + "##" + downloadItem.audioFormatId + ".txt")
+                        val config = File(context.cacheDir, "config" + downloadItem.title + "##" + downloadItem.format.format_id + ".txt")
                         val configData =
                             "--ppa \"ffmpeg: -c:v png -vf crop=\\\"'if(gt(ih,iw),iw,ih)':'if(gt(iw,ih),ih,iw)'\\\"\""
                         config.writeText(configData)
@@ -139,11 +135,10 @@ class DownloadWorker(
                 if (embedSubs) {
                     request.addOption("--embed-subs", "")
                 }
-                var videoFormatID = downloadItem.videoFormatId
-                val audioFormatID = downloadItem.audioFormatId
+                var videoFormatID = downloadItem.format.format_id
                 if (videoFormatID.isEmpty()) videoFormatID = "bestvideo"
                 val formatArgument = StringBuilder(videoFormatID)
-                if (audioFormatID != "0") formatArgument.append("+", audioFormatID, "/best")
+                formatArgument.append("+bestaudio/best")
                 request.addOption("-f", formatArgument.toString())
                 var format = downloadItem.ext
                 if (format.isNotEmpty()) {
@@ -161,7 +156,7 @@ class DownloadWorker(
             }
             "command" -> {
                 val commandRegex = "\"([^\"]*)\"|(\\S+)"
-                val command = commandTemplateDao.getTemplate(downloadItem.customTemplateId)
+                val command = commandTemplateDao.getTemplate(downloadItem.format.format_id.toLong())
                 val m = Pattern.compile(commandRegex).matcher(command.content)
                 while (m.find()) {
                     if (m.group(1) != null) {
@@ -192,7 +187,7 @@ class DownloadWorker(
             val incognito = sharedPreferences.getBoolean("incognito", false)
             if (!incognito) {
                 val unixtime = System.currentTimeMillis() / 1000
-                val historyItem = HistoryItem(0, downloadItem.url, downloadItem.title, downloadItem.author, downloadItem.duration, downloadItem.thumb, downloadItem.type, unixtime, downloadItem.downloadPath, downloadItem.website)
+                val historyItem = HistoryItem(0, downloadItem.url, downloadItem.title, downloadItem.author, downloadItem.duration, downloadItem.thumb, downloadItem.type, unixtime, downloadItem.downloadPath, downloadItem.website, downloadItem.format)
                 runBlocking {
                     historyDao.insert(historyItem)
                 }

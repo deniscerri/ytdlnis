@@ -22,11 +22,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.adapter.HomeAdapter
-import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.models.Format
 import com.deniscerri.ytdlnis.database.models.ResultItem
-import com.deniscerri.ytdlnis.database.models.ResultItemWithFormats
-import com.deniscerri.ytdlnis.database.repository.DownloadRepository
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdlnis.databinding.FragmentHomeBinding
@@ -42,7 +39,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import java.util.*
 import kotlin.collections.ArrayList
@@ -147,7 +143,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
                 }else{
                     downloadAllFabCoordinator!!.visibility = GONE
                 }
-            }else if(it.size == 1 && !firstBoot && parentFragmentManager.findFragmentByTag("bottomSheet") == null){
+            }else if(it.size == 1 && !firstBoot && parentFragmentManager.findFragmentByTag("downloadSingleSheet") == null){
                 showSingleDownloadSheet(it[0], "audio")
             }
             firstBoot = false
@@ -360,11 +356,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
     }
 
     private fun showSingleDownloadSheet(resultItem : ResultItem, type: String){
-        val item = ResultItemWithFormats(
-            resultItem,
-            resultViewModel.getFormats(resultItem, "video") as ArrayList<Format>
-        )
-        val downloadItem = downloadViewModel.createDownloadItemFromResult(resultItem, "video")
+        val downloadItem = downloadViewModel.createDownloadItemFromResult(resultItem, type)
         downloadViewModel.insertDownload(downloadItem).observe(viewLifecycleOwner) {
             downloadItem.id = it
             val bottomSheet = DownloadBottomSheetDialog(downloadItem)

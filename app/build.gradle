@@ -24,7 +24,7 @@ android {
     defaultConfig {
         applicationId "com.deniscerri.ytdl"
         minSdkVersion 23
-        targetSdkVersion 29
+        targetSdkVersion 33
         versionCode project.versionCode
         versionName project.versionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -103,7 +103,7 @@ dependencies {
     implementation 'androidx.navigation:navigation-fragment:2.5.3'
     implementation 'androidx.navigation:navigation-ui:2.5.3'
     implementation 'androidx.core:core-ktx:1.9.0'
-    implementation 'androidx.core:core-ktx:+'
+    implementation 'androidx.core:core-ktx:1.9.0'
     testImplementation "junit:junit:$junitVer"
     androidTestImplementation "androidx.test.ext:junit:$androidJunitVer"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVer"

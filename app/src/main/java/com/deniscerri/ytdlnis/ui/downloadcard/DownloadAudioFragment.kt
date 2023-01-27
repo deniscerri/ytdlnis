@@ -132,9 +132,7 @@ class DownloadAudioFragment(private val downloadItem: DownloadItem) : Fragment()
                     audioPathResultLauncher.launch(intent)
                 }
 
-                val formats =  withContext(Dispatchers.IO){
-                    resultViewModel.getFormats(resultItem, type)
-                }
+                val formats = resultItem.formats.filter { it.format_note.contains("audio", ignoreCase = true) }
                 val format = view.findViewById<TextInputLayout>(R.id.format)
                 if (formats.isEmpty()) {
                     format.visibility = View.GONE
@@ -166,8 +164,8 @@ class DownloadAudioFragment(private val downloadItem: DownloadItem) : Fragment()
                     }
                     (format!!.editText as AutoCompleteTextView?)!!.onItemClickListener =
                         AdapterView.OnItemClickListener { _: AdapterView<*>?, _: View?, index: Int, _: Long ->
-                            downloadItem.formatDesc = formats[index].format_note
-                            downloadItem.audioFormatId = formats[index].format_id
+                            downloadItem.format.format_note = formats[index].format_note
+                            downloadItem.format.format_id = formats[index].format_id
                         }
                 }
 
@@ -184,7 +182,7 @@ class DownloadAudioFragment(private val downloadItem: DownloadItem) : Fragment()
                         containers
                     )
                 )
-                val selectedContainer: String = formats.find { downloadItem.formatDesc == it.format_note }?.container
+                val selectedContainer: String = formats.find { downloadItem.format.format_note == it.format_note }?.container
                     ?: sharedPreferences.getString("audio_format", "mp3")!!
                 containerAutoCompleteTextView!!.setText(selectedContainer, false)
                 (container!!.editText as AutoCompleteTextView?)!!.onItemClickListener =

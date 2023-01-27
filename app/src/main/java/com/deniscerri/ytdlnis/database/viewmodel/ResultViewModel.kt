@@ -1,21 +1,16 @@
 package com.deniscerri.ytdlnis.database.viewmodel
 
 import android.app.Application
-import android.content.Context
 import android.util.Log
 import androidx.lifecycle.*
 import com.deniscerri.ytdlnis.App
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.DBManager
-import com.deniscerri.ytdlnis.database.dao.FormatDao
-import com.deniscerri.ytdlnis.database.models.Format
 import com.deniscerri.ytdlnis.database.models.ResultItem
-import com.deniscerri.ytdlnis.database.repository.DownloadRepository
 import com.deniscerri.ytdlnis.database.repository.ResultRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.regex.Pattern
-import kotlin.coroutines.coroutineContext
 
 class ResultViewModel(application: Application) : AndroidViewModel(application) {
     private val tag: String = "ResultViewModel"
@@ -25,9 +20,8 @@ class ResultViewModel(application: Application) : AndroidViewModel(application) 
 
     init {
         val dao = DBManager.getInstance(application).resultDao
-        val formatDao = DBManager.getInstance(application).formatDao
         val commandDao = DBManager.getInstance(application).commandTemplateDao
-        repository = ResultRepository(dao, formatDao, commandDao, getApplication<Application>().applicationContext)
+        repository = ResultRepository(dao, commandDao, getApplication<Application>().applicationContext)
         items = repository.allResults
         loadingItems.postValue(false)
     }
@@ -99,32 +93,7 @@ class ResultViewModel(application: Application) : AndroidViewModel(application) 
         repository.update(item);
     }
 
-    fun getFormats(item: ResultItem, type: String) : List<Format> {
-        var list = repository.getFormats(item)
-        val formats = mutableListOf<Format>()
-        val audioFormats = getApplication<App>().resources.getStringArray(R.array.audio_formats)
-        val videoFormats = getApplication<App>().resources.getStringArray(R.array.video_formats)
 
-        when(type){
-            "audio" -> {
-                return list.filter { it.format_note.contains("audio", ignoreCase = true) }
-            }
-            "video" -> {
-                list = list.filter { !it.format_note.contains("audio", ignoreCase = true) }
-                if (list.isEmpty()) {
-                    videoFormats.forEach { formats.add(Format(0, item.id, it, "", 0, it)) }
-                    return formats
-                }
-                return list
-            }
-        }
-
-        val templates = repository.getTemplates()
-        templates.forEach {
-            formats.add(Format(0, item.id, it.title, "",  0, it.content))
-        }
-        return formats
-    }
 
     fun getItemByURL(url: String) : ResultItem {
         return repository.getItemByURL(url)

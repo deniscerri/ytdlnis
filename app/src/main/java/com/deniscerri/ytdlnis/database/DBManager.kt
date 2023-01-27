@@ -4,18 +4,19 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import com.deniscerri.ytdlnis.database.dao.*
 import com.deniscerri.ytdlnis.database.models.*
 
+@TypeConverters(Converters::class)
 @Database(
-    entities = [ResultItem::class, Format::class, HistoryItem::class, DownloadItem::class, CommandTemplate::class],
+    entities = [ResultItem::class, HistoryItem::class, DownloadItem::class, CommandTemplate::class],
     version = 1,
     autoMigrations = []
 )
 abstract class DBManager : RoomDatabase(){
     abstract val resultDao : ResultDao
     abstract val historyDao : HistoryDao
-    abstract val formatDao : FormatDao
     abstract val downloadDao : DownloadDao
     abstract val commandTemplateDao : CommandTemplateDao
 

@@ -4,14 +4,13 @@ import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
 import com.deniscerri.ytdlnis.database.dao.CommandTemplateDao
-import com.deniscerri.ytdlnis.database.dao.FormatDao
 import com.deniscerri.ytdlnis.database.dao.ResultDao
 import com.deniscerri.ytdlnis.database.models.CommandTemplate
 import com.deniscerri.ytdlnis.database.models.Format
 import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.deniscerri.ytdlnis.util.InfoUtil
 
-class ResultRepository(private val resultDao: ResultDao, private val formatDao: FormatDao, private val commandTemplateDao: CommandTemplateDao, private val context: Context) {
+class ResultRepository(private val resultDao: ResultDao, private val commandTemplateDao: CommandTemplateDao, private val context: Context) {
     private val tag: String = "ResultRepository"
     val allResults : LiveData<List<ResultItem>> = resultDao.getResults()
 
@@ -28,8 +27,7 @@ class ResultRepository(private val resultDao: ResultDao, private val formatDao: 
         val infoUtil = InfoUtil(context)
         val items = infoUtil.getTrending(context)
         for (i in items){
-            val id = resultDao.insert(i!!.resultItem)
-            addFormats(i.formats,id)
+            resultDao.insert(i!!)
         }
     }
 
@@ -39,8 +37,7 @@ class ResultRepository(private val resultDao: ResultDao, private val formatDao: 
             if (resetResults) deleteAll()
             val res = infoUtil.search(inputQuery)
             res.forEach {
-                val id = resultDao.insert(it!!.resultItem)
-                addFormats(it.formats,id)
+                resultDao.insert(it!!)
             }
         }catch (ignored: Exception){}
     }
@@ -63,8 +60,7 @@ class ResultRepository(private val resultDao: ResultDao, private val formatDao: 
         try {
             val v = infoUtil.getVideo(query!!)
             if (resetResults) deleteAll()
-            val id = resultDao.insert(v!!.resultItem)
-            addFormats(v.formats,id)
+            resultDao.insert(v!!)
         } catch (e: Exception) {
             Log.e(tag, e.toString())
         }
@@ -81,8 +77,7 @@ class ResultRepository(private val resultDao: ResultDao, private val formatDao: 
             val tmpVids = tmp.videos
             val tmpToken = tmp.nextPageToken
             tmpVids.forEach {
-                val id = resultDao.insert(it!!.resultItem)
-                addFormats(it.formats,id)
+                resultDao.insert(it!!)
             }
             if (tmpToken.isEmpty()) break
             if (tmpToken == nextPageToken) break
@@ -96,33 +91,20 @@ class ResultRepository(private val resultDao: ResultDao, private val formatDao: 
             if (resetResults) deleteAll()
             val items = infoUtil.getFromYTDL(inputQuery)
             items.forEach {
-                val id = resultDao.insert(it!!.resultItem)
-                addFormats(it.formats,id)
+                resultDao.insert(it!!)
             }
         } catch (e: Exception) {
             Log.e(tag, e.toString())
         }
     }
 
-    private suspend fun addFormats(formats : ArrayList<Format>, id: Long){
-        formats.forEach { f ->
-            if (f.filesize == 0L) return@forEach
-            f.itemId = id
-            formatDao.insert(f)
-        }
-    }
 
     suspend fun deleteAll(){
         resultDao.deleteAll()
-        formatDao.deleteAll()
     }
 
     suspend fun update(item: ResultItem){
         resultDao.update(item)
-    }
-
-    fun getFormats(item: ResultItem): List<Format> {
-        return formatDao.getFormatsByItemId(item.id)
     }
 
     fun getTemplates() : List<CommandTemplate> {

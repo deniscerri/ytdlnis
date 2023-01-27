@@ -1,12 +1,8 @@
 package com.deniscerri.ytdlnis.database.repository
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import com.deniscerri.ytdlnis.database.dao.DownloadDao
-import com.deniscerri.ytdlnis.database.dao.FormatDao
 import com.deniscerri.ytdlnis.database.models.DownloadItem
-import com.deniscerri.ytdlnis.database.models.Format
-import com.deniscerri.ytdlnis.database.models.ResultItem
 
 class DownloadRepository(private val downloadDao: DownloadDao) {
     val allDownloads : LiveData<List<DownloadItem>> = downloadDao.getAllDownloads()

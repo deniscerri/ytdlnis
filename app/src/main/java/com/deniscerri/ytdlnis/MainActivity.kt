@@ -7,6 +7,8 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
+import android.os.Build.VERSION_CODES
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
@@ -272,10 +274,16 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun askPermissions() {
-        if (!checkFilePermission()) {
+        if (Build.VERSION.SDK_INT < VERSION_CODES.TIRAMISU && !checkFilePermission()) {
             ActivityCompat.requestPermissions(
                 this,
                 arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                1
+            )
+        }else{
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.POST_NOTIFICATIONS),
                 1
             )
         }

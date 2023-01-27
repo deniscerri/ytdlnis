@@ -14,10 +14,7 @@ data class DownloadItem(
     val thumb: String,
     val duration: String,
     var type: String,
-    var audioFormatId: String,
-    var videoFormatId: String,
-    var customTemplateId: Long,
-    var formatDesc: String,
+    var format: Format,
     @ColumnInfo(defaultValue = "0")
     val removeAudio: Boolean,
     var downloadPath: String,

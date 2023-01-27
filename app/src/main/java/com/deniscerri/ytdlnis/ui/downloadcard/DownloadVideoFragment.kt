@@ -13,9 +13,11 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import com.deniscerri.ytdlnis.App
 import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.DownloadItem
+import com.deniscerri.ytdlnis.database.models.Format
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdlnis.databinding.FragmentHomeBinding
@@ -132,8 +134,11 @@ class DownloadVideoFragment(private val downloadItem: DownloadItem) : Fragment()
                     videoPathResultLauncher.launch(intent)
                 }
 
-                val formats =  withContext(Dispatchers.IO){
-                    resultViewModel.getFormats(resultItem, type)
+                val formats = mutableListOf<Format>()
+                formats.addAll(resultItem.formats.filter { !it.format_note.contains("audio", ignoreCase = true) })
+                if (formats.isEmpty()) {
+                    val videoFormats = resources.getStringArray(R.array.video_formats)
+                    videoFormats.forEach { formats.add(Format(it, "", 0, it)) }
                 }
 
                 val formatTitles = formats.map {
@@ -159,8 +164,8 @@ class DownloadVideoFragment(private val downloadItem: DownloadItem) : Fragment()
                 }
                 (format!!.editText as AutoCompleteTextView?)!!.onItemClickListener =
                     AdapterView.OnItemClickListener { _: AdapterView<*>?, _: View?, index: Int, _: Long ->
-                        downloadItem.formatDesc = formats[index].format_note
-                        downloadItem.videoFormatId = formats[index].format_id
+                        downloadItem.format.format_note = formats[index].format_note
+                        downloadItem.format.format_id = formats[index].format_id
                     }
 
                 val containers = requireContext().resources.getStringArray(R.array.video_containers)
@@ -177,7 +182,7 @@ class DownloadVideoFragment(private val downloadItem: DownloadItem) : Fragment()
                     )
                 )
                 val selectedContainer: String =
-                    formats.find { downloadItem.formatDesc == it.format_note }?.container
+                    formats.find { downloadItem.format.format_note == it.format_note }?.container
                         ?: sharedPreferences.getString("video_format", "DEFAULT")!!
                 containerAutoCompleteTextView!!.setText(selectedContainer, false)
                 (container!!.editText as AutoCompleteTextView?)!!.onItemClickListener =
