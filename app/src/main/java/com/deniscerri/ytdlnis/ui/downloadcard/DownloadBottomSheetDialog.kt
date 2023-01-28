@@ -17,6 +17,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.DownloadItem
+import com.deniscerri.ytdlnis.database.repository.DownloadRepository
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -97,6 +98,11 @@ class DownloadBottomSheetDialog(item: DownloadItem) : BottomSheetDialogFragment(
 
         val download = view.findViewById<Button>(R.id.bottomsheet_download_button)
         download!!.setOnClickListener {
+            downloadItem.status = DownloadRepository.status.Queued.toString()
+            downloadViewModel.insertDownload(downloadItem)
+            dismiss()
+
+
 //                for (i in selectedObjects!!.indices) {
 //                    val vid = findVideo(
 //                        selectedObjects!![i]!!.getURL()
@@ -113,7 +119,7 @@ class DownloadBottomSheetDialog(item: DownloadItem) : BottomSheetDialogFragment(
 //                    mainActivity!!.startDownloadService(downloadQueue, listener)
 //                    downloadQueue!!.clear()
 //                }
-            dismiss()
+
         }
     }
 
@@ -135,7 +141,7 @@ class DownloadBottomSheetDialog(item: DownloadItem) : BottomSheetDialogFragment(
                 parentFragmentManager.beginTransaction().remove(parentFragmentManager.findFragmentByTag("f$i")!!).commit()
             }
         }
-        downloadViewModel.deleteDownload(downloadItem)
+        downloadViewModel.deleteSingleProcessing(downloadItem)
     }
 
 }

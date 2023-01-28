@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
+import android.widget.Toast
 import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.findFragment
 import androidx.lifecycle.ViewModelProvider
@@ -22,6 +23,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.tabs.TabLayout
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -30,8 +32,7 @@ class ConfigureDownloadBottomSheetDialog(private val downloadItem: DownloadItem)
     private lateinit var tabLayout: TabLayout
     private lateinit var viewPager2: ViewPager2
     private lateinit var fragmentAdapter : DownloadFragmentAdapter
-    private val currentItem = downloadItem.copy()
-
+    private lateinit var currentItem : DownloadItem
     private lateinit var downloadViewModel: DownloadViewModel
     private lateinit var resultViewModel: ResultViewModel
 
@@ -39,6 +40,7 @@ class ConfigureDownloadBottomSheetDialog(private val downloadItem: DownloadItem)
         super.onCreate(savedInstanceState)
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
         resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]
+        currentItem = downloadViewModel.cloneDownloadItem(downloadItem)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -99,12 +101,12 @@ class ConfigureDownloadBottomSheetDialog(private val downloadItem: DownloadItem)
 
         val cancelBtn = view.findViewById<MaterialButton>(R.id.bottomsheet_cancel_button)
         cancelBtn.setOnClickListener{
-            returnPreviousState();
             dismiss()
         }
 
         val download = view.findViewById<Button>(R.id.bottom_sheet_ok)
         download!!.setOnClickListener {
+            downloadViewModel.updateDownload(downloadItem)
             dismiss()
         }
     }
@@ -121,12 +123,11 @@ class ConfigureDownloadBottomSheetDialog(private val downloadItem: DownloadItem)
     }
 
     private fun returnPreviousState(){
-        lifecycleScope.launch{
-            val result = withContext(Dispatchers.IO){
-                resultViewModel.getItemByURL(currentItem.url)
-            }
+        CoroutineScope(Dispatchers.IO).launch {
+            val result =  resultViewModel.getItemByURL(currentItem.url)
             result.title = currentItem.title
             result.author = currentItem.author
+            Log.e("TAG, ", currentItem.toString())
             resultViewModel.update(result)
             downloadViewModel.updateDownload(currentItem)
         }

@@ -39,9 +39,15 @@ interface DownloadDao {
     @Query("DELETE FROM downloads WHERE status='Processing'")
     suspend fun deleteProcessing()
 
+    @Query("DELETE FROM downloads WHERE status='Processing' AND id=:id")
+    suspend fun deleteSingleProcessing(id: Long)
+
     @Update(onConflict = OnConflictStrategy.REPLACE)
     suspend fun update(item: DownloadItem)
 
     @Query("SELECT * FROM downloads ORDER BY id DESC LIMIT 1")
     fun getLatest() : DownloadItem
+
+    @Query("UPDATE downloads SET status='Queued' WHERE status='Processing'")
+    suspend fun queueAllProcessing()
 }

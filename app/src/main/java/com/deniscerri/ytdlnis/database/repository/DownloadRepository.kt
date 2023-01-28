@@ -1,5 +1,6 @@
 package com.deniscerri.ytdlnis.database.repository
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import com.deniscerri.ytdlnis.database.dao.DownloadDao
 import com.deniscerri.ytdlnis.database.models.DownloadItem
@@ -42,5 +43,13 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
 
     suspend fun deleteProcessing(){
         downloadDao.deleteProcessing()
+    }
+
+    suspend fun deleteSingleProcessing(item: DownloadItem){
+        downloadDao.deleteSingleProcessing(item.id)
+    }
+
+    suspend fun queueAllProcessing(){
+        downloadDao.queueAllProcessing()
     }
 }

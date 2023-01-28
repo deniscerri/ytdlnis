@@ -14,6 +14,7 @@ import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.models.Format
 import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.deniscerri.ytdlnis.database.repository.DownloadRepository
+import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -139,7 +140,20 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
         return result
     }
 
+    fun deleteSingleProcessing(item: DownloadItem) = viewModelScope.launch(Dispatchers.IO) {
+        repository.deleteSingleProcessing(item)
+    }
+
     fun deleteProcessing() = viewModelScope.launch(Dispatchers.IO) {
         repository.deleteProcessing()
+    }
+
+    fun cloneDownloadItem(item: DownloadItem) : DownloadItem {
+        val string = Gson().toJson(item, DownloadItem::class.java)
+        return Gson().fromJson(string, DownloadItem::class.java)
+    }
+
+    fun queueAllProcessing()= viewModelScope.launch(Dispatchers.IO) {
+        repository.queueAllProcessing();
     }
 }

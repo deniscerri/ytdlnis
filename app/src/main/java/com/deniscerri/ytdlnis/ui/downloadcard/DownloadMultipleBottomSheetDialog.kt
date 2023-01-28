@@ -20,6 +20,7 @@ import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.adapter.ConfigureMultipleDownloadsAdapter
 import com.deniscerri.ytdlnis.adapter.HomeAdapter
 import com.deniscerri.ytdlnis.database.models.DownloadItem
+import com.deniscerri.ytdlnis.database.repository.DownloadRepository
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.ResultViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -80,6 +81,7 @@ class DownloadMultipleBottomSheetDialog(private val items: List<DownloadItem>) :
 
         val download = view.findViewById<Button>(R.id.bottomsheet_download_button)
         download!!.setOnClickListener {
+            downloadViewModel.queueAllProcessing()
 //                for (i in selectedObjects!!.indices) {
 //                    val vid = findVideo(
 //                        selectedObjects!![i]!!.getURL()

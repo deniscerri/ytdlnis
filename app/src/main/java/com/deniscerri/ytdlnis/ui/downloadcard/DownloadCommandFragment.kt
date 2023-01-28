@@ -12,12 +12,11 @@ import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.models.Format
 import com.deniscerri.ytdlnis.databinding.FragmentHomeBinding
 
-class DownloadCommandFragment(item: DownloadItem) : Fragment() {
+class DownloadCommandFragment(private val downloadItem: DownloadItem) : Fragment() {
     private var _binding : FragmentHomeBinding? = null
     private var fragmentView: View? = null
     private var activity: Activity? = null
     private var mainActivity: MainActivity? = null
-    private val downloadItem = item
 
     override fun onCreateView(
         inflater: LayoutInflater,

@@ -10,11 +10,11 @@
     <com.google.android.material.button.MaterialButton
         android:id="@+id/materialButton"
         style="@style/Widget.Material3.Button.IconButton"
-        android:layout_width="28dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="end"
-        android:padding="0dp"
+        android:padding="5dp"
         app:icon="@drawable/ic_handle"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/download_card_view"

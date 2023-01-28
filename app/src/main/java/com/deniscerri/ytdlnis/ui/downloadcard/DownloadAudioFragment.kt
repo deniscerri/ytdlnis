@@ -45,20 +45,21 @@ class DownloadAudioFragment(private val downloadItem: DownloadItem) : Fragment()
 
     override fun onResume() {
         super.onResume()
+        downloadItem.type = "audio"
         lifecycleScope.launch{
-            val item = withContext(Dispatchers.IO){
-                downloadViewModel.getItemByID(downloadItem.id)
-            }
-            if (::title.isInitialized){
-                title.editText!!.setText(item.title)
-                downloadItem.title = item.title
-            }
-            if(::author.isInitialized){
-                author.editText!!.setText(item.author)
-                downloadItem.author = item.author
-            }
+//            val item = withContext(Dispatchers.IO){
+//                downloadViewModel.getItemByID(downloadItem.id)
+//            }
+//            if (::title.isInitialized){
+//                title.editText!!.setText(item.title)
+//                downloadItem.title = item.title
+//            }
+//            if(::author.isInitialized){
+//                author.editText!!.setText(item.author)
+//                downloadItem.author = item.author
+//            }
         }
-        downloadViewModel.updateDownload(downloadItem)
+        //downloadViewModel.updateDownload(downloadItem)
     }
 
     override fun onCreateView(
@@ -96,8 +97,8 @@ class DownloadAudioFragment(private val downloadItem: DownloadItem) : Fragment()
                     override fun afterTextChanged(p0: Editable?) {
                         downloadItem.title = p0.toString()
                         resultItem.title = p0.toString()
-                        resultViewModel.update(resultItem)
-                        downloadViewModel.updateDownload(downloadItem)
+                        //resultViewModel.update(resultItem)
+                        //downloadViewModel.updateDownload(downloadItem)
                     }
                 })
 
@@ -109,8 +110,8 @@ class DownloadAudioFragment(private val downloadItem: DownloadItem) : Fragment()
                     override fun afterTextChanged(p0: Editable?) {
                         downloadItem.author = p0.toString()
                         resultItem.author = p0.toString()
-                        resultViewModel.update(resultItem)
-                        downloadViewModel.updateDownload(downloadItem)
+                        //resultViewModel.update(resultItem)
+                        //downloadViewModel.updateDownload(downloadItem)
                     }
                 })
                 saveDir = view.findViewById(R.id.outputPath)
@@ -119,7 +120,7 @@ class DownloadAudioFragment(private val downloadItem: DownloadItem) : Fragment()
                     getString(R.string.music_path)
                 )
                 downloadItem.downloadPath = downloadPath!!
-                downloadViewModel.updateDownload(downloadItem)
+                //downloadViewModel.updateDownload(downloadItem)
                 saveDir.editText!!.setText(
                     fileUtil.formatPath(downloadPath)
                 )
@@ -168,7 +169,7 @@ class DownloadAudioFragment(private val downloadItem: DownloadItem) : Fragment()
                         AdapterView.OnItemClickListener { _: AdapterView<*>?, _: View?, index: Int, _: Long ->
                             downloadItem.format.format_note = formats[index].format_note
                             downloadItem.format.format_id = formats[index].format_id
-                            downloadViewModel.updateDownload(downloadItem)
+                            //downloadViewModel.updateDownload(downloadItem)
                         }
                 }
 
@@ -191,10 +192,10 @@ class DownloadAudioFragment(private val downloadItem: DownloadItem) : Fragment()
                 (container!!.editText as AutoCompleteTextView?)!!.onItemClickListener =
                     AdapterView.OnItemClickListener { _: AdapterView<*>?, _: View?, index: Int, _: Long ->
                         downloadItem.format.container = containers[index]
-                        downloadViewModel.updateDownload(downloadItem)
+                        //downloadViewModel.updateDownload(downloadItem)
                     }
 
-                downloadViewModel.updateDownload(downloadItem)
+                //downloadViewModel.updateDownload(downloadItem)
             }catch (e : Exception){
                 e.printStackTrace()
             }
@@ -213,7 +214,7 @@ class DownloadAudioFragment(private val downloadItem: DownloadItem) : Fragment()
                 )
             }
             downloadItem.downloadPath = result.data?.data.toString()
-            downloadViewModel.updateDownload(downloadItem)
+            //downloadViewModel.updateDownload(downloadItem)
             saveDir.editText?.setText(fileUtil.formatPath(result.data?.data.toString()), TextView.BufferType.EDITABLE)
         }
     }

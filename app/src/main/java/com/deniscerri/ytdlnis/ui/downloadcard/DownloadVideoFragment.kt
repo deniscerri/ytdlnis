@@ -45,20 +45,21 @@ class DownloadVideoFragment(private val downloadItem: DownloadItem) : Fragment()
 
     override fun onResume() {
         super.onResume()
-        lifecycleScope.launch{
-            val item = withContext(Dispatchers.IO){
-                downloadViewModel.getItemByID(downloadItem.id)
-            }
-            if (::title.isInitialized){
-                title.editText!!.setText(item.title)
-                downloadItem.title = item.title
-            }
-            if(::author.isInitialized){
-                author.editText!!.setText(item.author)
-                downloadItem.author = item.author
-            }
-        }
-        downloadViewModel.updateDownload(downloadItem)
+        downloadItem.type = "video"
+//        lifecycleScope.launch{
+//            val item = withContext(Dispatchers.IO){
+//                downloadViewModel.getItemByID(downloadItem.id)
+//            }
+//            if (::title.isInitialized){
+//                title.editText!!.setText(item.title)
+//                downloadItem.title = item.title
+//            }
+//            if(::author.isInitialized){
+//                author.editText!!.setText(item.author)
+//                downloadItem.author = item.author
+//            }
+//        }
+        //downloadviewmodel.updateDownload(downloadItem)
     }
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -97,8 +98,8 @@ class DownloadVideoFragment(private val downloadItem: DownloadItem) : Fragment()
                     override fun afterTextChanged(p0: Editable?) {
                         downloadItem.title = p0.toString()
                         resultItem.title = p0.toString()
-                        resultViewModel.update(resultItem)
-                        downloadViewModel.updateDownload(downloadItem)
+                        //esultViewModel.update(resultItem)
+                        //downloadviewmodel.updateDownload(downloadItem)
                     }
                 })
 
@@ -110,8 +111,8 @@ class DownloadVideoFragment(private val downloadItem: DownloadItem) : Fragment()
                     override fun afterTextChanged(p0: Editable?) {
                         downloadItem.author = p0.toString()
                         resultItem.author = p0.toString()
-                        resultViewModel.update(resultItem)
-                        downloadViewModel.updateDownload(downloadItem)
+                        //resultViewModel.update(resultItem)
+                        //downloadviewmodel.updateDownload(downloadItem)
                     }
                 })
 
@@ -121,7 +122,7 @@ class DownloadVideoFragment(private val downloadItem: DownloadItem) : Fragment()
                     getString(R.string.video_path)
                 )
                 downloadItem.downloadPath = downloadPath!!
-                downloadViewModel.updateDownload(downloadItem)
+                //downloadviewmodel.updateDownload(downloadItem)
                 saveDir.editText!!.setText(
                     fileUtil.formatPath(downloadPath)
                 )
@@ -164,7 +165,7 @@ class DownloadVideoFragment(private val downloadItem: DownloadItem) : Fragment()
                         downloadItem.format.format_note = formats[index].format_note
                         downloadItem.format.format_id = formats[index].format_id
                         downloadItem.format.filesize = formats[index].filesize
-                        downloadViewModel.updateDownload(downloadItem)
+                        //downloadviewmodel.updateDownload(downloadItem)
                     }
 
                 val containers = requireContext().resources.getStringArray(R.array.video_containers)
@@ -188,7 +189,7 @@ class DownloadVideoFragment(private val downloadItem: DownloadItem) : Fragment()
                 (container!!.editText as AutoCompleteTextView?)!!.onItemClickListener =
                     AdapterView.OnItemClickListener { _: AdapterView<*>?, _: View?, index: Int, _: Long ->
                         downloadItem.format.container = containers[index]
-                        downloadViewModel.updateDownload(downloadItem)
+                        //downloadviewmodel.updateDownload(downloadItem)
                     }
 
                 val embedSubs = view.findViewById<Chip>(R.id.embed_subtitles)
@@ -218,7 +219,7 @@ class DownloadVideoFragment(private val downloadItem: DownloadItem) : Fragment()
                 )
             }
             downloadItem.downloadPath = result.data?.data.toString()
-            downloadViewModel.updateDownload(downloadItem)
+            //downloadviewmodel.updateDownload(downloadItem)
             saveDir.editText?.setText(fileUtil.formatPath(result.data?.data.toString()), TextView.BufferType.EDITABLE)
         }
     }
