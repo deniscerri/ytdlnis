@@ -3,7 +3,9 @@ package com.deniscerri.ytdlnis.util
 import android.content.Context
 import android.media.MediaScannerConnection
 import android.net.Uri
+import android.os.Build
 import android.provider.DocumentsContract
+import android.util.Log
 import android.webkit.MimeTypeMap
 import android.widget.Toast
 import com.deniscerri.ytdlnis.R
@@ -11,6 +13,8 @@ import com.deniscerri.ytdlnis.database.models.DownloadItem
 import java.io.File
 import java.net.URLDecoder
 import java.nio.charset.StandardCharsets
+import java.nio.file.Files
+import java.nio.file.StandardCopyOption
 import java.text.DecimalFormat
 import kotlin.math.log10
 import kotlin.math.pow
@@ -54,19 +58,14 @@ class FileUtil() {
         return formattedPath.toString()
     }
 
-    fun scanMedia(video: DownloadItem, context: Context) : String {
+    fun scanMedia(destDir: String, context: Context) : String {
         val files = ArrayList<File>()
-        val title: String = video.title.replace("[^a-zA-Z0-9]".toRegex(), "")
-        var pathTmp: String
-        val path = File(video.downloadPath)
+        val path = File(formatPath(destDir))
 
         try {
             for (file in path.listFiles()!!) {
                 if (file.isFile) {
-                    pathTmp = file.absolutePath.replace("[^a-zA-Z0-9]".toRegex(), "")
-                    if (pathTmp.contains(title)) {
-                        files.add(file)
-                    }
+                    files.add(file)
                 }
             }
 
@@ -80,47 +79,59 @@ class FileUtil() {
 
         return context.getString(R.string.unfound_file);
     }
-     fun moveFile(originDir : File, context:Context, destDir : Uri, progress: (p: Int) -> Unit){
+     fun moveFile(originDir: File, context: Context, destDir: String, progress: (p: Int) -> Unit){
         originDir.listFiles()?.forEach {
-            val mimeType =
-                MimeTypeMap.getSingleton().getMimeTypeFromExtension(it.extension) ?: "*/*"
-
             if (it.name.equals("rList")){
                 it.delete()
                 return@forEach
             }
 
-            val destUri = DocumentsContract.createDocument(
-                context.contentResolver,
-                destDir,
-                mimeType,
-                it.name
-            ) ?: return@forEach
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+                val f = File(formatPath(destDir)+"/"+it.name)
+                if (!f.exists()) f.mkdir()
+                Files.move(it.toPath(), f.toPath(), StandardCopyOption.REPLACE_EXISTING)
+                progress(100)
+            }else{
+                val mimeType =
+                    MimeTypeMap.getSingleton().getMimeTypeFromExtension(it.extension) ?: "*/*"
 
-            val inputStream = it.inputStream()
-            val outputStream = context.contentResolver.openOutputStream(destUri) ?: return@forEach
-            val fileLength = it.length()
-            var bytesCopied: Long = 0
-            val buffer = ByteArray(DEFAULT_BUFFER_SIZE)
-            var bytes = inputStream.read(buffer)
-
-            try {
-                while (bytes >= 0) {
-                    outputStream.write(buffer, 0, bytes)
-                    bytesCopied += bytes
-                    progress((bytesCopied * 100 / fileLength).toInt())
-                    bytes = inputStream.read(buffer)
+                val destination = Uri.parse(destDir).run {
+                    DocumentsContract.buildChildDocumentsUriUsingTree(this, DocumentsContract.getTreeDocumentId(this))
                 }
-            }catch (e : Exception){
-                Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
+
+                val destUri = DocumentsContract.createDocument(
+                    context.contentResolver,
+                    destination,
+                    mimeType,
+                    it.name
+                ) ?: return@forEach
+
+                val inputStream = it.inputStream()
+                val outputStream = context.contentResolver.openOutputStream(destUri) ?: return@forEach
+                val fileLength = it.length()
+                var bytesCopied: Long = 0
+                val buffer = ByteArray(DEFAULT_BUFFER_SIZE)
+                var bytes = inputStream.read(buffer)
+
+                try {
+                    while (bytes >= 0) {
+                        outputStream.write(buffer, 0, bytes)
+                        bytesCopied += bytes
+                        progress((bytesCopied * 100 / fileLength).toInt())
+                        bytes = inputStream.read(buffer)
+                    }
+                }catch (e : Exception){
+                    Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
+                }
+
+                inputStream.close()
+                outputStream.close()
+
+                it.delete()
             }
-
-            inputStream.close()
-            outputStream.close()
-
-            it.delete()
         }
          originDir.delete()
+         scanMedia(destDir, context)
     }
 
     fun convertFileSize(s: Long): String{

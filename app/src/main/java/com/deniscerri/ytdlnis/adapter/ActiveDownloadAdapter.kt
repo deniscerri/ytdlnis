@@ -7,7 +7,6 @@ import android.graphics.ColorMatrix
 import android.graphics.ColorMatrixColorFilter
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,7 +28,7 @@ import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
-class HistoryAdapter(onItemClickListener: OnItemClickListener, activity: Activity) : ListAdapter<HistoryItem?, HistoryAdapter.ViewHolder>(AsyncDifferConfig.Builder(DIFF_CALLBACK).build()) {
+class ActiveDownloadAdapter(onItemClickListener: OnItemClickListener, activity: Activity) : ListAdapter<HistoryItem?, ActiveDownloadAdapter.ViewHolder>(AsyncDifferConfig.Builder(DIFF_CALLBACK).build()) {
     private val checkedItems: ArrayList<Long>
     private val onItemClickListener: OnItemClickListener
     private val activity: Activity
@@ -112,7 +111,6 @@ class HistoryAdapter(onItemClickListener: OnItemClickListener, activity: Activit
         //IS IN THE FILE SYSTEM?
         val path = item.downloadPath
         val file = File(path)
-        Log.e("aa", file.absolutePath + " " + file.isFile)
         if (!file.exists() && path.isNotEmpty()) {
             filePresent = false
             thumbnail.colorFilter = ColorMatrixColorFilter(object : ColorMatrix() {

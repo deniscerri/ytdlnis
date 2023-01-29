@@ -25,6 +25,7 @@ import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.deniscerri.ytdlnis.databinding.ActivityMainBinding
 import com.deniscerri.ytdlnis.service.IDownloaderListener
 import com.deniscerri.ytdlnis.service.IDownloaderService
+import com.deniscerri.ytdlnis.ui.DownloadFragment
 import com.deniscerri.ytdlnis.ui.HistoryFragment
 import com.deniscerri.ytdlnis.ui.HomeFragment
 import com.deniscerri.ytdlnis.ui.MoreFragment
@@ -46,6 +47,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var context: Context
     private lateinit var homeFragment: HomeFragment
     private lateinit var historyFragment: HistoryFragment
+    private lateinit var downloadFragment: DownloadFragment
     private lateinit var workManager: WorkManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,6 +63,7 @@ class MainActivity : AppCompatActivity() {
 
         homeFragment = HomeFragment()
         historyFragment = HistoryFragment()
+        downloadFragment = DownloadFragment()
         moreFragment = MoreFragment()
         initFragments()
         binding.bottomNavigationView.setOnItemSelectedListener { item: MenuItem ->
@@ -77,9 +80,17 @@ class MainActivity : AppCompatActivity() {
                     if (lastFragment === historyFragment) {
                         historyFragment.scrollToTop()
                     } else {
-                        this.title = getString(R.string.downloads)
+                        this.title = getString(R.string.history)
                     }
                     replaceFragment(historyFragment)
+                }
+                R.id.downloads -> {
+                    if (lastFragment === downloadFragment) {
+                        downloadFragment.scrollToTop()
+                    } else {
+                        this.title = getString(R.string.downloads)
+                    }
+                    replaceFragment(downloadFragment)
                 }
                 R.id.more -> {
                     if (lastFragment === moreFragment) {
@@ -118,6 +129,7 @@ class MainActivity : AppCompatActivity() {
             Log.e(TAG, action)
             homeFragment = HomeFragment()
             historyFragment = HistoryFragment()
+            downloadFragment = DownloadFragment()
             moreFragment = MoreFragment()
             if (type.equals("application/txt", ignoreCase = true)) {
                 try {
@@ -152,9 +164,11 @@ class MainActivity : AppCompatActivity() {
         fm.beginTransaction()
             .replace(R.id.frame_layout, homeFragment)
             .add(R.id.frame_layout, historyFragment)
+            .add(R.id.frame_layout, downloadFragment)
             .add(R.id.frame_layout, moreFragment)
             .hide(historyFragment)
             .hide(moreFragment)
+            .hide(downloadFragment)
             .commit()
         lastFragment = homeFragment
         listeners = ArrayList()

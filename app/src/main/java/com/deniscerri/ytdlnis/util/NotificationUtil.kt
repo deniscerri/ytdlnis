@@ -15,7 +15,6 @@ import com.deniscerri.ytdlnis.receiver.CancelDownloadNotificationReceiver
 class NotificationUtil(var context: Context) {
     private val downloadNotificationBuilder: NotificationCompat.Builder = NotificationCompat.Builder(context, DOWNLOAD_SERVICE_CHANNEL_ID)
     private val commandDownloadNotificationBuilder: NotificationCompat.Builder = NotificationCompat.Builder(context, COMMAND_DOWNLOAD_SERVICE_CHANNEL_ID)
-    private val fileTransferNotificationBuilder: NotificationCompat.Builder = NotificationCompat.Builder(context, FILE_TRANSFER_CHANNEL_ID)
     private val notificationManager: NotificationManager = context.getSystemService(NotificationManager::class.java)
 
     fun createNotificationChannel() {
@@ -39,43 +38,6 @@ class NotificationUtil(var context: Context) {
             channel = NotificationChannel(COMMAND_DOWNLOAD_SERVICE_CHANNEL_ID, name, importance)
             channel.description = description
             notificationManager.createNotificationChannel(channel)
-
-            //file transfers
-            name = context.getString(R.string.file_transfer_notification_channel_name)
-            description = context.getString(R.string.file_transfer_notification_channel_description)
-            channel = NotificationChannel(FILE_TRANSFER_CHANNEL_ID, name, importance)
-            channel.description = description
-            notificationManager.createNotificationChannel(channel)
-        }
-    }
-
-    fun createFileTransferNotification(
-        pendingIntent: PendingIntent?,
-        title: String?,
-    ) : Notification {
-        val intent = Intent(context, CancelDownloadNotificationReceiver::class.java)
-
-        return fileTransferNotificationBuilder
-            .setContentTitle(title)
-            .setCategory(Notification.CATEGORY_PROGRESS)
-            .setSmallIcon(R.drawable.ic_app_icon)
-            .setContentText("")
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-            .setProgress(PROGRESS_MAX, PROGRESS_CURR, false)
-            .setContentIntent(pendingIntent)
-            .setForegroundServiceBehavior(NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE)
-            .build()
-    }
-
-    fun updateFileTransferNotification(
-        id: Int,
-        progress: Int
-    ) {
-        try {
-            fileTransferNotificationBuilder.setProgress(100, progress, false)
-            notificationManager.notify(id, fileTransferNotificationBuilder.build())
-        } catch (ignored: Exception) {
         }
     }
 
@@ -83,7 +45,6 @@ class NotificationUtil(var context: Context) {
         when(channel) {
             DOWNLOAD_SERVICE_CHANNEL_ID -> { return downloadNotificationBuilder}
             COMMAND_DOWNLOAD_SERVICE_CHANNEL_ID -> { return commandDownloadNotificationBuilder }
-            FILE_TRANSFER_CHANNEL_ID -> { return fileTransferNotificationBuilder }
         }
         return downloadNotificationBuilder
     }
@@ -102,7 +63,7 @@ class NotificationUtil(var context: Context) {
         intent.putExtra("workID", workID)
         val cancelNotificationPendingIntent = PendingIntent.getBroadcast(
             context,
-            0,
+            workID,
             intent,
             PendingIntent.FLAG_IMMUTABLE
         )

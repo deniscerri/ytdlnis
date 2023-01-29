@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Bundle
+import android.os.SystemClock
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -15,10 +16,15 @@ import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.findFragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
+import androidx.work.Data
+import androidx.work.ExistingWorkPolicy
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.repository.DownloadRepository
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
+import com.deniscerri.ytdlnis.work.DownloadWorker
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -99,27 +105,20 @@ class DownloadBottomSheetDialog(item: DownloadItem) : BottomSheetDialogFragment(
         val download = view.findViewById<Button>(R.id.bottomsheet_download_button)
         download!!.setOnClickListener {
             downloadItem.status = DownloadRepository.status.Queued.toString()
+            val workID = SystemClock.uptimeMillis()
+            downloadItem.workID = workID
             downloadViewModel.insertDownload(downloadItem)
+
+            val workRequest = OneTimeWorkRequestBuilder<DownloadWorker>()
+                .setInputData(Data.Builder().putLong("workID", workID).build())
+                .build()
+            WorkManager.getInstance(requireContext()).beginUniqueWork(
+                downloadItem.id.toString(),
+                ExistingWorkPolicy.KEEP,
+                workRequest
+            ).enqueue()
+
             dismiss()
-
-
-//                for (i in selectedObjects!!.indices) {
-//                    val vid = findVideo(
-//                        selectedObjects!![i]!!.getURL()
-//                    )
-//                    vid!!.downloadedType = type
-//                    updateDownloadingStatusOnResult(vid, type, true)
-//                    homeAdapter!!.notifyItemChanged(resultsList!!.indexOf(vid))
-//                    downloadQueue!!.add(vid)
-//                }
-//                selectedObjects = ArrayList()
-//                homeAdapter!!.clearCheckedVideos()
-//                downloadFabs!!.visibility = View.GONE
-//                if (isStoragePermissionGranted) {
-//                    mainActivity!!.startDownloadService(downloadQueue, listener)
-//                    downloadQueue!!.clear()
-//                }
-
         }
     }
 

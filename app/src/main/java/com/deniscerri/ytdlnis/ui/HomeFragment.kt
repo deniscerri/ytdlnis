@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -22,12 +23,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.adapter.HomeAdapter
-import com.deniscerri.ytdlnis.database.models.Format
 import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdlnis.databinding.FragmentHomeBinding
-import com.deniscerri.ytdlnis.service.DownloadInfo
 import com.deniscerri.ytdlnis.ui.downloadcard.DownloadBottomSheetDialog
 import com.deniscerri.ytdlnis.ui.downloadcard.DownloadMultipleBottomSheetDialog
 import com.deniscerri.ytdlnis.util.FileUtil
@@ -37,14 +36,10 @@ import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
-import com.google.android.material.chip.ChipGroup
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-import com.google.android.material.progressindicator.LinearProgressIndicator
 import java.util.*
-import kotlin.collections.ArrayList
 
 class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickListener {
-    private var progressBar: LinearProgressIndicator? = null
     private var inputQuery: String? = null
     private var inputQueries: LinkedList<String?>? = null
     private var inputQueriesLength = 0
@@ -56,7 +51,6 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
     private var homeFabs: CoordinatorLayout? = null
     private var infoUtil: InfoUtil? = null
     private var downloadQueue: ArrayList<ResultItem>? = null
-    private var downloadInfo: DownloadInfo? = null
 
     private lateinit var resultViewModel : ResultViewModel
     private lateinit var downloadViewModel : DownloadViewModel
@@ -70,17 +64,12 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
     private var shimmerCards: ShimmerFrameLayout? = null
     private var topAppBar: MaterialToolbar? = null
     private var recyclerView: RecyclerView? = null
-    private var bottomSheet: BottomSheetDialog? = null
     private var uiHandler: Handler? = null
-    private var noResults: RelativeLayout? = null
-    private var selectionChips: LinearLayout? = null
-    private var websiteGroup: ChipGroup? = null
     private var resultsList: List<ResultItem?>? = null
     private var selectedObjects: ArrayList<ResultItem>? = null
-    private var deleteFab: ExtendedFloatingActionButton? = null
     private var fileUtil: FileUtil? = null
     private var firstBoot = true
-
+    private var sharedPreferences: SharedPreferences? = null
     private var _binding : FragmentHomeBinding? = null
 
     override fun onCreateView(
@@ -99,15 +88,8 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
 
         fragmentContext = context
         layoutinflater = LayoutInflater.from(context)
-        shimmerCards = view.findViewById(R.id.shimmer_downloads_framelayout)
         topAppBar = view.findViewById(R.id.downloads_toolbar)
-        noResults = view.findViewById(R.id.downloads_no_results)
-        selectionChips = view.findViewById(R.id.downloads_selection_chips)
-        websiteGroup = view.findViewById(R.id.website_chip_group)
-        deleteFab = view.findViewById(R.id.delete_selected_fab)
         fileUtil = FileUtil()
-        deleteFab?.tag = "deleteSelected"
-        deleteFab?.setOnClickListener(this)
         uiHandler = Handler(Looper.getMainLooper())
         selectedObjects = ArrayList()
         downloading = mainActivity!!.isDownloadServiceRunning()
@@ -117,6 +99,8 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
         downloadQueue = ArrayList()
         resultsList = mutableListOf()
         selectedObjects = ArrayList()
+
+        sharedPreferences = requireContext().getSharedPreferences("root_preferences", Activity.MODE_PRIVATE)
 
         //initViews
         shimmerCards = view.findViewById(R.id.shimmer_results_framelayout)
@@ -143,8 +127,10 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
                 }else{
                     downloadAllFabCoordinator!!.visibility = GONE
                 }
-            }else if(it.size == 1 && !firstBoot && parentFragmentManager.findFragmentByTag("downloadSingleSheet") == null){
-                showSingleDownloadSheet(it[0], "audio")
+            }else if (sharedPreferences!!.getBoolean("download_card", true)){
+                if(it.size == 1 && !firstBoot && parentFragmentManager.findFragmentByTag("downloadSingleSheet") == null){
+                    showSingleDownloadSheet(it[0], "audio")
+                }
             }
             firstBoot = false
         }
@@ -338,9 +324,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
 //            } catch (ignored: Exception) {
 //            }
 //        }
-        val sharedPreferences =
-            requireContext().getSharedPreferences("root_preferences", Activity.MODE_PRIVATE)
-        if (sharedPreferences.getBoolean("download_card", true)) {
+        if (sharedPreferences!!.getBoolean("download_card", true)) {
 //            selectedObjects!!.clear()
 //            selectedObjects!!.add(item!!)
             //showConfigureSingleDownloadCard(createDownloadItem(item!!, type), item)

@@ -22,7 +22,7 @@ interface DownloadDao {
     fun getProcessingDownloads() : LiveData<List<DownloadItem>>
 
     @Query("SELECT * FROM downloads WHERE workID=:workID")
-    fun getDownloadByWorkId(workID: Int) : DownloadItem
+    fun getDownloadByWorkId(workID: Long) : DownloadItem
 
     @Query("SELECT * FROM downloads WHERE id=:id LIMIT 1")
     fun getDownloadById(id: Long) : DownloadItem

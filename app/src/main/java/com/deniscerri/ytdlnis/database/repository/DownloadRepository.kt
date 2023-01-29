@@ -27,7 +27,7 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
         downloadDao.update(item)
     }
 
-    fun getDownloadByWorkID(workID: Int) : DownloadItem{
+    fun getDownloadByWorkID(workID: Long) : DownloadItem{
         return downloadDao.getDownloadByWorkId(workID)
     }
 

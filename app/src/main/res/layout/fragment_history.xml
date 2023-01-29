@@ -3,23 +3,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/downloadscoordinator"
+    android:id="@+id/historycoordinator"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/downloads_appbarlayout"
+        android:id="@+id/history_appbarlayout"
         app:liftOnScroll="false"
         android:background="@android:color/transparent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/downloads_toolbar"
+            android:id="@+id/history_toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:layout_scrollFlags="scroll|enterAlways|snap"
             app:title="@string/history"
-            app:menu="@menu/downloads_menu"
+            app:menu="@menu/history_menu"
             android:theme="@style/Toolbar"
             />
 
@@ -39,7 +39,7 @@
             android:layout_height="wrap_content">
 
             <LinearLayout
-                android:id="@+id/downloads_selection_chips"
+                android:id="@+id/history_selection_chips"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
@@ -101,7 +101,7 @@
         </HorizontalScrollView>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerviewdownloadss"
+            android:id="@+id/recyclerviewhistorys"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/chips_recycler_horizontalscrollview"
@@ -119,12 +119,12 @@
             android:visibility="gone"
             android:layout_height="match_parent"
             android:layout_below="@+id/chips_recycler_horizontalscrollview"
-            android:id="@+id/shimmer_downloads_framelayout"
+            android:id="@+id/shimmer_history_framelayout"
             android:orientation="vertical">
 
 
             <LinearLayout
-                android:id="@+id/shimmer_downloads_linear_layout"
+                android:id="@+id/shimmer_history_linear_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"

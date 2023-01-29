@@ -26,5 +26,5 @@ data class DownloadItem(
     val SaveThumb: Boolean,
     @ColumnInfo(defaultValue = "Queued")
     var status: String,
-    val workID: Int
+    var workID: Long
 )

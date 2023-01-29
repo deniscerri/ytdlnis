@@ -123,7 +123,7 @@
             <com.google.android.material.chip.ChipGroup
                 android:id="@+id/chipGroup"
                 android:layout_width="wrap_content"
-                app:singleLine="true"
+                app:singleLine="false"
                 android:layout_height="wrap_content">
 
                 <com.google.android.material.chip.Chip

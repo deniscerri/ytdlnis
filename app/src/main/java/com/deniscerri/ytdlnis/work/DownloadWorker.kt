@@ -5,6 +5,7 @@ import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Looper
 import android.os.SystemClock
 import android.provider.DocumentsContract
 import android.util.Log
@@ -26,6 +27,7 @@ import com.yausername.youtubedl_android.YoutubeDLRequest
 import kotlinx.coroutines.runBlocking
 import java.io.File
 import java.util.regex.Pattern
+import kotlin.math.abs
 
 
 class DownloadWorker(
@@ -33,7 +35,7 @@ class DownloadWorker(
     workerParams: WorkerParameters
 ) : Worker(context, workerParams) {
     override fun doWork(): Result {
-        workID = inputData.getInt("workID", SystemClock.uptimeMillis().toInt())
+        workID = inputData.getLong("workID", SystemClock.uptimeMillis())
         val notificationUtil = NotificationUtil(context)
         val dbManager = DBManager.getInstance(context)
         val dao = dbManager.downloadDao
@@ -47,8 +49,8 @@ class DownloadWorker(
         }
         val intent = Intent(context, MainActivity::class.java)
         val pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE)
-        val notification = notificationUtil.createDownloadServiceNotification(pendingIntent, downloadItem.title, workID, NotificationUtil.DOWNLOAD_SERVICE_CHANNEL_ID)
-        val foregroundInfo = ForegroundInfo(workID, notification)
+        val notification = notificationUtil.createDownloadServiceNotification(pendingIntent, downloadItem.title, workID.toInt(), NotificationUtil.DOWNLOAD_SERVICE_CHANNEL_ID)
+        val foregroundInfo = ForegroundInfo(workID.toInt(), notification)
         setForegroundAsync(foregroundInfo)
 
         
@@ -123,10 +125,6 @@ class DownloadWorker(
                 request.addOption("-o", tempFileDir.absolutePath + "/%(uploader)s - %(title)s.%(ext)s")
             }
             "video" -> {
-                if (downloadLocation == context.getString(R.string.video_path)){
-                    tempFileDir = File(context.getString(R.string.video_path))
-                }
-
                 val addChapters = sharedPreferences.getBoolean("add_chapters", false)
                 if (addChapters) {
                     request.addOption("--sponsorblock-mark", "all")
@@ -136,17 +134,19 @@ class DownloadWorker(
                     request.addOption("--embed-subs", "")
                 }
                 var videoFormatID = downloadItem.format.format_id
-                if (videoFormatID.isEmpty()) videoFormatID = "bestvideo"
-                val formatArgument = StringBuilder(videoFormatID)
-                formatArgument.append("+bestaudio/best")
-                request.addOption("-f", formatArgument.toString())
-                var format = downloadItem.format.container
-                if (format.isNotEmpty()) {
-                    format = sharedPreferences.getString("video_format", "")!!
-                    if (format != "DEFAULT") request.addOption("--merge-output-format", format)
+                Log.e(TAG, videoFormatID)
+                var formatArgument = "bestvideo+bestaudio/best"
+                if (videoFormatID.isNotEmpty()) {
+                    if (videoFormatID == "Best Quality") videoFormatID = "bestvideo"
+                    else if (videoFormatID == "Worst Quality") videoFormatID = "worst"
+                    formatArgument = videoFormatID + if (downloadItem.removeAudio) "" else "+bestaudio"
                 }
-
-                if (format != "webm") {
+                request.addOption("-f", formatArgument)
+                val format = downloadItem.format.container
+                if(format.isNotEmpty()){
+                    request.addOption("--merge-output-format", format)
+                }
+                if (format != "webm" && format != "DEFAULT") {
                     val embedThumb = sharedPreferences.getBoolean("embed_thumbnail", false)
                     if (embedThumb) {
                         request.addOption("--embed-thumbnail")
@@ -173,13 +173,14 @@ class DownloadWorker(
                 setProgressAsync(workDataOf("progress" to progress.toInt()))
                 val title: String = downloadItem.title
                 notificationUtil.updateDownloadNotification(
-                    workID,
+                    downloadItem.workID.toInt(),
                     line, progress.toInt(), 0, title,
                     NotificationUtil.DOWNLOAD_SERVICE_CHANNEL_ID
                 )
             }
         }.onSuccess {
             //move file from internal to set download directory
+
             moveFile(tempFileDir.absoluteFile, downloadLocation){ progress ->
                 setProgressAsync(workDataOf("progress" to progress))
             }
@@ -187,22 +188,31 @@ class DownloadWorker(
             val incognito = sharedPreferences.getBoolean("incognito", false)
             if (!incognito) {
                 val unixtime = System.currentTimeMillis() / 1000
-                val historyItem = HistoryItem(0, downloadItem.url, downloadItem.title, downloadItem.author, downloadItem.duration, downloadItem.thumb, downloadItem.type, unixtime, downloadItem.downloadPath, downloadItem.website, downloadItem.format)
+                val fileUtil = FileUtil()
+                val finalPath = fileUtil.formatPath(downloadItem.downloadPath) + downloadItem.author + " - " + downloadItem.title + "." + downloadItem.format.container
+                val historyItem = HistoryItem(0, downloadItem.url, downloadItem.title, downloadItem.author, downloadItem.duration, downloadItem.thumb, downloadItem.type, unixtime, finalPath, downloadItem.website, downloadItem.format)
                 runBlocking {
                     historyDao.insert(historyItem)
                 }
             }
+            runBlocking {
+                dao.delete(downloadItem.id)
+            }
         }.onFailure {
             tempFileDir.delete()
-            if (BuildConfig.DEBUG) {
-                Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
-                Log.e(TAG, context.getString(R.string.failed_download), it)
-            }
+            Looper.prepare()
+            Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
+            Log.e(TAG, context.getString(R.string.failed_download), it)
             notificationUtil.updateDownloadNotification(
-                workID,
+                downloadItem.workID.toInt(),
                 context.getString(R.string.failed_download), 0, 0, downloadItem.title,
                 NotificationUtil.DOWNLOAD_SERVICE_CHANNEL_ID
             )
+
+            downloadItem.status = DownloadRepository.status.Errored.toString()
+            runBlocking {
+                dao.update(downloadItem)
+            }
             return Result.failure()
         }
         
@@ -227,13 +237,13 @@ class DownloadWorker(
             DocumentsContract.buildChildDocumentsUriUsingTree(this, DocumentsContract.getTreeDocumentId(this))
         }
         val fileUtil = FileUtil()
-        fileUtil.moveFile(originDir, context, destDir){ p ->
+        fileUtil.moveFile(originDir, context, downLocation){ p ->
             progress(p)
         }
     }
 
     companion object {
-        var workID: Int = 0
+        var workID: Long = 0
         const val TAG = "DownloadWorker"
     }
 

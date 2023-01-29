@@ -42,7 +42,6 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener,
     OnClickListener, OnLongClickListener {
     private lateinit var historyViewModel : HistoryViewModel
 
-    private var downloading = false
     private var fragmentView: View? = null
     private var activity: Activity? = null
     private var mainActivity: MainActivity? = null
@@ -58,8 +57,8 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener,
     private var noResults: RelativeLayout? = null
     private var selectionChips: LinearLayout? = null
     private var websiteGroup: ChipGroup? = null
-    private var downloadsList: List<HistoryItem?>? = null
-    private var allDownloadsList: List<HistoryItem?>? = null
+    private var historyList: List<HistoryItem?>? = null
+    private var allhistoryList: List<HistoryItem?>? = null
     private var selectedObjects: ArrayList<HistoryItem>? = null
     private var deleteFab: ExtendedFloatingActionButton? = null
     private var fileUtil: FileUtil? = null
@@ -83,10 +82,10 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener,
 
         fragmentContext = context
         layoutinflater = LayoutInflater.from(context)
-        shimmerCards = view.findViewById(R.id.shimmer_downloads_framelayout)
-        topAppBar = view.findViewById(R.id.downloads_toolbar)
-        noResults = view.findViewById(R.id.downloads_no_results)
-        selectionChips = view.findViewById(R.id.downloads_selection_chips)
+        shimmerCards = view.findViewById(R.id.shimmer_history_framelayout)
+        topAppBar = view.findViewById(R.id.history_toolbar)
+        noResults = view.findViewById(R.id.no_results)
+        selectionChips = view.findViewById(R.id.history_selection_chips)
         websiteGroup = view.findViewById(R.id.website_chip_group)
         deleteFab = view.findViewById(R.id.delete_selected_fab)
         fileUtil = FileUtil()
@@ -94,18 +93,17 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener,
         deleteFab?.setOnClickListener(this)
         uiHandler = Handler(Looper.getMainLooper())
         selectedObjects = ArrayList()
-        downloading = mainActivity!!.isDownloadServiceRunning()
 
 
-        downloadsList = mutableListOf()
-        allDownloadsList = mutableListOf()
+        historyList = mutableListOf()
+        allhistoryList = mutableListOf()
 
         historyAdapter =
             HistoryAdapter(
                 this,
                 requireActivity()
             )
-        recyclerView = view.findViewById(R.id.recyclerviewdownloadss)
+        recyclerView = view.findViewById(R.id.recyclerviewhistorys)
         recyclerView?.layoutManager = LinearLayoutManager(context)
         recyclerView?.adapter = historyAdapter
 
@@ -116,7 +114,7 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener,
 
         historyViewModel = ViewModelProvider(this)[HistoryViewModel::class.java]
         historyViewModel.allItems.observe(viewLifecycleOwner) {
-            allDownloadsList = it
+            allhistoryList = it
             if(it.isEmpty()){
                 noResults!!.visibility = VISIBLE
                 selectionChips!!.visibility = GONE
@@ -130,7 +128,7 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener,
 
         historyViewModel.getFilteredList().observe(viewLifecycleOwner) {
             historyAdapter!!.submitList(it)
-            downloadsList = it
+            historyList = it
         }
 
         initMenu()
@@ -158,14 +156,14 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener,
                     return true
                 }
             }
-        topAppBar!!.menu.findItem(R.id.search_downloads)
+        topAppBar!!.menu.findItem(R.id.search_history)
             .setOnActionExpandListener(onActionExpandListener)
-        val searchView = topAppBar!!.menu.findItem(R.id.search_downloads).actionView as SearchView?
+        val searchView = topAppBar!!.menu.findItem(R.id.search_history).actionView as SearchView?
         searchView!!.inputType = InputType.TYPE_CLASS_TEXT
         searchView.queryHint = getString(R.string.search_history_hint)
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
-                topAppBar!!.menu.findItem(R.id.search_downloads).collapseActionView()
+                topAppBar!!.menu.findItem(R.id.search_history).collapseActionView()
                 historyViewModel.setQueryFilter(query)
                 return true
             }
@@ -178,8 +176,8 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener,
         topAppBar!!.setOnClickListener { scrollToTop() }
         topAppBar!!.setOnMenuItemClickListener { m: MenuItem ->
             when (m.itemId) {
-                R.id.remove_downloads -> {
-                    if(allDownloadsList!!.isEmpty()){
+                R.id.remove_history -> {
+                    if(allhistoryList!!.isEmpty()){
                         Toast.makeText(context, R.string.history_is_empty, Toast.LENGTH_SHORT).show()
                     }else{
                         val deleteDialog = MaterialAlertDialogBuilder(fragmentContext!!)
@@ -192,8 +190,8 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener,
                         deleteDialog.show()
                     }
                 }
-                R.id.remove_deleted_downloads -> {
-                    if(allDownloadsList!!.isEmpty()){
+                R.id.remove_deleted_history -> {
+                    if(allhistoryList!!.isEmpty()){
                         Toast.makeText(context, R.string.history_is_empty, Toast.LENGTH_SHORT).show()
                     }else{
                         val deleteDialog = MaterialAlertDialogBuilder(fragmentContext!!)
@@ -207,7 +205,7 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener,
                     }
                 }
                 R.id.remove_duplicates -> {
-                    if(allDownloadsList!!.isEmpty()){
+                    if(allhistoryList!!.isEmpty()){
                         Toast.makeText(context, R.string.history_is_empty, Toast.LENGTH_SHORT).show()
                     }else{
                         val deleteDialog = MaterialAlertDialogBuilder(fragmentContext!!)
@@ -283,7 +281,7 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener,
             if (!websites.contains(item.website)) websites.add(item.website)
         }
         websiteGroup!!.removeAllViews()
-        //val websites = downloadsRecyclerViewAdapter!!.websites
+        //val websites = historyRecyclerViewAdapter!!.websites
         for (i in websites.indices) {
             val w = websites[i]
             val tmp = layoutinflater!!.inflate(R.layout.filter_chip, websiteGroup, false) as Chip
@@ -441,7 +439,7 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener,
     }
 
     override fun onButtonClick(position: Int) {
-//        val vid = downloadsObjects!![position]
+//        val vid = historyObjects!![position]
 //        try {
 //            //mainActivity!!.removeItemFromDownloadQueue(vid, vid!!.downloadedType)
 //        } catch (e: Exception) {
@@ -452,10 +450,10 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener,
     }
 
     private fun findItem(id : Long): HistoryItem? {
-        return downloadsList?.find { it?.id == id }
+        return historyList?.find { it?.id == id }
     }
 
     companion object {
-        private const val TAG = "downloadsFragment"
+        private const val TAG = "historyFragment"
     }
 }
