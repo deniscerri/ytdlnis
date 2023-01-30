@@ -94,8 +94,8 @@ class DownloadWorker(
             "audio" -> {
                 request.addOption("-x")
                 var audioQualityId : String = downloadItem.format.format_id
-                if (audioQualityId == "0") audioQualityId = "ba"
-                var ext = downloadItem.format.container
+                if (audioQualityId == "0" || audioQualityId.isEmpty()) audioQualityId = "ba"
+                val ext = downloadItem.format.container
                 request.addOption("-f", audioQualityId)
                 request.addOption("--audio-format", ext)
                 request.addOption("--embed-metadata")
@@ -181,15 +181,13 @@ class DownloadWorker(
         }.onSuccess {
             //move file from internal to set download directory
 
-            moveFile(tempFileDir.absoluteFile, downloadLocation){ progress ->
+            val finalPath = moveFile(tempFileDir.absoluteFile, downloadLocation){ progress ->
                 setProgressAsync(workDataOf("progress" to progress))
             }
             //put download in history
             val incognito = sharedPreferences.getBoolean("incognito", false)
             if (!incognito) {
                 val unixtime = System.currentTimeMillis() / 1000
-                val fileUtil = FileUtil()
-                val finalPath = fileUtil.formatPath(downloadItem.downloadPath) + downloadItem.author + " - " + downloadItem.title + "." + downloadItem.format.container
                 val historyItem = HistoryItem(0, downloadItem.url, downloadItem.title, downloadItem.author, downloadItem.duration, downloadItem.thumb, downloadItem.type, unixtime, finalPath, downloadItem.website, downloadItem.format)
                 runBlocking {
                     historyDao.insert(historyItem)
@@ -232,14 +230,15 @@ class DownloadWorker(
     }
 
 
-    private fun moveFile(originDir: File, downLocation: String, progress: (progress: Int) -> Unit){
+    private fun moveFile(originDir: File, downLocation: String, progress: (progress: Int) -> Unit) : String{
         val destDir = Uri.parse(downLocation).run {
             DocumentsContract.buildChildDocumentsUriUsingTree(this, DocumentsContract.getTreeDocumentId(this))
         }
         val fileUtil = FileUtil()
-        fileUtil.moveFile(originDir, context, downLocation){ p ->
+        val path = fileUtil.moveFile(originDir, context, downLocation){ p ->
             progress(p)
         }
+        return path
     }
 
     companion object {

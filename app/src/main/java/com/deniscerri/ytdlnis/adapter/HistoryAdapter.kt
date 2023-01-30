@@ -112,7 +112,6 @@ class HistoryAdapter(onItemClickListener: OnItemClickListener, activity: Activit
         //IS IN THE FILE SYSTEM?
         val path = item.downloadPath
         val file = File(path)
-        Log.e("aa", file.absolutePath + " " + file.isFile)
         if (!file.exists() && path.isNotEmpty()) {
             filePresent = false
             thumbnail.colorFilter = ColorMatrixColorFilter(object : ColorMatrix() {

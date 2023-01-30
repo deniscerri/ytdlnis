@@ -61,16 +61,17 @@ class ResultViewModel(application: Application) : AndroidViewModel(application) 
         try {
             when (type) {
                 "Search" -> {
-                    repository.search(inputQuery, resetResults);
+                    repository.search(inputQuery, resetResults)
                 }
                 "Video" -> {
-                    repository.getOne(inputQuery, resetResults);
+                    repository.getOne(inputQuery, resetResults)
                 }
                 "Playlist" -> {
-                    repository.getPlaylist(inputQuery, resetResults);
+                    repository.getPlaylist(inputQuery, resetResults)
+
                 }
                 "Default" -> {
-                    repository.getDefault(inputQuery, resetResults);
+                    repository.getDefault(inputQuery, resetResults)
                 }
             }
         } catch (e: Exception) {
@@ -92,8 +93,6 @@ class ResultViewModel(application: Application) : AndroidViewModel(application) 
     fun update(item: ResultItem) = viewModelScope.launch(Dispatchers.IO){
         repository.update(item);
     }
-
-
 
     fun getItemByURL(url: String) : ResultItem {
         return repository.getItemByURL(url)

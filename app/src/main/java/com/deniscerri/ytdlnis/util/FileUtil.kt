@@ -58,7 +58,7 @@ class FileUtil() {
         return formattedPath.toString()
     }
 
-    fun scanMedia(destDir: String, context: Context) : String {
+    private fun scanMedia(destDir: String, context: Context) : String {
         val files = ArrayList<File>()
         val path = File(formatPath(destDir))
 
@@ -79,7 +79,7 @@ class FileUtil() {
 
         return context.getString(R.string.unfound_file);
     }
-     fun moveFile(originDir: File, context: Context, destDir: String, progress: (p: Int) -> Unit){
+     fun moveFile(originDir: File, context: Context, destDir: String, progress: (p: Int) -> Unit) : String {
         originDir.listFiles()?.forEach {
             if (it.name.equals("rList")){
                 it.delete()
@@ -131,7 +131,7 @@ class FileUtil() {
             }
         }
          originDir.delete()
-         scanMedia(destDir, context)
+         return scanMedia(destDir, context)
     }
 
     fun convertFileSize(s: Long): String{

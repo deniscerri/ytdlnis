@@ -72,17 +72,18 @@ class ResultRepository(private val resultDao: ResultDao, private val commandTemp
         var nextPageToken = ""
         if (resetResults) deleteAll()
         val infoUtil = InfoUtil(context)
+        val items : ArrayList<ResultItem?> = arrayListOf()
         do {
             val tmp = infoUtil.getPlaylist(query, nextPageToken)
-            val tmpVids = tmp.videos
+            items.addAll(tmp.videos)
             val tmpToken = tmp.nextPageToken
-            tmpVids.forEach {
-                resultDao.insert(it!!)
-            }
             if (tmpToken.isEmpty()) break
             if (tmpToken == nextPageToken) break
             nextPageToken = tmpToken
         } while (true)
+        items.forEach {
+            resultDao.insert(it!!)
+        }
     }
 
     suspend fun getDefault(inputQuery: String, resetResults: Boolean){
@@ -114,5 +115,4 @@ class ResultRepository(private val resultDao: ResultDao, private val commandTemp
     fun getItemByURL(url: String): ResultItem {
         return resultDao.getResultByURL(url)
     }
-
 }

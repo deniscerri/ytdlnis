@@ -45,8 +45,9 @@ class InfoUtil(context: Context) {
                 "US"
             }
         }
-        if (useInvidous == false){
+        if (!useInvidous){
             val res = genericRequest(invidousURL + "stats")
+            Log.e("Assa", res.toString())
             useInvidous = res.length() != 0
         }
     }
@@ -524,7 +525,6 @@ class InfoUtil(context: Context) {
     }
 
     fun getSearchSuggestions(query: String): ArrayList<String> {
-        if (!useInvidous) return ArrayList()
         val url = invidousURL + "search/suggestions?q=" + query
         val res = genericRequest(url)
         if (res.length() == 0) return ArrayList()
