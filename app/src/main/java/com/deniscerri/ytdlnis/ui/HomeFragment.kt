@@ -20,6 +20,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.work.WorkManager
 import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.adapter.HomeAdapter
@@ -71,6 +72,8 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
     private var firstBoot = true
     private var sharedPreferences: SharedPreferences? = null
     private var _binding : FragmentHomeBinding? = null
+
+    private var workManager: WorkManager? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -188,6 +191,14 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
         } else {
             resultViewModel.checkTrending()
         }
+
+        WorkManager.getInstance(requireContext())
+            .getWorkInfosByTagLiveData("download")
+            .observe(viewLifecycleOwner){ list ->
+                list.forEach {
+                    //Toast.makeText(context, """${it.progress.getInt("progress", 0)} ${it.progress.getString("output")}""", Toast.LENGTH_SHORT).show()
+                }
+            }
     }
 
     private fun initMenu() {
@@ -341,8 +352,8 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
 
     private fun showSingleDownloadSheet(resultItem : ResultItem, type: String){
         val downloadItem = downloadViewModel.createDownloadItemFromResult(resultItem, type)
-        downloadViewModel.insertDownload(downloadItem).observe(viewLifecycleOwner) {
-            downloadItem.id = it
+        downloadViewModel.putDownloadsForProcessing(listOf(resultItem), listOf(downloadItem)).observe(viewLifecycleOwner) {
+            downloadItem.id = it[0]
             val bottomSheet = DownloadBottomSheetDialog(downloadItem)
             bottomSheet.show(parentFragmentManager, "downloadSingleSheet")
         }
@@ -395,7 +406,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
         if (viewIdName.isNotEmpty()) {
             if (viewIdName == "downloadSelected") {
                 val downloadList = downloadViewModel.turnResultItemstoDownloadItems(selectedObjects!!)
-                downloadViewModel.putDownloadsForProcessing(selectedObjects!!).observe(viewLifecycleOwner) {
+                downloadViewModel.putDownloadsForProcessing(selectedObjects!!, downloadList).observe(viewLifecycleOwner) {
                     it.forEachIndexed { i, itemID ->
                         downloadList[i].id = itemID
                     }
@@ -405,7 +416,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
             }
             if (viewIdName == "downloadAll") {
                 val downloadList = downloadViewModel.turnResultItemstoDownloadItems(resultsList!!)
-                downloadViewModel.putDownloadsForProcessing(resultsList!!).observe(viewLifecycleOwner) {
+                downloadViewModel.putDownloadsForProcessing(resultsList!!, downloadList).observe(viewLifecycleOwner) {
                     it.forEachIndexed { i, itemID ->
                         downloadList[i].id = itemID
                     }

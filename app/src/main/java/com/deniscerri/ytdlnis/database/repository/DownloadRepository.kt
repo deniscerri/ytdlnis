@@ -1,9 +1,9 @@
 package com.deniscerri.ytdlnis.database.repository
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import com.deniscerri.ytdlnis.database.dao.DownloadDao
 import com.deniscerri.ytdlnis.database.models.DownloadItem
+import com.deniscerri.ytdlnis.database.models.ResultItem
 
 class DownloadRepository(private val downloadDao: DownloadDao) {
     val allDownloads : LiveData<List<DownloadItem>> = downloadDao.getAllDownloads()
@@ -11,8 +11,8 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
     val queuedDownloads : LiveData<List<DownloadItem>> = downloadDao.getQueuedDownloads()
     val processingDownloads : LiveData<List<DownloadItem>> = downloadDao.getProcessingDownloads()
 
-    enum class status {
-        Active, Queued, Errored, Processing
+    enum class Status {
+        Active, Queued, Error, Processing, Cancelled
     }
 
     suspend fun insert(item: DownloadItem) : Long {
@@ -27,12 +27,8 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
         downloadDao.update(item)
     }
 
-    fun getDownloadByWorkID(workID: Long) : DownloadItem{
-        return downloadDao.getDownloadByWorkId(workID)
-    }
 
-
-    suspend fun setDownloadStatus(item: DownloadItem, status: status){
+    suspend fun setDownloadStatus(item: DownloadItem, status: Status){
         item.status = status.toString()
         update(item);
     }
@@ -51,5 +47,9 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
 
     suspend fun queueAllProcessing(){
         downloadDao.queueAllProcessing()
+    }
+
+    fun checkIfPresent(item: ResultItem): DownloadItem{
+        return downloadDao.checkIfErrorOrCancelled(item.url)
     }
 }

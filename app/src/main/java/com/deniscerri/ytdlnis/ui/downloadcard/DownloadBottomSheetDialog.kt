@@ -104,20 +104,7 @@ class DownloadBottomSheetDialog(item: DownloadItem) : BottomSheetDialogFragment(
 
         val download = view.findViewById<Button>(R.id.bottomsheet_download_button)
         download!!.setOnClickListener {
-            downloadItem.status = DownloadRepository.status.Queued.toString()
-            val workID = SystemClock.uptimeMillis()
-            downloadItem.workID = workID
-            downloadViewModel.insertDownload(downloadItem)
-
-            val workRequest = OneTimeWorkRequestBuilder<DownloadWorker>()
-                .setInputData(Data.Builder().putLong("workID", workID).build())
-                .build()
-            WorkManager.getInstance(requireContext()).beginUniqueWork(
-                downloadItem.id.toString(),
-                ExistingWorkPolicy.KEEP,
-                workRequest
-            ).enqueue()
-
+            downloadViewModel.queueDownloads(listOf(downloadItem))
             dismiss()
         }
     }

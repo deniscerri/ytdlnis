@@ -3,8 +3,6 @@ package com.deniscerri.ytdlnis.database.dao
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.deniscerri.ytdlnis.database.models.DownloadItem
-import com.deniscerri.ytdlnis.database.models.HistoryItem
-import com.deniscerri.ytdlnis.util.FileUtil
 
 @Dao
 interface DownloadDao {
@@ -20,9 +18,6 @@ interface DownloadDao {
 
     @Query("SELECT * FROM downloads WHERE status='Processing'")
     fun getProcessingDownloads() : LiveData<List<DownloadItem>>
-
-    @Query("SELECT * FROM downloads WHERE workID=:workID")
-    fun getDownloadByWorkId(workID: Long) : DownloadItem
 
     @Query("SELECT * FROM downloads WHERE id=:id LIMIT 1")
     fun getDownloadById(id: Long) : DownloadItem
@@ -50,4 +45,8 @@ interface DownloadDao {
 
     @Query("UPDATE downloads SET status='Queued' WHERE status='Processing'")
     suspend fun queueAllProcessing()
+
+
+    @Query("SELECT * FROM downloads WHERE url=:url AND (status='Error' OR status='Cancelled') LIMIT 1")
+    fun checkIfErrorOrCancelled(url: String) : DownloadItem
 }

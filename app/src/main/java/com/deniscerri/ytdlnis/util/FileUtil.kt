@@ -79,6 +79,7 @@ class FileUtil() {
 
         return context.getString(R.string.unfound_file);
     }
+    @Throws(Exception::class)
      fun moveFile(originDir: File, context: Context, destDir: String, progress: (p: Int) -> Unit) : String {
         originDir.listFiles()?.forEach {
             if (it.name.equals("rList")){
@@ -88,7 +89,7 @@ class FileUtil() {
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
                 val f = File(formatPath(destDir)+"/"+it.name)
-                if (!f.exists()) f.mkdir()
+                f.mkdirs()
                 Files.move(it.toPath(), f.toPath(), StandardCopyOption.REPLACE_EXISTING)
                 progress(100)
             }else{
