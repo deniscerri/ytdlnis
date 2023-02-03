@@ -108,9 +108,14 @@ class DownloadWorker(
                 request.addOption("-x")
                 var audioQualityId : String = downloadItem.format.format_id
                 if (audioQualityId == "0" || audioQualityId.isEmpty()) audioQualityId = "ba"
-                val ext = downloadItem.format.container
                 request.addOption("-f", audioQualityId)
-                request.addOption("--audio-format", ext)
+
+                val ext = downloadItem.format.container
+                if(ext != context.getString(R.string.defaultValue)){
+                    request.addOption("--audio-format", ext)
+                }else{
+                    request.addOption("--audio-format", sharedPreferences.getString("audio_format", "mp3")!!)
+                }
                 request.addOption("--embed-metadata")
 
                 val embedThumb = sharedPreferences.getBoolean("embed_thumbnail", false)

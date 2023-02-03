@@ -17,6 +17,7 @@ import java.nio.file.Files
 import java.nio.file.StandardCopyOption
 import java.text.DecimalFormat
 import kotlin.math.log10
+import kotlin.math.max
 import kotlin.math.pow
 
 class FileUtil() {
@@ -58,21 +59,18 @@ class FileUtil() {
         return formattedPath.toString()
     }
 
-    private fun scanMedia(destDir: String, context: Context) : String {
-        val files = ArrayList<File>()
+    private fun scanMedia(destDir: String, fileName: String, context: Context) : String {
+        val file : File
         val path = File(formatPath(destDir))
 
         try {
-            for (file in path.listFiles()!!) {
-                if (file.isFile) {
-                    files.add(file)
-                }
-            }
+            file = path.listFiles()?.find {
+                it!!.name == fileName
+            }!!
 
-            val paths = arrayOfNulls<String>(files.size)
-            for (i in files.indices) paths[i] = files[i].absolutePath
+            val paths = arrayOf(file.absolutePath)
             MediaScannerConnection.scanFile(context, paths, null, null)
-            return paths[0]!!
+            return paths[0]
         }catch (e: Exception){
             e.printStackTrace()
         }
@@ -81,10 +79,17 @@ class FileUtil() {
     }
     @Throws(Exception::class)
      fun moveFile(originDir: File, context: Context, destDir: String, progress: (p: Int) -> Unit) : String {
+        var fileName = ""
+        var maxSize = 0L
         originDir.listFiles()?.forEach {
             if (it.name.equals("rList")){
                 it.delete()
                 return@forEach
+            }
+
+            if (it.length() > maxSize){
+                maxSize = it.length()
+                fileName = it.name
             }
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
@@ -131,8 +136,12 @@ class FileUtil() {
                 it.delete()
             }
         }
-         originDir.delete()
-         return scanMedia(destDir, context)
+        originDir.delete()
+        return if (maxSize > 0L){
+            scanMedia(destDir, fileName, context)
+        }else{
+            context.getString(R.string.unfound_file)
+        }
     }
 
     fun convertFileSize(s: Long): String{

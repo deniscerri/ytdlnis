@@ -29,12 +29,8 @@ class HistoryRepository(private val historyDao: HistoryDao) {
         historyDao.insert(item)
     }
 
-    suspend fun delete(item: HistoryItem, deleteFile: Boolean){
-        historyDao.delete(item.id!!)
-        if (deleteFile){
-            val fileUtil = FileUtil()
-            fileUtil.deleteFile(item.downloadPath)
-        }
+    suspend fun delete(item: HistoryItem){
+        historyDao.delete(item.id)
     }
 
     suspend fun deleteAll(){

@@ -160,8 +160,6 @@
     <string name="schedule">Schedule</string>
     <string name="concurrent_downloads">Concurrent Downloads</string>
     <string name="concurrent_downloads_summary">Number of downloads executing at the same time</string>
-    <string name="best">Best</string>
-    <string name="worst">Worst</string>
     <string name="defaultValue">Default</string>
     <string name="container">Container</string>
     <string name="template">Template</string>

@@ -17,20 +17,18 @@ import androidx.lifecycle.lifecycleScope
 import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.DownloadItem
-import com.deniscerri.ytdlnis.database.models.Format
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdlnis.databinding.FragmentHomeBinding
 import com.deniscerri.ytdlnis.util.FileUtil
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel.Type
 
-class DownloadAudioFragment(private val downloadItem: DownloadItem) : Fragment() {
+
+class DownloadAudioFragment(private var downloadItem: DownloadItem) : Fragment() {
     private var _binding : FragmentHomeBinding? = null
     private var fragmentView: View? = null
     private var activity: Activity? = null
@@ -43,24 +41,7 @@ class DownloadAudioFragment(private val downloadItem: DownloadItem) : Fragment()
     private lateinit var author : TextInputLayout
     private lateinit var saveDir : TextInputLayout
 
-    override fun onResume() {
-        super.onResume()
-        downloadItem.type = "audio"
-        lifecycleScope.launch{
-//            val item = withContext(Dispatchers.IO){
-//                downloadViewModel.getItemByID(downloadItem.id)
-//            }
-//            if (::title.isInitialized){
-//                title.editText!!.setText(item.title)
-//                downloadItem.title = item.title
-//            }
-//            if(::author.isInitialized){
-//                author.editText!!.setText(item.author)
-//                downloadItem.author = item.author
-//            }
-        }
-        //downloadViewModel.updateDownload(downloadItem)
-    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -79,11 +60,11 @@ class DownloadAudioFragment(private val downloadItem: DownloadItem) : Fragment()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        downloadItem.type = "audio"
         lifecycleScope.launch {
             val resultItem = withContext(Dispatchers.IO){
                 resultViewModel.getItemByURL(downloadItem.url)
             }
-            val type = downloadItem.type
 
             val sharedPreferences =
                 requireContext().getSharedPreferences("root_preferences", Activity.MODE_PRIVATE)
@@ -128,13 +109,11 @@ class DownloadAudioFragment(private val downloadItem: DownloadItem) : Fragment()
                     audioPathResultLauncher.launch(intent)
                 }
 
-                val formats = resultItem.formats.filter { it.format_note.contains("audio", ignoreCase = true) }
                 val format = view.findViewById<TextInputLayout>(R.id.format)
-                if (formats.isEmpty()) {
+                if (resultItem.formats.isEmpty()) {
                     format.visibility = View.GONE
-                    downloadItem.format = Format()
                 } else {
-                    val formatTitles = formats.map {
+                    val formatTitles = resultItem.formats.map {
                         if (it.format_note.contains("AUDIO_QUALITY_")) {
                             it.format_note.replace(
                                 "AUDIO_QUALITY_",
@@ -157,12 +136,12 @@ class DownloadAudioFragment(private val downloadItem: DownloadItem) : Fragment()
                         )
                     )
                     if (formatTitles.isNotEmpty()) {
-                        autoCompleteTextView!!.setText(formatTitles[formats.lastIndex], false)
+                        autoCompleteTextView!!.setText(formatTitles[resultItem.formats.lastIndex], false)
                     }
                     (format!!.editText as AutoCompleteTextView?)!!.onItemClickListener =
                         AdapterView.OnItemClickListener { _: AdapterView<*>?, _: View?, index: Int, _: Long ->
-                            downloadItem.format.format_note = formats[index].format_note
-                            downloadItem.format.format_id = formats[index].format_id
+                            downloadItem.format.format_note = resultItem.formats[index].format_note
+                            downloadItem.format.format_id = resultItem.formats[index].format_id
                         }
                 }
 
@@ -179,8 +158,12 @@ class DownloadAudioFragment(private val downloadItem: DownloadItem) : Fragment()
                         containers
                     )
                 )
-                val selectedContainer: String = formats.find { downloadItem.format.format_note == it.format_note }?.container
-                    ?: sharedPreferences.getString("audio_format", "mp3")!!
+                Log.e("aa", downloadItem.format.container)
+                val selectedContainer: String = if (containers.contains(downloadItem.format.container)){
+                    downloadItem.format.container
+                }else{
+                    containers[0]
+                }
                 downloadItem.format.container = selectedContainer
                 containerAutoCompleteTextView!!.setText(selectedContainer, false)
                 (container!!.editText as AutoCompleteTextView?)!!.onItemClickListener =

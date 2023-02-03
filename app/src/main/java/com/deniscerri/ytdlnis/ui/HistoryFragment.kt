@@ -38,8 +38,7 @@ import java.io.File
 /**
  * A fragment representing a list of Items.
  */
-class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener,
-    OnClickListener, OnLongClickListener {
+class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
     private lateinit var historyViewModel : HistoryViewModel
 
     private var fragmentView: View? = null
@@ -90,7 +89,9 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener,
         deleteFab = view.findViewById(R.id.delete_selected_fab)
         fileUtil = FileUtil()
         deleteFab?.tag = "deleteSelected"
-        deleteFab?.setOnClickListener(this)
+        deleteFab?.setOnClickListener{
+            removeSelectedItems()
+        }
         uiHandler = Handler(Looper.getMainLooper())
         selectedObjects = ArrayList()
 
@@ -129,6 +130,7 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener,
         historyViewModel.getFilteredList().observe(viewLifecycleOwner) {
             historyAdapter!!.submitList(it)
             historyList = it
+            scrollToTop()
         }
 
         initMenu()
@@ -301,31 +303,6 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener,
         }
     }
 
-    override fun onClick(v: View) {
-        when (v.id) {
-            R.id.bottomsheet_remove_button -> {
-                removeItem(v.tag as Long)
-            }
-            R.id.bottom_sheet_link -> {
-                openLinkIntent(v.tag as Long)
-            }
-            R.id.bottomsheet_open_file_button -> {
-                openFileIntent(v.tag as Long)
-            }
-            R.id.delete_selected_fab -> {
-                removeSelectedItems()
-            }
-        }
-    }
-
-    override fun onLongClick(v: View): Boolean {
-        val id = v.id
-        if (id == R.id.bottom_sheet_link) {
-            copyLinkToClipBoard(v.tag as Long)
-            return true
-        }
-        return false
-    }
 
     private fun removeSelectedItems() {
         if (bottomSheet != null) bottomSheet!!.hide()
@@ -348,25 +325,23 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener,
         deleteDialog.show()
     }
 
-    private fun removeItem(id: Long) {
+    private fun removeItem(item: HistoryItem) {
         if (bottomSheet != null) bottomSheet!!.hide()
         val deleteFile = booleanArrayOf(false)
-        val v = findItem(id)
         val deleteDialog = MaterialAlertDialogBuilder(fragmentContext!!)
-        deleteDialog.setTitle(getString(R.string.you_are_going_to_delete) + " \"" + v!!.title + "\"!")
+        deleteDialog.setTitle(getString(R.string.you_are_going_to_delete) + " \"" + item.title + "\"!")
         deleteDialog.setMultiChoiceItems(
             arrayOf(getString(R.string.delete_file_too)),
             booleanArrayOf(false)
         ) { _: DialogInterface?, _: Int, b: Boolean -> deleteFile[0] = b }
         deleteDialog.setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, _: Int -> dialogInterface.cancel() }
         deleteDialog.setPositiveButton(getString(R.string.ok)) { _: DialogInterface?, _: Int ->
-              historyViewModel.delete(v, deleteFile[0])
+              historyViewModel.delete(item, deleteFile[0])
         }
         deleteDialog.show()
     }
 
-    private fun copyLinkToClipBoard(id: Long) {
-        val url = findItem(id)?.url
+    private fun copyLinkToClipBoard(url: String) {
         val clipboard = context?.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         val clip = ClipData.newPlainText(getString(R.string.url), url)
         clipboard.setPrimaryClip(clip)
@@ -375,16 +350,14 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener,
             .show()
     }
 
-    private fun openLinkIntent(id: Long) {
-        val url = findItem(id)?.url
+    private fun openLinkIntent(url: String) {
         val i = Intent(Intent.ACTION_VIEW)
         i.data = Uri.parse(url)
         if (bottomSheet != null) bottomSheet!!.hide()
         startActivity(i)
     }
 
-    private fun openFileIntent(id: Long) {
-        val downloadPath = findItem(id)!!.downloadPath
+    private fun openFileIntent(downloadPath: String) {
         val file = File(downloadPath)
         val uri = FileProvider.getUriForFile(
             fragmentContext!!,
@@ -411,14 +384,23 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener,
         val url = video.url
         link!!.text = url
         link.tag = videoID
-        link.setOnClickListener(this)
-        link.setOnLongClickListener(this)
+        link.setOnClickListener{
+            openLinkIntent(video.url)
+        }
+        link.setOnLongClickListener{
+            copyLinkToClipBoard(video.url)
+            true
+        }
         val remove = bottomSheet!!.findViewById<Button>(R.id.bottomsheet_remove_button)
         remove!!.tag = videoID
-        remove.setOnClickListener(this)
+        remove.setOnClickListener{
+            removeItem(video)
+        }
         val openFile = bottomSheet!!.findViewById<Button>(R.id.bottomsheet_open_file_button)
         openFile!!.tag = videoID
-        openFile.setOnClickListener(this)
+        openFile.setOnClickListener{
+            openFileIntent(video.downloadPath)
+        }
         if (!isPresent) openFile.visibility = GONE
         bottomSheet!!.show()
         bottomSheet!!.window!!.setLayout(
@@ -436,17 +418,6 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener,
         } else {
             deleteFab!!.visibility = GONE
         }
-    }
-
-    override fun onButtonClick(position: Int) {
-//        val vid = historyObjects!![position]
-//        try {
-//            //mainActivity!!.removeItemFromDownloadQueue(vid, vid!!.downloadedType)
-//        } catch (e: Exception) {
-//            val info = DownloadInfo()
-//            info.video = vid
-//            info.downloadType = vid!!.downloadedType
-//        }
     }
 
     private fun findItem(id : Long): HistoryItem? {

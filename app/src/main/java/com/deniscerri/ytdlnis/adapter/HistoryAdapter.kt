@@ -165,7 +165,6 @@ class HistoryAdapter(onItemClickListener: OnItemClickListener, activity: Activit
     interface OnItemClickListener {
         fun onCardClick(itemID: Long, isPresent: Boolean)
         fun onCardSelect(itemID: Long, isChecked: Boolean)
-        fun onButtonClick(position: Int)
     }
 
     @SuppressLint("NotifyDataSetChanged")

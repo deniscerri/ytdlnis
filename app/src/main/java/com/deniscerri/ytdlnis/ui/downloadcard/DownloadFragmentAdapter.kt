@@ -9,7 +9,13 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.google.gson.Gson
 
-class DownloadFragmentAdapter (private val downloadItem : DownloadItem, fragmentManager : FragmentManager, lifecycle : Lifecycle) : FragmentStateAdapter(fragmentManager, lifecycle) {
+class DownloadFragmentAdapter (
+    private val audioDownloadItem : DownloadItem,
+    private val videoDownloadItem : DownloadItem,
+    private val commandDownloadItem : DownloadItem,
+    fragmentManager : FragmentManager,
+    lifecycle : Lifecycle
+) : FragmentStateAdapter(fragmentManager, lifecycle) {
 
     override fun getItemCount(): Int {
         return 3
@@ -18,18 +24,13 @@ class DownloadFragmentAdapter (private val downloadItem : DownloadItem, fragment
     override fun createFragment(position: Int): Fragment {
         when (position) {
             0 -> {
-                return DownloadAudioFragment(downloadItem)
+                return DownloadAudioFragment(audioDownloadItem)
             }
             1 -> {
-                return DownloadVideoFragment(downloadItem)
+                return DownloadVideoFragment(videoDownloadItem)
             }
         }
-        return DownloadCommandFragment(downloadItem)
+        return DownloadCommandFragment(commandDownloadItem)
     }
 
-
-    private fun clone(item: DownloadItem) : DownloadItem {
-        val stringItem = Gson().toJson(item, DownloadItem::class.java)
-        return Gson().fromJson(stringItem, DownloadItem::class.java)
-    }
 }

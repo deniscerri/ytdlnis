@@ -4,39 +4,32 @@ import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Bundle
-import android.os.SystemClock
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.Adapter
 import android.widget.Button
-import android.widget.LinearLayout
-import androidx.core.view.get
-import androidx.fragment.app.FragmentTransaction
-import androidx.fragment.app.findFragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
-import androidx.work.Data
-import androidx.work.ExistingWorkPolicy
-import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.WorkManager
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.DownloadItem
-import com.deniscerri.ytdlnis.database.repository.DownloadRepository
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
-import com.deniscerri.ytdlnis.work.DownloadWorker
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.tabs.TabLayout
+import com.google.gson.Gson
+import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel.Type
 
-class DownloadBottomSheetDialog(item: DownloadItem) : BottomSheetDialogFragment() {
+class DownloadBottomSheetDialog(private val downloadItem: DownloadItem) : BottomSheetDialogFragment() {
     private lateinit var tabLayout: TabLayout
     private lateinit var viewPager2: ViewPager2
     private lateinit var fragmentAdapter : DownloadFragmentAdapter
-    private val downloadItem = item
     private lateinit var downloadViewModel: DownloadViewModel
+
+    private var downloadType = Type.VIDEO
+    private val audioDownloadItem = clone(downloadItem)
+    private val videoDownloadItem = clone(downloadItem)
+    private val commandDownloadItem = clone(downloadItem)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,11 +48,17 @@ class DownloadBottomSheetDialog(item: DownloadItem) : BottomSheetDialogFragment(
         val view = LayoutInflater.from(context).inflate(R.layout.download_bottom_sheet, null)
         dialog.setContentView(view)
 
+        Log.e("aaa", downloadItem.toString())
+
         tabLayout = view.findViewById(R.id.download_tablayout)
         viewPager2 = view.findViewById(R.id.download_viewpager)
 
         val fragmentManager = parentFragmentManager
-        fragmentAdapter = DownloadFragmentAdapter(downloadItem, fragmentManager, lifecycle)
+        fragmentAdapter = DownloadFragmentAdapter(
+            audioDownloadItem, videoDownloadItem, commandDownloadItem,
+            fragmentManager,
+            lifecycle
+        )
         viewPager2.adapter = fragmentAdapter
         viewPager2.isSaveFromParentEnabled = false
 
@@ -104,7 +103,13 @@ class DownloadBottomSheetDialog(item: DownloadItem) : BottomSheetDialogFragment(
 
         val download = view.findViewById<Button>(R.id.bottomsheet_download_button)
         download!!.setOnClickListener {
-            downloadViewModel.queueDownloads(listOf(downloadItem))
+            Log.e("aa", tabLayout.selectedTabPosition.toString())
+            val item: List<DownloadItem> = when(tabLayout.selectedTabPosition){
+                0 -> listOf(audioDownloadItem)
+                1 -> listOf(videoDownloadItem)
+                else -> listOf(commandDownloadItem)
+            }
+            downloadViewModel.queueDownloads(item)
             dismiss()
         }
     }
@@ -128,6 +133,15 @@ class DownloadBottomSheetDialog(item: DownloadItem) : BottomSheetDialogFragment(
             }
         }
         downloadViewModel.deleteSingleProcessing(downloadItem)
+    }
+
+    fun updateType(type: Type){
+        downloadType = type
+    }
+
+    private fun clone(item: DownloadItem) : DownloadItem {
+        val stringItem = Gson().toJson(item, DownloadItem::class.java)
+        return Gson().fromJson(stringItem, DownloadItem::class.java)
     }
 
 }

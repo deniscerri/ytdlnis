@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,7 +13,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import com.deniscerri.ytdlnis.App
 import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.DownloadItem
@@ -23,12 +21,13 @@ import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdlnis.databinding.FragmentHomeBinding
 import com.deniscerri.ytdlnis.util.FileUtil
-import com.google.android.material.button.MaterialButton
 import com.google.android.material.chip.Chip
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel.Type
+
 
 class DownloadVideoFragment(private val downloadItem: DownloadItem) : Fragment() {
     private var _binding : FragmentHomeBinding? = null
@@ -43,24 +42,8 @@ class DownloadVideoFragment(private val downloadItem: DownloadItem) : Fragment()
     private lateinit var author : TextInputLayout
     private lateinit var saveDir : TextInputLayout
 
-    override fun onResume() {
-        super.onResume()
-        downloadItem.type = "video"
-//        lifecycleScope.launch{
-//            val item = withContext(Dispatchers.IO){
-//                downloadViewModel.getItemByID(downloadItem.id)
-//            }
-//            if (::title.isInitialized){
-//                title.editText!!.setText(item.title)
-//                downloadItem.title = item.title
-//            }
-//            if(::author.isInitialized){
-//                author.editText!!.setText(item.author)
-//                downloadItem.author = item.author
-//            }
-//        }
-        //downloadviewmodel.updateDownload(downloadItem)
-    }
+
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -79,7 +62,7 @@ class DownloadVideoFragment(private val downloadItem: DownloadItem) : Fragment()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        downloadItem.type = "video"
         lifecycleScope.launch {
             val resultItem = withContext(Dispatchers.IO){
                 resultViewModel.getItemByURL(downloadItem.url)
@@ -140,12 +123,16 @@ class DownloadVideoFragment(private val downloadItem: DownloadItem) : Fragment()
                 formats.addAll(resultItem.formats.filter { !it.format_note.contains("audio", ignoreCase = true) })
                 if (formats.isEmpty()) {
                     val videoFormats = resources.getStringArray(R.array.video_formats)
-                    videoFormats.forEach { formats.add(Format(it, "", 0, it)) }
+                    val container = sharedPreferences.getString("video_format", "Default")
+                    videoFormats.forEach { formats.add(Format(it, container!!, 0, it)) }
                 }
 
                 val formatTitles = formats.map {
                     it.format_note + if (it.filesize == 0L) "" else " / " + fileUtil.convertFileSize(it.filesize)
                 }
+
+
+                downloadItem.format = formats[formats.lastIndex]
 
                 val format = view.findViewById<TextInputLayout>(R.id.format)
                 val autoCompleteTextView =
@@ -181,10 +168,7 @@ class DownloadVideoFragment(private val downloadItem: DownloadItem) : Fragment()
                         containers
                     )
                 )
-                var selectedContainer: String = downloadItem.format.container
-                if (selectedContainer.isEmpty()){
-                    selectedContainer = sharedPreferences.getString("video_format", "Default")!!
-                }
+                val selectedContainer: String = downloadItem.format.container
                 containerAutoCompleteTextView!!.setText(selectedContainer, false)
                 (container!!.editText as AutoCompleteTextView?)!!.onItemClickListener =
                     AdapterView.OnItemClickListener { _: AdapterView<*>?, _: View?, index: Int, _: Long ->
@@ -193,13 +177,22 @@ class DownloadVideoFragment(private val downloadItem: DownloadItem) : Fragment()
                     }
 
                 val embedSubs = view.findViewById<Chip>(R.id.embed_subtitles)
-                embedSubs!!.isChecked = sharedPreferences.getBoolean("embed_subtitles", false)
+                embedSubs!!.isChecked = embedSubs.isChecked
+                embedSubs.setOnClickListener {
+                    downloadItem.embedSubs = embedSubs.isChecked
+                }
 
                 val addChapters = view.findViewById<Chip>(R.id.add_chapters)
-                addChapters!!.isChecked = sharedPreferences.getBoolean("add_chapters", false)
+                addChapters!!.isChecked = addChapters.isChecked
+                addChapters.setOnClickListener{
+                    downloadItem.addChapters = addChapters.isChecked
+                }
 
                 val saveThumbnail = view.findViewById<Chip>(R.id.save_thumbnail)
-                saveThumbnail!!.isChecked = sharedPreferences.getBoolean("write_thumbnail", false)
+                saveThumbnail!!.isChecked = saveThumbnail.isChecked
+                saveThumbnail.setOnClickListener {
+                    downloadItem.SaveThumb = saveThumbnail.isChecked
+                }
 
             } catch (e: Exception) {
                 e.printStackTrace()

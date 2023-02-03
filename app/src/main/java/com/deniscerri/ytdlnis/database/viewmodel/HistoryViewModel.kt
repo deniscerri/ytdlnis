@@ -13,6 +13,7 @@ import com.deniscerri.ytdlnis.database.DBManager
 import com.deniscerri.ytdlnis.database.models.HistoryItem
 import com.deniscerri.ytdlnis.database.repository.HistoryRepository
 import com.deniscerri.ytdlnis.database.repository.HistoryRepository.HistorySort
+import com.deniscerri.ytdlnis.util.FileUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -77,7 +78,11 @@ class HistoryViewModel(application: Application) : AndroidViewModel(application)
     }
 
     fun delete(item: HistoryItem, deleteFile: Boolean) = viewModelScope.launch(Dispatchers.IO){
-        repository.delete(item, deleteFile)
+        repository.delete(item)
+        if (deleteFile){
+            val fileUtil = FileUtil()
+            fileUtil.deleteFile(item.downloadPath)
+        }
     }
 
     fun deleteAll() = viewModelScope.launch(Dispatchers.IO) {

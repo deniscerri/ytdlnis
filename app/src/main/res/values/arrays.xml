@@ -1,5 +1,6 @@
 <resources>
     <string-array name="audio_containers">
+        <item>@string/defaultValue</item>
         <item>mp3</item>
         <item>m4a</item>
         <item>aac</item>
@@ -7,11 +8,6 @@
         <item>flac</item>
         <item>opus</item>
         <item>wav</item>
-    </string-array>
-
-    <string-array name="audio_formats">
-        <item>@string/worst</item>
-        <item>@string/best</item>
     </string-array>
 
     <string-array name="video_containers">

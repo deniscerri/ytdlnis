@@ -33,6 +33,10 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
     val processingDownloads : LiveData<List<DownloadItem>>
 
     private var bestVideoFormat: Format
+    private var bestAudioFormat: Format
+    enum class Type {
+        AUDIO, VIDEO, COMMAND
+    }
 
     init {
         val dao = DBManager.getInstance(application).downloadDao
@@ -45,30 +49,22 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
         activeDownloads = repository.activeDownloads
         processingDownloads = repository.processingDownloads
 
-        val format = getApplication<App>().resources.getStringArray(R.array.video_formats)
-        val container = sharedPreferences.getString("video_format", "Default")
+        val videoFormat = getApplication<App>().resources.getStringArray(R.array.video_formats)
+        val videoContainer = sharedPreferences.getString("video_format", "Default")
         bestVideoFormat = Format(
-            format[format.lastIndex],
-            container!!,
+            videoFormat[videoFormat.lastIndex],
+            videoContainer!!,
             0,
-            format[format.lastIndex]
+            videoFormat[videoFormat.lastIndex]
         )
-    }
 
-    fun startWork(items: List<DownloadItem>){
-        items.forEach {
-            insertDownload(it)
-        }
-
-    }
-
-    fun insertDownload(item: DownloadItem) : LiveData<Long> {
-        val result = MutableLiveData<Long>()
-        viewModelScope.launch(Dispatchers.IO){
-            val id = repository.insert(item)
-            result.postValue(id)
-        }
-        return result
+        val audioContainer = sharedPreferences.getString("audio_format", "mp3")
+        bestAudioFormat = Format(
+            "",
+            audioContainer!!,
+            0,
+            ""
+        )
     }
 
     fun deleteDownload(item: DownloadItem) = viewModelScope.launch(Dispatchers.IO) {
@@ -107,12 +103,12 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
                 return try {
                     resultItem.formats.last { it.format_note.contains("audio", ignoreCase = true) }
                 }catch (e: Exception){
-                    Format()
+                    bestAudioFormat
                 }
             }
             "video" -> {
                 return try {
-                    resultItem.formats[resultItem.formats.lastIndex]
+                    resultItem.formats.last { !it.format_note.contains("audio", ignoreCase = true) }
                 }catch (e: Exception){
                     bestVideoFormat
                 }
