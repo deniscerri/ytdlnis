@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.ResultItem
+import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.progressindicator.LinearProgressIndicator
@@ -84,11 +85,11 @@ class HomeAdapter(onItemClickListener: OnItemClickListener, activity: Activity) 
         val musicBtn = buttonLayout.findViewById<MaterialButton>(R.id.download_music)
         musicBtn.tag = "$videoURL##audio"
         musicBtn.setTag(R.id.cancelDownload, "false")
-        musicBtn.setOnClickListener { onItemClickListener.onButtonClick(videoURL, "audio") }
+        musicBtn.setOnClickListener { onItemClickListener.onButtonClick(videoURL, DownloadViewModel.Type.audio) }
         val videoBtn = buttonLayout.findViewById<MaterialButton>(R.id.download_video)
         videoBtn.tag = "$videoURL##video"
         videoBtn.setTag(R.id.cancelDownload, "false")
-        videoBtn.setOnClickListener { onItemClickListener.onButtonClick(videoURL, "video") }
+        videoBtn.setOnClickListener { onItemClickListener.onButtonClick(videoURL, DownloadViewModel.Type.video) }
 
 
         // PROGRESS BAR ----------------------------------------------------
@@ -159,7 +160,7 @@ class HomeAdapter(onItemClickListener: OnItemClickListener, activity: Activity) 
     }
 
     interface OnItemClickListener {
-        fun onButtonClick(videoURL: String, type: String?)
+        fun onButtonClick(videoURL: String, type: DownloadViewModel.Type?)
         fun onCardClick(videoURL: String, add: Boolean)
     }
 

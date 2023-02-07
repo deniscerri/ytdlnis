@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.DownloadItem
+import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.ResultViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -24,23 +25,17 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel.Type
 
-class ConfigureDownloadBottomSheetDialog(private val downloadItem: DownloadItem) : BottomSheetDialogFragment() {
+class ConfigureDownloadBottomSheetDialog(private val resultItem: ResultItem, private val type: Type) : BottomSheetDialogFragment() {
     private lateinit var tabLayout: TabLayout
     private lateinit var viewPager2: ViewPager2
     private lateinit var fragmentAdapter : DownloadFragmentAdapter
-    private lateinit var currentItem : DownloadItem
     private lateinit var downloadViewModel: DownloadViewModel
     private lateinit var resultViewModel: ResultViewModel
-
-    private val audioDownloadItem =clone(downloadItem)
-    private val videoDownloadItem = clone(downloadItem)
-    private val commandDownloadItem = clone(downloadItem)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
         resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]
-        currentItem = downloadViewModel.cloneDownloadItem(downloadItem)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -61,23 +56,23 @@ class ConfigureDownloadBottomSheetDialog(private val downloadItem: DownloadItem)
 
         val fragmentManager = parentFragmentManager
         fragmentAdapter = DownloadFragmentAdapter(
-            audioDownloadItem,videoDownloadItem,commandDownloadItem,
+            resultItem,
             fragmentManager,
             lifecycle
         )
         viewPager2.adapter = fragmentAdapter
         viewPager2.isSaveFromParentEnabled = false
 
-        when(downloadItem.type) {
-            "audio" -> {
+        when(type) {
+            Type.audio -> {
                 tabLayout.selectTab(tabLayout.getTabAt(0))
                 viewPager2.setCurrentItem(0, false)
             }
-            "video" -> {
+            Type.video -> {
                 tabLayout.selectTab(tabLayout.getTabAt(1))
                 viewPager2.setCurrentItem(1, false)
             }
-            "command" -> {
+            Type.command -> {
                 tabLayout.selectTab(tabLayout.getTabAt(2))
                 viewPager2.setCurrentItem(2, false)
             }
@@ -110,18 +105,29 @@ class ConfigureDownloadBottomSheetDialog(private val downloadItem: DownloadItem)
 
         val ok = view.findViewById<Button>(R.id.bottom_sheet_ok)
         ok!!.setOnClickListener {
-            when(tabLayout.selectedTabPosition){
-                0 -> downloadViewModel.updateDownload(audioDownloadItem)
-                1 -> downloadViewModel.updateDownload(videoDownloadItem)
-                else -> downloadViewModel.updateDownload(commandDownloadItem)
+
+            val item : DownloadItem = when(tabLayout.selectedTabPosition){
+                0 -> {
+                    val f = fragmentManager.findFragmentByTag("f0") as DownloadAudioFragment
+                    f.downloadItem
+                }
+                1 -> {
+                    val f = fragmentManager.findFragmentByTag("f1") as DownloadVideoFragment
+                    f.downloadItem
+                }
+                else -> {
+                    val f = fragmentManager.findFragmentByTag("f2") as DownloadCommandFragment
+                    f.downloadItem
+                }
             }
+            downloadViewModel.updateDownload(item)
             dismiss()
         }
     }
 
     override fun onCancel(dialog: DialogInterface) {
         super.onCancel(dialog)
-        returnPreviousState();
+        //returnPreviousState();
         cleanUp()
     }
 
@@ -130,16 +136,16 @@ class ConfigureDownloadBottomSheetDialog(private val downloadItem: DownloadItem)
         cleanUp()
     }
 
-    private fun returnPreviousState(){
-        CoroutineScope(Dispatchers.IO).launch {
-            val result =  resultViewModel.getItemByURL(currentItem.url)
-            result.title = currentItem.title
-            result.author = currentItem.author
-            Log.e("TAG, ", currentItem.toString())
-            resultViewModel.update(result)
-            downloadViewModel.updateDownload(currentItem)
-        }
-    }
+//    private fun returnPreviousState(){
+//        CoroutineScope(Dispatchers.IO).launch {
+//            val result =  resultViewModel.getItemByURL(currentItem.url)
+//            result.title = currentItem.title
+//            result.author = currentItem.author
+//            Log.e("TAG, ", currentItem.toString())
+//            resultViewModel.update(result)
+//            downloadViewModel.updateDownload(currentItem)
+//        }
+//    }
 
     private fun cleanUp(){
         parentFragmentManager.beginTransaction().remove(parentFragmentManager.findFragmentByTag("configureDownloadSingleSheet")!!).commit()
@@ -148,11 +154,6 @@ class ConfigureDownloadBottomSheetDialog(private val downloadItem: DownloadItem)
                 parentFragmentManager.beginTransaction().remove(parentFragmentManager.findFragmentByTag("f$i")!!).commit()
             }
         }
-    }
-
-    private fun clone(item: DownloadItem) : DownloadItem {
-        val stringItem = Gson().toJson(item, DownloadItem::class.java)
-        return Gson().fromJson(stringItem, DownloadItem::class.java)
     }
 
 }

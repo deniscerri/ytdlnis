@@ -17,6 +17,7 @@ import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.models.Format
+import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdlnis.databinding.FragmentHomeBinding
@@ -29,7 +30,7 @@ import kotlinx.coroutines.withContext
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel.Type
 
 
-class DownloadVideoFragment(private val downloadItem: DownloadItem) : Fragment() {
+class DownloadVideoFragment(private val resultItem: ResultItem) : Fragment() {
     private var _binding : FragmentHomeBinding? = null
     private var fragmentView: View? = null
     private var activity: Activity? = null
@@ -42,7 +43,7 @@ class DownloadVideoFragment(private val downloadItem: DownloadItem) : Fragment()
     private lateinit var author : TextInputLayout
     private lateinit var saveDir : TextInputLayout
 
-
+    lateinit var downloadItem: DownloadItem
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -53,8 +54,8 @@ class DownloadVideoFragment(private val downloadItem: DownloadItem) : Fragment()
         fragmentView = inflater.inflate(R.layout.fragment_download_video, container, false)
         activity = getActivity()
         mainActivity = activity as MainActivity?
-        resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
+        downloadItem = downloadViewModel.createDownloadItemFromResult(resultItem, Type.video)
         fileUtil = FileUtil()
         return fragmentView
     }
@@ -62,16 +63,9 @@ class DownloadVideoFragment(private val downloadItem: DownloadItem) : Fragment()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        downloadItem.type = "video"
         lifecycleScope.launch {
-            val resultItem = withContext(Dispatchers.IO){
-                resultViewModel.getItemByURL(downloadItem.url)
-            }
-            val type = downloadItem.type
 
             val sharedPreferences = requireContext().getSharedPreferences("root_preferences", Activity.MODE_PRIVATE)
-            val editor = sharedPreferences.edit()
-
             try {
                 title = view.findViewById(R.id.title_textinput)
                 title.editText!!.setText(downloadItem.title)
@@ -80,9 +74,6 @@ class DownloadVideoFragment(private val downloadItem: DownloadItem) : Fragment()
                     override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
                     override fun afterTextChanged(p0: Editable?) {
                         downloadItem.title = p0.toString()
-                        resultItem.title = p0.toString()
-                        //esultViewModel.update(resultItem)
-                        //downloadviewmodel.updateDownload(downloadItem)
                     }
                 })
 
@@ -93,9 +84,6 @@ class DownloadVideoFragment(private val downloadItem: DownloadItem) : Fragment()
                     override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
                     override fun afterTextChanged(p0: Editable?) {
                         downloadItem.author = p0.toString()
-                        resultItem.author = p0.toString()
-                        //resultViewModel.update(resultItem)
-                        //downloadviewmodel.updateDownload(downloadItem)
                     }
                 })
 
@@ -105,7 +93,6 @@ class DownloadVideoFragment(private val downloadItem: DownloadItem) : Fragment()
                     getString(R.string.video_path)
                 )
                 downloadItem.downloadPath = downloadPath!!
-                //downloadviewmodel.updateDownload(downloadItem)
                 saveDir.editText!!.setText(
                     fileUtil.formatPath(downloadPath)
                 )
@@ -133,6 +120,7 @@ class DownloadVideoFragment(private val downloadItem: DownloadItem) : Fragment()
 
 
                 downloadItem.format = formats[formats.lastIndex]
+                val containers = requireContext().resources.getStringArray(R.array.video_containers)
 
                 val format = view.findViewById<TextInputLayout>(R.id.format)
                 val autoCompleteTextView =
@@ -147,15 +135,7 @@ class DownloadVideoFragment(private val downloadItem: DownloadItem) : Fragment()
                 if (formatTitles.isNotEmpty()) {
                     autoCompleteTextView!!.setText(formatTitles[formats.lastIndex], false)
                 }
-                (format!!.editText as AutoCompleteTextView?)!!.onItemClickListener =
-                    AdapterView.OnItemClickListener { _: AdapterView<*>?, _: View?, index: Int, _: Long ->
-                        downloadItem.format.format_note = formats[index].format_note
-                        downloadItem.format.format_id = formats[index].format_id
-                        downloadItem.format.filesize = formats[index].filesize
-                        //downloadviewmodel.updateDownload(downloadItem)
-                    }
 
-                val containers = requireContext().resources.getStringArray(R.array.video_containers)
                 val container = view.findViewById<TextInputLayout>(R.id.downloadContainer)
                 val containerAutoCompleteTextView =
                     view.findViewById<AutoCompleteTextView>(R.id.container_textview)
@@ -170,11 +150,28 @@ class DownloadVideoFragment(private val downloadItem: DownloadItem) : Fragment()
                 )
                 val selectedContainer: String = downloadItem.format.container
                 containerAutoCompleteTextView!!.setText(selectedContainer, false)
+
+                (format!!.editText as AutoCompleteTextView?)!!.onItemClickListener =
+                    AdapterView.OnItemClickListener { _: AdapterView<*>?, _: View?, index: Int, _: Long ->
+                        downloadItem.format.format_note = formats[index].format_note
+                        downloadItem.format.format_id = formats[index].format_id
+                        downloadItem.format.filesize = formats[index].filesize
+
+                        if (containers.contains(formats[index].container)){
+                            downloadItem.format.container = formats[index].container
+                            containerAutoCompleteTextView.setText(formats[index].container, false)
+                        }
+
+                    }
+
                 (container!!.editText as AutoCompleteTextView?)!!.onItemClickListener =
                     AdapterView.OnItemClickListener { _: AdapterView<*>?, _: View?, index: Int, _: Long ->
                         downloadItem.format.container = containers[index]
-                        //downloadviewmodel.updateDownload(downloadItem)
                     }
+
+
+
+
 
                 val embedSubs = view.findViewById<Chip>(R.id.embed_subtitles)
                 embedSubs!!.isChecked = embedSubs.isChecked
@@ -192,6 +189,11 @@ class DownloadVideoFragment(private val downloadItem: DownloadItem) : Fragment()
                 saveThumbnail!!.isChecked = saveThumbnail.isChecked
                 saveThumbnail.setOnClickListener {
                     downloadItem.SaveThumb = saveThumbnail.isChecked
+                }
+
+                val removeAudio = view.findViewById<Chip>(R.id.remove_audio)
+                removeAudio.setOnClickListener {
+                    downloadItem.removeAudio = removeAudio.isChecked
                 }
 
             } catch (e: Exception) {
@@ -216,4 +218,5 @@ class DownloadVideoFragment(private val downloadItem: DownloadItem) : Fragment()
             saveDir.editText?.setText(fileUtil.formatPath(result.data?.data.toString()), TextView.BufferType.EDITABLE)
         }
     }
+
 }

@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.models.ResultItem
+import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
@@ -96,13 +97,13 @@ class ConfigureMultipleDownloadsAdapter(onItemClickListener: OnItemClickListener
         val btn = card.findViewById<MaterialButton>(R.id.downloads_download_button_type)
 
         when(item.type) {
-            "audio" -> {
+            DownloadViewModel.Type.audio -> {
                 btn.icon = ContextCompat.getDrawable(activity, R.drawable.ic_music)
             }
-            "video" -> {
+            DownloadViewModel.Type.video -> {
                 btn.icon = ContextCompat.getDrawable(activity, R.drawable.ic_video)
             }
-            "command" -> {
+            DownloadViewModel.Type.command -> {
                 btn.icon = ContextCompat.getDrawable(activity, R.drawable.ic_baseline_keyboard_arrow_right_24)
             }
         }

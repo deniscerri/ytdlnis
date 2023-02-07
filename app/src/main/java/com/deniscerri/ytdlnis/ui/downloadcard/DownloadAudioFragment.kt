@@ -17,6 +17,8 @@ import androidx.lifecycle.lifecycleScope
 import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.DownloadItem
+import com.deniscerri.ytdlnis.database.models.ResultItem
+import com.deniscerri.ytdlnis.database.repository.DownloadRepository
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdlnis.databinding.FragmentHomeBinding
@@ -28,7 +30,7 @@ import kotlinx.coroutines.withContext
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel.Type
 
 
-class DownloadAudioFragment(private var downloadItem: DownloadItem) : Fragment() {
+class DownloadAudioFragment(private var resultItem: ResultItem) : Fragment() {
     private var _binding : FragmentHomeBinding? = null
     private var fragmentView: View? = null
     private var activity: Activity? = null
@@ -41,7 +43,7 @@ class DownloadAudioFragment(private var downloadItem: DownloadItem) : Fragment()
     private lateinit var author : TextInputLayout
     private lateinit var saveDir : TextInputLayout
 
-
+    lateinit var downloadItem: DownloadItem
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -52,20 +54,15 @@ class DownloadAudioFragment(private var downloadItem: DownloadItem) : Fragment()
         fragmentView = inflater.inflate(R.layout.fragment_download_audio, container, false)
         activity = getActivity()
         mainActivity = activity as MainActivity?
-        resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
+        downloadItem = downloadViewModel.createDownloadItemFromResult(resultItem, Type.audio)
         fileUtil = FileUtil()
         return fragmentView
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        downloadItem.type = "audio"
         lifecycleScope.launch {
-            val resultItem = withContext(Dispatchers.IO){
-                resultViewModel.getItemByURL(downloadItem.url)
-            }
-
             val sharedPreferences =
                 requireContext().getSharedPreferences("root_preferences", Activity.MODE_PRIVATE)
 
@@ -110,10 +107,19 @@ class DownloadAudioFragment(private var downloadItem: DownloadItem) : Fragment()
                 }
 
                 val format = view.findViewById<TextInputLayout>(R.id.format)
-                if (resultItem.formats.isEmpty()) {
+                val formats = resultItem.formats.filter { it.format_note.contains("audio", ignoreCase = true) }
+
+                val containers = requireContext().resources.getStringArray(R.array.audio_containers)
+                val container = view.findViewById<TextInputLayout>(R.id.downloadContainer)
+                val containerAutoCompleteTextView =
+                    view.findViewById<AutoCompleteTextView>(R.id.container_textview)
+
+
+
+                if (formats.isEmpty()) {
                     format.visibility = View.GONE
                 } else {
-                    val formatTitles = resultItem.formats.map {
+                    val formatTitles = formats.map {
                         if (it.format_note.contains("AUDIO_QUALITY_")) {
                             it.format_note.replace(
                                 "AUDIO_QUALITY_",
@@ -136,19 +142,24 @@ class DownloadAudioFragment(private var downloadItem: DownloadItem) : Fragment()
                         )
                     )
                     if (formatTitles.isNotEmpty()) {
-                        autoCompleteTextView!!.setText(formatTitles[resultItem.formats.lastIndex], false)
+                        autoCompleteTextView!!.setText(formatTitles[formats.lastIndex], false)
                     }
                     (format!!.editText as AutoCompleteTextView?)!!.onItemClickListener =
                         AdapterView.OnItemClickListener { _: AdapterView<*>?, _: View?, index: Int, _: Long ->
-                            downloadItem.format.format_note = resultItem.formats[index].format_note
-                            downloadItem.format.format_id = resultItem.formats[index].format_id
+                            downloadItem.format.format_note = formats[index].format_note
+                            downloadItem.format.format_id = formats[index].format_id
+                            downloadItem.format.filesize = formats[index].filesize
+
+                            if (containers.contains(formats[index].container)){
+                                downloadItem.format.container = formats[index].container
+                                containerAutoCompleteTextView.setText(formats[index].container, false)
+                            }else{
+                                downloadItem.format.container = containers[0]
+                                containerAutoCompleteTextView.setText(containers[0], false)
+                            }
                         }
                 }
 
-                val containers = requireContext().resources.getStringArray(R.array.audio_containers)
-                val container = view.findViewById<TextInputLayout>(R.id.downloadContainer)
-                val containerAutoCompleteTextView =
-                    view.findViewById<AutoCompleteTextView>(R.id.container_textview)
 
                 container?.isEnabled = true
                 containerAutoCompleteTextView?.setAdapter(
@@ -158,9 +169,8 @@ class DownloadAudioFragment(private var downloadItem: DownloadItem) : Fragment()
                         containers
                     )
                 )
-                Log.e("aa", downloadItem.format.container)
-                val selectedContainer: String = if (containers.contains(downloadItem.format.container)){
-                    downloadItem.format.container
+                val selectedContainer: String = if (containers.contains(formats[formats.lastIndex].container)){
+                    formats[formats.lastIndex].container
                 }else{
                     containers[0]
                 }

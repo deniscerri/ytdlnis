@@ -3,7 +3,6 @@ package com.deniscerri.ytdlnis.database.viewmodel
 import android.app.Activity
 import android.app.Application
 import android.content.SharedPreferences
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -35,7 +34,7 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
     private var bestVideoFormat: Format
     private var bestAudioFormat: Format
     enum class Type {
-        AUDIO, VIDEO, COMMAND
+        audio, video, command
     }
 
     init {
@@ -79,7 +78,7 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
         return repository.getItemByID(id)
     }
 
-    fun createDownloadItemFromResult(resultItem: ResultItem, type: String) : DownloadItem {
+    fun createDownloadItemFromResult(resultItem: ResultItem, type: Type) : DownloadItem {
          val embedSubs = sharedPreferences.getBoolean("embed_subtitles", false)
         val addChapters = sharedPreferences.getBoolean("add_chapters", false)
         val saveThumb = sharedPreferences.getBoolean("write_thumbnail", false)
@@ -97,16 +96,16 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
 
     }
 
-    private fun getFormat(resultItem: ResultItem, type: String) : Format {
+    private fun getFormat(resultItem: ResultItem, type: Type) : Format {
         when(type) {
-            "audio" -> {
+            Type.audio -> {
                 return try {
                     resultItem.formats.last { it.format_note.contains("audio", ignoreCase = true) }
                 }catch (e: Exception){
                     bestAudioFormat
                 }
             }
-            "video" -> {
+            Type.video -> {
                 return try {
                     resultItem.formats.last { !it.format_note.contains("audio", ignoreCase = true) }
                 }catch (e: Exception){
@@ -119,10 +118,10 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
         }
     }
 
-    fun turnResultItemstoDownloadItems(items: List<ResultItem?>) : List<DownloadItem> {
+    fun turnResultItemsToDownloadItems(items: List<ResultItem?>) : List<DownloadItem> {
         val list : MutableList<DownloadItem> = mutableListOf()
         items.forEach {
-            list.add(createDownloadItemFromResult(it!!, "video"))
+            list.add(createDownloadItemFromResult(it!!, Type.video))
         }
         return list
     }
@@ -150,10 +149,6 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
         return result
     }
 
-    fun deleteSingleProcessing(item: DownloadItem) = viewModelScope.launch(Dispatchers.IO) {
-        repository.deleteSingleProcessing(item)
-    }
-
     fun deleteProcessing() = viewModelScope.launch(Dispatchers.IO) {
         repository.deleteProcessing()
     }
@@ -167,7 +162,10 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
         val context = getApplication<App>().applicationContext
         items.forEach {
             it.status = DownloadRepository.Status.Queued.toString()
-            repository.update(it)
+            if (it.id == 0L){
+                val id = repository.insert(it)
+                it.id = id
+            }else repository.update(it)
 
             val workRequest = OneTimeWorkRequestBuilder<DownloadWorker>()
                 .setInputData(Data.Builder().putLong("id", it.id).build())

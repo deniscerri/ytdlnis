@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.HistoryItem
+import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
 import com.squareup.picasso.Picasso
@@ -120,12 +121,10 @@ class QueuedDownloadAdapter(onItemClickListener: OnItemClickListener, activity: 
             })
             thumbnail.alpha = 0.7f
         }
-        if (item.type.isNotEmpty()) {
-            if (item.type == "audio") {
-                if (filePresent) btn.icon = ContextCompat.getDrawable(activity, R.drawable.ic_music_downloaded) else btn.icon = ContextCompat.getDrawable(activity, R.drawable.ic_music)
-            } else {
-                if (filePresent) btn.icon = ContextCompat.getDrawable(activity, R.drawable.ic_video_downloaded) else btn.icon = ContextCompat.getDrawable(activity, R.drawable.ic_video)
-            }
+        if (item.type == DownloadViewModel.Type.audio) {
+            if (filePresent) btn.icon = ContextCompat.getDrawable(activity, R.drawable.ic_music_downloaded) else btn.icon = ContextCompat.getDrawable(activity, R.drawable.ic_music)
+        } else {
+            if (filePresent) btn.icon = ContextCompat.getDrawable(activity, R.drawable.ic_video_downloaded) else btn.icon = ContextCompat.getDrawable(activity, R.drawable.ic_video)
         }
         if (btn.hasOnClickListeners()) btn.setOnClickListener(null)
         if (checkedItems.contains(item.id)) {

@@ -7,12 +7,11 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.deniscerri.ytdlnis.database.models.DownloadItem
+import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.google.gson.Gson
 
 class DownloadFragmentAdapter (
-    private val audioDownloadItem : DownloadItem,
-    private val videoDownloadItem : DownloadItem,
-    private val commandDownloadItem : DownloadItem,
+    private val resultItem: ResultItem,
     fragmentManager : FragmentManager,
     lifecycle : Lifecycle
 ) : FragmentStateAdapter(fragmentManager, lifecycle) {
@@ -24,13 +23,13 @@ class DownloadFragmentAdapter (
     override fun createFragment(position: Int): Fragment {
         when (position) {
             0 -> {
-                return DownloadAudioFragment(audioDownloadItem)
+                return DownloadAudioFragment(resultItem)
             }
             1 -> {
-                return DownloadVideoFragment(videoDownloadItem)
+                return DownloadVideoFragment(resultItem)
             }
         }
-        return DownloadCommandFragment(commandDownloadItem)
+        return DownloadCommandFragment(resultItem)
     }
 
 }

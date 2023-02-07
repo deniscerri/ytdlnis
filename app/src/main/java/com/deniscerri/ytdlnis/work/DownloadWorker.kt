@@ -18,6 +18,7 @@ import com.deniscerri.ytdlnis.database.DBManager
 import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.models.HistoryItem
 import com.deniscerri.ytdlnis.database.repository.DownloadRepository
+import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.NotificationUtil
 import com.yausername.youtubedl_android.YoutubeDL
@@ -104,7 +105,7 @@ class DownloadWorker(
         request.addCommands(listOf("--replace-in-metadata","uploader",".*.",downloadItem.author));
 
         when(type){
-            "audio" -> {
+            DownloadViewModel.Type.audio -> {
                 request.addOption("-x")
                 var audioQualityId : String = downloadItem.format.format_id
                 if (audioQualityId == "0" || audioQualityId.isEmpty()) audioQualityId = "ba"
@@ -142,7 +143,7 @@ class DownloadWorker(
                 }
                 request.addOption("-o", tempFileDir.absolutePath + "/%(uploader)s - %(title)s.%(ext)s")
             }
-            "video" -> {
+            DownloadViewModel.Type.video -> {
                 val addChapters = sharedPreferences.getBoolean("add_chapters", false)
                 if (addChapters) {
                     request.addOption("--sponsorblock-mark", "all")
@@ -157,8 +158,9 @@ class DownloadWorker(
                 if (videoFormatID.isNotEmpty()) {
                     if (videoFormatID == "Best Quality") videoFormatID = "bestvideo"
                     else if (videoFormatID == "Worst Quality") videoFormatID = "worst"
-                    formatArgument = videoFormatID + if (downloadItem.removeAudio) "" else "+bestaudio"
+                    formatArgument = videoFormatID + if (downloadItem.removeAudio) "" else "+bestaudio/$videoFormatID"
                 }
+                Log.e(TAG, formatArgument)
                 request.addOption("-f", formatArgument)
                 val format = downloadItem.format.container
                 if(format.isNotEmpty()){
@@ -172,7 +174,7 @@ class DownloadWorker(
                 }
                 request.addOption("-o", tempFileDir.absolutePath + "/%(uploader)s - %(title)s.%(ext)s")
             }
-            "command" -> {
+            DownloadViewModel.Type.command -> {
                 val commandRegex = "\"([^\"]*)\"|(\\S+)"
                 val command = commandTemplateDao.getTemplate(downloadItem.format.format_id.toLong())
                 val m = Pattern.compile(commandRegex).matcher(command.content)

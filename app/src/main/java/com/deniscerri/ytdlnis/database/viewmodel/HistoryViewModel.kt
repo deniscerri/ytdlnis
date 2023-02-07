@@ -1,14 +1,7 @@
 package com.deniscerri.ytdlnis.database.viewmodel
 
 import android.app.Application
-import android.util.Log
-import android.widget.Toast
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.deniscerri.ytdlnis.database.DBManager
 import com.deniscerri.ytdlnis.database.models.HistoryItem
 import com.deniscerri.ytdlnis.database.repository.HistoryRepository
@@ -31,26 +24,26 @@ class HistoryViewModel(application: Application) : AndroidViewModel(application)
         repository = HistoryRepository(dao)
         allItems = repository.items
 
-        _items.addSource(allItems, Observer {
+        _items.addSource(allItems){
             filter(queryFilter.value!!, formatFilter.value!!, websiteFilter.value!!, sortType.value!!)
-        })
-        _items.addSource(formatFilter, Observer {
+        }
+        _items.addSource(formatFilter){
             filter(queryFilter.value!!, formatFilter.value!!, websiteFilter.value!!, sortType.value!!)
-        })
-        _items.addSource(sortType, Observer {
+        }
+        _items.addSource(sortType){
             filter(queryFilter.value!!, formatFilter.value!!, websiteFilter.value!!, sortType.value!!)
-        })
-        _items.addSource(websiteFilter, Observer {
+        }
+        _items.addSource(websiteFilter){
             filter(queryFilter.value!!, formatFilter.value!!, websiteFilter.value!!, sortType.value!!)
-        })
-        _items.addSource(queryFilter, Observer {
+        }
+        _items.addSource(queryFilter){
             filter(queryFilter.value!!, formatFilter.value!!, websiteFilter.value!!, sortType.value!!)
-        })
+        }
 
     }
 
     fun getFilteredList() : LiveData<List<HistoryItem>>{
-        return _items;
+        return _items
     }
 
     fun setSorting(sort: HistorySort){
@@ -69,7 +62,7 @@ class HistoryViewModel(application: Application) : AndroidViewModel(application)
         formatFilter.value = filter
     }
 
-    fun filter(query : String, format : String, site : String, sort: HistorySort) = viewModelScope.launch(Dispatchers.IO){
+    private fun filter(query : String, format : String, site : String, sort: HistorySort) = viewModelScope.launch(Dispatchers.IO){
         _items.postValue(repository.getFiltered(query, format, site, sort))
     }
 
@@ -94,7 +87,7 @@ class HistoryViewModel(application: Application) : AndroidViewModel(application)
     }
 
     fun update(item: HistoryItem) = viewModelScope.launch(Dispatchers.IO){
-        repository.update(item);
+        repository.update(item)
     }
 
     fun clearDeleted() = viewModelScope.launch(Dispatchers.IO) {

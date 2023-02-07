@@ -3,6 +3,7 @@ package com.deniscerri.ytdlnis.database.models
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 
 @Entity(tableName = "downloads")
 data class DownloadItem(
@@ -13,10 +14,10 @@ data class DownloadItem(
     var author: String,
     val thumb: String,
     val duration: String,
-    var type: String,
+    var type: DownloadViewModel.Type,
     var format: Format,
     @ColumnInfo(defaultValue = "0")
-    val removeAudio: Boolean,
+    var removeAudio: Boolean,
     var downloadPath: String,
     val website: String,
     val downloadSize: String,

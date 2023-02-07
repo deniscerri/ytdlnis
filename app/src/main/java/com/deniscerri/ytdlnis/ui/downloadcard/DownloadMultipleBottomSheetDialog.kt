@@ -34,6 +34,7 @@ import kotlinx.coroutines.withContext
 
 class DownloadMultipleBottomSheetDialog(private val items: List<DownloadItem>) : BottomSheetDialogFragment(), ConfigureMultipleDownloadsAdapter.OnItemClickListener, View.OnClickListener {
     private lateinit var downloadViewModel: DownloadViewModel
+    private lateinit var resultViewModel: ResultViewModel
     private lateinit var listAdapter : ConfigureMultipleDownloadsAdapter
     private lateinit var recyclerView: RecyclerView
 
@@ -41,6 +42,7 @@ class DownloadMultipleBottomSheetDialog(private val items: List<DownloadItem>) :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
+        resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -110,7 +112,10 @@ class DownloadMultipleBottomSheetDialog(private val items: List<DownloadItem>) :
             val downloadItem = withContext(Dispatchers.IO){
                 downloadViewModel.getItemByID(itemID)
             }
-            val bottomSheet = ConfigureDownloadBottomSheetDialog(downloadItem)
+            val resultItem = withContext(Dispatchers.IO){
+                resultViewModel.getItemByURL(downloadItem.url)
+            }
+            val bottomSheet = ConfigureDownloadBottomSheetDialog(resultItem, DownloadViewModel.Type.video)
             bottomSheet.show(parentFragmentManager, "configureDownloadSingleSheet")
         }
     }

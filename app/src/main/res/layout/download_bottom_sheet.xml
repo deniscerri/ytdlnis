@@ -5,21 +5,35 @@
     android:orientation="vertical"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/bottom_sheet_title"
+    <LinearLayout
         android:layout_width="wrap_content"
-        android:textSize="25sp"
-        android:padding="20dp"
-        android:layout_gravity="center"
         android:layout_height="wrap_content"
-        android:text="@string/configure_download" />
+        android:padding="20dp"
+        android:paddingBottom="0dp"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/bottom_sheet_title"
+            android:layout_width="wrap_content"
+            android:textSize="25sp"
+            android:layout_height="wrap_content"
+            android:text="@string/download" />
+
+        <TextView
+            android:id="@+id/bottom_sheet_subtitle"
+            android:layout_width="wrap_content"
+            android:textSize="15sp"
+            android:layout_height="wrap_content"
+            android:text="@string/configure_download" />
+    </LinearLayout>
+
 
     <com.google.android.material.tabs.TabLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:backgroundTint="@android:color/transparent"
         app:tabMode="scrollable"
-        app:tabGravity="center"
+        android:layout_margin="10dp"
+        app:tabGravity="fill"
         android:id="@+id/download_tablayout" >
 
         <com.google.android.material.tabs.TabItem
@@ -41,10 +55,13 @@
 
     </com.google.android.material.tabs.TabLayout>
 
+
     <androidx.viewpager2.widget.ViewPager2
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/download_viewpager" />
+
+
 
     <LinearLayout
         android:layout_width="match_parent"

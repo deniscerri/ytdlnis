@@ -2,6 +2,7 @@ package com.deniscerri.ytdlnis.database
 
 import androidx.room.TypeConverter
 import com.deniscerri.ytdlnis.database.models.Format
+import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.lang.reflect.Type
@@ -26,4 +27,15 @@ class Converters {
     @TypeConverter
     fun stringToFormat(string: String): Format = Gson().fromJson(string, Format::class.java)
 
+
+    @TypeConverter
+    fun typeToString(type: DownloadViewModel.Type) : String = type.toString()
+    @TypeConverter
+    fun stringToType(string: String) : DownloadViewModel.Type {
+        return when(string){
+            "audio" -> DownloadViewModel.Type.audio
+            "video" -> DownloadViewModel.Type.video
+            else -> DownloadViewModel.Type.command
+        }
+    }
 }

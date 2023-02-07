@@ -130,9 +130,11 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
                 }else{
                     downloadAllFabCoordinator!!.visibility = GONE
                 }
-            }else if (sharedPreferences!!.getBoolean("download_card", true)){
-                if(it.size == 1 && !firstBoot && parentFragmentManager.findFragmentByTag("downloadSingleSheet") == null){
-                    showSingleDownloadSheet(it[0], "audio")
+            }else if (it.size == 1){
+                if (sharedPreferences!!.getBoolean("download_card", true)){
+                    if(it.size == 1 && !firstBoot && parentFragmentManager.findFragmentByTag("downloadSingleSheet") == null){
+                        showSingleDownloadSheet(it[0], DownloadViewModel.Type.video)
+                    }
                 }
             }
             firstBoot = false
@@ -321,8 +323,8 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
     }
 
     @SuppressLint("ResourceType")
-    override fun onButtonClick(videoURL: String, type: String?) {
-        Log.e(TAG, type!! + " " + videoURL)
+    override fun onButtonClick(videoURL: String, type: DownloadViewModel.Type?) {
+        Log.e(TAG, type.toString() + " " + videoURL)
         val item = resultsList!!.find { it?.url == videoURL }
         Log.e(TAG, resultsList!![0].toString() + " " + videoURL)
         val btn = recyclerView!!.findViewWithTag<MaterialButton>("""${item?.url}##$type""")
@@ -339,7 +341,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
 //            selectedObjects!!.clear()
 //            selectedObjects!!.add(item!!)
             //showConfigureSingleDownloadCard(createDownloadItem(item!!, type), item)
-            showSingleDownloadSheet(item!!, type)
+            showSingleDownloadSheet(item!!, type!!)
         } else {
 //            downloadQueue!!.add(vid)
 //            updateDownloadingStatusOnResult(vid, type, true)
@@ -350,13 +352,9 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
         }
     }
 
-    private fun showSingleDownloadSheet(resultItem : ResultItem, type: String){
-        val downloadItem = downloadViewModel.createDownloadItemFromResult(resultItem, type)
-        downloadViewModel.putDownloadsForProcessing(listOf(resultItem), listOf(downloadItem)).observe(viewLifecycleOwner) {
-            downloadItem.id = it[0]
-            val bottomSheet = DownloadBottomSheetDialog(downloadItem)
-            bottomSheet.show(parentFragmentManager, "downloadSingleSheet")
-        }
+    private fun showSingleDownloadSheet(resultItem : ResultItem, type: DownloadViewModel.Type){
+        val bottomSheet = DownloadBottomSheetDialog(resultItem, type)
+        bottomSheet.show(parentFragmentManager, "downloadSingleSheet")
     }
 
 
@@ -393,7 +391,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
             downloadFabs!!.visibility = VISIBLE
         } else {
             downloadFabs!!.visibility = GONE
-            if (resultsList!!.size > 1 && resultsList!![1]!!.playlistTitle.isNotEmpty()) {
+            if (resultsList!!.size > 1 && resultsList!![1]!!.playlistTitle != getString(R.string.trendingPlaylist)) {
                 downloadAllFabCoordinator!!.visibility = VISIBLE
             }
         }
@@ -405,7 +403,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
         } catch (e: Exception) {""}
         if (viewIdName.isNotEmpty()) {
             if (viewIdName == "downloadSelected") {
-                val downloadList = downloadViewModel.turnResultItemstoDownloadItems(selectedObjects!!)
+                val downloadList = downloadViewModel.turnResultItemsToDownloadItems(selectedObjects!!)
                 downloadViewModel.putDownloadsForProcessing(selectedObjects!!, downloadList).observe(viewLifecycleOwner) {
                     it.forEachIndexed { i, itemID ->
                         downloadList[i].id = itemID
@@ -415,7 +413,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
                 }
             }
             if (viewIdName == "downloadAll") {
-                val downloadList = downloadViewModel.turnResultItemstoDownloadItems(resultsList!!)
+                val downloadList = downloadViewModel.turnResultItemsToDownloadItems(resultsList!!)
                 downloadViewModel.putDownloadsForProcessing(resultsList!!, downloadList).observe(viewLifecycleOwner) {
                     it.forEachIndexed { i, itemID ->
                         downloadList[i].id = itemID
