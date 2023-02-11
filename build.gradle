@@ -12,7 +12,7 @@ buildscript {
         versionCode = versionMajor * 100000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
         versionName = "${versionMajor}.${versionMinor}.${versionPatch}"
         // dependency versions
-        appCompatVer = '1.6.0'
+        appCompatVer = '1.6.1'
         junitVer = '4.13.2'
         androidJunitVer = '1.1.5'
         espressoVer = '3.5.1'
@@ -22,7 +22,7 @@ buildscript {
         // supports java 1.6
         commonsCompressVer = '1.12'
         youtubedlAndroidVer = "a3b971724d"
-        workVer = "2.7.1"
+        workVer = "2.8.0"
         composeVer = "1.4.0-alpha02"
         kotlinVer = "1.7.21"
         coroutineVer = "1.6.4"

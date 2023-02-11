@@ -95,7 +95,6 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
         fileUtil = FileUtil()
         uiHandler = Handler(Looper.getMainLooper())
         selectedObjects = ArrayList()
-        downloading = mainActivity!!.isDownloadServiceRunning()
 
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
 
@@ -391,8 +390,10 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
             downloadFabs!!.visibility = VISIBLE
         } else {
             downloadFabs!!.visibility = GONE
-            if (resultsList!!.size > 1 && resultsList!![1]!!.playlistTitle != getString(R.string.trendingPlaylist)) {
+            if (resultsList!![1]!!.playlistTitle.isNotEmpty() && resultsList!![1]!!.playlistTitle != getString(R.string.trendingPlaylist)){
                 downloadAllFabCoordinator!!.visibility = VISIBLE
+            }else{
+                downloadAllFabCoordinator!!.visibility = GONE
             }
         }
     }

@@ -48,40 +48,13 @@ class App : Application() {
                         .getInt("concurrent_downloads", 1)))
                 .build())
 
-        configureRxJavaErrorHandler()
-        Completable.fromAction { initLibraries() }.subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(object : DisposableCompletableObserver() {
-                override fun onComplete() {
-                    // it worked
-                }
-
-                override fun onError(e: Throwable) {
-                    if (BuildConfig.DEBUG) Log.e(TAG, "failed to initialize youtubedl-android", e)
-                    Toast.makeText(
-                        applicationContext,
-                        "initialization failed: " + e.localizedMessage,
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            })
-    }
-
-    private fun configureRxJavaErrorHandler() {
-        var err = Throwable()
-        RxJavaPlugins.setErrorHandler { e: Throwable ->
-            if (e is UndeliverableException) {
-                // As UndeliverableException is a wrapper, get the cause of it to get the "real" exception
-                err = e.cause!!
-            }
-            if (e is InterruptedException) {
-                // fine, some blocking code was interrupted by a dispose call
-                return@setErrorHandler
-            }
-            Log.e(TAG, "Undeliverable exception received, not sure what to do", err)
+        try {
+            initLibraries()
+        }catch (e: Exception){
+            Toast.makeText(this@App, e.message, Toast.LENGTH_SHORT).show()
+            e.printStackTrace()
         }
     }
-
     @Throws(YoutubeDLException::class)
     private fun initLibraries() {
         YoutubeDL.getInstance().init(this)

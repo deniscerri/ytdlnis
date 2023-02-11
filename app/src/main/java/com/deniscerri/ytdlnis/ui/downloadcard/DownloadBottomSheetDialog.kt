@@ -1,13 +1,14 @@
 package com.deniscerri.ytdlnis.ui.downloadcard
 
 import android.annotation.SuppressLint
+import android.app.DatePickerDialog
 import android.app.Dialog
+import android.app.TimePickerDialog
 import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
-import android.widget.FrameLayout
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.deniscerri.ytdlnis.R
@@ -16,10 +17,10 @@ import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel.Type
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.tabs.TabLayout
+import java.util.*
 
 
 class DownloadBottomSheetDialog(private val resultItem: ResultItem, private val type: Type) : BottomSheetDialogFragment() {
@@ -103,6 +104,39 @@ class DownloadBottomSheetDialog(private val resultItem: ResultItem, private val 
             }
         }
 
+        val scheduleBtn = view.findViewById<MaterialButton>(R.id.bottomsheet_schedule_button)
+        scheduleBtn.setOnClickListener{
+            val currentDate = Calendar.getInstance()
+            val date = Calendar.getInstance()
+
+            val datepicker = DatePickerDialog(
+                requireContext(),
+                { view, year, monthOfYear, dayOfMonth ->
+                    date[year, monthOfYear] = dayOfMonth
+                    TimePickerDialog(context,
+                        { _, hourOfDay, minute ->
+                            date[Calendar.HOUR_OF_DAY] = hourOfDay
+                            date[Calendar.MINUTE] = minute
+
+
+                            val item: DownloadItem = getDownloadItem();
+                            item.downloadStartTime = date.timeInMillis
+                            downloadViewModel.queueDownloads(listOf(item))
+                            dismiss()
+                        },
+                        currentDate.get(Calendar.HOUR_OF_DAY),
+                        currentDate.get(Calendar.MINUTE),
+                        false
+                    ).show()
+                },
+                currentDate.get(Calendar.YEAR),
+                currentDate.get(Calendar.MONTH),
+                currentDate.get(Calendar.DATE)
+            )
+            datepicker.datePicker.minDate = System.currentTimeMillis() - 1000
+            datepicker.show()
+        }
+
         val cancelBtn = view.findViewById<MaterialButton>(R.id.bottomsheet_cancel_button)
         cancelBtn.setOnClickListener{
             dismiss()
@@ -110,22 +144,26 @@ class DownloadBottomSheetDialog(private val resultItem: ResultItem, private val 
 
         val download = view.findViewById<Button>(R.id.bottomsheet_download_button)
         download!!.setOnClickListener {
-            val item: DownloadItem = when(tabLayout.selectedTabPosition){
-                0 -> {
-                    val f = fragmentManager.findFragmentByTag("f0") as DownloadAudioFragment
-                    f.downloadItem
-                }
-                1 -> {
-                    val f = fragmentManager.findFragmentByTag("f1") as DownloadVideoFragment
-                    f.downloadItem
-                }
-                else -> {
-                    val f = fragmentManager.findFragmentByTag("f2") as DownloadCommandFragment
-                    f.downloadItem
-                }
-            }
+            val item: DownloadItem = getDownloadItem();
             downloadViewModel.queueDownloads(listOf(item))
             dismiss()
+        }
+    }
+
+    private fun getDownloadItem() : DownloadItem{
+        when(tabLayout.selectedTabPosition){
+            0 -> {
+                val f = fragmentManager?.findFragmentByTag("f0") as DownloadAudioFragment
+                return f.downloadItem
+            }
+            1 -> {
+                val f = fragmentManager?.findFragmentByTag("f1") as DownloadVideoFragment
+                return f.downloadItem
+            }
+            else -> {
+                val f = fragmentManager?.findFragmentByTag("f2") as DownloadCommandFragment
+                return f.downloadItem
+            }
         }
     }
 

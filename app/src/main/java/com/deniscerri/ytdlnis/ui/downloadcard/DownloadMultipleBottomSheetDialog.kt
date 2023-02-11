@@ -1,7 +1,9 @@
 package com.deniscerri.ytdlnis.ui.downloadcard
 
 import android.annotation.SuppressLint
+import android.app.DatePickerDialog
 import android.app.Dialog
+import android.app.TimePickerDialog
 import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
@@ -31,12 +33,14 @@ import com.google.android.material.tabs.TabLayout
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.*
 
 class DownloadMultipleBottomSheetDialog(private val items: List<DownloadItem>) : BottomSheetDialogFragment(), ConfigureMultipleDownloadsAdapter.OnItemClickListener, View.OnClickListener {
     private lateinit var downloadViewModel: DownloadViewModel
     private lateinit var resultViewModel: ResultViewModel
     private lateinit var listAdapter : ConfigureMultipleDownloadsAdapter
     private lateinit var recyclerView: RecyclerView
+    private lateinit var behavior: BottomSheetBehavior<View>
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,6 +62,12 @@ class DownloadMultipleBottomSheetDialog(private val items: List<DownloadItem>) :
         dialog.setContentView(view)
         view.minimumHeight = resources.displayMetrics.heightPixels
 
+        dialog.setOnShowListener {
+            behavior = BottomSheetBehavior.from(view.parent as View)
+            behavior.skipCollapsed = true
+            behavior.state = BottomSheetBehavior.STATE_EXPANDED
+        }
+
         listAdapter =
             ConfigureMultipleDownloadsAdapter(
                 this,
@@ -74,6 +84,39 @@ class DownloadMultipleBottomSheetDialog(private val items: List<DownloadItem>) :
             if (it.isEmpty()){
                 dismiss()
             }
+        }
+
+        val scheduleBtn = view.findViewById<MaterialButton>(R.id.bottomsheet_schedule_button)
+        scheduleBtn.setOnClickListener{
+            val currentDate = Calendar.getInstance()
+            val date = Calendar.getInstance()
+
+            val datepicker = DatePickerDialog(
+                requireContext(),
+                { view, year, monthOfYear, dayOfMonth ->
+                    date[year, monthOfYear] = dayOfMonth
+                    TimePickerDialog(context,
+                        { _, hourOfDay, minute ->
+                            date[Calendar.HOUR_OF_DAY] = hourOfDay
+                            date[Calendar.MINUTE] = minute
+
+                            items.forEach {
+                                it.downloadStartTime = date.timeInMillis
+                            }
+                            downloadViewModel.queueDownloads(items)
+                            dismiss()
+                        },
+                        currentDate.get(Calendar.HOUR_OF_DAY),
+                        currentDate.get(Calendar.MINUTE),
+                        false
+                    ).show()
+                },
+                currentDate.get(Calendar.YEAR),
+                currentDate.get(Calendar.MONTH),
+                currentDate.get(Calendar.DATE)
+            )
+            datepicker.datePicker.minDate = System.currentTimeMillis() - 1000
+            datepicker.show()
         }
 
         val cancelBtn = view.findViewById<MaterialButton>(R.id.bottomsheet_cancel_button)

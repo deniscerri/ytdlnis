@@ -19,7 +19,7 @@ class CancelDownloadNotificationReceiver : BroadcastReceiver() {
         if (message != null) {
             val notificationUtil = NotificationUtil(c)
 
-            YoutubeDL.getInstance().destroyProcessById(id.toString());
+            YoutubeDL.getInstance().destroyProcessById(id.toString())
             WorkManager.getInstance(c).cancelUniqueWork(id.toString())
             notificationUtil.cancelDownloadNotification(id)
         }

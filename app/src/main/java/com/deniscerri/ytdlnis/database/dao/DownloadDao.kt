@@ -49,4 +49,7 @@ interface DownloadDao {
 
     @Query("SELECT * FROM downloads WHERE url=:url AND (status='Error' OR status='Cancelled') LIMIT 1")
     fun checkIfErrorOrCancelled(url: String) : DownloadItem
+
+    @Query("SELECT * FROM downloads WHERE url=:url AND format=:format AND (status='Error' OR status='Cancelled') LIMIT 1")
+    fun getUnfinishedByURLAndFormat(url: String, format: String) : DownloadItem
 }

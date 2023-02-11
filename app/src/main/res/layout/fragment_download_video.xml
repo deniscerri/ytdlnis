@@ -95,7 +95,6 @@
             android:id="@+id/outputPath"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:errorEnabled="true"
             android:hint="@string/save_dir"
             style="@style/Widget.Material3.TextInputLayout.FilledBox">
 
@@ -109,6 +108,7 @@
         <LinearLayout
             android:id="@+id/adjust_video"
             android:layout_width="match_parent"
+            android:padding="10dp"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             >
@@ -120,46 +120,45 @@
                 android:layout_height="wrap_content"
                 android:text="@string/adjust_video" />
 
-            <com.google.android.material.chip.ChipGroup
-                android:id="@+id/chipGroup"
+            <HorizontalScrollView
                 android:layout_width="wrap_content"
-                app:singleLine="false"
                 android:layout_height="wrap_content">
 
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/embed_subtitles"
-                    style="@style/Widget.Material3.Chip.Filter.Elevated"
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/chipGroup"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checked="false"
-                    android:text="@string/embed_subtitles"/>
+                    app:singleLine="false"
+                    android:layout_height="wrap_content">
 
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/add_chapters"
-                    style="@style/Widget.Material3.Chip.Filter.Elevated"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checked="false"
-                    android:text="@string/add_chapter"/>
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/embed_subtitles"
+                        style="@style/Widget.Material3.Chip.Filter.Elevated"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="false"
+                        android:text="@string/embed_subtitles"/>
 
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/save_thumbnail"
-                    style="@style/Widget.Material3.Chip.Filter.Elevated"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checked="false"
-                    android:text="@string/save_thumb"/>
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/add_chapters"
+                        style="@style/Widget.Material3.Chip.Filter.Elevated"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="false"
+                        android:text="@string/add_chapter"/>
 
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/remove_audio"
-                    style="@style/Widget.Material3.Chip.Filter.Elevated"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checked="false"
-                    android:text="@string/remove_audio"/>
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/save_thumbnail"
+                        style="@style/Widget.Material3.Chip.Filter.Elevated"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="false"
+                        android:text="@string/save_thumb"/>
 
 
-            </com.google.android.material.chip.ChipGroup>
+                </com.google.android.material.chip.ChipGroup>
+
+
+            </HorizontalScrollView>
 
         </LinearLayout>
 

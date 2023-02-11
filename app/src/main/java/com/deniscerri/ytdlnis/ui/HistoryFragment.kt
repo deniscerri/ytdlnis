@@ -330,10 +330,14 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
         val deleteFile = booleanArrayOf(false)
         val deleteDialog = MaterialAlertDialogBuilder(fragmentContext!!)
         deleteDialog.setTitle(getString(R.string.you_are_going_to_delete) + " \"" + item.title + "\"!")
-        deleteDialog.setMultiChoiceItems(
-            arrayOf(getString(R.string.delete_file_too)),
-            booleanArrayOf(false)
-        ) { _: DialogInterface?, _: Int, b: Boolean -> deleteFile[0] = b }
+        val path = item.downloadPath
+        val file = File(path)
+        if (file.exists() && path.isNotEmpty()) {
+            deleteDialog.setMultiChoiceItems(
+                arrayOf(getString(R.string.delete_file_too)),
+                booleanArrayOf(false)
+            ) { _: DialogInterface?, _: Int, b: Boolean -> deleteFile[0] = b }
+        }
         deleteDialog.setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, _: Int -> dialogInterface.cancel() }
         deleteDialog.setPositiveButton(getString(R.string.ok)) { _: DialogInterface?, _: Int ->
               historyViewModel.delete(item, deleteFile[0])

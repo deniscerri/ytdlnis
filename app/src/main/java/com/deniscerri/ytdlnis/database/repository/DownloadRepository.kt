@@ -1,6 +1,7 @@
 package com.deniscerri.ytdlnis.database.repository
 
 import androidx.lifecycle.LiveData
+import com.deniscerri.ytdlnis.database.Converters
 import com.deniscerri.ytdlnis.database.dao.DownloadDao
 import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.models.ResultItem
@@ -49,7 +50,18 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
         downloadDao.queueAllProcessing()
     }
 
-    fun checkIfPresent(item: ResultItem): DownloadItem{
+    fun checkIfPresentForProcessing(item: ResultItem): DownloadItem{
         return downloadDao.checkIfErrorOrCancelled(item.url)
+    }
+
+    fun checkIfReDownloadingErroredOrCancelled(item: DownloadItem) : Long {
+        val converters = Converters()
+        val format = converters.formatToString(item.format)
+        return try {
+            val i = downloadDao.getUnfinishedByURLAndFormat(item.url, format)
+            i.id
+        }catch (e: Exception){
+            0L
+        }
     }
 }

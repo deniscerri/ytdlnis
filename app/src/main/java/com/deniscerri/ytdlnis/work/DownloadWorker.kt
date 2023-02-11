@@ -12,6 +12,7 @@ import androidx.work.ForegroundInfo
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import androidx.work.workDataOf
+import com.deniscerri.ytdlnis.App
 import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.DBManager
@@ -101,8 +102,12 @@ class DownloadWorker(
             request.addOption("--sponsorblock-remove", filters)
         }
 
-        request.addCommands(listOf("--replace-in-metadata","title",".*.",downloadItem.title));
-        request.addCommands(listOf("--replace-in-metadata","uploader",".*.",downloadItem.author));
+        if(downloadItem.title.isNotEmpty()){
+            request.addCommands(listOf("--replace-in-metadata","title",".*.",downloadItem.title));
+        }
+        if (downloadItem.author.isNotEmpty()){
+            request.addCommands(listOf("--replace-in-metadata","uploader",".*.",downloadItem.author));
+        }
 
         when(type){
             DownloadViewModel.Type.audio -> {
@@ -152,13 +157,16 @@ class DownloadWorker(
                 if (embedSubs) {
                     request.addOption("--embed-subs", "")
                 }
+                val defaultFormats = context.resources.getStringArray(R.array.video_formats)
+
                 var videoFormatID = downloadItem.format.format_id
                 Log.e(TAG, videoFormatID)
                 var formatArgument = "bestvideo+bestaudio/best"
                 if (videoFormatID.isNotEmpty()) {
                     if (videoFormatID == "Best Quality") videoFormatID = "bestvideo"
                     else if (videoFormatID == "Worst Quality") videoFormatID = "worst"
-                    formatArgument = videoFormatID + if (downloadItem.removeAudio) "" else "+bestaudio/$videoFormatID"
+                    else if (defaultFormats.contains(videoFormatID)) videoFormatID = "bestvideo[height<="+videoFormatID.substring(0, videoFormatID.length -1)+"]"
+                    formatArgument = videoFormatID + "+bestaudio/best/$videoFormatID"
                 }
                 Log.e(TAG, formatArgument)
                 request.addOption("-f", formatArgument)

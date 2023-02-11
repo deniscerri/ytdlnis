@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
+import java.util.*
 
 @Entity(tableName = "downloads")
 data class DownloadItem(
@@ -16,8 +17,6 @@ data class DownloadItem(
     val duration: String,
     var type: DownloadViewModel.Type,
     var format: Format,
-    @ColumnInfo(defaultValue = "0")
-    var removeAudio: Boolean,
     var downloadPath: String,
     val website: String,
     val downloadSize: String,
@@ -26,5 +25,7 @@ data class DownloadItem(
     var addChapters: Boolean,
     var SaveThumb: Boolean,
     @ColumnInfo(defaultValue = "Queued")
-    var status: String
+    var status: String,
+    @ColumnInfo(defaultValue = "0")
+    var downloadStartTime: Long
 )

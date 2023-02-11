@@ -35,7 +35,6 @@ class DownloadAudioFragment(private var resultItem: ResultItem) : Fragment() {
     private var fragmentView: View? = null
     private var activity: Activity? = null
     private var mainActivity: MainActivity? = null
-    private lateinit var resultViewModel : ResultViewModel
     private lateinit var downloadViewModel : DownloadViewModel
     private lateinit var fileUtil : FileUtil
 

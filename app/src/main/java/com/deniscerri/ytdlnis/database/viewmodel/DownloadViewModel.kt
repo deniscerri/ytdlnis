@@ -3,6 +3,7 @@ package com.deniscerri.ytdlnis.database.viewmodel
 import android.app.Activity
 import android.app.Application
 import android.content.SharedPreferences
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -22,6 +23,8 @@ import com.deniscerri.ytdlnis.work.DownloadWorker
 import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.*
+import java.util.concurrent.TimeUnit
 
 class DownloadViewModel(application: Application) : AndroidViewModel(application) {
     private val repository : DownloadRepository
@@ -31,8 +34,8 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
     val activeDownloads : LiveData<List<DownloadItem>>
     val processingDownloads : LiveData<List<DownloadItem>>
 
-    private var bestVideoFormat: Format
-    private var bestAudioFormat: Format
+    private var bestVideoFormat : Format
+    private var bestAudioFormat : Format
     enum class Type {
         audio, video, command
     }
@@ -90,8 +93,8 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
             resultItem.thumb,
             resultItem.duration,
             type,
-            getFormat(resultItem, type),   false,
-            "", resultItem.website, "", resultItem.playlistTitle, embedSubs, addChapters, saveThumb, DownloadRepository.Status.Processing.toString()
+            getFormat(resultItem, type),
+            "", resultItem.website, "", resultItem.playlistTitle, embedSubs, addChapters, saveThumb, DownloadRepository.Status.Processing.toString(), 0
         )
 
     }
@@ -133,7 +136,7 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
             items.forEachIndexed { i, it ->
                 val tmpDownloadItem = downloadItems[i]
                 try {
-                    val item = repository.checkIfPresent(it!!)
+                    val item = repository.checkIfPresentForProcessing(it!!)
                     tmpDownloadItem.id = item.id
                     tmpDownloadItem.status = DownloadRepository.Status.Processing.toString()
                     repository.update(tmpDownloadItem)
@@ -162,15 +165,24 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
         val context = getApplication<App>().applicationContext
         items.forEach {
             it.status = DownloadRepository.Status.Queued.toString()
+            it.id = repository.checkIfReDownloadingErroredOrCancelled(it)
             if (it.id == 0L){
                 val id = repository.insert(it)
                 it.id = id
             }else repository.update(it)
 
+            val currentTime = System.currentTimeMillis()
+            var delay = if (it.downloadStartTime != 0L){
+                it.downloadStartTime - currentTime
+            } else 0
+            if (delay < 0L) delay = 0L
+
             val workRequest = OneTimeWorkRequestBuilder<DownloadWorker>()
                 .setInputData(Data.Builder().putLong("id", it.id).build())
                 .addTag("download")
+                .setInitialDelay(delay, TimeUnit.MILLISECONDS)
                 .build()
+
             WorkManager.getInstance(context).beginUniqueWork(
                 it.id.toString(),
                 ExistingWorkPolicy.KEEP,

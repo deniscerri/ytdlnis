@@ -1,7 +1,6 @@
 package com.deniscerri.ytdlnis
 
 import android.Manifest
-import android.app.ActivityManager
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -21,11 +20,9 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.work.WorkManager
-import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.deniscerri.ytdlnis.databinding.ActivityMainBinding
 import com.deniscerri.ytdlnis.service.IDownloaderListener
 import com.deniscerri.ytdlnis.service.IDownloaderService
-import com.deniscerri.ytdlnis.ui.DownloadFragment
 import com.deniscerri.ytdlnis.ui.HistoryFragment
 import com.deniscerri.ytdlnis.ui.HomeFragment
 import com.deniscerri.ytdlnis.ui.MoreFragment
@@ -47,7 +44,6 @@ class MainActivity : AppCompatActivity() {
     lateinit var context: Context
     private lateinit var homeFragment: HomeFragment
     private lateinit var historyFragment: HistoryFragment
-    private lateinit var downloadFragment: DownloadFragment
     private lateinit var workManager: WorkManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,7 +59,6 @@ class MainActivity : AppCompatActivity() {
 
         homeFragment = HomeFragment()
         historyFragment = HistoryFragment()
-        downloadFragment = DownloadFragment()
         moreFragment = MoreFragment()
         initFragments()
         binding.bottomNavigationView.setOnItemSelectedListener { item: MenuItem ->
@@ -80,17 +75,9 @@ class MainActivity : AppCompatActivity() {
                     if (lastFragment === historyFragment) {
                         historyFragment.scrollToTop()
                     } else {
-                        this.title = getString(R.string.history)
-                    }
-                    replaceFragment(historyFragment)
-                }
-                R.id.downloads -> {
-                    if (lastFragment === downloadFragment) {
-                        downloadFragment.scrollToTop()
-                    } else {
                         this.title = getString(R.string.downloads)
                     }
-                    replaceFragment(downloadFragment)
+                    replaceFragment(historyFragment)
                 }
                 R.id.more -> {
                     if (lastFragment === moreFragment) {
@@ -129,11 +116,14 @@ class MainActivity : AppCompatActivity() {
             Log.e(TAG, action)
             homeFragment = HomeFragment()
             historyFragment = HistoryFragment()
-            downloadFragment = DownloadFragment()
             moreFragment = MoreFragment()
             if (type.equals("application/txt", ignoreCase = true)) {
                 try {
-                    val uri = intent.getParcelableExtra<Uri>(Intent.EXTRA_STREAM)
+                    val uri = if (Build.VERSION.SDK_INT >= 33){
+                        intent.getParcelableExtra(Intent.EXTRA_STREAM, Uri::class.java)
+                    }else{
+                        intent.getParcelableExtra(Intent.EXTRA_STREAM)
+                    }
                     val `is` = contentResolver.openInputStream(uri!!)
                     val textBuilder = StringBuilder()
                     val reader: Reader = BufferedReader(
@@ -164,11 +154,9 @@ class MainActivity : AppCompatActivity() {
         fm.beginTransaction()
             .replace(R.id.frame_layout, homeFragment)
             .add(R.id.frame_layout, historyFragment)
-            .add(R.id.frame_layout, downloadFragment)
             .add(R.id.frame_layout, moreFragment)
             .hide(historyFragment)
             .hide(moreFragment)
-            .hide(downloadFragment)
             .commit()
         lastFragment = homeFragment
         listeners = ArrayList()
@@ -179,104 +167,8 @@ class MainActivity : AppCompatActivity() {
         lastFragment = f
     }
 
-    fun startDownloadService(
-        downloadQueue: ArrayList<ResultItem>,
-        awaitingListener: IDownloaderListener
-    ) {
-//        addQueueToDownloads(downloadQueue)
-//        if (isDownloadServiceRunning) {
-//            iDownloaderService?.updateQueue(downloadQueue)
-//            return
-//        }
-//        if (!listeners.contains(awaitingListener)) listeners.add(awaitingListener)
-//        val serviceIntent = Intent(context, DownloaderService::class.java)
-//        serviceIntent.putParcelableArrayListExtra("queue", downloadQueue)
-//        context.applicationContext.startService(serviceIntent)
-//        context.applicationContext.bindService(serviceIntent, serviceConnection, BIND_AUTO_CREATE)
-
-    }
-
-    private fun addQueueToDownloads(downloadQueue: ArrayList<ResultItem>) {
-//        try {
-//            val sharedPreferences = context.getSharedPreferences("root_preferences", MODE_PRIVATE)
-//            if (!sharedPreferences.getBoolean("incognito", false)) {
-//                val databaseManager = DatabaseManager(context)
-//                for (i in downloadQueue.indices.reversed()) {
-//                    val v = downloadQueue[i]
-//                    v.isQueuedDownload = true
-//                    databaseManager.addToHistory(v)
-//                }
-//                databaseManager.close()
-//                //downloadsFragment.initCards()
-//            }
-//        } catch (e: Exception) {
-//            e.printStackTrace()
-//        }
-    }
-
-    fun stopDownloadService() {
-//        if (!isDownloadServiceRunning) return
-//        try {
-//            iDownloaderService!!.removeActivity(this)
-//            context.applicationContext.unbindService(serviceConnection)
-//            context.applicationContext.stopService(
-//                Intent(
-//                    context.applicationContext,
-//                    DownloaderService::class.java
-//                )
-//            )
-//        } catch (ignored: Exception) {
-//        }
-//        isDownloadServiceRunning = false
-    }
-
-    fun cancelDownloadService() {
-        if (!isDownloadServiceRunning) return
-        iDownloaderService!!.cancelDownload(true)
-        stopDownloadService()
-    }
-
     fun cancelAllDownloads() {
         workManager.cancelAllWork();
-    }
-
-    fun removeItemFromDownloadQueue(video: ResultItem?, type: String?) {
-        iDownloaderService!!.removeItemFromDownloadQueue(video, type)
-    }
-
-    fun isDownloadServiceRunning(): Boolean {
-//        val service = getService(DownloaderService::class.java)
-//        if (service != null) {
-//            if (service.foreground) {
-//                isDownloadServiceRunning = true
-//                return true
-//            }
-//        }
-        return false
-    }
-
-    private fun reconnectDownloadService() {
-//        val service = getService(DownloaderService::class.java)
-//        if (service != null) {
-//            val serviceIntent = Intent(context.applicationContext, DownloaderService::class.java)
-//            serviceIntent.putExtra("rebind", true)
-//            context.applicationContext.bindService(
-//                serviceIntent,
-//                serviceConnection,
-//                BIND_AUTO_CREATE
-//            )
-//            isDownloadServiceRunning = true
-//        }
-    }
-
-    private fun getService(className: Class<*>): ActivityManager.RunningServiceInfo? {
-        val manager = getSystemService(ACTIVITY_SERVICE) as ActivityManager
-        for (service in manager.getRunningServices(Int.MAX_VALUE)) {
-            if (className.name == service.service.className) {
-                return service
-            }
-        }
-        return null
     }
 
     private fun checkUpdate() {

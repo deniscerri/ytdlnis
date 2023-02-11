@@ -96,8 +96,7 @@
             style="@style/Widget.Material3.TextInputLayout.FilledBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/save_dir"
-            app:errorEnabled="true">
+            android:hint="@string/save_dir">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
