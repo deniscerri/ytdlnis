@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name" translatable="false">YTDLnis</string>
-    <string name="search">Cerca</string>
-    <string name="remove_all">Rimuovi Tutti</string>
-    <string name="remove_results">Cancella Risultati</string>
-    <string name="download_all">Scarica Tutti</string>
-    <string name="settings">Impostazioni</string>
+    <string name="search">Search</string>
+    <string name="remove_all">Remove All</string>
+    <string name="remove_results">Clear Results</string>
+    <string name="download_all">Download All</string>
+    <string name="settings">Settings</string>
     <string name="home">Home</string>
-    <string name="directories">Cartelle</string>
-    <string name="music_directory">Cartella Musica</string>
-    <string name="video_directory">Cartella Video</string>
-    <string name="updating">Aggiornamento in corso</string>
-    <string name="ytdl_update_hint">"Utile se hai problemi con il download "</string>
-    <string name="update_ytdl">Aggiorna youtube-dl</string>
-    <string name="source_code">Codice Sorgente</string>
-    <string name="search_hint">Cerca su YouTube YouTube</string>
+    <string name="directories">Folders</string>
+    <string name="music_directory">Music Folder</string>
+    <string name="video_directory">Video Folder</string>
+    <string name="updating">Updating</string>
+    <string name="ytdl_update_hint">Useful if you have problems downloading</string>
+    <string name="update_ytdl">Install new version of youtube-dl</string>
+    <string name="source_code">Source Code</string>
+    <string name="search_hint">Search from YouTube</string>
     <string name="failed_download">Could not download file.</string>
     <string name="download_notification_channel_name">File Downloads</string>
     <string name="download_notification_channel_description">Notification showing the progress of downloading audio and video files</string>
