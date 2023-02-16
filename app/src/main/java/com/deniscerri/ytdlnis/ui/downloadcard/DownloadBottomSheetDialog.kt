@@ -8,7 +8,11 @@ import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.Adapter
 import android.widget.Button
+import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.view.get
+import androidx.core.view.size
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.deniscerri.ytdlnis.R
@@ -78,7 +82,7 @@ class DownloadBottomSheetDialog(private val resultItem: ResultItem, private val 
 
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
-                viewPager2.currentItem = tab!!.position
+                viewPager2.setCurrentItem(tab!!.position, false)
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {
@@ -93,16 +97,8 @@ class DownloadBottomSheetDialog(private val resultItem: ResultItem, private val 
                 tabLayout.selectTab(tabLayout.getTabAt(position))
             }
         })
-        viewPager2.setPageTransformer { v, _ ->
-            v.post {
-                val wMeasureSpec = View.MeasureSpec.makeMeasureSpec(v.width, View.MeasureSpec.EXACTLY)
-                val hMeasureSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
-                v.measure(wMeasureSpec, hMeasureSpec)
 
-                viewPager2.layoutParams = (viewPager2.layoutParams).also { lp -> lp.height = v.measuredHeight }
-                viewPager2.invalidate()
-            }
-        }
+        viewPager2.setPageTransformer(BackgroundToForegroundPageTransformer())
 
         val scheduleBtn = view.findViewById<MaterialButton>(R.id.bottomsheet_schedule_button)
         scheduleBtn.setOnClickListener{

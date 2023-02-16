@@ -1,30 +1,16 @@
 package com.deniscerri.ytdlnis
 
-import android.annotation.SuppressLint
 import android.app.Application
-import android.content.Context
-import android.content.pm.PackageInfo
-import android.content.pm.PackageManager
-import android.os.Build
-import android.util.Log
 import android.widget.Toast
 import androidx.preference.PreferenceManager
 import androidx.work.Configuration
 import androidx.work.WorkManager
 import com.deniscerri.ytdlnis.util.NotificationUtil
-import com.deniscerri.ytdlnis.util.UpdateUtil
 import com.google.android.material.color.DynamicColors
 import com.yausername.aria2c.Aria2c
 import com.yausername.ffmpeg.FFmpeg
 import com.yausername.youtubedl_android.YoutubeDL
 import com.yausername.youtubedl_android.YoutubeDLException
-import io.reactivex.Completable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.exceptions.UndeliverableException
-import io.reactivex.observers.DisposableCompletableObserver
-import io.reactivex.plugins.RxJavaPlugins
-import io.reactivex.schedulers.Schedulers
-import java.io.File
 import java.util.concurrent.Executors
 
 class App : Application() {

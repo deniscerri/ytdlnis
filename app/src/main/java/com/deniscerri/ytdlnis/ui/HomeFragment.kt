@@ -135,6 +135,8 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
                         showSingleDownloadSheet(it[0], DownloadViewModel.Type.video)
                     }
                 }
+            }else{
+                downloadAllFabCoordinator!!.visibility = GONE
             }
             firstBoot = false
         }
@@ -169,6 +171,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
             inputQueriesLength = inputQueries!!.size
             Handler(Looper.getMainLooper()).post { scrollToTop() }
             val thread = Thread {
+                resultViewModel.parseQuery(inputQueries!!.pop()!!, true)
                 while (!inputQueries!!.isEmpty()) {
                     inputQuery = inputQueries!!.pop()
                     resultViewModel.parseQuery(inputQuery!!, false)

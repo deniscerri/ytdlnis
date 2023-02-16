@@ -11,6 +11,56 @@
         android:padding="10dp"
         android:orientation="vertical">
 
+
+
+<!--        <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--            android:id="@+id/result_card_constraintLayout"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content">-->
+
+<!--            <RelativeLayout-->
+<!--                android:id="@+id/result_relative_layout"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="0dp"-->
+<!--                app:layout_constraintDimensionRatio="H,16:9"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="parent">-->
+
+<!--                <com.google.android.material.card.MaterialCardView-->
+<!--                    android:id="@+id/result_card_view"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    app:cardCornerRadius="10dp"-->
+<!--                    app:cardElevation="10dp"-->
+<!--                    app:cardMaxElevation="12dp"-->
+<!--                    app:cardBackgroundColor="@color/black"-->
+<!--                    app:cardPreventCornerOverlap="true"-->
+<!--                    android:checkable="true"-->
+<!--                    app:strokeWidth="0dp"-->
+<!--                    android:layout_margin="10dp">-->
+
+<!--                    <com.devbrackets.android.exomedia.ui.widget.VideoView-->
+<!--                        android:id="@+id/result_video_view"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        app:useDefaultControls="true"/>-->
+
+<!--                </com.google.android.material.card.MaterialCardView>-->
+<!--            </RelativeLayout>-->
+
+<!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+<!--        <com.google.android.material.slider.RangeSlider-->
+<!--            android:id="@+id/range_slider"-->
+<!--            android:layout_marginHorizontal="10dp"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            app:values="@array/initial_slider_values"-->
+<!--            android:valueFrom="0.0"-->
+
+<!--            android:valueTo="100.0" />-->
+
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/title_textinput"
             android:layout_width="match_parent"

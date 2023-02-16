@@ -235,8 +235,8 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
             sortSheet = BottomSheetDialog(requireContext())
             sortSheet!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
             sortSheet!!.setContentView(R.layout.history_sort_sheet)
-            val newest = sortSheet!!.findViewById<TextView>(R.id.newest)
-            val oldest = sortSheet!!.findViewById<TextView>(R.id.oldest)
+            val newest = sortSheet!!.findViewById<TextView>(R.id.date)
+            val oldest = sortSheet!!.findViewById<TextView>(R.id.title)
             newest!!.setOnClickListener {
                 historyViewModel.setSorting(HistorySort.DESC)
                 sortSheet!!.cancel()
@@ -245,7 +245,7 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
                 historyViewModel.setSorting(HistorySort.ASC)
                 sortSheet!!.cancel()
             }
-            val cancel = sortSheet!!.findViewById<TextView>(R.id.cancel)
+            val cancel = sortSheet!!.findViewById<TextView>(R.id.author)
             cancel!!.setOnClickListener { sortSheet!!.cancel() }
             sortSheet!!.show()
             sortSheet!!.window!!.setLayout(

@@ -13,8 +13,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-
-
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/home_toolbar"
             android:layout_width="match_parent"
@@ -43,56 +41,50 @@
         </LinearLayout>
     </ScrollView>
 
-    <LinearLayout
+
+    <androidx.recyclerview.widget.RecyclerView
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:layout_width="match_parent"
+        android:id="@+id/recyclerViewHome"
+        android:orientation="vertical"
+        android:layout_height="wrap_content"
+        android:scrollbars="vertical"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:clipToPadding="false"
+        android:paddingBottom="100dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        />
+
+
+    <com.facebook.shimmer.ShimmerFrameLayout
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="?attr/actionBarSize"
+        android:id="@+id/shimmer_results_framelayout"
         android:orientation="vertical">
 
-        <androidx.recyclerview.widget.RecyclerView
+        <LinearLayout
+            android:id="@+id/shimmer_linear_layout"
             android:layout_width="match_parent"
-            android:id="@+id/recyclerViewHome"
-            android:nestedScrollingEnabled="false"
-            android:orientation="vertical"
             android:layout_height="wrap_content"
-            android:scrollbars="vertical"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:clipToPadding="false"
-            android:paddingBottom="100dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            />
-
-
-        <com.facebook.shimmer.ShimmerFrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/shimmer_results_framelayout"
+            android:layout_margin="10dp"
             android:orientation="vertical">
 
-            <LinearLayout
-                android:id="@+id/shimmer_linear_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:orientation="vertical">
+            <include layout="@layout/result_card_shimmer" />
 
-                <include layout="@layout/result_card_shimmer" />
+            <include layout="@layout/result_card_shimmer" />
 
-                <include layout="@layout/result_card_shimmer" />
+            <include layout="@layout/result_card_shimmer" />
 
-                <include layout="@layout/result_card_shimmer" />
+            <include layout="@layout/result_card_shimmer" />
 
-                <include layout="@layout/result_card_shimmer" />
-
-                <include layout="@layout/result_card_shimmer" />
+            <include layout="@layout/result_card_shimmer" />
 
 
-            </LinearLayout>
+        </LinearLayout>
 
-        </com.facebook.shimmer.ShimmerFrameLayout>
-
-    </LinearLayout>
+    </com.facebook.shimmer.ShimmerFrameLayout>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/home_fabs"

@@ -165,4 +165,5 @@
     <string name="template">Template</string>
     <string name="logs">Logs</string>
     <string name="commands">Commands</string>
+    <string name="date_added">Date added</string>
 </resources>

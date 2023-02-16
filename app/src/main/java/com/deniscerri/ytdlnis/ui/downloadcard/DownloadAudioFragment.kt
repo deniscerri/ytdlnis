@@ -9,7 +9,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
+import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -18,16 +21,12 @@ import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.models.ResultItem
-import com.deniscerri.ytdlnis.database.repository.DownloadRepository
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
-import com.deniscerri.ytdlnis.database.viewmodel.ResultViewModel
+import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel.Type
 import com.deniscerri.ytdlnis.databinding.FragmentHomeBinding
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.google.android.material.textfield.TextInputLayout
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel.Type
 
 
 class DownloadAudioFragment(private var resultItem: ResultItem) : Fragment() {
@@ -43,6 +42,10 @@ class DownloadAudioFragment(private var resultItem: ResultItem) : Fragment() {
     private lateinit var saveDir : TextInputLayout
 
     lateinit var downloadItem: DownloadItem
+
+    override fun onResume() {
+        super.onResume()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -168,12 +171,19 @@ class DownloadAudioFragment(private var resultItem: ResultItem) : Fragment() {
                         containers
                     )
                 )
-                val selectedContainer: String = if (containers.contains(formats[formats.lastIndex].container)){
-                    formats[formats.lastIndex].container
-                }else{
+
+                val selectedContainer: String = try {
+                    if (containers.contains(formats[formats.lastIndex].container)){
+                        formats[formats.lastIndex].container
+                    }else{
+                        containers[0]
+                    }
+                }catch (e: Exception){
                     containers[0]
                 }
+
                 downloadItem.format.container = selectedContainer
+                Log.e("TAG", selectedContainer)
                 containerAutoCompleteTextView!!.setText(selectedContainer, false)
                 (container!!.editText as AutoCompleteTextView?)!!.onItemClickListener =
                     AdapterView.OnItemClickListener { _: AdapterView<*>?, _: View?, index: Int, _: Long ->

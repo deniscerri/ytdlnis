@@ -12,39 +12,72 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:padding="10dp"
+        android:layout_marginVertical="10dp"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/newest"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:text="@string/newest_first"
-            android:drawablePadding="20dp"
-            android:paddingBottom="20dp"
-            app:drawableLeftCompat="@drawable/ic_up" />
+            android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/oldest"
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_up"/>
+
+
+            <TextView
+                android:id="@+id/date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:padding="10dp"
+                android:text="@string/date_added" />
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:text="@string/oldest_first"
-            android:drawablePadding="20dp"
-            android:paddingBottom="20dp"
-            app:drawableLeftCompat="@drawable/ic_down" />
+            android:orientation="horizontal">
 
-        <View style="@style/Divider.Horizontal"/>
+            <ImageView
+                android:visibility="invisible"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_up"/>
 
-        <TextView
-            android:id="@+id/cancel"
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:padding="10dp"
+                android:text="@string/title" />
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="15sp"
-            app:icon="@drawable/ic_link"
-            android:text="@string/cancel"
-            android:drawablePadding="20dp"
-            app:drawableLeftCompat="@drawable/ic_cancel" />
+            android:orientation="horizontal">
+
+            <ImageView
+                android:visibility="invisible"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_up"/>
+
+
+            <TextView
+                android:id="@+id/author"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:padding="10dp"
+                android:text="@string/author" />
+        </LinearLayout>
+
+
 
     </LinearLayout>
 

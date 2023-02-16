@@ -53,4 +53,9 @@
     <string-array name="sponsorblock_settings_default">
         <item>music_offtopic</item>
     </string-array>
+
+    <array name="initial_slider_values">
+        <item>0.0</item>
+        <item>100.0</item>
+    </array>
 </resources>

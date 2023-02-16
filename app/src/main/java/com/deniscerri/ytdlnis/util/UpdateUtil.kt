@@ -24,7 +24,6 @@ import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
 import java.util.concurrent.atomic.AtomicReference
-import java.io.File
 
 class UpdateUtil(var context: Context) {
     private val tag = "UpdateUtil"
