@@ -77,7 +77,6 @@
     <string name="remove_non_music">Remove non-music parts</string>
     <string name="remove_non_music_summary">Strips non-music parts of audio files with SponsorBlock</string>
     <string name="processing">Processing</string>
-    <string name="embed_subs">Subtitles in Videos</string>
     <string name="embed_subs_summary">Adds subtitles in the video</string>
     <string name="embed_thumb">Thumbnail Covers</string>
     <string name="embed_thumb_summary">Uses the thumbnail as cover art</string>
@@ -167,4 +166,6 @@
     <string name="commands">Commands</string>
     <string name="date_added">Date added</string>
     <string name="update_ytdl_nightly">Download Nightly Version of yt-dlp</string>
+    <string name="adjust_audio">Adjust Audio</string>
+    <string name="file_name_template">Filename Template</string>
 </resources>

@@ -21,8 +21,9 @@ data class DownloadItem(
     val website: String,
     val downloadSize: String,
     val playlistTitle: String,
-    var embedSubs: Boolean,
-    var addChapters: Boolean,
+    val audioPreferences : AudioPreferences,
+    val videoPreferences: VideoPreferences,
+    var customFileNameTemplate: String,
     var SaveThumb: Boolean,
     @ColumnInfo(defaultValue = "Queued")
     var status: String,

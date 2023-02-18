@@ -121,24 +121,24 @@ class DownloadCommandFragment(private val resultItem: ResultItem) : Fragment() {
                     commandPathResultLauncher.launch(intent)
                 }
 
-
-                val embedSubs = view.findViewById<Chip>(R.id.embed_subtitles)
-                embedSubs!!.isChecked = embedSubs.isChecked
-                embedSubs.setOnClickListener {
-                    downloadItem.embedSubs = embedSubs.isChecked
-                }
-
-                val addChapters = view.findViewById<Chip>(R.id.add_chapters)
-                addChapters!!.isChecked = addChapters.isChecked
-                addChapters.setOnClickListener{
-                    downloadItem.addChapters = addChapters.isChecked
-                }
-
-                val saveThumbnail = view.findViewById<Chip>(R.id.save_thumbnail)
-                saveThumbnail!!.isChecked = saveThumbnail.isChecked
-                saveThumbnail.setOnClickListener {
-                    downloadItem.SaveThumb = saveThumbnail.isChecked
-                }
+//
+//                val embedSubs = view.findViewById<Chip>(R.id.embed_subtitles)
+//                embedSubs!!.isChecked = embedSubs.isChecked
+//                embedSubs.setOnClickListener {
+//                    downloadItem.embedSubs = embedSubs.isChecked
+//                }
+//
+//                val addChapters = view.findViewById<Chip>(R.id.add_chapters)
+//                addChapters!!.isChecked = addChapters.isChecked
+//                addChapters.setOnClickListener{
+//                    downloadItem.addChapters = addChapters.isChecked
+//                }
+//
+//                val saveThumbnail = view.findViewById<Chip>(R.id.save_thumbnail)
+//                saveThumbnail!!.isChecked = saveThumbnail.isChecked
+//                saveThumbnail.setOnClickListener {
+//                    downloadItem.SaveThumb = saveThumbnail.isChecked
+//                }
 
             } catch (e: Exception) {
                 e.printStackTrace()

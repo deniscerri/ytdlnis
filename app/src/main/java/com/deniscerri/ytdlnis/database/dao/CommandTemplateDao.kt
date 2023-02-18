@@ -16,6 +16,9 @@ interface CommandTemplateDao {
     @Query("SELECT * FROM commandTemplates WHERE id=:id LIMIT 1")
     fun getTemplate(id: Long) : CommandTemplate
 
+    @Query("SELECT * FROM commandTemplates LIMIT 1")
+    fun getFirst() : CommandTemplate
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(item: CommandTemplate)
 

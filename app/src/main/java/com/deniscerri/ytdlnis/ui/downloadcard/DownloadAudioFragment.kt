@@ -25,6 +25,7 @@ import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel.Type
 import com.deniscerri.ytdlnis.databinding.FragmentHomeBinding
 import com.deniscerri.ytdlnis.util.FileUtil
+import com.google.android.material.chip.Chip
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.launch
 
@@ -189,6 +190,12 @@ class DownloadAudioFragment(private var resultItem: ResultItem) : Fragment() {
                     AdapterView.OnItemClickListener { _: AdapterView<*>?, _: View?, index: Int, _: Long ->
                         downloadItem.format.container = containers[index]
                     }
+
+                val embedThumb = view.findViewById<Chip>(R.id.embed_thumb)
+                embedThumb!!.isChecked = downloadItem.audioPreferences.embedThumb
+                embedThumb.setOnClickListener {
+                    downloadItem.audioPreferences.embedThumb = embedThumb.isChecked
+                }
 
             }catch (e : Exception){
                 e.printStackTrace()

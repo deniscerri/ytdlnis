@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "9197d2ce894417365b9012ace8bcf284",
+    "identityHash": "ae6989cdbd101bb25c22cc38d8ec456d",
     "entities": [
       {
         "tableName": "results",
@@ -160,7 +160,7 @@
       },
       {
         "tableName": "downloads",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `url` TEXT NOT NULL, `title` TEXT NOT NULL, `author` TEXT NOT NULL, `thumb` TEXT NOT NULL, `duration` TEXT NOT NULL, `type` TEXT NOT NULL, `format` TEXT NOT NULL, `downloadPath` TEXT NOT NULL, `website` TEXT NOT NULL, `downloadSize` TEXT NOT NULL, `playlistTitle` TEXT NOT NULL, `embedSubs` INTEGER NOT NULL, `addChapters` INTEGER NOT NULL, `SaveThumb` INTEGER NOT NULL, `status` TEXT NOT NULL DEFAULT 'Queued', `downloadStartTime` INTEGER NOT NULL DEFAULT 0)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `url` TEXT NOT NULL, `title` TEXT NOT NULL, `author` TEXT NOT NULL, `thumb` TEXT NOT NULL, `duration` TEXT NOT NULL, `type` TEXT NOT NULL, `format` TEXT NOT NULL, `downloadPath` TEXT NOT NULL, `website` TEXT NOT NULL, `downloadSize` TEXT NOT NULL, `playlistTitle` TEXT NOT NULL, `audioPreferences` TEXT NOT NULL, `videoPreferences` TEXT NOT NULL, `customFileNameTemplate` TEXT NOT NULL, `SaveThumb` INTEGER NOT NULL, `status` TEXT NOT NULL DEFAULT 'Queued', `downloadStartTime` INTEGER NOT NULL DEFAULT 0)",
         "fields": [
           {
             "fieldPath": "id",
@@ -235,15 +235,21 @@
             "notNull": true
           },
           {
-            "fieldPath": "embedSubs",
-            "columnName": "embedSubs",
-            "affinity": "INTEGER",
+            "fieldPath": "audioPreferences",
+            "columnName": "audioPreferences",
+            "affinity": "TEXT",
             "notNull": true
           },
           {
-            "fieldPath": "addChapters",
-            "columnName": "addChapters",
-            "affinity": "INTEGER",
+            "fieldPath": "videoPreferences",
+            "columnName": "videoPreferences",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "customFileNameTemplate",
+            "columnName": "customFileNameTemplate",
+            "affinity": "TEXT",
             "notNull": true
           },
           {
@@ -312,7 +318,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '9197d2ce894417365b9012ace8bcf284')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'ae6989cdbd101bb25c22cc38d8ec456d')"
     ]
   }
 }

@@ -1,0 +1,5 @@
+package com.deniscerri.ytdlnis.database.models
+
+data class AudioPreferences(
+    var embedThumb: Boolean = true,
+)

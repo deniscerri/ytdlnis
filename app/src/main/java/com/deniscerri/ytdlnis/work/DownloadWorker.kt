@@ -90,8 +90,7 @@ class DownloadWorker(
         }
         val limitRate = sharedPreferences.getString("limit_rate", "")
         if (limitRate != "") request.addOption("-r", limitRate!!)
-        val writeThumbnail = sharedPreferences.getBoolean("write_thumbnail", false)
-        if (writeThumbnail) {
+        if (downloadItem.SaveThumb) {
             request.addOption("--write-thumbnail")
             request.addOption("--convert-thumbnails", "png")
         }
@@ -108,6 +107,8 @@ class DownloadWorker(
         if (downloadItem.author.isNotEmpty()){
             request.addCommands(listOf("--replace-in-metadata","uploader",".*.",downloadItem.author));
         }
+        if (downloadItem.customFileNameTemplate.isEmpty()) downloadItem.customFileNameTemplate = "%(uploader)s - %(title)s"
+
 
         when(type){
             DownloadViewModel.Type.audio -> {
@@ -124,8 +125,7 @@ class DownloadWorker(
                 }
                 request.addOption("--embed-metadata")
 
-                val embedThumb = sharedPreferences.getBoolean("embed_thumbnail", false)
-                if (embedThumb) {
+                if (downloadItem.audioPreferences.embedThumb) {
                     request.addOption("--embed-thumbnail")
                     request.addOption("--convert-thumbnails", "png")
                     try {
@@ -137,8 +137,6 @@ class DownloadWorker(
                     } catch (ignored: Exception) {}
                 }
                 request.addOption("--parse-metadata", "%(release_year,upload_date)s:%(meta_date)s")
-                request.addCommands(listOf("--replace-in-metadata", "title", ".*.", downloadItem.title))
-                request.addCommands(listOf("--replace-in-metadata", "uploader", ".*.", downloadItem.author))
 
                 if (downloadItem.playlistTitle.isNotEmpty()) {
                     request.addOption("--parse-metadata", "%(album,playlist,title)s:%(meta_album)s")
@@ -146,15 +144,13 @@ class DownloadWorker(
                 } else {
                     request.addOption("--parse-metadata", "%(album,title)s:%(meta_album)s")
                 }
-                request.addOption("-o", tempFileDir.absolutePath + "/%(uploader)s - %(title)s.%(ext)s")
+                request.addOption("-o", tempFileDir.absolutePath + "/${downloadItem.customFileNameTemplate}.%(ext)s")
             }
             DownloadViewModel.Type.video -> {
-                val addChapters = sharedPreferences.getBoolean("add_chapters", false)
-                if (addChapters) {
+                if (downloadItem.videoPreferences.addChapters) {
                     request.addOption("--sponsorblock-mark", "all")
                 }
-                val embedSubs = sharedPreferences.getBoolean("embed_subtitles", false)
-                if (embedSubs) {
+                if (downloadItem.videoPreferences.embedSubs) {
                     request.addOption("--embed-subs", "")
                 }
                 val defaultFormats = context.resources.getStringArray(R.array.video_formats)
@@ -180,7 +176,7 @@ class DownloadWorker(
                         request.addOption("--embed-thumbnail")
                     }
                 }
-                request.addOption("-o", tempFileDir.absolutePath + "/%(uploader)s - %(title)s.%(ext)s")
+                request.addOption("-o", tempFileDir.absolutePath + "/${downloadItem.customFileNameTemplate}.%(ext)s")
             }
             DownloadViewModel.Type.command -> {
                 val commandRegex = "\"([^\"]*)\"|(\\S+)"

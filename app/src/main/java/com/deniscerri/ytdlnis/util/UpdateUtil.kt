@@ -57,7 +57,9 @@ class UpdateUtil(var context: Context) {
         } catch (ignored: JSONException) {
             return false
         }
-        if (version == "v" + BuildConfig.VERSION_NAME) {
+        val versionNameInt = version.split("v")[1].replace(".","").toInt()
+        val currentVersionNameInt = BuildConfig.VERSION_NAME.replace(".","").toInt()
+        if (currentVersionNameInt > versionNameInt) {
             return false
         }
         val updateDialog = MaterialAlertDialogBuilder(context)

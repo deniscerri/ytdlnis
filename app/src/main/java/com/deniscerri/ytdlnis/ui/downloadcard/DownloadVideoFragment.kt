@@ -174,15 +174,15 @@ class DownloadVideoFragment(private val resultItem: ResultItem) : Fragment() {
 
 
                 val embedSubs = view.findViewById<Chip>(R.id.embed_subtitles)
-                embedSubs!!.isChecked = downloadItem.embedSubs
+                embedSubs!!.isChecked = downloadItem.videoPreferences.embedSubs
                 embedSubs.setOnClickListener {
-                    downloadItem.embedSubs = embedSubs.isChecked
+                    downloadItem.videoPreferences.embedSubs = embedSubs.isChecked
                 }
 
                 val addChapters = view.findViewById<Chip>(R.id.add_chapters)
-                addChapters!!.isChecked = downloadItem.addChapters
+                addChapters!!.isChecked = downloadItem.videoPreferences.addChapters
                 addChapters.setOnClickListener{
-                    downloadItem.addChapters = addChapters.isChecked
+                    downloadItem.videoPreferences.addChapters = addChapters.isChecked
                 }
 
                 val saveThumbnail = view.findViewById<Chip>(R.id.save_thumbnail)

@@ -63,7 +63,6 @@
             app:key="concurrent_downloads"
             app:min="1"
             app:showSeekBarValue="true"
-            android:dependency="aria2"
             app:summary="@string/concurrent_downloads_summary"
             app:title="@string/concurrent_downloads" />
 
@@ -95,12 +94,18 @@
             app:summary="@string/select_sponsorblock_filtering"
             app:title="SponsorBlock" />
 
+        <EditTextPreference
+            android:icon="@drawable/ic_textformat"
+            app:key="file_name_template"
+            app:defaultValue="%(uploader)s - %(title)s"
+            app:title="@string/file_name_template" />
+
         <SwitchPreferenceCompat
             app:defaultValue="true"
             app:icon="@drawable/ic_subtitles"
             app:key="embed_subtitles"
             app:summary="@string/embed_subs_summary"
-            app:title="@string/embed_subs" />
+            app:title="@string/embed_subtitles" />
 
         <SwitchPreferenceCompat
             app:defaultValue="true"

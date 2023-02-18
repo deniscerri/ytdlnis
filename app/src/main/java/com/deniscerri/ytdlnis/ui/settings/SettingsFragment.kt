@@ -24,6 +24,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
     private var limitRate: EditTextPreference? = null
     private var aria2: SwitchPreferenceCompat? = null
     private var sponsorblockFilters: MultiSelectListPreference? = null
+    private var filenameTemplate: EditTextPreference? = null
     private var embedSubtitles: SwitchPreferenceCompat? = null
     private var embedThumbnail: SwitchPreferenceCompat? = null
     private var addChapters: SwitchPreferenceCompat? = null
@@ -62,6 +63,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         aria2 = findPreference("aria2")
         sponsorblockFilters = findPreference("sponsorblock_filter")
         embedSubtitles = findPreference("embed_subtitles")
+        filenameTemplate = findPreference("file_name_template")
         embedThumbnail = findPreference("embed_thumbnail")
         addChapters = findPreference("add_chapters")
         writeThumbnail = findPreference("write_thumbnail")
@@ -91,6 +93,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         editor.putString("limit_rate", limitRate!!.text)
         editor.putBoolean("aria2", aria2!!.isChecked)
         editor.putStringSet("sponsorblock_filters", sponsorblockFilters!!.values)
+        editor.putString("file_name_template", filenameTemplate!!.text)
         editor.putBoolean("embed_subtitles", embedSubtitles!!.isChecked)
         editor.putBoolean("embed_thumbnail", embedThumbnail!!.isChecked)
         editor.putBoolean("add_chapters", addChapters!!.isChecked)
@@ -189,6 +192,12 @@ class SettingsFragment : PreferenceFragmentCompat() {
             Preference.OnPreferenceChangeListener { _: Preference?, newValue: Any? ->
                 sponsorblockFilters!!.values = newValue as Set<String?>?
                 editor.putStringSet("sponsorblock_filters", newValue)
+                editor.apply()
+                true
+            }
+        filenameTemplate!!.onPreferenceChangeListener =
+            Preference.OnPreferenceChangeListener { _: Preference?, newValue: Any ->
+                editor.putString("file_name_template", newValue.toString())
                 editor.apply()
                 true
             }

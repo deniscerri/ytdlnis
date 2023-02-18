@@ -15,9 +15,8 @@ import androidx.work.WorkManager
 import com.deniscerri.ytdlnis.App
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.DBManager
-import com.deniscerri.ytdlnis.database.models.DownloadItem
-import com.deniscerri.ytdlnis.database.models.Format
-import com.deniscerri.ytdlnis.database.models.ResultItem
+import com.deniscerri.ytdlnis.database.dao.CommandTemplateDao
+import com.deniscerri.ytdlnis.database.models.*
 import com.deniscerri.ytdlnis.database.repository.DownloadRepository
 import com.deniscerri.ytdlnis.work.DownloadWorker
 import com.google.gson.Gson
@@ -29,6 +28,7 @@ import java.util.concurrent.TimeUnit
 class DownloadViewModel(application: Application) : AndroidViewModel(application) {
     private val repository : DownloadRepository
     private val sharedPreferences: SharedPreferences
+    private val commandTemplateDao: CommandTemplateDao
     val allDownloads : LiveData<List<DownloadItem>>
     val queuedDownloads : LiveData<List<DownloadItem>>
     val activeDownloads : LiveData<List<DownloadItem>>
@@ -45,6 +45,7 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
         repository = DownloadRepository(dao)
         sharedPreferences =
             getApplication<App>().getSharedPreferences("root_preferences", Activity.MODE_PRIVATE)
+        commandTemplateDao = DBManager.getInstance(application).commandTemplateDao
 
         allDownloads = repository.allDownloads
         queuedDownloads = repository.queuedDownloads
@@ -82,9 +83,14 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
     }
 
     fun createDownloadItemFromResult(resultItem: ResultItem, type: Type) : DownloadItem {
-         val embedSubs = sharedPreferences.getBoolean("embed_subtitles", false)
+        val embedSubs = sharedPreferences.getBoolean("embed_subtitles", false)
         val addChapters = sharedPreferences.getBoolean("add_chapters", false)
         val saveThumb = sharedPreferences.getBoolean("write_thumbnail", false)
+        val embedThumb = sharedPreferences.getBoolean("embed_thumbnail", false)
+        val customFileNameTemplate = sharedPreferences.getString("file_name_template", "%(uploader)s - %(title)s")
+
+        val audioPreferences = AudioPreferences(embedThumb)
+        val videoPreferences = VideoPreferences(embedSubs, addChapters)
 
         return DownloadItem(0,
             resultItem.url,
@@ -94,7 +100,7 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
             resultItem.duration,
             type,
             getFormat(resultItem, type),
-            "", resultItem.website, "", resultItem.playlistTitle, embedSubs, addChapters, saveThumb, DownloadRepository.Status.Processing.toString(), 0
+            "", resultItem.website, "", resultItem.playlistTitle, audioPreferences, videoPreferences,customFileNameTemplate!!, saveThumb, DownloadRepository.Status.Processing.toString(), 0
         )
 
     }

@@ -525,16 +525,17 @@ class InfoUtil(context: Context) {
     }
 
     fun getSearchSuggestions(query: String): ArrayList<String> {
-        val url = invidousURL + "search/suggestions?q=" + query
-        val res = genericRequest(url)
+        val url = "https://suggestqueries.google.com/complete/search?client=youtube&ds=yt&client=firefox&q=$query"
+        // invidousURL + "search/suggestions?q=" + query
+        val res = genericArrayRequest(url)
         if (res.length() == 0) return ArrayList()
         val suggestionList = ArrayList<String>()
         try {
-            val suggestions = res.getJSONArray("suggestions")
-            for (i in 0 until suggestions.length()) {
-                suggestionList.add(suggestions.getString(i))
+            for (i in 0 until res.getJSONArray(1).length()) {
+                suggestionList.add(res.getJSONArray(1).getString(i))
             }
         } catch (ignored: Exception) {
+            ignored.printStackTrace()
         }
         return suggestionList
     }
