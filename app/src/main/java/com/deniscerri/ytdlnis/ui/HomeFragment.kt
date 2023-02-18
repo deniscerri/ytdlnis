@@ -345,6 +345,8 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
             //showConfigureSingleDownloadCard(createDownloadItem(item!!, type), item)
             showSingleDownloadSheet(item!!, type!!)
         } else {
+            val downloadItem = downloadViewModel.createDownloadItemFromResult(item!!, type!!)
+            downloadViewModel.queueDownloads(listOf(downloadItem))
 //            downloadQueue!!.add(vid)
 //            updateDownloadingStatusOnResult(vid, type, true)
 //            if (isStoragePermissionGranted) {

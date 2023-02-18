@@ -16,64 +16,67 @@
         android:orientation="vertical">
 
         <LinearLayout
+            android:id="@+id/date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingBottom="20dp"
             android:orientation="horizontal">
 
             <ImageView
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="20dp"
+                android:paddingEnd="20dp"
                 android:src="@drawable/ic_up"/>
 
 
             <TextView
-                android:id="@+id/date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="15sp"
-                android:padding="10dp"
                 android:text="@string/date_added" />
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingBottom="20dp"
             android:orientation="horizontal">
 
             <ImageView
                 android:visibility="invisible"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="20dp"
+                android:paddingEnd="20dp"
                 android:src="@drawable/ic_up"/>
 
 
             <TextView
-                android:id="@+id/title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="15sp"
-                android:padding="10dp"
                 android:text="@string/title" />
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/author"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingBottom="20dp"
             android:orientation="horizontal">
 
             <ImageView
                 android:visibility="invisible"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="20dp"
+                android:paddingEnd="20dp"
                 android:src="@drawable/ic_up"/>
 
 
             <TextView
-                android:id="@+id/author"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="15sp"
-                android:padding="10dp"
                 android:text="@string/author" />
         </LinearLayout>
 

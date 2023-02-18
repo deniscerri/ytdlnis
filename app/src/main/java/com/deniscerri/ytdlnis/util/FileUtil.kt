@@ -45,8 +45,8 @@ class FileUtil() {
         } catch (ignored: Exception) {
         }
         val pieces = dataValue.split("/").toTypedArray()
-        var formattedPath = StringBuilder("/storage/")
-        if (pieces[0].equals("primary")){
+        val formattedPath = StringBuilder("/storage/")
+        if (pieces[0] == "primary"){
             formattedPath.append("emulated/0/")
         }else{
             formattedPath.append(pieces[0]).append("/")

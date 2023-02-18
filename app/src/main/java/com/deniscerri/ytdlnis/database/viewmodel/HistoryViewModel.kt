@@ -6,13 +6,15 @@ import com.deniscerri.ytdlnis.database.DBManager
 import com.deniscerri.ytdlnis.database.models.HistoryItem
 import com.deniscerri.ytdlnis.database.repository.HistoryRepository
 import com.deniscerri.ytdlnis.database.repository.HistoryRepository.HistorySort
+import com.deniscerri.ytdlnis.database.repository.HistoryRepository.HistorySortType
 import com.deniscerri.ytdlnis.util.FileUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class HistoryViewModel(application: Application) : AndroidViewModel(application) {
     private val repository : HistoryRepository
-    private val sortType = MutableLiveData(HistorySort.DESC)
+    val sortOrder = MutableLiveData(HistorySort.DESC)
+    private val sortType = MutableLiveData(HistorySortType.DATE)
     private val websiteFilter = MutableLiveData("")
     private val queryFilter = MutableLiveData("")
     private val formatFilter = MutableLiveData("")
@@ -25,19 +27,19 @@ class HistoryViewModel(application: Application) : AndroidViewModel(application)
         allItems = repository.items
 
         _items.addSource(allItems){
-            filter(queryFilter.value!!, formatFilter.value!!, websiteFilter.value!!, sortType.value!!)
+            filter(queryFilter.value!!, formatFilter.value!!, websiteFilter.value!!, sortType.value!!, sortOrder.value!!)
         }
         _items.addSource(formatFilter){
-            filter(queryFilter.value!!, formatFilter.value!!, websiteFilter.value!!, sortType.value!!)
+            filter(queryFilter.value!!, formatFilter.value!!, websiteFilter.value!!, sortType.value!!, sortOrder.value!!)
         }
         _items.addSource(sortType){
-            filter(queryFilter.value!!, formatFilter.value!!, websiteFilter.value!!, sortType.value!!)
+            filter(queryFilter.value!!, formatFilter.value!!, websiteFilter.value!!, sortType.value!!, sortOrder.value!!)
         }
         _items.addSource(websiteFilter){
-            filter(queryFilter.value!!, formatFilter.value!!, websiteFilter.value!!, sortType.value!!)
+            filter(queryFilter.value!!, formatFilter.value!!, websiteFilter.value!!, sortType.value!!, sortOrder.value!!)
         }
         _items.addSource(queryFilter){
-            filter(queryFilter.value!!, formatFilter.value!!, websiteFilter.value!!, sortType.value!!)
+            filter(queryFilter.value!!, formatFilter.value!!, websiteFilter.value!!, sortType.value!!, sortOrder.value!!)
         }
 
     }
@@ -46,7 +48,14 @@ class HistoryViewModel(application: Application) : AndroidViewModel(application)
         return _items
     }
 
-    fun setSorting(sort: HistorySort){
+    fun setSorting(sort: HistorySortType){
+        if (sortType.value != sort){
+            sortOrder.value = HistorySort.DESC
+        }else{
+            sortOrder.value = if (sortOrder.value == HistorySort.DESC) {
+                HistorySort.ASC
+            } else HistorySort.DESC
+        }
         sortType.value = sort
     }
 
@@ -62,8 +71,8 @@ class HistoryViewModel(application: Application) : AndroidViewModel(application)
         formatFilter.value = filter
     }
 
-    private fun filter(query : String, format : String, site : String, sort: HistorySort) = viewModelScope.launch(Dispatchers.IO){
-        _items.postValue(repository.getFiltered(query, format, site, sort))
+    private fun filter(query : String, format : String, site : String, sortType: HistorySortType, sort: HistorySort) = viewModelScope.launch(Dispatchers.IO){
+        _items.postValue(repository.getFiltered(query, format, site, sortType, sort))
     }
 
     fun insert(item: HistoryItem) = viewModelScope.launch(Dispatchers.IO){

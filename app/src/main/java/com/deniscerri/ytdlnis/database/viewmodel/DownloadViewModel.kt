@@ -89,6 +89,12 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
         val embedThumb = sharedPreferences.getBoolean("embed_thumbnail", false)
         val customFileNameTemplate = sharedPreferences.getString("file_name_template", "%(uploader)s - %(title)s")
 
+        val downloadPath = when(type){
+            Type.audio -> sharedPreferences.getString("music_path", getApplication<App>().resources.getString(R.string.music_path))
+            Type.video -> sharedPreferences.getString("video_path", getApplication<App>().resources.getString(R.string.video_path))
+            Type.command -> sharedPreferences.getString("command_path", getApplication<App>().resources.getString(R.string.command_path))
+        }
+
         val audioPreferences = AudioPreferences(embedThumb)
         val videoPreferences = VideoPreferences(embedSubs, addChapters)
 
@@ -100,7 +106,7 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
             resultItem.duration,
             type,
             getFormat(resultItem, type),
-            "", resultItem.website, "", resultItem.playlistTitle, audioPreferences, videoPreferences,customFileNameTemplate!!, saveThumb, DownloadRepository.Status.Processing.toString(), 0
+            downloadPath!!, resultItem.website, "", resultItem.playlistTitle, audioPreferences, videoPreferences,customFileNameTemplate!!, saveThumb, DownloadRepository.Status.Processing.toString(), 0
         )
 
     }

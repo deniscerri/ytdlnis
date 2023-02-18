@@ -21,6 +21,7 @@ import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.adapter.HistoryAdapter
 import com.deniscerri.ytdlnis.database.models.HistoryItem
+import com.deniscerri.ytdlnis.database.repository.HistoryRepository
 import com.deniscerri.ytdlnis.database.repository.HistoryRepository.HistorySort
 import com.deniscerri.ytdlnis.database.viewmodel.HistoryViewModel
 import com.deniscerri.ytdlnis.databinding.FragmentHistoryBinding
@@ -228,6 +229,14 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
         }
     }
 
+    private fun changeSortIcon(item: LinearLayout, order: HistorySort){
+        when(order){
+            HistorySort.DESC -> (item.getChildAt(0) as ImageView).setImageResource(R.drawable.ic_up)
+            HistorySort.ASC -> (item.getChildAt(0) as ImageView).setImageResource(R.drawable.ic_down)
+        }
+        item.getChildAt(0).visibility = VISIBLE
+    }
+
 
     private fun initChips() {
         val sortChip = fragmentView!!.findViewById<Chip>(R.id.sortChip)
@@ -235,23 +244,29 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
             sortSheet = BottomSheetDialog(requireContext())
             sortSheet!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
             sortSheet!!.setContentView(R.layout.history_sort_sheet)
-            val newest = sortSheet!!.findViewById<TextView>(R.id.date)
-            val oldest = sortSheet!!.findViewById<TextView>(R.id.title)
-            newest!!.setOnClickListener {
-                historyViewModel.setSorting(HistorySort.DESC)
-                sortSheet!!.cancel()
+
+            val date = sortSheet!!.findViewById<LinearLayout>(R.id.date)
+            val title = sortSheet!!.findViewById<LinearLayout>(R.id.title)
+            val author = sortSheet!!.findViewById<LinearLayout>(R.id.author)
+
+            val sortOptions = listOf(date!!, title!!, author!!)
+
+            date.getChildAt(1).setOnClickListener {
+                sortOptions.forEach { it.getChildAt(0).visibility = INVISIBLE }
+                historyViewModel.setSorting(HistoryRepository.HistorySortType.DATE)
+                changeSortIcon(date, historyViewModel.sortOrder.value!!)
             }
-            oldest!!.setOnClickListener {
-                historyViewModel.setSorting(HistorySort.ASC)
-                sortSheet!!.cancel()
+            title.getChildAt(1).setOnClickListener {
+                sortOptions.forEach { it.getChildAt(0).visibility = INVISIBLE }
+                historyViewModel.setSorting(HistoryRepository.HistorySortType.TITLE)
+                changeSortIcon(title, historyViewModel.sortOrder.value!!)
             }
-            val cancel = sortSheet!!.findViewById<TextView>(R.id.author)
-            cancel!!.setOnClickListener { sortSheet!!.cancel() }
+            author.getChildAt(1).setOnClickListener {
+                sortOptions.forEach { it.getChildAt(0).visibility = INVISIBLE }
+                historyViewModel.setSorting(HistoryRepository.HistorySortType.AUTHOR)
+                changeSortIcon(author, historyViewModel.sortOrder.value!!)
+            }
             sortSheet!!.show()
-            sortSheet!!.window!!.setLayout(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT
-            )
         }
 
         //format
