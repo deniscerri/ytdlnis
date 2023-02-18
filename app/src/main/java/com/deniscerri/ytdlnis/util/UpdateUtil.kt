@@ -1,5 +1,6 @@
 package com.deniscerri.ytdlnis.util
 
+import android.app.Activity
 import android.app.DownloadManager
 import android.content.Context
 import android.content.DialogInterface
@@ -29,6 +30,7 @@ class UpdateUtil(var context: Context) {
     private val tag = "UpdateUtil"
     private val downloadManager: DownloadManager = context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
     private val compositeDisposable = CompositeDisposable()
+    private val ytdlpNightly = "https://api.github.com/repos/ytdl-patched/yt-dlp/releases/latest"
 
     fun updateApp(): Boolean {
         if (updatingApp) {
@@ -140,6 +142,8 @@ class UpdateUtil(var context: Context) {
     }
 
     fun updateYoutubeDL() {
+        val sharedPreferences =
+            context.getSharedPreferences("root_preferences", Activity.MODE_PRIVATE)
         if (updatingYTDL) {
             Toast.makeText(
                 context,
@@ -156,7 +160,7 @@ class UpdateUtil(var context: Context) {
         updatingYTDL = true
         val disposable = Observable.fromCallable {
             YoutubeDL.getInstance().updateYoutubeDL(
-                context
+                context, if (sharedPreferences.getBoolean("nightly_ytdl", false) ) ytdlpNightly else null
             )
         }
             .subscribeOn(Schedulers.newThread())

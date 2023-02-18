@@ -172,6 +172,13 @@
             app:title="@string/update_ytdl" />
 
         <SwitchPreferenceCompat
+            android:defaultValue="false"
+            app:icon="@drawable/ic_nightly"
+            app:key="nightly_ytdl"
+            android:title="@string/update_ytdl_nightly"
+            />
+
+        <SwitchPreferenceCompat
             app:defaultValue="true"
             android:icon="@drawable/ic_update_app"
             android:key="update_app"

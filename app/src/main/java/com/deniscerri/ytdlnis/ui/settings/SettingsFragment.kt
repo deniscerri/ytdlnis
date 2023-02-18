@@ -33,6 +33,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
     private var audioQuality: SeekBarPreference? = null
     private var videoQuality: ListPreference? = null
     private var updateYTDL: Preference? = null
+    private var updateNightlyYTDL: SwitchPreferenceCompat? = null
     private var updateApp: SwitchPreferenceCompat? = null
     private var version: Preference? = null
     private var updateUtil: UpdateUtil? = null
@@ -69,6 +70,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         audioQuality = findPreference("audio_quality")
         videoQuality = findPreference("video_quality")
         updateYTDL = findPreference("update_ytdl")
+        updateNightlyYTDL = findPreference("nightly_ytdl")
         updateApp = findPreference("update_app")
         version = findPreference("version")
         version!!.summary = BuildConfig.VERSION_NAME
@@ -97,6 +99,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         editor.putString("video_format", videoFormat!!.value)
         editor.putInt("audio_quality", audioQuality!!.value)
         editor.putString("video_quality", videoQuality!!.value)
+        editor.putBoolean("nightly_ytdl", updateNightlyYTDL!!.isChecked)
         editor.putBoolean("update_app", updateApp!!.isChecked)
         editor.apply()
     }
@@ -250,6 +253,13 @@ class SettingsFragment : PreferenceFragmentCompat() {
         updateYTDL!!.onPreferenceClickListener =
             Preference.OnPreferenceClickListener {
                 updateUtil!!.updateYoutubeDL()
+                true
+            }
+        updateNightlyYTDL!!.onPreferenceChangeListener =
+            Preference.OnPreferenceChangeListener {  _: Preference?, newValue: Any ->
+                val enable = newValue as Boolean
+                editor.putBoolean("nightly_ytdl", enable)
+                editor.apply()
                 true
             }
         updateApp!!.onPreferenceChangeListener =

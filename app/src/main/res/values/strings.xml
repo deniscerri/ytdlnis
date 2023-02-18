@@ -14,7 +14,7 @@
     <string name="video_directory">Video Folder</string>
     <string name="updating">Updating</string>
     <string name="ytdl_update_hint">Useful if you have problems downloading</string>
-    <string name="update_ytdl">Install new version of youtube-dl</string>
+    <string name="update_ytdl">Install new version of yt-dlp</string>
     <string name="about">About</string>
     <string name="source_code">Source Code</string>
     <string name="search_hint">Search from YouTube</string>
@@ -166,4 +166,5 @@
     <string name="logs">Logs</string>
     <string name="commands">Commands</string>
     <string name="date_added">Date added</string>
+    <string name="update_ytdl_nightly">Download Nightly Version of yt-dlp</string>
 </resources>
