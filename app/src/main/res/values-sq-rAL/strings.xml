@@ -142,4 +142,22 @@
     <string name="sponsorblock_fillers">Pjesë Shtesë</string>
     <string name="sponsorblock_reminders">Përkujtuesit e Abonimit</string>
     <string name="select_sponsorblock_filtering">Zgjidh Filtrimin e SponsorBlock</string>
+    <string name="save_dir">Direktoria</string>
+    <string name="new_template">Shabllon i ri</string>
+    <string name="adjust_templates">Cakto Shabllonët</string>
+    <string name="edit_selected">Redakto të zgjedhurin</string>
+    <string name="adjust_video">Modifiko Videon</string>
+    <string name="schedule">Planifiko</string>
+    <string name="concurrent_downloads">Shkarkimet e njëkohësishme</string>
+    <string name="concurrent_downloads_summary">Numri i shkarkimeve qe do ekzekutohen në të njëjtën kohë</string>
+    <string name="defaultValue">Siç është</string>
+    <string name="container">Formati</string>
+    <string name="template">Shablloni</string>
+    <string name="logs">Shënimet</string>
+    <string name="commands">Komandat</string>
+    <string name="date_added">Data e shtuar</string>
+    <string name="update_ytdl_nightly">Shkarko versionin beta të yt-dlp</string>
+    <string name="adjust_audio">Modifiko Audion</string>
+    <string name="file_name_template">Formati i Emrit të Skedarit</string>
+    <string name="language">Gjuha</string>
 </resources>

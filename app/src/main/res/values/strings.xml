@@ -155,7 +155,6 @@
     <string name="adjust_templates">Adjust templates</string>
     <string name="edit_selected">Edit selected</string>
     <string name="adjust_video">Adjust video</string>
-    <string name="remove_audio">Remove Audio</string>
     <string name="schedule">Schedule</string>
     <string name="concurrent_downloads">Concurrent Downloads</string>
     <string name="concurrent_downloads_summary">Number of downloads executing at the same time</string>
@@ -168,4 +167,7 @@
     <string name="update_ytdl_nightly">Download Nightly Version of yt-dlp</string>
     <string name="adjust_audio">Adjust Audio</string>
     <string name="file_name_template">Filename Template</string>
+    <string name="language">Language</string>
+    <string name="command_templates">Command Templates</string>
+    <string name="terminal">Terminal</string>
 </resources>

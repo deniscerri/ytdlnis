@@ -58,4 +58,16 @@
         <item>0.0</item>
         <item>100.0</item>
     </array>
+
+    <string-array name="language_values">
+        <item>en</item>
+        <item>de</item>
+        <item>fr</item>
+        <item>ja</item>
+        <item>nb</item>
+        <item>pl</item>
+        <item>ru</item>
+        <item>sq</item>
+        <item>tr</item>
+    </string-array>
 </resources>

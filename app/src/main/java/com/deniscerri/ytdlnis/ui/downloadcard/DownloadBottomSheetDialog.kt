@@ -73,7 +73,7 @@ class DownloadBottomSheetDialog(private val resultItem: ResultItem, private val 
                 tabLayout.selectTab(tabLayout.getTabAt(1))
                 viewPager2.setCurrentItem(1, false)
             }
-            Type.command -> {
+            else -> {
                 tabLayout.selectTab(tabLayout.getTabAt(2))
                 viewPager2.setCurrentItem(2, false)
             }

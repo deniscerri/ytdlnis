@@ -1,6 +1,14 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <ListPreference
+        android:entries="@array/language_values"
+        android:entryValues="@array/language_values"
+        android:icon="@drawable/ic_language"
+        app:key="app_language"
+        app:summary="en"
+        app:title="@string/language" />
+
     <PreferenceCategory android:title="@string/directories">
         <Preference
             app:icon="@drawable/ic_music_downloaded"

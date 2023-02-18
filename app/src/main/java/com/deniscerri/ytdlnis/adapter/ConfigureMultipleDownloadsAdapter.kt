@@ -103,7 +103,7 @@ class ConfigureMultipleDownloadsAdapter(onItemClickListener: OnItemClickListener
             DownloadViewModel.Type.video -> {
                 btn.icon = ContextCompat.getDrawable(activity, R.drawable.ic_video)
             }
-            DownloadViewModel.Type.command -> {
+            else -> {
                 btn.icon = ContextCompat.getDrawable(activity, R.drawable.ic_baseline_keyboard_arrow_right_24)
             }
         }

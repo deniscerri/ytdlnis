@@ -2,17 +2,23 @@ package com.deniscerri.ytdlnis.ui.settings
 
 import android.app.Activity
 import android.content.Intent
+import android.content.res.Configuration
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.os.LocaleListCompat
 import androidx.preference.*
 import com.deniscerri.ytdlnis.BuildConfig
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.UpdateUtil
+import java.util.*
 
 class SettingsFragment : PreferenceFragmentCompat() {
+    private var language: ListPreference? = null
     private var musicPath: Preference? = null
     private var videoPath: Preference? = null
     private var commandPath: Preference? = null
@@ -51,6 +57,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         val preferences =
             requireContext().getSharedPreferences("root_preferences", Activity.MODE_PRIVATE)
         val editor = preferences.edit()
+        language = findPreference("app_language")
         musicPath = findPreference("music_path")
         videoPath = findPreference("video_path")
         commandPath = findPreference("command_path")
@@ -76,6 +83,20 @@ class SettingsFragment : PreferenceFragmentCompat() {
         updateApp = findPreference("update_app")
         version = findPreference("version")
         version!!.summary = BuildConfig.VERSION_NAME
+
+        val values = resources.getStringArray(R.array.language_values)
+        if (Build.VERSION.SDK_INT >= 34){
+            language!!.isVisible = false
+        }else{
+            val entries = mutableListOf<String>()
+            values.forEach {
+                entries.add(Locale(it).getDisplayName(Locale(it)))
+            }
+            language!!.entries = entries.toTypedArray()
+        }
+        val lang = if (values.contains(Locale.getDefault().language)) Locale.getDefault().language else "en"
+        editor.putString("app_language", lang)
+
         if (preferences.getString("music_path", "")!!.isEmpty()) {
             editor.putString("music_path", getString(R.string.music_path))
         }
@@ -111,6 +132,17 @@ class SettingsFragment : PreferenceFragmentCompat() {
         val preferences =
             requireContext().getSharedPreferences("root_preferences", Activity.MODE_PRIVATE)
         val editor = preferences.edit()
+        language!!.summary = Locale(preferences.getString("app_language", "")!!).getDisplayLanguage(Locale(preferences.getString("app_language", "")!!))
+        language!!.onPreferenceChangeListener =
+            Preference.OnPreferenceChangeListener { _: Preference?, newValue: Any ->
+                editor.putString("app_language", newValue.toString())
+                language!!.summary = Locale(newValue.toString()).getDisplayLanguage(Locale(newValue.toString()))
+                editor.apply()
+                AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(newValue.toString()))
+                (requireActivity() as SettingsActivity).setLocale(newValue.toString())
+                true
+            }
+
         musicPath!!.summary = fileUtil?.formatPath(preferences.getString("music_path", "")!!)
         musicPath!!.onPreferenceClickListener =
             Preference.OnPreferenceClickListener {

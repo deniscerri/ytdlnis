@@ -14,8 +14,10 @@
     <application
         android:name=".App"
         android:allowBackup="false"
+        android:localeConfig="@xml/locales_config"
         android:extractNativeLibs="true"
         android:icon="@mipmap/ic_launcher"
+        android:configChanges="layoutDirection|locale"
         android:label="@string/app_name"
         android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
@@ -27,6 +29,7 @@
         tools:ignore="DataExtractionRules">
         <activity android:name=".MainActivity"
             android:windowSoftInputMode="adjustResize"
+            android:configChanges="layoutDirection|locale"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -46,6 +49,7 @@
 
         </activity>
         <activity android:name=".receiver.ShareActivity"
+            android:configChanges="layoutDirection|locale"
             android:exported="true">
 
 <!--            <intent-filter>-->
@@ -62,6 +66,7 @@
         </activity>
         <activity
             android:name=".ui.settings.SettingsActivity"
+            android:configChanges="layoutDirection|locale"
             android:parentActivityName=".MainActivity"
             android:exported="true">
             <intent-filter>
@@ -71,6 +76,7 @@
         </activity>
         <activity
             android:name=".ui.CustomCommandActivity"
+            android:configChanges="layoutDirection|locale"
             android:theme="@style/AppDefaultTheme"
             android:parentActivityName=".MainActivity"
             android:label="@string/run_command"

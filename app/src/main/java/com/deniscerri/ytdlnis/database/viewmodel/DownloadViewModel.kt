@@ -37,7 +37,7 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
     private var bestVideoFormat : Format
     private var bestAudioFormat : Format
     enum class Type {
-        audio, video, command
+        audio, video, command, terminal
     }
 
     init {
@@ -92,7 +92,7 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
         val downloadPath = when(type){
             Type.audio -> sharedPreferences.getString("music_path", getApplication<App>().resources.getString(R.string.music_path))
             Type.video -> sharedPreferences.getString("video_path", getApplication<App>().resources.getString(R.string.video_path))
-            Type.command -> sharedPreferences.getString("command_path", getApplication<App>().resources.getString(R.string.command_path))
+            else -> sharedPreferences.getString("command_path", getApplication<App>().resources.getString(R.string.command_path))
         }
 
         val audioPreferences = AudioPreferences(embedThumb)
@@ -111,18 +111,19 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
 
     }
 
-    private fun getFormat(resultItem: ResultItem, type: Type) : Format {
+
+    private fun getFormat(resultItem: ResultItem?, type: Type) : Format {
         when(type) {
             Type.audio -> {
                 return try {
-                    resultItem.formats.last { it.format_note.contains("audio", ignoreCase = true) }
+                    resultItem!!.formats.last { it.format_note.contains("audio", ignoreCase = true) }
                 }catch (e: Exception){
                     bestAudioFormat
                 }
             }
             Type.video -> {
                 return try {
-                    resultItem.formats.last { !it.format_note.contains("audio", ignoreCase = true) }
+                    resultItem!!.formats.last { !it.format_note.contains("audio", ignoreCase = true) }
                 }catch (e: Exception){
                     bestVideoFormat
                 }
@@ -201,6 +202,41 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
                 workRequest
             ).enqueue()
         }
+    }
+
+    fun startTerminalDownload(command: String) = viewModelScope.launch(Dispatchers.IO) {
+        val downloadPath = sharedPreferences.getString("command_path", getApplication<App>().resources.getString(R.string.command_path))
+        val downloadItem = DownloadItem(0,
+            "",
+            "",
+            "",
+            "",
+            "",
+            Type.terminal,
+            Format("", "", 0, command),
+            downloadPath!!, "", "", "", AudioPreferences(), VideoPreferences(), "", false, DownloadRepository.Status.Processing.toString(), 0
+        )
+
+        downloadItem.status = DownloadRepository.Status.Queued.toString()
+        Log.e("aaaaaaaa", downloadItem.toString())
+        val id = repository.insert(downloadItem)
+        downloadItem.id = id
+
+        val workRequest = OneTimeWorkRequestBuilder<DownloadWorker>()
+            .setInputData(Data.Builder().putLong("id", downloadItem.id).build())
+            .addTag("terminal")
+            .build()
+        val context = getApplication<App>().applicationContext
+        WorkManager.getInstance(context).beginUniqueWork(
+            downloadItem.id.toString(),
+            ExistingWorkPolicy.KEEP,
+            workRequest
+        ).enqueue()
+    }
+
+
+    fun getTerminalDownload(): Long {
+        return repository.getTerminalDownload();
     }
 
 }

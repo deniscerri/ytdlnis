@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.Configuration
 import android.net.Uri
 import android.os.Build
 import android.os.Build.VERSION_CODES
@@ -15,7 +16,9 @@ import android.view.MenuItem
 import android.view.View
 import android.view.WindowInsets
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.app.ActivityCompat
+import androidx.core.os.LocaleListCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -49,6 +52,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivityMainBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_main)
         setContentView(binding.root)
         context = baseContext
@@ -252,6 +256,10 @@ class MainActivity : AppCompatActivity() {
             exitProcess(0)
         }
         dialog.show()
+    }
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        startActivity(Intent(this, MainActivity::class.java))
+        super.onConfigurationChanged(newConfig)
     }
 
     companion object {

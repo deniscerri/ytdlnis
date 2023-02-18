@@ -2,6 +2,8 @@ package com.deniscerri.ytdlnis
 
 import android.app.Application
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.os.LocaleListCompat
 import androidx.preference.PreferenceManager
 import androidx.work.Configuration
 import androidx.work.WorkManager
@@ -11,9 +13,11 @@ import com.yausername.aria2c.Aria2c
 import com.yausername.ffmpeg.FFmpeg
 import com.yausername.youtubedl_android.YoutubeDL
 import com.yausername.youtubedl_android.YoutubeDLException
+import java.util.*
 import java.util.concurrent.Executors
 
 class App : Application() {
+
     override fun onCreate() {
         super.onCreate()
         DynamicColors.applyToActivitiesIfAvailable(this)
@@ -40,6 +44,9 @@ class App : Application() {
             Toast.makeText(this@App, e.message, Toast.LENGTH_SHORT).show()
             e.printStackTrace()
         }
+        val locale = getSharedPreferences("root_preferences", MODE_PRIVATE)
+            .getString("app_language", Locale.getDefault().language)!!
+        AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(locale))
     }
     @Throws(YoutubeDLException::class)
     private fun initLibraries() {

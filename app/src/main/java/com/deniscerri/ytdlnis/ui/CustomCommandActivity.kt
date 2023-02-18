@@ -6,19 +6,34 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.EditText
 import android.widget.ScrollView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.work.WorkInfo
+import androidx.work.WorkManager
 import com.deniscerri.ytdlnis.R
+import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.service.IDownloaderService
 import com.deniscerri.ytdlnis.util.NotificationUtil
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+import com.yausername.youtubedl_android.YoutubeDL
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 
 class CustomCommandActivity : AppCompatActivity() {
     private var topAppBar: MaterialToolbar? = null
+    private lateinit var downloadViewModel: DownloadViewModel
+    private lateinit var notificationUtil: NotificationUtil
+    private lateinit var workManager: WorkManager
     private var isDownloadServiceRunning = false
     private var output: TextView? = null
     private var input: EditText? = null
@@ -27,80 +42,6 @@ class CustomCommandActivity : AppCompatActivity() {
     private var iDownloaderService: IDownloaderService? = null
     private var scrollView: ScrollView? = null
     var context: Context? = null
-//    private val serviceConnection: ServiceConnection = object : ServiceConnection {
-//        override fun onServiceConnected(className: ComponentName, service: IBinder) {
-//            downloaderService = (service as LocalBinder).service
-//            iDownloaderService = service
-//            isDownloadServiceRunning = true
-//            try {
-//                val listeners = ArrayList<IDownloaderListener>()
-//                listeners.add(listener)
-//                iDownloaderService!!.addActivity(this@CustomCommandActivity, listeners)
-//                listener.onDownloadStart(iDownloaderService!!.info)
-//            } catch (e: Exception) {
-//                e.printStackTrace()
-//            }
-//        }
-//
-//        override fun onServiceDisconnected(componentName: ComponentName) {
-//            downloaderService = null
-//            iDownloaderService = null
-//            isDownloadServiceRunning = false
-//        }
-//    }
-//    var listener: IDownloaderListener = object : IDownloaderListener {
-//        override fun onDownloadStart(info: DownloadInfo) {
-//            input!!.isEnabled = false
-//            output!!.text = ""
-//            swapFabs()
-//        }
-//
-//        override fun onDownloadProgress(info: DownloadInfo) {
-//            val newInfo = info.outputLine
-//            if (newInfo.contains("[download]")) {
-//                val temp = output!!.text.toString()
-//                output!!.text =
-//                    temp.substring(0, temp.lastIndexOf(System.getProperty("line.separator")!!) - 2)
-//            }
-//            output!!.append(
-//                """${info.outputLine}
-//"""
-//            )
-//            output!!.scrollTo(0, output!!.height)
-//            scrollView!!.fullScroll(View.FOCUS_DOWN)
-//        }
-//
-//        @SuppressLint("SetTextI18n")
-//        override fun onDownloadError(info: DownloadInfo) {
-//            output!!.append(
-//                """
-//
-//    ${info.outputLine}
-//    """.trimIndent()
-//            )
-//            scrollView!!.scrollTo(0, scrollView!!.maxScrollAmount)
-//            input!!.setText("yt-dlp ")
-//            input!!.isEnabled = true
-//            swapFabs()
-//        }
-//
-//        @SuppressLint("SetTextI18n")
-//        override fun onDownloadEnd(info: DownloadInfo) {
-//            output!!.append(info.outputLine)
-//            scrollView!!.scrollTo(0, scrollView!!.maxScrollAmount)
-//            // MEDIA SCAN
-//            MediaScannerConnection.scanFile(context, arrayOf("/storage"), null, null)
-//            input!!.setText("yt-dlp ")
-//            input!!.isEnabled = true
-//            swapFabs()
-//        }
-//
-//        override fun onDownloadCancel(downloadInfo: DownloadInfo) {}
-//        override fun onDownloadCancelAll(downloadInfo: DownloadInfo) {}
-//        override fun onDownloadServiceEnd() {
-//            stopDownloadService()
-//        }
-//    }
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -115,19 +56,18 @@ class CustomCommandActivity : AppCompatActivity() {
         input!!.requestFocus()
         fab = findViewById(R.id.command_fab)
         fab!!.setOnClickListener {
-            if (isStoragePermissionGranted) {
-                startDownloadService(
-                    input!!.text.toString(),
-                    NotificationUtil.COMMAND_DOWNLOAD_NOTIFICATION_ID
-                )
-            }
+            startDownload(
+                input!!.text.toString()
+            )
         }
         cancelFab = findViewById(R.id.cancel_command_fab)
         cancelFab!!.setOnClickListener {
-            cancelDownloadService()
-            swapFabs()
+            cancelDownload()
             input!!.isEnabled = true
         }
+        downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
+        notificationUtil = NotificationUtil(this)
+        workManager = WorkManager.getInstance(this)
         handleIntent(intent)
     }
 
@@ -147,53 +87,32 @@ class CustomCommandActivity : AppCompatActivity() {
         }
     }
 
-    private fun swapFabs() {
-        val cancel = cancelFab!!.visibility
-        val start = fab!!.visibility
-        cancelFab!!.visibility = start
-        fab!!.visibility = cancel
-    }
 
-
-    private fun startDownloadService(command: String?, id: Int) {
+    private fun startDownload(command: String?) {
         if (isDownloadServiceRunning) return
-        //val serviceIntent = Intent(context, DownloaderService::class.java)
-//        serviceIntent.putExtra("command", command)
-//        serviceIntent.putExtra("id", id)
-        //context!!.applicationContext.bindService(serviceIntent, serviceConnection, BIND_AUTO_CREATE)
+        downloadViewModel.startTerminalDownload(command!!)
+        output!!.text = ""
+        workManager.getWorkInfosByTagLiveData("terminal")
+            .observe(this){ list ->
+                list.forEach {
+                    if(it.progress.getString("output") != null){
+                        output?.append("\n" + it.progress.getString("output") + "\n")
+                        output?.scrollTo(0, output!!.height)
+                        scrollView?.fullScroll(View.FOCUS_DOWN)
+                    }
+                }
+            }
+
     }
 
-    fun stopDownloadService() {
-//        if (!isDownloadServiceRunning) return
-//        iDownloaderService!!.removeActivity(this)
-//        context!!.applicationContext.unbindService(serviceConnection)
-//        downloaderService!!.stopForeground(true)
-//        downloaderService!!.stopSelf()
-//        isDownloadServiceRunning = false
-    }
-
-    fun cancelDownloadService() {
-        if (!isDownloadServiceRunning) return
-        iDownloaderService!!.cancelDownload(false)
-        stopDownloadService()
-    }
-
-    private val isStoragePermissionGranted: Boolean
-        get() = if (ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE
-            )
-            == PackageManager.PERMISSION_GRANTED
-        ) {
-            true
-        } else {
-            ActivityCompat.requestPermissions(
-                this,
-                arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
-                1
-            )
-            false
+    private fun cancelDownload() {
+        lifecycleScope.launch {
+            val id = withContext(Dispatchers.IO){ downloadViewModel.getTerminalDownload(); }
+            YoutubeDL.getInstance().destroyProcessById(id.toString())
+            WorkManager.getInstance(this@CustomCommandActivity).cancelUniqueWork(id.toString())
+            notificationUtil.cancelDownloadNotification(id.toInt())
         }
+    }
 
     companion object {
         private const val TAG = "CustomCommandActivity"

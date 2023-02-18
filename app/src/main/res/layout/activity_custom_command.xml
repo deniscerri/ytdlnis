@@ -64,8 +64,7 @@
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/custom_command_toolbar"
             android:elevation="0dp"
-            app:layout_scrollFlags="scroll|enterAlways|snap"
-            app:title="@string/custom_command"
+            app:title="@string/terminal"
             android:layout_width="match_parent"
             app:navigationIcon="@drawable/ic_back"
             android:layout_height="match_parent"/>

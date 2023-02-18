@@ -17,10 +17,11 @@
             android:data="https://github.com/deniscerri/ytdlnis" />
     </Preference>
 
+
     <Preference
-        app:icon="@drawable/ic_baseline_keyboard_arrow_right_24"
+        app:icon="@drawable/ic_terminal"
         app:key="run_command"
-        app:title="@string/custom_command">
+        app:title="@string/terminal">
         <intent android:action="ytdlnis.page.CustomCommandActivity" />
     </Preference>
 
@@ -33,8 +34,17 @@
     </Preference>
 
     <Preference
+        app:icon="@drawable/ic_baseline_keyboard_arrow_right_24"
+        app:key="command_templates"
+        app:allowDividerBelow="true"
+        app:title="@string/command_templates">
+        <intent android:action="ytdlnis.page.DownloadLogsActivity" />
+    </Preference>
+
+    <Preference
         app:icon="@drawable/ic_settings"
         app:key="open_settings"
+        app:allowDividerAbove="true"
         app:title="@string/settings">
         <intent android:action="ytdlnis.settings.SettingsActivity" />
     </Preference>
