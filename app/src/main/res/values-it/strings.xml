@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="music_directory">Cartella Musica</string>
+    <string name="search">Cerca</string>
+    <string name="remove_all">Rimuovi Tutti</string>
+    <string name="remove_results">Cancella Risultati</string>
+    <string name="updating">Aggiornamento in corso</string>
+    <string name="home">Home</string>
+    <string name="ytdl_update_hint">"Utile se hai problemi con il download "</string>
+    <string name="download_all">Scarica Tutti</string>
+    <string name="settings">Impostazioni</string>
+    <string name="directories">Cartelle</string>
+    <string name="video_directory">Cartella Video</string>
+</resources>
