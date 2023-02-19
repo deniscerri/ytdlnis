@@ -65,7 +65,4 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
         }
     }
 
-    fun getTerminalDownload() : Long {
-        return downloadDao.getTerminalDownload().id
-    }
 }

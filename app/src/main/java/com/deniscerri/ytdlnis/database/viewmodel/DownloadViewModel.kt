@@ -37,7 +37,7 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
     private var bestVideoFormat : Format
     private var bestAudioFormat : Format
     enum class Type {
-        audio, video, command, terminal
+        audio, video, command
     }
 
     init {
@@ -202,41 +202,6 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
                 workRequest
             ).enqueue()
         }
-    }
-
-    fun startTerminalDownload(command: String) = viewModelScope.launch(Dispatchers.IO) {
-        val downloadPath = sharedPreferences.getString("command_path", getApplication<App>().resources.getString(R.string.command_path))
-        val downloadItem = DownloadItem(0,
-            "",
-            "",
-            "",
-            "",
-            "",
-            Type.terminal,
-            Format("", "", 0, command),
-            downloadPath!!, "", "", "", AudioPreferences(), VideoPreferences(), "", false, DownloadRepository.Status.Processing.toString(), 0
-        )
-
-        downloadItem.status = DownloadRepository.Status.Queued.toString()
-        Log.e("aaaaaaaa", downloadItem.toString())
-        val id = repository.insert(downloadItem)
-        downloadItem.id = id
-
-        val workRequest = OneTimeWorkRequestBuilder<DownloadWorker>()
-            .setInputData(Data.Builder().putLong("id", downloadItem.id).build())
-            .addTag("terminal")
-            .build()
-        val context = getApplication<App>().applicationContext
-        WorkManager.getInstance(context).beginUniqueWork(
-            downloadItem.id.toString(),
-            ExistingWorkPolicy.KEEP,
-            workRequest
-        ).enqueue()
-    }
-
-
-    fun getTerminalDownload(): Long {
-        return repository.getTerminalDownload();
     }
 
 }

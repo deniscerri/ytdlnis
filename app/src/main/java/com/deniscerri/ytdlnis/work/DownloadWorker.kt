@@ -190,32 +190,6 @@ class DownloadWorker(
                     }
                 }
             }
-            DownloadViewModel.Type.terminal -> {
-                if(downloadItem.format.format_note.startsWith("yt-dlp ")){
-                    downloadItem.format.format_note = downloadItem.format.format_note.substring(6).trim();
-                }
-
-                val commandRegex = "\"([^\"]*)\"|(\\S+)"
-                request = YoutubeDLRequest(emptyList())
-
-                tempFolder = StringBuilder(context.cacheDir.absolutePath + """/${downloadItem.format.format_id}##terminal""")
-                tempFileDir = File(tempFolder.toString())
-                tempFileDir.delete()
-                tempFileDir.mkdir()
-
-
-                val m = Pattern.compile(commandRegex).matcher(downloadItem.format.format_note)
-                while (m.find()) {
-                    if (m.group(1) != null) {
-                        request.addOption(m.group(1)!!)
-                    } else {
-                        request.addOption(m.group(2)!!)
-                    }
-                }
-
-                request.addOption("-o", tempFileDir.absolutePath + "/${downloadItem.customFileNameTemplate}.%(ext)s")
-
-            }
         }
 
         runCatching {

@@ -1,6 +1,8 @@
 package com.deniscerri.ytdlnis.ui
 
 import android.Manifest
+import android.app.Notification
+import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -10,36 +12,36 @@ import android.view.View
 import android.widget.EditText
 import android.widget.ScrollView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
+import androidx.core.app.NotificationManagerCompat
 import androidx.lifecycle.lifecycleScope
-import androidx.work.WorkInfo
-import androidx.work.WorkManager
 import com.deniscerri.ytdlnis.R
-import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
-import com.deniscerri.ytdlnis.service.IDownloaderService
+import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.NotificationUtil
+import com.deniscerri.ytdlnis.work.DownloadWorker
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.yausername.youtubedl_android.YoutubeDL
-import kotlinx.coroutines.Dispatchers
+import com.yausername.youtubedl_android.YoutubeDLRequest
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
+import java.io.File
+import java.util.regex.Pattern
+
 
 class CustomCommandActivity : AppCompatActivity() {
     private var topAppBar: MaterialToolbar? = null
-    private lateinit var downloadViewModel: DownloadViewModel
     private lateinit var notificationUtil: NotificationUtil
-    private lateinit var workManager: WorkManager
-    private var isDownloadServiceRunning = false
     private var output: TextView? = null
     private var input: EditText? = null
     private var fab: ExtendedFloatingActionButton? = null
     private var cancelFab: ExtendedFloatingActionButton? = null
-    private var iDownloaderService: IDownloaderService? = null
     private var scrollView: ScrollView? = null
     var context: Context? = null
 
@@ -56,6 +58,9 @@ class CustomCommandActivity : AppCompatActivity() {
         input!!.requestFocus()
         fab = findViewById(R.id.command_fab)
         fab!!.setOnClickListener {
+            input!!.isEnabled = false
+            output!!.text = ""
+            swapFabs()
             startDownload(
                 input!!.text.toString()
             )
@@ -65,9 +70,7 @@ class CustomCommandActivity : AppCompatActivity() {
             cancelDownload()
             input!!.isEnabled = true
         }
-        downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
         notificationUtil = NotificationUtil(this)
-        workManager = WorkManager.getInstance(this)
         handleIntent(intent)
     }
 
@@ -88,33 +91,141 @@ class CustomCommandActivity : AppCompatActivity() {
     }
 
 
+    private fun swapFabs() {
+        val cancel = cancelFab!!.visibility
+        val start = fab!!.visibility
+        cancelFab!!.visibility = start
+        fab!!.visibility = cancel
+    }
+
+
     private fun startDownload(command: String?) {
-        if (isDownloadServiceRunning) return
-        downloadViewModel.startTerminalDownload(command!!)
-        output!!.text = ""
-        workManager.getWorkInfosByTagLiveData("terminal")
-            .observe(this){ list ->
-                list.forEach {
-                    if(it.progress.getString("output") != null){
-                        output?.append("\n" + it.progress.getString("output") + "\n")
-                        output?.scrollTo(0, output!!.height)
-                        scrollView?.fullScroll(View.FOCUS_DOWN)
+        downloadID = System.currentTimeMillis().toInt()
+
+        val theIntent = Intent(this, CustomCommandActivity::class.java)
+        val pendingIntent = PendingIntent.getActivity(this, 0, theIntent, PendingIntent.FLAG_IMMUTABLE)
+
+        val commandNotification: Notification =
+            notificationUtil.createDownloadServiceNotification(
+                pendingIntent,
+                getString(R.string.terminal),
+                downloadID,
+                NotificationUtil.COMMAND_DOWNLOAD_SERVICE_CHANNEL_ID
+            )
+        with(NotificationManagerCompat.from(this)){
+            if (ActivityCompat.checkSelfPermission(
+                    context!!,
+                    Manifest.permission.POST_NOTIFICATIONS
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
+                notify(downloadID, commandNotification)
+            }
+        }
+
+        val commandRegex = "\"([^\"]*)\"|(\\S+)"
+        val request = YoutubeDLRequest(emptyList())
+
+        val tempFolder = StringBuilder(context!!.cacheDir.absolutePath + """/${command}##terminal""")
+        val tempFileDir = File(tempFolder.toString())
+        tempFileDir.delete()
+        tempFileDir.mkdir()
+
+
+        val m = Pattern.compile(commandRegex).matcher(command!!)
+        while (m.find()) {
+            if (m.group(1) != null) {
+                request.addOption(m.group(1)!!)
+            } else {
+                request.addOption(m.group(2)!!)
+            }
+        }
+
+        request.addOption("-o", tempFileDir.absolutePath + "/%(uploader)s - %(title)s.%(ext)s")
+
+        cancelFab!!.visibility = View.VISIBLE
+        fab!!.visibility = View.GONE
+
+        val disposable: Disposable = Observable.fromCallable {
+            try{
+                YoutubeDL.getInstance().execute(request, downloadID.toString()){ progress, _, line ->
+                    runOnUiThread {
+                        output!!.append("\n" + line)
+                        output!!.scrollTo(0, output!!.height)
+                        scrollView!!.fullScroll(View.FOCUS_DOWN)
+
+                        val title: String = getString(R.string.terminal)
+                        notificationUtil.updateDownloadNotification(
+                            downloadID,
+                            line, progress.toInt(), 0, title,
+                            NotificationUtil.COMMAND_DOWNLOAD_SERVICE_CHANNEL_ID
+                        )
                     }
+                }
+            }catch (e: Exception){
+                e.printStackTrace()
+                runOnUiThread {
+                    input!!.isEnabled = true
+
+                    cancelFab!!.visibility = View.GONE
+                    fab!!.visibility = View.VISIBLE
                 }
             }
 
+        }
+            .subscribeOn(Schedulers.newThread())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                scrollView!!.scrollTo(0, scrollView!!.maxScrollAmount);
+                input!!.setText("yt-dlp ");
+                input!!.isEnabled = true;
+
+                cancelFab!!.visibility = View.GONE
+                fab!!.visibility = View.VISIBLE
+
+                //move file from internal to set download directory
+                try {
+                    moveFile(tempFileDir.absoluteFile, getString(R.string.command_path)){ }
+                }catch (e: Exception){
+                    Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
+                }
+                notificationUtil.cancelDownloadNotification(downloadID)
+            }) { e ->
+                scrollView!!.scrollTo(0, scrollView!!.maxScrollAmount)
+                input!!.setText("yt-dlp ")
+                input!!.isEnabled = true
+
+                cancelFab!!.visibility = View.GONE
+                fab!!.visibility = View.VISIBLE
+
+                tempFileDir.delete()
+                Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
+
+                Log.e(DownloadWorker.TAG, context?.getString(R.string.failed_download), e)
+                notificationUtil.cancelDownloadNotification(downloadID)
+            }
+        compositeDisposable.add(disposable)
+
+    }
+    @Throws(Exception::class)
+    private fun moveFile(originDir: File, downLocation: String, progress: (progress: Int) -> Unit){
+        val fileUtil = FileUtil()
+        fileUtil.moveFile(originDir, context!!, downLocation){ p ->
+            progress(p)
+        }
     }
 
     private fun cancelDownload() {
         lifecycleScope.launch {
-            val id = withContext(Dispatchers.IO){ downloadViewModel.getTerminalDownload(); }
-            YoutubeDL.getInstance().destroyProcessById(id.toString())
-            WorkManager.getInstance(this@CustomCommandActivity).cancelUniqueWork(id.toString())
-            notificationUtil.cancelDownloadNotification(id.toInt())
+            compositeDisposable.dispose()
+            YoutubeDL.getInstance().destroyProcessById(downloadID.toString())
+            notificationUtil.cancelDownloadNotification(downloadID)
         }
     }
 
     companion object {
         private const val TAG = "CustomCommandActivity"
+        private var downloadID = System.currentTimeMillis().toInt()
+        private val compositeDisposable = CompositeDisposable()
+
     }
 }

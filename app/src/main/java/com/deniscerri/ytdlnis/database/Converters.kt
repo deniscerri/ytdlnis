@@ -38,8 +38,7 @@ class Converters {
         return when(string){
             "audio" -> DownloadViewModel.Type.audio
             "video" -> DownloadViewModel.Type.video
-            "command" -> DownloadViewModel.Type.command
-            else -> DownloadViewModel.Type.terminal
+            else -> DownloadViewModel.Type.command
         }
     }
 
