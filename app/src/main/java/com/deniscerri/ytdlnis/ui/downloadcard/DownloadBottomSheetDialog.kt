@@ -47,10 +47,8 @@ class DownloadBottomSheetDialog(private val resultItem: ResultItem, private val 
 
         dialog.setOnShowListener {
             behavior = BottomSheetBehavior.from(view.parent as View)
-            behavior.skipCollapsed = true
-            behavior.state = BottomSheetBehavior.STATE_EXPANDED
+            behavior.peekHeight = 1200
         }
-
 
         tabLayout = view.findViewById(R.id.download_tablayout)
         viewPager2 = view.findViewById(R.id.download_viewpager)
@@ -131,11 +129,6 @@ class DownloadBottomSheetDialog(private val resultItem: ResultItem, private val 
             )
             datepicker.datePicker.minDate = System.currentTimeMillis() - 1000
             datepicker.show()
-        }
-
-        val cancelBtn = view.findViewById<MaterialButton>(R.id.bottomsheet_cancel_button)
-        cancelBtn.setOnClickListener{
-            dismiss()
         }
 
         val download = view.findViewById<Button>(R.id.bottomsheet_download_button)

@@ -53,7 +53,7 @@
     <string name="write_ytdlp_command">Write yt-dlp command</string>
     <string name="run">Run</string>
     <string name="running_ytdlp_command">Running custom yt-dlp command…</string>
-    <string name="command_directory">Folder for Custom Command</string>
+    <string name="command_directory">Custom Command Folder</string>
     <string name="error_checking_latest_version">Could not check for latest version.</string>
     <string name="couldnt_find_apk">Could not find a suitable APK.</string>
     <string name="downloading_update">Downloading new version…</string>

@@ -414,8 +414,12 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
                     it.forEachIndexed { i, itemID ->
                         downloadList[i].id = itemID
                     }
-                    val bottomSheet = DownloadMultipleBottomSheetDialog(downloadList)
-                    bottomSheet.show(parentFragmentManager, "downloadMultipleSheet")
+                    if (sharedPreferences!!.getBoolean("download_card", true)) {
+                        val bottomSheet = DownloadMultipleBottomSheetDialog(downloadList)
+                        bottomSheet.show(parentFragmentManager, "downloadMultipleSheet")
+                    } else {
+                        downloadViewModel.queueDownloads(downloadList)
+                    }
                 }
             }
             if (viewIdName == "downloadAll") {
@@ -424,8 +428,12 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
                     it.forEachIndexed { i, itemID ->
                         downloadList[i].id = itemID
                     }
-                    val bottomSheet = DownloadMultipleBottomSheetDialog(downloadList)
-                    bottomSheet.show(parentFragmentManager, "downloadMultipleSheet")
+                    if (sharedPreferences!!.getBoolean("download_card", true)) {
+                        val bottomSheet = DownloadMultipleBottomSheetDialog(downloadList)
+                        bottomSheet.show(parentFragmentManager, "downloadMultipleSheet")
+                    } else {
+                        downloadViewModel.queueDownloads(downloadList)
+                    }
                 }
             }
         }
