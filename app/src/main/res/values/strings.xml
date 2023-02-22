@@ -164,7 +164,7 @@
     <string name="logs">Logs</string>
     <string name="commands">Commands</string>
     <string name="date_added">Date added</string>
-    <string name="update_ytdl_nightly">Download Nightly Version of yt-dlp</string>
+    <string name="update_ytdl_nightly">Nightly Version of yt-dlp</string>
     <string name="adjust_audio">Adjust Audio</string>
     <string name="file_name_template">Filename Template</string>
     <string name="language">Language</string>

@@ -15,6 +15,12 @@
         android:layout_marginVertical="10dp"
         android:orientation="vertical">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:text="@string/sort_by"
+            android:paddingBottom="20dp"
+            android:layout_height="wrap_content"/>
+
         <LinearLayout
             android:id="@+id/date"
             android:layout_width="match_parent"

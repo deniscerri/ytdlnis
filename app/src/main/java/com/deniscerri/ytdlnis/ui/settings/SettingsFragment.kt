@@ -132,14 +132,14 @@ class SettingsFragment : PreferenceFragmentCompat() {
         val preferences =
             requireContext().getSharedPreferences("root_preferences", Activity.MODE_PRIVATE)
         val editor = preferences.edit()
-        language!!.summary = Locale(preferences.getString("app_language", "")!!).getDisplayLanguage(Locale(preferences.getString("app_language", "")!!))
+        if(language!!.value == null) language!!.value = Locale.getDefault().language
+        language!!.summary = Locale(language!!.value).getDisplayLanguage(Locale(language!!.value))
         language!!.onPreferenceChangeListener =
             Preference.OnPreferenceChangeListener { _: Preference?, newValue: Any ->
                 editor.putString("app_language", newValue.toString())
                 language!!.summary = Locale(newValue.toString()).getDisplayLanguage(Locale(newValue.toString()))
                 editor.apply()
                 AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(newValue.toString()))
-                (requireActivity() as SettingsActivity).setLocale(newValue.toString())
                 true
             }
 

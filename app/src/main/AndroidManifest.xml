@@ -97,6 +97,14 @@
 <!--            android:exported="false" />-->
         <receiver android:name=".receiver.CancelDownloadNotificationReceiver" />
 
+        <service
+            android:name="androidx.appcompat.app.AppLocalesMetadataHolderService"
+            android:enabled="false"
+            android:exported="false">
+            <meta-data
+                android:name="autoStoreLocales"
+                android:value="true" />
+        </service>
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.deniscerri.ytdl.fileprovider"
