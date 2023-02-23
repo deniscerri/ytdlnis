@@ -2,7 +2,9 @@ package com.deniscerri.ytdlnis.ui
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.ClipboardManager
 import android.content.Context
+import android.content.Context.CLIPBOARD_SERVICE
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -38,7 +40,9 @@ import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+import com.google.android.material.snackbar.Snackbar
 import java.util.*
+
 
 class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickListener {
     private var inputQuery: String? = null
@@ -83,6 +87,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
         fragmentView = inflater.inflate(R.layout.fragment_home, container, false)
         activity = getActivity()
         mainActivity = activity as MainActivity?
+
         return fragmentView
     }
 
@@ -203,6 +208,21 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
                     //Toast.makeText(context, """${it.progress.getInt("progress", 0)} ${it.progress.getString("output")}""", Toast.LENGTH_SHORT).show()
                 }
             }
+
+//        fragmentView!!.post{
+//            if (shimmerCards!!.visibility == VISIBLE) return@post
+//            val clipboard = requireContext().getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+//            val regex = "(https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|www\\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9]+\\.[^\\s]{2,}|www\\.[a-zA-Z0-9]+\\.[^\\s]{2,})".toRegex()
+//            val clip = clipboard.primaryClip!!.getItemAt(0).text
+//            if (regex.containsMatchIn(clip.toString())){
+//                val snackbar = Snackbar.make(fragmentView!!, clip, Snackbar.LENGTH_INDEFINITE)
+//                snackbar.setAction(getString(R.string.download)+"?") {
+//                    resultViewModel.deleteAll()
+//                    resultViewModel.parseQuery(clip.toString(), true)
+//                }
+//                snackbar.show()
+//            }
+//        }
     }
 
     private fun initMenu() {

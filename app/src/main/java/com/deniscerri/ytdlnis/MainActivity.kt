@@ -1,6 +1,7 @@
 package com.deniscerri.ytdlnis
 
 import android.Manifest
+import android.content.ClipboardManager
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -16,9 +17,8 @@ import android.view.MenuItem
 import android.view.View
 import android.view.WindowInsets
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.app.ActivityCompat
-import androidx.core.os.LocaleListCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -32,6 +32,7 @@ import com.deniscerri.ytdlnis.ui.MoreFragment
 import com.deniscerri.ytdlnis.ui.settings.SettingsActivity
 import com.deniscerri.ytdlnis.util.UpdateUtil
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import java.io.BufferedReader
 import java.io.File
 import java.io.InputStreamReader
@@ -48,6 +49,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var homeFragment: HomeFragment
     private lateinit var historyFragment: HistoryFragment
     private lateinit var workManager: WorkManager
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivityMainBinding.inflate(layoutInflater)

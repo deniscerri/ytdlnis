@@ -4,8 +4,6 @@
     <string name="settings">Paramètres</string>
     <string name="home">Accueil</string>
     <string name="remove_results">Effacer les résultats</string>
-    <string name="end_of_results"><b>Plus de résultats</b></string>
     <string name="search">Recherche</string>
-    <string name="Trending"><b> Tendance</b></string>
     <string name="download_all">Télécharger tout</string>
 </resources>

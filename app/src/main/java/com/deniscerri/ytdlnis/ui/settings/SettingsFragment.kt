@@ -85,7 +85,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         version!!.summary = BuildConfig.VERSION_NAME
 
         val values = resources.getStringArray(R.array.language_values)
-        if (Build.VERSION.SDK_INT >= 34){
+        if (Build.VERSION.SDK_INT >= 33){
             language!!.isVisible = false
         }else{
             val entries = mutableListOf<String>()

@@ -61,13 +61,18 @@
 
     <string-array name="language_values">
         <item>en</item>
+        <item>ar</item>
+        <item>az</item>
         <item>de</item>
         <item>fr</item>
+        <item>in</item>
+        <item>it</item>
         <item>ja</item>
         <item>nb</item>
         <item>pl</item>
         <item>ru</item>
         <item>sq</item>
         <item>tr</item>
+        <item>vi</item>
     </string-array>
 </resources>

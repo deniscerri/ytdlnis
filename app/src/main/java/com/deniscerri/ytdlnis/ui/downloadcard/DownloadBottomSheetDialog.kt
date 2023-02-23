@@ -57,7 +57,7 @@ class DownloadBottomSheetDialog(private val resultItem: ResultItem, private val 
             behavior = BottomSheetBehavior.from(view.parent as View)
             val displayMetrics = DisplayMetrics()
             requireActivity().windowManager.defaultDisplay.getMetrics(displayMetrics)
-            behavior.peekHeight = displayMetrics.heightPixels / 2
+            behavior.peekHeight = displayMetrics.heightPixels - 400
         }
 
         tabLayout = view.findViewById(R.id.download_tablayout)
