@@ -51,9 +51,6 @@
     <string name="choose_range_desc">Choisissez une plage à télécharger dans la playlist (pour ne pas tout télécharger).</string>
     <string name="last_cant_be_smaller_than_first">Le dernier index ne peut pas être plus petit que le premier.</string>
     <string name="first_cant_be_larger_than_last">Le premier index ne peut pas être plus grand que le dernier.</string>
-    <string name="music_path" translatable="false">/storage/emulated/0/Download/YTDLnis/Audio</string>
-    <string name="video_path" translatable="false">/storage/emulated/0/Download/YTDLnis/Video</string>
-    <string name="command_path" translatable="false">/storage/emulated/0/Download/YTDLnis/Command</string>
     <string name="concurrent_fragments_summary">Nombre de fragments d'une vidéo native DASH/HLS à télécharger simultanément</string>
     <string name="concurrent_fragments">Fragments simultanés</string>
     <string name="downloading">Téléchargement</string>
@@ -92,8 +89,6 @@
     <string name="sort_by">Trier</string>
     <string name="newest_first">Le plus récent</string>
     <string name="oldest_first">Le plus ancien</string>
-    <item type="id" name="cancelDownload"/>
-    <string name="trendingPlaylist" translatable="false">ytdlnis-TRENDING</string>
     <string name="currently_downloading">Téléchargement</string>
     <string name="remove_downloading">Annuler les téléchargements</string>
     <string name="confirm_delete_downloading_desc">Supprimer tous les éléments en cours de téléchargement et arrêter le service de téléchargement ?</string>
