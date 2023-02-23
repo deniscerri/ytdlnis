@@ -119,4 +119,13 @@
     <string name="request_permission_desc">Bu uygulamanın indirilenleri aygıta kaydetmek için dosya izinlerine ihtiyacı vardır</string>
     <string name="exit_app">Uygulamadan Çık</string>
     <string name="warning">Uyarı</string>
+    <string name="sponsorblock_previews">önizlemeler</string>
+    <string name="sponsorblock_fillers">Dolgu maddeleri</string>
+    <string name="sponsorblock_nonmusic">Müzik Dışı ve Konu Dışı bölümler</string>
+    <string name="sponsorblock_sponsors">Sponsorlar</string>
+    <string name="sponsorblock_intro">Giriş</string>
+    <string name="sponsorblock_outro">Çıkış</string>
+    <string name="sponsorblock_promos">Kişisel Tanıtımlar</string>
+    <string name="sponsorblock_reminders">Abonelik Hatırlatıcıları</string>
+    <string name="select_sponsorblock_filtering">SponsorBlock Filtrelemeyi Seçin</string>
 </resources>
