@@ -6,6 +6,8 @@ import android.app.Dialog
 import android.app.TimePickerDialog
 import android.content.DialogInterface
 import android.os.Bundle
+import android.util.DisplayMetrics
+import android.view.Display
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Adapter
@@ -23,7 +25,13 @@ import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel.Type
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.datepicker.CalendarConstraints
+import com.google.android.material.datepicker.DateValidatorPointBackward
+import com.google.android.material.datepicker.DateValidatorPointForward
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.tabs.TabLayout
+import com.google.android.material.timepicker.MaterialTimePicker
+import com.google.android.material.timepicker.TimeFormat
 import java.util.*
 
 
@@ -47,7 +55,9 @@ class DownloadBottomSheetDialog(private val resultItem: ResultItem, private val 
 
         dialog.setOnShowListener {
             behavior = BottomSheetBehavior.from(view.parent as View)
-            behavior.peekHeight = 1200
+            val displayMetrics = DisplayMetrics()
+            requireActivity().windowManager.defaultDisplay.getMetrics(displayMetrics)
+            behavior.peekHeight = displayMetrics.heightPixels / 2
         }
 
         tabLayout = view.findViewById(R.id.download_tablayout)
@@ -103,32 +113,40 @@ class DownloadBottomSheetDialog(private val resultItem: ResultItem, private val 
             val currentDate = Calendar.getInstance()
             val date = Calendar.getInstance()
 
-            val datepicker = DatePickerDialog(
-                requireContext(),
-                { view, year, monthOfYear, dayOfMonth ->
-                    date[year, monthOfYear] = dayOfMonth
-                    TimePickerDialog(context,
-                        { _, hourOfDay, minute ->
-                            date[Calendar.HOUR_OF_DAY] = hourOfDay
-                            date[Calendar.MINUTE] = minute
+            val datepicker = MaterialDatePicker.Builder.datePicker()
+                .setCalendarConstraints(
+                    CalendarConstraints.Builder()
+                        .setValidator(DateValidatorPointForward.now())
+                        .build()
+                )
+                .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+                .build()
+
+            datepicker.addOnPositiveButtonClickListener{
+                date.timeInMillis = it
 
 
-                            val item: DownloadItem = getDownloadItem();
-                            item.downloadStartTime = date.timeInMillis
-                            downloadViewModel.queueDownloads(listOf(item))
-                            dismiss()
-                        },
-                        currentDate.get(Calendar.HOUR_OF_DAY),
-                        currentDate.get(Calendar.MINUTE),
-                        false
-                    ).show()
-                },
-                currentDate.get(Calendar.YEAR),
-                currentDate.get(Calendar.MONTH),
-                currentDate.get(Calendar.DATE)
-            )
-            datepicker.datePicker.minDate = System.currentTimeMillis() - 1000
-            datepicker.show()
+                val timepicker = MaterialTimePicker.Builder()
+                    .setTimeFormat(TimeFormat.CLOCK_12H)
+                    .setHour(currentDate.get(Calendar.HOUR_OF_DAY))
+                    .setMinute(currentDate.get(Calendar.MINUTE))
+                    .build()
+
+                timepicker.addOnPositiveButtonClickListener{
+                    date[Calendar.HOUR_OF_DAY] = timepicker.hour
+                    date[Calendar.MINUTE] = timepicker.minute
+
+
+                    val item: DownloadItem = getDownloadItem();
+                    item.downloadStartTime = date.timeInMillis
+                    downloadViewModel.queueDownloads(listOf(item))
+                    dismiss()
+                }
+                timepicker.show(fragmentManager, "timepicker")
+
+            }
+            datepicker.show(fragmentManager, "datepicker")
+
         }
 
         val download = view.findViewById<Button>(R.id.bottomsheet_download_button)
