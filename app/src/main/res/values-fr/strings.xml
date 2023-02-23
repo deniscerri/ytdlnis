@@ -71,7 +71,7 @@
     <string name="save_thumb_summary">Enregistrer la vignette dans le dossier de téléchargement</string>
     <string name="audio_format">Format audio</string>
     <string name="video_format">Format vidéo</string>
-    <string ="audio_quality">Qualité audio</string>
+    <string name="audio_quality">Qualité audio</string>
     <string name="audio_quality_summary">0 (meilleur) 10 (pire)</string>
     <string name="cancel_download">Annuler le téléchargement</string>
     <string name="run_command">Exécuter la commande</string>
