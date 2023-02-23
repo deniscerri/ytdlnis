@@ -6,4 +6,10 @@
     <string name="remove_results">Effacer les résultats</string>
     <string name="search">Recherche</string>
     <string name="download_all">Télécharger tout</string>
+    <string name="directories">Dossiers</string>
+    <string name="music_directory">Dossier Musique</string>
+    <string name="video_directory">Dossier vidéo</string>
+    <string name="updating">Mise à jour</string>
+    <string name="update_ytdl">Installer la nouvelle version de youtube-dl</string>
+    <string name="ytdl_update_hint">Utile si vous rencontrez des problèmes de téléchargement</string>
 </resources>
