@@ -58,11 +58,11 @@
     <string name="processing">Emal edilir</string>
     <string name="embed_subs">Videolardakı altyazılar</string>
     <string name="embed_subs_summary">Videoya altyazı əlavə edir</string>
-    <string name = "embed_thumb">Tumbnail örtükləri</ string>
+    <string name="embed_thumb">Tumbnail örtükləri</string>
     <string name="embed_thumb_summary">Matbuatdan üz qabığı kimi istifadə edir</string>
     <string name="add_chapters">Videolardakı Fəsillər</string>
     <string name="add_chapters_summary">YouTube / SponsorBlock seqmentlərini video üçün fəsil kimi qeyd edir</string>
-    <string name = "save_thumb">Miniatoru yadda saxlayın</ string>
+    <string name="save_thumb">Miniatoru yadda saxlayın</string>
     <string name="save_thumb_summary">Minikizi endirmə qovluğunda yadda saxlayın</string>
     <string name="audio_format">Audio Format</string>
     <string name="video_format">Video Format</string>
@@ -117,7 +117,7 @@
     <string name="sponsorblock_sponsors">Sponsorlar</string>
     <string name="sponsorblock_intro">Giriş</string>
     <string name="sponsorblock_outro">Çıxış</string>
-    <string name="sponsorblock_promos">Özünü Təbliğat</ string>
+    <string name="sponsorblock_promos">Özünü Təbliğat</string>
     <string name="sponsorblock_previews">Önizləmələr</string>
     <string name="sponsorblock_fillers">Doldurucular</string>
     <string name="sponsorblock_reminders">Abunəlik Xatırlatmaları</string>
