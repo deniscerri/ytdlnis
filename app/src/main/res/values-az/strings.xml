@@ -22,8 +22,8 @@
     <string name="you_are_in_latest_version">Son versiyadan istifadə etməklə</string>
     <string name="ytld_update_success">Yeni versiya quraşdırılıb</string>
     <string name="ytdl_update_failed">Yeni versiyanı quraşdırmaq mümkün olmadı</string>
-    <string name="ytdl_already_updating">Yeni versiya quraşdırılır...</string>
-    <string name="ytdl_updating_started">Yeni versiya yüklənir...</string>
+    <string name="ytdl_already_updating">Yeni versiya quraşdırılır…</string>
+    <string name="ytdl_updating_started">Yeni versiya yüklənir…</string>
     <string name="Remove">Silin</string>
     <string name="ok">OK</string>
     <string name="cancel">Ləğv et</string>
@@ -37,11 +37,11 @@
     <string name="update_app">Yeniləmələri yoxlayın</string>
     <string name="version">Versiya</string>
     <string name="custom_command">Fərdi Komandanı Çalıştır</string>
-    <string name="running_ytdlp_command">Fərdi yt-dlp əmri icra edilir...</string>
+    <string name="running_ytdlp_command">Fərdi yt-dlp əmri icra edilir…</string>
     <string name="command_directory">Fərdi Komanda üçün Qovluq</string>
     <string name="couldnt_find_apk">Uyğun APK tapmaq mümkün olmadı.</string>
-    <string name="downloading_update">Yeni versiya yüklənir...</string>
-    <string name = "chooose_range">Endirməni ... ilə məhdudlaşdırın</string>
+    <string name="downloading_update">Yeni versiya yüklənir…</string>
+    <string name="chooose_range">Endirməni ilə məhdudlaşdırın</string>
     <string name="audio">Audio</string>
     <string name="video">Video</string>
     <string name="first">Birinci</string>
@@ -107,7 +107,7 @@
     <string name="mutliple_authors">Çoxlu Müəlliflər</string>
     <string name="Open_File">Faylı açın</string>
     <string name="delete_selected">Seçilmişi Sil</string>
-    <string name="you_are_going_to_delete_multiple_items">Birdən çox element silinir...</string>
+    <string name="you_are_going_to_delete_multiple_items">Birdən çox element silinir…</string>
     <string name="delete_file_too">Faylı cihazdan silin</string>
     <string name="delete_files_too">Faylları cihazdan silin</string>
     <string name="request_permission_desc">Endirmələri cihazda saxlamaq üçün bu proqrama Fayl İcazələri lazımdır</string>
