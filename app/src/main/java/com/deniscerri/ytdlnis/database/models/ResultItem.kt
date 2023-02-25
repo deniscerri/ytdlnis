@@ -17,6 +17,6 @@ data class ResultItem(
     val thumb: String,
     val website: String,
     var playlistTitle: String,
-    val formats: ArrayList<Format>,
+    var formats: ArrayList<Format>,
     var creationTime: Long = System.currentTimeMillis() / 1000,
 )

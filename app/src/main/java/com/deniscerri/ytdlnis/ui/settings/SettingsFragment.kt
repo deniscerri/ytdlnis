@@ -31,6 +31,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
     private var aria2: SwitchPreferenceCompat? = null
     private var sponsorblockFilters: MultiSelectListPreference? = null
     private var filenameTemplate: EditTextPreference? = null
+    private var mtime: SwitchPreferenceCompat? = null
     private var embedSubtitles: SwitchPreferenceCompat? = null
     private var embedThumbnail: SwitchPreferenceCompat? = null
     private var addChapters: SwitchPreferenceCompat? = null
@@ -69,6 +70,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         limitRate = findPreference("limit_rate")
         aria2 = findPreference("aria2")
         sponsorblockFilters = findPreference("sponsorblock_filter")
+        mtime = findPreference("mtime")
         embedSubtitles = findPreference("embed_subtitles")
         filenameTemplate = findPreference("file_name_template")
         embedThumbnail = findPreference("embed_thumbnail")
@@ -115,6 +117,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         editor.putBoolean("aria2", aria2!!.isChecked)
         editor.putStringSet("sponsorblock_filters", sponsorblockFilters!!.values)
         editor.putString("file_name_template", filenameTemplate!!.text)
+        editor.putBoolean("mtime", mtime!!.isChecked)
         editor.putBoolean("embed_subtitles", embedSubtitles!!.isChecked)
         editor.putBoolean("embed_thumbnail", embedThumbnail!!.isChecked)
         editor.putBoolean("add_chapters", addChapters!!.isChecked)
@@ -230,6 +233,13 @@ class SettingsFragment : PreferenceFragmentCompat() {
         filenameTemplate!!.onPreferenceChangeListener =
             Preference.OnPreferenceChangeListener { _: Preference?, newValue: Any ->
                 editor.putString("file_name_template", newValue.toString())
+                editor.apply()
+                true
+            }
+        mtime!!.onPreferenceChangeListener =
+            Preference.OnPreferenceChangeListener { _: Preference?, newValue: Any ->
+                val embed = newValue as Boolean
+                editor.putBoolean("mtime", embed)
                 editor.apply()
                 true
             }

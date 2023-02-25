@@ -109,6 +109,13 @@
             app:title="@string/file_name_template" />
 
         <SwitchPreferenceCompat
+            app:defaultValue="false"
+            app:icon="@drawable/ic_clock"
+            app:key="mtime"
+            app:summary="@string/enable_mtime_summary"
+            app:title="@string/enable_mtime" />
+
+        <SwitchPreferenceCompat
             app:defaultValue="true"
             app:icon="@drawable/ic_subtitles"
             app:key="embed_subtitles"

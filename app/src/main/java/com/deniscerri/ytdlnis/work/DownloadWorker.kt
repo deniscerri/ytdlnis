@@ -94,7 +94,9 @@ class DownloadWorker(
             request.addOption("--write-thumbnail")
             request.addOption("--convert-thumbnails", "png")
         }
-        request.addOption("--no-mtime")
+        if (!sharedPreferences.getBoolean("mtime", false)){
+            request.addOption("--no-mtime")
+        }
         val sponsorBlockFilters = sharedPreferences.getStringSet("sponsorblock_filters", emptySet())
         if (sponsorBlockFilters!!.isNotEmpty()) {
             val filters = java.lang.String.join(",", sponsorBlockFilters)
@@ -169,15 +171,16 @@ class DownloadWorker(
                 Log.e(TAG, formatArgument)
                 request.addOption("-f", formatArgument)
                 val format = downloadItem.format.container
-                if(format.isNotEmpty()){
+                if(format.isNotEmpty() || format != "Default"){
                     request.addOption("--merge-output-format", format)
-                }
-                if (format != "webm" && format != "DEFAULT") {
-                    val embedThumb = sharedPreferences.getBoolean("embed_thumbnail", false)
-                    if (embedThumb) {
-                        request.addOption("--embed-thumbnail")
+                    if (format != "webm") {
+                        val embedThumb = sharedPreferences.getBoolean("embed_thumbnail", false)
+                        if (embedThumb) {
+                            request.addOption("--embed-thumbnail")
+                        }
                     }
                 }
+
                 request.addOption("-o", tempFileDir.absolutePath + "/${downloadItem.customFileNameTemplate}.%(ext)s")
             }
             DownloadViewModel.Type.command -> {

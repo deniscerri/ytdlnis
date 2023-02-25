@@ -5,31 +5,31 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
+import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.models.Format
 import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
+import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel.Type
 import com.deniscerri.ytdlnis.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdlnis.databinding.FragmentHomeBinding
 import com.deniscerri.ytdlnis.util.FileUtil
+import com.deniscerri.ytdlnis.util.UiUtil
 import com.google.android.material.chip.Chip
 import com.google.android.material.textfield.TextInputLayout
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel.Type
-import com.deniscerri.ytdlnis.util.UiUtil
 
 
 class DownloadVideoFragment(private val resultItem: ResultItem) : Fragment() {
@@ -37,6 +37,7 @@ class DownloadVideoFragment(private val resultItem: ResultItem) : Fragment() {
     private var fragmentView: View? = null
     private var activity: Activity? = null
     private lateinit var downloadViewModel : DownloadViewModel
+    private lateinit var resultViewModel: ResultViewModel
     private lateinit var fileUtil : FileUtil
     private lateinit var uiUtil : UiUtil
 
@@ -55,6 +56,7 @@ class DownloadVideoFragment(private val resultItem: ResultItem) : Fragment() {
         fragmentView = inflater.inflate(R.layout.fragment_download_video, container, false)
         activity = getActivity()
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
+        resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]
         downloadItem = downloadViewModel.createDownloadItemFromResult(resultItem, Type.video)
         fileUtil = FileUtil()
         uiUtil = UiUtil(fileUtil)
@@ -107,7 +109,7 @@ class DownloadVideoFragment(private val resultItem: ResultItem) : Fragment() {
                     videoPathResultLauncher.launch(intent)
                 }
 
-                val formats = mutableListOf<Format>()
+                var formats = mutableListOf<Format>()
                 formats.addAll(resultItem.formats.filter { !it.format_note.contains("audio", ignoreCase = true) })
                 if (formats.isEmpty()) {
                     val videoFormats = resources.getStringArray(R.array.video_formats)
@@ -140,19 +142,28 @@ class DownloadVideoFragment(private val resultItem: ResultItem) : Fragment() {
                 val listener = object : OnFormatClickListener {
                     override fun onFormatClick(allFormats: List<Format>, item: Format) {
                         downloadItem.format = item
+                        Log.e("Aa", item.toString())
 
                         if (containers.contains(item.container)){
                             downloadItem.format.container = item.container
                             containerAutoCompleteTextView.setText(item.container, false)
                         }else{
-                            downloadItem.format.container = containers[0]
                             containerAutoCompleteTextView.setText(containers[0], false)
                         }
+                        if (resultItem.formats.isEmpty()){
+                            resultItem.formats = ArrayList(allFormats)
+                        }else{
+                            resultItem.formats = ArrayList(resultItem.formats.filter { it.format_note.contains("audio", ignoreCase = true) })
+                            resultItem.formats.addAll(allFormats)
+                        }
+                        resultViewModel.update(resultItem)
+                        formats = allFormats.toMutableList()
+                        Log.e("Aa", item.toString())
                         uiUtil.populateFormatCard(formatCard, item)
                     }
                 }
                 formatCard.setOnClickListener{_ ->
-                    val bottomSheet = FormatSelectionBottomSheetDialog(formats, listener)
+                    val bottomSheet = FormatSelectionBottomSheetDialog(downloadItem, formats, listener)
                     bottomSheet.show(parentFragmentManager, "formatSheet")
                 }
 

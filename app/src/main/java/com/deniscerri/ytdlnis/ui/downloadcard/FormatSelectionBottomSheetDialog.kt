@@ -11,10 +11,7 @@ import android.util.Log
 import android.view.Display
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.Adapter
-import android.widget.Button
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.get
@@ -28,6 +25,7 @@ import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel.Type
 import com.deniscerri.ytdlnis.util.FileUtil
+import com.deniscerri.ytdlnis.util.InfoUtil
 import com.deniscerri.ytdlnis.util.UiUtil
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -42,15 +40,17 @@ import com.google.android.material.timepicker.TimeFormat
 import java.util.*
 
 
-class FormatSelectionBottomSheetDialog(private val formats: List<Format>, private val listener: OnFormatClickListener) : BottomSheetDialogFragment() {
+class FormatSelectionBottomSheetDialog(private val item: DownloadItem, private var formats: List<Format>, private val listener: OnFormatClickListener) : BottomSheetDialogFragment() {
     private lateinit var behavior: BottomSheetBehavior<View>
     private lateinit var fileUtil: FileUtil
+    private lateinit var infoUtil: InfoUtil
     private lateinit var uiUtil: UiUtil
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         fileUtil = FileUtil()
         uiUtil = UiUtil(fileUtil)
+        infoUtil = InfoUtil(requireActivity().applicationContext)
     }
 
 
@@ -68,7 +68,31 @@ class FormatSelectionBottomSheetDialog(private val formats: List<Format>, privat
         }
 
         val linearLayout = view.findViewById<LinearLayout>(R.id.format_list_linear_layout)
+        addFormatsToView(linearLayout)
 
+        val refreshBtn = view.findViewById<Button>(R.id.format_refresh)
+        if (formats.none { it.filesize == 0L }) refreshBtn.visibility = View.GONE
+        refreshBtn.setOnClickListener {
+           try {
+               refreshBtn.isEnabled = false
+               val res = infoUtil.getFromYTDL(item.url)
+               formats = res[0]!!.formats.filter { it.filesize != 0L }
+               formats = when(item.type){
+                   Type.audio -> formats.filter { it.format_note.contains("audio", ignoreCase = true) }
+                   else -> formats.filter { !it.format_note.contains("audio", ignoreCase = true) }
+               }
+               addFormatsToView(linearLayout)
+               refreshBtn.visibility = View.GONE
+           }catch (e: Exception){
+               refreshBtn.isEnabled = true
+               e.printStackTrace()
+               Toast.makeText(context, getString(R.string.error_updating_formats), Toast.LENGTH_SHORT).show()
+           }
+        }
+    }
+
+    private fun addFormatsToView(linearLayout: LinearLayout){
+        linearLayout.removeAllViews()
         for (i in formats.lastIndex downTo 0){
             val it = formats[i]
             val formatItem = LayoutInflater.from(context).inflate(R.layout.format_item, null)

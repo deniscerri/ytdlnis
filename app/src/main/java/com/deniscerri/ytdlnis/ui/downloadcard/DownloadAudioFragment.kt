@@ -146,7 +146,7 @@ class DownloadAudioFragment(private var resultItem: ResultItem) : Fragment() {
                         formats.forEach {
                             Log.e("aa", it.toString())
                         }
-                        val bottomSheet = FormatSelectionBottomSheetDialog(formats, listener)
+                        val bottomSheet = FormatSelectionBottomSheetDialog(downloadItem, formats, listener)
                         bottomSheet.show(parentFragmentManager, "formatSheet")
                     }
 

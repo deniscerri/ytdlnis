@@ -174,4 +174,8 @@
     <string name="select_format">Select Format</string>
     <string name="please_wait">Please Wait</string>
     <string name="remove_search_history">Clear Search History</string>
+    <string name="enable_mtime">Enable mtime</string>
+    <string name="enable_mtime_summary">Set the HTTP Last-Modified header as last modified time</string>
+    <string name="update_formats">Update Formats</string>
+    <string name="error_updating_formats">Error updating formats!</string>
 </resources>
