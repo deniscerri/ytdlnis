@@ -16,6 +16,11 @@
         app:showAsAction="never" />
 
     <item
+        android:id="@+id/delete_search"
+        android:title="@string/remove_search_history"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/cancel_download"
         android:title="@string/cancel_download"
         android:visible="false"

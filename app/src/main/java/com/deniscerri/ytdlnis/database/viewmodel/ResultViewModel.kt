@@ -7,7 +7,9 @@ import com.deniscerri.ytdlnis.App
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.DBManager
 import com.deniscerri.ytdlnis.database.models.ResultItem
+import com.deniscerri.ytdlnis.database.models.SearchHistoryItem
 import com.deniscerri.ytdlnis.database.repository.ResultRepository
+import com.deniscerri.ytdlnis.database.repository.SearchHistoryRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.regex.Pattern
@@ -15,6 +17,7 @@ import java.util.regex.Pattern
 class ResultViewModel(application: Application) : AndroidViewModel(application) {
     private val tag: String = "ResultViewModel"
     private val repository : ResultRepository
+    private val searchHistoryRepository : SearchHistoryRepository
     val items : LiveData<List<ResultItem>>
     val loadingItems = MutableLiveData<Boolean>()
     var itemCount : LiveData<Int>
@@ -23,6 +26,7 @@ class ResultViewModel(application: Application) : AndroidViewModel(application) 
         val dao = DBManager.getInstance(application).resultDao
         val commandDao = DBManager.getInstance(application).commandTemplateDao
         repository = ResultRepository(dao, commandDao, getApplication<Application>().applicationContext)
+        searchHistoryRepository = SearchHistoryRepository(DBManager.getInstance(application).searchHistoryDao)
         items = repository.allResults
         loadingItems.postValue(false)
         itemCount = repository.itemCount
@@ -98,5 +102,17 @@ class ResultViewModel(application: Application) : AndroidViewModel(application) 
 
     fun getItemByURL(url: String) : ResultItem {
         return repository.getItemByURL(url)
+    }
+
+    fun addSearchQueryToHistory(query: String) = viewModelScope.launch(Dispatchers.IO) {
+        searchHistoryRepository.insert(query)
+    }
+
+    fun deleteAllSearchQueryHistory() = viewModelScope.launch(Dispatchers.IO){
+        searchHistoryRepository.deleteAll()
+    }
+
+    fun getSearchHistory() : List<SearchHistoryItem> {
+        return searchHistoryRepository.getAll()
     }
 }

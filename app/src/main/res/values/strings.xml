@@ -173,4 +173,5 @@
     <string name="format">Format</string>
     <string name="select_format">Select Format</string>
     <string name="please_wait">Please Wait</string>
+    <string name="remove_search_history">Clear Search History</string>
 </resources>

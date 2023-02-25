@@ -251,6 +251,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
         searchView!!.inputType = InputType.TYPE_TEXT_VARIATION_URI
         searchView.queryHint = getString(R.string.search_hint)
         infoUtil = InfoUtil(requireContext())
+
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
                 topAppBar!!.menu.findItem(R.id.search).collapseActionView()
@@ -258,6 +259,9 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
                 downloadFabs!!.visibility = GONE
                 selectedObjects = ArrayList()
                 inputQuery = query.trim { it <= ' ' }
+                if(!sharedPreferences!!.getBoolean("incognito", false)){
+                    resultViewModel.addSearchQueryToHistory(inputQuery!!)
+                }
                 resultViewModel.deleteAll()
                 val thread = Thread {
                     resultViewModel.parseQuery(inputQuery!!, true)
@@ -268,9 +272,12 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
 
             override fun onQueryTextChange(newText: String): Boolean {
                 searchSuggestionsLinearLayout!!.removeAllViews()
-                if (newText.isEmpty()) return false
                 val thread = Thread {
-                    val suggestions = infoUtil!!.getSearchSuggestions(newText)
+                    val suggestions = if (newText.isEmpty()) {
+                        resultViewModel.getSearchHistory().map { it.query }
+                    }else{
+                        infoUtil!!.getSearchSuggestions(newText)
+                    }
                     for (i in suggestions.indices) {
                         val v = LayoutInflater.from(fragmentContext)
                             .inflate(R.layout.search_suggestion_item, null)
@@ -307,15 +314,9 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
                 try {
                     mainActivity!!.cancelAllDownloads()
                     topAppBar!!.menu.findItem(itemId).isVisible = false
-//                    for (i in downloadInfo!!.downloadQueue.indices) {
-//                        val vid = downloadInfo!!.downloadQueue[i]
-//                        val type = vid.downloadedType
-//                        updateDownloadingStatusOnResult(vid, type, false)
-//                    }
-//                    downloadQueue = ArrayList()
-//                    downloading = false
-                } catch (ignored: Exception) {
-                }
+                } catch (ignored: Exception) {}
+            } else if (itemId == R.id.delete_search){
+                resultViewModel.deleteAllSearchQueryHistory()
             }
             true
         }
@@ -351,61 +352,17 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
         val item = resultsList!!.find { it?.url == videoURL }
         Log.e(TAG, resultsList!![0].toString() + " " + videoURL)
         val btn = recyclerView!!.findViewWithTag<MaterialButton>("""${item?.url}##$type""")
-//        if (downloading) {
-//            try {
-//                if (btn.getTag(R.id.cancelDownload) == "true") {
-//                    mainActivity!!.removeItemFromDownloadQueue(vid, type)
-//                    return
-//                }
-//            } catch (ignored: Exception) {
-//            }
-//        }
         if (sharedPreferences!!.getBoolean("download_card", true)) {
-//            selectedObjects!!.clear()
-//            selectedObjects!!.add(item!!)
-            //showConfigureSingleDownloadCard(createDownloadItem(item!!, type), item)
             showSingleDownloadSheet(item!!, type!!)
         } else {
             val downloadItem = downloadViewModel.createDownloadItemFromResult(item!!, type!!)
             downloadViewModel.queueDownloads(listOf(downloadItem))
-//            downloadQueue!!.add(vid)
-//            updateDownloadingStatusOnResult(vid, type, true)
-//            if (isStoragePermissionGranted) {
-//                mainActivity!!.startDownloadService(downloadQueue, listener)
-//                downloadQueue!!.clear()
-//            }
         }
     }
 
     private fun showSingleDownloadSheet(resultItem : ResultItem, type: DownloadViewModel.Type){
         val bottomSheet = DownloadBottomSheetDialog(resultItem, type)
         bottomSheet.show(parentFragmentManager, "downloadSingleSheet")
-    }
-
-
-    fun updateDownloadStatusOnResult(v: ResultItem?, type: String?, downloaded: Boolean) {
-//        if (v != null) {
-//            databaseManager = DatabaseManager(context)
-//            try {
-//                databaseManager!!.updateDownloadStatusOnResult(v.videoId, type, downloaded)
-//                databaseManager!!.close()
-//            } catch (ignored: Exception) {
-//            }
-//        }
-    }
-
-    fun updateDownloadingStatusOnResult(v: ResultItem?, type: String, isDownloading: Boolean) {
-//        if (v != null) {
-//            if (type == "audio") v.isDownloadingAudio =
-//                isDownloading else if (type == "video") v.isDownloadingVideo = isDownloading
-//            homeAdapter!!.updateVideoListItem(v, resultsList!!.indexOf(v))
-//            databaseManager = DatabaseManager(context)
-//            try {
-//                databaseManager!!.updateDownloadingStatusOnResult(v.videoId, type, isDownloading)
-//                databaseManager!!.close()
-//            } catch (ignored: Exception) {
-//            }
-//        }
     }
 
     override fun onCardClick(videoURL: String, add: Boolean) {
@@ -458,47 +415,6 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
                 }
             }
         }
-    }
-
-    private fun initDownloadAll(
-        bottomSheet: BottomSheetDialog,
-        start: Int,
-        end: Int,
-        type: String
-    ) {
-//        var start = start
-//        var end = end
-//        if (start > end) {
-//            val first = bottomSheet.findViewById<TextInputLayout>(R.id.first_textinput)
-//            first!!.error = getString(R.string.first_cant_be_larger_than_last)
-//            val last = bottomSheet.findViewById<TextInputLayout>(R.id.last_textinput)
-//            last!!.error = getString(R.string.last_cant_be_smaller_than_first)
-//            return
-//        }
-//        bottomSheet.cancel()
-//        start--
-//        end--
-//        if (start <= 1) start = 0
-//        val sharedPreferences =
-//            requireContext().getSharedPreferences("root_preferences", Activity.MODE_PRIVATE)
-//        if (sharedPreferences.getBoolean("download_card", true)) {
-//            selectedObjects!!.clear()
-//            selectedObjects!!.addAll(resultsList!!.subList(start, end + 1) as ArrayList<ResultItem>)
-//            showConfigureDownloadCard(type)
-//        } else {
-//            for (i in start..end) {
-//                val vid = findVideo(
-//                    resultsList!![i]!!.getURL()
-//                )
-//                vid!!.downloadedType = type
-//                updateDownloadingStatusOnResult(vid, type, true)
-//                downloadQueue!!.add(vid)
-//            }
-//            if (isStoragePermissionGranted) {
-//                mainActivity!!.startDownloadService(downloadQueue, listener)
-//                downloadQueue!!.clear()
-//            }
-//        }
     }
 
     companion object {

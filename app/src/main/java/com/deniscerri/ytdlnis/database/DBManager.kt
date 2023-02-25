@@ -10,7 +10,7 @@ import com.deniscerri.ytdlnis.database.models.*
 
 @TypeConverters(Converters::class)
 @Database(
-    entities = [ResultItem::class, HistoryItem::class, DownloadItem::class, CommandTemplate::class],
+    entities = [ResultItem::class, HistoryItem::class, DownloadItem::class, CommandTemplate::class, SearchHistoryItem::class],
     version = 1,
     autoMigrations = []
 )
@@ -19,6 +19,7 @@ abstract class DBManager : RoomDatabase(){
     abstract val historyDao : HistoryDao
     abstract val downloadDao : DownloadDao
     abstract val commandTemplateDao : CommandTemplateDao
+    abstract val searchHistoryDao: SearchHistoryDao
 
     companion object {
         //prevents multiple instances of db getting created at the same time

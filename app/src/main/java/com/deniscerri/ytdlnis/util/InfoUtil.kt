@@ -4,8 +4,10 @@ import android.app.Activity
 import android.content.Context
 import android.util.Log
 import com.deniscerri.ytdlnis.R
+import com.deniscerri.ytdlnis.database.DBManager
 import com.deniscerri.ytdlnis.database.models.Format
 import com.deniscerri.ytdlnis.database.models.ResultItem
+import com.deniscerri.ytdlnis.database.repository.SearchHistoryRepository
 import com.google.gson.Gson
 import com.yausername.youtubedl_android.YoutubeDL
 import com.yausername.youtubedl_android.YoutubeDLRequest
@@ -21,6 +23,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 class InfoUtil(context: Context) {
+    private var searchHistoryRepository = SearchHistoryRepository(DBManager.getInstance(context).searchHistoryDao)
     private var items: ArrayList<ResultItem?>
     private var key: String? = null
     private var useInvidous = false
@@ -532,7 +535,8 @@ class InfoUtil(context: Context) {
         val suggestionList = ArrayList<String>()
         try {
             for (i in 0 until res.getJSONArray(1).length()) {
-                suggestionList.add(res.getJSONArray(1).getString(i))
+                val item = res.getJSONArray(1).getString(i)
+                suggestionList.add(item)
             }
         } catch (ignored: Exception) {
             ignored.printStackTrace()
