@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -28,16 +29,16 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel.Type
+import com.deniscerri.ytdlnis.util.UiUtil
 
 
 class DownloadVideoFragment(private val resultItem: ResultItem) : Fragment() {
     private var _binding : FragmentHomeBinding? = null
     private var fragmentView: View? = null
     private var activity: Activity? = null
-    private var mainActivity: MainActivity? = null
-    private lateinit var resultViewModel : ResultViewModel
     private lateinit var downloadViewModel : DownloadViewModel
     private lateinit var fileUtil : FileUtil
+    private lateinit var uiUtil : UiUtil
 
     private lateinit var title : TextInputLayout
     private lateinit var author : TextInputLayout
@@ -53,10 +54,10 @@ class DownloadVideoFragment(private val resultItem: ResultItem) : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         fragmentView = inflater.inflate(R.layout.fragment_download_video, container, false)
         activity = getActivity()
-        mainActivity = activity as MainActivity?
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
         downloadItem = downloadViewModel.createDownloadItemFromResult(resultItem, Type.video)
         fileUtil = FileUtil()
+        uiUtil = UiUtil(fileUtil)
         return fragmentView
     }
 
@@ -111,30 +112,12 @@ class DownloadVideoFragment(private val resultItem: ResultItem) : Fragment() {
                 if (formats.isEmpty()) {
                     val videoFormats = resources.getStringArray(R.array.video_formats)
                     val container = sharedPreferences.getString("video_format", "Default")
-                    videoFormats.forEach { formats.add(Format(it, container!!, 0, it)) }
+                    videoFormats.forEach { formats.add(Format(it, container!!,"","", "",0, it)) }
                 }
-
-                val formatTitles = formats.map {
-                    it.format_note + if (it.filesize == 0L) "" else " / " + fileUtil.convertFileSize(it.filesize)
-                }
-
 
                 downloadItem.format = formats[formats.lastIndex]
                 val containers = requireContext().resources.getStringArray(R.array.video_containers)
 
-                val format = view.findViewById<TextInputLayout>(R.id.format)
-                val autoCompleteTextView =
-                    view.findViewById<AutoCompleteTextView>(R.id.format_textview)
-                autoCompleteTextView?.setAdapter(
-                    ArrayAdapter(
-                        requireContext(),
-                        android.R.layout.simple_dropdown_item_1line,
-                        formatTitles
-                    )
-                )
-                if (formatTitles.isNotEmpty()) {
-                    autoCompleteTextView!!.setText(formatTitles[formats.lastIndex], false)
-                }
 
                 val container = view.findViewById<TextInputLayout>(R.id.downloadContainer)
                 val containerAutoCompleteTextView =
@@ -151,27 +134,27 @@ class DownloadVideoFragment(private val resultItem: ResultItem) : Fragment() {
                 val selectedContainer: String = downloadItem.format.container
                 containerAutoCompleteTextView!!.setText(selectedContainer, false)
 
-                (format!!.editText as AutoCompleteTextView?)!!.onItemClickListener =
-                    AdapterView.OnItemClickListener { _: AdapterView<*>?, _: View?, index: Int, _: Long ->
-                        downloadItem.format.format_note = formats[index].format_note
-                        downloadItem.format.format_id = formats[index].format_id
-                        downloadItem.format.filesize = formats[index].filesize
+                val formatCard = view.findViewById<ConstraintLayout>(R.id.format_card_constraintLayout)
+                val chosenFormat = formats[formats.lastIndex]
+                uiUtil.populateFormatCard(formatCard, chosenFormat)
+                val listener = object : OnFormatClickListener {
+                    override fun onFormatClick(allFormats: List<Format>, item: Format) {
+                        downloadItem.format = item
 
-                        if (containers.contains(formats[index].container)){
-                            downloadItem.format.container = formats[index].container
-                            containerAutoCompleteTextView.setText(formats[index].container, false)
+                        if (containers.contains(item.container)){
+                            downloadItem.format.container = item.container
+                            containerAutoCompleteTextView.setText(item.container, false)
+                        }else{
+                            downloadItem.format.container = containers[0]
+                            containerAutoCompleteTextView.setText(containers[0], false)
                         }
-
+                        uiUtil.populateFormatCard(formatCard, item)
                     }
-
-                (container!!.editText as AutoCompleteTextView?)!!.onItemClickListener =
-                    AdapterView.OnItemClickListener { _: AdapterView<*>?, _: View?, index: Int, _: Long ->
-                        downloadItem.format.container = containers[index]
-                    }
-
-
-
-
+                }
+                formatCard.setOnClickListener{_ ->
+                    val bottomSheet = FormatSelectionBottomSheetDialog(formats, listener)
+                    bottomSheet.show(parentFragmentManager, "formatSheet")
+                }
 
                 val embedSubs = view.findViewById<Chip>(R.id.embed_subtitles)
                 embedSubs!!.isChecked = downloadItem.videoPreferences.embedSubs

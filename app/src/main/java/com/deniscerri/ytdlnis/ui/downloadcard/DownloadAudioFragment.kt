@@ -14,17 +14,21 @@ import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.DownloadItem
+import com.deniscerri.ytdlnis.database.models.Format
 import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel.Type
 import com.deniscerri.ytdlnis.databinding.FragmentHomeBinding
 import com.deniscerri.ytdlnis.util.FileUtil
+import com.deniscerri.ytdlnis.util.UiUtil
 import com.google.android.material.chip.Chip
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.launch
@@ -34,9 +38,9 @@ class DownloadAudioFragment(private var resultItem: ResultItem) : Fragment() {
     private var _binding : FragmentHomeBinding? = null
     private var fragmentView: View? = null
     private var activity: Activity? = null
-    private var mainActivity: MainActivity? = null
     private lateinit var downloadViewModel : DownloadViewModel
     private lateinit var fileUtil : FileUtil
+    private lateinit var uiUtil : UiUtil
 
     private lateinit var title : TextInputLayout
     private lateinit var author : TextInputLayout
@@ -56,10 +60,10 @@ class DownloadAudioFragment(private var resultItem: ResultItem) : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         fragmentView = inflater.inflate(R.layout.fragment_download_audio, container, false)
         activity = getActivity()
-        mainActivity = activity as MainActivity?
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
         downloadItem = downloadViewModel.createDownloadItemFromResult(resultItem, Type.audio)
         fileUtil = FileUtil()
+        uiUtil = UiUtil(fileUtil)
         return fragmentView
     }
 
@@ -109,8 +113,7 @@ class DownloadAudioFragment(private var resultItem: ResultItem) : Fragment() {
                     audioPathResultLauncher.launch(intent)
                 }
 
-                val format = view.findViewById<TextInputLayout>(R.id.format)
-                val formats = resultItem.formats.filter { it.format_note.contains("audio", ignoreCase = true) }
+                var formats = resultItem.formats.filter { it.format_note.contains("audio", ignoreCase = true) }
 
                 val containers = requireContext().resources.getStringArray(R.array.audio_containers)
                 val container = view.findViewById<TextInputLayout>(R.id.downloadContainer)
@@ -118,49 +121,35 @@ class DownloadAudioFragment(private var resultItem: ResultItem) : Fragment() {
                     view.findViewById<AutoCompleteTextView>(R.id.container_textview)
 
 
-
+                val formatCard = view.findViewById<ConstraintLayout>(R.id.format_card_constraintLayout)
                 if (formats.isEmpty()) {
-                    format.visibility = View.GONE
+                    formatCard.visibility = View.GONE
                 } else {
-                    val formatTitles = formats.map {
-                        if (it.format_note.contains("AUDIO_QUALITY_")) {
-                            it.format_note.replace(
-                                "AUDIO_QUALITY_",
-                                ""
-                            ) + if (it.filesize == 0L) "" else " / " + fileUtil.convertFileSize(it.filesize)
-                        } else {
-                            it.format_note + if (it.filesize == 0L) "" else " / " + fileUtil.convertFileSize(
-                                it.filesize
-                            )
-                        }
-                    }
+                    val chosenFormat = formats[formats.lastIndex]
+                    uiUtil.populateFormatCard(formatCard, chosenFormat)
+                    val listener = object : OnFormatClickListener {
+                        override fun onFormatClick(allFormats: List<Format>, item: Format) {
+                            downloadItem.format = item
 
-                    val autoCompleteTextView =
-                        view.findViewById<AutoCompleteTextView>(R.id.format_textview)
-                    autoCompleteTextView?.setAdapter(
-                        ArrayAdapter(
-                            requireContext(),
-                            android.R.layout.simple_dropdown_item_1line,
-                            formatTitles
-                        )
-                    )
-                    if (formatTitles.isNotEmpty()) {
-                        autoCompleteTextView!!.setText(formatTitles[formats.lastIndex], false)
-                    }
-                    (format!!.editText as AutoCompleteTextView?)!!.onItemClickListener =
-                        AdapterView.OnItemClickListener { _: AdapterView<*>?, _: View?, index: Int, _: Long ->
-                            downloadItem.format.format_note = formats[index].format_note
-                            downloadItem.format.format_id = formats[index].format_id
-                            downloadItem.format.filesize = formats[index].filesize
-
-                            if (containers.contains(formats[index].container)){
-                                downloadItem.format.container = formats[index].container
-                                containerAutoCompleteTextView.setText(formats[index].container, false)
+                            if (containers.contains(item.container)){
+                                downloadItem.format.container = item.container
+                                containerAutoCompleteTextView.setText(item.container, false)
                             }else{
                                 downloadItem.format.container = containers[0]
                                 containerAutoCompleteTextView.setText(containers[0], false)
                             }
+                            uiUtil.populateFormatCard(formatCard, item)
+                            formats = allFormats
                         }
+                    }
+                    formatCard.setOnClickListener{_ ->
+                        formats.forEach {
+                            Log.e("aa", it.toString())
+                        }
+                        val bottomSheet = FormatSelectionBottomSheetDialog(formats, listener)
+                        bottomSheet.show(parentFragmentManager, "formatSheet")
+                    }
+
                 }
 
 

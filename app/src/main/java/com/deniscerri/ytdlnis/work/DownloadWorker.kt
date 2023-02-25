@@ -114,11 +114,13 @@ class DownloadWorker(
             DownloadViewModel.Type.audio -> {
                 request.addOption("-x")
                 var audioQualityId : String = downloadItem.format.format_id
-                if (audioQualityId == "0" || audioQualityId.isEmpty()) audioQualityId = "ba"
-                request.addOption("-f", audioQualityId)
+                if (audioQualityId.isEmpty() || audioQualityId == "0") audioQualityId = ""
+                if (audioQualityId.isNotEmpty()){
+                    request.addOption("-f", audioQualityId)
+                }
 
                 val ext = downloadItem.format.container
-                if(ext != context.getString(R.string.defaultValue)){
+                if(ext != context.getString(R.string.defaultValue) && ext != "webm"){
                     request.addOption("--audio-format", ext)
                 }else{
                     request.addOption("--audio-format", sharedPreferences.getString("audio_format", "mp3")!!)

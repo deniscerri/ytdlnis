@@ -16,12 +16,14 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.get
 import androidx.core.view.size
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel.Type
+import com.deniscerri.ytdlnis.receiver.ShareActivity
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.button.MaterialButton
@@ -57,11 +59,17 @@ class DownloadBottomSheetDialog(private val resultItem: ResultItem, private val 
             behavior = BottomSheetBehavior.from(view.parent as View)
             val displayMetrics = DisplayMetrics()
             requireActivity().windowManager.defaultDisplay.getMetrics(displayMetrics)
-            behavior.peekHeight = displayMetrics.heightPixels - 400
+            behavior.peekHeight = displayMetrics.heightPixels - 700
         }
+
 
         tabLayout = view.findViewById(R.id.download_tablayout)
         viewPager2 = view.findViewById(R.id.download_viewpager)
+
+        (viewPager2.getChildAt(0) as? RecyclerView)?.apply {
+            isNestedScrollingEnabled = false
+            overScrollMode = View.OVER_SCROLL_NEVER
+        }
 
         val fragmentManager = parentFragmentManager
         fragmentAdapter = DownloadFragmentAdapter(
@@ -158,18 +166,18 @@ class DownloadBottomSheetDialog(private val resultItem: ResultItem, private val 
     }
 
     private fun getDownloadItem() : DownloadItem{
-        when(tabLayout.selectedTabPosition){
+        return when(tabLayout.selectedTabPosition){
             0 -> {
                 val f = fragmentManager?.findFragmentByTag("f0") as DownloadAudioFragment
-                return f.downloadItem
+                f.downloadItem
             }
             1 -> {
                 val f = fragmentManager?.findFragmentByTag("f1") as DownloadVideoFragment
-                return f.downloadItem
+                f.downloadItem
             }
             else -> {
                 val f = fragmentManager?.findFragmentByTag("f2") as DownloadCommandFragment
-                return f.downloadItem
+                f.downloadItem
             }
         }
     }
@@ -191,6 +199,9 @@ class DownloadBottomSheetDialog(private val resultItem: ResultItem, private val 
             if (parentFragmentManager.findFragmentByTag("f${i}") != null){
                 parentFragmentManager.beginTransaction().remove(parentFragmentManager.findFragmentByTag("f$i")!!).commit()
             }
+        }
+        if (activity is ShareActivity){
+            (activity as ShareActivity).finish()
         }
     }
 }

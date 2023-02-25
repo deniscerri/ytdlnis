@@ -17,6 +17,7 @@ class ResultViewModel(application: Application) : AndroidViewModel(application) 
     private val repository : ResultRepository
     val items : LiveData<List<ResultItem>>
     val loadingItems = MutableLiveData<Boolean>()
+    var itemCount : LiveData<Int>
 
     init {
         val dao = DBManager.getInstance(application).resultDao
@@ -24,6 +25,7 @@ class ResultViewModel(application: Application) : AndroidViewModel(application) 
         repository = ResultRepository(dao, commandDao, getApplication<Application>().applicationContext)
         items = repository.allResults
         loadingItems.postValue(false)
+        itemCount = repository.itemCount
     }
 
     fun checkTrending() = viewModelScope.launch(Dispatchers.IO){
@@ -41,7 +43,7 @@ class ResultViewModel(application: Application) : AndroidViewModel(application) 
     }
     fun getTrending() = viewModelScope.launch(Dispatchers.IO){
         loadingItems.postValue(true)
-        repository.updateTrending();
+        repository.updateTrending()
         loadingItems.postValue(false)
     }
 

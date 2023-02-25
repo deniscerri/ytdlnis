@@ -128,13 +128,14 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
         resultViewModel.items.observe(viewLifecycleOwner) {
             homeAdapter!!.submitList(it)
             resultsList = it
-            if(it.size > 1){
+            Log.e(TAG, resultViewModel.itemCount.toString())
+            if(resultViewModel.itemCount.value!! > 1){
                 if (it[0].playlistTitle.isNotEmpty() && it[0].playlistTitle != getString(R.string.trendingPlaylist)){
                     downloadAllFabCoordinator!!.visibility = VISIBLE
                 }else{
                     downloadAllFabCoordinator!!.visibility = GONE
                 }
-            }else if (it.size == 1){
+            }else if (resultViewModel.itemCount.value!! == 1){
                 if (sharedPreferences!!.getBoolean("download_card", true)){
                     if(it.size == 1 && !firstBoot && parentFragmentManager.findFragmentByTag("downloadSingleSheet") == null){
                         showSingleDownloadSheet(it[0], DownloadViewModel.Type.video)

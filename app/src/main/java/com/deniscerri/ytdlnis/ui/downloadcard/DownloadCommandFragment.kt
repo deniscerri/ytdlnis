@@ -35,7 +35,6 @@ class DownloadCommandFragment(private val resultItem: ResultItem) : Fragment() {
     private var _binding : FragmentHomeBinding? = null
     private var fragmentView: View? = null
     private var activity: Activity? = null
-    private var mainActivity: MainActivity? = null
     private lateinit var downloadViewModel : DownloadViewModel
     private lateinit var fileUtil : FileUtil
 
@@ -52,7 +51,6 @@ class DownloadCommandFragment(private val resultItem: ResultItem) : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         fragmentView = inflater.inflate(R.layout.fragment_download_command, container, false)
         activity = getActivity()
-        mainActivity = activity as MainActivity?
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
         downloadItem = downloadViewModel.createDownloadItemFromResult(resultItem, DownloadViewModel.Type.command)
         fileUtil = FileUtil()
@@ -72,6 +70,9 @@ class DownloadCommandFragment(private val resultItem: ResultItem) : Fragment() {
                 val chosenCommand = commands.find { it.id == id }
                 downloadItem.format = Format(
                     chosenCommand!!.title,
+                    "",
+                    "",
+                    "",
                     "",
                     0,
                     chosenCommand.content

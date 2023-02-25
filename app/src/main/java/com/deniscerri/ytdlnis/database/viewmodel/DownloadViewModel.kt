@@ -57,6 +57,9 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
         bestVideoFormat = Format(
             videoFormat[videoFormat.lastIndex],
             videoContainer!!,
+            "",
+            "",
+            "",
             0,
             videoFormat[videoFormat.lastIndex]
         )
@@ -65,6 +68,9 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
         bestAudioFormat = Format(
             "",
             audioContainer!!,
+            "",
+            "",
+            "",
             0,
             ""
         )

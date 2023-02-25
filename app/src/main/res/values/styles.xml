@@ -9,6 +9,14 @@
         <item name="dialogCornerRadius">28dp</item>
     </style>
 
+    <style name="Theme.BottomSheet" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+
 
     <style name="AppTheme" parent="AppDefaultTheme" />
 

@@ -170,4 +170,7 @@
     <string name="language">Language</string>
     <string name="command_templates">Command Templates</string>
     <string name="terminal">Terminal</string>
+    <string name="format">Format</string>
+    <string name="select_format">Select Format</string>
+    <string name="please_wait">Please Wait</string>
 </resources>
