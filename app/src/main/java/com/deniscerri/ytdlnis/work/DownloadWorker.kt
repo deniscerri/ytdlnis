@@ -197,11 +197,11 @@ class DownloadWorker(
         }
 
         runCatching {
-            val logDownloads = sharedPreferences.getBoolean("log_downloads", false)
+            val logDownloads = sharedPreferences.getBoolean("log_downloads", false) && !sharedPreferences.getBoolean("incognito", false)
             val logFolder = File(context.filesDir.absolutePath + "/logs")
             val logFile = File(context.filesDir.absolutePath + """/logs/${downloadItem.id} - ${downloadItem.title}##${downloadItem.type}##${downloadItem.format.format_id}.log""")
             if (logDownloads){
-                logFolder.mkdir()
+                logFolder.mkdirs()
                 logFile.createNewFile()
                 logFile.writeText("Downloading:\n" +
                         "URL: ${downloadItem.url}\n" +
@@ -219,7 +219,7 @@ class DownloadWorker(
                     line, progress.toInt(), 0, title,
                     NotificationUtil.DOWNLOAD_SERVICE_CHANNEL_ID
                 )
-                if (logDownloads){
+                if (logDownloads && logFile.exists()){
                     logFile.appendText("${line}\n")
                 }
             }
@@ -259,7 +259,9 @@ class DownloadWorker(
                 val logDownloads = sharedPreferences.getBoolean("log_downloads", false)
                 if (logDownloads){
                     val logFile = File(context.filesDir.absolutePath + """/logs/${downloadItem.id} - ${downloadItem.title}##${downloadItem.type}##${downloadItem.format.format_id}.log""")
-                    logFile.appendText("${it.message}\n")
+                    if (logFile.exists()){
+                        logFile.appendText("${it.message}\n")
+                    }
                 }
 
                 tempFileDir.delete()

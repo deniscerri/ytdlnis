@@ -18,6 +18,7 @@
             android:elevation="0dp"
             app:title="@string/logs"
             android:layout_width="match_parent"
+            app:menu="@menu/download_logs_menu"
             app:navigationIcon="@drawable/ic_back"
             android:layout_height="match_parent"/>
 

@@ -71,6 +71,18 @@
     <string name="remove_non_music">Hiq pjesët pa muzikë</string>
     <string name="remove_non_music_summary">Hiq segmentet që përmbajnë pjesë pa muzikë në skedarët audio me SponsorBlock</string>
     <string name="processing">Proçesimi</string>
+    <string name="command_templates">Shabllonët e Komandave</string>
+    <string name="terminal">Terminali</string>
+    <string name="format">Formatet</string>
+    <string name="select_format">Zgjidh një Format</string>
+    <string name="please_wait">Ju Lutem Prisni</string>
+    <string name="remove_search_history">Pastro Historinë e Kërkimit</string>
+    <string name="enable_mtime">Aktivizo mtime</string>
+    <string name="enable_mtime_summary">Vendos orën e modifikimit sipas linkut</string>
+    <string name="update_formats">Përditëso Formatet</string>
+    <string name="error_updating_formats">Problem në përditësimin e formateve!</string>
+    <string name="log_downloads">Shëno Shkarkimet</string>
+    <string name="log_downloads_summary">Krijo një skedar shënimesh për çdo shkarkim</string>
     <string name="embed_subs">Titra në Video</string>
     <string name="embed_subs_summary">Vendos titra brenda videos</string>
     <string name="embed_thumb">Vendos Imazh</string>
@@ -142,6 +154,7 @@
     <string name="sponsorblock_fillers">Pjesë Shtesë</string>
     <string name="sponsorblock_reminders">Përkujtuesit e Abonimit</string>
     <string name="select_sponsorblock_filtering">Zgjidh Filtrimin e SponsorBlock</string>
+    <string name="file_transfer_notification_channel_description">Njoftimi qe shfaq progresin e transferimit te skedareve</string>
     <string name="save_dir">Direktoria</string>
     <string name="new_template">Shabllon i ri</string>
     <string name="adjust_templates">Cakto Shabllonët</string>
