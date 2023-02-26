@@ -3,7 +3,7 @@
     <string name="app_name" translatable="false">YTDLnis</string>
     <string name="search">Ara</string>
     <string name="remove_all"> Tümünü Kaldır</string>
-    <string name="remove_results"> Clear Results</string>
+    <string name="remove_results">Sonuçları Temizle</string>
     <string name="download_all"> Tümünü İndir</string>
     <string name="settings"> Ayarlar</string>
     <string name="home">Ev</string>
@@ -19,7 +19,7 @@
     <string name="download_notification_channel_name"> Dosya İndirmeleri</string>
     <string name="download_notification_channel_description"> Ses ve video dosyalarının indirilme ilerlemesini gösteren bildirim</string>
     <string name="failed_making_directory"> Yeni klasör oluşturulamadı.</string>
-    <string name="added_to_queue"> Enqueued</string>
+    <string name="added_to_queue">kuyruğa alınmış</string>
     <string name="you_are_in_latest_version"> En son sürümü kullanıyor</string>
     <string name="ytld_update_success">Yeni sürüm yüklendi</string>
     <string name="ytdl_update_failed">Yeni sürüm yüklenemedi</string>
@@ -27,14 +27,14 @@
     <string name="ytdl_updating_started">Yeni sürüm indiriliyor…</string>
     <string name="Remove">Kaldır</string>
     <string name="ok">Tamam</string>
-    <string name="cancel">Cancel</string>
+    <string name="cancel">İptal etmek</string>
     <string name="confirm_delete_history_desc">Tüm geçmişi kalıcı olarak silin.</string>
     <string name="confirm_delete_history_deleted_desc">Geçmişinizde indirme yoluyla eşleşen bir dosya olmayan herhangi bir öğeyi siler.</string>
     <string name="confirm_delete_history_duplicates_desc">Geçmişinizdeki her kopyayı siler (aynı URL ve indirme türü) ve en son sürümü korur.</string>
     <string name="confirm_delete_history">Onayla</string>
     <string name="search_history_hint">Geçmişten Ara</string>
-    <string name="no_results">No Results</string>
-    <string name="more">More</string>
+    <string name="no_results">Sonuç yok</string>
+    <string name="more">Daha</string>
     <string name="update_app">Güncellemeleri denetle</string>
     <string name="version">Sürüm</string>
     <string name="custom_command">Özel Komutu Çalıştır</string>
