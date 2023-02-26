@@ -33,6 +33,7 @@
                 <Button
                     style="?attr/materialIconButtonStyle"
                     android:layout_width="40dp"
+                    android:scrollbars="none"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.01"
                     app:icon="@drawable/ic_search"
@@ -54,6 +55,7 @@
                     style="?attr/materialIconButtonStyle"
                     android:id="@+id/set_search_query_button"
                     android:layout_width="40dp"
+                    android:scrollbars="none"
                     android:layout_height="match_parent"
                     app:icon="@drawable/ic_arrow_up"
                     android:layout_weight="0.01"

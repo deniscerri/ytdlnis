@@ -61,12 +61,14 @@ class DownloadLogListActivity : AppCompatActivity(), DownloadLogsAdapter.OnItemC
     private fun updateList(logFolder: File){
         fileList = mutableListOf()
         fileList.addAll(logFolder.listFiles()!!)
-        if (fileList.isNotEmpty()) {
-            fileList.reverse()
-            noResults.visibility = View.GONE
-            downloadLogAdapter.submitList(fileList.toList())
-        }else{
-            noResults.visibility = View.VISIBLE
+        fileList.reverse()
+        downloadLogAdapter.submitList(fileList.toList())
+        runOnUiThread{
+            if (fileList.isNotEmpty()) {
+                noResults.visibility = View.GONE
+            }else{
+                noResults.visibility = View.VISIBLE
+            }
         }
     }
 

@@ -18,6 +18,7 @@ class DownloadLogActivity : AppCompatActivity() {
     private lateinit var content: TextView
     private lateinit var contentScrollView : NestedScrollView
     private lateinit var topAppBar: MaterialToolbar
+    private lateinit var observer: FileObserver
     var context: Context? = null
 
     public override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,19 +27,23 @@ class DownloadLogActivity : AppCompatActivity() {
         context = baseContext
 
         topAppBar = findViewById(R.id.title)
-        topAppBar.setNavigationOnClickListener { onBackPressedDispatcher.onBackPressed() }
+        topAppBar.setNavigationOnClickListener {
+            onBackPressedDispatcher.onBackPressed()
+        }
 
         content = findViewById(R.id.content)
         contentScrollView = findViewById(R.id.content_scrollview)
 
         val path = intent.getStringExtra("path")
-        if (path == null) onBackPressedDispatcher.onBackPressed()
+        if (path == null) {
+            onBackPressedDispatcher.onBackPressed()
+        }
 
         val file = File(path!!)
         topAppBar.title = file.name
         content.text = file.readText()
 
-        val observer: FileObserver = object : FileObserver(file, MODIFY) {
+        observer = object : FileObserver(file, MODIFY) {
             override fun onEvent(event: Int, p: String?) {
                 runOnUiThread{
                     content.text = File(path).readText()
@@ -47,6 +52,11 @@ class DownloadLogActivity : AppCompatActivity() {
             }
         }
         observer.startWatching();
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        observer.stopWatching()
     }
 
     companion object {

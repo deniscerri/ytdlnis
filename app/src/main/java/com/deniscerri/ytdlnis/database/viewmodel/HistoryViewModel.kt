@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 class HistoryViewModel(application: Application) : AndroidViewModel(application) {
     private val repository : HistoryRepository
     val sortOrder = MutableLiveData(HistorySort.DESC)
-    private val sortType = MutableLiveData(HistorySortType.DATE)
+    val sortType = MutableLiveData(HistorySortType.DATE)
     private val websiteFilter = MutableLiveData("")
     private val queryFilter = MutableLiveData("")
     private val formatFilter = MutableLiveData("")

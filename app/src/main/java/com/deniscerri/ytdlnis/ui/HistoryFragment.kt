@@ -250,6 +250,12 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
             val author = sortSheet!!.findViewById<LinearLayout>(R.id.author)
 
             val sortOptions = listOf(date!!, title!!, author!!)
+            sortOptions.forEach { it.getChildAt(0).visibility = INVISIBLE }
+            when(historyViewModel.sortType.value!!) {
+                HistoryRepository.HistorySortType.DATE -> changeSortIcon(date, historyViewModel.sortOrder.value!!)
+                HistoryRepository.HistorySortType.TITLE -> changeSortIcon(title, historyViewModel.sortOrder.value!!)
+                HistoryRepository.HistorySortType.AUTHOR -> changeSortIcon(author, historyViewModel.sortOrder.value!!)
+            }
 
             date.getChildAt(1).setOnClickListener {
                 sortOptions.forEach { it.getChildAt(0).visibility = INVISIBLE }

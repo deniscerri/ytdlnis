@@ -256,6 +256,12 @@ class DownloadWorker(
                 }
                 return Result.failure()
             }else{
+                val logDownloads = sharedPreferences.getBoolean("log_downloads", false)
+                if (logDownloads){
+                    val logFile = File(context.filesDir.absolutePath + """/logs/${downloadItem.id} - ${downloadItem.title}##${downloadItem.type}##${downloadItem.format.format_id}.log""")
+                    logFile.appendText("${it.message}\n")
+                }
+
                 tempFileDir.delete()
                 handler.postDelayed({
                     Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()

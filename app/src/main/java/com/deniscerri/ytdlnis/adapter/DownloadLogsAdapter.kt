@@ -41,13 +41,16 @@ class DownloadLogsAdapter(onItemClickListener: OnItemClickListener, activity: Ac
         val item = getItem(position)
         val card = holder.item
 
-        card.findViewById<TextView>(R.id.title).text = item?.name
+        val title = card.findViewById<TextView>(R.id.title)
+        title.text = item?.name
 
-        card.findViewById<Button>(R.id.delete).setOnClickListener {
+        val delete = card.findViewById<Button>(R.id.delete)
+
+        delete.setOnClickListener {
             onItemClickListener.onDeleteClick(item!!)
         }
 
-        card.setOnClickListener {
+        title.setOnClickListener {
             onItemClickListener.onItemClick(item!!)
         }
     }
