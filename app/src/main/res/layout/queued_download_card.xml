@@ -38,9 +38,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
+
                 <TextView
                     android:id="@+id/title"
-                    android:layout_width="300dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:paddingStart="10dp"
                     android:paddingTop="10dp"
@@ -53,13 +54,18 @@
                     android:textColor="@color/white"
                     android:textSize="15sp"
                     android:textStyle="bold"
+                    app:layout_constraintBottom_toTopOf="@+id/author"
+                    app:layout_constraintEnd_toStartOf="@+id/queued_download_cancel"
+                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.0" />
 
                 <TextView
                     android:id="@+id/author"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
                     android:gravity="bottom"
                     android:paddingLeft="10dp"
                     android:paddingTop="10dp"
@@ -72,16 +78,16 @@
                     android:textColor="@color/white"
                     android:textSize="12sp"
                     android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/title" />
-
+                    app:layout_constraintBottom_toTopOf="@+id/linearLayout3"
+                    app:layout_constraintEnd_toStartOf="@+id/queued_download_cancel"
+                    app:layout_constraintStart_toStartOf="parent" />
 
                 <com.google.android.material.button.MaterialButton
-                    android:layout_margin="15dp"
                     android:id="@+id/queued_download_cancel"
                     style="@style/Widget.Material3.ExtendedFloatingActionButton.Icon.Secondary"
                     android:layout_width="55dp"
                     android:layout_height="55dp"
+                    android:layout_margin="15dp"
                     app:cornerRadius="10dp"
                     app:icon="@drawable/ic_baseline_delete_outline_24"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -94,12 +100,19 @@
                     android:layout_height="wrap_content"
                     android:padding="10dp"
                     android:textSize="15sp"
+                    android:shadowColor="@color/black"
+                    android:shadowDx="4"
+                    android:shadowDy="4"
+                    android:shadowRadius="1.5"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/author"
                     app:layout_constraintVertical_bias="1.0" />
 
                 <LinearLayout
+                    android:id="@+id/linearLayout3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
