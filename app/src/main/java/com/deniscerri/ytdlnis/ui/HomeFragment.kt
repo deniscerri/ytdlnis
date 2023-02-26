@@ -317,6 +317,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
                 } catch (ignored: Exception) {}
             } else if (itemId == R.id.delete_search){
                 resultViewModel.deleteAllSearchQueryHistory()
+                searchSuggestionsLinearLayout!!.removeAllViews()
             }
             true
         }

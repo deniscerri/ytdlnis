@@ -29,6 +29,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
     private var concurrentDownloads: SeekBarPreference? = null
     private var limitRate: EditTextPreference? = null
     private var aria2: SwitchPreferenceCompat? = null
+    private var logDownloads: SwitchPreferenceCompat? = null
     private var sponsorblockFilters: MultiSelectListPreference? = null
     private var filenameTemplate: EditTextPreference? = null
     private var mtime: SwitchPreferenceCompat? = null
@@ -69,6 +70,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         concurrentDownloads = findPreference("concurrent_downloads")
         limitRate = findPreference("limit_rate")
         aria2 = findPreference("aria2")
+        logDownloads = findPreference("log_downloads")
         sponsorblockFilters = findPreference("sponsorblock_filter")
         mtime = findPreference("mtime")
         embedSubtitles = findPreference("embed_subtitles")
@@ -115,6 +117,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         editor.putInt("concurrent_downloads", concurrentDownloads!!.value)
         editor.putString("limit_rate", limitRate!!.text)
         editor.putBoolean("aria2", aria2!!.isChecked)
+        editor.putBoolean("log_downloads", logDownloads!!.isChecked)
         editor.putStringSet("sponsorblock_filters", sponsorblockFilters!!.values)
         editor.putString("file_name_template", filenameTemplate!!.text)
         editor.putBoolean("mtime", mtime!!.isChecked)
@@ -220,6 +223,13 @@ class SettingsFragment : PreferenceFragmentCompat() {
             Preference.OnPreferenceChangeListener { _: Preference?, newValue: Any ->
                 val enable = newValue as Boolean
                 editor.putBoolean("aria2", enable)
+                editor.apply()
+                true
+            }
+        logDownloads!!.onPreferenceChangeListener =
+            Preference.OnPreferenceChangeListener { _: Preference?, newValue: Any ->
+                val enable = newValue as Boolean
+                editor.putBoolean("log_downloads", enable)
                 editor.apply()
                 true
             }

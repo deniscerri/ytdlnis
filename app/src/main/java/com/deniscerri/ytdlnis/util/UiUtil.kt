@@ -9,7 +9,6 @@ import com.deniscerri.ytdlnis.database.models.Format
 
 class UiUtil(private val fileUtil: FileUtil) {
     fun populateFormatCard(formatCard : ConstraintLayout, chosenFormat: Format){
-        Log.e("aa", chosenFormat.toString())
         formatCard.findViewById<TextView>(R.id.container).text = chosenFormat.container.uppercase()
         formatCard.findViewById<TextView>(R.id.format_note).text = chosenFormat.format_note.uppercase()
         formatCard.findViewById<TextView>(R.id.format_id).text = "id: ${chosenFormat.format_id}"

@@ -12,7 +12,6 @@ import androidx.work.ForegroundInfo
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import androidx.work.workDataOf
-import com.deniscerri.ytdlnis.App
 import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.DBManager
@@ -67,13 +66,13 @@ class DownloadWorker(
 
         
         val url = downloadItem.url
-        var request = YoutubeDLRequest(url)
+        val request = YoutubeDLRequest(url)
         val type = downloadItem.type
         val downloadLocation = downloadItem.downloadPath
 
-        var tempFolder = StringBuilder(context.cacheDir.absolutePath + """/${downloadItem.title}##${downloadItem.type}""")
+        val tempFolder = StringBuilder(context.cacheDir.absolutePath + """/${downloadItem.title}##${downloadItem.type}""")
         tempFolder.append("##${downloadItem.format.format_id}")
-        var tempFileDir = File(tempFolder.toString())
+        val tempFileDir = File(tempFolder.toString())
         tempFileDir.delete()
         tempFileDir.mkdir()
 
@@ -104,10 +103,10 @@ class DownloadWorker(
         }
 
         if(downloadItem.title.isNotEmpty()){
-            request.addCommands(listOf("--replace-in-metadata","title",".*.",downloadItem.title));
+            request.addCommands(listOf("--replace-in-metadata","title",".*.",downloadItem.title))
         }
         if (downloadItem.author.isNotEmpty()){
-            request.addCommands(listOf("--replace-in-metadata","uploader",".*.",downloadItem.author));
+            request.addCommands(listOf("--replace-in-metadata","uploader",".*.",downloadItem.author))
         }
         if (downloadItem.customFileNameTemplate.isEmpty()) downloadItem.customFileNameTemplate = "%(uploader)s - %(title)s"
 
@@ -166,7 +165,7 @@ class DownloadWorker(
                     if (videoFormatID == "Best Quality") videoFormatID = "bestvideo"
                     else if (videoFormatID == "Worst Quality") videoFormatID = "worst"
                     else if (defaultFormats.contains(videoFormatID)) videoFormatID = "bestvideo[height<="+videoFormatID.substring(0, videoFormatID.length -1)+"]"
-                    formatArgument = videoFormatID + "+bestaudio/best/$videoFormatID"
+                    formatArgument = "$videoFormatID+bestaudio/best/$videoFormatID"
                 }
                 Log.e(TAG, formatArgument)
                 request.addOption("-f", formatArgument)
@@ -198,6 +197,19 @@ class DownloadWorker(
         }
 
         runCatching {
+            val logDownloads = sharedPreferences.getBoolean("log_downloads", false)
+            val logFolder = File(context.filesDir.absolutePath + "/logs")
+            val logFile = File(context.filesDir.absolutePath + """/logs/${downloadItem.id} - ${downloadItem.title}##${downloadItem.type}##${downloadItem.format.format_id}.log""")
+            if (logDownloads){
+                logFolder.mkdir()
+                logFile.createNewFile()
+                logFile.writeText("Downloading:\n" +
+                        "URL: ${downloadItem.url}\n" +
+                        "Type: ${downloadItem.type}\n" +
+                        "Format: ${downloadItem.format}\n\n")
+            }
+
+
             YoutubeDL.getInstance().execute(request, downloadItem.id.toString()){ progress, _, line ->
                 setProgressAsync(workDataOf("progress" to progress.toInt()))
                 setProgressAsync(workDataOf("output" to line))
@@ -207,6 +219,9 @@ class DownloadWorker(
                     line, progress.toInt(), 0, title,
                     NotificationUtil.DOWNLOAD_SERVICE_CHANNEL_ID
                 )
+                if (logDownloads){
+                    logFile.appendText("${line}\n")
+                }
             }
         }.onSuccess {
             //move file from internal to set download directory

@@ -178,4 +178,6 @@
     <string name="enable_mtime_summary">Set the HTTP Last-Modified header as last modified time</string>
     <string name="update_formats">Update Formats</string>
     <string name="error_updating_formats">Error updating formats!</string>
+    <string name="log_downloads">Log Downloads</string>
+    <string name="log_downloads_summary">Create a log file for each download</string>
 </resources>

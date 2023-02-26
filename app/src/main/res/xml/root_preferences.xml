@@ -88,6 +88,13 @@
             android:disableDependentsState="true"
             app:title="Aria2" />
 
+        <SwitchPreferenceCompat
+            app:defaultValue="false"
+            android:icon="@drawable/ic_baseline_file_open_24"
+            android:key="log_downloads"
+            app:summary="@string/log_downloads_summary"
+            app:title="@string/log_downloads" />
+
     </PreferenceCategory>
 
 
