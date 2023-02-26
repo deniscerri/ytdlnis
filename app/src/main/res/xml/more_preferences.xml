@@ -42,6 +42,15 @@
     </Preference>
 
     <Preference
+        app:icon="@drawable/ic_down"
+        app:key="download_queue"
+        app:allowDividerBelow="true"
+        app:title="@string/download_queue">
+        <intent android:action="ytdlnis.DownloadQueueActivity" />
+    </Preference>
+
+
+    <Preference
         app:icon="@drawable/ic_settings"
         app:key="open_settings"
         app:allowDividerAbove="true"

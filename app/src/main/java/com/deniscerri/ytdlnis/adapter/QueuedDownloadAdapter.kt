@@ -7,6 +7,7 @@ import android.graphics.ColorMatrix
 import android.graphics.ColorMatrixColorFilter
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,38 +20,40 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdlnis.R
+import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.models.HistoryItem
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
+import com.deniscerri.ytdlnis.util.FileUtil
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
 import com.squareup.picasso.Picasso
+import org.w3c.dom.Text
 import java.io.File
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
-class QueuedDownloadAdapter(onItemClickListener: OnItemClickListener, activity: Activity) : ListAdapter<HistoryItem?, QueuedDownloadAdapter.ViewHolder>(AsyncDifferConfig.Builder(DIFF_CALLBACK).build()) {
-    private val checkedItems: ArrayList<Long>
+class QueuedDownloadAdapter(onItemClickListener: OnItemClickListener, activity: Activity) : ListAdapter<DownloadItem?, QueuedDownloadAdapter.ViewHolder>(AsyncDifferConfig.Builder(DIFF_CALLBACK).build()) {
     private val onItemClickListener: OnItemClickListener
     private val activity: Activity
+    private var fileUtil: FileUtil
 
     init {
-        checkedItems = ArrayList()
         this.onItemClickListener = onItemClickListener
         this.activity = activity
+        fileUtil = FileUtil()
     }
 
     class ViewHolder(itemView: View, onItemClickListener: OnItemClickListener?) : RecyclerView.ViewHolder(itemView) {
         val cardView: MaterialCardView
-
         init {
-            cardView = itemView.findViewById(R.id.downloads_card_view)
+            cardView = itemView.findViewById(R.id.queued_download_card_view)
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val cardView = LayoutInflater.from(parent.context)
-                .inflate(R.layout.history_card, parent, false)
+            .inflate(R.layout.queued_download_card, parent, false)
         return ViewHolder(cardView, onItemClickListener)
     }
 
@@ -58,7 +61,7 @@ class QueuedDownloadAdapter(onItemClickListener: OnItemClickListener, activity: 
         val item = getItem(position)
         val card = holder.cardView
         // THUMBNAIL ----------------------------------
-        val thumbnail = card.findViewById<ImageView>(R.id.downloads_image_view)
+        val thumbnail = card.findViewById<ImageView>(R.id.image_view)
         val imageURL = item!!.thumb
         val uiHandler = Handler(Looper.getMainLooper())
         if (imageURL.isNotEmpty()) {
@@ -69,29 +72,48 @@ class QueuedDownloadAdapter(onItemClickListener: OnItemClickListener, activity: 
         thumbnail.setColorFilter(Color.argb(95, 0, 0, 0))
 
         // TITLE  ----------------------------------
-        val itemTitle = card.findViewById<TextView>(R.id.downloads_title)
+        val itemTitle = card.findViewById<TextView>(R.id.title)
         var title = item.title
         if (title.length > 100) {
             title = title.substring(0, 40) + "..."
         }
         itemTitle.text = title
 
-        // Bottom Info ----------------------------------
-        val bottomInfo = card.findViewById<TextView>(R.id.downloads_info_bottom)
+        // Author ----------------------------------
+        val author = card.findViewById<TextView>(R.id.author)
         var info = item.author
         if (item.duration.isNotEmpty()) {
             if (item.author.isNotEmpty()) info += " • "
             info += item.duration
         }
-        bottomInfo.text = info
+        author.text = info
 
-        // TIME DOWNLOADED  ----------------------------------
-        val datetime = card.findViewById<TextView>(R.id.downloads_info_time)
-        val time = item.time
-        val downloadedTime: String
+        val formatNote = card.findViewById<TextView>(R.id.format_note)
+        formatNote.text = item.format.format_note
+        val codec = card.findViewById<TextView>(R.id.codec)
+        val codecText =
+            if (item.format.encoding != "") {
+                item.format.encoding.uppercase()
+            }else if (item.format.vcodec != "none" && item.format.vcodec != ""){
+                item.format.vcodec.uppercase()
+            } else {
+                item.format.acodec.uppercase()
+            }
+        if (codecText == "" || codecText == "none"){
+            codec.visibility = View.GONE
+        }else{
+            codec.visibility = View.VISIBLE
+            codec.text = codecText
+        }
+
+        val fileSize = card.findViewById<TextView>(R.id.file_size)
+        fileSize.text = fileUtil.convertFileSize(item.format.filesize)
+        val downloadStartTime = card.findViewById<TextView>(R.id.time)
+        val time = item.downloadStartTime
         if (time == 0L) {
-            downloadedTime = activity.getString(R.string.currently_downloading) + " " + item.type
+            downloadStartTime.visibility = View.GONE
         } else {
+            downloadStartTime.visibility = View.VISIBLE
             val cal = Calendar.getInstance()
             val date = Date(time * 1000L)
             cal.time = date
@@ -100,94 +122,31 @@ class QueuedDownloadAdapter(onItemClickListener: OnItemClickListener, activity: 
             val year = cal[Calendar.YEAR]
             val formatter: DateFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
             val timeString = formatter.format(date)
-            downloadedTime = "$day $month $year - $timeString"
+            downloadStartTime.text = "$day $month $year - $timeString"
         }
-        datetime.text = downloadedTime
 
-        // BUTTON ----------------------------------
-        val buttonLayout = card.findViewById<LinearLayout>(R.id.downloads_download_button_layout)
-        val btn = buttonLayout.findViewById<MaterialButton>(R.id.downloads_download_button_type)
-        var filePresent = true
+        // CANCEL BUTTON ----------------------------------
+        val cancelButton = card.findViewById<MaterialButton>(R.id.queued_download_cancel)
+        if (cancelButton.hasOnClickListeners()) cancelButton.setOnClickListener(null)
 
-        //IS IN THE FILE SYSTEM?
-        val path = item.downloadPath
-        val file = File(path)
-        if (!file.exists() && path.isNotEmpty()) {
-            filePresent = false
-            thumbnail.colorFilter = ColorMatrixColorFilter(object : ColorMatrix() {
-                init {
-                    setSaturation(0f)
-                }
-            })
-            thumbnail.alpha = 0.7f
+        cancelButton.setOnClickListener {
+            onItemClickListener.onQueuedCancelClick(item.id)
         }
-        if (item.type == DownloadViewModel.Type.audio) {
-            if (filePresent) btn.icon = ContextCompat.getDrawable(activity, R.drawable.ic_music_downloaded) else btn.icon = ContextCompat.getDrawable(activity, R.drawable.ic_music)
-        } else {
-            if (filePresent) btn.icon = ContextCompat.getDrawable(activity, R.drawable.ic_video_downloaded) else btn.icon = ContextCompat.getDrawable(activity, R.drawable.ic_video)
-        }
-        if (btn.hasOnClickListeners()) btn.setOnClickListener(null)
-        if (checkedItems.contains(item.id)) {
-            card.isChecked = true
-            card.strokeWidth = 5
-        } else {
-            card.isChecked = false
-            card.strokeWidth = 0
-        }
-        val finalFilePresent = filePresent
-        card.setOnLongClickListener {
-            checkCard(card, item.id)
-            true
-        }
-        card.setOnClickListener {
-            if (checkedItems.size > 0) {
-                checkCard(card, item.id)
-            } else {
-                onItemClickListener.onCardClick(item.id, finalFilePresent)
-            }
-        }
+
     }
-
-    private fun checkCard(card: MaterialCardView, itemID: Long) {
-        if (card.isChecked) {
-            card.strokeWidth = 0
-            checkedItems.remove(itemID)
-        } else {
-            card.strokeWidth = 5
-            checkedItems.add(itemID)
-        }
-        card.isChecked = !card.isChecked
-        onItemClickListener.onCardSelect(itemID, card.isChecked)
-    }
-
     interface OnItemClickListener {
-        fun onCardClick(itemID: Long, isPresent: Boolean)
-        fun onCardSelect(itemID: Long, isChecked: Boolean)
-        fun onButtonClick(position: Int)
-    }
-
-    @SuppressLint("NotifyDataSetChanged")
-    fun clearCheckeditems() {
-        for (i in 0 until itemCount){
-            val item = getItem(i)
-            if (checkedItems.find { it == item?.id } != null){
-                checkedItems.remove(item?.id)
-                notifyItemChanged(i)
-            }
-        }
-
-        checkedItems.clear()
+        fun onQueuedCancelClick(itemID: Long)
     }
 
     companion object {
-        private val DIFF_CALLBACK: DiffUtil.ItemCallback<HistoryItem> = object : DiffUtil.ItemCallback<HistoryItem>() {
-            override fun areItemsTheSame(oldItem: HistoryItem, newItem: HistoryItem): Boolean {
+        private val DIFF_CALLBACK: DiffUtil.ItemCallback<DownloadItem> = object : DiffUtil.ItemCallback<DownloadItem>() {
+            override fun areItemsTheSame(oldItem: DownloadItem, newItem: DownloadItem): Boolean {
                 val ranged = arrayListOf(oldItem.id, newItem.id)
                 return ranged[0] == ranged[1]
             }
 
-            override fun areContentsTheSame(oldItem: HistoryItem, newItem: HistoryItem): Boolean {
-                return oldItem.time == newItem.time
+            override fun areContentsTheSame(oldItem: DownloadItem, newItem: DownloadItem): Boolean {
+                return oldItem.url == newItem.url && oldItem.format.format_id == newItem.format.format_id
             }
         }
     }

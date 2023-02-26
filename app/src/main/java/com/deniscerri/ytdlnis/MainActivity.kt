@@ -26,6 +26,7 @@ import androidx.work.WorkManager
 import com.deniscerri.ytdlnis.databinding.ActivityMainBinding
 import com.deniscerri.ytdlnis.service.IDownloaderListener
 import com.deniscerri.ytdlnis.service.IDownloaderService
+import com.deniscerri.ytdlnis.ui.DownloadQueueActivity
 import com.deniscerri.ytdlnis.ui.HistoryFragment
 import com.deniscerri.ytdlnis.ui.HomeFragment
 import com.deniscerri.ytdlnis.ui.MoreFragment
@@ -79,7 +80,8 @@ class MainActivity : AppCompatActivity() {
                 }
                 R.id.history -> {
                     if (lastFragment === historyFragment) {
-                        historyFragment.scrollToTop()
+                        val intent = Intent(context, DownloadQueueActivity::class.java)
+                        startActivity(intent)
                     } else {
                         this.title = getString(R.string.downloads)
                     }

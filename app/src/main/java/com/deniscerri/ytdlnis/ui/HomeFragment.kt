@@ -184,15 +184,10 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
                 }
                 try {
                     Handler(Looper.getMainLooper()).post {
-
                         // DOWNLOAD ALL BUTTON
                         if (resultsList!!.size > 1 || inputQueriesLength > 1) {
                             downloadAllFabCoordinator!!.visibility = VISIBLE
                         }
-//                        databaseManager = DatabaseManager(context)
-//                        databaseManager!!.clearResults()
-//                        for (v in resultsList!!) v!!.isPlaylistItem = 1
-//                        databaseManager!!.addToResults(resultsList)
                     }
                 } catch (ignored: Exception) {
                 }
@@ -201,14 +196,6 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
         } else {
             resultViewModel.checkTrending()
         }
-
-        WorkManager.getInstance(requireContext())
-            .getWorkInfosByTagLiveData("download")
-            .observe(viewLifecycleOwner){ list ->
-                list.forEach {
-                    //Toast.makeText(context, """${it.progress.getInt("progress", 0)} ${it.progress.getString("output")}""", Toast.LENGTH_SHORT).show()
-                }
-            }
 
 //        fragmentView!!.post{
 //            if (shimmerCards!!.visibility == VISIBLE) return@post

@@ -66,6 +66,16 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".ui.DownloadQueueActivity"
+            android:configChanges="layoutDirection|locale"
+            android:parentActivityName=".MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="ytdlnis.DownloadQueueActivity" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".ui.downloadLogs.DownloadLogActivity"
             android:configChanges="layoutDirection|locale"
             android:parentActivityName=".ui.downloadLogs.DownloadLogListActivity"
