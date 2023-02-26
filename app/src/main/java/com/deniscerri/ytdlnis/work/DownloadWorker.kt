@@ -170,7 +170,7 @@ class DownloadWorker(
                 Log.e(TAG, formatArgument)
                 request.addOption("-f", formatArgument)
                 val format = downloadItem.format.container
-                if(format.isNotEmpty() || format != "Default"){
+                if(format.isNotEmpty() || format != context.resources.getString(R.string.defaultValue)){
                     request.addOption("--merge-output-format", format)
                     if (format != "webm") {
                         val embedThumb = sharedPreferences.getBoolean("embed_thumbnail", false)
