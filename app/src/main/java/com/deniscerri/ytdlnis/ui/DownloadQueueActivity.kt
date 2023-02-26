@@ -1,6 +1,7 @@
 package com.deniscerri.ytdlnis.ui
 
 import android.content.Context
+import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
@@ -12,6 +13,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.work.WorkManager
@@ -66,13 +68,23 @@ class DownloadQueueActivity : AppCompatActivity(), ActiveDownloadAdapter.OnItemC
                 this@DownloadQueueActivity
             )
 
+        val landScapeOrTablet = resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE || resources.getBoolean(R.bool.isTablet)
+
 
         activeRecyclerView = findViewById(R.id.active_recyclerview)
-        activeRecyclerView.layoutManager = LinearLayoutManager(context)
+        if (landScapeOrTablet){
+            activeRecyclerView.layoutManager = GridLayoutManager(context, 2)
+        }else{
+            activeRecyclerView.layoutManager = LinearLayoutManager(context)
+        }
         activeRecyclerView.adapter = activeDownloads
 
         queuedRecyclerView = findViewById(R.id.queued_recyclerview)
-        queuedRecyclerView.layoutManager = LinearLayoutManager(context)
+        if (landScapeOrTablet){
+            queuedRecyclerView.layoutManager = GridLayoutManager(context, 2)
+        }else{
+            queuedRecyclerView.layoutManager = LinearLayoutManager(context)
+        }
         queuedRecyclerView.adapter = queuedDownloads
 
         noResults = findViewById(R.id.no_results)

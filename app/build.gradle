@@ -68,16 +68,18 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            debuggable true
+            debuggable false
             signingConfig signingConfigs.debug
         }
 
         dev {
             initWith buildTypes.release
+            debuggable true
         }
 
         debug {
             initWith buildTypes.release
+            debuggable true
             proguardFiles 'baseline-profiles-rules.pro'
         }
     }

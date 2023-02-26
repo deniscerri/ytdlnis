@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.Context.CLIPBOARD_SERVICE
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.res.Configuration
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -20,6 +21,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.work.WorkManager
@@ -121,7 +123,11 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
                 requireActivity()
             )
         recyclerView = view.findViewById(R.id.recyclerViewHome)
-        recyclerView?.layoutManager = LinearLayoutManager(context)
+        if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE || resources.getBoolean(R.bool.isTablet)){
+            recyclerView?.layoutManager = GridLayoutManager(context, 2)
+        }else{
+            recyclerView?.layoutManager = LinearLayoutManager(context)
+        }
         recyclerView?.adapter = homeAdapter
 
         resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]

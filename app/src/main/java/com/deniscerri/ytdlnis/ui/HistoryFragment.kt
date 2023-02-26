@@ -2,6 +2,7 @@ package com.deniscerri.ytdlnis.ui
 
 import android.app.Activity
 import android.content.*
+import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
@@ -15,6 +16,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdlnis.MainActivity
@@ -106,7 +108,11 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
                 requireActivity()
             )
         recyclerView = view.findViewById(R.id.recyclerviewhistorys)
-        recyclerView?.layoutManager = LinearLayoutManager(context)
+        if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE || resources.getBoolean(R.bool.isTablet)){
+            recyclerView?.layoutManager = GridLayoutManager(context, 2)
+        }else{
+            recyclerView?.layoutManager = LinearLayoutManager(context)
+        }
         recyclerView?.adapter = historyAdapter
 
         noResults?.visibility = GONE
