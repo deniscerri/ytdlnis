@@ -180,4 +180,5 @@
     <string name="error_updating_formats">Error updating formats!</string>
     <string name="log_downloads">Log Downloads</string>
     <string name="log_downloads_summary">Create a log file for each download</string>
+    <string name="new_update">New Update</string>
 </resources>

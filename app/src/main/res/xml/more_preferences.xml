@@ -22,7 +22,7 @@
         app:icon="@drawable/ic_terminal"
         app:key="run_command"
         app:title="@string/terminal">
-        <intent android:action="ytdlnis.page.CustomCommandActivity" />
+        <intent android:action="ytdlnis.CustomCommandActivity" />
     </Preference>
 
     <Preference
@@ -30,7 +30,7 @@
         app:key="download_logs"
         app:allowDividerBelow="true"
         app:title="@string/logs">
-        <intent android:action="ytdlnis.page.DownloadLogsActivity" />
+        <intent android:action="ytdlnis.downloadLogs.DownloadLogListActivity" />
     </Preference>
 
     <Preference
@@ -38,7 +38,7 @@
         app:key="command_templates"
         app:allowDividerBelow="true"
         app:title="@string/command_templates">
-        <intent android:action="ytdlnis.page.DownloadLogsActivity" />
+        <intent android:action="ytdlnis.CommandTemplatesActivity" />
     </Preference>
 
     <Preference

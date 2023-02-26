@@ -56,6 +56,26 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".ui.downloadLogs.DownloadLogListActivity"
+            android:configChanges="layoutDirection|locale"
+            android:parentActivityName=".MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="ytdlnis.downloadLogs.DownloadLogListActivity" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.downloadLogs.DownloadLogActivity"
+            android:configChanges="layoutDirection|locale"
+            android:parentActivityName=".ui.downloadLogs.DownloadLogListActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="ytdlnis.downloadLogs.DownloadLogActivity" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".ui.settings.SettingsActivity"
             android:configChanges="layoutDirection|locale"
             android:parentActivityName=".MainActivity"
@@ -73,7 +93,7 @@
             android:label="@string/run_command"
             android:exported="true">
             <intent-filter>
-                <action android:name="ytdlnis.page.CustomCommandActivity" />
+                <action android:name="ytdlnis.CustomCommandActivity" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
             <intent-filter>
@@ -82,10 +102,6 @@
                 <data android:mimeType="text/plain" />
             </intent-filter>
         </activity>
-<!--        <service-->
-<!--            android:name=".DownloaderService"-->
-<!--            android:enabled="true"-->
-<!--            android:exported="false" />-->
         <receiver android:name=".receiver.CancelDownloadNotificationReceiver" />
 
         <service
