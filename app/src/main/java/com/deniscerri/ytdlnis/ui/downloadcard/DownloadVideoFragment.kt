@@ -29,7 +29,9 @@ import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.UiUtil
 import com.google.android.material.chip.Chip
 import com.google.android.material.textfield.TextInputLayout
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 class DownloadVideoFragment(private val resultItem: ResultItem) : Fragment() {
@@ -142,7 +144,6 @@ class DownloadVideoFragment(private val resultItem: ResultItem) : Fragment() {
                 val listener = object : OnFormatClickListener {
                     override fun onFormatClick(allFormats: List<Format>, item: Format) {
                         downloadItem.format = item
-                        Log.e("Aa", item.toString())
 
                         if (containers.contains(item.container)){
                             downloadItem.format.container = item.container
@@ -150,15 +151,8 @@ class DownloadVideoFragment(private val resultItem: ResultItem) : Fragment() {
                         }else{
                             containerAutoCompleteTextView.setText(containers[0], false)
                         }
-                        if (resultItem.formats.isEmpty()){
-                            resultItem.formats = ArrayList(allFormats)
-                        }else{
-                            resultItem.formats = ArrayList(resultItem.formats.filter { it.format_note.contains("audio", ignoreCase = true) })
-                            resultItem.formats.addAll(allFormats)
-                        }
-                        resultViewModel.update(resultItem)
+
                         formats = allFormats.toMutableList()
-                        Log.e("Aa", item.toString())
                         uiUtil.populateFormatCard(formatCard, item)
                     }
                 }

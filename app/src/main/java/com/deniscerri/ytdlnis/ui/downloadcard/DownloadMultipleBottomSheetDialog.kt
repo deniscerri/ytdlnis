@@ -76,7 +76,6 @@ class DownloadMultipleBottomSheetDialog(private val items: List<DownloadItem>) :
 
         recyclerView = view.findViewById(R.id.downloadMultipleRecyclerview)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        recyclerView.setHasFixedSize(true)
         recyclerView.adapter = listAdapter
 
         downloadViewModel.processingDownloads.observe(this) {

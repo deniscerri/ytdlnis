@@ -48,10 +48,6 @@ class DownloadAudioFragment(private var resultItem: ResultItem) : Fragment() {
 
     lateinit var downloadItem: DownloadItem
 
-    override fun onResume() {
-        super.onResume()
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

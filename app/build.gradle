@@ -66,21 +66,24 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             debuggable false
             signingConfig signingConfigs.debug
         }
 
         dev {
-            initWith buildTypes.release
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             debuggable true
+            signingConfig signingConfigs.debug
         }
 
         debug {
-            initWith buildTypes.release
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             debuggable true
-            proguardFiles 'baseline-profiles-rules.pro'
+            signingConfig signingConfigs.debug
         }
     }
 
@@ -116,9 +119,9 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation "com.github.junkfood02.youtubedl-android:library:$youtubedlAndroidVer"
-    implementation "com.github.junkfood02.youtubedl-android:ffmpeg:$youtubedlAndroidVer"
-    implementation "com.github.junkfood02.youtubedl-android:aria2c:$youtubedlAndroidVer"
+    implementation "com.github.JunkFood02.youtubedl-android:library:$youtubedlAndroidVer"
+    implementation "com.github.JunkFood02.youtubedl-android:ffmpeg:$youtubedlAndroidVer"
+    implementation "com.github.JunkFood02.youtubedl-android:aria2c:$youtubedlAndroidVer"
 
     implementation "androidx.appcompat:appcompat:$appCompatVer"
     implementation "androidx.constraintlayout:constraintlayout:2.1.4"
@@ -136,7 +139,7 @@ dependencies {
     androidTestImplementation "junit:junit:$junitVer"
     androidTestImplementation "androidx.test.ext:junit:$androidJunitVer"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVer"
-    androidTestImplementation "androidx.benchmark:benchmark-macro-junit4:1.2.0-alpha09"
+    androidTestImplementation "androidx.benchmark:benchmark-macro-junit4:1.2.0-alpha10"
     androidTestImplementation "androidx.test:runner:1.5.2"
     androidTestImplementation "androidx.test:core:1.5.0"
     androidTestImplementation "androidx.test:rules:1.5.0"

@@ -110,6 +110,7 @@ class DownloadWorker(
         }
         if (downloadItem.customFileNameTemplate.isEmpty()) downloadItem.customFileNameTemplate = "%(uploader)s - %(title)s"
 
+        request.addOption("--restrict-filenames")
 
         when(type){
             DownloadViewModel.Type.audio -> {
@@ -183,7 +184,7 @@ class DownloadWorker(
                 request.addOption("-o", tempFileDir.absolutePath + "/${downloadItem.customFileNameTemplate}.%(ext)s")
             }
             DownloadViewModel.Type.command -> {
-                val commandRegex = "\"([^\"]*)\"|(\\S+)"
+                val commandRegex = "\"([^\"]*)\"|(-\\S+)"
                 val command = commandTemplateDao.getTemplate(downloadItem.format.format_id.toLong())
                 val m = Pattern.compile(commandRegex).matcher(command.content)
                 while (m.find()) {
@@ -193,6 +194,8 @@ class DownloadWorker(
                         request.addOption(m.group(2)!!)
                     }
                 }
+                request.addOption("-P", tempFileDir.absolutePath)
+
             }
         }
 
@@ -230,6 +233,7 @@ class DownloadWorker(
                 }
             }catch (e: Exception){
                 finalPath = context.getString(R.string.unfound_file)
+                e.printStackTrace()
                 handler.postDelayed({
                     Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
                 }, 1000)

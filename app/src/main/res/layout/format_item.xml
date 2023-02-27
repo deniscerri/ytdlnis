@@ -3,9 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/format_card_constraintLayout"
     android:layout_width="match_parent"
+    android:clickable="true"
     android:layout_height="wrap_content"
-    android:paddingVertical="10dp"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:paddingVertical="5dp"
+    android:background="?android:attr/selectableItemBackground"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:focusable="true">
 
     <TextView
         android:id="@+id/container"

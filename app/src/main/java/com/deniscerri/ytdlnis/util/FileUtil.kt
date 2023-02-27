@@ -21,7 +21,6 @@ import kotlin.math.max
 import kotlin.math.pow
 
 class FileUtil() {
-
     fun deleteFile(path: String){
         val file = File(path)
         if (file.exists()) {
@@ -127,6 +126,7 @@ class FileUtil() {
                         bytes = inputStream.read(buffer)
                     }
                 }catch (e : Exception){
+                    e.printStackTrace()
                     Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
                 }
 

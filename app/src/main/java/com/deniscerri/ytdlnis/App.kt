@@ -13,6 +13,10 @@ import com.yausername.aria2c.Aria2c
 import com.yausername.ffmpeg.FFmpeg
 import com.yausername.youtubedl_android.YoutubeDL
 import com.yausername.youtubedl_android.YoutubeDLException
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
 import java.util.*
 import java.util.concurrent.Executors
 
@@ -30,6 +34,16 @@ class App : Application() {
             false
         )
 
+        applicationScope = CoroutineScope(SupervisorJob())
+        applicationScope.launch((Dispatchers.IO)) {
+            try {
+                initLibraries()
+            }catch (e: Exception){
+                Toast.makeText(this@App, e.message, Toast.LENGTH_SHORT).show()
+                e.printStackTrace()
+            }
+        }
+
         WorkManager.initialize(
             this@App,
             Configuration.Builder()
@@ -38,12 +52,8 @@ class App : Application() {
                         .getInt("concurrent_downloads", 1)))
                 .build())
 
-        try {
-            initLibraries()
-        }catch (e: Exception){
-            Toast.makeText(this@App, e.message, Toast.LENGTH_SHORT).show()
-            e.printStackTrace()
-        }
+
+
         val locale = getSharedPreferences("root_preferences", MODE_PRIVATE)
             .getString("app_language", Locale.getDefault().language)!!
         AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(locale))
@@ -62,5 +72,6 @@ class App : Application() {
 
     companion object {
         private const val TAG = "App"
+        private lateinit var applicationScope: CoroutineScope
     }
 }

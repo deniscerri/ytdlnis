@@ -100,6 +100,11 @@ class CustomCommandActivity : AppCompatActivity() {
 
 
     private fun startDownload(command: String?) {
+        var cmd: String = ""
+        if (command!!.contains("yt-dlp")) cmd = command.replace("yt-dlp", "")
+        else cmd = command
+        cmd = cmd.trim()
+
         downloadID = System.currentTimeMillis().toInt()
 
         val theIntent = Intent(this, CustomCommandActivity::class.java)
@@ -121,8 +126,7 @@ class CustomCommandActivity : AppCompatActivity() {
                 notify(downloadID, commandNotification)
             }
         }
-
-        val commandRegex = "\"([^\"]*)\"|(\\S+)"
+        val commandRegex = "(-\\S+)|(\\S+)"
         val request = YoutubeDLRequest(emptyList())
 
         val tempFolder = StringBuilder(context!!.cacheDir.absolutePath + """/${command}##terminal""")
@@ -130,8 +134,8 @@ class CustomCommandActivity : AppCompatActivity() {
         tempFileDir.delete()
         tempFileDir.mkdir()
 
-
-        val m = Pattern.compile(commandRegex).matcher(command!!)
+        Log.e(TAG, cmd)
+        val m = Pattern.compile(commandRegex).matcher(cmd)
         while (m.find()) {
             if (m.group(1) != null) {
                 request.addOption(m.group(1)!!)
@@ -140,30 +144,34 @@ class CustomCommandActivity : AppCompatActivity() {
             }
         }
 
-        request.addOption("-o", tempFileDir.absolutePath + "/%(uploader)s - %(title)s.%(ext)s")
+        request.addOption("-P", tempFileDir.absolutePath)
 
         cancelFab!!.visibility = View.VISIBLE
         fab!!.visibility = View.GONE
-
         val disposable: Disposable = Observable.fromCallable {
             try{
                 YoutubeDL.getInstance().execute(request, downloadID.toString()){ progress, _, line ->
+                    Log.e(TAG, line)
                     runOnUiThread {
                         output!!.append("\n" + line)
                         output!!.scrollTo(0, output!!.height)
                         scrollView!!.fullScroll(View.FOCUS_DOWN)
-
-                        val title: String = getString(R.string.terminal)
-                        notificationUtil.updateDownloadNotification(
-                            downloadID,
-                            line, progress.toInt(), 0, title,
-                            NotificationUtil.COMMAND_DOWNLOAD_SERVICE_CHANNEL_ID
-                        )
                     }
+
+                    val title: String = getString(R.string.terminal)
+                    notificationUtil.updateDownloadNotification(
+                        downloadID,
+                        line, progress.toInt(), 0, title,
+                        NotificationUtil.COMMAND_DOWNLOAD_SERVICE_CHANNEL_ID
+                    )
                 }
             }catch (e: Exception){
                 e.printStackTrace()
                 runOnUiThread {
+                    output!!.append("\n" + e.message)
+                    output!!.scrollTo(0, output!!.height)
+                    scrollView!!.fullScroll(View.FOCUS_DOWN)
+
                     input!!.isEnabled = true
 
                     cancelFab!!.visibility = View.GONE
@@ -190,6 +198,7 @@ class CustomCommandActivity : AppCompatActivity() {
                 }
                 notificationUtil.cancelDownloadNotification(downloadID)
             }) { e ->
+                e.printStackTrace()
                 scrollView!!.scrollTo(0, scrollView!!.maxScrollAmount)
                 input!!.setText("yt-dlp ")
                 input!!.isEnabled = true

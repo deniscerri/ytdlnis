@@ -124,6 +124,7 @@
     <string name="album">Album</string>
     <string name="video_quality">Video Quality</string>
     <string name="embed_subtitles">Embed Subtitles</string>
+    <string name="embed_subs">Embed Subtitles</string>
     <string name="add_chapter">Add Chapters</string>
     <string name="show_download_card">Show Options for Downloading</string>
     <string name="download_card_summary">Settings for how to download items</string>
