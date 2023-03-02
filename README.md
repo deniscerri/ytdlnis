@@ -24,20 +24,19 @@
 
 ## Features:
 
-- download audio and video files
-- download full playlists
-- download selected videos on a list and add to a queue
-- use custom download paths for each format
-- remove non music parts from youtube audio files
-- embed subtitles on videos
-- add chapters to youtube videos by using sponsorblock chapters
-- select different download formats
-- share any yt-dlp compatible link into the app and start downloading
-- foreground download services which work even if app is cleared from recents and updates ui when u go back
-- search from the app
-- material you interface
-- really easy to use
-- run terminal commands for more flexibility
+- Download audio and video files
+- Download playlists
+- Download selected videos on a list
+- Infinite Queue of Downloads
+- Schedule Downloads (Date & Time)
+- Select Formats, Modify Metadata, Embed Subtitles, Embed Chapters to Videos and more yt-dlp features
+- Sponsorblock Compatible
+- Share any yt-dlp compatible link from the share menu and Download on the Go
+- Search from youtube, with search suggestions and search history
+- Log Downloads
+- Terminal Mode for raw yt-dlp
+- Command Templates
+- Download History
 
 ## Screenshots
 
@@ -52,7 +51,8 @@
 
 ## Create a YouTube API Key
 
-Using your personal api key will increase youtube result speed inside the app drastically. On top of that, the app will show you trending videos on youtube every time you open the app. <br>
+In case you want faster results from youtube or have Trending videos shown on the home screen, create an API Key.
+<br>
 Here is how to do it:
 
 - Go to [Google Console](https://console.cloud.google.com/projectselector2/apis/dashboard)
