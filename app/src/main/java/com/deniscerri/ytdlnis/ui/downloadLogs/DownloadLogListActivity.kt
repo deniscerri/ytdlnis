@@ -2,10 +2,7 @@ package com.deniscerri.ytdlnis.ui.downloadLogs
 
 import android.content.Context
 import android.content.Intent
-import android.os.Bundle
-import android.os.FileObserver
-import android.os.Handler
-import android.os.Looper
+import android.os.*
 import android.text.InputType
 import android.util.Log
 import android.view.LayoutInflater
@@ -57,7 +54,7 @@ class DownloadLogListActivity : AppCompatActivity(), DownloadLogsAdapter.OnItemC
         val logFolder = File(filesDir.absolutePath + "/logs")
         updateList(logFolder)
 
-        val observer: FileObserver = object : FileObserver(logFolder) {
+        val observer: FileObserver = object : FileObserver(logFolder.absolutePath) {
             override fun onEvent(event: Int, path: String?) {
                 when(event) {
                     CREATE, DELETE -> updateList(logFolder)

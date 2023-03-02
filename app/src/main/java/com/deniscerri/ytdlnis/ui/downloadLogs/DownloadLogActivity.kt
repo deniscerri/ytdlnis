@@ -1,6 +1,7 @@
 package com.deniscerri.ytdlnis.ui.downloadLogs
 
 import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import android.os.FileObserver
 import android.util.Log
@@ -43,7 +44,7 @@ class DownloadLogActivity : AppCompatActivity() {
         topAppBar.title = file.name
         content.text = file.readText()
 
-        observer = object : FileObserver(file, MODIFY) {
+        observer = object : FileObserver(file.absolutePath, MODIFY) {
             override fun onEvent(event: Int, p: String?) {
                 runOnUiThread{
                     content.text = File(path).readText()

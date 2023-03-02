@@ -1,24 +1,22 @@
 package com.deniscerri.ytdlnis.util
 
+import android.R.attr.src
 import android.content.Context
 import android.media.MediaScannerConnection
-import android.net.Uri
 import android.os.Build
-import android.provider.DocumentsContract
-import android.util.Log
-import android.webkit.MimeTypeMap
-import android.widget.Toast
 import com.deniscerri.ytdlnis.R
-import com.deniscerri.ytdlnis.database.models.DownloadItem
 import java.io.File
+import java.io.FileInputStream
+import java.io.FileOutputStream
 import java.net.URLDecoder
+import java.nio.channels.FileChannel
 import java.nio.charset.StandardCharsets
 import java.nio.file.Files
 import java.nio.file.StandardCopyOption
 import java.text.DecimalFormat
 import kotlin.math.log10
-import kotlin.math.max
 import kotlin.math.pow
+
 
 class FileUtil() {
     fun deleteFile(path: String){
@@ -97,43 +95,54 @@ class FileUtil() {
                 Files.move(it.toPath(), f.toPath(), StandardCopyOption.REPLACE_EXISTING)
                 progress(100)
             }else{
-                val mimeType =
-                    MimeTypeMap.getSingleton().getMimeTypeFromExtension(it.extension) ?: "*/*"
+                val f = File(formatPath(destDir)+"/"+it.name)
 
-                val destination = Uri.parse(destDir).run {
-                    DocumentsContract.buildChildDocumentsUriUsingTree(this, DocumentsContract.getTreeDocumentId(this))
-                }
-
-                val destUri = DocumentsContract.createDocument(
-                    context.contentResolver,
-                    destination,
-                    mimeType,
-                    it.name
-                ) ?: return@forEach
-
-                val inputStream = it.inputStream()
-                val outputStream = context.contentResolver.openOutputStream(destUri) ?: return@forEach
-                val fileLength = it.length()
-                var bytesCopied: Long = 0
-                val buffer = ByteArray(DEFAULT_BUFFER_SIZE)
-                var bytes = inputStream.read(buffer)
-
+                val inChannel: FileChannel = FileInputStream(it).channel
+                val outChannel: FileChannel = FileOutputStream(f).channel
                 try {
-                    while (bytes >= 0) {
-                        outputStream.write(buffer, 0, bytes)
-                        bytesCopied += bytes
-                        progress((bytesCopied * 100 / fileLength).toInt())
-                        bytes = inputStream.read(buffer)
-                    }
-                }catch (e : Exception){
-                    e.printStackTrace()
-                    Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
+                    inChannel.transferTo(0, inChannel.size(), outChannel)
+                } finally {
+                    inChannel.close()
+                    outChannel.close()
                 }
-
-                inputStream.close()
-                outputStream.close()
-
-                it.delete()
+//
+//                val mimeType =
+//                    MimeTypeMap.getSingleton().getMimeTypeFromExtension(it.extension) ?: "*/*"
+//
+//                val destination = Uri.parse(destDir).run {
+//                    DocumentsContract.buildChildDocumentsUriUsingTree(this, DocumentsContract.getTreeDocumentId(this))
+//                }
+//
+//                val destUri = DocumentsContract.createDocument(
+//                    context.contentResolver,
+//                    destination,
+//                    mimeType,
+//                    it.name
+//                ) ?: return@forEach
+//
+//                val inputStream = it.inputStream()
+//                val outputStream = context.contentResolver.openOutputStream(destUri) ?: return@forEach
+//                val fileLength = it.length()
+//                var bytesCopied: Long = 0
+//                val buffer = ByteArray(DEFAULT_BUFFER_SIZE)
+//                var bytes = inputStream.read(buffer)
+//
+//                try {
+//                    while (bytes >= 0) {
+//                        outputStream.write(buffer, 0, bytes)
+//                        bytesCopied += bytes
+//                        progress((bytesCopied * 100 / fileLength).toInt())
+//                        bytes = inputStream.read(buffer)
+//                    }
+//                }catch (e : Exception){
+//                    e.printStackTrace()
+//                    Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
+//                }
+//
+//                inputStream.close()
+//                outputStream.close()
+//
+//                it.delete()
             }
         }
         originDir.delete()

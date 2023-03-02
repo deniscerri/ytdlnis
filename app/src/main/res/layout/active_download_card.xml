@@ -96,6 +96,12 @@
                     android:paddingStart="10dp"
                     android:paddingEnd="0dp"
                     android:textSize="15sp"
+                    android:shadowColor="@color/black"
+                    android:shadowDx="4"
+                    android:shadowDy="4"
+                    android:shadowRadius="2"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
                     app:layout_constraintBottom_toTopOf="@+id/output"
                     app:layout_constraintStart_toStartOf="parent" />
 
@@ -153,9 +159,13 @@
                     android:paddingTop="10dp"
                     android:paddingRight="10dp"
                     android:paddingBottom="10dp"
-                    android:shadowRadius="1.5"
                     android:textSize="12sp"
                     android:textStyle="bold"
+                    android:shadowColor="@color/black"
+                    android:shadowDx="4"
+                    android:shadowDy="4"
+                    android:shadowRadius="2"
+                    android:textColor="@color/white"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent" />

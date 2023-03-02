@@ -89,7 +89,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         version!!.summary = BuildConfig.VERSION_NAME
 
         val values = resources.getStringArray(R.array.language_values)
-        if (Build.VERSION.SDK_INT >= 33){
+        if (Build.VERSION.SDK_INT >= 33 || Build.VERSION.SDK_INT < 24){
             language!!.isVisible = false
         }else{
             val entries = mutableListOf<String>()
@@ -299,7 +299,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
             }
         audioQuality!!.onPreferenceChangeListener =
             Preference.OnPreferenceChangeListener { _: Preference?, newValue: Any ->
-                editor.putInt("audio_format", newValue.toString().toInt())
+                editor.putInt("audio_quality", newValue.toString().toInt())
                 editor.apply()
                 true
             }
