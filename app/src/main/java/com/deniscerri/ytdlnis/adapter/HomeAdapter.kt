@@ -86,10 +86,12 @@ class HomeAdapter(onItemClickListener: OnItemClickListener, activity: Activity) 
         musicBtn.tag = "$videoURL##audio"
         musicBtn.setTag(R.id.cancelDownload, "false")
         musicBtn.setOnClickListener { onItemClickListener.onButtonClick(videoURL, DownloadViewModel.Type.audio) }
+        musicBtn.setOnLongClickListener{ onItemClickListener.onLongButtonClick(videoURL, DownloadViewModel.Type.audio); true}
         val videoBtn = buttonLayout.findViewById<MaterialButton>(R.id.download_video)
         videoBtn.tag = "$videoURL##video"
         videoBtn.setTag(R.id.cancelDownload, "false")
         videoBtn.setOnClickListener { onItemClickListener.onButtonClick(videoURL, DownloadViewModel.Type.video) }
+        videoBtn.setOnLongClickListener{ onItemClickListener.onLongButtonClick(videoURL, DownloadViewModel.Type.video); true}
 
 
         // PROGRESS BAR ----------------------------------------------------
@@ -161,6 +163,7 @@ class HomeAdapter(onItemClickListener: OnItemClickListener, activity: Activity) 
 
     interface OnItemClickListener {
         fun onButtonClick(videoURL: String, type: DownloadViewModel.Type?)
+        fun onLongButtonClick(videoURL: String, type: DownloadViewModel.Type?)
         fun onCardClick(videoURL: String, add: Boolean)
     }
 

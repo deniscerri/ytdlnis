@@ -354,6 +354,12 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
         }
     }
 
+    override fun onLongButtonClick(videoURL: String, type: DownloadViewModel.Type?) {
+        Log.e(TAG, type.toString() + " " + videoURL)
+        val item = resultsList!!.find { it?.url == videoURL }
+        showSingleDownloadSheet(item!!, type!!)
+    }
+
     private fun showSingleDownloadSheet(resultItem : ResultItem, type: DownloadViewModel.Type){
         val bottomSheet = DownloadBottomSheetDialog(resultItem, type)
         bottomSheet.show(parentFragmentManager, "downloadSingleSheet")

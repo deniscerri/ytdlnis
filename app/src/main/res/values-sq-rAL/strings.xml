@@ -173,4 +173,6 @@
     <string name="adjust_audio">Modifiko Audion</string>
     <string name="file_name_template">Formati i Emrit të Skedarit</string>
     <string name="language">Gjuha</string>
+    <string name="download_queue">Rradha e Shkarkimeve</string>
+    <string name="running">Në Ekzekutim</string>
 </resources>
