@@ -57,7 +57,7 @@
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:liftOnScroll="false"
+        app:liftOnScroll="true"
         android:background="@android:color/transparent"
         android:fitsSystemWindows="true">
 

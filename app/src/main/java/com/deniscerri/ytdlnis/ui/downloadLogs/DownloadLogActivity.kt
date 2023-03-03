@@ -44,15 +44,27 @@ class DownloadLogActivity : AppCompatActivity() {
         topAppBar.title = file.name
         content.text = file.readText()
 
-        observer = object : FileObserver(file.absolutePath, MODIFY) {
-            override fun onEvent(event: Int, p: String?) {
-                runOnUiThread{
-                    content.text = File(path).readText()
-                    content.scrollTo(0, content.height)
+        if(Build.VERSION.SDK_INT < 29){
+            observer = object : FileObserver(file.absolutePath, MODIFY) {
+                override fun onEvent(event: Int, p: String?) {
+                    runOnUiThread{
+                        content.text = File(path).readText()
+                        content.scrollTo(0, content.height)
+                    }
                 }
             }
+            observer.startWatching();
+        }else{
+            observer = object : FileObserver(file, MODIFY) {
+                override fun onEvent(event: Int, p: String?) {
+                    runOnUiThread{
+                        content.text = File(path).readText()
+                        content.scrollTo(0, content.height)
+                    }
+                }
+            }
+            observer.startWatching();
         }
-        observer.startWatching();
     }
 
     override fun onDestroy() {

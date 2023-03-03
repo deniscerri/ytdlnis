@@ -54,14 +54,25 @@ class DownloadLogListActivity : AppCompatActivity(), DownloadLogsAdapter.OnItemC
         val logFolder = File(filesDir.absolutePath + "/logs")
         updateList(logFolder)
 
-        val observer: FileObserver = object : FileObserver(logFolder.absolutePath) {
-            override fun onEvent(event: Int, path: String?) {
-                when(event) {
-                    CREATE, DELETE -> updateList(logFolder)
+        if(Build.VERSION.SDK_INT < 29){
+            val observer: FileObserver = object : FileObserver(logFolder.absolutePath) {
+                override fun onEvent(event: Int, path: String?) {
+                    when(event) {
+                        CREATE, DELETE -> updateList(logFolder)
+                    }
                 }
             }
+            observer.startWatching()
+        }else{
+            val observer: FileObserver = object : FileObserver(logFolder) {
+                override fun onEvent(event: Int, path: String?) {
+                    when(event) {
+                        CREATE, DELETE -> updateList(logFolder)
+                    }
+                }
+            }
+            observer.startWatching()
         }
-        observer.startWatching();
         initMenu(logFolder)
     }
 
