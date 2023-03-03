@@ -162,10 +162,10 @@ class DownloadAudioFragment(private var resultItem: ResultItem) : Fragment() {
                     if (containers.contains(formats[formats.lastIndex].container)){
                         formats[formats.lastIndex].container
                     }else{
-                        containers[0]
+                        sharedPreferences.getString("audio_format", "mp3")!!
                     }
                 }catch (e: Exception){
-                    containers[0]
+                    sharedPreferences.getString("audio_format", "mp3")!!
                 }
 
                 downloadItem.format.container = selectedContainer

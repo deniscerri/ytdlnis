@@ -17,6 +17,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.get
 import androidx.core.view.size
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.DownloadItem
@@ -37,6 +38,9 @@ import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.*
 
 
@@ -73,20 +77,24 @@ class FormatSelectionBottomSheetDialog(private val item: DownloadItem, private v
         val refreshBtn = view.findViewById<Button>(R.id.format_refresh)
         if (formats.none { it.filesize == 0L }) refreshBtn.visibility = View.GONE
         refreshBtn.setOnClickListener {
-           try {
-               refreshBtn.isEnabled = false
-               val res = infoUtil.getFromYTDL(item.url)
-               formats = res[0]!!.formats.filter { it.filesize != 0L }
-               formats = when(item.type){
-                   Type.audio -> formats.filter { it.format_note.contains("audio", ignoreCase = true) }
-                   else -> formats.filter { !it.format_note.contains("audio", ignoreCase = true) }
+           lifecycleScope.launch {
+               try {
+                   refreshBtn.isEnabled = false
+                   val res = withContext(Dispatchers.IO){
+                       infoUtil.getFormats(item.url)
+                   }
+                   formats = res.formats.filter { it.filesize != 0L }
+                   formats = when(item.type){
+                       Type.audio -> formats.filter { it.format_note.contains("audio", ignoreCase = true) }
+                       else -> formats.filter { !it.format_note.contains("audio", ignoreCase = true) }
+                   }
+                   addFormatsToView(linearLayout)
+                   refreshBtn.visibility = View.GONE
+               }catch (e: Exception){
+                   refreshBtn.isEnabled = true
+                   e.printStackTrace()
+                   Toast.makeText(context, getString(R.string.error_updating_formats), Toast.LENGTH_SHORT).show()
                }
-               addFormatsToView(linearLayout)
-               refreshBtn.visibility = View.GONE
-           }catch (e: Exception){
-               refreshBtn.isEnabled = true
-               e.printStackTrace()
-               Toast.makeText(context, getString(R.string.error_updating_formats), Toast.LENGTH_SHORT).show()
            }
         }
     }

@@ -49,22 +49,10 @@ class ResultRepository(private val resultDao: ResultDao, private val commandTemp
     }
 
     suspend fun getOne(inputQuery: String, resetResults: Boolean) : ArrayList<ResultItem?>{
-        var el: Array<String?> =
-            inputQuery.split("/".toRegex()).dropLastWhile { it.isEmpty() }
-                .toTypedArray()
-        var query = el[el.size - 1]
-        if (query!!.contains("watch?v=")) {
-            query = query.substring(8)
-        }
-        el = query.split("&".toRegex()).dropLastWhile { it.isEmpty() }
-            .toTypedArray()
-        query = el[0]
-        el = query!!.split("\\?".toRegex()).dropLastWhile { it.isEmpty() }
-            .toTypedArray()
-        query = el[0]
         val infoUtil = InfoUtil(context)
+        val query = infoUtil.getIDFromYoutubeURL(inputQuery)
         try {
-            val v = infoUtil.getVideo(query!!)
+            val v = infoUtil.getVideo(query)
             if (resetResults) deleteAll()
             itemCount.postValue(1)
             resultDao.insert(v!!)

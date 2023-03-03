@@ -1,4 +1,4 @@
-package com.deniscerri.ytdlnis.ui
+package com.deniscerri.ytdlnis.ui.more
 
 import android.app.Activity
 import android.app.Application

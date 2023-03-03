@@ -1,17 +1,14 @@
-package com.deniscerri.ytdlnis.ui.downloadLogs
+package com.deniscerri.ytdlnis.ui.more.downloadLogs
 
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.os.FileObserver
-import android.util.Log
-import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.NestedScrollView
 import com.deniscerri.ytdlnis.R
 import com.google.android.material.appbar.MaterialToolbar
-import kotlinx.coroutines.runBlocking
 import java.io.File
 
 

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.deniscerri.ytdlnis.ui.settings.SettingsActivity">
+    tools:context="com.deniscerri.ytdlnis.ui.more.settings.SettingsActivity">
 
     <FrameLayout
         android:id="@+id/settings_frame_layout"

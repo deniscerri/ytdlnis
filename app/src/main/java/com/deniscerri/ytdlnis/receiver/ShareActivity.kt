@@ -108,7 +108,7 @@ class ShareActivity : AppCompatActivity() {
                 }
 
                 resultViewModel.items.observe(this) {
-                    if (it.isNotEmpty()){
+                    if (it.isNotEmpty() && supportFragmentManager.findFragmentByTag("downloadSingleSheet") == null){
                         if(resultViewModel.itemCount.value!! == it.size){
                             loadingBottomSheet.cancel()
                             showDownloadSheet(it[0])
@@ -211,6 +211,5 @@ class ShareActivity : AppCompatActivity() {
 
     companion object {
         private const val TAG = "ShareActivity"
-
     }
 }

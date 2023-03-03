@@ -1,4 +1,4 @@
-package com.deniscerri.ytdlnis.ui.settings
+package com.deniscerri.ytdlnis.ui.more.settings
 
 import android.content.Context
 import android.content.res.Configuration

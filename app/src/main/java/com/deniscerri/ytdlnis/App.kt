@@ -52,11 +52,6 @@ class App : Application() {
                         .getInt("concurrent_downloads", 1)))
                 .build())
 
-
-
-        val locale = getSharedPreferences("root_preferences", MODE_PRIVATE)
-            .getString("app_language", Locale.getDefault().language)!!
-        AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(locale))
     }
     @Throws(YoutubeDLException::class)
     private fun initLibraries() {

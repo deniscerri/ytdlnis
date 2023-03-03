@@ -135,7 +135,7 @@ class DownloadBottomSheetDialog(private val resultItem: ResultItem, private val 
 
 
                 val timepicker = MaterialTimePicker.Builder()
-                    .setTimeFormat(TimeFormat.CLOCK_12H)
+                    .setTimeFormat(TimeFormat.CLOCK_24H)
                     .setHour(currentDate.get(Calendar.HOUR_OF_DAY))
                     .setMinute(currentDate.get(Calendar.MINUTE))
                     .build()

@@ -55,7 +55,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.downloadLogs.DownloadLogListActivity"
+            android:name=".ui.more.downloadLogs.DownloadLogListActivity"
             android:configChanges="layoutDirection|locale"
             android:parentActivityName=".MainActivity"
             android:exported="true">
@@ -75,9 +75,9 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.downloadLogs.DownloadLogActivity"
+            android:name=".ui.more.downloadLogs.DownloadLogActivity"
             android:configChanges="layoutDirection|locale"
-            android:parentActivityName=".ui.downloadLogs.DownloadLogListActivity"
+            android:parentActivityName=".ui.more.downloadLogs.DownloadLogListActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="ytdlnis.downloadLogs.DownloadLogActivity" />
@@ -85,7 +85,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.settings.SettingsActivity"
+            android:name=".ui.more.settings.SettingsActivity"
             android:configChanges="layoutDirection|locale"
             android:parentActivityName=".MainActivity"
             android:exported="true">
@@ -95,7 +95,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.CustomCommandActivity"
+            android:name=".ui.more.CustomCommandActivity"
             android:configChanges="layoutDirection|locale"
             android:theme="@style/AppDefaultTheme"
             android:parentActivityName=".MainActivity"

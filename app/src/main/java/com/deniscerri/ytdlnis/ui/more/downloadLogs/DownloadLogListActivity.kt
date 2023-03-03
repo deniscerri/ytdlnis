@@ -1,27 +1,19 @@
-package com.deniscerri.ytdlnis.ui.downloadLogs
+package com.deniscerri.ytdlnis.ui.more.downloadLogs
 
 import android.content.Context
 import android.content.Intent
 import android.os.*
-import android.text.InputType
-import android.util.Log
-import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.RelativeLayout
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.adapter.DownloadLogsAdapter
-import com.deniscerri.ytdlnis.util.InfoUtil
 import com.google.android.material.appbar.MaterialToolbar
-import com.google.android.material.button.MaterialButton
 import java.io.File
-import java.util.ArrayList
 
 
 class DownloadLogListActivity : AppCompatActivity(), DownloadLogsAdapter.OnItemClickListener {

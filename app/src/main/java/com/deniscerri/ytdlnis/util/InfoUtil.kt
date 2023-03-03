@@ -20,6 +20,7 @@ import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
 import java.util.*
+import java.util.regex.Pattern
 import kotlin.collections.ArrayList
 
 class InfoUtil(context: Context) {
@@ -447,6 +448,41 @@ class InfoUtil(context: Context) {
             e.printStackTrace()
         }
         return items
+    }
+
+    fun getIDFromYoutubeURL(inputQuery: String) : String {
+        var el: Array<String?> =
+            inputQuery.split("/".toRegex()).dropLastWhile { it.isEmpty() }
+                .toTypedArray()
+        var query = el[el.size - 1]
+        if (query!!.contains("watch?v=")) {
+            query = query.substring(8)
+        }
+        el = query.split("&".toRegex()).dropLastWhile { it.isEmpty() }
+            .toTypedArray()
+        query = el[0]
+        el = query!!.split("\\?".toRegex()).dropLastWhile { it.isEmpty() }
+            .toTypedArray()
+        query = el[0]
+        return query!!
+    }
+
+    fun getFormats(url: String) : ResultItem {
+        init()
+        val p = Pattern.compile("^(https?)://(www.)?youtu(.be)?")
+        val m = p.matcher(url)
+        return if(m.find() && useInvidous){
+            val id = getIDFromYoutubeURL(url)
+            Log.e("Aa", id)
+            val res = genericRequest(invidousURL + "videos/" + id)
+            Log.e("aa", res.toString())
+            if (res.length() == 0) getFromYTDL(url)[0]!!
+            else createVideofromInvidiousJSON(
+                res
+            )!!
+        }else{
+            getFromYTDL(url)[0]!!
+        }
     }
 
     fun getFromYTDL(query: String): ArrayList<ResultItem?> {

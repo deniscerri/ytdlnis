@@ -58,7 +58,7 @@ class DownloadVideoFragment(private val resultItem: ResultItem) : Fragment() {
         fragmentView = inflater.inflate(R.layout.fragment_download_video, container, false)
         activity = getActivity()
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
-        resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]
+        resultViewModel = ViewModelProvider(this@DownloadVideoFragment)[ResultViewModel::class.java]
         downloadItem = downloadViewModel.createDownloadItemFromResult(resultItem, Type.video)
         fileUtil = FileUtil()
         uiUtil = UiUtil(fileUtil)
@@ -151,7 +151,12 @@ class DownloadVideoFragment(private val resultItem: ResultItem) : Fragment() {
                         }else{
                             containerAutoCompleteTextView.setText(containers[0], false)
                         }
-
+                        lifecycleScope.launch {
+                            withContext(Dispatchers.IO){
+                                resultItem.formats = ArrayList(allFormats)
+                                resultViewModel.update(resultItem)
+                            }
+                        }
                         formats = allFormats.toMutableList()
                         uiUtil.populateFormatCard(formatCard, item)
                     }
