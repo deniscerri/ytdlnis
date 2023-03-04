@@ -196,6 +196,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 true
             }
 
+
         downloadCard!!.onPreferenceChangeListener =
             Preference.OnPreferenceChangeListener { _: Preference?, newValue: Any ->
                 val enable = newValue as Boolean
