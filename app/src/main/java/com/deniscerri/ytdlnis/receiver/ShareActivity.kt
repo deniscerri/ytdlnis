@@ -121,10 +121,10 @@ class ShareActivity : AppCompatActivity() {
 
     private fun showDownloadSheet(it: ResultItem){
         if (sharedPreferences.getBoolean("download_card", true)){
-            val bottomSheet = DownloadBottomSheetDialog(it, DownloadViewModel.Type.video)
+            val bottomSheet = DownloadBottomSheetDialog(it, DownloadViewModel.Type.valueOf(sharedPreferences.getString("preferred_download_type", "video")!!))
             bottomSheet.show(supportFragmentManager, "downloadSingleSheet")
         }else{
-            val downloadItem = downloadViewModel.createDownloadItemFromResult(it, DownloadViewModel.Type.video)
+            val downloadItem = downloadViewModel.createDownloadItemFromResult(it, DownloadViewModel.Type.valueOf(sharedPreferences.getString("preferred_download_type", "video")!!))
             downloadViewModel.queueDownloads(listOf(downloadItem))
             this.finish()
         }

@@ -36,15 +36,13 @@ class DownloadLogActivity : AppCompatActivity() {
         }
 
         content = findViewById(R.id.content)
-        content.movementMethod = ScrollingMovementMethod()
         contentScrollView = findViewById(R.id.content_scrollview)
 
         copyLog = findViewById(R.id.copy_log)
         copyLog.setOnClickListener {
             val clipboard: ClipboardManager =
                 getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
-            val clip: ClipData = ClipData.newPlainText("Download Log", content.text)
-            clipboard.setPrimaryClip(clip)
+            clipboard.setText(content.text)
         }
 
         val path = intent.getStringExtra("path")
@@ -60,8 +58,10 @@ class DownloadLogActivity : AppCompatActivity() {
             observer = object : FileObserver(file.absolutePath, MODIFY) {
                 override fun onEvent(event: Int, p: String?) {
                     runOnUiThread{
-                        content.text = File(path).readText()
+                        val newText = File(path).readText()
+                        content.text = newText
                         content.scrollTo(0, content.height)
+                        contentScrollView.fullScroll(View.FOCUS_DOWN)
                     }
                 }
             }
@@ -70,7 +70,8 @@ class DownloadLogActivity : AppCompatActivity() {
             observer = object : FileObserver(file, MODIFY) {
                 override fun onEvent(event: Int, p: String?) {
                     runOnUiThread{
-                        content.text = File(path).readText()
+                        val newText = File(path).readText()
+                        content.text = newText
                         content.scrollTo(0, content.height)
                         contentScrollView.fullScroll(View.FOCUS_DOWN)
                     }

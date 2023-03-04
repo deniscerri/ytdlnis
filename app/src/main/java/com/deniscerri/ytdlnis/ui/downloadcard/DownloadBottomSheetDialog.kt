@@ -109,16 +109,18 @@ class DownloadBottomSheetDialog(private val resultItem: ResultItem, private val 
 
         when(type) {
             Type.audio -> {
-                tabLayout.selectTab(tabLayout.getTabAt(0))
+                tabLayout.getTabAt(0)!!.select()
                 viewPager2.setCurrentItem(0, false)
             }
             Type.video -> {
-                tabLayout.selectTab(tabLayout.getTabAt(1))
+                tabLayout.getTabAt(1)!!.select()
                 viewPager2.setCurrentItem(1, false)
             }
             else -> {
-                tabLayout.selectTab(tabLayout.getTabAt(2))
-                viewPager2.setCurrentItem(2, false)
+                tabLayout.getTabAt(2)!!.select()
+                viewPager2.postDelayed( {
+                    viewPager2.setCurrentItem(2, false)
+                }, 200)
             }
         }
 

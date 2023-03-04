@@ -23,27 +23,34 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <ScrollView
+    <LinearLayout
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:id="@+id/content_scrollview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clipToPadding="false"
-        android:fillViewport="true"
-        android:paddingBottom="150dp"
-        >
+        android:layout_height="wrap_content"
+        android:descendantFocusability="blocksDescendants"
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/content"
-            android:padding="10dp"
-            android:scrollHorizontally="true"
-            android:fontFamily="monospace"
-            android:textSize="15sp"
-            android:layout_width="wrap_content"
-            android:textIsSelectable="true"
-            android:layout_height="wrap_content" />
+        <ScrollView
+            android:id="@+id/content_scrollview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingBottom="150dp"
+            >
 
-    </ScrollView>
+            <TextView
+                android:id="@+id/content"
+                android:padding="10dp"
+                android:fontFamily="monospace"
+                android:textSize="15sp"
+                android:gravity="bottom"
+                android:layout_width="match_parent"
+                android:textIsSelectable="true"
+                android:layout_height="wrap_content" />
+
+        </ScrollView>
+
+    </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/copy_log"

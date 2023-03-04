@@ -2,6 +2,7 @@ package com.deniscerri.ytdlnis.ui.downloadqueue
 
 import android.app.Activity
 import android.content.DialogInterface
+import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -23,6 +24,7 @@ import com.deniscerri.ytdlnis.adapter.GenericDownloadAdapter
 import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.databinding.FragmentHomeBinding
+import com.deniscerri.ytdlnis.ui.more.downloadLogs.DownloadLogActivity
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.UiUtil
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -85,7 +87,11 @@ class ErroredDownloadsFragment() : Fragment(), GenericDownloadAdapter.OnItemClic
     }
 
     override fun onActionButtonClick(itemID: Long) {
-        TODO("Not yet implemented")
+        val item = items.find { it.id == itemID } ?: return
+        val file = File(requireContext().filesDir.absolutePath + """/logs/${item.id} - ${item.title}##${item.type}##${item.format.format_id}.log""")
+        val intent = Intent(requireContext(), DownloadLogActivity::class.java)
+        intent.putExtra("path", file.absolutePath)
+        startActivity(intent)
     }
 
     override fun onCardClick(itemID: Long) {

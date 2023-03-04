@@ -45,6 +45,16 @@
             app:summary="@string/download_card_summary"
             app:title="@string/show_download_card" />
 
+        <ListPreference
+            android:dependency="download_card"
+            android:defaultValue="video"
+            android:entries="@array/download_types"
+            android:entryValues="@array/download_types_values"
+            android:icon="@drawable/ic_download_type"
+            app:key="preferred_download_type"
+            app:summary="@string/preferred_download_type_summary"
+            app:title="@string/preferred_download_type" />
+
         <EditTextPreference
             android:icon="@drawable/ic_key"
             app:key="api_key"

@@ -8,7 +8,6 @@ import android.content.Intent
 import android.net.Uri
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
@@ -18,7 +17,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.content.FileProvider
 import androidx.lifecycle.LifecycleOwner
 import com.deniscerri.ytdlnis.R
@@ -55,7 +53,7 @@ class UiUtil(private val fileUtil: FileUtil) {
 
     }
 
-     fun showCreationSheet(context: Activity, lifeCycle: LifecycleOwner, commandTemplateViewModel: CommandTemplateViewModel, newTemplate: (newTemplate: CommandTemplate) -> Unit){
+     fun showCommandTemplateCreationOrUpdatingSheet(item: CommandTemplate?, context: Activity, lifeCycle: LifecycleOwner, commandTemplateViewModel: CommandTemplateViewModel, newTemplate: (newTemplate: CommandTemplate) -> Unit){
         val bottomSheet = BottomSheetDialog(context)
         bottomSheet.requestWindowFeature(Window.FEATURE_NO_TITLE)
         bottomSheet.setContentView(R.layout.create_command_template)
@@ -66,7 +64,15 @@ class UiUtil(private val fileUtil: FileUtil) {
         val shortcutsChipGroup : ChipGroup = bottomSheet.findViewById(R.id.shortcutsChipGroup)!!
         val editShortcuts : Button = bottomSheet.findViewById(R.id.edit_shortcuts)!!
 
-        ok.isEnabled = false
+        if (item != null){
+            title.editText!!.setText(item.title)
+            content.editText!!.setText(item.content)
+            bottomSheet.findViewById<TextView>(R.id.bottom_sheet_subtitle)!!.text = content.resources.getString(R.string.update_template)
+            ok.text = content.resources.getString(R.string.update)
+            ok.isEnabled = true
+        }else{
+            ok.isEnabled = false
+        }
 
         title.editText!!.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
@@ -90,6 +96,10 @@ class UiUtil(private val fileUtil: FileUtil) {
                 }
             }
         })
+
+        if (content.editText!!.text.isEmpty()){
+
+        }
 
         content.setEndIconOnClickListener {
             if(content.editText!!.text.isEmpty()){
@@ -118,9 +128,16 @@ class UiUtil(private val fileUtil: FileUtil) {
         }
 
         ok.setOnClickListener {
-            val t = CommandTemplate(0, title.editText!!.text.toString(), content.editText!!.text.toString())
-            commandTemplateViewModel.insert(t)
-            newTemplate(t)
+            if (item == null){
+                val t = CommandTemplate(0, title.editText!!.text.toString(), content.editText!!.text.toString())
+                commandTemplateViewModel.insert(t)
+                newTemplate(t)
+            }else{
+                item.title = title.editText!!.text.toString()
+                item.content = content.editText!!.text.toString()
+                commandTemplateViewModel.update(item)
+                newTemplate(item)
+            }
             bottomSheet.cancel()
         }
 

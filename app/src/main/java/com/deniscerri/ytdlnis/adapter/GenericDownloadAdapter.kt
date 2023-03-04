@@ -23,6 +23,7 @@ import com.deniscerri.ytdlnis.util.FileUtil
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
 import com.squareup.picasso.Picasso
+import java.io.File
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -106,7 +107,13 @@ class GenericDownloadAdapter(onItemClickListener: OnItemClickListener, activity:
         when(item.status){
             DownloadRepository.Status.Cancelled.toString() -> actionButton.setIconResource(R.drawable.ic_refresh)
             DownloadRepository.Status.Queued.toString() -> actionButton.setIconResource(R.drawable.ic_baseline_delete_outline_24)
-            else -> actionButton.setIconResource(R.drawable.ic_baseline_file_open_24)
+            else -> {
+                actionButton.setIconResource(R.drawable.ic_baseline_file_open_24)
+                val logFile = File(activity.filesDir.absolutePath + """/logs/${item.id} - ${item.title}##${item.type}##${item.format.format_id}.log""")
+                if (!logFile.exists()){
+                    actionButton.visibility = View.GONE
+                }
+            }
         }
 
 

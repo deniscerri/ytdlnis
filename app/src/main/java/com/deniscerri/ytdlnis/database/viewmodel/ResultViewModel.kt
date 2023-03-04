@@ -105,7 +105,14 @@ class ResultViewModel(application: Application) : AndroidViewModel(application) 
     }
 
     fun addSearchQueryToHistory(query: String) = viewModelScope.launch(Dispatchers.IO) {
-        searchHistoryRepository.insert(query)
+        val allQueries = searchHistoryRepository.getAll()
+        allQueries.filterNot {
+            it.query == query
+        }.run {
+            this.forEach {
+                searchHistoryRepository.insert(it.query)
+            }
+        }
     }
 
     fun deleteAllSearchQueryHistory() = viewModelScope.launch(Dispatchers.IO){

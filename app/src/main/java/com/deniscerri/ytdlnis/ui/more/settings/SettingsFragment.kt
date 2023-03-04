@@ -23,6 +23,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
     private var videoPath: Preference? = null
     private var commandPath: Preference? = null
     private var incognito: SwitchPreferenceCompat? = null
+    private var preferredDownloadType : ListPreference? = null
     private var downloadCard: SwitchPreferenceCompat? = null
     private var apiKey: EditTextPreference? = null
     private var concurrentFragments: SeekBarPreference? = null
@@ -64,6 +65,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         videoPath = findPreference("video_path")
         commandPath = findPreference("command_path")
         incognito = findPreference("incognito")
+        preferredDownloadType = findPreference("preferred_download_type")
         downloadCard = findPreference("download_card")
         apiKey = findPreference("api_key")
         concurrentFragments = findPreference("concurrent_fragments")
@@ -111,6 +113,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
             editor.putString("command_path", getString(R.string.command_path))
         }
         editor.putBoolean("incognito", incognito!!.isChecked)
+        editor.putString("preferred_download_type", preferredDownloadType!!.value)
         editor.putBoolean("download_card", downloadCard!!.isChecked)
         editor.putString("api_key", apiKey!!.text)
         editor.putInt("concurrent_fragments", concurrentFragments!!.value)
@@ -186,6 +189,13 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 editor.apply()
                 true
             }
+        preferredDownloadType!!.onPreferenceChangeListener =
+            Preference.OnPreferenceChangeListener { _: Preference?, newValue: Any ->
+                editor.putString("preferred_download_type", newValue.toString())
+                editor.apply()
+                true
+            }
+
         downloadCard!!.onPreferenceChangeListener =
             Preference.OnPreferenceChangeListener { _: Preference?, newValue: Any ->
                 val enable = newValue as Boolean

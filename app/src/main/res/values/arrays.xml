@@ -75,4 +75,17 @@
         <item>tr</item>
         <item>vi</item>
     </string-array>
+
+
+    <string-array name="download_types">
+        <item>@string/audio</item>
+        <item>@string/video</item>
+        <item>@string/command</item>
+    </string-array>
+
+    <string-array name="download_types_values">
+        <item>audio</item>
+        <item>video</item>
+        <item>command</item>
+    </string-array>
 </resources>

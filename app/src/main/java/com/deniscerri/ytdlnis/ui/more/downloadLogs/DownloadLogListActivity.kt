@@ -1,6 +1,7 @@
 package com.deniscerri.ytdlnis.ui.more.downloadLogs
 
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.*
 import android.view.MenuItem
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.adapter.DownloadLogsAdapter
 import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.io.File
 
 
@@ -22,6 +24,7 @@ class DownloadLogListActivity : AppCompatActivity(), DownloadLogsAdapter.OnItemC
     private lateinit var noResults: RelativeLayout
     private lateinit var fileList: MutableList<File>
     private lateinit var topAppBar: MaterialToolbar
+    private lateinit var logFolder : File
     var context: Context? = null
 
     public override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,7 +46,7 @@ class DownloadLogListActivity : AppCompatActivity(), DownloadLogsAdapter.OnItemC
         noResults = findViewById(R.id.no_results)
         noResults.visibility = View.GONE
 
-        val logFolder = File(filesDir.absolutePath + "/logs")
+        logFolder = File(filesDir.absolutePath + "/logs")
         updateList(logFolder)
 
         if(Build.VERSION.SDK_INT < 29){
@@ -73,9 +76,18 @@ class DownloadLogListActivity : AppCompatActivity(), DownloadLogsAdapter.OnItemC
             val itemId = m.itemId
             if (itemId == R.id.remove_logs) {
                 try{
-                    logFolder.listFiles()!!.forEach {
-                        it.delete()
+                    val deleteDialog = MaterialAlertDialogBuilder(this)
+                    deleteDialog.setTitle(getString(R.string.confirm_delete_history))
+                    deleteDialog.setMessage(getString(R.string.confirm_delete_logs_desc))
+                    deleteDialog.setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, _: Int -> dialogInterface.cancel() }
+                    deleteDialog.setPositiveButton(getString(R.string.ok)) { _: DialogInterface?, _: Int ->
+                        logFolder.listFiles()!!.forEach {
+                            it.delete()
+                        }.run {
+                            updateList(logFolder)
+                        }
                     }
+                    deleteDialog.show()
                 }catch (e: Exception){
                     Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
                 }
@@ -113,6 +125,14 @@ class DownloadLogListActivity : AppCompatActivity(), DownloadLogsAdapter.OnItemC
     }
 
     override fun onDeleteClick(file: File) {
-        file.delete()
+        val deleteDialog = MaterialAlertDialogBuilder(this)
+        deleteDialog.setTitle(getString(R.string.you_are_going_to_delete) + " \"" + file.name + "\"!")
+        deleteDialog.setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, _: Int -> dialogInterface.cancel() }
+        deleteDialog.setPositiveButton(getString(R.string.ok)) { _: DialogInterface?, _: Int ->
+            file.delete().run {
+                updateList(logFolder)
+            }
+        }
+        deleteDialog.show()
     }
 }

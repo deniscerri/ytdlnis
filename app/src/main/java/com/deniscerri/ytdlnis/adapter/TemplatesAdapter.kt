@@ -53,14 +53,19 @@ class TemplatesAdapter(onItemClickListener: OnItemClickListener, activity: Activ
 //            onItemClickListener.onSelected(item!!)
 //        }
 
-        title.setOnClickListener {
+        card.setOnClickListener {
             onItemClickListener.onItemClick(item!!)
+        }
+
+        card.setOnLongClickListener {
+            onItemClickListener.onDelete(item!!); true
         }
     }
 
     interface OnItemClickListener {
         fun onItemClick(commandTemplate: CommandTemplate)
         fun onSelected(commandTemplate: CommandTemplate)
+        fun onDelete(commandTemplate: CommandTemplate)
     }
 
     companion object {

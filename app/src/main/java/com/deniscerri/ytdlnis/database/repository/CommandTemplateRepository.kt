@@ -7,7 +7,7 @@ import com.deniscerri.ytdlnis.database.models.TemplateShortcut
 
 class CommandTemplateRepository(private val commandDao: CommandTemplateDao) {
     val items : LiveData<List<CommandTemplate>> = commandDao.getAllTemplatesLiveData()
-    val shortcuts : LiveData<List<TemplateShortcut>> = commandDao.getAllShortcuts()
+    val shortcuts : LiveData<List<TemplateShortcut>> = commandDao.getAllShortcutsLiveData()
 
     fun getAll() : List<CommandTemplate> {
         return commandDao.getAllTemplates();
@@ -23,6 +23,10 @@ class CommandTemplateRepository(private val commandDao: CommandTemplateDao) {
 
     suspend fun delete(item: CommandTemplate){
         commandDao.delete(item.id)
+    }
+
+    fun getAllShortCuts() : List<TemplateShortcut> {
+        return commandDao.getAllShortcuts();
     }
 
     suspend fun insertShortcut(item: TemplateShortcut){

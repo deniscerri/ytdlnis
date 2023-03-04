@@ -6,6 +6,7 @@ plugins {
     id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin' version '2.0.1'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
+    id "org.jetbrains.kotlin.plugin.serialization" version "1.7.21"
 }
 
 def properties = new Properties()
@@ -173,7 +174,6 @@ dependencies {
     implementation "com.squareup.okhttp3:logging-interceptor:4.7.2"
 
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1"
-
 
 
 }

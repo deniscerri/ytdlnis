@@ -197,4 +197,10 @@
     <string name="create_shortcut">Create Shortcut</string>
     <string name="error_restarting_download">Error trying to restart the download</string>
     <string name="delete_temp_file_too">Delete temporary files from the device</string>
+    <string name="update_template">Update Template</string>
+    <string name="create">Create</string>
+    <string name="update">Update</string>
+    <string name="preferred_download_type">Preferred Download Type</string>
+    <string name="preferred_download_type_summary">Default tab the download card will open to</string>
+    <string name="confirm_delete_logs_desc">Delete the entire log list, permanently.</string>
 </resources>

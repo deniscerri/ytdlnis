@@ -1,32 +1,27 @@
 package com.deniscerri.ytdlnis.ui.more
 
-import android.content.ClipboardManager
 import android.content.Context
+import android.content.DialogInterface
 import android.os.*
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.MenuItem
-import android.view.ViewGroup
-import android.view.Window
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.adapter.TemplatesAdapter
 import com.deniscerri.ytdlnis.database.models.CommandTemplate
-import com.deniscerri.ytdlnis.database.models.TemplateShortcut
 import com.deniscerri.ytdlnis.database.viewmodel.CommandTemplateViewModel
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.UiUtil
 import com.google.android.material.appbar.MaterialToolbar
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.chip.Chip
-import com.google.android.material.chip.ChipGroup
-import com.google.android.material.textfield.TextInputLayout
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 class CommandTemplatesActivity : AppCompatActivity(), TemplatesAdapter.OnItemClickListener {
@@ -68,9 +63,19 @@ class CommandTemplatesActivity : AppCompatActivity(), TemplatesAdapter.OnItemCli
         topAppBar.setOnMenuItemClickListener { m: MenuItem ->
             val itemId = m.itemId
             if (itemId == R.id.export_clipboard) {
-                commandTemplateViewModel.exportToClipboard()
+                lifecycleScope.launch(Dispatchers.IO){
+                    commandTemplateViewModel.exportToClipboard()
+                }
             }else if (itemId == R.id.import_clipboard){
-                commandTemplateViewModel.importFromClipboard()
+                lifecycleScope.launch{
+                    withContext(Dispatchers.IO){
+                        val count = commandTemplateViewModel.importFromClipboard()
+                        runOnUiThread{
+                            Toast.makeText(this@CommandTemplatesActivity, "$count items imported!", Toast.LENGTH_LONG).show()
+                        }
+                    }
+
+                }
             }
             true
         }
@@ -79,7 +84,7 @@ class CommandTemplatesActivity : AppCompatActivity(), TemplatesAdapter.OnItemCli
     private fun initChips() {
         val new = findViewById<Chip>(R.id.newTemplate)
         new.setOnClickListener {
-            uiUtil.showCreationSheet(this@CommandTemplatesActivity, this, commandTemplateViewModel) {}
+            uiUtil.showCommandTemplateCreationOrUpdatingSheet(null,this@CommandTemplatesActivity, this, commandTemplateViewModel) {}
         }
         val shortcuts = findViewById<Chip>(R.id.shortcuts)
         shortcuts.setOnClickListener {
@@ -92,10 +97,21 @@ class CommandTemplatesActivity : AppCompatActivity(), TemplatesAdapter.OnItemCli
     }
 
     override fun onItemClick(commandTemplate: CommandTemplate) {
-        TODO("Not yet implemented")
+        uiUtil.showCommandTemplateCreationOrUpdatingSheet(commandTemplate,this@CommandTemplatesActivity, this, commandTemplateViewModel) {}
+
     }
 
     override fun onSelected(commandTemplate: CommandTemplate) {
         TODO("Not yet implemented")
+    }
+
+    override fun onDelete(commandTemplate: CommandTemplate) {
+        val deleteDialog = MaterialAlertDialogBuilder(this)
+        deleteDialog.setTitle(getString(R.string.you_are_going_to_delete) + " \"" + commandTemplate.title + "\"!")
+        deleteDialog.setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, _: Int -> dialogInterface.cancel() }
+        deleteDialog.setPositiveButton(getString(R.string.ok)) { _: DialogInterface?, _: Int ->
+            commandTemplateViewModel.delete(commandTemplate)
+        }
+        deleteDialog.show()
     }
 }

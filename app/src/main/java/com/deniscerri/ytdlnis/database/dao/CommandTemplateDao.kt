@@ -17,7 +17,10 @@ interface CommandTemplateDao {
     fun getAllTemplatesLiveData() : LiveData<List<CommandTemplate>>
 
     @Query("SELECT * FROM templateShortcuts ORDER BY id DESC")
-    fun getAllShortcuts() : LiveData<List<TemplateShortcut>>
+    fun getAllShortcutsLiveData() : LiveData<List<TemplateShortcut>>
+
+    @Query("SELECT * FROM templateShortcuts ORDER BY id DESC")
+    fun getAllShortcuts() : List<TemplateShortcut>
 
     @Query("SELECT COUNT(id) FROM commandTemplates")
     fun getTotalNumber() : Int

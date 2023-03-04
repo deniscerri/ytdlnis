@@ -20,6 +20,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.deniscerri.ytdlnis.R
+import com.deniscerri.ytdlnis.database.models.CommandTemplate
 import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.models.Format
 import com.deniscerri.ytdlnis.database.models.ResultItem
@@ -68,8 +69,8 @@ class DownloadCommandFragment(private val resultItem: ResultItem) : Fragment() {
         lifecycleScope.launch {
             val sharedPreferences = requireContext().getSharedPreferences("root_preferences", Activity.MODE_PRIVATE)
             try {
-                val templates = withContext(Dispatchers.IO){
-                    commandTemplateViewModel.getAll()
+                val templates : MutableList<CommandTemplate> = withContext(Dispatchers.IO){
+                    commandTemplateViewModel.getAll().toMutableList()
                 }
                 val id = sharedPreferences.getLong("commandTemplate", templates[0].id)
                 val chosenCommand = templates.find { it.id == id }
@@ -117,21 +118,10 @@ class DownloadCommandFragment(private val resultItem: ResultItem) : Fragment() {
                     }
                 }
 
-                val templateTitles = templates.map {it.title}
-
                 val commandTemplates = view.findViewById<TextInputLayout>(R.id.template)
                 val autoCompleteTextView =
-                    view.findViewById<AutoCompleteTextView>(R.id.template_textview)
-                autoCompleteTextView?.setAdapter(
-                    ArrayAdapter(
-                        requireContext(),
-                        android.R.layout.simple_dropdown_item_1line,
-                        templateTitles
-                    )
-                )
-                if (templateTitles.isNotEmpty()) {
-                    autoCompleteTextView!!.setText(downloadItem.format.format_id, false)
-                }
+                    requireView().findViewById<AutoCompleteTextView>(R.id.template_textview)
+                populateCommandTemplates(templates, autoCompleteTextView)
 
                 (commandTemplates!!.editText as AutoCompleteTextView?)!!.onItemClickListener =
                     AdapterView.OnItemClickListener { _: AdapterView<*>?, _: View?, index: Int, _: Long ->
@@ -168,33 +158,60 @@ class DownloadCommandFragment(private val resultItem: ResultItem) : Fragment() {
 
                 val newTemplate : Chip = view.findViewById(R.id.newTemplate)
                 newTemplate.setOnClickListener {
-                    uiUtil.showCreationSheet(requireActivity(), viewLifecycleOwner, commandTemplateViewModel) {
-
+                    uiUtil.showCommandTemplateCreationOrUpdatingSheet(null, requireActivity(), viewLifecycleOwner, commandTemplateViewModel) {
+                        templates.add(it)
+                        chosenCommandView.editText!!.setText(it.content)
+                        downloadItem.format = Format(
+                            it.title,
+                            "",
+                            "",
+                            "",
+                            "",
+                            0,
+                            it.content
+                        )
+                        populateCommandTemplates(templates, autoCompleteTextView)
                     }
                 }
 
-//
-//                val embedSubs = view.findViewById<Chip>(R.id.embed_subtitles)
-//                embedSubs!!.isChecked = embedSubs.isChecked
-//                embedSubs.setOnClickListener {
-//                    downloadItem.embedSubs = embedSubs.isChecked
-//                }
-//
-//                val addChapters = view.findViewById<Chip>(R.id.add_chapters)
-//                addChapters!!.isChecked = addChapters.isChecked
-//                addChapters.setOnClickListener{
-//                    downloadItem.addChapters = addChapters.isChecked
-//                }
-//
-//                val saveThumbnail = view.findViewById<Chip>(R.id.save_thumbnail)
-//                saveThumbnail!!.isChecked = saveThumbnail.isChecked
-//                saveThumbnail.setOnClickListener {
-//                    downloadItem.SaveThumb = saveThumbnail.isChecked
-//                }
+                val editSelected : Chip = view.findViewById(R.id.editSelected)
+                editSelected.setOnClickListener {
+                    var current = templates.find { it.title == autoCompleteTextView.text.toString() }
+                    if (current == null) current = CommandTemplate(0, "", chosenCommandView.editText!!.text.toString())
+                    uiUtil.showCommandTemplateCreationOrUpdatingSheet(current, requireActivity(), viewLifecycleOwner, commandTemplateViewModel) {
+                        templates.add(it)
+                        chosenCommandView.editText!!.setText(it.content)
+                        downloadItem.format = Format(
+                            it.title,
+                            "",
+                            "",
+                            "",
+                            "",
+                            0,
+                            it.content
+                        )
+                    }
+                }
 
             } catch (e: Exception) {
                 e.printStackTrace()
             }
+        }
+    }
+
+    private fun populateCommandTemplates(templates: List<CommandTemplate>, autoCompleteTextView: AutoCompleteTextView?){
+        val templateTitles = templates.map {it.title}
+
+
+        autoCompleteTextView?.setAdapter(
+            ArrayAdapter(
+                requireContext(),
+                android.R.layout.simple_dropdown_item_1line,
+                templateTitles
+            )
+        )
+        if (templateTitles.isNotEmpty()) {
+            autoCompleteTextView!!.setText(downloadItem.format.format_id, false)
         }
     }
 
