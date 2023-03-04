@@ -185,8 +185,7 @@ class DownloadWorker(
             }
             DownloadViewModel.Type.command -> {
                 val commandRegex = "\"([^\"]*)\"|(-\\S+)"
-                val command = commandTemplateDao.getTemplate(downloadItem.format.format_id.toLong())
-                val m = Pattern.compile(commandRegex).matcher(command.content)
+                val m = Pattern.compile(commandRegex).matcher(downloadItem.format.format_note)
                 while (m.find()) {
                     if (m.group(1) != null) {
                         request.addOption(m.group(1)!!)
@@ -268,7 +267,7 @@ class DownloadWorker(
 
                 tempFileDir.delete()
                 handler.postDelayed({
-                    Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
                 }, 1000)
 
                 Log.e(TAG, context.getString(R.string.failed_download), it)

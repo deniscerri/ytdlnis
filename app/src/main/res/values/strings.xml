@@ -184,4 +184,11 @@
     <string name="new_update">New Update</string>
     <string name="download_queue">Download Queue</string>
     <string name="running">Running</string>
+    <string name="command">Command</string>
+    <string name="import_from_clipboard">Import from clipboard</string>
+    <string name="export_from_clipboard">Export to clipboard</string>
+    <string name="shortcuts">Shortcuts</string>
+    <string name="create_template">Create Template</string>
+    <string name="edit">Edit</string>
+    <string name="shortcuts_desc">Use commonly used commands to create templates</string>
 </resources>

@@ -13,23 +13,16 @@ import com.google.gson.Gson
 class DownloadFragmentAdapter (
     private val resultItem: ResultItem,
     fragmentManager : FragmentManager,
-    lifecycle : Lifecycle
+    lifecycle : Lifecycle,
+    private val fragments: List<Fragment>
 ) : FragmentStateAdapter(fragmentManager, lifecycle) {
 
     override fun getItemCount(): Int {
-        return 3
+        return fragments.size
     }
 
     override fun createFragment(position: Int): Fragment {
-        when (position) {
-            0 -> {
-                return DownloadAudioFragment(resultItem)
-            }
-            1 -> {
-                return DownloadVideoFragment(resultItem)
-            }
-        }
-        return DownloadCommandFragment(resultItem)
+        return fragments[position]
     }
 
 }

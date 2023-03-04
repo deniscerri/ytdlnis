@@ -88,7 +88,7 @@
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="@string/run_command" />
+                android:text="@string/command" />
 
 
         </com.google.android.material.tabs.TabLayout>

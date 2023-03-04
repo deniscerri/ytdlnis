@@ -10,15 +10,20 @@ import android.util.DisplayMetrics
 import android.view.Display
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Adapter
 import android.widget.Button
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.get
 import androidx.core.view.size
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.deniscerri.ytdlnis.R
+import com.deniscerri.ytdlnis.database.DBManager
+import com.deniscerri.ytdlnis.database.dao.CommandTemplateDao
 import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
@@ -34,6 +39,9 @@ import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.*
 
 
@@ -43,10 +51,12 @@ class DownloadBottomSheetDialog(private val resultItem: ResultItem, private val 
     private lateinit var fragmentAdapter : DownloadFragmentAdapter
     private lateinit var downloadViewModel: DownloadViewModel
     private lateinit var behavior: BottomSheetBehavior<View>
+    private lateinit var commandTemplateDao : CommandTemplateDao
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
+        commandTemplateDao = DBManager.getInstance(requireContext()).commandTemplateDao
     }
 
     @SuppressLint("RestrictedApi")
@@ -71,12 +81,29 @@ class DownloadBottomSheetDialog(private val resultItem: ResultItem, private val 
             overScrollMode = View.OVER_SCROLL_NEVER
         }
 
+        val fragments = mutableListOf<Fragment>(DownloadAudioFragment(resultItem), DownloadVideoFragment(resultItem))
+
+        lifecycleScope.launch{
+            withContext(Dispatchers.IO){
+                val nr = commandTemplateDao.getTotalNumber()
+                if(nr > 0){
+                    fragments.add(DownloadCommandFragment(resultItem))
+                }else{
+                    (tabLayout.getChildAt(0) as? ViewGroup)?.getChildAt(2)?.isEnabled = false
+                    (tabLayout.getChildAt(0) as? ViewGroup)?.getChildAt(2)?.alpha = 0.3f
+                }
+            }
+        }
+
+
         val fragmentManager = parentFragmentManager
         fragmentAdapter = DownloadFragmentAdapter(
             resultItem,
             fragmentManager,
-            lifecycle
+            lifecycle,
+            fragments
         )
+
         viewPager2.adapter = fragmentAdapter
         viewPager2.isSaveFromParentEnabled = false
 

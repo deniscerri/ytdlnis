@@ -4,12 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.deniscerri.ytdlnis.ui.more.CustomCommandActivity">
+    tools:context="com.deniscerri.ytdlnis.ui.more.TerminalActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:liftOnScroll="false"
+        app:liftOnScroll="true"
         android:background="@android:color/transparent"
         android:fitsSystemWindows="true">
 
@@ -17,6 +17,7 @@
             android:id="@+id/logs_toolbar"
             android:elevation="0dp"
             app:title="@string/command_templates"
+            app:menu="@menu/command_templates_menu"
             android:layout_width="match_parent"
             app:navigationIcon="@drawable/ic_back"
             android:layout_height="match_parent"/>
@@ -24,15 +25,64 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:id="@+id/template_recyclerview"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:clipToPadding="false"
-        >
+        android:orientation="vertical"
+        android:layout_margin="10dp"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
-    </androidx.recyclerview.widget.RecyclerView>
+
+    <HorizontalScrollView
+            android:id="@+id/chips_command"
+            android:layout_width="wrap_content"
+            android:scrollbars="none"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/command_selection_chips"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.chip.ChipGroup
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:selectionRequired="false"
+                    app:singleSelection="false">
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/newTemplate"
+                        style="@style/Widget.Material3.Chip.Assist"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/new_template"
+                        app:chipIcon="@drawable/ic_plus" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/shortcuts"
+                        style="@style/Widget.Material3.Chip.Assist"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/shortcuts"
+                        app:chipIcon="@drawable/ic_shortcut" />
+
+                </com.google.android.material.chip.ChipGroup>
+
+            </LinearLayout>
+
+        </HorizontalScrollView>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_below="@+id/chips_command"
+            android:id="@+id/template_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            >
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+    </RelativeLayout>
 
 
     <include layout="@layout/history_no_results"

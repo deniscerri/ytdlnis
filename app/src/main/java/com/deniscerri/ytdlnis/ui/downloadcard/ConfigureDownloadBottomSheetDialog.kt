@@ -7,10 +7,16 @@ import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
+import android.widget.LinearLayout
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
 import com.deniscerri.ytdlnis.R
+import com.deniscerri.ytdlnis.database.DBManager
+import com.deniscerri.ytdlnis.database.dao.CommandTemplateDao
 import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
@@ -24,6 +30,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel.Type
+import kotlinx.coroutines.withContext
 
 class ConfigureDownloadBottomSheetDialog(private val resultItem: ResultItem, private val type: Type) : BottomSheetDialogFragment() {
     private lateinit var tabLayout: TabLayout
@@ -31,11 +38,13 @@ class ConfigureDownloadBottomSheetDialog(private val resultItem: ResultItem, pri
     private lateinit var fragmentAdapter : DownloadFragmentAdapter
     private lateinit var downloadViewModel: DownloadViewModel
     private lateinit var resultViewModel: ResultViewModel
+    private lateinit var commandTemplateDao: CommandTemplateDao
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
         resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]
+        commandTemplateDao = DBManager.getInstance(requireContext()).commandTemplateDao
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -54,11 +63,27 @@ class ConfigureDownloadBottomSheetDialog(private val resultItem: ResultItem, pri
         tabLayout = view.findViewById(R.id.download_tablayout)
         viewPager2 = view.findViewById(R.id.download_viewpager)
 
+        val fragments = mutableListOf<Fragment>(DownloadAudioFragment(resultItem), DownloadVideoFragment(resultItem))
+
+        lifecycleScope.launch{
+            withContext(Dispatchers.IO){
+                val nr = commandTemplateDao.getTotalNumber()
+                if(nr > 0){
+                    fragments.add(DownloadCommandFragment(resultItem))
+                }else{
+                    (tabLayout.getChildAt(0) as? ViewGroup)?.getChildAt(2)?.isEnabled = false
+                }
+            }
+        }
+
+
+
         val fragmentManager = parentFragmentManager
         fragmentAdapter = DownloadFragmentAdapter(
             resultItem,
             fragmentManager,
-            lifecycle
+            lifecycle,
+            fragments
         )
         viewPager2.adapter = fragmentAdapter
         viewPager2.isSaveFromParentEnabled = false
@@ -77,7 +102,6 @@ class ConfigureDownloadBottomSheetDialog(private val resultItem: ResultItem, pri
                 viewPager2.setCurrentItem(2, false)
             }
         }
-
 
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
@@ -123,6 +147,7 @@ class ConfigureDownloadBottomSheetDialog(private val resultItem: ResultItem, pri
             downloadViewModel.updateDownload(item)
             dismiss()
         }
+
     }
 
     override fun onCancel(dialog: DialogInterface) {

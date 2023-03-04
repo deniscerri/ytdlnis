@@ -35,7 +35,7 @@ import java.io.File
 import java.util.regex.Pattern
 
 
-class CustomCommandActivity : AppCompatActivity() {
+class TerminalActivity : AppCompatActivity() {
     private var topAppBar: MaterialToolbar? = null
     private lateinit var notificationUtil: NotificationUtil
     private var output: TextView? = null
@@ -47,7 +47,7 @@ class CustomCommandActivity : AppCompatActivity() {
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_custom_command)
+        setContentView(R.layout.activity_terminal)
         context = baseContext
         scrollView = findViewById(R.id.custom_command_scrollview)
         topAppBar = findViewById(R.id.custom_command_toolbar)
@@ -107,7 +107,7 @@ class CustomCommandActivity : AppCompatActivity() {
 
         downloadID = System.currentTimeMillis().toInt()
 
-        val theIntent = Intent(this, CustomCommandActivity::class.java)
+        val theIntent = Intent(this, TerminalActivity::class.java)
         val pendingIntent = PendingIntent.getActivity(this, 0, theIntent, PendingIntent.FLAG_IMMUTABLE)
 
         val commandNotification: Notification =

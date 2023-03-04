@@ -11,12 +11,30 @@
         android:orientation="vertical">
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
+            app:endIconMode="custom"
+            app:endIconDrawable="@drawable/ic_clipboard"
+            android:hint="@string/command"
+            style="@style/Widget.Material3.TextInputLayout.FilledBox">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:maxLines="4"
+                android:inputType="textMultiLine"
+                android:layout_height="wrap_content"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/template"
             style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="10dp"
-            android:hint="@string/commands">
+            android:hint="@string/command_templates">
 
             <AutoCompleteTextView
                 android:id="@+id/template_textview"
@@ -27,21 +45,6 @@
                 />
 
         </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.card.MaterialCardView
-            style="@style/Widget.Material3.CardView.Filled"
-            android:layout_width="match_parent"
-            android:layout_marginBottom="10dp"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/template_content_textview"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="20dp"/>
-
-        </com.google.android.material.card.MaterialCardView>
-
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/outputPath"

@@ -1,6 +1,7 @@
 package com.deniscerri.ytdlnis.ui.downloadcard
 
 import android.app.Activity
+import android.content.ClipboardManager
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
@@ -13,33 +14,35 @@ import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
-import com.deniscerri.ytdlnis.database.DBManager
-import com.deniscerri.ytdlnis.database.dao.CommandTemplateDao
 import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.models.Format
 import com.deniscerri.ytdlnis.database.models.ResultItem
+import com.deniscerri.ytdlnis.database.viewmodel.CommandTemplateViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
-import com.deniscerri.ytdlnis.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdlnis.databinding.FragmentHomeBinding
 import com.deniscerri.ytdlnis.util.FileUtil
+import com.deniscerri.ytdlnis.util.UiUtil
 import com.google.android.material.chip.Chip
 import com.google.android.material.textfield.TextInputLayout
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class DownloadCommandFragment(private val resultItem: ResultItem) : Fragment() {
     private var _binding : FragmentHomeBinding? = null
     private var fragmentView: View? = null
     private var activity: Activity? = null
     private lateinit var downloadViewModel : DownloadViewModel
+    private lateinit var commandTemplateViewModel : CommandTemplateViewModel
     private lateinit var fileUtil : FileUtil
-
+    private lateinit var uiUtil : UiUtil
     private lateinit var saveDir : TextInputLayout
-    private lateinit var commandTemplateDao : CommandTemplateDao
 
     lateinit var downloadItem: DownloadItem
 
@@ -52,9 +55,10 @@ class DownloadCommandFragment(private val resultItem: ResultItem) : Fragment() {
         fragmentView = inflater.inflate(R.layout.fragment_download_command, container, false)
         activity = getActivity()
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
+        commandTemplateViewModel = ViewModelProvider(this)[CommandTemplateViewModel::class.java]
         downloadItem = downloadViewModel.createDownloadItemFromResult(resultItem, DownloadViewModel.Type.command)
         fileUtil = FileUtil()
-        commandTemplateDao = DBManager.getInstance(requireContext()).commandTemplateDao
+        uiUtil = UiUtil(fileUtil)
         return fragmentView
     }
 
@@ -62,12 +66,13 @@ class DownloadCommandFragment(private val resultItem: ResultItem) : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         lifecycleScope.launch {
-
             val sharedPreferences = requireContext().getSharedPreferences("root_preferences", Activity.MODE_PRIVATE)
             try {
-                val commands = commandTemplateDao.getAllTemplates()
-                val id = sharedPreferences.getLong("commandTemplate", commands[0].id)
-                val chosenCommand = commands.find { it.id == id }
+                val templates = withContext(Dispatchers.IO){
+                    commandTemplateViewModel.getAll()
+                }
+                val id = sharedPreferences.getLong("commandTemplate", templates[0].id)
+                val chosenCommand = templates.find { it.id == id }
                 downloadItem.format = Format(
                     chosenCommand!!.title,
                     "",
@@ -78,7 +83,40 @@ class DownloadCommandFragment(private val resultItem: ResultItem) : Fragment() {
                     chosenCommand.content
                 )
 
-                val templates = commandTemplateDao.getAllTemplates()
+                val chosenCommandView = view.findViewById<TextInputLayout>(R.id.content)
+                chosenCommandView.editText!!.setText(chosenCommand.content)
+                chosenCommandView.endIconDrawable = AppCompatResources.getDrawable(requireContext(), R.drawable.ic_delete_all)
+                chosenCommandView.editText!!.addTextChangedListener(object : TextWatcher {
+                    override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+                    override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+                    override fun afterTextChanged(p0: Editable?) {
+                        if (p0!!.isNotEmpty()){
+                            chosenCommandView.endIconDrawable = AppCompatResources.getDrawable(requireContext(), R.drawable.ic_delete_all)
+                        }else{
+                            chosenCommandView.endIconDrawable = AppCompatResources.getDrawable(requireContext(), R.drawable.ic_clipboard)
+                        }
+                        downloadItem.format = Format(
+                            "Custom",
+                            "",
+                            "",
+                            "",
+                            "",
+                            0,
+                            p0.toString()
+                        )
+                    }
+                })
+
+                chosenCommandView.setEndIconOnClickListener {
+                    if(chosenCommandView.editText!!.text.isEmpty()){
+                        val clipboard: ClipboardManager =
+                            requireContext().getSystemService(AppCompatActivity.CLIPBOARD_SERVICE) as ClipboardManager
+                        chosenCommandView.editText!!.setText(clipboard.primaryClip?.getItemAt(0)?.text)
+                    }else{
+                        chosenCommandView.editText!!.setText("")
+                    }
+                }
+
                 val templateTitles = templates.map {it.title}
 
                 val commandTemplates = view.findViewById<TextInputLayout>(R.id.template)
@@ -97,11 +135,17 @@ class DownloadCommandFragment(private val resultItem: ResultItem) : Fragment() {
 
                 (commandTemplates!!.editText as AutoCompleteTextView?)!!.onItemClickListener =
                     AdapterView.OnItemClickListener { _: AdapterView<*>?, _: View?, index: Int, _: Long ->
-//                       TODO
+                        chosenCommandView.editText!!.setText(templates[index].content)
+                        downloadItem.format = Format(
+                            templates[index].title,
+                            "",
+                            "",
+                            "",
+                            "",
+                            0,
+                            templates[index].content
+                        )
                     }
-
-                val templateContent = view.findViewById<TextView>(R.id.template_content_textview)
-                templateContent.text = downloadItem.format.format_note
 
                 saveDir = view.findViewById(R.id.outputPath)
                 val downloadPath = sharedPreferences.getString(
@@ -120,6 +164,13 @@ class DownloadCommandFragment(private val resultItem: ResultItem) : Fragment() {
                     intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                     intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION)
                     commandPathResultLauncher.launch(intent)
+                }
+
+                val newTemplate : Chip = view.findViewById(R.id.newTemplate)
+                newTemplate.setOnClickListener {
+                    uiUtil.showCreationSheet(requireActivity(), viewLifecycleOwner, commandTemplateViewModel) {
+
+                    }
                 }
 
 //
