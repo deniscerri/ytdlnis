@@ -1,8 +1,11 @@
 package com.deniscerri.ytdlnis.util
 
 import android.app.Activity
+import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -11,10 +14,12 @@ import android.view.ViewGroup
 import android.view.Window
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat.getSystemService
+import androidx.core.content.FileProvider
 import androidx.lifecycle.LifecycleOwner
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.CommandTemplate
@@ -25,6 +30,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.textfield.TextInputLayout
+import java.io.File
 
 class UiUtil(private val fileUtil: FileUtil) {
     fun populateFormatCard(formatCard : ConstraintLayout, chosenFormat: Format){
@@ -165,5 +171,34 @@ class UiUtil(private val fileUtil: FileUtil) {
             ViewGroup.LayoutParams.MATCH_PARENT
         )
     }
+    fun copyLinkToClipBoard(context: Context, url: String, bottomSheet: BottomSheetDialog?) {
+        val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        val clip = ClipData.newPlainText(context.getString(R.string.url), url)
+        clipboard.setPrimaryClip(clip)
+        bottomSheet?.hide()
+        Toast.makeText(context, context.getString(R.string.link_copied_to_clipboard), Toast.LENGTH_SHORT)
+            .show()
+    }
 
+    fun openLinkIntent(context: Context, url: String, bottomSheet: BottomSheetDialog?) {
+        val i = Intent(Intent.ACTION_VIEW)
+        i.data = Uri.parse(url)
+        bottomSheet?.hide()
+        context.startActivity(i)
+    }
+
+
+    fun openFileIntent(fragmentContext: Context, downloadPath: String) {
+        val file = File(downloadPath)
+        val uri = FileProvider.getUriForFile(
+            fragmentContext,
+            fragmentContext.packageName + ".fileprovider",
+            file
+        )
+        val mime = fragmentContext.contentResolver.getType(uri)
+        val i = Intent(Intent.ACTION_VIEW)
+        i.setDataAndType(uri, mime)
+        i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        fragmentContext.startActivity(i)
+    }
 }

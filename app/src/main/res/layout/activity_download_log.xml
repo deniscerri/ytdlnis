@@ -23,26 +23,37 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.core.widget.NestedScrollView
+    <ScrollView
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:id="@+id/content_scrollview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false"
+        android:fillViewport="true"
         android:paddingBottom="150dp"
         >
 
         <TextView
             android:id="@+id/content"
             android:padding="10dp"
+            android:scrollHorizontally="true"
+            android:fontFamily="monospace"
             android:textSize="15sp"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:textIsSelectable="true"
-            android:gravity="bottom"
             android:layout_height="wrap_content" />
 
-    </androidx.core.widget.NestedScrollView>
+    </ScrollView>
 
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/copy_log"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:layout_gravity="bottom|end"
+        android:contentDescription="@string/copy_log"
+        android:text="@string/copy_log"
+        app:icon="@drawable/ic_copy"/>
 
     <include layout="@layout/history_no_results"
         android:visibility="gone" />

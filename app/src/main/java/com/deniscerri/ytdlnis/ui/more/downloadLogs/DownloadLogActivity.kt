@@ -1,22 +1,28 @@
 package com.deniscerri.ytdlnis.ui.more.downloadLogs
 
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.os.FileObserver
+import android.text.method.ScrollingMovementMethod
+import android.view.View
+import android.widget.ScrollView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.widget.NestedScrollView
 import com.deniscerri.ytdlnis.R
 import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import java.io.File
 
 
 class DownloadLogActivity : AppCompatActivity() {
     private lateinit var content: TextView
-    private lateinit var contentScrollView : NestedScrollView
+    private lateinit var contentScrollView : ScrollView
     private lateinit var topAppBar: MaterialToolbar
     private lateinit var observer: FileObserver
+    private lateinit var copyLog : ExtendedFloatingActionButton
     var context: Context? = null
 
     public override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,7 +36,16 @@ class DownloadLogActivity : AppCompatActivity() {
         }
 
         content = findViewById(R.id.content)
+        content.movementMethod = ScrollingMovementMethod()
         contentScrollView = findViewById(R.id.content_scrollview)
+
+        copyLog = findViewById(R.id.copy_log)
+        copyLog.setOnClickListener {
+            val clipboard: ClipboardManager =
+                getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+            val clip: ClipData = ClipData.newPlainText("Download Log", content.text)
+            clipboard.setPrimaryClip(clip)
+        }
 
         val path = intent.getStringExtra("path")
         if (path == null) {
@@ -57,6 +72,7 @@ class DownloadLogActivity : AppCompatActivity() {
                     runOnUiThread{
                         content.text = File(path).readText()
                         content.scrollTo(0, content.height)
+                        contentScrollView.fullScroll(View.FOCUS_DOWN)
                     }
                 }
             }

@@ -100,10 +100,8 @@ class TerminalActivity : AppCompatActivity() {
 
 
     private fun startDownload(command: String?) {
-        var cmd: String = ""
-        if (command!!.contains("yt-dlp")) cmd = command.replace("yt-dlp", "")
-        else cmd = command
-        cmd = cmd.trim()
+        val cmd = if (command!!.contains("yt-dlp")) command.replace("yt-dlp", "")
+        else command
 
         downloadID = System.currentTimeMillis().toInt()
 
@@ -126,23 +124,20 @@ class TerminalActivity : AppCompatActivity() {
                 notify(downloadID, commandNotification)
             }
         }
-        val commandRegex = "(-\\S+)|(\\S+)"
         val request = YoutubeDLRequest(emptyList())
 
-        val tempFolder = StringBuilder(context!!.cacheDir.absolutePath + """/${command}##terminal""")
+        val tempFolder = StringBuilder(context!!.cacheDir.absolutePath + """/${System.currentTimeMillis()}##terminal""")
         val tempFileDir = File(tempFolder.toString())
         tempFileDir.delete()
         tempFileDir.mkdir()
 
-        Log.e(TAG, cmd)
-        val m = Pattern.compile(commandRegex).matcher(cmd)
-        while (m.find()) {
-            if (m.group(1) != null) {
-                request.addOption(m.group(1)!!)
-            } else {
-                request.addOption(m.group(2)!!)
-            }
-        }
+        request.addOption(
+            "--config-locations",
+            File(cacheDir, "config${System.currentTimeMillis()}.txt").apply {
+                writeText(cmd)
+            }.absolutePath
+        )
+
 
         request.addOption("-P", tempFileDir.absolutePath)
 

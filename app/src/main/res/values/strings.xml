@@ -193,4 +193,8 @@
     <string name="shortcuts_desc">Use commonly used commands to create templates</string>
     <string name="cancelled">Cancelled</string>
     <string name="errored">Errored</string>
+    <string name="copy_log">Copy log</string>
+    <string name="create_shortcut">Create Shortcut</string>
+    <string name="error_restarting_download">Error trying to restart the download</string>
+    <string name="delete_temp_file_too">Delete temporary files from the device</string>
 </resources>

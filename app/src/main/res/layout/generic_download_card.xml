@@ -9,29 +9,20 @@
 <RelativeLayout
         android:id="@+id/queued_download_relative_layout"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintDimensionRatio="H,3:1"
+        android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.card.MaterialCardView
-            android:id="@+id/queued_download_card_view"
+            android:id="@+id/download_card_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             app:cardCornerRadius="10dp"
             app:cardMaxElevation="12dp"
-            android:checkable="true"
             app:strokeWidth="0dp"
             app:cardPreventCornerOverlap="true"
             android:layout_margin="10dp">
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/image_view"
-                android:adjustViewBounds="true"
-                android:scaleType="centerCrop"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -42,52 +33,45 @@
                     android:id="@+id/title"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
                     android:paddingStart="10dp"
                     android:paddingTop="10dp"
                     android:paddingEnd="10dp"
-                    android:paddingBottom="10dp"
-                    android:shadowColor="@color/black"
-                    android:shadowDx="4"
-                    android:shadowDy="4"
-                    android:shadowRadius="2"
-                    android:textColor="@color/white"
-                    android:textSize="15sp"
+                    android:textSize="16sp"
                     android:textStyle="bold"
-                    app:layout_constraintEnd_toStartOf="@+id/queued_download_cancel"
+                    app:layout_constraintEnd_toStartOf="@+id/action_button"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.0" />
 
+
+                <TextView
+                    android:id="@+id/url"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/title" />
+
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/queued_download_cancel"
+                    android:id="@+id/action_button"
                     style="@style/Widget.Material3.ExtendedFloatingActionButton.Icon.Secondary"
                     android:layout_width="55dp"
                     android:layout_height="55dp"
-                    android:layout_margin="15dp"
+                    android:layout_margin="10dp"
                     app:cornerRadius="10dp"
-                    app:icon="@drawable/ic_baseline_delete_outline_24"
+                    app:icon="@drawable/ic_refresh"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-
-                <TextView
-                    android:id="@+id/format_note"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:textSize="15sp"
-                    android:shadowColor="@color/black"
-                    android:shadowDx="4"
-                    android:shadowDy="4"
-                    android:shadowRadius="1.5"
-                    android:textColor="@color/white"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/title"
-                    app:layout_constraintVertical_bias="1.0" />
 
                 <LinearLayout
                     android:id="@+id/linearLayout3"
@@ -96,9 +80,41 @@
                     android:layout_gravity="bottom"
                     android:orientation="horizontal"
                     android:padding="10dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/format_note">
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/url">
 
+                    <TextView
+                        style="@style/Widget.Material3.FloatingActionButton.Large.Primary"
+                        android:id="@+id/type"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="5dp"
+                        android:background="?attr/colorPrimary"
+                        android:clickable="false"
+                        android:gravity="center"
+                        android:minWidth="30dp"
+                        android:paddingHorizontal="10dp"
+                        app:cornerRadius="10dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"/>
+
+
+                    <TextView
+                        android:id="@+id/format_note"
+                        style="@style/Widget.Material3.FloatingActionButton.Large.Primary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="5dp"
+                        android:background="?attr/colorPrimary"
+                        android:clickable="false"
+                        android:gravity="center"
+                        android:minWidth="30dp"
+                        android:paddingHorizontal="10dp"
+                        app:cornerRadius="10dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"/>
 
                     <TextView
                         android:id="@+id/codec"
@@ -123,22 +139,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="5dp"
                         android:background="?attr/colorSecondary"
-                        android:clickable="false"
-                        android:gravity="center"
-                        android:minWidth="30dp"
-                        android:paddingHorizontal="10dp"
-                        app:cornerRadius="10dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/time"
-                        style="@style/Widget.Material3.FloatingActionButton.Large.Primary"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="5dp"
-                        android:background="?attr/colorPrimary"
                         android:clickable="false"
                         android:gravity="center"
                         android:minWidth="30dp"

@@ -22,7 +22,7 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
-                android:maxLines="4"
+                android:maxLines="10"
                 android:inputType="textMultiLine"
                 android:layout_height="wrap_content"/>
 

@@ -184,15 +184,13 @@ class DownloadWorker(
                 request.addOption("-o", tempFileDir.absolutePath + "/${downloadItem.customFileNameTemplate}.%(ext)s")
             }
             DownloadViewModel.Type.command -> {
-                val commandRegex = "\"([^\"]*)\"|(-\\S+)"
-                val m = Pattern.compile(commandRegex).matcher(downloadItem.format.format_note)
-                while (m.find()) {
-                    if (m.group(1) != null) {
-                        request.addOption(m.group(1)!!)
-                    } else {
-                        request.addOption(m.group(2)!!)
-                    }
-                }
+                request.addOption(
+                    "--config-locations",
+                    File(context.cacheDir, "config${System.currentTimeMillis()}.txt").apply {
+                        writeText(downloadItem.format.format_note)
+                    }.absolutePath
+                )
+
                 request.addOption("-P", tempFileDir.absolutePath)
 
             }

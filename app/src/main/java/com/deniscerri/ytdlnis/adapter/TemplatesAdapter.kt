@@ -47,11 +47,11 @@ class TemplatesAdapter(onItemClickListener: OnItemClickListener, activity: Activ
         val content = card.findViewById<TextView>(R.id.content)
         content.text = item?.content
 
-        val check = card.findViewById<Button>(R.id.check)
-
-        check.setOnClickListener {
-            onItemClickListener.onSelected(item!!)
-        }
+//        val check = card.findViewById<Button>(R.id.check)
+//
+//        check.setOnClickListener {
+//            onItemClickListener.onSelected(item!!)
+//        }
 
         title.setOnClickListener {
             onItemClickListener.onItemClick(item!!)

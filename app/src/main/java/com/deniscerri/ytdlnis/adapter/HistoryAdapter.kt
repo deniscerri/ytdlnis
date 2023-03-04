@@ -124,8 +124,10 @@ class HistoryAdapter(onItemClickListener: OnItemClickListener, activity: Activit
         }
         if (item.type == DownloadViewModel.Type.audio) {
             if (filePresent) btn.icon = ContextCompat.getDrawable(activity, R.drawable.ic_music_downloaded) else btn.icon = ContextCompat.getDrawable(activity, R.drawable.ic_music)
-        } else {
+        } else if (item.type == DownloadViewModel.Type.video) {
             if (filePresent) btn.icon = ContextCompat.getDrawable(activity, R.drawable.ic_video_downloaded) else btn.icon = ContextCompat.getDrawable(activity, R.drawable.ic_video)
+        }else{
+            btn.icon = ContextCompat.getDrawable(activity, R.drawable.ic_terminal)
         }
         if (btn.hasOnClickListeners()) btn.setOnClickListener(null)
         if (checkedItems.contains(item.id)) {

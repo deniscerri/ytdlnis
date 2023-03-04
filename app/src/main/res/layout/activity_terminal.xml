@@ -30,7 +30,7 @@
                 android:layout_height="wrap_content"
                 android:inputType="textMultiLine"
                 android:gravity="start"
-                android:maxLines="5" />
+                android:maxLines="10" />
 
             <ScrollView
                 android:id="@+id/custom_command_scrollview"
@@ -44,6 +44,7 @@
                     android:id="@+id/custom_command_output"
                     android:layout_width="match_parent"
                     android:textIsSelectable="true"
+                    android:fontFamily="monospace"
                     android:gravity="bottom"
                     android:layout_height="wrap_content" />
 
