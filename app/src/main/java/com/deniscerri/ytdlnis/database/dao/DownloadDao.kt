@@ -16,6 +16,12 @@ interface DownloadDao {
     @Query("SELECT * FROM downloads WHERE status='Queued'")
     fun getQueuedDownloads() : LiveData<List<DownloadItem>>
 
+    @Query("SELECT * FROM downloads WHERE status='Cancelled'")
+    fun getCancelledDownloads() : LiveData<List<DownloadItem>>
+
+    @Query("SELECT * FROM downloads WHERE status='Error'")
+    fun getErroredDownloads() : LiveData<List<DownloadItem>>
+
     @Query("SELECT * FROM downloads WHERE status='Processing'")
     fun getProcessingDownloads() : LiveData<List<DownloadItem>>
 

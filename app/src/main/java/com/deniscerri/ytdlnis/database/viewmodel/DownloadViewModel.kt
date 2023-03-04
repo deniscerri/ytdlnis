@@ -32,6 +32,8 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
     val allDownloads : LiveData<List<DownloadItem>>
     val queuedDownloads : LiveData<List<DownloadItem>>
     val activeDownloads : LiveData<List<DownloadItem>>
+    val cancelledDownloads : LiveData<List<DownloadItem>>
+    val erroredDownloads : LiveData<List<DownloadItem>>
     val processingDownloads : LiveData<List<DownloadItem>>
 
     private var bestVideoFormat : Format
@@ -51,6 +53,8 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
         queuedDownloads = repository.queuedDownloads
         activeDownloads = repository.activeDownloads
         processingDownloads = repository.processingDownloads
+        cancelledDownloads = repository.cancelledDownloads
+        erroredDownloads = repository.erroredDownloads
 
         val videoFormat = getApplication<App>().resources.getStringArray(R.array.video_formats)
         val videoContainer = sharedPreferences.getString("video_format", "Default")

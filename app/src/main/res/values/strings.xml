@@ -191,4 +191,6 @@
     <string name="create_template">Create Template</string>
     <string name="edit">Edit</string>
     <string name="shortcuts_desc">Use commonly used commands to create templates</string>
+    <string name="cancelled">Cancelled</string>
+    <string name="errored">Errored</string>
 </resources>

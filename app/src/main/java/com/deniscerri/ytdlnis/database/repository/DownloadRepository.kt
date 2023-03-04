@@ -10,6 +10,8 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
     val allDownloads : LiveData<List<DownloadItem>> = downloadDao.getAllDownloads()
     val activeDownloads : LiveData<List<DownloadItem>> = downloadDao.getActiveDownloads()
     val queuedDownloads : LiveData<List<DownloadItem>> = downloadDao.getQueuedDownloads()
+    val cancelledDownloads : LiveData<List<DownloadItem>> = downloadDao.getCancelledDownloads()
+    val erroredDownloads : LiveData<List<DownloadItem>> = downloadDao.getErroredDownloads()
     val processingDownloads : LiveData<List<DownloadItem>> = downloadDao.getProcessingDownloads()
 
     enum class Status {
