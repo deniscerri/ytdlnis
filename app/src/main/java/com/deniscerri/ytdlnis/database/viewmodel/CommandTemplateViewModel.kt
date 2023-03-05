@@ -79,8 +79,8 @@ class CommandTemplateViewModel(private val application: Application) : AndroidVi
         val clip = clipboard.primaryClip!!.getItemAt(0).text.toString()
         try{
             jsonFormat.decodeFromString<CommandTemplateExport>(clip).run {
-                templates.filterNot {
-                    allTemplates.contains(it)
+                templates.filterNot {t ->
+                    allTemplates.find { it.content == t.content} != null
                 }.run {
                     this.forEach {
                         repository.insert(it.copy(id=0))

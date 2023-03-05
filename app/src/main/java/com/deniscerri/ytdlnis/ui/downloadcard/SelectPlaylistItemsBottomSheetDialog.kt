@@ -104,7 +104,9 @@ class SelectPlaylistItemsBottomSheetDialog(private val items: List<ResultItem>, 
                 val downloadItems = mutableListOf<DownloadItem>()
                 checkedResultItems.forEach {c ->
                     val i = downloadViewModel.createDownloadItemFromResult(c,type)
-                    i.format = downloadViewModel.getLatestCommandTemplateAsFormat()
+                    if (type == DownloadViewModel.Type.command){
+                        i.format = downloadViewModel.getLatestCommandTemplateAsFormat()
+                    }
                     downloadItems.add(i)
                 }
                 if (downloadItems.size == 1){
