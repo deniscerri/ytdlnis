@@ -537,10 +537,11 @@ class InfoUtil(context: Context) {
                 if (formatsInJSON != null) {
                     for (f in 0 until formatsInJSON.length()){
                         val format = formatsInJSON.getJSONObject(f).toString()
-                        formats.add(Gson().fromJson(format, Format::class.java))
+                        val formatProper = Gson().fromJson(format, Format::class.java)
+                        if (formatProper.filesize > 0) formats.add(formatProper)
                     }
                 }
-                Log.e(TAG, formats.toString())
+                Log.e("aa", formats.toString())
                 items.add(ResultItem(0,
                         url,
                         title,

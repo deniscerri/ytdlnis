@@ -12,6 +12,7 @@ import com.deniscerri.ytdlnis.database.repository.ResultRepository
 import com.deniscerri.ytdlnis.database.repository.SearchHistoryRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.regex.Pattern
 
 class ResultViewModel(application: Application) : AndroidViewModel(application) {
@@ -51,39 +52,47 @@ class ResultViewModel(application: Application) : AndroidViewModel(application) 
         loadingItems.postValue(false)
     }
 
-    fun parseQuery(inputQuery: String, resetResults: Boolean) = viewModelScope.launch(Dispatchers.IO){
+    suspend fun parseQuery(inputQuery: String, resetResults: Boolean) : ArrayList<ResultItem?> {
         if (resetResults) loadingItems.postValue(true)
+        val type = getQueryType(inputQuery)
+        var res = arrayListOf<ResultItem?>()
+        return withContext(Dispatchers.IO){
+            try {
+                when (type) {
+                    "Search" -> {
+                        res = repository.search(inputQuery, resetResults)
+                    }
+                    "Video" -> {
+                        res = repository.getOne(inputQuery, resetResults)
+                    }
+                    "Playlist" -> {
+                        res = repository.getPlaylist(inputQuery, resetResults)
+
+                    }
+                    "Default" -> {
+                        res = repository.getDefault(inputQuery, resetResults)
+                    }
+                }
+            } catch (e: Exception) {
+                Log.e(tag, e.toString())
+            }
+            loadingItems.postValue(false)
+            res
+        }
+    }
+    fun getQueryType(inputQuery: String) : String {
         var type = "Search"
         val p = Pattern.compile("^(https?)://(www.)?youtu(.be)?")
-        val m = p.matcher(inputQuery!!)
+        val m = p.matcher(inputQuery)
         if (m.find()) {
             type = "Video"
-            if (inputQuery!!.contains("playlist?list=")) {
+            if (inputQuery.contains("playlist?list=")) {
                 type = "Playlist"
             }
-        } else if (inputQuery!!.contains("http")) {
+        } else if (inputQuery.contains("http")) {
             type = "Default"
         }
-        try {
-            when (type) {
-                "Search" -> {
-                    repository.search(inputQuery, resetResults)
-                }
-                "Video" -> {
-                    repository.getOne(inputQuery, resetResults)
-                }
-                "Playlist" -> {
-                    repository.getPlaylist(inputQuery, resetResults)
-
-                }
-                "Default" -> {
-                    repository.getDefault(inputQuery, resetResults)
-                }
-            }
-        } catch (e: Exception) {
-            Log.e(tag, e.toString())
-        }
-        loadingItems.postValue(false)
+        return type
     }
 
     fun insert(items: ArrayList<ResultItem?>) = viewModelScope.launch(Dispatchers.IO){

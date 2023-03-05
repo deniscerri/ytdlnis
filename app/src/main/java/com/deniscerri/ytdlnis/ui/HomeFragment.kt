@@ -21,6 +21,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -43,6 +44,9 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.*
 
 
@@ -134,8 +138,8 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
         resultViewModel.items.observe(viewLifecycleOwner) {
             homeAdapter!!.submitList(it)
             resultsList = it
-            if(resultViewModel.itemCount.value!! > 1 || resultViewModel.itemCount.value!!  == -1){
-                if (it[0].playlistTitle.isNotEmpty() && it[0].playlistTitle != getString(R.string.trendingPlaylist)){
+            if(resultViewModel.itemCount.value!! > 1 || resultViewModel.itemCount.value!! == -1){
+                if (it[0].playlistTitle.isNotEmpty() && it[0].playlistTitle != getString(R.string.trendingPlaylist) && it.size > 1){
                     downloadAllFabCoordinator!!.visibility = VISIBLE
                 }else{
                     downloadAllFabCoordinator!!.visibility = GONE
@@ -181,23 +185,24 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
             resultViewModel.deleteAll()
             inputQueriesLength = inputQueries!!.size
             Handler(Looper.getMainLooper()).post { scrollToTop() }
-            val thread = Thread {
-                resultViewModel.parseQuery(inputQueries!!.pop()!!, true)
+            lifecycleScope.launch(){
+                withContext(Dispatchers.IO){
+                    resultViewModel.parseQuery(inputQueries!!.pop()!!, true)
+                }
+
                 while (!inputQueries!!.isEmpty()) {
                     inputQuery = inputQueries!!.pop()
-                    resultViewModel.parseQuery(inputQuery!!, false)
+                    withContext(Dispatchers.IO){
+                        resultViewModel.parseQuery(inputQuery!!, false)
+                    }
                 }
                 try {
-                    Handler(Looper.getMainLooper()).post {
-                        // DOWNLOAD ALL BUTTON
-                        if (resultsList!!.size > 1 || inputQueriesLength > 1) {
-                            downloadAllFabCoordinator!!.visibility = VISIBLE
-                        }
+                    if (resultsList!!.size > 1 || inputQueriesLength > 1) {
+                        downloadAllFabCoordinator!!.visibility = VISIBLE
                     }
                 } catch (ignored: Exception) {
                 }
             }
-            thread.start()
         } else {
             resultViewModel.checkTrending()
         }
@@ -255,10 +260,9 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
                     resultViewModel.addSearchQueryToHistory(inputQuery!!)
                 }
                 resultViewModel.deleteAll()
-                val thread = Thread {
+                lifecycleScope.launch(Dispatchers.IO){
                     resultViewModel.parseQuery(inputQuery!!, true)
                 }
-                thread.start()
                 return true
             }
 

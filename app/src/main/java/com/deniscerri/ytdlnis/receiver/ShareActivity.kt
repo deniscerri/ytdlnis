@@ -20,6 +20,7 @@ import android.view.Window
 import android.view.WindowManager
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.view.ViewCompat
@@ -42,6 +43,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
 import kotlin.system.exitProcess
 
@@ -110,19 +112,20 @@ class ShareActivity : AppCompatActivity() {
                 showDownloadSheet(result)
             }catch (e: Exception){
                 resultViewModel.deleteAll()
-                CoroutineScope(Dispatchers.IO).launch {
-                    resultViewModel.parseQuery(inputQuery!!, true)
-                }
-
-                resultViewModel.items.observe(this) {
-                    if (it.isNotEmpty() && supportFragmentManager.findFragmentByTag("downloadSingleSheet") == null){
-                        if(resultViewModel.itemCount.value!! == it.size){
-                            loadingBottomSheet.cancel()
-                            if (it.size == 1){
-                                showDownloadSheet(it[0])
-                            }else{
-                                showSelectPlaylistItems(it)
-                            }
+                lifecycleScope.launch {
+                    var res: ArrayList<ResultItem?>
+                    withContext(Dispatchers.IO){
+                        res = resultViewModel.parseQuery(inputQuery!!, true)
+                    }
+                    if (res.isEmpty()) {
+                        Toast.makeText(this@ShareActivity, "No Results Found!", Toast.LENGTH_SHORT).show()
+                        exit()
+                    }else{
+                        loadingBottomSheet.cancel()
+                        if (res.size == 1){
+                            showDownloadSheet(res[0]!!)
+                        }else{
+                            showSelectPlaylistItems(res.toList())
                         }
                     }
                 }
@@ -141,7 +144,7 @@ class ShareActivity : AppCompatActivity() {
         }
     }
 
-    private fun showSelectPlaylistItems(it: List<ResultItem>){
+    private fun showSelectPlaylistItems(it: List<ResultItem?>){
         if (sharedPreferences.getBoolean("download_card", true)){
             val bottomSheet = SelectPlaylistItemsBottomSheetDialog(it, DownloadViewModel.Type.valueOf(sharedPreferences.getString("preferred_download_type", "video")!!))
             bottomSheet.show(supportFragmentManager, "downloadPlaylistSheet")
@@ -149,7 +152,7 @@ class ShareActivity : AppCompatActivity() {
             lifecycleScope.launch(Dispatchers.IO){
                 val downloadItems = mutableListOf<DownloadItem>()
                 it.forEach { res ->
-                    val i = downloadViewModel.createDownloadItemFromResult(res, DownloadViewModel.Type.valueOf(sharedPreferences.getString("preferred_download_type", "video")!!))
+                    val i = downloadViewModel.createDownloadItemFromResult(res!!, DownloadViewModel.Type.valueOf(sharedPreferences.getString("preferred_download_type", "video")!!))
                     i.format = downloadViewModel.getLatestCommandTemplateAsFormat()
                     downloadItems.add(i)
                 }

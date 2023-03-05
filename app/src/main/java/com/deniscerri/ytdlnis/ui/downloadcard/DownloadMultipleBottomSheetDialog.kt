@@ -200,6 +200,7 @@ class DownloadMultipleBottomSheetDialog(private val items: MutableList<DownloadI
             val resultItem = withContext(Dispatchers.IO){
                 resultViewModel.getItemByURL(downloadItem!!.url)
             }
+            Log.e("aa", resultItem.toString())
             val bottomSheet = ConfigureDownloadBottomSheetDialog(resultItem, downloadItem!!, this@DownloadMultipleBottomSheetDialog)
             bottomSheet.show(parentFragmentManager, "configureDownloadSingleSheet")
         }

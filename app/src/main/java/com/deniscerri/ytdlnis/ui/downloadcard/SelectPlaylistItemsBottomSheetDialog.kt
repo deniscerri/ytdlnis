@@ -35,7 +35,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.*
 
-class SelectPlaylistItemsBottomSheetDialog(private val items: List<ResultItem>, private val type: DownloadViewModel.Type) : BottomSheetDialogFragment(), PlaylistAdapter.OnItemClickListener {
+class SelectPlaylistItemsBottomSheetDialog(private val items: List<ResultItem?>, private val type: DownloadViewModel.Type) : BottomSheetDialogFragment(), PlaylistAdapter.OnItemClickListener {
     private lateinit var downloadViewModel: DownloadViewModel
     private lateinit var resultViewModel: ResultViewModel
     private lateinit var listAdapter : PlaylistAdapter
@@ -85,10 +85,9 @@ class SelectPlaylistItemsBottomSheetDialog(private val items: List<ResultItem>, 
 
         val checkAll = view.findViewById<Button>(R.id.check_all)
         checkAll!!.setOnClickListener {
-            if (listAdapter.getCheckedItems().isEmpty()){
+            if (listAdapter.getCheckedItems().size != items.size){
                 listAdapter.checkAll()
                 selectedText.text = resources.getString(R.string.all_items_selected)
-
             }else{
                 listAdapter.clearCheckeditems()
                 selectedText.text = "0 ${resources.getString(R.string.selected)}"
@@ -100,17 +99,19 @@ class SelectPlaylistItemsBottomSheetDialog(private val items: List<ResultItem>, 
         ok!!.setOnClickListener {
             lifecycleScope.launch(Dispatchers.IO){
                 val checkedItems = listAdapter.getCheckedItems()
-                val checkedResultItems = items.filter { checkedItems.contains(it.id) }
+                val checkedResultItems = items.filter { item -> checkedItems.contains(item!!.url) }
                 val downloadItems = mutableListOf<DownloadItem>()
-                checkedResultItems.forEach {c ->
+                checkedResultItems.forEach { c ->
+                    c!!.id = 0
                     val i = downloadViewModel.createDownloadItemFromResult(c,type)
                     if (type == DownloadViewModel.Type.command){
                         i.format = downloadViewModel.getLatestCommandTemplateAsFormat()
                     }
                     downloadItems.add(i)
                 }
+
                 if (downloadItems.size == 1){
-                    val resultItem = resultViewModel.getItemByURL(items[0].url)
+                    val resultItem = resultViewModel.getItemByURL(items[0]!!.url)
                     val bottomSheet = DownloadBottomSheetDialog(resultItem, type)
                     bottomSheet.show(parentFragmentManager, "downloadSingleSheet")
                 }else{
@@ -118,8 +119,7 @@ class SelectPlaylistItemsBottomSheetDialog(private val items: List<ResultItem>, 
                     bottomSheet.show(parentFragmentManager, "downloadMultipleSheet")
                 }
                 dismiss()
-                resultViewModel.deleteAll()
-                resultViewModel.insert(ArrayList(checkedResultItems))
+
             }
         }
     }
@@ -142,7 +142,7 @@ class SelectPlaylistItemsBottomSheetDialog(private val items: List<ResultItem>, 
     }
 
 
-    override fun onCardSelect(itemID: Long, isChecked: Boolean, checkedItems: List<Long>) {
+    override fun onCardSelect(itemURL: String, isChecked: Boolean, checkedItems: List<String>) {
         if (checkedItems.size == items.size){
             selectedText.text = resources.getString(R.string.all_items_selected)
         }else{

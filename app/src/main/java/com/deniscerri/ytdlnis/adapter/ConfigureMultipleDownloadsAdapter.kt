@@ -106,9 +106,7 @@ class ConfigureMultipleDownloadsAdapter(onItemClickListener: OnItemClickListener
         }
 
         val fileSize = card.findViewById<TextView>(R.id.file_size)
-        Log.e("aa", item.format.filesize.toString())
         val fileSizeReadable = fileUtil.convertFileSize(item.format.filesize)
-        Log.e("aa", fileSizeReadable)
         if (fileSizeReadable == "?") fileSize.visibility = View.GONE
         else {
             fileSize.text = fileSizeReadable
