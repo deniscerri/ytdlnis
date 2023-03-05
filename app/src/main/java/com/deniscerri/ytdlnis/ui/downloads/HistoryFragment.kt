@@ -1,4 +1,4 @@
-package com.deniscerri.ytdlnis.ui
+package com.deniscerri.ytdlnis.ui.downloads
 
 import android.app.Activity
 import android.content.*
@@ -378,31 +378,61 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
         bottomSheet = BottomSheetDialog(fragmentContext!!)
         bottomSheet!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
         bottomSheet!!.setContentView(R.layout.history_item_details_bottom_sheet)
-        val video = findItem(itemID)
+        val item = findItem(itemID)
         val title = bottomSheet!!.findViewById<TextView>(R.id.bottom_sheet_title)
-        title!!.text = video!!.title
+        title!!.text = item!!.title
         val author = bottomSheet!!.findViewById<TextView>(R.id.bottom_sheet_author)
-        author!!.text = video.author
+        author!!.text = item.author
+
+        val type = bottomSheet!!.findViewById<TextView>(R.id.type)
+        val formatNote = bottomSheet!!.findViewById<TextView>(R.id.format_note)
+        val codec = bottomSheet!!.findViewById<TextView>(R.id.codec)
+        val fileSize = bottomSheet!!.findViewById<TextView>(R.id.file_size)
+
+        type!!.text = item.type.toString().uppercase()
+
+        if (item.format.format_note == "?") formatNote!!.visibility = View.GONE
+        else formatNote!!.text = item.format.format_note
+
+        val codecText =
+            if (item.format.encoding != "") {
+                item.format.encoding.uppercase()
+            }else if (item.format.vcodec != "none" && item.format.vcodec != ""){
+                item.format.vcodec.uppercase()
+            } else {
+                item.format.acodec.uppercase()
+            }
+        if (codecText == "" || codecText == "none"){
+            codec!!.visibility = View.GONE
+        }else{
+            codec!!.visibility = View.VISIBLE
+            codec.text = codecText
+        }
+
+        val fileSizeReadable = fileUtil!!.convertFileSize(item.format.filesize)
+        if (fileSizeReadable == "?") fileSize!!.visibility = View.GONE
+        else fileSize!!.text = fileSizeReadable
+
         val link = bottomSheet!!.findViewById<Button>(R.id.bottom_sheet_link)
-        val url = video.url
+        val url = item.url
         link!!.text = url
         link.tag = itemID
         link.setOnClickListener{
-            uiUtil!!.openLinkIntent(requireContext(), video.url, bottomSheet)
+            uiUtil!!.openLinkIntent(requireContext(), item.url, bottomSheet)
         }
         link.setOnLongClickListener{
-            uiUtil!!.copyLinkToClipBoard(requireContext(), video.url, bottomSheet)
+            uiUtil!!.copyLinkToClipBoard(requireContext(), item.url, bottomSheet)
             true
         }
         val remove = bottomSheet!!.findViewById<Button>(R.id.bottomsheet_remove_button)
         remove!!.tag = itemID
         remove.setOnClickListener{
-            removeItem(video)
+            removeItem(item)
         }
         val openFile = bottomSheet!!.findViewById<Button>(R.id.bottomsheet_open_file_button)
         openFile!!.tag = itemID
         openFile.setOnClickListener{
-            uiUtil!!.openFileIntent(requireContext(), video.downloadPath)
+            uiUtil!!.openFileIntent(requireContext(), item.downloadPath)
         }
         if (!isPresent) openFile.visibility = GONE
         bottomSheet!!.show()

@@ -1,14 +1,9 @@
-package com.deniscerri.ytdlnis.ui.downloadqueue
+package com.deniscerri.ytdlnis.ui.downloads
 
-import android.util.Log
-import androidx.annotation.NonNull
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.deniscerri.ytdlnis.database.models.DownloadItem
-import com.deniscerri.ytdlnis.database.models.ResultItem
-import com.google.gson.Gson
 
 class DownloadListFragmentAdapter (
     fragmentManager : FragmentManager,

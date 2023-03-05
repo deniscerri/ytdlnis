@@ -24,8 +24,8 @@ import androidx.work.WorkManager
 import com.deniscerri.ytdlnis.databinding.ActivityMainBinding
 import com.deniscerri.ytdlnis.service.IDownloaderListener
 import com.deniscerri.ytdlnis.service.IDownloaderService
-import com.deniscerri.ytdlnis.ui.downloadqueue.DownloadQueueActivity
-import com.deniscerri.ytdlnis.ui.HistoryFragment
+import com.deniscerri.ytdlnis.ui.downloads.DownloadQueueActivity
+import com.deniscerri.ytdlnis.ui.downloads.HistoryFragment
 import com.deniscerri.ytdlnis.ui.HomeFragment
 import com.deniscerri.ytdlnis.ui.more.MoreFragment
 import com.deniscerri.ytdlnis.ui.more.settings.SettingsActivity

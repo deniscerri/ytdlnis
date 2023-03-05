@@ -99,23 +99,6 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"/>
 
-
-                    <TextView
-                        android:id="@+id/format_note"
-                        style="@style/Widget.Material3.FloatingActionButton.Large.Primary"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="5dp"
-                        android:background="?attr/colorPrimary"
-                        android:clickable="false"
-                        android:gravity="center"
-                        android:minWidth="30dp"
-                        android:paddingHorizontal="10dp"
-                        app:cornerRadius="10dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"/>
-
                     <TextView
                         android:id="@+id/codec"
                         style="@style/Widget.Material3.FloatingActionButton.Large.Secondary"

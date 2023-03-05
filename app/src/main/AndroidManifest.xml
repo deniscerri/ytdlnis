@@ -65,7 +65,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.downloadqueue.DownloadQueueActivity"
+            android:name=".ui.downloads.DownloadQueueActivity"
             android:configChanges="layoutDirection|locale"
             android:parentActivityName=".MainActivity"
             android:exported="true">

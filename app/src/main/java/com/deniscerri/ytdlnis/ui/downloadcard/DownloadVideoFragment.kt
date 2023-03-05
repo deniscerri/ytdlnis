@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.TextView
@@ -135,6 +136,12 @@ class DownloadVideoFragment(private val resultItem: ResultItem) : Fragment() {
                         containers
                     )
                 )
+
+                (container!!.editText as AutoCompleteTextView?)!!.onItemClickListener =
+                    AdapterView.OnItemClickListener { _: AdapterView<*>?, _: View?, index: Int, _: Long ->
+                        downloadItem.format.container = containers[index]
+                    }
+
                 val selectedContainer: String = downloadItem.format.container
                 containerAutoCompleteTextView!!.setText(selectedContainer, false)
 

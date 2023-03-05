@@ -71,14 +71,6 @@ class GenericDownloadAdapter(onItemClickListener: OnItemClickListener, activity:
         val type = card.findViewById<TextView>(R.id.type)
         type!!.text = item.type.toString().uppercase()
 
-        val formatNote = card.findViewById<TextView>(R.id.format_note)
-        if (item.type == DownloadViewModel.Type.command){
-            formatNote.visibility = View.GONE
-        }else{
-            formatNote.text = item.format.format_note
-        }
-
-
         val codec = card.findViewById<TextView>(R.id.codec)
         val codecText =
             if (item.format.encoding != "") {

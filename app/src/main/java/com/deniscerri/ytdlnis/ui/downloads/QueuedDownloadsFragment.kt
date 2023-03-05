@@ -1,50 +1,52 @@
-package com.deniscerri.ytdlnis.ui.downloadqueue
+package com.deniscerri.ytdlnis.ui.downloads
 
 import android.app.Activity
-import android.content.DialogInterface
 import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
-import android.widget.AdapterView.OnItemClickListener
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.work.WorkManager
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.adapter.GenericDownloadAdapter
 import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.databinding.FragmentHomeBinding
 import com.deniscerri.ytdlnis.util.FileUtil
+import com.deniscerri.ytdlnis.util.NotificationUtil
 import com.deniscerri.ytdlnis.util.UiUtil
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import org.w3c.dom.Text
+import com.yausername.youtubedl_android.YoutubeDL
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.sql.Date
-import java.sql.Timestamp
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
 
-class CancelledDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickListener {
+class QueuedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickListener {
     private var _binding : FragmentHomeBinding? = null
     private var fragmentView: View? = null
     private var activity: Activity? = null
     private lateinit var downloadViewModel : DownloadViewModel
-    private lateinit var cancelledRecyclerView : RecyclerView
-    private lateinit var cancelledDownloads : GenericDownloadAdapter
+    private lateinit var queuedRecyclerView : RecyclerView
+    private lateinit var queuedDownloads : GenericDownloadAdapter
+    private lateinit var notificationUtil: NotificationUtil
     private lateinit var items : List<DownloadItem>
     private lateinit var fileUtil: FileUtil
-    private lateinit var uiUtil : UiUtil
+    private lateinit var uiUtil: UiUtil
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -54,6 +56,7 @@ class CancelledDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClic
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         fragmentView = inflater.inflate(R.layout.fragment_generic_download_queue, container, false)
         activity = getActivity()
+        notificationUtil = NotificationUtil(requireContext())
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
         items = listOf()
         fileUtil = FileUtil()
@@ -64,35 +67,35 @@ class CancelledDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClic
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        cancelledDownloads =
+        queuedDownloads =
             GenericDownloadAdapter(
                 this,
                 requireActivity()
             )
 
-        cancelledRecyclerView = view.findViewById(R.id.download_recyclerview)
-        cancelledRecyclerView.adapter = cancelledDownloads
+        queuedRecyclerView = view.findViewById(R.id.download_recyclerview)
+        queuedRecyclerView.adapter = queuedDownloads
 
         val landScapeOrTablet = resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE || resources.getBoolean(R.bool.isTablet)
         if (landScapeOrTablet){
-            cancelledRecyclerView.layoutManager = GridLayoutManager(context, 2)
+            queuedRecyclerView.layoutManager = GridLayoutManager(context, 2)
         }else{
-            cancelledRecyclerView.layoutManager = LinearLayoutManager(context)
+            queuedRecyclerView.layoutManager = LinearLayoutManager(context)
         }
 
-        downloadViewModel.cancelledDownloads.observe(viewLifecycleOwner) {
+        downloadViewModel.queuedDownloads.observe(viewLifecycleOwner) {
             items = it
-            cancelledDownloads.submitList(it)
+            queuedDownloads.submitList(it)
         }
     }
 
     override fun onActionButtonClick(itemID: Long) {
-        val item = items.find { it.id == itemID }
-        if (item != null){
-            downloadViewModel.queueDownloads(listOf(item))
-        }else{
-            Toast.makeText(requireContext(), getString(R.string.error_restarting_download), Toast.LENGTH_LONG).show()
+        lifecycleScope.launch{
+            withContext(Dispatchers.IO){
+                downloadViewModel.deleteDownload(downloadViewModel.getItemByID(itemID))
+            }
         }
+        cancelDownload(itemID)
     }
 
     override fun onCardClick(itemID: Long) {
@@ -154,7 +157,7 @@ class CancelledDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClic
         }else{
             val time = bottomSheet.findViewById<TextView>(R.id.time)
             val cal = Calendar.getInstance()
-            val date = Date(item.downloadStartTime * 1000L)
+            val date = Date(item.downloadStartTime)
             cal.time = date
             val day = cal[Calendar.DAY_OF_MONTH]
             val month = cal.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault())
@@ -166,10 +169,7 @@ class CancelledDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClic
         }
 
         val remove = bottomSheet.findViewById<Button>(R.id.bottomsheet_remove_button)
-        remove!!.tag = itemID
-        remove.setOnClickListener{
-            removeItem(item, bottomSheet)
-        }
+        remove!!.visibility = View.GONE
 
         bottomSheet.show()
         bottomSheet.window!!.setLayout(
@@ -178,15 +178,11 @@ class CancelledDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClic
         )
     }
 
-
-    private fun removeItem(item: DownloadItem, bottomSheet: BottomSheetDialog?){
-        bottomSheet?.hide()
-        val deleteDialog = MaterialAlertDialogBuilder(requireContext())
-        deleteDialog.setTitle(getString(R.string.you_are_going_to_delete) + " \"" + item.title + "\"!")
-        deleteDialog.setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, _: Int -> dialogInterface.cancel() }
-        deleteDialog.setPositiveButton(getString(R.string.ok)) { _: DialogInterface?, _: Int ->
-            downloadViewModel.deleteDownload(item)
-        }
-        deleteDialog.show()
+    private fun cancelDownload(itemID: Long){
+        val id = itemID.toInt()
+        YoutubeDL.getInstance().destroyProcessById(id.toString())
+        WorkManager.getInstance(requireContext()).cancelUniqueWork(id.toString())
+        notificationUtil.cancelDownloadNotification(id)
     }
+
 }

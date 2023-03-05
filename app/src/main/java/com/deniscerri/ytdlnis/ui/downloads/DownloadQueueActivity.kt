@@ -1,4 +1,4 @@
-package com.deniscerri.ytdlnis.ui.downloadqueue
+package com.deniscerri.ytdlnis.ui.downloads
 
 import android.content.Context
 import android.os.Bundle
