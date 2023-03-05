@@ -31,10 +31,11 @@ import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.UiUtil
 import com.google.android.material.chip.Chip
 import com.google.android.material.textfield.TextInputLayout
+import com.google.gson.Gson
 import kotlinx.coroutines.launch
 
 
-class DownloadAudioFragment(private var resultItem: ResultItem) : Fragment() {
+class DownloadAudioFragment(private var resultItem: ResultItem, private var currentDownloadItem: DownloadItem?) : Fragment() {
     private var _binding : FragmentHomeBinding? = null
     private var fragmentView: View? = null
     private var activity: Activity? = null
@@ -46,8 +47,7 @@ class DownloadAudioFragment(private var resultItem: ResultItem) : Fragment() {
     private lateinit var author : TextInputLayout
     private lateinit var saveDir : TextInputLayout
 
-    lateinit var downloadItem: DownloadItem
-
+    lateinit var downloadItem : DownloadItem
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -57,7 +57,14 @@ class DownloadAudioFragment(private var resultItem: ResultItem) : Fragment() {
         fragmentView = inflater.inflate(R.layout.fragment_download_audio, container, false)
         activity = getActivity()
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
-        downloadItem = downloadViewModel.createDownloadItemFromResult(resultItem, Type.audio)
+
+        downloadItem = if (currentDownloadItem != null && currentDownloadItem!!.type == Type.audio){
+            val string = Gson().toJson(currentDownloadItem, DownloadItem::class.java)
+            Gson().fromJson(string, DownloadItem::class.java)
+        }else{
+            downloadViewModel.createDownloadItemFromResult(resultItem, Type.audio)
+        }
+
         fileUtil = FileUtil()
         uiUtil = UiUtil(fileUtil)
         return fragmentView
@@ -90,14 +97,8 @@ class DownloadAudioFragment(private var resultItem: ResultItem) : Fragment() {
                     }
                 })
                 saveDir = view.findViewById(R.id.outputPath)
-                val downloadPath = sharedPreferences.getString(
-                    "music_path",
-                    getString(R.string.music_path)
-                )
-                downloadItem.downloadPath = downloadPath!!
-                //downloadViewModel.updateDownload(downloadItem)
                 saveDir.editText!!.setText(
-                    fileUtil.formatPath(downloadPath)
+                    fileUtil.formatPath(downloadItem.downloadPath)
                 )
                 saveDir.editText!!.isFocusable = false;
                 saveDir.editText!!.isClickable = true;
@@ -121,7 +122,7 @@ class DownloadAudioFragment(private var resultItem: ResultItem) : Fragment() {
                 if (formats.isEmpty()) {
                     formatCard.visibility = View.GONE
                 } else {
-                    val chosenFormat = formats[formats.lastIndex]
+                    val chosenFormat = downloadItem.format
                     uiUtil.populateFormatCard(formatCard, chosenFormat)
                     val listener = object : OnFormatClickListener {
                         override fun onFormatClick(allFormats: List<Format>, item: Format) {
@@ -158,19 +159,7 @@ class DownloadAudioFragment(private var resultItem: ResultItem) : Fragment() {
                     )
                 )
 
-                val selectedContainer: String = try {
-                    if (containers.contains(formats[formats.lastIndex].container)){
-                        formats[formats.lastIndex].container
-                    }else{
-                        sharedPreferences.getString("audio_format", "mp3")!!
-                    }
-                }catch (e: Exception){
-                    sharedPreferences.getString("audio_format", "mp3")!!
-                }
-
-                downloadItem.format.container = selectedContainer
-                Log.e("TAG", selectedContainer)
-                containerAutoCompleteTextView!!.setText(selectedContainer, false)
+                containerAutoCompleteTextView!!.setText(downloadItem.format.container, false)
                 (container!!.editText as AutoCompleteTextView?)!!.onItemClickListener =
                     AdapterView.OnItemClickListener { _: AdapterView<*>?, _: View?, index: Int, _: Long ->
                         downloadItem.format.container = containers[index]

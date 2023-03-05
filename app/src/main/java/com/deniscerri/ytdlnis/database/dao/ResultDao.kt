@@ -9,6 +9,9 @@ interface ResultDao {
     @Query("SELECT * FROM results")
     fun getResults() : LiveData<List<ResultItem>>
 
+    @Query("SELECT COUNT(id) FROM results")
+    fun getCount() : LiveData<Int>
+
     @Query("SELECT * FROM results LIMIT 1")
     fun getFirstResult() : ResultItem
 

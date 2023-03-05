@@ -1,19 +1,17 @@
 package com.deniscerri.ytdlnis.util
 
-import android.R.attr.src
 import android.content.Context
 import android.media.MediaScannerConnection
-import android.os.Build
+import android.net.Uri
+import android.provider.DocumentsContract
+import android.webkit.MimeTypeMap
 import com.deniscerri.ytdlnis.R
+import okhttp3.internal.closeQuietly
 import java.io.File
-import java.io.FileInputStream
-import java.io.FileOutputStream
 import java.net.URLDecoder
-import java.nio.channels.FileChannel
 import java.nio.charset.StandardCharsets
-import java.nio.file.Files
-import java.nio.file.StandardCopyOption
 import java.text.DecimalFormat
+import java.util.*
 import kotlin.math.log10
 import kotlin.math.pow
 
@@ -23,6 +21,12 @@ class FileUtil() {
         val file = File(path)
         if (file.exists()) {
             file.delete()
+        }
+    }
+
+    internal object Compare {
+        fun max(a: File, b: File): File {
+            return if (a.length() > b.length()) a else b
         }
     }
 
@@ -56,18 +60,18 @@ class FileUtil() {
         return formattedPath.toString()
     }
 
-    private fun scanMedia(destDir: String, fileName: String, context: Context) : String {
+    private fun scanMedia(destDir: String, context: Context) : String {
         val file : File
         val path = File(formatPath(destDir))
 
         try {
-            file = path.listFiles()?.find {
-                it!!.name == fileName
-            }!!
+            val files = path.listFiles()!!
+            files.filter { it.lastModified() >  System.currentTimeMillis() - 10000}
+            Arrays.sort(files) { p0, p1 -> p0!!.lastModified().compareTo(p1!!.lastModified()) }
 
-            val paths = arrayOf(file.absolutePath)
+            val paths = files.map { it.absolutePath }.toTypedArray()
             MediaScannerConnection.scanFile(context, paths, null, null)
-            return paths[0]
+            return files.reduce(Compare::max).absolutePath
         }catch (e: Exception){
             e.printStackTrace()
         }
@@ -76,81 +80,38 @@ class FileUtil() {
     }
     @Throws(Exception::class)
      fun moveFile(originDir: File, context: Context, destDir: String, progress: (p: Int) -> Unit) : String {
-        var fileName = ""
-        var maxSize = 0L
         originDir.listFiles()?.forEach {
             if (it.name.equals("rList")){
                 it.delete()
                 return@forEach
             }
 
-            if (it.length() > maxSize){
-                maxSize = it.length()
-                fileName = it.name
+            val mimeType =
+                MimeTypeMap.getSingleton().getMimeTypeFromExtension(it.extension) ?: "*/*"
+
+            val dest = Uri.parse(destDir).run {
+                DocumentsContract.buildDocumentUriUsingTree(
+                    this,
+                    DocumentsContract.getTreeDocumentId(this)
+                )
             }
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-                val f = File(formatPath(destDir)+"/"+it.name)
-                f.mkdirs()
-                Files.move(it.toPath(), f.toPath(), StandardCopyOption.REPLACE_EXISTING)
-                progress(100)
-            }else{
-                val f = File(formatPath(destDir)+"/"+it.name)
+            val destUri = DocumentsContract.createDocument(
+                context.contentResolver,
+                dest,
+                mimeType,
+                it.name
+            ) ?: return@forEach
 
-                val inChannel: FileChannel = FileInputStream(it).channel
-                val outChannel: FileChannel = FileOutputStream(f).channel
-                try {
-                    inChannel.transferTo(0, inChannel.size(), outChannel)
-                } finally {
-                    inChannel.close()
-                    outChannel.close()
-                }
-//
-//                val mimeType =
-//                    MimeTypeMap.getSingleton().getMimeTypeFromExtension(it.extension) ?: "*/*"
-//
-//                val destination = Uri.parse(destDir).run {
-//                    DocumentsContract.buildChildDocumentsUriUsingTree(this, DocumentsContract.getTreeDocumentId(this))
-//                }
-//
-//                val destUri = DocumentsContract.createDocument(
-//                    context.contentResolver,
-//                    destination,
-//                    mimeType,
-//                    it.name
-//                ) ?: return@forEach
-//
-//                val inputStream = it.inputStream()
-//                val outputStream = context.contentResolver.openOutputStream(destUri) ?: return@forEach
-//                val fileLength = it.length()
-//                var bytesCopied: Long = 0
-//                val buffer = ByteArray(DEFAULT_BUFFER_SIZE)
-//                var bytes = inputStream.read(buffer)
-//
-//                try {
-//                    while (bytes >= 0) {
-//                        outputStream.write(buffer, 0, bytes)
-//                        bytesCopied += bytes
-//                        progress((bytesCopied * 100 / fileLength).toInt())
-//                        bytes = inputStream.read(buffer)
-//                    }
-//                }catch (e : Exception){
-//                    e.printStackTrace()
-//                    Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
-//                }
-//
-//                inputStream.close()
-//                outputStream.close()
-//
-//                it.delete()
-            }
+            val inputStream = it.inputStream()
+            val outputStream =
+                context.contentResolver.openOutputStream(destUri) ?: return@forEach
+            inputStream.copyTo(outputStream)
+            inputStream.closeQuietly()
+            outputStream.closeQuietly()
         }
         originDir.delete()
-        return if (maxSize > 0L){
-            scanMedia(destDir, fileName, context)
-        }else{
-            context.getString(R.string.unfound_file)
-        }
+        return scanMedia(destDir, context)
     }
 
     fun convertFileSize(s: Long): String{

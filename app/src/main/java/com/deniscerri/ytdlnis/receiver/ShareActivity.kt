@@ -14,22 +14,29 @@ import android.os.Build
 import android.os.Build.VERSION_CODES
 import android.os.Bundle
 import android.provider.Settings
+import android.view.View
+import android.view.ViewGroup
 import android.view.Window
 import android.view.WindowManager
+import android.widget.Button
 import android.widget.TextView
-import androidx.activity.ComponentActivity
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
+import com.deniscerri.ytdlnis.adapter.PlaylistAdapter
+import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdlnis.ui.downloadcard.DownloadBottomSheetDialog
-import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.deniscerri.ytdlnis.ui.downloadcard.SelectPlaylistItemsBottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.CoroutineScope
@@ -111,7 +118,11 @@ class ShareActivity : AppCompatActivity() {
                     if (it.isNotEmpty() && supportFragmentManager.findFragmentByTag("downloadSingleSheet") == null){
                         if(resultViewModel.itemCount.value!! == it.size){
                             loadingBottomSheet.cancel()
-                            showDownloadSheet(it[0])
+                            if (it.size == 1){
+                                showDownloadSheet(it[0])
+                            }else{
+                                showSelectPlaylistItems(it)
+                            }
                         }
                     }
                 }
@@ -126,6 +137,24 @@ class ShareActivity : AppCompatActivity() {
         }else{
             val downloadItem = downloadViewModel.createDownloadItemFromResult(it, DownloadViewModel.Type.valueOf(sharedPreferences.getString("preferred_download_type", "video")!!))
             downloadViewModel.queueDownloads(listOf(downloadItem))
+            this.finish()
+        }
+    }
+
+    private fun showSelectPlaylistItems(it: List<ResultItem>){
+        if (sharedPreferences.getBoolean("download_card", true)){
+            val bottomSheet = SelectPlaylistItemsBottomSheetDialog(it, DownloadViewModel.Type.valueOf(sharedPreferences.getString("preferred_download_type", "video")!!))
+            bottomSheet.show(supportFragmentManager, "downloadPlaylistSheet")
+        }else{
+            lifecycleScope.launch(Dispatchers.IO){
+                val downloadItems = mutableListOf<DownloadItem>()
+                it.forEach { res ->
+                    val i = downloadViewModel.createDownloadItemFromResult(res, DownloadViewModel.Type.valueOf(sharedPreferences.getString("preferred_download_type", "video")!!))
+                    i.format = downloadViewModel.getLatestCommandTemplateAsFormat()
+                    downloadItems.add(i)
+                }
+                downloadViewModel.queueDownloads(downloadItems)
+            }
             this.finish()
         }
     }

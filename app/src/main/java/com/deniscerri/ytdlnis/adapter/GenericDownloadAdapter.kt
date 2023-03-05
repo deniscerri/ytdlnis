@@ -23,6 +23,7 @@ import com.deniscerri.ytdlnis.util.FileUtil
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
 import com.squareup.picasso.Picasso
+import okhttp3.internal.format
 import java.io.File
 import java.text.DateFormat
 import java.text.SimpleDateFormat
@@ -48,13 +49,24 @@ class GenericDownloadAdapter(onItemClickListener: OnItemClickListener, activity:
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val cardView = LayoutInflater.from(parent.context)
-            .inflate(R.layout.generic_download_card, parent, false)
+            .inflate(R.layout.download_card, parent, false)
         return ViewHolder(cardView, onItemClickListener)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)
         val card = holder.cardView
+
+        // THUMBNAIL ----------------------------------
+        val thumbnail = card.findViewById<ImageView>(R.id.downloads_image_view)
+        val imageURL = item!!.thumb
+        val uiHandler = Handler(Looper.getMainLooper())
+        if (imageURL.isNotEmpty()) {
+            uiHandler.post { Picasso.get().load(imageURL).into(thumbnail) }
+        } else {
+            uiHandler.post { Picasso.get().load(R.color.black).into(thumbnail) }
+        }
+        thumbnail.setColorFilter(Color.argb(95, 0, 0, 0))
 
         // TITLE  ----------------------------------
         val itemTitle = card.findViewById<TextView>(R.id.title)
@@ -64,12 +76,11 @@ class GenericDownloadAdapter(onItemClickListener: OnItemClickListener, activity:
         }
         itemTitle.text = title
 
-        // TITLE  ----------------------------------
-        val itemUrl = card.findViewById<TextView>(R.id.url)
+        val itemUrl = card.findViewById<TextView>(R.id.subtitle)
         itemUrl.text = item.url
 
-        val type = card.findViewById<TextView>(R.id.type)
-        type!!.text = item.type.toString().uppercase()
+        val formatNote = card.findViewById<TextView>(R.id.format_note)
+        formatNote!!.text = item.format.format_note.uppercase()
 
         val codec = card.findViewById<TextView>(R.id.codec)
         val codecText =

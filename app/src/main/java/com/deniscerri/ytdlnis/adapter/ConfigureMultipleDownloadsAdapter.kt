@@ -25,6 +25,7 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.squareup.picasso.Picasso
+import okhttp3.internal.format
 import java.util.*
 
 class ConfigureMultipleDownloadsAdapter(onItemClickListener: OnItemClickListener, activity: Activity) : ListAdapter<DownloadItem?, ConfigureMultipleDownloadsAdapter.ViewHolder>(AsyncDifferConfig.Builder(DIFF_CALLBACK).build()) {
@@ -77,24 +78,45 @@ class ConfigureMultipleDownloadsAdapter(onItemClickListener: OnItemClickListener
         itemTitle.text = title
 
         // Author ----------------------------------
-        val author = card.findViewById<TextView>(R.id.author)
+        val author = card.findViewById<TextView>(R.id.subtitle)
         author.text = item.author
 
-        // Container ----------------------------------
-        val container = card.findViewById<TextView>(R.id.container)
-        container.text = item.format.container.uppercase(Locale.getDefault())
+        // Format Note ----------------------------------
+        val formatNote = card.findViewById<TextView>(R.id.format_note)
+        if (item.format.format_note.isNotEmpty()){
+            formatNote.text = item.format.format_note.uppercase(Locale.getDefault())
+        }else{
+            formatNote.visibility = View.GONE
+        }
 
-        // File Size
-        val fileSize = card.findViewById<TextView>(R.id.filesize)
-        val formattedSize = fileUtil.convertFileSize(item.format.filesize)
-        fileSize.text = if (formattedSize == "?") "" else formattedSize.uppercase(Locale.getDefault())
+        val codec = card.findViewById<TextView>(R.id.codec)
+        val codecText =
+            if (item.format.encoding != "") {
+                item.format.encoding.uppercase()
+            }else if (item.format.vcodec != "none" && item.format.vcodec != ""){
+                item.format.vcodec.uppercase()
+            } else {
+                item.format.acodec.uppercase()
+            }
+        if (codecText == "" || codecText == "none"){
+            codec.visibility = View.GONE
+        }else{
+            codec.visibility = View.VISIBLE
+            codec.text = codecText
+        }
 
-        // Quality
-        val quality = card.findViewById<TextView>(R.id.quality)
-        quality.text = item.format.format_note
+        val fileSize = card.findViewById<TextView>(R.id.file_size)
+        Log.e("aa", item.format.filesize.toString())
+        val fileSizeReadable = fileUtil.convertFileSize(item.format.filesize)
+        Log.e("aa", fileSizeReadable)
+        if (fileSizeReadable == "?") fileSize.visibility = View.GONE
+        else {
+            fileSize.text = fileSizeReadable
+            fileSize.visibility = View.VISIBLE
+        }
 
         // Type Icon Button
-        val btn = card.findViewById<MaterialButton>(R.id.downloads_download_button_type)
+        val btn = card.findViewById<MaterialButton>(R.id.action_button)
 
         when(item.type) {
             DownloadViewModel.Type.audio -> {
@@ -109,23 +131,23 @@ class ConfigureMultipleDownloadsAdapter(onItemClickListener: OnItemClickListener
         }
 
         card.setOnClickListener {
-            onItemClickListener.onCardClick(item.id)
+            onItemClickListener.onCardClick(item.url)
         }
     }
 
     interface OnItemClickListener {
         fun onButtonClick(videoURL: String, type: String?)
-        fun onCardClick(itemID: Long)
+        fun onCardClick(itemURL: String)
     }
 
     companion object {
         private val DIFF_CALLBACK: DiffUtil.ItemCallback<DownloadItem> = object : DiffUtil.ItemCallback<DownloadItem>() {
             override fun areItemsTheSame(oldItem: DownloadItem, newItem: DownloadItem): Boolean {
-                return oldItem.id === newItem.id
+                return oldItem.url == newItem.url
             }
 
             override fun areContentsTheSame(oldItem: DownloadItem, newItem: DownloadItem): Boolean {
-                return oldItem.url == newItem.url && oldItem.title == newItem.title && oldItem.author == newItem.author && oldItem.type == newItem.type && oldItem.format == newItem.format
+                return oldItem.title == newItem.title && oldItem.author == newItem.author && oldItem.type == newItem.type && oldItem.format == newItem.format
             }
         }
     }

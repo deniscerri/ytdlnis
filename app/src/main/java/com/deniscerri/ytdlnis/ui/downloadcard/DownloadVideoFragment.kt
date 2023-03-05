@@ -30,12 +30,13 @@ import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.UiUtil
 import com.google.android.material.chip.Chip
 import com.google.android.material.textfield.TextInputLayout
+import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 
-class DownloadVideoFragment(private val resultItem: ResultItem) : Fragment() {
+class DownloadVideoFragment(private val resultItem: ResultItem, private var currentDownloadItem: DownloadItem?) : Fragment() {
     private var _binding : FragmentHomeBinding? = null
     private var fragmentView: View? = null
     private var activity: Activity? = null
@@ -60,7 +61,14 @@ class DownloadVideoFragment(private val resultItem: ResultItem) : Fragment() {
         activity = getActivity()
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
         resultViewModel = ViewModelProvider(this@DownloadVideoFragment)[ResultViewModel::class.java]
-        downloadItem = downloadViewModel.createDownloadItemFromResult(resultItem, Type.video)
+
+        downloadItem = if (currentDownloadItem != null && currentDownloadItem!!.type == Type.video){
+            val string = Gson().toJson(currentDownloadItem, DownloadItem::class.java)
+            Gson().fromJson(string, DownloadItem::class.java)
+        }else{
+            downloadViewModel.createDownloadItemFromResult(resultItem, Type.video)
+        }
+
         fileUtil = FileUtil()
         uiUtil = UiUtil(fileUtil)
         return fragmentView
@@ -94,13 +102,8 @@ class DownloadVideoFragment(private val resultItem: ResultItem) : Fragment() {
                 })
 
                 saveDir = view.findViewById(R.id.outputPath)
-                val downloadPath = sharedPreferences.getString(
-                    "video_path",
-                    getString(R.string.video_path)
-                )
-                downloadItem.downloadPath = downloadPath!!
                 saveDir.editText!!.setText(
-                    fileUtil.formatPath(downloadPath)
+                    fileUtil.formatPath(downloadItem.downloadPath)
                 )
                 saveDir.editText!!.isFocusable = false;
                 saveDir.editText!!.isClickable = true;
@@ -120,9 +123,7 @@ class DownloadVideoFragment(private val resultItem: ResultItem) : Fragment() {
                     videoFormats.forEach { formats.add(Format(it, container!!,"","", "",0, it)) }
                 }
 
-                downloadItem.format = formats[formats.lastIndex]
                 val containers = requireContext().resources.getStringArray(R.array.video_containers)
-
 
                 val container = view.findViewById<TextInputLayout>(R.id.downloadContainer)
                 val containerAutoCompleteTextView =
@@ -146,7 +147,7 @@ class DownloadVideoFragment(private val resultItem: ResultItem) : Fragment() {
                 containerAutoCompleteTextView!!.setText(selectedContainer, false)
 
                 val formatCard = view.findViewById<ConstraintLayout>(R.id.format_card_constraintLayout)
-                val chosenFormat = formats[formats.lastIndex]
+                val chosenFormat = downloadItem.format
                 uiUtil.populateFormatCard(formatCard, chosenFormat)
                 val listener = object : OnFormatClickListener {
                     override fun onFormatClick(allFormats: List<Format>, item: Format) {

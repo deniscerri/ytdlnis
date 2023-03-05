@@ -31,11 +31,12 @@ import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.UiUtil
 import com.google.android.material.chip.Chip
 import com.google.android.material.textfield.TextInputLayout
+import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class DownloadCommandFragment(private val resultItem: ResultItem) : Fragment() {
+class DownloadCommandFragment(private val resultItem: ResultItem, private var currentDownloadItem: DownloadItem?) : Fragment() {
     private var _binding : FragmentHomeBinding? = null
     private var fragmentView: View? = null
     private var activity: Activity? = null
@@ -57,7 +58,14 @@ class DownloadCommandFragment(private val resultItem: ResultItem) : Fragment() {
         activity = getActivity()
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
         commandTemplateViewModel = ViewModelProvider(this)[CommandTemplateViewModel::class.java]
-        downloadItem = downloadViewModel.createDownloadItemFromResult(resultItem, DownloadViewModel.Type.command)
+
+        downloadItem = if (currentDownloadItem != null && currentDownloadItem!!.type == DownloadViewModel.Type.command){
+            val string = Gson().toJson(currentDownloadItem, DownloadItem::class.java)
+            Gson().fromJson(string, DownloadItem::class.java)
+        }else{
+            downloadViewModel.createDownloadItemFromResult(resultItem, DownloadViewModel.Type.command)
+        }
+
         fileUtil = FileUtil()
         uiUtil = UiUtil(fileUtil)
         return fragmentView
@@ -138,13 +146,8 @@ class DownloadCommandFragment(private val resultItem: ResultItem) : Fragment() {
                     }
 
                 saveDir = view.findViewById(R.id.outputPath)
-                val downloadPath = sharedPreferences.getString(
-                    "command_path",
-                    getString(R.string.command_path)
-                )
-                downloadItem.downloadPath = downloadPath!!
                 saveDir.editText!!.setText(
-                    fileUtil.formatPath(downloadPath)
+                    fileUtil.formatPath(downloadItem.downloadPath)
                 )
                 saveDir.editText!!.isFocusable = false;
                 saveDir.editText!!.isClickable = true;

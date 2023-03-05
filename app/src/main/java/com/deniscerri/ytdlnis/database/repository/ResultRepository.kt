@@ -14,7 +14,7 @@ import com.deniscerri.ytdlnis.util.InfoUtil
 class ResultRepository(private val resultDao: ResultDao, private val commandTemplateDao: CommandTemplateDao, private val context: Context) {
     private val tag: String = "ResultRepository"
     val allResults : LiveData<List<ResultItem>> = resultDao.getResults()
-    var itemCount = MutableLiveData(0)
+    var itemCount = MutableLiveData(-1)
 
     suspend fun insert(it: ResultItem){
         resultDao.insert(it)

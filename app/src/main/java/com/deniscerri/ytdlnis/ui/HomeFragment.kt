@@ -134,8 +134,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
         resultViewModel.items.observe(viewLifecycleOwner) {
             homeAdapter!!.submitList(it)
             resultsList = it
-            Log.e(TAG, resultViewModel.itemCount.toString())
-            if(resultViewModel.itemCount.value!! > 1){
+            if(resultViewModel.itemCount.value!! > 1 || resultViewModel.itemCount.value!!  == -1){
                 if (it[0].playlistTitle.isNotEmpty() && it[0].playlistTitle != getString(R.string.trendingPlaylist)){
                     downloadAllFabCoordinator!!.visibility = VISIBLE
                 }else{
@@ -388,30 +387,20 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
         if (viewIdName.isNotEmpty()) {
             if (viewIdName == "downloadSelected") {
                 val downloadList = downloadViewModel.turnResultItemsToDownloadItems(selectedObjects!!)
-                downloadViewModel.putDownloadsForProcessing(selectedObjects!!, downloadList).observe(viewLifecycleOwner) {
-                    it.forEachIndexed { i, itemID ->
-                        downloadList[i].id = itemID
-                    }
-                    if (sharedPreferences!!.getBoolean("download_card", true)) {
-                        val bottomSheet = DownloadMultipleBottomSheetDialog(downloadList)
-                        bottomSheet.show(parentFragmentManager, "downloadMultipleSheet")
-                    } else {
-                        downloadViewModel.queueDownloads(downloadList)
-                    }
+                if (sharedPreferences!!.getBoolean("download_card", true)) {
+                    val bottomSheet = DownloadMultipleBottomSheetDialog(downloadList.toMutableList())
+                    bottomSheet.show(parentFragmentManager, "downloadMultipleSheet")
+                } else {
+                    downloadViewModel.queueDownloads(downloadList)
                 }
             }
             if (viewIdName == "downloadAll") {
                 val downloadList = downloadViewModel.turnResultItemsToDownloadItems(resultsList!!)
-                downloadViewModel.putDownloadsForProcessing(resultsList!!, downloadList).observe(viewLifecycleOwner) {
-                    it.forEachIndexed { i, itemID ->
-                        downloadList[i].id = itemID
-                    }
-                    if (sharedPreferences!!.getBoolean("download_card", true)) {
-                        val bottomSheet = DownloadMultipleBottomSheetDialog(downloadList)
-                        bottomSheet.show(parentFragmentManager, "downloadMultipleSheet")
-                    } else {
-                        downloadViewModel.queueDownloads(downloadList)
-                    }
+                if (sharedPreferences!!.getBoolean("download_card", true)) {
+                    val bottomSheet = DownloadMultipleBottomSheetDialog(downloadList.toMutableList())
+                    bottomSheet.show(parentFragmentManager, "downloadMultipleSheet")
+                } else {
+                    downloadViewModel.queueDownloads(downloadList)
                 }
             }
         }

@@ -20,8 +20,25 @@
             style="@style/Widget.Material3.BottomAppBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            app:menu="@menu/download_multiple_menu" />
+            android:layout_gravity="bottom">
+
+            <Button
+                style="?attr/materialIconButtonStyle"
+                android:id="@+id/check_all"
+                android:padding="0dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:icon="@drawable/ic_select_all" />
+
+            <TextView
+                android:id="@+id/selected"
+                android:layout_width="wrap_content"
+                android:textStyle="bold"
+                android:paddingStart="17dp"
+                android:paddingEnd="0dp"
+                android:layout_height="wrap_content" />
+
+        </com.google.android.material.bottomappbar.BottomAppBar>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/edit_selected"
@@ -50,44 +67,25 @@
             android:orientation="horizontal"
             android:paddingTop="20dp">
 
+
             <TextView
                 android:id="@+id/bottom_sheet_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/download"
-                android:textSize="25sp"
+                android:layout_marginTop="10dp"
+                android:text="@string/select"
+                android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-
-            <TextView
-                android:id="@+id/bottom_sheet_subtitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/configure_download"
-                android:textSize="12sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/bottom_sheet_title" />
-
             <Button
-                android:id="@+id/bottomsheet_schedule_button"
-                style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
-                app:icon="@drawable/ic_clock"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/bottomsheet_download_button"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <Button
-                android:id="@+id/bottomsheet_download_button"
+                android:id="@+id/bottomsheet_ok"
                 style="@style/Widget.Material3.Button.ElevatedButton.Icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:autoLink="all"
-                android:text="@string/download"
-                app:icon="@drawable/ic_down"
+                android:text="@string/ok"
+                app:icon="@drawable/ic_check"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -99,6 +97,7 @@
             android:id="@+id/downloadMultipleRecyclerview"
             android:layout_width="match_parent"
             android:paddingTop="10dp"
+            tools:listitem="@layout/playlist_item"
             android:layout_height="wrap_content"
             android:focusableInTouchMode="true"
             android:orientation="vertical"

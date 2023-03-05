@@ -81,13 +81,13 @@ class DownloadBottomSheetDialog(private val resultItem: ResultItem, private val 
             overScrollMode = View.OVER_SCROLL_NEVER
         }
 
-        val fragments = mutableListOf<Fragment>(DownloadAudioFragment(resultItem), DownloadVideoFragment(resultItem))
+        val fragments = mutableListOf<Fragment>(DownloadAudioFragment(resultItem, null), DownloadVideoFragment(resultItem, null))
 
         lifecycleScope.launch{
             withContext(Dispatchers.IO){
                 val nr = commandTemplateDao.getTotalNumber()
                 if(nr > 0){
-                    fragments.add(DownloadCommandFragment(resultItem))
+                    fragments.add(DownloadCommandFragment(resultItem, null))
                 }else{
                     (tabLayout.getChildAt(0) as? ViewGroup)?.getChildAt(2)?.isEnabled = false
                     (tabLayout.getChildAt(0) as? ViewGroup)?.getChildAt(2)?.alpha = 0.3f

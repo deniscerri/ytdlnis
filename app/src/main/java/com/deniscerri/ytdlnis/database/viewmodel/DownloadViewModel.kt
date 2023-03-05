@@ -144,6 +144,11 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
         }
     }
 
+    fun getLatestCommandTemplateAsFormat() : Format {
+        val t = commandTemplateDao.getFirst()
+        return Format(t.title, "", "", "", "", 0, t.content)
+    }
+
     fun turnResultItemsToDownloadItems(items: List<ResultItem?>) : List<DownloadItem> {
         val list : MutableList<DownloadItem> = mutableListOf()
         items.forEach {

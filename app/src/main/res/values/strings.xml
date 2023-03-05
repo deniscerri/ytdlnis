@@ -203,4 +203,7 @@
     <string name="preferred_download_type">Preferred Download Type</string>
     <string name="preferred_download_type_summary">Default tab the download card will open to</string>
     <string name="confirm_delete_logs_desc">Delete the entire log list, permanently.</string>
+    <string name="select">Select</string>
+    <string name="selected">Selected</string>
+    <string name="all_items_selected">All items selected</string>
 </resources>
