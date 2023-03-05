@@ -25,6 +25,7 @@ import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.models.Format
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.ResultViewModel
+import com.deniscerri.ytdlnis.receiver.ShareActivity
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -174,17 +175,19 @@ class DownloadMultipleBottomSheetDialog(private val items: MutableList<DownloadI
 
     override fun onCancel(dialog: DialogInterface) {
         super.onCancel(dialog)
-        cleanDownloads()
+        cleanup()
     }
 
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
-        cleanDownloads()
+        cleanup()
     }
 
-    private fun cleanDownloads(){
+    private fun cleanup(){
         parentFragmentManager.beginTransaction().remove(parentFragmentManager.findFragmentByTag("downloadMultipleSheet")!!).commit()
-        downloadViewModel.deleteProcessing()
+        if (parentFragmentManager.fragments.size == 1){
+            (activity as ShareActivity).finish()
+        }
     }
 
     override fun onButtonClick(videoURL: String, type: String?) {

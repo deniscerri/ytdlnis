@@ -5,6 +5,7 @@ import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Bundle
 import android.util.DisplayMetrics
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
@@ -20,6 +21,7 @@ import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.ResultViewModel
+import com.deniscerri.ytdlnis.receiver.ShareActivity
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.button.MaterialButton
@@ -105,12 +107,18 @@ class SelectPlaylistItemsBottomSheetDialog(private val items: List<ResultItem>, 
                     i.format = downloadViewModel.getLatestCommandTemplateAsFormat()
                     downloadItems.add(i)
                 }
-                val bottomSheet = DownloadMultipleBottomSheetDialog(downloadItems)
-                bottomSheet.show(parentFragmentManager, "downloadMultipleSheet")
+                if (downloadItems.size == 1){
+                    val resultItem = resultViewModel.getItemByURL(items[0].url)
+                    val bottomSheet = DownloadBottomSheetDialog(resultItem, type)
+                    bottomSheet.show(parentFragmentManager, "downloadSingleSheet")
+                }else{
+                    val bottomSheet = DownloadMultipleBottomSheetDialog(downloadItems)
+                    bottomSheet.show(parentFragmentManager, "downloadMultipleSheet")
+                }
+                dismiss()
                 resultViewModel.deleteAll()
                 resultViewModel.insert(ArrayList(checkedResultItems))
             }
-            dismiss()
         }
     }
 
@@ -126,6 +134,9 @@ class SelectPlaylistItemsBottomSheetDialog(private val items: List<ResultItem>, 
 
     private fun cleanup(){
         parentFragmentManager.beginTransaction().remove(parentFragmentManager.findFragmentByTag("downloadPlaylistSheet")!!).commit()
+        if (parentFragmentManager.fragments.size == 1){
+            (activity as ShareActivity).finish()
+        }
     }
 
 
