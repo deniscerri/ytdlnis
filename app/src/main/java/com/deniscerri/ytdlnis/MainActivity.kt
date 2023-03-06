@@ -185,13 +185,22 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun askPermissions() {
-        if (Build.VERSION.SDK_INT < VERSION_CODES.TIRAMISU && !checkFilePermission()) {
-            ActivityCompat.requestPermissions(
-                this,
-                arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
-                1
-            )
-        }else if (!checkNotificationPermission()){
+        if (!checkFilePermission()) {
+            if (Build.VERSION.SDK_INT >= 33){
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(Manifest.permission.READ_MEDIA_VIDEO, Manifest.permission.READ_MEDIA_AUDIO),
+                    1
+                )
+            }else{
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                    1
+                )
+            }
+        }
+        if (!checkNotificationPermission()){
             ActivityCompat.requestPermissions(
                 this,
                 arrayOf(Manifest.permission.POST_NOTIFICATIONS),
@@ -218,7 +227,7 @@ class MainActivity : AppCompatActivity() {
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         for (i in permissions.indices) {
-            if (permissions.contains(Manifest.permission.POST_NOTIFICATIONS)) break
+            if (permissions.contains(Manifest.permission.POST_NOTIFICATIONS)) continue
             if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
                 createPermissionRequestDialog()
             }else{
@@ -233,8 +242,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun checkFilePermission(): Boolean {
-        return (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                == PackageManager.PERMISSION_GRANTED)
+        return if(Build.VERSION.SDK_INT >= 33){
+            (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_AUDIO)
+                    == PackageManager.PERMISSION_GRANTED) &&
+            (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_VIDEO)
+                    == PackageManager.PERMISSION_GRANTED)
+        }else{
+            (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    == PackageManager.PERMISSION_GRANTED)
+        }
     }
 
     private fun checkNotificationPermission(): Boolean {

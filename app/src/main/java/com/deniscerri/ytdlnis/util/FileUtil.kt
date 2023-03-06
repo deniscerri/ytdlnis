@@ -7,6 +7,7 @@ import android.os.Build
 import android.provider.DocumentsContract
 import android.util.Log
 import android.webkit.MimeTypeMap
+import androidx.documentfile.provider.DocumentFile
 import com.deniscerri.ytdlnis.R
 import okhttp3.internal.closeQuietly
 import okio.Path.Companion.toPath
@@ -70,10 +71,9 @@ class FileUtil() {
         val path = File(formatPath(destDir))
 
         try {
-            val files = path.listFiles()!!
-            files.filter { it.lastModified() >  System.currentTimeMillis() - 10000}
+            var files = path.listFiles()!!
+            files = files.filter { it.lastModified() >  System.currentTimeMillis() - 5000}.toTypedArray()
             Arrays.sort(files) { p0, p1 -> p0!!.lastModified().compareTo(p1!!.lastModified()) }
-
             val paths = files.map { it.absolutePath }.toTypedArray()
             MediaScannerConnection.scanFile(context, paths, null, null)
             return files.reduce(Compare::max).absolutePath
@@ -102,7 +102,6 @@ class FileUtil() {
             }
 
             val destFile = File(formatPath(destDir) + "/${it.name}")
-            Log.e("aa", destFile.absolutePath)
             if (destFile.absolutePath.contains("/storage/emulated/0/Download")
                 || destFile.absolutePath.contains("/storage/emulated/0/Documents")
             ){
