@@ -391,7 +391,7 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
 
         type!!.text = item.type.toString().uppercase()
 
-        if (item.format.format_note == "?") formatNote!!.visibility = View.GONE
+        if (item.format.format_note == "?" || item.format.format_note == "") formatNote!!.visibility = View.GONE
         else formatNote!!.text = item.format.format_note
 
         val codecText =

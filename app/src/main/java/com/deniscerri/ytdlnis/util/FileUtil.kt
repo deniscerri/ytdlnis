@@ -3,13 +3,19 @@ package com.deniscerri.ytdlnis.util
 import android.content.Context
 import android.media.MediaScannerConnection
 import android.net.Uri
+import android.os.Build
 import android.provider.DocumentsContract
+import android.util.Log
 import android.webkit.MimeTypeMap
 import com.deniscerri.ytdlnis.R
 import okhttp3.internal.closeQuietly
+import okio.Path.Companion.toPath
 import java.io.File
 import java.net.URLDecoder
 import java.nio.charset.StandardCharsets
+import java.nio.file.CopyOption
+import java.nio.file.Files
+import java.nio.file.StandardCopyOption
 import java.text.DecimalFormat
 import java.util.*
 import kotlin.math.log10
@@ -61,7 +67,6 @@ class FileUtil() {
     }
 
     private fun scanMedia(destDir: String, context: Context) : String {
-        val file : File
         val path = File(formatPath(destDir))
 
         try {
@@ -94,6 +99,19 @@ class FileUtil() {
                     this,
                     DocumentsContract.getTreeDocumentId(this)
                 )
+            }
+
+            val destFile = File(formatPath(destDir) + "/${it.name}")
+            Log.e("aa", destFile.absolutePath)
+            if (destFile.absolutePath.contains("/storage/emulated/0/Download")
+                || destFile.absolutePath.contains("/storage/emulated/0/Documents")
+            ){
+                if (Build.VERSION.SDK_INT >= 26 ){
+                    Files.move(it.toPath(), destFile.toPath(), StandardCopyOption.REPLACE_EXISTING)
+                }else{
+                    it.renameTo(destFile)
+                }
+                return@forEach
             }
 
             val destUri = DocumentsContract.createDocument(
