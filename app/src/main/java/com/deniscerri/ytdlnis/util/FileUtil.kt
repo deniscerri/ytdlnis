@@ -1,12 +1,15 @@
 package com.deniscerri.ytdlnis.util
 
+import android.Manifest
 import android.content.Context
+import android.content.pm.PackageManager
 import android.media.MediaScannerConnection
 import android.net.Uri
 import android.os.Build
 import android.provider.DocumentsContract
 import android.util.Log
 import android.webkit.MimeTypeMap
+import androidx.core.app.ActivityCompat
 import androidx.documentfile.provider.DocumentFile
 import com.deniscerri.ytdlnis.R
 import okhttp3.internal.closeQuietly
@@ -67,13 +70,9 @@ class FileUtil() {
         return formattedPath.toString()
     }
 
-    private fun scanMedia(destDir: String, context: Context) : String {
-        val path = File(formatPath(destDir))
+    private fun scanMedia(files: List<File>, context: Context) : String {
 
         try {
-            var files = path.listFiles()!!
-            files = files.filter { it.lastModified() >  System.currentTimeMillis() - 5000}.toTypedArray()
-            Arrays.sort(files) { p0, p1 -> p0!!.lastModified().compareTo(p1!!.lastModified()) }
             val paths = files.map { it.absolutePath }.toTypedArray()
             MediaScannerConnection.scanFile(context, paths, null, null)
             return files.reduce(Compare::max).absolutePath
@@ -85,50 +84,60 @@ class FileUtil() {
     }
     @Throws(Exception::class)
      fun moveFile(originDir: File, context: Context, destDir: String, progress: (p: Int) -> Unit) : String {
+        val fileList = mutableListOf<File>()
         originDir.listFiles()?.forEach {
-            if (it.name.equals("rList")){
-                it.delete()
-                return@forEach
-            }
-
-            val mimeType =
-                MimeTypeMap.getSingleton().getMimeTypeFromExtension(it.extension) ?: "*/*"
-
-            val dest = Uri.parse(destDir).run {
-                DocumentsContract.buildDocumentUriUsingTree(
-                    this,
-                    DocumentsContract.getTreeDocumentId(this)
-                )
-            }
-
             val destFile = File(formatPath(destDir) + "/${it.name}")
-            if (destFile.absolutePath.contains("/storage/emulated/0/Download")
-                || destFile.absolutePath.contains("/storage/emulated/0/Documents")
-            ){
-                if (Build.VERSION.SDK_INT >= 26 ){
-                    Files.move(it.toPath(), destFile.toPath(), StandardCopyOption.REPLACE_EXISTING)
-                }else{
-                    it.renameTo(destFile)
+
+            try {
+                if (it.name.equals("rList")){
+                    it.delete()
+                    return@forEach
+                }
+
+                val mimeType =
+                    MimeTypeMap.getSingleton().getMimeTypeFromExtension(it.extension) ?: "*/*"
+
+                val dest = Uri.parse(destDir).run {
+                    DocumentsContract.buildDocumentUriUsingTree(
+                        this,
+                        DocumentsContract.getTreeDocumentId(this)
+                    )
+                }
+                val destUri = DocumentsContract.createDocument(
+                    context.contentResolver,
+                    dest,
+                    mimeType,
+                    it.name
+                ) ?: return@forEach
+
+                val inputStream = it.inputStream()
+                val outputStream =
+                    context.contentResolver.openOutputStream(destUri) ?: return@forEach
+                inputStream.copyTo(outputStream)
+                inputStream.closeQuietly()
+                outputStream.closeQuietly()
+
+                fileList.add(destFile)
+            }catch (e: java.lang.Exception) {
+
+                if (destFile.absolutePath.contains("/storage/emulated/0/Download")
+                    || destFile.absolutePath.contains("/storage/emulated/0/Documents")
+                ){
+                    if (Build.VERSION.SDK_INT >= 26 ){
+                        Files.move(it.toPath(), destFile.toPath(), StandardCopyOption.REPLACE_EXISTING)
+                    }else{
+                        it.renameTo(destFile)
+                    }
+                    fileList.add(destFile)
                 }
                 return@forEach
+            }catch(e : Exception){
+                return@forEach
             }
 
-            val destUri = DocumentsContract.createDocument(
-                context.contentResolver,
-                dest,
-                mimeType,
-                it.name
-            ) ?: return@forEach
-
-            val inputStream = it.inputStream()
-            val outputStream =
-                context.contentResolver.openOutputStream(destUri) ?: return@forEach
-            inputStream.copyTo(outputStream)
-            inputStream.closeQuietly()
-            outputStream.closeQuietly()
         }
         originDir.delete()
-        return scanMedia(destDir, context)
+        return scanMedia(fileList, context)
     }
 
     fun convertFileSize(s: Long): String{
