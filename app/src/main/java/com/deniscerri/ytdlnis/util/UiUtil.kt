@@ -88,18 +88,14 @@ class UiUtil(private val fileUtil: FileUtil) {
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun afterTextChanged(p0: Editable?) {
                 ok.isEnabled =
-                    !(title.editText!!.text.isEmpty() || content.editText!!.text.isEmpty())
-                if (ok.isEnabled){
+                    (title.editText!!.text.isNotEmpty() && content.editText!!.text.isNotEmpty())
+                if (content.editText!!.text.isNotEmpty()){
                     content.endIconDrawable = AppCompatResources.getDrawable(context, R.drawable.ic_delete_all)
                 }else{
                     content.endIconDrawable = AppCompatResources.getDrawable(context, R.drawable.ic_clipboard)
                 }
             }
         })
-
-        if (content.editText!!.text.isEmpty()){
-
-        }
 
         content.setEndIconOnClickListener {
             if(content.editText!!.text.isEmpty()){
@@ -117,7 +113,7 @@ class UiUtil(private val fileUtil: FileUtil) {
                 val chip = context.layoutInflater.inflate(R.layout.suggestion_chip, shortcutsChipGroup, false) as Chip
                 chip.text = shortcut.content
                 chip.setOnClickListener {
-                    content.editText!!.append(shortcut.content + " ")
+                    content.editText!!.text.insert(content.editText!!.selectionStart, shortcut.content + " ")
                 }
                 shortcutsChipGroup.addView(chip)
             }

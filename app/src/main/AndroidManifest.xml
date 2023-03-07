@@ -115,6 +115,7 @@
         </activity>
         <activity
             android:name=".ui.more.CommandTemplatesActivity"
+            android:windowSoftInputMode="adjustResize"
             android:configChanges="layoutDirection|locale"
             android:parentActivityName=".MainActivity"
             android:exported="true">

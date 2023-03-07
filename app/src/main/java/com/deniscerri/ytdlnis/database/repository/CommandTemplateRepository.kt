@@ -30,7 +30,9 @@ class CommandTemplateRepository(private val commandDao: CommandTemplateDao) {
     }
 
     suspend fun insertShortcut(item: TemplateShortcut){
-        commandDao.insertShortcut(item.content)
+        if (commandDao.checkExistingShortcut(item.content) == 0){
+            commandDao.insertShortcut(item)
+        }
     }
 
     suspend fun deleteShortcut(item: TemplateShortcut){

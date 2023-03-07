@@ -40,8 +40,11 @@ interface CommandTemplateDao {
     @Query("DELETE FROM commandTemplates WHERE id=:itemId")
     suspend fun delete(itemId: Long)
 
-    @Query("INSERT INTO templateShortcuts(content) VALUES(:content)")
-    suspend fun insertShortcut(content: String)
+    @Insert(TemplateShortcut::class, OnConflictStrategy.REPLACE)
+    suspend fun insertShortcut(shortcut: TemplateShortcut)
+
+    @Query("SELECT COUNT(id) FROM templateShortcuts WHERE content=:content")
+    suspend fun checkExistingShortcut(content: String) : Int
 
     @Query("DELETE FROM templateShortcuts WHERE id=:itemId")
     suspend fun deleteShortcut(itemId: Long)

@@ -185,25 +185,23 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun askPermissions() {
+        val permissions = arrayListOf<String>()
         if (!checkFilePermission()) {
             if (Build.VERSION.SDK_INT >= 33){
-                ActivityCompat.requestPermissions(
-                    this,
-                    arrayOf(Manifest.permission.READ_MEDIA_VIDEO, Manifest.permission.READ_MEDIA_AUDIO),
-                    1
-                )
+                permissions.add(Manifest.permission.READ_MEDIA_AUDIO)
+                permissions.add(Manifest.permission.READ_MEDIA_VIDEO)
             }else{
-                ActivityCompat.requestPermissions(
-                    this,
-                    arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
-                    1
-                )
+                permissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
             }
         }
         if (!checkNotificationPermission()){
+            permissions.add(Manifest.permission.POST_NOTIFICATIONS)
+        }
+
+        if (permissions.isNotEmpty()){
             ActivityCompat.requestPermissions(
                 this,
-                arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+                permissions.toTypedArray(),
                 1
             )
         }
