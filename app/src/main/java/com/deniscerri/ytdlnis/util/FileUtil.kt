@@ -1,23 +1,16 @@
 package com.deniscerri.ytdlnis.util
 
-import android.Manifest
 import android.content.Context
-import android.content.pm.PackageManager
 import android.media.MediaScannerConnection
 import android.net.Uri
 import android.os.Build
 import android.provider.DocumentsContract
-import android.util.Log
 import android.webkit.MimeTypeMap
-import androidx.core.app.ActivityCompat
-import androidx.documentfile.provider.DocumentFile
 import com.deniscerri.ytdlnis.R
 import okhttp3.internal.closeQuietly
-import okio.Path.Companion.toPath
 import java.io.File
 import java.net.URLDecoder
 import java.nio.charset.StandardCharsets
-import java.nio.file.CopyOption
 import java.nio.file.Files
 import java.nio.file.StandardCopyOption
 import java.text.DecimalFormat

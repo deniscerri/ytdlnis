@@ -14,11 +14,8 @@ import android.os.Build
 import android.os.Build.VERSION_CODES
 import android.os.Bundle
 import android.provider.Settings
-import android.view.View
-import android.view.ViewGroup
 import android.view.Window
 import android.view.WindowManager
-import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -27,11 +24,8 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
-import com.deniscerri.ytdlnis.adapter.PlaylistAdapter
 import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
@@ -40,7 +34,6 @@ import com.deniscerri.ytdlnis.ui.downloadcard.DownloadBottomSheetDialog
 import com.deniscerri.ytdlnis.ui.downloadcard.SelectPlaylistItemsBottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -82,7 +75,6 @@ class ShareActivity : AppCompatActivity() {
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
         sharedPreferences = getSharedPreferences("root_preferences", Activity.MODE_PRIVATE)
 
-        askPermissions()
         val intent = intent
         handleIntents(intent)
     }
@@ -93,6 +85,8 @@ class ShareActivity : AppCompatActivity() {
     }
 
     private fun handleIntents(intent: Intent) {
+        askPermissions()
+
         val action = intent.action
         val type = intent.type
         if (Intent.ACTION_SEND == action && type != null) {
@@ -163,16 +157,23 @@ class ShareActivity : AppCompatActivity() {
     }
 
     private fun askPermissions() {
-        if (Build.VERSION.SDK_INT < VERSION_CODES.TIRAMISU && !checkFilePermission()) {
+        val permissions = arrayListOf<String>()
+        if (!checkFilePermission()) {
+            if (Build.VERSION.SDK_INT >= 33){
+                permissions.add(Manifest.permission.READ_MEDIA_AUDIO)
+                permissions.add(Manifest.permission.READ_MEDIA_VIDEO)
+            }else{
+                permissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            }
+        }
+        if (!checkNotificationPermission()){
+            permissions.add(Manifest.permission.POST_NOTIFICATIONS)
+        }
+
+        if (permissions.isNotEmpty()){
             ActivityCompat.requestPermissions(
                 this,
-                arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
-                1
-            )
-        }else if (!checkNotificationPermission()){
-            ActivityCompat.requestPermissions(
-                this,
-                arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+                permissions.toTypedArray(),
                 1
             )
         }

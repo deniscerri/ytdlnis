@@ -1,7 +1,6 @@
 package com.deniscerri.ytdlnis.service
 
 import com.deniscerri.ytdlnis.database.models.ResultItem
-import java.util.*
 
 class DownloadInfo {
     var video: ResultItem? = null

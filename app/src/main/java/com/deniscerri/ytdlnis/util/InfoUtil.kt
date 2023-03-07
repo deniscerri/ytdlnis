@@ -21,7 +21,6 @@ import java.net.HttpURLConnection
 import java.net.URL
 import java.util.*
 import java.util.regex.Pattern
-import kotlin.collections.ArrayList
 
 class InfoUtil(context: Context) {
     private var searchHistoryRepository = SearchHistoryRepository(DBManager.getInstance(context).searchHistoryDao)

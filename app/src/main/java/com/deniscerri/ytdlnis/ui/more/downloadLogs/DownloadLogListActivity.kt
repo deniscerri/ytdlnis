@@ -3,7 +3,9 @@ package com.deniscerri.ytdlnis.ui.more.downloadLogs
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
-import android.os.*
+import android.os.Build
+import android.os.Bundle
+import android.os.FileObserver
 import android.view.MenuItem
 import android.view.View
 import android.widget.RelativeLayout

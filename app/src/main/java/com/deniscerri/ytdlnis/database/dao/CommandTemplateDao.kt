@@ -3,10 +3,7 @@ package com.deniscerri.ytdlnis.database.dao
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.deniscerri.ytdlnis.database.models.CommandTemplate
-import com.deniscerri.ytdlnis.database.models.DownloadItem
-import com.deniscerri.ytdlnis.database.models.HistoryItem
 import com.deniscerri.ytdlnis.database.models.TemplateShortcut
-import com.deniscerri.ytdlnis.util.FileUtil
 
 @Dao
 interface CommandTemplateDao {

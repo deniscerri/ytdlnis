@@ -1,12 +1,10 @@
 package com.deniscerri.ytdlnis.ui.more.downloadLogs
 
-import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.os.FileObserver
-import android.text.method.ScrollingMovementMethod
 import android.view.View
 import android.widget.ScrollView
 import android.widget.TextView

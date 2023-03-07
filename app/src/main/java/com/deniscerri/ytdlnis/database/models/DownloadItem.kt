@@ -4,7 +4,6 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
-import java.util.*
 
 @Entity(tableName = "downloads")
 data class DownloadItem(

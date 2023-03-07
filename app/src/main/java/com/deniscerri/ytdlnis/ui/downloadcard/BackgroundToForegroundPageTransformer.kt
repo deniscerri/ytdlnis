@@ -2,7 +2,6 @@ package com.deniscerri.ytdlnis.ui.downloadcard
 
 import android.view.View
 import androidx.viewpager2.widget.ViewPager2
-import kotlin.math.abs
 
 
 class BackgroundToForegroundPageTransformer : ViewPager2.PageTransformer {

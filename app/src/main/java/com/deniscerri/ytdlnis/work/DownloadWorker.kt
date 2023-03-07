@@ -25,7 +25,6 @@ import com.yausername.youtubedl_android.YoutubeDL
 import com.yausername.youtubedl_android.YoutubeDLRequest
 import kotlinx.coroutines.runBlocking
 import java.io.File
-import java.util.regex.Pattern
 
 
 class DownloadWorker(

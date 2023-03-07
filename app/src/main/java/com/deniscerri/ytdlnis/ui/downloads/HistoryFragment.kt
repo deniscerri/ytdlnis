@@ -1,7 +1,8 @@
 package com.deniscerri.ytdlnis.ui.downloads
 
 import android.app.Activity
-import android.content.*
+import android.content.Context
+import android.content.DialogInterface
 import android.content.res.Configuration
 import android.os.Bundle
 import android.os.Handler

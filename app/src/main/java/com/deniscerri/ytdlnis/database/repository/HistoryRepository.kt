@@ -1,15 +1,9 @@
 package com.deniscerri.ytdlnis.database.repository
 
-import android.util.Log
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.room.Transaction
-import com.deniscerri.ytdlnis.database.dao.DownloadDao
 import com.deniscerri.ytdlnis.database.dao.HistoryDao
-import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.models.HistoryItem
 import com.deniscerri.ytdlnis.util.FileUtil
-import java.io.File
 
 class HistoryRepository(private val historyDao: HistoryDao) {
     val items : LiveData<List<HistoryItem>> = historyDao.getAllHistory()

@@ -1,7 +1,6 @@
 package com.deniscerri.ytdlnis.ui.more
 
 import android.app.Activity
-import android.app.Application
 import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.preference.Preference

@@ -32,7 +32,6 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.launch
 import java.io.File
-import java.util.regex.Pattern
 
 
 class TerminalActivity : AppCompatActivity() {
@@ -178,9 +177,9 @@ class TerminalActivity : AppCompatActivity() {
             .subscribeOn(Schedulers.newThread())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                scrollView!!.scrollTo(0, scrollView!!.maxScrollAmount);
-                input!!.setText("yt-dlp ");
-                input!!.isEnabled = true;
+                scrollView!!.scrollTo(0, scrollView!!.maxScrollAmount)
+                input!!.setText("yt-dlp ")
+                input!!.isEnabled = true
 
                 cancelFab!!.visibility = View.GONE
                 fab!!.visibility = View.VISIBLE

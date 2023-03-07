@@ -3,7 +3,6 @@ package com.deniscerri.ytdlnis.database.viewmodel
 import android.app.Activity
 import android.app.Application
 import android.content.SharedPreferences
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -22,7 +21,6 @@ import com.deniscerri.ytdlnis.work.DownloadWorker
 import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.util.*
 import java.util.concurrent.TimeUnit
 
 class DownloadViewModel(application: Application) : AndroidViewModel(application) {

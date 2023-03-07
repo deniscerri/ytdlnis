@@ -2,9 +2,9 @@ package com.deniscerri.ytdlnis.ui.more
 
 import android.content.Context
 import android.content.DialogInterface
-import android.os.*
+import android.os.Bundle
 import android.view.MenuItem
-import android.widget.*
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope

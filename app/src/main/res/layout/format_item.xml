@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/format_card_constraintLayout"
     android:layout_width="match_parent"
     android:clickable="true"
@@ -97,7 +96,6 @@
         android:clickable="false"
         android:gravity="bottom|end"
         android:minWidth="30dp"
-        android:textColor="@color/white"
         app:cornerRadius="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

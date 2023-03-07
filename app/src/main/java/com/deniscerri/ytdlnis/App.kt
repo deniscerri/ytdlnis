@@ -2,8 +2,6 @@ package com.deniscerri.ytdlnis
 
 import android.app.Application
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.os.LocaleListCompat
 import androidx.preference.PreferenceManager
 import androidx.work.Configuration
 import androidx.work.WorkManager
