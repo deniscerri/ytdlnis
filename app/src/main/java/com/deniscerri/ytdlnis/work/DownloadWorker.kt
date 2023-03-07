@@ -89,26 +89,28 @@ class DownloadWorker(
         }
         val limitRate = sharedPreferences.getString("limit_rate", "")
         if (limitRate != "") request.addOption("-r", limitRate!!)
-        if (downloadItem.SaveThumb) {
-            request.addOption("--write-thumbnail")
-            request.addOption("--convert-thumbnails", "png")
-        }
-        if (!sharedPreferences.getBoolean("mtime", false)){
-            request.addOption("--no-mtime")
-        }
-        val sponsorBlockFilters = sharedPreferences.getStringSet("sponsorblock_filters", emptySet())
-        if (sponsorBlockFilters!!.isNotEmpty()) {
-            val filters = java.lang.String.join(",", sponsorBlockFilters)
-            request.addOption("--sponsorblock-remove", filters)
-        }
+        if(downloadItem.type != DownloadViewModel.Type.command){
+            if (downloadItem.SaveThumb) {
+                request.addOption("--write-thumbnail")
+                request.addOption("--convert-thumbnails", "png")
+            }
+            if (!sharedPreferences.getBoolean("mtime", false)){
+                request.addOption("--no-mtime")
+            }
+            val sponsorBlockFilters = sharedPreferences.getStringSet("sponsorblock_filters", emptySet())
+            if (sponsorBlockFilters!!.isNotEmpty()) {
+                val filters = java.lang.String.join(",", sponsorBlockFilters)
+                request.addOption("--sponsorblock-remove", filters)
+            }
 
-        if(downloadItem.title.isNotEmpty()){
-            request.addCommands(listOf("--replace-in-metadata","title",".*.",downloadItem.title))
+            if(downloadItem.title.isNotEmpty()){
+                request.addCommands(listOf("--replace-in-metadata","title",".*.",downloadItem.title))
+            }
+            if (downloadItem.author.isNotEmpty()){
+                request.addCommands(listOf("--replace-in-metadata","uploader",".*.",downloadItem.author))
+            }
+            if (downloadItem.customFileNameTemplate.isEmpty()) downloadItem.customFileNameTemplate = "%(uploader)s - %(title)s"
         }
-        if (downloadItem.author.isNotEmpty()){
-            request.addCommands(listOf("--replace-in-metadata","uploader",".*.",downloadItem.author))
-        }
-        if (downloadItem.customFileNameTemplate.isEmpty()) downloadItem.customFileNameTemplate = "%(uploader)s - %(title)s"
 
         request.addOption("--restrict-filenames")
 
