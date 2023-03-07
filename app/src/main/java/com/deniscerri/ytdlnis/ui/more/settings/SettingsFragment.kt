@@ -1,14 +1,20 @@
 package com.deniscerri.ytdlnis.ui.more.settings
 
+import android.Manifest
 import android.app.Activity
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.content.res.Configuration
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Environment
+import android.provider.Settings
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.app.ActivityCompat
 import androidx.core.os.LocaleListCompat
 import androidx.preference.*
 import com.deniscerri.ytdlnis.BuildConfig
@@ -22,6 +28,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
     private var musicPath: Preference? = null
     private var videoPath: Preference? = null
     private var commandPath: Preference? = null
+    private var accessAllFiles : Preference? = null
     private var incognito: SwitchPreferenceCompat? = null
     private var preferredDownloadType : ListPreference? = null
     private var downloadCard: SwitchPreferenceCompat? = null
@@ -64,6 +71,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         musicPath = findPreference("music_path")
         videoPath = findPreference("video_path")
         commandPath = findPreference("command_path")
+        accessAllFiles = findPreference("access_all_files")
         incognito = findPreference("incognito")
         preferredDownloadType = findPreference("preferred_download_type")
         downloadCard = findPreference("download_card")
@@ -112,6 +120,12 @@ class SettingsFragment : PreferenceFragmentCompat() {
         if (preferences.getString("command_path", "")!!.isEmpty()) {
             editor.putString("command_path", getString(R.string.command_path))
         }
+
+        if((Build.VERSION.SDK_INT >= 30 && Environment.isExternalStorageManager()) ||
+                Build.VERSION.SDK_INT < 30) {
+            accessAllFiles!!.isVisible = false
+        }
+
         editor.putBoolean("incognito", incognito!!.isChecked)
         editor.putString("preferred_download_type", preferredDownloadType!!.value)
         editor.putBoolean("download_card", downloadCard!!.isChecked)
@@ -182,6 +196,15 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 commandPathResultLauncher.launch(intent)
                 true
             }
+        accessAllFiles!!.onPreferenceClickListener =
+            Preference.OnPreferenceClickListener {
+                val intent = Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
+                val uri = Uri.parse("package:" + requireContext().packageName)
+                intent.data = uri
+                startActivity(intent)
+                true
+            }
+
         incognito!!.onPreferenceChangeListener =
             Preference.OnPreferenceChangeListener { _: Preference?, newValue: Any ->
                 val enable = newValue as Boolean
