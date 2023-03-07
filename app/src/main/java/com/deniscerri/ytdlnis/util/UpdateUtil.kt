@@ -30,7 +30,7 @@ class UpdateUtil(var context: Context) {
     private val tag = "UpdateUtil"
     private val downloadManager: DownloadManager = context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
     private val compositeDisposable = CompositeDisposable()
-    private val ytdlpNightly = "https://api.github.com/repos/ytdl-patched/yt-dlp/releases/latest"
+    private val ytdlpNightly = "https://api.github.com/repos/yt-dlp/yt-dlp-nightly-builds/releases/latest"
 
     fun updateApp(): Boolean {
         if (updatingApp) {
