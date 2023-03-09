@@ -17,7 +17,7 @@
     <string name="update_ytdl">Install new version of yt-dlp</string>
     <string name="about">About</string>
     <string name="source_code">Source Code</string>
-    <string name="search_hint">Search from YouTube</string>
+    <string name="search_hint">Search or Insert URL</string>
     <string name="download_already_started">Waiting for other download to finish before starting this one…</string>
     <string name="try_again_after_permission">Retry after granting the permission.</string>
     <string name="download_success">Downloaded</string>

@@ -17,6 +17,7 @@ import android.view.View.VISIBLE
 import android.widget.*
 import androidx.appcompat.widget.SearchView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -40,6 +41,7 @@ import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+import com.google.android.material.search.SearchBar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -69,7 +71,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
     private var fragmentContext: Context? = null
     private var layoutinflater: LayoutInflater? = null
     private var shimmerCards: ShimmerFrameLayout? = null
-    private var topAppBar: MaterialToolbar? = null
+    private var searchBar: SearchBar? = null
     private var recyclerView: RecyclerView? = null
     private var uiHandler: Handler? = null
     private var resultsList: List<ResultItem?>? = null
@@ -98,7 +100,6 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
 
         fragmentContext = context
         layoutinflater = LayoutInflater.from(context)
-        topAppBar = view.findViewById(R.id.downloads_toolbar)
         fileUtil = FileUtil()
         uiHandler = Handler(Looper.getMainLooper())
         selectedObjects = ArrayList()
@@ -113,7 +114,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
 
         //initViews
         shimmerCards = view.findViewById(R.id.shimmer_results_framelayout)
-        topAppBar = view.findViewById(R.id.home_toolbar)
+        searchBar = view.findViewById(R.id.search_bar)
         searchSuggestions = view.findViewById(R.id.search_suggestions_scroll_view)
         searchSuggestionsLinearLayout = view.findViewById(R.id.search_suggestions_linear_layout)
 
@@ -220,98 +221,81 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
     }
 
     private fun initMenu() {
-        val onActionExpandListener: MenuItem.OnActionExpandListener =
-            object : MenuItem.OnActionExpandListener {
-                override fun onMenuItemActionExpand(menuItem: MenuItem): Boolean {
-                    homeFabs!!.visibility = GONE
-                    recyclerView!!.visibility = GONE
-                    searchSuggestions!!.visibility = VISIBLE
-                    return true
-                }
-
-                override fun onMenuItemActionCollapse(menuItem: MenuItem): Boolean {
-                    homeFabs!!.visibility = VISIBLE
-                    recyclerView!!.visibility = VISIBLE
-                    searchSuggestions!!.visibility = GONE
-                    return true
-                }
-            }
-        if (downloading) {
-            topAppBar!!.menu.findItem(R.id.cancel_download).isVisible = true
-        }
-        topAppBar!!.menu.findItem(R.id.search).setOnActionExpandListener(onActionExpandListener)
-        val searchView = topAppBar!!.menu.findItem(R.id.search).actionView as SearchView?
-        searchView!!.inputType = InputType.TYPE_TEXT_VARIATION_URI
-        searchView.queryHint = getString(R.string.search_hint)
+        val searchView = requireView().findViewById<com.google.android.material.search.SearchView>(R.id.search_view)
         infoUtil = InfoUtil(requireContext())
 
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String): Boolean {
-                topAppBar!!.menu.findItem(R.id.search).collapseActionView()
-                downloadAllFabCoordinator!!.visibility = GONE
-                downloadFabs!!.visibility = GONE
-                selectedObjects = ArrayList()
-                inputQuery = query.trim { it <= ' ' }
-                if(!sharedPreferences!!.getBoolean("incognito", false)){
-                    resultViewModel.addSearchQueryToHistory(inputQuery!!)
-                }
-                resultViewModel.deleteAll()
-                lifecycleScope.launch(Dispatchers.IO){
-                    resultViewModel.parseQuery(inputQuery!!, true)
-                }
-                return true
-            }
-
-            override fun onQueryTextChange(newText: String): Boolean {
-                searchSuggestionsLinearLayout!!.removeAllViews()
-                val thread = Thread {
-                    val suggestions = if (newText.isEmpty()) {
+        searchView.editText.addTextChangedListener {
+            searchSuggestionsLinearLayout!!.removeAllViews()
+            lifecycleScope.launch {
+                val suggestions = withContext(Dispatchers.IO){
+                    if (it!!.isEmpty()) {
                         resultViewModel.getSearchHistory().map { it.query }
                     }else{
-                        infoUtil!!.getSearchSuggestions(newText)
-                    }
-                    for (i in suggestions.indices) {
-                        val v = LayoutInflater.from(fragmentContext)
-                            .inflate(R.layout.search_suggestion_item, null)
-                        val textView = v.findViewById<TextView>(R.id.suggestion_text)
-                        textView.text = suggestions[i]
-                        Handler(Looper.getMainLooper()).post {
-                            searchSuggestionsLinearLayout!!.addView(
-                                v
-                            )
-                        }
-                        textView.setOnClickListener { onQueryTextSubmit(textView.text.toString()) }
-                        val mb = v.findViewById<MaterialButton>(R.id.set_search_query_button)
-                        mb.setOnClickListener {
-                            searchView.setQuery(
-                                textView.text,
-                                false
-                            )
-                        }
+                        infoUtil!!.getSearchSuggestions(it.toString())
                     }
                 }
-                thread.start()
-                return false
+
+                for (i in suggestions.indices) {
+                    val v = LayoutInflater.from(fragmentContext)
+                        .inflate(R.layout.search_suggestion_item, null)
+                    val textView = v.findViewById<TextView>(R.id.suggestion_text)
+                    textView.text = suggestions[i]
+                    Handler(Looper.getMainLooper()).post {
+                        searchSuggestionsLinearLayout!!.addView(
+                            v
+                        )
+                    }
+                    textView.setOnClickListener {
+                        searchView.setText(textView.text)
+                        initSearch(searchView)
+                    }
+                    val mb = v.findViewById<ImageButton>(R.id.set_search_query_button)
+                    mb.setOnClickListener {
+                        searchView.setText(textView.text)
+                    }
+                }
             }
-        })
-        topAppBar!!.setOnClickListener { scrollToTop() }
-        topAppBar!!.setOnMenuItemClickListener { m: MenuItem ->
-            val itemId = m.itemId
-            if (itemId == R.id.delete_results) {
-                resultViewModel.getTrending()
-                selectedObjects = ArrayList()
-                downloadAllFabCoordinator!!.visibility = GONE
-                downloadFabs!!.visibility = GONE
-            } else if (itemId == R.id.cancel_download) {
-                try {
-                    mainActivity!!.cancelAllDownloads()
-                    topAppBar!!.menu.findItem(itemId).isVisible = false
-                } catch (ignored: Exception) {}
-            } else if (itemId == R.id.delete_search){
-                resultViewModel.deleteAllSearchQueryHistory()
-                searchSuggestionsLinearLayout!!.removeAllViews()
+            false
+        }
+
+        searchView.editText.setOnEditorActionListener { textView, i, keyEvent ->
+            initSearch(searchView)
+            true
+        }
+
+        searchBar!!.setOnMenuItemClickListener { m: MenuItem ->
+            when (val itemId = m.itemId) {
+                R.id.delete_results -> {
+                    resultViewModel.getTrending()
+                    selectedObjects = ArrayList()
+                    downloadAllFabCoordinator!!.visibility = GONE
+                    downloadFabs!!.visibility = GONE
+                }
+                R.id.cancel_download -> {
+                    try {
+                        mainActivity!!.cancelAllDownloads()
+                        searchBar!!.menu.findItem(itemId).isVisible = false
+                    } catch (ignored: Exception) {}
+                }
+                R.id.delete_search -> {
+                    resultViewModel.deleteAllSearchQueryHistory()
+                    searchSuggestionsLinearLayout!!.removeAllViews()
+                }
             }
             true
+        }
+    }
+
+    private fun initSearch(searchView: com.google.android.material.search.SearchView){
+        searchBar!!.text = searchView.text
+        searchView.hide()
+        val inputQuery = searchView.text!!.trim { it <= ' '}
+        if(!sharedPreferences!!.getBoolean("incognito", false)){
+            resultViewModel.addSearchQueryToHistory(inputQuery.toString())
+        }
+        resultViewModel.deleteAll()
+        lifecycleScope.launch(Dispatchers.IO){
+            resultViewModel.parseQuery(inputQuery.toString(), true)
         }
     }
 
@@ -326,7 +310,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
 
     fun scrollToTop() {
         recyclerView!!.scrollToPosition(0)
-        (topAppBar!!.parent as AppBarLayout).setExpanded(true, true)
+        (searchBar!!.parent as AppBarLayout).setExpanded(true, true)
     }
 
     private fun findVideo(url: String): ResultItem? {

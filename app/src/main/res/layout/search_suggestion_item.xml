@@ -30,13 +30,13 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <Button
+                <ImageButton
                     style="?attr/materialIconButtonStyle"
                     android:layout_width="40dp"
                     android:scrollbars="none"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.01"
-                    app:icon="@drawable/ic_search"
+                    android:src="@drawable/ic_search"
                     />
 
                 <TextView
@@ -51,13 +51,13 @@
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
-                <Button
+                <ImageButton
                     style="?attr/materialIconButtonStyle"
                     android:id="@+id/set_search_query_button"
                     android:layout_width="40dp"
                     android:scrollbars="none"
                     android:layout_height="match_parent"
-                    app:icon="@drawable/ic_arrow_up"
+                    android:src="@drawable/ic_arrow_up"
                     android:layout_weight="0.01"
                     />
 
