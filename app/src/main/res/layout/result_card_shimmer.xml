@@ -81,26 +81,6 @@
             android:shadowDy="4"
             android:shadowColor="@color/black" />
 
-        <TextView
-            android:layout_width="50dp"
-            android:layout_height="10dp"
-            android:layout_gravity="bottom"
-            android:layout_marginBottom="20dp"
-            android:layout_marginLeft="65dp"
-            android:background="@color/light_grey"
-            android:gravity="bottom"
-            android:paddingTop="10dp"
-            android:paddingRight="20dp"
-            android:paddingBottom="20dp"
-            android:paddingLeft="20dp"
-            android:textSize="15sp"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            android:shadowRadius="1.5"
-            android:shadowDx="4"
-            android:shadowDy="4"
-            android:shadowColor="@color/black" />
-
         <LinearLayout
             android:id="@+id/download_button_layout"
             android:layout_width="match_parent"

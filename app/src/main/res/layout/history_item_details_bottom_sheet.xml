@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout android:id="@+id/downloads_element_bottom_sheet"
+<FrameLayout xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/downloads_element_bottom_sheet"
     style="@style/Widget.Material3.BottomSheet"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -12,29 +13,60 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:orientation="vertical">
+            android:padding="20dp">
 
-            <TextView
-                android:id="@+id/bottom_sheet_title"
-                android:layout_width="wrap_content"
-                android:textSize="25sp"
-                android:textColor="?attr/colorOnSurface"
+            <LinearLayout
+                android:id="@+id/linearLayout4"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@string/app_name" />
+                android:orientation="vertical"
+                app:layout_constraintEnd_toStartOf="@+id/downloads_download_button_layout"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:id="@+id/bottom_sheet_author"
+                <TextView
+                    android:id="@+id/bottom_sheet_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/app_name"
+                    android:textColor="?attr/colorOnSurface"
+                    android:textSize="25sp" />
+
+                <TextView
+                    android:id="@+id/bottom_sheet_author"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="5dp"
+                    android:text="@string/app_name"
+                    android:textSize="15sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/downloads_download_button_layout"
                 android:layout_width="wrap_content"
-                android:paddingTop="5dp"
-                android:textSize="15sp"
-                android:layout_height="wrap_content"
-                android:text="@string/app_name" />
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:paddingVertical="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-        </LinearLayout>
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/downloads_download_button_type"
+                    style="@style/Widget.Material3.ExtendedFloatingActionButton.Icon.Secondary"
+                    android:layout_width="55dp"
+                    android:layout_height="55dp"
+                    android:layout_marginStart="10dp"
+                    android:clickable="false"
+                    app:cornerRadius="10dp" />
+
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <HorizontalScrollView
             android:layout_width="wrap_content"
@@ -50,22 +82,6 @@
                 android:orientation="horizontal"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/url">
-
-                <TextView
-                    android:id="@+id/type"
-                    style="@style/Widget.Material3.FloatingActionButton.Large.Primary"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="5dp"
-                    android:background="?attr/colorAccent"
-                    android:clickable="false"
-                    android:gravity="center"
-                    android:minWidth="30dp"
-                    android:paddingHorizontal="10dp"
-                    app:cornerRadius="10dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"/>
 
                 <TextView
                     android:id="@+id/format_note"
@@ -121,14 +137,14 @@
 
 
         <Button
-            style="@style/Widget.Material3.Button.TextButton.Icon"
             android:id="@+id/bottom_sheet_link"
-            android:layout_width="wrap_content"
+            style="@style/Widget.Material3.Button.TextButton.Icon"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:text="@string/app_name"
             android:textSize="15sp"
-            android:layout_gravity="center"
-            app:icon="@drawable/ic_link"
-            android:text="@string/app_name" />
+            app:icon="@drawable/ic_link" />
 
         <LinearLayout
             android:layout_width="match_parent"

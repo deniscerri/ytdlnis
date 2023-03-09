@@ -111,6 +111,7 @@
                     android:layout_width="55dp"
                     android:layout_height="55dp"
                     app:cornerRadius="10dp"
+                    android:clickable="false"
                     android:layout_marginStart="10dp"
                     />
 

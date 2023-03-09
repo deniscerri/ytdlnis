@@ -4,6 +4,8 @@ import android.app.Activity
 import android.content.Context
 import android.content.DialogInterface
 import android.content.res.Configuration
+import android.graphics.ColorMatrix
+import android.graphics.ColorMatrixColorFilter
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -13,6 +15,7 @@ import android.view.*
 import android.view.View.*
 import android.widget.*
 import androidx.appcompat.widget.SearchView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
@@ -24,6 +27,7 @@ import com.deniscerri.ytdlnis.adapter.HistoryAdapter
 import com.deniscerri.ytdlnis.database.models.HistoryItem
 import com.deniscerri.ytdlnis.database.repository.HistoryRepository
 import com.deniscerri.ytdlnis.database.repository.HistoryRepository.HistorySort
+import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.HistoryViewModel
 import com.deniscerri.ytdlnis.databinding.FragmentHistoryBinding
 import com.deniscerri.ytdlnis.util.FileUtil
@@ -32,6 +36,7 @@ import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -385,12 +390,21 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
         val author = bottomSheet!!.findViewById<TextView>(R.id.bottom_sheet_author)
         author!!.text = item.author
 
-        val type = bottomSheet!!.findViewById<TextView>(R.id.type)
+        // BUTTON ----------------------------------
+        val buttonLayout = bottomSheet!!.findViewById<LinearLayout>(R.id.downloads_download_button_layout)
+        val btn = buttonLayout!!.findViewById<MaterialButton>(R.id.downloads_download_button_type)
+
+        if (item.type == DownloadViewModel.Type.audio) {
+            if (isPresent) btn.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_music_downloaded) else btn.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_music)
+        } else if (item.type == DownloadViewModel.Type.video) {
+            if (isPresent) btn.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_video_downloaded) else btn.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_video)
+        }else{
+            btn.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_terminal)
+        }
+
         val formatNote = bottomSheet!!.findViewById<TextView>(R.id.format_note)
         val codec = bottomSheet!!.findViewById<TextView>(R.id.codec)
         val fileSize = bottomSheet!!.findViewById<TextView>(R.id.file_size)
-
-        type!!.text = item.type.toString().uppercase()
 
         if (item.format.format_note == "?" || item.format.format_note == "") formatNote!!.visibility = View.GONE
         else formatNote!!.text = item.format.format_note

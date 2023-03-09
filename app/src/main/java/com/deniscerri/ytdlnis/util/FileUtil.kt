@@ -8,6 +8,7 @@ import android.provider.DocumentsContract
 import android.webkit.MimeTypeMap
 import com.deniscerri.ytdlnis.R
 import okhttp3.internal.closeQuietly
+import okhttp3.internal.format
 import java.io.File
 import java.net.URLDecoder
 import java.nio.charset.StandardCharsets
@@ -78,8 +79,10 @@ class FileUtil() {
     @Throws(Exception::class)
      fun moveFile(originDir: File, context: Context, destDir: String, progress: (p: Int) -> Unit) : String {
         val fileList = mutableListOf<File>()
+        val dir = File(formatPath(destDir))
+        if (!dir.exists()) dir.mkdirs()
         originDir.listFiles()?.forEach {
-            val destFile = File(formatPath(destDir) + "/${it.name}")
+            val destFile = File(dir.absolutePath + "/${it.name}")
 
             try {
                 if (it.name.equals("rList")){

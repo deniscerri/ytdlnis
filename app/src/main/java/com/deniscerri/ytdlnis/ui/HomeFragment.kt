@@ -268,6 +268,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
                 R.id.delete_results -> {
                     resultViewModel.getTrending()
                     selectedObjects = ArrayList()
+                    searchBar!!.text = ""
                     downloadAllFabCoordinator!!.visibility = GONE
                     downloadFabs!!.visibility = GONE
                 }
@@ -287,9 +288,10 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
     }
 
     private fun initSearch(searchView: com.google.android.material.search.SearchView){
+        val inputQuery = searchView.text!!.trim { it <= ' '}
+        if (inputQuery.isEmpty()) return
         searchBar!!.text = searchView.text
         searchView.hide()
-        val inputQuery = searchView.text!!.trim { it <= ' '}
         if(!sharedPreferences!!.getBoolean("incognito", false)){
             resultViewModel.addSearchQueryToHistory(inputQuery.toString())
         }
