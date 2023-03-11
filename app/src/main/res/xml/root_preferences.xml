@@ -123,7 +123,7 @@
             app:dialogTitle="@string/select_sponsorblock_filtering"
             app:entries="@array/sponsorblock_settings_entries"
             app:entryValues="@array/sponsorblock_settings_values"
-            app:key="sponsorblock_filter"
+            app:key="sponsorblock_filters"
             app:summary="@string/select_sponsorblock_filtering"
             app:title="SponsorBlock" />
 
@@ -232,10 +232,27 @@
 
     </PreferenceCategory>
 
-    <Preference
-        app:allowDividerAbove="true"
-        app:icon="@drawable/ic_info"
-        app:key="version"
-        app:title="@string/version"/>
+    <PreferenceCategory android:title="@string/about">
+
+        <Preference
+            app:isPreferenceVisible="false"
+            app:icon="@drawable/ic_clipboard"
+            app:key="export_preferences"
+            app:title="@string/export_from_clipboard"/>
+
+        <Preference
+            app:isPreferenceVisible="false"
+            app:icon="@drawable/ic_copy"
+            app:key="import_preferences"
+            app:title="@string/import_from_clipboard"/>
+
+
+        <Preference
+            app:icon="@drawable/ic_info"
+            app:key="version"
+            app:title="@string/version"/>
+
+    </PreferenceCategory>
+
 
 </PreferenceScreen>

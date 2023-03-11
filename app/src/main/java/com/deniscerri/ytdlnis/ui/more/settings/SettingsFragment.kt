@@ -1,14 +1,17 @@
 package com.deniscerri.ytdlnis.ui.more.settings
 
 import android.app.Activity
+import android.content.ClipboardManager
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.Settings
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.LocaleListCompat
 import androidx.preference.*
@@ -16,6 +19,9 @@ import com.deniscerri.ytdlnis.BuildConfig
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.UpdateUtil
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.*
 import java.util.*
 
 class SettingsFragment : PreferenceFragmentCompat() {
@@ -47,9 +53,15 @@ class SettingsFragment : PreferenceFragmentCompat() {
     private var updateYTDL: Preference? = null
     private var updateNightlyYTDL: SwitchPreferenceCompat? = null
     private var updateApp: SwitchPreferenceCompat? = null
+    private var exportPreferences : Preference? = null
+    private var importPreferences : Preference? = null
     private var version: Preference? = null
+
+
     private var updateUtil: UpdateUtil? = null
     private var fileUtil: FileUtil? = null
+
+    private val jsonFormat = Json { prettyPrint = true }
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.root_preferences, rootKey)
         updateUtil = UpdateUtil(requireContext())
@@ -76,7 +88,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         limitRate = findPreference("limit_rate")
         aria2 = findPreference("aria2")
         logDownloads = findPreference("log_downloads")
-        sponsorblockFilters = findPreference("sponsorblock_filter")
+        sponsorblockFilters = findPreference("sponsorblock_filters")
         mtime = findPreference("mtime")
         embedSubtitles = findPreference("embed_subtitles")
         filenameTemplate = findPreference("file_name_template")
@@ -90,6 +102,8 @@ class SettingsFragment : PreferenceFragmentCompat() {
         updateYTDL = findPreference("update_ytdl")
         updateNightlyYTDL = findPreference("nightly_ytdl")
         updateApp = findPreference("update_app")
+        exportPreferences = findPreference("export_preferences")
+        importPreferences = findPreference("import_preferences")
         version = findPreference("version")
         version!!.summary = BuildConfig.VERSION_NAME
 
@@ -359,6 +373,75 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 editor.apply()
                 true
             }
+//        exportPreferences!!.onPreferenceClickListener =
+//            Preference.OnPreferenceClickListener {
+//                val prefs = preferences.all
+//                val json = buildJsonObject {
+//                    putJsonArray("YTDLnis_Preferences") {
+//                        prefs.forEach {
+//                            add(buildJsonObject {
+//                                put("key", it.key)
+//                                put("value", it.value.toString())
+//                                put("type", it.value!!::class.simpleName)
+//                            })
+//                        }
+//                    }
+//                }
+//                val string = jsonFormat.encodeToString(json)
+//                val clipboard: ClipboardManager =
+//                    requireContext().getSystemService(AppCompatActivity.CLIPBOARD_SERVICE) as ClipboardManager
+//                clipboard.setText(string)
+//                true
+//            }
+//        importPreferences!!.onPreferenceClickListener =
+//            Preference.OnPreferenceClickListener {
+//                val clipboard = requireContext().getSystemService(AppCompatActivity.CLIPBOARD_SERVICE) as ClipboardManager
+//                val clip = clipboard.primaryClip!!.getItemAt(0).text.toString()
+//                try{
+//                    val preferencesKeys = preferences.all.map { it.key }
+//                    var count = 0
+//                    jsonFormat.decodeFromString<JsonObject>(clip).run {
+//                        val prefs = this.jsonObject["YTDLnis_Preferences"]!!.jsonArray
+//                        prefs.forEach {
+//                            val key : String = it.jsonObject["key"].toString().replace("\"", "")
+//                            if (preferencesKeys.contains(key)){
+//                                when(it.jsonObject["type"].toString().replace("\"", "")){
+//                                    "String" -> {
+//                                        val value = it.jsonObject["value"].toString().replace("\"", "")
+//                                        Log.e("aa", value.toString())
+//                                        editor.putString(key, value)
+//                                        editor.apply()
+//                                    }
+//                                    "Boolean" -> {
+//                                        val value = it.jsonObject["value"].toString().replace("\"", "").toBoolean()
+//                                        Log.e("aa", value.toString())
+//                                        editor.putBoolean(key, value)
+//                                        editor.apply()
+//                                    }
+//                                    "Int" -> {
+//                                        val value = it.jsonObject["value"].toString().replace("\"", "").toInt()
+//                                        Log.e("aa", value.toString())
+//                                        editor.putInt(key, value)
+//                                        editor.apply()
+//                                    }
+//                                    "HashSet" -> {
+//                                        val value = hashSetOf(it.jsonObject["value"].toString().replace("(\")|(\\[)|(])".toRegex(), ""))
+//                                        Log.e("aa", value.toString())
+//                                        editor.putStringSet(key, value)
+//                                        editor.apply()
+//                                    }
+//                                }
+//                                count++
+//                            }
+//                        }
+//                    }
+//                    Toast.makeText(requireContext(), "${getString(R.string.items_imported)} (${count})", Toast.LENGTH_LONG).show()
+//                }catch (e: Exception){
+//                    e.printStackTrace()
+//                }
+//
+//                true
+//            }
         version!!.onPreferenceClickListener =
             Preference.OnPreferenceClickListener {
                 if (!updateUtil!!.updateApp()) {

@@ -214,4 +214,5 @@
     <string name="clear_cancelled">Clear Cancelled</string>
     <string name="clear_errored">Clear Errored</string>
     <string name="split_by_chapters">Split By Chapters</string>
+    <string name="items_imported">Items Imported</string>
 </resources>

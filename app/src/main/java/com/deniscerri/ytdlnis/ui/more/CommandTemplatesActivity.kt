@@ -71,7 +71,7 @@ class CommandTemplatesActivity : AppCompatActivity(), TemplatesAdapter.OnItemCli
                     withContext(Dispatchers.IO){
                         val count = commandTemplateViewModel.importFromClipboard()
                         runOnUiThread{
-                            Toast.makeText(this@CommandTemplatesActivity, "$count items imported!", Toast.LENGTH_LONG).show()
+                            Toast.makeText(this@CommandTemplatesActivity, "${getString(R.string.items_imported)} (${count})", Toast.LENGTH_LONG).show()
                         }
                     }
 
