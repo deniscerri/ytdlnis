@@ -1,17 +1,14 @@
 package com.deniscerri.ytdlnis.ui.more.settings
 
 import android.app.Activity
-import android.content.ClipboardManager
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.Settings
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.LocaleListCompat
 import androidx.preference.*
@@ -19,8 +16,7 @@ import com.deniscerri.ytdlnis.BuildConfig
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.UpdateUtil
-import kotlinx.serialization.decodeFromString
-import kotlinx.serialization.encodeToString
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.serialization.json.*
 import java.util.*
 
@@ -254,6 +250,25 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 val value = newValue.toString().toInt()
                 editor.putInt("concurrent_downloads", value)
                 editor.apply()
+
+                MaterialAlertDialogBuilder(requireContext())
+                    .setTitle(resources.getString(R.string.warning))
+                    .setMessage(resources.getString(R.string.workmanager_updated))
+                    .setNegativeButton(resources.getString(R.string.cancel)) { dialog, which ->
+                        dialog.cancel()
+                    }
+                    .setPositiveButton(resources.getString(R.string.restart)) { dialog, which ->
+                        val i: Intent =
+                            requireContext().packageManager.getLaunchIntentForPackage(
+                                requireContext().packageName
+                            )!!
+                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                        startActivity(i)
+                        requireActivity().finish()
+                        dialog.cancel()
+                    }
+                    .show()
+
                 true
             }
         limitRate!!.onPreferenceChangeListener =

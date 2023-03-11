@@ -217,4 +217,6 @@
     <string name="items_imported">Items Imported</string>
     <string name="help_translate">Help Translate</string>
     <string name="help_translate_summary">Translate this app on your language using Weblate</string>
+    <string name="workmanager_updated">You need to restart the app and have no active downloads for this preference to take effect!</string>
+    <string name="restart">Restart</string>
 </resources>
