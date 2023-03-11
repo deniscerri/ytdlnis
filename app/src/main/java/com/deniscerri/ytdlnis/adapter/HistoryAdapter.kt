@@ -136,6 +136,7 @@ class HistoryAdapter(onItemClickListener: OnItemClickListener, activity: Activit
             btn.icon = ContextCompat.getDrawable(activity, R.drawable.ic_terminal)
         }
         if (btn.hasOnClickListeners()) btn.setOnClickListener(null)
+        btn.isClickable = false
         if (checkedItems.contains(item.id)) {
             card.isChecked = true
             card.strokeWidth = 5

@@ -196,6 +196,13 @@ class DownloadCommandFragment(private val resultItem: ResultItem, private var cu
                     }
                 }
 
+                val copyURL = view.findViewById<Chip>(R.id.copy_url)
+                copyURL.setOnClickListener {
+                    val clipboard: ClipboardManager =
+                        requireContext().getSystemService(AppCompatActivity.CLIPBOARD_SERVICE) as ClipboardManager
+                    clipboard.setText(downloadItem.url)
+                }
+
             } catch (e: Exception) {
                 e.printStackTrace()
             }

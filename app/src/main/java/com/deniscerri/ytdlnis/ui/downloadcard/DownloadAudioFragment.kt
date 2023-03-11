@@ -1,6 +1,7 @@
 package com.deniscerri.ytdlnis.ui.downloadcard
 
 import android.app.Activity
+import android.content.ClipboardManager
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
@@ -14,6 +15,7 @@ import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -169,6 +171,13 @@ class DownloadAudioFragment(private var resultItem: ResultItem, private var curr
                 embedThumb!!.isChecked = downloadItem.audioPreferences.embedThumb
                 embedThumb.setOnClickListener {
                     downloadItem.audioPreferences.embedThumb = embedThumb.isChecked
+                }
+
+                val copyURL = view.findViewById<Chip>(R.id.copy_url)
+                copyURL.setOnClickListener {
+                    val clipboard: ClipboardManager =
+                        requireContext().getSystemService(AppCompatActivity.CLIPBOARD_SERVICE) as ClipboardManager
+                    clipboard.setText(downloadItem.url)
                 }
 
             }catch (e : Exception){

@@ -75,31 +75,54 @@
                 android:layout_height="wrap_content"
                 android:text="@string/adjust_templates" />
 
-            <com.google.android.material.chip.ChipGroup
-                android:id="@+id/commands_chip_group"
+            <HorizontalScrollView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:selectionRequired="false"
-                app:singleLine="true"
-                app:singleSelection="false">
+                android:layout_height="wrap_content">
 
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/newTemplate"
-                    style="@style/Widget.Material3.Chip.Assist"
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/commands_chip_group"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/new_template"
-                    app:chipIcon="@drawable/ic_plus" />
+                    app:selectionRequired="false"
+                    app:singleLine="true"
+                    app:singleSelection="false">
 
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/editSelected"
-                    style="@style/Widget.Material3.Chip.Assist"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/edit_selected"
-                    app:chipIcon="@drawable/ic_edit" />
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/newTemplate"
+                        style="@style/Widget.Material3.Chip.Assist"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/new_template"
+                        app:chipIcon="@drawable/ic_plus" />
 
-            </com.google.android.material.chip.ChipGroup>
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/editSelected"
+                        style="@style/Widget.Material3.Chip.Assist"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/edit_selected"
+                        app:chipIcon="@drawable/ic_edit" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/copy_url"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/copy_url"
+                        app:chipIconVisible="true"
+                        app:chipIcon="@drawable/ic_clipboard"
+                        android:minWidth="30dp"
+                        android:layout_margin="10dp"
+                        app:cornerRadius="10dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+
+                </com.google.android.material.chip.ChipGroup>
+
+
+            </HorizontalScrollView>
 
         </LinearLayout>
 

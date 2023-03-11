@@ -139,7 +139,8 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text" />
+                android:maxLines="2"
+                android:inputType="textMultiLine" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -148,7 +149,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="10dp">
+            android:paddingVertical="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -190,6 +191,22 @@
                         android:layout_height="wrap_content"
                         android:checked="false"
                         android:text="@string/save_thumb" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/copy_url"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/copy_url"
+                        app:chipIconVisible="true"
+                        app:chipIcon="@drawable/ic_clipboard"
+                        android:minWidth="30dp"
+                        android:layout_margin="10dp"
+                        app:cornerRadius="10dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
 
 
                 </com.google.android.material.chip.ChipGroup>
