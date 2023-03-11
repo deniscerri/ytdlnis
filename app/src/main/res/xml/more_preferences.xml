@@ -50,28 +50,6 @@
     </Preference>
 
     <Preference
-        app:icon="@drawable/ic_discord"
-        app:key="discord"
-        app:summary="https://discord.gg/WW3KYWxAPm"
-        app:allowDividerAbove="true"
-        app:title="Discord">
-        <intent
-            android:action="android.intent.action.VIEW"
-            android:data="https://discord.gg/WW3KYWxAPm" />
-    </Preference>
-
-    <Preference
-        app:icon="@drawable/ic_telegram"
-        app:key="telegram"
-        app:summary="https://t.me/ytdlnis"
-        app:title="Telegram">
-        <intent
-            android:action="android.intent.action.VIEW"
-            android:data="https://t.me/ytdlnis" />
-    </Preference>
-
-
-    <Preference
         app:icon="@drawable/ic_settings"
         app:key="open_settings"
         app:allowDividerAbove="true"

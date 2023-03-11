@@ -331,8 +331,8 @@
                         <option name="values">
                           <map>
                             <entry key="assetSourceType" value="FILE" />
-                            <entry key="outputName" value="ic_telegram" />
-                            <entry key="sourceFile" value="C:\Users\denis\Desktop\FREKUENCA\icons8-discord.svg" />
+                            <entry key="outputName" value="ic_translate" />
+                            <entry key="sourceFile" value="C:\Users\denis\Desktop\FREKUENCA\icons8-google-translate.svg" />
                           </map>
                         </option>
                       </PersistentState>

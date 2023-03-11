@@ -215,4 +215,6 @@
     <string name="clear_errored">Clear Errored</string>
     <string name="split_by_chapters">Split By Chapters</string>
     <string name="items_imported">Items Imported</string>
+    <string name="help_translate">Help Translate</string>
+    <string name="help_translate_summary">Translate this app on your language using Weblate</string>
 </resources>
