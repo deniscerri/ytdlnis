@@ -10,9 +10,9 @@
         app:showAsAction="collapseActionView|ifRoom"/>
 
     <item
-        android:id="@+id/edit"
-        android:title="@string/directories"
-        android:icon="@drawable/ic_edit_multiple"
+        android:id="@+id/preferred_download_type"
+        android:title="@string/preferred_download_type"
+        android:icon="@drawable/baseline_insert_drive_file_24"
         app:showAsAction="collapseActionView|ifRoom"/>
 
 </menu>

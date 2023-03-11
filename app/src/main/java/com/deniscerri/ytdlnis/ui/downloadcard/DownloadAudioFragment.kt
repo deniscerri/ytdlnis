@@ -32,7 +32,9 @@ import com.deniscerri.ytdlnis.util.UiUtil
 import com.google.android.material.chip.Chip
 import com.google.android.material.textfield.TextInputLayout
 import com.google.gson.Gson
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 class DownloadAudioFragment(private var resultItem: ResultItem, private var currentDownloadItem: DownloadItem?) : Fragment() {
@@ -57,14 +59,6 @@ class DownloadAudioFragment(private var resultItem: ResultItem, private var curr
         fragmentView = inflater.inflate(R.layout.fragment_download_audio, container, false)
         activity = getActivity()
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
-
-        downloadItem = if (currentDownloadItem != null && currentDownloadItem!!.type == Type.audio){
-            val string = Gson().toJson(currentDownloadItem, DownloadItem::class.java)
-            Gson().fromJson(string, DownloadItem::class.java)
-        }else{
-            downloadViewModel.createDownloadItemFromResult(resultItem, Type.audio)
-        }
-
         fileUtil = FileUtil()
         uiUtil = UiUtil(fileUtil)
         return fragmentView
@@ -73,6 +67,14 @@ class DownloadAudioFragment(private var resultItem: ResultItem, private var curr
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         lifecycleScope.launch {
+            downloadItem = withContext(Dispatchers.IO) {
+                if (currentDownloadItem != null && currentDownloadItem!!.type == Type.audio){
+                    val string = Gson().toJson(currentDownloadItem, DownloadItem::class.java)
+                    Gson().fromJson(string, DownloadItem::class.java)
+                }else{
+                    downloadViewModel.createDownloadItemFromResult(resultItem, Type.audio)
+                }
+            }
             val sharedPreferences =
                 requireContext().getSharedPreferences("root_preferences", Activity.MODE_PRIVATE)
 

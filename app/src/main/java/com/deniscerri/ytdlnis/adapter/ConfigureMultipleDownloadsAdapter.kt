@@ -80,6 +80,7 @@ class ConfigureMultipleDownloadsAdapter(onItemClickListener: OnItemClickListener
         val formatNote = card.findViewById<TextView>(R.id.format_note)
         if (item.format.format_note.isNotEmpty()){
             formatNote.text = item.format.format_note.uppercase(Locale.getDefault())
+            formatNote.visibility = View.VISIBLE
         }else{
             formatNote.visibility = View.GONE
         }
@@ -119,7 +120,7 @@ class ConfigureMultipleDownloadsAdapter(onItemClickListener: OnItemClickListener
                 btn.icon = ContextCompat.getDrawable(activity, R.drawable.ic_video)
             }
             else -> {
-                btn.icon = ContextCompat.getDrawable(activity, R.drawable.ic_baseline_keyboard_arrow_right_24)
+                btn.icon = ContextCompat.getDrawable(activity, R.drawable.ic_terminal)
             }
         }
 

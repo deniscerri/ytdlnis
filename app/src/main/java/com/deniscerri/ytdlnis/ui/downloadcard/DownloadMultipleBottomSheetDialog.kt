@@ -8,25 +8,29 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.MenuItem
-import android.view.View
+import android.view.*
 import android.widget.Button
+import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.adapter.ConfigureMultipleDownloadsAdapter
+import com.deniscerri.ytdlnis.database.models.CommandTemplate
 import com.deniscerri.ytdlnis.database.models.DownloadItem
+import com.deniscerri.ytdlnis.database.viewmodel.CommandTemplateViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdlnis.receiver.ShareActivity
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.datepicker.CalendarConstraints
@@ -39,9 +43,10 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.*
 
-class DownloadMultipleBottomSheetDialog(private val items: MutableList<DownloadItem>) : BottomSheetDialogFragment(), ConfigureMultipleDownloadsAdapter.OnItemClickListener, View.OnClickListener,
+class DownloadMultipleBottomSheetDialog(private var items: MutableList<DownloadItem>) : BottomSheetDialogFragment(), ConfigureMultipleDownloadsAdapter.OnItemClickListener, View.OnClickListener,
     ConfigureDownloadBottomSheetDialog.OnDownloadItemUpdateListener {
     private lateinit var downloadViewModel: DownloadViewModel
+    private lateinit var commandTemplateViewModel: CommandTemplateViewModel
     private lateinit var resultViewModel: ResultViewModel
     private lateinit var listAdapter : ConfigureMultipleDownloadsAdapter
     private lateinit var recyclerView: RecyclerView
@@ -53,6 +58,7 @@ class DownloadMultipleBottomSheetDialog(private val items: MutableList<DownloadI
         super.onCreate(savedInstanceState)
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
         resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]
+        commandTemplateViewModel = ViewModelProvider(this)[CommandTemplateViewModel::class.java]
         fileUtil = FileUtil()
     }
 
@@ -136,6 +142,20 @@ class DownloadMultipleBottomSheetDialog(private val items: MutableList<DownloadI
         }
 
         val bottomAppBar = view.findViewById<BottomAppBar>(R.id.bottomAppBar)
+        val preferredDownloadType = bottomAppBar.menu.findItem(R.id.preferred_download_type)
+        when(items.first().type){
+            DownloadViewModel.Type.audio -> {
+                preferredDownloadType.setIcon(R.drawable.baseline_audio_file_24)
+            }
+            DownloadViewModel.Type.video -> {
+                preferredDownloadType.setIcon(R.drawable.baseline_video_file_24)
+
+            }
+            DownloadViewModel.Type.command -> {
+                preferredDownloadType.setIcon(R.drawable.baseline_insert_drive_file_24)
+            }
+        }
+
         bottomAppBar!!.setOnMenuItemClickListener { m: MenuItem ->
             val itemId = m.itemId
             if (itemId == R.id.folder) {
@@ -144,7 +164,61 @@ class DownloadMultipleBottomSheetDialog(private val items: MutableList<DownloadI
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                 intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION)
                 pathResultLauncher.launch(intent)
-            } else if (itemId == R.id.edit){
+            } else if (itemId == R.id.preferred_download_type){
+                lifecycleScope.launch{
+                    val bottomSheet = BottomSheetDialog(requireContext())
+                    bottomSheet.requestWindowFeature(Window.FEATURE_NO_TITLE)
+                    bottomSheet.setContentView(R.layout.download_type_sheet)
+
+                    // BUTTON ----------------------------------
+                    val audio = bottomSheet.findViewById<LinearLayout>(R.id.audio)
+                    val video = bottomSheet.findViewById<LinearLayout>(R.id.video)
+                    val command = bottomSheet.findViewById<LinearLayout>(R.id.command)
+
+
+                    withContext(Dispatchers.IO){
+                        val nr = commandTemplateViewModel.getTotalNumber()
+                        if(nr == 0){
+                            command!!.visibility = View.GONE
+                        }else{
+                            command!!.visibility = View.VISIBLE
+                        }
+                    }
+
+                    audio!!.setOnClickListener {
+                        items = downloadViewModel.switchDownloadType(items, DownloadViewModel.Type.audio).toMutableList()
+                        listAdapter.submitList(items.toList())
+                        listAdapter.notifyDataSetChanged()
+                        preferredDownloadType.setIcon(R.drawable.baseline_audio_file_24)
+                        bottomSheet.cancel()
+                    }
+
+                    video!!.setOnClickListener {
+                        items = downloadViewModel.switchDownloadType(items, DownloadViewModel.Type.video).toMutableList()
+                        listAdapter.submitList(items.toList())
+                        listAdapter.notifyDataSetChanged()
+                        preferredDownloadType.setIcon(R.drawable.baseline_video_file_24)
+                        bottomSheet.cancel()
+                    }
+
+                    command!!.setOnClickListener {
+                        lifecycleScope.launch {
+                            items = withContext(Dispatchers.IO){
+                                downloadViewModel.switchDownloadType(items, DownloadViewModel.Type.command).toMutableList()
+                            }
+                            listAdapter.submitList(items.toList())
+                            listAdapter.notifyDataSetChanged()
+                            preferredDownloadType.setIcon(R.drawable.baseline_insert_drive_file_24)
+                            bottomSheet.cancel()
+                        }
+                    }
+
+                    bottomSheet.show()
+                    bottomSheet.window!!.setLayout(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT
+                    )
+                }
 
             }
             true
@@ -197,7 +271,6 @@ class DownloadMultipleBottomSheetDialog(private val items: MutableList<DownloadI
             val resultItem = withContext(Dispatchers.IO){
                 resultViewModel.getItemByURL(downloadItem!!.url)
             }
-            Log.e("aa", resultItem.toString())
             val bottomSheet = ConfigureDownloadBottomSheetDialog(resultItem, downloadItem!!, this@DownloadMultipleBottomSheetDialog)
             bottomSheet.show(parentFragmentManager, "configureDownloadSingleSheet")
         }

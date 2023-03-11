@@ -58,14 +58,6 @@ class DownloadCommandFragment(private val resultItem: ResultItem, private var cu
         activity = getActivity()
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
         commandTemplateViewModel = ViewModelProvider(this)[CommandTemplateViewModel::class.java]
-
-        downloadItem = if (currentDownloadItem != null && currentDownloadItem!!.type == DownloadViewModel.Type.command){
-            val string = Gson().toJson(currentDownloadItem, DownloadItem::class.java)
-            Gson().fromJson(string, DownloadItem::class.java)
-        }else{
-            downloadViewModel.createDownloadItemFromResult(resultItem, DownloadViewModel.Type.command)
-        }
-
         fileUtil = FileUtil()
         uiUtil = UiUtil(fileUtil)
         return fragmentView
@@ -75,25 +67,34 @@ class DownloadCommandFragment(private val resultItem: ResultItem, private var cu
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         lifecycleScope.launch {
+            downloadItem = withContext(Dispatchers.IO){
+                if (currentDownloadItem != null && currentDownloadItem!!.type == DownloadViewModel.Type.command){
+                    val string = Gson().toJson(currentDownloadItem, DownloadItem::class.java)
+                    Gson().fromJson(string, DownloadItem::class.java)
+                }else{
+                    downloadViewModel.createDownloadItemFromResult(resultItem, DownloadViewModel.Type.command)
+                }
+            }
+
             val sharedPreferences = requireContext().getSharedPreferences("root_preferences", Activity.MODE_PRIVATE)
             try {
                 val templates : MutableList<CommandTemplate> = withContext(Dispatchers.IO){
                     commandTemplateViewModel.getAll().toMutableList()
                 }
-                val id = sharedPreferences.getLong("commandTemplate", templates[0].id)
-                val chosenCommand = templates.find { it.id == id }
-                downloadItem.format = Format(
-                    chosenCommand!!.title,
-                    "",
-                    "",
-                    "",
-                    "",
-                    0,
-                    chosenCommand.content
-                )
+//                val id = sharedPreferences.getLong("commandTemplate", templates[0].id)
+//                val chosenCommand = templates.find { it.id == id }
+//                downloadItem.format = Format(
+//                    chosenCommand!!.title,
+//                    "",
+//                    "",
+//                    "",
+//                    "",
+//                    0,
+//                    chosenCommand.content
+//                )
 
                 val chosenCommandView = view.findViewById<TextInputLayout>(R.id.content)
-                chosenCommandView.editText!!.setText(chosenCommand.content)
+                chosenCommandView.editText!!.setText(downloadItem.format.format_note)
                 chosenCommandView.endIconDrawable = AppCompatResources.getDrawable(requireContext(), R.drawable.ic_delete_all)
                 chosenCommandView.editText!!.addTextChangedListener(object : TextWatcher {
                     override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}

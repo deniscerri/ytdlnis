@@ -168,8 +168,8 @@ class DownloadWorker(
                 Log.e(TAG, videoFormatID)
                 var formatArgument = "bestvideo+bestaudio/best"
                 if (videoFormatID.isNotEmpty()) {
-                    if (videoFormatID == "Best Quality") videoFormatID = "bestvideo"
-                    else if (videoFormatID == "Worst Quality") videoFormatID = "worst"
+                    if (videoFormatID == context.resources.getString(R.string.best_quality)) videoFormatID = "bestvideo"
+                    else if (videoFormatID == context.resources.getString(R.string.worst_quality)) videoFormatID = "worst"
                     else if (defaultFormats.contains(videoFormatID)) videoFormatID = "bestvideo[height<="+videoFormatID.substring(0, videoFormatID.length -1)+"]"
                     formatArgument = "$videoFormatID+bestaudio/best/$videoFormatID"
                 }

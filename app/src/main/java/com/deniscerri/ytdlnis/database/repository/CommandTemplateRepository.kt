@@ -13,6 +13,10 @@ class CommandTemplateRepository(private val commandDao: CommandTemplateDao) {
         return commandDao.getAllTemplates();
     }
 
+    fun getTotalNumber() : Int {
+        return commandDao.getTotalNumber()
+    }
+
     fun getItem(id: Long) : CommandTemplate {
         return commandDao.getTemplate(id)
     }

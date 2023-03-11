@@ -63,13 +63,6 @@ class DownloadVideoFragment(private val resultItem: ResultItem, private var curr
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
         resultViewModel = ViewModelProvider(this@DownloadVideoFragment)[ResultViewModel::class.java]
 
-        downloadItem = if (currentDownloadItem != null && currentDownloadItem!!.type == Type.video){
-            val string = Gson().toJson(currentDownloadItem, DownloadItem::class.java)
-            Gson().fromJson(string, DownloadItem::class.java)
-        }else{
-            downloadViewModel.createDownloadItemFromResult(resultItem, Type.video)
-        }
-
         fileUtil = FileUtil()
         uiUtil = UiUtil(fileUtil)
         return fragmentView
@@ -79,6 +72,14 @@ class DownloadVideoFragment(private val resultItem: ResultItem, private var curr
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         lifecycleScope.launch {
+            downloadItem = withContext(Dispatchers.IO){
+                if (currentDownloadItem != null && currentDownloadItem!!.type == Type.video){
+                    val string = Gson().toJson(currentDownloadItem, DownloadItem::class.java)
+                    Gson().fromJson(string, DownloadItem::class.java)
+                }else{
+                    downloadViewModel.createDownloadItemFromResult(resultItem, Type.video)
+                }
+            }
 
             val sharedPreferences = requireContext().getSharedPreferences("root_preferences", Activity.MODE_PRIVATE)
             try {

@@ -21,6 +21,7 @@ import com.deniscerri.ytdlnis.work.DownloadWorker
 import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.concurrent.TimeUnit
 
 class DownloadViewModel(application: Application) : AndroidViewModel(application) {
@@ -55,7 +56,7 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
         erroredDownloads = repository.erroredDownloads
 
         val videoFormat = getApplication<App>().resources.getStringArray(R.array.video_formats)
-        val videoContainer = sharedPreferences.getString("video_format", "Default")
+        val videoContainer = sharedPreferences.getString("video_format",  getApplication<App>().resources.getString(R.string.defaultValue))
         bestVideoFormat = Format(
             videoFormat[videoFormat.lastIndex],
             videoContainer!!,
@@ -113,10 +114,20 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
             resultItem.thumb,
             resultItem.duration,
             type,
-            getFormat(resultItem, type),
+            getFormat(resultItem.formats, type),
+            resultItem.formats,
             downloadPath!!, resultItem.website, "", resultItem.playlistTitle, audioPreferences, videoPreferences,customFileNameTemplate!!, saveThumb, DownloadRepository.Status.Processing.toString(), 0
         )
 
+    }
+
+    fun switchDownloadType(list: List<DownloadItem>, type: Type) : List<DownloadItem>{
+        list.forEach {
+            val format = getFormat(it.allFormats, type)
+            it.format = format
+            it.type = type
+        }
+        return list
     }
 
     fun createDownloadItemFromHistory(historyItem: HistoryItem) : DownloadItem {
@@ -143,30 +154,51 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
             historyItem.duration,
             historyItem.type,
             historyItem.format,
+            ArrayList(),
             downloadPath!!, historyItem.website, "", "", audioPreferences, videoPreferences,customFileNameTemplate!!, saveThumb, DownloadRepository.Status.Processing.toString(), 0
         )
 
     }
 
 
-    private fun getFormat(resultItem: ResultItem?, type: Type) : Format {
+    private fun getFormat(formats: List<Format>, type: Type) : Format {
         when(type) {
             Type.audio -> {
                 return try {
-                    resultItem!!.formats.last { it.format_note.contains("audio", ignoreCase = true) }
+                    formats.last { it.format_note.contains("audio", ignoreCase = true) }
                 }catch (e: Exception){
                     bestAudioFormat
                 }
             }
             Type.video -> {
                 return try {
-                    resultItem!!.formats.last { !it.format_note.contains("audio", ignoreCase = true) }
+                    val qualityPreference = sharedPreferences.getString("video_quality", getApplication<App>().resources.getString(R.string.best_quality))
+                    if (qualityPreference == getApplication<App>().resources.getString(R.string.worst_quality)){
+                        formats.first { !it.format_note.contains("audio", ignoreCase = true) }
+                    }
+                    if (qualityPreference == getApplication<App>().resources.getString(R.string.best_quality)){
+                        formats.last { !it.format_note.contains("audio", ignoreCase = true) }
+                    }
+                    try{
+                        formats.last { format -> format.format_note.contains(qualityPreference!!.substring(0, qualityPreference.length -1)) }
+                    }catch (e: Exception){
+                        formats.last { !it.format_note.contains("audio", ignoreCase = true) }
+                    }
                 }catch (e: Exception){
                     bestVideoFormat
                 }
             }
             else -> {
-                return Format()
+                val c = commandTemplateDao.getFirst()
+                return Format(
+                    c.title,
+                    "",
+                    "",
+                    "",
+                    "",
+                    0,
+                    c.content
+                )
             }
         }
     }

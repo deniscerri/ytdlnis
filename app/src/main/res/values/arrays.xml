@@ -18,14 +18,14 @@
     </string-array>
 
     <string-array name="video_formats">
-        <item>Worst Quality</item>
+        <item>@string/worst_quality</item>
         <item>360p</item>
         <item>480p</item>
         <item>720p</item>
         <item>1080p</item>
         <item>1440p</item>
         <item>2160p</item>
-        <item>Best Quality</item>
+        <item>@string/best_quality</item>
     </string-array>
 
     <string-array name="sponsorblock_settings_entries">
@@ -88,4 +88,6 @@
         <item>video</item>
         <item>command</item>
     </string-array>
+    <string name="worst_quality">Worst Quality</string>
+    <string name="best_quality">Best Quality</string>
 </resources>

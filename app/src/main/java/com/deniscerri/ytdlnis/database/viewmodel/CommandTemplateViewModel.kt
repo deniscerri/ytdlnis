@@ -38,6 +38,10 @@ class CommandTemplateViewModel(private val application: Application) : AndroidVi
         return repository.getAll()
     }
 
+    fun getTotalNumber(): Int {
+        return repository.getTotalNumber()
+    }
+
     fun insert(item: CommandTemplate) = viewModelScope.launch(Dispatchers.IO) {
         repository.insert(item)
     }

@@ -328,8 +328,10 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
         if (sharedPreferences!!.getBoolean("download_card", true)) {
             showSingleDownloadSheet(item!!, type!!)
         } else {
-            val downloadItem = downloadViewModel.createDownloadItemFromResult(item!!, type!!)
-            downloadViewModel.queueDownloads(listOf(downloadItem))
+            lifecycleScope.launch(Dispatchers.IO){
+                val downloadItem = downloadViewModel.createDownloadItemFromResult(item!!, type!!)
+                downloadViewModel.queueDownloads(listOf(downloadItem))
+            }
         }
     }
 

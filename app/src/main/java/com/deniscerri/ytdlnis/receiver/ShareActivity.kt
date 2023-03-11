@@ -132,8 +132,10 @@ class ShareActivity : AppCompatActivity() {
             val bottomSheet = DownloadBottomSheetDialog(it, DownloadViewModel.Type.valueOf(sharedPreferences.getString("preferred_download_type", "video")!!))
             bottomSheet.show(supportFragmentManager, "downloadSingleSheet")
         }else{
-            val downloadItem = downloadViewModel.createDownloadItemFromResult(it, DownloadViewModel.Type.valueOf(sharedPreferences.getString("preferred_download_type", "video")!!))
-            downloadViewModel.queueDownloads(listOf(downloadItem))
+            lifecycleScope.launch(Dispatchers.IO){
+                val downloadItem = downloadViewModel.createDownloadItemFromResult(it, DownloadViewModel.Type.valueOf(sharedPreferences.getString("preferred_download_type", "video")!!))
+                downloadViewModel.queueDownloads(listOf(downloadItem))
+            }
             this.finish()
         }
     }
@@ -145,12 +147,14 @@ class ShareActivity : AppCompatActivity() {
         }else{
             lifecycleScope.launch(Dispatchers.IO){
                 val downloadItems = mutableListOf<DownloadItem>()
-                it.forEach { res ->
-                    val i = downloadViewModel.createDownloadItemFromResult(res!!, DownloadViewModel.Type.valueOf(sharedPreferences.getString("preferred_download_type", "video")!!))
-                    i.format = downloadViewModel.getLatestCommandTemplateAsFormat()
-                    downloadItems.add(i)
+                lifecycleScope.launch(Dispatchers.IO){
+                    it.forEach { res ->
+                        val i = downloadViewModel.createDownloadItemFromResult(res!!, DownloadViewModel.Type.valueOf(sharedPreferences.getString("preferred_download_type", "video")!!))
+                        i.format = downloadViewModel.getLatestCommandTemplateAsFormat()
+                        downloadItems.add(i)
+                    }
+                    downloadViewModel.queueDownloads(downloadItems)
                 }
-                downloadViewModel.queueDownloads(downloadItems)
             }
             this.finish()
         }

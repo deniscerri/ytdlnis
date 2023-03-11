@@ -112,8 +112,7 @@ class HistoryAdapter(onItemClickListener: OnItemClickListener, activity: Activit
         datetime.text = relativeTime
 
         // BUTTON ----------------------------------
-        val buttonLayout = card.findViewById<LinearLayout>(R.id.downloads_download_button_layout)
-        val btn = buttonLayout.findViewById<MaterialButton>(R.id.downloads_download_button_type)
+        val btn = card.findViewById<MaterialButton>(R.id.downloads_download_button_type)
         var filePresent = true
 
         //IS IN THE FILE SYSTEM?

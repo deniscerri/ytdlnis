@@ -16,6 +16,7 @@ data class DownloadItem(
     val duration: String,
     var type: DownloadViewModel.Type,
     var format: Format,
+    val allFormats: ArrayList<Format>,
     var downloadPath: String,
     val website: String,
     val downloadSize: String,
