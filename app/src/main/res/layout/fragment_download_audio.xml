@@ -165,45 +165,48 @@
                     android:layout_height="wrap_content"
                     android:text="@string/adjust_audio" />
 
-                <HorizontalScrollView
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/chipGroup"
                     android:layout_width="wrap_content"
+                    app:chipSpacingVertical="0dp"
+                    app:singleLine="false"
                     android:layout_height="wrap_content">
 
-                    <com.google.android.material.chip.ChipGroup
-                        android:id="@+id/chipGroup"
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/embed_thumb"
+                        style="@style/Widget.Material3.Chip.Filter.Elevated"
                         android:layout_width="wrap_content"
-                        app:singleLine="false"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:checked="false"
+                        android:text="@string/embed_thumb"/>
 
-                        <com.google.android.material.chip.Chip
-                            android:id="@+id/embed_thumb"
-                            style="@style/Widget.Material3.Chip.Filter.Elevated"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:checked="false"
-                            android:text="@string/embed_thumb"/>
-
-                        <com.google.android.material.chip.Chip
-                            android:id="@+id/copy_url"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:text="@string/copy_url"
-                            app:chipIconVisible="true"
-                            app:chipIcon="@drawable/ic_clipboard"
-                            android:minWidth="30dp"
-                            android:layout_margin="10dp"
-                            app:cornerRadius="10dp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/split_by_chapters"
+                        style="@style/Widget.Material3.Chip.Filter.Elevated"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="false"
+                        android:text="@string/split_by_chapters"/>
 
 
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/copy_url"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/copy_url"
+                        app:chipIconVisible="true"
+                        app:chipIcon="@drawable/ic_clipboard"
+                        android:minWidth="30dp"
+                        app:cornerRadius="10dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-                    </com.google.android.material.chip.ChipGroup>
 
 
-                </HorizontalScrollView>
+                </com.google.android.material.chip.ChipGroup>
+
 
             </LinearLayout>
 

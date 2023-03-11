@@ -17,6 +17,7 @@
             android:id="@+id/logs_toolbar"
             android:elevation="0dp"
             app:title="@string/download_queue"
+            app:menu="@menu/download_queue_menu"
             android:layout_width="match_parent"
             app:navigationIcon="@drawable/ic_back"
             android:layout_height="match_parent"/>
@@ -47,7 +48,7 @@
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="@string/added_to_queue" />
+                android:text="@string/in_queue" />
 
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"

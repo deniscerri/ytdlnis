@@ -101,7 +101,7 @@
             android:layout_height="wrap_content"
             android:focusableInTouchMode="true"
             android:orientation="vertical"
-            android:paddingBottom="70dp"
+            android:paddingBottom="80dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
 

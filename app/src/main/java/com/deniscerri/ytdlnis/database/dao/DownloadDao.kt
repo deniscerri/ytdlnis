@@ -37,8 +37,11 @@ interface DownloadDao {
     @Query("DELETE FROM downloads WHERE id=:id")
     suspend fun delete(id: Long)
 
-    @Query("DELETE FROM downloads WHERE status='Processing'")
-    suspend fun deleteProcessing()
+    @Query("DELETE FROM downloads WHERE status='Cancelled'")
+    suspend fun deleteCancelled()
+
+    @Query("DELETE FROM downloads WHERE status='Error'")
+    suspend fun deleteErrored()
 
     @Query("DELETE FROM downloads WHERE status='Processing' AND id=:id")
     suspend fun deleteSingleProcessing(id: Long)

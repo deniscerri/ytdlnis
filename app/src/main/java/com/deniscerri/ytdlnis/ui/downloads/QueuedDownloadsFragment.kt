@@ -10,6 +10,7 @@ import android.view.Window
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -26,6 +27,7 @@ import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.NotificationUtil
 import com.deniscerri.ytdlnis.util.UiUtil
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.button.MaterialButton
 import com.yausername.youtubedl_android.YoutubeDL
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -103,23 +105,30 @@ class QueuedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLi
 
         val bottomSheet = BottomSheetDialog(requireContext())
         bottomSheet.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        bottomSheet.setContentView(R.layout.download_details_bottom_sheet)
-
+        bottomSheet.setContentView(R.layout.history_item_details_bottom_sheet)
         val title = bottomSheet.findViewById<TextView>(R.id.bottom_sheet_title)
         title!!.text = item.title
-
         val author = bottomSheet.findViewById<TextView>(R.id.bottom_sheet_author)
         author!!.text = item.author
 
-        val type = bottomSheet.findViewById<TextView>(R.id.type)
+        // BUTTON ----------------------------------
+        val buttonLayout = bottomSheet.findViewById<LinearLayout>(R.id.downloads_download_button_layout)
+        val btn = buttonLayout!!.findViewById<MaterialButton>(R.id.downloads_download_button_type)
+
+        if (item.type == DownloadViewModel.Type.audio) {
+            btn.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_music)
+        } else if (item.type == DownloadViewModel.Type.video) {
+            btn.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_video)
+        }else{
+            btn.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_terminal)
+        }
+
         val formatNote = bottomSheet.findViewById<TextView>(R.id.format_note)
         val codec = bottomSheet.findViewById<TextView>(R.id.codec)
         val fileSize = bottomSheet.findViewById<TextView>(R.id.file_size)
-        val scheduledTime = bottomSheet.findViewById<LinearLayout>(R.id.scheduled_time_linear)
 
-        type!!.text = item.type.toString().uppercase()
-
-        if (item.format.format_note == "?") formatNote!!.visibility = View.GONE
+        if (item.format.format_note == "?" || item.format.format_note == "") formatNote!!.visibility =
+            View.GONE
         else formatNote!!.text = item.format.format_note
 
         val codecText =
@@ -142,7 +151,8 @@ class QueuedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLi
         else fileSize!!.text = fileSizeReadable
 
         val link = bottomSheet.findViewById<Button>(R.id.bottom_sheet_link)
-        link!!.text = item.url
+        val url = item.url
+        link!!.text = url
         link.tag = itemID
         link.setOnClickListener{
             uiUtil.openLinkIntent(requireContext(), item.url, bottomSheet)
@@ -151,25 +161,16 @@ class QueuedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLi
             uiUtil.copyLinkToClipBoard(requireContext(), item.url, bottomSheet)
             true
         }
-
-        if (item.downloadStartTime == 0L){
-            scheduledTime!!.visibility = View.GONE
-        }else{
-            val time = bottomSheet.findViewById<TextView>(R.id.time)
-            val cal = Calendar.getInstance()
-            val date = Date(item.downloadStartTime)
-            cal.time = date
-            val day = cal[Calendar.DAY_OF_MONTH]
-            val month = cal.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault())
-            val year = cal[Calendar.YEAR]
-            val formatter: DateFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
-            val timeString = formatter.format(date)
-            val formattedTime = "$day $month $year - $timeString"
-            time!!.text = formattedTime
-        }
-
         val remove = bottomSheet.findViewById<Button>(R.id.bottomsheet_remove_button)
-        remove!!.visibility = View.GONE
+        remove!!.tag = itemID
+        remove.setOnClickListener{
+            cancelDownload(itemID)
+        }
+        val openFile = bottomSheet.findViewById<Button>(R.id.bottomsheet_open_file_button)
+        openFile!!.visibility = View.GONE
+
+        val redownload = bottomSheet.findViewById<Button>(R.id.bottomsheet_redownload_button)
+        redownload!!.visibility = View.GONE
 
         bottomSheet.show()
         bottomSheet.window!!.setLayout(

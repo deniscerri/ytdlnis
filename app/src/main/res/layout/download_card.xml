@@ -8,7 +8,7 @@
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/download_card_view"
         android:layout_width="0dp"
-        android:layout_height="100dp"
+        android:layout_height="120dp"
         android:layout_margin="10dp"
         android:checkable="true"
         app:cardCornerRadius="10dp"
@@ -78,71 +78,71 @@
 
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp"
+            <HorizontalScrollView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:gravity="bottom"
-                android:paddingBottom="5dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="0dp"
+                android:scrollbars="none"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/title_author">
+                app:layout_constraintTop_toBottomOf="@+id/title_author"
+                app:layout_constraintVertical_bias="1.0">
 
-                <TextView
-                    android:id="@+id/format_note"
-                    style="@style/Widget.Material3.FloatingActionButton.Large.Primary"
+                <com.google.android.material.chip.ChipGroup
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="5dp"
-                    android:background="?attr/colorPrimary"
-                    android:clickable="false"
-                    android:gravity="center"
-                    android:minWidth="30dp"
-                    android:paddingHorizontal="10dp"
-                    app:cornerRadius="10dp"
-                    android:maxLines="1"
-                    android:ellipsize="end"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:layout_height="match_parent">
 
-                <TextView
-                    android:id="@+id/codec"
-                    style="@style/Widget.Material3.FloatingActionButton.Large.Secondary"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="5dp"
-                    android:background="?attr/colorSecondary"
-                    android:clickable="false"
-                    android:gravity="center"
-                    android:minWidth="30dp"
-                    android:paddingHorizontal="10dp"
-                    app:cornerRadius="10dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/format_note"
+                        style="@style/Widget.Material3.FloatingActionButton.Large.Primary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:clickable="false"
+                        android:ellipsize="end"
+                        android:gravity="center"
+                        android:maxLines="1"
+                        android:minWidth="30dp"
+                        android:paddingHorizontal="10dp"
+                        app:cornerRadius="10dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/file_size"
-                    style="@style/Widget.Material3.FloatingActionButton.Large.Tertiary"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="5dp"
-                    android:background="?attr/colorTertiary"
-                    android:clickable="false"
-                    android:gravity="center"
-                    android:minWidth="30dp"
-                    android:paddingHorizontal="10dp"
-                    app:cornerRadius="10dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/codec"
+                        style="@style/Widget.Material3.FloatingActionButton.Large.Secondary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:clickable="false"
+                        android:gravity="center"
+                        android:minWidth="30dp"
+                        app:cornerRadius="10dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/file_size"
+                        style="@style/Widget.Material3.FloatingActionButton.Large.Tertiary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:clickable="false"
+                        android:gravity="center"
+                        android:minWidth="30dp"
+                        app:cornerRadius="10dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
 
-            </LinearLayout>
+                </com.google.android.material.chip.ChipGroup>
 
+
+            </HorizontalScrollView>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/action_button"

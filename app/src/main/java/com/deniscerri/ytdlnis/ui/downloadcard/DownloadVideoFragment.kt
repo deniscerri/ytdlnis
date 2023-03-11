@@ -188,6 +188,20 @@ class DownloadVideoFragment(private val resultItem: ResultItem, private var curr
                     downloadItem.videoPreferences.addChapters = addChapters.isChecked
                 }
 
+
+                val splitByChapters = view.findViewById<Chip>(R.id.split_by_chapters)
+                splitByChapters!!.isChecked = downloadItem.audioPreferences.splitByChapters
+                splitByChapters.setOnClickListener {
+                    if (splitByChapters.isChecked){
+                        addChapters.isEnabled = false
+                        addChapters.isChecked = false
+                        downloadItem.videoPreferences.addChapters = false
+                    }else{
+                        addChapters.isEnabled = true
+                    }
+                    downloadItem.videoPreferences.splitByChapters = splitByChapters.isChecked
+                }
+
                 val saveThumbnail = view.findViewById<Chip>(R.id.save_thumbnail)
                 saveThumbnail!!.isChecked = downloadItem.SaveThumb
                 saveThumbnail.setOnClickListener {

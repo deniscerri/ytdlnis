@@ -39,7 +39,6 @@ class DownloadWorker(
         val dbManager = DBManager.getInstance(context)
         val dao = dbManager.downloadDao
         val repository = DownloadRepository(dao)
-        val commandTemplateDao = dbManager.commandTemplateDao
         val historyDao = dbManager.historyDao
         val handler = Handler(Looper.getMainLooper())
 
@@ -125,8 +124,6 @@ class DownloadWorker(
                 val ext = downloadItem.format.container
                 if(ext != context.getString(R.string.defaultValue) && ext != "webm"){
                     request.addOption("--audio-format", ext)
-                }else{
-                    request.addOption("--audio-format", sharedPreferences.getString("audio_format", "mp3")!!)
                 }
                 request.addOption("--embed-metadata")
 
@@ -149,7 +146,14 @@ class DownloadWorker(
                 } else {
                     request.addOption("--parse-metadata", "%(album,title)s:%(meta_album)s")
                 }
-                request.addOption("-o", tempFileDir.absolutePath + "/${downloadItem.customFileNameTemplate}.%(ext)s")
+
+                if (downloadItem.audioPreferences.splitByChapters){
+                    request.addOption("--split-chapters")
+                    request.addOption("-P", tempFileDir.absolutePath)
+                }else{
+                    request.addOption("-o", tempFileDir.absolutePath + "/${downloadItem.customFileNameTemplate}.%(ext)s")
+                }
+
             }
             DownloadViewModel.Type.video -> {
                 if (downloadItem.videoPreferences.addChapters) {
@@ -182,7 +186,13 @@ class DownloadWorker(
                     }
                 }
 
-                request.addOption("-o", tempFileDir.absolutePath + "/${downloadItem.customFileNameTemplate}.%(ext)s")
+                if (downloadItem.videoPreferences.splitByChapters){
+                    request.addOption("--split-chapters")
+                    request.addOption("-P", tempFileDir.absolutePath)
+                }else{
+                    request.addOption("-o", tempFileDir.absolutePath + "/${downloadItem.customFileNameTemplate}.%(ext)s")
+                }
+
             }
             DownloadViewModel.Type.command -> {
                 request.addOption(

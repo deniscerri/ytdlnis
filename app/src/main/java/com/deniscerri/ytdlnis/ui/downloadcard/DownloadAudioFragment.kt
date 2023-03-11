@@ -173,6 +173,12 @@ class DownloadAudioFragment(private var resultItem: ResultItem, private var curr
                     downloadItem.audioPreferences.embedThumb = embedThumb.isChecked
                 }
 
+                val splitByChapters = view.findViewById<Chip>(R.id.split_by_chapters)
+                splitByChapters!!.isChecked = downloadItem.audioPreferences.splitByChapters
+                splitByChapters.setOnClickListener {
+                    downloadItem.audioPreferences.splitByChapters = splitByChapters.isChecked
+                }
+
                 val copyURL = view.findViewById<Chip>(R.id.copy_url)
                 copyURL.setOnClickListener {
                     val clipboard: ClipboardManager =

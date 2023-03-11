@@ -264,19 +264,13 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
         }
 
         searchBar!!.setOnMenuItemClickListener { m: MenuItem ->
-            when (val itemId = m.itemId) {
+            when (m.itemId) {
                 R.id.delete_results -> {
                     resultViewModel.getTrending()
                     selectedObjects = ArrayList()
                     searchBar!!.text = ""
                     downloadAllFabCoordinator!!.visibility = GONE
                     downloadFabs!!.visibility = GONE
-                }
-                R.id.cancel_download -> {
-                    try {
-                        mainActivity!!.cancelAllDownloads()
-                        searchBar!!.menu.findItem(itemId).isVisible = false
-                    } catch (ignored: Exception) {}
                 }
                 R.id.delete_search -> {
                     resultViewModel.deleteAllSearchQueryHistory()

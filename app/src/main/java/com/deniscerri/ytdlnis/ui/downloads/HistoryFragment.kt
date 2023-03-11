@@ -234,9 +234,6 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
                         deleteDialog.show()
                     }
                 }
-                R.id.remove_downloading -> {
-
-                }
             }
             true
         }

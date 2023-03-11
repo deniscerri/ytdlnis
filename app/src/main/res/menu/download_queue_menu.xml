@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/clear_queue"
+        android:icon="@drawable/ic_delete_all"
+        android:title="@string/remove_downloading"
+        app:showAsAction="never" />
+
+
+    <item
+        android:id="@+id/clear_cancelled"
+        android:icon="@drawable/ic_delete_all"
+        android:title="@string/clear_cancelled"
+        app:showAsAction="never" />
+
+
+    <item
+        android:id="@+id/clear_errored"
+        android:icon="@drawable/ic_delete_all"
+        android:title="@string/clear_errored"
+        app:showAsAction="never" />
+</menu>

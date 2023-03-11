@@ -19,6 +19,7 @@ import com.deniscerri.ytdlnis.database.repository.DownloadRepository
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
+import com.google.android.material.chip.Chip
 import com.squareup.picasso.Picasso
 import java.io.File
 
@@ -72,10 +73,10 @@ class GenericDownloadAdapter(onItemClickListener: OnItemClickListener, activity:
         val itemUrl = card.findViewById<TextView>(R.id.subtitle)
         itemUrl.text = item.url
 
-        val formatNote = card.findViewById<TextView>(R.id.format_note)
+        val formatNote = card.findViewById<Chip>(R.id.format_note)
         formatNote!!.text = item.format.format_note.uppercase()
 
-        val codec = card.findViewById<TextView>(R.id.codec)
+        val codec = card.findViewById<Chip>(R.id.codec)
         val codecText =
             if (item.format.encoding != "") {
                 item.format.encoding.uppercase()
@@ -91,7 +92,7 @@ class GenericDownloadAdapter(onItemClickListener: OnItemClickListener, activity:
             codec.text = codecText
         }
 
-        val fileSize = card.findViewById<TextView>(R.id.file_size)
+        val fileSize = card.findViewById<Chip>(R.id.file_size)
         val fileSizeReadable = fileUtil.convertFileSize(item.format.filesize)
         if (fileSizeReadable == "?") fileSize.visibility = View.GONE
         else fileSize.text = fileSizeReadable

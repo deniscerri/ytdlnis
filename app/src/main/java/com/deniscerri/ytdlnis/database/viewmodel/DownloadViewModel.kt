@@ -207,8 +207,12 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
         return result
     }
 
-    fun deleteProcessing() = viewModelScope.launch(Dispatchers.IO) {
-        repository.deleteProcessing()
+    fun deleteCancelled() = viewModelScope.launch(Dispatchers.IO) {
+        repository.deleteCancelled()
+    }
+
+    fun deleteErrored() = viewModelScope.launch(Dispatchers.IO) {
+        repository.deleteErrored()
     }
 
     fun cloneDownloadItem(item: DownloadItem) : DownloadItem {

@@ -210,4 +210,8 @@
     <string name="access_all_directories_summary">Let the app download on directories that are restricted by default</string>
     <string name="redownload">Redownload</string>
     <string name="copy_url">Copy URL</string>
+    <string name="in_queue">In Queue</string>
+    <string name="clear_cancelled">Clear Cancelled</string>
+    <string name="clear_errored">Clear Errored</string>
+    <string name="split_by_chapters">Split By Chapters</string>
 </resources>

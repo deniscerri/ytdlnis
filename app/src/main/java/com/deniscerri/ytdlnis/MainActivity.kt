@@ -19,7 +19,6 @@ import androidx.core.app.ActivityCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import androidx.work.WorkManager
 import com.deniscerri.ytdlnis.databinding.ActivityMainBinding
 import com.deniscerri.ytdlnis.service.IDownloaderListener
 import com.deniscerri.ytdlnis.service.IDownloaderService
@@ -45,7 +44,6 @@ class MainActivity : AppCompatActivity() {
     lateinit var context: Context
     private lateinit var homeFragment: HomeFragment
     private lateinit var historyFragment: HistoryFragment
-    private lateinit var workManager: WorkManager
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,7 +56,6 @@ class MainActivity : AppCompatActivity() {
         askPermissions()
         checkUpdate()
         fm = supportFragmentManager
-        workManager = WorkManager.getInstance(context)
 
         homeFragment = HomeFragment()
         historyFragment = HistoryFragment()
@@ -171,9 +168,6 @@ class MainActivity : AppCompatActivity() {
         lastFragment = f
     }
 
-    fun cancelAllDownloads() {
-        workManager.cancelAllWork();
-    }
 
     private fun checkUpdate() {
         val preferences = context.getSharedPreferences("root_preferences", MODE_PRIVATE)

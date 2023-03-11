@@ -40,8 +40,12 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
         return downloadDao.getDownloadById(id)
     }
 
-    suspend fun deleteProcessing(){
-        downloadDao.deleteProcessing()
+    suspend fun deleteCancelled(){
+        downloadDao.deleteCancelled()
+    }
+
+    suspend fun deleteErrored(){
+        downloadDao.deleteErrored()
     }
 
     suspend fun deleteSingleProcessing(item: DownloadItem){

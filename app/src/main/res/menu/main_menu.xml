@@ -3,13 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".MainActivity" >
 
-<!--    <item-->
-<!--        android:id="@+id/search"-->
-<!--        android:title="@string/search"-->
-<!--        android:icon="@drawable/ic_search"-->
-<!--        app:showAsAction="always|collapseActionView"-->
-<!--        app:actionViewClass="androidx.appcompat.widget.SearchView"/>-->
-
     <item
         android:id="@+id/delete_results"
         android:title="@string/remove_results"
@@ -20,11 +13,6 @@
         android:title="@string/remove_search_history"
         app:showAsAction="never" />
 
-    <item
-        android:id="@+id/cancel_download"
-        android:title="@string/cancel_download"
-        android:visible="false"
-        app:showAsAction="never" />
 
 </menu>
 

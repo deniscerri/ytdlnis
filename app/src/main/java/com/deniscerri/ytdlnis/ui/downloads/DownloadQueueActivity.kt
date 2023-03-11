@@ -2,10 +2,16 @@ package com.deniscerri.ytdlnis.ui.downloads
 
 import android.content.Context
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
+import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
+import androidx.work.WorkManager
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.google.android.material.appbar.MaterialToolbar
@@ -15,7 +21,7 @@ import com.google.android.material.tabs.TabLayout
 class DownloadQueueActivity : AppCompatActivity(){
     private lateinit var downloadViewModel: DownloadViewModel
     private lateinit var topAppBar: MaterialToolbar
-
+    private lateinit var workManager: WorkManager
     private lateinit var tabLayout: TabLayout
     private lateinit var viewPager2: ViewPager2
     private lateinit var fragmentAdapter : DownloadListFragmentAdapter
@@ -26,7 +32,8 @@ class DownloadQueueActivity : AppCompatActivity(){
         setContentView(R.layout.activity_download_queue)
         context = baseContext
         val view : View = window.decorView.findViewById(android.R.id.content)
-
+        workManager = WorkManager.getInstance(this)
+        downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
 
         topAppBar = findViewById(R.id.logs_toolbar)
         topAppBar.setNavigationOnClickListener { onBackPressedDispatcher.onBackPressed() }
@@ -81,24 +88,38 @@ class DownloadQueueActivity : AppCompatActivity(){
             }
         })
 
-        //initMenu()
+        initMenu()
+//        downloadViewModel.activeDownloads.observe(this){
+//            if (it.isEmpty()) tabLayout.getTabAt(0)!!.view.visibility = View.GONE
+//            else tabLayout.getTabAt(0)!!.view.visibility = View.VISIBLE
+//        }
     }
 
-//    private fun initMenu() {
-//        topAppBar.setOnMenuItemClickListener { m: MenuItem ->
-//            val itemId = m.itemId
-//            if (itemId == R.id.remove_logs) {
-//                try{
-//                    logFolder.listFiles()!!.forEach {
-//                        it.delete()
-//                    }
-//                }catch (e: Exception){
-//                    Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
-//                }
-//            }
-//            true
-//        }
-//    }
+    private fun initMenu() {
+        topAppBar.setOnMenuItemClickListener { m: MenuItem ->
+            try{
+                when(m.itemId){
+                    R.id.clear_queue -> {
+                        cancelAllDownloads()
+                    }
+                    R.id.clear_cancelled -> {
+                        downloadViewModel.deleteCancelled()
+                    }
+                    R.id.clear_errored -> {
+                        downloadViewModel.deleteErrored()
+                    }
+                }
+            }catch (e: Exception){
+                Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
+            }
+
+            true
+        }
+    }
+
+    private fun cancelAllDownloads() {
+        workManager.cancelAllWork();
+    }
 
 
     companion object {
