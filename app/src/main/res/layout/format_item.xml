@@ -26,7 +26,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout2"
         android:layout_width="wrap_content"
-        android:layout_height="55dp"
+        android:layout_height="0dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/container"
@@ -48,12 +48,15 @@
             android:layout_gravity="bottom"
             android:layout_marginStart="10dp"
             android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@+id/format_note"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
 
             <TextView
                 android:id="@+id/codec"
+                android:ellipsize="end"
+                android:maxLength="17"
                 style="@style/Widget.Material3.FloatingActionButton.Large.Secondary"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -95,6 +98,7 @@
         android:layout_height="55dp"
         android:clickable="false"
         android:gravity="bottom|end"
+        android:maxLength="10"
         android:minWidth="30dp"
         app:cornerRadius="10dp"
         app:layout_constraintBottom_toBottomOf="parent"

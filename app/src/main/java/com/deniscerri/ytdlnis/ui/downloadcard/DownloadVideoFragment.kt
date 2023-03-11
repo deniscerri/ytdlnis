@@ -117,7 +117,7 @@ class DownloadVideoFragment(private val resultItem: ResultItem, private var curr
                 var formats = mutableListOf<Format>()
                 formats.addAll(resultItem.formats.filter { !it.format_note.contains("audio", ignoreCase = true) })
                 val videoFormats = resources.getStringArray(R.array.video_formats)
-                val containerPreference = sharedPreferences.getString("video_format", "Default")
+                val containerPreference = sharedPreferences.getString("video_format", getString(R.string.defaultValue))
 
                 if (formats.isEmpty()) {
 
@@ -139,13 +139,12 @@ class DownloadVideoFragment(private val resultItem: ResultItem, private var curr
                     )
                 )
                 downloadItem.format.container = containerPreference!!
+                containerAutoCompleteTextView!!.setText(downloadItem.format.container, false)
 
                 (container!!.editText as AutoCompleteTextView?)!!.onItemClickListener =
                     AdapterView.OnItemClickListener { _: AdapterView<*>?, _: View?, index: Int, _: Long ->
                         downloadItem.format.container = containers[index]
                     }
-
-                containerAutoCompleteTextView!!.setText(downloadItem.format.container, false)
 
                 val formatCard = view.findViewById<ConstraintLayout>(R.id.format_card_constraintLayout)
                 val chosenFormat = downloadItem.format

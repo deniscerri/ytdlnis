@@ -4,8 +4,6 @@ import android.app.Activity
 import android.content.Context
 import android.content.DialogInterface
 import android.content.res.Configuration
-import android.graphics.ColorMatrix
-import android.graphics.ColorMatrixColorFilter
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -48,6 +46,7 @@ import java.io.File
  */
 class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
     private lateinit var historyViewModel : HistoryViewModel
+    private lateinit var downloadViewModel : DownloadViewModel
 
     private var fragmentView: View? = null
     private var activity: Activity? = null
@@ -145,6 +144,8 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
             historyList = it
             scrollToTop()
         }
+
+        downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
 
         initMenu()
         initChips()
@@ -406,7 +407,7 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
         val codec = bottomSheet!!.findViewById<TextView>(R.id.codec)
         val fileSize = bottomSheet!!.findViewById<TextView>(R.id.file_size)
 
-        if (item.format.format_note == "?" || item.format.format_note == "") formatNote!!.visibility = View.GONE
+        if (item.format.format_note == "?" || item.format.format_note == "") formatNote!!.visibility = GONE
         else formatNote!!.text = item.format.format_note
 
         val codecText =
@@ -418,14 +419,14 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
                 item.format.acodec.uppercase()
             }
         if (codecText == "" || codecText == "none"){
-            codec!!.visibility = View.GONE
+            codec!!.visibility = GONE
         }else{
-            codec!!.visibility = View.VISIBLE
+            codec!!.visibility = VISIBLE
             codec.text = codecText
         }
 
         val fileSizeReadable = fileUtil!!.convertFileSize(item.format.filesize)
-        if (fileSizeReadable == "?") fileSize!!.visibility = View.GONE
+        if (fileSizeReadable == "?") fileSize!!.visibility = GONE
         else fileSize!!.text = fileSizeReadable
 
         val link = bottomSheet!!.findViewById<Button>(R.id.bottom_sheet_link)
@@ -449,7 +450,19 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
         openFile.setOnClickListener{
             uiUtil!!.openFileIntent(requireContext(), item.downloadPath)
         }
+
+        val redownload = bottomSheet!!.findViewById<Button>(R.id.bottomsheet_redownload_button)
+        redownload!!.tag = itemID
+        redownload.setOnClickListener{
+            val downloadItem = downloadViewModel.createDownloadItemFromHistory(item)
+            downloadViewModel.queueDownloads(listOf(downloadItem))
+            historyViewModel.delete(item, false)
+            bottomSheet!!.cancel()
+        }
+
         if (!isPresent) openFile.visibility = GONE
+        else redownload.visibility = GONE
+
         bottomSheet!!.show()
         bottomSheet!!.window!!.setLayout(
             ViewGroup.LayoutParams.MATCH_PARENT,

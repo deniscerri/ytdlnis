@@ -111,6 +111,7 @@ class DownloadAudioFragment(private var resultItem: ResultItem, private var curr
                 var formats = resultItem.formats.filter { it.format_note.contains("audio", ignoreCase = true) }
 
                 val containers = requireContext().resources.getStringArray(R.array.audio_containers)
+                val containerPreference = sharedPreferences.getString("audio_format", getString(R.string.defaultValue))
                 val container = view.findViewById<TextInputLayout>(R.id.downloadContainer)
                 val containerAutoCompleteTextView =
                     view.findViewById<AutoCompleteTextView>(R.id.container_textview)
@@ -125,7 +126,6 @@ class DownloadAudioFragment(private var resultItem: ResultItem, private var curr
                     val listener = object : OnFormatClickListener {
                         override fun onFormatClick(allFormats: List<Format>, item: Format) {
                             downloadItem.format = item
-
                             if (containers.contains(item.container)){
                                 downloadItem.format.container = item.container
                                 containerAutoCompleteTextView.setText(item.container, false)
@@ -157,7 +157,9 @@ class DownloadAudioFragment(private var resultItem: ResultItem, private var curr
                     )
                 )
 
-                containerAutoCompleteTextView!!.setText(downloadItem.format.container, false)
+                downloadItem.format.container = containerPreference!!
+                containerAutoCompleteTextView.setText(downloadItem.format.container, false)
+
                 (container!!.editText as AutoCompleteTextView?)!!.onItemClickListener =
                     AdapterView.OnItemClickListener { _: AdapterView<*>?, _: View?, index: Int, _: Long ->
                         downloadItem.format.container = containers[index]

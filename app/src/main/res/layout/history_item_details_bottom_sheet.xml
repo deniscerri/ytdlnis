@@ -51,8 +51,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
-                android:paddingVertical="20dp"
+                app:layout_constraintBottom_toBottomOf="@+id/linearLayout4"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/linearLayout4"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <com.google.android.material.button.MaterialButton
@@ -83,13 +84,12 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/url">
 
-                <TextView
+                <com.google.android.material.chip.Chip
                     android:id="@+id/format_note"
                     style="@style/Widget.Material3.FloatingActionButton.Large.Primary"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="5dp"
-                    android:background="?attr/colorPrimary"
                     android:clickable="false"
                     android:gravity="center"
                     android:minWidth="30dp"
@@ -99,13 +99,12 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"/>
 
-                <TextView
+                <com.google.android.material.chip.Chip
                     android:id="@+id/codec"
                     style="@style/Widget.Material3.FloatingActionButton.Large.Secondary"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="5dp"
-                    android:background="?attr/colorSecondary"
                     android:clickable="false"
                     android:gravity="center"
                     android:minWidth="30dp"
@@ -115,13 +114,12 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
+                <com.google.android.material.chip.Chip
                     android:id="@+id/file_size"
                     style="@style/Widget.Material3.FloatingActionButton.Large.Tertiary"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="5dp"
-                    android:background="?attr/colorSecondary"
                     android:clickable="false"
                     android:gravity="center"
                     android:minWidth="30dp"
@@ -169,7 +167,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/Open_File"
+                android:layout_marginEnd="10dp"
                 app:icon="@drawable/ic_baseline_file_open_24"
+                />
+
+            <Button
+                style="@style/Widget.Material3.Button.ElevatedButton.Icon"
+                android:id="@+id/bottomsheet_redownload_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/redownload"
+                android:layout_marginEnd="10dp"
+                app:icon="@drawable/ic_refresh"
                 />
 
         </LinearLayout>

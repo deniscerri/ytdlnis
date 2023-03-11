@@ -208,4 +208,5 @@
     <string name="all_items_selected">All items selected</string>
     <string name="access_all_directories">Allow access to all directories</string>
     <string name="access_all_directories_summary">Let the app download on directories that are restricted by default</string>
+    <string name="redownload">Redownload</string>
 </resources>

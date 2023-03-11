@@ -119,6 +119,35 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
 
     }
 
+    fun createDownloadItemFromHistory(historyItem: HistoryItem) : DownloadItem {
+        val embedSubs = sharedPreferences.getBoolean("embed_subtitles", false)
+        val addChapters = sharedPreferences.getBoolean("add_chapters", false)
+        val saveThumb = sharedPreferences.getBoolean("write_thumbnail", false)
+        val embedThumb = sharedPreferences.getBoolean("embed_thumbnail", false)
+        val customFileNameTemplate = sharedPreferences.getString("file_name_template", "%(uploader)s - %(title)s")
+
+        val downloadPath = when(historyItem.type){
+            Type.audio -> sharedPreferences.getString("music_path", getApplication<App>().resources.getString(R.string.music_path))
+            Type.video -> sharedPreferences.getString("video_path", getApplication<App>().resources.getString(R.string.video_path))
+            else -> sharedPreferences.getString("command_path", getApplication<App>().resources.getString(R.string.command_path))
+        }
+
+        val audioPreferences = AudioPreferences(embedThumb)
+        val videoPreferences = VideoPreferences(embedSubs, addChapters)
+
+        return DownloadItem(0,
+            historyItem.url,
+            historyItem.title,
+            historyItem.author,
+            historyItem.thumb,
+            historyItem.duration,
+            historyItem.type,
+            historyItem.format,
+            downloadPath!!, historyItem.website, "", "", audioPreferences, videoPreferences,customFileNameTemplate!!, saveThumb, DownloadRepository.Status.Processing.toString(), 0
+        )
+
+    }
+
 
     private fun getFormat(resultItem: ResultItem?, type: Type) : Format {
         when(type) {
