@@ -20,8 +20,6 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.deniscerri.ytdlnis.databinding.ActivityMainBinding
-import com.deniscerri.ytdlnis.service.IDownloaderListener
-import com.deniscerri.ytdlnis.service.IDownloaderService
 import com.deniscerri.ytdlnis.ui.HomeFragment
 import com.deniscerri.ytdlnis.ui.downloads.DownloadQueueActivity
 import com.deniscerri.ytdlnis.ui.downloads.HistoryFragment
@@ -160,7 +158,6 @@ class MainActivity : AppCompatActivity() {
             .hide(moreFragment)
             .commit()
         lastFragment = homeFragment
-        listeners = ArrayList()
     }
 
     private fun replaceFragment(f: Fragment) {
@@ -275,8 +272,5 @@ class MainActivity : AppCompatActivity() {
         private lateinit var moreFragment: MoreFragment
         private lateinit var lastFragment: Fragment
         private lateinit var fm: FragmentManager
-        private var isDownloadServiceRunning = false
-        private lateinit var listeners: ArrayList<IDownloaderListener>
-        private var iDownloaderService: IDownloaderService? = null
     }
 }

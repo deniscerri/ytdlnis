@@ -78,7 +78,7 @@
     <string name="url">URL</string>
     <string name="link_copied_to_clipboard">Link mübadilə buferinə kopyalandı</string>
     <string name="api_key">APİ Açarından istifadə edin</string>
-    <string name="api_key_summary">YouTube'dan daha sürətli nəticələr</string>
+    <string name="api_key_summary">YouTube\'dan daha sürətli nəticələr</string>
     <string name="update_app_summary">Tətbiq açıldıqda onun yeni versiyalarını elan edir</string>
     <string name="downloads">Yükləmələr</string>
     <string name="removed_from_queue">növbədən silindi.</string>
