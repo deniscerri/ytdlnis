@@ -113,4 +113,13 @@
     <string name="mutliple_authors">Wiele autorów</string>
     <string name="Open_File">Otwórz plik</string>
     <string name="delete_files_too">Usuń pliki z urządzenia</string>
+    <string name="sponsorblock_intro">Wprowadzenie</string>
+    <string name="sponsorblock_reminders">Przypomnienia o subskrypcji</string>
+    <string name="select_sponsorblock_filtering">Wybierz filtrowanie SponsorBlock</string>
+    <string name="sponsorblock_nonmusic">Części niezwiązane z muzyką i nie na temat</string>
+    <string name="sponsorblock_sponsors">Sponsorzy</string>
+    <string name="sponsorblock_outro">Apreter</string>
+    <string name="sponsorblock_promos">Promocje własne</string>
+    <string name="sponsorblock_previews">Podglądy</string>
+    <string name="sponsorblock_fillers">Wypełniacze</string>
 </resources>

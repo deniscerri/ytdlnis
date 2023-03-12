@@ -106,18 +106,17 @@
                 android:layout_height="match_parent"
                 android:gravity="bottom|end"
                 android:orientation="horizontal"
-                android:paddingBottom="16dp"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp">
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp">
 
                 <com.google.android.material.button.MaterialButton
                     style="@style/Widget.Material3.ExtendedFloatingActionButton.Icon.Secondary"
                     android:id="@+id/download_music"
                     android:layout_width="55dp"
                     android:layout_height="55dp"
-                    app:cornerRadius="10dp"
                     app:icon="@drawable/ic_music"
-                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginBottom="5dp"
                     />
 
                 <com.google.android.material.button.MaterialButton
@@ -125,9 +124,9 @@
                     android:id="@+id/download_video"
                     android:layout_width="55dp"
                     android:layout_height="55dp"
-                    app:cornerRadius="10dp"
                     app:icon="@drawable/ic_video"
-                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginBottom="5dp"
                     />
 
             </LinearLayout>
