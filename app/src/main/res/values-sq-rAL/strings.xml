@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="worst_quality">Kualiteti më i keq</string>
+    <string name="best_quality">Kualiteti më i mirë</string>
     <string name="Trending"><b>Në Trend</b></string>
     <string name="search">Kërko</string>
     <string name="remove_results">Pastro Rezultatet</string>
@@ -173,6 +175,7 @@
     <string name="adjust_audio">Modifiko Audion</string>
     <string name="file_name_template">Formati i Emrit të Skedarit</string>
     <string name="language">Gjuha</string>
+    <string name="new_update">Përditësim i ri</string>
     <string name="download_queue">Rradha e Shkarkimeve</string>
     <string name="running">Në Ekzekutim</string>
     <string name="command">Komandë</string>
@@ -205,4 +208,9 @@
     <string name="clear_cancelled">Fshi Të Anulluarit</string>
     <string name="clear_errored">Fshi Me Probleme</string>
     <string name="split_by_chapters">Ngaj sipas Kapitujve</string>
+    <string name="items_imported">Elementë të importuar</string>
+    <string name="help_translate">Ndihmo në përkthim</string>
+    <string name="help_translate_summary">Përkthe këtë aplikacion në gjuhën tuaj duke përdorur Weblate</string>
+    <string name="workmanager_updated">Duhet të rinisni aplikacionin dhe të mos keni shkarkime aktive që kjo preferencë të hyjë në fuqi!</string>
+    <string name="restart">Rinis</string>
 </resources>
