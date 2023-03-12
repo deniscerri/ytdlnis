@@ -32,10 +32,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.io.File
-import java.sql.Date
-import java.text.DateFormat
-import java.text.SimpleDateFormat
-import java.util.*
 
 
 class ErroredDownloadsFragment() : Fragment(), GenericDownloadAdapter.OnItemClickListener, OnItemClickListener {

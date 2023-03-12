@@ -17,7 +17,7 @@ import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.UpdateUtil
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import kotlinx.serialization.json.*
+import kotlinx.serialization.json.Json
 import java.util.*
 
 class SettingsFragment : PreferenceFragmentCompat() {

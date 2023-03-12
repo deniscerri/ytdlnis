@@ -32,10 +32,6 @@ import com.yausername.youtubedl_android.YoutubeDL
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.sql.Date
-import java.text.DateFormat
-import java.text.SimpleDateFormat
-import java.util.*
 
 
 class QueuedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickListener {

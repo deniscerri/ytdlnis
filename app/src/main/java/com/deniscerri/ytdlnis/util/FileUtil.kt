@@ -8,7 +8,6 @@ import android.provider.DocumentsContract
 import android.webkit.MimeTypeMap
 import com.deniscerri.ytdlnis.R
 import okhttp3.internal.closeQuietly
-import okhttp3.internal.format
 import java.io.File
 import java.net.URLDecoder
 import java.nio.charset.StandardCharsets

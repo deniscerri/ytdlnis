@@ -21,7 +21,6 @@ import com.deniscerri.ytdlnis.work.DownloadWorker
 import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.util.concurrent.TimeUnit
 
 class DownloadViewModel(application: Application) : AndroidViewModel(application) {
