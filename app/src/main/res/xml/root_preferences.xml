@@ -36,6 +36,12 @@
             android:summary="@string/access_all_directories_summary"
             app:title="@string/access_all_directories" />
 
+        <Preference
+            app:icon="@drawable/ic_folder_delete"
+            app:key="clear_cache"
+            android:summary="@string/clear_temporary_files_summary"
+            app:title="@string/clear_temporary_files" />
+
     </PreferenceCategory>
 
     <PreferenceCategory app:title="@string/downloading">

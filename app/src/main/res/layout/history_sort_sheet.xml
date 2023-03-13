@@ -21,70 +21,60 @@
             android:paddingBottom="20dp"
             android:layout_height="wrap_content"/>
 
-        <LinearLayout
+        <TextView
             android:id="@+id/date"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackground"
+            android:paddingVertical="10dp"
+            android:drawablePadding="30dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="20dp"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="20dp"
-                android:paddingEnd="20dp"
-                android:src="@drawable/ic_up"/>
+            android:textSize="15sp"
+            android:text="@string/date_added"
+            app:drawableLeftCompat="@drawable/ic_arrow_up" />
 
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="15sp"
-                android:text="@string/date_added" />
-        </LinearLayout>
-
-        <LinearLayout
+        <TextView
             android:id="@+id/title"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackground"
+            android:paddingVertical="10dp"
+            android:drawablePadding="30dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="20dp"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:visibility="invisible"
-                android:layout_width="wrap_content"
-                android:layout_height="20dp"
-                android:paddingEnd="20dp"
-                android:src="@drawable/ic_up"/>
+            android:textSize="15sp"
+            android:text="@string/title"
+            app:drawableLeftCompat="@drawable/ic_arrow_up" />
 
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="15sp"
-                android:text="@string/title" />
-        </LinearLayout>
-
-        <LinearLayout
+        <TextView
             android:id="@+id/author"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackground"
+            android:paddingVertical="10dp"
+            android:drawablePadding="30dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="20dp"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:visibility="invisible"
-                android:layout_width="wrap_content"
-                android:layout_height="20dp"
-                android:paddingEnd="20dp"
-                android:src="@drawable/ic_up"/>
+            android:textSize="15sp"
+            android:text="@string/author"
+            app:drawableLeftCompat="@drawable/ic_arrow_up" />
 
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="15sp"
-                android:text="@string/author" />
-        </LinearLayout>
+        <TextView
+            android:id="@+id/filesize"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackground"
+            android:drawablePadding="30dp"
+            android:paddingVertical="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:text="@string/file_size"
+            app:drawableLeftCompat="@drawable/ic_arrow_up" />
 
 
 

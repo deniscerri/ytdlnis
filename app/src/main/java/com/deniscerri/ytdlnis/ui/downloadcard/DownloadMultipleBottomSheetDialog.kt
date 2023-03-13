@@ -25,6 +25,7 @@ import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdlnis.receiver.ShareActivity
 import com.deniscerri.ytdlnis.util.FileUtil
+import com.deniscerri.ytdlnis.util.UiUtil
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -49,6 +50,7 @@ class DownloadMultipleBottomSheetDialog(private var items: MutableList<DownloadI
     private lateinit var recyclerView: RecyclerView
     private lateinit var behavior: BottomSheetBehavior<View>
     private lateinit var fileUtil: FileUtil
+    private lateinit var uiUtil: UiUtil
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,6 +59,7 @@ class DownloadMultipleBottomSheetDialog(private var items: MutableList<DownloadI
         resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]
         commandTemplateViewModel = ViewModelProvider(this)[CommandTemplateViewModel::class.java]
         fileUtil = FileUtil()
+        uiUtil = UiUtil(fileUtil)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -70,7 +73,6 @@ class DownloadMultipleBottomSheetDialog(private var items: MutableList<DownloadI
         super.setupDialog(dialog, style)
         val view = LayoutInflater.from(context).inflate(R.layout.download_multiple_bottom_sheet, null)
         dialog.setContentView(view)
-        //view.minimumHeight = resources.displayMetrics.heightPixels
 
         dialog.setOnShowListener {
             behavior = BottomSheetBehavior.from(view.parent as View)
@@ -92,44 +94,13 @@ class DownloadMultipleBottomSheetDialog(private var items: MutableList<DownloadI
 
         val scheduleBtn = view.findViewById<MaterialButton>(R.id.bottomsheet_schedule_button)
         scheduleBtn.setOnClickListener{
-            val currentDate = Calendar.getInstance()
-            val date = Calendar.getInstance()
-
-            val datepicker = MaterialDatePicker.Builder.datePicker()
-                .setCalendarConstraints(
-                    CalendarConstraints.Builder()
-                        .setValidator(DateValidatorPointForward.now())
-                        .build()
-                )
-                .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
-                .build()
-
-            datepicker.addOnPositiveButtonClickListener{
-                date.timeInMillis = it
-
-
-                val timepicker = MaterialTimePicker.Builder()
-                    .setTimeFormat(TimeFormat.CLOCK_24H)
-                    .setHour(currentDate.get(Calendar.HOUR_OF_DAY))
-                    .setMinute(currentDate.get(Calendar.MINUTE))
-                    .build()
-
-                timepicker.addOnPositiveButtonClickListener{
-                    date[Calendar.HOUR_OF_DAY] = timepicker.hour
-                    date[Calendar.MINUTE] = timepicker.minute
-
-
-                    items.forEach { item ->
-                        item.downloadStartTime = date.timeInMillis
-                    }
-                    downloadViewModel.queueDownloads(items)
-                    dismiss()
+            uiUtil.showDatePicker(parentFragmentManager) {
+                items.forEach { item ->
+                    item.downloadStartTime = it.timeInMillis
                 }
-                timepicker.show(parentFragmentManager, "timepicker")
-
+                downloadViewModel.queueDownloads(items)
+                dismiss()
             }
-            datepicker.show(parentFragmentManager, "datepicker")
-
         }
 
         val download = view.findViewById<Button>(R.id.bottomsheet_download_button)

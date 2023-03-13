@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.text.InputType
+import android.text.format.DateUtils
 import android.util.Log
 import android.view.*
 import android.view.View.*
@@ -40,6 +41,10 @@ import com.google.android.material.chip.ChipGroup
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import java.io.File
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * A fragment representing a list of Items.
@@ -239,12 +244,15 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
         }
     }
 
-    private fun changeSortIcon(item: LinearLayout, order: HistorySort){
+    private fun changeSortIcon(item: TextView, order: HistorySort){
         when(order){
-            HistorySort.DESC -> (item.getChildAt(0) as ImageView).setImageResource(R.drawable.ic_up)
-            HistorySort.ASC -> (item.getChildAt(0) as ImageView).setImageResource(R.drawable.ic_down)
+            HistorySort.DESC ->{
+                item.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_up, 0,0,0)
+            }
+            HistorySort.ASC ->                 {
+                item.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_down, 0,0,0)
+            }
         }
-        item.getChildAt(0).visibility = VISIBLE
     }
 
 
@@ -255,32 +263,39 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
             sortSheet!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
             sortSheet!!.setContentView(R.layout.history_sort_sheet)
 
-            val date = sortSheet!!.findViewById<LinearLayout>(R.id.date)
-            val title = sortSheet!!.findViewById<LinearLayout>(R.id.title)
-            val author = sortSheet!!.findViewById<LinearLayout>(R.id.author)
+            val date = sortSheet!!.findViewById<TextView>(R.id.date)
+            val title = sortSheet!!.findViewById<TextView>(R.id.title)
+            val author = sortSheet!!.findViewById<TextView>(R.id.author)
+            val filesize = sortSheet!!.findViewById<TextView>(R.id.filesize)
 
-            val sortOptions = listOf(date!!, title!!, author!!)
-            sortOptions.forEach { it.getChildAt(0).visibility = INVISIBLE }
+            val sortOptions = listOf(date!!, title!!, author!!, filesize!!)
+            sortOptions.forEach { it.setCompoundDrawablesWithIntrinsicBounds(R.drawable.empty,0,0,0) }
             when(historyViewModel.sortType.value!!) {
                 HistoryRepository.HistorySortType.DATE -> changeSortIcon(date, historyViewModel.sortOrder.value!!)
                 HistoryRepository.HistorySortType.TITLE -> changeSortIcon(title, historyViewModel.sortOrder.value!!)
                 HistoryRepository.HistorySortType.AUTHOR -> changeSortIcon(author, historyViewModel.sortOrder.value!!)
+                HistoryRepository.HistorySortType.FILESIZE -> changeSortIcon(filesize, historyViewModel.sortOrder.value!!)
             }
 
-            date.getChildAt(1).setOnClickListener {
-                sortOptions.forEach { it.getChildAt(0).visibility = INVISIBLE }
+            date.setOnClickListener {
+                sortOptions.forEach { it.setCompoundDrawablesWithIntrinsicBounds(R.drawable.empty,0,0,0) }
                 historyViewModel.setSorting(HistoryRepository.HistorySortType.DATE)
                 changeSortIcon(date, historyViewModel.sortOrder.value!!)
             }
-            title.getChildAt(1).setOnClickListener {
-                sortOptions.forEach { it.getChildAt(0).visibility = INVISIBLE }
+            title.setOnClickListener {
+                sortOptions.forEach { it.setCompoundDrawablesWithIntrinsicBounds(R.drawable.empty,0,0,0) }
                 historyViewModel.setSorting(HistoryRepository.HistorySortType.TITLE)
                 changeSortIcon(title, historyViewModel.sortOrder.value!!)
             }
-            author.getChildAt(1).setOnClickListener {
-                sortOptions.forEach { it.getChildAt(0).visibility = INVISIBLE }
+            author.setOnClickListener {
+                sortOptions.forEach { it.setCompoundDrawablesWithIntrinsicBounds(R.drawable.empty,0,0,0) }
                 historyViewModel.setSorting(HistoryRepository.HistorySortType.AUTHOR)
                 changeSortIcon(author, historyViewModel.sortOrder.value!!)
+            }
+            filesize.setOnClickListener {
+                sortOptions.forEach { it.setCompoundDrawablesWithIntrinsicBounds(R.drawable.empty,0,0,0) }
+                historyViewModel.setSorting(HistoryRepository.HistorySortType.FILESIZE)
+                changeSortIcon(filesize, historyViewModel.sortOrder.value!!)
             }
             sortSheet!!.show()
         }
@@ -400,9 +415,15 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
             btn.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_terminal)
         }
 
+        val time = bottomSheet!!.findViewById<TextView>(R.id.time)
         val formatNote = bottomSheet!!.findViewById<TextView>(R.id.format_note)
         val codec = bottomSheet!!.findViewById<TextView>(R.id.codec)
         val fileSize = bottomSheet!!.findViewById<TextView>(R.id.file_size)
+
+        val calendar = Calendar.getInstance()
+        calendar.timeInMillis = item.time * 1000L
+        time!!.text = SimpleDateFormat(android.text.format.DateFormat.getBestDateTimePattern(Locale.getDefault(), "ddMMMyyyy - HHmm"), Locale.getDefault()).format(calendar.time)
+        time.isClickable = false
 
         if (item.format.format_note == "?" || item.format.format_note == "") formatNote!!.visibility = GONE
         else formatNote!!.text = item.format.format_note

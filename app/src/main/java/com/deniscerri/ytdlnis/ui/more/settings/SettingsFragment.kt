@@ -12,6 +12,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.LocaleListCompat
 import androidx.preference.*
+import androidx.work.WorkInfo
+import androidx.work.WorkManager
 import com.deniscerri.ytdlnis.BuildConfig
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.util.FileUtil
@@ -26,6 +28,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
     private var videoPath: Preference? = null
     private var commandPath: Preference? = null
     private var accessAllFiles : Preference? = null
+    private var clearCache: Preference? = null
     private var incognito: SwitchPreferenceCompat? = null
     private var preferredDownloadType : ListPreference? = null
     private var downloadCard: SwitchPreferenceCompat? = null
@@ -56,12 +59,21 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
     private var updateUtil: UpdateUtil? = null
     private var fileUtil: FileUtil? = null
+    private var activeDownloadCount = 0
 
     private val jsonFormat = Json { prettyPrint = true }
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.root_preferences, rootKey)
         updateUtil = UpdateUtil(requireContext())
         fileUtil = FileUtil()
+
+        WorkManager.getInstance(requireContext()).getWorkInfosByTagLiveData("download").observe(this){
+            activeDownloadCount = 0
+            it.forEach {w ->
+                if (w.state == WorkInfo.State.RUNNING) activeDownloadCount++
+            }
+        }
+
         initPreferences()
         initListeners()
     }
@@ -75,6 +87,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         videoPath = findPreference("video_path")
         commandPath = findPreference("command_path")
         accessAllFiles = findPreference("access_all_files")
+        clearCache = findPreference("clear_cache")
         incognito = findPreference("incognito")
         preferredDownloadType = findPreference("preferred_download_type")
         downloadCard = findPreference("download_card")
@@ -210,6 +223,20 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 true
             }
 
+        var cacheSize = requireContext().cacheDir.walkBottomUp().fold(0L) { acc, file -> acc + file.length() }
+        clearCache!!.summary = "(${fileUtil!!.convertFileSize(cacheSize)}) ${resources.getString(R.string.clear_temporary_files_summary)}"
+        clearCache!!.onPreferenceClickListener =
+            Preference.OnPreferenceClickListener {
+                if (activeDownloadCount == 0){
+                    requireContext().cacheDir.deleteRecursively()
+                    Toast.makeText(requireContext(), getString(R.string.cache_cleared), Toast.LENGTH_SHORT).show()
+                    cacheSize = requireContext().cacheDir.walkBottomUp().fold(0L) { acc, file -> acc + file.length() }
+                    clearCache!!.summary = "(${fileUtil!!.convertFileSize(cacheSize)}) ${resources.getString(R.string.clear_temporary_files_summary)}"
+                }else{
+                    Toast.makeText(requireContext(), getString(R.string.downloads_running_try_later), Toast.LENGTH_SHORT).show()
+                }
+                true
+            }
         incognito!!.onPreferenceChangeListener =
             Preference.OnPreferenceChangeListener { _: Preference?, newValue: Any ->
                 val enable = newValue as Boolean

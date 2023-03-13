@@ -22,6 +22,8 @@ import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel.Type
 import com.deniscerri.ytdlnis.receiver.ShareActivity
+import com.deniscerri.ytdlnis.util.FileUtil
+import com.deniscerri.ytdlnis.util.UiUtil
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.button.MaterialButton
@@ -34,6 +36,7 @@ import com.google.android.material.timepicker.TimeFormat
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.File
 import java.util.*
 
 
@@ -44,11 +47,13 @@ class DownloadBottomSheetDialog(private val resultItem: ResultItem, private val 
     private lateinit var downloadViewModel: DownloadViewModel
     private lateinit var behavior: BottomSheetBehavior<View>
     private lateinit var commandTemplateDao : CommandTemplateDao
+    private lateinit var uiUtil: UiUtil
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
         commandTemplateDao = DBManager.getInstance(requireContext()).commandTemplateDao
+        uiUtil = UiUtil(FileUtil())
     }
 
     @SuppressLint("RestrictedApi")
@@ -139,43 +144,12 @@ class DownloadBottomSheetDialog(private val resultItem: ResultItem, private val 
 
         val scheduleBtn = view.findViewById<MaterialButton>(R.id.bottomsheet_schedule_button)
         scheduleBtn.setOnClickListener{
-            val currentDate = Calendar.getInstance()
-            val date = Calendar.getInstance()
-
-            val datepicker = MaterialDatePicker.Builder.datePicker()
-                .setCalendarConstraints(
-                    CalendarConstraints.Builder()
-                        .setValidator(DateValidatorPointForward.now())
-                        .build()
-                )
-                .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
-                .build()
-
-            datepicker.addOnPositiveButtonClickListener{
-                date.timeInMillis = it
-
-
-                val timepicker = MaterialTimePicker.Builder()
-                    .setTimeFormat(TimeFormat.CLOCK_24H)
-                    .setHour(currentDate.get(Calendar.HOUR_OF_DAY))
-                    .setMinute(currentDate.get(Calendar.MINUTE))
-                    .build()
-
-                timepicker.addOnPositiveButtonClickListener{
-                    date[Calendar.HOUR_OF_DAY] = timepicker.hour
-                    date[Calendar.MINUTE] = timepicker.minute
-
-
-                    val item: DownloadItem = getDownloadItem();
-                    item.downloadStartTime = date.timeInMillis
-                    downloadViewModel.queueDownloads(listOf(item))
-                    dismiss()
-                }
-                timepicker.show(fragmentManager, "timepicker")
-
+            uiUtil.showDatePicker(fragmentManager) {
+                val item: DownloadItem = getDownloadItem();
+                item.downloadStartTime = it.timeInMillis
+                downloadViewModel.queueDownloads(listOf(item))
+                dismiss()
             }
-            datepicker.show(fragmentManager, "datepicker")
-
         }
 
         val download = view.findViewById<Button>(R.id.bottomsheet_download_button)

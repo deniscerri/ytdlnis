@@ -18,17 +18,25 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.FileProvider
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LifecycleOwner
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.CommandTemplate
+import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.models.Format
 import com.deniscerri.ytdlnis.database.models.TemplateShortcut
 import com.deniscerri.ytdlnis.database.viewmodel.CommandTemplateViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
+import com.google.android.material.datepicker.CalendarConstraints
+import com.google.android.material.datepicker.DateValidatorPointForward
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.textfield.TextInputLayout
+import com.google.android.material.timepicker.MaterialTimePicker
+import com.google.android.material.timepicker.TimeFormat
 import java.io.File
+import java.util.*
 
 class UiUtil(private val fileUtil: FileUtil) {
     fun populateFormatCard(formatCard : ConstraintLayout, chosenFormat: Format){
@@ -213,5 +221,39 @@ class UiUtil(private val fileUtil: FileUtil) {
         i.setDataAndType(uri, mime)
         i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         fragmentContext.startActivity(i)
+    }
+
+    fun showDatePicker(fragmentManager: FragmentManager , onSubmit : (chosenDate: Calendar) -> Unit ){
+        val currentDate = Calendar.getInstance()
+        val date = Calendar.getInstance()
+
+        val datePicker = MaterialDatePicker.Builder.datePicker()
+            .setCalendarConstraints(
+                CalendarConstraints.Builder()
+                    .setValidator(DateValidatorPointForward.now())
+                    .build()
+            )
+            .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+            .build()
+
+        datePicker.addOnPositiveButtonClickListener{
+            date.timeInMillis = it
+
+
+            val timepicker = MaterialTimePicker.Builder()
+                .setTimeFormat(TimeFormat.CLOCK_24H)
+                .setHour(currentDate.get(Calendar.HOUR_OF_DAY))
+                .setMinute(currentDate.get(Calendar.MINUTE))
+                .build()
+
+            timepicker.addOnPositiveButtonClickListener{
+                date[Calendar.HOUR_OF_DAY] = timepicker.hour
+                date[Calendar.MINUTE] = timepicker.minute
+                onSubmit(date)
+            }
+            timepicker.show(fragmentManager, "timepicker")
+
+        }
+        datePicker.show(fragmentManager, "datepicker")
     }
 }

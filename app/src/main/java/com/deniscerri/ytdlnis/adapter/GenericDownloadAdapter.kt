@@ -74,7 +74,9 @@ class GenericDownloadAdapter(onItemClickListener: OnItemClickListener, activity:
         itemUrl.text = item.url
 
         val formatNote = card.findViewById<Chip>(R.id.format_note)
-        formatNote!!.text = item.format.format_note.uppercase()
+        if (item.format.format_note == "?" || item.format.format_note == "") formatNote!!.visibility =
+            View.GONE
+        else formatNote!!.text = item.format.format_note.uppercase()
 
         val codec = card.findViewById<Chip>(R.id.codec)
         val codecText =

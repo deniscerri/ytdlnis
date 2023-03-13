@@ -92,22 +92,6 @@ class HistoryAdapter(onItemClickListener: OnItemClickListener, activity: Activit
             System.currentTimeMillis(),
             DateUtils.MINUTE_IN_MILLIS
         )
-//
-//        val time = item.time
-//        val downloadedTime: String
-//        if (time == 0L) {
-//            downloadedTime = activity.getString(R.string.currently_downloading) + " " + item.type
-//        } else {
-//            val cal = Calendar.getInstance()
-//            val date = Date(time * 1000L)
-//            cal.time = date
-//            val day = cal[Calendar.DAY_OF_MONTH]
-//            val month = cal.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault())
-//            val year = cal[Calendar.YEAR]
-//            val formatter: DateFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
-//            val timeString = formatter.format(date)
-//            downloadedTime = "$day $month $year - $timeString"
-//        }
         datetime.text = relativeTime
 
         // BUTTON ----------------------------------

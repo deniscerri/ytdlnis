@@ -84,6 +84,20 @@
                 app:layout_constraintTop_toBottomOf="@+id/url">
 
                 <com.google.android.material.chip.Chip
+                    android:id="@+id/time"
+                    style="@style/Widget.Material3.FloatingActionButton.Large.Primary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:minWidth="30dp"
+                    app:cornerRadius="10dp"
+                    app:chipIcon="@drawable/ic_clock"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:focusable="true" />
+
+                <com.google.android.material.chip.Chip
                     android:id="@+id/format_note"
                     style="@style/Widget.Material3.FloatingActionButton.Large.Primary"
                     android:layout_width="wrap_content"
