@@ -221,4 +221,8 @@
     <string name="restart">Restart</string>
     <string name="download_rescheduled_to">Download rescheduled to:</string>
     <string name="file_size">File size</string>
+    <string name="clear_temporary_files">Clear temporary files</string>
+    <string name="clear_temporary_files_summary">Delete cached files from crashed/errored/cancelled downloads</string>
+    <string name="cache_cleared">Temporary files cleared</string>
+    <string name="downloads_running_try_later">Download worker is running. Try again later</string>
 </resources>
