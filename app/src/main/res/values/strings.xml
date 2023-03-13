@@ -220,4 +220,5 @@
     <string name="workmanager_updated">You need to restart the app and have no active downloads for this preference to take effect!</string>
     <string name="restart">Restart</string>
     <string name="download_rescheduled_to">Download rescheduled to:</string>
+    <string name="file_size">File size</string>
 </resources>

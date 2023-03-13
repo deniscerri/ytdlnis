@@ -12,7 +12,7 @@ class HistoryRepository(private val historyDao: HistoryDao) {
     }
 
     enum class HistorySortType {
-        DATE, TITLE, AUTHOR
+        DATE, TITLE, AUTHOR, FILESIZE
     }
 
     suspend fun getItem(id: Int) : HistoryItem {
@@ -24,6 +24,13 @@ class HistoryRepository(private val historyDao: HistoryDao) {
             HistorySortType.DATE ->  historyDao.getHistorySortedByID(query, format, site, sort.toString())
             HistorySortType.TITLE ->  historyDao.getHistorySortedByTitle(query, format, site, sort.toString())
             HistorySortType.AUTHOR ->  historyDao.getHistorySortedByAuthor(query, format, site, sort.toString())
+            HistorySortType.FILESIZE ->  {
+                val items = historyDao.getHistorySortedByID(query, format, site, sort.toString())
+                when(sort){
+                    HistorySort.DESC -> items.sortedByDescending { it.format.filesize }
+                    HistorySort.ASC -> items.sortedBy { it.format.filesize }
+                }
+            }
         }
     }
 

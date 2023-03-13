@@ -240,12 +240,15 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
         }
     }
 
-    private fun changeSortIcon(item: LinearLayout, order: HistorySort){
+    private fun changeSortIcon(item: TextView, order: HistorySort){
         when(order){
-            HistorySort.DESC -> (item.getChildAt(0) as ImageView).setImageResource(R.drawable.ic_up)
-            HistorySort.ASC -> (item.getChildAt(0) as ImageView).setImageResource(R.drawable.ic_down)
+            HistorySort.DESC ->{
+                item.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_up, 0,0,0)
+            }
+            HistorySort.ASC ->                 {
+                item.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_down, 0,0,0)
+            }
         }
-        item.getChildAt(0).visibility = VISIBLE
     }
 
 
@@ -256,32 +259,39 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
             sortSheet!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
             sortSheet!!.setContentView(R.layout.history_sort_sheet)
 
-            val date = sortSheet!!.findViewById<LinearLayout>(R.id.date)
-            val title = sortSheet!!.findViewById<LinearLayout>(R.id.title)
-            val author = sortSheet!!.findViewById<LinearLayout>(R.id.author)
+            val date = sortSheet!!.findViewById<TextView>(R.id.date)
+            val title = sortSheet!!.findViewById<TextView>(R.id.title)
+            val author = sortSheet!!.findViewById<TextView>(R.id.author)
+            val filesize = sortSheet!!.findViewById<TextView>(R.id.filesize)
 
-            val sortOptions = listOf(date!!, title!!, author!!)
-            sortOptions.forEach { it.getChildAt(0).visibility = INVISIBLE }
+            val sortOptions = listOf(date!!, title!!, author!!, filesize!!)
+            sortOptions.forEach { it.setCompoundDrawablesWithIntrinsicBounds(R.drawable.empty,0,0,0) }
             when(historyViewModel.sortType.value!!) {
                 HistoryRepository.HistorySortType.DATE -> changeSortIcon(date, historyViewModel.sortOrder.value!!)
                 HistoryRepository.HistorySortType.TITLE -> changeSortIcon(title, historyViewModel.sortOrder.value!!)
                 HistoryRepository.HistorySortType.AUTHOR -> changeSortIcon(author, historyViewModel.sortOrder.value!!)
+                HistoryRepository.HistorySortType.FILESIZE -> changeSortIcon(filesize, historyViewModel.sortOrder.value!!)
             }
 
-            date.getChildAt(1).setOnClickListener {
-                sortOptions.forEach { it.getChildAt(0).visibility = INVISIBLE }
+            date.setOnClickListener {
+                sortOptions.forEach { it.setCompoundDrawablesWithIntrinsicBounds(R.drawable.empty,0,0,0) }
                 historyViewModel.setSorting(HistoryRepository.HistorySortType.DATE)
                 changeSortIcon(date, historyViewModel.sortOrder.value!!)
             }
-            title.getChildAt(1).setOnClickListener {
-                sortOptions.forEach { it.getChildAt(0).visibility = INVISIBLE }
+            title.setOnClickListener {
+                sortOptions.forEach { it.setCompoundDrawablesWithIntrinsicBounds(R.drawable.empty,0,0,0) }
                 historyViewModel.setSorting(HistoryRepository.HistorySortType.TITLE)
                 changeSortIcon(title, historyViewModel.sortOrder.value!!)
             }
-            author.getChildAt(1).setOnClickListener {
-                sortOptions.forEach { it.getChildAt(0).visibility = INVISIBLE }
+            author.setOnClickListener {
+                sortOptions.forEach { it.setCompoundDrawablesWithIntrinsicBounds(R.drawable.empty,0,0,0) }
                 historyViewModel.setSorting(HistoryRepository.HistorySortType.AUTHOR)
                 changeSortIcon(author, historyViewModel.sortOrder.value!!)
+            }
+            filesize.setOnClickListener {
+                sortOptions.forEach { it.setCompoundDrawablesWithIntrinsicBounds(R.drawable.empty,0,0,0) }
+                historyViewModel.setSorting(HistoryRepository.HistorySortType.FILESIZE)
+                changeSortIcon(filesize, historyViewModel.sortOrder.value!!)
             }
             sortSheet!!.show()
         }
