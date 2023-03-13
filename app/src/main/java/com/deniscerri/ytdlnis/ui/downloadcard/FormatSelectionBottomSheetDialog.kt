@@ -69,6 +69,7 @@ class FormatSelectionBottomSheetDialog(private val item: DownloadItem, private v
                        Type.audio -> formats.filter { it.format_note.contains("audio", ignoreCase = true) }
                        else -> formats.filter { !it.format_note.contains("audio", ignoreCase = true) }
                    }
+                   if (formats.isEmpty()) throw Exception()
                    addFormatsToView(linearLayout)
                    refreshBtn.visibility = View.GONE
                }catch (e: Exception){

@@ -30,6 +30,7 @@ import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.UiUtil
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.chip.Chip
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.io.File
 
@@ -115,9 +116,12 @@ class ErroredDownloadsFragment() : Fragment(), GenericDownloadAdapter.OnItemClic
             btn.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_terminal)
         }
 
+        val time = bottomSheet.findViewById<Chip>(R.id.time)
         val formatNote = bottomSheet.findViewById<TextView>(R.id.format_note)
         val codec = bottomSheet.findViewById<TextView>(R.id.codec)
         val fileSize = bottomSheet.findViewById<TextView>(R.id.file_size)
+
+        time!!.visibility = View.GONE
 
         if (item.format.format_note == "?" || item.format.format_note == "") formatNote!!.visibility =
             View.GONE

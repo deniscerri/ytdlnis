@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.text.InputType
+import android.text.format.DateUtils
 import android.util.Log
 import android.view.*
 import android.view.View.*
@@ -400,9 +401,17 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
             btn.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_terminal)
         }
 
+        val time = bottomSheet!!.findViewById<TextView>(R.id.time)
         val formatNote = bottomSheet!!.findViewById<TextView>(R.id.format_note)
         val codec = bottomSheet!!.findViewById<TextView>(R.id.codec)
         val fileSize = bottomSheet!!.findViewById<TextView>(R.id.file_size)
+
+        time!!.text = DateUtils.getRelativeTimeSpanString(
+            item.time * 1000L,
+            System.currentTimeMillis(),
+            DateUtils.MINUTE_IN_MILLIS
+        )
+        time.isClickable = false
 
         if (item.format.format_note == "?" || item.format.format_note == "") formatNote!!.visibility = GONE
         else formatNote!!.text = item.format.format_note

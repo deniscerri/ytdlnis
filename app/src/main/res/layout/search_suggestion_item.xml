@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/search_suggestions_constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -30,34 +30,32 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <ImageButton
-                    style="?attr/materialIconButtonStyle"
-                    android:layout_width="40dp"
-                    android:scrollbars="none"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.01"
-                    android:src="@drawable/ic_search"
-                    />
-
                 <TextView
                     android:id="@+id/suggestion_text"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:maxLines="1"
+                    android:background="?attr/selectableItemBackground"
+                    android:focusable="true"
+                    android:clickable="true"
                     android:ellipsize="end"
                     android:layout_gravity="center_vertical"
                     android:gravity="center_vertical"
-                    android:paddingStart="20dp"
                     android:paddingEnd="20dp"
                     android:textSize="16sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:drawablePadding="20dp"
+                    app:drawableLeftCompat="@drawable/ic_search" />
 
                 <ImageButton
                     style="?attr/materialIconButtonStyle"
                     android:id="@+id/set_search_query_button"
                     android:layout_width="40dp"
                     android:scrollbars="none"
+                    android:background="?attr/selectableItemBackground"
+                    android:focusable="true"
+                    android:clickable="true"
                     android:layout_height="match_parent"
                     android:src="@drawable/ic_arrow_up"
                     android:layout_weight="0.01"

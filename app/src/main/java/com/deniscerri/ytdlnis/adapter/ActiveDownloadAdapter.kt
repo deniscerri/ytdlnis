@@ -20,6 +20,7 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.squareup.picasso.Picasso
+import java.util.zip.GZIPOutputStream
 
 class ActiveDownloadAdapter(onItemClickListener: OnItemClickListener, activity: Activity) : ListAdapter<DownloadItem?, ActiveDownloadAdapter.ViewHolder>(AsyncDifferConfig.Builder(DIFF_CALLBACK).build()) {
     private val onItemClickListener: OnItemClickListener
@@ -103,6 +104,7 @@ class ActiveDownloadAdapter(onItemClickListener: OnItemClickListener, activity: 
 
         val fileSize = card.findViewById<TextView>(R.id.file_size)
         fileSize.text = fileUtil.convertFileSize(item.format.filesize)
+        if (fileSize.text == "?") fileSize.visibility = View.GONE
 
         //OUTPUT
         val output = card.findViewById<TextView>(R.id.output)

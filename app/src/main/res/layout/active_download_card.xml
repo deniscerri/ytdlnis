@@ -30,6 +30,7 @@
                 android:id="@+id/image_view"
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop"
+                android:foreground="@drawable/image_gradient_shape"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
@@ -45,109 +46,97 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <TextView
-                    android:id="@+id/title"
+                <LinearLayout
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:paddingStart="10dp"
-                    android:paddingTop="10dp"
-                    android:paddingEnd="10dp"
-                    android:paddingBottom="10dp"
-                    android:shadowColor="@color/black"
-                    android:shadowDx="4"
-                    android:shadowDy="4"
-                    android:shadowRadius="2"
-                    android:textColor="@color/white"
-                    android:textSize="15sp"
-                    android:textStyle="bold"
-                    app:layout_constraintEnd_toStartOf="@+id/active_download_cancel"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/author"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="bottom"
-                    android:paddingLeft="10dp"
-                    android:paddingTop="10dp"
-                    android:paddingRight="10dp"
-                    android:paddingBottom="10dp"
-                    android:shadowColor="@color/black"
-                    android:shadowDx="4"
-                    android:shadowDy="4"
-                    android:shadowRadius="1.5"
-                    android:textColor="@color/white"
-                    android:textSize="12sp"
-                    android:textStyle="bold"
+                    android:layout_height="0dp"
+                    android:orientation="vertical"
                     app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
                     app:layout_constraintEnd_toStartOf="@+id/active_download_cancel"
-                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/title" />
+                    app:layout_constraintTop_toTopOf="parent">
 
-                <TextView
-                    android:id="@+id/format_note"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingVertical="10dp"
-                    android:paddingStart="10dp"
-                    android:paddingEnd="0dp"
-                    android:textSize="15sp"
-                    android:shadowColor="@color/black"
-                    android:shadowDx="4"
-                    android:shadowDy="4"
-                    android:shadowRadius="2"
-                    android:textColor="@color/white"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toTopOf="@+id/output"
-                    app:layout_constraintStart_toStartOf="parent" />
+                    <TextView
+                        android:id="@+id/title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:maxLines="2"
+                        android:paddingStart="10dp"
+                        android:scrollbars="none"
+                        android:paddingTop="10dp"
+                        android:paddingEnd="10dp"
+                        android:shadowColor="@color/black"
+                        android:shadowDx="4"
+                        android:shadowDy="4"
+                        android:shadowRadius="2"
+                        android:textColor="@color/white"
+                        android:textSize="17sp"
+                        android:textStyle="bold" />
 
-                <LinearLayout
+                    <TextView
+                        android:id="@+id/author"
+                        android:layout_width="296dp"
+                        android:layout_height="20dp"
+                        android:ellipsize="end"
+                        android:gravity="bottom"
+                        android:maxLines="1"
+                        android:paddingStart="10dp"
+                        android:scrollbars="none"
+                        android:paddingEnd="10dp"
+                        android:paddingBottom="5dp"
+                        android:shadowColor="@color/black"
+                        android:shadowDx="4"
+                        android:shadowDy="4"
+                        android:shadowRadius="1.5"
+                        android:textColor="@color/white"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+
+
+                </LinearLayout>
+
+
+                <com.google.android.material.chip.ChipGroup
                     android:id="@+id/linearLayout2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:paddingHorizontal="10dp"
                     android:layout_gravity="bottom"
                     android:orientation="horizontal"
-                    android:padding="10dp"
                     app:layout_constraintBottom_toTopOf="@+id/output"
-                    app:layout_constraintStart_toEndOf="@+id/format_note">
+                    app:layout_constraintStart_toStartOf="parent">
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/format_note"
+                        style="@style/Widget.Material3.FloatingActionButton.Large.Secondary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:clickable="false"
+                        app:layout_constraintBottom_toTopOf="@+id/output"
+                        app:layout_constraintStart_toStartOf="parent" />
 
 
-                    <TextView
+                    <com.google.android.material.chip.Chip
                         android:id="@+id/codec"
                         style="@style/Widget.Material3.FloatingActionButton.Large.Secondary"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="5dp"
-                        android:background="?attr/colorSecondary"
                         android:clickable="false"
-                        android:gravity="center"
-                        android:minWidth="30dp"
-                        android:paddingHorizontal="10dp"
-                        app:cornerRadius="10dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                    <TextView
+                    <com.google.android.material.chip.Chip
                         android:id="@+id/file_size"
                         style="@style/Widget.Material3.FloatingActionButton.Large.Tertiary"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="5dp"
-                        android:background="?attr/colorSecondary"
                         android:clickable="false"
-                        android:gravity="center"
-                        android:minWidth="30dp"
-                        android:paddingHorizontal="10dp"
-                        app:cornerRadius="10dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                </LinearLayout>
+                </com.google.android.material.chip.ChipGroup>
 
 
                 <TextView
@@ -159,12 +148,7 @@
                     android:paddingRight="10dp"
                     android:paddingBottom="10dp"
                     android:textSize="12sp"
-                    android:textStyle="bold"
-                    android:shadowColor="@color/black"
-                    android:shadowDx="4"
-                    android:shadowDy="4"
-                    android:shadowRadius="2"
-                    android:textColor="@color/white"
+                    android:fontFamily="monospace"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent" />

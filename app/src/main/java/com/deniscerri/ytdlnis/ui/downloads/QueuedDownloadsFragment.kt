@@ -3,6 +3,7 @@ package com.deniscerri.ytdlnis.ui.downloads
 import android.app.Activity
 import android.content.res.Configuration
 import android.os.Bundle
+import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,7 @@ import android.view.Window
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -28,10 +30,12 @@ import com.deniscerri.ytdlnis.util.NotificationUtil
 import com.deniscerri.ytdlnis.util.UiUtil
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.chip.Chip
 import com.yausername.youtubedl_android.YoutubeDL
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.w3c.dom.Text
 
 
 class QueuedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickListener {
@@ -119,9 +123,30 @@ class QueuedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLi
             btn.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_terminal)
         }
 
-        val formatNote = bottomSheet.findViewById<TextView>(R.id.format_note)
-        val codec = bottomSheet.findViewById<TextView>(R.id.codec)
-        val fileSize = bottomSheet.findViewById<TextView>(R.id.file_size)
+        val time = bottomSheet.findViewById<Chip>(R.id.time)
+        val formatNote = bottomSheet.findViewById<Chip>(R.id.format_note)
+        val codec = bottomSheet.findViewById<Chip>(R.id.codec)
+        val fileSize = bottomSheet.findViewById<Chip>(R.id.file_size)
+
+        if (item.downloadStartTime <= System.currentTimeMillis() / 1000) time!!.visibility = View.GONE
+        else {
+            time!!.text = DateUtils.getRelativeTimeSpanString(
+                item.downloadStartTime,
+                System.currentTimeMillis(),
+                DateUtils.MINUTE_IN_MILLIS
+            )
+
+            time.setOnClickListener {
+                uiUtil.showDatePicker(parentFragmentManager) {
+                    bottomSheet.dismiss()
+                    Toast.makeText(context, getString(R.string.download_rescheduled_to) + " " + it.time, Toast.LENGTH_LONG).show()
+                    downloadViewModel.deleteDownload(item)
+                    item.downloadStartTime = it.timeInMillis
+                    WorkManager.getInstance(requireContext()).cancelUniqueWork(item.id.toString())
+                    downloadViewModel.queueDownloads(listOf(item))
+                }
+            }
+        }
 
         if (item.format.format_note == "?" || item.format.format_note == "") formatNote!!.visibility =
             View.GONE
