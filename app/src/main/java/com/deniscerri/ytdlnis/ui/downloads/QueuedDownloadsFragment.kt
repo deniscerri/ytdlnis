@@ -3,6 +3,7 @@ package com.deniscerri.ytdlnis.ui.downloads
 import android.app.Activity
 import android.content.res.Configuration
 import android.os.Bundle
+import android.text.format.DateFormat
 import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.View
@@ -36,6 +37,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.w3c.dom.Text
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class QueuedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickListener {
@@ -130,11 +133,9 @@ class QueuedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLi
 
         if (item.downloadStartTime <= System.currentTimeMillis() / 1000) time!!.visibility = View.GONE
         else {
-            time!!.text = DateUtils.getRelativeTimeSpanString(
-                item.downloadStartTime,
-                System.currentTimeMillis(),
-                DateUtils.MINUTE_IN_MILLIS
-            )
+            val calendar = Calendar.getInstance()
+            calendar.timeInMillis = item.downloadStartTime
+            time!!.text = SimpleDateFormat(DateFormat.getBestDateTimePattern(Locale.getDefault(), "ddMMMyyyy - HHmm"), Locale.getDefault()).format(calendar.time)
 
             time.setOnClickListener {
                 uiUtil.showDatePicker(parentFragmentManager) {

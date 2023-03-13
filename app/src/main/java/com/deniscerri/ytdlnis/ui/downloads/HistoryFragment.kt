@@ -41,6 +41,10 @@ import com.google.android.material.chip.ChipGroup
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import java.io.File
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * A fragment representing a list of Items.
@@ -416,11 +420,9 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
         val codec = bottomSheet!!.findViewById<TextView>(R.id.codec)
         val fileSize = bottomSheet!!.findViewById<TextView>(R.id.file_size)
 
-        time!!.text = DateUtils.getRelativeTimeSpanString(
-            item.time * 1000L,
-            System.currentTimeMillis(),
-            DateUtils.MINUTE_IN_MILLIS
-        )
+        val calendar = Calendar.getInstance()
+        calendar.timeInMillis = item.time * 1000L
+        time!!.text = SimpleDateFormat(android.text.format.DateFormat.getBestDateTimePattern(Locale.getDefault(), "ddMMMyyyy - HHmm"), Locale.getDefault()).format(calendar.time)
         time.isClickable = false
 
         if (item.format.format_note == "?" || item.format.format_note == "") formatNote!!.visibility = GONE
