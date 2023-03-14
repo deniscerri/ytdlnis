@@ -131,6 +131,7 @@ class DownloadAudioFragment(private var resultItem: ResultItem, private var curr
                 val formatCard = view.findViewById<ConstraintLayout>(R.id.format_card_constraintLayout)
                 if (formats.isEmpty()) {
                     formatCard.visibility = View.GONE
+                    view.findViewById<TextView>(R.id.audio_quality_title).visibility = View.GONE
                 } else {
                     val chosenFormat = downloadItem.format
                     uiUtil.populateFormatCard(formatCard, chosenFormat)

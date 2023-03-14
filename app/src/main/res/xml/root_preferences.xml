@@ -218,7 +218,7 @@
             android:entryValues="@array/video_formats"
             android:icon="@drawable/ic_video"
             app:key="video_quality"
-            app:summary="Best Quality"
+            app:summary="@string/best_quality"
             app:title="@string/video_quality" />
 
     </PreferenceCategory>
