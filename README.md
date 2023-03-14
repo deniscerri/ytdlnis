@@ -24,20 +24,26 @@
 
 ## Features:
 
-- download audio and video files
-- download full playlists
-- download selected videos on a list and add to a queue
-- use custom download paths for each format
-- remove non music parts from youtube audio files
-- embed subtitles on videos
-- add chapters to youtube videos by using sponsorblock chapters
+- download audio/video files from more than <a href="https://github.com/yt-dlp/yt-dlp/blob/master/supportedsites.md">1000 websites</a>
+- download playlists or multi select items
+- queue downloads and schedule them by date and time
+- use custom commands and templates or go full terminal mode
+- remove sponsorblock chapters
+- embed subtitles/metadata/chapters etc
+- modify metadata such as title and author
+- split item into separate files depending on its chapters
 - select different download formats
-- share any yt-dlp compatible link into the app and start downloading
-- foreground download services which work even if app is cleared from recents and updates ui when u go back
-- search from the app
-- material you interface
-- really easy to use
-- run terminal commands for more flexibility
+- process multiple items before download
+- quick share card right from the share menu 
+- search or insert a link from the app
+- log downloads
+- re-download cancelled or failed downloads
+- incognito mode when you don't want to save a download history
+- download multiple items at the same time
+- change preferred audio/video formats and qualities
+- Material You interface
+- MVVM Architecture w/ WorkManager
+- easy to use :)
 
 ## Screenshots
 
