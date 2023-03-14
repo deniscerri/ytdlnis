@@ -17,6 +17,7 @@ import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel.Type
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.InfoUtil
 import com.deniscerri.ytdlnis.util.UiUtil
+import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.coroutines.Dispatchers
@@ -53,6 +54,8 @@ class FormatSelectionBottomSheetDialog(private val item: DownloadItem, private v
         }
 
         val linearLayout = view.findViewById<LinearLayout>(R.id.format_list_linear_layout)
+        val shimmers = view.findViewById<ShimmerFrameLayout>(R.id.format_list_shimmer)
+        shimmers.visibility = View.GONE
         addFormatsToView(linearLayout)
 
         val refreshBtn = view.findViewById<Button>(R.id.format_refresh)
@@ -61,6 +64,10 @@ class FormatSelectionBottomSheetDialog(private val item: DownloadItem, private v
            lifecycleScope.launch {
                try {
                    refreshBtn.isEnabled = false
+                   linearLayout.visibility = View.GONE
+                   shimmers.visibility = View.VISIBLE
+                   shimmers.startShimmer()
+
                    val res = withContext(Dispatchers.IO){
                        infoUtil.getFormats(item.url)
                    }
@@ -72,8 +79,16 @@ class FormatSelectionBottomSheetDialog(private val item: DownloadItem, private v
                    if (formats.isEmpty()) throw Exception()
                    addFormatsToView(linearLayout)
                    refreshBtn.visibility = View.GONE
+
+                   linearLayout.visibility = View.VISIBLE
+                   shimmers.visibility = View.GONE
+                   shimmers.stopShimmer()
                }catch (e: Exception){
                    refreshBtn.isEnabled = true
+                   linearLayout.visibility = View.VISIBLE
+                   shimmers.visibility = View.GONE
+                   shimmers.stopShimmer()
+
                    e.printStackTrace()
                    Toast.makeText(context, getString(R.string.error_updating_formats), Toast.LENGTH_SHORT).show()
                }

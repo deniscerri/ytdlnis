@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/format_card_constraintLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingVertical="5dp"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+
+    <TextView
+        android:id="@+id/container"
+        android:layout_width="60dp"
+        android:background="@color/light_grey"
+        android:textColor="@color/white"
+        android:clickable="false"
+        android:layout_height="55dp"
+        android:gravity="center"
+        android:minWidth="30dp"
+        app:cornerRadius="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout2"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/container"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <TextView
+            android:id="@+id/format_note"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginStart="10dp"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@+id/format_note"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+
+            <TextView
+                android:id="@+id/codec"
+                android:ellipsize="end"
+                android:maxLength="17"
+                style="@style/Widget.Material3.FloatingActionButton.Large.Secondary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:background="@color/light_grey"
+                android:clickable="false"
+                android:gravity="center"
+                android:minWidth="30dp"
+                android:paddingHorizontal="10dp"
+                app:cornerRadius="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/file_size"
+                style="@style/Widget.Material3.FloatingActionButton.Large.Tertiary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:background="@color/light_grey"
+                android:clickable="false"
+                android:gravity="center"
+                android:minWidth="30dp"
+                android:paddingHorizontal="10dp"
+                app:cornerRadius="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </LinearLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/format_id"
+        android:layout_width="wrap_content"
+        android:layout_height="10dp"
+        android:layout_marginEnd="4dp"
+        android:background="@color/light_grey"
+        android:clickable="false"
+        android:gravity="bottom|end"
+        android:maxLength="10"
+        android:minWidth="30dp"
+        app:cornerRadius="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
