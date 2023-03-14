@@ -35,6 +35,7 @@ import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.File
 
 class DownloadCommandFragment(private val resultItem: ResultItem, private var currentDownloadItem: DownloadItem?) : Fragment() {
     private var _binding : FragmentHomeBinding? = null
@@ -45,6 +46,7 @@ class DownloadCommandFragment(private val resultItem: ResultItem, private var cu
     private lateinit var fileUtil : FileUtil
     private lateinit var uiUtil : UiUtil
     private lateinit var saveDir : TextInputLayout
+    private lateinit var freeSpace : TextView
 
     lateinit var downloadItem: DownloadItem
 
@@ -76,22 +78,10 @@ class DownloadCommandFragment(private val resultItem: ResultItem, private var cu
                 }
             }
 
-            val sharedPreferences = requireContext().getSharedPreferences("root_preferences", Activity.MODE_PRIVATE)
             try {
                 val templates : MutableList<CommandTemplate> = withContext(Dispatchers.IO){
                     commandTemplateViewModel.getAll().toMutableList()
                 }
-//                val id = sharedPreferences.getLong("commandTemplate", templates[0].id)
-//                val chosenCommand = templates.find { it.id == id }
-//                downloadItem.format = Format(
-//                    chosenCommand!!.title,
-//                    "",
-//                    "",
-//                    "",
-//                    "",
-//                    0,
-//                    chosenCommand.content
-//                )
 
                 val chosenCommandView = view.findViewById<TextInputLayout>(R.id.content)
                 chosenCommandView.editText!!.setText(downloadItem.format.format_note)
@@ -159,6 +149,11 @@ class DownloadCommandFragment(private val resultItem: ResultItem, private var cu
                     intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION)
                     commandPathResultLauncher.launch(intent)
                 }
+
+                freeSpace = view.findViewById(R.id.freespace)
+                freeSpace.text = getString(R.string.freespace) + ": " + fileUtil.convertFileSize(
+                    File(fileUtil.formatPath(downloadItem.downloadPath)).freeSpace
+                )
 
                 val newTemplate : Chip = view.findViewById(R.id.newTemplate)
                 newTemplate.setOnClickListener {
@@ -240,6 +235,10 @@ class DownloadCommandFragment(private val resultItem: ResultItem, private var cu
             downloadItem.downloadPath = result.data?.data.toString()
             //downloadviewmodel.updateDownload(downloadItem)
             saveDir.editText?.setText(fileUtil.formatPath(result.data?.data.toString()), TextView.BufferType.EDITABLE)
+
+            freeSpace.text = getString(R.string.freespace) + ": " + fileUtil.convertFileSize(
+                File(fileUtil.formatPath(downloadItem.downloadPath)).freeSpace
+            )
         }
     }
 }

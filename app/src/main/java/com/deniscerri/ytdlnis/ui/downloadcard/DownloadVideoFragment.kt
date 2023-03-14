@@ -35,6 +35,7 @@ import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.File
 
 
 class DownloadVideoFragment(private val resultItem: ResultItem, private var currentDownloadItem: DownloadItem?) : Fragment() {
@@ -49,6 +50,7 @@ class DownloadVideoFragment(private val resultItem: ResultItem, private var curr
     private lateinit var title : TextInputLayout
     private lateinit var author : TextInputLayout
     private lateinit var saveDir : TextInputLayout
+    private lateinit var freeSpace : TextView
 
     lateinit var downloadItem: DownloadItem
 
@@ -116,6 +118,11 @@ class DownloadVideoFragment(private val resultItem: ResultItem, private var curr
                     intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION)
                     videoPathResultLauncher.launch(intent)
                 }
+
+                freeSpace = view.findViewById(R.id.freespace)
+                freeSpace.text = getString(R.string.freespace) + ": " + fileUtil.convertFileSize(
+                    File(fileUtil.formatPath(downloadItem.downloadPath)).freeSpace
+                )
 
                 var formats = mutableListOf<Format>()
                 formats.addAll(resultItem.formats.filter { !it.format_note.contains("audio", ignoreCase = true) })
@@ -236,6 +243,10 @@ class DownloadVideoFragment(private val resultItem: ResultItem, private var curr
             downloadItem.downloadPath = result.data?.data.toString()
             //downloadviewmodel.updateDownload(downloadItem)
             saveDir.editText?.setText(fileUtil.formatPath(result.data?.data.toString()), TextView.BufferType.EDITABLE)
+
+            freeSpace.text = getString(R.string.freespace) + ": " + fileUtil.convertFileSize(
+                File(fileUtil.formatPath(downloadItem.downloadPath)).freeSpace
+            )
         }
     }
 

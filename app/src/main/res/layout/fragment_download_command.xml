@@ -60,6 +60,16 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
+        <TextView
+            android:id="@+id/freespace"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="5dp"
+            android:textSize="13sp"
+            android:textColor="@android:color/tab_indicator_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
         <LinearLayout
             android:id="@+id/adjust_commands"
             android:layout_width="wrap_content"

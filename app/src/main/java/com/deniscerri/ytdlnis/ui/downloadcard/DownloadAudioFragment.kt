@@ -35,6 +35,7 @@ import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.File
 
 
 class DownloadAudioFragment(private var resultItem: ResultItem, private var currentDownloadItem: DownloadItem?) : Fragment() {
@@ -48,6 +49,7 @@ class DownloadAudioFragment(private var resultItem: ResultItem, private var curr
     private lateinit var title : TextInputLayout
     private lateinit var author : TextInputLayout
     private lateinit var saveDir : TextInputLayout
+    private lateinit var freeSpace : TextView
 
     lateinit var downloadItem : DownloadItem
     override fun onCreateView(
@@ -111,6 +113,11 @@ class DownloadAudioFragment(private var resultItem: ResultItem, private var curr
                     intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION)
                     audioPathResultLauncher.launch(intent)
                 }
+                freeSpace = view.findViewById(R.id.freespace)
+                freeSpace.text = getString(R.string.freespace) + ": " + fileUtil.convertFileSize(
+                    File(fileUtil.formatPath(downloadItem.downloadPath)).freeSpace
+                )
+
 
                 var formats = resultItem.formats.filter { it.format_note.contains("audio", ignoreCase = true) }
 
@@ -208,6 +215,10 @@ class DownloadAudioFragment(private var resultItem: ResultItem, private var curr
             downloadItem.downloadPath = result.data?.data.toString()
             //downloadViewModel.updateDownload(downloadItem)
             saveDir.editText?.setText(fileUtil.formatPath(result.data?.data.toString()), TextView.BufferType.EDITABLE)
+
+            freeSpace.text = getString(R.string.freespace) + ": " + fileUtil.convertFileSize(
+                File(fileUtil.formatPath(downloadItem.downloadPath)).freeSpace
+            )
         }
     }
 
