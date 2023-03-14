@@ -218,4 +218,6 @@
     <string name="clear_temporary_files">Müvəqqəti faylları təmizlə</string>
     <string name="download_rescheduled_to">Endirmə vaxtı buna dəyişdirildi:</string>
     <string name="downloads_running_try_later">Yükləmə işçisi işləyir. Daha sonra təkrar cəhd et</string>
+    <string name="freespace">Boş yer</string>
+    <string name="ytdl_version">yt-dlp Versiya</string>
 </resources>
