@@ -80,9 +80,9 @@
 
         <SeekBarPreference
             app:dependency="aria2"
-            android:defaultValue="1"
+            android:defaultValue="3"
             android:icon="@drawable/ic_lines"
-            android:max="10"
+            android:max="25"
             app:key="concurrent_fragments"
             app:min="1"
             app:showSeekBarValue="true"
@@ -93,7 +93,7 @@
         <SeekBarPreference
             android:defaultValue="1"
             android:icon="@drawable/ic_concurrent_downloads"
-            android:max="5"
+            android:max="10"
             app:key="concurrent_downloads"
             app:min="1"
             app:showSeekBarValue="true"

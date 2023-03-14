@@ -16,6 +16,7 @@ import androidx.preference.*
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import com.deniscerri.ytdlnis.BuildConfig
+import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.UpdateUtil
@@ -291,14 +292,13 @@ class SettingsFragment : PreferenceFragmentCompat() {
                         dialog.cancel()
                     }
                     .setPositiveButton(resources.getString(R.string.restart)) { dialog, which ->
-                        val i: Intent =
-                            requireContext().packageManager.getLaunchIntentForPackage(
-                                requireContext().packageName
-                            )!!
-                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                        startActivity(i)
-                        requireActivity().finish()
-                        dialog.cancel()
+                        val intent = Intent(context, MainActivity::class.java)
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        requireContext().startActivity(intent)
+                        if (context is Activity) {
+                            (context as Activity).finish()
+                        }
+                        Runtime.getRuntime().exit(0)
                     }
                     .show()
 

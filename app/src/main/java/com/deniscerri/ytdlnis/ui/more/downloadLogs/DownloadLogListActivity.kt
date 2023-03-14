@@ -102,8 +102,10 @@ class DownloadLogListActivity : AppCompatActivity(), DownloadLogsAdapter.OnItemC
         fileList = mutableListOf()
         try{
             fileList.addAll(logFolder.listFiles()!!)
-            fileList.sortByDescending { it.name }
-        }catch (ignored: Exception){}
+            fileList.sortByDescending { it.name.split(" -")[0].toInt() }
+        }catch (e: Exception){
+            e.printStackTrace()
+        }
         downloadLogAdapter.submitList(fileList.toList())
         runOnUiThread{
             if (fileList.isNotEmpty()) {
