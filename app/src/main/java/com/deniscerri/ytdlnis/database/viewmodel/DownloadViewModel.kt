@@ -68,13 +68,13 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
 
         val audioContainer = sharedPreferences.getString("audio_format", "mp3")
         bestAudioFormat = Format(
-            "",
+            getApplication<App>().resources.getString(R.string.best_quality),
             audioContainer!!,
             "",
             "",
             "",
             0,
-            ""
+            getApplication<App>().resources.getString(R.string.best_quality)
         )
     }
 
@@ -209,8 +209,9 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
 
     fun turnResultItemsToDownloadItems(items: List<ResultItem?>) : List<DownloadItem> {
         val list : MutableList<DownloadItem> = mutableListOf()
+        val preferredType = sharedPreferences.getString("preferred_download_type", "video");
         items.forEach {
-            list.add(createDownloadItemFromResult(it!!, Type.video))
+            list.add(createDownloadItemFromResult(it!!, Type.valueOf(preferredType!!)))
         }
         return list
     }

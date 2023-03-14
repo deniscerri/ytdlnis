@@ -50,7 +50,7 @@
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:orientation="vertical"
-                    app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
+                    app:layout_constraintBottom_toTopOf="@+id/linearlayout2_horizontalscrollview"
                     app:layout_constraintEnd_toStartOf="@+id/active_download_cancel"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
@@ -96,47 +96,65 @@
                 </LinearLayout>
 
 
-                <com.google.android.material.chip.ChipGroup
-                    android:id="@+id/linearLayout2"
+                <HorizontalScrollView
+                    android:id="@+id/linearlayout2_horizontalscrollview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingHorizontal="10dp"
-                    android:layout_gravity="bottom"
-                    android:orientation="horizontal"
+                    android:scrollbars="none"
                     app:layout_constraintBottom_toTopOf="@+id/output"
                     app:layout_constraintStart_toStartOf="parent">
 
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/format_note"
-                        style="@style/Widget.Material3.FloatingActionButton.Large.Secondary"
+                    <com.google.android.material.chip.ChipGroup
+                        android:id="@+id/linearLayout2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:clickable="false"
-                        app:layout_constraintBottom_toTopOf="@+id/output"
-                        app:layout_constraintStart_toStartOf="parent" />
+                        android:paddingHorizontal="10dp"
+                        android:layout_gravity="bottom"
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/type"
+                            style="@style/Widget.Material3.FloatingActionButton.Large.Secondary"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:clickable="false"
+                            app:layout_constraintBottom_toTopOf="@+id/output"
+                            app:layout_constraintStart_toStartOf="parent" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/format_note"
+                            style="@style/Widget.Material3.FloatingActionButton.Large.Secondary"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:clickable="false"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
 
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/codec"
-                        style="@style/Widget.Material3.FloatingActionButton.Large.Secondary"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:clickable="false"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/codec"
+                            style="@style/Widget.Material3.FloatingActionButton.Large.Secondary"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:clickable="false"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/file_size"
-                        style="@style/Widget.Material3.FloatingActionButton.Large.Tertiary"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:clickable="false"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/file_size"
+                            style="@style/Widget.Material3.FloatingActionButton.Large.Tertiary"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:clickable="false"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
-                </com.google.android.material.chip.ChipGroup>
+                    </com.google.android.material.chip.ChipGroup>
+
+                </HorizontalScrollView>
 
 
                 <TextView

@@ -20,6 +20,7 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.squareup.picasso.Picasso
+import org.w3c.dom.Text
 import java.util.zip.GZIPOutputStream
 
 class ActiveDownloadAdapter(onItemClickListener: OnItemClickListener, activity: Activity) : ListAdapter<DownloadItem?, ActiveDownloadAdapter.ViewHolder>(AsyncDifferConfig.Builder(DIFF_CALLBACK).build()) {
@@ -83,6 +84,9 @@ class ActiveDownloadAdapter(onItemClickListener: OnItemClickListener, activity: 
             info += item.duration
         }
         author.text = info
+
+        val type = card.findViewById<TextView>(R.id.type)
+        type.text = item.type.toString().uppercase()
 
         val formatNote = card.findViewById<TextView>(R.id.format_note)
         formatNote.text = item.format.format_note

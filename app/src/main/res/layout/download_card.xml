@@ -13,6 +13,7 @@
         android:checkable="true"
         app:cardCornerRadius="10dp"
         app:cardMaxElevation="12dp"
+        app:cardElevation="5dp"
         app:cardPreventCornerOverlap="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

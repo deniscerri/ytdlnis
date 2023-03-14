@@ -213,7 +213,7 @@
             app:title="@string/audio_quality" />
 
         <ListPreference
-            android:defaultValue="Best Quality"
+            android:defaultValue="@string/best_quality"
             android:entries="@array/video_formats"
             android:entryValues="@array/video_formats"
             android:icon="@drawable/ic_video"

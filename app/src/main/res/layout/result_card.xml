@@ -21,7 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:cardCornerRadius="10dp"
-            app:cardElevation="10dp"
+            app:cardElevation="5dp"
             app:cardMaxElevation="12dp"
             app:cardPreventCornerOverlap="true"
             android:checkable="true"
