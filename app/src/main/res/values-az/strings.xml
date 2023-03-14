@@ -212,4 +212,10 @@
     <string name="split_by_chapters">Bölmələrə görə böl</string>
     <string name="items_imported">İdxal edilən elementlər</string>
     <string name="help_translate">Tərcümə etməyə kömək et</string>
+    <string name="file_size">Fayl ölçüsü</string>
+    <string name="clear_temporary_files_summary">Qəzaya uğramış/xəta olan/ləğv edilmiş yükləmələrdən toplanmış faylları sil</string>
+    <string name="cache_cleared">Müvəqqəti fayllar təmizləndi</string>
+    <string name="clear_temporary_files">Müvəqqəti faylları təmizlə</string>
+    <string name="download_rescheduled_to">Endirmə vaxtı buna dəyişdirildi:</string>
+    <string name="downloads_running_try_later">Yükləmə işçisi işləyir. Daha sonra təkrar cəhd et</string>
 </resources>
