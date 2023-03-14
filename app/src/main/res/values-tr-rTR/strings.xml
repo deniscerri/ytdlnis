@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name" translatable="false">YTDLnis</string>
-    <string name="search">Ara</string>
-    <string name="remove_all"> Tümünü Kaldır</string>
+    <string name="search">Arama</string>
+    <string name="remove_all">Hepsini Kaldır</string>
     <string name="remove_results">Sonuçları Temizle</string>
-    <string name="download_all"> Tümünü İndir</string>
+    <string name="download_all">Hepsini İndir</string>
     <string name="settings"> Ayarlar</string>
-    <string name="home">Ev</string>
+    <string name="home">Ana Sayfa</string>
     <string name="directories"> Klasörler</string>
     <string name="music_directory"> Müzik Klasörü</string>
     <string name="video_directory"> Video Klasörü</string>
