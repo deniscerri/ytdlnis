@@ -35,6 +35,7 @@ import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import java.io.File
 import java.util.*
@@ -147,7 +148,9 @@ class DownloadBottomSheetDialog(private val resultItem: ResultItem, private val 
             uiUtil.showDatePicker(fragmentManager) {
                 val item: DownloadItem = getDownloadItem();
                 item.downloadStartTime = it.timeInMillis
-                downloadViewModel.queueDownloads(listOf(item))
+                runBlocking {
+                    downloadViewModel.queueDownloads(listOf(item))
+                }
                 dismiss()
             }
         }
@@ -155,7 +158,9 @@ class DownloadBottomSheetDialog(private val resultItem: ResultItem, private val 
         val download = view.findViewById<Button>(R.id.bottomsheet_download_button)
         download!!.setOnClickListener {
             val item: DownloadItem = getDownloadItem();
-            downloadViewModel.queueDownloads(listOf(item))
+            runBlocking {
+                downloadViewModel.queueDownloads(listOf(item))
+            }
             dismiss()
         }
     }

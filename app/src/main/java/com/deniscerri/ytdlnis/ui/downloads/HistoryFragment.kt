@@ -17,6 +17,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -40,6 +41,8 @@ import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import java.io.File
 import java.text.DateFormat
 import java.text.SimpleDateFormat
@@ -473,7 +476,9 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
         redownload!!.tag = itemID
         redownload.setOnClickListener{
             val downloadItem = downloadViewModel.createDownloadItemFromHistory(item)
-            downloadViewModel.queueDownloads(listOf(downloadItem))
+            runBlocking{
+                downloadViewModel.queueDownloads(listOf(downloadItem))
+            }
             historyViewModel.delete(item, false)
             bottomSheet!!.cancel()
         }

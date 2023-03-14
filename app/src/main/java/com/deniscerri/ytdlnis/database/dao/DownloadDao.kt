@@ -31,6 +31,9 @@ interface DownloadDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(item: DownloadItem) : Long
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAll(list: List<DownloadItem>) : List<Long>
+
     @Query("DELETE FROM downloads")
     suspend fun deleteAll()
 

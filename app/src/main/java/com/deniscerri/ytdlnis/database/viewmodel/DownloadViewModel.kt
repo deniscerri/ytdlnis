@@ -3,6 +3,7 @@ package com.deniscerri.ytdlnis.database.viewmodel
 import android.app.Activity
 import android.app.Application
 import android.content.SharedPreferences
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -256,16 +257,13 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
         return Gson().fromJson(string, DownloadItem::class.java)
     }
 
-    fun queueDownloads(items: List<DownloadItem>)= viewModelScope.launch(Dispatchers.IO) {
+    suspend fun queueDownloads(items: List<DownloadItem>) {
         val context = getApplication<App>().applicationContext
-        items.forEach {
-            it.status = DownloadRepository.Status.Queued.toString()
-            it.id = repository.checkIfReDownloadingErroredOrCancelled(it)
-            if (it.id == 0L){
-                val id = repository.insert(it)
-                it.id = id
-            }else repository.update(it)
-
+        items.forEach { it.status = DownloadRepository.Status.Queued.toString() }
+        val ids = repository.insertAll(items)
+        for (i in ids.indices){
+            val it = items[i]
+            it.id = ids[i]
             val currentTime = System.currentTimeMillis()
             var delay = if (it.downloadStartTime != 0L){
                 it.downloadStartTime - currentTime
@@ -283,6 +281,12 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
                 ExistingWorkPolicy.KEEP,
                 workRequest
             ).enqueue()
+        }
+        items.forEach {
+            it.id = repository.checkIfReDownloadingErroredOrCancelled(it)
+            if (it.id != 0L){
+                repository.delete(it)
+            }
         }
     }
 

@@ -85,8 +85,8 @@ class ActiveDownloadsFragment() : Fragment(), ActiveDownloadAdapter.OnItemClickL
                             val outputText = view.findViewWithTag<TextView>("$id##output")
 
                             requireActivity().runOnUiThread {
-                                progressBar.setProgressCompat(progress, true)
-                                outputText.text = output
+                                progressBar?.setProgressCompat(progress, true)
+                                outputText?.text = output
                             }
                         }
                     }

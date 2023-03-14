@@ -7,6 +7,7 @@ import android.graphics.ColorMatrix
 import android.graphics.ColorMatrixColorFilter
 import android.os.Handler
 import android.os.Looper
+import android.text.format.DateFormat
 import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.View
@@ -25,6 +26,7 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
 import com.squareup.picasso.Picasso
 import java.io.File
+import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -87,12 +89,12 @@ class HistoryAdapter(onItemClickListener: OnItemClickListener, activity: Activit
         // TIME DOWNLOADED  ----------------------------------
         val datetime = card.findViewById<TextView>(R.id.downloads_info_time)
 
-        val relativeTime = DateUtils.getRelativeTimeSpanString(
-            item.time * 1000L,
-            System.currentTimeMillis(),
-            DateUtils.MINUTE_IN_MILLIS
-        )
-        datetime.text = relativeTime
+//        val relativeTime = DateUtils.getRelativeTimeSpanString(
+//            item.time * 1000L,
+//            System.currentTimeMillis(),
+//            DateUtils.MINUTE_IN_MILLIS
+//        )
+        datetime.text = SimpleDateFormat(DateFormat.getBestDateTimePattern(Locale.getDefault(), "ddMMMyyyy - HHmm"), Locale.getDefault()).format(item.time * 1000L)
 
         // BUTTON ----------------------------------
         val btn = card.findViewById<MaterialButton>(R.id.downloads_download_button_type)

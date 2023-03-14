@@ -80,6 +80,7 @@
                         android:ellipsize="end"
                         android:gravity="bottom"
                         android:maxLines="1"
+                        android:layout_marginTop="5dp"
                         android:paddingStart="10dp"
                         android:scrollbars="none"
                         android:paddingEnd="10dp"

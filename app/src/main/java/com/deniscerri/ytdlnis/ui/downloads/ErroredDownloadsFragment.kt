@@ -17,6 +17,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -32,6 +33,8 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.chip.Chip
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import java.io.File
 
 
@@ -168,7 +171,9 @@ class ErroredDownloadsFragment() : Fragment(), GenericDownloadAdapter.OnItemClic
         val redownload = bottomSheet.findViewById<Button>(R.id.bottomsheet_redownload_button)
         redownload!!.tag = itemID
         redownload.setOnClickListener{
-            downloadViewModel.queueDownloads(listOf(item))
+            runBlocking{
+                downloadViewModel.queueDownloads(listOf(item))
+            }
             bottomSheet.cancel()
         }
 

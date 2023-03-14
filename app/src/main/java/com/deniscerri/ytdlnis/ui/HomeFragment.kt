@@ -40,6 +40,7 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.search.SearchBar
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.*
@@ -370,7 +371,9 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
                     val bottomSheet = DownloadMultipleBottomSheetDialog(downloadList.toMutableList())
                     bottomSheet.show(parentFragmentManager, "downloadMultipleSheet")
                 } else {
-                    downloadViewModel.queueDownloads(downloadList)
+                    lifecycleScope.launch {
+                        downloadViewModel.queueDownloads(downloadList)
+                    }
                 }
             }
             if (viewIdName == "downloadAll") {
@@ -379,7 +382,9 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
                     val bottomSheet = DownloadMultipleBottomSheetDialog(downloadList.toMutableList())
                     bottomSheet.show(parentFragmentManager, "downloadMultipleSheet")
                 } else {
-                    downloadViewModel.queueDownloads(downloadList)
+                    lifecycleScope.launch {
+                        downloadViewModel.queueDownloads(downloadList)
+                    }
                 }
             }
         }

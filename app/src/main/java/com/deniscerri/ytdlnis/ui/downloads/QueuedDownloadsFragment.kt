@@ -35,6 +35,7 @@ import com.google.android.material.chip.Chip
 import com.yausername.youtubedl_android.YoutubeDL
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import org.w3c.dom.Text
 import java.text.SimpleDateFormat
@@ -144,7 +145,9 @@ class QueuedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLi
                     downloadViewModel.deleteDownload(item)
                     item.downloadStartTime = it.timeInMillis
                     WorkManager.getInstance(requireContext()).cancelUniqueWork(item.id.toString())
-                    downloadViewModel.queueDownloads(listOf(item))
+                    runBlocking {
+                        downloadViewModel.queueDownloads(listOf(item))
+                    }
                 }
             }
         }

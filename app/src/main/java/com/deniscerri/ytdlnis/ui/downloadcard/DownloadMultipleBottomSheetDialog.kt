@@ -38,6 +38,7 @@ import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import java.util.*
 
@@ -98,14 +99,18 @@ class DownloadMultipleBottomSheetDialog(private var items: MutableList<DownloadI
                 items.forEach { item ->
                     item.downloadStartTime = it.timeInMillis
                 }
-                downloadViewModel.queueDownloads(items)
+                runBlocking {
+                    downloadViewModel.queueDownloads(items)
+                }
                 dismiss()
             }
         }
 
         val download = view.findViewById<Button>(R.id.bottomsheet_download_button)
         download!!.setOnClickListener {
-            downloadViewModel.queueDownloads(items)
+            runBlocking {
+                downloadViewModel.queueDownloads(items)
+            }
             dismiss()
         }
 
