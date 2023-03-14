@@ -15,10 +15,10 @@
     <string name="video_directory">Direktoria e Videos</string>
     <string name="updating">Përditësim</string>
     <string name="ytdl_update_hint">Nëse ke probleme me shkarkimin</string>
-    <string name="update_ytdl">Instalo versionin e ri te youtube-dl</string>
+    <string name="update_ytdl">Instalo versionin e ri te yt-dlp</string>
     <string name="about">Rreth</string>
     <string name="source_code">Kodi</string>
-    <string name="search_hint">Kërko nga YouTube</string>
+    <string name="search_hint">Kërko ose Vendos URL</string>
     <string name="download_already_started">Nuk mund te filloj pasi nje shkarkim tjeter është në punë…</string>
     <string name="try_again_after_permission">Provo përsëri pasi ke pranuar lejen.</string>
     <string name="download_success">U shkarkua</string>
@@ -196,7 +196,7 @@
     <string name="update">Redakto</string>
     <string name="preferred_download_type">Lloji i preferuar i Shkarkimit</string>
     <string name="preferred_download_type_summary">Tabi i zgjedhur nga karta e shkarkimit</string>
-    <string name="confirm_delete_logs_desc">Fshi të gjithë listën e shënimeve, përgjithmmonë</string>
+    <string name="confirm_delete_logs_desc">Fshi të gjithë listën e shënimeve, përgjithmmonë.</string>
     <string name="select">Zgjidh</string>
     <string name="selected">Zgjedhur</string>
     <string name="all_items_selected">Të gjithë janë zgjedhur</string>
@@ -213,4 +213,5 @@
     <string name="help_translate_summary">Përkthe këtë aplikacion në gjuhën tuaj duke përdorur Weblate</string>
     <string name="workmanager_updated">Duhet të rinisni aplikacionin dhe të mos keni shkarkime aktive që kjo preferencë të hyjë në fuqi!</string>
     <string name="restart">Rinis</string>
+    <string name="file_transfer_notification_channel_name">Transferimet e Skedarëve</string>
 </resources>
