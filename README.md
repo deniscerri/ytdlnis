@@ -48,21 +48,13 @@
 <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/4.png" width="30%" />
 <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/5.png" width="30%" />
 <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/6.png" width="30%" />
+<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/7.png" width="30%" />
+<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/8.png" width="30%" />
+<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/9.png" width="30%" />
+<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/10.png" width="30%" />
+<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/11.png" width="30%" />
+<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/12.png" width="30%" />
 </div>
-
-## Create a YouTube API Key
-
-Using your personal api key will increase youtube result speed inside the app drastically. On top of that, the app will show you trending videos on youtube every time you open the app. <br>
-Here is how to do it:
-
-- Go to [Google Console](https://console.cloud.google.com/projectselector2/apis/dashboard)
-- Accept Terms & Services and click Create Project
-- Click "Enabled API's and Services"
-- Search for "Youtube Data API V3" click and enable it
-- Click the Credentials tab on the left
-- Click "Create Credentials" and choose API Key
-
-Copy the key that appears and paste it in this app's settings.
 
 ## Connect with YouTube Revanced
 
