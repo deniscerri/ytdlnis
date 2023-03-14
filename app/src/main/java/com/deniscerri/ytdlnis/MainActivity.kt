@@ -4,8 +4,10 @@ import android.Manifest
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.content.res.Configuration
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -14,6 +16,7 @@ import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.view.WindowInsets
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.view.WindowInsetsCompat
@@ -42,6 +45,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var context: Context
     private lateinit var homeFragment: HomeFragment
     private lateinit var historyFragment: HistoryFragment
+    private lateinit var preferences: SharedPreferences
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,6 +55,9 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setContentView(binding.root)
         context = baseContext
+
+        preferences = context.getSharedPreferences("root_preferences", MODE_PRIVATE)
+
         askPermissions()
         checkUpdate()
         fm = supportFragmentManager
@@ -101,6 +108,18 @@ class MainActivity : AppCompatActivity() {
         }
         val intent = intent
         handleIntents(intent)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val incognitoHeader = findViewById<TextView>(R.id.incognito_header)
+        if (preferences.getBoolean("incognito", false)){
+            incognitoHeader.visibility = View.VISIBLE
+            window.statusBarColor = (incognitoHeader.background as ColorDrawable).color
+        }else{
+            window.statusBarColor = getColor(android.R.color.transparent)
+            incognitoHeader.visibility = View.GONE
+        }
     }
 
     override fun onNewIntent(intent: Intent) {
@@ -167,7 +186,6 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun checkUpdate() {
-        val preferences = context.getSharedPreferences("root_preferences", MODE_PRIVATE)
         if (preferences.getBoolean("update_app", false)) {
             val updateUtil = UpdateUtil(this)
             updateUtil.updateApp()

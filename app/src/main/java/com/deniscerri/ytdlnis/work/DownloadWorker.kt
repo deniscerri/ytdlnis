@@ -250,7 +250,9 @@ class DownloadWorker(
             val incognito = sharedPreferences.getBoolean("incognito", false)
             if (!incognito) {
                 val unixtime = System.currentTimeMillis() / 1000
-                val historyItem = HistoryItem(0, downloadItem.url, downloadItem.title, downloadItem.author, downloadItem.duration, downloadItem.thumb, downloadItem.type, unixtime, finalPath!!, downloadItem.website, downloadItem.format)
+                val file = File(finalPath!!)
+                downloadItem.format.filesize = if (file.exists()) file.length() else 0L
+                val historyItem = HistoryItem(0, downloadItem.url, downloadItem.title, downloadItem.author, downloadItem.duration, downloadItem.thumb, downloadItem.type, unixtime, finalPath, downloadItem.website, downloadItem.format)
                 runBlocking {
                     historyDao.insert(historyItem)
                 }
