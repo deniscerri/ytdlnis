@@ -214,4 +214,10 @@
     <string name="workmanager_updated">Duhet të rinisni aplikacionin dhe të mos keni shkarkime aktive që kjo preferencë të hyjë në fuqi!</string>
     <string name="restart">Rinis</string>
     <string name="file_transfer_notification_channel_name">Transferimet e Skedarëve</string>
+    <string name="file_size">Madhësia e skedarit</string>
+    <string name="clear_temporary_files">Pastro skedarët e perkohshëm</string>
+    <string name="clear_temporary_files_summary">Fshi skedarët në memorien kashe nga shkarkimet me probleme ose të anuluara</string>
+    <string name="cache_cleared">Skedarët e perkohshëm u fshinë</string>
+    <string name="download_rescheduled_to">Shkarkimi u riskedulua në:</string>
+    <string name="downloads_running_try_later">Punëtori i shkarkimit është në ekzekutim. Provo sërisht më vonë</string>
 </resources>
