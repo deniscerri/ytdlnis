@@ -246,6 +246,10 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
         repository.deleteErrored()
     }
 
+    fun deleteQueued() = viewModelScope.launch(Dispatchers.IO) {
+        repository.deleteQueued()
+    }
+
     fun cloneDownloadItem(item: DownloadItem) : DownloadItem {
         val string = Gson().toJson(item, DownloadItem::class.java)
         return Gson().fromJson(string, DownloadItem::class.java)

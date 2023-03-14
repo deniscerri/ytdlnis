@@ -293,6 +293,21 @@
                 android:data="https://hosted.weblate.org/projects/ytdlnis/" />
         </Preference>
 
+        <Preference
+            app:icon="@drawable/ic_code"
+            app:key="rreth"
+            app:summary="https://github.com/deniscerri/ytdlnis"
+            app:allowDividerBelow="true"
+            app:title="@string/source_code">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="https://github.com/deniscerri/ytdlnis" />
+        </Preference>
+
+        <Preference
+            app:icon="@drawable/ic_info"
+            app:key="ytdl-version"
+            app:title="@string/ytdl_version"/>
 
         <Preference
             app:icon="@drawable/ic_info"

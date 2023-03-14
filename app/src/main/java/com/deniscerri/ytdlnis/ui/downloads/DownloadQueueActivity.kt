@@ -4,8 +4,10 @@ import android.content.Context
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.size
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
@@ -45,19 +47,6 @@ class DownloadQueueActivity : AppCompatActivity(){
         }
 
         val fragments = mutableListOf(ActiveDownloadsFragment(), QueuedDownloadsFragment(), CancelledDownloadsFragment(), ErroredDownloadsFragment())
-//
-//        lifecycleScope.launch{
-//            withContext(Dispatchers.IO){
-//                val active = commandTemplateDao.getTotalNumber()
-//                if(nr > 0){
-//                    fragments.add(DownloadCommandFragment(resultItem))
-//                }else{
-//                    (tabLayout.getChildAt(0) as? ViewGroup)?.getChildAt(2)?.isEnabled = false
-//                    (tabLayout.getChildAt(0) as? ViewGroup)?.getChildAt(2)?.alpha = 0.3f
-//                }
-//            }
-//        }
-
 
         fragmentAdapter = DownloadListFragmentAdapter(
             supportFragmentManager,
@@ -87,10 +76,6 @@ class DownloadQueueActivity : AppCompatActivity(){
         })
 
         initMenu()
-//        downloadViewModel.activeDownloads.observe(this){
-//            if (it.isEmpty()) tabLayout.getTabAt(0)!!.view.visibility = View.GONE
-//            else tabLayout.getTabAt(0)!!.view.visibility = View.VISIBLE
-//        }
     }
 
     private fun initMenu() {
@@ -99,6 +84,7 @@ class DownloadQueueActivity : AppCompatActivity(){
                 when(m.itemId){
                     R.id.clear_queue -> {
                         cancelAllDownloads()
+                        downloadViewModel.deleteQueued()
                     }
                     R.id.clear_cancelled -> {
                         downloadViewModel.deleteCancelled()
@@ -116,7 +102,7 @@ class DownloadQueueActivity : AppCompatActivity(){
     }
 
     private fun cancelAllDownloads() {
-        workManager.cancelAllWork();
+        workManager.cancelAllWork()
     }
 
 

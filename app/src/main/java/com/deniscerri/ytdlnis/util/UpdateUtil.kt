@@ -18,6 +18,8 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.BufferedReader
@@ -143,56 +145,47 @@ class UpdateUtil(var context: Context) {
         }
     }
 
-    fun updateYoutubeDL() {
-        val sharedPreferences =
-            context.getSharedPreferences("root_preferences", Activity.MODE_PRIVATE)
-        if (updatingYTDL) {
-            Toast.makeText(
-                context,
-                context.getString(R.string.ytdl_already_updating),
-                Toast.LENGTH_LONG
-            ).show()
-            return
-        }
-        Toast.makeText(
-            context,
-            context.getString(R.string.ytdl_updating_started),
-            Toast.LENGTH_SHORT
-        ).show()
-        updatingYTDL = true
-        val disposable = Observable.fromCallable {
-            YoutubeDL.getInstance().updateYoutubeDL(
-                context, if (sharedPreferences.getBoolean("nightly_ytdl", false) ) ytdlpNightly else null
-            )
-        }
-            .subscribeOn(Schedulers.newThread())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ status: UpdateStatus ->
-                when (status) {
-                    UpdateStatus.DONE ->
-                        Toast.makeText(
-                            context,
-                            context.getString(R.string.ytld_update_success),
-                            Toast.LENGTH_LONG
-                        ).show()
-                    UpdateStatus.ALREADY_UP_TO_DATE -> Toast.makeText(
+    suspend fun updateYoutubeDL() : UpdateStatus? =
+        withContext(Dispatchers.IO){
+            val sharedPreferences =
+                context.getSharedPreferences("root_preferences", Activity.MODE_PRIVATE)
+            val editor = sharedPreferences.edit()
+            if (updatingYTDL) {
+                withContext(Dispatchers.Main){
+                    Toast.makeText(
                         context,
-                        context.getString(R.string.you_are_in_latest_version),
+                        context.getString(R.string.ytdl_already_updating),
                         Toast.LENGTH_LONG
                     ).show()
-                    else -> Toast.makeText(context, status.toString(), Toast.LENGTH_LONG).show()
                 }
-                updatingYTDL = false
-            } as ((UpdateStatus?) -> Unit)?) { e: Throwable? ->
-                if (BuildConfig.DEBUG) Log.e(tag, context.getString(R.string.ytdl_update_failed), e)
+                UpdateStatus.ALREADY_UP_TO_DATE
+            }
+            withContext(Dispatchers.Main){
                 Toast.makeText(
                     context,
-                    context.getString(R.string.ytdl_update_failed),
-                    Toast.LENGTH_LONG
+                    context.getString(R.string.ytdl_updating_started),
+                    Toast.LENGTH_SHORT
                 ).show()
+            }
+            updatingYTDL = true
+
+
+            YoutubeDL.getInstance().updateYoutubeDL(
+                context, if (sharedPreferences.getBoolean("nightly_ytdl", false) ) ytdlpNightly else null
+            ).apply {
                 updatingYTDL = false
             }
-        compositeDisposable.add(disposable)
+
+//                .onFailure {
+//                if (BuildConfig.DEBUG) Log.e(tag, context.getString(R.string.ytdl_update_failed), e)
+//                Toast.makeText(
+//                    context,
+//                    context.getString(R.string.ytdl_update_failed),
+//                    Toast.LENGTH_LONG
+//                ).show()
+//                updatingYTDL = false
+//            }
+        //}
     }
 
     companion object {

@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.LocaleListCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.preference.*
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
@@ -19,6 +20,8 @@ import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.UpdateUtil
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.yausername.youtubedl_android.YoutubeDL
+import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 import java.util.*
 
@@ -54,6 +57,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
     private var updateApp: SwitchPreferenceCompat? = null
     private var exportPreferences : Preference? = null
     private var importPreferences : Preference? = null
+    private var ytdlVersion: Preference? = null
     private var version: Preference? = null
 
 
@@ -113,6 +117,8 @@ class SettingsFragment : PreferenceFragmentCompat() {
         updateApp = findPreference("update_app")
         exportPreferences = findPreference("export_preferences")
         importPreferences = findPreference("import_preferences")
+        ytdlVersion = findPreference("ytdl-version")
+        ytdlVersion!!.summary = preferences.getString("ytdl-version", "NULL")
         version = findPreference("version")
         version!!.summary = BuildConfig.VERSION_NAME
 
@@ -398,7 +404,28 @@ class SettingsFragment : PreferenceFragmentCompat() {
             }
         updateYTDL!!.onPreferenceClickListener =
             Preference.OnPreferenceClickListener {
-                updateUtil!!.updateYoutubeDL()
+                lifecycleScope.launch {
+                    when (updateUtil!!.updateYoutubeDL()) {
+                        YoutubeDL.UpdateStatus.DONE -> {
+                            Toast.makeText(
+                                context,
+                                requireContext().getString(R.string.ytld_update_success),
+                                Toast.LENGTH_LONG
+                            ).show()
+                            YoutubeDL.getInstance().version(context)?.let {
+                                editor.putString("ytdl-version", it)
+                                editor.apply()
+                                ytdlVersion!!.summary = it
+                            }
+                        }
+                        YoutubeDL.UpdateStatus.ALREADY_UP_TO_DATE -> Toast.makeText(
+                            context,
+                            requireContext().getString(R.string.you_are_in_latest_version),
+                            Toast.LENGTH_LONG
+                        ).show()
+                        else -> Toast.makeText(context, this.toString(), Toast.LENGTH_LONG).show()
+                    }
+                }
                 true
             }
         updateNightlyYTDL!!.onPreferenceChangeListener =
