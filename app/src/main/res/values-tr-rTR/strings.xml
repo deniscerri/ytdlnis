@@ -11,7 +11,7 @@
     <string name="music_directory"> Müzik Klasörü</string>
     <string name="video_directory"> Video Klasörü</string>
     <string name="updating"> Güncelleniyor</string>
-    <string name="ytdl_update_hint"> İndirirken sorun yaşarsanız kullanışlıdır</string>
+    <string name="ytdl_update_hint">İndirmede sorunlarınız varsa kullanışlıdır</string>
     <string name="update_ytdl"> youtube-dl\'nin yeni sürümünü yükle</string>
     <string name="source_code"> Kaynak Kod</string>
     <string name="search_hint"> YouTube\'dan ara</string>
@@ -20,7 +20,7 @@
     <string name="download_notification_channel_description"> Ses ve video dosyalarının indirilme ilerlemesini gösteren bildirim</string>
     <string name="failed_making_directory"> Yeni klasör oluşturulamadı.</string>
     <string name="added_to_queue">kuyruğa alınmış</string>
-    <string name="you_are_in_latest_version"> En son sürümü kullanıyor</string>
+    <string name="you_are_in_latest_version">En son sürüm çalışıyor</string>
     <string name="ytld_update_success">Yeni sürüm yüklendi</string>
     <string name="ytdl_update_failed">Yeni sürüm yüklenemedi</string>
     <string name="ytdl_already_updating">Yeni sürüm yükleniyor…</string>
