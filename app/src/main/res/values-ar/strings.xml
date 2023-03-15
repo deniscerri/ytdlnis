@@ -11,8 +11,6 @@
     <string name="video_directory">مجلد الفيديو</string>
     <string name="updating">التحديثات</string>
     <string name="ytdl_update_hint">يفيدك ان كنت تواجه مشاكل في التنزيل</string>
-    <string name="failed_making_directory">تعذر إنشاء المجلد الجديد.</string>
-    <string name="added_to_queue">في قائمة الانتظار</string>
     <string name="update_ytdl">تثبيت نسخة جديدة من youtube-dl</string>
     <string name="source_code">الكود المصدري</string>
     <string name="search_hint">البحث في اليوتيوب</string>
@@ -20,7 +18,6 @@
     <string name="download_notification_channel_description">إشعار يوضح تقدم تنزيل ملفات الصوت والفيديو</string>
     <string name="download_notification_channel_name">تحميل الملفات</string>
     <string name="ok">تم</string>
-    <string name="ytdl_update_failed">تعذر تثبيت الإصدار الجديد</string>
     <string name="ytdl_already_updating">جاري تثبيت الإصدار الجديد…</string>
     <string name="ytdl_updating_started">جاري تحميل إصدار جديد…</string>
     <string name="cancel">إلغاء</string>
@@ -28,16 +25,12 @@
     <string name="confirm_delete_history_desc">احذف السجل بالكامل بشكل دائم.</string>
     <string name="you_are_in_latest_version">يستخدم أحدث إصدار</string>
     <string name="ytld_update_success">تم تثبيت إصدار جديدة</string>
-    <string name="confirm_delete_history_duplicates_desc">يحذف كل نسخة مكررة في السجل (نفس عنوان URL ونوع التنزيل) ، ويحتفظ بأحدث إصدار.</string>
     <string name="confirm_delete_history">تأكيد</string>
     <string name="search_history_hint">البحث في السجل</string>
     <string name="no_results">لا توجد نتائج</string>
     <string name="more">المزيد</string>
     <string name="version">الإصدار</string>
     <string name="update_app">تحقق من وجود تحديثات</string>
-    <string name="confirm_delete_history_deleted_desc">يحذف أي عنصر في السجل بدون ملف يطابق مسار التنزيل الخاص به.</string>
-    <string name="running_ytdlp_command">جاري تشغيل أوامر yt-dlp المخصصة…</string>
     <string name="command_directory">مجلد للأوامر المخصصة</string>
     <string name="couldnt_find_apk">تعذر العثور على APK مناسب.</string>
-    <string name="custom_command">تشغيل أمر مخصص</string>
 </resources>

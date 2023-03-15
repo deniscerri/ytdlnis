@@ -18,38 +18,26 @@
     <string name="failed_download"> Dosya indirilemedi.</string>
     <string name="download_notification_channel_name"> Dosya İndirmeleri</string>
     <string name="download_notification_channel_description"> Ses ve video dosyalarının indirilme ilerlemesini gösteren bildirim</string>
-    <string name="failed_making_directory"> Yeni klasör oluşturulamadı.</string>
-    <string name="added_to_queue">kuyruğa alınmış</string>
     <string name="you_are_in_latest_version">En son sürüm çalışıyor</string>
     <string name="ytld_update_success">Yeni sürüm yüklendi</string>
-    <string name="ytdl_update_failed">Yeni sürüm yüklenemedi</string>
     <string name="ytdl_already_updating">Yeni sürüm yükleniyor…</string>
     <string name="ytdl_updating_started">Yeni sürüm indiriliyor…</string>
     <string name="Remove">Kaldır</string>
     <string name="ok">Tamam</string>
     <string name="cancel">İptal etmek</string>
     <string name="confirm_delete_history_desc">Tüm geçmişi kalıcı olarak silin.</string>
-    <string name="confirm_delete_history_deleted_desc">Geçmişinizde indirme yoluyla eşleşen bir dosya olmayan herhangi bir öğeyi siler.</string>
-    <string name="confirm_delete_history_duplicates_desc">Geçmişinizdeki her kopyayı siler (aynı URL ve indirme türü) ve en son sürümü korur.</string>
     <string name="confirm_delete_history">Onayla</string>
     <string name="search_history_hint">Geçmişten Ara</string>
     <string name="no_results">Sonuç yok</string>
     <string name="more">Daha</string>
     <string name="update_app">Güncellemeleri denetle</string>
     <string name="version">Sürüm</string>
-    <string name="custom_command">Özel Komutu Çalıştır</string>
-    <string name="running_ytdlp_command">Özel yt-dlp komutunu çalıştırıyor…</string>
     <string name="command_directory">Özel Komut için Klasör</string>
     <string name="couldnt_find_apk">Uygun bir APK bulunamadı.</string>
     <string name="downloading_update">Yeni sürüm indiriliyor…</string>
-    <string name="chooose_range">İndirmeyi …</string> ile sınırla
+    ile sınırla
     <string name="audio">Ses</string>
     <string name="video">Video</string>
-    <string name="first">İlk</string>
-    <string name="last">Son</string>
-    <string name="choose_range_desc">Çalma listesinden indirmek için bir aralık seçin (her şeyi indirmemek için).</string>
-    <string name="last_cant_be_smaller_than_first">Son dizin ilkinden daha küçük olamaz.</string>
-    <string name="first_cant_be_larger_than_last">İlk dizin son dizinden büyük olamaz.</string>
     <string name="music_path" translatable="false">/storage/emulated/0/Download</string>
     <string name="video_path" translatable="false">/storage/emulated/0/Download</string>
     <string name="command_path" translatable="false">/storage/emulated/0/Download</string>
@@ -60,7 +48,6 @@
     <string name="limit_rate_summary">Maksimum indirme hızı (saniye başına bayt cinsinden), örneğin 50K veya 4,2M</string>
     <string name="aria2_summary">Varsayılan yerine indirici olarak aria2c kullanın</string>
     <string name="processing">İşleme</string>
-    <string name="embed_subs">Videolardaki Altyazılar</string>
     <string name="embed_subs_summary">Videoya altyazı ekler</string>
     <string name="embed_thumb">Thumbnail Kapakları</string>
     <string name="embed_thumb_summary">Küçük resmi kapak resmi olarak kullanır</string>
@@ -85,32 +72,22 @@
     <string name="api_key_summary">YouTube\'dan daha hızlı sonuçlar</string>
     <string name="update_app_summary">Açıldığında uygulamanın yeni sürümlerini bildirir</string>
     <string name="downloads">İndirilenler</string>
-    <string name="removed_from_queue">kuyruktan kaldırıldı.</string>
     <string name="remove_deleted">Silinenleri Kaldır</string>
     <string name="remove_duplicates">Yinelenenleri Kaldır</string>
     <string name="sort_by">Sıralama</string>
-    <string name="newest_first">En yeni</string>
-    <string name="oldest_first">En eski</string>
     <item type="id" name="cancelDownload"/>
     <string name="trendingPlaylist" translatable="false">ytdlnis-TRENDING</string>
-    <string name="currently_downloading">İndiriliyor</string>
     <string name="remove_downloading">İndirmeleri İptal Et</string>
-    <string name="confirm_delete_downloading_desc">İndirilmekte olan tüm öğeleri kaldırın ve indirme hizmetini durdurun?</string>
-    <string name="error_deleting_file">Dosya silinemedi.</string>
     <string name="incognito_summary">Geçmişe eklemeden indir</string>
-    <string name="download_audio">Ses İndir</string>
     <string name="configure_download">İndirmeyi Ayarla</string>
     <string name="title">Başlık</string>
     <string name="author">Yazar</string>
     <string name="download">İndir</string>
-    <string name="download_video">Video İndir</string>
     <string name="video_quality">Video Kalitesi</string>
     <string name="embed_subtitles">Altyazıları Yerleştir</string>
     <string name="add_chapter">Bölüm Ekle</string>
     <string name="show_download_card">İndirme Seçeneklerini Göster</string>
     <string name="download_card_summary">Öğelerin nasıl indirileceğine ilişkin ayarlar</string>
-    <string name="mutliple_titles">Çoklu Başlıklar</string>
-    <string name="mutliple_authors">Çoklu Yazarlar</string>
     <string name="Open_File">Dosya Aç</string>
     <string name="delete_selected">Seçileni Sil</string>
     <string name="you_are_going_to_delete_multiple_items">Birden fazla öğe silme…</string>
