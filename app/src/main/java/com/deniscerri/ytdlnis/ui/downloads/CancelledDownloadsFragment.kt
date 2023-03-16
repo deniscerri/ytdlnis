@@ -121,6 +121,7 @@ class CancelledDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClic
 
         val time = bottomSheet.findViewById<Chip>(R.id.time)
         val formatNote = bottomSheet.findViewById<Chip>(R.id.format_note)
+        val container = bottomSheet.findViewById<Chip>(R.id.container_chip)
         val codec = bottomSheet.findViewById<Chip>(R.id.codec)
         val fileSize = bottomSheet.findViewById<Chip>(R.id.file_size)
 
@@ -129,6 +130,9 @@ class CancelledDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClic
         if (item.format.format_note == "?" || item.format.format_note == "") formatNote!!.visibility =
             View.GONE
         else formatNote!!.text = item.format.format_note
+
+        if (item.format.container != "") container!!.text = item.format.container.uppercase()
+        else container!!.visibility = View.GONE
 
         val codecText =
             if (item.format.encoding != "") {

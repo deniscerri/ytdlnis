@@ -420,6 +420,7 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
 
         val time = bottomSheet!!.findViewById<TextView>(R.id.time)
         val formatNote = bottomSheet!!.findViewById<TextView>(R.id.format_note)
+        val container = bottomSheet!!.findViewById<TextView>(R.id.container_chip)
         val codec = bottomSheet!!.findViewById<TextView>(R.id.codec)
         val fileSize = bottomSheet!!.findViewById<TextView>(R.id.file_size)
 
@@ -430,6 +431,9 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
 
         if (item.format.format_note == "?" || item.format.format_note == "") formatNote!!.visibility = GONE
         else formatNote!!.text = item.format.format_note
+
+        if (item.format.container != "") container!!.text = item.format.container.uppercase()
+        else container!!.visibility = View.GONE
 
         val codecText =
             if (item.format.encoding != "") {
