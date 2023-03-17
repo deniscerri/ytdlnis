@@ -110,7 +110,7 @@
     <string name="save_dir">Dizine kaydet</string>
     <string name="cache_cleared">Geçici dosyalar temizlendi</string>
     <string name="remove_search_history">Arama geçmişini temizle</string>
-    <string name="container">Kapasite</string>
+    <string name="container">Uzantı</string>
     <string name="terminal">Terminal</string>
     <string name="enable_mtime">Aktivasyon d.saat</string>
     <string name="enable_mtime_summary">HTTP son değiştirilme başlığını son değiştirilme zamanı olarak ayarla</string>
