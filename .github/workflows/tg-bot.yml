@@ -1,0 +1,31 @@
+name: Telegram Builder
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: send telegram message on push
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          format: markdown
+          photo: https://raw.githubusercontent.com/deniscerri/ytdlnis/main/app/src/main/ic_launcher-playstore.png
+          disable_web_page_preview: false
+          message: |
+            YTDLnis has a new release: [${{ github.event.release.tag_name }}](https://github.com/${{ github.repository }}/releases/tag/${{ github.event.release.tag_name }})
+            ```markdown
+            ${{ github.event.release.body }}
+            ```
+            
+            [${{ github.event.release.assets[0].name }}](${{ github.event.release.assets[0].browser_download_url }})
+            [${{ github.event.release.assets[1].name }}](${{ github.event.release.assets[1].browser_download_url }})
+            [${{ github.event.release.assets[2].name }}](${{ github.event.release.assets[2].browser_download_url }})
+            [${{ github.event.release.assets[3].name }}](${{ github.event.release.assets[3].browser_download_url }})
+            [${{ github.event.release.assets[4].name }}](${{ github.event.release.assets[4].browser_download_url }})
+            [${{ github.event.release.assets[5].name }}](${{ github.event.release.assets[5].browser_download_url }})
