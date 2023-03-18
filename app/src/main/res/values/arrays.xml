@@ -84,6 +84,4 @@
         <item>video</item>
         <item>command</item>
     </string-array>
-    <string name="worst_quality">Worst Quality</string>
-    <string name="best_quality">Best Quality</string>
 </resources>

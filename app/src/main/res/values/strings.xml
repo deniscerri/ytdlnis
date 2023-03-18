@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="worst_quality">Worst Quality</string>
+    <string name="best_quality">Best Quality</string>
     <string name="app_name" translatable="false">YTDLnis</string>
     <string name="search">Search</string>
     <string name="remove_all">Remove All</string>
