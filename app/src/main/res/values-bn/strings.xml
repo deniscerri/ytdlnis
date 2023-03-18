@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="update_ytdl">youtube-dl এর নতুন সংস্করণ ইনস্টল করুন</string>
+    <string name="update_ytdl">yt-dlp এর নতুন সংস্করণ ইনস্টল করুন</string>
     <string name="search">অনুসন্ধান করুন</string>
     <string name="remove_all">সব মুছে ফেলুন</string>
     <string name="remove_results">ফলাফল মুছুন</string>
@@ -71,7 +71,7 @@
     <string name="sponsorblock_previews">পূর্বরূপ</string>
     <string name="sponsorblock_reminders">সদস্যতা অনুস্মারক</string>
     <string name="ytdl_update_hint">ডাউনলোড করতে সমস্যা হলে উপকারী</string>
-    <string name="search_hint">ইউটিউব থেকে সার্চ করুন</string>
+    <string name="search_hint">অনুসন্ধান করুন বা URL ইনসার্ট করুন</string>
     <string name="select_sponsorblock_filtering">স্পনসরব্লক ফিল্টারিং নির্বাচন করুন</string>
     <string name="ytdl_already_updating">নতুন সংস্করণ ইনস্টল করা হচ্ছে…</string>
     <string name="ok">Ok</string>
@@ -98,4 +98,7 @@
     <string name="download_card_summary">আইটেম ডাউনলোড করার জন্য সেটিংস</string>
     <string name="sponsorblock_fillers">ফিলার</string>
     <string name="concurrent_fragments_summary">একযোগে ডাউনলোড করার জন্য একটি DASH/HLS নেটিভ ভিডিওর খণ্ডের সংখ্যা</string>
+    <string name="new_template">নতুন টেমপ্লেট</string>
+    <string name="adjust_templates">টেমপ্লেট অ্যাডজাস্ট করুন</string>
+    <string name="save_dir">সেভ করার স্থান</string>
 </resources>
