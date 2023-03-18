@@ -2,18 +2,17 @@ package com.deniscerri.ytdlnis.ui
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.Context
-import android.content.Intent
-import android.content.SharedPreferences
+import android.content.*
+import android.content.Context.CLIPBOARD_SERVICE
 import android.content.res.Configuration
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.view.*
-import android.view.View.GONE
-import android.view.View.VISIBLE
+import android.view.View.*
 import android.widget.*
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
@@ -37,10 +36,11 @@ import com.deniscerri.ytdlnis.util.InfoUtil
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.search.SearchBar
+import com.google.android.material.search.SearchView
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.*
@@ -51,8 +51,12 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
     private var inputQueries: LinkedList<String?>? = null
     private var inputQueriesLength = 0
     private var homeAdapter: HomeAdapter? = null
+
     private var searchSuggestions: ScrollView? = null
     private var searchSuggestionsLinearLayout: LinearLayout? = null
+    private var searchHistory: ScrollView? = null
+    private var searchHistoryLinearLayout: LinearLayout? = null
+
     private var downloadFabs: CoordinatorLayout? = null
     private var downloadAllFabCoordinator: CoordinatorLayout? = null
     private var homeFabs: CoordinatorLayout? = null
@@ -115,6 +119,8 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
         searchBar = view.findViewById(R.id.search_bar)
         searchSuggestions = view.findViewById(R.id.search_suggestions_scroll_view)
         searchSuggestionsLinearLayout = view.findViewById(R.id.search_suggestions_linear_layout)
+        searchHistory = view.findViewById(R.id.search_history_scroll_view)
+        searchHistoryLinearLayout = view.findViewById(R.id.search_history_linear_layout)
 
         homeAdapter =
             HomeAdapter(
@@ -201,29 +207,45 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
         } else {
             resultViewModel.checkTrending()
         }
-
-//        fragmentView!!.post{
-//            if (shimmerCards!!.visibility == VISIBLE) return@post
-//            val clipboard = requireContext().getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
-//            val regex = "(https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|www\\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9]+\\.[^\\s]{2,}|www\\.[a-zA-Z0-9]+\\.[^\\s]{2,})".toRegex()
-//            val clip = clipboard.primaryClip!!.getItemAt(0).text
-//            if (regex.containsMatchIn(clip.toString())){
-//                val snackbar = Snackbar.make(fragmentView!!, clip, Snackbar.LENGTH_INDEFINITE)
-//                snackbar.setAction(getString(R.string.download)+"?") {
-//                    resultViewModel.deleteAll()
-//                    resultViewModel.parseQuery(clip.toString(), true)
-//                }
-//                snackbar.show()
-//            }
-//        }
     }
 
     private fun initMenu() {
-        val searchView = requireView().findViewById<com.google.android.material.search.SearchView>(R.id.search_view)
+        val searchView = requireView().findViewById<SearchView>(R.id.search_view)
         infoUtil = InfoUtil(requireContext())
+        val linkYouCopied = searchView.findViewById<ConstraintLayout>(R.id.link_you_copied)
+        searchView.addTransitionListener { view, previousState, newState ->
+            if (newState == SearchView.TransitionState.SHOWN) {
+                val clipboard =
+                    requireContext().getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+                val regex =
+                    "(https?://(?:www\\.|(?!www))[a-zA-Z\\d][a-zA-Z\\d-]+[a-zA-Z\\d]\\.\\S{2,}|www\\.[a-zA-Z\\d][a-zA-Z\\d-]+[a-zA-Z\\d]\\.\\S{2,}|https?://(?:www\\.|(?!www))[a-zA-Z\\d]+\\.\\S{2,}|www\\.[a-zA-Z\\d]+\\.\\S{2,})".toRegex()
+                val clip = clipboard.primaryClip!!.getItemAt(0).text
+                if (regex.containsMatchIn(clip.toString())) {
+                    linkYouCopied.visibility = VISIBLE
+                    val textView = linkYouCopied.findViewById<TextView>(R.id.suggestion_text)
+                    textView.text = getString(R.string.link_you_copied)
+                    textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_language, 0, 0, 0)
+                    val mb = linkYouCopied.findViewById<ImageButton>(R.id.set_search_query_button)
+                    mb.visibility = INVISIBLE
+
+                    textView.setOnClickListener {
+                        searchView.setText(clip.toString())
+                        initSearch(searchView)
+                    }
+                }else{
+                    linkYouCopied.visibility = GONE
+                }
+            }
+        }
 
         searchView.editText.addTextChangedListener {
             searchSuggestionsLinearLayout!!.removeAllViews()
+            searchHistoryLinearLayout!!.removeAllViews()
+
+            searchSuggestionsLinearLayout!!.visibility = GONE
+            searchHistoryLinearLayout!!.visibility = GONE
+            linkYouCopied!!.visibility = GONE
+
             lifecycleScope.launch {
                 val suggestions = withContext(Dispatchers.IO){
                     if (it!!.isEmpty()) {
@@ -233,25 +255,65 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
                     }
                 }
 
-                for (i in suggestions.indices) {
-                    val v = LayoutInflater.from(fragmentContext)
-                        .inflate(R.layout.search_suggestion_item, null)
-                    val textView = v.findViewById<TextView>(R.id.suggestion_text)
-                    textView.text = suggestions[i]
-                    Handler(Looper.getMainLooper()).post {
-                        searchSuggestionsLinearLayout!!.addView(
-                            v
-                        )
+                if (it!!.isEmpty()){
+                    for (i in suggestions.indices) {
+                        val v = LayoutInflater.from(fragmentContext)
+                            .inflate(R.layout.search_suggestion_item, null)
+                        val textView = v.findViewById<TextView>(R.id.suggestion_text)
+                        textView.text = suggestions[i]
+                        textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_refresh, 0, 0, 0)
+                        Handler(Looper.getMainLooper()).post {
+                            searchHistoryLinearLayout!!.addView(
+                                v
+                            )
+                        }
+                        textView.setOnClickListener {
+                            searchView.setText(textView.text)
+                            initSearch(searchView)
+                        }
+                        textView.setOnLongClickListener {
+                            val deleteDialog = MaterialAlertDialogBuilder(requireContext())
+                            deleteDialog.setTitle(getString(R.string.you_are_going_to_delete) + " \"" + textView.text + "\"!")
+                            deleteDialog.setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, _: Int -> dialogInterface.cancel() }
+                            deleteDialog.setPositiveButton(getString(R.string.ok)) { _: DialogInterface?, _: Int ->
+                                searchHistoryLinearLayout!!.removeView(v)
+                                resultViewModel.removeSearchQueryFromHistory(textView.text.toString())
+                            }
+                            deleteDialog.show()
+                            true
+                        }
+
+                        val mb = v.findViewById<ImageButton>(R.id.set_search_query_button)
+                        mb.setOnClickListener {
+                            searchView.setText(textView.text)
+                        }
                     }
-                    textView.setOnClickListener {
-                        searchView.setText(textView.text)
-                        initSearch(searchView)
+                    searchHistoryLinearLayout!!.visibility = VISIBLE
+                    linkYouCopied!!.visibility = VISIBLE
+                }else{
+                    for (i in suggestions.indices) {
+                        val v = LayoutInflater.from(fragmentContext)
+                            .inflate(R.layout.search_suggestion_item, null)
+                        val textView = v.findViewById<TextView>(R.id.suggestion_text)
+                        textView.text = suggestions[i]
+                        Handler(Looper.getMainLooper()).post {
+                            searchSuggestionsLinearLayout!!.addView(
+                                v
+                            )
+                        }
+                        textView.setOnClickListener {
+                            searchView.setText(textView.text)
+                            initSearch(searchView)
+                        }
+                        val mb = v.findViewById<ImageButton>(R.id.set_search_query_button)
+                        mb.setOnClickListener {
+                            searchView.setText(textView.text)
+                        }
                     }
-                    val mb = v.findViewById<ImageButton>(R.id.set_search_query_button)
-                    mb.setOnClickListener {
-                        searchView.setText(textView.text)
-                    }
+                    searchSuggestionsLinearLayout!!.visibility = VISIBLE
                 }
+
+
             }
             false
         }
@@ -279,7 +341,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
         }
     }
 
-    private fun initSearch(searchView: com.google.android.material.search.SearchView){
+    private fun initSearch(searchView: SearchView){
         val inputQuery = searchView.text!!.trim { it <= ' '}
         if (inputQuery.isEmpty()) return
         searchBar!!.text = searchView.text
@@ -352,10 +414,12 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
             downloadFabs!!.visibility = VISIBLE
         } else {
             downloadFabs!!.visibility = GONE
-            if (resultsList!![1]!!.playlistTitle.isNotEmpty() && resultsList!![1]!!.playlistTitle != getString(R.string.trendingPlaylist)){
-                downloadAllFabCoordinator!!.visibility = VISIBLE
-            }else{
-                downloadAllFabCoordinator!!.visibility = GONE
+            if(resultsList!!.size > 1){
+                if (resultsList!![1]!!.playlistTitle.isNotEmpty() && resultsList!![1]!!.playlistTitle != getString(R.string.trendingPlaylist)){
+                    downloadAllFabCoordinator!!.visibility = VISIBLE
+                }else{
+                    downloadAllFabCoordinator!!.visibility = GONE
+                }
             }
         }
     }

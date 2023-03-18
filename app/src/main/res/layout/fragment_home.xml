@@ -13,21 +13,65 @@
         android:hint="@string/search_hint"
         app:layout_anchor="@id/search_bar">
 
-        <ScrollView
-            android:id="@+id/search_suggestions_scroll_view"
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <LinearLayout
-                android:id="@+id/search_suggestions_linear_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <include layout="@layout/search_suggestion_item" />
-            </LinearLayout>
-        </ScrollView>
+                <ScrollView
+                    android:id="@+id/search_history_scroll_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-        <!-- Search suggestions/results go here (ScrollView, RecyclerView, etc.). -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <include
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="-10dp"
+                            android:visibility="gone"
+                            android:id="@+id/link_you_copied"
+                            layout="@layout/search_suggestion_item"
+                            />
+
+
+                        <LinearLayout
+                            android:id="@+id/search_history_linear_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </ScrollView>
+
+                <ScrollView
+                    android:id="@+id/search_suggestions_scroll_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <LinearLayout
+                        android:id="@+id/search_suggestions_linear_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                    </LinearLayout>
+                </ScrollView>
+
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
     </com.google.android.material.search.SearchView>
 
     <com.google.android.material.appbar.AppBarLayout

@@ -124,6 +124,14 @@ class ResultViewModel(application: Application) : AndroidViewModel(application) 
 
     }
 
+    fun removeSearchQueryFromHistory(query: String) = viewModelScope.launch(Dispatchers.IO) {
+        val allQueries = searchHistoryRepository.getAll()
+        if (allQueries.any { it.query == query }){
+            searchHistoryRepository.delete(query)
+        }
+
+    }
+
     fun deleteAllSearchQueryHistory() = viewModelScope.launch(Dispatchers.IO){
         searchHistoryRepository.deleteAll()
     }

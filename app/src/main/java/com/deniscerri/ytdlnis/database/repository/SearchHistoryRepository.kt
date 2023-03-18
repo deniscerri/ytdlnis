@@ -19,4 +19,8 @@ class SearchHistoryRepository(private val searchHistoryDao: SearchHistoryDao) {
     suspend fun deleteAll(){
         searchHistoryDao.deleteAll()
     }
+
+    suspend fun delete(query: String){
+        searchHistoryDao.delete(query)
+    }
 }
