@@ -215,24 +215,29 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
         val linkYouCopied = searchView.findViewById<ConstraintLayout>(R.id.link_you_copied)
         searchView.addTransitionListener { view, previousState, newState ->
             if (newState == SearchView.TransitionState.SHOWN) {
-                val clipboard =
-                    requireContext().getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
-                val regex =
-                    "(https?://(?:www\\.|(?!www))[a-zA-Z\\d][a-zA-Z\\d-]+[a-zA-Z\\d]\\.\\S{2,}|www\\.[a-zA-Z\\d][a-zA-Z\\d-]+[a-zA-Z\\d]\\.\\S{2,}|https?://(?:www\\.|(?!www))[a-zA-Z\\d]+\\.\\S{2,}|www\\.[a-zA-Z\\d]+\\.\\S{2,})".toRegex()
-                val clip = clipboard.primaryClip!!.getItemAt(0).text
-                if (regex.containsMatchIn(clip.toString())) {
-                    linkYouCopied.visibility = VISIBLE
-                    val textView = linkYouCopied.findViewById<TextView>(R.id.suggestion_text)
-                    textView.text = getString(R.string.link_you_copied)
-                    textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_language, 0, 0, 0)
-                    val mb = linkYouCopied.findViewById<ImageButton>(R.id.set_search_query_button)
-                    mb.visibility = INVISIBLE
+                try{
+                    val clipboard =
+                        requireContext().getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+                    val regex =
+                        "(https?://(?:www\\.|(?!www))[a-zA-Z\\d][a-zA-Z\\d-]+[a-zA-Z\\d]\\.\\S{2,}|www\\.[a-zA-Z\\d][a-zA-Z\\d-]+[a-zA-Z\\d]\\.\\S{2,}|https?://(?:www\\.|(?!www))[a-zA-Z\\d]+\\.\\S{2,}|www\\.[a-zA-Z\\d]+\\.\\S{2,})".toRegex()
+                    val clip = clipboard.primaryClip!!.getItemAt(0).text
+                    if (regex.containsMatchIn(clip.toString())) {
+                        linkYouCopied.visibility = VISIBLE
+                        val textView = linkYouCopied.findViewById<TextView>(R.id.suggestion_text)
+                        textView.text = getString(R.string.link_you_copied)
+                        textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_language, 0, 0, 0)
+                        val mb = linkYouCopied.findViewById<ImageButton>(R.id.set_search_query_button)
+                        mb.visibility = INVISIBLE
 
-                    textView.setOnClickListener {
-                        searchView.setText(clip.toString())
-                        initSearch(searchView)
+                        textView.setOnClickListener {
+                            searchView.setText(clip.toString())
+                            initSearch(searchView)
+                        }
+                    }else{
+                        linkYouCopied.visibility = GONE
                     }
-                }else{
+                }catch (e: Exception){
+                    e.printStackTrace()
                     linkYouCopied.visibility = GONE
                 }
             }
@@ -289,7 +294,9 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
                         }
                     }
                     searchHistoryLinearLayout!!.visibility = VISIBLE
-                    linkYouCopied!!.visibility = VISIBLE
+                    if (linkYouCopied.findViewById<TextView>(R.id.suggestion_text).text.isNotEmpty()){
+                        linkYouCopied.visibility = VISIBLE
+                    }
                 }else{
                     for (i in suggestions.indices) {
                         val v = LayoutInflater.from(fragmentContext)

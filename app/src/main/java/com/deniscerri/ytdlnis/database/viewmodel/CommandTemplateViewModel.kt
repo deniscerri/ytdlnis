@@ -101,18 +101,22 @@ class CommandTemplateViewModel(private val application: Application) : AndroidVi
 
 
     fun exportToClipboard() = viewModelScope.launch(Dispatchers.IO) {
-        val allTemplates = repository.getAll()
-        val allShortcuts = repository.getAllShortCuts()
-        val output = jsonFormat.encodeToString(
-            CommandTemplateExport(
+        try{
+            val allTemplates = repository.getAll()
+            val allShortcuts = repository.getAllShortCuts()
+            val output = jsonFormat.encodeToString(
+                CommandTemplateExport(
                     templates = allTemplates,
                     shortcuts = allShortcuts
                 )
             )
 
-        val clipboard: ClipboardManager =
-            application.getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
-        clipboard.setText(output)
+            val clipboard: ClipboardManager =
+                application.getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+            clipboard.setText(output)
+        }catch (e: Exception){
+            e.printStackTrace()
+        }
     }
 
 }
