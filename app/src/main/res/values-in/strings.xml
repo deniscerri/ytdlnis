@@ -172,4 +172,6 @@
     <string name="command_download_notification_channel_description">Notifikasi yang memperlihatkan kemajuan pengunduhan yang menggunakan perintah yt-dlp</string>
     <string name="downloads">Unduhan</string>
     <string name="link_you_copied">Pranala yang Kamu Salin</string>
+    <string name="best_quality">Kualitas Terbaik</string>
+    <string name="worst_quality">Kualitas Terburuk</string>
 </resources>
