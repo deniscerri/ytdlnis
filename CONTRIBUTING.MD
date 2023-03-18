@@ -13,12 +13,12 @@ When submitting a bug report, please make sure your issue contains enough inform
 ## Feature Request
 YTDlnis is and will remain a simple GUI for yt-dlp, providing most of the functionality of yt-dlp as is, without modifications. Thus, we'll not take requests for features that yt-dlp does not support.
 
-The app has two download modes:
+The app has three download modes:
 
-- General mode: Save as audio, download playlist, and many other options that can be used individually or combined for normal download tasks. Once the download is complete, YTDlnis will scan the files into the system media library, and store them in the download history.
-- Custom Command mode: For advanced usage of yt-dlp, a user can create and store multiple command templates in the app, then select and use one of them directly to execute the yt-dlp command like in a terminal. In this mode, all of the GUI options and features in the general mode will be disabled.
+- <b>General mode</b>: Save as audio, download playlist, and many other options that can be used individually or combined for normal download tasks. Once the download is complete, YTDlnis will scan the files into the system media library, and store them in the download history.
+- <b>Custom Command mode</b>: For advanced usage of yt-dlp, a user can create and store multiple command templates in the app, then select and use one of them directly to execute the yt-dlp command like in a terminal. In this mode, all of the GUI options and features in the general mode will be disabled.
   Since most of the functions can be implemented in custom command mode, the "feature request" would be treated as adding a shortcut to the general mode. However, not all feature requests will be accepted and implemented in the app. Why not add an option for that?
-- Terminal mode: A CLI-like interface to be as close to yt-dlp
+- <b>Terminal mode</b>: A CLI-like interface to be as close to yt-dlp
 
 ## Pull Request
 If you wish to contribute to the project by submitting code directly, please first leave a comment under the relevant issue or file a new issue, describe the changes you are about to make.
