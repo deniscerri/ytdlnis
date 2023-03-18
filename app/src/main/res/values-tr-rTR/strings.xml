@@ -179,4 +179,6 @@
     <string name="freespace">Boş alan</string>
     <string name="update_formats">Biçimleri Güncelle</string>
     <string name="link_you_copied">Kopyaladığınız URL</string>
+    <string name="worst_quality">En Kötü Kalite</string>
+    <string name="best_quality">En Iyi Kalite</string>
 </resources>
