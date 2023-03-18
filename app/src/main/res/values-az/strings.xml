@@ -153,7 +153,7 @@
     <string name="redownload">Təkrar yüklə</string>
     <string name="copy_url">URL-i Köçür</string>
     <string name="in_queue">Növbədə</string>
-    <string name="clear_cancelled">Təmizlənmə ləğv edildi</string>
+    <string name="clear_cancelled">Ləğv ediləni təmizlə</string>
     <string name="access_all_directories_summary">Tətbiq endirilməsinə standart olaraq məhdudlaşdırılan qovluqlarda icazə ver</string>
     <string name="adjust_audio">Səsi Tənzimlə</string>
     <string name="log_downloads">Yükləmələr Jurnalı</string>
@@ -172,4 +172,6 @@
     <string name="freespace">Boş yer</string>
     <string name="ytdl_version">yt-dlp Versiya</string>
     <string name="link_you_copied">Kopyaladığınız link</string>
+    <string name="best_quality">Ən yaxşı keyfiyyət</string>
+    <string name="worst_quality">Ən Pis Keyfiyyət</string>
 </resources>
