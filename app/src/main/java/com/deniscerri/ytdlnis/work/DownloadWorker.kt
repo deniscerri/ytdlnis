@@ -210,7 +210,9 @@ class DownloadWorker(
         runCatching {
             val logDownloads = sharedPreferences.getBoolean("log_downloads", false) && !sharedPreferences.getBoolean("incognito", false)
             val logFolder = File(context.filesDir.absolutePath + "/logs")
-            val logFile = File(context.filesDir.absolutePath + """/logs/${downloadItem.id} - ${downloadItem.title}##${downloadItem.type}##${downloadItem.format.format_id}.log""")
+            val regex = Regex("[^A-Za-z\\d ]")
+            val logFile = File(context.filesDir.absolutePath + """/logs/${downloadItem.id} - ${regex.replace(downloadItem.title, "")}##${downloadItem.type}##${downloadItem.format.format_id}.log""")
+            Log.e("aa", logFile.name)
             if (logDownloads){
                 logFolder.mkdirs()
                 logFile.createNewFile()
