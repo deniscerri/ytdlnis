@@ -76,6 +76,9 @@ The App's package name is com.deniscerri.ytdl
 
 [GNU GPL v3.0](https://github.com/deniscerri/ytdlnis/blob/main/LICENSE)
 
+Warning <br>
+Except for the source code licensed under the GPLv3 license, all other parties are prohibited from using the 'YTDLnis' name as a downloader app, and the same is true for its derivatives. Derivatives include but are not limited to forks and unofficial builds.
+
 ## Thanks
 
 - [yt-dlp](https://github.com/yt-dlp/yt-dlp) and its contributors for making this tool possible. Without it this app wouldn't exist.
@@ -85,3 +88,4 @@ The App's package name is com.deniscerri.ytdl
 - [decipher3114](https://github.com/decipher3114) for the app icon
 
 and alot of other internet forum strangers.
+
