@@ -62,7 +62,7 @@
 <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/12.png" width="30%" />
 </div>
 
-##💬 Contact
+## Contact 💬
 
 Join our [Telegram Channel](https://t.me/ytdlnis) or [Discord](https://discord.gg/WW3KYWxAPm) for discussion, announcements, and releases!
 
