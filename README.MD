@@ -82,7 +82,9 @@ If you would like to contribute. Please read the [Contributing](CONTRIBUTING.MD)
 
 ## License 📄
 
-[GNU GPL v3.0](https://github.com/deniscerri/ytdlnis/blob/main/LICENSE)
+[![68747470733a2f2f696d672e736869656c64732e696f2f6769746875622f6c6963656e73652f4a756e6b466f6f6430322f5365616c3f7374796c653d666f722d7468652d6261646765](https://user-images.githubusercontent.com/124310688/226141126-e156b672-c950-4afc-9536-36f42d10ebb8.svg)
+
+](https://github.com/deniscerri/ytdlnis/blob/main/LICENSE)
 
 ⚠️ Warning <br>
 Except for the source code licensed under the GPLv3 license, all other parties are prohibited from using the 'YTDLnis' name as a downloader app, and the same is true for its derivatives. Derivatives include but are not limited to forks and unofficial builds.
