@@ -178,4 +178,5 @@
     <string name="ytdl_version">yt-dlp Sürümü</string>
     <string name="freespace">Boş alan</string>
     <string name="update_formats">Biçimleri Güncelle</string>
+    <string name="link_you_copied">Kopyaladığınız URL</string>
 </resources>

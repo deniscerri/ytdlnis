@@ -171,4 +171,5 @@
     <string name="downloads_running_try_later">Yükləmə işçisi işləyir. Daha sonra təkrar cəhd et</string>
     <string name="freespace">Boş yer</string>
     <string name="ytdl_version">yt-dlp Versiya</string>
+    <string name="link_you_copied">Kopyaladığınız link</string>
 </resources>
