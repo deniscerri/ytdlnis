@@ -170,6 +170,6 @@
     <string name="help_translate">অনুবাদে সহায়তা করুন</string>
     <string name="clear_temporary_files">অস্থায়ী ফাইল সাফ করুন</string>
     <string name="cache_cleared">অস্থায়ী ফাইল সাফ করা হয়েছে</string>
-    <string name="downloads_running_try_later">"ডাউনলোডটি চলছে।  পরে আবার চেষ্টা করুন"</string>
+    <string name="downloads_running_try_later">ডাউনলোডটি চলছে। পরে আবার চেষ্টা করুন</string>
     <string name="freespace">মুক্ত স্থান</string>
 </resources>
