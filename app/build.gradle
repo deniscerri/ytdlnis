@@ -21,7 +21,7 @@ android {
             keyPassword properties["signingConfig.keyPassword"]
         }
     }
-    compileSdkVersion 33
+    compileSdk 33
     defaultConfig {
         applicationId "com.deniscerri.ytdl"
         minSdkVersion 23
