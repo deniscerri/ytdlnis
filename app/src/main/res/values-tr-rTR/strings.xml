@@ -161,7 +161,7 @@
     <string name="confirm_delete_logs_desc">Tüm günlük listesini kalıcı olarak sil.</string>
     <string name="access_all_directories_summary">Uygulamanın varsayılan olarak kısıtlanmış dizinlerde indirilmesine izin ver</string>
     <string name="copy_url">Url\'yi kopyala</string>
-    <string name="clear_cancelled">Temizleme İptal edildi</string>
+    <string name="clear_cancelled">İptal edileni temizle</string>
     <string name="help_translate">Çeviriye Yardım Et</string>
     <string name="all_items_selected">Tüm öğeler seçildi</string>
     <string name="clear_errored">Hatalıları Temizle</string>
