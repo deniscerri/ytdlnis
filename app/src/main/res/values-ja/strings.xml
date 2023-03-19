@@ -8,7 +8,7 @@
     <string name="directories">フォルダ</string>
     <string name="music_directory">音楽フォルダ</string>
     <string name="video_directory">動画フォルダ</string>
-    <string name="update_ytdl">新しいバージョンのyoutube-dlをインストールする</string>
+    <string name="update_ytdl">新しいバージョンのyt-dlpをインストールする</string>
     <string name="failed_download">ファイルをダウンロードできませんでした。</string>
     <string name="download_notification_channel_name">ファイルのダウンロード</string>
     <string name="you_are_in_latest_version">最新バージョンを使用中</string>
@@ -22,7 +22,7 @@
     <string name="no_results">結果がありません</string>
     <string name="more">もっと見る</string>
     <string name="version">バージョン</string>
-    <string name="command_directory">カスタムコマンド用のフォルダ</string>
+    <string name="command_directory">カスタム コマンド フォルダ</string>
     <string name="couldnt_find_apk">適切な APK が見つかりませんでした。</string>
     <string name="downloading_update">新しいバージョンをダウンロード中…</string>
     <string name="video">動画</string>
@@ -71,7 +71,7 @@
     <string name="update_app">アップデートを確認</string>
     <string name="search">検索</string>
     <string name="download_all">すべてダウンロード</string>
-    <string name="search_hint">YouTubeから検索</string>
+    <string name="search_hint">検索またはリンクの挿入</string>
     <string name="ytdl_update_hint">ダウンロードに問題が発生した場合に便利です</string>
     <string name="download_notification_channel_description">音声や動画のダウンロード状況を表示する通知</string>
     <string name="Remove">削除</string>
@@ -98,4 +98,25 @@
     <string name="request_permission_desc">ダウンロードしたファイルをデバイスに保存するために、ファイル権限が必要です</string>
     <string name="exit_app">アプリを終了</string>
     <string name="warning">警告</string>
+    <string name="worst_quality">最悪の品質</string>
+    <string name="best_quality">最高品質</string>
+    <string name="about">だいたい</string>
+    <string name="container">ファイル拡張子</string>
+    <string name="template">レンプレート</string>
+    <string name="date_added">追加日</string>
+    <string name="update_ytdl_nightly">yt-dlp のナイトリー バージョン</string>
+    <string name="adjust_audio">オーディオの調整</string>
+    <string name="file_name_template">ファイル名テンプレート</string>
+    <string name="language">言語</string>
+    <string name="command_templates">コマンド テンプレート</string>
+    <string name="terminal">「ターミナル」</string>
+    <string name="save_dir">ディレクトリを保存</string>
+    <string name="new_template">新しいテンプレート</string>
+    <string name="adjust_templates">テンプレートを調整する</string>
+    <string name="edit_selected">選択したものを編集</string>
+    <string name="adjust_video">ビデオを調整する</string>
+    <string name="logs">ログ</string>
+    <string name="concurrent_downloads">同時ダウンロード</string>
+    <string name="concurrent_downloads_summary">同時に実行されるダウンロードの数</string>
+    <string name="defaultValue">デフォルト</string>
 </resources>
