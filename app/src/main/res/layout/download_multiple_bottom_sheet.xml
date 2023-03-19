@@ -99,9 +99,8 @@
             android:layout_width="match_parent"
             android:paddingTop="10dp"
             android:layout_height="wrap_content"
-            android:focusableInTouchMode="true"
             android:orientation="vertical"
-            android:paddingBottom="80dp"
+            android:paddingBottom="70dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
 

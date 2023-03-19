@@ -280,6 +280,9 @@ class InfoUtil(context: Context) {
             val id = obj.getString("videoId")
             val title = obj.getString("title").toString()
             val author = obj.getString("author").toString()
+
+            if (author.isNullOrBlank()) throw Exception()
+
             val duration = formatIntegerDuration(obj.getInt("lengthSeconds"))
             val thumb = "https://i.ytimg.com/vi/$id/hqdefault.jpg"
             val url = "https://www.youtube.com/watch?v=$id"

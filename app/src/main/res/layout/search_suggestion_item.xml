@@ -57,7 +57,7 @@
                     android:focusable="true"
                     android:clickable="true"
                     android:layout_height="match_parent"
-                    android:src="@drawable/ic_arrow_up"
+                    android:src="@drawable/ic_arrow_outward"
                     android:layout_weight="0.01"
                     />
 

@@ -50,6 +50,7 @@
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:orientation="vertical"
+                    android:dividerPadding="5dp"
                     app:layout_constraintBottom_toTopOf="@+id/linearlayout2_horizontalscrollview"
                     app:layout_constraintEnd_toStartOf="@+id/active_download_cancel"
                     app:layout_constraintStart_toStartOf="parent"
@@ -59,39 +60,32 @@
                         android:id="@+id/title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:ellipsize="end"
-                        android:maxLines="2"
-                        android:paddingStart="10dp"
-                        android:scrollbars="none"
                         android:paddingTop="10dp"
                         android:paddingEnd="10dp"
-                        android:shadowColor="@color/black"
+                        android:paddingStart="10dp"
+                        android:textSize="17sp"
+                        android:textColor="@color/white"
+                        android:textStyle="bold"
+                        android:shadowRadius="2"
                         android:shadowDx="4"
                         android:shadowDy="4"
-                        android:shadowRadius="2"
-                        android:textColor="@color/white"
-                        android:textSize="17sp"
-                        android:textStyle="bold" />
+                        android:shadowColor="@color/black" />
 
                     <TextView
                         android:id="@+id/author"
-                        android:layout_width="296dp"
-                        android:layout_height="20dp"
-                        android:ellipsize="end"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:gravity="bottom"
-                        android:maxLines="1"
-                        android:layout_marginTop="5dp"
-                        android:paddingStart="10dp"
-                        android:scrollbars="none"
                         android:paddingEnd="10dp"
                         android:paddingBottom="5dp"
-                        android:shadowColor="@color/black"
+                        android:paddingStart="10dp"
+                        android:textSize="12sp"
+                        android:textColor="@color/white"
+                        android:textStyle="bold"
+                        android:shadowRadius="1.5"
                         android:shadowDx="4"
                         android:shadowDy="4"
-                        android:shadowRadius="1.5"
-                        android:textColor="@color/white"
-                        android:textSize="13sp"
-                        android:textStyle="bold" />
+                        android:shadowColor="@color/black" />
 
 
                 </LinearLayout>
@@ -103,15 +97,17 @@
                     android:layout_height="wrap_content"
                     android:scrollbars="none"
                     app:layout_constraintBottom_toTopOf="@+id/output"
-                    app:layout_constraintStart_toStartOf="parent">
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/active_download_cancel"
+                    app:layout_constraintVertical_bias="1.0">
 
                     <com.google.android.material.chip.ChipGroup
                         android:id="@+id/linearLayout2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:paddingHorizontal="10dp"
                         android:layout_gravity="bottom"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="10dp">
 
                         <com.google.android.material.chip.Chip
                             android:id="@+id/type"
@@ -156,7 +152,6 @@
                     </com.google.android.material.chip.ChipGroup>
 
                 </HorizontalScrollView>
-
 
                 <TextView
                     android:id="@+id/output"

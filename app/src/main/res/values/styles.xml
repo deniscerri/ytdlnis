@@ -48,4 +48,9 @@
         <item name="android:layout_marginStart">5dp</item>
     </style>
 
+    <style name="ShapeAppearanceOverlay.Avatar" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">5dp</item>
+    </style>
+
 </resources>

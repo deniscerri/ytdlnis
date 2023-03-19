@@ -22,6 +22,7 @@ import com.deniscerri.ytdlnis.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdlnis.receiver.ShareActivity
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
@@ -74,7 +75,7 @@ class SelectPlaylistItemsBottomSheetDialog(private val items: List<ResultItem?>,
         selectedText = view.findViewById<Button>(R.id.selected)
         selectedText.text = "0 ${resources.getString(R.string.selected)}"
 
-        val checkAll = view.findViewById<Button>(R.id.check_all)
+        val checkAll = view.findViewById<FloatingActionButton>(R.id.check_all)
         checkAll!!.setOnClickListener {
             if (listAdapter.getCheckedItems().size != items.size){
                 listAdapter.checkAll()

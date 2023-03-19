@@ -69,6 +69,10 @@ class PlaylistAdapter(onItemClickListener: OnItemClickListener, activity: Activi
         }
         itemTitle.text = title
 
+
+        val duration = card.findViewById<TextView>(R.id.duration)
+        duration.text = item.duration
+
         // CHECKBOX ----------------------------------
         val check = card.findViewById<CheckBox>(R.id.checkBox)
         check.isChecked = checkedItems.contains(item.url)

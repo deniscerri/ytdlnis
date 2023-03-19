@@ -266,7 +266,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
                             .inflate(R.layout.search_suggestion_item, null)
                         val textView = v.findViewById<TextView>(R.id.suggestion_text)
                         textView.text = suggestions[i]
-                        textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_refresh, 0, 0, 0)
+                        textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_restore, 0, 0, 0)
                         Handler(Looper.getMainLooper()).post {
                             searchHistoryLinearLayout!!.addView(
                                 v
@@ -291,6 +291,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
                         val mb = v.findViewById<ImageButton>(R.id.set_search_query_button)
                         mb.setOnClickListener {
                             searchView.setText(textView.text)
+                            searchView.editText.setSelection(searchView.editText.length())
                         }
                     }
                     searchHistoryLinearLayout!!.visibility = VISIBLE
@@ -315,6 +316,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
                         val mb = v.findViewById<ImageButton>(R.id.set_search_query_button)
                         mb.setOnClickListener {
                             searchView.setText(textView.text)
+                            searchView.editText.setSelection(searchView.editText.length())
                         }
                     }
                     searchSuggestionsLinearLayout!!.visibility = VISIBLE
@@ -437,23 +439,27 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
         } catch (e: Exception) {""}
         if (viewIdName.isNotEmpty()) {
             if (viewIdName == "downloadSelected") {
-                val downloadList = downloadViewModel.turnResultItemsToDownloadItems(selectedObjects!!)
-                if (sharedPreferences!!.getBoolean("download_card", true)) {
-                    val bottomSheet = DownloadMultipleBottomSheetDialog(downloadList.toMutableList())
-                    bottomSheet.show(parentFragmentManager, "downloadMultipleSheet")
-                } else {
-                    lifecycleScope.launch {
+                lifecycleScope.launch {
+                    val downloadList = withContext(Dispatchers.IO){
+                        downloadViewModel.turnResultItemsToDownloadItems(selectedObjects!!)
+                    }
+                    if (sharedPreferences!!.getBoolean("download_card", true)) {
+                        val bottomSheet = DownloadMultipleBottomSheetDialog(downloadList.toMutableList())
+                        bottomSheet.show(parentFragmentManager, "downloadMultipleSheet")
+                    } else {
                         downloadViewModel.queueDownloads(downloadList)
                     }
                 }
             }
             if (viewIdName == "downloadAll") {
-                val downloadList = downloadViewModel.turnResultItemsToDownloadItems(resultsList!!)
-                if (sharedPreferences!!.getBoolean("download_card", true)) {
-                    val bottomSheet = DownloadMultipleBottomSheetDialog(downloadList.toMutableList())
-                    bottomSheet.show(parentFragmentManager, "downloadMultipleSheet")
-                } else {
-                    lifecycleScope.launch {
+                lifecycleScope.launch {
+                    val downloadList = withContext(Dispatchers.IO){
+                        downloadViewModel.turnResultItemsToDownloadItems(resultsList!!)
+                    }
+                    if (sharedPreferences!!.getBoolean("download_card", true)) {
+                        val bottomSheet = DownloadMultipleBottomSheetDialog(downloadList.toMutableList())
+                        bottomSheet.show(parentFragmentManager, "downloadMultipleSheet")
+                    } else {
                         downloadViewModel.queueDownloads(downloadList)
                     }
                 }

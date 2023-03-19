@@ -101,10 +101,10 @@
             android:configChanges="layoutDirection|locale"
             android:theme="@style/AppDefaultTheme"
             android:parentActivityName=".MainActivity"
-            android:label="@string/run_command"
+            android:label="@string/terminal"
             android:exported="true">
             <intent-filter>
-                <action android:name="ytdlnis.CustomCommandActivity" />
+                <action android:name="ytdlnis.TerminalActivity" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
             <intent-filter>

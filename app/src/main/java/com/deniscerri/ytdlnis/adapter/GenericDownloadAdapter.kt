@@ -7,6 +7,7 @@ import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.AsyncDifferConfig
@@ -35,7 +36,7 @@ class GenericDownloadAdapter(onItemClickListener: OnItemClickListener, activity:
     }
 
     class ViewHolder(itemView: View, onItemClickListener: OnItemClickListener?) : RecyclerView.ViewHolder(itemView) {
-        val cardView: MaterialCardView
+        val cardView: FrameLayout
         init {
             cardView = itemView.findViewById(R.id.download_card_view)
         }
@@ -60,25 +61,24 @@ class GenericDownloadAdapter(onItemClickListener: OnItemClickListener, activity:
         } else {
             uiHandler.post { Picasso.get().load(R.color.black).into(thumbnail) }
         }
-        thumbnail.setColorFilter(Color.argb(95, 0, 0, 0))
+
+        val duration = card.findViewById<TextView>(R.id.duration)
+        duration.text = item.duration
 
         // TITLE  ----------------------------------
         val itemTitle = card.findViewById<TextView>(R.id.title)
-        var title = item!!.title
+        var title = item.title
         if (title.length > 100) {
             title = title.substring(0, 40) + "..."
         }
         itemTitle.text = title
 
-        val itemUrl = card.findViewById<TextView>(R.id.subtitle)
-        itemUrl.text = item.url
-
-        val formatNote = card.findViewById<Chip>(R.id.format_note)
+        val formatNote = card.findViewById<TextView>(R.id.format_note)
         if (item.format.format_note == "?" || item.format.format_note == "") formatNote!!.visibility =
             View.GONE
         else formatNote!!.text = item.format.format_note.uppercase()
 
-        val codec = card.findViewById<Chip>(R.id.codec)
+        val codec = card.findViewById<TextView>(R.id.codec)
         val codecText =
             if (item.format.encoding != "") {
                 item.format.encoding.uppercase()
@@ -94,7 +94,7 @@ class GenericDownloadAdapter(onItemClickListener: OnItemClickListener, activity:
             codec.text = codecText
         }
 
-        val fileSize = card.findViewById<Chip>(R.id.file_size)
+        val fileSize = card.findViewById<TextView>(R.id.file_size)
         val fileSizeReadable = fileUtil.convertFileSize(item.format.filesize)
         if (fileSizeReadable == "?") fileSize.visibility = View.GONE
         else fileSize.text = fileSizeReadable

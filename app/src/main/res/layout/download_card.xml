@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/downloads_card_constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <com.google.android.material.card.MaterialCardView
+    <FrameLayout
         android:id="@+id/download_card_view"
         android:layout_width="0dp"
-        android:layout_height="120dp"
+        app:shapeAppearance="@style/ShapeAppearanceOverlay.Avatar"
+        android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:checkable="true"
-        app:cardCornerRadius="10dp"
-        app:cardMaxElevation="12dp"
-        app:cardElevation="5dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="?android:attr/selectableItemBackground"
         app:cardPreventCornerOverlap="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -21,149 +23,172 @@
         app:layout_constraintTop_toTopOf="parent"
         app:strokeWidth="0dp">
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/downloads_image_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:adjustViewBounds="true"
-            android:scaleType="centerCrop" />
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <LinearLayout
-                android:id="@+id/title_author"
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/downloads_image_view"
                 android:layout_width="0dp"
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintEnd_toStartOf="@+id/action_button"
+                android:layout_height="0dp"
+                app:layout_constraintHorizontal_weight="0.3"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="H,16:9"
+                app:layout_constraintEnd_toStartOf="@+id/download_item_data"
                 app:layout_constraintStart_toStartOf="parent"
+                app:shapeAppearance="@style/ShapeAppearanceOverlay.Avatar"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <TextView
+                android:id="@+id/duration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#80000000"
+                android:clickable="false"
+                android:layout_margin="5dp"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:maxLength="17"
+                android:maxLines="1"
+                android:minWidth="30dp"
+                android:paddingHorizontal="5dp"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                app:cornerRadius="10dp"
+                app:layout_constraintBottom_toBottomOf="@+id/downloads_image_view"
+                app:layout_constraintEnd_toEndOf="@+id/downloads_image_view" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/download_item_data"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintHorizontal_weight="0.7"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/downloads_image_view"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
                     android:id="@+id/title"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:maxLines="2"
+                    android:paddingHorizontal="5dp"
                     android:scrollbars="none"
-                    android:paddingTop="10dp"
-                    android:paddingEnd="10dp"
                     android:shadowColor="@color/black"
                     android:shadowDx="4"
                     android:shadowDy="4"
                     android:shadowRadius="2"
                     android:textColor="@color/white"
                     android:textSize="15sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toStartOf="@+id/action_button"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    />
 
-                <TextView
-                    android:id="@+id/subtitle"
-                    android:layout_width="296dp"
-                    android:layout_height="20dp"
-                    android:ellipsize="end"
-                    android:gravity="bottom"
-                    android:maxLines="1"
-                    android:scrollbars="none"
-                    android:paddingEnd="10dp"
-                    android:paddingBottom="5dp"
-                    android:shadowColor="@color/black"
-                    android:shadowDx="4"
-                    android:shadowDy="4"
-                    android:shadowRadius="1.5"
-                    android:textColor="@color/white"
-                    android:textSize="11sp"
-                    android:textStyle="bold" />
-
-
-            </LinearLayout>
-
-            <HorizontalScrollView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="bottom"
-                android:paddingStart="10dp"
-                android:paddingEnd="0dp"
-                android:scrollbars="none"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/title_author"
-                app:layout_constraintVertical_bias="1.0">
-
-                <com.google.android.material.chip.ChipGroup
+                <HorizontalScrollView
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent">
+                    android:layout_height="wrap_content"
+                    android:gravity="bottom"
+                    android:paddingStart="5dp"
+                    android:paddingEnd="0dp"
+                    android:scrollbars="none"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/action_button"
+                    app:layout_constraintVertical_bias="1.0">
 
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/format_note"
-                        style="@style/Widget.Material3.FloatingActionButton.Large.Primary"
+                    <LinearLayout
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:clickable="false"
-                        android:ellipsize="end"
-                        android:gravity="center"
-                        android:maxLines="1"
-                        android:minWidth="30dp"
-                        android:paddingHorizontal="10dp"
-                        app:cornerRadius="10dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        android:layout_height="match_parent">
 
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/codec"
-                        style="@style/Widget.Material3.FloatingActionButton.Large.Secondary"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:clickable="false"
-                        android:gravity="center"
-                        android:minWidth="30dp"
-                        app:cornerRadius="10dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        <TextView
+                            style="@style/Widget.Material3.FloatingActionButton.Large.Secondary"
+                            android:background="?attr/colorSecondary"
+                            android:id="@+id/format_note"
+                            android:layout_marginEnd="5dp"
+                            android:maxLength="17"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:clickable="false"
+                            android:ellipsize="end"
+                            android:gravity="center"
+                            android:textSize="12sp"
+                            android:maxLines="1"
+                            android:minWidth="30dp"
+                            android:textStyle="bold"
+                            android:paddingHorizontal="5dp"
+                            app:cornerRadius="10dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/file_size"
-                        style="@style/Widget.Material3.FloatingActionButton.Large.Tertiary"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:clickable="false"
-                        android:gravity="center"
-                        android:minWidth="30dp"
-                        app:cornerRadius="10dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        <TextView
+                            style="@style/Widget.Material3.FloatingActionButton.Large.Tertiary"
+                            android:background="?attr/colorSecondary"
+                            android:id="@+id/codec"
+                            android:layout_marginEnd="5dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:clickable="false"
+                            android:gravity="center"
+                            android:minWidth="30dp"
+                            android:textSize="12sp"
+                            android:textStyle="bold"
+                            android:paddingHorizontal="5dp"
+                            app:cornerRadius="10dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:background="?attr/colorPrimaryInverse"
+                            android:id="@+id/file_size"
+                            android:layout_marginEnd="5dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:clickable="false"
+                            android:gravity="center"
+                            android:textStyle="bold"
+                            android:paddingHorizontal="5dp"
+                            android:minWidth="30dp"
+                            app:cornerRadius="10dp"
+                            android:textSize="12sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
 
-                </com.google.android.material.chip.ChipGroup>
+                    </LinearLayout>
 
 
-            </HorizontalScrollView>
+                </HorizontalScrollView>
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/action_button"
-                style="@style/Widget.Material3.ExtendedFloatingActionButton.Icon.Secondary"
-                android:layout_width="55dp"
-                android:layout_height="55dp"
-                android:layout_margin="10dp"
-                android:layout_marginEnd="8dp"
-                app:cornerRadius="10dp"
-                app:icon="@drawable/ic_video"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.155" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/action_button"
+                    style="?attr/materialIconButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:cornerRadius="10dp"
+                    app:icon="@drawable/ic_video"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.0" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </com.google.android.material.card.MaterialCardView>
+    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

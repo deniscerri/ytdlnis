@@ -1,12 +1,12 @@
 package com.deniscerri.ytdlnis.adapter
 
 import android.app.Activity
-import android.graphics.Color
 import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
@@ -26,16 +26,16 @@ import java.util.*
 class ConfigureMultipleDownloadsAdapter(onItemClickListener: OnItemClickListener, activity: Activity) : ListAdapter<DownloadItem?, ConfigureMultipleDownloadsAdapter.ViewHolder>(AsyncDifferConfig.Builder(DIFF_CALLBACK).build()) {
     private val onItemClickListener: OnItemClickListener
     private val activity: Activity
-    private val fileUtil: FileUtil
+    private var fileUtil: FileUtil
 
     init {
         this.onItemClickListener = onItemClickListener
         this.activity = activity
-        this.fileUtil = FileUtil()
+        fileUtil = FileUtil()
     }
 
     class ViewHolder(itemView: View, onItemClickListener: OnItemClickListener?) : RecyclerView.ViewHolder(itemView) {
-        val cardView: MaterialCardView
+        val cardView: FrameLayout
 
         init {
             cardView = itemView.findViewById(R.id.download_card_view)
@@ -54,15 +54,15 @@ class ConfigureMultipleDownloadsAdapter(onItemClickListener: OnItemClickListener
         // THUMBNAIL ----------------------------------
         val thumbnail = card.findViewById<ImageView>(R.id.downloads_image_view)
         val imageURL = item!!.thumb
+        val uiHandler = Handler(Looper.getMainLooper())
         if (imageURL.isNotEmpty()) {
-            val uiHandler = Handler(Looper.getMainLooper())
             uiHandler.post { Picasso.get().load(imageURL).into(thumbnail) }
-            thumbnail.setColorFilter(Color.argb(70, 0, 0, 0))
         } else {
-            val uiHandler = Handler(Looper.getMainLooper())
             uiHandler.post { Picasso.get().load(R.color.black).into(thumbnail) }
-            thumbnail.setColorFilter(Color.argb(70, 0, 0, 0))
         }
+
+        val duration = card.findViewById<TextView>(R.id.duration)
+        duration.text = item.duration
 
         // TITLE  ----------------------------------
         val itemTitle = card.findViewById<TextView>(R.id.title)
@@ -71,10 +71,6 @@ class ConfigureMultipleDownloadsAdapter(onItemClickListener: OnItemClickListener
             title = title.substring(0, 40) + "..."
         }
         itemTitle.text = title
-
-        // Author ----------------------------------
-        val author = card.findViewById<TextView>(R.id.subtitle)
-        author.text = item.author
 
         // Format Note ----------------------------------
         val formatNote = card.findViewById<TextView>(R.id.format_note)
@@ -111,16 +107,17 @@ class ConfigureMultipleDownloadsAdapter(onItemClickListener: OnItemClickListener
 
         // Type Icon Button
         val btn = card.findViewById<MaterialButton>(R.id.action_button)
+        if (btn.hasOnClickListeners()) btn.setOnClickListener(null)
 
         when(item.type) {
             DownloadViewModel.Type.audio -> {
-                btn.icon = ContextCompat.getDrawable(activity, R.drawable.ic_music)
+                btn.setIconResource(R.drawable.ic_music)
             }
             DownloadViewModel.Type.video -> {
-                btn.icon = ContextCompat.getDrawable(activity, R.drawable.ic_video)
+                btn.setIconResource(R.drawable.ic_video)
             }
             else -> {
-                btn.icon = ContextCompat.getDrawable(activity, R.drawable.ic_terminal)
+                btn.setIconResource(R.drawable.ic_terminal)
             }
         }
 

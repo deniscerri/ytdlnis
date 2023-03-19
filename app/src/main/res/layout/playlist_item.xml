@@ -4,36 +4,108 @@
     android:id="@+id/playlist_card_constraintLayout"
     android:layout_width="match_parent"
     android:layout_marginBottom="10dp"
-    android:layout_height="50dp">
+    android:layout_height="wrap_content">
+
+    <FrameLayout
+        android:id="@+id/download_card_view"
+        android:layout_width="0dp"
+        android:layout_marginStart="10dp"
+        app:shapeAppearance="@style/ShapeAppearanceOverlay.Avatar"
+        android:layout_height="wrap_content"
+        android:checkable="true"
+        android:clickable="true"
+        android:focusable="true"
+        app:cardPreventCornerOverlap="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/checkBox"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:strokeWidth="0dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/downloads_image_view"
+                android:clickable="false"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintHorizontal_weight="0.3"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="H,16:9"
+                app:layout_constraintEnd_toStartOf="@+id/download_item_data"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:shapeAppearance="@style/ShapeAppearanceOverlay.Avatar"
+                />
+
+            <TextView
+                android:id="@+id/duration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#80000000"
+                android:clickable="false"
+                android:layout_margin="5dp"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:maxLength="17"
+                android:maxLines="1"
+                android:minWidth="30dp"
+                android:paddingHorizontal="5dp"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                app:cornerRadius="10dp"
+                app:layout_constraintBottom_toBottomOf="@+id/downloads_image_view"
+                app:layout_constraintEnd_toEndOf="@+id/downloads_image_view" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/download_item_data"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintHorizontal_weight="0.7"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/downloads_image_view"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:paddingHorizontal="10dp"
+                    android:scrollbars="none"
+                    android:shadowColor="@color/black"
+                    android:shadowDx="4"
+                    android:shadowDy="4"
+                    android:shadowRadius="2"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </FrameLayout>
+
 
     <CheckBox
         android:id="@+id/checkBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/downloads_image_view"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        app:layout_constraintDimensionRatio="H,16:9"
-        android:layout_marginEnd="10dp"
-        android:adjustViewBounds="true"
-        android:scaleType="centerCrop"
-        app:layout_constraintStart_toEndOf="@+id/checkBox" />
-
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:padding="15dp"
-        android:lines="2"
-        android:maxLines="2"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/downloads_image_view"
         app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

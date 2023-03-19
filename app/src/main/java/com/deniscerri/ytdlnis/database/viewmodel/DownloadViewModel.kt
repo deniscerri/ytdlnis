@@ -37,6 +37,7 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
 
     private var bestVideoFormat : Format
     private var bestAudioFormat : Format
+    private var defaultVideoFormats : MutableList<Format>
     enum class Type {
         audio, video, command
     }
@@ -57,15 +58,22 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
 
         val videoFormat = getApplication<App>().resources.getStringArray(R.array.video_formats)
         val videoContainer = sharedPreferences.getString("video_format",  getApplication<App>().resources.getString(R.string.defaultValue))
-        bestVideoFormat = Format(
-            videoFormat[videoFormat.lastIndex],
-            videoContainer!!,
-            "",
-            "",
-            "",
-            0,
-            videoFormat[videoFormat.lastIndex]
-        )
+
+        defaultVideoFormats = mutableListOf()
+        videoFormat.forEach {
+            val tmp = Format(
+                it,
+                videoContainer!!,
+                "",
+                "",
+                "",
+                0,
+                it
+            )
+            defaultVideoFormats.add(tmp)
+        }
+
+        bestVideoFormat = defaultVideoFormats.last()
 
         val audioContainer = sharedPreferences.getString("audio_format", "mp3")
         bestAudioFormat = Format(
@@ -172,17 +180,19 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
             }
             Type.video -> {
                 return try {
+                    val theFormats = formats.ifEmpty { defaultVideoFormats }
+
                     val qualityPreference = sharedPreferences.getString("video_quality", getApplication<App>().resources.getString(R.string.best_quality))
                     if (qualityPreference == getApplication<App>().resources.getString(R.string.worst_quality)){
-                        formats.first { !it.format_note.contains("audio", ignoreCase = true) }
+                        theFormats.first { !it.format_note.contains("audio", ignoreCase = true) }
                     }
                     if (qualityPreference == getApplication<App>().resources.getString(R.string.best_quality)){
-                        formats.last { !it.format_note.contains("audio", ignoreCase = true) }
+                        theFormats.last { !it.format_note.contains("audio", ignoreCase = true) }
                     }
                     try{
-                        formats.last { format -> format.format_note.contains(qualityPreference!!.substring(0, qualityPreference.length -1)) }
+                        theFormats.last { format -> format.format_note.contains(qualityPreference!!.substring(0, qualityPreference.length - 1)) }
                     }catch (e: Exception){
-                        formats.last { !it.format_note.contains("audio", ignoreCase = true) }
+                        theFormats.last { !it.format_note.contains("audio", ignoreCase = true) }
                     }
                 }catch (e: Exception){
                     bestVideoFormat

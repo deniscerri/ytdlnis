@@ -44,6 +44,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
     private var logDownloads: SwitchPreferenceCompat? = null
     private var sponsorblockFilters: MultiSelectListPreference? = null
     private var filenameTemplate: EditTextPreference? = null
+    private var restrictFilenames: SwitchPreferenceCompat? = null
     private var mtime: SwitchPreferenceCompat? = null
     private var embedSubtitles: SwitchPreferenceCompat? = null
     private var embedThumbnail: SwitchPreferenceCompat? = null
@@ -106,6 +107,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         mtime = findPreference("mtime")
         embedSubtitles = findPreference("embed_subtitles")
         filenameTemplate = findPreference("file_name_template")
+        restrictFilenames = findPreference("restrict_filenames")
         embedThumbnail = findPreference("embed_thumbnail")
         addChapters = findPreference("add_chapters")
         writeThumbnail = findPreference("write_thumbnail")
@@ -162,6 +164,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         editor.putBoolean("log_downloads", logDownloads!!.isChecked)
         editor.putStringSet("sponsorblock_filters", sponsorblockFilters!!.values)
         editor.putString("file_name_template", filenameTemplate!!.text)
+        editor.putBoolean("restrict_filenames", restrictFilenames!!.isChecked)
         editor.putBoolean("mtime", mtime!!.isChecked)
         editor.putBoolean("embed_subtitles", embedSubtitles!!.isChecked)
         editor.putBoolean("embed_thumbnail", embedThumbnail!!.isChecked)
@@ -334,6 +337,13 @@ class SettingsFragment : PreferenceFragmentCompat() {
         filenameTemplate!!.onPreferenceChangeListener =
             Preference.OnPreferenceChangeListener { _: Preference?, newValue: Any ->
                 editor.putString("file_name_template", newValue.toString())
+                editor.apply()
+                true
+            }
+        restrictFilenames!!.onPreferenceChangeListener =
+            Preference.OnPreferenceChangeListener { _: Preference?, newValue: Any ->
+                val embed = newValue as Boolean
+                editor.putBoolean("restrict_filenames", embed)
                 editor.apply()
                 true
             }

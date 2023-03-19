@@ -145,6 +145,14 @@
 
         <SwitchPreferenceCompat
             android:widgetLayout="@layout/preferece_material_switch"
+            app:defaultValue="true"
+            app:icon="@drawable/if_file_rename"
+            app:key="restrict_filenames"
+            app:summary="@string/restrict_filenames_summary"
+            app:title="@string/restrict_filenames" />
+
+        <SwitchPreferenceCompat
+            android:widgetLayout="@layout/preferece_material_switch"
             app:defaultValue="false"
             app:icon="@drawable/ic_clock"
             app:key="mtime"

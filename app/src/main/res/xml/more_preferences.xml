@@ -10,7 +10,7 @@
         app:icon="@drawable/ic_terminal"
         app:key="run_command"
         app:title="@string/terminal">
-        <intent android:action="ytdlnis.CustomCommandActivity" />
+        <intent android:action="ytdlnis.TerminalActivity" />
     </Preference>
 
     <Preference
