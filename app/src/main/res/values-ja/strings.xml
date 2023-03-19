@@ -119,4 +119,23 @@
     <string name="concurrent_downloads">同時ダウンロード</string>
     <string name="concurrent_downloads_summary">同時に実行されるダウンロードの数</string>
     <string name="defaultValue">デフォルト</string>
+    <string name="format">形式</string>
+    <string name="shortcuts">ショートカット</string>
+    <string name="create_template">テンプレート作成</string>
+    <string name="shortcuts_desc">よく使うコマンドを使ってテンプレートを作成する</string>
+    <string name="update">アップデート</string>
+    <string name="update_template">アップデートテンプレート</string>
+    <string name="create">作る</string>
+    <string name="preferred_download_type">優先ダウンロード形式</string>
+    <string name="selected">選択された</string>
+    <string name="redownload">再ダウンロード</string>
+    <string name="copy_url">コピーURL</string>
+    <string name="workmanager_updated">この設定を有効にする、アプリを再起動しアクティブなダウンロードがない状態にする必要があります！</string>
+    <string name="select">選択</string>
+    <string name="confirm_delete_logs_desc">ログリスト全体を永久に削除する。</string>
+    <string name="running">作動中</string>
+    <string name="command">コマンド</string>
+    <string name="import_from_clipboard">クリップボードから取り込む</string>
+    <string name="export_from_clipboard">クリップボードからエクスポート</string>
+    <string name="downloads_running_try_later">ダウンロードワーカーは稼働中、後で再試行する</string>
 </resources>
