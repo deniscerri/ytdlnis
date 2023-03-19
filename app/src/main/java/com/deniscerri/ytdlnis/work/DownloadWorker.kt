@@ -108,7 +108,7 @@ class DownloadWorker(
             if (downloadItem.author.isNotEmpty()){
                 request.addCommands(listOf("--replace-in-metadata","uploader",".*.",downloadItem.author))
             }
-            if (downloadItem.customFileNameTemplate.isEmpty()) downloadItem.customFileNameTemplate = "%(uploader)s - %(title)s"
+            if (downloadItem.customFileNameTemplate.isBlank()) downloadItem.customFileNameTemplate = "%(uploader)s - %(title)s"
         }
 
         if (sharedPreferences.getBoolean("restrict_filenames", true)) {
@@ -119,8 +119,8 @@ class DownloadWorker(
             DownloadViewModel.Type.audio -> {
                 request.addOption("-x")
                 var audioQualityId : String = downloadItem.format.format_id
-                if (audioQualityId.isEmpty() || audioQualityId == "0" || audioQualityId == context.getString(R.string.best_quality)) audioQualityId = ""
-                if (audioQualityId.isNotEmpty()){
+                if (audioQualityId.isBlank() || audioQualityId == "0" || audioQualityId == context.getString(R.string.best_quality)) audioQualityId = ""
+                if (audioQualityId.isNotBlank()){
                     request.addOption("-f", audioQualityId)
                 }
 

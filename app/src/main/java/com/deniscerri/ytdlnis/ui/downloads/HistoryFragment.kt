@@ -3,6 +3,7 @@ package com.deniscerri.ytdlnis.ui.downloads
 import android.app.Activity
 import android.content.Context
 import android.content.DialogInterface
+import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
 import android.os.Handler
@@ -416,6 +417,12 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
             if (isPresent) btn.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_video_downloaded) else btn.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_video)
         }else{
             btn.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_terminal)
+        }
+
+        if (isPresent){
+            btn.setOnClickListener {
+                uiUtil!!.shareFileIntent(requireContext(),item.downloadPath)
+            }
         }
 
         val time = bottomSheet!!.findViewById<TextView>(R.id.time)

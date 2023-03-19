@@ -223,6 +223,19 @@ class UiUtil(private val fileUtil: FileUtil) {
         fragmentContext.startActivity(i)
     }
 
+    fun shareFileIntent(fragmentContext: Context, downloadPath: String){
+        val file = File(downloadPath)
+        val uri = FileProvider.getUriForFile(
+            fragmentContext,
+            fragmentContext.packageName + ".fileprovider",
+            file
+        )
+        val mime = fragmentContext.contentResolver.getType(uri)
+        val i = Intent(Intent.ACTION_SEND)
+        i.setDataAndType(uri, mime)
+        fragmentContext.startActivity(i)
+    }
+
     fun showDatePicker(fragmentManager: FragmentManager , onSubmit : (chosenDate: Calendar) -> Unit ){
         val currentDate = Calendar.getInstance()
         val date = Calendar.getInstance()
