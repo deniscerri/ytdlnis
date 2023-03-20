@@ -64,7 +64,7 @@
 
 ## 💬 Contact
 
-Join our [Telegram Channel](https://t.me/ytdlnis) or [Discord](Also on Discord: https://discord.gg/WW3KYWxAPm) for discussion, announcements, and releases!
+Join our [Telegram Channel](https://t.me/ytdlnis) or [Discord](https://discord.gg/WW3KYWxAPm) for discussion, announcements, and releases!
 
 ## 🔑 Connect with YouTube ReVanced
 
