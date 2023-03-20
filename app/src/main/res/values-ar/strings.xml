@@ -13,7 +13,7 @@
     <string name="ytdl_update_hint">يفيدك ان كنت تواجه مشاكل في التنزيل</string>
     <string name="update_ytdl">تثبيت نسخة جديدة من youtube-dl</string>
     <string name="source_code">الكود المصدري</string>
-    <string name="search_hint">البحث في اليوتيوب</string>
+    <string name="search_hint">إبحث في اليوتيوب او أدخل الرابط</string>
     <string name="failed_download">تعذر تحميل الملف.</string>
     <string name="download_notification_channel_description">إشعار يوضح تقدم تنزيل ملفات الصوت والفيديو</string>
     <string name="download_notification_channel_name">تحميل الملفات</string>
@@ -31,6 +31,23 @@
     <string name="more">المزيد</string>
     <string name="version">الإصدار</string>
     <string name="update_app">تحقق من وجود تحديثات</string>
-    <string name="command_directory">مجلد للأوامر المخصصة</string>
+    <string name="command_directory">مجلد الاوامر المخصصة</string>
     <string name="couldnt_find_apk">تعذر العثور على APK مناسب.</string>
+    <string name="best_quality">أفضل جودة</string>
+    <string name="downloading">جاري التحميل</string>
+    <string name="limit_rate">معدل الحد</string>
+    <string name="embed_thumb_summary">استخدام الصورة المصغرة كغلاف فني</string>
+    <string name="add_chapters">الفصول في الفيديو</string>
+    <string name="worst_quality">جودة ضعيفة</string>
+    <string name="embed_thumb">أغلفة الصور المصغرة</string>
+    <string name="downloading_update">تحميل أحدث نسخة</string>
+    <string name="audio">الصوت</string>
+    <string name="video">الفيديو</string>
+    <string name="concurrent_fragments">القطع الحالية</string>
+    <string name="concurrent_fragments_summary">عدد أجزاء فيديو DASH / HLS الأصلي لتنزيله بشكل متزامن</string>
+    <string name="limit_rate_summary">اقصى معدل تحميل (بايت في الثانية)٫ مثلا 50 كيلوبايت او 4.2 ميڨابايت</string>
+    <string name="aria2_summary">استعمل aria2c كمحرك تحميل عوضا عن الافتراضي</string>
+    <string name="processing">جاري المعالجة</string>
+    <string name="embed_subs_summary">إضافة الترجمة للفيديو</string>
+    <string name="about">حول التطبيق</string>
 </resources>
