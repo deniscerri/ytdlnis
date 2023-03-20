@@ -3,6 +3,8 @@ package com.deniscerri.ytdlnis.database.viewmodel
 import android.app.Application
 import android.content.ClipboardManager
 import android.content.Context.CLIPBOARD_SERVICE
+import android.os.Handler
+import android.os.Looper
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
@@ -13,6 +15,7 @@ import com.deniscerri.ytdlnis.database.models.TemplateShortcut
 import com.deniscerri.ytdlnis.database.repository.CommandTemplateRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -70,7 +73,9 @@ class CommandTemplateViewModel(private val application: Application) : AndroidVi
         val allTemplates = repository.getAll()
         val allShortcuts = repository.getAllShortCuts()
         var count = 0
-        val clipboard = application.getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+        val clipboard = withContext(Dispatchers.Main){
+            application.getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+        }
         val clip = clipboard.primaryClip!!.getItemAt(0).text.toString()
         try{
             jsonFormat.decodeFromString<CommandTemplateExport>(clip).run {
@@ -100,10 +105,14 @@ class CommandTemplateViewModel(private val application: Application) : AndroidVi
     }
 
 
-    fun exportToClipboard() = viewModelScope.launch(Dispatchers.IO) {
+    fun exportToClipboard() = viewModelScope.launch {
         try{
-            val allTemplates = repository.getAll()
-            val allShortcuts = repository.getAllShortCuts()
+            val allTemplates = withContext(Dispatchers.IO){
+                repository.getAll()
+            }
+            val allShortcuts = withContext(Dispatchers.IO){
+                repository.getAllShortCuts()
+            }
             val output = jsonFormat.encodeToString(
                 CommandTemplateExport(
                     templates = allTemplates,

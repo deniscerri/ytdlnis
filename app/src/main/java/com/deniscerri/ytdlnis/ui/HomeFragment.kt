@@ -140,7 +140,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
             homeAdapter!!.submitList(it)
             resultsList = it
             if(resultViewModel.itemCount.value!! > 1 || resultViewModel.itemCount.value!! == -1){
-                if (it[0].playlistTitle.isNotEmpty() && it[0].playlistTitle != getString(R.string.trendingPlaylist) && it.size > 1){
+                if (it.size > 1 && it[0].playlistTitle.isNotEmpty() && it[0].playlistTitle != getString(R.string.trendingPlaylist) && it.size > 1){
                     downloadAllFabCoordinator!!.visibility = VISIBLE
                 }else{
                     downloadAllFabCoordinator!!.visibility = GONE
