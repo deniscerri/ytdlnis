@@ -98,3 +98,8 @@ Except for the source code licensed under the GPLv3 license, all other parties a
 
 and alot of other internet forum strangers.
 
+<div align="right">
+<table><td>
+<a href="#start-of-content">👆 Scroll to top</a>
+</td></table>
+</div>
