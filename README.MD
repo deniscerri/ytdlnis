@@ -22,7 +22,7 @@
 
 </div>
 
-## Features:
+## 💡 Features:
 
 - download audio/video files from more than <a href="https://github.com/yt-dlp/yt-dlp/blob/master/supportedsites.md">1000 websites</a>
 - download playlists or multi select items
@@ -45,7 +45,7 @@
 - MVVM Architecture w/ WorkManager
 - easy to use :)
 
-## Screenshots
+## 📲 Screenshots
 
 <div>
 <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/1.png" width="30%" />
@@ -62,28 +62,33 @@
 <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/12.png" width="30%" />
 </div>
 
-## Connect with YouTube Revanced
+## 💬 Contact
+
+Join our [Telegram Channel](https://t.me/ytdlnis) or [Discord](https://discord.gg/WW3KYWxAPm) for discussion, announcements, and releases!
+
+## 🔑 Connect with YouTube ReVanced
 
 The App's package name is com.deniscerri.ytdl
 
-## Help Translate on Weblate
+## 📝 Help Translate on Weblate
 
 <a href="https://hosted.weblate.org/engage/ytdlnis/">
 <img src="https://hosted.weblate.org/widgets/ytdlnis/-/multi-auto.svg" alt="Translation status" />
 </a>
 
-## Contributing
+## 😇 Contributing
 
 If you would like to contribute. Please read the [Contributing](CONTRIBUTING.MD) section.
 
-## License
+## 📄 License
 
 [GNU GPL v3.0](https://github.com/deniscerri/ytdlnis/blob/main/LICENSE)
 
-Warning !! <br>
+⚠️  Warning <br>
+
 Except for the source code licensed under the GPLv3 license, all other parties are prohibited from using the 'YTDLnis' name as a downloader app, and the same is true for its derivatives. Derivatives include but are not limited to forks and unofficial builds.
 
-## Thanks
+## 🙏 Thanks
 
 - [yt-dlp](https://github.com/yt-dlp/yt-dlp) and its contributors for making this tool possible. Without it this app wouldn't exist.
 - [youtubedl-android](https://github.com/yausername/youtubedl-android) for porting yt-dlp to android
