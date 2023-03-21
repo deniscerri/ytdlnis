@@ -6,8 +6,8 @@
     <string name="music_directory">Папка с аудио</string>
     <string name="home">Главная</string>
     <string name="source_code">Исходный код</string>
-    <string name="search_hint">Поиск в YouTube</string>
-    <string name="update_ytdl">Установка новой версии yt-dlp</string>
+    <string name="search_hint">Найти или вставить URL</string>
+    <string name="update_ytdl">Обновить yt-dlp</string>
     <string name="failed_download">Невозможно загрузить файл.</string>
     <string name="download_notification_channel_name">Файл загружается</string>
     <string name="you_are_in_latest_version">Используется последняя версия</string>
@@ -23,7 +23,7 @@
     <string name="update_app">Проверить обновления</string>
     <string name="version">Версия</string>
     <string name="couldnt_find_apk">Не удалось найти подходящий APK.</string>
-    <string name="downloading_update">Загрузка новой версии…</string>
+    <string name="downloading_update">Загрузка обновления…</string>
     <string name="audio">Аудио</string>
     <string name="video">Видео</string>
     <string name="concurrent_fragments_summary">Количество фрагментов оригинального видео DASH/HLS для одновременной загрузки</string>
@@ -73,7 +73,7 @@
     <string name="ytdl_update_hint">Полезно в случае проблем с загрузкой</string>
     <string name="confirm_delete_history_desc">Удалить всю историю, навсегда.</string>
     <string name="ytdl_already_updating">Установка новой версии…</string>
-    <string name="command_directory">Папка для пользовательской команды</string>
+    <string name="command_directory">Папка пользовательских команд</string>
     <string name="save_thumb_summary">Сохраните обложку видео в папке загрузки</string>
     <string name="limit_rate_summary">Максимальная скорость загрузки (в байтах в секунду), например. 50К или 4.2М</string>
     <string name="concurrent_fragments">Параллельные фрагменты</string>
@@ -98,4 +98,16 @@
     <string name="request_permission_desc">Приложению необходим доступ к файлам для сохранения загрузок на устройстве</string>
     <string name="download_notification_channel_description">Уведомление показывает процесс загрузки аудио- и видеофайлов</string>
     <string name="sponsorblock_sponsors">Реклама</string>
+    <string name="worst_quality">Худшее качество</string>
+    <string name="best_quality">Лучшее качество</string>
+    <string name="error_updating_formats">Ошибка обновления форматов!</string>
+    <string name="access_all_directories">Дать доступ ко всем каталогам</string>
+    <string name="access_all_directories_summary">Разрешить приложению загружать контент в каталоги, которые по умолчанию ограничены</string>
+    <string name="redownload">Загрузить повторно</string>
+    <string name="copy_url">Скопировать URL</string>
+    <string name="in_queue">В очереди</string>
+    <string name="clear_cancelled">Очистить отмененные</string>
+    <string name="about">О приложении</string>
+    <string name="clear_errored">Очистить ошибки</string>
+    <string name="split_by_chapters">Разделить на главы</string>
 </resources>

@@ -174,4 +174,6 @@
     <string name="link_you_copied">Kopyaladığınız link</string>
     <string name="best_quality">Ən yaxşı keyfiyyət</string>
     <string name="worst_quality">Ən Pis Keyfiyyət</string>
+    <string name="restrict_filenames">Fayl adların məhdudlaşdır</string>
+    <string name="restrict_filenames_summary">Fayl adların ancaq ASCII simvollarıyla məhdudlaşdır və fayl adlarında \"&amp;\" və boşluqlar yaratma</string>
 </resources>
