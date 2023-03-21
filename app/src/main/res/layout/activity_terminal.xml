@@ -22,31 +22,40 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/command_edittext"
-                android:background="@android:color/transparent"
-                android:text="yt-dlp "
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textMultiLine"
-                android:gravity="start"
-                android:maxLines="10" />
-
             <ScrollView
                 android:id="@+id/custom_command_scrollview"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:clipToPadding="false"
-                android:paddingBottom="150dp"
+                android:paddingBottom="100dp"
                 >
 
-                <TextView
-                    android:id="@+id/custom_command_output"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:textIsSelectable="true"
-                    android:fontFamily="monospace"
-                    android:gravity="bottom"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/custom_command_output"
+                        android:layout_width="match_parent"
+                        android:textIsSelectable="true"
+                        android:fontFamily="monospace"
+                        android:gravity="bottom"
+                        android:layout_height="wrap_content" />
+
+                    <EditText
+                        android:id="@+id/command_edittext"
+                        android:background="@android:color/transparent"
+                        android:layout_width="match_parent"
+                        android:fontFamily="monospace"
+                        android:text="yt-dlp "
+                        android:textSize="13sp"
+                        android:layout_height="wrap_content"
+                        android:inputType="textMultiLine"
+                        android:gravity="start"
+                        android:maxLines="100" />
+
+                </LinearLayout>
 
             </ScrollView>
 

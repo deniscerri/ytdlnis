@@ -69,9 +69,7 @@ class DownloadWorker(
         val downloadLocation = downloadItem.downloadPath
 
         val titleRegex = Regex("[^A-Za-z\\d ]")
-        val tempFolder = StringBuilder(context.cacheDir.absolutePath + """/${titleRegex.replace(downloadItem.title, "")}##${downloadItem.type}""")
-        tempFolder.append("##${downloadItem.format.format_id}")
-        val tempFileDir = File(tempFolder.toString())
+        val tempFileDir = File(context.cacheDir.absolutePath + downloadItem.id)
         tempFileDir.delete()
         tempFileDir.mkdir()
 
@@ -114,6 +112,8 @@ class DownloadWorker(
         if (sharedPreferences.getBoolean("restrict_filenames", true)) {
             request.addOption("--restrict-filenames")
         }
+
+        request.addOption("--trim-filenames", 100)
 
         when(type){
             DownloadViewModel.Type.audio -> {

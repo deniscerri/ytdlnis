@@ -6,4 +6,4 @@
 /build
 /captures
 .externalNativeBuild
-benchmark
+/benchmark

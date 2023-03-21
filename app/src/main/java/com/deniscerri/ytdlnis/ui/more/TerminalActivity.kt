@@ -57,8 +57,8 @@ class TerminalActivity : AppCompatActivity() {
         input!!.requestFocus()
         fab = findViewById(R.id.command_fab)
         fab!!.setOnClickListener {
-            input!!.isEnabled = false
-            output!!.text = ""
+            input!!.visibility = View.GONE
+            output!!.text = "${output!!.text}\n~ $ ${input!!.text}\n";
             swapFabs()
             startDownload(
                 input!!.text.toString()
@@ -67,7 +67,7 @@ class TerminalActivity : AppCompatActivity() {
         cancelFab = findViewById(R.id.cancel_command_fab)
         cancelFab!!.setOnClickListener {
             cancelDownload()
-            input!!.isEnabled = true
+            input!!.visibility = View.VISIBLE
         }
         notificationUtil = NotificationUtil(this)
         handleIntent(intent)
@@ -166,7 +166,7 @@ class TerminalActivity : AppCompatActivity() {
                     output!!.scrollTo(0, output!!.height)
                     scrollView!!.fullScroll(View.FOCUS_DOWN)
 
-                    input!!.isEnabled = true
+                    input!!.visibility = View.VISIBLE
 
                     cancelFab!!.visibility = View.GONE
                     fab!!.visibility = View.VISIBLE
@@ -177,9 +177,10 @@ class TerminalActivity : AppCompatActivity() {
             .subscribeOn(Schedulers.newThread())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                scrollView!!.scrollTo(0, scrollView!!.maxScrollAmount)
+                output!!.scrollTo(0, output!!.height)
+                scrollView!!.fullScroll(View.FOCUS_DOWN)
                 input!!.setText("yt-dlp ")
-                input!!.isEnabled = true
+                input!!.visibility = View.VISIBLE
 
                 cancelFab!!.visibility = View.GONE
                 fab!!.visibility = View.VISIBLE
@@ -193,9 +194,10 @@ class TerminalActivity : AppCompatActivity() {
                 notificationUtil.cancelDownloadNotification(downloadID)
             }) { e ->
                 e.printStackTrace()
-                scrollView!!.scrollTo(0, scrollView!!.maxScrollAmount)
+                output!!.scrollTo(0, output!!.height)
+                scrollView!!.fullScroll(View.FOCUS_DOWN)
                 input!!.setText("yt-dlp ")
-                input!!.isEnabled = true
+                input!!.visibility = View.VISIBLE
 
                 cancelFab!!.visibility = View.GONE
                 fab!!.visibility = View.VISIBLE
