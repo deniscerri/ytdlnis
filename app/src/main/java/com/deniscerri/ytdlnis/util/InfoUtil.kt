@@ -4,14 +4,11 @@ import android.app.Activity
 import android.content.Context
 import android.util.Log
 import com.deniscerri.ytdlnis.R
-import com.deniscerri.ytdlnis.database.DBManager
 import com.deniscerri.ytdlnis.database.models.Format
 import com.deniscerri.ytdlnis.database.models.ResultItem
-import com.deniscerri.ytdlnis.database.repository.SearchHistoryRepository
 import com.google.gson.Gson
 import com.yausername.youtubedl_android.YoutubeDL
 import com.yausername.youtubedl_android.YoutubeDLRequest
-import kotlinx.serialization.json.Json
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -23,7 +20,6 @@ import java.util.*
 import java.util.regex.Pattern
 
 class InfoUtil(context: Context) {
-    private var searchHistoryRepository = SearchHistoryRepository(DBManager.getInstance(context).searchHistoryDao)
     private var items: ArrayList<ResultItem?>
     private var key: String? = null
     private var useInvidous = false
@@ -281,14 +277,14 @@ class InfoUtil(context: Context) {
             val title = obj.getString("title").toString()
             val author = obj.getString("author").toString()
 
-            if (author.isNullOrBlank()) throw Exception()
+            if (author.isBlank()) throw Exception()
 
             val duration = formatIntegerDuration(obj.getInt("lengthSeconds"))
             val thumb = "https://i.ytimg.com/vi/$id/hqdefault.jpg"
             val url = "https://www.youtube.com/watch?v=$id"
             val formats : ArrayList<Format> = ArrayList()
             if (obj.has("adaptiveFormats")){
-                val formatsInJSON = obj.getJSONArray("adaptiveFormats");
+                val formatsInJSON = obj.getJSONArray("adaptiveFormats")
                 for (f in 0 until formatsInJSON.length()){
                     val format = formatsInJSON.getJSONObject(f)
                     if(!format.has("container")) continue
@@ -504,7 +500,6 @@ class InfoUtil(context: Context) {
             } catch (e: Exception) {
                 arrayOf(youtubeDLResponse.out)
             }
-            val pl = JSONObject(results[0]!!)
             for (result in results) {
                 val jsonObject = JSONObject(result!!)
                 val title = if (jsonObject.has("title")) {
@@ -559,10 +554,6 @@ class InfoUtil(context: Context) {
             e.printStackTrace()
         }
         return items
-    }
-
-    private val jsonFormat = Json {
-        ignoreUnknownKeys = true
     }
 
     fun getSearchSuggestions(query: String): ArrayList<String> {

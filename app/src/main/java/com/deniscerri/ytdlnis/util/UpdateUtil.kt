@@ -149,7 +149,6 @@ class UpdateUtil(var context: Context) {
         withContext(Dispatchers.IO){
             val sharedPreferences =
                 context.getSharedPreferences("root_preferences", Activity.MODE_PRIVATE)
-            val editor = sharedPreferences.edit()
             if (updatingYTDL) {
                 withContext(Dispatchers.Main){
                     Toast.makeText(

@@ -1,3 +1,5 @@
+import com.android.build.api.dsl.ManagedVirtualDevice
+
 plugins {
     id 'com.android.application'
     id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin' version '2.0.1'
@@ -49,19 +51,6 @@ android {
         androidTest.assets.srcDirs += files("$projectDir/schemas".toString())
     }
 
-
-    testOptions{
-        managedDevices {
-            devices{
-                pixel4Api31(com.android.build.api.dsl.ManagedVirtualDevice){
-                    device = "Pixel 2"
-                    apiLevel = 31
-                    systemImageSource = "aosp"
-                }
-            }
-        }
-    }
-
     buildTypes {
         release {
             minifyEnabled true
@@ -81,6 +70,14 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             debuggable true
+            signingConfig signingConfigs.debug
+        }
+
+        benchmark {
+            initWith release
+            proguardFiles 'baseline-profiles-rules.pro'
+            debuggable false
+            matchingFallbacks ['release']
             signingConfig signingConfigs.debug
         }
     }
@@ -133,6 +130,7 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.9.0'
     implementation 'androidx.core:core-ktx:1.9.0'
     implementation 'androidx.test.ext:junit-ktx:1.1.5'
+    implementation 'androidx.benchmark:benchmark-macro:1.1.1'
     testImplementation "junit:junit:$junitVer"
     androidTestImplementation "junit:junit:$junitVer"
     androidTestImplementation "androidx.test.ext:junit:$androidJunitVer"

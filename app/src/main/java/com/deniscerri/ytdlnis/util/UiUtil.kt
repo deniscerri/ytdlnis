@@ -8,6 +8,7 @@ import android.content.Intent
 import android.net.Uri
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
@@ -227,13 +228,17 @@ class UiUtil(private val fileUtil: FileUtil) {
         val file = File(downloadPath)
         val uri = FileProvider.getUriForFile(
             fragmentContext,
-            fragmentContext.packageName + ".fileprovider",
+            "com.deniscerri.ytdl.fileprovider",
             file
         )
         val mime = fragmentContext.contentResolver.getType(uri)
-        val i = Intent(Intent.ACTION_SEND)
-        i.setDataAndType(uri, mime)
-        fragmentContext.startActivity(i)
+
+        val shareIntent: Intent = Intent().apply {
+            action = Intent.ACTION_SEND
+            putExtra(Intent.EXTRA_STREAM, uri)
+            type = mime
+        }
+        fragmentContext.startActivity(Intent.createChooser(shareIntent, null))
     }
 
     fun showDatePicker(fragmentManager: FragmentManager , onSubmit : (chosenDate: Calendar) -> Unit ){
