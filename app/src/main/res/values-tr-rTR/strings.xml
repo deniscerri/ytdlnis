@@ -181,4 +181,6 @@
     <string name="link_you_copied">Kopyaladığınız URL</string>
     <string name="worst_quality">En Kötü Kalite</string>
     <string name="best_quality">En Iyi Kalite</string>
+    <string name="restrict_filenames">Dosya Adların Kısıtla</string>
+    <string name="restrict_filenames_summary">Dosya adların yalnızca ASCII karakterleriyle sınırla ve dosya adlarında \"&amp;\" ve boşluklardan kaçının</string>
 </resources>
