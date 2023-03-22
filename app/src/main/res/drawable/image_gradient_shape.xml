@@ -3,9 +3,9 @@
 
     <gradient
         android:angle="90"
-        android:endColor="#00ffffff"
+        android:endColor="?attr/cardBackgroundColor"
         android:startColor="?attr/colorSurfaceContainer"
-        android:centerColor="#00ffffff" />
+        android:centerColor="?attr/cardBackgroundColor" />
 
     <corners android:radius="0dp" />
 </shape>

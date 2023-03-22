@@ -7,6 +7,8 @@ import android.content.DialogInterface
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.widget.Toast
 import com.deniscerri.ytdlnis.BuildConfig
@@ -35,47 +37,47 @@ class UpdateUtil(var context: Context) {
     private val ytdlpNightly = "https://api.github.com/repos/yt-dlp/yt-dlp-nightly-builds/releases/latest"
 
     fun updateApp(): Boolean {
-        if (updatingApp) {
-            Toast.makeText(
-                context,
-                context.getString(R.string.ytdl_already_updating),
-                Toast.LENGTH_LONG
-            ).show()
-            return true
-        }
-        val res = AtomicReference(JSONObject())
         try {
-            val thread = Thread { res.set(checkForAppUpdate()) }
-            thread.start()
-            thread.join()
-        } catch (e: Exception) {
-            Log.e(tag, e.toString())
-        }
-        val version: String
-        val body: String?
-        try {
-            version = res.get().getString("tag_name")
-            body = res.get().getString("body")
-        } catch (ignored: JSONException) {
-            return false
-        }
-        val versionNameInt = version.split("v")[1].replace(".","").toInt()
-        val currentVersionNameInt = BuildConfig.VERSION_NAME.replace(".","").toInt()
-        if (currentVersionNameInt >= versionNameInt) {
-            return false
-        }
-        val updateDialog = MaterialAlertDialogBuilder(context)
-            .setTitle(version)
-            .setMessage(body)
-            .setIcon(R.drawable.ic_update_app)
-            .setNegativeButton("Cancel") { _: DialogInterface?, _: Int -> }
-            .setPositiveButton("Update") { _: DialogInterface?, _: Int ->
-                startAppUpdate(
-                    res.get()
-                )
+            if (updatingApp) {
+                Toast.makeText(
+                    context,
+                    context.getString(R.string.ytdl_already_updating),
+                    Toast.LENGTH_LONG
+                ).show()
+                return true
             }
-        updateDialog.show()
-        return true
+            val res = checkForAppUpdate()
+            val version: String
+            val body: String?
+            try {
+                version = res.getString("tag_name")
+                body = res.getString("body")
+            } catch (ignored: JSONException) {
+                return false
+            }
+            val versionNameInt = version.split("v")[1].replace(".","").toInt()
+            val currentVersionNameInt = BuildConfig.VERSION_NAME.replace(".","").toInt()
+            if (currentVersionNameInt >= versionNameInt) {
+                return false
+            }
+            Handler(Looper.getMainLooper()).post {
+                val updateDialog = MaterialAlertDialogBuilder(context)
+                    .setTitle(version)
+                    .setMessage(body)
+                    .setIcon(R.drawable.ic_update_app)
+                    .setNegativeButton("Cancel") { _: DialogInterface?, _: Int -> }
+                    .setPositiveButton("Update") { _: DialogInterface?, _: Int ->
+                        startAppUpdate(
+                            res
+                        )
+                    }
+                updateDialog.show()
+            }
+            return true
+        }catch (e: Exception){
+            e.printStackTrace()
+            return false
+        }
     }
 
     private fun checkForAppUpdate(): JSONObject {

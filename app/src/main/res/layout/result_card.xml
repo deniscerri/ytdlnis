@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/result_card_constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -13,8 +13,7 @@
         app:layout_constraintDimensionRatio="H,16:9"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
+        app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/result_card_view"
@@ -45,91 +44,108 @@
                 android:alpha="0.7"
                 android:scaleY="100" />
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:dividerPadding="5dp"
-                android:orientation="vertical">
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:dividerPadding="5dp"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toTopOf="@+id/download_button_layout"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/result_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="10dp"
+                        android:maxLines="2"
+                        android:ellipsize="end"
+                        android:paddingTop="10dp"
+                        android:paddingEnd="10dp"
+                        android:shadowColor="@color/black"
+                        android:shadowDx="4"
+                        android:shadowDy="4"
+                        android:scrollbars="none"
+                        android:shadowRadius="2"
+                        android:textColor="@color/white"
+                        android:textSize="17sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/author"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="bottom"
+                        android:paddingStart="10dp"
+                        android:maxLines="1"
+                        android:ellipsize="end"
+                        android:paddingEnd="10dp"
+                        android:paddingBottom="5dp"
+                        android:shadowColor="@color/black"
+                        android:shadowDx="4"
+                        android:shadowDy="4"
+                        android:scrollbars="none"
+                        android:shadowRadius="1.5"
+                        android:textColor="@color/white"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
 
                 <TextView
-                    android:id="@+id/result_title"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="10dp"
-                    android:paddingEnd="10dp"
-                    android:paddingStart="10dp"
-                    android:textSize="17sp"
-                    android:textColor="@color/white"
-                    android:textStyle="bold"
-                    android:shadowRadius="2"
-                    android:shadowDx="4"
-                    android:shadowDy="4"
-                    android:shadowColor="@color/black" />
-
-                <TextView
-                    android:id="@+id/author"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:id="@+id/duration"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
                     android:gravity="bottom"
-                    android:paddingEnd="10dp"
-                    android:paddingBottom="5dp"
                     android:paddingStart="10dp"
-                    android:textSize="12sp"
-                    android:textColor="@color/white"
-                    android:textStyle="bold"
-                    android:shadowRadius="1.5"
+                    android:paddingEnd="10dp"
+                    android:paddingBottom="20dp"
+                    android:shadowColor="@color/black"
                     android:shadowDx="4"
                     android:shadowDy="4"
-                    android:shadowColor="@color/black" />
+                    android:shadowRadius="1.5"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
 
-            </LinearLayout>
 
-            <TextView
-                android:id="@+id/duration"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="bottom"
-                android:paddingEnd="10dp"
-                android:paddingBottom="20dp"
-                android:paddingStart="10dp"
-                android:textSize="12sp"
-                android:textColor="@color/white"
-                android:textStyle="bold"
-                android:shadowRadius="1.5"
-                android:shadowDx="4"
-                android:shadowDy="4"
-                android:shadowColor="@color/black" />
+                <LinearLayout
+                    android:id="@+id/download_button_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="5dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
 
-            <LinearLayout
-                android:id="@+id/download_button_layout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="bottom|end"
-                android:orientation="horizontal"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp">
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/download_music"
+                        style="@style/Widget.Material3.ExtendedFloatingActionButton.Icon.Secondary"
+                        android:layout_width="55dp"
+                        android:layout_height="55dp"
+                        android:layout_marginVertical="5dp"
+                        android:layout_marginStart="5dp"
+                        app:icon="@drawable/ic_music" />
 
-                <com.google.android.material.button.MaterialButton
-                    style="@style/Widget.Material3.ExtendedFloatingActionButton.Icon.Secondary"
-                    android:id="@+id/download_music"
-                    android:layout_width="55dp"
-                    android:layout_height="55dp"
-                    app:icon="@drawable/ic_music"
-                    android:layout_marginEnd="5dp"
-                    android:layout_marginBottom="5dp"
-                    />
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/download_video"
+                        style="@style/Widget.Material3.ExtendedFloatingActionButton.Icon.Secondary"
+                        android:layout_width="55dp"
+                        android:layout_height="55dp"
+                        android:layout_margin="5dp"
+                        app:icon="@drawable/ic_video" />
 
-                <com.google.android.material.button.MaterialButton
-                    style="@style/Widget.Material3.ExtendedFloatingActionButton.Icon.Secondary"
-                    android:id="@+id/download_video"
-                    android:layout_width="55dp"
-                    android:layout_height="55dp"
-                    app:icon="@drawable/ic_video"
-                    android:layout_marginEnd="5dp"
-                    android:layout_marginBottom="5dp"
-                    />
+                </LinearLayout>
 
-            </LinearLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </com.google.android.material.card.MaterialCardView>
     </RelativeLayout>

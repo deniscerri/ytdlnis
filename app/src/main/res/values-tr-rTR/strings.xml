@@ -38,9 +38,6 @@
     ile sınırla
     <string name="audio">Ses</string>
     <string name="video">Video</string>
-    <string name="music_path" translatable="false">/storage/emulated/0/Download</string>
-    <string name="video_path" translatable="false">/storage/emulated/0/Download</string>
-    <string name="command_path" translatable="false">/storage/emulated/0/Download</string>
     <string name="concurrent_fragments_summary">Eşzamanlı indirilecek DASH/HLS yerel videonun parça sayısı</string>
     <string name="concurrent_fragments">Eşzamanlı Parçalar</string>
     <string name="downloading">İndiriliyor</string>

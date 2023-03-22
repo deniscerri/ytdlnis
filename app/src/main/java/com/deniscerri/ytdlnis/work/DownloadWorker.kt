@@ -225,7 +225,7 @@ class DownloadWorker(
             }
 
             YoutubeDL.getInstance().execute(request, downloadItem.id.toString()){ progress, _, line ->
-                setProgressAsync(workDataOf("progress" to progress.toInt(), "output" to line, "id" to downloadItem.id))
+                setProgressAsync(workDataOf("progress" to progress.toInt(), "output" to line, "id" to downloadItem.id, "log" to logDownloads))
                 val title: String = downloadItem.title
                 notificationUtil.updateDownloadNotification(
                     downloadItem.id.toInt(),

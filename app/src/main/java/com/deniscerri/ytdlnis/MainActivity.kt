@@ -22,6 +22,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.lifecycleScope
 import com.deniscerri.ytdlnis.databinding.ActivityMainBinding
 import com.deniscerri.ytdlnis.ui.HomeFragment
 import com.deniscerri.ytdlnis.ui.downloads.DownloadQueueActivity
@@ -30,6 +31,8 @@ import com.deniscerri.ytdlnis.ui.more.MoreFragment
 import com.deniscerri.ytdlnis.ui.more.settings.SettingsActivity
 import com.deniscerri.ytdlnis.util.UpdateUtil
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.io.BufferedReader
 import java.io.File
 import java.io.InputStreamReader
@@ -188,7 +191,9 @@ class MainActivity : AppCompatActivity() {
     private fun checkUpdate() {
         if (preferences.getBoolean("update_app", false)) {
             val updateUtil = UpdateUtil(this)
-            updateUtil.updateApp()
+            lifecycleScope.launch(Dispatchers.IO){
+                updateUtil.updateApp()
+            }
         }
     }
 

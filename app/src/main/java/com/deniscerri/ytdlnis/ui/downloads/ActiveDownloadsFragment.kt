@@ -80,13 +80,16 @@ class ActiveDownloadsFragment() : Fragment(), ActiveDownloadAdapter.OnItemClickL
 
                             val progress = work.progress.getInt("progress", 0)
                             val output = work.progress.getString("output")
+                            val log = work.progress.getBoolean("log", false)
 
                             val progressBar = view.findViewWithTag<LinearProgressIndicator>("$id##progress")
                             val outputText = view.findViewWithTag<TextView>("$id##output")
 
                             requireActivity().runOnUiThread {
-                                progressBar?.setProgressCompat(progress, true)
-                                outputText?.text = output
+                                try {
+                                    progressBar?.setProgressCompat(progress, true)
+                                    outputText?.text = output
+                                }catch (ignored: Exception) {}
                             }
                         }
                     }

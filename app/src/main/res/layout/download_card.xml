@@ -25,7 +25,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/downloads_image_view"
@@ -65,10 +65,10 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/download_item_data"
                 android:layout_width="0dp"
-                android:layout_height="0dp"
-                app:layout_constraintHorizontal_weight="0.7"
+                android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_weight="0.7"
                 app:layout_constraintStart_toEndOf="@+id/downloads_image_view"
                 app:layout_constraintTop_toTopOf="parent">
 
@@ -84,8 +84,7 @@
                     android:textStyle="bold"
                     app:layout_constraintEnd_toStartOf="@+id/action_button"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <HorizontalScrollView
                     android:layout_width="wrap_content"
@@ -98,65 +97,64 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/action_button"
-                    app:layout_constraintVertical_bias="1.0">
+                    app:layout_constraintTop_toBottomOf="@+id/action_button">
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent">
 
                         <TextView
-                            style="@style/Widget.Material3.FloatingActionButton.Large.Secondary"
-                            android:background="?attr/colorSecondary"
                             android:id="@+id/format_note"
-                            android:layout_marginEnd="5dp"
-                            android:maxLength="17"
+                            style="@style/Widget.Material3.FloatingActionButton.Large.Secondary"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginEnd="5dp"
+                            android:background="?attr/colorSecondary"
                             android:clickable="false"
                             android:ellipsize="end"
                             android:gravity="center"
-                            android:textSize="12sp"
+                            android:maxLength="17"
                             android:maxLines="1"
                             android:minWidth="30dp"
-                            android:textStyle="bold"
                             android:paddingHorizontal="5dp"
+                            android:textSize="12sp"
+                            android:textStyle="bold"
                             app:cornerRadius="10dp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
                         <TextView
-                            style="@style/Widget.Material3.FloatingActionButton.Large.Tertiary"
-                            android:background="?attr/colorSecondary"
                             android:id="@+id/codec"
-                            android:layout_marginEnd="5dp"
+                            style="@style/Widget.Material3.FloatingActionButton.Large.Tertiary"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginEnd="5dp"
+                            android:background="?attr/colorSecondary"
                             android:clickable="false"
                             android:gravity="center"
                             android:minWidth="30dp"
+                            android:paddingHorizontal="5dp"
                             android:textSize="12sp"
                             android:textStyle="bold"
-                            android:paddingHorizontal="5dp"
                             app:cornerRadius="10dp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
                         <TextView
-                            android:background="?attr/colorPrimaryInverse"
                             android:id="@+id/file_size"
-                            android:layout_marginEnd="5dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginEnd="5dp"
+                            android:background="?attr/colorPrimaryInverse"
                             android:clickable="false"
                             android:gravity="center"
-                            android:textStyle="bold"
-                            android:paddingHorizontal="5dp"
                             android:minWidth="30dp"
-                            app:cornerRadius="10dp"
+                            android:paddingHorizontal="5dp"
                             android:textSize="12sp"
+                            android:textStyle="bold"
+                            app:cornerRadius="10dp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
