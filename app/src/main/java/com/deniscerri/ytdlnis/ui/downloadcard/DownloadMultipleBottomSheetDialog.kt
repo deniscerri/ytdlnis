@@ -6,6 +6,7 @@ import android.app.Dialog
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
+import android.text.format.DateFormat
 import android.util.DisplayMetrics
 import android.util.Log
 import android.view.*
@@ -40,6 +41,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
+import java.text.SimpleDateFormat
 import java.util.*
 
 class DownloadMultipleBottomSheetDialog(private var items: MutableList<DownloadItem>) : BottomSheetDialogFragment(), ConfigureMultipleDownloadsAdapter.OnItemClickListener, View.OnClickListener,
@@ -101,6 +103,9 @@ class DownloadMultipleBottomSheetDialog(private var items: MutableList<DownloadI
                 }
                 runBlocking {
                     downloadViewModel.queueDownloads(items)
+                    val first = items.first()
+                    val date = SimpleDateFormat(DateFormat.getBestDateTimePattern(Locale.getDefault(), "ddMMMyyyy - HHmm"), Locale.getDefault()).format(first.downloadStartTime)
+                    Toast.makeText(context, getString(R.string.download_rescheduled_to) + " " + date, Toast.LENGTH_LONG).show()
                 }
                 dismiss()
             }
@@ -244,8 +249,10 @@ class DownloadMultipleBottomSheetDialog(private var items: MutableList<DownloadI
             val resultItem = withContext(Dispatchers.IO){
                 resultViewModel.getItemByURL(downloadItem!!.url)
             }
-            val bottomSheet = ConfigureDownloadBottomSheetDialog(resultItem, downloadItem!!, this@DownloadMultipleBottomSheetDialog)
-            bottomSheet.show(parentFragmentManager, "configureDownloadSingleSheet")
+            if (parentFragmentManager.findFragmentByTag("configureDownloadSingleSheet") == null){
+                val bottomSheet = ConfigureDownloadBottomSheetDialog(resultItem, downloadItem!!, this@DownloadMultipleBottomSheetDialog)
+                bottomSheet.show(parentFragmentManager, "configureDownloadSingleSheet")
+            }
         }
     }
 

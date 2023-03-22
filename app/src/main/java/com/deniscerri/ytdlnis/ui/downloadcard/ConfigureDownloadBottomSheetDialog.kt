@@ -72,6 +72,7 @@ class ConfigureDownloadBottomSheetDialog(private val resultItem: ResultItem, pri
                     fragments.add(DownloadCommandFragment(resultItem, downloadItem))
                 }else{
                     (tabLayout.getChildAt(0) as? ViewGroup)?.getChildAt(2)?.isEnabled = false
+                    (tabLayout.getChildAt(0) as? ViewGroup)?.getChildAt(2)?.alpha = 0.3f
                 }
             }
         }

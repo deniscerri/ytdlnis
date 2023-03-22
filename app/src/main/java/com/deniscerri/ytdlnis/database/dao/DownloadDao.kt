@@ -13,7 +13,7 @@ interface DownloadDao {
     @Query("SELECT * FROM downloads WHERE status='Active'")
     fun getActiveDownloads() : LiveData<List<DownloadItem>>
 
-    @Query("SELECT * FROM downloads WHERE status='Queued'")
+    @Query("SELECT * FROM downloads WHERE status='Queued' ORDER BY downloadStartTime, id")
     fun getQueuedDownloads() : LiveData<List<DownloadItem>>
 
     @Query("SELECT * FROM downloads WHERE status='Cancelled' ORDER BY id DESC")

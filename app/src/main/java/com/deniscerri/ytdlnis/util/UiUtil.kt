@@ -79,8 +79,10 @@ class UiUtil(private val fileUtil: FileUtil) {
             bottomSheet.findViewById<TextView>(R.id.bottom_sheet_subtitle)!!.text = content.resources.getString(R.string.update_template)
             ok.text = content.resources.getString(R.string.update)
             ok.isEnabled = true
+            content.endIconDrawable = AppCompatResources.getDrawable(context, R.drawable.ic_delete_all)
         }else{
             ok.isEnabled = false
+            content.endIconDrawable = AppCompatResources.getDrawable(context, R.drawable.ic_clipboard)
         }
 
         title.editText!!.addTextChangedListener(object : TextWatcher {

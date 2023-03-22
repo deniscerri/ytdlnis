@@ -116,7 +116,7 @@
             android:exported="true"
             android:label="@string/terminal"
             android:parentActivityName=".MainActivity"
-            android:theme="@style/AppDefaultTheme">
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="ytdlnis.TerminalActivity" />
 
