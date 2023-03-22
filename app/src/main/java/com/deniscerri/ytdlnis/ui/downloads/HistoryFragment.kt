@@ -408,19 +408,18 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
         author!!.text = item.author
 
         // BUTTON ----------------------------------
-        val buttonLayout = bottomSheet!!.findViewById<LinearLayout>(R.id.downloads_download_button_layout)
-        val btn = buttonLayout!!.findViewById<MaterialButton>(R.id.downloads_download_button_type)
+        val btn = bottomSheet!!.findViewById<MaterialButton>(R.id.downloads_download_button_type)
 
         if (item.type == DownloadViewModel.Type.audio) {
-            if (isPresent) btn.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_music_downloaded) else btn.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_music)
+            if (isPresent) btn!!.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_music_downloaded) else btn!!.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_music)
         } else if (item.type == DownloadViewModel.Type.video) {
-            if (isPresent) btn.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_video_downloaded) else btn.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_video)
+            if (isPresent) btn!!.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_video_downloaded) else btn!!.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_video)
         }else{
-            btn.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_terminal)
+            btn!!.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_terminal)
         }
 
         if (isPresent){
-            btn.setOnClickListener {
+            btn!!.setOnClickListener {
                 uiUtil!!.shareFileIntent(requireContext(),item.downloadPath)
             }
         }

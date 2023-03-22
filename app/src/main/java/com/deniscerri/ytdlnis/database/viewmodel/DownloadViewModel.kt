@@ -182,11 +182,14 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
     private fun getFormat(formats: List<Format>, type: Type) : Format {
         when(type) {
             Type.audio -> {
-                return try {
-                    cloneFormat(formats.last { it.format_note.contains("audio", ignoreCase = true) })
-                }catch (e: Exception){
-                    bestAudioFormat
-                }
+                return cloneFormat (
+                    try {
+                        formats.last { it.format_note.contains("audio", ignoreCase = true) }
+                    }catch (e: Exception){
+                        bestAudioFormat
+                    }
+                )
+
             }
             Type.video -> {
                 return cloneFormat(

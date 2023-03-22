@@ -129,7 +129,9 @@ class DownloadWorker(
             DownloadViewModel.Type.audio -> {
                 request.addOption("-x")
                 var audioQualityId : String = downloadItem.format.format_id
-                if (audioQualityId.isBlank() || audioQualityId == "0" || audioQualityId == context.getString(R.string.best_quality)) audioQualityId = ""
+                if (audioQualityId.isBlank() || audioQualityId == "0") audioQualityId = ""
+                else if (audioQualityId == context.getString(R.string.worst_quality)) audioQualityId = "worstaudio"
+
                 if (audioQualityId.isNotBlank()){
                     request.addOption("-f", audioQualityId)
                 }

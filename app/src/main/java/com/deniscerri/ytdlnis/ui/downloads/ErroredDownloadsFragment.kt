@@ -108,15 +108,18 @@ class ErroredDownloadsFragment() : Fragment(), GenericDownloadAdapter.OnItemClic
         author!!.text = item.author
 
         // BUTTON ----------------------------------
-        val buttonLayout = bottomSheet.findViewById<LinearLayout>(R.id.downloads_download_button_layout)
-        val btn = buttonLayout!!.findViewById<MaterialButton>(R.id.downloads_download_button_type)
+        val btn = bottomSheet.findViewById<MaterialButton>(R.id.downloads_download_button_type)
 
-        if (item.type == DownloadViewModel.Type.audio) {
-            btn.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_music)
-        } else if (item.type == DownloadViewModel.Type.video) {
-            btn.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_video)
-        }else{
-            btn.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_terminal)
+        when (item.type) {
+            DownloadViewModel.Type.audio -> {
+                btn!!.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_music)
+            }
+            DownloadViewModel.Type.video -> {
+                btn!!.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_video)
+            }
+            else -> {
+                btn!!.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_terminal)
+            }
         }
 
         val time = bottomSheet.findViewById<Chip>(R.id.time)

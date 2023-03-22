@@ -28,6 +28,11 @@
         <item>@string/best_quality</item>
     </string-array>
 
+    <string-array name="audio_formats">
+        <item>@string/worst_quality</item>
+        <item>@string/best_quality</item>
+    </string-array>
+
     <string-array name="sponsorblock_settings_entries">
         <item>@string/sponsorblock_nonmusic</item>
         <item>@string/sponsorblock_sponsors</item>

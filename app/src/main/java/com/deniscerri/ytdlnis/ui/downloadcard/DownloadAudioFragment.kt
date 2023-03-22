@@ -30,6 +30,7 @@ import com.deniscerri.ytdlnis.database.models.Format
 import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel.Type
+import com.deniscerri.ytdlnis.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdlnis.databinding.FragmentHomeBinding
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.UiUtil
@@ -48,6 +49,7 @@ class DownloadAudioFragment(private var resultItem: ResultItem, private var curr
     private var fragmentView: View? = null
     private var activity: Activity? = null
     private lateinit var downloadViewModel : DownloadViewModel
+    private lateinit var resultViewModel : ResultViewModel
     private lateinit var fileUtil : FileUtil
     private lateinit var uiUtil : UiUtil
 
@@ -66,6 +68,8 @@ class DownloadAudioFragment(private var resultItem: ResultItem, private var curr
         fragmentView = inflater.inflate(R.layout.fragment_download_audio, container, false)
         activity = getActivity()
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
+        resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]
+
         fileUtil = FileUtil()
         uiUtil = UiUtil(fileUtil)
         return fragmentView
@@ -123,8 +127,9 @@ class DownloadAudioFragment(private var resultItem: ResultItem, private var curr
                     File(fileUtil.formatPath(downloadItem.downloadPath)).freeSpace
                 )
 
-
-                var formats = resultItem.formats.filter { it.format_note.contains("audio", ignoreCase = true) }
+                var formats = mutableListOf<Format>()
+                formats.addAll(resultItem.formats.filter { it.format_note.contains("audio", ignoreCase = true) })
+                val audioFormats = resources.getStringArray(R.array.audio_formats)
 
                 val containers = requireContext().resources.getStringArray(R.array.audio_containers)
                 val containerPreference = sharedPreferences.getString("audio_format", getString(R.string.defaultValue))
@@ -132,36 +137,37 @@ class DownloadAudioFragment(private var resultItem: ResultItem, private var curr
                 val containerAutoCompleteTextView =
                     view.findViewById<AutoCompleteTextView>(R.id.container_textview)
 
+                if (formats.isEmpty()) {
+                    audioFormats.forEach { formats.add(Format(it, containerPreference!!,"","", "",0, it)) }
+                }
 
                 val formatCard = view.findViewById<ConstraintLayout>(R.id.format_card_constraintLayout)
-                if (formats.isEmpty()) {
-                    formatCard.visibility = View.GONE
-                    view.findViewById<TextView>(R.id.audio_quality_title).visibility = View.GONE
-                } else {
-                    val chosenFormat = downloadItem.format
-                    uiUtil.populateFormatCard(formatCard, chosenFormat)
-                    val listener = object : OnFormatClickListener {
-                        override fun onFormatClick(allFormats: List<Format>, item: Format) {
-                            downloadItem.format = item
-                            if (containers.contains(item.container)){
-                                downloadItem.format.container = item.container
-                                containerAutoCompleteTextView.setText(item.container, false)
-                            }else{
-                                downloadItem.format.container = containers[0]
-                                containerAutoCompleteTextView.setText(containers[0], false)
+                val chosenFormat = downloadItem.format
+                uiUtil.populateFormatCard(formatCard, chosenFormat)
+                val listener = object : OnFormatClickListener {
+                    override fun onFormatClick(allFormats: List<Format>, item: Format) {
+                        downloadItem.format = item
+                        uiUtil.populateFormatCard(formatCard, item)
+                        if (containers.contains(item.container)){
+                            downloadItem.format.container = item.container
+                            containerAutoCompleteTextView.setText(item.container, false)
+                        }
+                        lifecycleScope.launch {
+                            withContext(Dispatchers.IO){
+                                resultItem.formats.removeAll(formats.toSet())
+                                resultItem.formats.addAll(allFormats)
+                                resultViewModel.update(resultItem)
                             }
-                            uiUtil.populateFormatCard(formatCard, item)
-                            formats = allFormats
                         }
+                        formats = allFormats.toMutableList()
                     }
-                    formatCard.setOnClickListener{_ ->
-                        formats.forEach {
-                            Log.e("aa", it.toString())
-                        }
-                        val bottomSheet = FormatSelectionBottomSheetDialog(downloadItem, formats, listener)
-                        bottomSheet.show(parentFragmentManager, "formatSheet")
+                }
+                formatCard.setOnClickListener{_ ->
+                    formats.forEach {
+                        Log.e("aa", it.toString())
                     }
-
+                    val bottomSheet = FormatSelectionBottomSheetDialog(downloadItem, formats, listener)
+                    bottomSheet.show(parentFragmentManager, "formatSheet")
                 }
 
 

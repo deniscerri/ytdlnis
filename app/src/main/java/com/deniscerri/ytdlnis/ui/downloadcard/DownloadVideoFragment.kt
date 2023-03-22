@@ -137,7 +137,6 @@ class DownloadVideoFragment(private val resultItem: ResultItem, private var curr
                 val containerPreference = sharedPreferences.getString("video_format", getString(R.string.defaultValue))
 
                 if (formats.isEmpty()) {
-
                     videoFormats.forEach { formats.add(Format(it, containerPreference!!,"","", "",0, it)) }
                 }
 
@@ -152,12 +151,11 @@ class DownloadVideoFragment(private val resultItem: ResultItem, private var curr
                         if (containers.contains(item.container)){
                             downloadItem.format.container = item.container
                             containerAutoCompleteTextView.setText(item.container, false)
-                        }else{
-                            containerAutoCompleteTextView.setText(containers[0], false)
                         }
                         lifecycleScope.launch {
                             withContext(Dispatchers.IO){
-                                resultItem.formats = ArrayList(allFormats)
+                                resultItem.formats.removeAll(formats.toSet())
+                                resultItem.formats.addAll(allFormats)
                                 resultViewModel.update(resultItem)
                             }
                         }
@@ -165,7 +163,7 @@ class DownloadVideoFragment(private val resultItem: ResultItem, private var curr
                         uiUtil.populateFormatCard(formatCard, item)
                     }
                 }
-                formatCard.setOnClickListener{_ ->
+                formatCard.setOnClickListener{
                     val bottomSheet = FormatSelectionBottomSheetDialog(downloadItem, formats, listener)
                     bottomSheet.show(parentFragmentManager, "formatSheet")
                 }
@@ -219,8 +217,8 @@ class DownloadVideoFragment(private val resultItem: ResultItem, private var curr
                     downloadItem.SaveThumb = saveThumbnail.isChecked
                 }
 
-                val sponsorblock = view.findViewById<Chip>(R.id.sponsorblock_filters)
-                sponsorblock!!.setOnClickListener {
+                val sponsorBlock = view.findViewById<Chip>(R.id.sponsorblock_filters)
+                sponsorBlock!!.setOnClickListener {
                     val builder = MaterialAlertDialogBuilder(requireContext())
                     builder.setTitle(getString(R.string.select_sponsorblock_filtering))
                     val values = resources.getStringArray(R.array.sponsorblock_settings_values)
