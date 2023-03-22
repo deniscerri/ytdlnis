@@ -1,7 +1,9 @@
 package com.deniscerri.ytdlnis.ui.downloadcard
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.ClipboardManager
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
@@ -20,6 +22,8 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.preference.MultiSelectListPreference
+import androidx.preference.Preference
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.models.Format
@@ -30,6 +34,7 @@ import com.deniscerri.ytdlnis.databinding.FragmentHomeBinding
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.UiUtil
 import com.google.android.material.chip.Chip
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
 import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
@@ -104,8 +109,8 @@ class DownloadAudioFragment(private var resultItem: ResultItem, private var curr
                 saveDir.editText!!.setText(
                     fileUtil.formatPath(downloadItem.downloadPath)
                 )
-                saveDir.editText!!.isFocusable = false;
-                saveDir.editText!!.isClickable = true;
+                saveDir.editText!!.isFocusable = false
+                saveDir.editText!!.isClickable = true
                 saveDir.editText!!.setOnClickListener {
                     val intent = Intent(Intent.ACTION_OPEN_DOCUMENT_TREE)
                     intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
@@ -187,6 +192,49 @@ class DownloadAudioFragment(private var resultItem: ResultItem, private var curr
                 splitByChapters!!.isChecked = downloadItem.audioPreferences.splitByChapters
                 splitByChapters.setOnClickListener {
                     downloadItem.audioPreferences.splitByChapters = splitByChapters.isChecked
+                }
+
+                val sponsorblock = view.findViewById<Chip>(R.id.sponsorblock_filters)
+                sponsorblock!!.setOnClickListener {
+                    val builder = MaterialAlertDialogBuilder(requireContext())
+                    builder.setTitle(getString(R.string.select_sponsorblock_filtering))
+                    val values = resources.getStringArray(R.array.sponsorblock_settings_values)
+                    val entries = resources.getStringArray(R.array.sponsorblock_settings_entries)
+                    val checkedItems : ArrayList<Boolean> = arrayListOf()
+                    values.forEach {
+                        if (downloadItem.audioPreferences.sponsorBlockFilters.contains(it)) {
+                            checkedItems.add(true)
+                        }else{
+                            checkedItems.add(false)
+                        }
+                    }
+
+                    builder.setMultiChoiceItems(
+                        entries,
+                        checkedItems.toBooleanArray()
+                    ) { dialog, which, isChecked ->
+                        checkedItems[which] = isChecked
+                    }
+
+                    builder.setPositiveButton(
+                        getString(R.string.ok)
+                    ) { dialog: DialogInterface?, which: Int ->
+                        downloadItem.audioPreferences.sponsorBlockFilters.clear()
+                        for (i in 0 until checkedItems.size) {
+                            if (checkedItems[i]) {
+                                downloadItem.audioPreferences.sponsorBlockFilters.add(values[i])
+                            }
+                        }
+                    }
+
+                    // handle the negative button of the alert dialog
+                    builder.setNegativeButton(
+                        getString(R.string.cancel)
+                    ) { dialog: DialogInterface?, which: Int -> }
+
+
+                    val dialog = builder.create()
+                    dialog.show()
                 }
 
                 val copyURL = view.findViewById<Chip>(R.id.copy_url)

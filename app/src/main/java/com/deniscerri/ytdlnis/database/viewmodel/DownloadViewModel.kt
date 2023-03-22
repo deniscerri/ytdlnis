@@ -118,8 +118,10 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
             else -> sharedPreferences.getString("command_path", getApplication<App>().resources.getString(R.string.command_path))
         }
 
-        val audioPreferences = AudioPreferences(embedThumb)
-        val videoPreferences = VideoPreferences(embedSubs, addChapters)
+        val sponsorblock = sharedPreferences.getStringSet("sponsorblock_filters", emptySet())
+
+        val audioPreferences = AudioPreferences(embedThumb, false, ArrayList(sponsorblock!!))
+        val videoPreferences = VideoPreferences(embedSubs, addChapters, false, ArrayList(sponsorblock))
 
         return DownloadItem(0,
             resultItem.url,
@@ -157,8 +159,10 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
             else -> sharedPreferences.getString("command_path", getApplication<App>().resources.getString(R.string.command_path))
         }
 
-        val audioPreferences = AudioPreferences(embedThumb)
-        val videoPreferences = VideoPreferences(embedSubs, addChapters)
+        val sponsorblock = sharedPreferences.getStringSet("sponsorblock_filters", emptySet())
+
+        val audioPreferences = AudioPreferences(embedThumb, false, ArrayList(sponsorblock!!))
+        val videoPreferences = VideoPreferences(embedSubs, addChapters, false, ArrayList(sponsorblock))
 
         return DownloadItem(0,
             historyItem.url,
@@ -179,30 +183,32 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
         when(type) {
             Type.audio -> {
                 return try {
-                    formats.last { it.format_note.contains("audio", ignoreCase = true) }
+                    cloneFormat(formats.last { it.format_note.contains("audio", ignoreCase = true) })
                 }catch (e: Exception){
                     bestAudioFormat
                 }
             }
             Type.video -> {
-                return try {
-                    val theFormats = formats.ifEmpty { defaultVideoFormats }
+                return cloneFormat(
+                    try {
+                        val theFormats = formats.ifEmpty { defaultVideoFormats }
 
-                    val qualityPreference = sharedPreferences.getString("video_quality", getApplication<App>().resources.getString(R.string.best_quality))
-                    if (qualityPreference == getApplication<App>().resources.getString(R.string.worst_quality)){
-                        theFormats.first { !it.format_note.contains("audio", ignoreCase = true) }
-                    }
-                    if (qualityPreference == getApplication<App>().resources.getString(R.string.best_quality)){
-                        theFormats.last { !it.format_note.contains("audio", ignoreCase = true) }
-                    }
-                    try{
-                        theFormats.last { format -> format.format_note.contains(qualityPreference!!.substring(0, qualityPreference.length - 1)) }
+                        val qualityPreference = sharedPreferences.getString("video_quality", getApplication<App>().resources.getString(R.string.best_quality))
+                        if (qualityPreference == getApplication<App>().resources.getString(R.string.worst_quality)){
+                            theFormats.first { !it.format_note.contains("audio", ignoreCase = true) }
+                        }
+                        if (qualityPreference == getApplication<App>().resources.getString(R.string.best_quality)){
+                            theFormats.last { !it.format_note.contains("audio", ignoreCase = true) }
+                        }
+                        try{
+                            theFormats.last { format -> format.format_note.contains(qualityPreference!!.substring(0, qualityPreference.length - 1)) }
+                        }catch (e: Exception){
+                            theFormats.last { !it.format_note.contains("audio", ignoreCase = true) }
+                        }
                     }catch (e: Exception){
-                        theFormats.last { !it.format_note.contains("audio", ignoreCase = true) }
+                        bestVideoFormat
                     }
-                }catch (e: Exception){
-                    bestVideoFormat
-                }
+                )
             }
             else -> {
                 val c = commandTemplateDao.getFirst()
@@ -268,9 +274,9 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
         repository.deleteQueued()
     }
 
-    fun cloneDownloadItem(item: DownloadItem) : DownloadItem {
-        val string = Gson().toJson(item, DownloadItem::class.java)
-        return Gson().fromJson(string, DownloadItem::class.java)
+    fun cloneFormat(item: Format) : Format {
+        val string = Gson().toJson(item, Format::class.java)
+        return Gson().fromJson(string, Format::class.java)
     }
 
     suspend fun queueDownloads(items: List<DownloadItem>) {

@@ -94,8 +94,18 @@ class DownloadWorker(
             if (!sharedPreferences.getBoolean("mtime", false)){
                 request.addOption("--no-mtime")
             }
-            val sponsorBlockFilters = sharedPreferences.getStringSet("sponsorblock_filters", emptySet())
-            if (sponsorBlockFilters!!.isNotEmpty()) {
+
+            val sponsorBlockFilters : ArrayList<String> = when(downloadItem.type) {
+                DownloadViewModel.Type.audio -> {
+                    downloadItem.audioPreferences.sponsorBlockFilters
+                }
+                //video
+                else -> {
+                    downloadItem.videoPreferences.sponsorBlockFilters
+                }
+            }
+
+            if (sponsorBlockFilters.isNotEmpty()) {
                 val filters = java.lang.String.join(",", sponsorBlockFilters)
                 request.addOption("--sponsorblock-remove", filters)
             }

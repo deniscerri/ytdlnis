@@ -5,6 +5,7 @@ import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Bundle
 import android.util.DisplayMetrics
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
@@ -98,6 +99,7 @@ class FormatSelectionBottomSheetDialog(private val item: DownloadItem, private v
 
     private fun addFormatsToView(linearLayout: LinearLayout){
         linearLayout.removeAllViews()
+        Log.e("aa", formats.toString())
         for (i in formats.lastIndex downTo 0){
             val it = formats[i]
             val formatItem = LayoutInflater.from(context).inflate(R.layout.format_item, null)

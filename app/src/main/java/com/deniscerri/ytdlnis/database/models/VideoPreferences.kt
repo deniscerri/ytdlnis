@@ -4,4 +4,5 @@ data class VideoPreferences (
     var embedSubs: Boolean = true,
     var addChapters: Boolean = true,
     var splitByChapters: Boolean = false,
+    var sponsorBlockFilters: ArrayList<String>
 )

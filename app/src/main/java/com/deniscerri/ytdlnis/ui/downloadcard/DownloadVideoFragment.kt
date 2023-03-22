@@ -2,6 +2,7 @@ package com.deniscerri.ytdlnis.ui.downloadcard
 
 import android.app.Activity
 import android.content.ClipboardManager
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
@@ -30,6 +31,7 @@ import com.deniscerri.ytdlnis.databinding.FragmentHomeBinding
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.UiUtil
 import com.google.android.material.chip.Chip
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
 import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
@@ -127,6 +129,11 @@ class DownloadVideoFragment(private val resultItem: ResultItem, private var curr
                 var formats = mutableListOf<Format>()
                 formats.addAll(resultItem.formats.filter { !it.format_note.contains("audio", ignoreCase = true) })
                 val videoFormats = resources.getStringArray(R.array.video_formats)
+
+                val containers = requireContext().resources.getStringArray(R.array.video_containers)
+                val container = view.findViewById<TextInputLayout>(R.id.downloadContainer)
+                val containerAutoCompleteTextView =
+                    view.findViewById<AutoCompleteTextView>(R.id.container_textview)
                 val containerPreference = sharedPreferences.getString("video_format", getString(R.string.defaultValue))
 
                 if (formats.isEmpty()) {
@@ -134,29 +141,8 @@ class DownloadVideoFragment(private val resultItem: ResultItem, private var curr
                     videoFormats.forEach { formats.add(Format(it, containerPreference!!,"","", "",0, it)) }
                 }
 
-                val containers = requireContext().resources.getStringArray(R.array.video_containers)
-
-                val container = view.findViewById<TextInputLayout>(R.id.downloadContainer)
-                val containerAutoCompleteTextView =
-                    view.findViewById<AutoCompleteTextView>(R.id.container_textview)
-
-                container?.isEnabled = true
-                containerAutoCompleteTextView?.setAdapter(
-                    ArrayAdapter(
-                        requireContext(),
-                        android.R.layout.simple_dropdown_item_1line,
-                        containers
-                    )
-                )
-                downloadItem.format.container = containerPreference!!
-                containerAutoCompleteTextView!!.setText(downloadItem.format.container, false)
-
-                (container!!.editText as AutoCompleteTextView?)!!.onItemClickListener =
-                    AdapterView.OnItemClickListener { _: AdapterView<*>?, _: View?, index: Int, _: Long ->
-                        downloadItem.format.container = containers[index]
-                    }
-
                 val formatCard = view.findViewById<ConstraintLayout>(R.id.format_card_constraintLayout)
+
                 val chosenFormat = downloadItem.format
                 uiUtil.populateFormatCard(formatCard, chosenFormat)
                 val listener = object : OnFormatClickListener {
@@ -183,6 +169,23 @@ class DownloadVideoFragment(private val resultItem: ResultItem, private var curr
                     val bottomSheet = FormatSelectionBottomSheetDialog(downloadItem, formats, listener)
                     bottomSheet.show(parentFragmentManager, "formatSheet")
                 }
+
+                container?.isEnabled = true
+                containerAutoCompleteTextView?.setAdapter(
+                    ArrayAdapter(
+                        requireContext(),
+                        android.R.layout.simple_dropdown_item_1line,
+                        containers
+                    )
+                )
+                downloadItem.format.container = containerPreference!!
+                containerAutoCompleteTextView!!.setText(downloadItem.format.container, false)
+
+                (container!!.editText as AutoCompleteTextView?)!!.onItemClickListener =
+                    AdapterView.OnItemClickListener { _: AdapterView<*>?, _: View?, index: Int, _: Long ->
+                        downloadItem.format.container = containers[index]
+                    }
+
 
                 val embedSubs = view.findViewById<Chip>(R.id.embed_subtitles)
                 embedSubs!!.isChecked = downloadItem.videoPreferences.embedSubs
@@ -214,6 +217,49 @@ class DownloadVideoFragment(private val resultItem: ResultItem, private var curr
                 saveThumbnail!!.isChecked = downloadItem.SaveThumb
                 saveThumbnail.setOnClickListener {
                     downloadItem.SaveThumb = saveThumbnail.isChecked
+                }
+
+                val sponsorblock = view.findViewById<Chip>(R.id.sponsorblock_filters)
+                sponsorblock!!.setOnClickListener {
+                    val builder = MaterialAlertDialogBuilder(requireContext())
+                    builder.setTitle(getString(R.string.select_sponsorblock_filtering))
+                    val values = resources.getStringArray(R.array.sponsorblock_settings_values)
+                    val entries = resources.getStringArray(R.array.sponsorblock_settings_entries)
+                    val checkedItems : ArrayList<Boolean> = arrayListOf()
+                    values.forEach {
+                        if (downloadItem.videoPreferences.sponsorBlockFilters.contains(it)) {
+                            checkedItems.add(true)
+                        }else{
+                            checkedItems.add(false)
+                        }
+                    }
+
+                    builder.setMultiChoiceItems(
+                        entries,
+                        checkedItems.toBooleanArray()
+                    ) { dialog, which, isChecked ->
+                        checkedItems[which] = isChecked
+                    }
+
+                    builder.setPositiveButton(
+                        getString(R.string.ok)
+                    ) { dialog: DialogInterface?, which: Int ->
+                        downloadItem.videoPreferences.sponsorBlockFilters.clear()
+                        for (i in 0 until checkedItems.size) {
+                            if (checkedItems[i]) {
+                                downloadItem.videoPreferences.sponsorBlockFilters.add(values[i])
+                            }
+                        }
+                    }
+
+                    // handle the negative button of the alert dialog
+                    builder.setNegativeButton(
+                        getString(R.string.cancel)
+                    ) { dialog: DialogInterface?, which: Int -> }
+
+
+                    val dialog = builder.create()
+                    dialog.show()
                 }
 
                 val copyURL = view.findViewById<Chip>(R.id.copy_url)
