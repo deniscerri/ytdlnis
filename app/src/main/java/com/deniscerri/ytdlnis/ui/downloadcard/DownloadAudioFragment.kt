@@ -1,7 +1,6 @@
 package com.deniscerri.ytdlnis.ui.downloadcard
 
 import android.app.Activity
-import android.app.AlertDialog
 import android.content.ClipboardManager
 import android.content.DialogInterface
 import android.content.Intent
@@ -22,8 +21,6 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.preference.MultiSelectListPreference
-import androidx.preference.Preference
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.models.Format
@@ -123,9 +120,9 @@ class DownloadAudioFragment(private var resultItem: ResultItem, private var curr
                     audioPathResultLauncher.launch(intent)
                 }
                 freeSpace = view.findViewById(R.id.freespace)
-                freeSpace.text = getString(R.string.freespace) + ": " + fileUtil.convertFileSize(
+                freeSpace.text = String.format( getString(R.string.freespace) + ": " + fileUtil.convertFileSize(
                     File(fileUtil.formatPath(downloadItem.downloadPath)).freeSpace
-                )
+                ))
 
                 var formats = mutableListOf<Format>()
                 formats.addAll(resultItem.formats.filter { it.format_note.contains("audio", ignoreCase = true) })
@@ -271,9 +268,9 @@ class DownloadAudioFragment(private var resultItem: ResultItem, private var curr
             //downloadViewModel.updateDownload(downloadItem)
             saveDir.editText?.setText(fileUtil.formatPath(result.data?.data.toString()), TextView.BufferType.EDITABLE)
 
-            freeSpace.text = getString(R.string.freespace) + ": " + fileUtil.convertFileSize(
+            freeSpace.text = String.format( getString(R.string.freespace) + ": " + fileUtil.convertFileSize(
                 File(fileUtil.formatPath(downloadItem.downloadPath)).freeSpace
-            )
+            ))
         }
     }
 

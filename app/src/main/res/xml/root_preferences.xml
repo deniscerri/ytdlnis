@@ -145,7 +145,7 @@
 
         <SwitchPreferenceCompat
             android:widgetLayout="@layout/preferece_material_switch"
-            app:defaultValue="true"
+            app:defaultValue="false"
             app:icon="@drawable/if_file_rename"
             app:key="restrict_filenames"
             app:summary="@string/restrict_filenames_summary"
@@ -293,7 +293,7 @@
 
         <Preference
             app:icon="@drawable/ic_translate"
-            app:key="telegram"
+            app:key="translate"
             app:summary="@string/help_translate_summary"
             app:title="@string/help_translate">
             <intent

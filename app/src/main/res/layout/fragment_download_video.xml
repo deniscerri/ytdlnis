@@ -169,6 +169,7 @@
                 android:textSize="15sp" />
 
             <HorizontalScrollView
+                android:scrollbars="none"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
@@ -196,14 +197,6 @@
                         android:text="@string/add_chapter" />
 
                     <com.google.android.material.chip.Chip
-                        android:id="@+id/split_by_chapters"
-                        style="@style/Widget.Material3.Chip.Filter.Elevated"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:checked="false"
-                        android:text="@string/split_by_chapters"/>
-
-                    <com.google.android.material.chip.Chip
                         android:id="@+id/save_thumbnail"
                         style="@style/Widget.Material3.Chip.Filter.Elevated"
                         android:layout_width="wrap_content"
@@ -217,6 +210,7 @@
             </HorizontalScrollView>
 
             <HorizontalScrollView
+                android:scrollbars="none"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
@@ -239,6 +233,15 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/split_by_chapters"
+                        style="@style/Widget.Material3.Chip.Filter.Elevated"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="false"
+                        android:text="@string/split_by_chapters"/>
+
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/copy_url"

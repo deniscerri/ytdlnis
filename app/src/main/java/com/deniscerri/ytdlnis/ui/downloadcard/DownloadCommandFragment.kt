@@ -1,5 +1,6 @@
 package com.deniscerri.ytdlnis.ui.downloadcard
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.ClipboardManager
 import android.content.Intent
@@ -7,12 +8,10 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
-import android.widget.TextView
+import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
@@ -116,6 +115,7 @@ class DownloadCommandFragment(private val resultItem: ResultItem, private var cu
                         chosenCommandView.editText!!.setText("")
                     }
                 }
+                chosenCommandView.editText!!.enableScrollText()
 
                 val commandTemplates = view.findViewById<TextInputLayout>(R.id.template)
                 val autoCompleteTextView =
@@ -140,8 +140,8 @@ class DownloadCommandFragment(private val resultItem: ResultItem, private var cu
                 saveDir.editText!!.setText(
                     fileUtil.formatPath(downloadItem.downloadPath)
                 )
-                saveDir.editText!!.isFocusable = false;
-                saveDir.editText!!.isClickable = true;
+                saveDir.editText!!.isFocusable = false
+                saveDir.editText!!.isClickable = true
                 saveDir.editText!!.setOnClickListener {
                     val intent = Intent(Intent.ACTION_OPEN_DOCUMENT_TREE)
                     intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
@@ -151,9 +151,9 @@ class DownloadCommandFragment(private val resultItem: ResultItem, private var cu
                 }
 
                 freeSpace = view.findViewById(R.id.freespace)
-                freeSpace.text = getString(R.string.freespace) + ": " + fileUtil.convertFileSize(
+                freeSpace.text = String.format(getString(R.string.freespace) + ": " + fileUtil.convertFileSize(
                     File(fileUtil.formatPath(downloadItem.downloadPath)).freeSpace
-                )
+                ))
 
                 val newTemplate : Chip = view.findViewById(R.id.newTemplate)
                 newTemplate.setOnClickListener {
@@ -233,12 +233,30 @@ class DownloadCommandFragment(private val resultItem: ResultItem, private var cu
                 )
             }
             downloadItem.downloadPath = result.data?.data.toString()
-            //downloadviewmodel.updateDownload(downloadItem)
             saveDir.editText?.setText(fileUtil.formatPath(result.data?.data.toString()), TextView.BufferType.EDITABLE)
 
-            freeSpace.text = getString(R.string.freespace) + ": " + fileUtil.convertFileSize(
+            freeSpace.text = String.format(getString(R.string.freespace) + ": " + fileUtil.convertFileSize(
                 File(fileUtil.formatPath(downloadItem.downloadPath)).freeSpace
-            )
+            ))
+        }
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    fun EditText.enableScrollText()
+    {
+        overScrollMode = View.OVER_SCROLL_ALWAYS
+        scrollBarStyle = View.SCROLLBARS_INSIDE_INSET
+        isVerticalScrollBarEnabled = true
+        setOnTouchListener { view, event ->
+            if (view is EditText) {
+                if(!view.text.isNullOrEmpty()) {
+                    view.parent.requestDisallowInterceptTouchEvent(true)
+                    when (event.action and MotionEvent.ACTION_MASK) {
+                        MotionEvent.ACTION_UP -> view.parent.requestDisallowInterceptTouchEvent(false)
+                    }
+                }
+            }
+            false
         }
     }
 }

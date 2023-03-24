@@ -433,7 +433,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
                             requireContext().getString(R.string.you_are_in_latest_version),
                             Toast.LENGTH_LONG
                         ).show()
-                        else -> Toast.makeText(context, this.toString(), Toast.LENGTH_LONG).show()
+                        else -> Toast.makeText(context, getString(R.string.errored), Toast.LENGTH_LONG).show()
                     }
                 }
                 true

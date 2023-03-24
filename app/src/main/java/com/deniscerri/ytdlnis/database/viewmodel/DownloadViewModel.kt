@@ -222,7 +222,7 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
                     "",
                     "",
                     0,
-                    c.content
+                    c.content.replace("\n", " ")
                 )
             }
         }

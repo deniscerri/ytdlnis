@@ -171,22 +171,17 @@ class UpdateUtil(var context: Context) {
             updatingYTDL = true
 
 
-            YoutubeDL.getInstance().updateYoutubeDL(
-                context, if (sharedPreferences.getBoolean("nightly_ytdl", false) ) ytdlpNightly else null
-            ).apply {
+            try {
+                YoutubeDL.getInstance().updateYoutubeDL(
+                    context, if (sharedPreferences.getBoolean("nightly_ytdl", false) ) ytdlpNightly else null
+                ).apply {
+                    updatingYTDL = false
+                }
+            }catch (e: Exception){
+                e.printStackTrace()
                 updatingYTDL = false
+                null
             }
-
-//                .onFailure {
-//                if (BuildConfig.DEBUG) Log.e(tag, context.getString(R.string.ytdl_update_failed), e)
-//                Toast.makeText(
-//                    context,
-//                    context.getString(R.string.ytdl_update_failed),
-//                    Toast.LENGTH_LONG
-//                ).show()
-//                updatingYTDL = false
-//            }
-        //}
     }
 
     companion object {

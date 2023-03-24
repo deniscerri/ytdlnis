@@ -5,65 +5,45 @@
     android:layout_height="wrap_content"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <RelativeLayout
-        android:id="@+id/downloads_relative_layout"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintDimensionRatio="H,6:1"
+    <LinearLayout
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
+        app:layout_constraintTop_toTopOf="parent">
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/downloads_card_view"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/suggestion_text"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            app:cardBackgroundColor="@android:color/transparent"
-            android:checkable="true"
-            app:strokeWidth="0dp"
-            app:cardPreventCornerOverlap="true"
-            android:layout_margin="10dp">
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:drawablePadding="20dp"
+            android:ellipsize="end"
+            android:focusable="true"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:paddingEnd="20dp"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:drawableLeftCompat="@drawable/ic_search" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+        <ImageButton
+            android:id="@+id/set_search_query_button"
+            style="?attr/materialIconButtonStyle"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.01"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:scrollbars="none"
+            android:src="@drawable/ic_arrow_outward" />
 
-                <TextView
-                    android:id="@+id/suggestion_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:maxLines="1"
-                    android:background="?attr/selectableItemBackground"
-                    android:focusable="true"
-                    android:clickable="true"
-                    android:ellipsize="end"
-                    android:layout_gravity="center_vertical"
-                    android:gravity="center_vertical"
-                    android:paddingEnd="20dp"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:drawablePadding="20dp"
-                    app:drawableLeftCompat="@drawable/ic_search" />
-
-                <ImageButton
-                    style="?attr/materialIconButtonStyle"
-                    android:id="@+id/set_search_query_button"
-                    android:layout_width="40dp"
-                    android:scrollbars="none"
-                    android:background="?attr/selectableItemBackground"
-                    android:focusable="true"
-                    android:clickable="true"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/ic_arrow_outward"
-                    android:layout_weight="0.01"
-                    />
-
-            </LinearLayout>
-
-        </com.google.android.material.card.MaterialCardView>
-    </RelativeLayout>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

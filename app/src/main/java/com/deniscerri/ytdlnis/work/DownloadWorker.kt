@@ -68,7 +68,6 @@ class DownloadWorker(
         val type = downloadItem.type
         val downloadLocation = downloadItem.downloadPath
 
-        val titleRegex = Regex("[^A-Za-z\\d ]")
         val tempFileDir = File(context.cacheDir.absolutePath + downloadItem.id)
         tempFileDir.delete()
         tempFileDir.mkdir()
@@ -129,7 +128,7 @@ class DownloadWorker(
             DownloadViewModel.Type.audio -> {
                 request.addOption("-x")
                 var audioQualityId : String = downloadItem.format.format_id
-                if (audioQualityId.isBlank() || audioQualityId == "0") audioQualityId = ""
+                if (audioQualityId.isBlank() || audioQualityId == "0" || audioQualityId == context.getString(R.string.best_quality)) audioQualityId = ""
                 else if (audioQualityId == context.getString(R.string.worst_quality)) audioQualityId = "worstaudio"
 
                 if (audioQualityId.isNotBlank()){
@@ -223,14 +222,15 @@ class DownloadWorker(
         }
 
         runCatching {
+            val titleRegex = Regex("[^A-Za-z\\d ]")
             val logDownloads = sharedPreferences.getBoolean("log_downloads", false) && !sharedPreferences.getBoolean("incognito", false)
             val logFolder = File(context.filesDir.absolutePath + "/logs")
             val logFile = File(context.filesDir.absolutePath + """/logs/${downloadItem.id} - ${titleRegex.replace(downloadItem.title, "")}##${downloadItem.type}##${downloadItem.format.format_id}.log""")
-            Log.e("aa", logFile.name)
             if (logDownloads){
                 logFolder.mkdirs()
                 logFile.createNewFile()
                 logFile.writeText("Downloading:\n" +
+                        "Title: ${downloadItem.title}\n" +
                         "URL: ${downloadItem.url}\n" +
                         "Type: ${downloadItem.type}\n" +
                         "Format: ${downloadItem.format}\n\n")

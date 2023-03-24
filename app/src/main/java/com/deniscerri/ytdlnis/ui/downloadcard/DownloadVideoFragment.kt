@@ -111,8 +111,8 @@ class DownloadVideoFragment(private val resultItem: ResultItem, private var curr
                 saveDir.editText!!.setText(
                     fileUtil.formatPath(downloadItem.downloadPath)
                 )
-                saveDir.editText!!.isFocusable = false;
-                saveDir.editText!!.isClickable = true;
+                saveDir.editText!!.isFocusable = false
+                saveDir.editText!!.isClickable = true
                 saveDir.editText!!.setOnClickListener {
                     val intent = Intent(Intent.ACTION_OPEN_DOCUMENT_TREE)
                     intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
@@ -122,9 +122,9 @@ class DownloadVideoFragment(private val resultItem: ResultItem, private var curr
                 }
 
                 freeSpace = view.findViewById(R.id.freespace)
-                freeSpace.text = getString(R.string.freespace) + ": " + fileUtil.convertFileSize(
+                freeSpace.text = String.format(getString(R.string.freespace) + ": " + fileUtil.convertFileSize(
                     File(fileUtil.formatPath(downloadItem.downloadPath)).freeSpace
-                )
+                ))
 
                 var formats = mutableListOf<Format>()
                 formats.addAll(resultItem.formats.filter { !it.format_note.contains("audio", ignoreCase = true) })
@@ -235,13 +235,13 @@ class DownloadVideoFragment(private val resultItem: ResultItem, private var curr
                     builder.setMultiChoiceItems(
                         entries,
                         checkedItems.toBooleanArray()
-                    ) { dialog, which, isChecked ->
+                    ) { _, which, isChecked ->
                         checkedItems[which] = isChecked
                     }
 
                     builder.setPositiveButton(
                         getString(R.string.ok)
-                    ) { dialog: DialogInterface?, which: Int ->
+                    ) { _: DialogInterface?, _: Int ->
                         downloadItem.videoPreferences.sponsorBlockFilters.clear()
                         for (i in 0 until checkedItems.size) {
                             if (checkedItems[i]) {
@@ -253,7 +253,7 @@ class DownloadVideoFragment(private val resultItem: ResultItem, private var curr
                     // handle the negative button of the alert dialog
                     builder.setNegativeButton(
                         getString(R.string.cancel)
-                    ) { dialog: DialogInterface?, which: Int -> }
+                    ) { _: DialogInterface?, _: Int -> }
 
 
                     val dialog = builder.create()
@@ -288,9 +288,9 @@ class DownloadVideoFragment(private val resultItem: ResultItem, private var curr
             //downloadviewmodel.updateDownload(downloadItem)
             saveDir.editText?.setText(fileUtil.formatPath(result.data?.data.toString()), TextView.BufferType.EDITABLE)
 
-            freeSpace.text = getString(R.string.freespace) + ": " + fileUtil.convertFileSize(
+            freeSpace.text = String.format(getString(R.string.freespace) + ": " + fileUtil.convertFileSize(
                 File(fileUtil.formatPath(downloadItem.downloadPath)).freeSpace
-            )
+            ))
         }
     }
 

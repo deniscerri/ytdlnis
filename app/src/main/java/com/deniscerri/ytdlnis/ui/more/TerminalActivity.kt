@@ -137,8 +137,7 @@ class TerminalActivity : AppCompatActivity() {
             }.absolutePath
         )
 
-
-        request.addOption("-P", tempFileDir.absolutePath)
+        //request.addOption("-P", tempFileDir.absolutePath)
 
         cancelFab!!.visibility = View.VISIBLE
         fab!!.visibility = View.GONE

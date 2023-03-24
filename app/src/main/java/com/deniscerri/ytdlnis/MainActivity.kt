@@ -17,12 +17,15 @@ import android.view.MenuItem
 import android.view.View
 import android.view.WindowInsets
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import com.deniscerri.ytdlnis.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdlnis.databinding.ActivityMainBinding
 import com.deniscerri.ytdlnis.ui.HomeFragment
 import com.deniscerri.ytdlnis.ui.downloads.DownloadQueueActivity
@@ -33,6 +36,7 @@ import com.deniscerri.ytdlnis.util.UpdateUtil
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import java.io.BufferedReader
 import java.io.File
 import java.io.InputStreamReader
@@ -49,6 +53,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var homeFragment: HomeFragment
     private lateinit var historyFragment: HistoryFragment
     private lateinit var preferences: SharedPreferences
+    private lateinit var resultViewModel: ResultViewModel
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,8 +63,12 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setContentView(binding.root)
         context = baseContext
-
+        resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]
         preferences = context.getSharedPreferences("root_preferences", MODE_PRIVATE)
+
+        if (preferences.getBoolean("incognito", false)){
+            resultViewModel.deleteAll()
+        }
 
         askPermissions()
         checkUpdate()
