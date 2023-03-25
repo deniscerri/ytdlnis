@@ -176,4 +176,5 @@
     <string name="link_you_copied">Linku i kopjuar</string>
     <string name="restrict_filenames">Limito Titujt</string>
     <string name="restrict_filenames_summary">Limito emrin e skedarit me vetëm me karakteret ASCII, dhe shmag \"&amp;\" dhe hapësirat në emrin e skedarit</string>
+    <string name="kill_app">Ndalo Aplikacionin</string>
 </resources>

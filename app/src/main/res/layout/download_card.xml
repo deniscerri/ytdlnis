@@ -34,6 +34,7 @@
                 app:layout_constraintHorizontal_weight="0.3"
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop"
+                android:background="?attr/colorSurfaceVariant"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintDimensionRatio="H,16:9"
                 app:layout_constraintEnd_toStartOf="@+id/download_item_data"

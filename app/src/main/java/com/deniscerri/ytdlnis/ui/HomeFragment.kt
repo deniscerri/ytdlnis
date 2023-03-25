@@ -79,7 +79,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
     private var resultsList: List<ResultItem?>? = null
     private var selectedObjects: ArrayList<ResultItem>? = null
     private var fileUtil: FileUtil? = null
-    private var firstBoot = true
+    private var quickLaunchSheet = false
     private var sharedPreferences: SharedPreferences? = null
     private var _binding : FragmentHomeBinding? = null
 
@@ -93,6 +93,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
         fragmentView = inflater.inflate(R.layout.fragment_home, container, false)
         activity = getActivity()
         mainActivity = activity as MainActivity?
+        quickLaunchSheet = false
 
         return fragmentView
     }
@@ -147,14 +148,14 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
                 }
             }else if (resultViewModel.itemCount.value!! == 1){
                 if (sharedPreferences!!.getBoolean("download_card", true)){
-                    if(it.size == 1 && !firstBoot && parentFragmentManager.findFragmentByTag("downloadSingleSheet") == null){
+                    if(it.size == 1 && quickLaunchSheet && parentFragmentManager.findFragmentByTag("downloadSingleSheet") == null){
                         showSingleDownloadSheet(it[0], DownloadViewModel.Type.valueOf(sharedPreferences!!.getString("preferred_download_type", "video")!!))
                     }
                 }
             }else{
                 downloadAllFabCoordinator!!.visibility = GONE
             }
-            firstBoot = false
+            quickLaunchSheet = true
         }
 
         resultViewModel.loadingItems.observe(viewLifecycleOwner){

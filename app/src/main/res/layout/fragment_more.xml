@@ -69,6 +69,19 @@
             android:paddingHorizontal="15dp"
             app:drawableLeftCompat="@drawable/ic_concurrent_downloads" />
 
+        <TextView
+            android:id="@+id/terminate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawablePadding="35dp"
+            android:textSize="16sp"
+            android:paddingVertical="15dp"
+            android:text="@string/kill_app"
+            android:textStyle="bold"
+            android:paddingHorizontal="15dp"
+            app:drawableLeftCompat="@drawable/ic_power" />
+
+
         <View style="@style/Divider.Horizontal" />
 
         <TextView

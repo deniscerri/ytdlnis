@@ -18,6 +18,7 @@ import com.deniscerri.ytdlnis.databinding.FragmentHomeBinding
 import com.deniscerri.ytdlnis.ui.downloads.DownloadQueueActivity
 import com.deniscerri.ytdlnis.ui.more.downloadLogs.DownloadLogListActivity
 import com.deniscerri.ytdlnis.ui.more.settings.SettingsActivity
+import kotlin.system.exitProcess
 
 class MoreFragment : Fragment() {
     private lateinit var mainSharedPreferences: SharedPreferences
@@ -25,6 +26,7 @@ class MoreFragment : Fragment() {
     private lateinit var logs: TextView
     private lateinit var commandTemplates: TextView
     private lateinit var downloadQueue: TextView
+    private lateinit var terminateApp: TextView
     private lateinit var settings: TextView
     private lateinit var mainActivity: MainActivity
     override fun onCreateView(
@@ -44,9 +46,17 @@ class MoreFragment : Fragment() {
         logs = view.findViewById(R.id.logs)
         commandTemplates = view.findViewById(R.id.command_templates)
         downloadQueue = view.findViewById(R.id.download_queue)
+        terminateApp = view.findViewById(R.id.terminate)
         settings = view.findViewById(R.id.settings)
 
         val navHostFragment = parentFragmentManager.findFragmentById(R.id.frame_layout)
+
+        if (mainSharedPreferences.getBoolean("log_downloads", false)) {
+            logs.visibility = View.VISIBLE
+        }else {
+            logs.visibility = View.GONE
+        }
+
 
         terminal.setOnClickListener {
             val intent = Intent(context, TerminalActivity::class.java)
@@ -68,6 +78,10 @@ class MoreFragment : Fragment() {
             startActivity(intent)
         }
 
+        terminateApp.setOnClickListener {
+            exitProcess(0)
+        }
+
         settings.setOnClickListener {
             val intent = Intent(context, SettingsActivity::class.java)
             startActivity(intent)
@@ -79,13 +93,4 @@ class MoreFragment : Fragment() {
         const val TAG = "MoreFragment"
     }
 
-    override fun onResume() {
-        super.onResume()
-        if (mainSharedPreferences.getBoolean("log_downloads", false)) {
-            logs.visibility = View.VISIBLE
-        }else {
-            logs.visibility = View.GONE
-        }
-
-    }
 }
