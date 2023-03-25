@@ -37,7 +37,7 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
 
     suspend fun setDownloadStatus(item: DownloadItem, status: Status){
         item.status = status.toString()
-        update(item);
+        update(item)
     }
 
     fun getItemByID(id: Long) : DownloadItem {
@@ -54,14 +54,6 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
 
     suspend fun deleteQueued(){
         downloadDao.deleteQueued()
-    }
-
-    suspend fun deleteSingleProcessing(item: DownloadItem){
-        downloadDao.deleteSingleProcessing(item.id)
-    }
-
-    suspend fun queueAllProcessing(){
-        downloadDao.queueAllProcessing()
     }
 
     fun checkIfPresentForProcessing(item: ResultItem): DownloadItem{

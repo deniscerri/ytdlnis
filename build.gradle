@@ -28,6 +28,7 @@ buildscript {
         coroutineVer = "1.6.4"
         retrofitVer = "2.9.0"
         kodeinVer = "7.16.0"
+        navVer = "2.5.3"
     }
     repositories {
         mavenCentral()

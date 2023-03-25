@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    android:label="@string/more"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.deniscerri.ytdlnis.ui.HomeFragment"
+        android:label="@string/app_name"
+        tools:layout="@layout/fragment_home" />
+    <fragment
+        android:id="@+id/historyFragment"
+        android:name="com.deniscerri.ytdlnis.ui.downloads.HistoryFragment"
+        android:label="@string/downloads"
+        tools:layout="@layout/fragment_history" />
+    <fragment
+        android:id="@+id/moreFragment"
+        android:name="com.deniscerri.ytdlnis.ui.more.MoreFragment"
+        android:label="More"
+        tools:layout="@layout/fragment_more" >
+        <action
+            android:id="@+id/action_moreFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.deniscerri.ytdlnis.ui.more.settings.SettingsFragment"
+        android:label="SettingsFragment" />
+</navigation>

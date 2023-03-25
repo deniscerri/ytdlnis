@@ -25,6 +25,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
 import com.deniscerri.ytdlnis.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdlnis.databinding.ActivityMainBinding
 import com.deniscerri.ytdlnis.ui.HomeFragment
@@ -33,6 +39,8 @@ import com.deniscerri.ytdlnis.ui.downloads.HistoryFragment
 import com.deniscerri.ytdlnis.ui.more.MoreFragment
 import com.deniscerri.ytdlnis.ui.more.settings.SettingsActivity
 import com.deniscerri.ytdlnis.util.UpdateUtil
+import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -48,20 +56,17 @@ import kotlin.system.exitProcess
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityMainBinding
     lateinit var context: Context
-    private lateinit var homeFragment: HomeFragment
-    private lateinit var historyFragment: HistoryFragment
     private lateinit var preferences: SharedPreferences
     private lateinit var resultViewModel: ResultViewModel
+    private lateinit var bottomNav: BottomNavigationView
+    private lateinit var navHostFragment : NavHostFragment
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        binding = ActivityMainBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_main)
-        setContentView(binding.root)
         context = baseContext
         resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]
         preferences = context.getSharedPreferences("root_preferences", MODE_PRIVATE)
@@ -72,54 +77,48 @@ class MainActivity : AppCompatActivity() {
 
         askPermissions()
         checkUpdate()
-        fm = supportFragmentManager
 
-        homeFragment = HomeFragment()
-        historyFragment = HistoryFragment()
-        moreFragment = MoreFragment()
-        initFragments()
-        binding.bottomNavigationView.setOnItemSelectedListener { item: MenuItem ->
-            when (item.itemId) {
-                R.id.home -> {
-                    if (lastFragment === homeFragment) {
-                        homeFragment.scrollToTop()
-                    } else {
-                        this.setTitle(R.string.app_name)
-                    }
-                    replaceFragment(homeFragment)
-                }
-                R.id.history -> {
-                    if (lastFragment === historyFragment) {
-                        val intent = Intent(context, DownloadQueueActivity::class.java)
-                        startActivity(intent)
-                    } else {
-                        this.title = getString(R.string.downloads)
-                    }
-                    replaceFragment(historyFragment)
-                }
-                R.id.more -> {
-                    if (lastFragment === moreFragment) {
-                        val intent = Intent(context, SettingsActivity::class.java)
-                        startActivity(intent)
-                    } else {
-                        this.title = getString(R.string.more)
-                    }
-                    replaceFragment(moreFragment)
-                }
-            }
-            true
-        }
+        navHostFragment = supportFragmentManager.findFragmentById(R.id.frame_layout) as NavHostFragment
+        val navController = navHostFragment.findNavController()
+        bottomNav = findViewById(R.id.bottomNavigationView)
+
         window.decorView.setOnApplyWindowInsetsListener { view: View, windowInsets: WindowInsets? ->
             val windowInsetsCompat = WindowInsetsCompat.toWindowInsetsCompat(
                 windowInsets!!, view
             )
             val isImeVisible = windowInsetsCompat.isVisible(WindowInsetsCompat.Type.ime())
-            binding.bottomNavigationView.visibility =
+            bottomNav.visibility =
                 if (isImeVisible) View.GONE else View.VISIBLE
             view.onApplyWindowInsets(windowInsets)
         }
+
+        bottomNav.setupWithNavController(navController)
+        bottomNav.setOnItemReselectedListener {
+            when (it.itemId) {
+                R.id.homeFragment -> {
+                    (navHostFragment.childFragmentManager.primaryNavigationFragment!! as HomeFragment).scrollToTop()
+                }
+                R.id.historyFragment -> {
+                    val intent = Intent(context, DownloadQueueActivity::class.java)
+                    startActivity(intent)
+                }
+                R.id.moreFragment -> {
+                    val intent = Intent(context, SettingsActivity::class.java)
+                   startActivity(intent)
+                }
+            }
+        }
+
         val intent = intent
         handleIntents(intent)
+    }
+
+    fun hideNav() {
+        bottomNav.visibility = View.GONE
+    }
+
+    fun showNav() {
+        bottomNav.visibility = View.VISIBLE
     }
 
     override fun onResume() {
@@ -144,9 +143,6 @@ class MainActivity : AppCompatActivity() {
         val type = intent.type
         if (Intent.ACTION_SEND == action && type != null) {
             Log.e(TAG, action)
-            homeFragment = HomeFragment()
-            historyFragment = HistoryFragment()
-            moreFragment = MoreFragment()
             if (type.equals("application/txt", ignoreCase = true)) {
                 try {
                     val uri = if (Build.VERSION.SDK_INT >= 33){
@@ -169,31 +165,14 @@ class MainActivity : AppCompatActivity() {
                     }
                     val l = listOf(*textBuilder.toString().split("\n").toTypedArray())
                     val lines = LinkedList(l)
-                    homeFragment.handleFileIntent(lines)
+                    (navHostFragment.childFragmentManager.primaryNavigationFragment!! as HomeFragment).handleFileIntent(lines)
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
             } else {
-                homeFragment.handleIntent(intent)
+                (navHostFragment.childFragmentManager.primaryNavigationFragment!! as HomeFragment).handleIntent(intent)
             }
-            initFragments()
         }
-    }
-
-    private fun initFragments() {
-        fm.beginTransaction()
-            .replace(R.id.frame_layout, homeFragment)
-            .add(R.id.frame_layout, historyFragment)
-            .add(R.id.frame_layout, moreFragment)
-            .hide(historyFragment)
-            .hide(moreFragment)
-            .commit()
-        lastFragment = homeFragment
-    }
-
-    private fun replaceFragment(f: Fragment) {
-        fm.beginTransaction().hide(lastFragment).show(f).commit()
-        lastFragment = f
     }
 
 
@@ -301,8 +280,5 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         private const val TAG = "MainActivity"
-        private lateinit var moreFragment: MoreFragment
-        private lateinit var lastFragment: Fragment
-        private lateinit var fm: FragmentManager
     }
 }

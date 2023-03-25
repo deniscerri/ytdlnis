@@ -12,6 +12,7 @@ import android.util.Log
 import android.view.*
 import android.widget.Button
 import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.ViewModelProvider
@@ -32,11 +33,6 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.button.MaterialButton
-import com.google.android.material.datepicker.CalendarConstraints
-import com.google.android.material.datepicker.DateValidatorPointForward
-import com.google.android.material.datepicker.MaterialDatePicker
-import com.google.android.material.timepicker.MaterialTimePicker
-import com.google.android.material.timepicker.TimeFormat
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -149,9 +145,9 @@ class DownloadMultipleBottomSheetDialog(private var items: MutableList<DownloadI
                     bottomSheet.setContentView(R.layout.download_type_sheet)
 
                     // BUTTON ----------------------------------
-                    val audio = bottomSheet.findViewById<LinearLayout>(R.id.audio)
-                    val video = bottomSheet.findViewById<LinearLayout>(R.id.video)
-                    val command = bottomSheet.findViewById<LinearLayout>(R.id.command)
+                    val audio = bottomSheet.findViewById<TextView>(R.id.audio)
+                    val video = bottomSheet.findViewById<TextView>(R.id.video)
+                    val command = bottomSheet.findViewById<TextView>(R.id.command)
 
 
                     withContext(Dispatchers.IO){

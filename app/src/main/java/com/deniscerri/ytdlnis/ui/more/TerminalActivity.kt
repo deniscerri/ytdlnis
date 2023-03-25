@@ -58,7 +58,7 @@ class TerminalActivity : AppCompatActivity() {
         fab = findViewById(R.id.command_fab)
         fab!!.setOnClickListener {
             input!!.visibility = View.GONE
-            output!!.text = "${output!!.text}\n~ $ ${input!!.text}\n";
+            output!!.text = "${output!!.text}\n~ $ ${input!!.text}\n"
             swapFabs()
             startDownload(
                 input!!.text.toString()

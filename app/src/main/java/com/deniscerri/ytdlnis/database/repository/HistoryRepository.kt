@@ -63,7 +63,4 @@ class HistoryRepository(private val historyDao: HistoryDao) {
         }
     }
 
-    suspend fun checkDownloaded(){
-
-    }
 }

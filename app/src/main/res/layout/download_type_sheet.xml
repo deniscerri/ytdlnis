@@ -21,70 +21,46 @@
             android:paddingBottom="20dp"
             android:layout_height="wrap_content"/>
 
-        <LinearLayout
+        <TextView
             android:id="@+id/audio"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackground"
+            android:paddingVertical="10dp"
+            android:drawablePadding="30dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="20dp"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="20dp"
-                android:paddingEnd="20dp"
-                android:src="@drawable/ic_music"/>
+            android:textSize="15sp"
+            android:text="@string/audio"
+            app:drawableLeftCompat="@drawable/ic_music" />
 
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="15sp"
-                android:text="@string/audio" />
-        </LinearLayout>
-
-        <LinearLayout
+        <TextView
             android:id="@+id/video"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackground"
+            android:paddingVertical="10dp"
+            android:drawablePadding="30dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="20dp"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="20dp"
-                android:paddingEnd="20dp"
-                android:src="@drawable/ic_video"/>
+            android:textSize="15sp"
+            android:text="@string/video"
+            app:drawableLeftCompat="@drawable/ic_video" />
 
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="15sp"
-                android:text="@string/video" />
-        </LinearLayout>
-
-        <LinearLayout
+        <TextView
             android:id="@+id/command"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackground"
+            android:paddingVertical="10dp"
+            android:drawablePadding="30dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="20dp"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="20dp"
-                android:paddingEnd="20dp"
-                android:src="@drawable/ic_terminal"/>
-
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="15sp"
-                android:text="@string/command" />
-        </LinearLayout>
-
-
+            android:textSize="15sp"
+            android:text="@string/command"
+            app:drawableLeftCompat="@drawable/ic_terminal" />
 
     </LinearLayout>
 

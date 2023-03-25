@@ -3,22 +3,20 @@ package com.deniscerri.ytdlnis.ui.downloads
 import android.app.Activity
 import android.content.Context
 import android.content.DialogInterface
-import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.text.InputType
-import android.text.format.DateUtils
 import android.util.Log
 import android.view.*
-import android.view.View.*
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.widget.*
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -42,13 +40,10 @@ import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import java.io.File
-import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
 /**
  * A fragment representing a list of Items.
@@ -130,7 +125,6 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
         recyclerView?.adapter = historyAdapter
 
         noResults?.visibility = GONE
-        selectionChips?.visibility = VISIBLE
         shimmerCards?.visibility = GONE
 
 
@@ -325,6 +319,16 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
                 video.isChecked = false
             }
         }
+        val command = fragmentView!!.findViewById<Chip>(R.id.command_chip)
+        command.setOnClickListener {
+            if (command.isChecked) {
+                historyViewModel.setFormatFilter("command")
+                command.isChecked = true
+            } else {
+                historyViewModel.setFormatFilter("")
+                command.isChecked = false
+            }
+        }
     }
 
     private fun updateWebsiteChips(list : List<HistoryItem>) {
@@ -419,7 +423,7 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
         }
 
         if (isPresent){
-            btn!!.setOnClickListener {
+            btn.setOnClickListener {
                 uiUtil!!.shareFileIntent(requireContext(),item.downloadPath)
             }
         }
@@ -439,7 +443,7 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
         else formatNote!!.text = item.format.format_note
 
         if (item.format.container != "") container!!.text = item.format.container.uppercase()
-        else container!!.visibility = View.GONE
+        else container!!.visibility = GONE
 
         val codecText =
             if (item.format.encoding != "") {

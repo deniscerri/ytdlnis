@@ -109,7 +109,7 @@ class ResultViewModel(application: Application) : AndroidViewModel(application) 
     }
 
     fun update(item: ResultItem) = viewModelScope.launch(Dispatchers.IO){
-        repository.update(item);
+        repository.update(item)
     }
 
     fun getItemByURL(url: String) : ResultItem {
