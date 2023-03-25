@@ -15,7 +15,7 @@ class HistoryViewModel(application: Application) : AndroidViewModel(application)
     private val repository : HistoryRepository
     val sortOrder = MutableLiveData(HistorySort.DESC)
     val sortType = MutableLiveData(HistorySortType.DATE)
-    private val websiteFilter = MutableLiveData("")
+    val websiteFilter = MutableLiveData("")
     private val queryFilter = MutableLiveData("")
     private val formatFilter = MutableLiveData("")
     val allItems : LiveData<List<HistoryItem>>
@@ -47,6 +47,7 @@ class HistoryViewModel(application: Application) : AndroidViewModel(application)
     fun getFilteredList() : LiveData<List<HistoryItem>>{
         return _items
     }
+
 
     fun setSorting(sort: HistorySortType){
         if (sortType.value != sort){

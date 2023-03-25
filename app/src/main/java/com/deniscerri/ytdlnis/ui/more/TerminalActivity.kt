@@ -7,22 +7,40 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.os.Looper
+import android.text.format.DateFormat
 import android.util.Log
 import android.view.View
-import android.widget.EditText
-import android.widget.ScrollView
-import android.widget.TextView
-import android.widget.Toast
+import android.view.ViewGroup
+import android.view.Window
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.work.Data
+import androidx.work.ExistingWorkPolicy
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
+import com.deniscerri.ytdlnis.App
 import com.deniscerri.ytdlnis.R
+import com.deniscerri.ytdlnis.database.repository.DownloadRepository
+import com.deniscerri.ytdlnis.database.viewmodel.CommandTemplateViewModel
+import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.NotificationUtil
 import com.deniscerri.ytdlnis.work.DownloadWorker
 import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.bottomappbar.BottomAppBar
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.button.MaterialButton
+import com.google.android.material.chip.Chip
+import com.google.android.material.chip.ChipGroup
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.yausername.youtubedl_android.YoutubeDL
 import com.yausername.youtubedl_android.YoutubeDLRequest
 import io.reactivex.Observable
@@ -30,8 +48,14 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import java.io.File
+import java.text.SimpleDateFormat
+import java.util.*
+import java.util.concurrent.TimeUnit
 
 
 class TerminalActivity : AppCompatActivity() {
@@ -40,8 +64,9 @@ class TerminalActivity : AppCompatActivity() {
     private var output: TextView? = null
     private var input: EditText? = null
     private var fab: ExtendedFloatingActionButton? = null
-    private var cancelFab: ExtendedFloatingActionButton? = null
     private var scrollView: ScrollView? = null
+    private lateinit var bottomAppBar: BottomAppBar
+    private lateinit var commandTemplateViewModel: CommandTemplateViewModel
     var context: Context? = null
 
     public override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,23 +76,38 @@ class TerminalActivity : AppCompatActivity() {
         scrollView = findViewById(R.id.custom_command_scrollview)
         topAppBar = findViewById(R.id.custom_command_toolbar)
         topAppBar!!.setNavigationOnClickListener { onBackPressedDispatcher.onBackPressed() }
+
+        commandTemplateViewModel = ViewModelProvider(this)[CommandTemplateViewModel::class.java]
+
+
+        bottomAppBar = findViewById(R.id.bottomAppBar)
+        bottomAppBar.setOnMenuItemClickListener {
+            when(it.itemId){
+                R.id.command_templates -> showCommandTemplates()
+                R.id.shortcuts -> showShortcuts()
+                else -> {}
+            }
+            true
+        }
+
         output = findViewById(R.id.custom_command_output)
         output!!.setTextIsSelectable(true)
         input = findViewById(R.id.command_edittext)
         input!!.requestFocus()
         fab = findViewById(R.id.command_fab)
         fab!!.setOnClickListener {
-            input!!.visibility = View.GONE
-            output!!.text = "${output!!.text}\n~ $ ${input!!.text}\n"
-            swapFabs()
-            startDownload(
-                input!!.text.toString()
-            )
-        }
-        cancelFab = findViewById(R.id.cancel_command_fab)
-        cancelFab!!.setOnClickListener {
-            cancelDownload()
-            input!!.visibility = View.VISIBLE
+            if (fab!!.text == getString(R.string.run_command)){
+                input!!.visibility = View.GONE
+                output!!.text = "${output!!.text}\n~ $ ${input!!.text}\n"
+                showCancelFab()
+                startDownload(
+                    input!!.text.toString()
+                )
+            }else {
+                cancelDownload()
+                input!!.visibility = View.VISIBLE
+                hideCancelFab()
+            }
         }
         notificationUtil = NotificationUtil(this)
         handleIntent(intent)
@@ -90,13 +130,73 @@ class TerminalActivity : AppCompatActivity() {
     }
 
 
-    private fun swapFabs() {
-        val cancel = cancelFab!!.visibility
-        val start = fab!!.visibility
-        cancelFab!!.visibility = start
-        fab!!.visibility = cancel
+    private fun hideCancelFab() {
+        fab!!.text = getString(R.string.run_command)
+        fab!!.setIconResource(R.drawable.ic_baseline_keyboard_arrow_right_24)
+    }
+    private fun showCancelFab() {
+        fab!!.text = getString(R.string.cancel_download)
+        fab!!.setIconResource(R.drawable.ic_cancel)
     }
 
+    private fun showCommandTemplates(){
+        lifecycleScope.launch {
+            val bottomSheet = BottomSheetDialog(this@TerminalActivity)
+            bottomSheet.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            bottomSheet.setContentView(R.layout.command_template_list)
+
+            val linearLayout = bottomSheet.findViewById<LinearLayout>(R.id.command_list_linear_layout)
+            val list = withContext(Dispatchers.IO){
+                commandTemplateViewModel.getAll()
+            }
+
+            linearLayout!!.removeAllViews()
+            list.forEach {template ->
+                val item = layoutInflater.inflate(R.layout.command_template_item, linearLayout, false) as ConstraintLayout
+                item.findViewById<TextView>(R.id.title).text = template.title
+                item.findViewById<TextView>(R.id.content).text = template.content
+                item.setOnClickListener {
+                    input!!.text.insert(input!!.selectionStart, template.content + " ")
+                }
+                linearLayout.addView(item)
+            }
+
+            bottomSheet.show()
+            bottomSheet.window!!.setLayout(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT
+            )
+        }
+    }
+
+    private fun showShortcuts() {
+        lifecycleScope.launch {
+            val bottomSheet = BottomSheetDialog(this@TerminalActivity)
+            bottomSheet.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            bottomSheet.setContentView(R.layout.template_shortcuts_list)
+
+            val chipGroup = bottomSheet.findViewById<ChipGroup>(R.id.shortcutsChipGroup)
+            val shortcutList = withContext(Dispatchers.IO){
+                commandTemplateViewModel.getAllShortcuts()
+            }
+
+            chipGroup!!.removeAllViews()
+            shortcutList.forEach {shortcut ->
+                val chip = layoutInflater.inflate(R.layout.suggestion_chip, chipGroup, false) as Chip
+                chip.text = shortcut.content
+                chip.setOnClickListener {
+                    input!!.text.insert(input!!.selectionStart, shortcut.content + " ")
+                }
+                chipGroup.addView(chip)
+            }
+
+            bottomSheet.show()
+            bottomSheet.window!!.setLayout(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT
+            )
+        }
+    }
 
     private fun startDownload(command: String?) {
         val cmd = if (command!!.contains("yt-dlp")) command.replace("yt-dlp", "")
@@ -137,10 +237,10 @@ class TerminalActivity : AppCompatActivity() {
             }.absolutePath
         )
 
-        //request.addOption("-P", tempFileDir.absolutePath)
 
-        cancelFab!!.visibility = View.VISIBLE
-        fab!!.visibility = View.GONE
+        request.addOption("-P", tempFileDir.absolutePath)
+
+        showCancelFab()
         val disposable: Disposable = Observable.fromCallable {
             try{
                 YoutubeDL.getInstance().execute(request, downloadID.toString()){ progress, _, line ->
@@ -167,8 +267,7 @@ class TerminalActivity : AppCompatActivity() {
 
                     input!!.visibility = View.VISIBLE
 
-                    cancelFab!!.visibility = View.GONE
-                    fab!!.visibility = View.VISIBLE
+                    hideCancelFab()
                 }
             }
 
@@ -181,15 +280,7 @@ class TerminalActivity : AppCompatActivity() {
                 input!!.setText("yt-dlp ")
                 input!!.visibility = View.VISIBLE
 
-                cancelFab!!.visibility = View.GONE
-                fab!!.visibility = View.VISIBLE
-
-                //move file from internal to set download directory
-                try {
-                    moveFile(tempFileDir.absoluteFile, getString(R.string.command_path)){ }
-                }catch (e: Exception){
-                    Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
-                }
+                hideCancelFab()
                 notificationUtil.cancelDownloadNotification(downloadID)
             }) { e ->
                 e.printStackTrace()
@@ -198,32 +289,19 @@ class TerminalActivity : AppCompatActivity() {
                 input!!.setText("yt-dlp ")
                 input!!.visibility = View.VISIBLE
 
-                cancelFab!!.visibility = View.GONE
-                fab!!.visibility = View.VISIBLE
+                hideCancelFab();
 
-                tempFileDir.delete()
                 Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
-
                 Log.e(DownloadWorker.TAG, context?.getString(R.string.failed_download), e)
                 notificationUtil.cancelDownloadNotification(downloadID)
             }
         compositeDisposable.add(disposable)
-
-    }
-    @Throws(Exception::class)
-    private fun moveFile(originDir: File, downLocation: String, progress: (progress: Int) -> Unit){
-        val fileUtil = FileUtil()
-        fileUtil.moveFile(originDir, context!!, downLocation){ p ->
-            progress(p)
-        }
     }
 
     private fun cancelDownload() {
-        lifecycleScope.launch {
-            compositeDisposable.dispose()
-            YoutubeDL.getInstance().destroyProcessById(downloadID.toString())
-            notificationUtil.cancelDownloadNotification(downloadID)
-        }
+        YoutubeDL.getInstance().destroyProcessById(downloadID.toString())
+        WorkManager.getInstance(this).cancelUniqueWork(downloadID.toString())
+        notificationUtil.cancelDownloadNotification(downloadID)
     }
 
     companion object {

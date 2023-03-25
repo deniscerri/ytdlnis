@@ -333,6 +333,7 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
 
     private fun updateWebsiteChips(list : List<HistoryItem>) {
         val websites = mutableListOf<String>()
+        val websiteFilter = historyViewModel.websiteFilter.value
         for (item in list){
             if (!websites.contains(item.website)) websites.add(item.website)
         }
@@ -352,6 +353,9 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
                     historyViewModel.setWebsiteFilter("")
                     tmp.isChecked = false
                 }
+            }
+            if (w == websiteFilter){
+                tmp.isChecked = true
             }
             websiteGroup!!.addView(tmp)
         }

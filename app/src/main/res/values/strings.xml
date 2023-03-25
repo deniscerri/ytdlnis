@@ -184,4 +184,6 @@
     <string name="restrict_filenames">Restrict Filenames</string>
     <string name="restrict_filenames_summary"><![CDATA[Restrict filenames to only ASCII characters, and avoid \"&\" and spaces in filenames]]></string>
     <string name="kill_app">Terminate App</string>
+    <string name="confirm_terminate"><![CDATA[All downloads will be stopped & the app will be force closed]]></string>
+    <string name="dont_ask_again">Don\'t ask again</string>
 </resources>

@@ -41,6 +41,10 @@ class CommandTemplateViewModel(private val application: Application) : AndroidVi
         return repository.getAll()
     }
 
+    fun getAllShortcuts() : List<TemplateShortcut> {
+        return repository.getAllShortCuts()
+    }
+
     fun getTotalNumber(): Int {
         return repository.getTotalNumber()
     }

@@ -26,6 +26,9 @@
             android:layout_height="wrap_content"
             android:text="@string/terminal"
             android:textStyle="bold"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?android:attr/selectableItemBackground"
             android:paddingHorizontal="15dp"
             android:paddingVertical="15dp"
             android:drawablePadding="35dp"
@@ -38,6 +41,9 @@
             android:layout_height="wrap_content"
             android:text="@string/logs"
             android:textStyle="bold"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?android:attr/selectableItemBackground"
             android:paddingHorizontal="15dp"
             android:paddingVertical="15dp"
             android:drawablePadding="35dp"
@@ -54,6 +60,9 @@
             android:paddingVertical="15dp"
             android:text="@string/command_templates"
             android:textStyle="bold"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?android:attr/selectableItemBackground"
             android:paddingHorizontal="15dp"
             app:drawableLeftCompat="@drawable/ic_baseline_keyboard_arrow_right_24" />
 
@@ -66,6 +75,9 @@
             android:paddingVertical="15dp"
             android:text="@string/download_queue"
             android:textStyle="bold"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?android:attr/selectableItemBackground"
             android:paddingHorizontal="15dp"
             app:drawableLeftCompat="@drawable/ic_concurrent_downloads" />
 
@@ -75,6 +87,9 @@
             android:layout_height="wrap_content"
             android:drawablePadding="35dp"
             android:textSize="16sp"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?android:attr/selectableItemBackground"
             android:paddingVertical="15dp"
             android:text="@string/kill_app"
             android:textStyle="bold"
@@ -93,6 +108,9 @@
             android:paddingVertical="15dp"
             android:text="@string/settings"
             android:textStyle="bold"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?android:attr/selectableItemBackground"
             android:paddingHorizontal="15dp"
             app:drawableLeftCompat="@drawable/ic_settings" />
 
