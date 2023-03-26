@@ -260,6 +260,25 @@ class DownloadVideoFragment(private val resultItem: ResultItem, private var curr
                     dialog.show()
                 }
 
+                val cut = view.findViewById<Chip>(R.id.cut)
+                cut.text = downloadItem.downloadSections
+                val cutVideoListener = object : VideoCutListener {
+                    override fun onCancelCut() {
+                        downloadItem.downloadSections = ""
+                        cut.text = ""
+                    }
+
+                    override fun onChangeCut(from: String, to: String) {
+                        val value = "${from}-${to}"
+                        downloadItem.downloadSections = value
+                        cut.text = value
+                    }
+                }
+                cut.setOnClickListener {
+                    val bottomSheet = CutVideoBottomSheetDialog(downloadItem, cutVideoListener)
+                    bottomSheet.show(parentFragmentManager, "cutVideoSheet")
+                }
+
                 val copyURL = view.findViewById<Chip>(R.id.copy_url)
                 copyURL.setOnClickListener {
                     val clipboard: ClipboardManager =

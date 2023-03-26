@@ -186,4 +186,6 @@
     <string name="kill_app">Terminate App</string>
     <string name="confirm_terminate"><![CDATA[All downloads will be stopped & the app will be force closed]]></string>
     <string name="dont_ask_again">Don\'t ask again</string>
+    <string name="end">End</string>
+    <string name="start">Start</string>
 </resources>

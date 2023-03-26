@@ -171,6 +171,6 @@ dependencies {
     implementation "com.squareup.okhttp3:logging-interceptor:4.7.2"
 
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1"
-
+    implementation "com.google.android.exoplayer:exoplayer:2.18.5"
 
 }

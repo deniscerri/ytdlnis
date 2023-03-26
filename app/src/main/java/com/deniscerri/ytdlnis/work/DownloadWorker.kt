@@ -109,13 +109,17 @@ class DownloadWorker(
                 request.addOption("--sponsorblock-remove", filters)
             }
 
-            if(downloadItem.title.isNotEmpty()){
+            if(downloadItem.title.isNotBlank()){
                 request.addCommands(listOf("--replace-in-metadata","title",".*.",downloadItem.title))
             }
-            if (downloadItem.author.isNotEmpty()){
+            if (downloadItem.author.isNotBlank()){
                 request.addCommands(listOf("--replace-in-metadata","uploader",".*.",downloadItem.author))
             }
             if (downloadItem.customFileNameTemplate.isBlank()) downloadItem.customFileNameTemplate = "%(uploader)s - %(title)s"
+
+            if (downloadItem.downloadSections.isNotBlank()){
+                request.addOption("--download-sections", "*${downloadItem.downloadSections}")
+            }
         }
 
         if (sharedPreferences.getBoolean("restrict_filenames", true)) {
@@ -221,11 +225,12 @@ class DownloadWorker(
             }
         }
 
+        val titleRegex = Regex("[^A-Za-z\\d ]")
+        val logDownloads = sharedPreferences.getBoolean("log_downloads", false) && !sharedPreferences.getBoolean("incognito", false)
+        val logFolder = File(context.filesDir.absolutePath + "/logs")
+        val logFile = File(context.filesDir.absolutePath + """/logs/${downloadItem.id} - ${titleRegex.replace(downloadItem.title, "")}##${downloadItem.type}##${downloadItem.format.format_id}.log""")
+
         runCatching {
-            val titleRegex = Regex("[^A-Za-z\\d ]")
-            val logDownloads = sharedPreferences.getBoolean("log_downloads", false) && !sharedPreferences.getBoolean("incognito", false)
-            val logFolder = File(context.filesDir.absolutePath + "/logs")
-            val logFile = File(context.filesDir.absolutePath + """/logs/${downloadItem.id} - ${titleRegex.replace(downloadItem.title, "")}##${downloadItem.type}##${downloadItem.format.format_id}.log""")
             if (logDownloads){
                 logFolder.mkdirs()
                 logFile.createNewFile()
@@ -284,12 +289,8 @@ class DownloadWorker(
                 }
                 return Result.failure()
             }else{
-                val logDownloads = sharedPreferences.getBoolean("log_downloads", false)
-                if (logDownloads){
-                    val logFile = File(context.filesDir.absolutePath + """/logs/${downloadItem.id} - ${downloadItem.title}##${downloadItem.type}##${downloadItem.format.format_id}.log""")
-                    if (logFile.exists()){
-                        logFile.appendText("${it.message}\n")
-                    }
+                if (logDownloads && logFile.exists()){
+                    logFile.appendText("${it.message}\n")
                 }
 
                 tempFileDir.delete()
@@ -314,20 +315,6 @@ class DownloadWorker(
         
         return Result.success()
     }
-
-//    private fun getDownloadLocation(type: String, context: Context): String? {
-//        val sharedPreferences = context.getSharedPreferences("root_preferences",
-//            Service.MODE_PRIVATE
-//        )
-//        val downloadsDir: String? = if (type == "audio") {
-//            sharedPreferences.getString("music_path", context.getString(R.string.music_path))
-//        } else {
-//            sharedPreferences.getString("video_path", context.getString(R.string.video_path))
-//        }
-//        return downloadsDir
-//    }
-
-
     @Throws(Exception::class)
     private fun moveFile(originDir: File, downLocation: String, progress: (progress: Int) -> Unit) : String{
         val fileUtil = FileUtil()

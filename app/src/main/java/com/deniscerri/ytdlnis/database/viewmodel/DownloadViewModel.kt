@@ -131,6 +131,7 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
             resultItem.duration,
             type,
             getFormat(resultItem.formats, type),
+            "",
             resultItem.formats,
             downloadPath!!, resultItem.website, "", resultItem.playlistTitle, audioPreferences, videoPreferences,customFileNameTemplate!!, saveThumb, DownloadRepository.Status.Processing.toString(), 0
         )
@@ -172,6 +173,7 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
             historyItem.duration,
             historyItem.type,
             historyItem.format,
+            "",
             ArrayList(),
             downloadPath!!, historyItem.website, "", "", audioPreferences, videoPreferences,customFileNameTemplate!!, saveThumb, DownloadRepository.Status.Processing.toString(), 0
         )

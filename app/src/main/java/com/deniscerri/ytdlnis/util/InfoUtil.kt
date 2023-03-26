@@ -614,7 +614,7 @@ class InfoUtil(context: Context) {
         return duration
     }
 
-    private fun formatIntegerDuration(dur: Int): String {
+    fun formatIntegerDuration(dur: Int): String {
         var format = String.format(
             Locale.getDefault(),
             "%02d:%02d:%02d",
@@ -626,6 +626,28 @@ class InfoUtil(context: Context) {
         if (dur < 600) format = format.substring(4) else if (dur < 3600) format =
             format.substring(3) else if (dur < 36000) format = format.substring(1)
         return format
+    }
+
+    fun getStreamingUrl(url: String) : String {
+        try {
+            val request = YoutubeDLRequest(url)
+            request.addOption("-j")
+            request.addOption("--skip-download")
+            request.addOption("-R", "1")
+            request.addOption("--socket-timeout", "5")
+            val youtubeDLResponse = YoutubeDL.getInstance().execute(request)
+            val results: Array<String?> = try {
+                val lineSeparator = System.getProperty("line.separator")
+                youtubeDLResponse.out.split(lineSeparator!!).toTypedArray()
+            } catch (e: Exception) {
+                arrayOf(youtubeDLResponse.out)
+            }
+            val jsonObject = JSONObject(results[0]!!)
+            val streamURL =  jsonObject.getString("urls")
+            return streamURL.split("\n")[0]
+        } catch (e: Exception) {
+            return ""
+        }
     }
 
     class PlaylistTuple internal constructor(

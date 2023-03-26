@@ -1,18 +1,18 @@
 package com.deniscerri.ytdlnis.database
 
 import android.content.Context
-import androidx.room.Database
-import androidx.room.Room
-import androidx.room.RoomDatabase
-import androidx.room.TypeConverters
+import androidx.room.*
+import androidx.room.migration.AutoMigrationSpec
 import com.deniscerri.ytdlnis.database.dao.*
 import com.deniscerri.ytdlnis.database.models.*
 
 @TypeConverters(Converters::class)
 @Database(
     entities = [ResultItem::class, HistoryItem::class, DownloadItem::class, CommandTemplate::class, SearchHistoryItem::class, TemplateShortcut::class],
-    version = 1,
-    autoMigrations = []
+    version = 2,
+    autoMigrations = [
+        AutoMigration (from = 1, to = 2)
+    ]
 )
 abstract class DBManager : RoomDatabase(){
     abstract val resultDao : ResultDao
@@ -39,5 +39,4 @@ abstract class DBManager : RoomDatabase(){
             }
         }
     }
-
 }
