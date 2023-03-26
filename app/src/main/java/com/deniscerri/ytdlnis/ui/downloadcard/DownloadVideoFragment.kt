@@ -199,7 +199,12 @@ class DownloadVideoFragment(private val resultItem: ResultItem, private var curr
 
 
                 val splitByChapters = view.findViewById<Chip>(R.id.split_by_chapters)
-                splitByChapters!!.isChecked = downloadItem.audioPreferences.splitByChapters
+                if(downloadItem.downloadSections.isNotBlank()){
+                    splitByChapters.isEnabled = false
+                    splitByChapters.isChecked = false
+                }else{
+                    splitByChapters!!.isChecked = downloadItem.audioPreferences.splitByChapters
+                }
                 splitByChapters.setOnClickListener {
                     if (splitByChapters.isChecked){
                         addChapters.isEnabled = false
@@ -266,12 +271,25 @@ class DownloadVideoFragment(private val resultItem: ResultItem, private var curr
                     override fun onCancelCut() {
                         downloadItem.downloadSections = ""
                         cut.text = ""
+
+                        splitByChapters.isEnabled = true
+                        splitByChapters.isChecked = downloadItem.videoPreferences.splitByChapters
+                        if (splitByChapters.isChecked){
+                            addChapters.isEnabled = false
+                            addChapters.isChecked = false
+                        }else{
+                            addChapters.isEnabled = true
+                        }
                     }
 
                     override fun onChangeCut(from: String, to: String) {
                         val value = "${from}-${to}"
                         downloadItem.downloadSections = value
                         cut.text = value
+
+                        splitByChapters.isEnabled = false
+                        splitByChapters.isChecked = false
+                        addChapters.isEnabled = true
                     }
                 }
                 cut.setOnClickListener {

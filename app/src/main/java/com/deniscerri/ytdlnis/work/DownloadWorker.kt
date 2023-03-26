@@ -165,7 +165,7 @@ class DownloadWorker(
                     request.addOption("--parse-metadata", "%(album,title)s:%(meta_album)s")
                 }
 
-                if (downloadItem.audioPreferences.splitByChapters){
+                if (downloadItem.audioPreferences.splitByChapters && downloadItem.downloadSections.isBlank()){
                     request.addOption("--split-chapters")
                     request.addOption("-P", tempFileDir.absolutePath)
                 }else{
@@ -204,7 +204,7 @@ class DownloadWorker(
                     }
                 }
 
-                if (downloadItem.videoPreferences.splitByChapters){
+                if (downloadItem.videoPreferences.splitByChapters  && downloadItem.downloadSections.isBlank()){
                     request.addOption("--split-chapters")
                     request.addOption("-P", tempFileDir.absolutePath)
                 }else{

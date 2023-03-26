@@ -192,7 +192,13 @@ class DownloadAudioFragment(private var resultItem: ResultItem, private var curr
                 }
 
                 val splitByChapters = view.findViewById<Chip>(R.id.split_by_chapters)
-                splitByChapters!!.isChecked = downloadItem.audioPreferences.splitByChapters
+                if (downloadItem.downloadSections.isNotBlank()){
+                    splitByChapters.isEnabled = false
+                    splitByChapters.isChecked = false
+                }else{
+                    splitByChapters!!.isChecked = downloadItem.audioPreferences.splitByChapters
+                }
+
                 splitByChapters.setOnClickListener {
                     downloadItem.audioPreferences.splitByChapters = splitByChapters.isChecked
                 }
@@ -246,12 +252,18 @@ class DownloadAudioFragment(private var resultItem: ResultItem, private var curr
                     override fun onCancelCut() {
                         downloadItem.downloadSections = ""
                         cut.text = ""
+
+                        splitByChapters.isEnabled = true
+                        splitByChapters.isChecked = downloadItem.audioPreferences.splitByChapters
                     }
 
                     override fun onChangeCut(from: String, to: String) {
                         val value = "${from}-${to}"
                         downloadItem.downloadSections = value
                         cut.text = value
+
+                        splitByChapters.isEnabled = false
+                        splitByChapters.isChecked = false
                     }
                 }
                 cut.setOnClickListener {
