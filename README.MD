@@ -1,5 +1,5 @@
 <h1 align="center">
-	<img src="app/src/main/ic_launcher-playstore.png" width="15%" /> <br>
+	<img src="fastlane/metadata/android/en-US/images/app_icon.PNG" width="30%" /> <br>
 	YTDLnis
 </h1>
 
