@@ -77,7 +77,7 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val list
         val timeSeconds = convertStringToTimestamp(item.duration)
 
         if (item.downloadSections.isEmpty()){
-            fromTextInput.editText!!.setText("00:00")
+            fromTextInput.editText!!.setText("0:00")
             toTextInput.editText!!.setText(item.duration)
         }else{
             val stamps = item.downloadSections.split("-")

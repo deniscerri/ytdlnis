@@ -258,6 +258,9 @@ class DownloadAudioFragment(private var resultItem: ResultItem, private var curr
                     }
 
                     override fun onChangeCut(from: String, to: String) {
+                        if (from == "0:00" && to == downloadItem.duration){
+                            return
+                        }
                         val value = "${from}-${to}"
                         downloadItem.downloadSections = value
                         cut.text = value

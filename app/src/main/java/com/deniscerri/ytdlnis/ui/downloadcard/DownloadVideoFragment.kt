@@ -283,6 +283,9 @@ class DownloadVideoFragment(private val resultItem: ResultItem, private var curr
                     }
 
                     override fun onChangeCut(from: String, to: String) {
+                        if (from == "0:00" && to == downloadItem.duration){
+                           return
+                        }
                         val value = "${from}-${to}"
                         downloadItem.downloadSections = value
                         cut.text = value
@@ -290,6 +293,7 @@ class DownloadVideoFragment(private val resultItem: ResultItem, private var curr
                         splitByChapters.isEnabled = false
                         splitByChapters.isChecked = false
                         addChapters.isEnabled = true
+
                     }
                 }
                 cut.setOnClickListener {

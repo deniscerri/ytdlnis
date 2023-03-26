@@ -1,10 +1,12 @@
 package com.deniscerri.ytdlnis.ui.more
 
 import android.Manifest
+import android.app.Activity
 import android.app.Notification
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Looper
@@ -21,10 +23,7 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.work.Data
-import androidx.work.ExistingWorkPolicy
-import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.WorkManager
+import androidx.work.*
 import com.deniscerri.ytdlnis.App
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.repository.DownloadRepository
@@ -67,6 +66,7 @@ class TerminalActivity : AppCompatActivity() {
     private var scrollView: ScrollView? = null
     private lateinit var bottomAppBar: BottomAppBar
     private lateinit var commandTemplateViewModel: CommandTemplateViewModel
+    private lateinit var sharedPreferences: SharedPreferences
     var context: Context? = null
 
     public override fun onCreate(savedInstanceState: Bundle?) {
@@ -78,6 +78,7 @@ class TerminalActivity : AppCompatActivity() {
         topAppBar!!.setNavigationOnClickListener { onBackPressedDispatcher.onBackPressed() }
 
         commandTemplateViewModel = ViewModelProvider(this)[CommandTemplateViewModel::class.java]
+        sharedPreferences = getSharedPreferences("root_preferences", Activity.MODE_PRIVATE)
 
 
         bottomAppBar = findViewById(R.id.bottomAppBar)
@@ -157,6 +158,7 @@ class TerminalActivity : AppCompatActivity() {
                 item.findViewById<TextView>(R.id.content).text = template.content
                 item.setOnClickListener {
                     input!!.text.insert(input!!.selectionStart, template.content + " ")
+                    bottomSheet.cancel()
                 }
                 linearLayout.addView(item)
             }
@@ -246,7 +248,7 @@ class TerminalActivity : AppCompatActivity() {
                 YoutubeDL.getInstance().execute(request, downloadID.toString()){ progress, _, line ->
                     Log.e(TAG, line)
                     runOnUiThread {
-                        output!!.append("\n" + line)
+                        output!!.text = "${output!!.text}\n$line"
                         output!!.scrollTo(0, output!!.height)
                         scrollView!!.fullScroll(View.FOCUS_DOWN)
                     }
@@ -261,11 +263,12 @@ class TerminalActivity : AppCompatActivity() {
             }catch (e: Exception){
                 e.printStackTrace()
                 runOnUiThread {
-                    output!!.append("\n" + e.message)
+                    output!!.text = "${output!!.text}\n${e.message}"
                     output!!.scrollTo(0, output!!.height)
                     scrollView!!.fullScroll(View.FOCUS_DOWN)
 
                     input!!.visibility = View.VISIBLE
+                    input!!.requestFocus()
 
                     hideCancelFab()
                 }
@@ -275,15 +278,24 @@ class TerminalActivity : AppCompatActivity() {
             .subscribeOn(Schedulers.newThread())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                output!!.scrollTo(0, output!!.height)
-                scrollView!!.fullScroll(View.FOCUS_DOWN)
                 input!!.setText("yt-dlp ")
                 input!!.visibility = View.VISIBLE
+                input!!.requestFocus()
+
+                try{
+                    val fileUtil = FileUtil()
+                    fileUtil.moveFile(tempFileDir.absoluteFile, this, sharedPreferences.getString("command_path", getString(R.string.command))!!) {}
+                }catch (e: Exception){
+                    output!!.text = "${output!!.text}\n${e.message}"
+                    output!!.scrollTo(0, output!!.height)
+                    scrollView!!.fullScroll(View.FOCUS_DOWN)
+                }
 
                 hideCancelFab()
                 notificationUtil.cancelDownloadNotification(downloadID)
             }) { e ->
                 e.printStackTrace()
+                output!!.text = "${output!!.text}\n${e.message}"
                 output!!.scrollTo(0, output!!.height)
                 scrollView!!.fullScroll(View.FOCUS_DOWN)
                 input!!.setText("yt-dlp ")
