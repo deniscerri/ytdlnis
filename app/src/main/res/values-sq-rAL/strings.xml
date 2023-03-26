@@ -177,4 +177,8 @@
     <string name="restrict_filenames">Limito Titujt</string>
     <string name="restrict_filenames_summary">Limito emrin e skedarit me vetëm me karakteret ASCII, dhe shmag \"&amp;\" dhe hapësirat në emrin e skedarit</string>
     <string name="kill_app">Ndalo Aplikacionin</string>
+    <string name="confirm_terminate">Të gjithë shkarkimet do të ndalohen dhe aplikacioni do të mbyllet me forcë</string>
+    <string name="end">Fundi</string>
+    <string name="start">Fillimi</string>
+    <string name="dont_ask_again">Mos pyet më</string>
 </resources>

@@ -180,4 +180,9 @@
     <string name="best_quality">En Iyi Kalite</string>
     <string name="restrict_filenames">Dosya Adların Kısıtla</string>
     <string name="restrict_filenames_summary">Dosya adların yalnızca ASCII karakterleriyle sınırla ve dosya adlarında \"&amp;\" ve boşluklardan kaçının</string>
+    <string name="kill_app">Uygulamayı Sonlandır</string>
+    <string name="confirm_terminate">Tüm indirmeler durdurulacak ve uygulama zorla kapatılacak</string>
+    <string name="dont_ask_again">Tekrar sorma</string>
+    <string name="end">Son</string>
+    <string name="start">Başlangıç</string>
 </resources>
