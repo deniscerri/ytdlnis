@@ -176,4 +176,9 @@
     <string name="cache_cleared">一時ファイルが消去されました</string>
     <string name="ytdl_version">yt-dlp バージョン</string>
     <string name="freespace">フリースペース</string>
+    <string name="dont_ask_again">二度と聞かない</string>
+    <string name="end">終わり</string>
+    <string name="start">始める</string>
+    <string name="kill_app">アプリの終了</string>
+    <string name="confirm_terminate">すべてのダウンロードが停止され、アプリが強制終了されます</string>
 </resources>
