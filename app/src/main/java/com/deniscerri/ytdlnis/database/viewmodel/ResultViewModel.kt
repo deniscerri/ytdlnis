@@ -46,13 +46,12 @@ class ResultViewModel(application: Application) : AndroidViewModel(application) 
                 getTrending()
             }
         }catch (e : Exception){
+            e.printStackTrace()
             getTrending()
         }
     }
     fun getTrending() = viewModelScope.launch(Dispatchers.IO){
-        loadingItems.postValue(true)
         repository.updateTrending()
-        loadingItems.postValue(false)
     }
 
     suspend fun parseQuery(inputQuery: String, resetResults: Boolean) : ArrayList<ResultItem?> {

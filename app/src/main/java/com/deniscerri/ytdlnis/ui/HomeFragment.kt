@@ -205,9 +205,12 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
                 } catch (ignored: Exception) {
                 }
             }
-        } else {
-            resultViewModel.checkTrending()
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        resultViewModel.checkTrending()
     }
 
     private fun initMenu() {

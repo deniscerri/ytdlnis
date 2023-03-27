@@ -56,6 +56,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
     private var videoQuality: ListPreference? = null
     private var updateYTDL: Preference? = null
     private var updateNightlyYTDL: SwitchPreferenceCompat? = null
+    private var updateFormats: SwitchPreferenceCompat? = null
     private var updateApp: SwitchPreferenceCompat? = null
     private var exportPreferences : Preference? = null
     private var importPreferences : Preference? = null
@@ -117,6 +118,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         videoQuality = findPreference("video_quality")
         updateYTDL = findPreference("update_ytdl")
         updateNightlyYTDL = findPreference("nightly_ytdl")
+        updateFormats = findPreference("update_formats")
         updateApp = findPreference("update_app")
         exportPreferences = findPreference("export_preferences")
         importPreferences = findPreference("import_preferences")
@@ -175,6 +177,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         editor.putInt("audio_quality", audioQuality!!.value)
         editor.putString("video_quality", videoQuality!!.value)
         editor.putBoolean("nightly_ytdl", updateNightlyYTDL!!.isChecked)
+        editor.putBoolean("update_formats", updateFormats!!.isChecked)
         editor.putBoolean("update_app", updateApp!!.isChecked)
         editor.apply()
     }
@@ -436,6 +439,13 @@ class SettingsFragment : PreferenceFragmentCompat() {
                         else -> Toast.makeText(context, getString(R.string.errored), Toast.LENGTH_LONG).show()
                     }
                 }
+                true
+            }
+        updateFormats!!.onPreferenceChangeListener =
+            Preference.OnPreferenceChangeListener {  _: Preference?, newValue: Any ->
+                val enable = newValue as Boolean
+                editor.putBoolean("update_formats", enable)
+                editor.apply()
                 true
             }
         updateNightlyYTDL!!.onPreferenceChangeListener =

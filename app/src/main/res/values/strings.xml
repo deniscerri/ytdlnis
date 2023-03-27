@@ -188,4 +188,5 @@
     <string name="dont_ask_again">Don\'t ask again</string>
     <string name="end">End</string>
     <string name="start">Start</string>
+    <string name="update_formats_summary">Automatically search for missing formats when clicking the format card</string>
 </resources>

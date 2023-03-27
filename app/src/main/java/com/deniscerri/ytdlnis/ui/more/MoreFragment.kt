@@ -105,10 +105,12 @@ class MoreFragment : Fragment() {
                         mainSharedPreferencesEditor.putBoolean("ask_terminate_app", false)
                         mainSharedPreferencesEditor.commit()
                     }
+                    mainActivity.finishAndRemoveTask()
                     exitProcess(0)
                 }
                 terminateDialog.show()
             }else{
+                mainActivity.finishAndRemoveTask()
                 exitProcess(0)
             }
 

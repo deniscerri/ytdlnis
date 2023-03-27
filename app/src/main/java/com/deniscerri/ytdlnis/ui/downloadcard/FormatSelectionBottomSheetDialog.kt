@@ -1,8 +1,10 @@
 package com.deniscerri.ytdlnis.ui.downloadcard
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.Dialog
 import android.content.DialogInterface
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.util.Log
@@ -10,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.DownloadItem
@@ -32,12 +35,14 @@ class FormatSelectionBottomSheetDialog(private val item: DownloadItem, private v
     private lateinit var fileUtil: FileUtil
     private lateinit var infoUtil: InfoUtil
     private lateinit var uiUtil: UiUtil
+    private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         fileUtil = FileUtil()
         uiUtil = UiUtil(fileUtil)
         infoUtil = InfoUtil(requireActivity().applicationContext)
+        sharedPreferences = requireContext().getSharedPreferences("root_preferences", Activity.MODE_PRIVATE)
     }
 
 
@@ -94,6 +99,9 @@ class FormatSelectionBottomSheetDialog(private val item: DownloadItem, private v
                    Toast.makeText(context, getString(R.string.error_updating_formats), Toast.LENGTH_SHORT).show()
                }
            }
+        }
+        if (sharedPreferences.getBoolean("update_formats", false) && refreshBtn.isVisible){
+            refreshBtn.performClick()
         }
     }
 

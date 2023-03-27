@@ -319,7 +319,7 @@ class InfoUtil(context: Context) {
             val req = URL(url)
             conn = req.openConnection() as HttpURLConnection
             conn.requestMethod = "GET"
-            conn.connectTimeout = 10000
+            conn.connectTimeout = 3000
             conn.readTimeout = 5000
             if (conn.responseCode < 300) {
                 reader = BufferedReader(InputStreamReader(conn.inputStream))
@@ -350,7 +350,7 @@ class InfoUtil(context: Context) {
             val req = URL(url)
             conn = req.openConnection() as HttpURLConnection
             conn.requestMethod = "GET"
-            conn.connectTimeout = 10000
+            conn.connectTimeout = 3000
             conn.readTimeout = 5000
             if (conn.responseCode < 300) {
                 reader = BufferedReader(InputStreamReader(conn.inputStream))
@@ -393,9 +393,10 @@ class InfoUtil(context: Context) {
 
     @Throws(JSONException::class)
     fun getTrending(context: Context): ArrayList<ResultItem?> {
+        init()
         items = ArrayList()
         return if (key!!.isEmpty()) {
-            items
+            if (useInvidous) getTrendingFromInvidous(context) else ArrayList()
         } else getTrendingFromKey(context)
     }
 
@@ -429,23 +430,23 @@ class InfoUtil(context: Context) {
         return items
     }
 
-//    private fun getTrendingFromInvidous(context: Context): ArrayList<ResultItem?> {
-//        val url = invidousURL + "trending?type=music&region=" + countryCODE
-//        val res = genericArrayRequest(url)
-//        try {
-//            for (i in 0 until res.length()) {
-//                val element = res.getJSONObject(i)
-//                if (element.getString("type") != "video") continue
-//                val v = createVideofromInvidiousJSON(element)
-//                if (v == null || v.thumb.isEmpty()) continue
-//                v.playlistTitle = context.getString(R.string.trendingPlaylist)
-//                items.add(v)
-//            }
-//        } catch (e: Exception) {
-//            e.printStackTrace()
-//        }
-//        return items
-//    }
+    private fun getTrendingFromInvidous(context: Context): ArrayList<ResultItem?> {
+        val url = invidousURL + "trending?type=music&region=" + countryCODE
+        val res = genericArrayRequest(url)
+        try {
+            for (i in 0 until res.length()) {
+                val element = res.getJSONObject(i)
+                if (element.getString("type") != "video") continue
+                val v = createVideofromInvidiousJSON(element)
+                if (v == null || v.thumb.isEmpty()) continue
+                v.playlistTitle = context.getString(R.string.trendingPlaylist)
+                items.add(v)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return items
+    }
 
     fun getIDFromYoutubeURL(inputQuery: String) : String {
         var el: Array<String?> =

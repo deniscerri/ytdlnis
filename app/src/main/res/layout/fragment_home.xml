@@ -71,7 +71,9 @@
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/home_appbarlayout"
         app:liftOnScroll="true"
-        android:background="@android:color/transparent"
+        android:background="@null"
+        android:elevation="0dp"
+        app:elevation="0dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
