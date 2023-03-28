@@ -33,7 +33,7 @@
             android:paddingVertical="15dp"
             android:drawablePadding="35dp"
             android:textSize="16sp"
-            app:drawableLeftCompat="@drawable/ic_terminal" />
+            app:drawableStartCompat="@drawable/ic_terminal" />
 
         <TextView
             android:id="@+id/logs"
@@ -48,7 +48,7 @@
             android:paddingVertical="15dp"
             android:drawablePadding="35dp"
             android:textSize="16sp"
-            app:drawableLeftCompat="@drawable/ic_baseline_file_open_24" />
+            app:drawableStartCompat="@drawable/ic_baseline_file_open_24" />
 
 
         <TextView
@@ -64,7 +64,7 @@
             android:focusable="true"
             android:background="?android:attr/selectableItemBackground"
             android:paddingHorizontal="15dp"
-            app:drawableLeftCompat="@drawable/ic_baseline_keyboard_arrow_right_24" />
+            app:drawableStartCompat="@drawable/ic_baseline_keyboard_arrow_right_24" />
 
         <TextView
             android:id="@+id/download_queue"
@@ -79,7 +79,7 @@
             android:focusable="true"
             android:background="?android:attr/selectableItemBackground"
             android:paddingHorizontal="15dp"
-            app:drawableLeftCompat="@drawable/ic_concurrent_downloads" />
+            app:drawableStartCompat="@drawable/ic_concurrent_downloads" />
 
         <TextView
             android:id="@+id/terminate"
@@ -94,10 +94,12 @@
             android:text="@string/kill_app"
             android:textStyle="bold"
             android:paddingHorizontal="15dp"
-            app:drawableLeftCompat="@drawable/ic_power" />
+            app:drawableStartCompat="@drawable/ic_power" />
 
 
-        <View style="@style/Divider.Horizontal" />
+        <View
+            android:layout_margin="0dp"
+            style="@style/Divider.Horizontal" />
 
         <TextView
             android:id="@+id/settings"
@@ -112,7 +114,7 @@
             android:focusable="true"
             android:background="?android:attr/selectableItemBackground"
             android:paddingHorizontal="15dp"
-            app:drawableLeftCompat="@drawable/ic_settings" />
+            app:drawableStartCompat="@drawable/ic_settings" />
 
     </LinearLayout>
 

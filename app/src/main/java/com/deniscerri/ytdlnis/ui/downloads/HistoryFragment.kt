@@ -57,7 +57,6 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
     private var mainActivity: MainActivity? = null
     private var fragmentContext: Context? = null
     private var layoutinflater: LayoutInflater? = null
-    private var shimmerCards: ShimmerFrameLayout? = null
     private var topAppBar: MaterialToolbar? = null
     private var recyclerView: RecyclerView? = null
     private var historyAdapter: HistoryAdapter? = null
@@ -92,7 +91,6 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
 
         fragmentContext = context
         layoutinflater = LayoutInflater.from(context)
-        shimmerCards = view.findViewById(R.id.shimmer_history_framelayout)
         topAppBar = view.findViewById(R.id.history_toolbar)
         noResults = view.findViewById(R.id.no_results)
         selectionChips = view.findViewById(R.id.history_selection_chips)
@@ -125,7 +123,6 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
         recyclerView?.adapter = historyAdapter
 
         noResults?.visibility = GONE
-        shimmerCards?.visibility = GONE
 
 
         historyViewModel = ViewModelProvider(this)[HistoryViewModel::class.java]

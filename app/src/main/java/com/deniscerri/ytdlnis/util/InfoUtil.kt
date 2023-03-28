@@ -116,7 +116,7 @@ class InfoUtil(context: Context) {
         for (i in 0 until dataArray.length()) {
             val element = dataArray.getJSONObject(i)
             if (!element.getString("type").equals("video")) continue
-            val duration = formatIntegerDuration(element.getInt("lengthSeconds"))
+            val duration = formatIntegerDuration(element.getInt("lengthSeconds"), Locale.getDefault())
             if (duration == "0:00") {
                 continue
             }
@@ -279,7 +279,7 @@ class InfoUtil(context: Context) {
 
             if (author.isBlank()) throw Exception()
 
-            val duration = formatIntegerDuration(obj.getInt("lengthSeconds"))
+            val duration = formatIntegerDuration(obj.getInt("lengthSeconds"), Locale.getDefault())
             val thumb = "https://i.ytimg.com/vi/$id/hqdefault.jpg"
             val url = "https://www.youtube.com/watch?v=$id"
             val formats : ArrayList<Format> = ArrayList()
@@ -515,7 +515,7 @@ class InfoUtil(context: Context) {
                 }
                 var duration = ""
                 if (jsonObject.has("duration")) {
-                    duration = formatIntegerDuration(jsonObject.getInt("duration"))
+                    duration = formatIntegerDuration(jsonObject.getInt("duration"), Locale.getDefault())
                 }
                 val url = jsonObject.getString("webpage_url")
                 var thumb: String? = ""
@@ -615,9 +615,9 @@ class InfoUtil(context: Context) {
         return duration
     }
 
-    fun formatIntegerDuration(dur: Int): String {
+    fun formatIntegerDuration(dur: Int, locale: Locale): String {
         var format = String.format(
-            Locale.getDefault(),
+            locale,
             "%02d:%02d:%02d",
             dur / 3600,
             dur % 3600 / 60,

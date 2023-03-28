@@ -135,8 +135,8 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val list
             val startTimestamp = (values[0].toInt() * timeSeconds) / 100
             val endTimestamp = (values[1].toInt() * timeSeconds) / 100
 
-            val startTimestampString = infoUtil.formatIntegerDuration(startTimestamp)
-            val endTimestampString = infoUtil.formatIntegerDuration(endTimestamp)
+            val startTimestampString = infoUtil.formatIntegerDuration(startTimestamp, Locale.US)
+            val endTimestampString = infoUtil.formatIntegerDuration(endTimestamp, Locale.US)
 
             fromTextInput.editText!!.setText(startTimestampString)
             toTextInput.editText!!.setText(endTimestampString)
@@ -160,19 +160,19 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val list
                     fromTextInput.editText!!.clearFocus()
                     val seconds = convertStringToTimestamp(fromTextInput.editText!!.text.toString())
                     if (seconds == 0) {
-                        fromTextInput.editText!!.setText(infoUtil.formatIntegerDuration(startTimestamp))
+                        fromTextInput.editText!!.setText(infoUtil.formatIntegerDuration(startTimestamp, Locale.US))
                         return true
                     }
 
                     val startValue = (seconds.toFloat() / endTimestamp) * 100
                     if (startValue > 100){
-                        fromTextInput.editText!!.setText(infoUtil.formatIntegerDuration(startTimestamp))
+                        fromTextInput.editText!!.setText(infoUtil.formatIntegerDuration(startTimestamp, Locale.US))
                         return true
                     }
 
                     rangeSlider.setValues(startValue, rangeSlider.values[1])
                     val startValueTimeStampSeconds = (startValue.toInt() * timeSeconds) / 100
-                    fromTextInput.editText!!.setText(infoUtil.formatIntegerDuration(startValueTimeStampSeconds))
+                    fromTextInput.editText!!.setText(infoUtil.formatIntegerDuration(startValueTimeStampSeconds, Locale.US))
 
                     return true;
                 }
@@ -192,19 +192,19 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val list
                     toTextInput.editText!!.clearFocus()
                     val seconds = convertStringToTimestamp(toTextInput.editText!!.text.toString())
                     if (seconds == 0) {
-                        toTextInput.editText!!.setText(infoUtil.formatIntegerDuration(endTimestamp))
+                        toTextInput.editText!!.setText(infoUtil.formatIntegerDuration(endTimestamp, Locale.US))
                         return true
                     }
 
                     val endValue = (seconds.toFloat() / endTimestamp) * 100
                     if (endValue > 100 || endValue <= rangeSlider.values[0].toInt()){
-                        toTextInput.editText!!.setText(infoUtil.formatIntegerDuration(endTimestamp))
+                        toTextInput.editText!!.setText(infoUtil.formatIntegerDuration(endTimestamp, Locale.US))
                         return true
                     }
 
                     rangeSlider.setValues(rangeSlider.values[0], endValue)
                     val endValueTimeStampSeconds = (endValue.toInt() * timeSeconds) / 100
-                    toTextInput.editText!!.setText(infoUtil.formatIntegerDuration(endValueTimeStampSeconds))
+                    toTextInput.editText!!.setText(infoUtil.formatIntegerDuration(endValueTimeStampSeconds, Locale.US))
 
                     return true;
                 }

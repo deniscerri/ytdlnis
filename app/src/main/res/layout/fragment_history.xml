@@ -121,49 +121,6 @@
 
         </androidx.recyclerview.widget.RecyclerView>
 
-        <com.facebook.shimmer.ShimmerFrameLayout
-            android:layout_width="match_parent"
-            android:visibility="gone"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/chips_recycler_horizontalscrollview"
-            android:id="@+id/shimmer_history_framelayout"
-            android:orientation="vertical">
-
-
-            <LinearLayout
-                android:id="@+id/shimmer_history_linear_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:orientation="vertical">
-
-                <include layout="@layout/history_card_shimmer" />
-
-                <include layout="@layout/history_card_shimmer" />
-
-                <include layout="@layout/history_card_shimmer" />
-
-                <include layout="@layout/history_card_shimmer" />
-
-                <include layout="@layout/history_card_shimmer" />
-
-                <include layout="@layout/history_card_shimmer" />
-
-                <include layout="@layout/history_card_shimmer" />
-
-                <include layout="@layout/history_card_shimmer" />
-
-                <include layout="@layout/history_card_shimmer" />
-
-                <include layout="@layout/history_card_shimmer" />
-
-
-
-
-            </LinearLayout>
-
-        </com.facebook.shimmer.ShimmerFrameLayout>
-
     </RelativeLayout>
 
 

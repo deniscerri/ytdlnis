@@ -60,12 +60,12 @@
 
                 <TextView
                     android:id="@+id/downloads_info_bottom"
-                    android:layout_width="296dp"
-                    android:layout_height="20dp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
                     android:ellipsize="end"
                     android:gravity="bottom"
                     android:maxLines="1"
-                    android:layout_margin="10dp"
                     android:scrollbars="none"
                     android:shadowColor="@color/black"
                     android:shadowDx="4"
@@ -75,15 +75,15 @@
                     android:textSize="11sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/downloads_info_time"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/downloads_title"
                     app:layout_constraintVertical_bias="1.0" />
 
                 <TextView
                     android:id="@+id/downloads_info_time"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:gravity="bottom|end"
                     android:layout_margin="10dp"
                     android:shadowColor="@color/black"
                     android:shadowDx="4"
