@@ -176,4 +176,9 @@
     <string name="freespace">Вільний простір</string>
     <string name="link_you_copied">Скопійоване посилання</string>
     <string name="restrict_filenames">Обмеження імен файлів</string>
+    <string name="kill_app">Завершити роботу застосунку</string>
+    <string name="end">Кінець</string>
+    <string name="start">Старт</string>
+    <string name="confirm_terminate">Усі завантаження буде зупинено, а застосунок буде примусово закрито</string>
+    <string name="dont_ask_again">Більше не питай</string>
 </resources>
