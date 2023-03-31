@@ -176,4 +176,9 @@
     <string name="worst_quality">Peor Calidad</string>
     <string name="restrict_filenames">Restringir nombres de archivos</string>
     <string name="restrict_filenames_summary">Limite los nombres de los archivos a caracteres ASCII y evite \"&amp;\" y espacios en los nombres de archivo</string>
+    <string name="kill_app">Terminar la aplicación</string>
+    <string name="confirm_terminate">Se detendrán todas las descargas y se forzará el cierre de la aplicación</string>
+    <string name="dont_ask_again">No vuelvas a preguntar</string>
+    <string name="end">Fin</string>
+    <string name="start">Inicio</string>
 </resources>
