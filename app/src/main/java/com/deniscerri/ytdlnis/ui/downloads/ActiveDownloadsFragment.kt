@@ -1,6 +1,7 @@
 package com.deniscerri.ytdlnis.ui.downloads
 
 import android.app.Activity
+import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -19,6 +20,8 @@ import com.deniscerri.ytdlnis.adapter.ActiveDownloadAdapter
 import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.databinding.FragmentHomeBinding
+import com.deniscerri.ytdlnis.ui.more.downloadLogs.DownloadLogActivity
+import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.NotificationUtil
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.yausername.youtubedl_android.YoutubeDL
@@ -33,6 +36,7 @@ class ActiveDownloadsFragment() : Fragment(), ActiveDownloadAdapter.OnItemClickL
     private lateinit var activeDownloads : ActiveDownloadAdapter
     lateinit var downloadItem: DownloadItem
     private lateinit var notificationUtil: NotificationUtil
+    private lateinit var fileUtil: FileUtil
 
 
     override fun onCreateView(
@@ -44,6 +48,7 @@ class ActiveDownloadsFragment() : Fragment(), ActiveDownloadAdapter.OnItemClickL
         fragmentView = inflater.inflate(R.layout.fragment_generic_download_queue, container, false)
         activity = getActivity()
         notificationUtil = NotificationUtil(requireContext())
+        fileUtil = FileUtil()
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
         return fragmentView
     }
@@ -99,6 +104,15 @@ class ActiveDownloadsFragment() : Fragment(), ActiveDownloadAdapter.OnItemClickL
 
     override fun onCancelClick(itemID: Long) {
         cancelDownload(itemID)
+    }
+
+    override fun onOutputClick(item: DownloadItem) {
+        val logFile = fileUtil.getLogFile(requireContext(), item)
+        if (logFile.exists()) {
+            val intent = Intent(requireContext(), DownloadLogActivity::class.java)
+            intent.putExtra("path", logFile.absolutePath)
+            startActivity(intent)
+        }
     }
 
     private fun cancelDownload(itemID: Long){

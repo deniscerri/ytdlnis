@@ -70,6 +70,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_weight="0.7"
+                app:layout_constraintVertical_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/downloads_image_view"
                 app:layout_constraintTop_toTopOf="parent">
 

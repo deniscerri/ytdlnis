@@ -66,6 +66,7 @@
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/download_viewpager"
             android:layout_width="match_parent"
+            android:paddingHorizontal="10dp"
             android:layout_height="match_parent" />
     </LinearLayout>
     <include layout="@layout/history_no_results"

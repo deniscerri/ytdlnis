@@ -189,4 +189,5 @@
     <string name="end">End</string>
     <string name="start">Start</string>
     <string name="update_formats_summary">Automatically search for missing formats when clicking the format card</string>
+    <string name="ignore_battery_optimization">Ignore Battery Optimization</string>
 </resources>

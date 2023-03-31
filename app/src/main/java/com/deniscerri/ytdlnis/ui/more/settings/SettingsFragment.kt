@@ -1,15 +1,19 @@
 package com.deniscerri.ytdlnis.ui.more.settings
 
 import android.app.Activity
+import android.content.Context
+import android.content.Context.POWER_SERVICE
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
+import android.os.PowerManager
 import android.provider.Settings
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.os.LocaleListCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.*
@@ -26,8 +30,10 @@ import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 import java.util.*
 
+
 class SettingsFragment : PreferenceFragmentCompat() {
     private var language: ListPreference? = null
+    private var ignoreBatteryOptimization: Preference? = null
     private var musicPath: Preference? = null
     private var videoPath: Preference? = null
     private var commandPath: Preference? = null
@@ -90,6 +96,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
             requireContext().getSharedPreferences("root_preferences", Activity.MODE_PRIVATE)
         val editor = preferences.edit()
         language = findPreference("app_language")
+        ignoreBatteryOptimization = findPreference("ignore_battery")
         musicPath = findPreference("music_path")
         videoPath = findPreference("video_path")
         commandPath = findPreference("command_path")
@@ -139,6 +146,12 @@ class SettingsFragment : PreferenceFragmentCompat() {
         }
         val lang = if (values.contains(Locale.getDefault().language)) Locale.getDefault().language else "en"
         editor.putString("app_language", lang)
+
+        val packageName: String = requireContext().packageName
+        val pm = requireContext().applicationContext.getSystemService(POWER_SERVICE) as PowerManager
+        if (pm.isIgnoringBatteryOptimizations(packageName)) {
+            ignoreBatteryOptimization!!.isVisible = false
+        }
 
         if (preferences.getString("music_path", "")!!.isEmpty()) {
             editor.putString("music_path", getString(R.string.music_path))
@@ -194,6 +207,15 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 language!!.summary = Locale(newValue.toString()).getDisplayLanguage(Locale(newValue.toString()))
                 editor.apply()
                 AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(newValue.toString()))
+                true
+            }
+
+        ignoreBatteryOptimization!!.onPreferenceClickListener =
+            Preference.OnPreferenceClickListener {
+                val intent = Intent()
+                intent.action = Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS
+                intent.data = Uri.parse("package:" + requireContext().packageName)
+                startActivity(intent)
                 true
             }
 

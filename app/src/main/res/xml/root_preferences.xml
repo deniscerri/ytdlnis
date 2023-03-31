@@ -8,6 +8,11 @@
         app:summary="en"
         app:title="@string/language" />
 
+    <Preference
+        app:icon="@drawable/ic_battery"
+        app:key="ignore_battery"
+        app:title="@string/ignore_battery_optimization" />
+
     <PreferenceCategory android:title="@string/directories">
 
 

@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.util.FileUtil
+import com.google.android.exoplayer2.offline.Download
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.progressindicator.LinearProgressIndicator
@@ -114,6 +115,10 @@ class ActiveDownloadAdapter(onItemClickListener: OnItemClickListener, activity: 
         val output = card.findViewById<TextView>(R.id.output)
         output.tag = "${item.id}##output"
 
+        output.setOnClickListener {
+            onItemClickListener.onOutputClick(item)
+        }
+
 
         // CANCEL BUTTON ----------------------------------
         val cancelButton = card.findViewById<MaterialButton>(R.id.active_download_cancel)
@@ -125,6 +130,7 @@ class ActiveDownloadAdapter(onItemClickListener: OnItemClickListener, activity: 
     }
     interface OnItemClickListener {
         fun onCancelClick(itemID: Long)
+        fun onOutputClick(item: DownloadItem)
     }
 
     companion object {

@@ -7,6 +7,7 @@ import android.os.Build
 import android.provider.DocumentsContract
 import android.webkit.MimeTypeMap
 import com.deniscerri.ytdlnis.R
+import com.deniscerri.ytdlnis.database.models.DownloadItem
 import okhttp3.internal.closeQuietly
 import java.io.File
 import java.net.URLDecoder
@@ -133,6 +134,11 @@ class FileUtil() {
         }
         originDir.delete()
         return scanMedia(fileList, context)
+    }
+
+    fun getLogFile(context: Context, item: DownloadItem) : File {
+        val titleRegex = Regex("[^A-Za-z\\d ]")
+        return File(context.filesDir.absolutePath + """/logs/${item.id} - ${titleRegex.replace(item.title, "")}##${item.type}##${item.format.format_id}.log""")
     }
 
     fun convertFileSize(s: Long): String{

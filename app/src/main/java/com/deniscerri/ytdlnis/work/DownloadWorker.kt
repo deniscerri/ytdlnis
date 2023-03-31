@@ -36,6 +36,7 @@ class DownloadWorker(
         if (itemId == 0L) return Result.failure()
 
         val notificationUtil = NotificationUtil(context)
+        val fileUtil = FileUtil()
         val dbManager = DBManager.getInstance(context)
         val dao = dbManager.downloadDao
         val repository = DownloadRepository(dao)
@@ -225,10 +226,9 @@ class DownloadWorker(
             }
         }
 
-        val titleRegex = Regex("[^A-Za-z\\d ]")
         val logDownloads = sharedPreferences.getBoolean("log_downloads", false) && !sharedPreferences.getBoolean("incognito", false)
         val logFolder = File(context.filesDir.absolutePath + "/logs")
-        val logFile = File(context.filesDir.absolutePath + """/logs/${downloadItem.id} - ${titleRegex.replace(downloadItem.title, "")}##${downloadItem.type}##${downloadItem.format.format_id}.log""")
+        val logFile = fileUtil.getLogFile(context, downloadItem)
 
         runCatching {
             if (logDownloads){
@@ -260,6 +260,7 @@ class DownloadWorker(
                 finalPath = moveFile(tempFileDir.absoluteFile, downloadLocation){ progress ->
                     setProgressAsync(workDataOf("progress" to progress))
                 }
+                setProgressAsync(workDataOf("progress" to 1000, "output" to "Moved file to $finalPath", "id" to downloadItem.id, "log" to logDownloads))
             }catch (e: Exception){
                 finalPath = context.getString(R.string.unfound_file)
                 e.printStackTrace()

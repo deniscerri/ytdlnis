@@ -47,6 +47,7 @@
                 android:layout_height="match_parent">
 
                 <LinearLayout
+                    android:id="@+id/title_author"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:orientation="vertical"
@@ -94,15 +95,22 @@
 
                 </LinearLayout>
 
+                <androidx.constraintlayout.widget.Barrier
+                    android:id="@+id/barrier"
+                    app:barrierDirection="bottom"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:constraint_referenced_ids="title_author,active_download_cancel"/>
+
 
                 <HorizontalScrollView
                     android:id="@+id/linearlayout2_horizontalscrollview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:scrollbars="none"
-                    app:layout_constraintBottom_toTopOf="@+id/output"
+                    android:paddingTop="10dp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/active_download_cancel"
+                    app:layout_constraintTop_toBottomOf="@+id/barrier"
                     app:layout_constraintVertical_bias="1.0">
 
                     <com.google.android.material.chip.ChipGroup

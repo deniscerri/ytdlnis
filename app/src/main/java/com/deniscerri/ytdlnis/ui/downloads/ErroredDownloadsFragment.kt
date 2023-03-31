@@ -87,7 +87,7 @@ class ErroredDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickL
 
     override fun onActionButtonClick(itemID: Long) {
         val item = items.find { it.id == itemID } ?: return
-        val file = File(requireContext().filesDir.absolutePath + """/logs/${item.id} - ${item.title}##${item.type}##${item.format.format_id}.log""")
+        val file = fileUtil.getLogFile(requireContext(), item)
         val intent = Intent(requireContext(), DownloadLogActivity::class.java)
         intent.putExtra("path", file.absolutePath)
         startActivity(intent)

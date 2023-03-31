@@ -17,6 +17,9 @@ import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -242,10 +245,10 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
     private fun changeSortIcon(item: TextView, order: HistorySort){
         when(order){
             HistorySort.DESC ->{
-                item.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_up, 0,0,0)
+                item.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_up, 0,0,0)
             }
             HistorySort.ASC ->                 {
-                item.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_down, 0,0,0)
+                item.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_down, 0,0,0)
             }
         }
     }
@@ -264,7 +267,7 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
             val filesize = sortSheet!!.findViewById<TextView>(R.id.filesize)
 
             val sortOptions = listOf(date!!, title!!, author!!, filesize!!)
-            sortOptions.forEach { it.setCompoundDrawablesWithIntrinsicBounds(R.drawable.empty,0,0,0) }
+            sortOptions.forEach { it.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.empty,0,0,0) }
             when(historyViewModel.sortType.value!!) {
                 HistoryRepository.HistorySortType.DATE -> changeSortIcon(date, historyViewModel.sortOrder.value!!)
                 HistoryRepository.HistorySortType.TITLE -> changeSortIcon(title, historyViewModel.sortOrder.value!!)
@@ -273,22 +276,22 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
             }
 
             date.setOnClickListener {
-                sortOptions.forEach { it.setCompoundDrawablesWithIntrinsicBounds(R.drawable.empty,0,0,0) }
+                sortOptions.forEach { it.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.empty,0,0,0) }
                 historyViewModel.setSorting(HistoryRepository.HistorySortType.DATE)
                 changeSortIcon(date, historyViewModel.sortOrder.value!!)
             }
             title.setOnClickListener {
-                sortOptions.forEach { it.setCompoundDrawablesWithIntrinsicBounds(R.drawable.empty,0,0,0) }
+                sortOptions.forEach { it.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.empty,0,0,0) }
                 historyViewModel.setSorting(HistoryRepository.HistorySortType.TITLE)
                 changeSortIcon(title, historyViewModel.sortOrder.value!!)
             }
             author.setOnClickListener {
-                sortOptions.forEach { it.setCompoundDrawablesWithIntrinsicBounds(R.drawable.empty,0,0,0) }
+                sortOptions.forEach { it.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.empty,0,0,0) }
                 historyViewModel.setSorting(HistoryRepository.HistorySortType.AUTHOR)
                 changeSortIcon(author, historyViewModel.sortOrder.value!!)
             }
             filesize.setOnClickListener {
-                sortOptions.forEach { it.setCompoundDrawablesWithIntrinsicBounds(R.drawable.empty,0,0,0) }
+                sortOptions.forEach { it.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.empty,0,0,0) }
                 historyViewModel.setSorting(HistoryRepository.HistorySortType.FILESIZE)
                 changeSortIcon(filesize, historyViewModel.sortOrder.value!!)
             }
@@ -332,9 +335,10 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
         val websites = mutableListOf<String>()
         val websiteFilter = historyViewModel.websiteFilter.value
         for (item in list){
-            if (!websites.contains(item.website)) websites.add(item.website)
+            if (!websites.contains(item.website.lowercase())) websites.add(item.website.lowercase())
         }
         websiteGroup!!.removeAllViews()
+        if (websites.size <= 1) return
         //val websites = historyRecyclerViewAdapter!!.websites
         for (i in websites.indices) {
             val w = websites[i]

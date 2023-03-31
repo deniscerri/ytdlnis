@@ -22,7 +22,7 @@ buildscript {
         // supports java 1.6
         commonsCompressVer = '1.12'
         youtubedlAndroidVer = "7222fe9637"
-        workVer = "2.8.0"
+        workVer = "2.8.1"
         composeVer = "1.4.0-alpha02"
         kotlinVer = "1.7.21"
         coroutineVer = "1.6.4"
