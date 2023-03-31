@@ -176,4 +176,9 @@
     <string name="worst_quality">Ən Pis Keyfiyyət</string>
     <string name="restrict_filenames">Fayl adların məhdudlaşdır</string>
     <string name="restrict_filenames_summary">Fayl adların ancaq ASCII simvollarıyla məhdudlaşdır və fayl adlarında \"&amp;\" və boşluqlar yaratma</string>
+    <string name="kill_app">Tətbiqi Dayandır</string>
+    <string name="confirm_terminate">Bütün endirmələr dayandırılacaq və tətbiq bağlanmağa məcbur ediləcək</string>
+    <string name="dont_ask_again">Təkrar soruşma</string>
+    <string name="end">Son</string>
+    <string name="start">Başlanğıc</string>
 </resources>
