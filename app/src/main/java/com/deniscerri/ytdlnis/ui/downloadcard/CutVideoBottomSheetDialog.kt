@@ -5,8 +5,6 @@ import android.app.Dialog
 import android.content.DialogInterface
 import android.net.Uri
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.DisplayMetrics
 import android.util.Log
 import android.view.KeyEvent
@@ -20,11 +18,19 @@ import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.InfoUtil
 import com.deniscerri.ytdlnis.util.UiUtil
 import com.google.android.exoplayer2.ExoPlayer
-import com.google.android.exoplayer2.MediaItem
+import com.google.android.exoplayer2.MediaItem.fromUri
 import com.google.android.exoplayer2.Player
+import com.google.android.exoplayer2.source.DefaultMediaSourceFactory
+import com.google.android.exoplayer2.source.MediaSource
+import com.google.android.exoplayer2.source.MergingMediaSource
+import com.google.android.exoplayer2.source.ProgressiveMediaSource
+import com.google.android.exoplayer2.source.dash.DashMediaSource
+import com.google.android.exoplayer2.source.hls.HlsMediaSource
 import com.google.android.exoplayer2.ui.PlayerView
+import com.google.android.exoplayer2.upstream.FileDataSource
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.android.material.card.MaterialCardView
 import com.google.android.material.slider.RangeSlider
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.Dispatchers
@@ -66,6 +72,7 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val list
         }
 
         player = ExoPlayer.Builder(requireContext()).build()
+        val frame = view.findViewById<MaterialCardView>(R.id.frame_layout)
         val videoView = view.findViewById<PlayerView>(R.id.video_view)
         videoView.player = player
 
@@ -98,21 +105,39 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val list
                 val url = withContext(Dispatchers.IO){
                     infoUtil.getStreamingUrl(item.url)
                 }
+
+                if (url.isBlank()) throw Exception("No Streaming URL found!")
+                Log.e("aa", url.split("\n")[0])
+                Log.e("aa", url.split("\n")[1])
+
+                val urls = url.split("\n")
+                if (urls.size == 2){
+                    val audioSource: MediaSource =
+                        DefaultMediaSourceFactory(requireContext())
+                            .createMediaSource(fromUri(Uri.parse(urls[0])))
+                    val videoSource: MediaSource =
+                        DefaultMediaSourceFactory(requireContext())
+                            .createMediaSource(fromUri(Uri.parse(urls[1])))
+                    (player as ExoPlayer).setMediaSource(MergingMediaSource(videoSource, audioSource))
+                }else{
+                    player.addMediaItem(fromUri(Uri.parse(urls[0])))
+                }
+
                 progress.visibility = View.GONE
-                player.addMediaItem(MediaItem.fromUri(Uri.parse(url)))
+
                 player.prepare()
                 player.seekTo((((rangeSlider.values[0].toInt() * timeSeconds) / 100) * 1000).toLong())
                 player.play()
             }catch (e: Exception){
                 progress.visibility = View.GONE
-                videoView.visibility = View.GONE
+                frame.visibility = View.GONE
                 e.printStackTrace()
             }
         }
 
         //poll video progress
         lifecycleScope.launch {
-            audioProgress(player).collect {
+            videoProgress(player).collect {
                 val startTimestamp = (rangeSlider.values[0].toInt() * timeSeconds) / 100
                 val endTimestamp = (rangeSlider.values[1].toInt() * timeSeconds) / 100
                 if (it >= endTimestamp){
@@ -219,7 +244,7 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val list
         }
     }
 
-    private fun audioProgress(player: Player?) = flow<Int> {
+    private fun videoProgress(player: Player?) = flow<Int> {
         while (true) {
             emit((player!!.currentPosition / 1000).toInt())
             delay(1000)

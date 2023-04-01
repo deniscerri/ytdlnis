@@ -644,8 +644,7 @@ class InfoUtil(context: Context) {
                 arrayOf(youtubeDLResponse.out)
             }
             val jsonObject = JSONObject(results[0]!!)
-            val streamURL =  jsonObject.getString("urls")
-            return streamURL.split("\n")[0]
+            return jsonObject.getString("urls")
         } catch (e: Exception) {
             return ""
         }
