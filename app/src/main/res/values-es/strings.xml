@@ -181,4 +181,6 @@
     <string name="dont_ask_again">No vuelvas a preguntar</string>
     <string name="end">Fin</string>
     <string name="start">Inicio</string>
+    <string name="update_formats_summary">Busca automáticamente los formatos que faltan al hacer clic en la tarjeta de formato</string>
+    <string name="ignore_battery_optimization">Ignorar la optimización de la batería</string>
 </resources>
