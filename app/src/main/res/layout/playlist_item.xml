@@ -4,17 +4,18 @@
     android:id="@+id/playlist_card_constraintLayout"
     android:layout_width="match_parent"
     android:layout_marginBottom="10dp"
+    android:checkable="true"
+    android:clickable="true"
+    android:focusable="true"
+    android:background="?android:attr/selectableItemBackground"
     android:layout_height="wrap_content">
 
     <FrameLayout
         android:id="@+id/download_card_view"
         android:layout_width="0dp"
-        android:layout_marginStart="10dp"
+        android:padding="10dp"
         app:shapeAppearance="@style/ShapeAppearanceOverlay.Avatar"
         android:layout_height="wrap_content"
-        android:checkable="true"
-        android:clickable="true"
-        android:focusable="true"
         app:cardPreventCornerOverlap="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/checkBox"

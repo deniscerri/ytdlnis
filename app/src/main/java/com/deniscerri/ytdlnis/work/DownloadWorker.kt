@@ -69,7 +69,7 @@ class DownloadWorker(
         val type = downloadItem.type
         val downloadLocation = downloadItem.downloadPath
 
-        val tempFileDir = File(context.cacheDir.absolutePath + downloadItem.id)
+        val tempFileDir = File(context.cacheDir.absolutePath + "/" + downloadItem.id)
         tempFileDir.delete()
         tempFileDir.mkdir()
 

@@ -102,7 +102,7 @@ class DownloadLogListActivity : AppCompatActivity(), DownloadLogsAdapter.OnItemC
         fileList = mutableListOf()
         try{
             fileList.addAll(logFolder.listFiles()!!)
-            fileList.sortByDescending { it.name.split(" -")[0].toInt() }
+            fileList.sortByDescending { it.lastModified()}
         }catch (e: Exception){
             e.printStackTrace()
         }

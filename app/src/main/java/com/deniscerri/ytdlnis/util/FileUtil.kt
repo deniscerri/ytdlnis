@@ -140,6 +140,10 @@ class FileUtil() {
         val titleRegex = Regex("[^A-Za-z\\d ]")
         return File(context.filesDir.absolutePath + """/logs/${item.id} - ${titleRegex.replace(item.title, "")}##${item.type}##${item.format.format_id}.log""")
     }
+    fun getLogFileForTerminal(context: Context, command: String) : File {
+        val titleRegex = Regex("[^A-Za-z\\d ]")
+        return File(context.filesDir.absolutePath + """/logs/Terminal - ${titleRegex.replace(command.take(30), "")}##terminal.log""")
+    }
 
     fun convertFileSize(s: Long): String{
         if (s <= 0) return "?"

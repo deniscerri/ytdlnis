@@ -1,60 +1,43 @@
 package com.deniscerri.ytdlnis.ui.more
 
-import android.Manifest
 import android.app.Activity
-import android.app.Notification
-import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.content.pm.PackageManager
 import android.os.Bundle
-import android.os.Looper
-import android.text.format.DateFormat
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
-import android.widget.*
+import android.widget.EditText
+import android.widget.LinearLayout
+import android.widget.ScrollView
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.app.ActivityCompat
-import androidx.core.app.NotificationManagerCompat
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.work.*
-import com.deniscerri.ytdlnis.App
+import androidx.work.Data
+import androidx.work.ExistingWorkPolicy
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkInfo
+import androidx.work.WorkManager
 import com.deniscerri.ytdlnis.R
-import com.deniscerri.ytdlnis.database.repository.DownloadRepository
 import com.deniscerri.ytdlnis.database.viewmodel.CommandTemplateViewModel
-import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
-import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.NotificationUtil
-import com.deniscerri.ytdlnis.work.DownloadWorker
+import com.deniscerri.ytdlnis.work.TerminalDownloadWorker
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.button.MaterialButton
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.yausername.youtubedl_android.YoutubeDL
-import com.yausername.youtubedl_android.YoutubeDLRequest
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
-import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
-import java.io.File
-import java.text.SimpleDateFormat
-import java.util.*
-import java.util.concurrent.TimeUnit
+import kotlin.properties.Delegates
 
 
 class TerminalActivity : AppCompatActivity() {
@@ -67,11 +50,15 @@ class TerminalActivity : AppCompatActivity() {
     private lateinit var bottomAppBar: BottomAppBar
     private lateinit var commandTemplateViewModel: CommandTemplateViewModel
     private lateinit var sharedPreferences: SharedPreferences
+    private var downloadID by Delegates.notNull<Int>()
     var context: Context? = null
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_terminal)
+
+        downloadID = System.currentTimeMillis().toInt() % 100000
+
         context = baseContext
         scrollView = findViewById(R.id.custom_command_scrollview)
         topAppBar = findViewById(R.id.custom_command_toolbar)
@@ -112,6 +99,28 @@ class TerminalActivity : AppCompatActivity() {
         }
         notificationUtil = NotificationUtil(this)
         handleIntent(intent)
+
+        WorkManager.getInstance(this)
+            .getWorkInfosForUniqueWorkLiveData(downloadID.toString())
+            .observe(this){ list ->
+                list.forEach {work ->
+                    if (work.state == WorkInfo.State.SUCCEEDED || work.state == WorkInfo.State.FAILED || work.state == WorkInfo.State.CANCELLED) {
+                        input!!.visibility = View.VISIBLE
+                        input!!.requestFocus()
+                        hideCancelFab()
+                    }
+                    val line = work.progress.getString("output") ?: return@observe
+                    val id = work.progress.getInt("id", 0)
+                    if(id == 0) return@observe
+                    runOnUiThread {
+                        try {
+                            output!!.text = "${output!!.text}\n$line"
+                            output!!.scrollTo(0, output!!.height)
+                            scrollView!!.fullScroll(View.FOCUS_DOWN)
+                        }catch (ignored: Exception) {}
+                    }
+                }
+            }
     }
 
     override fun onNewIntent(intent: Intent) {
@@ -204,121 +213,31 @@ class TerminalActivity : AppCompatActivity() {
         val cmd = if (command!!.contains("yt-dlp")) command.replace("yt-dlp", "")
         else command
 
-        downloadID = System.currentTimeMillis().toInt()
-
-        val theIntent = Intent(this, TerminalActivity::class.java)
-        val pendingIntent = PendingIntent.getActivity(this, 0, theIntent, PendingIntent.FLAG_IMMUTABLE)
-
-        val commandNotification: Notification =
-            notificationUtil.createDownloadServiceNotification(
-                pendingIntent,
-                getString(R.string.terminal),
-                downloadID,
-                NotificationUtil.COMMAND_DOWNLOAD_SERVICE_CHANNEL_ID
+        val workRequest = OneTimeWorkRequestBuilder<TerminalDownloadWorker>()
+            .setInputData(
+                Data.Builder()
+                    .putInt("id", downloadID)
+                    .putString("command", cmd)
+                    .build()
             )
-        with(NotificationManagerCompat.from(this)){
-            if (ActivityCompat.checkSelfPermission(
-                    context!!,
-                    Manifest.permission.POST_NOTIFICATIONS
-                ) == PackageManager.PERMISSION_GRANTED
-            ) {
-                notify(downloadID, commandNotification)
-            }
-        }
-        val request = YoutubeDLRequest(emptyList())
+            .addTag("terminal")
+            .build()
 
-        val tempFolder = StringBuilder(context!!.cacheDir.absolutePath + """/${System.currentTimeMillis()}##terminal""")
-        val tempFileDir = File(tempFolder.toString())
-        tempFileDir.delete()
-        tempFileDir.mkdir()
-
-        request.addOption(
-            "--config-locations",
-            File(cacheDir, "config${System.currentTimeMillis()}.txt").apply {
-                writeText(cmd)
-            }.absolutePath
-        )
-
-
-        request.addOption("-P", tempFileDir.absolutePath)
-
-        showCancelFab()
-        val disposable: Disposable = Observable.fromCallable {
-            try{
-                YoutubeDL.getInstance().execute(request, downloadID.toString()){ progress, _, line ->
-                    Log.e(TAG, line)
-                    runOnUiThread {
-                        output!!.text = "${output!!.text}\n$line"
-                        output!!.scrollTo(0, output!!.height)
-                        scrollView!!.fullScroll(View.FOCUS_DOWN)
-                    }
-
-                    val title: String = getString(R.string.terminal)
-                    notificationUtil.updateDownloadNotification(
-                        downloadID,
-                        line, progress.toInt(), 0, title,
-                        NotificationUtil.COMMAND_DOWNLOAD_SERVICE_CHANNEL_ID
-                    )
-                }
-            }catch (e: Exception){
-                e.printStackTrace()
-                runOnUiThread {
-                    output!!.text = "${output!!.text}\n${e.message}"
-                    output!!.scrollTo(0, output!!.height)
-                    scrollView!!.fullScroll(View.FOCUS_DOWN)
-
-                    input!!.visibility = View.VISIBLE
-                    input!!.requestFocus()
-
-                    hideCancelFab()
-                }
-            }
-
-        }
-            .subscribeOn(Schedulers.newThread())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                input!!.setText("yt-dlp ")
-                input!!.visibility = View.VISIBLE
-                input!!.requestFocus()
-
-                try{
-                    val fileUtil = FileUtil()
-                    fileUtil.moveFile(tempFileDir.absoluteFile, this, sharedPreferences.getString("command_path", getString(R.string.command))!!) {}
-                }catch (e: Exception){
-                    output!!.text = "${output!!.text}\n${e.message}"
-                    output!!.scrollTo(0, output!!.height)
-                    scrollView!!.fullScroll(View.FOCUS_DOWN)
-                }
-
-                hideCancelFab()
-                notificationUtil.cancelDownloadNotification(downloadID)
-            }) { e ->
-                e.printStackTrace()
-                output!!.text = "${output!!.text}\n${e.message}"
-                output!!.scrollTo(0, output!!.height)
-                scrollView!!.fullScroll(View.FOCUS_DOWN)
-                input!!.setText("yt-dlp ")
-                input!!.visibility = View.VISIBLE
-
-                hideCancelFab();
-
-                Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
-                Log.e(DownloadWorker.TAG, context?.getString(R.string.failed_download), e)
-                notificationUtil.cancelDownloadNotification(downloadID)
-            }
-        compositeDisposable.add(disposable)
+        WorkManager.getInstance(this).beginUniqueWork(
+            downloadID.toString(),
+            ExistingWorkPolicy.KEEP,
+            workRequest
+        ).enqueue()
     }
 
     private fun cancelDownload() {
         YoutubeDL.getInstance().destroyProcessById(downloadID.toString())
         WorkManager.getInstance(this).cancelUniqueWork(downloadID.toString())
-        notificationUtil.cancelDownloadNotification(downloadID)
+        notificationUtil.cancelDownloadNotification(downloadID.toInt())
     }
 
     companion object {
         private const val TAG = "CustomCommandActivity"
-        private var downloadID = System.currentTimeMillis().toInt()
         private val compositeDisposable = CompositeDisposable()
 
     }

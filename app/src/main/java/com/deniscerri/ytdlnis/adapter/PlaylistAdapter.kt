@@ -76,12 +76,12 @@ class PlaylistAdapter(onItemClickListener: OnItemClickListener, activity: Activi
         // CHECKBOX ----------------------------------
         val check = card.findViewById<CheckBox>(R.id.checkBox)
         check.isChecked = checkedItems.contains(item.url)
-        check.setOnCheckedChangeListener { buttonView, isChecked ->
-            checkCard(isChecked, item.url)
+        check.setOnClickListener {
+            checkCard(check.isChecked, item.url)
         }
 
         card.setOnClickListener {
-            check.isChecked = !check.isChecked
+            check.performClick()
         }
     }
 
@@ -117,6 +117,22 @@ class PlaylistAdapter(onItemClickListener: OnItemClickListener, activity: Activi
             checkedItems.add(item!!.url)
             notifyItemChanged(i)
         }
+    }
+
+    fun checkRange(start: Int, end: Int){
+        checkedItems.clear()
+        if (start == end ){
+            val item = getItem(start)
+            checkedItems.add(item!!.url)
+            notifyItemChanged(start)
+        }else{
+            for (i in start..end){
+                val item = getItem(i)
+                checkedItems.add(item!!.url)
+                notifyItemChanged(i)
+            }
+        }
+
     }
 
     fun getCheckedItems() : List<String>{

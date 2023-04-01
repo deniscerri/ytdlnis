@@ -57,11 +57,12 @@
 
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="10dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/cancelButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/rangeSlider">
 
@@ -69,8 +70,8 @@
             android:id="@+id/from_textinput"
             style="@style/Widget.Material3.TextInputLayout.FilledBox"
             android:layout_width="wrap_content"
-            android:hint="@string/start"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:hint="@string/start">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
@@ -94,8 +95,8 @@
             android:id="@+id/to_textinput"
             style="@style/Widget.Material3.TextInputLayout.FilledBox"
             android:layout_width="wrap_content"
-            android:hint="@string/end"
             android:layout_height="wrap_content"
+            android:hint="@string/end"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/colon">
 

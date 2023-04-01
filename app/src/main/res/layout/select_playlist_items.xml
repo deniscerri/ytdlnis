@@ -77,9 +77,53 @@
                 android:autoLink="all"
                 android:text="@string/ok"
                 app:icon="@drawable/ic_check"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/bottomsheet_ok"
+                app:layout_constraintVertical_bias="0.0">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/from_textinput"
+                    style="@style/Widget.Material3.TextInputLayout.FilledBox"
+                    android:layout_width="70dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    app:errorEnabled="true"
+                    android:hint="@string/start">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="number" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/to_textinput"
+                    style="@style/Widget.Material3.TextInputLayout.FilledBox"
+                    android:layout_width="70dp"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/end"
+                    app:errorEnabled="true"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/colon">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -87,7 +131,6 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/downloadMultipleRecyclerview"
             android:layout_width="match_parent"
-            android:paddingTop="10dp"
             tools:listitem="@layout/playlist_item"
             android:layout_height="wrap_content"
             android:focusableInTouchMode="true"
