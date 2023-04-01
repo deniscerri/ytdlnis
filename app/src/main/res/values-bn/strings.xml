@@ -54,7 +54,7 @@
     <string name="remove_downloading">ডাউনলোড বাতিল করুন</string>
     <string name="incognito_summary">ইতিহাস যোগ না করে ডাউনলোড করুন</string>
     <string name="title">শিরোনাম</string>
-    <string name="download">ডাউনলোড করুন</string>
+    <string name="download">ডাউনলোড</string>
     <string name="video_quality">ভিডিও এর ধরন</string>
     <string name="embed_subtitles">সাবটাইটেল এম্বেড করুন</string>
     <string name="delete_selected">নির্বাচিতগুলি মুছুন</string>
@@ -174,4 +174,11 @@
     <string name="freespace">মুক্ত স্থান</string>
     <string name="worst_quality">সবচেয়ে খারাপ মানের</string>
     <string name="best_quality">সবচেয়ে ভালো মনের</string>
+    <string name="restrict_filenames">ফাইল নাম সীমাবদ্ধ করুন</string>
+    <string name="restrict_filenames_summary">ফাইলের নামগুলিকে শুধুমাত্র ASCII অক্ষরের মধ্যে সীমাবদ্ধ করুন এবং ফাইলের নামগুলিতে \"&amp;\" এবং স্পেস এড়িয়ে চলুন</string>
+    <string name="kill_app">অ্যাপ বন্ধ করুন</string>
+    <string name="confirm_terminate">সমস্ত ডাউনলোড বন্ধ করা হবে এবং তারপরে অ্যাপটি জোর করে বন্ধ করা হবে</string>
+    <string name="dont_ask_again">আবার জিজ্ঞাসা করবেন না</string>
+    <string name="end">শেষ</string>
+    <string name="start">শুরু</string>
 </resources>

@@ -176,4 +176,9 @@
     <string name="all_items_selected">Visi vienumi atlasīti</string>
     <string name="clear_errored">Notīrīt Kļūdainos</string>
     <string name="workmanager_updated">Jums nepieciešams restartēt lietotni, un nav jābūt aktīvām lejupielādēm, lai šī preference stātos spēkā!</string>
+    <string name="kill_app">Pārtraukt Lietotnes Darbību</string>
+    <string name="confirm_terminate">Visas lejupielādes tiks pārtrauktas un lietotne tiks piespiedu kārtā aizvērta</string>
+    <string name="dont_ask_again">Nejautāt vēlreiz</string>
+    <string name="end">Beigas</string>
+    <string name="start">Sākums</string>
 </resources>
