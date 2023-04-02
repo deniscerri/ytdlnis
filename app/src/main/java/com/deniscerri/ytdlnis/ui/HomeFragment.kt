@@ -14,6 +14,8 @@ import android.view.View.*
 import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.text.TextUtilsCompat
+import androidx.core.view.ViewCompat
 import androidx.core.view.children
 import androidx.core.view.forEach
 import androidx.core.widget.addTextChangedListener
@@ -207,6 +209,8 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
         val searchView = requireView().findViewById<SearchView>(R.id.search_view)
         val queriesConstraint = requireView().findViewById<ConstraintLayout>(R.id.queries_constraint)
         val queriesInitStartBtn = queriesConstraint.findViewById<MaterialButton>(R.id.init_search_query)
+        val isRightToLeft = resources.getBoolean(R.bool.is_right_to_left)
+
 
         infoUtil = InfoUtil(requireContext())
         val linkYouCopied = searchView.findViewById<ConstraintLayout>(R.id.link_you_copied)
@@ -337,8 +341,11 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
                 val drawableRight = 2
                 val drawableBottom = 3
                 if (event.action == MotionEvent.ACTION_UP) {
-                    if (event.x > searchView.editText.right - searchView.editText.compoundDrawables[drawableRight].bounds.width()
-                    ) {
+                    if (
+                        (isRightToLeft && (event.x < (searchView.editText.left - searchView.editText.compoundDrawables[drawableLeft].bounds.width()))) ||
+                        (!isRightToLeft && (event.x > (searchView.editText.right - searchView.editText.compoundDrawables[drawableRight].bounds.width())))
+                        ){
+
                         val present = queriesChipGroup!!.children.firstOrNull { (it as Chip).text.toString() == searchView.editText.text.toString() }
                         if (present == null) {
                             val chip = layoutinflater!!.inflate(R.layout.input_chip, queriesChipGroup, false) as Chip
@@ -352,6 +359,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
                         else queriesConstraint.visibility = VISIBLE
                         searchView.editText.setText("")
                         return@OnTouchListener true
+
                     }
                 }
             }catch (ignored: Exception){}
@@ -368,7 +376,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
                 R.id.delete_results -> {
                     resultViewModel.getTrending()
                     selectedObjects = ArrayList()
-                    searchBar!!.text = ""
+                    searchBar!!.setText("")
                     downloadAllFabCoordinator!!.visibility = GONE
                     downloadFabs!!.visibility = GONE
                 }
@@ -408,7 +416,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
 
         if (queryList.isEmpty()) return
         if (queryList.size == 1){
-            searchBar!!.text = searchView.text
+            searchBar!!.setText(searchView.text)
         }
 
         searchView.hide()

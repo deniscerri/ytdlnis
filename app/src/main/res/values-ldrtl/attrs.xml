@@ -1,0 +1,3 @@
+<resources>
+    <bool name="is_right_to_left">true</bool>
+</resources>

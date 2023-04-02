@@ -30,7 +30,7 @@
             android:paddingEnd="20dp"
             android:textSize="16sp"
             android:textStyle="bold"
-            app:drawableLeftCompat="@drawable/ic_search" />
+            app:drawableStartCompat="@drawable/ic_search" />
 
         <ImageButton
             android:id="@+id/set_search_query_button"
