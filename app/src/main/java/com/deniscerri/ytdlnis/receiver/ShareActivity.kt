@@ -13,6 +13,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
+import android.util.Log
 import android.view.Window
 import android.view.WindowManager
 import android.widget.TextView
@@ -87,8 +88,16 @@ class ShareActivity : AppCompatActivity() {
         askPermissions()
 
         val action = intent.action
-        val type = intent.type
+        val type = intent.clipData
+        Log.e("aa", intent.toString())
         if (Intent.ACTION_SEND == action && type != null) {
+            if (intent.getStringExtra(Intent.EXTRA_TEXT) == null){
+                intent.setClass(this, MainActivity::class.java)
+                startActivity(intent)
+                finishAffinity()
+                return
+            }
+
             val loadingBottomSheet = BottomSheetDialog(this)
             loadingBottomSheet.requestWindowFeature(Window.FEATURE_NO_TITLE)
             loadingBottomSheet.setContentView(R.layout.please_wait_bottom_sheet)

@@ -132,34 +132,29 @@ class MainActivity : AppCompatActivity() {
         val type = intent.type
         if (Intent.ACTION_SEND == action && type != null) {
             Log.e(TAG, action)
-            if (type.equals("application/txt", ignoreCase = true)) {
-                try {
-                    val uri = if (Build.VERSION.SDK_INT >= 33){
-                        intent.getParcelableExtra(Intent.EXTRA_STREAM, Uri::class.java)
-                    }else{
-                        intent.getParcelableExtra(Intent.EXTRA_STREAM)
-                    }
-                    val `is` = contentResolver.openInputStream(uri!!)
-                    val textBuilder = StringBuilder()
-                    val reader: Reader = BufferedReader(
-                        InputStreamReader(
-                            `is`, Charset.forName(
-                                StandardCharsets.UTF_8.name()
-                            )
+            try {
+                val uri = if (Build.VERSION.SDK_INT >= 33){
+                    intent.getParcelableExtra(Intent.EXTRA_STREAM, Uri::class.java)
+                }else{
+                    intent.getParcelableExtra(Intent.EXTRA_STREAM)
+                }
+                val `is` = contentResolver.openInputStream(uri!!)
+                val textBuilder = StringBuilder()
+                val reader: Reader = BufferedReader(
+                    InputStreamReader(
+                        `is`, Charset.forName(
+                            StandardCharsets.UTF_8.name()
                         )
                     )
-                    var c: Int
-                    while (reader.read().also { c = it } != -1) {
-                        textBuilder.append(c.toChar())
-                    }
-                    val l = listOf(*textBuilder.toString().split("\n").toTypedArray())
-                    val lines = LinkedList(l)
-                    (navHostFragment.childFragmentManager.primaryNavigationFragment!! as HomeFragment).handleFileIntent(lines)
-                } catch (e: Exception) {
-                    e.printStackTrace()
+                )
+                var c: Int
+                while (reader.read().also { c = it } != -1) {
+                    textBuilder.append(c.toChar())
                 }
-            } else {
-                (navHostFragment.childFragmentManager.primaryNavigationFragment!! as HomeFragment).handleIntent(intent)
+                val l = listOf(*textBuilder.toString().split("\n").toTypedArray())
+                (navHostFragment.childFragmentManager.primaryNavigationFragment!! as HomeFragment).handleFileIntent(l)
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
         }
     }

@@ -14,6 +14,8 @@ import android.view.View.*
 import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.view.children
+import androidx.core.view.forEach
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -36,6 +38,8 @@ import com.deniscerri.ytdlnis.util.InfoUtil
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.chip.Chip
+import com.google.android.material.chip.ChipGroup
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.search.SearchBar
@@ -48,7 +52,7 @@ import java.util.*
 
 class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickListener {
     private var inputQuery: String? = null
-    private var inputQueries: LinkedList<String?>? = null
+    private var inputQueries: MutableList<String>? = null
     private var inputQueriesLength = 0
     private var homeAdapter: HomeAdapter? = null
 
@@ -74,6 +78,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
     private var layoutinflater: LayoutInflater? = null
     private var shimmerCards: ShimmerFrameLayout? = null
     private var searchBar: SearchBar? = null
+    private var queriesChipGroup: ChipGroup? = null
     private var recyclerView: RecyclerView? = null
     private var uiHandler: Handler? = null
     private var resultsList: List<ResultItem?>? = null
@@ -118,6 +123,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
         //initViews
         shimmerCards = view.findViewById(R.id.shimmer_results_framelayout)
         searchBar = view.findViewById(R.id.search_bar)
+        queriesChipGroup = view.findViewById(R.id.queries)
         searchSuggestions = view.findViewById(R.id.search_suggestions_scroll_view)
         searchSuggestionsLinearLayout = view.findViewById(R.id.search_suggestions_linear_layout)
         searchHistory = view.findViewById(R.id.search_history_scroll_view)
@@ -141,7 +147,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
             homeAdapter!!.submitList(it)
             resultsList = it
             if(resultViewModel.itemCount.value!! > 1 || resultViewModel.itemCount.value!! == -1){
-                if (it.size > 1 && it[0].playlistTitle.isNotEmpty() && it[0].playlistTitle != getString(R.string.trendingPlaylist) && it.size > 1){
+                if (it.size > 1 && it[0].playlistTitle.isNotEmpty() && it[0].playlistTitle != getString(R.string.trendingPlaylist)){
                     downloadAllFabCoordinator!!.visibility = VISIBLE
                 }else{
                     downloadAllFabCoordinator!!.visibility = GONE
@@ -185,25 +191,8 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
 
         if (inputQueries != null) {
             resultViewModel.deleteAll()
-            inputQueriesLength = inputQueries!!.size
-            Handler(Looper.getMainLooper()).post { scrollToTop() }
-            lifecycleScope.launch(){
-                withContext(Dispatchers.IO){
-                    resultViewModel.parseQuery(inputQueries!!.pop()!!, true)
-                }
-
-                while (!inputQueries!!.isEmpty()) {
-                    inputQuery = inputQueries!!.pop()
-                    withContext(Dispatchers.IO){
-                        resultViewModel.parseQuery(inputQuery!!, false)
-                    }
-                }
-                try {
-                    if (resultsList!!.size > 1 || inputQueriesLength > 1) {
-                        downloadAllFabCoordinator!!.visibility = VISIBLE
-                    }
-                } catch (ignored: Exception) {
-                }
+            lifecycleScope.launch(Dispatchers.IO){
+                resultViewModel.parseQueries(inputQueries!!)
             }
         }
     }
@@ -213,8 +202,12 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
         resultViewModel.checkTrending()
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun initMenu() {
         val searchView = requireView().findViewById<SearchView>(R.id.search_view)
+        val queriesConstraint = requireView().findViewById<ConstraintLayout>(R.id.queries_constraint)
+        val queriesInitStartBtn = queriesConstraint.findViewById<MaterialButton>(R.id.init_search_query)
+
         infoUtil = InfoUtil(requireContext())
         val linkYouCopied = searchView.findViewById<ConstraintLayout>(R.id.link_you_copied)
         searchView.addTransitionListener { view, previousState, newState ->
@@ -229,7 +222,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
                         linkYouCopied.visibility = VISIBLE
                         val textView = linkYouCopied.findViewById<TextView>(R.id.suggestion_text)
                         textView.text = getString(R.string.link_you_copied)
-                        textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_language, 0, 0, 0)
+                        textView.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_language, 0, 0, 0)
                         val mb = linkYouCopied.findViewById<ImageButton>(R.id.set_search_query_button)
                         mb.visibility = INVISIBLE
 
@@ -255,6 +248,12 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
             searchHistoryLinearLayout!!.visibility = GONE
             linkYouCopied!!.visibility = GONE
 
+            if (searchView.editText.text.isEmpty()){
+                searchView.editText.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, 0, 0)
+            }else{
+                searchView.editText.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_plus, 0)
+            }
+
             lifecycleScope.launch {
                 val suggestions = withContext(Dispatchers.IO){
                     if (it!!.isEmpty()) {
@@ -270,7 +269,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
                             .inflate(R.layout.search_suggestion_item, null)
                         val textView = v.findViewById<TextView>(R.id.suggestion_text)
                         textView.text = suggestions[i]
-                        textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_restore, 0, 0, 0)
+                        textView.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_restore, 0, 0, 0)
                         Handler(Looper.getMainLooper()).post {
                             searchHistoryLinearLayout!!.addView(
                                 v
@@ -331,6 +330,34 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
             false
         }
 
+        searchView.editText.setOnTouchListener(OnTouchListener { v, event ->
+            try{
+                val drawableLeft = 0
+                val drawableTop = 1
+                val drawableRight = 2
+                val drawableBottom = 3
+                if (event.action == MotionEvent.ACTION_UP) {
+                    if (event.x > searchView.editText.right - searchView.editText.compoundDrawables[drawableRight].bounds.width()
+                    ) {
+                        val present = queriesChipGroup!!.children.firstOrNull { (it as Chip).text.toString() == searchView.editText.text.toString() }
+                        if (present == null) {
+                            val chip = layoutinflater!!.inflate(R.layout.input_chip, queriesChipGroup, false) as Chip
+                            chip.text = searchView.editText.text
+                            chip.setOnClickListener {
+                                queriesChipGroup!!.removeView(chip)
+                            }
+                            queriesChipGroup!!.addView(chip)
+                        }
+                        if (queriesChipGroup!!.childCount == 0) queriesConstraint.visibility = GONE
+                        else queriesConstraint.visibility = VISIBLE
+                        searchView.editText.setText("")
+                        return@OnTouchListener true
+                    }
+                }
+            }catch (ignored: Exception){}
+            false
+        })
+
         searchView.editText.setOnEditorActionListener { textView, i, keyEvent ->
             initSearch(searchView)
             true
@@ -352,29 +379,52 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
             }
             true
         }
+        queriesChipGroup!!.addOnLayoutChangeListener { view, i, i2, i3, i4, i5, i6, i7, i8 ->
+            if (queriesChipGroup!!.childCount == 0) queriesConstraint.visibility = GONE
+            else queriesConstraint.visibility = VISIBLE
+            searchView.editText.setText("")
+        }
+
+        queriesInitStartBtn.setOnClickListener {
+            initSearch(searchView)
+        }
     }
 
     private fun initSearch(searchView: SearchView){
-        val inputQuery = searchView.text!!.trim { it <= ' '}
-        if (inputQuery.isEmpty()) return
-        searchBar!!.text = searchView.text
+
+        val queryList = mutableListOf<String>()
+        if (queriesChipGroup!!.childCount > 0){
+            queriesChipGroup!!.children.forEach {
+                val query = (it as Chip).text.toString().trim {it2 -> it2 <= ' '}
+                if (query.isNotEmpty()){
+                    queryList.add(query)
+                }
+            }
+            queriesChipGroup!!.removeAllViews()
+        }
+        if (searchView.editText.text.isNotBlank()) {
+            queryList.add(searchView.editText.text.toString())
+        }
+
+        if (queryList.isEmpty()) return
+        if (queryList.size == 1){
+            searchBar!!.text = searchView.text
+        }
+
         searchView.hide()
         if(!sharedPreferences!!.getBoolean("incognito", false)){
-            resultViewModel.addSearchQueryToHistory(inputQuery.toString())
+            queryList.forEach { q ->
+                resultViewModel.addSearchQueryToHistory(q)
+            }
         }
         resultViewModel.deleteAll()
         lifecycleScope.launch(Dispatchers.IO){
-            resultViewModel.parseQuery(inputQuery.toString(), true)
+            resultViewModel.parseQueries(queryList)
         }
     }
 
-    fun handleIntent(intent: Intent) {
-        inputQueries = LinkedList()
-        inputQueries!!.add(intent.getStringExtra(Intent.EXTRA_TEXT))
-    }
-
-    fun handleFileIntent(lines: LinkedList<String?>?) {
-        inputQueries = lines
+    fun handleFileIntent(lines: List<String>) {
+        inputQueries = lines.toMutableList()
     }
 
     fun scrollToTop() {

@@ -28,6 +28,36 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/queries_constraint"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <com.google.android.material.chip.ChipGroup
+                            android:id="@+id/queries"
+                            android:layout_margin="10dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintEnd_toStartOf="@+id/init_search_query"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            app:singleLine="false" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/init_search_query"
+                            style="?attr/materialIconButtonStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            app:iconSize="20dp"
+                            app:cornerRadius="10dp"
+                            app:icon="@drawable/ic_search"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
                     <include
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

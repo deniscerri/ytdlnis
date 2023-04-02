@@ -52,8 +52,12 @@ class ResultRepository(private val resultDao: ResultDao, private val commandTemp
         val query = infoUtil.getIDFromYoutubeURL(inputQuery)
         try {
             val v = infoUtil.getVideo(query)
-            if (resetResults) deleteAll()
-            itemCount.postValue(1)
+            if (resetResults) {
+                deleteAll()
+                itemCount.postValue(1)
+            }else{
+                v!!.playlistTitle = "ytdlnis-Search"
+            }
             resultDao.insert(v!!)
             return arrayListOf(v)
         } catch (e: Exception) {
@@ -87,9 +91,13 @@ class ResultRepository(private val resultDao: ResultDao, private val commandTemp
     suspend fun getDefault(inputQuery: String, resetResults: Boolean) : ArrayList<ResultItem?> {
         val infoUtil = InfoUtil(context)
         try {
-            if (resetResults) deleteAll()
             val items = infoUtil.getFromYTDL(inputQuery)
-            itemCount.postValue(items.size)
+            if (resetResults) {
+                deleteAll()
+                itemCount.postValue(items.size)
+            }else{
+                items.forEach { it!!.playlistTitle = "ytdlnis-Search" }
+            }
             items.forEach {
                 resultDao.insert(it!!)
             }

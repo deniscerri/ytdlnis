@@ -53,6 +53,18 @@ class ResultViewModel(application: Application) : AndroidViewModel(application) 
     fun getTrending() = viewModelScope.launch(Dispatchers.IO){
         repository.updateTrending()
     }
+    suspend fun parseQueries(inputQueries: List<String>){
+        if (inputQueries.size == 1){
+            parseQuery(inputQueries[0], true)
+        }else {
+            repository.itemCount.postValue(2)
+            loadingItems.postValue(true)
+            inputQueries.forEach {
+                parseQuery(it, false)
+            }
+            loadingItems.postValue(false)
+        }
+    }
 
     suspend fun parseQuery(inputQuery: String, resetResults: Boolean) : ArrayList<ResultItem?> {
         if (resetResults) loadingItems.postValue(true)
