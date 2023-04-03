@@ -181,4 +181,6 @@
     <string name="dont_ask_again">Təkrar soruşma</string>
     <string name="end">Son</string>
     <string name="start">Başlanğıc</string>
+    <string name="update_formats_summary">Format kartına klikləyəndə çatışmayan formatları avtomatik axtarır</string>
+    <string name="ignore_battery_optimization">Batareya Optimallaşdırılmasına Məhəl qoyma</string>
 </resources>
