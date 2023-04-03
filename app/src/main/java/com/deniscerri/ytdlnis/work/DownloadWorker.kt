@@ -8,10 +8,7 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.widget.Toast
-import androidx.work.ForegroundInfo
-import androidx.work.Worker
-import androidx.work.WorkerParameters
-import androidx.work.workDataOf
+import androidx.work.*
 import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.DBManager
@@ -69,9 +66,9 @@ class DownloadWorker(
         val type = downloadItem.type
         val downloadLocation = downloadItem.downloadPath
 
-        val tempFileDir = File(context.cacheDir.absolutePath + "/" + downloadItem.id)
+        val tempFileDir = File(context.cacheDir.absolutePath + "/downloads/" + downloadItem.id)
         tempFileDir.delete()
-        tempFileDir.mkdir()
+        tempFileDir.mkdirs()
 
         val sharedPreferences = context.getSharedPreferences("root_preferences",
             Service.MODE_PRIVATE
@@ -111,10 +108,10 @@ class DownloadWorker(
             }
 
             if(downloadItem.title.isNotBlank()){
-                request.addCommands(listOf("--replace-in-metadata","title",".*.",downloadItem.title))
+                request.addCommands(listOf("--replace-in-metadata","title",".*.",downloadItem.title.take(200)))
             }
             if (downloadItem.author.isNotBlank()){
-                request.addCommands(listOf("--replace-in-metadata","uploader",".*.",downloadItem.author))
+                request.addCommands(listOf("--replace-in-metadata","uploader",".*.",downloadItem.author.take(25)))
             }
             if (downloadItem.customFileNameTemplate.isBlank()) downloadItem.customFileNameTemplate = "%(uploader)s - %(title)s"
 
@@ -126,8 +123,6 @@ class DownloadWorker(
         if (sharedPreferences.getBoolean("restrict_filenames", true)) {
             request.addOption("--restrict-filenames")
         }
-
-        request.addOption("--trim-filenames", 100)
 
         when(type){
             DownloadViewModel.Type.audio -> {
@@ -150,7 +145,7 @@ class DownloadWorker(
                     request.addOption("--embed-thumbnail")
                     request.addOption("--convert-thumbnails", "png")
                     try {
-                        val config = File(context.cacheDir, "config" + downloadItem.title + "##" + downloadItem.format.format_id + ".txt")
+                        val config = File(context.cacheDir.absolutePath + "/downloads/config" + downloadItem.title + "##" + downloadItem.format.format_id + ".txt")
                         val configData =
                             "--ppa \"ffmpeg: -c:v png -vf crop=\\\"'if(gt(ih,iw),iw,ih)':'if(gt(iw,ih),ih,iw)'\\\"\""
                         config.writeText(configData)
@@ -177,6 +172,7 @@ class DownloadWorker(
             DownloadViewModel.Type.video -> {
                 if (downloadItem.videoPreferences.addChapters) {
                     request.addOption("--sponsorblock-mark", "all")
+                    request.addOption("--embed-chapters")
                 }
                 if (downloadItem.videoPreferences.embedSubs) {
                     request.addOption("--embed-subs", "")
@@ -216,7 +212,7 @@ class DownloadWorker(
             DownloadViewModel.Type.command -> {
                 request.addOption(
                     "--config-locations",
-                    File(context.cacheDir, "config${System.currentTimeMillis()}.txt").apply {
+                    File(context.cacheDir.absolutePath + "/downloads/config${System.currentTimeMillis()}.txt").apply {
                         writeText(downloadItem.format.format_note)
                     }.absolutePath
                 )
@@ -255,12 +251,13 @@ class DownloadWorker(
             }
         }.onSuccess {
             //move file from internal to set download directory
+            setProgressAsync(workDataOf("progress" to 100, "output" to "Moving file to $downloadLocation", "id" to downloadItem.id, "log" to logDownloads))
             var finalPath : String?
             try {
                 finalPath = moveFile(tempFileDir.absoluteFile, downloadLocation){ progress ->
-                    setProgressAsync(workDataOf("progress" to progress))
+                    setProgressAsync(workDataOf("progress" to progress, "output" to "Moving file to $downloadLocation", "id" to downloadItem.id, "log" to logDownloads))
                 }
-                setProgressAsync(workDataOf("progress" to 1000, "output" to "Moved file to $finalPath", "id" to downloadItem.id, "log" to logDownloads))
+                setProgressAsync(workDataOf("progress" to 100, "output" to "Moved file to $finalPath", "id" to downloadItem.id, "log" to logDownloads))
             }catch (e: Exception){
                 finalPath = context.getString(R.string.unfound_file)
                 e.printStackTrace()
@@ -288,7 +285,9 @@ class DownloadWorker(
                 runBlocking {
                     dao.update(downloadItem)
                 }
-                return Result.failure()
+                return Result.failure(
+                    Data.Builder().putString("output", "Download has been cancelled!").build()
+                )
             }else{
                 if (logDownloads && logFile.exists()){
                     logFile.appendText("${it.message}\n")
@@ -310,7 +309,9 @@ class DownloadWorker(
                 runBlocking {
                     dao.update(downloadItem)
                 }
-                return Result.failure()
+                return Result.failure(
+                    Data.Builder().putString("output", it.toString()).build()
+                )
             }
         }
         

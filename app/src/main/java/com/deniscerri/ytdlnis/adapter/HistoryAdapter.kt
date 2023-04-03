@@ -94,7 +94,7 @@ class HistoryAdapter(onItemClickListener: OnItemClickListener, activity: Activit
 //            System.currentTimeMillis(),
 //            DateUtils.MINUTE_IN_MILLIS
 //        )
-        datetime.text = SimpleDateFormat(DateFormat.getBestDateTimePattern(Locale.getDefault(), "ddMMMyyyy - HHmm"), Locale.getDefault()).format(item.time * 1000L)
+        datetime.text = SimpleDateFormat(android.text.format.DateFormat.getBestDateTimePattern(Locale.getDefault(), "ddMMMyyyy - HHmm"), Locale.getDefault()).format(item.time * 1000L)
 
         // BUTTON ----------------------------------
         val btn = card.findViewById<MaterialButton>(R.id.downloads_download_button_type)

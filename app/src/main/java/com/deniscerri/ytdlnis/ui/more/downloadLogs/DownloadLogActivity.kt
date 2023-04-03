@@ -34,6 +34,7 @@ class DownloadLogActivity : AppCompatActivity() {
         }
 
         content = findViewById(R.id.content)
+        content.setTextIsSelectable(true)
         contentScrollView = findViewById(R.id.content_scrollview)
 
         copyLog = findViewById(R.id.copy_log)

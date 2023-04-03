@@ -107,21 +107,20 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val list
                 }
 
                 if (url.isBlank()) throw Exception("No Streaming URL found!")
-                Log.e("aa", url.split("\n")[0])
-                Log.e("aa", url.split("\n")[1])
 
-                val urls = url.split("\n")
-                if (urls.size == 2){
-                    val audioSource: MediaSource =
-                        DefaultMediaSourceFactory(requireContext())
-                            .createMediaSource(fromUri(Uri.parse(urls[0])))
-                    val videoSource: MediaSource =
-                        DefaultMediaSourceFactory(requireContext())
-                            .createMediaSource(fromUri(Uri.parse(urls[1])))
-                    (player as ExoPlayer).setMediaSource(MergingMediaSource(videoSource, audioSource))
-                }else{
-                    player.addMediaItem(fromUri(Uri.parse(urls[0])))
-                }
+//                val urls = url.split("\n")
+//                if (urls.size == 2){
+//                    val audioSource: MediaSource =
+//                        DefaultMediaSourceFactory(requireContext())
+//                            .createMediaSource(fromUri(Uri.parse(urls[0])))
+//                    val videoSource: MediaSource =
+//                        DefaultMediaSourceFactory(requireContext())
+//                            .createMediaSource(fromUri(Uri.parse(urls[1])))
+//                    (player as ExoPlayer).setMediaSource(MergingMediaSource(videoSource, audioSource))
+//                }else{
+//                    player.addMediaItem(fromUri(Uri.parse(urls[0])))
+//                }
+                player.addMediaItem(fromUri(Uri.parse(url)))
 
                 progress.visibility = View.GONE
 

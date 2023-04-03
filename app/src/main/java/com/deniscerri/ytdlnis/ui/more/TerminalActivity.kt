@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
+import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.ScrollView
@@ -17,11 +18,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.work.Data
-import androidx.work.ExistingWorkPolicy
-import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.WorkInfo
-import androidx.work.WorkManager
+import androidx.work.*
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.viewmodel.CommandTemplateViewModel
 import com.deniscerri.ytdlnis.util.NotificationUtil
@@ -109,9 +106,7 @@ class TerminalActivity : AppCompatActivity() {
                         input!!.requestFocus()
                         hideCancelFab()
                     }
-                    val line = work.progress.getString("output") ?: return@observe
-                    val id = work.progress.getInt("id", 0)
-                    if(id == 0) return@observe
+                    val line = work.progress.getString("output") ?: (work.outputData.getString("output") ?: return@observe)
                     runOnUiThread {
                         try {
                             output!!.text = "${output!!.text}\n$line"
@@ -168,6 +163,11 @@ class TerminalActivity : AppCompatActivity() {
                 item.setOnClickListener {
                     input!!.text.insert(input!!.selectionStart, template.content + " ")
                     bottomSheet.cancel()
+                    val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+                    input!!.postDelayed({
+                        input!!.requestFocus()
+                        imm.showSoftInput(input!!, 0)
+                    }, 200)
                 }
                 linearLayout.addView(item)
             }

@@ -28,6 +28,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yausername.youtubedl_android.YoutubeDL
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
+import java.io.File
 import java.util.*
 
 
@@ -135,15 +136,11 @@ class SettingsFragment : PreferenceFragmentCompat() {
         version!!.summary = BuildConfig.VERSION_NAME
 
         val values = resources.getStringArray(R.array.language_values)
-        if (Build.VERSION.SDK_INT >= 33 || Build.VERSION.SDK_INT < 24){
-            language!!.isVisible = false
-        }else{
-            val entries = mutableListOf<String>()
-            values.forEach {
-                entries.add(Locale(it).getDisplayName(Locale(it)))
-            }
-            language!!.entries = entries.toTypedArray()
+        val entries = mutableListOf<String>()
+        values.forEach {
+            entries.add(Locale(it).getDisplayName(Locale(it)))
         }
+        language!!.entries = entries.toTypedArray()
         val lang = if (values.contains(Locale.getDefault().language)) Locale.getDefault().language else "en"
         editor.putString("app_language", lang)
 
@@ -258,14 +255,14 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 true
             }
 
-        var cacheSize = requireContext().cacheDir.walkBottomUp().fold(0L) { acc, file -> acc + file.length() }
+        var cacheSize = File(requireContext().cacheDir.absolutePath + "/downloads").walkBottomUp().fold(0L) { acc, file -> acc + file.length() }
         clearCache!!.summary = "(${fileUtil!!.convertFileSize(cacheSize)}) ${resources.getString(R.string.clear_temporary_files_summary)}"
         clearCache!!.onPreferenceClickListener =
             Preference.OnPreferenceClickListener {
                 if (activeDownloadCount == 0){
-                    requireContext().cacheDir.deleteRecursively()
+                    File(requireContext().cacheDir.absolutePath + "/downloads").deleteRecursively()
                     Toast.makeText(requireContext(), getString(R.string.cache_cleared), Toast.LENGTH_SHORT).show()
-                    cacheSize = requireContext().cacheDir.walkBottomUp().fold(0L) { acc, file -> acc + file.length() }
+                    cacheSize = File(requireContext().cacheDir.absolutePath + "/downloads").walkBottomUp().fold(0L) { acc, file -> acc + file.length() }
                     clearCache!!.summary = "(${fileUtil!!.convertFileSize(cacheSize)}) ${resources.getString(R.string.clear_temporary_files_summary)}"
                 }else{
                     Toast.makeText(requireContext(), getString(R.string.downloads_running_try_later), Toast.LENGTH_SHORT).show()

@@ -27,7 +27,6 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:descendantFocusability="blocksDescendants"
         android:orientation="vertical">
 
         <ScrollView
@@ -38,15 +37,23 @@
             android:paddingBottom="150dp"
             >
 
-            <TextView
-                android:id="@+id/content"
-                android:padding="10dp"
-                android:fontFamily="monospace"
-                android:textSize="15sp"
-                android:gravity="bottom"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:textIsSelectable="true"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:focusableInTouchMode="true"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/content"
+                    android:padding="10dp"
+                    android:fontFamily="monospace"
+                    android:textSize="15sp"
+                    android:gravity="bottom"
+                    android:layout_width="match_parent"
+                    android:textIsSelectable="true"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
 
         </ScrollView>
 

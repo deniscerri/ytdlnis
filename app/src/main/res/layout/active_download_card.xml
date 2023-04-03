@@ -105,13 +105,13 @@
 
                 <HorizontalScrollView
                     android:id="@+id/linearlayout2_horizontalscrollview"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:scrollbars="none"
                     android:paddingTop="10dp"
+                    android:scrollbars="none"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/barrier"
-                    app:layout_constraintVertical_bias="1.0">
+                    app:layout_constraintTop_toBottomOf="@+id/barrier">
 
                     <com.google.android.material.chip.ChipGroup
                         android:id="@+id/linearLayout2"

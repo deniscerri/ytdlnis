@@ -24,6 +24,7 @@ import com.deniscerri.ytdlnis.work.DownloadWorker
 import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.sql.Date
 import java.text.SimpleDateFormat
 import java.util.*
@@ -310,7 +311,9 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
             ).enqueue()
         }
         items.forEach {
-            it.id = repository.checkIfReDownloadingErroredOrCancelled(it)
+            it.id = withContext(Dispatchers.IO){
+                repository.checkIfReDownloadingErroredOrCancelled(it)
+            }
             if (it.id != 0L){
                 repository.delete(it)
             }

@@ -8,10 +8,7 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.widget.Toast
-import androidx.work.ForegroundInfo
-import androidx.work.Worker
-import androidx.work.WorkerParameters
-import androidx.work.workDataOf
+import androidx.work.*
 import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.util.FileUtil
@@ -48,13 +45,13 @@ class TerminalDownloadWorker(
         )
 
         val downloadLocation = sharedPreferences.getString("command_path", context.getString(R.string.command_path))
-        val tempFileDir = File(context.cacheDir.absolutePath + "/" + itemId)
+        val tempFileDir = File(context.cacheDir.absolutePath + "/downloads/" + itemId)
         tempFileDir.delete()
-        tempFileDir.mkdir()
+        tempFileDir.mkdirs()
 
         request.addOption(
             "--config-locations",
-            File(context.cacheDir, "config${System.currentTimeMillis()}.txt").apply {
+            File(context.cacheDir.absolutePath + "/downloads/config${System.currentTimeMillis()}.txt").apply {
                 writeText(command)
             }.absolutePath
         )
@@ -93,7 +90,6 @@ class TerminalDownloadWorker(
                 finalPath = moveFile(tempFileDir.absoluteFile, downloadLocation!!){ progress ->
                     setProgressAsync(workDataOf("progress" to progress))
                 }
-                setProgressAsync(workDataOf("progress" to 100, "output" to "Moved file to $finalPath", "id" to itemId, "log" to logDownloads))
             }catch (e: Exception){
                 finalPath = context.getString(R.string.unfound_file)
                 e.printStackTrace()
@@ -101,20 +97,7 @@ class TerminalDownloadWorker(
                     Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
                 }, 1000)
             }
-            //put download in history
-//            val incognito = sharedPreferences.getBoolean("incognito", false)
-//            if (!incognito) {
-//                val unixtime = System.currentTimeMillis() / 1000
-//                val file = File(finalPath!!)
-//                downloadItem.format.filesize = if (file.exists()) file.length() else 0L
-//                val historyItem = HistoryItem(0, downloadItem.url, downloadItem.title, downloadItem.author, downloadItem.duration, downloadItem.thumb, downloadItem.type, unixtime, finalPath, downloadItem.website, downloadItem.format)
-//                runBlocking {
-//                    historyDao.insert(historyItem)
-//                }
-//            }
-//            runBlocking {
-//                dao.delete(downloadItem.id)
-//            }
+
         }.onFailure {
             if (it is YoutubeDL.CanceledException) {
                 return Result.failure()
@@ -123,8 +106,6 @@ class TerminalDownloadWorker(
             if (logDownloads && logFile.exists()){
                 logFile.appendText("${it.message}\n")
             }
-            setProgressAsync(workDataOf("progress" to -1, "output" to it.message, "id" to itemId, "log" to logDownloads))
-
             tempFileDir.delete()
 
             Log.e(TAG, context.getString(R.string.failed_download), it)
@@ -133,7 +114,14 @@ class TerminalDownloadWorker(
                 context.getString(R.string.failed_download), 0, 0, command.take(20),
                 NotificationUtil.DOWNLOAD_SERVICE_CHANNEL_ID
             )
-            return Result.failure()
+
+            if (logDownloads && logFile.exists()){
+                logFile.appendText("${it.message}\n")
+            }
+
+            return Result.failure(
+              Data.Builder().putString("output", it.message.toString()).build()
+            )
         }
 
         return Result.success()

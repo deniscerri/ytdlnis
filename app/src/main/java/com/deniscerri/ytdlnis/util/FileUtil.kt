@@ -132,13 +132,13 @@ class FileUtil() {
             }
 
         }
-        originDir.delete()
+        originDir.deleteRecursively()
         return scanMedia(fileList, context)
     }
 
     fun getLogFile(context: Context, item: DownloadItem) : File {
         val titleRegex = Regex("[^A-Za-z\\d ]")
-        return File(context.filesDir.absolutePath + """/logs/${item.id} - ${titleRegex.replace(item.title, "")}##${item.type}##${item.format.format_id}.log""")
+        return File(context.filesDir.absolutePath + """/logs/${item.id} - ${titleRegex.replace(item.title, "").take(150)}##${item.type}##${item.format.format_id}.log""")
     }
     fun getLogFileForTerminal(context: Context, command: String) : File {
         val titleRegex = Regex("[^A-Za-z\\d ]")
