@@ -181,4 +181,6 @@
     <string name="end">Fundi</string>
     <string name="start">Fillimi</string>
     <string name="dont_ask_again">Mos pyet më</string>
+    <string name="ignore_battery_optimization">Injoro Optimizimet e Baterisë</string>
+    <string name="update_formats_summary">Kërko automatikishit për formatet e munugara kur klikon kartën e formatit</string>
 </resources>

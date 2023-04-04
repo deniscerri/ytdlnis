@@ -181,4 +181,6 @@
     <string name="start">Старт</string>
     <string name="confirm_terminate">Усі завантаження буде зупинено, а застосунок буде примусово закрито</string>
     <string name="dont_ask_again">Більше не питай</string>
+    <string name="update_formats_summary">Автоматичний пошук відсутніх форматів при натисканні на картку формату</string>
+    <string name="ignore_battery_optimization">Ігноруйте оптимізацію батареї</string>
 </resources>
