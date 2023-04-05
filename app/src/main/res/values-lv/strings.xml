@@ -181,4 +181,6 @@
     <string name="dont_ask_again">Nejautāt vēlreiz</string>
     <string name="end">Beigas</string>
     <string name="start">Sākums</string>
+    <string name="update_formats_summary">Automātiska trūkstošo formātu meklēšana, noklikšķinot uz formatēšanas kartītes</string>
+    <string name="ignore_battery_optimization">Ignorēt Akumulatora Optimizāciju</string>
 </resources>
