@@ -193,6 +193,7 @@
                             android:gravity="center"
                             app:chipIconVisible="true"
                             app:chipIcon="@drawable/ic_cut"
+                            android:text="@string/cut"
                             android:minWidth="30dp"
                             app:cornerRadius="10dp"
                             app:layout_constraintBottom_toBottomOf="parent"

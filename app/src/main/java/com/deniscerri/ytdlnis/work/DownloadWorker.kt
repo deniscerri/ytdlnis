@@ -116,7 +116,11 @@ class DownloadWorker(
             if (downloadItem.customFileNameTemplate.isBlank()) downloadItem.customFileNameTemplate = "%(uploader)s - %(title)s"
 
             if (downloadItem.downloadSections.isNotBlank()){
-                request.addOption("--download-sections", "*${downloadItem.downloadSections}")
+                downloadItem.downloadSections.split(";").forEach {
+                    if (it.isBlank()) return@forEach
+                    request.addOption("--download-sections", "*$it")
+                }
+                downloadItem.customFileNameTemplate += "%(autonumber)s"
             }
         }
 

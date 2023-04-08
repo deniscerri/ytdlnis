@@ -190,4 +190,6 @@
     <string name="start">Start</string>
     <string name="update_formats_summary">Automatically search for missing formats when clicking the format card</string>
     <string name="ignore_battery_optimization">Ignore Battery Optimization</string>
+    <string name="cut">Cut</string>
+    <string name="new_cut">New Cut</string>
 </resources>

@@ -630,13 +630,23 @@ class InfoUtil(context: Context) {
     }
 
     fun getStreamingUrl(url: String) : String {
-        return try {
+        try {
             val request = YoutubeDLRequest(url)
-            request.addOption("-f", "best")
-            val youtubeDlInfo = YoutubeDL.getInstance().getInfo(request)
-            youtubeDlInfo.url ?: ""
+            request.addOption("-j")
+            request.addOption("--skip-download")
+            request.addOption("-R", "1")
+            request.addOption("--socket-timeout", "5")
+            val youtubeDLResponse = YoutubeDL.getInstance().execute(request)
+            val results: Array<String?> = try {
+                val lineSeparator = System.getProperty("line.separator")
+                youtubeDLResponse.out.split(lineSeparator!!).toTypedArray()
+            } catch (e: Exception) {
+                arrayOf(youtubeDLResponse.out)
+            }
+            val jsonObject = JSONObject(results[0]!!)
+            return jsonObject.getString("urls")
         } catch (e: Exception) {
-            ""
+            return ""
         }
     }
 

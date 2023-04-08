@@ -30,7 +30,6 @@ import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.yausername.youtubedl_android.YoutubeDL
-import io.reactivex.disposables.CompositeDisposable
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -102,6 +101,7 @@ class TerminalActivity : AppCompatActivity() {
             .observe(this){ list ->
                 list.forEach {work ->
                     if (work.state == WorkInfo.State.SUCCEEDED || work.state == WorkInfo.State.FAILED || work.state == WorkInfo.State.CANCELLED) {
+                        input!!.setText("yt-dlp ")
                         input!!.visibility = View.VISIBLE
                         input!!.requestFocus()
                         hideCancelFab()
@@ -233,12 +233,10 @@ class TerminalActivity : AppCompatActivity() {
     private fun cancelDownload() {
         YoutubeDL.getInstance().destroyProcessById(downloadID.toString())
         WorkManager.getInstance(this).cancelUniqueWork(downloadID.toString())
-        notificationUtil.cancelDownloadNotification(downloadID.toInt())
+        notificationUtil.cancelDownloadNotification(downloadID)
     }
 
     companion object {
         private const val TAG = "CustomCommandActivity"
-        private val compositeDisposable = CompositeDisposable()
-
     }
 }

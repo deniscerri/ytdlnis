@@ -266,33 +266,34 @@ class DownloadVideoFragment(private val resultItem: ResultItem, private var curr
                 }
 
                 val cut = view.findViewById<Chip>(R.id.cut)
-                cut.text = downloadItem.downloadSections
+                if (downloadItem.downloadSections.isNotBlank()) cut.text = downloadItem.downloadSections
                 val cutVideoListener = object : VideoCutListener {
-                    override fun onCancelCut() {
-                        downloadItem.downloadSections = ""
-                        cut.text = ""
 
-                        splitByChapters.isEnabled = true
-                        splitByChapters.isChecked = downloadItem.videoPreferences.splitByChapters
-                        if (splitByChapters.isChecked){
-                            addChapters.isEnabled = false
-                            addChapters.isChecked = false
+                    override fun onChangeCut(list: Sequence<String>) {
+                        if (list.count() == 0){
+                            downloadItem.downloadSections = ""
+                            cut.text = getString(R.string.cut)
+
+                            splitByChapters.isEnabled = true
+                            splitByChapters.isChecked = downloadItem.videoPreferences.splitByChapters
+                            if (splitByChapters.isChecked){
+                                addChapters.isEnabled = false
+                                addChapters.isChecked = false
+                            }else{
+                                addChapters.isEnabled = true
+                            }
                         }else{
+                            var value = ""
+                            list.forEach {
+                                value += "$it;"
+                            }
+                            downloadItem.downloadSections = value
+                            cut.text = value.dropLast(1)
+
+                            splitByChapters.isEnabled = false
+                            splitByChapters.isChecked = false
                             addChapters.isEnabled = true
                         }
-                    }
-
-                    override fun onChangeCut(from: String, to: String) {
-                        if (from == "0:00" && to == downloadItem.duration){
-                           return
-                        }
-                        val value = "${from}-${to}"
-                        downloadItem.downloadSections = value
-                        cut.text = value
-
-                        splitByChapters.isEnabled = false
-                        splitByChapters.isChecked = false
-                        addChapters.isEnabled = true
 
                     }
                 }

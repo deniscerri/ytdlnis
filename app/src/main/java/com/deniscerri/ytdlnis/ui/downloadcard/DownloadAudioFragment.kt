@@ -247,26 +247,26 @@ class DownloadAudioFragment(private var resultItem: ResultItem, private var curr
                 }
 
                 val cut = view.findViewById<Chip>(R.id.cut)
-                cut.text = downloadItem.downloadSections
+                if (downloadItem.downloadSections.isNotBlank()) cut.text = downloadItem.downloadSections
                 val cutVideoListener = object : VideoCutListener {
-                    override fun onCancelCut() {
-                        downloadItem.downloadSections = ""
-                        cut.text = ""
+                    override fun onChangeCut(list: Sequence<String>) {
+                        if (list.count() == 0){
+                            downloadItem.downloadSections = ""
+                            cut.text = ""
 
-                        splitByChapters.isEnabled = true
-                        splitByChapters.isChecked = downloadItem.audioPreferences.splitByChapters
-                    }
+                            splitByChapters.isEnabled = true
+                            splitByChapters.isChecked = downloadItem.audioPreferences.splitByChapters
+                        }else{
+                            var value = ""
+                            list.forEach {
+                                value += "$it;"
+                            }
+                            downloadItem.downloadSections = value
+                            cut.text = value.dropLast(1)
 
-                    override fun onChangeCut(from: String, to: String) {
-                        if (from == "0:00" && to == downloadItem.duration){
-                            return
+                            splitByChapters.isEnabled = false
+                            splitByChapters.isChecked = false
                         }
-                        val value = "${from}-${to}"
-                        downloadItem.downloadSections = value
-                        cut.text = value
-
-                        splitByChapters.isEnabled = false
-                        splitByChapters.isChecked = false
                     }
                 }
                 cut.setOnClickListener {

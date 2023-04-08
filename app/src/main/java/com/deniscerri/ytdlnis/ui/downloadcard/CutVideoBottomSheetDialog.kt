@@ -11,6 +11,8 @@ import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.children
 import androidx.lifecycle.lifecycleScope
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.DownloadItem
@@ -23,14 +25,13 @@ import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.source.DefaultMediaSourceFactory
 import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.source.MergingMediaSource
-import com.google.android.exoplayer2.source.ProgressiveMediaSource
-import com.google.android.exoplayer2.source.dash.DashMediaSource
-import com.google.android.exoplayer2.source.hls.HlsMediaSource
 import com.google.android.exoplayer2.ui.PlayerView
-import com.google.android.exoplayer2.upstream.FileDataSource
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.card.MaterialCardView
+import com.google.android.material.chip.Chip
+import com.google.android.material.chip.ChipGroup
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.slider.RangeSlider
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.Dispatchers
@@ -40,6 +41,7 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.*
+import kotlin.properties.Delegates
 
 
 class CutVideoBottomSheetDialog(private val item: DownloadItem, private val listener: VideoCutListener) : BottomSheetDialogFragment() {
@@ -48,6 +50,20 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val list
     private lateinit var infoUtil: InfoUtil
     private lateinit var uiUtil: UiUtil
     private lateinit var player: Player
+    
+    private lateinit var cutSection : ConstraintLayout
+    private lateinit var progress : ProgressBar
+    private lateinit var rangeSlider : RangeSlider
+    private lateinit var fromTextInput : TextInputLayout
+    private lateinit var toTextInput : TextInputLayout
+    private lateinit var cancelBtn : Button
+    private lateinit var okBtn : Button
+    
+    private lateinit var cutListSection : LinearLayout
+    private lateinit var newCutBtn : Button
+    private lateinit var chipGroup : ChipGroup
+
+    private var timeSeconds by Delegates.notNull<Int>()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -75,30 +91,26 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val list
         val frame = view.findViewById<MaterialCardView>(R.id.frame_layout)
         val videoView = view.findViewById<PlayerView>(R.id.video_view)
         videoView.player = player
+        timeSeconds = convertStringToTimestamp(item.duration)
 
-        val progress = view.findViewById<ProgressBar>(R.id.progress)
-        val rangeSlider = view.findViewById<RangeSlider>(R.id.rangeSlider)
-        val fromTextInput = view.findViewById<TextInputLayout>(R.id.from_textinput)
-        val toTextInput = view.findViewById<TextInputLayout>(R.id.to_textinput)
+        //cut section
+        cutSection = view.findViewById(R.id.cut_section)
+        progress = view.findViewById(R.id.progress)
+        rangeSlider = view.findViewById(R.id.rangeSlider)
+        fromTextInput = view.findViewById(R.id.from_textinput)
+        toTextInput = view.findViewById(R.id.to_textinput)
+        cancelBtn = view.findViewById(R.id.cancelButton)
+        okBtn = view.findViewById(R.id.okButton)
+        initCutSection()
 
-        val timeSeconds = convertStringToTimestamp(item.duration)
+        //cut list section
+        cutListSection = view.findViewById(R.id.list_section)
+        newCutBtn = view.findViewById(R.id.new_cut)
+        chipGroup = view.findViewById(R.id.cut_list_chip_group)
+        initCutListSection()
 
-        if (item.downloadSections.isEmpty()){
-            fromTextInput.editText!!.setText("0:00")
-            toTextInput.editText!!.setText(item.duration)
-        }else{
-            val stamps = item.downloadSections.split("-")
-            fromTextInput.editText!!.setText(stamps[0])
-            toTextInput.editText!!.setText(stamps[1])
-
-            val startSeconds = convertStringToTimestamp(stamps[0])
-            val endSeconds = convertStringToTimestamp(stamps[1])
-
-            val startValue = (startSeconds.toFloat() / timeSeconds) * 100
-            val endValue = (endSeconds.toFloat() / timeSeconds) * 100
-
-            rangeSlider.setValues(startValue, endValue)
-        }
+        if (item.downloadSections.isBlank()) cutSection.visibility = View.VISIBLE
+        else cutListSection.visibility = View.VISIBLE
 
         lifecycleScope.launch {
             try {
@@ -108,24 +120,23 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val list
 
                 if (url.isBlank()) throw Exception("No Streaming URL found!")
 
-//                val urls = url.split("\n")
-//                if (urls.size == 2){
-//                    val audioSource: MediaSource =
-//                        DefaultMediaSourceFactory(requireContext())
-//                            .createMediaSource(fromUri(Uri.parse(urls[0])))
-//                    val videoSource: MediaSource =
-//                        DefaultMediaSourceFactory(requireContext())
-//                            .createMediaSource(fromUri(Uri.parse(urls[1])))
-//                    (player as ExoPlayer).setMediaSource(MergingMediaSource(videoSource, audioSource))
-//                }else{
-//                    player.addMediaItem(fromUri(Uri.parse(urls[0])))
-//                }
-                player.addMediaItem(fromUri(Uri.parse(url)))
+                val urls = url.split("\n")
+                if (urls.size == 2){
+                    val audioSource: MediaSource =
+                        DefaultMediaSourceFactory(requireContext())
+                            .createMediaSource(fromUri(Uri.parse(urls[0])))
+                    val videoSource: MediaSource =
+                        DefaultMediaSourceFactory(requireContext())
+                            .createMediaSource(fromUri(Uri.parse(urls[1])))
+                    (player as ExoPlayer).setMediaSource(MergingMediaSource(videoSource, audioSource))
+                }else{
+                    player.addMediaItem(fromUri(Uri.parse(urls[0])))
+                }
 
                 progress.visibility = View.GONE
 
                 player.prepare()
-                player.seekTo((((rangeSlider.values[0].toInt() * timeSeconds) / 100) * 1000).toLong())
+                player.seekTo((((rangeSlider.valueFrom.toInt() * timeSeconds) / 100) * 1000).toLong())
                 player.play()
             }catch (e: Exception){
                 progress.visibility = View.GONE
@@ -133,12 +144,11 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val list
                 e.printStackTrace()
             }
         }
-
         //poll video progress
         lifecycleScope.launch {
             videoProgress(player).collect {
-                val startTimestamp = (rangeSlider.values[0].toInt() * timeSeconds) / 100
-                val endTimestamp = (rangeSlider.values[1].toInt() * timeSeconds) / 100
+                val startTimestamp = (rangeSlider.valueFrom.toInt() * timeSeconds) / 100
+                val endTimestamp = (rangeSlider.valueTo.toInt() * timeSeconds) / 100
                 if (it >= endTimestamp){
                     player.seekTo((startTimestamp * 1000).toLong())
                 }
@@ -153,6 +163,26 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val list
             }
         }
 
+    }
+
+    private fun initCutSection(){
+        if (item.downloadSections.isEmpty()){
+            fromTextInput.editText!!.setText("0:00")
+            toTextInput.editText!!.setText(item.duration)
+        }else{
+            val stamps = item.downloadSections.split("-")
+            fromTextInput.editText!!.setText(stamps[0])
+            toTextInput.editText!!.setText(stamps[1].replace(";", ""))
+
+            val startSeconds = convertStringToTimestamp(stamps[0])
+            val endSeconds = convertStringToTimestamp(stamps[1].replace(";", ""))
+
+            val startValue = (startSeconds.toFloat() / timeSeconds) * 100
+            val endValue = (endSeconds.toFloat() / timeSeconds) * 100
+
+            rangeSlider.setValues(startValue, endValue)
+        }
+
 
         rangeSlider.addOnChangeListener { rangeSlider, value, fromUser ->
             val values = rangeSlider.values
@@ -165,11 +195,14 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val list
             fromTextInput.editText!!.setText(startTimestampString)
             toTextInput.editText!!.setText(endTimestampString)
 
+
+            okBtn.isEnabled = !(values[0] == 0F && values[1] == 100F)
+
             try {
                 player.seekTo((startTimestamp * 1000).toLong())
+                player.play()
             }catch (ignored: Exception) {}
 
-            listener.onChangeCut(startTimestampString, endTimestampString)
         }
 
         fromTextInput.editText!!.setOnKeyListener(object : View.OnKeyListener {
@@ -178,8 +211,8 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val list
                 if ((event!!.action == KeyEvent.ACTION_DOWN) &&
                     (keyCode == KeyEvent.KEYCODE_ENTER)) {
 
-                    val startTimestamp = (rangeSlider.values[0].toInt() * timeSeconds) / 100
-                    val endTimestamp = (rangeSlider.values[1].toInt() * timeSeconds) / 100
+                    val startTimestamp = (rangeSlider.valueFrom.toInt() * timeSeconds) / 100
+                    val endTimestamp = (rangeSlider.valueTo.toInt() * timeSeconds) / 100
 
                     fromTextInput.editText!!.clearFocus()
                     val seconds = convertStringToTimestamp(fromTextInput.editText!!.text.toString())
@@ -194,7 +227,7 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val list
                         return true
                     }
 
-                    rangeSlider.setValues(startValue, rangeSlider.values[1])
+                    rangeSlider.setValues(startValue, rangeSlider.valueTo)
                     val startValueTimeStampSeconds = (startValue.toInt() * timeSeconds) / 100
                     fromTextInput.editText!!.setText(infoUtil.formatIntegerDuration(startValueTimeStampSeconds, Locale.US))
 
@@ -211,7 +244,7 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val list
                 if ((event!!.action == KeyEvent.ACTION_DOWN) &&
                     (keyCode == KeyEvent.KEYCODE_ENTER)) {
 
-                    val endTimestamp = (rangeSlider.values[1].toInt() * timeSeconds) / 100
+                    val endTimestamp = (rangeSlider.valueTo.toInt() * timeSeconds) / 100
 
                     toTextInput.editText!!.clearFocus()
                     val seconds = convertStringToTimestamp(toTextInput.editText!!.text.toString())
@@ -221,12 +254,12 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val list
                     }
 
                     val endValue = (seconds.toFloat() / endTimestamp) * 100
-                    if (endValue > 100 || endValue <= rangeSlider.values[0].toInt()){
+                    if (endValue > 100 || endValue <= rangeSlider.valueFrom.toInt()){
                         toTextInput.editText!!.setText(infoUtil.formatIntegerDuration(endTimestamp, Locale.US))
                         return true
                     }
 
-                    rangeSlider.setValues(rangeSlider.values[0], endValue)
+                    rangeSlider.setValues(rangeSlider.valueFrom, endValue)
                     val endValueTimeStampSeconds = (endValue.toInt() * timeSeconds) / 100
                     toTextInput.editText!!.setText(infoUtil.formatIntegerDuration(endValueTimeStampSeconds, Locale.US))
 
@@ -236,14 +269,82 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val list
             }
         })
 
-        val cancelBtn = view.findViewById<Button>(R.id.cancelButton)
         cancelBtn.setOnClickListener {
-            listener.onCancelCut()
-            dismiss()
+            cutSection.visibility = View.GONE
+            cutListSection.visibility = View.VISIBLE
+        }
+
+        okBtn.isEnabled = false
+        okBtn.setOnClickListener {
+            val chip = createChip("${fromTextInput.editText!!.text}-${toTextInput.editText!!.text}")
+            listener.onChangeCut(chipGroup.children.map { c -> (c as Chip).text.toString() })
+            chip.performClick()
+            player.seekTo((((rangeSlider.valueFrom.toInt() * timeSeconds) / 100) * 1000).toLong())
+            player.play()
+
+            cutSection.visibility = View.GONE
+            cutListSection.visibility = View.VISIBLE
         }
     }
 
-    private fun videoProgress(player: Player?) = flow<Int> {
+    private fun initCutListSection() {
+        newCutBtn.setOnClickListener {
+            cutSection.visibility = View.VISIBLE
+            cutListSection.visibility = View.GONE
+            rangeSlider.setValues(0F, 100F)
+            player.seekTo(0)
+        }
+
+        if (item.downloadSections.isNotBlank()){
+            chipGroup.removeAllViews()
+            item.downloadSections.split(";").forEachIndexed { index, it ->
+                if (it.isBlank()) return
+                val startingValue = ((convertStringToTimestamp(it.split("-")[0]).toFloat() / timeSeconds) * 100).toInt()
+                val endingValue = ((convertStringToTimestamp(it.split("-")[1].replace(";", "")).toFloat() / timeSeconds) * 100).toInt()
+
+                createChip(it.replace(";", ""))
+                if (index == 0) rangeSlider.setValues(startingValue.toFloat(), endingValue.toFloat())
+            }
+        }
+    }
+
+    private fun createChip(timestamp: String) : Chip {
+        val startingValue = ((convertStringToTimestamp(timestamp.split("-")[0]).toFloat() / timeSeconds) * 100).toInt()
+        val endingValue = ((convertStringToTimestamp(timestamp.split("-")[1].replace(";", "")).toFloat() / timeSeconds) * 100).toInt()
+
+        val chip = layoutInflater.inflate(R.layout.filter_chip, chipGroup, false) as Chip
+        chip.text = timestamp
+        chip.isCheckedIconVisible = false
+        chipGroup.addView(chip)
+        listener.onChangeCut(chipGroup.children.map { c -> (c as Chip).text.toString() })
+
+        chip.setOnClickListener {
+            if (chip.isChecked) {
+                rangeSlider.setValues(startingValue.toFloat(), endingValue.toFloat())
+            }else {
+                player.seekTo(0)
+                player.pause()
+            }
+        }
+
+        chip.setOnLongClickListener {
+            val deleteDialog = MaterialAlertDialogBuilder(requireContext())
+            deleteDialog.setTitle(getString(R.string.you_are_going_to_delete) + " \"" + chip.text + "\"!")
+            deleteDialog.setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, _: Int -> dialogInterface.cancel() }
+            deleteDialog.setPositiveButton(getString(R.string.ok)) { _: DialogInterface?, _: Int ->
+                player.seekTo(0)
+                player.pause()
+                chipGroup.removeView(chip)
+                listener.onChangeCut(chipGroup.children.map { c -> (c as Chip).text.toString() })
+            }
+            deleteDialog.show()
+            true
+        }
+
+        return chip
+    }
+
+    private fun videoProgress(player: Player?) = flow {
         while (true) {
             emit((player!!.currentPosition / 1000).toInt())
             delay(1000)
@@ -285,6 +386,5 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val list
 }
 
 interface VideoCutListener{
-    fun onCancelCut()
-    fun onChangeCut(from: String, to: String)
+    fun onChangeCut(list: Sequence<String>)
 }
