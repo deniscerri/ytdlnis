@@ -118,9 +118,13 @@ class DownloadWorker(
             if (downloadItem.downloadSections.isNotBlank()){
                 downloadItem.downloadSections.split(";").forEach {
                     if (it.isBlank()) return@forEach
-                    request.addOption("--download-sections", "*$it")
+                    if (it.contains(":"))
+                        request.addOption("--download-sections", "*$it")
+                    else
+                        request.addOption("--download-sections", it)
                 }
-                downloadItem.customFileNameTemplate += "%(autonumber)s"
+                downloadItem.customFileNameTemplate += " %(section_title)s %(autonumber)s"
+                request.addOption("--output-na-placeholder", " ")
             }
         }
 
@@ -130,9 +134,8 @@ class DownloadWorker(
 
         when(type){
             DownloadViewModel.Type.audio -> {
-                request.addOption("-x")
                 var audioQualityId : String = downloadItem.format.format_id
-                if (audioQualityId.isBlank() || audioQualityId == "0" || audioQualityId == context.getString(R.string.best_quality)) audioQualityId = ""
+                if (audioQualityId.isBlank() || audioQualityId == "0" || audioQualityId == context.getString(R.string.best_quality)) audioQualityId = "bestaudio"
                 else if (audioQualityId == context.getString(R.string.worst_quality)) audioQualityId = "worstaudio"
 
                 if (audioQualityId.isNotBlank()){
@@ -141,18 +144,33 @@ class DownloadWorker(
 
                 val ext = downloadItem.format.container
                 if(ext != context.getString(R.string.defaultValue) && ext != "webm"){
-                    request.addOption("--audio-format", ext)
+                    val codec = when(downloadItem.format.container){
+                        "m4a" -> "aac"
+                        "aac" -> "aac"
+                        "mp3" -> "libmp3lame"
+                        "flac" -> "flac"
+                        "opus" -> "libopus"
+                        else -> ""
+                    }
+                    Log.e("aa", codec)
+                    if (codec.isEmpty()){
+                        request.addOption("-x")
+                    }else{
+                        request.addOption("--remux-video", ext)
+                        request.addOption("--ppa", "VideoRemuxer:-c:a $codec")
+                    }
                 }
+
                 request.addOption("--embed-metadata")
 
                 if (downloadItem.audioPreferences.embedThumb) {
                     request.addOption("--embed-thumbnail")
-                    request.addOption("--convert-thumbnails", "png")
+                    request.addOption("--convert-thumbnails", "jpg")
                     try {
                         val config = File(context.cacheDir.absolutePath + "/downloads/config" + downloadItem.title + "##" + downloadItem.format.format_id + ".txt")
-                        val configData =
-                            "--ppa \"ffmpeg: -c:v png -vf crop=\\\"'if(gt(ih,iw),iw,ih)':'if(gt(iw,ih),ih,iw)'\\\"\""
+                        val configData = "--ppa \"ffmpeg: -c:v mjpeg -vf crop=\\\"'if(gt(ih,iw),iw,ih)':'if(gt(iw,ih),ih,iw)'\\\"\""
                         config.writeText(configData)
+                        request.addOption("--ppa", "ThumbnailsConvertor:-qmin 1 -q:v 1")
                         request.addOption("--config", config.absolutePath)
                     } catch (ignored: Exception) {}
                 }

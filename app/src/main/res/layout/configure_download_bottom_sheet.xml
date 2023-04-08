@@ -87,7 +87,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-
+        <Button
+            android:id="@+id/bottom_sheet_link"
+            style="@style/Widget.Material3.Button.TextButton.Icon"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:singleLine="true"
+            android:text="@string/app_name"
+            android:textSize="15sp"
+            app:icon="@drawable/ic_link" />
 
     </LinearLayout>
 

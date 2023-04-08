@@ -10,10 +10,7 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
-import android.widget.TextView
+import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -269,8 +266,8 @@ class DownloadVideoFragment(private val resultItem: ResultItem, private var curr
                 if (downloadItem.downloadSections.isNotBlank()) cut.text = downloadItem.downloadSections
                 val cutVideoListener = object : VideoCutListener {
 
-                    override fun onChangeCut(list: Sequence<String>) {
-                        if (list.count() == 0){
+                    override fun onChangeCut(list: List<String>) {
+                        if (list.isEmpty()){
                             downloadItem.downloadSections = ""
                             cut.text = getString(R.string.cut)
 
@@ -300,13 +297,6 @@ class DownloadVideoFragment(private val resultItem: ResultItem, private var curr
                 cut.setOnClickListener {
                     val bottomSheet = CutVideoBottomSheetDialog(downloadItem, cutVideoListener)
                     bottomSheet.show(parentFragmentManager, "cutVideoSheet")
-                }
-
-                val copyURL = view.findViewById<Chip>(R.id.copy_url)
-                copyURL.setOnClickListener {
-                    val clipboard: ClipboardManager =
-                        requireContext().getSystemService(AppCompatActivity.CLIPBOARD_SERVICE) as ClipboardManager
-                    clipboard.setText(downloadItem.url)
                 }
 
             } catch (e: Exception) {

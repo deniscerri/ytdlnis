@@ -3,6 +3,8 @@ package com.deniscerri.ytdlnis.ui.downloadcard
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.DialogInterface
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.util.DisplayMetrics
@@ -13,8 +15,10 @@ import android.view.View
 import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.children
+import androidx.core.view.forEach
 import androidx.lifecycle.lifecycleScope
 import com.deniscerri.ytdlnis.R
+import com.deniscerri.ytdlnis.database.models.ChapterItem
 import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.InfoUtil
@@ -31,15 +35,19 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
+import com.google.android.material.color.MaterialColors
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.slider.RangeSlider
 import com.google.android.material.textfield.TextInputLayout
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.lang.reflect.Type
 import java.util.*
 import kotlin.properties.Delegates
 
@@ -58,12 +66,17 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val list
     private lateinit var toTextInput : TextInputLayout
     private lateinit var cancelBtn : Button
     private lateinit var okBtn : Button
+    private lateinit var suggestedChips: ChipGroup
+    private lateinit var suggestedChapters : LinearLayout
     
     private lateinit var cutListSection : LinearLayout
     private lateinit var newCutBtn : Button
+    private lateinit var resetBtn : Button
     private lateinit var chipGroup : ChipGroup
 
     private var timeSeconds by Delegates.notNull<Int>()
+    private lateinit var chapters: List<ChapterItem>
+    private lateinit var selectedCuts: MutableList<String>
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -92,6 +105,7 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val list
         val videoView = view.findViewById<PlayerView>(R.id.video_view)
         videoView.player = player
         timeSeconds = convertStringToTimestamp(item.duration)
+        chapters = emptyList()
 
         //cut section
         cutSection = view.findViewById(R.id.cut_section)
@@ -101,12 +115,25 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val list
         toTextInput = view.findViewById(R.id.to_textinput)
         cancelBtn = view.findViewById(R.id.cancelButton)
         okBtn = view.findViewById(R.id.okButton)
+        suggestedChips = view.findViewById(R.id.chapters)
+        suggestedChapters = view.findViewById(R.id.suggested_cuts)
         initCutSection()
 
         //cut list section
         cutListSection = view.findViewById(R.id.list_section)
         newCutBtn = view.findViewById(R.id.new_cut)
+        resetBtn = view.findViewById(R.id.reset_all)
         chipGroup = view.findViewById(R.id.cut_list_chip_group)
+
+        selectedCuts = if (chipGroup.childCount == 0){
+            mutableListOf()
+        }else {
+            chipGroup.children.forEach { c ->
+                if ( ! (c as Chip).text.contains(":")) c.isEnabled = false
+            }
+            chipGroup.children.map { (it as Chip).text.toString() }.toMutableList()
+        }
+
         initCutListSection()
 
         if (item.downloadSections.isBlank()) cutSection.visibility = View.VISIBLE
@@ -114,26 +141,32 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val list
 
         lifecycleScope.launch {
             try {
-                val url = withContext(Dispatchers.IO){
-                    infoUtil.getStreamingUrl(item.url)
+                val data = withContext(Dispatchers.IO){
+                    infoUtil.getStreamingUrlAndChapters(item.url)
                 }
+                if (data.isEmpty()) throw Exception("No Data found!")
+                try{
+                    val listType: Type = object : TypeToken<List<ChapterItem>>() {}.type
+                    chapters = Gson().fromJson(data.first().toString(), listType)
+                }catch (ignored: Exception) {}
+                data.removeFirst()
 
-                if (url.isBlank()) throw Exception("No Streaming URL found!")
 
-                val urls = url.split("\n")
-                if (urls.size == 2){
+                if (data.isEmpty()) throw Exception("No Streaming URL found!")
+                if (data.size == 2){
                     val audioSource: MediaSource =
                         DefaultMediaSourceFactory(requireContext())
-                            .createMediaSource(fromUri(Uri.parse(urls[0])))
+                            .createMediaSource(fromUri(Uri.parse(data[0])))
                     val videoSource: MediaSource =
                         DefaultMediaSourceFactory(requireContext())
-                            .createMediaSource(fromUri(Uri.parse(urls[1])))
+                            .createMediaSource(fromUri(Uri.parse(data[1])))
                     (player as ExoPlayer).setMediaSource(MergingMediaSource(videoSource, audioSource))
                 }else{
-                    player.addMediaItem(fromUri(Uri.parse(urls[0])))
+                    player.addMediaItem(fromUri(Uri.parse(data[0])))
                 }
 
                 progress.visibility = View.GONE
+                populateSuggestedChapters()
 
                 player.prepare()
                 player.seekTo((((rangeSlider.valueFrom.toInt() * timeSeconds) / 100) * 1000).toLong())
@@ -166,23 +199,8 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val list
     }
 
     private fun initCutSection(){
-        if (item.downloadSections.isEmpty()){
-            fromTextInput.editText!!.setText("0:00")
-            toTextInput.editText!!.setText(item.duration)
-        }else{
-            val stamps = item.downloadSections.split("-")
-            fromTextInput.editText!!.setText(stamps[0])
-            toTextInput.editText!!.setText(stamps[1].replace(";", ""))
-
-            val startSeconds = convertStringToTimestamp(stamps[0])
-            val endSeconds = convertStringToTimestamp(stamps[1].replace(";", ""))
-
-            val startValue = (startSeconds.toFloat() / timeSeconds) * 100
-            val endValue = (endSeconds.toFloat() / timeSeconds) * 100
-
-            rangeSlider.setValues(startValue, endValue)
-        }
-
+        fromTextInput.editText!!.setText("0:00")
+        toTextInput.editText!!.setText(item.duration)
 
         rangeSlider.addOnChangeListener { rangeSlider, value, fromUser ->
             val values = rangeSlider.values
@@ -270,20 +288,52 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val list
         })
 
         cancelBtn.setOnClickListener {
-            cutSection.visibility = View.GONE
-            cutListSection.visibility = View.VISIBLE
+            if (chipGroup.childCount == 0){
+                player.stop()
+                dismiss()
+            }else{
+                cutSection.visibility = View.GONE
+                cutListSection.visibility = View.VISIBLE
+            }
         }
 
         okBtn.isEnabled = false
         okBtn.setOnClickListener {
             val chip = createChip("${fromTextInput.editText!!.text}-${toTextInput.editText!!.text}")
-            listener.onChangeCut(chipGroup.children.map { c -> (c as Chip).text.toString() })
             chip.performClick()
-            player.seekTo((((rangeSlider.valueFrom.toInt() * timeSeconds) / 100) * 1000).toLong())
-            player.play()
-
             cutSection.visibility = View.GONE
             cutListSection.visibility = View.VISIBLE
+        }
+
+        populateSuggestedChapters()
+    }
+
+    private fun populateSuggestedChapters(){
+        if (chapters.isEmpty()) suggestedChapters.visibility = View.GONE
+        else {
+            suggestedChapters.visibility = View.VISIBLE
+            suggestedChips.removeAllViews()
+            chapters.forEach {
+                val chip = layoutInflater.inflate(R.layout.suggestion_chip, chipGroup, false) as Chip
+                chip.text = it.title
+                chip.chipBackgroundColor = ColorStateList.valueOf(MaterialColors.getColor(requireContext(), R.attr.colorSecondaryContainer, Color.BLACK))
+                chip.isCheckedIconVisible = false
+                suggestedChips.addView(chip)
+                chip.setOnClickListener { c ->
+                    val createdChip = createChapterChip(it, null)
+                    createdChip.performClick()
+                    cutSection.visibility = View.GONE
+                    cutListSection.visibility = View.VISIBLE
+                }
+
+                //replace existing chip to enable click events
+                if (selectedCuts.contains(it.title)){
+                    val idx = selectedCuts.indexOf(it.title)
+                    val chipForDeletion = chipGroup.children.firstOrNull { cc -> (cc as Chip).text == it.title }
+                    chipGroup.removeView(chipForDeletion)
+                    createChapterChip(it, idx)
+                }
+            }
         }
     }
 
@@ -295,32 +345,44 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val list
             player.seekTo(0)
         }
 
+        resetBtn.setOnClickListener {
+            chipGroup.removeAllViews()
+            listener.onChangeCut(emptyList())
+            player.stop()
+            dismiss()
+        }
+
         if (item.downloadSections.isNotBlank()){
             chipGroup.removeAllViews()
             item.downloadSections.split(";").forEachIndexed { index, it ->
                 if (it.isBlank()) return
-                val startingValue = ((convertStringToTimestamp(it.split("-")[0]).toFloat() / timeSeconds) * 100).toInt()
-                val endingValue = ((convertStringToTimestamp(it.split("-")[1].replace(";", "")).toFloat() / timeSeconds) * 100).toInt()
-
-                createChip(it.replace(";", ""))
-                if (index == 0) rangeSlider.setValues(startingValue.toFloat(), endingValue.toFloat())
+                if (it.contains(":")) createChip(it.replace(";", ""))
+                else createChapterChip(ChapterItem(0, 0, it), null)
             }
         }
     }
 
     private fun createChip(timestamp: String) : Chip {
-        val startingValue = ((convertStringToTimestamp(timestamp.split("-")[0]).toFloat() / timeSeconds) * 100).toInt()
-        val endingValue = ((convertStringToTimestamp(timestamp.split("-")[1].replace(";", "")).toFloat() / timeSeconds) * 100).toInt()
+        val startTimestamp = convertStringToTimestamp(timestamp.split("-")[0].replace(";", ""))
+        val endTimestamp = convertStringToTimestamp(timestamp.split("-")[1].replace(";", ""))
+
+        val startingValue = ((startTimestamp.toFloat() / timeSeconds) * 100).toInt()
+        val endingValue = ((endTimestamp.toFloat() / timeSeconds) * 100).toInt()
 
         val chip = layoutInflater.inflate(R.layout.filter_chip, chipGroup, false) as Chip
         chip.text = timestamp
+        chip.chipBackgroundColor = ColorStateList.valueOf(MaterialColors.getColor(requireContext(), R.attr.colorSecondaryContainer, Color.BLACK))
         chip.isCheckedIconVisible = false
         chipGroup.addView(chip)
-        listener.onChangeCut(chipGroup.children.map { c -> (c as Chip).text.toString() })
+        selectedCuts.add(chip.text.toString())
+        listener.onChangeCut(selectedCuts)
 
         chip.setOnClickListener {
             if (chip.isChecked) {
                 rangeSlider.setValues(startingValue.toFloat(), endingValue.toFloat())
+                player.prepare()
+                player.seekTo((((startingValue * timeSeconds) / 100) * 1000).toLong())
+                player.play()
             }else {
                 player.seekTo(0)
                 player.pause()
@@ -335,7 +397,8 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val list
                 player.seekTo(0)
                 player.pause()
                 chipGroup.removeView(chip)
-                listener.onChangeCut(chipGroup.children.map { c -> (c as Chip).text.toString() })
+                selectedCuts.remove(chip.text.toString())
+                listener.onChangeCut(selectedCuts)
             }
             deleteDialog.show()
             true
@@ -343,6 +406,60 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val list
 
         return chip
     }
+
+    private fun createChapterChip(chapter: ChapterItem, position: Int?) : Chip {
+        val chip = layoutInflater.inflate(R.layout.filter_chip, chipGroup, false) as Chip
+        chip.text = chapter.title
+        chip.chipBackgroundColor = ColorStateList.valueOf(MaterialColors.getColor(requireContext(), R.attr.colorSecondaryContainer, Color.BLACK))
+        chip.isCheckedIconVisible = false
+
+        if (position != null) chipGroup.addView(chip, position)
+        else chipGroup.addView(chip)
+
+        if (! selectedCuts.contains(chapter.title))
+            selectedCuts.add(chip.text.toString())
+
+        listener.onChangeCut(selectedCuts)
+        if (chapter.start_time == 0L && chapter.end_time == 0L) {
+            chip.isEnabled = false
+        }else{
+            val startTimestamp = chapter.start_time.toInt()
+            val endTimestamp =  chapter.end_time.toInt()
+
+            val startingValue = ((startTimestamp.toFloat() / timeSeconds) * 100).toInt()
+            val endingValue = ((endTimestamp.toFloat() / timeSeconds) * 100).toInt()
+
+            chip.setOnClickListener {
+                if (chip.isChecked) {
+                    rangeSlider.setValues(startingValue.toFloat(), endingValue.toFloat())
+                    player.prepare()
+                    player.seekTo((((startingValue * timeSeconds) / 100) * 1000).toLong())
+                    player.play()
+                }else {
+                    player.seekTo(0)
+                    player.pause()
+                }
+            }
+
+            chip.setOnLongClickListener {
+                val deleteDialog = MaterialAlertDialogBuilder(requireContext())
+                deleteDialog.setTitle(getString(R.string.you_are_going_to_delete) + " \"" + chip.text + "\"!")
+                deleteDialog.setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, _: Int -> dialogInterface.cancel() }
+                deleteDialog.setPositiveButton(getString(R.string.ok)) { _: DialogInterface?, _: Int ->
+                    player.seekTo(0)
+                    player.pause()
+                    chipGroup.removeView(chip)
+                    selectedCuts.remove(chip.text.toString())
+                    listener.onChangeCut(selectedCuts)
+                }
+                deleteDialog.show()
+                true
+            }
+        }
+
+        return chip
+    }
+
 
     private fun videoProgress(player: Player?) = flow {
         while (true) {
@@ -386,5 +503,5 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val list
 }
 
 interface VideoCutListener{
-    fun onChangeCut(list: Sequence<String>)
+    fun onChangeCut(list: List<String>)
 }

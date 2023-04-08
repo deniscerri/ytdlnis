@@ -629,10 +629,11 @@ class InfoUtil(context: Context) {
         return format
     }
 
-    fun getStreamingUrl(url: String) : String {
+    fun getStreamingUrlAndChapters(url: String) : MutableList<String?> {
         try {
             val request = YoutubeDLRequest(url)
-            request.addOption("-j")
+            request.addOption("--get-url")
+            request.addOption("--print", "%(chapters)s")
             request.addOption("--skip-download")
             request.addOption("-R", "1")
             request.addOption("--socket-timeout", "5")
@@ -643,10 +644,9 @@ class InfoUtil(context: Context) {
             } catch (e: Exception) {
                 arrayOf(youtubeDLResponse.out)
             }
-            val jsonObject = JSONObject(results[0]!!)
-            return jsonObject.getString("urls")
+            return results.toMutableList()
         } catch (e: Exception) {
-            return ""
+            return mutableListOf()
         }
     }
 

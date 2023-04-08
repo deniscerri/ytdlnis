@@ -83,14 +83,14 @@ class DownloadBottomSheetDialog(private val resultItem: ResultItem, private val 
         }
 
         val fragments = mutableListOf<Fragment>(DownloadAudioFragment(resultItem, null), DownloadVideoFragment(resultItem, null))
-
+        var commandTemplateNr = 0
         lifecycleScope.launch{
             withContext(Dispatchers.IO){
-                val nr = commandTemplateDao.getTotalNumber()
-                if(nr > 0){
+                commandTemplateNr = commandTemplateDao.getTotalNumber()
+                if(commandTemplateNr > 0){
                     fragments.add(DownloadCommandFragment(resultItem, null))
                 }else{
-                    (tabLayout.getChildAt(0) as? ViewGroup)?.getChildAt(2)?.isEnabled = false
+                    (tabLayout.getChildAt(0) as? ViewGroup)?.getChildAt(2)?.isClickable = true
                     (tabLayout.getChildAt(0) as? ViewGroup)?.getChildAt(2)?.alpha = 0.3f
                 }
             }
@@ -128,7 +128,12 @@ class DownloadBottomSheetDialog(private val resultItem: ResultItem, private val 
 
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
-                viewPager2.setCurrentItem(tab!!.position, false)
+                if (tab!!.position == 2 && commandTemplateNr == 0){
+                    tabLayout.selectTab(tabLayout.getTabAt(1))
+                    Toast.makeText(context, getString(R.string.add_template_first), Toast.LENGTH_SHORT).show()
+                }else{
+                    viewPager2.setCurrentItem(tab.position, false)
+                }
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {
@@ -167,6 +172,16 @@ class DownloadBottomSheetDialog(private val resultItem: ResultItem, private val 
                 downloadViewModel.queueDownloads(listOf(item))
             }
             dismiss()
+        }
+
+        val link = view.findViewById<Button>(R.id.bottom_sheet_link)
+        link.text = resultItem.url
+        link.setOnClickListener{
+            uiUtil.openLinkIntent(requireContext(), resultItem.url, null)
+        }
+        link.setOnLongClickListener{
+            uiUtil.copyLinkToClipBoard(requireContext(), resultItem.url, null)
+            true
         }
     }
 

@@ -4,16 +4,20 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.*
 import android.content.Context.CLIPBOARD_SERVICE
+import android.content.res.ColorStateList
 import android.content.res.Configuration
+import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.text.InputType
 import android.util.Log
 import android.view.*
 import android.view.View.*
 import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.content.ContextCompat
 import androidx.core.text.TextUtilsCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.children
@@ -42,6 +46,7 @@ import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
+import com.google.android.material.color.MaterialColors
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.search.SearchBar
@@ -350,6 +355,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
                         if (present == null) {
                             val chip = layoutinflater!!.inflate(R.layout.input_chip, queriesChipGroup, false) as Chip
                             chip.text = searchView.editText.text
+                            chip.chipBackgroundColor = ColorStateList.valueOf(MaterialColors.getColor(requireContext(), R.attr.colorSecondaryContainer, Color.BLACK))
                             chip.setOnClickListener {
                                 queriesChipGroup!!.removeView(chip)
                             }

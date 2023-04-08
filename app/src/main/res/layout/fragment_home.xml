@@ -36,6 +36,7 @@
                         <com.google.android.material.chip.ChipGroup
                             android:id="@+id/queries"
                             android:layout_margin="10dp"
+                            app:chipSpacingVertical="-10dp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintHorizontal_bias="0.0"

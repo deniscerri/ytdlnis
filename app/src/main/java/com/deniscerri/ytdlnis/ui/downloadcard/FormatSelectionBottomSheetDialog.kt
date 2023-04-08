@@ -3,8 +3,7 @@ package com.deniscerri.ytdlnis.ui.downloadcard
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Dialog
-import android.content.DialogInterface
-import android.content.SharedPreferences
+import android.content.*
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.util.Log
@@ -109,12 +108,20 @@ class FormatSelectionBottomSheetDialog(private val item: DownloadItem, private v
         linearLayout.removeAllViews()
         Log.e("aa", formats.toString())
         for (i in formats.lastIndex downTo 0){
-            val it = formats[i]
+            val format = formats[i]
             val formatItem = LayoutInflater.from(context).inflate(R.layout.format_item, null)
-            uiUtil.populateFormatCard(formatItem as ConstraintLayout, it)
+            uiUtil.populateFormatCard(formatItem as ConstraintLayout, format)
             formatItem.setOnClickListener{_ ->
-                listener.onFormatClick(formats, it)
+                listener.onFormatClick(formats, format)
                 dismiss()
+            }
+            formatItem.setOnLongClickListener {
+                val clipboard = requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                val clip = ClipData.newPlainText("format_id", format.format_id)
+                clipboard.setPrimaryClip(clip)
+                Toast.makeText(context, requireContext().getString(R.string.formatid_copied_to_clipboard), Toast.LENGTH_SHORT)
+                    .show()
+                true
             }
             linearLayout.addView(formatItem)
         }

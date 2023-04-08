@@ -22,7 +22,7 @@ android {
             keyPassword properties["signingConfig.keyPassword"]
         }
     }
-    compileSdkVersion "android-UpsideDownCake"
+    compileSdkVersion 33
     defaultConfig {
         applicationId "com.deniscerri.ytdl"
         minSdkVersion 23
@@ -119,7 +119,7 @@ dependencies {
 
     implementation "androidx.appcompat:appcompat:$appCompatVer"
     implementation "androidx.constraintlayout:constraintlayout:2.1.4"
-    implementation 'com.google.android.material:material:1.10.0-alpha01'
+    implementation 'com.google.android.material:material:1.9.0-beta01'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.core:core:1.9.0'
     implementation 'androidx.recyclerview:recyclerview:1.3.0'

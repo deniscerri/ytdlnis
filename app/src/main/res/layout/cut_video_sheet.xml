@@ -69,7 +69,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="15dp"
             android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/suggested_cuts"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.533"
             app:layout_constraintStart_toStartOf="parent"
@@ -120,6 +120,43 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/suggested_cuts"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="20dp"
+            android:paddingTop="10dp"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.533"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout5"
+            app:layout_constraintVertical_bias="0.0"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/suggested" />
+
+            <HorizontalScrollView
+                android:layout_width="wrap_content"
+                android:scrollbars="none"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/chapters"
+                    android:layout_width="wrap_content"
+                    app:chipSpacingVertical="-10dp"
+                    app:chipSpacing="0dp"
+                    android:layout_height="wrap_content"
+                    app:singleLine="true" />
+
+            </HorizontalScrollView>
+
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -127,7 +164,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginHorizontal="20dp"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout5"
+            app:layout_constraintTop_toBottomOf="@+id/suggested_cuts"
             app:layout_constraintVertical_bias="1.0"
             >
 
@@ -178,6 +215,17 @@
                 app:layout_constraintEnd_toStartOf="@+id/new_cut"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/reset_all"
+                style="?attr/materialIconButtonFilledTonalStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                app:icon="@drawable/ic_baseline_delete_outline_24"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/new_cut"
                 app:layout_constraintTop_toTopOf="parent" />
 
 

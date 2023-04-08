@@ -9,7 +9,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:padding="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -20,7 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:hint="@string/title"
-            android:paddingBottom="10dp">
+            android:padding="10dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
@@ -33,7 +32,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingBottom="10dp">
+            android:padding="10dp">
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/author_textinput"
@@ -74,6 +73,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingHorizontal="10dp"
             android:text="@string/video_quality" />
 
         <include layout="@layout/format_item" />
@@ -85,7 +85,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/save_dir"
-            android:paddingTop="10dp">
+            android:paddingHorizontal="10dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="0dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
@@ -97,8 +99,7 @@
 
         <TextView
             android:id="@+id/freespace"
-            android:paddingHorizontal="10dp"
-            android:paddingVertical="5dp"
+            android:paddingHorizontal="20dp"
             android:textSize="13sp"
             android:textColor="@android:color/tab_indicator_text"
             android:layout_width="wrap_content"
@@ -110,7 +111,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingVertical="10dp">
+            android:padding="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -212,24 +213,6 @@
                 </com.google.android.material.chip.ChipGroup>
 
             </HorizontalScrollView>
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/copy_url"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@string/copy_url"
-                app:chipIconVisible="true"
-                app:chipIcon="@drawable/ic_clipboard"
-                android:minWidth="30dp"
-                app:cornerRadius="10dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-
-
-
 
         </LinearLayout>
 
