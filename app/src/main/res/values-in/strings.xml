@@ -9,7 +9,7 @@
     <string name="no_results">Tidak Ada Hasil</string>
     <string name="remove_all">Bersihkan Semua</string>
     <string name="download_all">Unduh Semua</string>
-    <string name="settings">Penyetelan</string>
+    <string name="settings">Pengaturan</string>
     <string name="search">Telusuri</string>
     <string name="failed_download">Tidak bisa mengunduh berkas.</string>
     <string name="download_notification_channel_name">Unduhan Berkas</string>
@@ -41,7 +41,7 @@
     <string name="limit_rate_summary">Laju unduhan maksimal (dalam satuan bita per detik), mis. 50K atau 4,2M</string>
     <string name="limit_rate">Batas Laju</string>
     <string name="aria2_summary">Gunakan aria2c sebagai pengunduh, bukannya pengunduh asali</string>
-    <string name="about">Perihal</string>
+    <string name="about">Tentang</string>
     <string name="concurrent_fragments">Fragmen Berbarengan</string>
     <string name="command_download_notification_channel_name">Unduhan Perintah</string>
     <string name="request_permission_desc">Aplikasi ini membutuhkan Perizinan Berkas untuk menyimpan unduhan pada perangkat</string>
@@ -174,4 +174,11 @@
     <string name="link_you_copied">Pranala yang Kamu Salin</string>
     <string name="best_quality">Kualitas Terbaik</string>
     <string name="worst_quality">Kualitas Terburuk</string>
+    <string name="restrict_filenames">Batasi Penamaan File</string>
+    <string name="restrict_filenames_summary">Batasi nama file hanya pada karakter ASCII, dan hindari \"&amp;\" dan spasi pada nama file</string>
+    <string name="kill_app">Hentikan Aplikasi</string>
+    <string name="confirm_terminate">Semua unduhan akan dihentikan &amp; aplikasi akan ditutup paksa</string>
+    <string name="dont_ask_again">Jangan tanya lagi</string>
+    <string name="update_formats_summary">Secara otomatis mencari format yang hilang ketika mengklik kartu format</string>
+    <string name="ignore_battery_optimization">Abaikan Pengoptimalan Baterai</string>
 </resources>
