@@ -183,4 +183,9 @@
     <string name="dont_ask_again">Mos pyet më</string>
     <string name="ignore_battery_optimization">Injoro Optimizimet e Baterisë</string>
     <string name="update_formats_summary">Kërko automatikishit për formatet e munugara kur klikon kartën e formatit</string>
+    <string name="cut">Prit</string>
+    <string name="new_cut">Prerje e Re</string>
+    <string name="formatid_copied_to_clipboard">ID e Formatit u kopjua</string>
+    <string name="suggested">Sygjerime</string>
+    <string name="add_template_first">Duhet të keni të paktën një shabllon komande të krijuar!</string>
 </resources>
