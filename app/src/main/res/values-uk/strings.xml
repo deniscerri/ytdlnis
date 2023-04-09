@@ -183,4 +183,18 @@
     <string name="dont_ask_again">Більше не питай</string>
     <string name="update_formats_summary">Автоматичний пошук відсутніх форматів при натисканні на картку формату</string>
     <string name="ignore_battery_optimization">Ігноруйте оптимізацію батареї</string>
+    <string name="cut">Вирізати</string>
+    <string name="new_cut">Новий виріз</string>
+    <string name="formatid_copied_to_clipboard">Ідентифікатор формату скопійовано до буфера обміну</string>
+    <string name="add_template_first">Вам потрібно створити принаймні один шаблон команди!</string>
+    <string name="suggested">Запропоновано</string>
+    <string name="cookies">Cookies</string>
+    <string name="select_all">Вибрати все</string>
+    <string name="share">Поділитися</string>
+    <string name="get_cookies">Отримати cookie</string>
+    <string name="confirm_delete_cookies_desc">Видалити всі cookie назавжди</string>
+    <string name="delete_all_cookies">Видалити всі cookie</string>
+    <string name="new_cookie">Нові cookie</string>
+    <string name="cookie">Cookie</string>
+    <string name="create_cookie">Створити cookie</string>
 </resources>
