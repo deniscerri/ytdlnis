@@ -28,6 +28,7 @@ import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.models.ResultItem
+import com.deniscerri.ytdlnis.database.viewmodel.CookieViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdlnis.ui.downloadcard.DownloadBottomSheetDialog
@@ -45,6 +46,7 @@ class ShareActivity : AppCompatActivity() {
     lateinit var context: Context
     private lateinit var resultViewModel: ResultViewModel
     private lateinit var downloadViewModel: DownloadViewModel
+    private lateinit var cookieViewModel: CookieViewModel
     private lateinit var sharedPreferences: SharedPreferences
 
 
@@ -73,7 +75,12 @@ class ShareActivity : AppCompatActivity() {
         context = baseContext
         resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
+        cookieViewModel = ViewModelProvider(this)[CookieViewModel::class.java]
         sharedPreferences = getSharedPreferences("root_preferences", Activity.MODE_PRIVATE)
+
+        cookieViewModel.getCookiesFromDB().getOrNull()?.let{
+            File(cacheDir, "cookies.txt").apply { writeText(it) }
+        }
 
         val intent = intent
         handleIntents(intent)

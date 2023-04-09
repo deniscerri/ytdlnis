@@ -25,6 +25,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
+import com.deniscerri.ytdlnis.database.viewmodel.CookieViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdlnis.ui.HomeFragment
 import com.deniscerri.ytdlnis.ui.downloads.DownloadQueueActivity
@@ -48,6 +49,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var context: Context
     private lateinit var preferences: SharedPreferences
     private lateinit var resultViewModel: ResultViewModel
+    private lateinit var cookieViewModel: CookieViewModel
     private lateinit var bottomNav: BottomNavigationView
     private lateinit var navHostFragment : NavHostFragment
 
@@ -58,6 +60,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         context = baseContext
         resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]
+        cookieViewModel = ViewModelProvider(this)[CookieViewModel::class.java]
         preferences = context.getSharedPreferences("root_preferences", MODE_PRIVATE)
 
         if (preferences.getBoolean("incognito", false)){
@@ -97,6 +100,10 @@ class MainActivity : AppCompatActivity() {
                    startActivity(intent)
                 }
             }
+        }
+
+        cookieViewModel.getCookiesFromDB().getOrNull()?.let{
+            File(cacheDir, "cookies.txt").apply { writeText(it) }
         }
 
         val intent = intent

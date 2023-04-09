@@ -31,6 +31,7 @@ class MoreFragment : Fragment() {
     private lateinit var logs: TextView
     private lateinit var commandTemplates: TextView
     private lateinit var downloadQueue: TextView
+    private lateinit var cookies: TextView
     private lateinit var terminateApp: TextView
     private lateinit var settings: TextView
     private lateinit var mainActivity: MainActivity
@@ -52,6 +53,7 @@ class MoreFragment : Fragment() {
         logs = view.findViewById(R.id.logs)
         commandTemplates = view.findViewById(R.id.command_templates)
         downloadQueue = view.findViewById(R.id.download_queue)
+        cookies = view.findViewById(R.id.cookies)
         terminateApp = view.findViewById(R.id.terminate)
         settings = view.findViewById(R.id.settings)
 
@@ -81,6 +83,11 @@ class MoreFragment : Fragment() {
 
         downloadQueue.setOnClickListener {
             val intent = Intent(context, DownloadQueueActivity::class.java)
+            startActivity(intent)
+        }
+
+        cookies.setOnClickListener {
+            val intent = Intent(context, CookiesActivity::class.java)
             startActivity(intent)
         }
 

@@ -144,6 +144,32 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".ui.more.CookiesActivity"
+            android:configChanges="layoutDirection|locale"
+            android:exported="true"
+            android:parentActivityName=".MainActivity"
+            android:windowSoftInputMode="adjustResize">
+            <intent-filter>
+                <action android:name="ytdlnis.CookiesActivity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".ui.more.WebViewActivity"
+            android:configChanges="layoutDirection|locale"
+            android:exported="true"
+            android:parentActivityName=".MainActivity"
+            android:windowSoftInputMode="adjustResize">
+            <intent-filter>
+                <action android:name="ytdlnis.WebViewActivity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
         <receiver android:name=".receiver.CancelDownloadNotificationReceiver" />
 
         <service

@@ -132,6 +132,11 @@ class DownloadWorker(
             request.addOption("--restrict-filenames")
         }
 
+        val cookiesFile = File(context.cacheDir, "cookies.txt")
+        if (cookiesFile.exists()){
+            request.addOption("--cookies", cookiesFile.absolutePath)
+        }
+
         when(type){
             DownloadViewModel.Type.audio -> {
                 var audioQualityId : String = downloadItem.format.format_id

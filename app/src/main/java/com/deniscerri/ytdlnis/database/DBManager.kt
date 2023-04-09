@@ -2,16 +2,16 @@ package com.deniscerri.ytdlnis.database
 
 import android.content.Context
 import androidx.room.*
-import androidx.room.migration.AutoMigrationSpec
 import com.deniscerri.ytdlnis.database.dao.*
 import com.deniscerri.ytdlnis.database.models.*
 
 @TypeConverters(Converters::class)
 @Database(
-    entities = [ResultItem::class, HistoryItem::class, DownloadItem::class, CommandTemplate::class, SearchHistoryItem::class, TemplateShortcut::class],
-    version = 2,
+    entities = [ResultItem::class, HistoryItem::class, DownloadItem::class, CommandTemplate::class, SearchHistoryItem::class, TemplateShortcut::class, CookieItem::class],
+    version = 3,
     autoMigrations = [
-        AutoMigration (from = 1, to = 2)
+        AutoMigration (from = 1, to = 2),
+        AutoMigration (from = 2, to = 3)
     ]
 )
 abstract class DBManager : RoomDatabase(){
@@ -20,6 +20,7 @@ abstract class DBManager : RoomDatabase(){
     abstract val downloadDao : DownloadDao
     abstract val commandTemplateDao : CommandTemplateDao
     abstract val searchHistoryDao: SearchHistoryDao
+    abstract val cookieDao: CookieDao
 
     companion object {
         //prevents multiple instances of db getting created at the same time

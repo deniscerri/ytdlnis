@@ -197,4 +197,11 @@
     <string name="suggested">Suggested</string>
     <string name="select_all">Select All</string>
     <string name="share">Share</string>
+    <string name="cookies">Cookies</string>
+    <string name="new_cookie">New Cookie</string>
+    <string name="cookie">Cookie</string>
+    <string name="create_cookie">Create Cookie</string>
+    <string name="get_cookies">Get Cookies</string>
+    <string name="delete_all_cookies">Delete All Cookies</string>
+    <string name="confirm_delete_cookies_desc">Delete all the cookies, permanently</string>
 </resources>

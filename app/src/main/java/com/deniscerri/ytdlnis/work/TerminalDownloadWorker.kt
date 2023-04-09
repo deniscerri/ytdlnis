@@ -56,6 +56,11 @@ class TerminalDownloadWorker(
             }.absolutePath
         )
 
+        val cookiesFile = File(context.cacheDir, "cookies.txt")
+        if (cookiesFile.exists()){
+            request.addOption("--cookies", cookiesFile.absolutePath)
+        }
+
         request.addOption("-P", tempFileDir.absolutePath)
 
         val logDownloads = sharedPreferences.getBoolean("log_downloads", false) && !sharedPreferences.getBoolean("incognito", false)

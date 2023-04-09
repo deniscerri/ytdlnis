@@ -2,6 +2,7 @@ package com.deniscerri.ytdlnis.util
 
 import android.app.Activity
 import android.content.Context
+import android.os.Environment
 import android.util.Log
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.Format
@@ -13,13 +14,14 @@ import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.BufferedReader
+import java.io.File
 import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
 import java.util.*
 import java.util.regex.Pattern
 
-class InfoUtil(context: Context) {
+class InfoUtil(private val context: Context) {
     private var items: ArrayList<ResultItem?>
     private var key: String? = null
     private var useInvidous = false
@@ -494,6 +496,12 @@ class InfoUtil(context: Context) {
             request.addOption("-R", "1")
             request.addOption("--socket-timeout", "5")
             if (!query.contains("http")) request.addOption("--default-search", "ytsearch25")
+
+            val cookiesFile = File(context.cacheDir, "cookies.txt")
+            if (cookiesFile.exists()){
+                request.addOption("--cookies", cookiesFile.absolutePath)
+            }
+
             val youtubeDLResponse = YoutubeDL.getInstance().execute(request)
             val results: Array<String?> = try {
                 val lineSeparator = System.getProperty("line.separator")
@@ -637,6 +645,12 @@ class InfoUtil(context: Context) {
             request.addOption("--skip-download")
             request.addOption("-R", "1")
             request.addOption("--socket-timeout", "5")
+
+            val cookiesFile = File(context.cacheDir, "cookies.txt")
+            if (cookiesFile.exists()){
+                request.addOption("--cookies", cookiesFile.absolutePath)
+            }
+
             val youtubeDLResponse = YoutubeDL.getInstance().execute(request)
             val results: Array<String?> = try {
                 val lineSeparator = System.getProperty("line.separator")
