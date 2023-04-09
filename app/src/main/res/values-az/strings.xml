@@ -183,4 +183,9 @@
     <string name="start">Başlanğıc</string>
     <string name="update_formats_summary">Format kartına klikləyəndə çatışmayan formatları avtomatik axtarır</string>
     <string name="ignore_battery_optimization">Batareya Optimallaşdırılmasına Məhəl qoyma</string>
+    <string name="cut">Kəs</string>
+    <string name="new_cut">Yeni Kəsik</string>
+    <string name="formatid_copied_to_clipboard">Format ID buferə nüsxələndi</string>
+    <string name="suggested">Təklif edilən</string>
+    <string name="add_template_first">Heç olmazsa, bir əmr şablonu yaratmalısınız!</string>
 </resources>
