@@ -13,10 +13,15 @@ import android.view.*
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.view.ActionMode
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
+import androidx.core.view.children
+import androidx.core.view.forEach
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
@@ -32,6 +37,7 @@ import com.deniscerri.ytdlnis.database.repository.HistoryRepository.HistorySort
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.HistoryViewModel
 import com.deniscerri.ytdlnis.databinding.FragmentHistoryBinding
+import com.deniscerri.ytdlnis.ui.downloadcard.DownloadMultipleBottomSheetDialog
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.UiUtil
 import com.facebook.shimmer.ShimmerFrameLayout
@@ -43,7 +49,10 @@ import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
@@ -72,10 +81,10 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
     private var historyList: List<HistoryItem?>? = null
     private var allhistoryList: List<HistoryItem?>? = null
     private var selectedObjects: ArrayList<HistoryItem>? = null
-    private var deleteFab: ExtendedFloatingActionButton? = null
     private var fileUtil: FileUtil? = null
     private var uiUtil: UiUtil? = null
     private var _binding : FragmentHistoryBinding? = null
+    private var actionMode : ActionMode? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -98,13 +107,8 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
         noResults = view.findViewById(R.id.no_results)
         selectionChips = view.findViewById(R.id.history_selection_chips)
         websiteGroup = view.findViewById(R.id.website_chip_group)
-        deleteFab = view.findViewById(R.id.delete_selected_fab)
         fileUtil = FileUtil()
         uiUtil = UiUtil(FileUtil())
-        deleteFab?.tag = "deleteSelected"
-        deleteFab?.setOnClickListener{
-            removeSelectedItems()
-        }
         uiHandler = Handler(Looper.getMainLooper())
         selectedObjects = ArrayList()
 
@@ -363,27 +367,6 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
     }
 
 
-    private fun removeSelectedItems() {
-        if (bottomSheet != null) bottomSheet!!.hide()
-        val deleteFile = booleanArrayOf(false)
-        val deleteDialog = MaterialAlertDialogBuilder(fragmentContext!!)
-        deleteDialog.setTitle(getString(R.string.you_are_going_to_delete_multiple_items))
-        deleteDialog.setMultiChoiceItems(
-            arrayOf(getString(R.string.delete_files_too)),
-            booleanArrayOf(false)
-        ) { _: DialogInterface?, _: Int, b: Boolean -> deleteFile[0] = b }
-        deleteDialog.setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, _: Int -> dialogInterface.cancel() }
-        deleteDialog.setPositiveButton(getString(R.string.ok)) { _: DialogInterface?, _: Int ->
-            for (item in selectedObjects!!){
-                historyViewModel.delete(item, deleteFile[0])
-            }
-            selectedObjects = ArrayList()
-            historyAdapter!!.clearCheckeditems()
-            deleteFab!!.visibility = GONE
-        }
-        deleteDialog.show()
-    }
-
     private fun removeItem(item: HistoryItem) {
         if (bottomSheet != null) bottomSheet!!.hide()
         val deleteFile = booleanArrayOf(false)
@@ -429,7 +412,7 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
 
         if (isPresent){
             btn.setOnClickListener {
-                uiUtil!!.shareFileIntent(requireContext(),item.downloadPath)
+                uiUtil!!.shareFileIntent(requireContext(), listOf(item.downloadPath))
             }
         }
 
@@ -514,17 +497,89 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
 
     override fun onCardSelect(itemID: Long, isChecked: Boolean) {
         val item = findItem(itemID)
-        if (isChecked) selectedObjects!!.add(item!!)
-        else selectedObjects!!.remove(item)
-        if (selectedObjects!!.size > 1) {
-            deleteFab!!.visibility = VISIBLE
-        } else {
-            deleteFab!!.visibility = GONE
+        if (isChecked) {
+            selectedObjects!!.add(item!!)
+            if (actionMode == null){
+                actionMode = (getActivity() as AppCompatActivity?)!!.startSupportActionMode(contextualActionBar)
+
+            }else{
+                actionMode!!.title = "${selectedObjects!!.size} ${getString(R.string.selected)}"
+            }
+        }
+        else {
+            selectedObjects!!.remove(item)
+            actionMode?.title = "${selectedObjects!!.size} ${getString(R.string.selected)}"
+            if (selectedObjects!!.isEmpty()){
+                actionMode?.finish()
+            }
         }
     }
 
     private fun findItem(id : Long): HistoryItem? {
         return historyList?.find { it?.id == id }
+    }
+
+    private val contextualActionBar = object : ActionMode.Callback {
+        override fun onCreateActionMode(mode: ActionMode?, menu: Menu?): Boolean {
+            mode!!.menuInflater.inflate(R.menu.history_menu_context, menu)
+            mode.title = "${selectedObjects!!.size} ${getString(R.string.selected)}"
+            (activity as MainActivity).disableBottomNavigation()
+            topAppBar!!.menu.forEach { it.isEnabled = false }
+            return true
+        }
+
+        override fun onPrepareActionMode(
+            mode: ActionMode?,
+            menu: Menu?
+        ): Boolean {
+            return false
+        }
+
+        override fun onActionItemClicked(
+            mode: ActionMode?,
+            item: MenuItem?
+        ): Boolean {
+            return when (item!!.itemId) {
+                R.id.delete_results -> {
+                    val deleteFile = booleanArrayOf(false)
+                    val deleteDialog = MaterialAlertDialogBuilder(fragmentContext!!)
+                    deleteDialog.setTitle(getString(R.string.you_are_going_to_delete_multiple_items))
+                    deleteDialog.setMultiChoiceItems(
+                        arrayOf(getString(R.string.delete_files_too)),
+                        booleanArrayOf(false)
+                    ) { _: DialogInterface?, _: Int, b: Boolean -> deleteFile[0] = b }
+                    deleteDialog.setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, _: Int -> dialogInterface.cancel() }
+                    deleteDialog.setPositiveButton(getString(R.string.ok)) { _: DialogInterface?, _: Int ->
+                        for (obj in selectedObjects!!){
+                            historyViewModel.delete(obj, deleteFile[0])
+                        }
+                        clearCheckedItems()
+                        actionMode?.finish()
+                    }
+                    deleteDialog.show()
+                    true
+                }
+                R.id.share -> {
+                    uiUtil?.shareFileIntent(requireContext(), selectedObjects!!.map { it.downloadPath })
+                    clearCheckedItems()
+                    actionMode?.finish()
+                    true
+                }
+                else -> false
+            }
+        }
+
+        override fun onDestroyActionMode(mode: ActionMode?) {
+            actionMode = null
+            (activity as MainActivity).enableBottomNavigation()
+            clearCheckedItems()
+            topAppBar!!.menu.forEach { it.isEnabled = true }
+        }
+    }
+
+    private fun clearCheckedItems(){
+        historyAdapter?.clearCheckeditems()
+        selectedObjects?.clear()
     }
 
     companion object {

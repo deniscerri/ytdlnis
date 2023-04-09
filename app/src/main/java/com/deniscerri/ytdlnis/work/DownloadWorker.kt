@@ -135,7 +135,7 @@ class DownloadWorker(
         when(type){
             DownloadViewModel.Type.audio -> {
                 var audioQualityId : String = downloadItem.format.format_id
-                if (audioQualityId.isBlank() || audioQualityId == "0" || audioQualityId == context.getString(R.string.best_quality)) audioQualityId = "bestaudio"
+                if (audioQualityId.isBlank() || audioQualityId == "0" || audioQualityId == context.getString(R.string.best_quality)) audioQualityId = ""
                 else if (audioQualityId == context.getString(R.string.worst_quality)) audioQualityId = "worstaudio"
 
                 if (audioQualityId.isNotBlank()){
@@ -157,7 +157,7 @@ class DownloadWorker(
                         request.addOption("-x")
                     }else{
                         request.addOption("--remux-video", ext)
-                        request.addOption("--ppa", "VideoRemuxer:-c:a $codec")
+                        request.addOption("--ppa", "VideoRemuxer:-vn -c:a $codec")
                     }
                 }
 

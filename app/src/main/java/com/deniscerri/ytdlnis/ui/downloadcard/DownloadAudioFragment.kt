@@ -155,11 +155,10 @@ class DownloadAudioFragment(private var resultItem: ResultItem, private var curr
                     }
                 }
                 formatCard.setOnClickListener{_ ->
-                    formats.forEach {
-                        Log.e("aa", it.toString())
+                    if (parentFragmentManager.findFragmentByTag("formatSheet") == null){
+                        val bottomSheet = FormatSelectionBottomSheetDialog(downloadItem, formats, listener)
+                        bottomSheet.show(parentFragmentManager, "formatSheet")
                     }
-                    val bottomSheet = FormatSelectionBottomSheetDialog(downloadItem, formats, listener)
-                    bottomSheet.show(parentFragmentManager, "formatSheet")
                 }
 
 
@@ -265,8 +264,10 @@ class DownloadAudioFragment(private var resultItem: ResultItem, private var curr
                     }
                 }
                 cut.setOnClickListener {
-                    val bottomSheet = CutVideoBottomSheetDialog(downloadItem, cutVideoListener)
-                    bottomSheet.show(parentFragmentManager, "cutVideoSheet")
+                    if (parentFragmentManager.findFragmentByTag("cutVideoSheet") == null){
+                        val bottomSheet = CutVideoBottomSheetDialog(downloadItem, cutVideoListener)
+                        bottomSheet.show(parentFragmentManager, "cutVideoSheet")
+                    }
                 }
 
             }catch (e : Exception){

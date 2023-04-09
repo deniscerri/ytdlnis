@@ -108,6 +108,9 @@ class ResultRepository(private val resultDao: ResultDao, private val commandTemp
         return arrayListOf()
     }
 
+    suspend fun delete(item: ResultItem){
+        resultDao.delete(item.id)
+    }
 
     suspend fun deleteAll(){
         itemCount.postValue(0)

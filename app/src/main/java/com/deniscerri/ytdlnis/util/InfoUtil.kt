@@ -644,7 +644,7 @@ class InfoUtil(context: Context) {
             } catch (e: Exception) {
                 arrayOf(youtubeDLResponse.out)
             }
-            return results.toMutableList()
+            return results.filter { it!!.isNotEmpty() }.toMutableList()
         } catch (e: Exception) {
             return mutableListOf()
         }

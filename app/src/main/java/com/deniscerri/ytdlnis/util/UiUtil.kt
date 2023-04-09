@@ -226,19 +226,25 @@ class UiUtil(private val fileUtil: FileUtil) {
         fragmentContext.startActivity(i)
     }
 
-    fun shareFileIntent(fragmentContext: Context, downloadPath: String){
-        val file = File(downloadPath)
-        val uri = FileProvider.getUriForFile(
-            fragmentContext,
-            "com.deniscerri.ytdl.fileprovider",
-            file
-        )
-        val mime = fragmentContext.contentResolver.getType(uri)
+    fun shareFileIntent(fragmentContext: Context, paths: List<String>){
+        val uris : ArrayList<Uri> = arrayListOf()
+        paths.forEach {
+            val file = File(it)
+            if (! file.exists()) return@forEach
+            val uri = FileProvider.getUriForFile(
+                fragmentContext,
+                "com.deniscerri.ytdl.fileprovider",
+                file
+            )
+            uris.add(uri)
+        }
+
 
         val shareIntent: Intent = Intent().apply {
-            action = Intent.ACTION_SEND
-            putExtra(Intent.EXTRA_STREAM, uri)
-            type = mime
+            action = Intent.ACTION_SEND_MULTIPLE
+            putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris)
+            type = "*/*"
+            putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
         }
         fragmentContext.startActivity(Intent.createChooser(shareIntent, null))
     }

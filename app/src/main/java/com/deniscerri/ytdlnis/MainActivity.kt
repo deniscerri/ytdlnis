@@ -19,6 +19,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.forEach
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
@@ -108,6 +109,14 @@ class MainActivity : AppCompatActivity() {
 
     fun showNav() {
         bottomNav.visibility = View.VISIBLE
+    }
+
+    fun disableBottomNavigation(){
+        bottomNav.menu.forEach { it.isEnabled = false }
+    }
+
+    fun enableBottomNavigation(){
+        bottomNav.menu.forEach { it.isEnabled = true }
     }
 
     override fun onResume() {

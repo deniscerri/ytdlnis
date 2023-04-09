@@ -10,16 +10,14 @@ import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.text.InputType
 import android.util.Log
 import android.view.*
 import android.view.View.*
 import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.view.ActionMode
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.core.content.ContextCompat
-import androidx.core.text.TextUtilsCompat
-import androidx.core.view.ViewCompat
 import androidx.core.view.children
 import androidx.core.view.forEach
 import androidx.core.widget.addTextChangedListener
@@ -29,7 +27,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.work.WorkManager
 import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.adapter.HomeAdapter
@@ -58,9 +55,7 @@ import java.util.*
 
 
 class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickListener {
-    private var inputQuery: String? = null
     private var inputQueries: MutableList<String>? = null
-    private var inputQueriesLength = 0
     private var homeAdapter: HomeAdapter? = null
 
     private var searchSuggestions: ScrollView? = null
@@ -77,7 +72,6 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
     private lateinit var resultViewModel : ResultViewModel
     private lateinit var downloadViewModel : DownloadViewModel
 
-    private var downloading = false
     private var fragmentView: View? = null
     private var activity: Activity? = null
     private var mainActivity: MainActivity? = null
@@ -94,9 +88,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
     private var quickLaunchSheet = false
     private var sharedPreferences: SharedPreferences? = null
     private var _binding : FragmentHomeBinding? = null
-
-    private var workManager: WorkManager? = null
-
+    private var actionMode: ActionMode? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -106,7 +98,6 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
         activity = getActivity()
         mainActivity = activity as MainActivity?
         quickLaunchSheet = false
-
         return fragmentView
     }
 
@@ -233,7 +224,24 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
                         textView.text = getString(R.string.link_you_copied)
                         textView.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_language, 0, 0, 0)
                         val mb = linkYouCopied.findViewById<ImageButton>(R.id.set_search_query_button)
-                        mb.visibility = INVISIBLE
+                        mb.setImageResource(R.drawable.ic_plus)
+
+                        mb.setOnClickListener {
+                            val present = queriesChipGroup!!.children.firstOrNull { (it as Chip).text.toString() == clip.toString() }
+                            if (present == null) {
+                                val chip = layoutinflater!!.inflate(R.layout.input_chip, queriesChipGroup, false) as Chip
+                                chip.text = clip.toString()
+                                chip.chipBackgroundColor = ColorStateList.valueOf(MaterialColors.getColor(requireContext(), R.attr.colorSecondaryContainer, Color.BLACK))
+                                chip.setOnClickListener {
+                                    queriesChipGroup!!.removeView(chip)
+                                }
+                                queriesChipGroup!!.addView(chip)
+                            }
+                            if (queriesChipGroup!!.childCount == 0) queriesConstraint.visibility = GONE
+                            else queriesConstraint.visibility = VISIBLE
+                            searchView.editText.setText("")
+                            linkYouCopied.visibility = GONE
+                        }
 
                         textView.setOnClickListener {
                             searchView.setText(clip.toString())
@@ -485,20 +493,23 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
 
     override fun onCardClick(videoURL: String, add: Boolean) {
         val item = resultsList?.find { it -> it?.url == videoURL }
-        if (add) selectedObjects!!.add(item!!) else selectedObjects!!.remove(item)
-        if (selectedObjects!!.size > 1) {
-            downloadAllFabCoordinator!!.visibility = GONE
-            downloadFabs!!.visibility = VISIBLE
+        if (add) {
+            selectedObjects!!.add(item!!)
+            if (actionMode == null){
+                actionMode = (getActivity() as AppCompatActivity?)!!.startSupportActionMode(contextualActionBar)
+
+            }else{
+                actionMode!!.title = "${selectedObjects!!.size} ${getString(R.string.selected)}"
+            }
         } else {
-            downloadFabs!!.visibility = GONE
-            if(resultsList!!.size > 1){
-                if (resultsList!![1]!!.playlistTitle.isNotEmpty() && resultsList!![1]!!.playlistTitle != getString(R.string.trendingPlaylist)){
-                    downloadAllFabCoordinator!!.visibility = VISIBLE
-                }else{
-                    downloadAllFabCoordinator!!.visibility = GONE
-                }
+            selectedObjects!!.remove(item)
+            actionMode?.title = "${selectedObjects!!.size} ${getString(R.string.selected)}"
+            if (selectedObjects!!.isEmpty()){
+                actionMode?.finish()
             }
         }
+
+
     }
 
     override fun onClick(v: View) {
@@ -506,19 +517,6 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
             v.tag.toString()
         } catch (e: Exception) {""}
         if (viewIdName.isNotEmpty()) {
-            if (viewIdName == "downloadSelected") {
-                lifecycleScope.launch {
-                    val downloadList = withContext(Dispatchers.IO){
-                        downloadViewModel.turnResultItemsToDownloadItems(selectedObjects!!)
-                    }
-                    if (sharedPreferences!!.getBoolean("download_card", true)) {
-                        val bottomSheet = DownloadMultipleBottomSheetDialog(downloadList.toMutableList())
-                        bottomSheet.show(parentFragmentManager, "downloadMultipleSheet")
-                    } else {
-                        downloadViewModel.queueDownloads(downloadList)
-                    }
-                }
-            }
             if (viewIdName == "downloadAll") {
                 lifecycleScope.launch {
                     val downloadList = withContext(Dispatchers.IO){
@@ -533,6 +531,94 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
                 }
             }
         }
+    }
+
+    private val contextualActionBar = object : ActionMode.Callback {
+        override fun onCreateActionMode(mode: ActionMode?, menu: Menu?): Boolean {
+            mode!!.menuInflater.inflate(R.menu.main_menu_context, menu)
+            mode.title = "${selectedObjects!!.size} ${getString(R.string.selected)}"
+            (activity as MainActivity).disableBottomNavigation()
+            searchBar?.isEnabled = false
+            searchBar!!.menu.forEach { it.isEnabled = false }
+            return true
+        }
+
+        override fun onPrepareActionMode(
+            mode: ActionMode?,
+            menu: Menu?
+        ): Boolean {
+            return false
+        }
+
+        override fun onActionItemClicked(
+            mode: ActionMode?,
+            item: MenuItem?
+        ): Boolean {
+            return when (item!!.itemId) {
+                R.id.delete_results -> {
+                    val deleteDialog = MaterialAlertDialogBuilder(fragmentContext!!)
+                    deleteDialog.setTitle(getString(R.string.you_are_going_to_delete_multiple_items))
+                    deleteDialog.setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, _: Int -> dialogInterface.cancel() }
+                    deleteDialog.setPositiveButton(getString(R.string.ok)) { _: DialogInterface?, _: Int ->
+                        if (selectedObjects?.size == resultsList?.size){
+                            resultViewModel.deleteAll()
+                        }else{
+                            resultViewModel.deleteSelected(selectedObjects!!.toList())
+                        }
+                        clearCheckedItems()
+                        actionMode?.finish()
+                    }
+                    deleteDialog.show()
+                    true
+                }
+                R.id.download -> {
+                    lifecycleScope.launch {
+                        val downloadList = withContext(Dispatchers.IO){
+                            downloadViewModel.turnResultItemsToDownloadItems(selectedObjects!!)
+                        }
+                        clearCheckedItems()
+                        actionMode?.finish()
+
+                        if (sharedPreferences!!.getBoolean("download_card", true)) {
+                            val bottomSheet = DownloadMultipleBottomSheetDialog(downloadList.toMutableList())
+                            bottomSheet.show(parentFragmentManager, "downloadMultipleSheet")
+                        } else {
+                            downloadViewModel.queueDownloads(downloadList)
+                        }
+                    }
+                    true
+                }
+                R.id.select_all -> {
+                    homeAdapter?.checkAll(resultsList)
+                    selectedObjects?.clear()
+                    resultsList?.forEach { selectedObjects?.add(it!!) }
+                    mode?.title = getString(R.string.all_items_selected)
+                    true
+                }
+                else -> false
+            }
+        }
+
+        override fun onDestroyActionMode(mode: ActionMode?) {
+            actionMode = null
+            (activity as MainActivity).enableBottomNavigation()
+            clearCheckedItems()
+            searchBar?.isEnabled = true
+            searchBar!!.menu.forEach { it.isEnabled = true }
+        }
+    }
+
+    private fun clearCheckedItems(){
+        homeAdapter?.clearCheckedItems()
+        selectedObjects?.forEach {
+            homeAdapter?.notifyItemChanged(resultsList!!.indexOf(it))
+        }
+        selectedObjects?.clear()
+    }
+
+    override fun onStop() {
+        actionMode?.finish()
+        super.onStop()
     }
 
     companion object {

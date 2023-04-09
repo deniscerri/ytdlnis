@@ -150,4 +150,10 @@ class ResultViewModel(application: Application) : AndroidViewModel(application) 
     fun getSearchHistory() : List<SearchHistoryItem> {
         return searchHistoryRepository.getAll()
     }
+
+    fun deleteSelected(selectedItems : List<ResultItem>) = viewModelScope.launch(Dispatchers.IO) {
+        selectedItems.forEach {
+            repository.delete(it)
+        }
+    }
 }

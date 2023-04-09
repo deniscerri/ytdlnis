@@ -399,6 +399,10 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val list
                 chipGroup.removeView(chip)
                 selectedCuts.remove(chip.text.toString())
                 listener.onChangeCut(selectedCuts)
+                if (selectedCuts.isEmpty()){
+                    player.stop()
+                    dismiss()
+                }
             }
             deleteDialog.show()
             true
@@ -451,6 +455,10 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val list
                     chipGroup.removeView(chip)
                     selectedCuts.remove(chip.text.toString())
                     listener.onChangeCut(selectedCuts)
+                    if (selectedCuts.isEmpty()){
+                        player.stop()
+                        dismiss()
+                    }
                 }
                 deleteDialog.show()
                 true

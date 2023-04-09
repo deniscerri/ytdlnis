@@ -195,4 +195,6 @@
     <string name="add_template_first">You need to have at least one command template created!</string>
     <string name="formatid_copied_to_clipboard">Format ID copied to clipboard</string>
     <string name="suggested">Suggested</string>
+    <string name="select_all">Select All</string>
+    <string name="share">Share</string>
 </resources>

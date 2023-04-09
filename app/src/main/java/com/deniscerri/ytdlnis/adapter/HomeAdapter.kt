@@ -167,13 +167,14 @@ class HomeAdapter(onItemClickListener: OnItemClickListener, activity: Activity) 
         fun onCardClick(videoURL: String, add: Boolean)
     }
 
-    fun clearCheckedVideos() {
-//        val size = checkedVideos.size
-//        for (i in 0 until size) {
-//            val position = checkedVideos[i]
-//            notifyItemChanged(position)
-//        }
-//        checkedVideos.clear()
+    fun checkAll(items: List<ResultItem?>?){
+        checkedVideos.clear()
+        checkedVideos.addAll(items!!.map { it!!.url })
+        notifyDataSetChanged()
+    }
+
+    fun clearCheckedItems(){
+        checkedVideos.clear()
     }
 
     companion object {
