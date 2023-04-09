@@ -181,4 +181,12 @@
     <string name="dont_ask_again">আবার জিজ্ঞাসা করবেন না</string>
     <string name="end">শেষ</string>
     <string name="start">শুরু</string>
+    <string name="cut">কাটুন</string>
+    <string name="new_cut">নতুন কাট</string>
+    <string name="add_template_first">আপনার কমপক্ষে একটি কমান্ড টেমপ্লেট তৈরি করা দরকার!</string>
+    <string name="suggested">প্রস্তাবিত</string>
+    <string name="select_all">সব নির্বাচন করুন</string>
+    <string name="formatid_copied_to_clipboard">ফর্ম্যাট আইডি ক্লিপবোর্ডে কপি করা হয়েছে</string>
+    <string name="update_formats_summary">ফর্ম্যাট কার্ডে ক্লিক করার সময় স্বয়ংক্রিয়ভাবে অনুপস্থিত ফর্ম্যাটগুলির জন্য অনুসন্ধান করুন৷</string>
+    <string name="ignore_battery_optimization">ব্যাটারি অপ্টিমাইজেশান উপেক্ষা করুন</string>
 </resources>
