@@ -183,4 +183,18 @@
     <string name="start">Inicio</string>
     <string name="update_formats_summary">Busca automáticamente los formatos que faltan al hacer clic en la tarjeta de formato</string>
     <string name="ignore_battery_optimization">Ignorar la optimización de la batería</string>
+    <string name="cut">Cortar</string>
+    <string name="formatid_copied_to_clipboard">El identificador del formato se copió en el portapapeles</string>
+    <string name="suggested">Sugerido</string>
+    <string name="select_all">Seleccionar todo</string>
+    <string name="share">Compartir</string>
+    <string name="cookie">Cookie</string>
+    <string name="create_cookie">Crear una Cookie</string>
+    <string name="new_cookie">Nueva Cookie</string>
+    <string name="confirm_delete_cookies_desc">Borrar permanentemente toda las cookies</string>
+    <string name="add_template_first">¡Necesitas tener al menos una plantilla de comando creada!</string>
+    <string name="new_cut">Nuevo corte</string>
+    <string name="cookies">Cookies</string>
+    <string name="get_cookies">Obtener las Cookies</string>
+    <string name="delete_all_cookies">Borrar toda las Cookies</string>
 </resources>
