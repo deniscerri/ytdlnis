@@ -188,4 +188,13 @@
     <string name="formatid_copied_to_clipboard">Format ID buferə nüsxələndi</string>
     <string name="suggested">Təklif edilən</string>
     <string name="add_template_first">Heç olmazsa, bir əmr şablonu yaratmalısınız!</string>
+    <string name="select_all">Hamısın seç</string>
+    <string name="delete_all_cookies">Bütün bazaları sil</string>
+    <string name="share">Paylaş</string>
+    <string name="cookies">Məlumat bazaları</string>
+    <string name="new_cookie">Yeni Məlumat Baza</string>
+    <string name="cookie">Məlumat bazası</string>
+    <string name="create_cookie">Baza Yarat</string>
+    <string name="get_cookies">Məlumatlar əldə et</string>
+    <string name="confirm_delete_cookies_desc">Bütün bazaları həmişəlik silir</string>
 </resources>
