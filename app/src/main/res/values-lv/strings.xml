@@ -183,4 +183,18 @@
     <string name="start">Sākums</string>
     <string name="update_formats_summary">Automātiska trūkstošo formātu meklēšana, noklikšķinot uz formatēšanas kartītes</string>
     <string name="ignore_battery_optimization">Ignorēt Akumulatora Optimizāciju</string>
+    <string name="cut">Izgriezt</string>
+    <string name="new_cut">Jauns Griezums</string>
+    <string name="add_template_first">Jums ir jābūt izveidotai vismaz vienai komandu veidnei!</string>
+    <string name="suggested">Ieteikts</string>
+    <string name="select_all">Atlasīt Visu</string>
+    <string name="share">Koplietot</string>
+    <string name="cookies">Sīkfaili</string>
+    <string name="new_cookie">Jauns Sīkfails</string>
+    <string name="cookie">Sīkfails</string>
+    <string name="create_cookie">Izveidot Sīkfailu</string>
+    <string name="get_cookies">Iegūt Sīkfailus</string>
+    <string name="delete_all_cookies">Dzēst Visus Sīkfailus</string>
+    <string name="confirm_delete_cookies_desc">Neatgriezeniski dzēst visas sīkdatnes</string>
+    <string name="formatid_copied_to_clipboard">Formāta ID kopēts starpliktuvē</string>
 </resources>
