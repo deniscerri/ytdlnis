@@ -197,4 +197,5 @@
     <string name="create_cookie">Krijo Biskotë</string>
     <string name="get_cookies">Merr Biskotat</string>
     <string name="confirm_delete_cookies_desc">Fshi të gjitha biskotat, përgjithmonë</string>
+    <string name="download_over_metered_networks">Shkarko me Rrjetet Celulare</string>
 </resources>
