@@ -1,5 +1,6 @@
 package com.deniscerri.ytdlnis.ui.more
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.webkit.CookieManager
 import android.webkit.WebView
@@ -7,12 +8,16 @@ import android.webkit.WebViewClient
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.CookieItem
 import com.deniscerri.ytdlnis.database.viewmodel.CookieViewModel
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
 
 
@@ -25,6 +30,7 @@ class WebViewActivity : AppCompatActivity() {
     private lateinit var url: String
     private lateinit var cookies: String
 
+    @SuppressLint("SetJavaScriptEnabled")
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.webview_activity)
@@ -35,6 +41,7 @@ class WebViewActivity : AppCompatActivity() {
         toolbar = appbar.findViewById(R.id.webviewToolbar)
         generateBtn = toolbar.findViewById(R.id.generate)
         cookieManager = CookieManager.getInstance()
+        cookieManager.removeAllCookies(null)
 
         webView = findViewById(R.id.webview)
         webView.settings.javaScriptEnabled = true
@@ -62,20 +69,24 @@ class WebViewActivity : AppCompatActivity() {
 
         generateBtn.setOnClickListener {
             cookiesViewModel.getCookiesFromDB().getOrNull()?.let {
-                File(cacheDir , "/cookies.txt").apply { writeText(it) }
+                kotlin.runCatching {
+                    lifecycleScope.launch {
+                        withContext(Dispatchers.IO){
+                            cookiesViewModel.insert(
+                                CookieItem(
+                                    0,
+                                    url,
+                                    it
+                                )
+                            )
+                        }
+                        cookiesViewModel.updateCookiesFile()
+                    }
+                }.onFailure {
+                    Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show()
+                }
             }
-            kotlin.runCatching {
-                cookiesViewModel.insert(
-                    CookieItem(
-                        0,
-                        url,
-                        ""
-                    )
-                )
-            }.onFailure {
-                Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show()
-            }
-            cookieManager.flush()
+            cookieManager.removeAllCookies(null)
             onBackPressedDispatcher.onBackPressed()
         }
 

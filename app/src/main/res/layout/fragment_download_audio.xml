@@ -19,7 +19,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:padding="10dp"
+                android:paddingHorizontal="10dp"
+                android:paddingBottom="10dp"
                 android:hint="@string/title"
                 style="@style/Widget.Material3.TextInputLayout.FilledBox">
 
@@ -34,7 +35,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
+                android:paddingHorizontal="10dp"
                 android:orientation="horizontal">
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -87,8 +88,8 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/outputPath"
                 android:paddingHorizontal="10dp"
-                android:paddingTop="10dp"
                 android:paddingBottom="0dp"
+                android:paddingTop="10dp"
                 style="@style/Widget.Material3.TextInputLayout.FilledBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -113,7 +114,7 @@
             <LinearLayout
                 android:id="@+id/adjust_audio"
                 android:layout_width="match_parent"
-                android:padding="10dp"
+                android:paddingHorizontal="10dp"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 >

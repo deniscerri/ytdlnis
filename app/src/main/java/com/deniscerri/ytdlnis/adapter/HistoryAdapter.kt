@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.HistoryItem
+import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
@@ -170,6 +171,16 @@ class HistoryAdapter(onItemClickListener: OnItemClickListener, activity: Activit
         }
 
         checkedItems.clear()
+    }
+
+    fun invertSelected(items: List<HistoryItem?>?){
+        val invertedList = mutableListOf<Long>()
+        items?.forEach {
+            if (!checkedItems.contains(it!!.id)) invertedList.add(it.id)
+        }
+        checkedItems.clear()
+        checkedItems.addAll(invertedList)
+        notifyDataSetChanged()
     }
 
     companion object {

@@ -13,11 +13,11 @@ interface CookieDao {
     @Query("SELECT * FROM cookies ORDER BY id DESC")
     fun getAllCookiesLiveData() : LiveData<List<CookieItem>>
 
-    @Query("SELECT * FROM cookies WHERE url=:url")
-    fun checkIfExistsWithSameURL(url: String) : CookieItem
+    @Query("SELECT EXISTS(SELECT * FROM cookies WHERE url=:url LIMIT 1)")
+    fun checkIfExistsWithSameURL(url: String) : Boolean
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insert(item: CookieItem)
+    suspend fun insert(item: CookieItem) : Long
 
     @Query("DELETE FROM cookies")
     suspend fun deleteAll()

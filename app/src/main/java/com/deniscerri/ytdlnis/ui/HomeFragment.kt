@@ -52,6 +52,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickListener {
@@ -593,6 +594,17 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
                     selectedObjects?.clear()
                     resultsList?.forEach { selectedObjects?.add(it!!) }
                     mode?.title = getString(R.string.all_items_selected)
+                    true
+                }
+                R.id.invert_selected -> {
+                    homeAdapter?.invertSelected(resultsList)
+                    val invertedList = arrayListOf<ResultItem>()
+                    resultsList?.forEach {
+                        if (!selectedObjects?.contains(it)!!) invertedList.add(it!!)
+                    }
+                    selectedObjects?.clear()
+                    selectedObjects?.addAll(invertedList)
+                    actionMode!!.title = "${selectedObjects!!.size} ${getString(R.string.selected)}"
                     true
                 }
                 else -> false

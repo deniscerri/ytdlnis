@@ -204,4 +204,8 @@
     <string name="get_cookies">Get Cookies</string>
     <string name="delete_all_cookies">Delete All Cookies</string>
     <string name="confirm_delete_cookies_desc">Delete all the cookies, permanently</string>
+    <string name="download_over_metered_networks">Download over Metered Networks</string>
+    <string name="download_over_metered_networks_summary">Let the download worker work on any network type. If disabled, it will wait for an unmetered network to start the downloads</string>
+    <string name="metered_network_download_start_info">Download worker will start after you are connected to an unmetered network</string>
+    <string name="invert_selected">Invert Selected</string>
 </resources>

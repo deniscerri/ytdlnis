@@ -2,7 +2,10 @@ package com.deniscerri.ytdlnis.database.viewmodel
 
 import android.app.Activity
 import android.app.Application
+import android.content.Context
 import android.content.SharedPreferences
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.text.format.DateFormat
 import android.util.Log
 import android.widget.Toast
@@ -10,10 +13,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import androidx.work.Data
-import androidx.work.ExistingWorkPolicy
-import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.WorkManager
+import androidx.work.*
 import com.deniscerri.ytdlnis.App
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.DBManager
@@ -287,6 +287,7 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
 
     suspend fun queueDownloads(items: List<DownloadItem>) {
         val context = getApplication<App>().applicationContext
+        val allowMeteredNetworks = sharedPreferences.getBoolean("metered_networks", true)
         items.forEach { it.status = DownloadRepository.Status.Queued.toString() }
         val ids = repository.insertAll(items)
         for (i in ids.indices){
@@ -301,6 +302,11 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
             val workRequest = OneTimeWorkRequestBuilder<DownloadWorker>()
                 .setInputData(Data.Builder().putLong("id", it.id).build())
                 .addTag("download")
+                .setConstraints(
+                    Constraints.Builder()
+                        .setRequiredNetworkType(if (allowMeteredNetworks) NetworkType.CONNECTED else NetworkType.UNMETERED)
+                        .build()
+                )
                 .setInitialDelay(delay, TimeUnit.MILLISECONDS)
                 .build()
 
@@ -317,6 +323,10 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
             if (it.id != 0L){
                 repository.delete(it)
             }
+        }
+        val isCurrentNetworkMetered = (context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager).isActiveNetworkMetered
+        if (!allowMeteredNetworks && isCurrentNetworkMetered){
+            Toast.makeText(context, context.getString(R.string.metered_network_download_start_info), Toast.LENGTH_LONG).show()
         }
     }
 

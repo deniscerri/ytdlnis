@@ -6,132 +6,138 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="top"
-        android:orientation="vertical"
-        tools:ignore="MissingConstraints">
+        android:layout_height="match_parent">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:background="@drawable/ic_app_icon"
-            android:scaleType="center" />
-
-        <TextView
-            android:id="@+id/terminal"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/terminal"
-            android:textStyle="bold"
-            android:clickable="true"
-            android:focusable="true"
-            android:background="?android:attr/selectableItemBackground"
-            android:paddingHorizontal="15dp"
-            android:paddingVertical="15dp"
-            android:drawablePadding="35dp"
-            android:textSize="16sp"
-            app:drawableStartCompat="@drawable/ic_terminal" />
+            android:gravity="top"
+            android:orientation="vertical"
+            tools:ignore="MissingConstraints">
 
-        <TextView
-            android:id="@+id/logs"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/logs"
-            android:textStyle="bold"
-            android:clickable="true"
-            android:focusable="true"
-            android:background="?android:attr/selectableItemBackground"
-            android:paddingHorizontal="15dp"
-            android:paddingVertical="15dp"
-            android:drawablePadding="35dp"
-            android:textSize="16sp"
-            app:drawableStartCompat="@drawable/ic_baseline_file_open_24" />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/ic_app_icon"
+                android:scaleType="center" />
 
+            <TextView
+                android:id="@+id/terminal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/terminal"
+                android:textStyle="bold"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?android:attr/selectableItemBackground"
+                android:paddingHorizontal="15dp"
+                android:paddingVertical="15dp"
+                android:drawablePadding="35dp"
+                android:textSize="16sp"
+                app:drawableStartCompat="@drawable/ic_terminal" />
 
-        <TextView
-            android:id="@+id/command_templates"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawablePadding="35dp"
-            android:textSize="16sp"
-            android:paddingVertical="15dp"
-            android:text="@string/command_templates"
-            android:textStyle="bold"
-            android:clickable="true"
-            android:focusable="true"
-            android:background="?android:attr/selectableItemBackground"
-            android:paddingHorizontal="15dp"
-            app:drawableStartCompat="@drawable/ic_baseline_keyboard_arrow_right_24" />
-
-        <TextView
-            android:id="@+id/download_queue"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawablePadding="35dp"
-            android:textSize="16sp"
-            android:paddingVertical="15dp"
-            android:text="@string/download_queue"
-            android:textStyle="bold"
-            android:clickable="true"
-            android:focusable="true"
-            android:background="?android:attr/selectableItemBackground"
-            android:paddingHorizontal="15dp"
-            app:drawableStartCompat="@drawable/ic_concurrent_downloads" />
-
-        <TextView
-            android:id="@+id/cookies"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawablePadding="35dp"
-            android:textSize="16sp"
-            android:paddingVertical="15dp"
-            android:text="@string/cookies"
-            android:textStyle="bold"
-            android:clickable="true"
-            android:focusable="true"
-            android:background="?android:attr/selectableItemBackground"
-            android:paddingHorizontal="15dp"
-            app:drawableStartCompat="@drawable/baseline_cookie_24" />
-
-        <TextView
-            android:id="@+id/terminate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawablePadding="35dp"
-            android:textSize="16sp"
-            android:clickable="true"
-            android:focusable="true"
-            android:background="?android:attr/selectableItemBackground"
-            android:paddingVertical="15dp"
-            android:text="@string/kill_app"
-            android:textStyle="bold"
-            android:paddingHorizontal="15dp"
-            app:drawableStartCompat="@drawable/ic_power" />
+            <TextView
+                android:id="@+id/logs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/logs"
+                android:textStyle="bold"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?android:attr/selectableItemBackground"
+                android:paddingHorizontal="15dp"
+                android:paddingVertical="15dp"
+                android:drawablePadding="35dp"
+                android:textSize="16sp"
+                app:drawableStartCompat="@drawable/ic_baseline_file_open_24" />
 
 
-        <View
-            android:layout_margin="0dp"
-            style="@style/Divider.Horizontal" />
+            <TextView
+                android:id="@+id/command_templates"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawablePadding="35dp"
+                android:textSize="16sp"
+                android:paddingVertical="15dp"
+                android:text="@string/command_templates"
+                android:textStyle="bold"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?android:attr/selectableItemBackground"
+                android:paddingHorizontal="15dp"
+                app:drawableStartCompat="@drawable/ic_baseline_keyboard_arrow_right_24" />
 
-        <TextView
-            android:id="@+id/settings"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawablePadding="35dp"
-            android:textSize="16sp"
-            android:paddingVertical="15dp"
-            android:text="@string/settings"
-            android:textStyle="bold"
-            android:clickable="true"
-            android:focusable="true"
-            android:background="?android:attr/selectableItemBackground"
-            android:paddingHorizontal="15dp"
-            app:drawableStartCompat="@drawable/ic_settings" />
+            <TextView
+                android:id="@+id/download_queue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawablePadding="35dp"
+                android:textSize="16sp"
+                android:paddingVertical="15dp"
+                android:text="@string/download_queue"
+                android:textStyle="bold"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?android:attr/selectableItemBackground"
+                android:paddingHorizontal="15dp"
+                app:drawableStartCompat="@drawable/ic_concurrent_downloads" />
 
-    </LinearLayout>
+            <TextView
+                android:id="@+id/cookies"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawablePadding="35dp"
+                android:textSize="16sp"
+                android:paddingVertical="15dp"
+                android:text="@string/cookies"
+                android:textStyle="bold"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?android:attr/selectableItemBackground"
+                android:paddingHorizontal="15dp"
+                app:drawableStartCompat="@drawable/baseline_cookie_24" />
+
+            <TextView
+                android:id="@+id/terminate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawablePadding="35dp"
+                android:textSize="16sp"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?android:attr/selectableItemBackground"
+                android:paddingVertical="15dp"
+                android:text="@string/kill_app"
+                android:textStyle="bold"
+                android:paddingHorizontal="15dp"
+                app:drawableStartCompat="@drawable/ic_power" />
+
+
+            <View
+                android:layout_margin="0dp"
+                style="@style/Divider.Horizontal" />
+
+            <TextView
+                android:id="@+id/settings"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawablePadding="35dp"
+                android:textSize="16sp"
+                android:paddingVertical="15dp"
+                android:text="@string/settings"
+                android:textStyle="bold"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?android:attr/selectableItemBackground"
+                android:paddingHorizontal="15dp"
+                app:drawableStartCompat="@drawable/ic_settings" />
+
+        </LinearLayout>
+
+    </ScrollView>
 
 
 </RelativeLayout>

@@ -135,6 +135,8 @@
                 <com.google.android.material.chip.ChipGroup
                     android:id="@+id/shortcutsChipGroup"
                     android:layout_width="wrap_content"
+                    app:chipSpacingVertical="-10dp"
+                    app:chipSpacing="0dp"
                     android:layout_height="wrap_content"
                     app:singleLine="false">
 

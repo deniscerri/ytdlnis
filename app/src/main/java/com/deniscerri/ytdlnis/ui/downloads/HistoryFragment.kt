@@ -3,6 +3,7 @@ package com.deniscerri.ytdlnis.ui.downloads
 import android.app.Activity
 import android.content.Context
 import android.content.DialogInterface
+import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
 import android.os.Handler
@@ -32,6 +33,7 @@ import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.adapter.HistoryAdapter
 import com.deniscerri.ytdlnis.database.models.HistoryItem
+import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.deniscerri.ytdlnis.database.repository.HistoryRepository
 import com.deniscerri.ytdlnis.database.repository.HistoryRepository.HistorySort
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
@@ -212,6 +214,10 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
                         }
                         deleteDialog.show()
                     }
+                }
+                R.id.download_queue -> {
+                    val intent = Intent(context, DownloadQueueActivity::class.java)
+                    startActivity(intent)
                 }
                 R.id.remove_deleted_history -> {
                     if(allhistoryList!!.isEmpty()){
@@ -563,6 +569,17 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
                     uiUtil?.shareFileIntent(requireContext(), selectedObjects!!.map { it.downloadPath })
                     clearCheckedItems()
                     actionMode?.finish()
+                    true
+                }
+                R.id.invert_selected -> {
+                    historyAdapter?.invertSelected(historyList)
+                    val invertedList = arrayListOf<HistoryItem>()
+                    historyList?.forEach {
+                        if (!selectedObjects?.contains(it)!!) invertedList.add(it!!)
+                    }
+                    selectedObjects?.clear()
+                    selectedObjects?.addAll(invertedList)
+                    actionMode!!.title = "${selectedObjects!!.size} ${getString(R.string.selected)}"
                     true
                 }
                 else -> false

@@ -145,25 +145,27 @@ class DownloadWorker(
 
                 if (audioQualityId.isNotBlank()){
                     request.addOption("-f", audioQualityId)
-                }
 
-                val ext = downloadItem.format.container
-                if(ext != context.getString(R.string.defaultValue) && ext != "webm"){
-                    val codec = when(downloadItem.format.container){
-                        "m4a" -> "aac"
-                        "aac" -> "aac"
-                        "mp3" -> "libmp3lame"
-                        "flac" -> "flac"
-                        "opus" -> "libopus"
-                        else -> ""
+                    val ext = downloadItem.format.container
+                    if(ext != context.getString(R.string.defaultValue) && ext != "webm"){
+                        val codec = when(downloadItem.format.container){
+                            "aac" -> "aac"
+                            "mp3" -> "libmp3lame"
+                            "flac" -> "flac"
+                            "opus" -> "libopus"
+                            else -> ""
+                        }
+                        Log.e("aa", codec)
+                        if (codec.isEmpty()){
+                            request.addOption("-x")
+                        }else{
+                            request.addOption("--remux-video", ext)
+                            request.addOption("--ppa", "VideoRemuxer:-vn -c:a $codec")
+                        }
                     }
-                    Log.e("aa", codec)
-                    if (codec.isEmpty()){
-                        request.addOption("-x")
-                    }else{
-                        request.addOption("--remux-video", ext)
-                        request.addOption("--ppa", "VideoRemuxer:-vn -c:a $codec")
-                    }
+
+                }else{
+                    request.addOption("-x")
                 }
 
                 request.addOption("--embed-metadata")

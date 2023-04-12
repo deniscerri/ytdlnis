@@ -173,6 +173,16 @@ class HomeAdapter(onItemClickListener: OnItemClickListener, activity: Activity) 
         notifyDataSetChanged()
     }
 
+    fun invertSelected(items: List<ResultItem?>?){
+        val invertedList = mutableListOf<String>()
+        items?.forEach {
+            if (!checkedVideos.contains(it!!.url)) invertedList.add(it.url)
+        }
+        checkedVideos.clear()
+        checkedVideos.addAll(invertedList)
+        notifyDataSetChanged()
+    }
+
     fun clearCheckedItems(){
         checkedVideos.clear()
     }

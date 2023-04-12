@@ -19,7 +19,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:hint="@string/title"
-            android:padding="10dp">
+            android:paddingBottom="10dp"
+            android:paddingHorizontal="10dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
@@ -32,7 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="10dp">
+            android:paddingHorizontal="10dp">
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/author_textinput"
@@ -111,7 +112,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="10dp">
+            android:paddingHorizontal="10dp">
 
             <TextView
                 android:layout_width="wrap_content"

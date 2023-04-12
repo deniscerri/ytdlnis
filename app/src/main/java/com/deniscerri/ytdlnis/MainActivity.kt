@@ -101,11 +101,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-
-        cookieViewModel.getCookiesFromDB().getOrNull()?.let{
-            File(cacheDir, "cookies.txt").apply { writeText(it) }
-        }
-
+        cookieViewModel.updateCookiesFile()
         val intent = intent
         handleIntents(intent)
     }

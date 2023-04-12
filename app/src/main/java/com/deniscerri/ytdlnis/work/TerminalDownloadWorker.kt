@@ -103,6 +103,15 @@ class TerminalDownloadWorker(
                 }, 1000)
             }
 
+            val chunks = it.out.chunked(5000)
+            val dataBuilder = Data.Builder();
+            dataBuilder.putString("output", chunks[0])
+
+
+            return Result.success(
+                dataBuilder.build()
+            )
+
         }.onFailure {
             if (it is YoutubeDL.CanceledException) {
                 return Result.failure()

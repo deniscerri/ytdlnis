@@ -15,5 +15,10 @@
         app:showAsAction="ifRoom"
         android:title="@string/share" />
 
+    <item
+        android:id="@+id/invert_selected"
+        android:title="@string/invert_selected"
+        app:showAsAction="never" />
+
 </menu>
 

@@ -3,7 +3,9 @@ package com.deniscerri.ytdlnis.util
 import android.app.Activity
 import android.content.Context
 import android.os.Environment
+import android.os.Looper
 import android.util.Log
+import android.widget.Toast
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.Format
 import com.deniscerri.ytdlnis.database.models.ResultItem
@@ -138,63 +140,70 @@ class InfoUtil(private val context: Context) {
 
     @Throws(JSONException::class)
     fun getPlaylist(id: String, nextPageToken: String): PlaylistTuple {
-        init()
-        items = ArrayList()
-        if (key!!.isEmpty()) {
-            return if (useInvidous) getPlaylistFromInvidous(id) else PlaylistTuple(
+        try{
+            init()
+            items = ArrayList()
+            if (key!!.isEmpty()) {
+                return if (useInvidous) getPlaylistFromInvidous(id) else PlaylistTuple(
+                    "",
+                    getFromYTDL("https://www.youtube.com/playlist?list=$id")
+                )
+            }
+            val url = "https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet&pageToken=$nextPageToken&maxResults=50&regionCode=$countryCODE&playlistId=$id&key=$key"
+            //short data
+            val res = genericRequest(url)
+            if (!res.has("items")) return PlaylistTuple(
+                "",
+                getFromYTDL("https://www.youtube.com/playlist?list=$id")
+            )
+            val dataArray = res.getJSONArray("items")
+
+            //extra data
+            var url2 = "https://www.googleapis.com/youtube/v3/videos?id="
+            //getting all ids, for the extra data request
+            for (i in 0 until dataArray.length()) {
+                val element = dataArray.getJSONObject(i)
+                val snippet = element.getJSONObject("snippet")
+                val videoID = snippet.getJSONObject("resourceId").getString("videoId")
+                url2 = "$url2$videoID,"
+                snippet.put("videoID", videoID)
+            }
+            url2 = url2.substring(
+                0,
+                url2.length - 1
+            ) + "&part=contentDetails&regionCode=" + countryCODE + "&key=" + key
+            val extra = genericRequest(url2)
+            val extraArray = extra.getJSONArray("items")
+            var j = 0
+            var i = 0
+            while (i < extraArray.length()) {
+                val element = dataArray.getJSONObject(i)
+                val snippet = element.getJSONObject("snippet")
+                var duration =
+                    extra.getJSONArray("items").getJSONObject(j).getJSONObject("contentDetails")
+                        .getString("duration")
+                duration = formatDuration(duration)
+                snippet.put("duration", duration)
+                fixThumbnail(snippet)
+                val v = createVideofromJSON(snippet)
+                if (v == null || v.thumb.isEmpty()) {
+                    i++
+                    continue
+                } else {
+                    j++
+                }
+                v.playlistTitle = "YTDLnis"
+                items.add(v)
+                i++
+            }
+            val next = res.optString("nextPageToken")
+            return PlaylistTuple(next, items)
+        }catch (e: Exception){
+            return PlaylistTuple(
                 "",
                 getFromYTDL("https://www.youtube.com/playlist?list=$id")
             )
         }
-        val url = "https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet&pageToken=$nextPageToken&maxResults=50&regionCode=$countryCODE&playlistId=$id&key=$key"
-        //short data
-        val res = genericRequest(url)
-        if (!res.has("items")) return PlaylistTuple(
-            "",
-            getFromYTDL("https://www.youtube.com/playlist?list=$id")
-        )
-        val dataArray = res.getJSONArray("items")
-
-        //extra data
-        var url2 = "https://www.googleapis.com/youtube/v3/videos?id="
-        //getting all ids, for the extra data request
-        for (i in 0 until dataArray.length()) {
-            val element = dataArray.getJSONObject(i)
-            val snippet = element.getJSONObject("snippet")
-            val videoID = snippet.getJSONObject("resourceId").getString("videoId")
-            url2 = "$url2$videoID,"
-            snippet.put("videoID", videoID)
-        }
-        url2 = url2.substring(
-            0,
-            url2.length - 1
-        ) + "&part=contentDetails&regionCode=" + countryCODE + "&key=" + key
-        val extra = genericRequest(url2)
-        val extraArray = extra.getJSONArray("items")
-        var j = 0
-        var i = 0
-        while (i < extraArray.length()) {
-            val element = dataArray.getJSONObject(i)
-            val snippet = element.getJSONObject("snippet")
-            var duration =
-                extra.getJSONArray("items").getJSONObject(j).getJSONObject("contentDetails")
-                    .getString("duration")
-            duration = formatDuration(duration)
-            snippet.put("duration", duration)
-            fixThumbnail(snippet)
-            val v = createVideofromJSON(snippet)
-            if (v == null || v.thumb.isEmpty()) {
-                i++
-                continue
-            } else {
-                j++
-            }
-            v.playlistTitle = "YTDLnis"
-            items.add(v)
-            i++
-        }
-        val next = res.optString("nextPageToken")
-        return PlaylistTuple(next, items)
     }
 
     private fun getPlaylistFromInvidous(id: String): PlaylistTuple {
@@ -221,30 +230,34 @@ class InfoUtil(private val context: Context) {
 
     @Throws(JSONException::class)
     fun getVideo(id: String): ResultItem? {
-        init()
-        if (key!!.isEmpty()) {
-            return if (useInvidous) {
-                val res = genericRequest(invidousURL + "videos/" + id)
-                if (res.length() == 0) getFromYTDL("https://www.youtube.com/watch?v=$id")[0] else createVideofromInvidiousJSON(
-                    res
-                )
-            } else {
-                getFromYTDL("https://www.youtube.com/watch?v=$id")[0]
+        try {
+            init()
+            if (key!!.isEmpty()) {
+                return if (useInvidous) {
+                    val res = genericRequest(invidousURL + "videos/" + id)
+                    if (res.length() == 0) getFromYTDL("https://www.youtube.com/watch?v=$id")[0] else createVideofromInvidiousJSON(
+                        res
+                    )
+                } else {
+                    getFromYTDL("https://www.youtube.com/watch?v=$id")[0]
+                }
             }
-        }
 
-        //short data
-        var res =
-            genericRequest("https://youtube.googleapis.com/youtube/v3/videos?part=snippet,contentDetails&id=$id&key=$key")
-        if (!res.has("items")) return getFromYTDL("https://www.youtube.com/watch?v=$id")[0]
-        var duration = res.getJSONArray("items").getJSONObject(0).getJSONObject("contentDetails")
-            .getString("duration")
-        duration = formatDuration(duration)
-        res = res.getJSONArray("items").getJSONObject(0).getJSONObject("snippet")
-        res.put("videoID", id)
-        res.put("duration", duration)
-        fixThumbnail(res)
-        return createVideofromJSON(res)
+            //short data
+            var res =
+                genericRequest("https://youtube.googleapis.com/youtube/v3/videos?part=snippet,contentDetails&id=$id&key=$key")
+            if (!res.has("items")) return getFromYTDL("https://www.youtube.com/watch?v=$id")[0]
+            var duration = res.getJSONArray("items").getJSONObject(0).getJSONObject("contentDetails")
+                .getString("duration")
+            duration = formatDuration(duration)
+            res = res.getJSONArray("items").getJSONObject(0).getJSONObject("snippet")
+            res.put("videoID", id)
+            res.put("duration", duration)
+            fixThumbnail(res)
+            return createVideofromJSON(res)
+        }catch (e: Exception){
+            return getFromYTDL("https://www.youtube.com/watch?v=$id")[0]
+        }
     }
 
     private fun createVideofromJSON(obj: JSONObject): ResultItem? {
@@ -510,7 +523,8 @@ class InfoUtil(private val context: Context) {
                 arrayOf(youtubeDLResponse.out)
             }
             for (result in results) {
-                val jsonObject = JSONObject(result!!)
+                if (result.isNullOrBlank()) continue
+                val jsonObject = JSONObject(result)
                 val title = if (jsonObject.has("title")) {
                     if (jsonObject.getString("title") == "[Private video]") continue
                     jsonObject.getString("title")
@@ -531,7 +545,9 @@ class InfoUtil(private val context: Context) {
                     thumb = jsonObject.getString("thumbnail")
                 } else if (jsonObject.has("thumbnails")) {
                     val thumbs = jsonObject.getJSONArray("thumbnails")
-                    thumb = thumbs.getJSONObject(thumbs.length() - 1).getString("url")
+                    if (thumbs.length() > 0){
+                        thumb = thumbs.getJSONObject(thumbs.length() - 1).getString("url")
+                    }
                 }
                 val website = if (jsonObject.has("ie_key")) jsonObject.getString("ie_key") else jsonObject.getString("extractor")
                 var playlistTitle: String? = ""
@@ -560,6 +576,9 @@ class InfoUtil(private val context: Context) {
                 )
             }
         } catch (e: Exception) {
+            Looper.prepare().run {
+                Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
+            }
             e.printStackTrace()
         }
         return items

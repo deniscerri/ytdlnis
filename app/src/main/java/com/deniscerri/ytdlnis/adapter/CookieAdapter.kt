@@ -44,7 +44,7 @@ class CookieAdapter(onItemClickListener: OnItemClickListener, activity: Activity
         title.text = item?.url
 
         val content = card.findViewById<TextView>(R.id.content)
-        content.visibility = View.GONE
+        content.text = item?.content
 
         card.setOnClickListener {
             onItemClickListener.onItemClick(item!!)

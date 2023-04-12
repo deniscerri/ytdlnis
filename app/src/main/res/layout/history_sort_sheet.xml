@@ -10,15 +10,13 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:padding="10dp"
-        android:layout_marginVertical="10dp"
         android:orientation="vertical">
 
         <TextView
             android:layout_width="wrap_content"
             android:text="@string/sort_by"
-            android:paddingBottom="20dp"
+            android:textSize="12sp"
+            android:layout_margin="20dp"
             android:layout_height="wrap_content"/>
 
         <TextView
@@ -27,6 +25,7 @@
             android:focusable="true"
             android:background="?attr/selectableItemBackground"
             android:paddingVertical="10dp"
+            android:paddingHorizontal="20dp"
             android:drawablePadding="30dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -41,6 +40,7 @@
             android:focusable="true"
             android:background="?attr/selectableItemBackground"
             android:paddingVertical="10dp"
+            android:paddingHorizontal="20dp"
             android:drawablePadding="30dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -55,6 +55,7 @@
             android:focusable="true"
             android:background="?attr/selectableItemBackground"
             android:paddingVertical="10dp"
+            android:paddingHorizontal="20dp"
             android:drawablePadding="30dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -70,12 +71,12 @@
             android:background="?attr/selectableItemBackground"
             android:drawablePadding="30dp"
             android:paddingVertical="10dp"
+            android:paddingHorizontal="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="15sp"
             android:text="@string/file_size"
             app:drawableStartCompat="@drawable/ic_arrow_up" />
-
 
 
     </LinearLayout>

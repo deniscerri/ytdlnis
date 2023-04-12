@@ -4,13 +4,16 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.LinearLayout
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdlnis.R
@@ -22,6 +25,8 @@ import com.deniscerri.ytdlnis.util.UiUtil
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.chip.Chip
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.io.File
 import java.net.CookieManager
 
@@ -70,12 +75,17 @@ class CookiesActivity : AppCompatActivity(), CookieAdapter.OnItemClickListener {
                     deleteDialog.setMessage(getString(R.string.confirm_delete_cookies_desc))
                     deleteDialog.setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, _: Int -> dialogInterface.cancel() }
                     deleteDialog.setPositiveButton(getString(R.string.ok)) { _: DialogInterface?, _: Int ->
-                        android.webkit.CookieManager.getInstance().removeAllCookies(null)
+                        cookiesViewModel.deleteAll()
                         kotlin.runCatching {
                             File(cacheDir, "cookies.txt").apply { writeText("") }
                         }
                     }
                     deleteDialog.show()
+                }
+                R.id.import_clipboard -> {
+                    lifecycleScope.launch(Dispatchers.IO){
+                        cookiesViewModel.importFromClipboard()
+                    }
                 }
                 R.id.export_clipboard -> {
                     cookiesViewModel.exportToClipboard()
@@ -97,7 +107,9 @@ class CookiesActivity : AppCompatActivity(), CookieAdapter.OnItemClickListener {
         builder.setTitle(getString(R.string.cookies))
         val inputLayout = layoutInflater.inflate(R.layout.textinput, null)
         val editText = inputLayout.findViewById<EditText>(R.id.url_edittext)
-        editText.setText(url)
+        val text = if (url.isNullOrBlank()) "https://" else url
+        editText.setText(text)
+        editText.setSelection(editText.text.length)
         builder.setView(inputLayout)
         builder.setPositiveButton(
             getString(R.string.get_cookies)
@@ -112,9 +124,8 @@ class CookiesActivity : AppCompatActivity(), CookieAdapter.OnItemClickListener {
             getString(R.string.cancel)
         ) { dialog: DialogInterface?, which: Int -> }
         val dialog = builder.create()
-        editText.setOnKeyListener { view, i, keyEvent ->
+        editText.doOnTextChanged { text, start, before, count ->
             dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = editText.text.isNotEmpty()
-            false
         }
         dialog.show()
         val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager

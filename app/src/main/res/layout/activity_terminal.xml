@@ -30,47 +30,58 @@
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
         android:layout_height="match_parent">
 
-        <ScrollView
-            android:layout_margin="10dp"
-            android:id="@+id/custom_command_scrollview"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintVertical_bias="0"
-            android:clipToPadding="false"
-            android:paddingBottom="100dp"
+            android:layout_height="0dp"
+            android:orientation="horizontal"
             app:layout_constraintBottom_toTopOf="@+id/coordinatorLayout"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <LinearLayout
+            <ScrollView
+                android:id="@+id/custom_command_scrollview"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:focusableInTouchMode="true"
-                android:orientation="vertical">
+                android:layout_height="match_parent"
+                android:layout_margin="10dp">
 
-                <TextView
-                    android:id="@+id/custom_command_output"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="monospace"
-                    android:gravity="bottom"
-                    android:textIsSelectable="true" />
+                    android:focusableInTouchMode="true"
+                    android:orientation="vertical">
 
-                <EditText
-                    android:id="@+id/command_edittext"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@android:color/transparent"
-                    android:fontFamily="monospace"
-                    android:gravity="start"
-                    android:inputType="textMultiLine"
-                    android:paddingBottom="100dp"
-                    android:maxLines="100"
-                    android:text="yt-dlp "
-                    android:textSize="15sp" />
+                    <HorizontalScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
 
-            </LinearLayout>
+                        <TextView
+                            android:id="@+id/custom_command_output"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="monospace"
+                            android:gravity="bottom"
+                            android:scrollbars="horizontal|vertical"
+                            android:scrollHorizontally="true"
+                            android:textIsSelectable="true" />
 
-        </ScrollView>
+                    </HorizontalScrollView>
+
+                    <EditText
+                        android:id="@+id/command_edittext"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:fontFamily="monospace"
+                        android:gravity="start"
+                        android:inputType="textMultiLine"
+                        android:maxLines="100"
+                        android:text="yt-dlp "
+                        android:textSize="15sp" />
+
+                </LinearLayout>
+
+            </ScrollView>
+        </LinearLayout>
 
 
         <androidx.coordinatorlayout.widget.CoordinatorLayout

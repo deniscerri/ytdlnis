@@ -78,10 +78,7 @@ class ShareActivity : AppCompatActivity() {
         cookieViewModel = ViewModelProvider(this)[CookieViewModel::class.java]
         sharedPreferences = getSharedPreferences("root_preferences", Activity.MODE_PRIVATE)
 
-        cookieViewModel.getCookiesFromDB().getOrNull()?.let{
-            File(cacheDir, "cookies.txt").apply { writeText(it) }
-        }
-
+        cookieViewModel.updateCookiesFile()
         val intent = intent
         handleIntents(intent)
     }

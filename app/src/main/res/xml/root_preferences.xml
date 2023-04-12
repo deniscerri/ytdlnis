@@ -65,6 +65,14 @@
             app:summary="@string/download_card_summary"
             app:title="@string/show_download_card" />
 
+        <SwitchPreferenceCompat
+            android:widgetLayout="@layout/preferece_material_switch"
+            app:defaultValue="true"
+            android:icon="@drawable/metered_networks"
+            android:key="metered_networks"
+            app:summary="@string/download_over_metered_networks_summary"
+            app:title="@string/download_over_metered_networks" />
+
         <ListPreference
             android:dependency="download_card"
             android:defaultValue="video"

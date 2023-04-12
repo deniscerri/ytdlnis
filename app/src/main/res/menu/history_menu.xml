@@ -7,8 +7,14 @@
         android:id="@+id/search_history"
         android:title="@string/search"
         android:icon="@drawable/ic_search"
-        app:showAsAction="collapseActionView|always"
+        app:showAsAction="collapseActionView|ifRoom"
         app:actionViewClass="androidx.appcompat.widget.SearchView"/>
+
+    <item
+        android:id="@+id/download_queue"
+        android:title="@string/download_queue"
+        android:icon="@drawable/baseline_downloading_24"
+        app:showAsAction="collapseActionView|ifRoom"/>
 
     <item
         android:id="@+id/remove_history"
