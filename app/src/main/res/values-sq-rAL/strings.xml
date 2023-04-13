@@ -198,4 +198,10 @@
     <string name="get_cookies">Merr Biskotat</string>
     <string name="confirm_delete_cookies_desc">Fshi të gjitha biskotat, përgjithmonë</string>
     <string name="download_over_metered_networks">Shkarko me Rrjetet Celulare</string>
+    <string name="invert_selected">Inverto Të Zgjedhurit</string>
+    <string name="save_subs_desc">Shkruaji titrat në skedarë</string>
+    <string name="download_over_metered_networks_summary">Lëreni punonjësin e shkarkimit të punojë në çdo lloj rrjeti. Nëse çaktivizohet, do të presë që një rrjet pa matje që të fillojë shkarkimet</string>
+    <string name="metered_network_download_start_info">Punëtori i shkarkimit do të fillojë pasi të jeni lidhur me një rrjet pa matje</string>
+    <string name="save_subs">Ruaj Titrat</string>
+    <string name="subtitle_languages">Gjuhet e Titrave</string>
 </resources>
