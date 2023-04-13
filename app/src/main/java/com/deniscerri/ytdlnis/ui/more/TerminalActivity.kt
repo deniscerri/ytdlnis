@@ -1,19 +1,20 @@
 package com.deniscerri.ytdlnis.ui.more
 
 import android.app.Activity
+import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.os.Build
 import android.os.Bundle
+import android.os.FileObserver
 import android.util.Log
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
-import android.widget.LinearLayout
-import android.widget.ScrollView
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.ViewModelProvider
@@ -33,6 +34,7 @@ import com.yausername.youtubedl_android.YoutubeDL
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.File
 import kotlin.properties.Delegates
 
 
@@ -47,6 +49,8 @@ class TerminalActivity : AppCompatActivity() {
     private lateinit var commandTemplateViewModel: CommandTemplateViewModel
     private lateinit var sharedPreferences: SharedPreferences
     private var downloadID by Delegates.notNull<Int>()
+    private lateinit var downloadFile : File
+    private lateinit var observer: FileObserver
     var context: Context? = null
 
     public override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,6 +58,8 @@ class TerminalActivity : AppCompatActivity() {
         setContentView(R.layout.activity_terminal)
 
         downloadID = System.currentTimeMillis().toInt() % 100000
+        downloadFile = File(cacheDir.absolutePath + "/$downloadID.txt")
+        if (! downloadFile.exists()) downloadFile.createNewFile()
 
         context = baseContext
         scrollView = findViewById(R.id.custom_command_scrollview)
@@ -84,6 +90,7 @@ class TerminalActivity : AppCompatActivity() {
                 input!!.visibility = View.GONE
                 output!!.text = "${output!!.text}\n~ $ ${input!!.text}\n"
                 showCancelFab()
+                downloadFile.appendText("~ $ ${input!!.text}\n")
                 startDownload(
                     input!!.text.toString()
                 )
@@ -96,6 +103,36 @@ class TerminalActivity : AppCompatActivity() {
         notificationUtil = NotificationUtil(this)
         handleIntent(intent)
 
+        if(Build.VERSION.SDK_INT < 29){
+            observer = object : FileObserver(downloadFile.absolutePath, MODIFY) {
+                override fun onEvent(event: Int, p: String?) {
+                    runOnUiThread{
+                        try {
+                            val newText = downloadFile.readText()
+                            output!!.text = newText
+                            output!!.scrollTo(0, output!!.height)
+                            scrollView!!.fullScroll(View.FOCUS_DOWN)
+                        }catch (ignored: Exception) {}
+                    }
+                }
+            }
+            observer.startWatching()
+        }else{
+            observer = object : FileObserver(downloadFile, MODIFY) {
+                override fun onEvent(event: Int, p: String?) {
+                    runOnUiThread{
+                        try {
+                            val newText = downloadFile.readText()
+                            output!!.text = newText
+                            output!!.scrollTo(0, output!!.height)
+                            scrollView!!.fullScroll(View.FOCUS_DOWN)
+                        }catch (ignored: Exception) {}
+                    }
+                }
+            }
+            observer.startWatching()
+        }
+
         WorkManager.getInstance(this)
             .getWorkInfosForUniqueWorkLiveData(downloadID.toString())
             .observe(this){ list ->
@@ -106,16 +143,27 @@ class TerminalActivity : AppCompatActivity() {
                         input!!.requestFocus()
                         hideCancelFab()
                     }
-                    val line = work.progress.getString("output") ?: (work.outputData.getString("output") ?: return@observe)
-                    runOnUiThread {
-                        try {
-                            output!!.text = "${output!!.text}\n$line"
-                            output!!.scrollTo(0, output!!.height)
-                            scrollView!!.fullScroll(View.FOCUS_DOWN)
-                        }catch (ignored: Exception) {}
-                    }
                 }
             }
+        initMenu()
+    }
+
+    private fun initMenu() {
+        topAppBar?.setOnMenuItemClickListener { m: MenuItem ->
+            val itemId = m.itemId
+            if (itemId == R.id.export_clipboard) {
+                lifecycleScope.launch(Dispatchers.IO){
+                    val clipboard: ClipboardManager = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+                    clipboard.setText(output?.text)
+                }
+            }
+            true
+        }
+    }
+
+    override fun onDestroy() {
+        downloadFile.delete()
+        super.onDestroy()
     }
 
     override fun onNewIntent(intent: Intent) {

@@ -49,6 +49,9 @@ class TerminalDownloadWorker(
         tempFileDir.delete()
         tempFileDir.mkdirs()
 
+        val outputFile = File(context.cacheDir.absolutePath + "/$itemId.txt")
+        if (! outputFile.exists()) outputFile.createNewFile()
+
         request.addOption(
             "--config-locations",
             File(context.cacheDir.absolutePath + "/downloads/config${System.currentTimeMillis()}.txt").apply {
@@ -77,7 +80,7 @@ class TerminalDownloadWorker(
             }
 
             YoutubeDL.getInstance().execute(request, itemId.toString()){ progress, _, line ->
-                setProgressAsync(workDataOf("progress" to progress.toInt(), "output" to line, "id" to itemId, "log" to logDownloads))
+                outputFile.appendText("${line}\n")
                 val title: String = command.take(20)
                 notificationUtil.updateDownloadNotification(
                     itemId,
@@ -103,20 +106,15 @@ class TerminalDownloadWorker(
                 }, 1000)
             }
 
-            val chunks = it.out.chunked(5000)
-            val dataBuilder = Data.Builder();
-            dataBuilder.putString("output", chunks[0])
-
-
-            return Result.success(
-                dataBuilder.build()
-            )
-
+            outputFile.appendText("${it.out}\n")
+            if (logDownloads && logFile.exists()){
+                logFile.appendText("${it.out}\n")
+            }
         }.onFailure {
             if (it is YoutubeDL.CanceledException) {
                 return Result.failure()
             }
-
+            outputFile.appendText("${it.message}\n")
             if (logDownloads && logFile.exists()){
                 logFile.appendText("${it.message}\n")
             }
@@ -129,13 +127,7 @@ class TerminalDownloadWorker(
                 NotificationUtil.DOWNLOAD_SERVICE_CHANNEL_ID
             )
 
-            if (logDownloads && logFile.exists()){
-                logFile.appendText("${it.message}\n")
-            }
-
-            return Result.failure(
-              Data.Builder().putString("output", it.message.toString()).build()
-            )
+            return Result.failure()
         }
 
         return Result.success()

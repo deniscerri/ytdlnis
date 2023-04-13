@@ -17,6 +17,7 @@
             android:id="@+id/custom_command_toolbar"
             android:elevation="0dp"
             app:title="@string/terminal"
+            app:menu="@menu/terminal_top_menu"
             android:layout_width="match_parent"
             app:navigationIcon="@drawable/ic_back"
             android:layout_height="match_parent"/>
