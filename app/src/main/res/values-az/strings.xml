@@ -197,4 +197,8 @@
     <string name="create_cookie">Baza Yarat</string>
     <string name="get_cookies">Məlumatlar əldə et</string>
     <string name="confirm_delete_cookies_desc">Bütün bazaları həmişəlik silir</string>
+    <string name="download_over_metered_networks">Ölçülən Şəbəkələr vasitəsilə yüklə</string>
+    <string name="download_over_metered_networks_summary">Yükləmə işçisinə istənilən şəbəkə növündə işləməyə icazə ver. Qeyri-aktiv edilərsə, o, yükləmələri başlatmaq üçün ölçülməyən şəbəkəni gözləyəcək</string>
+    <string name="metered_network_download_start_info">Yükləmə işçisi ölçülməyən şəbəkəyə qoşulduqdan sonra başlayacaq</string>
+    <string name="invert_selected">Seçilənləri Çevir</string>
 </resources>
