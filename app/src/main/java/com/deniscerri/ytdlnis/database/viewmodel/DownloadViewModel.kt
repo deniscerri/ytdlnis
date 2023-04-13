@@ -108,6 +108,7 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
 
     fun createDownloadItemFromResult(resultItem: ResultItem, type: Type) : DownloadItem {
         val embedSubs = sharedPreferences.getBoolean("embed_subtitles", false)
+        val saveSubs = sharedPreferences.getBoolean("write_subtitles", false)
         val addChapters = sharedPreferences.getBoolean("add_chapters", false)
         val saveThumb = sharedPreferences.getBoolean("write_thumbnail", false)
         val embedThumb = sharedPreferences.getBoolean("embed_thumbnail", false)
@@ -122,7 +123,7 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
         val sponsorblock = sharedPreferences.getStringSet("sponsorblock_filters", emptySet())
 
         val audioPreferences = AudioPreferences(embedThumb, false, ArrayList(sponsorblock!!))
-        val videoPreferences = VideoPreferences(embedSubs, addChapters, false, ArrayList(sponsorblock))
+        val videoPreferences = VideoPreferences(embedSubs, addChapters, false, ArrayList(sponsorblock), saveSubs)
 
         return DownloadItem(0,
             resultItem.url,
@@ -150,6 +151,7 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
 
     fun createDownloadItemFromHistory(historyItem: HistoryItem) : DownloadItem {
         val embedSubs = sharedPreferences.getBoolean("embed_subtitles", false)
+        val saveSubs = sharedPreferences.getBoolean("write_subtitles", false)
         val addChapters = sharedPreferences.getBoolean("add_chapters", false)
         val saveThumb = sharedPreferences.getBoolean("write_thumbnail", false)
         val embedThumb = sharedPreferences.getBoolean("embed_thumbnail", false)
@@ -164,7 +166,7 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
         val sponsorblock = sharedPreferences.getStringSet("sponsorblock_filters", emptySet())
 
         val audioPreferences = AudioPreferences(embedThumb, false, ArrayList(sponsorblock!!))
-        val videoPreferences = VideoPreferences(embedSubs, addChapters, false, ArrayList(sponsorblock))
+        val videoPreferences = VideoPreferences(embedSubs, addChapters, false, ArrayList(sponsorblock), saveSubs)
 
         return DownloadItem(0,
             historyItem.url,

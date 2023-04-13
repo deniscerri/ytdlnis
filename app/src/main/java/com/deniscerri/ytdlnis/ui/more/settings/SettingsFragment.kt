@@ -55,6 +55,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
     private var restrictFilenames: SwitchPreferenceCompat? = null
     private var mtime: SwitchPreferenceCompat? = null
     private var embedSubtitles: SwitchPreferenceCompat? = null
+    private var writeSubtitles: SwitchPreferenceCompat? = null
     private var embedThumbnail: SwitchPreferenceCompat? = null
     private var addChapters: SwitchPreferenceCompat? = null
     private var writeThumbnail: SwitchPreferenceCompat? = null
@@ -117,6 +118,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         sponsorblockFilters = findPreference("sponsorblock_filters")
         mtime = findPreference("mtime")
         embedSubtitles = findPreference("embed_subtitles")
+        writeSubtitles = findPreference("write_subtitles")
         filenameTemplate = findPreference("file_name_template")
         restrictFilenames = findPreference("restrict_filenames")
         embedThumbnail = findPreference("embed_thumbnail")
@@ -182,6 +184,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         editor.putBoolean("restrict_filenames", restrictFilenames!!.isChecked)
         editor.putBoolean("mtime", mtime!!.isChecked)
         editor.putBoolean("embed_subtitles", embedSubtitles!!.isChecked)
+        editor.putBoolean("write_subtitles", writeSubtitles!!.isChecked)
         editor.putBoolean("embed_thumbnail", embedThumbnail!!.isChecked)
         editor.putBoolean("add_chapters", addChapters!!.isChecked)
         editor.putBoolean("write_thumbnail", writeThumbnail!!.isChecked)
@@ -388,6 +391,13 @@ class SettingsFragment : PreferenceFragmentCompat() {
             Preference.OnPreferenceChangeListener { _: Preference?, newValue: Any ->
                 val embed = newValue as Boolean
                 editor.putBoolean("embed_subtitles", embed)
+                editor.apply()
+                true
+            }
+        writeSubtitles!!.onPreferenceChangeListener =
+            Preference.OnPreferenceChangeListener { _: Preference?, newValue: Any ->
+                val embed = newValue as Boolean
+                editor.putBoolean("write_subtitles", embed)
                 editor.apply()
                 true
             }

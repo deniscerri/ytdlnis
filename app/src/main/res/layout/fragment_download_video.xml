@@ -215,6 +215,41 @@
 
             </HorizontalScrollView>
 
+            <HorizontalScrollView
+                android:scrollbars="none"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.chip.ChipGroup
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:singleLine="true">
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/save_subtitles"
+                        style="@style/Widget.Material3.Chip.Filter.Elevated"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/save_subs"
+                        android:minWidth="30dp"
+                        app:cornerRadius="10dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/subtitle_languages"
+                        style="@style/Widget.Material3.Chip.Assist.Elevated"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"
+                        android:checked="false"
+                        android:text="@string/subtitle_languages"/>
+
+                </com.google.android.material.chip.ChipGroup>
+
+            </HorizontalScrollView>
         </LinearLayout>
 
 

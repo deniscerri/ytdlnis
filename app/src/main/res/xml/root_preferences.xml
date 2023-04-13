@@ -181,6 +181,14 @@
 
         <SwitchPreferenceCompat
             android:widgetLayout="@layout/preferece_material_switch"
+            app:defaultValue="false"
+            app:icon="@drawable/ic_subtitles_alternative"
+            app:key="write_subtitles"
+            app:summary="@string/save_subs_desc"
+            app:title="@string/save_subs" />
+
+        <SwitchPreferenceCompat
+            android:widgetLayout="@layout/preferece_material_switch"
             app:defaultValue="true"
             app:icon="@drawable/ic_image"
             app:key="embed_thumbnail"

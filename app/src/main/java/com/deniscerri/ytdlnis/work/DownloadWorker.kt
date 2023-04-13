@@ -230,6 +230,14 @@ class DownloadWorker(
                     }
                 }
 
+                if (downloadItem.videoPreferences.writeSubs){
+                    request.addOption("--write-subs")
+                    request.addOption("--write-auto-subs")
+                    request.addOption("--sub-format", "str/ass/best")
+                    request.addOption("--convert-subtitles", "srt")
+                    request.addOption("--sub-langs", downloadItem.videoPreferences.subsLanguages)
+                }
+
                 if (downloadItem.videoPreferences.splitByChapters  && downloadItem.downloadSections.isBlank()){
                     request.addOption("--split-chapters")
                     request.addOption("-P", tempFileDir.absolutePath)
@@ -267,7 +275,7 @@ class DownloadWorker(
             }
 
             YoutubeDL.getInstance().execute(request, downloadItem.id.toString()){ progress, _, line ->
-                setProgressAsync(workDataOf("progress" to progress.toInt(), "output" to line, "id" to downloadItem.id, "log" to logDownloads))
+                setProgressAsync(workDataOf("progress" to progress.toInt(), "output" to line.chunked(5000).first().toString(), "id" to downloadItem.id, "log" to logDownloads))
                 val title: String = downloadItem.title
                 notificationUtil.updateDownloadNotification(
                     downloadItem.id.toInt(),

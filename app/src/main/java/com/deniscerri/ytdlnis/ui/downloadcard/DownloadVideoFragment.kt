@@ -1,19 +1,23 @@
 package com.deniscerri.ytdlnis.ui.downloadcard
 
 import android.app.Activity
-import android.content.ClipboardManager
 import android.content.DialogInterface
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -301,6 +305,60 @@ class DownloadVideoFragment(private val resultItem: ResultItem, private var curr
                         val bottomSheet = CutVideoBottomSheetDialog(downloadItem, cutVideoListener)
                         bottomSheet.show(parentFragmentManager, "cutVideoSheet")
                     }
+                }
+
+                val saveSubtitles = view.findViewById<Chip>(R.id.save_subtitles)
+                val subtitleLanguages = view.findViewById<Chip>(R.id.subtitle_languages)
+                if (downloadItem.videoPreferences.writeSubs) {
+                    saveSubtitles.isChecked = true
+                    subtitleLanguages.visibility = View.VISIBLE
+                }
+
+                saveSubtitles.setOnCheckedChangeListener { compoundButton, b ->
+                    if (saveSubtitles.isChecked) subtitleLanguages.visibility = View.VISIBLE
+                    else subtitleLanguages.visibility = View.GONE
+                    downloadItem.videoPreferences.writeSubs = saveSubtitles.isChecked
+                }
+
+                subtitleLanguages.setOnClickListener {
+                    val builder = MaterialAlertDialogBuilder(requireContext())
+                    builder.setTitle(getString(R.string.subtitle_languages))
+                    val inputLayout = layoutInflater.inflate(R.layout.textinput, null)
+                    val editText = inputLayout.findViewById<EditText>(R.id.url_edittext)
+                    editText.setHint(R.string.subtitle_languages)
+                    editText.setText(downloadItem.videoPreferences.subsLanguages)
+                    editText.setSelection(editText.text.length)
+                    builder.setView(inputLayout)
+                    builder.setPositiveButton(
+                        getString(R.string.ok)
+                    ) { dialog: DialogInterface?, which: Int ->
+                        downloadItem.videoPreferences.subsLanguages = editText.text.toString()
+                    }
+
+                    // handle the negative button of the alert dialog
+                    builder.setNegativeButton(
+                        getString(R.string.cancel)
+                    ) { dialog: DialogInterface?, which: Int -> }
+
+                    builder.setNeutralButton("?")  { dialog: DialogInterface?, which: Int ->
+                        val browserIntent =
+                            Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/yt-dlp/yt-dlp#subtitle-options"))
+                        startActivity(browserIntent)
+                    }
+
+
+                    val dialog = builder.create()
+                    editText.doOnTextChanged { text, start, before, count ->
+                        dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = editText.text.isNotEmpty()
+                    }
+                    dialog.show()
+                    val imm = context?.getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager
+                    editText!!.postDelayed({
+                        editText.requestFocus()
+                        imm.showSoftInput(editText, 0)
+                    }, 300)
+                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = editText.text.isNotEmpty()
+                    dialog.getButton(AlertDialog.BUTTON_NEUTRAL).gravity = Gravity.START
                 }
 
             } catch (e: Exception) {

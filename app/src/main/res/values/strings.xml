@@ -208,4 +208,7 @@
     <string name="download_over_metered_networks_summary">Let the download worker work on any network type. If disabled, it will wait for an unmetered network to start the downloads</string>
     <string name="metered_network_download_start_info">Download worker will start after you are connected to an unmetered network</string>
     <string name="invert_selected">Invert Selected</string>
+    <string name="save_subs">Save Subtitles</string>
+    <string name="save_subs_desc">Write subtitle file</string>
+    <string name="subtitle_languages">Subtitle languages</string>
 </resources>
