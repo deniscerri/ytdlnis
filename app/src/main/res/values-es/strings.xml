@@ -197,4 +197,11 @@
     <string name="cookies">Cookies</string>
     <string name="get_cookies">Obtener las Cookies</string>
     <string name="delete_all_cookies">Borrar toda las Cookies</string>
+    <string name="download_over_metered_networks">Descargar en redes móviles</string>
+    <string name="metered_network_download_start_info">El asistente de descarga comenzará después de que esté conectado a una red sin medidor</string>
+    <string name="download_over_metered_networks_summary">Permite que el asistente de descargas trabaje en cualquier tipo de red. Si se desactiva, esperará a una red no medida para iniciar las descargas</string>
+    <string name="invert_selected">Invertir lo seleccionado</string>
+    <string name="save_subs">Guarda los subtítulos</string>
+    <string name="save_subs_desc">Escribir los subtítulos en un archivo</string>
+    <string name="subtitle_languages">Idiomas de los subtítulos</string>
 </resources>
