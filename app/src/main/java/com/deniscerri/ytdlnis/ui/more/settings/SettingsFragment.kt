@@ -1,7 +1,6 @@
 package com.deniscerri.ytdlnis.ui.more.settings
 
 import android.app.Activity
-import android.content.Context
 import android.content.Context.POWER_SERVICE
 import android.content.Intent
 import android.net.Uri
@@ -13,7 +12,6 @@ import android.provider.Settings
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.os.LocaleListCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.*

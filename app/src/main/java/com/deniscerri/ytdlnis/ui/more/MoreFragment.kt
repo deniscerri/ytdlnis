@@ -11,17 +11,12 @@ import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.navigation.Navigation
-import androidx.preference.Preference
-import androidx.preference.PreferenceFragmentCompat
 import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
-import com.deniscerri.ytdlnis.databinding.FragmentHomeBinding
 import com.deniscerri.ytdlnis.ui.downloads.DownloadQueueActivity
 import com.deniscerri.ytdlnis.ui.more.downloadLogs.DownloadLogListActivity
 import com.deniscerri.ytdlnis.ui.more.settings.SettingsActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import java.util.ArrayList
 import kotlin.system.exitProcess
 
 class MoreFragment : Fragment() {

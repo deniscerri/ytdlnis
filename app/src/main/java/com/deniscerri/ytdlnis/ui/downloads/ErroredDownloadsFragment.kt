@@ -32,7 +32,6 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.chip.Chip
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.runBlocking
-import java.io.File
 
 
 class ErroredDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickListener, OnItemClickListener {

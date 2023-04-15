@@ -4,11 +4,9 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
-import android.widget.LinearLayout
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doOnTextChanged
@@ -28,7 +26,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.File
-import java.net.CookieManager
 
 
 class CookiesActivity : AppCompatActivity(), CookieAdapter.OnItemClickListener {

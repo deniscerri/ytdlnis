@@ -16,7 +16,6 @@ import com.deniscerri.ytdlnis.R
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yausername.youtubedl_android.YoutubeDL
 import com.yausername.youtubedl_android.YoutubeDL.UpdateStatus
-import io.reactivex.disposables.CompositeDisposable
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONException

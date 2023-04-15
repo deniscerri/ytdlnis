@@ -21,7 +21,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.adapter.ConfigureMultipleDownloadsAdapter
 import com.deniscerri.ytdlnis.database.models.DownloadItem
-import com.deniscerri.ytdlnis.database.models.Format
 import com.deniscerri.ytdlnis.database.viewmodel.CommandTemplateViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.ResultViewModel
@@ -33,7 +32,6 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.button.MaterialButton
-import com.google.common.collect.Sets
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.launch

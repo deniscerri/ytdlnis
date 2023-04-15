@@ -1,7 +1,6 @@
 package com.deniscerri.ytdlnis.adapter
 
 import android.app.Activity
-import android.graphics.Color
 import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
@@ -19,10 +18,7 @@ import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.repository.DownloadRepository
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.google.android.material.button.MaterialButton
-import com.google.android.material.card.MaterialCardView
-import com.google.android.material.chip.Chip
 import com.squareup.picasso.Picasso
-import java.io.File
 
 class GenericDownloadAdapter(onItemClickListener: OnItemClickListener, activity: Activity) : ListAdapter<DownloadItem?, GenericDownloadAdapter.ViewHolder>(AsyncDifferConfig.Builder(DIFF_CALLBACK).build()) {
     private val onItemClickListener: OnItemClickListener

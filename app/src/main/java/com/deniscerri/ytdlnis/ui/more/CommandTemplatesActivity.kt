@@ -3,7 +3,6 @@ package com.deniscerri.ytdlnis.ui.more
 import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity

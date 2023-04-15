@@ -3,8 +3,6 @@ package com.deniscerri.ytdlnis.database.viewmodel
 import android.app.Application
 import android.content.ClipboardManager
 import android.content.Context.CLIPBOARD_SERVICE
-import android.os.Handler
-import android.os.Looper
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope

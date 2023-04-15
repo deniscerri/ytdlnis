@@ -36,7 +36,6 @@ import com.google.android.exoplayer2.source.MergingMediaSource
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.ui.PlayerView
-import com.google.android.exoplayer2.upstream.DefaultDataSource
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import com.google.android.exoplayer2.upstream.cache.CacheDataSource
 import com.google.android.exoplayer2.upstream.cache.LeastRecentlyUsedCacheEvictor

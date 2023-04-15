@@ -23,7 +23,6 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LifecycleOwner
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.CommandTemplate
-import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.models.Format
 import com.deniscerri.ytdlnis.database.models.TemplateShortcut
 import com.deniscerri.ytdlnis.database.viewmodel.CommandTemplateViewModel

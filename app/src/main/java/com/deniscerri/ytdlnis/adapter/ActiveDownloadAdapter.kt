@@ -16,13 +16,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.util.FileUtil
-import com.google.android.exoplayer2.offline.Download
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.squareup.picasso.Picasso
-import org.w3c.dom.Text
-import java.util.zip.GZIPOutputStream
 
 class ActiveDownloadAdapter(onItemClickListener: OnItemClickListener, activity: Activity) : ListAdapter<DownloadItem?, ActiveDownloadAdapter.ViewHolder>(AsyncDifferConfig.Builder(DIFF_CALLBACK).build()) {
     private val onItemClickListener: OnItemClickListener

@@ -4,13 +4,11 @@ import android.app.Activity
 import android.content.res.Configuration
 import android.os.Bundle
 import android.text.format.DateFormat
-import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.Button
-import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
@@ -37,7 +35,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
-import org.w3c.dom.Text
 import java.text.SimpleDateFormat
 import java.util.*
 

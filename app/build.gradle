@@ -87,6 +87,10 @@ android {
         }
     }
 
+    lintOptions{
+        disable 'MissingTranslation'
+    }
+
     buildFeatures {
         viewBinding true
         compose true

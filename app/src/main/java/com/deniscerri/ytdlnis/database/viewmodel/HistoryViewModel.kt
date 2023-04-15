@@ -4,7 +4,6 @@ import android.app.Application
 import androidx.lifecycle.*
 import com.deniscerri.ytdlnis.database.DBManager
 import com.deniscerri.ytdlnis.database.models.HistoryItem
-import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.deniscerri.ytdlnis.database.repository.HistoryRepository
 import com.deniscerri.ytdlnis.database.repository.HistoryRepository.HistorySort
 import com.deniscerri.ytdlnis.database.repository.HistoryRepository.HistorySortType

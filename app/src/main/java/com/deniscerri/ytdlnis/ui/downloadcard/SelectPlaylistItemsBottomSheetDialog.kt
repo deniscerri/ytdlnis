@@ -5,14 +5,11 @@ import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Bundle
 import android.util.DisplayMetrics
-import android.util.Log
-import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import androidx.core.widget.doAfterTextChanged
-import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -30,7 +27,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.util.*
 
 class SelectPlaylistItemsBottomSheetDialog(private val items: List<ResultItem?>, private val type: DownloadViewModel.Type) : BottomSheetDialogFragment(), PlaylistAdapter.OnItemClickListener {

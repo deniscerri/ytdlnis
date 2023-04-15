@@ -5,9 +5,6 @@ import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
-import android.text.format.DateFormat
-import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
@@ -25,11 +22,7 @@ import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.sql.Date
-import java.text.SimpleDateFormat
-import java.util.*
 import java.util.concurrent.TimeUnit
-import kotlin.collections.ArrayList
 
 class DownloadViewModel(application: Application) : AndroidViewModel(application) {
     private val repository : DownloadRepository

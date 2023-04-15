@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.AsyncDifferConfig
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -19,7 +18,6 @@ import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.google.android.material.button.MaterialButton
-import com.google.android.material.card.MaterialCardView
 import com.squareup.picasso.Picasso
 import java.util.*
 

@@ -52,7 +52,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickListener {

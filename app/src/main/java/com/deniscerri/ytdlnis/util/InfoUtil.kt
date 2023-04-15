@@ -2,7 +2,6 @@ package com.deniscerri.ytdlnis.util
 
 import android.app.Activity
 import android.content.Context
-import android.os.Environment
 import android.os.Looper
 import android.util.Log
 import android.widget.Toast
