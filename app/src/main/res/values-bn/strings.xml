@@ -189,4 +189,16 @@
     <string name="formatid_copied_to_clipboard">ফর্ম্যাট আইডি ক্লিপবোর্ডে কপি করা হয়েছে</string>
     <string name="update_formats_summary">ফর্ম্যাট কার্ডে ক্লিক করার সময় স্বয়ংক্রিয়ভাবে অনুপস্থিত ফর্ম্যাটগুলির জন্য অনুসন্ধান করুন৷</string>
     <string name="ignore_battery_optimization">ব্যাটারি অপ্টিমাইজেশান উপেক্ষা করুন</string>
+    <string name="share">শেয়ার করুন</string>
+    <string name="cookies">কুকি</string>
+    <string name="new_cookie">নতুন কুকি</string>
+    <string name="cookie">কুকি</string>
+    <string name="create_cookie">কুকি তৈরি করুন</string>
+    <string name="delete_all_cookies">সমস্ত কুকি মুছুন</string>
+    <string name="confirm_delete_cookies_desc">সব কুকি স্থায়ীভাবে মুছুন</string>
+    <string name="get_cookies">কুকিজ পান</string>
+    <string name="download_over_metered_networks">সীমিত নেটওয়ার্কে ডাউনলোড করুন</string>
+    <string name="download_over_metered_networks_summary">"ডাউনলোড ওয়ার্কারকে যেকোনো নেটওয়ার্ক টাইপের কাজ করতে দিন।  অক্ষম থাকলে, এটি ডাউনলোডগুলি শুরু করার জন্য একটি মিটারবিহীন নেটওয়ার্কের জন্য অপেক্ষা করবে"</string>
+    <string name="metered_network_download_start_info">"আপনি একটি  wifi নেটওয়ার্কের সাথে সংযুক্ত হওয়ার পরে ডাউনলোড কর্মী শুরু হবে"</string>
+    <string name="invert_selected">উল্টানো নির্বাচিত</string>
 </resources>
