@@ -29,7 +29,7 @@ import kotlinx.coroutines.withContext
 import java.util.*
 
 
-class FormatSelectionBottomSheetDialog(private val item: DownloadItem, private var formats: List<Format>, private val listener: OnFormatClickListener) : BottomSheetDialogFragment() {
+class FormatSelectionBottomSheetDialog(private val item: DownloadItem?, private var formats: List<Format>, private val listener: OnFormatClickListener) : BottomSheetDialogFragment() {
     private lateinit var behavior: BottomSheetBehavior<View>
     private lateinit var fileUtil: FileUtil
     private lateinit var infoUtil: InfoUtil
@@ -64,7 +64,7 @@ class FormatSelectionBottomSheetDialog(private val item: DownloadItem, private v
         addFormatsToView(linearLayout)
 
         val refreshBtn = view.findViewById<Button>(R.id.format_refresh)
-        if (formats.none { it.filesize == 0L }) refreshBtn.visibility = View.GONE
+        if (formats.none { it.filesize == 0L } || item == null) refreshBtn.visibility = View.GONE
         refreshBtn.setOnClickListener {
            lifecycleScope.launch {
                try {
@@ -74,10 +74,10 @@ class FormatSelectionBottomSheetDialog(private val item: DownloadItem, private v
                    shimmers.startShimmer()
 
                    val res = withContext(Dispatchers.IO){
-                       infoUtil.getFormats(item.url)
+                       infoUtil.getFormats(item!!.url)
                    }
                    formats = res.formats.filter { it.filesize != 0L }
-                   formats = when(item.type){
+                   formats = when(item?.type){
                        Type.audio -> formats.filter { it.format_note.contains("audio", ignoreCase = true) }
                        else -> formats.filter { !it.format_note.contains("audio", ignoreCase = true) }
                    }

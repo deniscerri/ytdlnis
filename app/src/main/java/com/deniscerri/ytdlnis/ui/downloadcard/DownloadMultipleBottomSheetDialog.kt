@@ -11,7 +11,6 @@ import android.util.DisplayMetrics
 import android.util.Log
 import android.view.*
 import android.widget.Button
-import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -22,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.adapter.ConfigureMultipleDownloadsAdapter
 import com.deniscerri.ytdlnis.database.models.DownloadItem
+import com.deniscerri.ytdlnis.database.models.Format
 import com.deniscerri.ytdlnis.database.viewmodel.CommandTemplateViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.ResultViewModel
@@ -33,7 +33,9 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.button.MaterialButton
+import com.google.common.collect.Sets
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
@@ -194,10 +196,42 @@ class DownloadMultipleBottomSheetDialog(private var items: MutableList<DownloadI
                     )
                 }
 
+            } else if (itemId == R.id.format){
+//                val formatListCollection = items.map { it.format }
+//                val commonFormats = getCommonFormats(formatListCollection)
+//
+//                val listener = object : OnFormatClickListener {
+//                    override fun onFormatClick(allFormats: List<Format>, item: Format) {
+//
+//                    }
+//                }
+//                if (parentFragmentManager.findFragmentByTag("formatSheet") == null){
+//                    val bottomSheet = FormatSelectionBottomSheetDialog(null, commonFormats.toList(), listener)
+//                    bottomSheet.show(parentFragmentManager, "formatSheet")
+//                }
             }
             true
         }
+
+        val itemsLiveData = items.asFlow()
     }
+
+//    private fun getCommonFormats(vararg lists: MutableList<List<Format>>): Set<Format> {
+//        val commons: MutableList<Format> = mutableListOf()
+//        commons.addAll(lists[1])
+//        {
+//            lists[1].forEach {
+//                commons.retainAll(it)
+//            }
+//        }
+//
+//        for (numbers in list) {
+//            result = Sets.intersection(result, Sets.newHashSet(numbers))
+//        }
+//        return result
+//
+//
+//    }
 
 
     private var pathResultLauncher = registerForActivityResult(

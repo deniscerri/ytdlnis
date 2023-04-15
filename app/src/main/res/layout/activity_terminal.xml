@@ -61,6 +61,7 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="monospace"
                             android:gravity="bottom"
+                            android:textSize="15sp"
                             android:scrollbars="horizontal|vertical"
                             android:scrollHorizontally="true"
                             android:textIsSelectable="true" />
@@ -74,7 +75,7 @@
                         android:background="@android:color/transparent"
                         android:fontFamily="monospace"
                         android:gravity="start"
-                        android:inputType="textMultiLine"
+                        android:inputType="textMultiLine|textNoSuggestions"
                         android:maxLines="100"
                         android:text="yt-dlp "
                         android:textSize="15sp" />

@@ -1,6 +1,7 @@
 package com.deniscerri.ytdlnis.adapter
 
 import android.app.Activity
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -53,7 +54,7 @@ class TemplatesAdapter(onItemClickListener: OnItemClickListener, activity: Activ
 //        }
 
         card.setOnClickListener {
-            onItemClickListener.onItemClick(item!!)
+            onItemClickListener.onItemClick(item!!, position)
         }
 
         card.setOnLongClickListener {
@@ -62,7 +63,7 @@ class TemplatesAdapter(onItemClickListener: OnItemClickListener, activity: Activ
     }
 
     interface OnItemClickListener {
-        fun onItemClick(commandTemplate: CommandTemplate)
+        fun onItemClick(commandTemplate: CommandTemplate, index: Int)
         fun onSelected(commandTemplate: CommandTemplate)
         fun onDelete(commandTemplate: CommandTemplate)
     }

@@ -581,6 +581,7 @@ class InfoUtil(private val context: Context) {
             }
             e.printStackTrace()
         }
+        Log.e("aa", items.toString())
         return items
     }
 

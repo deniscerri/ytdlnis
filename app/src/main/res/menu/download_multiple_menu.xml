@@ -15,5 +15,11 @@
         android:icon="@drawable/baseline_insert_drive_file_24"
         app:showAsAction="collapseActionView|ifRoom"/>
 
+    <item
+        android:id="@+id/format"
+        android:title="@string/format"
+        android:icon="@drawable/baseline_high_quality_24"
+        app:showAsAction="collapseActionView|ifRoom"/>
+
 </menu>
 

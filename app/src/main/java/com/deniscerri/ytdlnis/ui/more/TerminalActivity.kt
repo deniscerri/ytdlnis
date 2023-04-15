@@ -51,6 +51,7 @@ class TerminalActivity : AppCompatActivity() {
     private var downloadID by Delegates.notNull<Int>()
     private lateinit var downloadFile : File
     private lateinit var observer: FileObserver
+    private lateinit var imm : InputMethodManager
     var context: Context? = null
 
     public override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,6 +61,7 @@ class TerminalActivity : AppCompatActivity() {
         downloadID = System.currentTimeMillis().toInt() % 100000
         downloadFile = File(cacheDir.absolutePath + "/$downloadID.txt")
         if (! downloadFile.exists()) downloadFile.createNewFile()
+        imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
 
         context = baseContext
         scrollView = findViewById(R.id.custom_command_scrollview)
@@ -71,6 +73,17 @@ class TerminalActivity : AppCompatActivity() {
 
 
         bottomAppBar = findViewById(R.id.bottomAppBar)
+        lifecycleScope.launch {
+            val templateCount = withContext(Dispatchers.IO){
+                commandTemplateViewModel.getTotalNumber()
+            }
+            if (templateCount == 0) bottomAppBar.menu.getItem(0).isEnabled = false
+
+            val shortcutCount = withContext(Dispatchers.IO){
+                commandTemplateViewModel.getTotalShortcutNumber()
+            }
+            if (shortcutCount == 0) bottomAppBar.menu.getItem(1).isEnabled = false
+        }
         bottomAppBar.setOnMenuItemClickListener {
             when(it.itemId){
                 R.id.command_templates -> showCommandTemplates()
@@ -91,6 +104,7 @@ class TerminalActivity : AppCompatActivity() {
                 output!!.text = "${output!!.text}\n~ $ ${input!!.text}\n"
                 showCancelFab()
                 downloadFile.appendText("~ $ ${input!!.text}\n")
+                imm.hideSoftInputFromWindow(input?.windowToken, 0)
                 startDownload(
                     input!!.text.toString()
                 )
@@ -141,6 +155,7 @@ class TerminalActivity : AppCompatActivity() {
                         input!!.setText("yt-dlp ")
                         input!!.visibility = View.VISIBLE
                         input!!.requestFocus()
+                        input!!.setSelection(input!!.text.length)
                         hideCancelFab()
                     }
                 }
@@ -211,7 +226,6 @@ class TerminalActivity : AppCompatActivity() {
                 item.setOnClickListener {
                     input!!.text.insert(input!!.selectionStart, template.content + " ")
                     bottomSheet.cancel()
-                    val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
                     input!!.postDelayed({
                         input!!.requestFocus()
                         imm.showSoftInput(input!!, 0)

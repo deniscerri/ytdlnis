@@ -22,6 +22,9 @@ interface CommandTemplateDao {
     @Query("SELECT COUNT(id) FROM commandTemplates")
     fun getTotalNumber() : Int
 
+    @Query("SELECT COUNT(id) FROM templateShortcuts")
+    fun getTotalShortcutNumber() : Int
+
     @Query("SELECT * FROM commandTemplates WHERE id=:id LIMIT 1")
     fun getTemplate(id: Long) : CommandTemplate
 
@@ -46,6 +49,6 @@ interface CommandTemplateDao {
     @Query("DELETE FROM templateShortcuts WHERE id=:itemId")
     suspend fun deleteShortcut(itemId: Long)
 
-    @Update(onConflict = OnConflictStrategy.REPLACE)
+    @Update
     suspend fun update(item: CommandTemplate)
 }

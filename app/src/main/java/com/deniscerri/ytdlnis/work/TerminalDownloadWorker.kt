@@ -35,7 +35,7 @@ class TerminalDownloadWorker(
 
         val intent = Intent(context, MainActivity::class.java)
         val pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE)
-        val notification = notificationUtil.createDownloadServiceNotification(pendingIntent, command.take(20), itemId, NotificationUtil.DOWNLOAD_SERVICE_CHANNEL_ID)
+        val notification = notificationUtil.createDownloadServiceNotification(pendingIntent, command.take(65), itemId, NotificationUtil.DOWNLOAD_SERVICE_CHANNEL_ID)
         val foregroundInfo = ForegroundInfo(itemId, notification)
         setForegroundAsync(foregroundInfo)
         
@@ -81,7 +81,7 @@ class TerminalDownloadWorker(
 
             YoutubeDL.getInstance().execute(request, itemId.toString()){ progress, _, line ->
                 outputFile.appendText("${line}\n")
-                val title: String = command.take(20)
+                val title: String = command.take(65)
                 notificationUtil.updateDownloadNotification(
                     itemId,
                     line, progress.toInt(), 0, title,
@@ -123,7 +123,7 @@ class TerminalDownloadWorker(
             Log.e(TAG, context.getString(R.string.failed_download), it)
             notificationUtil.updateDownloadNotification(
                 itemId,
-                context.getString(R.string.failed_download), 0, 0, command.take(20),
+                context.getString(R.string.failed_download), 0, 0, command.take(65),
                 NotificationUtil.DOWNLOAD_SERVICE_CHANNEL_ID
             )
 

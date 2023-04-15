@@ -3,6 +3,7 @@ package com.deniscerri.ytdlnis.ui.more
 import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -96,8 +97,10 @@ class CommandTemplatesActivity : AppCompatActivity(), TemplatesAdapter.OnItemCli
         private const val TAG = "DownloadLogActivity"
     }
 
-    override fun onItemClick(commandTemplate: CommandTemplate) {
-        uiUtil.showCommandTemplateCreationOrUpdatingSheet(commandTemplate,this@CommandTemplatesActivity, this, commandTemplateViewModel) {}
+    override fun onItemClick(commandTemplate: CommandTemplate, index: Int) {
+        uiUtil.showCommandTemplateCreationOrUpdatingSheet(commandTemplate,this@CommandTemplatesActivity, this, commandTemplateViewModel) {
+            templatesAdapter.notifyItemChanged(index)
+        }
 
     }
 

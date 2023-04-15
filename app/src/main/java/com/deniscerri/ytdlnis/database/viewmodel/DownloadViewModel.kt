@@ -301,14 +301,13 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
             } else 0
             if (delay < 0L) delay = 0L
 
+            val workConstraints = Constraints.Builder()
+            if (!allowMeteredNetworks) workConstraints.setRequiredNetworkType(NetworkType.UNMETERED)
+
             val workRequest = OneTimeWorkRequestBuilder<DownloadWorker>()
                 .setInputData(Data.Builder().putLong("id", it.id).build())
                 .addTag("download")
-                .setConstraints(
-                    Constraints.Builder()
-                        .setRequiredNetworkType(if (allowMeteredNetworks) NetworkType.CONNECTED else NetworkType.UNMETERED)
-                        .build()
-                )
+                .setConstraints(workConstraints.build())
                 .setInitialDelay(delay, TimeUnit.MILLISECONDS)
                 .build()
 

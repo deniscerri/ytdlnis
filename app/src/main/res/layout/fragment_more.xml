@@ -83,7 +83,8 @@
                 android:focusable="true"
                 android:background="?android:attr/selectableItemBackground"
                 android:paddingHorizontal="15dp"
-                app:drawableStartCompat="@drawable/ic_concurrent_downloads" />
+                app:drawableTint="?android:colorAccent"
+                app:drawableStartCompat="@drawable/baseline_downloading_24" />
 
             <TextView
                 android:id="@+id/cookies"

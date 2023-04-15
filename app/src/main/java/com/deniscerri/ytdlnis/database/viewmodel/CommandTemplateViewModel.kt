@@ -49,6 +49,10 @@ class CommandTemplateViewModel(private val application: Application) : AndroidVi
         return repository.getTotalNumber()
     }
 
+    fun getTotalShortcutNumber(): Int {
+        return repository.getTotalShortcutNumber()
+    }
+
     fun insert(item: CommandTemplate) = viewModelScope.launch(Dispatchers.IO) {
         repository.insert(item)
     }

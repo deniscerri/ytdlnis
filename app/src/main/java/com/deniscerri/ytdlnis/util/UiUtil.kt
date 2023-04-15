@@ -142,6 +142,7 @@ class UiUtil(private val fileUtil: FileUtil) {
             }else{
                 item.title = title.editText!!.text.toString()
                 item.content = content.editText!!.text.toString()
+                Log.e("aa", item.toString())
                 commandTemplateViewModel.update(item)
                 newTemplate(item)
             }

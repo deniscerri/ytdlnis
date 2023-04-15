@@ -80,6 +80,7 @@
                 android:id="@+id/audio_quality_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingTop="10dp"
                 android:paddingHorizontal="10dp"
                 android:text="@string/audio_quality" />
             <include layout="@layout/format_item" />
