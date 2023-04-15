@@ -6,7 +6,6 @@ on:
   pull_request:
     branches: [ "main" ]
 
-
 jobs:
   build:
 
@@ -26,10 +25,7 @@ jobs:
         gradle-version: 7.5
     - name: Create Properties File
       run: touch local.properties
-    - name: Build Android App
-      uses: sparkfabrik/android-build-action@v1.3.4
-      with:
-        project-path: android
-        ruby-version: "2.7.5"
-        bundler-version: "2.3.26"
-        fastlane-env: "debug"
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+    - name: Build with Gradle
+      run: ./gradlew build
