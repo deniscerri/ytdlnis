@@ -1,8 +1,6 @@
 name: Android CI
 
 on:
-  push:
-    branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
 
@@ -12,8 +10,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - uses: actions/checkout@v3
+    - name: set up JDK 11
+      uses: actions/setup-java@v3
+      with:
+        java-version: '11'
+        distribution: 'temurin'
+        cache: gradle
+
+    - uses: gradle/gradle-build-action@v2
+      with:
+        gradle-version: 7.5
     - name: Create Properties File
       run: touch local.properties
-    - name: Build Android App
-      uses: sparkfabrik/android-build-action@v1.3.4
-
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+    - name: Build with Gradle
+      run: ./gradlew build
