@@ -8,23 +8,28 @@ plugins {
 }
 
 def properties = new Properties()
-try {
-    def propertiesFile = rootProject.file("local.properties")
-    properties.load(new FileInputStream(propertiesFile))
-}catch(IOException ignored){}
+def propertiesFile = rootProject.file("local.properties")
+
 
 android {
     namespace 'com.deniscerri.ytdlnis'
     compileSdk 33
 
-    signingConfigs {
-        debug {
-            storeFile file(properties["signingConfig.storeFile"])
-            storePassword properties["signingConfig.storePassword"]
-            keyAlias properties["signingConfig.keyAlias"]
-            keyPassword properties["signingConfig.keyPassword"]
-        }
+    if(propertiesFile.exists()){
+        try {
+            properties.load(new FileInputStream(propertiesFile))
+            signingConfigs {
+                debug {
+                    storeFile file(properties["signingConfig.storeFile"])
+                    storePassword properties["signingConfig.storePassword"]
+                    keyAlias properties["signingConfig.keyAlias"]
+                    keyPassword properties["signingConfig.keyPassword"]
+                }
+            }
+        }catch(IOException ignored){}
+
     }
+
     defaultConfig {
         applicationId "com.deniscerri.ytdl"
         minSdk 23
