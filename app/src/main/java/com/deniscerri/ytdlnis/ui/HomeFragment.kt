@@ -7,6 +7,9 @@ import android.content.Context.CLIPBOARD_SERVICE
 import android.content.res.ColorStateList
 import android.content.res.Configuration
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
+import android.graphics.drawable.RippleDrawable
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -16,6 +19,7 @@ import android.view.View.*
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
+import androidx.appcompat.view.StandaloneActionMode
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.children
@@ -27,6 +31,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.deniscerri.ytdlnis.App
 import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.adapter.HomeAdapter
@@ -497,7 +502,6 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
             selectedObjects!!.add(item!!)
             if (actionMode == null){
                 actionMode = (getActivity() as AppCompatActivity?)!!.startSupportActionMode(contextualActionBar)
-
             }else{
                 actionMode!!.title = "${selectedObjects!!.size} ${getString(R.string.selected)}"
             }
@@ -537,9 +541,9 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
         override fun onCreateActionMode(mode: ActionMode?, menu: Menu?): Boolean {
             mode!!.menuInflater.inflate(R.menu.main_menu_context, menu)
             mode.title = "${selectedObjects!!.size} ${getString(R.string.selected)}"
-            (activity as MainActivity).disableBottomNavigation()
-            searchBar?.isEnabled = false
+            searchBar!!.isEnabled = false
             searchBar!!.menu.forEach { it.isEnabled = false }
+            (activity as MainActivity).disableBottomNavigation()
             return true
         }
 
@@ -614,8 +618,9 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
             actionMode = null
             (activity as MainActivity).enableBottomNavigation()
             clearCheckedItems()
-            searchBar?.isEnabled = true
+            searchBar!!.isEnabled = true
             searchBar!!.menu.forEach { it.isEnabled = true }
+            searchBar?.expand(searchBar!!.parent as AppBarLayout)
         }
     }
 

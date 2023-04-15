@@ -15,10 +15,15 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.DownloadItem
+import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
+import com.google.android.material.chip.Chip
 import com.google.android.material.progressindicator.LinearProgressIndicator
+import com.google.android.material.shape.CornerFamily
+import com.google.android.material.shape.MaterialShapeDrawable
+import com.google.android.material.shape.ShapeAppearanceModel
 import com.squareup.picasso.Picasso
 
 class ActiveDownloadAdapter(onItemClickListener: OnItemClickListener, activity: Activity) : ListAdapter<DownloadItem?, ActiveDownloadAdapter.ViewHolder>(AsyncDifferConfig.Builder(DIFF_CALLBACK).build()) {
@@ -58,7 +63,7 @@ class ActiveDownloadAdapter(onItemClickListener: OnItemClickListener, activity: 
         } else {
             uiHandler.post { Picasso.get().load(R.color.black).into(thumbnail) }
         }
-        thumbnail.setColorFilter(Color.argb(95, 0, 0, 0))
+        thumbnail.setColorFilter(Color.argb(20, 0, 0, 0))
 
         // PROGRESS BAR ----------------------------------------------------
         val progressBar = card.findViewById<LinearProgressIndicator>(R.id.progress)
@@ -83,12 +88,17 @@ class ActiveDownloadAdapter(onItemClickListener: OnItemClickListener, activity: 
         }
         author.text = info
 
-        val type = card.findViewById<TextView>(R.id.type)
-        type.text = item.type.toString().uppercase()
+        val type = card.findViewById<MaterialButton>(R.id.download_type)
+        when(item.type){
+            DownloadViewModel.Type.audio -> type.setIconResource(R.drawable.ic_music)
+            DownloadViewModel.Type.video -> type.setIconResource(R.drawable.ic_video)
+            DownloadViewModel.Type.command -> type.setIconResource(R.drawable.ic_terminal)
+        }
 
-        val formatNote = card.findViewById<TextView>(R.id.format_note)
+        val formatNote = card.findViewById<Chip>(R.id.format_note)
         formatNote.text = item.format.format_note
-        val codec = card.findViewById<TextView>(R.id.codec)
+
+        val codec = card.findViewById<Chip>(R.id.codec)
         val codecText =
             if (item.format.encoding != "") {
                 item.format.encoding.uppercase()
@@ -104,9 +114,27 @@ class ActiveDownloadAdapter(onItemClickListener: OnItemClickListener, activity: 
             codec.text = codecText
         }
 
-        val fileSize = card.findViewById<TextView>(R.id.file_size)
+        val fileSize = card.findViewById<Chip>(R.id.file_size)
         fileSize.text = fileUtil.convertFileSize(item.format.filesize)
         if (fileSize.text == "?") fileSize.visibility = View.GONE
+
+        if (fileSize.visibility == View.VISIBLE && codec.visibility == View.GONE){
+            fileSize.shapeAppearanceModel = ShapeAppearanceModel.builder()
+                .setTopRightCorner(CornerFamily.ROUNDED, 40F)
+                .setBottomRightCorner(CornerFamily.ROUNDED, 40F)
+                .setTopLeftCorner(CornerFamily.ROUNDED, 0F)
+                .setBottomLeftCorner(CornerFamily.ROUNDED, 0F)
+                .build()
+        }
+
+        if (fileSize.visibility == View.GONE && codec.visibility == View.GONE){
+            formatNote.shapeAppearanceModel = ShapeAppearanceModel.builder()
+                .setTopLeftCorner(CornerFamily.ROUNDED, 40F)
+                .setBottomLeftCorner(CornerFamily.ROUNDED, 40F)
+                .setTopRightCorner(CornerFamily.ROUNDED, 40F)
+                .setBottomRightCorner(CornerFamily.ROUNDED, 40F)
+                .build()
+        }
 
         //OUTPUT
         val output = card.findViewById<TextView>(R.id.output)

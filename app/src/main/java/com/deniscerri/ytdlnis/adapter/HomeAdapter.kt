@@ -56,11 +56,11 @@ class HomeAdapter(onItemClickListener: OnItemClickListener, activity: Activity) 
         if (imageURL.isNotEmpty()) {
             val uiHandler = Handler(Looper.getMainLooper())
             uiHandler.post { Picasso.get().load(imageURL).into(thumbnail) }
-            thumbnail.setColorFilter(Color.argb(70, 0, 0, 0))
+            thumbnail.setColorFilter(Color.argb(20, 0, 0, 0))
         } else {
             val uiHandler = Handler(Looper.getMainLooper())
             uiHandler.post { Picasso.get().load(R.color.black).into(thumbnail) }
-            thumbnail.setColorFilter(Color.argb(70, 0, 0, 0))
+            thumbnail.setColorFilter(Color.argb(20, 0, 0, 0))
         }
 
         // TITLE  ----------------------------------

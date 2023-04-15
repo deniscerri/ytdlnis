@@ -2,6 +2,7 @@ package com.deniscerri.ytdlnis.util
 
 import android.app.Activity
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Looper
 import android.util.Log
 import android.widget.Toast
@@ -24,12 +25,13 @@ import java.util.regex.Pattern
 
 class InfoUtil(private val context: Context) {
     private var items: ArrayList<ResultItem?>
+    private lateinit var sharedPreferences: SharedPreferences
     private var key: String? = null
     private var useInvidous = false
 
     init {
         try {
-            val sharedPreferences =
+            sharedPreferences =
                 context.getSharedPreferences("root_preferences", Activity.MODE_PRIVATE)
             key = sharedPreferences.getString("api_key", "")
         } catch (e: Exception) {
@@ -483,11 +485,10 @@ class InfoUtil(private val context: Context) {
         init()
         val p = Pattern.compile("^(https?)://(www.)?youtu(.be)?")
         val m = p.matcher(url)
-        return if(m.find() && useInvidous){
+        val formatSource = sharedPreferences.getString("formats_source", context.getString(R.string.defaultValue))!!
+        return if(m.find() && useInvidous && formatSource == "Default"){
             val id = getIDFromYoutubeURL(url)
-            Log.e("Aa", id)
             val res = genericRequest(invidousURL + "videos/" + id)
-            Log.e("aa", res.toString())
             if (res.length() == 0) getFromYTDL(url)[0]!!
             else createVideofromInvidiousJSON(
                 res
@@ -556,9 +557,17 @@ class InfoUtil(private val context: Context) {
                 val formats : ArrayList<Format> = ArrayList()
                 if (formatsInJSON != null) {
                     for (f in 0 until formatsInJSON.length()){
-                        val format = formatsInJSON.getJSONObject(f).toString()
-                        val formatProper = Gson().fromJson(format, Format::class.java)
-                        if (formatProper.filesize > 0) formats.add(formatProper)
+                        val format = formatsInJSON.getJSONObject(f)
+                        val formatProper = Gson().fromJson(format.toString(), Format::class.java)
+                        if (formatProper.filesize > 0){
+                            if ( !formatProper.format_note.contains("audio only", true)) {
+                                formatProper.format_note = format.getString("format_note")
+                            }else{
+                                formatProper.format_note = "${format.getString("format_note")} audio"
+                            }
+                            formatProper.container = format.getString("ext")
+                            formats.add(formatProper)
+                        }
                     }
                 }
                 Log.e("aa", formats.toString())

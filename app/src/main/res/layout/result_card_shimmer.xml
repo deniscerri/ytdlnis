@@ -13,7 +13,7 @@
         android:id="@+id/result_shimmer_card_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:cardCornerRadius="10dp"
+        app:cardCornerRadius="20dp"
         app:cardElevation="10dp"
         app:cardMaxElevation="12dp"
         app:cardBackgroundColor="@color/grey"

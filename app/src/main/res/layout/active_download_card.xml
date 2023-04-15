@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/downloads_card_constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -18,7 +19,7 @@
             android:id="@+id/active_download_card_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:cardCornerRadius="10dp"
+            app:cardCornerRadius="20dp"
             app:cardElevation="10dp"
             app:cardMaxElevation="12dp"
             android:checkable="true"
@@ -30,7 +31,6 @@
                 android:id="@+id/image_view"
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop"
-                android:foreground="@drawable/image_gradient_shape"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
@@ -46,95 +46,51 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <LinearLayout
-                    android:id="@+id/title_author"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:orientation="vertical"
-                    android:dividerPadding="5dp"
-                    app:layout_constraintBottom_toTopOf="@+id/linearlayout2_horizontalscrollview"
-                    app:layout_constraintEnd_toStartOf="@+id/active_download_cancel"
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/download_type"
+                    style="?attr/materialIconButtonFilledTonalStyle"
+                    app:backgroundTint="?attr/colorSurface"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_margin="10dp"
+                    android:insetLeft="0dp"
+                    android:insetTop="0dp"
+                    android:insetRight="0dp"
+                    android:insetBottom="0dp"
+                    app:icon="@drawable/ic_music"
+                    app:iconPadding="0dp"
+                    app:iconSize="13dp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <TextView
-                        android:id="@+id/title"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingTop="10dp"
-                        android:maxLines="1"
-                        android:ellipsize="end"
-                        android:paddingEnd="10dp"
-                        android:paddingStart="10dp"
-                        android:textSize="17sp"
-                        android:textColor="@color/white"
-                        android:textStyle="bold"
-                        android:shadowRadius="2"
-                        android:shadowDx="4"
-                        android:shadowDy="4"
-                        android:shadowColor="@color/black" />
-
-                    <TextView
-                        android:id="@+id/author"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="bottom"
-                        android:maxLines="1"
-                        android:ellipsize="end"
-                        android:paddingEnd="10dp"
-                        android:paddingBottom="5dp"
-                        android:paddingStart="10dp"
-                        android:textSize="12sp"
-                        android:textColor="@color/white"
-                        android:textStyle="bold"
-                        android:shadowRadius="1.5"
-                        android:shadowDx="4"
-                        android:shadowDy="4"
-                        android:shadowColor="@color/black" />
-
-
-                </LinearLayout>
-
-                <androidx.constraintlayout.widget.Barrier
-                    android:id="@+id/barrier"
-                    app:barrierDirection="bottom"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:constraint_referenced_ids="title_author,active_download_cancel"/>
-
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full" />
 
                 <HorizontalScrollView
                     android:id="@+id/linearlayout2_horizontalscrollview"
                     android:layout_width="0dp"
+                    android:layout_marginStart="10dp"
                     android:layout_height="wrap_content"
-                    android:paddingTop="10dp"
                     android:scrollbars="none"
+                    app:layout_constraintBottom_toTopOf="@+id/title_author"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/barrier">
+                    app:layout_constraintStart_toEndOf="@+id/download_type">
 
                     <com.google.android.material.chip.ChipGroup
                         android:id="@+id/linearLayout2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="bottom"
+                        android:layout_gravity="center_vertical|end"
                         android:orientation="horizontal"
-                        android:paddingHorizontal="10dp">
-
-                        <com.google.android.material.chip.Chip
-                            android:id="@+id/type"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:clickable="false"
-                            app:chipMinTouchTargetSize="0dp"
-                            app:layout_constraintBottom_toTopOf="@+id/output"
-                            app:layout_constraintStart_toStartOf="parent" />
+                        android:paddingHorizontal="10dp"
+                        app:chipSpacingHorizontal="0dp">
 
                         <com.google.android.material.chip.Chip
                             android:id="@+id/format_note"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:clickable="false"
+                            app:chipStrokeWidth="0.5dp"
+                            app:shapeAppearance="@style/ShapeAppearanceOverlay.Chip.RoundedStart"
+                            android:textSize="11sp"
                             app:chipMinTouchTargetSize="0dp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -145,7 +101,10 @@
                             android:id="@+id/codec"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            app:shapeAppearance="@style/ShapeAppearanceOverlay.Chip.Middle"
                             android:clickable="false"
+                            app:chipStrokeWidth="0.5dp"
+                            android:textSize="11sp"
                             app:chipMinTouchTargetSize="0dp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -153,9 +112,12 @@
 
                         <com.google.android.material.chip.Chip
                             android:id="@+id/file_size"
+                            app:chipStrokeWidth="0.5dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            app:shapeAppearance="@style/ShapeAppearanceOverlay.Chip.RoundedEnd"
                             android:clickable="false"
+                            android:textSize="11sp"
                             app:chipMinTouchTargetSize="0dp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -165,32 +127,87 @@
 
                 </HorizontalScrollView>
 
+                <LinearLayout
+                    android:id="@+id/title_author"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:dividerPadding="5dp"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toTopOf="@+id/output"
+                    app:layout_constraintEnd_toStartOf="@+id/active_download_cancel"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/download_type">
+
+                    <TextView
+                        android:id="@+id/title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:paddingStart="10dp"
+                        android:paddingTop="10dp"
+                        android:paddingEnd="10dp"
+                        android:shadowColor="#000"
+                        android:shadowDx="4"
+                        android:shadowDy="4"
+                        android:shadowRadius="2"
+                        android:textColor="#FFF"
+                        android:textSize="17sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/author"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:gravity="bottom"
+                        android:maxLines="1"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:paddingBottom="5dp"
+                        android:shadowColor="#000"
+                        android:shadowDx="4"
+                        android:shadowDy="4"
+                        android:shadowRadius="1.5"
+                        android:textColor="#FFF"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+
+                </LinearLayout>
+
                 <TextView
                     android:id="@+id/output"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:maxLines="2"
-                    android:ellipsize="end"
                     android:clickable="true"
-                    android:padding="10dp"
-                    android:textSize="11sp"
+                    android:ellipsize="end"
+                    android:focusable="true"
                     android:fontFamily="monospace"
+                    android:maxLines="2"
+                    android:padding="10dp"
+                    android:shadowColor="#000"
+                    android:shadowDx="4"
+                    android:shadowDy="4"
+                    android:shadowRadius="2"
+                    android:textColor="#FFF"
+                    android:textSize="11sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    android:focusable="true" />
+                    app:layout_constraintStart_toStartOf="parent" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/active_download_cancel"
                     style="?attr/materialIconButtonFilledTonalStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    app:iconSize="30dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginTop="10dp"
                     app:cornerRadius="10dp"
                     app:icon="@drawable/ic_cancel"
+                    app:iconSize="30dp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="@+id/title_author" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

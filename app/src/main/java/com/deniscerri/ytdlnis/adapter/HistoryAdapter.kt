@@ -65,7 +65,7 @@ class HistoryAdapter(onItemClickListener: OnItemClickListener, activity: Activit
         } else {
             uiHandler.post { Picasso.get().load(R.color.black).into(thumbnail) }
         }
-        thumbnail.setColorFilter(Color.argb(95, 0, 0, 0))
+        thumbnail.setColorFilter(Color.argb(20, 0, 0, 0))
 
         // TITLE  ----------------------------------
         val itemTitle = card.findViewById<TextView>(R.id.downloads_title)

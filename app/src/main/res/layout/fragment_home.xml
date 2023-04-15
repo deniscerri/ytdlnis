@@ -109,6 +109,7 @@
         android:layout_height="wrap_content">
 
         <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/home_toolbar"
             android:layout_width="match_parent"
             app:title="@string/app_name"
             app:layout_scrollFlags="scroll"

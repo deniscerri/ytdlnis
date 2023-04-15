@@ -19,7 +19,7 @@
             android:id="@+id/result_card_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:cardCornerRadius="10dp"
+            app:cardCornerRadius="20dp"
             app:cardElevation="5dp"
             app:cardMaxElevation="12dp"
             app:cardPreventCornerOverlap="true"
@@ -72,7 +72,7 @@
                         android:shadowDy="4"
                         android:scrollbars="none"
                         android:shadowRadius="2"
-                        android:textColor="@color/white"
+                        android:textColor="#FFF"
                         android:textSize="17sp"
                         android:textStyle="bold" />
 
@@ -91,7 +91,7 @@
                         android:shadowDy="4"
                         android:scrollbars="none"
                         android:shadowRadius="1.5"
-                        android:textColor="@color/white"
+                        android:textColor="#FFF"
                         android:textSize="12sp"
                         android:textStyle="bold" />
 

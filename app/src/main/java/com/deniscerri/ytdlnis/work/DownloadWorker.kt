@@ -147,7 +147,7 @@ class DownloadWorker(
                     request.addOption("-f", audioQualityId)
 
                     val ext = downloadItem.format.container
-                    if(ext != context.getString(R.string.defaultValue) && ext != "webm"){
+                    if(ext != "Default" && ext != "webm"){
                         val codec = when(downloadItem.format.container){
                             "aac" -> "aac"
                             "mp3" -> "libmp3lame"
@@ -220,7 +220,7 @@ class DownloadWorker(
                 Log.e(TAG, formatArgument)
                 request.addOption("-f", formatArgument)
                 val format = downloadItem.format.container
-                if(format.isNotEmpty() && format != context.resources.getString(R.string.defaultValue)){
+                if(format.isNotEmpty() && format != "Default"){
                     request.addOption("--merge-output-format", format)
                     if (format != "webm") {
                         val embedThumb = sharedPreferences.getBoolean("embed_thumbnail", false)

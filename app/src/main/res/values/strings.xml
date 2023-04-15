@@ -211,4 +211,5 @@
     <string name="save_subs">Save Subtitles</string>
     <string name="save_subs_desc">Write subtitle file</string>
     <string name="subtitle_languages">Subtitle languages</string>
+    <string name="format_source">Formats Source</string>
 </resources>

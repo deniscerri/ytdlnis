@@ -10,8 +10,26 @@
         <item>wav</item>
     </string-array>
 
+    <string-array name="audio_containers_values">
+        <item>Default</item>
+        <item>mp3</item>
+        <item>m4a</item>
+        <item>aac</item>
+        <item>alac</item>
+        <item>flac</item>
+        <item>opus</item>
+        <item>wav</item>
+    </string-array>
+
     <string-array name="video_containers">
         <item>@string/defaultValue</item>
+        <item>mp4</item>
+        <item>mkv</item>
+        <item>webm</item>
+    </string-array>
+
+    <string-array name="video_containers_values">
+        <item>Default</item>
         <item>mp4</item>
         <item>mkv</item>
         <item>webm</item>
@@ -96,5 +114,15 @@
     <array name="initial_slider_values">
         <item>0.0</item>
         <item>100.0</item>
+    </array>
+
+    <array name="formats_source">
+        <item>@string/defaultValue</item>
+        <item>yt-dlp</item>
+    </array>
+
+    <array name="formats_source_values">
+        <item>@string/defaultValue</item>
+        <item>yt-dlp</item>
     </array>
 </resources>

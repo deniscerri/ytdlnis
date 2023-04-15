@@ -5,6 +5,7 @@ import android.content.Context.POWER_SERVICE
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
+import android.os.Build.VERSION_CODES
 import android.os.Bundle
 import android.os.Environment
 import android.os.PowerManager
@@ -64,6 +65,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
     private var updateYTDL: Preference? = null
     private var updateNightlyYTDL: SwitchPreferenceCompat? = null
     private var updateFormats: SwitchPreferenceCompat? = null
+    private var formatSource: ListPreference? = null
     private var updateApp: SwitchPreferenceCompat? = null
     private var exportPreferences : Preference? = null
     private var importPreferences : Preference? = null
@@ -129,6 +131,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         updateYTDL = findPreference("update_ytdl")
         updateNightlyYTDL = findPreference("nightly_ytdl")
         updateFormats = findPreference("update_formats")
+        formatSource = findPreference("formats_source")
         updateApp = findPreference("update_app")
         exportPreferences = findPreference("export_preferences")
         importPreferences = findPreference("import_preferences")
@@ -192,6 +195,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         editor.putString("video_quality", videoQuality!!.value)
         editor.putBoolean("nightly_ytdl", updateNightlyYTDL!!.isChecked)
         editor.putBoolean("update_formats", updateFormats!!.isChecked)
+        editor.putString("formats_source", formatSource!!.value)
         editor.putBoolean("update_app", updateApp!!.isChecked)
         editor.apply()
     }
@@ -208,6 +212,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 language!!.summary = Locale(newValue.toString()).getDisplayLanguage(Locale(newValue.toString()))
                 editor.apply()
                 AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(newValue.toString()))
+                if (Build.VERSION.SDK_INT >= VERSION_CODES.TIRAMISU) requireActivity().recreate()
                 true
             }
 
@@ -420,19 +425,19 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 editor.apply()
                 true
             }
-        audioFormat!!.summary = preferences.getString("audio_format", "")
+        audioFormat!!.summary = preferences.getString("audio_format", "")!!.replace("Default", getString(R.string.defaultValue))
         audioFormat!!.onPreferenceChangeListener =
             Preference.OnPreferenceChangeListener { _: Preference?, newValue: Any ->
                 editor.putString("audio_format", newValue.toString())
-                audioFormat!!.summary = newValue.toString()
+                audioFormat!!.summary = newValue.toString().replace("Default", getString(R.string.defaultValue))
                 editor.apply()
                 true
             }
-        videoFormat!!.summary = preferences.getString("video_format", "")
+        videoFormat!!.summary = preferences.getString("video_format", "")!!.replace("Default", getString(R.string.defaultValue))
         videoFormat!!.onPreferenceChangeListener =
             Preference.OnPreferenceChangeListener { _: Preference?, newValue: Any ->
                 editor.putString("video_format", newValue.toString())
-                videoFormat!!.summary = newValue.toString()
+                videoFormat!!.summary = newValue.toString().replace("Default", getString(R.string.defaultValue))
                 editor.apply()
                 true
             }
@@ -480,6 +485,14 @@ class SettingsFragment : PreferenceFragmentCompat() {
             Preference.OnPreferenceChangeListener {  _: Preference?, newValue: Any ->
                 val enable = newValue as Boolean
                 editor.putBoolean("update_formats", enable)
+                editor.apply()
+                true
+            }
+        formatSource!!.summary = preferences.getString("formats_source", "")!!.replace("Default", getString(R.string.defaultValue))
+        formatSource!!.onPreferenceChangeListener =
+            Preference.OnPreferenceChangeListener { _: Preference?, newValue: Any ->
+                editor.putString("formats_source", newValue.toString())
+                formatSource!!.summary = newValue.toString().replace("Default", getString(R.string.defaultValue))
                 editor.apply()
                 true
             }
