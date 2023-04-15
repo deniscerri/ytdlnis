@@ -39,6 +39,27 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 
+    <TextView
+        android:id="@+id/durationText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="#80000000"
+        android:clickable="false"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:maxLength="17"
+        android:maxLines="1"
+        android:minWidth="30dp"
+        android:paddingHorizontal="5dp"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:cornerRadius="10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/frame_layout"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cut_section"
         android:visibility="gone"

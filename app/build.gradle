@@ -14,6 +14,9 @@ try {
 }catch(IOException ignored){}
 
 android {
+    namespace 'com.deniscerri.ytdlnis'
+    compileSdk 33
+
     signingConfigs {
         debug {
             storeFile file(properties["signingConfig.storeFile"])
@@ -22,11 +25,10 @@ android {
             keyPassword properties["signingConfig.keyPassword"]
         }
     }
-    compileSdkVersion 33
     defaultConfig {
         applicationId "com.deniscerri.ytdl"
-        minSdkVersion 23
-        targetSdkVersion 33
+        minSdk 23
+        targetSdk 33
         versionCode project.versionCode
         versionName project.versionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -106,7 +108,6 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion composeVer
     }
-    namespace 'com.deniscerri.ytdlnis'
 }
 
 

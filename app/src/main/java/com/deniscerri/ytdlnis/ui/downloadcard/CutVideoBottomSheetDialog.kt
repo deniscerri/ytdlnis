@@ -8,14 +8,12 @@ import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.util.DisplayMetrics
-import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.children
-import androidx.core.view.forEach
 import androidx.lifecycle.lifecycleScope
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.ChapterItem
@@ -23,13 +21,28 @@ import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.InfoUtil
 import com.deniscerri.ytdlnis.util.UiUtil
+import com.google.android.exoplayer2.DefaultLoadControl
+import com.google.android.exoplayer2.DefaultRenderersFactory
+import com.google.android.exoplayer2.DefaultRenderersFactory.EXTENSION_RENDERER_MODE_PREFER
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem.fromUri
 import com.google.android.exoplayer2.Player
-import com.google.android.exoplayer2.source.DefaultMediaSourceFactory
+import com.google.android.exoplayer2.database.DatabaseProvider
+import com.google.android.exoplayer2.database.StandaloneDatabaseProvider
+import com.google.android.exoplayer2.mediacodec.MediaCodecInfo
+import com.google.android.exoplayer2.mediacodec.MediaCodecSelector
 import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.source.MergingMediaSource
+import com.google.android.exoplayer2.source.ProgressiveMediaSource
+import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.ui.PlayerView
+import com.google.android.exoplayer2.upstream.DefaultDataSource
+import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
+import com.google.android.exoplayer2.upstream.cache.CacheDataSource
+import com.google.android.exoplayer2.upstream.cache.LeastRecentlyUsedCacheEvictor
+import com.google.android.exoplayer2.upstream.cache.SimpleCache
+import com.google.android.exoplayer2.util.MimeTypes
+import com.google.android.exoplayer2.util.Util
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.card.MaterialCardView
@@ -47,6 +60,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.File
 import java.lang.reflect.Type
 import java.util.*
 import kotlin.properties.Delegates
@@ -60,6 +74,7 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val list
     private lateinit var player: Player
     
     private lateinit var cutSection : ConstraintLayout
+    private lateinit var durationText: TextView
     private lateinit var progress : ProgressBar
     private lateinit var rangeSlider : RangeSlider
     private lateinit var fromTextInput : TextInputLayout
@@ -77,6 +92,8 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val list
     private var timeSeconds by Delegates.notNull<Int>()
     private lateinit var chapters: List<ChapterItem>
     private lateinit var selectedCuts: MutableList<String>
+
+    private lateinit var cache: SimpleCache
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -100,7 +117,52 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val list
             behavior.peekHeight = displayMetrics.heightPixels / 2
         }
 
-        player = ExoPlayer.Builder(requireContext()).build()
+        val renderersFactory = DefaultRenderersFactory(requireContext().applicationContext)
+            .setEnableDecoderFallback(true)
+            .setExtensionRendererMode(EXTENSION_RENDERER_MODE_PREFER)
+            .setMediaCodecSelector { mimeType, requiresSecureDecoder, requiresTunnelingDecoder ->
+                var decoderInfos: MutableList<MediaCodecInfo> =
+                    MediaCodecSelector.DEFAULT
+                        .getDecoderInfos(
+                            mimeType,
+                            requiresSecureDecoder,
+                            requiresTunnelingDecoder
+                        )
+                if (MimeTypes.VIDEO_H264 == mimeType) {
+                    // copy the list because MediaCodecSelector.DEFAULT returns an unmodifiable list
+                    decoderInfos = ArrayList(decoderInfos)
+                    decoderInfos.reverse()
+                }
+                decoderInfos
+            }
+
+        val trackSelector = DefaultTrackSelector()
+        val loadControl = DefaultLoadControl()
+
+// Specify cache folder, my cache folder named media which is inside getCacheDir.
+        val cacheFolder = File(requireContext().cacheDir, "media")
+
+// Specify cache size and removing policies
+        val cacheEvictor = LeastRecentlyUsedCacheEvictor(1 * 1024 * 1024) // My cache size will be 1MB and it will automatically remove least recently used files if the size is reached out.
+
+// Build cache
+        val databaseProvider: DatabaseProvider = StandaloneDatabaseProvider(requireContext())
+        cache = SimpleCache(cacheFolder, cacheEvictor, databaseProvider)
+
+// Build data source factory with cache enabled, if data is available in cache it will return immediately, otherwise it will open a new connection to get the data.
+        val defaultDataSourceFactory = DefaultDataSourceFactory(
+            requireContext(),
+            Util.getUserAgent(requireContext(), requireContext().getString(R.string.app_name))
+        )
+
+        val cacheDataSourceFactory =  CacheDataSource.Factory()
+            .setCache(cache)
+            .setUpstreamDataSourceFactory(defaultDataSourceFactory)
+
+        player = ExoPlayer.Builder(requireContext(), renderersFactory)
+            .setTrackSelector(trackSelector)
+            .setLoadControl(loadControl)
+            .build()
         val frame = view.findViewById<MaterialCardView>(R.id.frame_layout)
         val videoView = view.findViewById<PlayerView>(R.id.video_view)
         videoView.player = player
@@ -109,6 +171,8 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val list
 
         //cut section
         cutSection = view.findViewById(R.id.cut_section)
+        durationText = view.findViewById(R.id.durationText)
+        durationText.text = ""
         progress = view.findViewById(R.id.progress)
         rangeSlider = view.findViewById(R.id.rangeSlider)
         fromTextInput = view.findViewById(R.id.from_textinput)
@@ -154,16 +218,17 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val list
 
                 if (data.isEmpty()) throw Exception("No Streaming URL found!")
                 if (data.size == 2){
-                    val audioSource: MediaSource =
-                        DefaultMediaSourceFactory(requireContext())
+                    val audioSource : MediaSource =
+                        ProgressiveMediaSource.Factory(cacheDataSourceFactory)
                             .createMediaSource(fromUri(Uri.parse(data[0])))
                     val videoSource: MediaSource =
-                        DefaultMediaSourceFactory(requireContext())
+                        ProgressiveMediaSource.Factory(cacheDataSourceFactory)
                             .createMediaSource(fromUri(Uri.parse(data[1])))
                     (player as ExoPlayer).setMediaSource(MergingMediaSource(videoSource, audioSource))
                 }else{
                     player.addMediaItem(fromUri(Uri.parse(data[0])))
                 }
+                player.addMediaItem(fromUri(Uri.parse(data[0])))
 
                 progress.visibility = View.GONE
                 populateSuggestedChapters()
@@ -180,18 +245,20 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val list
         //poll video progress
         lifecycleScope.launch {
             videoProgress(player).collect {
-                val startTimestamp = (rangeSlider.valueFrom.toInt() * timeSeconds) / 100
-                val endTimestamp = (rangeSlider.valueTo.toInt() * timeSeconds) / 100
+                val currentTime = infoUtil.formatIntegerDuration(it, Locale.US)
+                durationText.text = "$currentTime / ${item.duration}"
+                val startTimestamp = convertStringToTimestamp(fromTextInput.editText!!.text.toString())
+                val endTimestamp = convertStringToTimestamp(toTextInput.editText!!.text.toString())
                 if (it >= endTimestamp){
+                    player.prepare()
                     player.seekTo((startTimestamp * 1000).toLong())
                 }
             }
         }
 
         videoView.setOnClickListener {
-            if (player.isPlaying) player.stop()
+            if (player.isPlaying) player.pause()
             else {
-                player.prepare()
                 player.play()
             }
         }
@@ -479,7 +546,6 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val list
     private fun convertStringToTimestamp(duration: String): Int {
         return try {
             val timeArray = duration.split(":")
-            Log.e("aa", timeArray.toString())
             var timeSeconds = timeArray[timeArray.lastIndex].toInt()
             var times = 60
             for (i in timeArray.lastIndex - 1 downTo 0) {
@@ -506,6 +572,7 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val list
 
     private fun cleanUp(){
         player.stop()
+        cache.release()
         parentFragmentManager.beginTransaction().remove(parentFragmentManager.findFragmentByTag("cutVideoSheet")!!).commit()
     }
 }
