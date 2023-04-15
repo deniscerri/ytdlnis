@@ -1,24 +1,18 @@
-pluginManagement {
-    repositories {
-        gradlePluginPortal()
-        google()
-        jcenter()
-        mavenCentral()
-        maven { url 'https://jitpack.io' }
-        maven { url "https://dl.bintray.com/kodein-framework/Kodein-DI" }
-    }
-}
+//pluginManagement {
+  //  repositories {
+        //gradlePluginPortal()
+      //  google()
+    //    mavenCentral()
+  //  }
+//}
+
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         google()
-        jcenter()
         mavenCentral()
-        maven { url 'https://jitpack.io' }
-        maven { url "https://dl.bintray.com/kodein-framework/Kodein-DI" }
     }
 }
-rootProject.name = "YTDLnis"
 
-include ':common', ':app', ':library', ':ffmpeg'
-include ':benchmark'
+rootProject.name = "YTDLnis"
+include ':app'
