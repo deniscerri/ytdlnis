@@ -1,51 +1,24 @@
+//plugins {
+  //  id 'com.android.application' apply false version '7.2.1'
+    //id 'org.jetbrains.kotlin.android' apply false version '1.7.0'
+//}
+
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
-
-
 buildscript {
-
-    def versionMajor = 1
-    def versionMinor = 5
-    def versionPatch = 1
-    def versionBuild = 0 // bump for dogfood builds, public betas, etc.
-
-    ext {
-        versionCode = versionMajor * 100000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
-        versionName = "${versionMajor}.${versionMinor}.${versionPatch}"
-        // dependency versions
-        appCompatVer = '1.6.1'
-        junitVer = '4.13.2'
-        androidJunitVer = '1.1.5'
-        espressoVer = '3.5.1'
-        jacksonVer = '2.9.8'
-        // supports java 1.6
-        commonsIoVer = '2.5'
-        // supports java 1.6
-        commonsCompressVer = '1.12'
-        youtubedlAndroidVer = "7222fe9637"
-        workVer = "2.8.1"
-        composeVer = "1.4.0-alpha02"
-        kotlinVer = "1.7.21"
-        coroutineVer = "1.6.4"
-        retrofitVer = "2.9.0"
-        kodeinVer = "7.16.0"
-        navVer = "2.5.3"
-        media3_version = "1.0.0"
-    }
+    ext.kotlin_version = '1.8.20'
     repositories {
-        mavenCentral()
         google()
+        mavenCentral()
     }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:7.4.2'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "org.jetbrains.kotlin:kotlin-serialization:$kotlin_version"
 
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
 }
-
-plugins {
-    id 'com.android.application' version '7.4.2' apply false
-    id 'com.android.library' version '7.4.2' apply false
-    id 'org.jetbrains.kotlin.android' version '1.7.21' apply false
-    id "org.jetbrains.kotlin.plugin.serialization" version "1.7.21" apply false
-    id 'com.android.test' version '7.4.2' apply false
-}
-
 
 task clean(type: Delete) {
     delete rootProject.buildDir
