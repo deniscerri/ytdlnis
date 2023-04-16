@@ -1,5 +1,5 @@
 <h1 align="center">
-	<img src="fastlane/metadata/android/en-US/images/app_icon.PNG" width="30%" /> <br>
+	<img src="fastlane/metadata/android/en-US/images/icon.PNG" width="30%" /> <br>
 	YTDLnis
 </h1>
 
@@ -48,15 +48,15 @@
 ## 📲 Screenshots
 
 <div>
-<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/1.png" width="30%" />
-<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/2.png" width="30%" />
-<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/3.png" width="30%" />
-<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/4.png" width="30%" />
-<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/5.png" width="30%" />
-<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/6.png" width="30%" />
-<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/7.png" width="30%" />
-<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/8.png" width="30%" />
-<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/9.png" width="30%" />
+<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/01.png" width="30%" />
+<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/02.png" width="30%" />
+<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/03.png" width="30%" />
+<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/04.png" width="30%" />
+<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/05.png" width="30%" />
+<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/06.png" width="30%" />
+<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/07.png" width="30%" />
+<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/08.png" width="30%" />
+<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/09.png" width="30%" />
 <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/10.png" width="30%" />
 <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/11.png" width="30%" />
 <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/12.png" width="30%" />

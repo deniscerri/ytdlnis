@@ -122,7 +122,7 @@
     </array>
 
     <array name="formats_source_values">
-        <item>@string/defaultValue</item>
+        <item>Default</item>
         <item>yt-dlp</item>
     </array>
 </resources>
