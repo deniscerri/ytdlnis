@@ -1,1 +1,1 @@
-Android YouTube Downloader app
+Android Video/Audio Downloader app using yt-dlp

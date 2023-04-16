@@ -1,0 +1,41 @@
+Moved all of the app to kotlin
+Fixed Song Thumbnails not showing on music apps using mediastore (like Samsung Music)
+Cards update and animate nicely when new items are added
+Turned download service to a worker and combined default downloads with custom command
+Added Formats and File Sizes on Results
+Added ability to change download path from the download card
+Combined Audio / Video / Command in a single card through tabs
+Added ability to download multiple vids at the same time (Limit is 5 for now)
+Added ability to schedule downloads. You can put the date and time.
+Fixed File Scanning
+Made downloads download to temporary folders. Each version of the file depending on the url and format type has its own folder. If you cancel a download and restart it, it will resume the downloads based on the correct format. After download, temp folder gets axed.
+Fixed downloads not getting cancelled sometimes
+Added ability to update yt-dlp from a nightly build
+Changed search suggestion provider to google's own api
+Added more sorting options in the history fragment
+Implemented Language switcher in the app. For devices on Android 13 and up, go to App Details and change it there
+Added material date and time pickers
+Updated bottom sheet design
+Added separate format selection card
+Implemented bottom card in the share menu instead of opening the whole app. If its a txt file it will open the app
+Added m-time as a preference
+Added ability to get result item formats if you searched for it or if it is a playlist item since they don't have formats
+Added Download Logs
+Added Search History
+Added Separate Download Queue Screen. (Double Click the download icon or go to more section to access)
+Fixed bugs on terminal mode
+Fixed downlaod logs crashing on older apis
+Added long press to open download card even if the setting is disabled
+Fixed bug of download card duplicating when switching formats in share activity
+Implemented Custom Command Tab in the download card. (Disabled by default. You need to create at least one command template in the more section)
+Added tabs to download queue section (running, queued, cancelled, errored)
+Added ability to update custom command right from the download card & modify the chosen one just for that download
+Fixed search history storing duplicate queries
+Implemented Preferred Download Type. On Share Activity or when searching for one result, it will open the preferred tab on the download card
+Implemented processing multiple items from a playlist in the share activity. You can select a portion of them, then you can modify each item just like you would on a normal link. You can change the download directory for all items at once, and you can schedule all of them like a normal download. You can also change their type to audio/video/command all at once
+Fixed Download All button not showing up after reopening app with a playlist as result
+Added copy log in the download log screen
+Fixed download logs not properly live scrolling
+Added ability to retry cancelled downloads
+Added ability to open logs directly from the list of errored downloads (if logs were enabled for that download at the time)
+Showed link copied to clipboard as item suggestion in searchview

@@ -1,10 +1,20 @@
-Download audio and video files on different formats through yt-dlp.
-Download videos, playlists, multi-select items.
-Really user friendly.
-Download History.
-Command Line Functionality.
-Material You Compatible.
-Foreground Download Service.
-Share links directly to the app.
-Built in search functionality.
-Automatically checks for app updates.
+download audio/video files from more than 1000 websites using yt-dlp
+download playlists or multi select items
+queue downloads and schedule them by date and time
+use custom commands and templates or go full terminal mode
+remove sponsorblock chapters
+embed subtitles/metadata/chapters etc
+modify metadata such as title and author
+split item into separate files depending on its chapters
+select different download formats
+process multiple items before download
+quick share card right from the share menu
+search or insert a link from the app
+log downloads
+re-download cancelled or failed downloads
+incognito mode when you don't want to save a download history
+download multiple items at the same time
+change preferred audio/video formats and qualities
+Material You interface
+MVVM Architecture w/ WorkManager
+easy to use :)

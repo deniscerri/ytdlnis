@@ -288,11 +288,11 @@ class DownloadWorker(
             }
         }.onSuccess {
             //move file from internal to set download directory
-            setProgressAsync(workDataOf("progress" to 100, "output" to "Moving file to $downloadLocation", "id" to downloadItem.id, "log" to logDownloads))
+            setProgressAsync(workDataOf("progress" to 100, "output" to "Moving file to ${fileUtil.formatPath(downloadLocation)}", "id" to downloadItem.id, "log" to logDownloads))
             var finalPath : String?
             try {
                 finalPath = moveFile(tempFileDir.absoluteFile, downloadLocation){ progress ->
-                    setProgressAsync(workDataOf("progress" to progress, "output" to "Moving file to $downloadLocation", "id" to downloadItem.id, "log" to logDownloads))
+                    setProgressAsync(workDataOf("progress" to progress, "output" to "Moving file to ${fileUtil.formatPath(downloadLocation)}", "id" to downloadItem.id, "log" to logDownloads))
                 }
                 setProgressAsync(workDataOf("progress" to 100, "output" to "Moved file to $finalPath", "id" to downloadItem.id, "log" to logDownloads))
             }catch (e: Exception){

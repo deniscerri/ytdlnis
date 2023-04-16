@@ -1,6 +1,7 @@
 package com.deniscerri.ytdlnis.ui.downloads
 
 import android.content.Context
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
@@ -13,6 +14,7 @@ import androidx.work.WorkManager
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.tabs.TabLayout
 
 
@@ -81,14 +83,20 @@ class DownloadQueueActivity : AppCompatActivity(){
             try{
                 when(m.itemId){
                     R.id.clear_queue -> {
-                        cancelAllDownloads()
-                        downloadViewModel.deleteQueued()
+                        showDeleteDialog() {
+                            cancelAllDownloads()
+                            downloadViewModel.deleteQueued()
+                        }
                     }
                     R.id.clear_cancelled -> {
-                        downloadViewModel.deleteCancelled()
+                        showDeleteDialog() {
+                            downloadViewModel.deleteCancelled()
+                        }
                     }
                     R.id.clear_errored -> {
-                        downloadViewModel.deleteErrored()
+                        showDeleteDialog() {
+                            downloadViewModel.deleteErrored()
+                        }
                     }
                 }
             }catch (e: Exception){
@@ -97,6 +105,16 @@ class DownloadQueueActivity : AppCompatActivity(){
 
             true
         }
+    }
+
+    private fun showDeleteDialog (deleteClicked: (deleteClicked: Boolean) -> Unit){
+        val deleteDialog = MaterialAlertDialogBuilder(this)
+        deleteDialog.setTitle(getString(R.string.you_are_going_to_delete_multiple_items))
+        deleteDialog.setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, _: Int -> dialogInterface.cancel() }
+        deleteDialog.setPositiveButton(getString(R.string.ok)) { _: DialogInterface?, _: Int ->
+            deleteClicked(true)
+        }
+        deleteDialog.show()
     }
 
     private fun cancelAllDownloads() {
