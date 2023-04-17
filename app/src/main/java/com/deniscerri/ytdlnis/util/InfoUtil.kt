@@ -66,9 +66,9 @@ class InfoUtil(private val context: Context) {
         init()
         items = ArrayList()
         val searchEngine = sharedPreferences.getString("search_engine", "ytsearch")
-        return if (key!!.isEmpty()) {
-            if (useInvidous && searchEngine == "ytsearch") searchFromInvidous(query) else getFromYTDL(query)
-        } else searchFromKey(query)
+        return if (searchEngine == "ytsearch"){
+            if (key!!.isNotEmpty()) searchFromKey(query) else if (useInvidous) searchFromInvidous(query) else getFromYTDL(query)
+        }else getFromYTDL(query)
     }
 
     @Throws(JSONException::class)
