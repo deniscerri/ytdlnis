@@ -41,6 +41,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
     private var clearCache: Preference? = null
     private var incognito: SwitchPreferenceCompat? = null
     private var preferredDownloadType : ListPreference? = null
+    private var searchEngine : ListPreference? = null
     private var downloadCard: SwitchPreferenceCompat? = null
     private var meteredNetwork: SwitchPreferenceCompat? = null
     private var apiKey: EditTextPreference? = null
@@ -108,6 +109,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         clearCache = findPreference("clear_cache")
         incognito = findPreference("incognito")
         preferredDownloadType = findPreference("preferred_download_type")
+        searchEngine = findPreference("search_engine")
         downloadCard = findPreference("download_card")
         meteredNetwork = findPreference("metered_networks")
         apiKey = findPreference("api_key")
@@ -174,6 +176,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
         editor.putBoolean("incognito", incognito!!.isChecked)
         editor.putString("preferred_download_type", preferredDownloadType!!.value)
+        editor.putString("search_engine", searchEngine!!.value)
         editor.putBoolean("download_card", downloadCard!!.isChecked)
         editor.putBoolean("metered_networks", meteredNetwork!!.isChecked)
         editor.putString("api_key", apiKey!!.text)
@@ -291,6 +294,12 @@ class SettingsFragment : PreferenceFragmentCompat() {
         preferredDownloadType!!.onPreferenceChangeListener =
             Preference.OnPreferenceChangeListener { _: Preference?, newValue: Any ->
                 editor.putString("preferred_download_type", newValue.toString())
+                editor.apply()
+                true
+            }
+        searchEngine!!.onPreferenceChangeListener =
+            Preference.OnPreferenceChangeListener { _: Preference?, newValue: Any ->
+                editor.putString("search_engine", newValue.toString())
                 editor.apply()
                 true
             }

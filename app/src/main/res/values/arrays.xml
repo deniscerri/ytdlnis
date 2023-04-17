@@ -125,4 +125,30 @@
         <item>invidious</item>
         <item>yt-dlp</item>
     </array>
+
+    <array name="search_engines">
+        <item>YouTube</item>
+        <item>Nico video</item>
+        <item>PRX Series</item>
+        <item>PRX Stories</item>
+        <item>Rokfin</item>
+        <item>Yahoo screen</item>
+        <item>Soundcloud</item>
+        <item>Google Video</item>
+        <item>Bilibili</item>
+        <item>Netverse</item>
+    </array>
+
+    <array name="search_engines_values">
+        <item>ytsearch</item>
+        <item>nicosearch</item>
+        <item>PRX Series</item>
+        <item>PRX Stories</item>
+        <item>rkfnsearch</item>
+        <item>yvsearch</item>
+        <item>scsearch</item>
+        <item>gvsearch</item>
+        <item>bilisearch</item>
+        <item>netsearch</item>
+    </array>
 </resources>

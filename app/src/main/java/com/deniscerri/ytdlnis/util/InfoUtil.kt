@@ -10,6 +10,7 @@ import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.Format
 import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.google.gson.Gson
+import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.google.gson.reflect.TypeToken
 import com.yausername.youtubedl_android.YoutubeDL
@@ -64,8 +65,9 @@ class InfoUtil(private val context: Context) {
     fun search(query: String): ArrayList<ResultItem?> {
         init()
         items = ArrayList()
+        val searchEngine = sharedPreferences.getString("search_engine", "ytsearch")
         return if (key!!.isEmpty()) {
-            if (useInvidous) searchFromInvidous(query) else getFromYTDL(query)
+            if (useInvidous && searchEngine == "ytsearch") searchFromInvidous(query) else getFromYTDL(query)
         } else searchFromKey(query)
     }
 
@@ -555,6 +557,7 @@ class InfoUtil(private val context: Context) {
     fun getFromYTDL(query: String): ArrayList<ResultItem?> {
         init()
         items = ArrayList()
+        val searchEngine = sharedPreferences.getString("search_engine", "ytsearch")
         try {
             val request = YoutubeDLRequest(query)
             request.addOption("--flat-playlist")
@@ -562,7 +565,7 @@ class InfoUtil(private val context: Context) {
             request.addOption("--skip-download")
             request.addOption("-R", "1")
             request.addOption("--socket-timeout", "5")
-            if (!query.contains("http")) request.addOption("--default-search", "ytsearch25")
+            if (!query.contains("http")) request.addOption("--default-search", "${searchEngine}25")
 
             val cookiesFile = File(context.cacheDir, "cookies.txt")
             if (cookiesFile.exists()){
@@ -607,7 +610,7 @@ class InfoUtil(private val context: Context) {
                 var playlistTitle: String? = ""
                 if (jsonObject.has("playlist_title")) playlistTitle = jsonObject.getString("playlist_title")
                 if(playlistTitle.equals(query)) playlistTitle = ""
-                val formatsInJSON = if (jsonObject.has("formats")) jsonObject.getJSONArray("formats") else null
+                val formatsInJSON = if (jsonObject.has("formats") && jsonObject.get("formats") is JsonArray) jsonObject.getJSONArray("formats") else null
                 val formats : ArrayList<Format> = ArrayList()
                 if (formatsInJSON != null) {
                     for (f in 0 until formatsInJSON.length()){

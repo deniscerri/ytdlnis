@@ -57,7 +57,7 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
         erroredDownloads = repository.erroredDownloads
 
         val videoFormat = getApplication<App>().resources.getStringArray(R.array.video_formats)
-        val videoContainer = sharedPreferences.getString("video_format",  getApplication<App>().resources.getString(R.string.defaultValue))
+        val videoContainer = sharedPreferences.getString("video_format",  "Default")
 
         defaultVideoFormats = mutableListOf()
         videoFormat.forEach {

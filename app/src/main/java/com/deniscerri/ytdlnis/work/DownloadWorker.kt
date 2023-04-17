@@ -143,29 +143,25 @@ class DownloadWorker(
                 if (audioQualityId.isBlank() || audioQualityId == "0" || audioQualityId == context.getString(R.string.best_quality)) audioQualityId = ""
                 else if (audioQualityId == context.getString(R.string.worst_quality)) audioQualityId = "worstaudio"
 
-                if (audioQualityId.isNotBlank()){
-                    request.addOption("-f", audioQualityId)
+                val ext = downloadItem.format.container
+                if (audioQualityId.isBlank() || ext == "Default") request.addOption("-x")
+                request.addOption("-f", audioQualityId)
 
-                    val ext = downloadItem.format.container
-                    if(ext != "Default" && ext != "webm"){
-                        val codec = when(downloadItem.format.container){
-                            "aac" -> "aac"
-                            "mp3" -> "libmp3lame"
-                            "flac" -> "flac"
-                            "opus" -> "libopus"
-                            else -> ""
-                        }
-                        Log.e("aa", codec)
-                        if (codec.isEmpty()){
-                            request.addOption("-x")
-                        }else{
-                            request.addOption("--remux-video", ext)
-                            request.addOption("--ppa", "VideoRemuxer:-vn -c:a $codec")
-                        }
+                if(ext != "webm"){
+                    val codec = when(downloadItem.format.container){
+                        "aac" -> "aac"
+                        "mp3" -> "libmp3lame"
+                        "flac" -> "flac"
+                        "opus" -> "libopus"
+                        else -> ""
                     }
-
-                }else{
-                    request.addOption("-x")
+                    Log.e("aa", codec)
+                    if (codec.isEmpty()){
+                        request.addOption("-x")
+                    }else{
+                        request.addOption("--remux-video", ext)
+                        request.addOption("--ppa", "VideoRemuxer:-vn -c:a $codec")
+                    }
                 }
 
                 request.addOption("--embed-metadata")

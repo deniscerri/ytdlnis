@@ -96,7 +96,7 @@ class ActiveDownloadAdapter(onItemClickListener: OnItemClickListener, activity: 
         }
 
         val formatNote = card.findViewById<Chip>(R.id.format_note)
-        formatNote.text = item.format.format_note
+        formatNote.text = item.format.format_note.uppercase()
 
         val codec = card.findViewById<Chip>(R.id.codec)
         val codecText =
