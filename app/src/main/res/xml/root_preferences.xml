@@ -90,6 +90,14 @@
             app:summary="@string/api_key_summary"
             app:title="@string/api_key" />
 
+        <SwitchPreferenceCompat
+            android:widgetLayout="@layout/preferece_material_switch"
+            app:defaultValue="false"
+            android:icon="@drawable/baseline_recommend_24"
+            android:key="home_recommendations"
+            app:summary="@string/video_recommendations_summary"
+            app:title="@string/video_recommendations" />
+
         <SeekBarPreference
             app:dependency="aria2"
             android:defaultValue="3"
@@ -276,12 +284,12 @@
             app:title="@string/update_formats" />
 
         <ListPreference
-            android:defaultValue="Default"
+            android:defaultValue="yt-dlp"
             android:entries="@array/formats_source"
             android:entryValues="@array/formats_source_values"
             android:icon="@drawable/baseline_manage_search_24"
             app:key="formats_source"
-            app:summary="@string/defaultValue"
+            app:summary="yt-dlp"
             app:title="@string/format_source" />
 
         <SwitchPreferenceCompat

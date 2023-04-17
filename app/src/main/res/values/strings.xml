@@ -212,4 +212,6 @@
     <string name="save_subs_desc">Write subtitle file</string>
     <string name="subtitle_languages">Subtitle languages</string>
     <string name="format_source">Formats Source</string>
+    <string name="video_recommendations">Video Recommendations</string>
+    <string name="video_recommendations_summary">Get Recommended Youtube Videos on the Home Screen from Invidious</string>
 </resources>

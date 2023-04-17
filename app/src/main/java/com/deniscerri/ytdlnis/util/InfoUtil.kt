@@ -489,8 +489,8 @@ class InfoUtil(private val context: Context) {
         init()
         val p = Pattern.compile("^(https?)://(www.)?youtu(.be)?")
         val m = p.matcher(url)
-        val formatSource = sharedPreferences.getString("formats_source", context.getString(R.string.defaultValue))!!
-        return if(m.find() && useInvidous && formatSource == "Default"){
+        val formatSource = sharedPreferences.getString("formats_source", "yt-dlp")
+        return if(m.find() && useInvidous && formatSource == "invidious"){
             val id = getIDFromYoutubeURL(url)
             val res = genericRequest(invidousURL + "videos/" + id)
             if (res.length() == 0) getFromYTDL(url)[0]!!

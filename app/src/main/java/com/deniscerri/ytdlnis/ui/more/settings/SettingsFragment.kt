@@ -44,6 +44,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
     private var downloadCard: SwitchPreferenceCompat? = null
     private var meteredNetwork: SwitchPreferenceCompat? = null
     private var apiKey: EditTextPreference? = null
+    private var homeRecommendations: SwitchPreferenceCompat? = null
     private var concurrentFragments: SeekBarPreference? = null
     private var concurrentDownloads: SeekBarPreference? = null
     private var limitRate: EditTextPreference? = null
@@ -110,6 +111,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         downloadCard = findPreference("download_card")
         meteredNetwork = findPreference("metered_networks")
         apiKey = findPreference("api_key")
+        homeRecommendations = findPreference("home_recommendations")
         concurrentFragments = findPreference("concurrent_fragments")
         concurrentDownloads = findPreference("concurrent_downloads")
         limitRate = findPreference("limit_rate")
@@ -175,6 +177,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         editor.putBoolean("download_card", downloadCard!!.isChecked)
         editor.putBoolean("metered_networks", meteredNetwork!!.isChecked)
         editor.putString("api_key", apiKey!!.text)
+        editor.putBoolean("home_recommendations", homeRecommendations!!.isChecked)
         editor.putInt("concurrent_fragments", concurrentFragments!!.value)
         editor.putInt("concurrent_downloads", concurrentDownloads!!.value)
         editor.putString("limit_rate", limitRate!!.text)
@@ -308,6 +311,13 @@ class SettingsFragment : PreferenceFragmentCompat() {
         apiKey!!.onPreferenceChangeListener =
             Preference.OnPreferenceChangeListener { _: Preference?, newValue: Any ->
                 editor.putString("api_key", newValue.toString())
+                editor.apply()
+                true
+            }
+        homeRecommendations!!.onPreferenceChangeListener =
+            Preference.OnPreferenceChangeListener { _: Preference?, newValue: Any ->
+                val enable = newValue as Boolean
+                editor.putBoolean("home_recommendations", enable)
                 editor.apply()
                 true
             }

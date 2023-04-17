@@ -117,12 +117,12 @@
     </array>
 
     <array name="formats_source">
-        <item>@string/defaultValue</item>
+        <item>Invidious API [Youtube]</item>
         <item>yt-dlp</item>
     </array>
 
     <array name="formats_source_values">
-        <item>Default</item>
+        <item>invidious</item>
         <item>yt-dlp</item>
     </array>
 </resources>

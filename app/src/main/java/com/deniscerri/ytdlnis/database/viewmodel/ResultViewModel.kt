@@ -1,6 +1,8 @@
 package com.deniscerri.ytdlnis.database.viewmodel
 
+import android.app.Activity
 import android.app.Application
+import android.content.SharedPreferences
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
@@ -25,6 +27,7 @@ class ResultViewModel(application: Application) : AndroidViewModel(application) 
     val items : LiveData<List<ResultItem>>
     val loadingItems = MutableLiveData<Boolean>()
     var itemCount : LiveData<Int>
+    private val sharedPreferences: SharedPreferences
 
     init {
         val dao = DBManager.getInstance(application).resultDao
@@ -34,20 +37,23 @@ class ResultViewModel(application: Application) : AndroidViewModel(application) 
         items = repository.allResults
         loadingItems.postValue(false)
         itemCount = repository.itemCount
+        sharedPreferences = application.getSharedPreferences("root_preferences", Activity.MODE_PRIVATE)
     }
 
     fun checkTrending() = viewModelScope.launch(Dispatchers.IO){
-        try {
-            val item = repository.getFirstResult()
-            if (
-                item.playlistTitle == getApplication<App>().getString(R.string.trendingPlaylist)
-                && item.creationTime < (System.currentTimeMillis() / 1000) - 86400
-            ){
+        if (sharedPreferences.getBoolean("home_recommendations", false)){
+            try {
+                val item = repository.getFirstResult()
+                if (
+                    item.playlistTitle == getApplication<App>().getString(R.string.trendingPlaylist)
+                    && item.creationTime < (System.currentTimeMillis() / 1000) - 86400
+                ){
+                    getTrending()
+                }
+            }catch (e : Exception){
+                e.printStackTrace()
                 getTrending()
             }
-        }catch (e : Exception){
-            e.printStackTrace()
-            getTrending()
         }
     }
     fun getTrending() = viewModelScope.launch(Dispatchers.IO){
