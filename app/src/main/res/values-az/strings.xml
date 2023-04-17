@@ -201,4 +201,7 @@
     <string name="download_over_metered_networks_summary">Yükləmə işçisinə istənilən şəbəkə növündə işləməyə icazə ver. Qeyri-aktiv edilərsə, o, yükləmələri başlatmaq üçün ölçülməyən şəbəkəni gözləyəcək</string>
     <string name="metered_network_download_start_info">Yükləmə işçisi ölçülməyən şəbəkəyə qoşulduqdan sonra başlayacaq</string>
     <string name="invert_selected">Seçilənləri Çevir</string>
+    <string name="save_subs">Altyazıları Saxla</string>
+    <string name="save_subs_desc">Altyazı faylı yaz</string>
+    <string name="subtitle_languages">Altyazı dilləri</string>
 </resources>

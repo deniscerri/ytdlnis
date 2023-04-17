@@ -197,4 +197,11 @@
     <string name="new_cookie">Нові cookie</string>
     <string name="cookie">Cookie</string>
     <string name="create_cookie">Створити cookie</string>
+    <string name="metered_network_download_start_info">Завантаження почнеться, як тільки ви підключитеся до мережі з необмеженим доступом</string>
+    <string name="invert_selected">Інвертувати вибране</string>
+    <string name="save_subs">Зберегти субтитри</string>
+    <string name="save_subs_desc">Записати файл субтитрів</string>
+    <string name="subtitle_languages">Мови субтитрів</string>
+    <string name="download_over_metered_networks_summary">Дозволяє завантажувати з мережі будь-якого типу. Якщо вимкнено, він чекатиме на початок завантаження з необмеженої мережі</string>
+    <string name="download_over_metered_networks">Завантажувати через мережі з обмеженнями</string>
 </resources>

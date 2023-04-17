@@ -197,4 +197,11 @@
     <string name="delete_all_cookies">Dzēst Visus Sīkfailus</string>
     <string name="confirm_delete_cookies_desc">Neatgriezeniski dzēst visas sīkdatnes</string>
     <string name="formatid_copied_to_clipboard">Formāta ID kopēts starpliktuvē</string>
+    <string name="metered_network_download_start_info">Lejupielādes strādnieks sāks pēc tam, kad būsiet pieslēgti neierobežotam tīklam</string>
+    <string name="invert_selected">Invertēt Atlasīto</string>
+    <string name="save_subs">Saglabāt Subtitrus</string>
+    <string name="save_subs_desc">Rakstīt subtitru failu</string>
+    <string name="subtitle_languages">Subtitru valodas</string>
+    <string name="download_over_metered_networks">Lejupielāde ierobežotos tīklos</string>
+    <string name="download_over_metered_networks_summary">Ļaut lejupielādes strādniekam darboties jebkurā tīkla tipā. Ja atspējots, tas gaidīs, kad sāksies lejupielāde neierobežotā tīklā</string>
 </resources>
