@@ -185,4 +185,27 @@
     <string name="dont_ask_again">Tekrar sorma</string>
     <string name="end">Son</string>
     <string name="start">Başlangıç</string>
+    <string name="cut">Kes</string>
+    <string name="new_cut">Yeni Kesim</string>
+    <string name="add_template_first">Oluşturulmuş en az bir komut şablonuna sahip olmanız gerekir!</string>
+    <string name="formatid_copied_to_clipboard">Biçim kimliği panoya kopyalandı</string>
+    <string name="suggested">Önerildi</string>
+    <string name="select_all">Hepsin seç</string>
+    <string name="share">Paylaş</string>
+    <string name="cookies">Veritabanlar</string>
+    <string name="new_cookie">Yeni Veritabanı</string>
+    <string name="cookie">Veritabanı</string>
+    <string name="create_cookie">Veritabanı Oluştur</string>
+    <string name="get_cookies">Verileri al</string>
+    <string name="delete_all_cookies">Tüm Verileri Sil</string>
+    <string name="confirm_delete_cookies_desc">Tüm verileri kalıcı olarak sil</string>
+    <string name="download_over_metered_networks">Ölçülen Ağlar aracılığıyla yükleme</string>
+    <string name="download_over_metered_networks_summary">İndirme çalışanına herhangi bir ağ türünde çalışmaya izin ver. Devre dışı bırakılırsa, ölçülmemiş bir ağın indirmeleri başlatmasını bekler</string>
+    <string name="metered_network_download_start_info">İndirme çalışanı, ölçülmeyen ağa bağlandıktan sonra başlayacak</string>
+    <string name="invert_selected">Seçilenleri Çevir</string>
+    <string name="save_subs">Altyazıları Kaydet</string>
+    <string name="subtitle_languages">Altyazı dilleri</string>
+    <string name="save_subs_desc">Altyazı dosyası yaz</string>
+    <string name="update_formats_summary">Format kartına tıkladığınızda otomatik eksik formatları arar</string>
+    <string name="ignore_battery_optimization">Pil Optimizasyonun Yoksay</string>
 </resources>
