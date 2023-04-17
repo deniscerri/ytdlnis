@@ -10,8 +10,11 @@ import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.Format
 import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.google.gson.Gson
+import com.google.gson.JsonObject
+import com.google.gson.reflect.TypeToken
 import com.yausername.youtubedl_android.YoutubeDL
 import com.yausername.youtubedl_android.YoutubeDLRequest
+import kotlinx.serialization.json.Json
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -22,6 +25,7 @@ import java.net.HttpURLConnection
 import java.net.URL
 import java.util.*
 import java.util.regex.Pattern
+import kotlin.collections.ArrayList
 
 class InfoUtil(private val context: Context) {
     private var items: ArrayList<ResultItem?>
@@ -496,6 +500,56 @@ class InfoUtil(private val context: Context) {
         }else{
             getFromYTDL(url)[0]!!
         }
+    }
+
+    fun getFormatsTest(urls: List<String>, progress: (progress: List<Format>) -> Unit){
+        init()
+        val urlsFile = File(context.cacheDir, "urls.txt")
+        urlsFile.delete()
+        urlsFile.createNewFile()
+        urls.forEach {
+            urlsFile.appendText(it+"\n")
+        }
+        try {
+            val request = YoutubeDLRequest(emptyList())
+            request.addOption("--print", "%(formats)s")
+            request.addOption("-a", urlsFile.absolutePath)
+            request.addOption("--skip-download")
+            request.addOption("-R", "1")
+            request.addOption("--socket-timeout", "5")
+            val cookiesFile = File(context.cacheDir, "cookies.txt")
+            if (cookiesFile.exists()){
+                request.addOption("--cookies", cookiesFile.absolutePath)
+            }
+
+            val youtubeDLResponse = YoutubeDL.getInstance().execute(request){ progress, _, line ->
+                val formats = mutableListOf<Format>()
+                val listOfStrings = JSONArray(line)
+                for (f in 0 until listOfStrings.length()){
+                    val format = listOfStrings.get(f) as JSONObject
+                    try{
+                        if (format.getString("filesize") == "None") continue
+                    }catch (e: Exception) { continue }
+                    val formatProper = Gson().fromJson(format.toString(), Format::class.java)
+                    if (formatProper.filesize > 0){
+                        if ( !formatProper.format_note.contains("audio only", true)) {
+                            formatProper.format_note = format.getString("format_note")
+                        }else{
+                            formatProper.format_note = "${format.getString("format_note")} audio"
+                        }
+                        formatProper.container = format.getString("ext")
+                        formats.add(formatProper)
+                    }
+                }
+                progress(formats)
+            }
+        } catch (e: Exception) {
+            Looper.prepare().run {
+                Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
+            }
+            e.printStackTrace()
+        }
+        urlsFile.delete()
     }
 
     fun getFromYTDL(query: String): ArrayList<ResultItem?> {

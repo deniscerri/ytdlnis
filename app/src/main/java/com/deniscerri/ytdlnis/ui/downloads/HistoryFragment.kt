@@ -559,6 +559,13 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
                     actionMode?.finish()
                     true
                 }
+                R.id.select_all -> {
+                    historyAdapter?.checkAll(historyList)
+                    selectedObjects?.clear()
+                    historyList?.forEach { selectedObjects?.add(it!!) }
+                    mode?.title = getString(R.string.all_items_selected)
+                    true
+                }
                 R.id.invert_selected -> {
                     historyAdapter?.invertSelected(historyList)
                     val invertedList = arrayListOf<HistoryItem>()

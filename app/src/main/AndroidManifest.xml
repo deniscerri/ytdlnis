@@ -115,7 +115,7 @@
         </activity>
         <activity
             android:name=".ui.more.TerminalActivity"
-            android:configChanges="layoutDirection|locale"
+            android:configChanges="layoutDirection|locale|orientation|screenSize"
             android:exported="true"
             android:label="@string/terminal"
             android:parentActivityName=".MainActivity"

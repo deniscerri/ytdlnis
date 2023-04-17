@@ -16,6 +16,11 @@
         android:title="@string/share" />
 
     <item
+        android:id="@+id/select_all"
+        android:title="@string/select_all"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/invert_selected"
         android:title="@string/invert_selected"
         app:showAsAction="never" />

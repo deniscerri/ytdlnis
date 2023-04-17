@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.adapter.ConfigureMultipleDownloadsAdapter
 import com.deniscerri.ytdlnis.database.models.DownloadItem
+import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.deniscerri.ytdlnis.database.viewmodel.CommandTemplateViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.ResultViewModel
@@ -40,7 +41,7 @@ import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.*
 
-class DownloadMultipleBottomSheetDialog(private var items: MutableList<DownloadItem>) : BottomSheetDialogFragment(), ConfigureMultipleDownloadsAdapter.OnItemClickListener, View.OnClickListener,
+class DownloadMultipleBottomSheetDialog(private var results: List<ResultItem?>, private var items: MutableList<DownloadItem>) : BottomSheetDialogFragment(), ConfigureMultipleDownloadsAdapter.OnItemClickListener, View.OnClickListener,
     ConfigureDownloadBottomSheetDialog.OnDownloadItemUpdateListener {
     private lateinit var downloadViewModel: DownloadViewModel
     private lateinit var commandTemplateViewModel: CommandTemplateViewModel
@@ -131,82 +132,88 @@ class DownloadMultipleBottomSheetDialog(private var items: MutableList<DownloadI
         }
 
         bottomAppBar!!.setOnMenuItemClickListener { m: MenuItem ->
-            val itemId = m.itemId
-            if (itemId == R.id.folder) {
-                val intent = Intent(Intent.ACTION_OPEN_DOCUMENT_TREE)
-                intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
-                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION)
-                pathResultLauncher.launch(intent)
-            } else if (itemId == R.id.preferred_download_type){
-                lifecycleScope.launch{
-                    val bottomSheet = BottomSheetDialog(requireContext())
-                    bottomSheet.requestWindowFeature(Window.FEATURE_NO_TITLE)
-                    bottomSheet.setContentView(R.layout.download_type_sheet)
+            when (m.itemId) {
+                R.id.folder -> {
+                    val intent = Intent(Intent.ACTION_OPEN_DOCUMENT_TREE)
+                    intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                    intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION)
+                    pathResultLauncher.launch(intent)
+                }
+                R.id.preferred_download_type -> {
+                    lifecycleScope.launch{
+                        val bottomSheet = BottomSheetDialog(requireContext())
+                        bottomSheet.requestWindowFeature(Window.FEATURE_NO_TITLE)
+                        bottomSheet.setContentView(R.layout.download_type_sheet)
 
-                    // BUTTON ----------------------------------
-                    val audio = bottomSheet.findViewById<TextView>(R.id.audio)
-                    val video = bottomSheet.findViewById<TextView>(R.id.video)
-                    val command = bottomSheet.findViewById<TextView>(R.id.command)
+                        // BUTTON ----------------------------------
+                        val audio = bottomSheet.findViewById<TextView>(R.id.audio)
+                        val video = bottomSheet.findViewById<TextView>(R.id.video)
+                        val command = bottomSheet.findViewById<TextView>(R.id.command)
 
 
-                    withContext(Dispatchers.IO){
-                        val nr = commandTemplateViewModel.getTotalNumber()
-                        if(nr == 0){
-                            command!!.visibility = View.GONE
-                        }else{
-                            command!!.visibility = View.VISIBLE
-                        }
-                    }
-
-                    audio!!.setOnClickListener {
-                        items = downloadViewModel.switchDownloadType(items, DownloadViewModel.Type.audio).toMutableList()
-                        listAdapter.submitList(items.toList())
-                        listAdapter.notifyDataSetChanged()
-                        preferredDownloadType.setIcon(R.drawable.baseline_audio_file_24)
-                        bottomSheet.cancel()
-                    }
-
-                    video!!.setOnClickListener {
-                        items = downloadViewModel.switchDownloadType(items, DownloadViewModel.Type.video).toMutableList()
-                        listAdapter.submitList(items.toList())
-                        listAdapter.notifyDataSetChanged()
-                        preferredDownloadType.setIcon(R.drawable.baseline_video_file_24)
-                        bottomSheet.cancel()
-                    }
-
-                    command!!.setOnClickListener {
-                        lifecycleScope.launch {
-                            items = withContext(Dispatchers.IO){
-                                downloadViewModel.switchDownloadType(items, DownloadViewModel.Type.command).toMutableList()
+                        withContext(Dispatchers.IO){
+                            val nr = commandTemplateViewModel.getTotalNumber()
+                            if(nr == 0){
+                                command!!.visibility = View.GONE
+                            }else{
+                                command!!.visibility = View.VISIBLE
                             }
+                        }
+
+                        audio!!.setOnClickListener {
+                            items = downloadViewModel.switchDownloadType(items, DownloadViewModel.Type.audio).toMutableList()
                             listAdapter.submitList(items.toList())
                             listAdapter.notifyDataSetChanged()
-                            preferredDownloadType.setIcon(R.drawable.baseline_insert_drive_file_24)
+                            preferredDownloadType.setIcon(R.drawable.baseline_audio_file_24)
                             bottomSheet.cancel()
                         }
+
+                        video!!.setOnClickListener {
+                            items = downloadViewModel.switchDownloadType(items, DownloadViewModel.Type.video).toMutableList()
+                            listAdapter.submitList(items.toList())
+                            listAdapter.notifyDataSetChanged()
+                            preferredDownloadType.setIcon(R.drawable.baseline_video_file_24)
+                            bottomSheet.cancel()
+                        }
+
+                        command!!.setOnClickListener {
+                            lifecycleScope.launch {
+                                items = withContext(Dispatchers.IO){
+                                    downloadViewModel.switchDownloadType(items, DownloadViewModel.Type.command).toMutableList()
+                                }
+                                listAdapter.submitList(items.toList())
+                                listAdapter.notifyDataSetChanged()
+                                preferredDownloadType.setIcon(R.drawable.baseline_insert_drive_file_24)
+                                bottomSheet.cancel()
+                            }
+                        }
+
+                        bottomSheet.show()
+                        bottomSheet.window!!.setLayout(
+                            ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.MATCH_PARENT
+                        )
                     }
 
-                    bottomSheet.show()
-                    bottomSheet.window!!.setLayout(
-                        ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.MATCH_PARENT
-                    )
                 }
+                R.id.format -> {
+                    if (results.first()!!.formats.isEmpty()){
 
-            } else if (itemId == R.id.format){
-//                val formatListCollection = items.map { it.format }
-//                val commonFormats = getCommonFormats(formatListCollection)
-//
-//                val listener = object : OnFormatClickListener {
-//                    override fun onFormatClick(allFormats: List<Format>, item: Format) {
-//
-//                    }
-//                }
-//                if (parentFragmentManager.findFragmentByTag("formatSheet") == null){
-//                    val bottomSheet = FormatSelectionBottomSheetDialog(null, commonFormats.toList(), listener)
-//                    bottomSheet.show(parentFragmentManager, "formatSheet")
-//                }
+                    }
+        //                val formatListCollection = items.map { it.format }
+        //                val commonFormats = getCommonFormats(formatListCollection)
+        //
+        //                val listener = object : OnFormatClickListener {
+        //                    override fun onFormatClick(allFormats: List<Format>, item: Format) {
+        //
+        //                    }
+        //                }
+        //                if (parentFragmentManager.findFragmentByTag("formatSheet") == null){
+        //                    val bottomSheet = FormatSelectionBottomSheetDialog(null, commonFormats.toList(), listener)
+        //                    bottomSheet.show(parentFragmentManager, "formatSheet")
+        //                }
+                }
             }
             true
         }

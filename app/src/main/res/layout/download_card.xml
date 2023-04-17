@@ -135,7 +135,7 @@
 
                         <TextView
                             android:id="@+id/codec"
-                            style="@style/Widget.Material3.FloatingActionButton.Large.Tertiary"
+                            style="@style/Widget.Material3.FloatingActionButton.Large.Secondary"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="5dp"
@@ -153,10 +153,11 @@
 
                         <TextView
                             android:id="@+id/file_size"
+                            style="@style/Widget.Material3.FloatingActionButton.Large.Secondary"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="5dp"
-                            android:background="?attr/colorPrimaryInverse"
+                            android:background="?attr/colorSecondary"
                             android:clickable="false"
                             android:gravity="center"
                             android:minWidth="30dp"
@@ -180,6 +181,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:cornerRadius="10dp"
+                    app:iconTint="?attr/colorAccent"
                     app:icon="@drawable/ic_video"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"

@@ -199,12 +199,14 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/active_download_cancel"
-                    style="?attr/materialIconButtonFilledTonalStyle"
+                    style="?attr/materialIconButtonFilledStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="10dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="5dp"
                     app:cornerRadius="10dp"
+                    app:backgroundTint="?attr/colorSurface"
+                    app:iconTint="?android:textColorPrimary"
                     app:icon="@drawable/ic_cancel"
                     app:iconSize="30dp"
                     app:layout_constraintEnd_toEndOf="parent"

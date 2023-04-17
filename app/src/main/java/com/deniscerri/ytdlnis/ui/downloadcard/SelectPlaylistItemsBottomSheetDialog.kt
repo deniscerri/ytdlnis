@@ -158,7 +158,7 @@ class SelectPlaylistItemsBottomSheetDialog(private val items: List<ResultItem?>,
                         downloadItems.add(i)
                     }
 
-                    val bottomSheet = DownloadMultipleBottomSheetDialog(downloadItems)
+                    val bottomSheet = DownloadMultipleBottomSheetDialog(items, downloadItems)
                     bottomSheet.show(parentFragmentManager, "downloadMultipleSheet")
                 }
 

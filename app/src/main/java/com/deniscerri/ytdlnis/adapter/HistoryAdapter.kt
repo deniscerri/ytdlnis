@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.HistoryItem
+import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
@@ -168,6 +169,12 @@ class HistoryAdapter(onItemClickListener: OnItemClickListener, activity: Activit
         }
 
         checkedItems.clear()
+    }
+
+    fun checkAll(items: List<HistoryItem?>?){
+        checkedItems.clear()
+        checkedItems.addAll(items!!.map { it!!.id })
+        notifyDataSetChanged()
     }
 
     fun invertSelected(items: List<HistoryItem?>?){

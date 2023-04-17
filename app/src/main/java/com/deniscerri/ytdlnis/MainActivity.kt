@@ -25,11 +25,13 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
+import androidx.test.InstrumentationRegistry
 import com.deniscerri.ytdlnis.database.viewmodel.CookieViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdlnis.ui.HomeFragment
 import com.deniscerri.ytdlnis.ui.downloads.DownloadQueueActivity
 import com.deniscerri.ytdlnis.ui.more.settings.SettingsActivity
+import com.deniscerri.ytdlnis.util.InfoUtil
 import com.deniscerri.ytdlnis.util.UpdateUtil
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -101,6 +103,17 @@ class MainActivity : AppCompatActivity() {
             }
         }
         cookieViewModel.updateCookiesFile()
+
+        //TODO PLAYLIST FORMAT UPDATING
+//        val infoUtil = InfoUtil(context)
+//        val list = arrayOf(
+//            "https://www.youtube.com/watch?v=tYcqn48SMT8",
+//            "https://www.youtube.com/watch?v=QNrNKPKe5oc"
+//        )
+//        infoUtil.getFormatsTest(list.toList()){
+//            Log.e("gff", it.toString())
+//        }
+
         val intent = intent
         handleIntents(intent)
     }
