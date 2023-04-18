@@ -183,6 +183,7 @@ class ErroredDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickL
         openFile.visibility = View.GONE
 
         bottomSheet.show()
+        bottomSheet.behavior.peekHeight = 512
         bottomSheet.window!!.setLayout(
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.MATCH_PARENT

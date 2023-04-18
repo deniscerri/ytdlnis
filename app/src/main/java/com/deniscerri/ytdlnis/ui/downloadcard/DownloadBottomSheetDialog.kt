@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.DBManager
@@ -30,6 +31,8 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayout.TabLayoutOnPageChangeListener
+import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -64,7 +67,7 @@ class DownloadBottomSheetDialog(private val resultItem: ResultItem, private val 
             behavior = BottomSheetBehavior.from(view.parent as View)
             val displayMetrics = DisplayMetrics()
             requireActivity().windowManager.defaultDisplay.getMetrics(displayMetrics)
-            behavior.peekHeight = displayMetrics.heightPixels - 700
+            behavior.peekHeight = displayMetrics.heightPixels - 400
         }
 
 
@@ -158,7 +161,6 @@ class DownloadBottomSheetDialog(private val resultItem: ResultItem, private val 
                 dismiss()
             }
         }
-
         val download = view.findViewById<Button>(R.id.bottomsheet_download_button)
         download!!.setOnClickListener {
             val item: DownloadItem = getDownloadItem();
@@ -208,14 +210,16 @@ class DownloadBottomSheetDialog(private val resultItem: ResultItem, private val 
 
 
     private fun cleanUp(){
-        parentFragmentManager.beginTransaction().remove(parentFragmentManager.findFragmentByTag("downloadSingleSheet")!!).commit()
-        for (i in 0 until viewPager2.adapter?.itemCount!!){
-            if (parentFragmentManager.findFragmentByTag("f${i}") != null){
-                parentFragmentManager.beginTransaction().remove(parentFragmentManager.findFragmentByTag("f$i")!!).commit()
+        kotlin.runCatching {
+            parentFragmentManager.beginTransaction().remove(parentFragmentManager.findFragmentByTag("downloadSingleSheet")!!).commit()
+            for (i in 0 until viewPager2.adapter?.itemCount!!){
+                if (parentFragmentManager.findFragmentByTag("f${i}") != null){
+                    parentFragmentManager.beginTransaction().remove(parentFragmentManager.findFragmentByTag("f$i")!!).commit()
+                }
             }
-        }
-        if (activity is ShareActivity){
-            (activity as ShareActivity).finish()
+            if (activity is ShareActivity){
+                (activity as ShareActivity).finish()
+            }
         }
     }
 }

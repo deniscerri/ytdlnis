@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
+import android.content.res.Resources
 import android.net.ConnectivityManager
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
@@ -24,7 +25,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.concurrent.TimeUnit
 
-class DownloadViewModel(application: Application) : AndroidViewModel(application) {
+class DownloadViewModel(private val application: Application) : AndroidViewModel(application) {
     private val repository : DownloadRepository
     private val sharedPreferences: SharedPreferences
     private val commandTemplateDao: CommandTemplateDao
@@ -213,17 +214,37 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
             }
             else -> {
                 val c = commandTemplateDao.getFirst()
-                return Format(
-                    c.title,
-                    "",
-                    "",
-                    "",
-                    "",
-                    0,
-                    c.content.replace("\n", " ")
-                )
+                return generateCommandFormat(c)
             }
         }
+    }
+
+    fun generateCommandFormat(c: CommandTemplate) : Format {
+        return Format(
+            c.title,
+            "",
+            "",
+            "",
+            "",
+            0,
+            c.content.replace("\n", " ")
+        )
+    }
+
+    fun getGenericAudioFormats() : MutableList<Format>{
+        val audioFormats = application.resources.getStringArray(R.array.audio_formats)
+        val formats = mutableListOf<Format>()
+        val containerPreference = sharedPreferences.getString("audio_format", "Default")
+        audioFormats.forEach { formats.add(Format(it, containerPreference!!,"","", "",0, it)) }
+        return formats
+    }
+
+    fun getGenericVideoFormats() : MutableList<Format>{
+        val videoFormats = application.resources.getStringArray(R.array.video_formats)
+        val formats = mutableListOf<Format>()
+        val containerPreference = sharedPreferences.getString("video_format", "Default")
+        videoFormats.forEach { formats.add(Format(it, containerPreference!!,"","", "",0, it)) }
+        return formats
     }
 
     fun getLatestCommandTemplateAsFormat() : Format {

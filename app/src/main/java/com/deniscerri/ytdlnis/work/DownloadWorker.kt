@@ -145,7 +145,7 @@ class DownloadWorker(
 
                 val ext = downloadItem.format.container
                 if (audioQualityId.isBlank() || ext == "Default") request.addOption("-x")
-                request.addOption("-f", audioQualityId)
+                else request.addOption("-f", audioQualityId)
 
                 if(ext != "webm"){
                     val codec = when(downloadItem.format.container){

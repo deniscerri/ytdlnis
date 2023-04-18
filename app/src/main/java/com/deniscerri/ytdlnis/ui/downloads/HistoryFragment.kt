@@ -483,6 +483,7 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
         else redownload.visibility = GONE
 
         bottomSheet!!.show()
+        bottomSheet!!.behavior.peekHeight = 512
         bottomSheet!!.window!!.setLayout(
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.MATCH_PARENT

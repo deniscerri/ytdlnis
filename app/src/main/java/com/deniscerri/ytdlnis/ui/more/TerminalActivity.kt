@@ -25,7 +25,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.work.*
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.viewmodel.CommandTemplateViewModel
+import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.NotificationUtil
+import com.deniscerri.ytdlnis.util.UiUtil
 import com.deniscerri.ytdlnis.work.TerminalDownloadWorker
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomappbar.BottomAppBar
@@ -55,6 +57,7 @@ class TerminalActivity : AppCompatActivity() {
     private lateinit var downloadFile : File
     private lateinit var observer: FileObserver
     private lateinit var imm : InputMethodManager
+    private lateinit var uiUtil: UiUtil
     var context: Context? = null
 
     public override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,6 +68,7 @@ class TerminalActivity : AppCompatActivity() {
         downloadFile = File(cacheDir.absolutePath + "/$downloadID.txt")
         if (! downloadFile.exists()) downloadFile.createNewFile()
         imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        uiUtil = UiUtil(FileUtil())
 
         context = baseContext
         scrollView = findViewById(R.id.custom_command_scrollview)
@@ -89,7 +93,17 @@ class TerminalActivity : AppCompatActivity() {
         }
         bottomAppBar.setOnMenuItemClickListener {
             when(it.itemId){
-                R.id.command_templates -> showCommandTemplates()
+                R.id.command_templates -> {
+                    lifecycleScope.launch {
+                        uiUtil.showCommandTemplates(this@TerminalActivity, commandTemplateViewModel){ template ->
+                            input!!.text.insert(input!!.selectionStart, template.content + " ")
+                            input!!.postDelayed({
+                                input!!.requestFocus()
+                                imm.showSoftInput(input!!, 0)
+                            }, 200)
+                        }
+                    }
+                }
                 R.id.shortcuts -> showShortcuts()
                 else -> {}
             }
@@ -208,41 +222,6 @@ class TerminalActivity : AppCompatActivity() {
     private fun showCancelFab() {
         fab!!.text = getString(R.string.cancel_download)
         fab!!.setIconResource(R.drawable.ic_cancel)
-    }
-
-    private fun showCommandTemplates(){
-        lifecycleScope.launch {
-            val bottomSheet = BottomSheetDialog(this@TerminalActivity)
-            bottomSheet.requestWindowFeature(Window.FEATURE_NO_TITLE)
-            bottomSheet.setContentView(R.layout.command_template_list)
-
-            val linearLayout = bottomSheet.findViewById<LinearLayout>(R.id.command_list_linear_layout)
-            val list = withContext(Dispatchers.IO){
-                commandTemplateViewModel.getAll()
-            }
-
-            linearLayout!!.removeAllViews()
-            list.forEach {template ->
-                val item = layoutInflater.inflate(R.layout.command_template_item, linearLayout, false) as ConstraintLayout
-                item.findViewById<TextView>(R.id.title).text = template.title
-                item.findViewById<TextView>(R.id.content).text = template.content
-                item.setOnClickListener {
-                    input!!.text.insert(input!!.selectionStart, template.content + " ")
-                    bottomSheet.cancel()
-                    input!!.postDelayed({
-                        input!!.requestFocus()
-                        imm.showSoftInput(input!!, 0)
-                    }, 200)
-                }
-                linearLayout.addView(item)
-            }
-
-            bottomSheet.show()
-            bottomSheet.window!!.setLayout(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT
-            )
-        }
     }
 
     private fun showShortcuts() {

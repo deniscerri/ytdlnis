@@ -13,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -21,6 +22,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.FileProvider
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.lifecycleScope
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.CommandTemplate
 import com.deniscerri.ytdlnis.database.models.Format
@@ -35,6 +37,9 @@ import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
 import java.util.*
 
@@ -281,5 +286,34 @@ class UiUtil(private val fileUtil: FileUtil) {
 
         }
         datePicker.show(fragmentManager, "datepicker")
+    }
+
+    suspend fun showCommandTemplates(activity: Activity, commandTemplateViewModel: CommandTemplateViewModel, itemSelected: (itemSelected: CommandTemplate) -> Unit) {
+        val bottomSheet = BottomSheetDialog(activity)
+        bottomSheet.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        bottomSheet.setContentView(R.layout.command_template_list)
+
+        val linearLayout = bottomSheet.findViewById<LinearLayout>(R.id.command_list_linear_layout)
+        val list = withContext(Dispatchers.IO){
+            commandTemplateViewModel.getAll()
+        }
+
+        linearLayout!!.removeAllViews()
+        list.forEach {template ->
+            val item = activity.layoutInflater.inflate(R.layout.command_template_item, linearLayout, false) as ConstraintLayout
+            item.findViewById<TextView>(R.id.title).text = template.title
+            item.findViewById<TextView>(R.id.content).text = template.content
+            item.setOnClickListener {
+                itemSelected(template)
+                bottomSheet.cancel()
+            }
+            linearLayout.addView(item)
+        }
+
+        bottomSheet.show()
+        bottomSheet.window!!.setLayout(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.MATCH_PARENT
+        )
     }
 }

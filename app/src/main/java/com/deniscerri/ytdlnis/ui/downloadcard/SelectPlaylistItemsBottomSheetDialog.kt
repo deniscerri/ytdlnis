@@ -179,9 +179,11 @@ class SelectPlaylistItemsBottomSheetDialog(private val items: List<ResultItem?>,
     }
 
     private fun cleanup(){
-        parentFragmentManager.beginTransaction().remove(parentFragmentManager.findFragmentByTag("downloadPlaylistSheet")!!).commit()
-        if (parentFragmentManager.fragments.size == 1){
-            (activity as ShareActivity).finish()
+        kotlin.runCatching {
+            parentFragmentManager.beginTransaction().remove(parentFragmentManager.findFragmentByTag("downloadPlaylistSheet")!!).commit()
+            if (parentFragmentManager.fragments.size == 1){
+                (activity as ShareActivity).finish()
+            }
         }
     }
 

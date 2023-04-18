@@ -45,7 +45,6 @@ class ConfigureDownloadBottomSheetDialog(private val resultItem: ResultItem, pri
     private lateinit var onDownloadItemUpdateListener: OnDownloadItemUpdateListener
     private lateinit var uiUtil: UiUtil
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
@@ -71,7 +70,7 @@ class ConfigureDownloadBottomSheetDialog(private val resultItem: ResultItem, pri
             behavior = BottomSheetBehavior.from(view.parent as View)
             val displayMetrics = DisplayMetrics()
             requireActivity().windowManager.defaultDisplay.getMetrics(displayMetrics)
-            behavior.peekHeight = displayMetrics.heightPixels - 700
+            behavior.peekHeight = displayMetrics.heightPixels - 400
         }
 
         tabLayout = view.findViewById(R.id.download_tablayout)
@@ -82,7 +81,7 @@ class ConfigureDownloadBottomSheetDialog(private val resultItem: ResultItem, pri
             overScrollMode = View.OVER_SCROLL_NEVER
         }
 
-        val fragments = mutableListOf<Fragment>(DownloadAudioFragment(resultItem, downloadItem), DownloadVideoFragment(resultItem, downloadItem))
+        val fragments = mutableListOf(DownloadAudioFragment(resultItem, downloadItem), DownloadVideoFragment(resultItem, downloadItem))
         var commandTemplateNr = 0
         lifecycleScope.launch{
             withContext(Dispatchers.IO){
@@ -211,10 +210,12 @@ class ConfigureDownloadBottomSheetDialog(private val resultItem: ResultItem, pri
 //    }
 
     private fun cleanUp(){
-        parentFragmentManager.beginTransaction().remove(parentFragmentManager.findFragmentByTag("configureDownloadSingleSheet")!!).commit()
-        for (i in 0 until viewPager2.adapter?.itemCount!!){
-            if (parentFragmentManager.findFragmentByTag("f${i}") != null){
-                parentFragmentManager.beginTransaction().remove(parentFragmentManager.findFragmentByTag("f$i")!!).commit()
+        kotlin.runCatching {
+            parentFragmentManager.beginTransaction().remove(parentFragmentManager.findFragmentByTag("configureDownloadSingleSheet")!!).commit()
+            for (i in 0 until viewPager2.adapter?.itemCount!!){
+                if (parentFragmentManager.findFragmentByTag("f${i}") != null){
+                    parentFragmentManager.beginTransaction().remove(parentFragmentManager.findFragmentByTag("f$i")!!).commit()
+                }
             }
         }
     }

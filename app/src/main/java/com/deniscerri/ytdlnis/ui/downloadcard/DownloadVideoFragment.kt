@@ -129,44 +129,42 @@ class DownloadVideoFragment(private val resultItem: ResultItem, private var curr
 
                 var formats = mutableListOf<Format>()
                 formats.addAll(resultItem.formats.filter { !it.format_note.contains("audio", ignoreCase = true) })
-                val videoFormats = resources.getStringArray(R.array.video_formats)
+                if (formats.isEmpty()) formats.addAll(downloadItem.allFormats.filter { !it.format_note.contains("audio", ignoreCase = true) })
 
                 val containers = requireContext().resources.getStringArray(R.array.video_containers)
                 val container = view.findViewById<TextInputLayout>(R.id.downloadContainer)
                 val containerAutoCompleteTextView =
                     view.findViewById<AutoCompleteTextView>(R.id.container_textview)
-                val containerPreference = sharedPreferences.getString("video_format", getString(R.string.defaultValue))
+                val containerPreference = sharedPreferences.getString("video_format", "Default")
 
-                if (formats.isEmpty()) {
-                    videoFormats.forEach { formats.add(Format(it, containerPreference!!,"","", "",0, it)) }
-                }
+                if (formats.isEmpty()) formats = downloadViewModel.getGenericVideoFormats()
 
                 val formatCard = view.findViewById<ConstraintLayout>(R.id.format_card_constraintLayout)
 
                 val chosenFormat = downloadItem.format
                 uiUtil.populateFormatCard(formatCard, chosenFormat)
                 val listener = object : OnFormatClickListener {
-                    override fun onFormatClick(allFormats: List<Format>, item: Format) {
-                        downloadItem.format = item
+                    override fun onFormatClick(allFormats: List<List<Format>>, item: List<Format>) {
+                        downloadItem.format = item.first()
 
-                        if (containers.contains(item.container)){
-                            downloadItem.format.container = item.container
-                            containerAutoCompleteTextView.setText(item.container, false)
+                        if (containers.contains(item.first().container)){
+                            downloadItem.format.container = item.first().container
+                            containerAutoCompleteTextView.setText(item.first().container, false)
                         }
                         lifecycleScope.launch {
                             withContext(Dispatchers.IO){
                                 resultItem.formats.removeAll(formats.toSet())
-                                resultItem.formats.addAll(allFormats)
+                                resultItem.formats.addAll(allFormats.first())
                                 resultViewModel.update(resultItem)
                             }
                         }
-                        formats = allFormats.toMutableList()
-                        uiUtil.populateFormatCard(formatCard, item)
+                        formats = allFormats.first().toMutableList()
+                        uiUtil.populateFormatCard(formatCard, item.first())
                     }
                 }
                 formatCard.setOnClickListener{
                     if (parentFragmentManager.findFragmentByTag("formatSheet") == null){
-                        val bottomSheet = FormatSelectionBottomSheetDialog(downloadItem, formats, listener)
+                        val bottomSheet = FormatSelectionBottomSheetDialog(listOf(downloadItem), listOf(formats), listener)
                         bottomSheet.show(parentFragmentManager, "formatSheet")
                     }
                 }

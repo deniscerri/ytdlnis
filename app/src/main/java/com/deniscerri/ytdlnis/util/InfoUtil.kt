@@ -504,7 +504,7 @@ class InfoUtil(private val context: Context) {
         }
     }
 
-    fun getFormatsTest(urls: List<String>, progress: (progress: List<Format>) -> Unit){
+    fun getFormatsMultiple(urls: List<String>, progress: (progress: List<Format>) -> Unit){
         init()
         val urlsFile = File(context.cacheDir, "urls.txt")
         urlsFile.delete()
@@ -524,26 +524,30 @@ class InfoUtil(private val context: Context) {
                 request.addOption("--cookies", cookiesFile.absolutePath)
             }
 
-            val youtubeDLResponse = YoutubeDL.getInstance().execute(request){ progress, _, line ->
-                val formats = mutableListOf<Format>()
-                val listOfStrings = JSONArray(line)
-                for (f in 0 until listOfStrings.length()){
-                    val format = listOfStrings.get(f) as JSONObject
-                    try{
-                        if (format.getString("filesize") == "None") continue
-                    }catch (e: Exception) { continue }
-                    val formatProper = Gson().fromJson(format.toString(), Format::class.java)
-                    if (formatProper.filesize > 0){
-                        if ( !formatProper.format_note.contains("audio only", true)) {
-                            formatProper.format_note = format.getString("format_note")
-                        }else{
-                            formatProper.format_note = "${format.getString("format_note")} audio"
+            YoutubeDL.getInstance().execute(request){ progress, _, line ->
+                try{
+                    val formats = mutableListOf<Format>()
+                    val listOfStrings = JSONArray(line)
+                    for (f in 0 until listOfStrings.length()){
+                        val format = listOfStrings.get(f) as JSONObject
+                        try{
+                            if (format.getString("filesize") == "None") continue
+                        }catch (e: Exception) { continue }
+                        val formatProper = Gson().fromJson(format.toString(), Format::class.java)
+                        if (formatProper.filesize > 0){
+                            if ( !formatProper.format_note.contains("audio only", true)) {
+                                formatProper.format_note = format.getString("format_note")
+                            }else{
+                                formatProper.format_note = "${format.getString("format_note")} audio"
+                            }
+                            formatProper.container = format.getString("ext")
+                            formats.add(formatProper)
                         }
-                        formatProper.container = format.getString("ext")
-                        formats.add(formatProper)
                     }
+                    progress(formats)
+                }catch (e: Exception){
+                    progress(emptyList())
                 }
-                progress(formats)
             }
         } catch (e: Exception) {
             Looper.prepare().run {

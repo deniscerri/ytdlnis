@@ -570,9 +570,11 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val list
 
 
     private fun cleanUp(){
-        player.stop()
-        cache.release()
-        parentFragmentManager.beginTransaction().remove(parentFragmentManager.findFragmentByTag("cutVideoSheet")!!).commit()
+        kotlin.runCatching {
+            player.stop()
+            cache.release()
+            parentFragmentManager.beginTransaction().remove(parentFragmentManager.findFragmentByTag("cutVideoSheet")!!).commit()
+        }
     }
 }
 
