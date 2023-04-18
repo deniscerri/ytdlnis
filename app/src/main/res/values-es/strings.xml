@@ -204,4 +204,7 @@
     <string name="save_subs">Guarda los subtítulos</string>
     <string name="save_subs_desc">Escribir los subtítulos en un archivo</string>
     <string name="subtitle_languages">Idiomas de los subtítulos</string>
+    <string name="format_source">Formatos de la fuente</string>
+    <string name="video_recommendations">Videos recomendados</string>
+    <string name="video_recommendations_summary">Obtene los vídeos recomendados de Youtube en la pantalla de inicio de Invidious</string>
 </resources>
