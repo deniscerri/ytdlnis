@@ -38,7 +38,7 @@
     <string name="limit_rate">حد السرعة</string>
     <string name="embed_thumb_summary">استخدام الصور المصغرة كغلاف فني</string>
     <string name="add_chapters">الفصول في الفيديو</string>
-    <string name="worst_quality">أردأ جودة</string>
+    <string name="worst_quality">اقل جودة</string>
     <string name="embed_thumb">الصور المصغرة لأغلفة المقاطع</string>
     <string name="downloading_update">تحميل أحدث إصدار…</string>
     <string name="audio">الصوت</string>
@@ -200,8 +200,11 @@
     <string name="download_over_metered_networks">التحميل بإستخدام الشبكات المحدودة</string>
     <string name="download_over_metered_networks_summary">السماح لأداة التحميل بالعمل على أي نوع من الشبكات، وفي حال تم تعطيلة، فسيتم إنتظار شبكة غير محدودة لبدء التحميلات</string>
     <string name="metered_network_download_start_info">ستبدأ أداة التنزيل بعد اتصالك بشبكة غير محدودة</string>
-    <string name="invert_selected">عكس المحدد</string>
+    <string name="invert_selected">عكس التحديد</string>
     <string name="save_subs">حفظ الترجمات</string>
     <string name="save_subs_desc">كتابة ملف الترجمة</string>
     <string name="subtitle_languages">لغات الترجمة</string>
+    <string name="format_source">مصدر التنسيقات</string>
+    <string name="video_recommendations">توصيات الفيديو</string>
+    <string name="video_recommendations_summary">الحصول على فيديوهات يوتيوب الموصى بها على الصفحة الرئيسية من خلال واجهة Invidious</string>
 </resources>
