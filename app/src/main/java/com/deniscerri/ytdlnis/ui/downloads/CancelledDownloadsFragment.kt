@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.DialogInterface
 import android.content.res.Configuration
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -69,12 +70,11 @@ class CancelledDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClic
         cancelledRecyclerView = view.findViewById(R.id.download_recyclerview)
         cancelledRecyclerView.adapter = cancelledDownloads
 
-        val landScapeOrTablet = resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE || resources.getBoolean(R.bool.isTablet)
-        if (landScapeOrTablet){
+        val landScape = resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE && ! resources.getBoolean(R.bool.isTablet)
+        if (landScape){
             cancelledRecyclerView.layoutManager = GridLayoutManager(context, 2)
-        }else{
-            cancelledRecyclerView.layoutManager = LinearLayoutManager(context)
         }
+        if (resources.getBoolean(R.bool.isTablet)) cancelledRecyclerView.layoutManager = GridLayoutManager(context, 3)
 
         downloadViewModel.cancelledDownloads.observe(viewLifecycleOwner) {
             items = it

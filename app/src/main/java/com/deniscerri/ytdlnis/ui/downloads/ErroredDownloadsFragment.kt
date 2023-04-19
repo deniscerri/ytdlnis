@@ -5,6 +5,7 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -71,12 +72,11 @@ class ErroredDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickL
         erroredRecyclerView = view.findViewById(R.id.download_recyclerview)
         erroredRecyclerView.adapter = erroredDownloads
 
-        val landScapeOrTablet = resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE || resources.getBoolean(R.bool.isTablet)
-        if (landScapeOrTablet){
+        val landScape = resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE && ! resources.getBoolean(R.bool.isTablet)
+        if (landScape){
             erroredRecyclerView.layoutManager = GridLayoutManager(context, 2)
-        }else{
-            erroredRecyclerView.layoutManager = LinearLayoutManager(context)
         }
+        if (resources.getBoolean(R.bool.isTablet)) erroredRecyclerView.layoutManager = GridLayoutManager(context, 3)
 
         downloadViewModel.erroredDownloads.observe(viewLifecycleOwner) {
             items = it

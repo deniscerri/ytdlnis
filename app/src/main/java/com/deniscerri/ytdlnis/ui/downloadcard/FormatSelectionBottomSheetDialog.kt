@@ -70,25 +70,33 @@ class FormatSelectionBottomSheetDialog(private val items: List<DownloadItem?>, p
 
         if (items.size > 1){
             val hasGenericFormats =  when(items.first()!!.type){
-                Type.audio -> formats.flatten().size == resources.getStringArray(R.array.audio_formats).size
-                else -> formats.flatten().size == resources.getStringArray(R.array.video_formats).size
+                Type.audio -> formats.first().size == resources.getStringArray(R.array.audio_formats).size
+                else -> formats.first().size == resources.getStringArray(R.array.video_formats).size
             }
             if (!hasGenericFormats){
                 formatCollection.addAll(formats)
                 val flattenFormats = formats.flatten()
                 val commonFormats = flattenFormats.groupingBy { it.format_id }.eachCount().filter { it.value == items.size }.mapValues { flattenFormats.first { f -> f.format_id == it.key } }.map { it.value }
-                commonFormats.forEach {
+                chosenFormats = commonFormats.mapTo(mutableListOf()) {it.copy()}
+                chosenFormats = when(items.first()?.type){
+                    Type.audio -> chosenFormats.filter { it.format_note.contains("audio", ignoreCase = true) }
+                    else -> chosenFormats.filter { !it.format_note.contains("audio", ignoreCase = true) }
+                }
+                chosenFormats.forEach {
                     it.filesize =
                         flattenFormats.filter { f -> f.format_id == it.format_id }
                             .sumOf { itt -> itt.filesize }
                 }
-                chosenFormats = commonFormats
             }else{
                 chosenFormats = formats.flatten()
             }
             addFormatsToView(linearLayout)
         }else{
             chosenFormats = formats.flatten()
+            chosenFormats = when(items.first()?.type){
+                Type.audio -> chosenFormats.filter { it.format_note.contains("audio", ignoreCase = true) }
+                else -> chosenFormats.filter { !it.format_note.contains("audio", ignoreCase = true) }
+            }
             addFormatsToView(linearLayout)
         }
 
@@ -118,6 +126,7 @@ class FormatSelectionBottomSheetDialog(private val items: List<DownloadItem?>, p
                    //playlist format filtering
                    }else{
                        var progress = "0/${items.size}"
+                       formatCollection.clear()
                        refreshBtn.text = progress
                        withContext(Dispatchers.IO){
                            infoUtil.getFormatsMultiple(items.map { it!!.url }) {
@@ -167,7 +176,6 @@ class FormatSelectionBottomSheetDialog(private val items: List<DownloadItem?>, p
     }
     private fun addFormatsToView(linearLayout: LinearLayout){
         linearLayout.removeAllViews()
-        Log.e("aa", chosenFormats.toString())
         for (i in chosenFormats.lastIndex downTo 0){
             val format = chosenFormats[i]
             val formatItem = LayoutInflater.from(context).inflate(R.layout.format_item, null)

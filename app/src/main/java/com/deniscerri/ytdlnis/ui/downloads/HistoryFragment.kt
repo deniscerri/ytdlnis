@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.text.InputType
+import android.util.DisplayMetrics
 import android.util.Log
 import android.view.*
 import android.view.View.GONE
@@ -112,11 +113,11 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
                 requireActivity()
             )
         recyclerView = view.findViewById(R.id.recyclerviewhistorys)
-        if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE || resources.getBoolean(R.bool.isTablet)){
+        if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE && ! resources.getBoolean(R.bool.isTablet)){
             recyclerView?.layoutManager = GridLayoutManager(context, 2)
-        }else{
-            recyclerView?.layoutManager = LinearLayoutManager(context)
         }
+        if (resources.getBoolean(R.bool.isTablet)) recyclerView?.layoutManager = GridLayoutManager(context, 3)
+
         recyclerView?.adapter = historyAdapter
 
         noResults?.visibility = GONE
@@ -483,7 +484,9 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
         else redownload.visibility = GONE
 
         bottomSheet!!.show()
-        bottomSheet!!.behavior.peekHeight = 512
+        val displayMetrics = DisplayMetrics()
+        requireActivity().windowManager.defaultDisplay.getMetrics(displayMetrics)
+        bottomSheet!!.behavior.peekHeight = displayMetrics.heightPixels
         bottomSheet!!.window!!.setLayout(
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.MATCH_PARENT

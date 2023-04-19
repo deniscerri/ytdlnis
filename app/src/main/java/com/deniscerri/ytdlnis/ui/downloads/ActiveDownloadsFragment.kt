@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
@@ -65,12 +66,11 @@ class ActiveDownloadsFragment() : Fragment(), ActiveDownloadAdapter.OnItemClickL
         activeRecyclerView = view.findViewById(R.id.download_recyclerview)
         activeRecyclerView.adapter = activeDownloads
 
-        val landScapeOrTablet = resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE || resources.getBoolean(R.bool.isTablet)
-        if (landScapeOrTablet){
+        val landScape = resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE && ! resources.getBoolean(R.bool.isTablet)
+        if (landScape){
             activeRecyclerView.layoutManager = GridLayoutManager(context, 2)
-        }else{
-            activeRecyclerView.layoutManager = LinearLayoutManager(context)
         }
+        if (resources.getBoolean(R.bool.isTablet)) activeRecyclerView.layoutManager = GridLayoutManager(context, 3)
 
         downloadViewModel.activeDownloads.observe(viewLifecycleOwner) {
             activeDownloads.submitList(it)

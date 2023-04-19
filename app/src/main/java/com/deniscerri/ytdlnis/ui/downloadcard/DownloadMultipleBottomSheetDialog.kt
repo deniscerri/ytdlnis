@@ -134,9 +134,13 @@ class DownloadMultipleBottomSheetDialog(private var results: List<ResultItem?>, 
 
         val formatListener = object : OnFormatClickListener {
             override fun onFormatClick(allFormats: List<List<Format>>, selectedFormats: List<Format>) {
+                val formatCollection = mutableListOf<List<Format>>()
+                allFormats.forEach {f ->
+                    formatCollection.add(f.mapTo(mutableListOf()) {it.copy()})
+                }
                 items.forEachIndexed { index, it ->
                     it.allFormats.clear()
-                    it.allFormats.addAll(allFormats[index])
+                    it.allFormats.addAll(formatCollection[index])
                     it.format = selectedFormats[index]
                 }
                 listAdapter.submitList(items.toList())

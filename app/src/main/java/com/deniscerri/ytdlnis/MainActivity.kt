@@ -25,16 +25,14 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
-import androidx.test.InstrumentationRegistry
 import com.deniscerri.ytdlnis.database.viewmodel.CookieViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdlnis.ui.HomeFragment
 import com.deniscerri.ytdlnis.ui.downloads.DownloadQueueActivity
 import com.deniscerri.ytdlnis.ui.more.settings.SettingsActivity
-import com.deniscerri.ytdlnis.util.InfoUtil
 import com.deniscerri.ytdlnis.util.UpdateUtil
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.navigation.NavigationBarView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.BufferedReader
@@ -51,7 +49,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var preferences: SharedPreferences
     private lateinit var resultViewModel: ResultViewModel
     private lateinit var cookieViewModel: CookieViewModel
-    private lateinit var bottomNav: BottomNavigationView
+    private lateinit var navigationView: NavigationBarView
     private lateinit var navHostFragment : NavHostFragment
 
 
@@ -73,20 +71,20 @@ class MainActivity : AppCompatActivity() {
 
         navHostFragment = supportFragmentManager.findFragmentById(R.id.frame_layout) as NavHostFragment
         val navController = navHostFragment.findNavController()
-        bottomNav = findViewById(R.id.bottomNavigationView)
+        navigationView = findViewById(R.id.bottomNavigationView)
 
         window.decorView.setOnApplyWindowInsetsListener { view: View, windowInsets: WindowInsets? ->
             val windowInsetsCompat = WindowInsetsCompat.toWindowInsetsCompat(
                 windowInsets!!, view
             )
             val isImeVisible = windowInsetsCompat.isVisible(WindowInsetsCompat.Type.ime())
-            bottomNav.visibility =
+            navigationView.visibility =
                 if (isImeVisible) View.GONE else View.VISIBLE
             view.onApplyWindowInsets(windowInsets)
         }
 
-        bottomNav.setupWithNavController(navController)
-        bottomNav.setOnItemReselectedListener {
+        navigationView.setupWithNavController(navController)
+        navigationView.setOnItemReselectedListener {
             when (it.itemId) {
                 R.id.homeFragment -> {
                     (navHostFragment.childFragmentManager.primaryNavigationFragment!! as HomeFragment).scrollToTop()
@@ -119,19 +117,19 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun hideNav() {
-        bottomNav.visibility = View.GONE
+        navigationView.visibility = View.GONE
     }
 
     fun showNav() {
-        bottomNav.visibility = View.VISIBLE
+        navigationView.visibility = View.VISIBLE
     }
 
     fun disableBottomNavigation(){
-        bottomNav.menu.forEach { it.isEnabled = false }
+        navigationView.menu.forEach { it.isEnabled = false }
     }
 
     fun enableBottomNavigation(){
-        bottomNav.menu.forEach { it.isEnabled = true }
+        navigationView.menu.forEach { it.isEnabled = true }
     }
 
     override fun onResume() {

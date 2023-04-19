@@ -44,6 +44,10 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
         return downloadDao.getDownloadById(id)
     }
 
+    fun getActiveDownloads() : List<DownloadItem> {
+        return downloadDao.getActiveDownloadsList()
+    }
+
     suspend fun deleteCancelled(){
         downloadDao.deleteCancelled()
     }
@@ -52,8 +56,8 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
         downloadDao.deleteErrored()
     }
 
-    suspend fun deleteQueued(){
-        downloadDao.deleteQueued()
+    suspend fun cancelQueued(){
+        downloadDao.cancelQueued()
     }
 
     fun checkIfPresentForProcessing(item: ResultItem): DownloadItem{

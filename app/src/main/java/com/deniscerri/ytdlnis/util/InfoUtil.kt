@@ -614,17 +614,19 @@ class InfoUtil(private val context: Context) {
                 var playlistTitle: String? = ""
                 if (jsonObject.has("playlist_title")) playlistTitle = jsonObject.getString("playlist_title")
                 if(playlistTitle.equals(query)) playlistTitle = ""
-                val formatsInJSON = if (jsonObject.has("formats") && jsonObject.get("formats") is JsonArray) jsonObject.getJSONArray("formats") else null
+                val formatsInJSON = if (jsonObject.has("formats") && jsonObject.get("formats") is JSONArray) jsonObject.getJSONArray("formats") else null
                 val formats : ArrayList<Format> = ArrayList()
                 if (formatsInJSON != null) {
                     for (f in 0 until formatsInJSON.length()){
                         val format = formatsInJSON.getJSONObject(f)
                         val formatProper = Gson().fromJson(format.toString(), Format::class.java)
                         if (formatProper.filesize > 0){
-                            if ( !formatProper.format_note.contains("audio only", true)) {
-                                formatProper.format_note = format.getString("format_note")
-                            }else{
-                                formatProper.format_note = "${format.getString("format_note")} audio"
+                            if (format.has("format_note")){
+                                if ( !formatProper.format_note.contains("audio only", true)) {
+                                    formatProper.format_note = format.getString("format_note")
+                                }else{
+                                    formatProper.format_note = "${format.getString("format_note")} audio"
+                                }
                             }
                             formatProper.container = format.getString("ext")
                             formats.add(formatProper)

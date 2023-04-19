@@ -22,6 +22,7 @@ import com.deniscerri.ytdlnis.work.DownloadWorker
 import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import java.util.concurrent.TimeUnit
 
@@ -261,29 +262,6 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         return list
     }
 
-    fun putDownloadsForProcessing(items: List<ResultItem?>, downloadItems: List<DownloadItem>) : LiveData<List<Long>> {
-        val result = MutableLiveData<List<Long>>()
-        viewModelScope.launch(Dispatchers.IO){
-            val list : MutableList<Long> = mutableListOf()
-            items.forEachIndexed { i, it ->
-                val tmpDownloadItem = downloadItems[i]
-                try {
-                    val item = repository.checkIfPresentForProcessing(it!!)
-                    tmpDownloadItem.id = item.id
-                    tmpDownloadItem.status = DownloadRepository.Status.Processing.toString()
-                    repository.update(tmpDownloadItem)
-                    list.add(tmpDownloadItem.id)
-                }catch (e: Exception){
-                    val id = repository.insert(tmpDownloadItem)
-                    list.add(id)
-                }
-
-            }
-            result.postValue(list)
-        }
-        return result
-    }
-
     fun deleteCancelled() = viewModelScope.launch(Dispatchers.IO) {
         repository.deleteCancelled()
     }
@@ -292,13 +270,17 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         repository.deleteErrored()
     }
 
-    fun deleteQueued() = viewModelScope.launch(Dispatchers.IO) {
-        repository.deleteQueued()
+    fun cancelQueued() = viewModelScope.launch(Dispatchers.IO) {
+        repository.cancelQueued()
     }
 
-    fun cloneFormat(item: Format) : Format {
+    private fun cloneFormat(item: Format) : Format {
         val string = Gson().toJson(item, Format::class.java)
         return Gson().fromJson(string, Format::class.java)
+    }
+
+    fun getActiveDownloads() : List<DownloadItem>{
+        return repository.getActiveDownloads()
     }
 
     suspend fun queueDownloads(items: List<DownloadItem>) {

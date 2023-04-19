@@ -18,6 +18,7 @@ import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.ViewModelProvider
@@ -58,6 +59,7 @@ class TerminalActivity : AppCompatActivity() {
     private lateinit var observer: FileObserver
     private lateinit var imm : InputMethodManager
     private lateinit var uiUtil: UiUtil
+    private lateinit var fileUtil: FileUtil
     var context: Context? = null
 
     public override fun onCreate(savedInstanceState: Bundle?) {
@@ -68,7 +70,8 @@ class TerminalActivity : AppCompatActivity() {
         downloadFile = File(cacheDir.absolutePath + "/$downloadID.txt")
         if (! downloadFile.exists()) downloadFile.createNewFile()
         imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-        uiUtil = UiUtil(FileUtil())
+        fileUtil = FileUtil()
+        uiUtil = UiUtil(fileUtil)
 
         context = baseContext
         scrollView = findViewById(R.id.custom_command_scrollview)
@@ -105,7 +108,13 @@ class TerminalActivity : AppCompatActivity() {
                     }
                 }
                 R.id.shortcuts -> showShortcuts()
-                else -> {}
+                R.id.folder -> {
+                    val intent = Intent(Intent.ACTION_OPEN_DOCUMENT_TREE)
+                    intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                    intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION)
+                    commandPathResultLauncher.launch(intent)
+                }
             }
             true
         }
@@ -250,6 +259,21 @@ class TerminalActivity : AppCompatActivity() {
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT
             )
+        }
+    }
+
+    private var commandPathResultLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            result.data?.data?.let {
+                contentResolver?.takePersistableUriPermission(
+                    it,
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION or
+                            Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+                )
+            }
+            input!!.text.insert(input!!.selectionStart, fileUtil.formatPath(result.data?.data.toString()))
         }
     }
 

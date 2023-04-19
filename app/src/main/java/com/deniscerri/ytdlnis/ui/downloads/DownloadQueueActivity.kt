@@ -8,14 +8,21 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import androidx.work.WorkManager
+import androidx.work.await
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
+import com.deniscerri.ytdlnis.util.NotificationUtil
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.tabs.TabLayout
+import com.yausername.youtubedl_android.YoutubeDL
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 class DownloadQueueActivity : AppCompatActivity(){
@@ -85,7 +92,7 @@ class DownloadQueueActivity : AppCompatActivity(){
                     R.id.clear_queue -> {
                         showDeleteDialog() {
                             cancelAllDownloads()
-                            downloadViewModel.deleteQueued()
+                            downloadViewModel.cancelQueued()
                         }
                     }
                     R.id.clear_cancelled -> {
@@ -118,7 +125,20 @@ class DownloadQueueActivity : AppCompatActivity(){
     }
 
     private fun cancelAllDownloads() {
-        workManager.cancelAllWork()
+        lifecycleScope.launch {
+            val notificationUtil = NotificationUtil(this@DownloadQueueActivity)
+            val activeDownloads = withContext(Dispatchers.IO){
+                downloadViewModel.getActiveDownloads()
+            }
+            val workManager = WorkManager.getInstance(this@DownloadQueueActivity)
+            activeDownloads.forEach {
+                val id = it.id.toInt()
+                YoutubeDL.getInstance().destroyProcessById(id.toString())
+                workManager.cancelUniqueWork(id.toString())
+                notificationUtil.cancelDownloadNotification(id)
+            }
+            workManager.cancelAllWorkByTag("download")
+        }
     }
 
 

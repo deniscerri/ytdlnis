@@ -13,6 +13,9 @@ interface DownloadDao {
     @Query("SELECT * FROM downloads WHERE status='Active'")
     fun getActiveDownloads() : LiveData<List<DownloadItem>>
 
+    @Query("SELECT * FROM downloads WHERE status='Active'")
+    fun getActiveDownloadsList() : List<DownloadItem>
+
     @Query("SELECT * FROM downloads WHERE status='Queued' ORDER BY downloadStartTime, id")
     fun getQueuedDownloads() : LiveData<List<DownloadItem>>
 
@@ -46,8 +49,8 @@ interface DownloadDao {
     @Query("DELETE FROM downloads WHERE status='Error'")
     suspend fun deleteErrored()
 
-    @Query("DELETE FROM downloads WHERE status='Queued'")
-    suspend fun deleteQueued()
+    @Query("UPDATE downloads SET status='Cancelled' WHERE status='Queued'")
+    suspend fun cancelQueued()
 
     @Query("DELETE FROM downloads WHERE status='Processing' AND id=:id")
     suspend fun deleteSingleProcessing(id: Long)

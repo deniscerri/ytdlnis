@@ -138,10 +138,8 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
                 requireActivity()
             )
         recyclerView = view.findViewById(R.id.recyclerViewHome)
-        if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE || resources.getBoolean(R.bool.isTablet)){
+        if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE && ! resources.getBoolean(R.bool.isTablet)){
             recyclerView?.layoutManager = GridLayoutManager(context, 2)
-        }else{
-            recyclerView?.layoutManager = LinearLayoutManager(context)
         }
         recyclerView?.adapter = homeAdapter
 
@@ -478,8 +476,10 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
         if (sharedPreferences!!.getBoolean("download_card", true)) {
             showSingleDownloadSheet(item!!, type!!)
         } else {
-            lifecycleScope.launch(Dispatchers.IO){
-                val downloadItem = downloadViewModel.createDownloadItemFromResult(item!!, type!!)
+            lifecycleScope.launch{
+                val downloadItem = withContext(Dispatchers.IO){
+                    downloadViewModel.createDownloadItemFromResult(item!!, type!!)
+                }
                 downloadViewModel.queueDownloads(listOf(downloadItem))
             }
         }

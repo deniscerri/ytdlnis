@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.res.Configuration
 import android.os.Bundle
 import android.text.format.DateFormat
+import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -79,12 +80,11 @@ class QueuedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLi
         queuedRecyclerView = view.findViewById(R.id.download_recyclerview)
         queuedRecyclerView.adapter = queuedDownloads
 
-        val landScapeOrTablet = resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE || resources.getBoolean(R.bool.isTablet)
-        if (landScapeOrTablet){
+        val landScape = resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE && ! resources.getBoolean(R.bool.isTablet)
+        if (landScape){
             queuedRecyclerView.layoutManager = GridLayoutManager(context, 2)
-        }else{
-            queuedRecyclerView.layoutManager = LinearLayoutManager(context)
         }
+        if (resources.getBoolean(R.bool.isTablet)) queuedRecyclerView.layoutManager = GridLayoutManager(context, 3)
 
         downloadViewModel.queuedDownloads.observe(viewLifecycleOwner) {
             items = it
