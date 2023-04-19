@@ -8,9 +8,9 @@
     <string name="music_directory">Folder Muzyki</string>
     <string name="video_directory">Folder Filmów</string>
     <string name="updating">Aktualizowanie</string>
-    <string name="update_ytdl">Zainstaluj nowszą wersję youtube-dl</string>
+    <string name="update_ytdl">Zainstaluj nowszą wersję yt-dlp</string>
     <string name="source_code">Kod źródłowy</string>
-    <string name="search_hint">Odszukaj z YouTube</string>
+    <string name="search_hint">Szukaj lub wstaw URL</string>
     <string name="Remove">Usuń</string>
     <string name="api_key_summary">Szybsze wyniki z YouTube</string>
     <string name="update_app_summary">Ogłasza nowe wersje aplikacji po jej otwarciu</string>
@@ -59,7 +59,7 @@
     <string name="link_copied_to_clipboard">Link skopiowany do schowka</string>
     <string name="search_history_hint">Wyszukaj z historii przeglądania</string>
     <string name="version">Wersja</string>
-    <string name="command_directory">Folder dla spersonalizowanych komend</string>
+    <string name="command_directory">Własny folder komand</string>
     <string name="couldnt_find_apk">Nie można znaleźć odpowiedniego pliku APK.</string>
     <string name="video">Wideo</string>
     <string name="audio">Audio</string>
@@ -98,4 +98,20 @@
     <string name="sponsorblock_promos">Promocje własne</string>
     <string name="sponsorblock_previews">Podglądy</string>
     <string name="sponsorblock_fillers">Wypełniacze</string>
+    <string name="worst_quality">Najgorsza Jakość</string>
+    <string name="best_quality">Najlepsza Jakość</string>
+    <string name="about">O programie</string>
+    <string name="language">Język</string>
+    <string name="command_templates">Szablony komend</string>
+    <string name="terminal">Terminal</string>
+    <string name="format">Format</string>
+    <string name="select_format">Wybierz format</string>
+    <string name="please_wait">Proszę czekać</string>
+    <string name="remove_search_history">Wyczyść historię wyszukiwania</string>
+    <string name="enable_mtime">Włącz mtime</string>
+    <string name="update_formats">Zaktualizuj formaty</string>
+    <string name="error_updating_formats">Błąd aktualizacji formatów!</string>
+    <string name="log_downloads">Logi pobranych</string>
+    <string name="log_downloads_summary">Utwórz plik z logiem dla każdego pobrania</string>
+    <string name="download_queue">Kolejka pobrań</string>
 </resources>
