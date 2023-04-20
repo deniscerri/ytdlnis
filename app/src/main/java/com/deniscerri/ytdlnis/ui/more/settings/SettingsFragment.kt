@@ -42,6 +42,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
     private var incognito: SwitchPreferenceCompat? = null
     private var preferredDownloadType : ListPreference? = null
     private var searchEngine : ListPreference? = null
+    private var startDestination : ListPreference? = null
     private var downloadCard: SwitchPreferenceCompat? = null
     private var meteredNetwork: SwitchPreferenceCompat? = null
     private var apiKey: EditTextPreference? = null
@@ -110,6 +111,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         incognito = findPreference("incognito")
         preferredDownloadType = findPreference("preferred_download_type")
         searchEngine = findPreference("search_engine")
+        startDestination = findPreference("start_destination")
         downloadCard = findPreference("download_card")
         meteredNetwork = findPreference("metered_networks")
         apiKey = findPreference("api_key")
@@ -177,6 +179,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         editor.putBoolean("incognito", incognito!!.isChecked)
         editor.putString("preferred_download_type", preferredDownloadType!!.value)
         editor.putString("search_engine", searchEngine!!.value)
+        editor.putString("start_destination", startDestination!!.value)
         editor.putBoolean("download_card", downloadCard!!.isChecked)
         editor.putBoolean("metered_networks", meteredNetwork!!.isChecked)
         editor.putString("api_key", apiKey!!.text)
@@ -300,6 +303,12 @@ class SettingsFragment : PreferenceFragmentCompat() {
         searchEngine!!.onPreferenceChangeListener =
             Preference.OnPreferenceChangeListener { _: Preference?, newValue: Any ->
                 editor.putString("search_engine", newValue.toString())
+                editor.apply()
+                true
+            }
+        startDestination!!.onPreferenceChangeListener =
+            Preference.OnPreferenceChangeListener { _: Preference?, newValue: Any ->
+                editor.putString("start_destination", newValue.toString())
                 editor.apply()
                 true
             }

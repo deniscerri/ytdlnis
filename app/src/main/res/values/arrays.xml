@@ -151,4 +151,16 @@
         <item>bilisearch</item>
         <item>netsearch</item>
     </array>
+
+    <array name="start_destination">
+        <item>@string/home</item>
+        <item>@string/downloads</item>
+        <item>@string/more</item>
+    </array>
+
+    <array name="start_destination_values">
+        <item>Home</item>
+        <item>History</item>
+        <item>More</item>
+    </array>
 </resources>

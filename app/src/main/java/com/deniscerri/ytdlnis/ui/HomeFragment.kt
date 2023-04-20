@@ -94,6 +94,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
     private var sharedPreferences: SharedPreferences? = null
     private var _binding : FragmentHomeBinding? = null
     private var actionMode: ActionMode? = null
+    private var appBarLayout: AppBarLayout? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -126,6 +127,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
         //initViews
         shimmerCards = view.findViewById(R.id.shimmer_results_framelayout)
         searchBar = view.findViewById(R.id.search_bar)
+        appBarLayout = view.findViewById(R.id.home_appbarlayout)
         queriesChipGroup = view.findViewById(R.id.queries)
         searchSuggestions = view.findViewById(R.id.search_suggestions_scroll_view)
         searchSuggestionsLinearLayout = view.findViewById(R.id.search_suggestions_linear_layout)
@@ -620,7 +622,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
             clearCheckedItems()
             searchBar!!.isEnabled = true
             searchBar!!.menu.forEach { it.isEnabled = true }
-            searchBar?.expand(searchBar!!.parent as AppBarLayout)
+            searchBar?.expand(appBarLayout!!)
         }
     }
 

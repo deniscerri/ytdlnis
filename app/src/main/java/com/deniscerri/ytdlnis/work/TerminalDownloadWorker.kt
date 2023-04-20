@@ -80,7 +80,7 @@ class TerminalDownloadWorker(
             }
 
             YoutubeDL.getInstance().execute(request, itemId.toString()){ progress, _, line ->
-                outputFile.appendText("${line}\n")
+                setProgressAsync(workDataOf("progress" to progress.toInt(), "output" to line.chunked(5000).first().toString(), "id" to itemId, "log" to logDownloads))
                 val title: String = command.take(65)
                 notificationUtil.updateDownloadNotification(
                     itemId,

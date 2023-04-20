@@ -179,5 +179,6 @@ dependencies {
 
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1"
     implementation "com.google.android.exoplayer:exoplayer:2.18.5"
+    implementation 'it.xabaras.android:recyclerview-swipedecorator:1.4'
 
 }

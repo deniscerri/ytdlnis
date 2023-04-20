@@ -92,6 +92,14 @@
             app:summary="@string/preferred_search_engine_summary"
             app:title="@string/preferred_search_engine" />
 
+        <ListPreference
+            android:defaultValue="Home"
+            android:entries="@array/start_destination"
+            android:entryValues="@array/start_destination_values"
+            app:icon="@drawable/baseline_add_to_home_screen_24"
+            app:key="start_destination"
+            app:title="@string/preferred_home_screen" />
+
         <EditTextPreference
             android:icon="@drawable/ic_key"
             app:key="api_key"
@@ -276,6 +284,11 @@
             app:summary="@string/ytdl_update_hint"
             app:title="@string/update_ytdl" />
 
+        <Preference
+            app:icon="@drawable/ic_info"
+            app:key="ytdl-version"
+            app:title="@string/ytdl_version"/>
+
         <SwitchPreferenceCompat
             android:widgetLayout="@layout/preferece_material_switch"
             android:defaultValue="false"
@@ -365,11 +378,6 @@
                 android:action="android.intent.action.VIEW"
                 android:data="https://github.com/deniscerri/ytdlnis" />
         </Preference>
-
-        <Preference
-            app:icon="@drawable/ic_info"
-            app:key="ytdl-version"
-            app:title="@string/ytdl_version"/>
 
         <Preference
             app:icon="@drawable/ic_info"

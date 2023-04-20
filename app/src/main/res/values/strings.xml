@@ -217,4 +217,6 @@
     <string name="preferred_search_engine">Preferred Search Engine</string>
     <string name="preferred_search_engine_summary">The search engine to use for in-app searches</string>
     <string name="format_filtering_hint">All items must be of the same type to use this option</string>
+    <string name="preferred_home_screen">Preferred Home Screen</string>
+    <string name="undo">Undo</string>
 </resources>

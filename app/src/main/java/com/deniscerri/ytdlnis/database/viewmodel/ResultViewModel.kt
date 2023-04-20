@@ -41,23 +41,25 @@ class ResultViewModel(application: Application) : AndroidViewModel(application) 
     }
 
     fun checkTrending() = viewModelScope.launch(Dispatchers.IO){
-        if (sharedPreferences.getBoolean("home_recommendations", false)){
-            try {
-                val item = repository.getFirstResult()
-                if (
-                    item.playlistTitle == getApplication<App>().getString(R.string.trendingPlaylist)
-                    && item.creationTime < (System.currentTimeMillis() / 1000) - 86400
-                ){
-                    getTrending()
-                }
-            }catch (e : Exception){
-                e.printStackTrace()
+        try {
+            val item = repository.getFirstResult()
+            if (
+                item.playlistTitle == getApplication<App>().getString(R.string.trendingPlaylist)
+                && item.creationTime < (System.currentTimeMillis() / 1000) - 86400
+            ){
                 getTrending()
             }
+        }catch (e : Exception){
+            e.printStackTrace()
+            getTrending()
         }
     }
     fun getTrending() = viewModelScope.launch(Dispatchers.IO){
-        repository.updateTrending()
+        if (sharedPreferences.getBoolean("home_recommendations", false)){
+            repository.updateTrending()
+        }else{
+            deleteAll()
+        }
     }
     suspend fun parseQueries(inputQueries: List<String>){
         if (inputQueries.size == 1){

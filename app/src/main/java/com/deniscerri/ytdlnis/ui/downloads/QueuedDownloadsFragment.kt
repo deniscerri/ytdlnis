@@ -2,6 +2,8 @@ package com.deniscerri.ytdlnis.ui.downloads
 
 import android.app.Activity
 import android.content.res.Configuration
+import android.graphics.Canvas
+import android.graphics.Color
 import android.os.Bundle
 import android.text.format.DateFormat
 import android.util.DisplayMetrics
@@ -17,6 +19,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.work.WorkManager
@@ -31,7 +34,10 @@ import com.deniscerri.ytdlnis.util.UiUtil
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.chip.Chip
+import com.google.android.material.color.MaterialColors
+import com.google.android.material.snackbar.Snackbar
 import com.yausername.youtubedl_android.YoutubeDL
+import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -48,7 +54,7 @@ class QueuedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLi
     private lateinit var queuedRecyclerView : RecyclerView
     private lateinit var queuedDownloads : GenericDownloadAdapter
     private lateinit var notificationUtil: NotificationUtil
-    private lateinit var items : List<DownloadItem>
+    private lateinit var items : MutableList<DownloadItem>
     private lateinit var fileUtil: FileUtil
     private lateinit var uiUtil: UiUtil
 
@@ -62,7 +68,7 @@ class QueuedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLi
         activity = getActivity()
         notificationUtil = NotificationUtil(requireContext())
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
-        items = listOf()
+        items = mutableListOf()
         fileUtil = FileUtil()
         uiUtil = UiUtil(fileUtil)
         return fragmentView
@@ -79,6 +85,8 @@ class QueuedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLi
 
         queuedRecyclerView = view.findViewById(R.id.download_recyclerview)
         queuedRecyclerView.adapter = queuedDownloads
+        val itemTouchHelper = ItemTouchHelper(simpleCallback)
+        itemTouchHelper.attachToRecyclerView(queuedRecyclerView)
 
         val landScape = resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE && ! resources.getBoolean(R.bool.isTablet)
         if (landScape){
@@ -87,7 +95,7 @@ class QueuedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLi
         if (resources.getBoolean(R.bool.isTablet)) queuedRecyclerView.layoutManager = GridLayoutManager(context, 3)
 
         downloadViewModel.queuedDownloads.observe(viewLifecycleOwner) {
-            items = it
+            items = it.toMutableList()
             queuedDownloads.submitList(it)
         }
     }
@@ -215,5 +223,70 @@ class QueuedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLi
         WorkManager.getInstance(requireContext()).cancelUniqueWork(id.toString())
         notificationUtil.cancelDownloadNotification(id)
     }
+
+    private var simpleCallback: ItemTouchHelper.SimpleCallback =
+        object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+            override fun onMove(recyclerView: RecyclerView,viewHolder: RecyclerView.ViewHolder,target: RecyclerView.ViewHolder
+            ): Boolean {
+                return false
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val position = viewHolder.bindingAdapterPosition
+                when (direction) {
+                    ItemTouchHelper.LEFT -> {
+                        val deletedItem = items[position]
+                        cancelDownload(deletedItem.id)
+                        Snackbar.make(queuedRecyclerView, getString(R.string.cancelled) + ": " + deletedItem.title, Snackbar.LENGTH_LONG)
+                            .setAction(getString(R.string.undo)) {
+                                lifecycleScope.launch(Dispatchers.IO) {
+                                    downloadViewModel.queueDownloads(listOf(deletedItem))
+                                }
+                            }.show()
+                    }
+
+                }
+            }
+
+            override fun onChildDraw(
+                c: Canvas,
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                dX: Float,
+                dY: Float,
+                actionState: Int,
+                isCurrentlyActive: Boolean
+            ) {
+                RecyclerViewSwipeDecorator.Builder(
+                    requireContext(),
+                    c,
+                    recyclerView,
+                    viewHolder,
+                    dX,
+                    dY,
+                    actionState,
+                    isCurrentlyActive
+                )
+                    .addSwipeLeftBackgroundColor(Color.RED)
+                    .addSwipeLeftActionIcon(R.drawable.baseline_delete_24)
+                    .addSwipeRightBackgroundColor(
+                        MaterialColors.getColor(
+                            requireContext(),
+                            R.attr.colorOnSurfaceInverse, Color.TRANSPARENT
+                        )
+                    )
+                    .create()
+                    .decorate()
+                super.onChildDraw(
+                    c,
+                    recyclerView,
+                    viewHolder!!,
+                    dX,
+                    dY,
+                    actionState,
+                    isCurrentlyActive
+                )
+            }
+        }
 
 }

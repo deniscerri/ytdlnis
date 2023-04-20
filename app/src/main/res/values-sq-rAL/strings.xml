@@ -207,4 +207,8 @@
     <string name="format_source">Burimi i Formateve</string>
     <string name="video_recommendations">Rekomendimet e Videove</string>
     <string name="video_recommendations_summary">Merr video Youtube te rekomanduara në faqen kryesore nga Invidious</string>
+    <string name="preferred_search_engine">Kërkuesi i Preferuar</string>
+    <string name="preferred_search_engine_summary">Kërkuesi që do të përdoret për kërkimet në aplikacion</string>
+    <string name="format_filtering_hint">Të gjithë elementet duhet të jenë të një i njëjti lloj për të përdorur këtë opsion</string>
+    <string name="preferred_home_screen">Faqja e preferuar kryesore</string>
 </resources>

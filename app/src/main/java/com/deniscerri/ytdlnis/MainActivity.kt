@@ -1,6 +1,7 @@
 package com.deniscerri.ytdlnis
 
 import android.Manifest
+import android.app.Activity
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -82,6 +83,18 @@ class MainActivity : AppCompatActivity() {
                 if (isImeVisible) View.GONE else View.VISIBLE
             view.onApplyWindowInsets(windowInsets)
         }
+        var sharedPreferences = getSharedPreferences("root_preferences", Activity.MODE_PRIVATE)
+
+        val startDestination = sharedPreferences.getString("start_destination", "")
+        val graph = navHostFragment.navController.navInflater.inflate(R.navigation.nav_graph)
+        when(startDestination) {
+                "History" -> graph.setStartDestination(R.id.historyFragment)
+                "More" -> graph.setStartDestination(R.id.moreFragment)
+                else -> graph.setStartDestination(R.id.homeFragment)
+        }
+        navHostFragment.navController.graph = graph
+
+
 
         navigationView.setupWithNavController(navController)
         navigationView.setOnItemReselectedListener {

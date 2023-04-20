@@ -8,6 +8,7 @@ import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
 import android.os.FileObserver
+import android.os.Looper
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
@@ -21,6 +22,7 @@ import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.forEach
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.work.*
@@ -129,7 +131,6 @@ class TerminalActivity : AppCompatActivity() {
                 input!!.visibility = View.GONE
                 output!!.text = "${output!!.text}\n~ $ ${input!!.text}\n"
                 showCancelFab()
-                downloadFile.appendText("~ $ ${input!!.text}\n")
                 imm.hideSoftInputFromWindow(input?.windowToken, 0)
                 startDownload(
                     input!!.text.toString()
@@ -149,7 +150,8 @@ class TerminalActivity : AppCompatActivity() {
                     runOnUiThread{
                         try {
                             val newText = downloadFile.readText()
-                            output!!.text = newText
+                            if (newText.isBlank()) return@runOnUiThread
+                            output!!.append(newText)
                             output!!.scrollTo(0, output!!.height)
                             scrollView!!.fullScroll(View.FOCUS_DOWN)
                         }catch (ignored: Exception) {}
@@ -163,7 +165,8 @@ class TerminalActivity : AppCompatActivity() {
                     runOnUiThread{
                         try {
                             val newText = downloadFile.readText()
-                            output!!.text = newText
+                            if (newText.isBlank()) return@runOnUiThread
+                            output!!.append(newText)
                             output!!.scrollTo(0, output!!.height)
                             scrollView!!.fullScroll(View.FOCUS_DOWN)
                         }catch (ignored: Exception) {}
@@ -183,7 +186,19 @@ class TerminalActivity : AppCompatActivity() {
                         input!!.requestFocus()
                         input!!.setSelection(input!!.text.length)
                         hideCancelFab()
+                        downloadFile.writeText("")
                     }
+                    val outputData = work.progress.getString("output")
+                    if (!outputData.isNullOrBlank()){
+                        runOnUiThread{
+                            try {
+                                output!!.append("\n$outputData")
+                                output!!.scrollTo(0, output!!.height)
+                                scrollView!!.fullScroll(View.FOCUS_DOWN)
+                            }catch (ignored: Exception) {}
+                        }
+                    }
+
                 }
             }
         initMenu()
@@ -227,10 +242,12 @@ class TerminalActivity : AppCompatActivity() {
     private fun hideCancelFab() {
         fab!!.text = getString(R.string.run_command)
         fab!!.setIconResource(R.drawable.ic_baseline_keyboard_arrow_right_24)
+        topAppBar!!.menu.forEach { it.isEnabled = true }
     }
     private fun showCancelFab() {
         fab!!.text = getString(R.string.cancel_download)
         fab!!.setIconResource(R.drawable.ic_cancel)
+        topAppBar!!.menu.forEach { it.isEnabled = false }
     }
 
     private fun showShortcuts() {
