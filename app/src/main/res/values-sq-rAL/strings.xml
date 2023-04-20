@@ -204,4 +204,7 @@
     <string name="metered_network_download_start_info">Punëtori i shkarkimit do të fillojë pasi të jeni lidhur me një rrjet pa matje</string>
     <string name="save_subs">Ruaj Titrat</string>
     <string name="subtitle_languages">Gjuhet e Titrave</string>
+    <string name="format_source">Burimi i Formateve</string>
+    <string name="video_recommendations">Rekomendimet e Videove</string>
+    <string name="video_recommendations_summary">Merr video Youtube te rekomanduara në faqen kryesore nga Invidious</string>
 </resources>

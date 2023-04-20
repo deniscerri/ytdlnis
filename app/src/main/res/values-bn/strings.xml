@@ -201,4 +201,10 @@
     <string name="download_over_metered_networks_summary">"ডাউনলোড ওয়ার্কারকে যেকোনো নেটওয়ার্ক টাইপের কাজ করতে দিন।  অক্ষম থাকলে, এটি ডাউনলোডগুলি শুরু করার জন্য একটি মিটারবিহীন নেটওয়ার্কের জন্য অপেক্ষা করবে"</string>
     <string name="metered_network_download_start_info">"আপনি একটি  wifi নেটওয়ার্কের সাথে সংযুক্ত হওয়ার পরে ডাউনলোড কর্মী শুরু হবে"</string>
     <string name="invert_selected">উল্টানো নির্বাচিত</string>
+    <string name="save_subs_desc">সাবটাইটেল ফাইল সেভ করুন</string>
+    <string name="subtitle_languages">সাবটাইটেল ভাষা</string>
+    <string name="save_subs">সাবটাইটেল সংরক্ষণ করুন</string>
+    <string name="format_source">ফরম্যাট উৎস</string>
+    <string name="video_recommendations">ভিডিও সুপারিশ</string>
+    <string name="video_recommendations_summary">ইনভিডিয়াস থেকে হোম স্ক্রিনে প্রস্তাবিত ইউটিউব ভিডিও পান</string>
 </resources>

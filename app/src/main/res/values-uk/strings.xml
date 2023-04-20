@@ -204,4 +204,7 @@
     <string name="subtitle_languages">Мови субтитрів</string>
     <string name="download_over_metered_networks_summary">Дозволяє завантажувати з мережі будь-якого типу. Якщо вимкнено, він чекатиме на початок завантаження з необмеженої мережі</string>
     <string name="download_over_metered_networks">Завантажувати через мережі з обмеженнями</string>
+    <string name="format_source">Формати джерела</string>
+    <string name="video_recommendations">Відеорекомендації</string>
+    <string name="video_recommendations_summary">Отримувати рекомендовані відео на Youtube на головному екрані від Invidious</string>
 </resources>
