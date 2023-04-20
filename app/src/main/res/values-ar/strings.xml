@@ -11,7 +11,7 @@
     <string name="video_directory">مجلد الفيديوهات</string>
     <string name="updating">التحديثات</string>
     <string name="ytdl_update_hint">مهم، إذا كانت لديك مشاكل في التحميل</string>
-    <string name="update_ytdl">تثبيت أحدث نسخة من yt-dlp</string>
+    <string name="update_ytdl">النقر لتثبيت أحدث نسخة من yt-dlp</string>
     <string name="source_code">رمز المصدر</string>
     <string name="search_hint">بحث يوتيوب أو رابط من موقع مدعوم</string>
     <string name="failed_download">لم يتم تحميل الملف.</string>
@@ -38,14 +38,14 @@
     <string name="limit_rate">حد السرعة</string>
     <string name="embed_thumb_summary">استخدام الصور المصغرة كغلاف فني</string>
     <string name="add_chapters">الفصول في الفيديو</string>
-    <string name="worst_quality">اقل جودة</string>
+    <string name="worst_quality">أدنى جودة</string>
     <string name="embed_thumb">الصور المصغرة لأغلفة المقاطع</string>
     <string name="downloading_update">تحميل أحدث إصدار…</string>
     <string name="audio">الصوت</string>
     <string name="video">الفيديو</string>
     <string name="concurrent_fragments">الأجزاء المتزامنة</string>
-    <string name="concurrent_fragments_summary">عدد أجزاء الفيديو الأصلي DASH/HLS التي سيتم تنزيلها في نفس الوقت</string>
-    <string name="limit_rate_summary">الحد الأقصى لسرعة التحميل (بالبايت في الثانية)، مثلًا 50ك أو 4.2م</string>
+    <string name="concurrent_fragments_summary">عدد أجزاء الفيديو الأصلي DASH/HLS التي سيتم تحميلها في نفس الوقت</string>
+    <string name="limit_rate_summary">الحد الأقصى لسرعة التحميل (بالبايت في الثانية)، مثلًا 50K أو 4.2M</string>
     <string name="aria2_summary">التحميل بأداة aria2c بدلًا من الإفتراضية</string>
     <string name="processing">المعالجة</string>
     <string name="embed_subs_summary">إضافة الترجمة للفيديو</string>
@@ -68,7 +68,7 @@
     <string name="template">قالب</string>
     <string name="logs">السجلات</string>
     <string name="date_added">تاريخ الإضافة</string>
-    <string name="update_ytdl_nightly">استخدام النسخة التجريبية(الليلية) من yt-dlp</string>
+    <string name="update_ytdl_nightly">استخدام النسخة الليلية من yt-dlp</string>
     <string name="adjust_audio">تضبيط الصوت</string>
     <string name="file_name_template">تنسيق اسم الملف</string>
     <string name="language">اللغة</string>
@@ -112,7 +112,7 @@
     <string name="audio_format">صيغة الصوت</string>
     <string name="video_format">صيغة الفيديو</string>
     <string name="audio_quality">جودة الصوت</string>
-    <string name="audio_quality_summary">0(الأفضل)10 (الأردأ)</string>
+    <string name="audio_quality_summary">0(الأفضل) 10(الأدنى)</string>
     <string name="cancel_download">إلغاء التحميل</string>
     <string name="run_command">تشغيل الأمر</string>
     <string name="command_download_notification_channel_name">تحميلات الأوامر</string>
@@ -129,12 +129,12 @@
     <string name="remove_duplicates">إزالة المكررة</string>
     <string name="sort_by">الفرز وفقًا لـ</string>
     <string name="remove_downloading">إلغاء التحميلات</string>
-    <string name="incognito_summary">بدون سجلات تحميل وبحث</string>
+    <string name="incognito_summary">البحث والتحميل بدون سجلات</string>
     <string name="configure_download">تخصيص التحميل</string>
     <string name="title">اسم الملف</string>
     <string name="author">الناشر</string>
     <string name="download">تحميل</string>
-    <string name="video_quality">دقة الفيديو</string>
+    <string name="video_quality">جودة الفيديو</string>
     <string name="embed_subtitles">تضمين ترجمات</string>
     <string name="add_chapter">تعيين الفصول</string>
     <string name="show_download_card">إظهار بطاقة تخصيص التحميل</string>
@@ -143,7 +143,7 @@
     <string name="delete_selected">إزالة المحدَدة</string>
     <string name="delete_files_too">الحذف من الجهاز أيضًا</string>
     <string name="delete_file_too">الحذف من الجهاز أيضًا</string>
-    <string name="you_are_going_to_delete_multiple_items">إزالة المحدد…</string>
+    <string name="you_are_going_to_delete_multiple_items">إزالة بعض العناصر…</string>
     <string name="sponsorblock_sponsors">الرعاة</string>
     <string name="sponsorblock_intro">المقدمة</string>
     <string name="sponsorblock_fillers">الحشو/النكات</string>
@@ -155,7 +155,7 @@
     <string name="end">الإنتهاء عند</string>
     <string name="start">البدء من</string>
     <string name="save_dir">مسار الحفظ</string>
-    <string name="preferred_download_type_summary">التبويب الذي سيتم فتح بطاقة التنزيل عليه</string>
+    <string name="preferred_download_type_summary">التبويب الذي ستُفتح عليه بطاقة تخصيص التحميل</string>
     <string name="help_translate">المساعدة في الترجمة</string>
     <string name="help_translate_summary">المساعدة في توطين/تحسين الترجمة على Weblate</string>
     <string name="workmanager_updated">يتطلب تنفيذ هذا الإعداد، إعادة تشغيل التطبيق بدون تحميلات نشطة!</string>
@@ -179,9 +179,9 @@
     <string name="update_formats_summary">البحث التلقائي عن التنسيقات المفقودة عند فتح بطاقة التنسيقات</string>
     <string name="ignore_battery_optimization">تجاهل تحسين البطارية</string>
     <string name="log_downloads_summary">إنشاء ملف سجل لكل تحميل</string>
-    <string name="shortcuts_desc">طريقة وصول أسرع للأوامر الكثيرة الاستخدام</string>
-    <string name="restrict_filenames_summary">حصر أسماء الملفات بأحرف الـ ASCII فقط، مع تجنب «&amp;» والمسافات</string>
-    <string name="add_chapters_summary">تعليم أجزاء اليوتيوب و/أو حاجب شرائح الإعلانات كفصول للفيديو</string>
+    <string name="shortcuts_desc">طريقة وصول أسرع للأوامر كثيرة الاستخدام</string>
+    <string name="restrict_filenames_summary">حصر أسماء الملفات بأحرف الـ ASCII فقط، وتجنُب «&amp;» والمسافات</string>
+    <string name="add_chapters_summary">تعليم أجزاء مقطع اليوتيوب و/أو حاجب شرائح الإعلانات كفصول للفيديو</string>
     <string name="container">الصيغة</string>
     <string name="cut">قص</string>
     <string name="new_cut">قصٌ آخر</string>
@@ -190,7 +190,7 @@
     <string name="suggested">مقترحة</string>
     <string name="select_all">تحديد الكل</string>
     <string name="share">مشاركة</string>
-    <string name="cookies">ملفات تعريف الارتباط(الكوكيز)</string>
+    <string name="cookies">ملفات تعريف الارتباط (الكوكيز)</string>
     <string name="new_cookie">كوكيز جديدة</string>
     <string name="cookie">ملف تعريف ارتباط</string>
     <string name="create_cookie">إنشاء الكوكيز</string>
@@ -207,4 +207,7 @@
     <string name="format_source">مصدر التنسيقات</string>
     <string name="video_recommendations">توصيات الفيديو</string>
     <string name="video_recommendations_summary">الحصول على فيديوهات يوتيوب الموصى بها على الصفحة الرئيسية من خلال واجهة Invidious</string>
+    <string name="preferred_search_engine">محرك البحث المفضل</string>
+    <string name="preferred_search_engine_summary">المحرك المراد استخدامه بعمليات البحث من داخل التطبيق</string>
+    <string name="format_filtering_hint">يجب أن تكون كل العناصر من نفس النوع حتى تعمل هذا الميزة</string>
 </resources>
