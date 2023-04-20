@@ -16,5 +16,10 @@ data class Format(
     @SerializedName(value = "filesize", alternate = ["clen", "filesize_approx"])
     var filesize: Long = 0,
     @SerializedName(value = "format_note", alternate = ["resolution", "audioQuality"])
-    var format_note: String = ""
+    var format_note: String = "",
+    @SerializedName(value = "fps")
+    var fps: String? = "",
+    @SerializedName(value = "asr", alternate = ["audioSampleRate"])
+    var asr: String? = "",
+
 )

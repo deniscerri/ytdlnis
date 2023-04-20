@@ -107,6 +107,10 @@ class ConfigureMultipleDownloadsAdapter(onItemClickListener: OnItemClickListener
         val btn = card.findViewById<MaterialButton>(R.id.action_button)
         if (btn.hasOnClickListeners()) btn.setOnClickListener(null)
 
+        btn.setOnClickListener {
+            onItemClickListener.onButtonClick(item.url)
+        }
+
         when(item.type) {
             DownloadViewModel.Type.audio -> {
                 btn.setIconResource(R.drawable.ic_music)
@@ -125,7 +129,7 @@ class ConfigureMultipleDownloadsAdapter(onItemClickListener: OnItemClickListener
     }
 
     interface OnItemClickListener {
-        fun onButtonClick(videoURL: String, type: String?)
+        fun onButtonClick(itemURL: String)
         fun onCardClick(itemURL: String)
     }
 

@@ -308,8 +308,63 @@ class DownloadMultipleBottomSheetDialog(private var results: List<ResultItem?>, 
         }
     }
 
-    override fun onButtonClick(videoURL: String, type: String?) {
-        TODO("Not yet implemented")
+    override fun onButtonClick(itemURL: String) {
+        lifecycleScope.launch {
+            val item = items.find { it.url == itemURL } ?: return@launch
+            val position = items.indexOf(item)
+
+            val bottomSheet = BottomSheetDialog(requireContext())
+            bottomSheet.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            bottomSheet.setContentView(R.layout.download_type_sheet)
+
+            // BUTTON ----------------------------------
+            val audio = bottomSheet.findViewById<TextView>(R.id.audio)
+            val video = bottomSheet.findViewById<TextView>(R.id.video)
+            val command = bottomSheet.findViewById<TextView>(R.id.command)
+
+            withContext(Dispatchers.IO){
+                val nr = commandTemplateViewModel.getTotalNumber()
+                if(nr == 0){
+                    command!!.visibility = View.GONE
+                }else{
+                    command!!.visibility = View.VISIBLE
+                }
+            }
+
+            audio!!.setOnClickListener {
+                items[position] = downloadViewModel.switchDownloadType(listOf(item), DownloadViewModel.Type.audio).first()
+                listAdapter.submitList(items.toList())
+                listAdapter.notifyItemChanged(position)
+                bottomSheet.cancel()
+            }
+
+            video!!.setOnClickListener {
+                items[position] = downloadViewModel.switchDownloadType(listOf(item), DownloadViewModel.Type.video).first()
+                listAdapter.submitList(items.toList())
+                listAdapter.notifyItemChanged(position)
+                bottomSheet.cancel()
+            }
+
+            command!!.setOnClickListener {
+                lifecycleScope.launch {
+                    items[position] = withContext(Dispatchers.IO){
+                        downloadViewModel.switchDownloadType(listOf(item), DownloadViewModel.Type.command).first()
+                    }
+                    listAdapter.submitList(items.toList())
+                    listAdapter.notifyItemChanged(position)
+                    bottomSheet.cancel()
+                }
+            }
+
+            bottomSheet.show()
+            val displayMetrics = DisplayMetrics()
+            requireActivity().windowManager.defaultDisplay.getMetrics(displayMetrics)
+            bottomSheet.behavior.peekHeight = displayMetrics.heightPixels
+            bottomSheet.window!!.setLayout(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT
+            )
+        }
     }
 
     override fun onCardClick(itemURL: String) {

@@ -27,23 +27,17 @@ import com.google.android.exoplayer2.DefaultRenderersFactory.EXTENSION_RENDERER_
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem.fromUri
 import com.google.android.exoplayer2.Player
-import com.google.android.exoplayer2.database.DatabaseProvider
-import com.google.android.exoplayer2.database.StandaloneDatabaseProvider
 import com.google.android.exoplayer2.mediacodec.MediaCodecInfo
 import com.google.android.exoplayer2.mediacodec.MediaCodecSelector
+import com.google.android.exoplayer2.source.DefaultMediaSourceFactory
 import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.source.MergingMediaSource
-import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.ui.PlayerView
-import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
-import com.google.android.exoplayer2.upstream.cache.CacheDataSource
-import com.google.android.exoplayer2.upstream.cache.LeastRecentlyUsedCacheEvictor
-import com.google.android.exoplayer2.upstream.cache.SimpleCache
 import com.google.android.exoplayer2.util.MimeTypes
-import com.google.android.exoplayer2.util.Util
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
@@ -59,7 +53,6 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.io.File
 import java.lang.reflect.Type
 import java.util.*
 import kotlin.properties.Delegates
@@ -75,6 +68,8 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val list
     private lateinit var cutSection : ConstraintLayout
     private lateinit var durationText: TextView
     private lateinit var progress : ProgressBar
+    private lateinit var pauseBtn : MaterialButton
+    private lateinit var muteBtn : MaterialButton
     private lateinit var rangeSlider : RangeSlider
     private lateinit var fromTextInput : TextInputLayout
     private lateinit var toTextInput : TextInputLayout
@@ -91,8 +86,6 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val list
     private var timeSeconds by Delegates.notNull<Int>()
     private lateinit var chapters: List<ChapterItem>
     private lateinit var selectedCuts: MutableList<String>
-
-    private lateinit var cache: SimpleCache
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -138,26 +131,6 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val list
         val trackSelector = DefaultTrackSelector()
         val loadControl = DefaultLoadControl()
 
-// Specify cache folder, my cache folder named media which is inside getCacheDir.
-        val cacheFolder = File(requireContext().cacheDir, "media")
-
-// Specify cache size and removing policies
-        val cacheEvictor = LeastRecentlyUsedCacheEvictor(1 * 1024 * 1024) // My cache size will be 1MB and it will automatically remove least recently used files if the size is reached out.
-
-// Build cache
-        val databaseProvider: DatabaseProvider = StandaloneDatabaseProvider(requireContext())
-        cache = SimpleCache(cacheFolder, cacheEvictor, databaseProvider)
-
-// Build data source factory with cache enabled, if data is available in cache it will return immediately, otherwise it will open a new connection to get the data.
-        val defaultDataSourceFactory = DefaultDataSourceFactory(
-            requireContext(),
-            Util.getUserAgent(requireContext(), requireContext().getString(R.string.app_name))
-        )
-
-        val cacheDataSourceFactory =  CacheDataSource.Factory()
-            .setCache(cache)
-            .setUpstreamDataSourceFactory(defaultDataSourceFactory)
-
         player = ExoPlayer.Builder(requireContext(), renderersFactory)
             .setTrackSelector(trackSelector)
             .setLoadControl(loadControl)
@@ -173,6 +146,8 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val list
         durationText = view.findViewById(R.id.durationText)
         durationText.text = ""
         progress = view.findViewById(R.id.progress)
+        pauseBtn = view.findViewById(R.id.pause)
+        muteBtn = view.findViewById(R.id.mute)
         rangeSlider = view.findViewById(R.id.rangeSlider)
         fromTextInput = view.findViewById(R.id.from_textinput)
         toTextInput = view.findViewById(R.id.to_textinput)
@@ -218,10 +193,10 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val list
                 if (data.isEmpty()) throw Exception("No Streaming URL found!")
                 if (data.size == 2){
                     val audioSource : MediaSource =
-                        ProgressiveMediaSource.Factory(cacheDataSourceFactory)
+                        DefaultMediaSourceFactory(requireContext())
                             .createMediaSource(fromUri(Uri.parse(data[0])))
                     val videoSource: MediaSource =
-                        ProgressiveMediaSource.Factory(cacheDataSourceFactory)
+                        DefaultMediaSourceFactory(requireContext())
                             .createMediaSource(fromUri(Uri.parse(data[1])))
                     (player as ExoPlayer).setMediaSource(MergingMediaSource(videoSource, audioSource))
                 }else{
@@ -256,9 +231,23 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val list
         }
 
         videoView.setOnClickListener {
-            if (player.isPlaying) player.pause()
+            if (player.isPlaying){
+                player.pause()
+                pauseBtn.visibility = View.VISIBLE
+            }
             else {
                 player.play()
+                pauseBtn.visibility = View.GONE
+            }
+        }
+
+        muteBtn.setOnClickListener {
+            if (player.volume > 0F) {
+                muteBtn.setIconResource(R.drawable.baseline_music_off_24)
+                player.volume = 0F
+            }else {
+                muteBtn.setIconResource(R.drawable.ic_music)
+                player.volume = 1F
             }
         }
 
@@ -572,7 +561,6 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val list
     private fun cleanUp(){
         kotlin.runCatching {
             player.stop()
-            cache.release()
             parentFragmentManager.beginTransaction().remove(parentFragmentManager.findFragmentByTag("cutVideoSheet")!!).commit()
         }
     }

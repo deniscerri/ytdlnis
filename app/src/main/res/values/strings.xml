@@ -219,4 +219,8 @@
     <string name="format_filtering_hint">All items must be of the same type to use this option</string>
     <string name="preferred_home_screen">Preferred Home Screen</string>
     <string name="undo">Undo</string>
+    <string name="format_id">Format ID</string>
+    <string name="codec">Codec</string>
+    <string name="audio_samplerate">Audio Sample Rate</string>
+    <string name="copied_to_clipboard">Copied To Clipboard</string>
 </resources>

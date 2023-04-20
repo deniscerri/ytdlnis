@@ -37,6 +37,34 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/pause"
+        android:visibility="gone"
+        android:clickable="false"
+        app:iconSize="50dp"
+        style="@style/Widget.Material3.Button.IconButton"
+        app:iconTint="?android:colorAccent"
+        app:icon="@drawable/exomedia_ic_play_arrow_white"
+        android:layout_width="wrap_content"
+        android:indeterminate="true"
+        android:translationZ="10dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/frame_layout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/mute"
+        style="@style/Widget.Material3.Button.IconButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:icon="@drawable/ic_music"
+        app:iconSize="30dp"
+        app:iconTint="?android:colorAccent"
+        app:layout_constraintBottom_toBottomOf="@+id/frame_layout"
+        app:layout_constraintEnd_toEndOf="@+id/frame_layout" />
+
 
     <TextView
         android:id="@+id/durationText"
