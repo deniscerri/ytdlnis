@@ -208,4 +208,14 @@
     <string name="save_subs_desc">Altyazı dosyası yaz</string>
     <string name="update_formats_summary">Format kartına tıkladığınızda otomatik eksik formatları arar</string>
     <string name="ignore_battery_optimization">Pil Optimizasyonun Yoksay</string>
+    <string name="format_source">Format Kaynağı</string>
+    <string name="video_recommendations">Video Önerileri</string>
+    <string name="video_recommendations_summary">Invidious ile Ana Ekrana Video Önerileri Getir</string>
+    <string name="preferred_search_engine">Tercih Edilen Arama Motoru</string>
+    <string name="preferred_search_engine_summary">Uygulama içi aramalar için kullanılacak arama motoru</string>
+    <string name="format_filtering_hint">Bu seçeneği kullanmak için tüm öğeler aynı türde olmalıdır</string>
+    <string name="preferred_home_screen">Tercih Edilen Ana Ekran</string>
+    <string name="undo">Geri alma</string>
+    <string name="format_id">Biçim Kimliği</string>
+    <string name="copied_to_clipboard">Kopyalandı</string>
 </resources>
