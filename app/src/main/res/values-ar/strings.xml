@@ -55,7 +55,7 @@
     <string name="exit_app">الخروج من التطبيق</string>
     <string name="warning">تنبيه</string>
     <string name="sponsorblock_nonmusic">أجزاء غير موسيقية/خارج الموضوع</string>
-    <string name="sponsorblock_outro">النهاية</string>
+    <string name="sponsorblock_outro">الخاتمة</string>
     <string name="sponsorblock_promos">الترويج الذاتي</string>
     <string name="sponsorblock_previews">المعاينات</string>
     <string name="new_template">قالب جديد</string>
@@ -152,8 +152,8 @@
     <string name="kill_app">إنهاء التطبيق</string>
     <string name="confirm_terminate">سيتم إيقاف أيّة تحميلات نشطة، وفرض إغلاق التطبيق</string>
     <string name="dont_ask_again">لا تسألني بعد الآن</string>
-    <string name="end">الإنتهاء عند</string>
-    <string name="start">البدء من</string>
+    <string name="end">النهاية</string>
+    <string name="start">البداية</string>
     <string name="save_dir">مسار الحفظ</string>
     <string name="preferred_download_type_summary">التبويب الذي ستُفتح عليه بطاقة تخصيص التحميل</string>
     <string name="help_translate">المساعدة في الترجمة</string>
@@ -210,4 +210,10 @@
     <string name="preferred_search_engine">محرك البحث المفضل</string>
     <string name="preferred_search_engine_summary">المحرك المراد استخدامه بعمليات البحث من داخل التطبيق</string>
     <string name="format_filtering_hint">يجب أن تكون كل العناصر من نفس النوع حتى تعمل هذا الميزة</string>
+    <string name="preferred_home_screen">الشاشة المفضلة</string>
+    <string name="undo">تراجع</string>
+    <string name="format_id">معرف التنسيق</string>
+    <string name="codec">الترميز</string>
+    <string name="audio_samplerate">معدل عيّنة الصوت</string>
+    <string name="copied_to_clipboard">تم النسخ الى الحافظة</string>
 </resources>
