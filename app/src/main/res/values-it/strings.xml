@@ -33,8 +33,8 @@
     <string name="embed_subs_summary">Aggiunge i sottotitoli nel video</string>
     <string name="add_chapters_summary">Contrassegna i segmenti YouTube/SponsorBlock come capitoli per il video</string>
     <string name="save_thumb">Salva miniatura</string>
-    <string name="update_ytdl">Installa la nuova versione di youtube-dl</string>
-    <string name="search_hint">Cerca da YouTube</string>
+    <string name="update_ytdl">Installa la nuova versione di yt-dlp</string>
+    <string name="search_hint">Cerca o inserisci URL</string>
     <string name="failed_download">Impossibile scaricare il file.</string>
     <string name="download_notification_channel_description">Notifica che mostra l\'avanzamento del download di file audio e video</string>
     <string name="download_notification_channel_name">Download di file</string>
@@ -98,4 +98,9 @@
     <string name="add_chapter">Aggiungi capitoli</string>
     <string name="delete_file_too">Elimina il file dal dispositivo</string>
     <string name="request_permission_desc">Questa app richiede autorizzazioni file per salvare i download sul dispositivo</string>
+    <string name="worst_quality">Qualità peggiore</string>
+    <string name="best_quality">Qualità migliore</string>
+    <string name="save_dir">Scarica directory</string>
+    <string name="new_template">Nuovo modello</string>
+    <string name="about">Circa</string>
 </resources>
