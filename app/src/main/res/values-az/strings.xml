@@ -17,7 +17,7 @@
     <string name="failed_download">Faylı endirmək mümkün olmadı.</string>
     <string name="download_notification_channel_name">Fayl Yükləmələri</string>
     <string name="download_notification_channel_description">Səs və video faylların endirilmə irəliləyişin göstərən bildiriş</string>
-    <string name="you_are_in_latest_version">Ən son versiya işlədilir</string>
+    <string name="you_are_in_latest_version">Son versiya işlədilir</string>
     <string name="ytld_update_success">Yeni versiya quraşdırıldı</string>
     <string name="ytdl_already_updating">Yeni versiya quraşdırılır…</string>
     <string name="ytdl_updating_started">Yeni versiya yüklənir…</string>
@@ -27,7 +27,7 @@
     <string name="confirm_delete_history_desc">Bütün tarixçəni həmişəlik sil.</string>
     <string name="confirm_delete_history">Təsdiqlə</string>
     <string name="search_history_hint">Tarixçədən Axtarış</string>
-    <string name="no_results">Nəticə yoxdur</string>
+    <string name="no_results">Nəticə Yoxdur</string>
     <string name="more">Daha çox</string>
     <string name="update_app">Yeniləmələr üçün yoxla</string>
     <string name="version">Versiya</string>
@@ -55,7 +55,7 @@
     <string name="audio_quality">Səs Keyfiyyəti</string>
     <string name="audio_quality_summary">0 (ən yaxşı) 10 (ən pis)</string>
     <string name="cancel_download">Endirməni Ləğv et</string>
-    <string name="run_command">Əmri işlət</string>
+    <string name="run_command">Əmri İşlət</string>
     <string name="command_download_notification_channel_name">Əmr Yükləmələri</string>
     <string name="command_download_notification_channel_description">Yt-dlp əmri işlədərkən endirmə irəliləyişi göstərən bildiriş</string>
     <string name="items_left">sol element(lər)</string>
@@ -72,14 +72,14 @@
     <string name="sort_by">Çeşidləmə</string>
     <string name="remove_downloading">Endirmələri Ləğv et</string>
     <string name="incognito_summary">Tarixçəyə əlavə etmədən yüklə</string>
-    <string name="configure_download">Endirməni tənzimlə</string>
+    <string name="configure_download">Endirməni Tənzimlə</string>
     <string name="title">Başlıq</string>
     <string name="author">Müəllif</string>
     <string name="download">Yüklə</string>
     <string name="video_quality">Video Keyfiyyəti</string>
-    <string name="embed_subtitles">Altyazılar yerləşdir</string>
-    <string name="add_chapter">Bölmələr əlavə et</string>
-    <string name="show_download_card">Endirmə üçün Seçimlər Göstər</string>
+    <string name="embed_subtitles">Altyazılar Yerləşdir</string>
+    <string name="add_chapter">Bölmələr Əlavə et</string>
+    <string name="show_download_card">Endirmə üçün seçimlər göstər</string>
     <string name="download_card_summary">Elementləri yükləmək üçün tənzimləmələr</string>
     <string name="Open_File">Faylı Aç</string>
     <string name="delete_selected">Seçiləni Sil</string>
@@ -172,7 +172,7 @@
     <string name="freespace">Boş yer</string>
     <string name="ytdl_version">yt-dlp Versiya</string>
     <string name="link_you_copied">Kopyaladığınız link</string>
-    <string name="best_quality">Ən yaxşı keyfiyyət</string>
+    <string name="best_quality">Ən Yaxşı Keyfiyyət</string>
     <string name="worst_quality">Ən Pis Keyfiyyət</string>
     <string name="restrict_filenames">Fayl adların məhdudlaşdır</string>
     <string name="restrict_filenames_summary">Fayl adların ancaq ASCII simvollarıyla məhdudlaşdır və fayl adlarında \"&amp;\" və boşluqlar yaratma</string>
@@ -210,4 +210,10 @@
     <string name="preferred_search_engine">Üstünlük Verilən Axtarış Mühərrik</string>
     <string name="format_filtering_hint">Bu seçimi işlətmək üçün bütün elementlər eyni növdə olmalıdır</string>
     <string name="preferred_search_engine_summary">Tətbiqdaxili axtarışlar üçün istifadə edilməli axtarış mühərriki</string>
+    <string name="preferred_home_screen">Üstünlük Verilən Ev Ekran</string>
+    <string name="audio_samplerate">Səs Nümunə Sürəti</string>
+    <string name="copied_to_clipboard">Buferə Nüsxələndi</string>
+    <string name="undo">Geri al</string>
+    <string name="codec">Kodek</string>
+    <string name="format_id">Format ID</string>
 </resources>
