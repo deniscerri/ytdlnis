@@ -207,4 +207,13 @@
     <string name="format_source">ফরম্যাট উৎস</string>
     <string name="video_recommendations">ভিডিও সুপারিশ</string>
     <string name="video_recommendations_summary">ইনভিডিয়াস থেকে হোম স্ক্রিনে প্রস্তাবিত ইউটিউব ভিডিও পান</string>
+    <string name="preferred_search_engine">পছন্দের সার্চ ইঞ্জিন</string>
+    <string name="preferred_search_engine_summary">অ্যাপ-মধ্যস্থ অনুসন্ধানের জন্য ব্যবহার করার জন্য সার্চ ইঞ্জিন</string>
+    <string name="format_filtering_hint">এই বিকল্পটি ব্যবহার করার জন্য সমস্ত আইটেম একই ধরনের হতে হবে</string>
+    <string name="preferred_home_screen">পছন্দের হোম স্ক্রীন</string>
+    <string name="undo">পূর্বাবস্থায় ফেরান</string>
+    <string name="format_id">ফর্ম্যাট আইডি</string>
+    <string name="codec">কোডেক</string>
+    <string name="audio_samplerate">অডিও নমুনা হার</string>
+    <string name="copied_to_clipboard">ক্লিপবোর্ডে কপি করা হয়েছে</string>
 </resources>

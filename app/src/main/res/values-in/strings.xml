@@ -201,4 +201,19 @@
     <string name="download_over_metered_networks_summary">Mengizinkan pekerja unduhan bekerja di semua jenis jaringan. Jika dinonaktifkan, pekerja unduhan akan menunggu jaringan yang tidak terukur untuk memulai unduhan</string>
     <string name="end">Akhir</string>
     <string name="start">Awal</string>
+    <string name="save_subs">Simpan Takarir</string>
+    <string name="save_subs_desc">Menulis berkas takarir</string>
+    <string name="subtitle_languages">Bahasa takarir</string>
+    <string name="video_recommendations_summary">Dapatkan Rekomendasi Video YouTube di Layar Beranda dari Invidious</string>
+    <string name="format_source">Sumber Format</string>
+    <string name="video_recommendations">Rekomendasi Video</string>
+    <string name="copied_to_clipboard">Disalin ke Papan Klip</string>
+    <string name="audio_samplerate">Laju Sampel Audio</string>
+    <string name="codec">Kodek</string>
+    <string name="format_id">ID Format</string>
+    <string name="undo">Urungkan</string>
+    <string name="format_filtering_hint">Semua butir harus merupakan jenis yang sama untuk bisa menggunakan opsi ini</string>
+    <string name="preferred_home_screen">Preferensi Layar Beranda</string>
+    <string name="preferred_search_engine">Preferensi Mesin Penelusuran</string>
+    <string name="preferred_search_engine_summary">Mesin penelusuran yang akan digunakan untuk penelusuran di dalam aplikasi</string>
 </resources>
