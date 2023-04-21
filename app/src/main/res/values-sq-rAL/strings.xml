@@ -216,4 +216,5 @@
     <string name="codec">Kodek</string>
     <string name="audio_samplerate">Shpejtësia e Audios</string>
     <string name="copied_to_clipboard">U kopjua</string>
+    <string name="Theme">Tema</string>
 </resources>

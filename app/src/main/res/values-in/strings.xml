@@ -216,4 +216,5 @@
     <string name="preferred_home_screen">Preferensi Layar Beranda</string>
     <string name="preferred_search_engine">Preferensi Mesin Penelusuran</string>
     <string name="preferred_search_engine_summary">Mesin penelusuran yang akan digunakan untuk penelusuran di dalam aplikasi</string>
+    <string name="Theme">Tema</string>
 </resources>
