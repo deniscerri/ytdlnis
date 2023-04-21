@@ -108,36 +108,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            app:layout_scrollFlags="scroll"
-            android:layout_height="wrap_content">
-
-            <com.google.android.material.appbar.MaterialToolbar
-                android:id="@+id/home_toolbar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:theme="@style/Toolbar"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:title="@string/app_name" />
-
-            <com.google.android.material.search.SearchBar
-                android:id="@+id/search_bar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                app:layout_scrollFlags="scroll|enterAlways"
-                android:hint="@string/search_hint"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toEndOf="@+id/home_toolbar"
-                app:layout_constraintTop_toTopOf="parent"
-                app:menu="@menu/main_menu" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        <com.google.android.material.search.SearchBar
+            android:id="@+id/search_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_gravity="end"
+            app:layout_scrollFlags="scroll|enterAlways"
+            android:hint="@string/search_hint"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toEndOf="@+id/home_toolbar"
+            app:layout_constraintTop_toTopOf="parent"
+            app:menu="@menu/main_menu" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -153,7 +137,7 @@
         android:layout_marginRight="10dp"
         android:clipToPadding="false"
         android:paddingBottom="100dp"
-        app:spanCount="2"
+        app:spanCount="3"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         />
 
@@ -174,8 +158,8 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:weightSum="2"
-                android:layout_height="250dp">
+                android:weightSum="3"
+                android:layout_height="200dp">
 
                 <include
                     android:layout_weight="1"
@@ -197,8 +181,8 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:weightSum="2"
-                android:layout_height="250dp">
+                android:weightSum="3"
+                android:layout_height="200dp">
 
                 <include
                     android:layout_weight="1"
@@ -220,8 +204,8 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:weightSum="2"
-                android:layout_height="250dp">
+                android:weightSum="3"
+                android:layout_height="200dp">
 
                 <include
                     android:layout_weight="1"
@@ -243,6 +227,7 @@
 
 
         </LinearLayout>
+
 
     </com.facebook.shimmer.ShimmerFrameLayout>
 

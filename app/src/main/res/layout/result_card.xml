@@ -85,7 +85,6 @@
                         android:maxLines="1"
                         android:ellipsize="end"
                         android:paddingEnd="10dp"
-                        android:paddingBottom="5dp"
                         android:shadowColor="@color/black"
                         android:shadowDx="4"
                         android:shadowDy="4"

@@ -16,6 +16,7 @@ import android.provider.Settings
 import android.util.Log
 import android.view.View
 import android.view.WindowInsets
+import android.widget.CheckBox
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -34,6 +35,7 @@ import com.deniscerri.ytdlnis.ui.more.settings.SettingsActivity
 import com.deniscerri.ytdlnis.util.UpdateUtil
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.navigation.NavigationBarView
+import com.google.android.material.navigation.NavigationView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.BufferedReader
@@ -50,7 +52,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var preferences: SharedPreferences
     private lateinit var resultViewModel: ResultViewModel
     private lateinit var cookieViewModel: CookieViewModel
-    private lateinit var navigationView: NavigationBarView
+    private lateinit var navigationView: View
     private lateinit var navHostFragment : NavHostFragment
 
 
@@ -72,18 +74,25 @@ class MainActivity : AppCompatActivity() {
 
         navHostFragment = supportFragmentManager.findFragmentById(R.id.frame_layout) as NavHostFragment
         val navController = navHostFragment.findNavController()
-        navigationView = findViewById(R.id.bottomNavigationView)
-
-        window.decorView.setOnApplyWindowInsetsListener { view: View, windowInsets: WindowInsets? ->
-            val windowInsetsCompat = WindowInsetsCompat.toWindowInsetsCompat(
-                windowInsets!!, view
-            )
-            val isImeVisible = windowInsetsCompat.isVisible(WindowInsetsCompat.Type.ime())
-            navigationView.visibility =
-                if (isImeVisible) View.GONE else View.VISIBLE
-            view.onApplyWindowInsets(windowInsets)
+        navigationView = try {
+            findViewById(R.id.bottomNavigationView)
+        }catch (e: Exception){
+            findViewById<NavigationView>(R.id.navigationView)
         }
-        var sharedPreferences = getSharedPreferences("root_preferences", Activity.MODE_PRIVATE)
+
+        if (navigationView is NavigationBarView){
+            window.decorView.setOnApplyWindowInsetsListener { view: View, windowInsets: WindowInsets? ->
+                val windowInsetsCompat = WindowInsetsCompat.toWindowInsetsCompat(
+                    windowInsets!!, view
+                )
+                val isImeVisible = windowInsetsCompat.isVisible(WindowInsetsCompat.Type.ime())
+                navigationView.visibility =
+                    if (isImeVisible) View.GONE else View.VISIBLE
+                view.onApplyWindowInsets(windowInsets)
+            }
+        }
+
+        val sharedPreferences = getSharedPreferences("root_preferences", Activity.MODE_PRIVATE)
 
         val startDestination = sharedPreferences.getString("start_destination", "")
         val graph = navHostFragment.navController.navInflater.inflate(R.navigation.nav_graph)
@@ -96,35 +105,58 @@ class MainActivity : AppCompatActivity() {
 
 
 
-        navigationView.setupWithNavController(navController)
-        navigationView.setOnItemReselectedListener {
-            when (it.itemId) {
-                R.id.homeFragment -> {
-                    (navHostFragment.childFragmentManager.primaryNavigationFragment!! as HomeFragment).scrollToTop()
-                }
-                R.id.historyFragment -> {
-                    val intent = Intent(context, DownloadQueueActivity::class.java)
-                    startActivity(intent)
-                }
-                R.id.moreFragment -> {
-                    //navController.navigate(R.id.settingsFragment)
-                    val intent = Intent(context, SettingsActivity::class.java)
-                   startActivity(intent)
+        if (navigationView is NavigationBarView){
+            (navigationView as NavigationBarView).setupWithNavController(navController)
+            (navigationView as NavigationBarView).setOnItemReselectedListener {
+                when (it.itemId) {
+                    R.id.homeFragment -> {
+                        (navHostFragment.childFragmentManager.primaryNavigationFragment!! as HomeFragment).scrollToTop()
+                    }
+                    R.id.historyFragment -> {
+                        val intent = Intent(context, DownloadQueueActivity::class.java)
+                        startActivity(intent)
+                    }
+                    R.id.moreFragment -> {
+                        //navController.navigate(R.id.settingsFragment)
+                        val intent = Intent(context, SettingsActivity::class.java)
+                        startActivity(intent)
+                    }
                 }
             }
         }
+        if (navigationView is NavigationView){
+            (navigationView as NavigationView).setupWithNavController(navController)
+            //terminate button
+            (navigationView as NavigationView).menu.getItem(7).setOnMenuItemClickListener {
+                if (sharedPreferences.getBoolean("ask_terminate_app", true)){
+                    var doNotShowAgain = false
+                    val terminateDialog = MaterialAlertDialogBuilder(this)
+                    terminateDialog.setTitle(getString(R.string.confirm_delete_history))
+                    val dialogView = layoutInflater.inflate(R.layout.dialog_terminate_app, null)
+                    val checkbox = dialogView.findViewById<CheckBox>(R.id.doNotShowAgain)
+                    terminateDialog.setView(dialogView)
+                    checkbox.setOnCheckedChangeListener { compoundButton, b ->
+                        doNotShowAgain = compoundButton.isChecked
+                    }
+
+                    terminateDialog.setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, _: Int -> dialogInterface.cancel() }
+                    terminateDialog.setPositiveButton(getString(R.string.ok)) { _: DialogInterface?, _: Int ->
+                        if (doNotShowAgain){
+                            sharedPreferences.edit().putBoolean("ask_terminate_app", false).apply()
+                        }
+                        finishAndRemoveTask()
+                        exitProcess(0)
+                    }
+                    terminateDialog.show()
+                }else{
+                    finishAndRemoveTask()
+                    exitProcess(0)
+                }
+                true
+            }
+        }
+
         cookieViewModel.updateCookiesFile()
-
-        //TODO PLAYLIST FORMAT UPDATING
-//        val infoUtil = InfoUtil(context)
-//        val list = arrayOf(
-//            "https://www.youtube.com/watch?v=tYcqn48SMT8",
-//            "https://www.youtube.com/watch?v=QNrNKPKe5oc"
-//        )
-//        infoUtil.getFormatsTest(list.toList()){
-//            Log.e("gff", it.toString())
-//        }
-
         val intent = intent
         handleIntents(intent)
     }
@@ -138,11 +170,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun disableBottomNavigation(){
-        navigationView.menu.forEach { it.isEnabled = false }
+        (navigationView as NavigationView).menu.forEach { it.isEnabled = false }
     }
 
     fun enableBottomNavigation(){
-        navigationView.menu.forEach { it.isEnabled = true }
+        (navigationView as NavigationView).menu.forEach { it.isEnabled = true }
     }
 
     override fun onResume() {

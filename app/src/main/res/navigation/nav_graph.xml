@@ -15,7 +15,11 @@
         android:id="@+id/historyFragment"
         android:name="com.deniscerri.ytdlnis.ui.downloads.HistoryFragment"
         android:label="@string/downloads"
-        tools:layout="@layout/fragment_history" />
+        tools:layout="@layout/fragment_history" >
+        <action
+            android:id="@+id/action_historyFragment_to_downloadQueueActivity"
+            app:destination="@id/downloadQueueActivity" />
+    </fragment>
     <fragment
         android:id="@+id/moreFragment"
         android:name="com.deniscerri.ytdlnis.ui.more.MoreFragment"
@@ -29,4 +33,31 @@
         android:id="@+id/settingsFragment"
         android:name="com.deniscerri.ytdlnis.ui.more.settings.SettingsFragment"
         android:label="SettingsFragment" />
+    <activity
+        android:id="@+id/downloadQueueActivity"
+        android:name="com.deniscerri.ytdlnis.ui.downloads.DownloadQueueActivity"
+        android:label="DownloadQueueActivity"
+        tools:layout="@layout/activity_download_queue" />
+    <activity
+        android:id="@+id/downloadLogListActivity"
+        android:name="com.deniscerri.ytdlnis.ui.more.downloadLogs.DownloadLogListActivity"
+        android:label="DownloadLogListActivity" />
+    <activity
+        android:id="@+id/commandTemplatesActivity"
+        android:name="com.deniscerri.ytdlnis.ui.more.CommandTemplatesActivity"
+        android:label="CommandTemplatesActivity" />
+    <activity
+        android:id="@+id/cookiesActivity"
+        android:name="com.deniscerri.ytdlnis.ui.more.CookiesActivity"
+        android:label="CookiesActivity" />
+    <activity
+        android:id="@+id/settingsActivity"
+        android:name="com.deniscerri.ytdlnis.ui.more.settings.SettingsActivity"
+        android:label="activity_settings"
+        tools:layout="@layout/activity_settings" />
+    <activity
+        android:id="@+id/terminalActivity"
+        android:name="com.deniscerri.ytdlnis.ui.more.TerminalActivity"
+        android:label="activity_terminal"
+        tools:layout="@layout/activity_terminal" />
 </navigation>

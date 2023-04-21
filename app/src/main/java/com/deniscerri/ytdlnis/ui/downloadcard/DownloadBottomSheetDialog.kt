@@ -67,7 +67,7 @@ class DownloadBottomSheetDialog(private val resultItem: ResultItem, private val 
             behavior = BottomSheetBehavior.from(view.parent as View)
             val displayMetrics = DisplayMetrics()
             requireActivity().windowManager.defaultDisplay.getMetrics(displayMetrics)
-            behavior.peekHeight = displayMetrics.heightPixels - 400
+            behavior.peekHeight = displayMetrics.heightPixels - 700
         }
 
 

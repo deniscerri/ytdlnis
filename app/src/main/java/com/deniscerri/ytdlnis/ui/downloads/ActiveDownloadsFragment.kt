@@ -66,11 +66,14 @@ class ActiveDownloadsFragment() : Fragment(), ActiveDownloadAdapter.OnItemClickL
         activeRecyclerView = view.findViewById(R.id.download_recyclerview)
         activeRecyclerView.adapter = activeDownloads
 
-        val landScape = resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE && ! resources.getBoolean(R.bool.isTablet)
-        if (landScape){
+        val landScape = resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+        val displayMetrics: DisplayMetrics = requireContext().resources.displayMetrics
+        val dpWidth: Float = displayMetrics.widthPixels / displayMetrics.density
+        if (dpWidth > 1200 && landScape){
+            activeRecyclerView.layoutManager = GridLayoutManager(context, 3)
+        }else if (landScape || dpWidth >= 700){
             activeRecyclerView.layoutManager = GridLayoutManager(context, 2)
         }
-        if (resources.getBoolean(R.bool.isTablet)) activeRecyclerView.layoutManager = GridLayoutManager(context, 3)
 
         downloadViewModel.activeDownloads.observe(viewLifecycleOwner) {
             activeDownloads.submitList(it)

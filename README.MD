@@ -61,6 +61,7 @@
 <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/10.png" width="30%" />
 <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/11.png" width="30%" />
 <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/12.png" width="30%" />
+<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/13.png" width="90%" />
 </div>
 
 ## 💬 Contact

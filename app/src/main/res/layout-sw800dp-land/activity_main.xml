@@ -38,21 +38,22 @@
             app:navGraph="@navigation/nav_graph"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/bottomNavigationView"
+            app:layout_constraintStart_toEndOf="@+id/navigationView"
             app:layout_constraintTop_toTopOf="parent"
             />
 
-        <com.google.android.material.navigationrail.NavigationRailView
-            android:id="@+id/bottomNavigationView"
+        <com.google.android.material.navigation.NavigationView
+            android:id="@+id/navigationView"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             app:labelVisibilityMode="unlabeled"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:headerLayout="@layout/header_navigation_drawer"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:menu="@menu/bottom_nav_menu" />
+            app:menu="@menu/nav_menu_largescreen" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

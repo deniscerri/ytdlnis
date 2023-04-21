@@ -6,6 +6,7 @@ import android.content.res.Configuration
 import android.graphics.Canvas
 import android.graphics.Color
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -76,11 +77,14 @@ class CancelledDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClic
         val itemTouchHelper = ItemTouchHelper(simpleCallback)
         itemTouchHelper.attachToRecyclerView(cancelledRecyclerView)
 
-        val landScape = resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE && ! resources.getBoolean(R.bool.isTablet)
-        if (landScape){
+        val landScape = resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+        val displayMetrics: DisplayMetrics = requireContext().resources.displayMetrics
+        val dpWidth: Float = displayMetrics.widthPixels / displayMetrics.density
+        if (dpWidth > 1200 && landScape){
+            cancelledRecyclerView.layoutManager = GridLayoutManager(context, 3)
+        }else if (landScape || dpWidth >= 700){
             cancelledRecyclerView.layoutManager = GridLayoutManager(context, 2)
         }
-        if (resources.getBoolean(R.bool.isTablet)) cancelledRecyclerView.layoutManager = GridLayoutManager(context, 3)
 
         downloadViewModel.cancelledDownloads.observe(viewLifecycleOwner) {
             items = it.toMutableList()

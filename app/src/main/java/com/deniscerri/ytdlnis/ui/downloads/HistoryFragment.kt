@@ -113,13 +113,16 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
                 requireActivity()
             )
         recyclerView = view.findViewById(R.id.recyclerviewhistorys)
-        if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE && ! resources.getBoolean(R.bool.isTablet)){
-            recyclerView?.layoutManager = GridLayoutManager(context, 2)
-        }
-        if (resources.getBoolean(R.bool.isTablet)) recyclerView?.layoutManager = GridLayoutManager(context, 3)
-
         recyclerView?.adapter = historyAdapter
 
+        val landScape = resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+        val displayMetrics: DisplayMetrics = requireContext().resources.displayMetrics
+        val dpWidth: Float = displayMetrics.widthPixels / displayMetrics.density
+        if (dpWidth > 1200 && landScape){
+            recyclerView?.layoutManager = GridLayoutManager(context, 3)
+        }else if (landScape || dpWidth >= 700){
+            recyclerView?.layoutManager = GridLayoutManager(context, 2)
+        }
         noResults?.visibility = GONE
 
 
