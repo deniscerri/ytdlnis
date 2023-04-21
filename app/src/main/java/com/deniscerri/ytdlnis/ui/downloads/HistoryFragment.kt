@@ -120,7 +120,7 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
         val dpWidth: Float = displayMetrics.widthPixels / displayMetrics.density
         if (dpWidth > 1200 && landScape){
             recyclerView?.layoutManager = GridLayoutManager(context, 3)
-        }else if (landScape || dpWidth >= 700){
+        }else if (landScape || dpWidth >= 650){
             recyclerView?.layoutManager = GridLayoutManager(context, 2)
         }
         noResults?.visibility = GONE
@@ -297,6 +297,9 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
                 historyViewModel.setSorting(HistoryRepository.HistorySortType.FILESIZE)
                 changeSortIcon(filesize, historyViewModel.sortOrder.value!!)
             }
+            val displayMetrics = DisplayMetrics()
+            requireActivity().windowManager.defaultDisplay.getMetrics(displayMetrics)
+            sortSheet!!.behavior.peekHeight = displayMetrics.heightPixels
             sortSheet!!.show()
         }
 

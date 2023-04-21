@@ -223,4 +223,5 @@
     <string name="codec">Codec</string>
     <string name="audio_samplerate">Audio Sample Rate</string>
     <string name="copied_to_clipboard">Copied To Clipboard</string>
+    <string name="Theme">Theme</string>
 </resources>

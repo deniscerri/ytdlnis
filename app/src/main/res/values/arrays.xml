@@ -163,4 +163,20 @@
         <item>History</item>
         <item>More</item>
     </array>
+
+    <array name="themes">
+        <item>@string/defaultValue</item>
+        <item>@string/dark</item>
+        <item>@string/light</item>
+    </array>
+
+    <array name="themes_values">
+        <item>Default</item>
+        <item>Dark</item>
+        <item>Light</item>
+    </array>
+
+
+    <string name="dark">Dark</string>
+    <string name="light">Light</string>
 </resources>

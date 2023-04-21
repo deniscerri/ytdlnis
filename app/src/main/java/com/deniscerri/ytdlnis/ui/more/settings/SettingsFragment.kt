@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.os.Environment
 import android.os.PowerManager
 import android.provider.Settings
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatDelegate
@@ -33,6 +34,7 @@ import java.util.*
 
 class SettingsFragment : PreferenceFragmentCompat() {
     private var language: ListPreference? = null
+    private var theme: ListPreference? = null
     private var ignoreBatteryOptimization: Preference? = null
     private var musicPath: Preference? = null
     private var videoPath: Preference? = null
@@ -102,6 +104,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
             requireContext().getSharedPreferences("root_preferences", Activity.MODE_PRIVATE)
         val editor = preferences.edit()
         language = findPreference("app_language")
+        theme = findPreference("ytdlnis_theme")
         ignoreBatteryOptimization = findPreference("ignore_battery")
         musicPath = findPreference("music_path")
         videoPath = findPreference("video_path")
@@ -160,6 +163,8 @@ class SettingsFragment : PreferenceFragmentCompat() {
         if (pm.isIgnoringBatteryOptimizations(packageName)) {
             ignoreBatteryOptimization!!.isVisible = false
         }
+
+        editor.putString("theme", theme!!.value)
 
         if (preferences.getString("music_path", "")!!.isEmpty()) {
             editor.putString("music_path", getString(R.string.music_path))
@@ -222,6 +227,32 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 editor.apply()
                 AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(newValue.toString()))
                 if (Build.VERSION.SDK_INT >= VERSION_CODES.TIRAMISU) requireActivity().recreate()
+                true
+            }
+
+        theme!!.summary = when(theme!!.value){
+            "Default" -> getString(R.string.defaultValue)
+            "Dark" -> getString(R.string.dark)
+            else -> getString(R.string.light)
+        }
+        theme!!.onPreferenceChangeListener =
+            Preference.OnPreferenceChangeListener { _: Preference?, newValue: Any ->
+                when(newValue){
+                    "Default" -> {
+                        theme!!.summary = getString(R.string.defaultValue)
+                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+                    }
+                    "Dark" -> {
+                        theme!!.summary = getString(R.string.dark)
+                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                    }
+                    else -> {
+                        theme!!.summary = getString(R.string.light)
+                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                    }
+                }
+                editor.putString("ytdlnis_theme", newValue.toString())
+                editor.apply()
                 true
             }
 

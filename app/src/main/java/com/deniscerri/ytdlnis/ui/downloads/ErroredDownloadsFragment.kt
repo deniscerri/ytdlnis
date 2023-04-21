@@ -85,7 +85,7 @@ class ErroredDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickL
         val dpWidth: Float = displayMetrics.widthPixels / displayMetrics.density
         if (dpWidth > 1200 && landScape){
             erroredRecyclerView.layoutManager = GridLayoutManager(context, 3)
-        }else if (landScape || dpWidth >= 700){
+        }else if (landScape || dpWidth >= 650){
             erroredRecyclerView.layoutManager = GridLayoutManager(context, 2)
         }
 

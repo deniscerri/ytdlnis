@@ -82,7 +82,7 @@ class CancelledDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClic
         val dpWidth: Float = displayMetrics.widthPixels / displayMetrics.density
         if (dpWidth > 1200 && landScape){
             cancelledRecyclerView.layoutManager = GridLayoutManager(context, 3)
-        }else if (landScape || dpWidth >= 700){
+        }else if (landScape || dpWidth >= 650){
             cancelledRecyclerView.layoutManager = GridLayoutManager(context, 2)
         }
 

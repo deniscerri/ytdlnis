@@ -33,9 +33,11 @@ import com.deniscerri.ytdlnis.ui.HomeFragment
 import com.deniscerri.ytdlnis.ui.downloads.DownloadQueueActivity
 import com.deniscerri.ytdlnis.ui.more.settings.SettingsActivity
 import com.deniscerri.ytdlnis.util.UpdateUtil
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.navigation.NavigationBarView
 import com.google.android.material.navigation.NavigationView
+import com.google.android.material.navigationrail.NavigationRailView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.BufferedReader
@@ -95,17 +97,16 @@ class MainActivity : AppCompatActivity() {
         val sharedPreferences = getSharedPreferences("root_preferences", Activity.MODE_PRIVATE)
 
         val startDestination = sharedPreferences.getString("start_destination", "")
-        val graph = navHostFragment.navController.navInflater.inflate(R.navigation.nav_graph)
+        val graph = navController.navInflater.inflate(R.navigation.nav_graph)
         when(startDestination) {
-                "History" -> graph.setStartDestination(R.id.historyFragment)
-                "More" -> graph.setStartDestination(R.id.moreFragment)
-                else -> graph.setStartDestination(R.id.homeFragment)
+            "History" -> graph.setStartDestination(R.id.historyFragment)
+            "More" -> if (navigationView is NavigationBarView) graph.setStartDestination(R.id.moreFragment) else graph.setStartDestination(R.id.homeFragment)
+            else -> graph.setStartDestination(R.id.homeFragment)
         }
-        navHostFragment.navController.graph = graph
-
-
+        navController.graph = graph
 
         if (navigationView is NavigationBarView){
+            (navigationView as NavigationBarView).selectedItemId = graph.startDestinationId
             (navigationView as NavigationBarView).setupWithNavController(navController)
             (navigationView as NavigationBarView).setOnItemReselectedListener {
                 when (it.itemId) {
@@ -125,6 +126,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
         if (navigationView is NavigationView){
+            (navigationView as NavigationView).setCheckedItem(graph.startDestinationId)
             (navigationView as NavigationView).setupWithNavController(navController)
             //terminate button
             (navigationView as NavigationView).menu.getItem(7).setOnMenuItemClickListener {

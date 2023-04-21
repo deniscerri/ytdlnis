@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/downloads_card_constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -40,11 +41,11 @@
                 <TextView
                     android:id="@+id/downloads_title"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="0dp"
                     android:ellipsize="end"
                     android:maxLines="2"
-                    android:paddingTop="10dp"
                     android:paddingHorizontal="10dp"
+                    android:paddingTop="10dp"
                     android:scrollbars="none"
                     android:shadowColor="@color/black"
                     android:shadowDx="4"
@@ -53,6 +54,7 @@
                     android:textColor="#FFF"
                     android:textSize="15sp"
                     android:textStyle="bold"
+                    app:layout_constraintBottom_toTopOf="@+id/downloads_info_bottom"
                     app:layout_constraintEnd_toStartOf="@+id/downloads_download_button_type"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -62,7 +64,7 @@
                     android:id="@+id/downloads_info_bottom"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
+                    android:padding="10dp"
                     android:ellipsize="end"
                     android:gravity="bottom"
                     android:maxLines="1"
@@ -76,20 +78,25 @@
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/downloads_info_time"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintVertical_bias="1.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/downloads_title"
-                    app:layout_constraintVertical_bias="1.0" />
+                    app:layout_constraintTop_toBottomOf="@+id/downloads_download_button_type" />
 
                 <TextView
                     android:id="@+id/downloads_info_time"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
+                    android:padding="10dp"
+                    android:ellipsize="end"
+                    android:gravity="bottom"
+                    android:maxLines="1"
+                    android:scrollbars="none"
                     android:shadowColor="@color/black"
                     android:shadowDx="4"
                     android:shadowDy="4"
                     android:shadowRadius="10"
-                    android:textColor="@color/white"
+                    android:textColor="#FFF"
                     android:textSize="11sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -102,14 +109,11 @@
                     style="@style/Widget.Material3.ExtendedFloatingActionButton.Icon.Secondary"
                     android:layout_width="55dp"
                     android:layout_height="55dp"
-                    android:layout_marginHorizontal="20dp"
-                    android:layout_marginEnd="16dp"
+                    android:layout_margin="10dp"
                     android:clickable="false"
                     app:cornerRadius="10dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.375" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

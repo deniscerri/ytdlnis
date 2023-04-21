@@ -1,7 +1,11 @@
 package com.deniscerri.ytdlnis
 
 import android.app.Application
+import android.app.UiModeManager.MODE_NIGHT_NO
+import android.app.UiModeManager.MODE_NIGHT_YES
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
 import androidx.preference.PreferenceManager
 import androidx.work.Configuration
 import androidx.work.WorkManager
@@ -32,6 +36,8 @@ class App : Application() {
             false
         )
 
+        val sharedPreferences = getSharedPreferences("root_preferences", MODE_PRIVATE)
+
         applicationScope = CoroutineScope(SupervisorJob())
         applicationScope.launch((Dispatchers.IO)) {
             try {
@@ -42,12 +48,19 @@ class App : Application() {
             }
         }
 
+        AppCompatDelegate.setDefaultNightMode(
+            when(sharedPreferences.getString("ytdlnis_theme", "Default")){
+                "Default" -> MODE_NIGHT_FOLLOW_SYSTEM
+                "Dark" -> MODE_NIGHT_YES
+                else -> MODE_NIGHT_NO
+            }
+        )
+
         WorkManager.initialize(
             this@App,
             Configuration.Builder()
                 .setExecutor(Executors.newFixedThreadPool(
-                    getSharedPreferences("root_preferences", MODE_PRIVATE)
-                        .getInt("concurrent_downloads", 1)))
+                    sharedPreferences.getInt("concurrent_downloads", 1)))
                 .build())
 
     }

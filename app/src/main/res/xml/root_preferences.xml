@@ -8,6 +8,15 @@
         app:summary="en"
         app:title="@string/language" />
 
+    <ListPreference
+        android:entries="@array/themes"
+        android:entryValues="@array/themes_values"
+        android:icon="@drawable/baseline_format_paint_24"
+        app:defaultValue="Default"
+        app:key="ytdlnis_theme"
+        app:summary="@string/defaultValue"
+        app:title="@string/Theme" />
+
     <Preference
         app:icon="@drawable/ic_battery"
         app:key="ignore_battery"
