@@ -175,8 +175,4 @@
         <item>Dark</item>
         <item>Light</item>
     </array>
-
-
-    <string name="dark">Dark</string>
-    <string name="light">Light</string>
 </resources>
