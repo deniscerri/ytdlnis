@@ -76,12 +76,12 @@ class FormatSelectionBottomSheetDialog(private val items: List<DownloadItem?>, p
         val linearLayout = view.findViewById<LinearLayout>(R.id.format_list_linear_layout)
         val shimmers = view.findViewById<ShimmerFrameLayout>(R.id.format_list_shimmer)
         shimmers.visibility = View.GONE
-
+        val hasGenericFormats =  when(items.first()!!.type){
+            Type.audio -> formats.first().size == resources.getStringArray(R.array.audio_formats).size
+            else -> formats.first().size == resources.getStringArray(R.array.video_formats).size
+        }
         if (items.size > 1){
-            val hasGenericFormats =  when(items.first()!!.type){
-                Type.audio -> formats.first().size == resources.getStringArray(R.array.audio_formats).size
-                else -> formats.first().size == resources.getStringArray(R.array.video_formats).size
-            }
+
             if (!hasGenericFormats){
                 formatCollection.addAll(formats)
                 val flattenFormats = formats.flatten()
@@ -102,9 +102,11 @@ class FormatSelectionBottomSheetDialog(private val items: List<DownloadItem?>, p
             addFormatsToView(linearLayout)
         }else{
             chosenFormats = formats.flatten()
-            chosenFormats = when(items.first()?.type){
-                Type.audio -> chosenFormats.filter { it.format_note.contains("audio", ignoreCase = true) }
-                else -> chosenFormats.filter { !it.format_note.contains("audio", ignoreCase = true) }
+            if(!hasGenericFormats){
+                chosenFormats = when(items.first()?.type){
+                    Type.audio -> chosenFormats.filter { it.format_note.contains("audio", ignoreCase = true) }
+                    else -> chosenFormats.filter { !it.format_note.contains("audio", ignoreCase = true) }
+                }
             }
             addFormatsToView(linearLayout)
         }

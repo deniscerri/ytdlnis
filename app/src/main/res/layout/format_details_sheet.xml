@@ -140,7 +140,7 @@
 
         <TextView
             android:layout_width="0dp"
-            android:text="@string/title"
+            android:text="@string/format"
             android:layout_weight="50"
             android:textSize="18sp"
             android:layout_margin="10dp"

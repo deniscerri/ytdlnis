@@ -1,0 +1,16 @@
+New features:
+
+restrict filenames
+share files
+sponsor block filters in the download card
+tablet ui
+make multiple cuts in a video based on time span or chapter
+range picker in playlist card
+get a common format for all playlist items
+automatic format updates preference
+multiple search engines
+stack search queries
+contextual menus for batch deletion or other actions
+swipe right/left for download cards for certain actions
+download subtitle files and choose sub language
+metered networks preference
