@@ -207,4 +207,17 @@
     <string name="format_source">Formatos de la fuente</string>
     <string name="video_recommendations">Videos recomendados</string>
     <string name="video_recommendations_summary">Obtene los vídeos recomendados de Youtube en la pantalla de inicio de Invidious</string>
+    <string name="preferred_search_engine">Buscador favorito</string>
+    <string name="preferred_search_engine_summary">El buscador para las búsquedas dentro de la aplicación</string>
+    <string name="format_filtering_hint">Todos los artículos deben ser del mismo tipo para utilizar esta opción</string>
+    <string name="preferred_home_screen">Pantalla de inicio preferida</string>
+    <string name="undo">Deshacer</string>
+    <string name="format_id">ID del formato</string>
+    <string name="codec">códec</string>
+    <string name="audio_samplerate">Velocidad del muestreo del audio</string>
+    <string name="copied_to_clipboard">Copiado al portapapeles</string>
+    <string name="dark">Oscuro</string>
+    <string name="light">Claro</string>
+    <string name="quality">Calidad</string>
+    <string name="Theme">Tema</string>
 </resources>
