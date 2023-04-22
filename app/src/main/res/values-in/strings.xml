@@ -218,4 +218,17 @@
     <string name="preferred_search_engine_summary">Mesin penelusuran yang akan digunakan untuk penelusuran di dalam aplikasi</string>
     <string name="Theme">Tema</string>
     <string name="pure_theme_summary">Tema Hitam / Putih Tulen</string>
+    <string name="light">Terang</string>
+    <string name="dark">Gelap</string>
+    <string name="quality">Kualitas</string>
+    <string name="high_contrast">Kontras Tinggi</string>
+    <string name="system">Sistem</string>
+    <string name="accents">Aksen</string>
+    <string name="yellow">Kuning</string>
+    <string name="green">Hijau</string>
+    <string name="blue">Biru</string>
+    <string name="material_you">Material You</string>
+    <string name="purple">Ungu</string>
+    <string name="monochrome">Monokrom</string>
+    <string name="red">Merah</string>
 </resources>

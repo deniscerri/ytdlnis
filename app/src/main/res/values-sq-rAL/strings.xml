@@ -226,4 +226,11 @@
     <string name="accents">Ngjyrat</string>
     <string name="high_contrast">Kontrast i Lartë</string>
     <string name="pure_theme_summary">Temë komplet e Zezë / e Bardhë</string>
+    <string name="material_you">Material Ju</string>
+    <string name="blue">Blu</string>
+    <string name="red">E Kuqe</string>
+    <string name="purple">Vjollcë</string>
+    <string name="yellow">E Verdhë</string>
+    <string name="monochrome">Monokrom</string>
+    <string name="green">Jeshile</string>
 </resources>
