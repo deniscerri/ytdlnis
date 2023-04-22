@@ -172,11 +172,19 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun disableBottomNavigation(){
-        (navigationView as NavigationView).menu.forEach { it.isEnabled = false }
+        if (navigationView is NavigationBarView){
+            (navigationView as NavigationBarView).menu.forEach { it.isEnabled = false }
+        }else{
+            (navigationView as NavigationView).menu.forEach { it.isEnabled = false }
+        }
     }
 
     fun enableBottomNavigation(){
-        (navigationView as NavigationView).menu.forEach { it.isEnabled = true }
+        if (navigationView is NavigationBarView){
+            (navigationView as NavigationBarView).menu.forEach { it.isEnabled = true }
+        }else{
+            (navigationView as NavigationView).menu.forEach { it.isEnabled = true }
+        }
     }
 
     override fun onResume() {

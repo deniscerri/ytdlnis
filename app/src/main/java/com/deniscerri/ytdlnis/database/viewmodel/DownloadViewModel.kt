@@ -262,6 +262,10 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         return list
     }
 
+    fun insert(item: DownloadItem) = viewModelScope.launch(Dispatchers.IO){
+        repository.insert(item)
+    }
+
     fun deleteCancelled() = viewModelScope.launch(Dispatchers.IO) {
         repository.deleteCancelled()
     }

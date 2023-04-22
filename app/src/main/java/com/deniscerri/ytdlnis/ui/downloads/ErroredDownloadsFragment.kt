@@ -194,7 +194,9 @@ class ErroredDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickL
         openFile.visibility = View.GONE
 
         bottomSheet.show()
-        bottomSheet.behavior.peekHeight = 512
+        val displayMetrics = DisplayMetrics()
+        requireActivity().windowManager.defaultDisplay.getMetrics(displayMetrics)
+        bottomSheet.behavior.peekHeight = displayMetrics.heightPixels
         bottomSheet.window!!.setLayout(
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.MATCH_PARENT
@@ -228,12 +230,10 @@ class ErroredDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickL
                 when (direction) {
                     ItemTouchHelper.LEFT -> {
                         val deletedItem = items[position]
-                        items.remove(deletedItem)
-                        erroredDownloads.submitList(items.toList())
+                        downloadViewModel.deleteDownload(deletedItem)
                         Snackbar.make(erroredRecyclerView, getString(R.string.you_are_going_to_delete) + ": " + deletedItem.title, Snackbar.LENGTH_LONG)
                             .setAction(getString(R.string.undo)) {
-                                items.add(position, deletedItem)
-                                erroredDownloads.submitList(items.toList())
+                                downloadViewModel.insert(deletedItem)
                             }.show()
                     }
 

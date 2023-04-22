@@ -59,7 +59,7 @@ android {
     buildTypes {
         release {
             minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             debuggable false
             signingConfig signingConfigs.debug
         }
@@ -135,7 +135,6 @@ dependencies {
     implementation 'androidx.preference:preference:1.2.0'
     implementation "androidx.navigation:navigation-fragment-ktx:$navVer"
     implementation "androidx.navigation:navigation-ui-ktx:$navVer"
-    implementation "androidx.navigation:navigation-dynamic-features-fragment:$navVer"
     implementation 'androidx.core:core-ktx:1.9.0'
     implementation 'androidx.test.ext:junit-ktx:1.1.5'
     implementation 'androidx.benchmark:benchmark-macro:1.1.1'
@@ -143,7 +142,7 @@ dependencies {
     androidTestImplementation "junit:junit:$junitVer"
     androidTestImplementation "androidx.test.ext:junit:$androidJunitVer"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVer"
-    androidTestImplementation "androidx.benchmark:benchmark-macro-junit4:1.2.0-alpha12"
+    androidTestImplementation "androidx.benchmark:benchmark-macro-junit4:1.2.0-alpha13"
     androidTestImplementation "androidx.test:runner:1.5.2"
     androidTestImplementation "androidx.test:core:1.5.0"
     androidTestImplementation "androidx.test:rules:1.5.0"

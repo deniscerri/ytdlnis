@@ -61,6 +61,4 @@
     public <init>(android.content.Context,androidx.work.WorkerParameters);
 }
 
--dontshrink
 -dontobfuscate
--dontoptimize

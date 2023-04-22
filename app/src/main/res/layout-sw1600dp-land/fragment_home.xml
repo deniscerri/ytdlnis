@@ -137,7 +137,7 @@
         android:layout_marginRight="10dp"
         android:clipToPadding="false"
         android:paddingBottom="100dp"
-        app:spanCount="3"
+        app:spanCount="4"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         />
 
@@ -158,9 +158,14 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:weightSum="3"
+                android:weightSum="4"
                 android:layout_height="200dp">
 
+                <include
+                    android:layout_weight="1"
+                    layout="@layout/result_card_shimmer"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp" />
                 <include
                     android:layout_weight="1"
                     layout="@layout/result_card_shimmer"
@@ -181,9 +186,14 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:weightSum="3"
+                android:weightSum="4"
                 android:layout_height="200dp">
 
+                <include
+                    android:layout_weight="1"
+                    layout="@layout/result_card_shimmer"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp" />
                 <include
                     android:layout_weight="1"
                     layout="@layout/result_card_shimmer"
@@ -204,9 +214,14 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:weightSum="3"
+                android:weightSum="4"
                 android:layout_height="200dp">
 
+                <include
+                    android:layout_weight="1"
+                    layout="@layout/result_card_shimmer"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp" />
                 <include
                     android:layout_weight="1"
                     layout="@layout/result_card_shimmer"
@@ -224,12 +239,16 @@
                     android:layout_width="0dp" />
 
             </LinearLayout>
-
             <LinearLayout
                 android:layout_width="match_parent"
-                android:weightSum="3"
+                android:weightSum="4"
                 android:layout_height="200dp">
 
+                <include
+                    android:layout_weight="1"
+                    layout="@layout/result_card_shimmer"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp" />
                 <include
                     android:layout_weight="1"
                     layout="@layout/result_card_shimmer"
