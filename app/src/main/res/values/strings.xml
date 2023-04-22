@@ -228,8 +228,6 @@
     <string name="light">Light</string>
     <string name="quality">Quality</string>
     <string name="system">System</string>
-    <string name="black">Pure Black</string>
-    <string name="white">Pure White</string>
     <string name="accents">Accents</string>
     <string name="high_contrast">High Contrast</string>
     <string name="pure_theme_summary">Pure Black  / White Theme</string>
