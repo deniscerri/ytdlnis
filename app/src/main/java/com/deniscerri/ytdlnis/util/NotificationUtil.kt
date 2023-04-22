@@ -11,10 +11,14 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.receiver.CancelDownloadNotificationReceiver
+import com.deniscerri.ytdlnis.receiver.OpenDownloadNotificationReceiver
+import com.deniscerri.ytdlnis.receiver.SharedDownloadNotificationReceiver
+import com.deniscerri.ytdlnis.ui.more.downloadLogs.DownloadLogActivity
 
 class NotificationUtil(var context: Context) {
     private val downloadNotificationBuilder: NotificationCompat.Builder = NotificationCompat.Builder(context, DOWNLOAD_SERVICE_CHANNEL_ID)
     private val commandDownloadNotificationBuilder: NotificationCompat.Builder = NotificationCompat.Builder(context, COMMAND_DOWNLOAD_SERVICE_CHANNEL_ID)
+    private val finishedDownloadNotificationBuilder: NotificationCompat.Builder = NotificationCompat.Builder(context, DOWNLOAD_FINISHED_CHANNEL_ID)
     private val notificationManager: NotificationManager = context.getSystemService(NotificationManager::class.java)
 
     fun createNotificationChannel() {
@@ -38,6 +42,14 @@ class NotificationUtil(var context: Context) {
             channel = NotificationChannel(COMMAND_DOWNLOAD_SERVICE_CHANNEL_ID, name, importance)
             channel.description = description
             notificationManager.createNotificationChannel(channel)
+
+            //finished or errored downloads
+            name = context.getString(R.string.finished_download_notification_channel_name)
+            description =
+                context.getString(R.string.finished_download_notification_channel_description)
+            channel = NotificationChannel(DOWNLOAD_FINISHED_CHANNEL_ID, name, NotificationManager.IMPORTANCE_HIGH)
+            channel.description = description
+            notificationManager.createNotificationChannel(channel)
         }
     }
 
@@ -45,6 +57,7 @@ class NotificationUtil(var context: Context) {
         when(channel) {
             DOWNLOAD_SERVICE_CHANNEL_ID -> { return downloadNotificationBuilder}
             COMMAND_DOWNLOAD_SERVICE_CHANNEL_ID -> { return commandDownloadNotificationBuilder }
+            DOWNLOAD_FINISHED_CHANNEL_ID -> { return finishedDownloadNotificationBuilder }
         }
         return downloadNotificationBuilder
     }
@@ -89,6 +102,84 @@ class NotificationUtil(var context: Context) {
             .build()
     }
 
+    fun createDownloadFinished(title: String?,
+        filepath: String?,
+        channel: String
+    ) {
+        val notificationBuilder = getBuilder(channel)
+
+        val openIntent = Intent(context, OpenDownloadNotificationReceiver::class.java)
+        openIntent.putExtra("open", "")
+        openIntent.putExtra("path", filepath)
+        openIntent.putExtra("notificationID", DOWNLOAD_FINISHED_NOTIFICATION_ID)
+        val openNotificationPendingIntent = PendingIntent.getBroadcast(
+            context,
+            1,
+            openIntent,
+            PendingIntent.FLAG_IMMUTABLE
+        )
+
+        val shareIntent = Intent(context, SharedDownloadNotificationReceiver::class.java)
+        shareIntent.putExtra("share", "")
+        shareIntent.putExtra("path", filepath)
+        openIntent.putExtra("notificationID", DOWNLOAD_FINISHED_NOTIFICATION_ID)
+        val shareNotificationPendingIntent = PendingIntent.getBroadcast(
+            context,
+            1,
+            shareIntent,
+            PendingIntent.FLAG_IMMUTABLE
+        )
+
+        notificationBuilder
+            .setContentTitle("${context.getString(R.string.downloaded)} $title")
+            .setSmallIcon(R.drawable.ic_app_icon)
+            .setLargeIcon(
+                BitmapFactory.decodeResource(
+                    context.resources,
+                    R.drawable.ic_app_icon
+                )
+            )
+            .setPriority(NotificationCompat.PRIORITY_MAX)
+            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+            .clearActions()
+        if (filepath != null){
+            notificationBuilder.addAction(0, context.getString(R.string.Open_File), openNotificationPendingIntent)
+            notificationBuilder.addAction(0, context.getString(R.string.share), shareNotificationPendingIntent)
+        }
+        notificationManager.notify(DOWNLOAD_FINISHED_NOTIFICATION_ID, notificationBuilder.build())
+    }
+
+    fun createDownloadErrored(title: String?,
+                               error: String?,
+                               logFilePath: String?,
+                               channel: String
+    ) {
+        val notificationBuilder = getBuilder(channel)
+
+        val intent = Intent(context, DownloadLogActivity::class.java)
+        intent.putExtra("path", logFilePath)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        val errorPendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE)
+
+        notificationBuilder
+            .setContentTitle("${context.getString(R.string.errored)}: $title")
+            .setContentText(error)
+            .setSmallIcon(R.drawable.ic_app_icon)
+            .setLargeIcon(
+                BitmapFactory.decodeResource(
+                    context.resources,
+                    R.drawable.ic_app_icon
+                )
+            )
+            .setPriority(NotificationCompat.PRIORITY_MAX)
+            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+            .clearActions()
+        if (logFilePath != null){
+            notificationBuilder.addAction(0, context.getString(R.string.logs), errorPendingIntent)
+        }
+        notificationManager.notify(DOWNLOAD_FINISHED_NOTIFICATION_ID, notificationBuilder.build())
+    }
+
     fun updateDownloadNotification(
         id: Int,
         desc: String,
@@ -118,9 +209,9 @@ class NotificationUtil(var context: Context) {
 
     companion object {
         const val DOWNLOAD_SERVICE_CHANNEL_ID = "1"
-        const val DOWNLOAD_NOTIFICATION_ID = 1
         const val COMMAND_DOWNLOAD_SERVICE_CHANNEL_ID = "2"
-        const val COMMAND_DOWNLOAD_NOTIFICATION_ID = 2
+        const val DOWNLOAD_FINISHED_CHANNEL_ID = "3"
+        const val DOWNLOAD_FINISHED_NOTIFICATION_ID = 3
         const val FILE_TRANSFER_CHANNEL_ID = "3"
         private const val PROGRESS_MAX = 100
         private const val PROGRESS_CURR = 0

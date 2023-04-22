@@ -16,6 +16,7 @@ import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.models.HistoryItem
 import com.deniscerri.ytdlnis.database.repository.DownloadRepository
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
+import com.deniscerri.ytdlnis.ui.more.downloadLogs.DownloadLogActivity
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.NotificationUtil
 import com.yausername.youtubedl_android.YoutubeDL
@@ -309,6 +310,11 @@ class DownloadWorker(
                     historyDao.insert(historyItem)
                 }
             }
+            notificationUtil.createDownloadFinished(
+                downloadItem.title,  if (finalPath.equals(context.getString(R.string.unfound_file))) null else finalPath,
+                NotificationUtil.DOWNLOAD_FINISHED_CHANNEL_ID
+            )
+
             runBlocking {
                 dao.delete(downloadItem.id)
             }
@@ -342,6 +348,13 @@ class DownloadWorker(
                 runBlocking {
                     dao.update(downloadItem)
                 }
+
+                notificationUtil.createDownloadErrored(
+                    downloadItem.title, it.message,
+                    if (logDownloads) logFile.absolutePath else null,
+                    NotificationUtil.DOWNLOAD_FINISHED_CHANNEL_ID
+                )
+
                 return Result.failure(
                     Data.Builder().putString("output", it.toString()).build()
                 )

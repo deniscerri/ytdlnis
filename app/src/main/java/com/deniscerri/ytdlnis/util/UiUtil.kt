@@ -228,7 +228,12 @@ class UiUtil(private val fileUtil: FileUtil) {
         val i = Intent(Intent.ACTION_VIEW)
         i.setDataAndType(uri, mime)
         i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-        fragmentContext.startActivity(i)
+        try {
+            fragmentContext.startActivity(i)
+        }catch (e: Exception){
+            i.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            fragmentContext.startActivity(i)
+        }
     }
 
     fun shareFileIntent(fragmentContext: Context, paths: List<String>){
@@ -251,7 +256,13 @@ class UiUtil(private val fileUtil: FileUtil) {
             type = "*/*"
             putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
         }
-        fragmentContext.startActivity(Intent.createChooser(shareIntent, null))
+        try {
+            fragmentContext.startActivity(Intent.createChooser(shareIntent, null))
+        }catch (e: Exception){
+            val intent = Intent.createChooser(shareIntent, null)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            fragmentContext.startActivity(intent)
+        }
     }
 
     fun showDatePicker(fragmentManager: FragmentManager , onSubmit : (chosenDate: Calendar) -> Unit ){

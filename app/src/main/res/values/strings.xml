@@ -238,4 +238,7 @@
     <string name="purple">Purple</string>
     <string name="yellow">Yellow</string>
     <string name="monochrome">Monochrome</string>
+    <string name="downloaded">"Downloaded: "</string>
+    <string name="finished_download_notification_channel_name">Finished Downloads</string>
+    <string name="finished_download_notification_channel_description">Notification showing when the download has succesfully finished or errored out</string>
 </resources>

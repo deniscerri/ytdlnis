@@ -5,6 +5,8 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.res.Configuration
+import android.graphics.Canvas
+import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -23,6 +25,7 @@ import androidx.core.view.forEach
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdlnis.MainActivity
@@ -43,7 +46,10 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
+import com.google.android.material.color.MaterialColors
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
+import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
 import kotlinx.coroutines.runBlocking
 import java.io.File
 import java.text.SimpleDateFormat
@@ -115,6 +121,8 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
             )
         recyclerView = view.findViewById(R.id.recyclerviewhistorys)
         recyclerView?.adapter = historyAdapter
+        val itemTouchHelper = ItemTouchHelper(simpleCallback)
+        itemTouchHelper.attachToRecyclerView(recyclerView)
 
         val landScape = resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
         val displayMetrics: DisplayMetrics = requireContext().resources.displayMetrics
@@ -386,7 +394,7 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
         }
         deleteDialog.setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, _: Int -> dialogInterface.cancel() }
         deleteDialog.setPositiveButton(getString(R.string.ok)) { _: DialogInterface?, _: Int ->
-              historyViewModel.delete(item, deleteFile[0])
+            historyViewModel.delete(item, deleteFile[0])
         }
         deleteDialog.show()
     }
@@ -491,7 +499,7 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
 
         redownload.setOnLongClickListener {
             bottomSheet!!.cancel()
-            val sheet = DownloadBottomSheetDialog(downloadViewModel.createResultItemFromHistory(item), item.type, null)
+            val sheet = DownloadBottomSheetDialog(downloadViewModel.createResultItemFromHistory(item), item.type, downloadViewModel.createDownloadItemFromHistory(item))
             sheet.show(parentFragmentManager, "downloadSingleSheet")
             true
         }
@@ -613,6 +621,72 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
         historyAdapter?.clearCheckeditems()
         selectedObjects?.clear()
     }
+
+    private var simpleCallback: ItemTouchHelper.SimpleCallback =
+        object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
+            override fun onMove(recyclerView: RecyclerView,viewHolder: RecyclerView.ViewHolder,target: RecyclerView.ViewHolder
+            ): Boolean {
+                return false
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val position = viewHolder.bindingAdapterPosition
+                when (direction) {
+                    ItemTouchHelper.LEFT -> {
+                        val deletedItem = historyList!![position]
+                        historyAdapter!!.notifyItemChanged(position)
+                        removeItem(deletedItem!!)
+                    }
+                    ItemTouchHelper.RIGHT -> {
+                        val item = historyList!![position]!!
+                        historyAdapter!!.notifyItemChanged(position)
+                        val sheet = DownloadBottomSheetDialog(downloadViewModel.createResultItemFromHistory(item), item.type, downloadViewModel.createDownloadItemFromHistory(item))
+                        sheet.show(parentFragmentManager, "downloadSingleSheet")
+                    }
+                }
+            }
+
+            override fun onChildDraw(
+                c: Canvas,
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                dX: Float,
+                dY: Float,
+                actionState: Int,
+                isCurrentlyActive: Boolean
+            ) {
+                RecyclerViewSwipeDecorator.Builder(
+                    requireContext(),
+                    c,
+                    recyclerView,
+                    viewHolder,
+                    dX,
+                    dY,
+                    actionState,
+                    isCurrentlyActive
+                )
+                    .addSwipeLeftBackgroundColor(Color.RED)
+                    .addSwipeLeftActionIcon(R.drawable.baseline_delete_24)
+                    .addSwipeRightBackgroundColor(
+                        MaterialColors.getColor(
+                            requireContext(),
+                            R.attr.colorOnSurfaceInverse, Color.TRANSPARENT
+                        )
+                    )
+                    .addSwipeRightActionIcon(R.drawable.ic_refresh)
+                    .create()
+                    .decorate()
+                super.onChildDraw(
+                    c,
+                    recyclerView,
+                    viewHolder!!,
+                    dX,
+                    dY,
+                    actionState,
+                    isCurrentlyActive
+                )
+            }
+        }
 
     companion object {
         private const val TAG = "historyFragment"

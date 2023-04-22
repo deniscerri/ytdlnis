@@ -73,6 +73,10 @@ Join our [Telegram Channel](https://t.me/ytdlnis) or [Discord](https://discord.g
 The App's package name is com.deniscerri.ytdl
 
 ## 📝 Help Translate on Weblate
+<a href="https://hosted.weblate.org/engage/ytdlnis/">
+<img src="https://hosted.weblate.org/widgets/ytdlnis/-/strings/open-graph.png" alt="Translation status" />
+</a>
+
 
 <a href="https://hosted.weblate.org/engage/ytdlnis/">
 <img src="https://hosted.weblate.org/widgets/ytdlnis/-/multi-auto.svg" alt="Translation status" />
