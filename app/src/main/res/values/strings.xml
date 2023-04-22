@@ -226,4 +226,5 @@
     <string name="Theme">Theme</string>
     <string name="dark">Dark</string>
     <string name="light">Light</string>
+    <string name="quality">Quality</string>
 </resources>
