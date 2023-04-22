@@ -217,4 +217,6 @@
     <string name="audio_samplerate">Shpejtësia e Audios</string>
     <string name="copied_to_clipboard">U kopjua</string>
     <string name="Theme">Tema</string>
+    <string name="dark">Errët</string>
+    <string name="light">Çelët</string>
 </resources>
