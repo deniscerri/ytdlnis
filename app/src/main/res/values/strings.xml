@@ -231,4 +231,11 @@
     <string name="accents">Accents</string>
     <string name="high_contrast">High Contrast</string>
     <string name="pure_theme_summary">Pure Black  / White Theme</string>
+    <string name="material_you">Material You</string>
+    <string name="blue">Blue</string>
+    <string name="red">Red</string>
+    <string name="green">Green</string>
+    <string name="purple">Purple</string>
+    <string name="yellow">Yellow</string>
+    <string name="monochrome">Monochrome</string>
 </resources>
