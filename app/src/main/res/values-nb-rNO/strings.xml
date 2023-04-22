@@ -171,4 +171,15 @@
     <string name="restart">Omstart</string>
     <string name="split_by_chapters">Del inn i kapitler</string>
     <string name="workmanager_updated">Du må starte programmet på ny og ikke ha noen aktive nedlastinger for å ta i bruk denne endringen.</string>
+    <string name="worst_quality">Verste kvalitet</string>
+    <string name="best_quality">Beste kvalitet</string>
+    <string name="dont_ask_again">Ikke spør igjen</string>
+    <string name="end">Slutt</string>
+    <string name="start">Start</string>
+    <string name="quality">Kvalitet</string>
+    <string name="black">Helsvart</string>
+    <string name="system">System</string>
+    <string name="pure_theme_summary">Helsvart/helhvit drakt</string>
+    <string name="white">Helhvit</string>
+    <string name="high_contrast">Høykontrast</string>
 </resources>
