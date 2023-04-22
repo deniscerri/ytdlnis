@@ -216,5 +216,8 @@
     <string name="codec">الترميز</string>
     <string name="audio_samplerate">معدل عيّنة الصوت</string>
     <string name="copied_to_clipboard">تم النسخ الى الحافظة</string>
-    <string name="Theme">المظهر</string>
+    <string name="Theme">السمة</string>
+    <string name="dark">الداكنة</string>
+    <string name="light">الفاتحة</string>
+    <string name="quality">الجودة</string>
 </resources>
