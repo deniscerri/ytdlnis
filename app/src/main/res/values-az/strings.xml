@@ -216,4 +216,5 @@
     <string name="undo">Geri al</string>
     <string name="codec">Kodek</string>
     <string name="format_id">Format ID</string>
+    <string name="Theme">Tema</string>
 </resources>
