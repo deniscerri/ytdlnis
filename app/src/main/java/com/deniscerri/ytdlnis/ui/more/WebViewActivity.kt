@@ -12,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.CookieItem
 import com.deniscerri.ytdlnis.database.viewmodel.CookieViewModel
+import com.deniscerri.ytdlnis.ui.BaseActivity
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton
@@ -20,7 +21,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 
-class WebViewActivity : AppCompatActivity() {
+class WebViewActivity : BaseActivity() {
     private lateinit var cookiesViewModel: CookieViewModel
     private lateinit var webView: WebView
     private lateinit var toolbar: MaterialToolbar

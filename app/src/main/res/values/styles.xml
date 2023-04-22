@@ -1,15 +1,4 @@
 <resources>
-    <style name="AppDefaultTheme" parent="Theme.Material3.DayNight.NoActionBar">
-        <item name="colorPrimary">#228DFF</item>
-        <item name="colorPrimaryDark">#1B6CC3</item>
-        <item name="android:windowLightStatusBar">?attr/isLightTheme</item>
-        <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:color">@android:color/transparent</item>
-        <item name="windowActionModeOverlay">true</item>
-        <item name="alertDialogTheme">@style/ThemeOverlay.Material3.MaterialAlertDialog</item>
-        <item name="dialogCornerRadius">28dp</item>
-    </style>
-
     <style name="Theme.BottomSheet" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="windowNoTitle">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
@@ -17,8 +6,6 @@
         <item name="android:colorBackgroundCacheHint">@null</item>
         <item name="android:windowContentOverlay">@null</item>
     </style>
-
-    <style name="AppTheme" parent="AppDefaultTheme" />
 
     <style name="Toolbar" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="searchViewStyle">@style/searchStyle</item>
@@ -73,5 +60,18 @@
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">0dp</item>
     </style>
+
+    <style name="Preference.SwitchPreferenceCompat.Material3" parent="@style/Preference.SwitchPreferenceCompat.Material">
+        <item name="widgetLayout">@layout/preferece_material_switch</item>
+    </style>
+
+    <style name="snackBarStyle" parent="@style/Widget.Material3.Snackbar">
+        <item name="shapeAppearance">@style/ShapeAppearance.Material3.Corner.ExtraLarge</item>
+        <item name="android:paddingStart">20dp</item>
+        <item name="android:paddingEnd">20dp</item>
+        <item name="maxLines">2</item>
+        <item name="animationMode">slide</item>
+    </style>
+
 
 </resources>

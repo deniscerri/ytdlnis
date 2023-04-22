@@ -25,6 +25,7 @@ import com.deniscerri.ytdlnis.adapter.GenericDownloadAdapter
 import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.databinding.FragmentHomeBinding
+import com.deniscerri.ytdlnis.ui.downloadcard.DownloadBottomSheetDialog
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.UiUtil
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -80,7 +81,9 @@ class CancelledDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClic
         val landScape = resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
         val displayMetrics: DisplayMetrics = requireContext().resources.displayMetrics
         val dpWidth: Float = displayMetrics.widthPixels / displayMetrics.density
-        if (dpWidth > 1200 && landScape){
+        if (dpWidth >= 1600 && landScape) {
+            cancelledRecyclerView.layoutManager = GridLayoutManager(context, 4)
+        }else if (dpWidth > 1200 && landScape){
             cancelledRecyclerView.layoutManager = GridLayoutManager(context, 3)
         }else if (landScape || dpWidth >= 650){
             cancelledRecyclerView.layoutManager = GridLayoutManager(context, 2)
@@ -189,6 +192,13 @@ class CancelledDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClic
                 downloadViewModel.queueDownloads(listOf(item))
             }
             bottomSheet.cancel()
+        }
+
+        redownload.setOnLongClickListener {
+            bottomSheet.cancel()
+            val sheet = DownloadBottomSheetDialog(downloadViewModel.createResultItemFromDownload(item), item.type, item)
+            sheet.show(parentFragmentManager, "downloadSingleSheet")
+            true
         }
 
         openFile.visibility = View.GONE

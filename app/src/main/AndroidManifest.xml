@@ -29,7 +29,7 @@
         android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
+        android:theme="@style/BaseTheme"
         tools:ignore="DataExtractionRules"
         tools:targetApi="tiramisu">
         <profileable
@@ -119,7 +119,7 @@
             android:exported="true"
             android:label="@string/terminal"
             android:parentActivityName=".MainActivity"
-            android:theme="@style/AppTheme">
+            android:theme="@style/BaseTheme">
             <intent-filter>
                 <action android:name="ytdlnis.TerminalActivity" />
 

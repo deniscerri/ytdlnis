@@ -18,6 +18,7 @@ import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.adapter.CookieAdapter
 import com.deniscerri.ytdlnis.database.models.CookieItem
 import com.deniscerri.ytdlnis.database.viewmodel.CookieViewModel
+import com.deniscerri.ytdlnis.ui.BaseActivity
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.UiUtil
 import com.google.android.material.appbar.MaterialToolbar
@@ -28,7 +29,7 @@ import kotlinx.coroutines.launch
 import java.io.File
 
 
-class CookiesActivity : AppCompatActivity(), CookieAdapter.OnItemClickListener {
+class CookiesActivity : BaseActivity(), CookieAdapter.OnItemClickListener {
     private lateinit var recyclerView: RecyclerView
     private lateinit var listAdapter: CookieAdapter
     private lateinit var topAppBar: MaterialToolbar

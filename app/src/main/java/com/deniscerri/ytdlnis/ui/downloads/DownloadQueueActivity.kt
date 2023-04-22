@@ -15,6 +15,7 @@ import androidx.work.WorkManager
 import androidx.work.await
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
+import com.deniscerri.ytdlnis.ui.BaseActivity
 import com.deniscerri.ytdlnis.util.NotificationUtil
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -25,7 +26,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 
-class DownloadQueueActivity : AppCompatActivity(){
+class DownloadQueueActivity : BaseActivity(){
     private lateinit var downloadViewModel: DownloadViewModel
     private lateinit var topAppBar: MaterialToolbar
     private lateinit var workManager: WorkManager

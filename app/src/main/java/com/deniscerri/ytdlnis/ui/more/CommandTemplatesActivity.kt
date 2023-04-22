@@ -14,6 +14,7 @@ import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.adapter.TemplatesAdapter
 import com.deniscerri.ytdlnis.database.models.CommandTemplate
 import com.deniscerri.ytdlnis.database.viewmodel.CommandTemplateViewModel
+import com.deniscerri.ytdlnis.ui.BaseActivity
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.UiUtil
 import com.google.android.material.appbar.MaterialToolbar
@@ -24,7 +25,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 
-class CommandTemplatesActivity : AppCompatActivity(), TemplatesAdapter.OnItemClickListener {
+class CommandTemplatesActivity : BaseActivity(), TemplatesAdapter.OnItemClickListener {
     private lateinit var recyclerView: RecyclerView
     private lateinit var templatesAdapter: TemplatesAdapter
     private lateinit var topAppBar: MaterialToolbar

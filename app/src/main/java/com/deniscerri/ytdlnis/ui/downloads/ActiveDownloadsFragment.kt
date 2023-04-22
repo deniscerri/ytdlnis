@@ -69,7 +69,9 @@ class ActiveDownloadsFragment() : Fragment(), ActiveDownloadAdapter.OnItemClickL
         val landScape = resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
         val displayMetrics: DisplayMetrics = requireContext().resources.displayMetrics
         val dpWidth: Float = displayMetrics.widthPixels / displayMetrics.density
-        if (dpWidth > 1200 && landScape){
+        if (dpWidth >= 1600 && landScape) {
+            activeRecyclerView.layoutManager = GridLayoutManager(context, 4)
+        }else if (dpWidth > 1200 && landScape){
             activeRecyclerView.layoutManager = GridLayoutManager(context, 3)
         }else if (landScape || dpWidth >= 650){
             activeRecyclerView.layoutManager = GridLayoutManager(context, 2)

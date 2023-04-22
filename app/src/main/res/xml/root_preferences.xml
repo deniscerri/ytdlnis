@@ -17,6 +17,23 @@
         app:summary="@string/defaultValue"
         app:title="@string/Theme" />
 
+    <ListPreference
+        android:entries="@array/accents"
+        android:entryValues="@array/accents_values"
+        android:icon="@drawable/baseline_color_lens_24"
+        app:defaultValue="blue"
+        app:key="theme_accent"
+        app:summary="Blue"
+        app:title="@string/accents" />
+
+    <SwitchPreferenceCompat
+        android:widgetLayout="@layout/preferece_material_switch"
+        app:defaultValue="false"
+        android:icon="@drawable/baseline_invert_colors_24"
+        android:key="high_contrast"
+        app:summary="@string/pure_theme_summary"
+        app:title="@string/high_contrast" />
+
     <Preference
         app:icon="@drawable/ic_battery"
         app:key="ignore_battery"

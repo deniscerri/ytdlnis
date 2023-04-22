@@ -41,7 +41,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-class DownloadBottomSheetDialog(private val resultItem: ResultItem, private val type: Type) : BottomSheetDialogFragment() {
+class DownloadBottomSheetDialog(private val resultItem: ResultItem, private val type: Type, private val downloadItem: DownloadItem?) : BottomSheetDialogFragment() {
     private lateinit var tabLayout: TabLayout
     private lateinit var viewPager2: ViewPager2
     private lateinit var fragmentAdapter : DownloadFragmentAdapter
@@ -49,6 +49,10 @@ class DownloadBottomSheetDialog(private val resultItem: ResultItem, private val 
     private lateinit var behavior: BottomSheetBehavior<View>
     private lateinit var commandTemplateDao : CommandTemplateDao
     private lateinit var uiUtil: UiUtil
+
+    private lateinit var downloadAudioFragment: DownloadAudioFragment
+    private lateinit var downloadVideoFragment: DownloadVideoFragment
+    private lateinit var downloadCommandFragment: DownloadCommandFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,14 +82,16 @@ class DownloadBottomSheetDialog(private val resultItem: ResultItem, private val 
             isNestedScrollingEnabled = false
             overScrollMode = View.OVER_SCROLL_NEVER
         }
-
-        val fragments = mutableListOf<Fragment>(DownloadAudioFragment(resultItem, null), DownloadVideoFragment(resultItem, null))
+        downloadAudioFragment = DownloadAudioFragment(resultItem, downloadItem)
+        downloadVideoFragment = DownloadVideoFragment(resultItem, downloadItem)
+        val fragments = mutableListOf(downloadAudioFragment, downloadVideoFragment)
         var commandTemplateNr = 0
         lifecycleScope.launch{
             withContext(Dispatchers.IO){
                 commandTemplateNr = commandTemplateDao.getTotalNumber()
                 if(commandTemplateNr > 0){
-                    fragments.add(DownloadCommandFragment(resultItem, null))
+                    downloadCommandFragment = DownloadCommandFragment(resultItem, downloadItem)
+                    fragments.add(downloadCommandFragment)
                 }else{
                     (tabLayout.getChildAt(0) as? ViewGroup)?.getChildAt(2)?.isClickable = true
                     (tabLayout.getChildAt(0) as? ViewGroup)?.getChildAt(2)?.alpha = 0.3f
@@ -212,11 +218,9 @@ class DownloadBottomSheetDialog(private val resultItem: ResultItem, private val 
     private fun cleanUp(){
         kotlin.runCatching {
             parentFragmentManager.beginTransaction().remove(parentFragmentManager.findFragmentByTag("downloadSingleSheet")!!).commit()
-            for (i in 0 until viewPager2.adapter?.itemCount!!){
-                if (parentFragmentManager.findFragmentByTag("f${i}") != null){
-                    parentFragmentManager.beginTransaction().remove(parentFragmentManager.findFragmentByTag("f$i")!!).commit()
-                }
-            }
+            parentFragmentManager.beginTransaction().remove(downloadVideoFragment).commit()
+            parentFragmentManager.beginTransaction().remove(downloadVideoFragment).commit()
+            parentFragmentManager.beginTransaction().remove(downloadCommandFragment).commit()
             if (activity is ShareActivity){
                 (activity as ShareActivity).finish()
             }

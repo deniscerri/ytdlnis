@@ -495,7 +495,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
     }
 
     private fun showSingleDownloadSheet(resultItem : ResultItem, type: DownloadViewModel.Type){
-        val bottomSheet = DownloadBottomSheetDialog(resultItem, type)
+        val bottomSheet = DownloadBottomSheetDialog(resultItem, type, null)
         bottomSheet.show(parentFragmentManager, "downloadSingleSheet")
     }
 

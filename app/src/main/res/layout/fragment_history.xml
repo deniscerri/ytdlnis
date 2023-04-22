@@ -21,7 +21,6 @@
             app:layout_scrollFlags="scroll"
             app:title="@string/downloads"
             app:menu="@menu/history_menu"
-            android:theme="@style/Toolbar"
             />
 
         <RelativeLayout

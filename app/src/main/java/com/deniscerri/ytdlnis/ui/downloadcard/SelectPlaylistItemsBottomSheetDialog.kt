@@ -145,7 +145,7 @@ class SelectPlaylistItemsBottomSheetDialog(private val items: List<ResultItem?>,
                 val checkedResultItems = items.filter { item -> checkedItems.contains(item!!.url) }
                 if (checkedResultItems.size == 1){
                     val resultItem = resultViewModel.getItemByURL(checkedResultItems[0]!!.url)
-                    val bottomSheet = DownloadBottomSheetDialog(resultItem, type)
+                    val bottomSheet = DownloadBottomSheetDialog(resultItem, type, null)
                     bottomSheet.show(parentFragmentManager, "downloadSingleSheet")
                 }else{
                     val downloadItems = mutableListOf<DownloadItem>()

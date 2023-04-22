@@ -135,6 +135,38 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
 
     }
 
+    fun createResultItemFromDownload(downloadItem: DownloadItem) : ResultItem {
+        return ResultItem(
+            0,
+            downloadItem.url,
+            downloadItem.title,
+            downloadItem.author,
+            downloadItem.duration,
+            downloadItem.thumb,
+            downloadItem.website,
+            downloadItem.playlistTitle,
+            downloadItem.allFormats,
+            System.currentTimeMillis()
+        )
+
+    }
+
+    fun createResultItemFromHistory(downloadItem: HistoryItem) : ResultItem {
+        return ResultItem(
+            0,
+            downloadItem.url,
+            downloadItem.title,
+            downloadItem.author,
+            downloadItem.duration,
+            downloadItem.thumb,
+            downloadItem.website,
+            "",
+            arrayListOf(),
+            System.currentTimeMillis()
+        )
+
+    }
+
     fun switchDownloadType(list: List<DownloadItem>, type: Type) : List<DownloadItem>{
         list.forEach {
             val format = getFormat(it.allFormats, type)

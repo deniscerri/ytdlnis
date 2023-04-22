@@ -1,0 +1,228 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+
+    <style name="BaseTheme" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="android:windowLightStatusBar">?attr/isLightTheme</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:color">@android:color/transparent</item>
+        <item name="windowActionModeOverlay">true</item>
+        <item name="alertDialogTheme">@style/ThemeOverlay.Material3.MaterialAlertDialog</item>
+        <item name="dialogCornerRadius">28dp</item>
+        <item name="switchPreferenceCompatStyle">@style/Preference.SwitchPreferenceCompat.Material3</item>
+        <item name="snackbarStyle">@style/snackBarStyle</item>
+    </style>
+
+    <style name="Theme.Red" parent="BaseTheme">
+        <item name="colorPrimary">@color/red_md_theme_light_primary</item>
+        <item name="colorOnPrimary">@color/red_md_theme_light_onPrimary</item>
+        <item name="colorPrimaryContainer">@color/red_md_theme_light_primaryContainer</item>
+        <item name="colorOnPrimaryContainer">@color/red_md_theme_light_onPrimaryContainer</item>
+        <item name="colorSecondary">@color/red_md_theme_light_secondary</item>
+        <item name="colorOnSecondary">@color/red_md_theme_light_onSecondary</item>
+        <item name="colorSecondaryContainer">@color/red_md_theme_light_secondaryContainer</item>
+        <item name="colorOnSecondaryContainer">@color/red_md_theme_light_onSecondaryContainer</item>
+        <item name="colorTertiary">@color/red_md_theme_light_tertiary</item>
+        <item name="colorOnTertiary">@color/red_md_theme_light_onTertiary</item>
+        <item name="colorTertiaryContainer">@color/red_md_theme_light_tertiaryContainer</item>
+        <item name="colorOnTertiaryContainer">@color/red_md_theme_light_onTertiaryContainer</item>
+        <item name="colorError">@color/red_md_theme_light_error</item>
+        <item name="colorErrorContainer">@color/red_md_theme_light_errorContainer</item>
+        <item name="colorOnError">@color/red_md_theme_light_onError</item>
+        <item name="colorOnErrorContainer">@color/red_md_theme_light_onErrorContainer</item>
+        <item name="android:colorBackground">@color/red_md_theme_light_background</item>
+        <item name="colorOnBackground">@color/red_md_theme_light_onBackground</item>
+        <item name="colorSurface">@color/red_md_theme_light_surface</item>
+        <item name="colorOnSurface">@color/red_md_theme_light_onSurface</item>
+        <item name="colorSurfaceVariant">@color/red_md_theme_light_surfaceVariant</item>
+        <item name="colorOnSurfaceVariant">@color/red_md_theme_light_onSurfaceVariant</item>
+        <item name="colorOutline">@color/red_md_theme_light_outline</item>
+        <item name="colorOnSurfaceInverse">@color/red_md_theme_light_inverseOnSurface</item>
+        <item name="colorSurfaceInverse">@color/red_md_theme_light_inverseSurface</item>
+        <item name="colorPrimaryInverse">@color/red_md_theme_light_inversePrimary</item>
+
+    </style>
+
+    <style name="Theme.Amoled" parent="BaseTheme">
+        <item name="android:colorForeground">@color/black</item>
+        <item name="android:colorPrimaryDark">@color/black</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:colorAccent">@color/white</item>
+        <item name="android:color">@color/white</item>
+        <item name="android:windowBackground">#111</item>
+        <item name="android:colorBackground">#111</item>
+        <item name="colorOnBackground">#111</item>
+        <item name="android:navigationBarColor">@color/black</item>
+        <item name="android:actionBarStyle">@color/black</item>
+    </style>
+
+    <style name="Theme.Blue" parent="BaseTheme">
+
+        <item name="colorPrimary">@color/blue_md_theme_light_primary</item>
+        <item name="colorOnPrimary">@color/blue_md_theme_light_onPrimary</item>
+        <item name="colorPrimaryContainer">@color/blue_md_theme_light_primaryContainer</item>
+        <item name="colorOnPrimaryContainer">@color/blue_md_theme_light_onPrimaryContainer</item>
+        <item name="colorSecondary">@color/blue_md_theme_light_secondary</item>
+        <item name="colorOnSecondary">@color/blue_md_theme_light_onSecondary</item>
+        <item name="colorSecondaryContainer">@color/blue_md_theme_light_secondaryContainer</item>
+        <item name="colorOnSecondaryContainer">@color/blue_md_theme_light_onSecondaryContainer
+        </item>
+        <item name="colorTertiary">@color/blue_md_theme_light_tertiary</item>
+        <item name="colorOnTertiary">@color/blue_md_theme_light_onTertiary</item>
+        <item name="colorTertiaryContainer">@color/blue_md_theme_light_tertiaryContainer</item>
+        <item name="colorOnTertiaryContainer">@color/blue_md_theme_light_onTertiaryContainer</item>
+        <item name="colorError">@color/blue_md_theme_light_error</item>
+        <item name="colorErrorContainer">@color/blue_md_theme_light_errorContainer</item>
+        <item name="colorOnError">@color/blue_md_theme_light_onError</item>
+        <item name="colorOnErrorContainer">@color/blue_md_theme_light_onErrorContainer</item>
+        <item name="android:colorBackground">@color/blue_md_theme_light_background</item>
+        <item name="colorOnBackground">@color/blue_md_theme_light_onBackground</item>
+        <item name="colorSurface">@color/blue_md_theme_light_surface</item>
+        <item name="colorOnSurface">@color/blue_md_theme_light_onSurface</item>
+        <item name="colorSurfaceVariant">@color/blue_md_theme_light_surfaceVariant</item>
+        <item name="colorOnSurfaceVariant">@color/blue_md_theme_light_onSurfaceVariant</item>
+        <item name="colorOutline">@color/blue_md_theme_light_outline</item>
+        <item name="colorOnSurfaceInverse">@color/blue_md_theme_light_inverseOnSurface</item>
+        <item name="colorSurfaceInverse">@color/blue_md_theme_light_inverseSurface</item>
+        <item name="colorPrimaryInverse">@color/blue_md_theme_light_inversePrimary</item>
+
+    </style>
+
+    <style name="Theme.Yellow" parent="BaseTheme">
+
+        <item name="colorPrimary">@color/yellow_md_theme_light_primary</item>
+        <item name="colorOnPrimary">@color/yellow_md_theme_light_onPrimary</item>
+        <item name="colorPrimaryContainer">@color/yellow_md_theme_light_primaryContainer</item>
+        <item name="colorOnPrimaryContainer">@color/yellow_md_theme_light_onPrimaryContainer</item>
+        <item name="colorSecondary">@color/yellow_md_theme_light_secondary</item>
+        <item name="colorOnSecondary">@color/yellow_md_theme_light_onSecondary</item>
+        <item name="colorSecondaryContainer">@color/yellow_md_theme_light_secondaryContainer</item>
+        <item name="colorOnSecondaryContainer">@color/yellow_md_theme_light_onSecondaryContainer
+        </item>
+        <item name="colorTertiary">@color/yellow_md_theme_light_tertiary</item>
+        <item name="colorOnTertiary">@color/yellow_md_theme_light_onTertiary</item>
+        <item name="colorTertiaryContainer">@color/yellow_md_theme_light_tertiaryContainer</item>
+        <item name="colorOnTertiaryContainer">@color/yellow_md_theme_light_onTertiaryContainer
+        </item>
+        <item name="colorError">@color/yellow_md_theme_light_error</item>
+        <item name="colorErrorContainer">@color/yellow_md_theme_light_errorContainer</item>
+        <item name="colorOnError">@color/yellow_md_theme_light_onError</item>
+        <item name="colorOnErrorContainer">@color/yellow_md_theme_light_onErrorContainer</item>
+        <item name="android:colorBackground">@color/yellow_md_theme_light_background</item>
+        <item name="colorOnBackground">@color/yellow_md_theme_light_onBackground</item>
+        <item name="colorSurface">@color/yellow_md_theme_light_surface</item>
+        <item name="colorOnSurface">@color/yellow_md_theme_light_onSurface</item>
+        <item name="colorSurfaceVariant">@color/yellow_md_theme_light_surfaceVariant</item>
+        <item name="colorOnSurfaceVariant">@color/yellow_md_theme_light_onSurfaceVariant</item>
+        <item name="colorOutline">@color/yellow_md_theme_light_outline</item>
+        <item name="colorOnSurfaceInverse">@color/yellow_md_theme_light_inverseOnSurface</item>
+        <item name="colorSurfaceInverse">@color/yellow_md_theme_light_inverseSurface</item>
+        <item name="colorPrimaryInverse">@color/yellow_md_theme_light_inversePrimary</item>
+
+    </style>
+
+    <style name="Theme.Green" parent="BaseTheme">
+
+        <item name="colorPrimary">@color/green_md_theme_light_primary</item>
+        <item name="colorOnPrimary">@color/green_md_theme_light_onPrimary</item>
+        <item name="colorPrimaryContainer">@color/green_md_theme_light_primaryContainer</item>
+        <item name="colorOnPrimaryContainer">@color/green_md_theme_light_onPrimaryContainer</item>
+        <item name="colorSecondary">@color/green_md_theme_light_secondary</item>
+        <item name="colorOnSecondary">@color/green_md_theme_light_onSecondary</item>
+        <item name="colorSecondaryContainer">@color/green_md_theme_light_secondaryContainer</item>
+        <item name="colorOnSecondaryContainer">@color/green_md_theme_light_onSecondaryContainer
+        </item>
+        <item name="colorTertiary">@color/green_md_theme_light_tertiary</item>
+        <item name="colorOnTertiary">@color/green_md_theme_light_onTertiary</item>
+        <item name="colorTertiaryContainer">@color/green_md_theme_light_tertiaryContainer</item>
+        <item name="colorOnTertiaryContainer">@color/green_md_theme_light_onTertiaryContainer</item>
+        <item name="colorError">@color/green_md_theme_light_error</item>
+        <item name="colorErrorContainer">@color/green_md_theme_light_errorContainer</item>
+        <item name="colorOnError">@color/green_md_theme_light_onError</item>
+        <item name="colorOnErrorContainer">@color/green_md_theme_light_onErrorContainer</item>
+        <item name="android:colorBackground">@color/green_md_theme_light_background</item>
+        <item name="colorOnBackground">@color/green_md_theme_light_onBackground</item>
+        <item name="colorSurface">@color/green_md_theme_light_surface</item>
+        <item name="colorOnSurface">@color/green_md_theme_light_onSurface</item>
+        <item name="colorSurfaceVariant">@color/green_md_theme_light_surfaceVariant</item>
+        <item name="colorOnSurfaceVariant">@color/green_md_theme_light_onSurfaceVariant</item>
+        <item name="colorOutline">@color/green_md_theme_light_outline</item>
+        <item name="colorOnSurfaceInverse">@color/green_md_theme_light_inverseOnSurface</item>
+        <item name="colorSurfaceInverse">@color/green_md_theme_light_inverseSurface</item>
+        <item name="colorPrimaryInverse">@color/green_md_theme_light_inversePrimary</item>
+
+    </style>
+
+    <style name="Theme.Purple" parent="BaseTheme">
+
+        <item name="colorPrimary">@color/purple_md_theme_light_primary</item>
+        <item name="colorOnPrimary">@color/purple_md_theme_light_onPrimary</item>
+        <item name="colorPrimaryContainer">@color/purple_md_theme_light_primaryContainer</item>
+        <item name="colorOnPrimaryContainer">@color/purple_md_theme_light_onPrimaryContainer</item>
+        <item name="colorSecondary">@color/purple_md_theme_light_secondary</item>
+        <item name="colorOnSecondary">@color/purple_md_theme_light_onSecondary</item>
+        <item name="colorSecondaryContainer">@color/purple_md_theme_light_secondaryContainer</item>
+        <item name="colorOnSecondaryContainer">@color/purple_md_theme_light_onSecondaryContainer
+        </item>
+        <item name="colorTertiary">@color/purple_md_theme_light_tertiary</item>
+        <item name="colorOnTertiary">@color/purple_md_theme_light_onTertiary</item>
+        <item name="colorTertiaryContainer">@color/purple_md_theme_light_tertiaryContainer</item>
+        <item name="colorOnTertiaryContainer">@color/purple_md_theme_light_onTertiaryContainer
+        </item>
+        <item name="colorError">@color/purple_md_theme_light_error</item>
+        <item name="colorErrorContainer">@color/purple_md_theme_light_errorContainer</item>
+        <item name="colorOnError">@color/purple_md_theme_light_onError</item>
+        <item name="colorOnErrorContainer">@color/purple_md_theme_light_onErrorContainer</item>
+        <item name="android:colorBackground">@color/purple_md_theme_light_background</item>
+        <item name="colorOnBackground">@color/purple_md_theme_light_onBackground</item>
+        <item name="colorSurface">@color/purple_md_theme_light_surface</item>
+        <item name="colorOnSurface">@color/purple_md_theme_light_onSurface</item>
+        <item name="colorSurfaceVariant">@color/purple_md_theme_light_surfaceVariant</item>
+        <item name="colorOnSurfaceVariant">@color/purple_md_theme_light_onSurfaceVariant</item>
+        <item name="colorOutline">@color/purple_md_theme_light_outline</item>
+        <item name="colorOnSurfaceInverse">@color/purple_md_theme_light_inverseOnSurface</item>
+        <item name="colorSurfaceInverse">@color/purple_md_theme_light_inverseSurface</item>
+        <item name="colorPrimaryInverse">@color/purple_md_theme_light_inversePrimary</item>
+
+    </style>
+
+    <style name="Theme.Monochrome" parent="BaseTheme">
+
+        <item name="colorPrimary">@color/monochrome_theme_light_primary</item>
+        <item name="colorOnPrimary">@color/monochrome_theme_light_onPrimary</item>
+        <item name="colorPrimaryContainer">@color/monochrome_theme_light_primaryContainer</item>
+        <item name="colorOnPrimaryContainer">@color/monochrome_theme_light_onPrimaryContainer</item>
+        <item name="colorSecondary">@color/monochrome_theme_light_secondary</item>
+        <item name="colorOnSecondary">@color/monochrome_theme_light_onSecondary</item>
+        <item name="colorSecondaryContainer">@color/monochrome_theme_light_secondaryContainer</item>
+        <item name="colorOnSecondaryContainer">@color/monochrome_theme_light_onSecondaryContainer
+        </item>
+        <item name="colorTertiary">@color/monochrome_theme_light_tertiary</item>
+        <item name="colorOnTertiary">@color/monochrome_theme_light_onTertiary</item>
+        <item name="colorTertiaryContainer">@color/monochrome_theme_light_tertiaryContainer</item>
+        <item name="colorOnTertiaryContainer">@color/monochrome_theme_light_onTertiaryContainer
+        </item>
+        <item name="colorError">@color/monochrome_theme_light_error</item>
+        <item name="colorErrorContainer">@color/monochrome_theme_light_errorContainer</item>
+        <item name="colorOnError">@color/monochrome_theme_light_onError</item>
+        <item name="colorOnErrorContainer">@color/monochrome_theme_light_onErrorContainer</item>
+        <item name="android:colorBackground">@color/monochrome_theme_light_background</item>
+        <item name="colorOnBackground">@color/monochrome_theme_light_onBackground</item>
+        <item name="colorSurface">@color/monochrome_theme_light_surface</item>
+        <item name="colorOnSurface">@color/monochrome_theme_light_onSurface</item>
+        <item name="colorSurfaceVariant">@color/monochrome_theme_light_surfaceVariant</item>
+        <item name="colorOnSurfaceVariant">@color/monochrome_theme_light_onSurfaceVariant</item>
+        <item name="colorOutline">@color/monochrome_theme_light_outline</item>
+        <item name="colorOnSurfaceInverse">@color/monochrome_theme_light_inverseOnSurface</item>
+        <item name="colorSurfaceInverse">@color/monochrome_theme_light_inverseSurface</item>
+        <item name="colorPrimaryInverse">@color/monochrome_theme_light_inversePrimary</item>
+
+    </style>
+
+    <style name="Pure">
+
+        <item name="android:colorBackground">@android:color/white</item>
+        <item name="colorSurface">@android:color/white</item>
+
+    </style>
+
+</resources>

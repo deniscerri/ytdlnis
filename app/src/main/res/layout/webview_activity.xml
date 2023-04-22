@@ -20,7 +20,6 @@
             android:layout_height="?attr/actionBarSize"
             app:layout_scrollFlags="scroll"
             app:navigationIcon="?attr/homeAsUpIndicator"
-            android:theme="@style/Toolbar"
             >
 
             <Button

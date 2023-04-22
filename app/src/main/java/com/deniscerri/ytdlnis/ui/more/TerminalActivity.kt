@@ -28,6 +28,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.work.*
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.viewmodel.CommandTemplateViewModel
+import com.deniscerri.ytdlnis.ui.BaseActivity
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.NotificationUtil
 import com.deniscerri.ytdlnis.util.UiUtil
@@ -46,7 +47,7 @@ import java.io.File
 import kotlin.properties.Delegates
 
 
-class TerminalActivity : AppCompatActivity() {
+class TerminalActivity : BaseActivity() {
     private var topAppBar: MaterialToolbar? = null
     private lateinit var notificationUtil: NotificationUtil
     private var output: TextView? = null

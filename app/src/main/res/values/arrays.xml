@@ -165,14 +165,42 @@
     </array>
 
     <array name="themes">
-        <item>@string/defaultValue</item>
+        <item>@string/system</item>
         <item>@string/dark</item>
         <item>@string/light</item>
     </array>
 
     <array name="themes_values">
-        <item>Default</item>
+        <item>System</item>
         <item>Dark</item>
         <item>Light</item>
     </array>
+
+    <array name="accents">
+        <item>@string/material_you</item>
+        <item>@string/blue</item>
+        <item>@string/red</item>
+        <item>@string/green</item>
+        <item>@string/purple</item>
+        <item>@string/yellow</item>
+        <item>@string/monochrome</item>
+    </array>
+
+    <array name="accents_values">
+        <item>Default</item>
+        <item>blue</item>
+        <item>red</item>
+        <item>green</item>
+        <item>purple</item>
+        <item>yellow</item>
+        <item>monochrome</item>
+    </array>
+
+    <string name="material_you">Material You</string>
+    <string name="blue">Blue</string>
+    <string name="red">Red</string>
+    <string name="green">Green</string>
+    <string name="purple">Purple</string>
+    <string name="yellow">Yellow</string>
+    <string name="monochrome">Monochrome</string>
 </resources>

@@ -15,12 +15,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.adapter.DownloadLogsAdapter
+import com.deniscerri.ytdlnis.ui.BaseActivity
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.io.File
 
 
-class DownloadLogListActivity : AppCompatActivity(), DownloadLogsAdapter.OnItemClickListener {
+class DownloadLogListActivity : BaseActivity(), DownloadLogsAdapter.OnItemClickListener {
     private lateinit var recyclerView: RecyclerView
     private lateinit var downloadLogAdapter: DownloadLogsAdapter
     private lateinit var noResults: RelativeLayout

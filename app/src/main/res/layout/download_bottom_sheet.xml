@@ -109,7 +109,7 @@
         <Button
             android:id="@+id/bottom_sheet_link"
             style="@style/Widget.Material3.Button.TextButton.Icon"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:textAlignment="textStart"

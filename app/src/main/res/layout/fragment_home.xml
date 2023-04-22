@@ -113,7 +113,6 @@
             android:layout_width="match_parent"
             app:title="@string/app_name"
             app:layout_scrollFlags="scroll"
-            android:theme="@style/Toolbar"
             android:layout_height="wrap_content" />
 
         <com.google.android.material.search.SearchBar

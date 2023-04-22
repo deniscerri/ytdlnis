@@ -34,6 +34,7 @@ import com.deniscerri.ytdlnis.database.repository.HistoryRepository.HistorySort
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.HistoryViewModel
 import com.deniscerri.ytdlnis.databinding.FragmentHistoryBinding
+import com.deniscerri.ytdlnis.ui.downloadcard.DownloadBottomSheetDialog
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.UiUtil
 import com.google.android.material.appbar.AppBarLayout
@@ -118,7 +119,9 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
         val landScape = resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
         val displayMetrics: DisplayMetrics = requireContext().resources.displayMetrics
         val dpWidth: Float = displayMetrics.widthPixels / displayMetrics.density
-        if (dpWidth > 1200 && landScape){
+        if (dpWidth >= 1600 && landScape) {
+            recyclerView?.layoutManager = GridLayoutManager(context, 4)
+        }else if (dpWidth > 1200 && landScape){
             recyclerView?.layoutManager = GridLayoutManager(context, 3)
         }else if (landScape || dpWidth >= 650){
             recyclerView?.layoutManager = GridLayoutManager(context, 2)
@@ -484,6 +487,13 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
             }
             historyViewModel.delete(item, false)
             bottomSheet!!.cancel()
+        }
+
+        redownload.setOnLongClickListener {
+            bottomSheet!!.cancel()
+            val sheet = DownloadBottomSheetDialog(downloadViewModel.createResultItemFromHistory(item), item.type, null)
+            sheet.show(parentFragmentManager, "downloadSingleSheet")
+            true
         }
 
         if (!isPresent) openFile.visibility = GONE

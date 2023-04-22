@@ -10,9 +10,9 @@ import android.os.Bundle
 import android.os.Environment
 import android.os.PowerManager
 import android.provider.Settings
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.LocaleListCompat
 import androidx.lifecycle.lifecycleScope
@@ -23,6 +23,7 @@ import com.deniscerri.ytdlnis.BuildConfig
 import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.util.FileUtil
+import com.deniscerri.ytdlnis.util.ThemeUtil
 import com.deniscerri.ytdlnis.util.UpdateUtil
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yausername.youtubedl_android.YoutubeDL
@@ -35,6 +36,8 @@ import java.util.*
 class SettingsFragment : PreferenceFragmentCompat() {
     private var language: ListPreference? = null
     private var theme: ListPreference? = null
+    private var accent: ListPreference? = null
+    private var highContrast: SwitchPreferenceCompat? = null
     private var ignoreBatteryOptimization: Preference? = null
     private var musicPath: Preference? = null
     private var videoPath: Preference? = null
@@ -105,6 +108,8 @@ class SettingsFragment : PreferenceFragmentCompat() {
         val editor = preferences.edit()
         language = findPreference("app_language")
         theme = findPreference("ytdlnis_theme")
+        accent = findPreference("theme_accent")
+        highContrast = findPreference("high_contrast")
         ignoreBatteryOptimization = findPreference("ignore_battery")
         musicPath = findPreference("music_path")
         videoPath = findPreference("video_path")
@@ -164,7 +169,9 @@ class SettingsFragment : PreferenceFragmentCompat() {
             ignoreBatteryOptimization!!.isVisible = false
         }
 
-        editor.putString("theme", theme!!.value)
+        editor.putString("ytdlnis_theme", theme!!.value)
+        editor.putString("theme_accent", accent!!.value)
+        editor.putBoolean("high_contrast", highContrast!!.isChecked)
 
         if (preferences.getString("music_path", "")!!.isEmpty()) {
             editor.putString("music_path", getString(R.string.music_path))
@@ -230,32 +237,57 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 true
             }
 
-        theme!!.summary = when(theme!!.value){
-            "Default" -> getString(R.string.defaultValue)
-            "Dark" -> getString(R.string.dark)
-            else -> getString(R.string.light)
-        }
+        theme!!.summary = theme!!.entry
         theme!!.onPreferenceChangeListener =
             Preference.OnPreferenceChangeListener { _: Preference?, newValue: Any ->
                 when(newValue){
-                    "Default" -> {
-                        theme!!.summary = getString(R.string.defaultValue)
-                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+                    "System" -> {
+                        theme!!.summary = getString(R.string.system)
                     }
                     "Dark" -> {
                         theme!!.summary = getString(R.string.dark)
-                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
                     }
                     else -> {
                         theme!!.summary = getString(R.string.light)
-                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
                     }
                 }
                 editor.putString("ytdlnis_theme", newValue.toString())
-                editor.apply()
+                editor.commit()
+                ThemeUtil.updateTheme(requireActivity() as AppCompatActivity)
+
+                val intent = Intent(requireContext(), MainActivity::class.java)
+                this.startActivity(intent)
+                requireActivity().finishAffinity()
                 true
             }
+        accent!!.summary = accent!!.entry
+        accent!!.onPreferenceChangeListener =
+            Preference.OnPreferenceChangeListener { _: Preference?, newValue: Any ->
+                editor.putString("theme_accent", newValue.toString())
+                editor.apply().apply {
+                    accent!!.summary = accent!!.entry
+                }
+                ThemeUtil.updateTheme(requireActivity() as AppCompatActivity)
 
+                val intent = Intent(requireContext(), MainActivity::class.java)
+                this.startActivity(intent)
+                requireActivity().finishAffinity()
+
+                true
+            }
+        highContrast!!.onPreferenceChangeListener =
+            Preference.OnPreferenceChangeListener { _: Preference?, newValue: Any ->
+                val enable = newValue as Boolean
+                editor.putBoolean("high_contrast", enable)
+                editor.apply()
+
+                ThemeUtil.updateTheme(requireActivity() as AppCompatActivity)
+                val intent = Intent(requireContext(), MainActivity::class.java)
+                this.startActivity(intent)
+                requireActivity().finishAffinity()
+
+                true
+            }
         ignoreBatteryOptimization!!.onPreferenceClickListener =
             Preference.OnPreferenceClickListener {
                 val intent = Intent()

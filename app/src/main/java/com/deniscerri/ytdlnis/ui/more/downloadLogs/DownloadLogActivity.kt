@@ -10,12 +10,13 @@ import android.widget.ScrollView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.deniscerri.ytdlnis.R
+import com.deniscerri.ytdlnis.ui.BaseActivity
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import java.io.File
 
 
-class DownloadLogActivity : AppCompatActivity() {
+class DownloadLogActivity : BaseActivity() {
     private lateinit var content: TextView
     private lateinit var contentScrollView : ScrollView
     private lateinit var topAppBar: MaterialToolbar

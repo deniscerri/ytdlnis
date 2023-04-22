@@ -15,7 +15,6 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/Toolbar"
         app:layout_scrollFlags="scroll"
         app:title="@string/app_name" />
 
