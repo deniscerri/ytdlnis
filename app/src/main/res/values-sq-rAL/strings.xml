@@ -220,4 +220,7 @@
     <string name="dark">Errët</string>
     <string name="light">Çelët</string>
     <string name="quality">Kualiteti</string>
+    <string name="system">Sistemi</string>
+    <string name="white">Kompet e Bardhë</string>
+    <string name="black">Komplet e Zezë</string>
 </resources>
