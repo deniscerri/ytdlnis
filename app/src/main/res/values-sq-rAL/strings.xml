@@ -177,7 +177,7 @@
     <string name="restrict_filenames">Limito Titujt</string>
     <string name="restrict_filenames_summary">Limito emrin e skedarit me vetëm me karakteret ASCII, dhe shmag \"&amp;\" dhe hapësirat në emrin e skedarit</string>
     <string name="kill_app">Ndalo Aplikacionin</string>
-    <string name="confirm_terminate">Të gjithë shkarkimet do të ndalohen dhe aplikacioni do të mbyllet me forcë</string>
+    <string name="confirm_terminate">Ndalon të gjithë shkarkimet dhe mbyll me forcë aplikacionin</string>
     <string name="end">Fundi</string>
     <string name="start">Fillimi</string>
     <string name="dont_ask_again">Mos pyet më</string>
@@ -200,8 +200,8 @@
     <string name="download_over_metered_networks">Shkarko me Rrjetet Celulare</string>
     <string name="invert_selected">Inverto Të Zgjedhurit</string>
     <string name="save_subs_desc">Shkruaji titrat në skedarë</string>
-    <string name="download_over_metered_networks_summary">Lëreni punonjësin e shkarkimit të punojë në çdo lloj rrjeti. Nëse çaktivizohet, do të presë që një rrjet pa matje që të fillojë shkarkimet</string>
-    <string name="metered_network_download_start_info">Punëtori i shkarkimit do të fillojë pasi të jeni lidhur me një rrjet pa matje</string>
+    <string name="download_over_metered_networks_summary">Shkarkon duke përdorur çdo rrjet. Përndryshe pret për një rrjet pa matje</string>
+    <string name="metered_network_download_start_info">Shkarkimi do të fillojë pasi të jeni lidhur me një rrjet pa matje</string>
     <string name="save_subs">Ruaj Titrat</string>
     <string name="subtitle_languages">Gjuhet e Titrave</string>
     <string name="format_source">Burimi i Formateve</string>
@@ -233,5 +233,5 @@
     <string name="green">Jeshile</string>
     <string name="downloaded">"U shkarkua: "</string>
     <string name="finished_download_notification_channel_name">Shkarkimet e Përfunduara</string>
-    <string name="finished_download_notification_channel_description">Njoftimet që shfaqin shkarkimet që kanë mbaruar me sukses ose me probleme</string>
+    <string name="finished_download_notification_channel_description">Njoftimet për shkarkimet e mbaruar ose me probleme</string>
 </resources>
