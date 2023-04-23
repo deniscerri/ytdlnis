@@ -45,6 +45,7 @@
 - Material You interface
 - MVVM Architecture w/ WorkManager
 - easy to use :)
+- Video cut function (This function is experimental and does not work exactly)
 
 ## 📲 Screenshots
 
