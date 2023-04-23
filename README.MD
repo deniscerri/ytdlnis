@@ -29,6 +29,7 @@
 - download playlists or multi select items
 - queue downloads and schedule them by date and time
 - use custom commands and templates or go full terminal mode
+- cut videos based on timestamps and video chapters (This yt-dlp feature is experimental on the original project)
 - remove sponsorblock chapters
 - embed subtitles/metadata/chapters etc
 - modify metadata such as title and author
@@ -45,7 +46,6 @@
 - Material You interface
 - MVVM Architecture w/ WorkManager
 - easy to use :)
-- Video cut function (This function is experimental and does not work exactly)
 
 ## 📲 Screenshots
 
