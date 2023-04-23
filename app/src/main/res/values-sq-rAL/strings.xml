@@ -231,4 +231,7 @@
     <string name="yellow">E Verdhë</string>
     <string name="monochrome">Monokrom</string>
     <string name="green">Jeshile</string>
+    <string name="downloaded">"U shkarkua: "</string>
+    <string name="finished_download_notification_channel_name">Shkarkimet e Përfunduara</string>
+    <string name="finished_download_notification_channel_description">Njoftimet që shfaqin shkarkimet që kanë mbaruar me sukses ose me probleme</string>
 </resources>

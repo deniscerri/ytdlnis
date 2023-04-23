@@ -206,7 +206,7 @@
     <string name="subtitle_languages">Altyazı dilləri</string>
     <string name="format_source">Formatlar Mənbəsi</string>
     <string name="video_recommendations">Video Tövsiyələr</string>
-    <string name="video_recommendations_summary">Ev ekranında tövsiyə olunan Youtube Videoların Invidious-dan əldə et</string>
+    <string name="video_recommendations_summary">Ev ekranında tövsiyə olunan YouTube videoların Invidious-dan əldə et</string>
     <string name="preferred_search_engine">Üstünlük Verilən Axtarış Mühərrik</string>
     <string name="format_filtering_hint">Bu seçimi işlətmək üçün bütün elementlər eyni növdə olmalıdır</string>
     <string name="preferred_search_engine_summary">Tətbiqdaxili axtarışlar üçün istifadə edilməli axtarış mühərriki</string>
@@ -231,4 +231,7 @@
     <string name="purple">Bənövşəyi</string>
     <string name="yellow">Sarı</string>
     <string name="monochrome">Tək Rəngli</string>
+    <string name="downloaded">"Endirildi: "</string>
+    <string name="finished_download_notification_channel_name">Bitmiş Yükləmələr</string>
+    <string name="finished_download_notification_channel_description">Endirmənin müvəffəqiyyətlə bitdiyin və ya xəta olduğun göstərən bildiriş</string>
 </resources>

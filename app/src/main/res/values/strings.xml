@@ -184,7 +184,7 @@
     <string name="restrict_filenames">Restrict Filenames</string>
     <string name="restrict_filenames_summary"><![CDATA[Restrict filenames to only ASCII characters, and avoid \"&\" and spaces in filenames]]></string>
     <string name="kill_app">Terminate App</string>
-    <string name="confirm_terminate"><![CDATA[All downloads will be stopped & the app will be force closed]]></string>
+    <string name="confirm_terminate">Stops all downloads and force closes the app</string>
     <string name="dont_ask_again">Don\'t ask again</string>
     <string name="end">End</string>
     <string name="start">Start</string>
@@ -205,8 +205,8 @@
     <string name="delete_all_cookies">Delete All Cookies</string>
     <string name="confirm_delete_cookies_desc">Delete all the cookies, permanently</string>
     <string name="download_over_metered_networks">Download over Metered Networks</string>
-    <string name="download_over_metered_networks_summary">Let the download worker work on any network type. If disabled, it will wait for an unmetered network to start the downloads</string>
-    <string name="metered_network_download_start_info">Download worker will start after you are connected to an unmetered network</string>
+    <string name="download_over_metered_networks_summary">Downloads using any network type. Otherwise waits for an unmetered network.</string>
+    <string name="metered_network_download_start_info">Download will start once you are connected to an unmetered network</string>
     <string name="invert_selected">Invert Selected</string>
     <string name="save_subs">Save Subtitles</string>
     <string name="save_subs_desc">Write subtitle file</string>
@@ -240,5 +240,5 @@
     <string name="monochrome">Monochrome</string>
     <string name="downloaded">"Downloaded: "</string>
     <string name="finished_download_notification_channel_name">Finished Downloads</string>
-    <string name="finished_download_notification_channel_description">Notification showing when the download has succesfully finished or errored out</string>
+    <string name="finished_download_notification_channel_description">Notification for finished or faulty downloads</string>
 </resources>
