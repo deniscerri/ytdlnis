@@ -110,6 +110,8 @@ class TerminalDownloadWorker(
             if (logDownloads && logFile.exists()){
                 logFile.appendText("${it.out}\n")
             }
+            notificationUtil.cancelDownloadNotification(itemId)
+
         }.onFailure {
             if (it is YoutubeDL.CanceledException) {
                 return Result.failure()
@@ -121,11 +123,7 @@ class TerminalDownloadWorker(
             tempFileDir.delete()
 
             Log.e(TAG, context.getString(R.string.failed_download), it)
-            notificationUtil.updateDownloadNotification(
-                itemId,
-                context.getString(R.string.failed_download), 0, 0, command.take(65),
-                NotificationUtil.DOWNLOAD_SERVICE_CHANNEL_ID
-            )
+            notificationUtil.cancelDownloadNotification(itemId)
 
             return Result.failure()
         }

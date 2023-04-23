@@ -38,6 +38,7 @@ class ActiveDownloadsFragment() : Fragment(), ActiveDownloadAdapter.OnItemClickL
     lateinit var downloadItem: DownloadItem
     private lateinit var notificationUtil: NotificationUtil
     private lateinit var fileUtil: FileUtil
+    private lateinit var list: List<DownloadItem>
 
 
     override fun onCreateView(
@@ -51,6 +52,7 @@ class ActiveDownloadsFragment() : Fragment(), ActiveDownloadAdapter.OnItemClickL
         notificationUtil = NotificationUtil(requireContext())
         fileUtil = FileUtil()
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
+        list = listOf()
         return fragmentView
     }
 
@@ -78,6 +80,7 @@ class ActiveDownloadsFragment() : Fragment(), ActiveDownloadAdapter.OnItemClickL
         }
 
         downloadViewModel.activeDownloads.observe(viewLifecycleOwner) {
+            list = it
             activeDownloads.submitList(it)
             it.forEach{item ->
                 WorkManager.getInstance(requireContext())
@@ -121,6 +124,7 @@ class ActiveDownloadsFragment() : Fragment(), ActiveDownloadAdapter.OnItemClickL
     }
 
     private fun cancelDownload(itemID: Long){
+        list.find { it.id == itemID }?.let { downloadViewModel.deleteDownload(it) }
         val id = itemID.toInt()
         YoutubeDL.getInstance().destroyProcessById(id.toString())
         WorkManager.getInstance(requireContext()).cancelUniqueWork(id.toString())

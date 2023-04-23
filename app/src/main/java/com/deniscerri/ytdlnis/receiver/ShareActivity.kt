@@ -31,6 +31,7 @@ import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.deniscerri.ytdlnis.database.viewmodel.CookieViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.ResultViewModel
+import com.deniscerri.ytdlnis.ui.BaseActivity
 import com.deniscerri.ytdlnis.ui.downloadcard.DownloadBottomSheetDialog
 import com.deniscerri.ytdlnis.ui.downloadcard.SelectPlaylistItemsBottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -41,7 +42,7 @@ import kotlinx.coroutines.withContext
 import java.io.File
 import kotlin.system.exitProcess
 
-class ShareActivity : AppCompatActivity() {
+class ShareActivity : BaseActivity() {
 
     lateinit var context: Context
     private lateinit var resultViewModel: ResultViewModel

@@ -177,10 +177,8 @@
     <string name="end">Slutt</string>
     <string name="start">Start</string>
     <string name="quality">Kvalitet</string>
-    <string name="black">Helsvart</string>
     <string name="system">System</string>
     <string name="pure_theme_summary">Helsvart/helhvit drakt</string>
-    <string name="white">Helhvit</string>
     <string name="high_contrast">Høykontrast</string>
     <string name="link_you_copied">Lenke du kopierte</string>
     <string name="cut">Klipp ut</string>

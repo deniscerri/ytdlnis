@@ -23,7 +23,7 @@ buildscript {
         commonsCompressVer = '1.12'
         youtubedlAndroidVer = "7222fe9637"
         workVer = "2.8.1"
-        composeVer = "1.4.0-alpha02"
+        composeVer = '1.4.2'
         kotlinVer = "1.7.21"
         coroutineVer = "1.6.4"
         retrofitVer = "2.9.0"
@@ -41,8 +41,8 @@ buildscript {
 plugins {
     id 'com.android.application' version '7.4.2' apply false
     id 'com.android.library' version '7.4.2' apply false
-    id 'org.jetbrains.kotlin.android' version '1.7.21' apply false
-    id "org.jetbrains.kotlin.plugin.serialization" version "1.7.21" apply false
+    id 'org.jetbrains.kotlin.android' version '1.8.10' apply false
+    id "org.jetbrains.kotlin.plugin.serialization" version "1.8.10" apply false
     id 'com.android.test' version '7.4.2' apply false
 }
 

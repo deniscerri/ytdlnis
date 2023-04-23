@@ -18,7 +18,6 @@ import android.view.View
 import android.view.WindowInsets
 import android.widget.CheckBox
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.forEach
@@ -35,11 +34,9 @@ import com.deniscerri.ytdlnis.ui.downloads.DownloadQueueActivity
 import com.deniscerri.ytdlnis.ui.more.settings.SettingsActivity
 import com.deniscerri.ytdlnis.util.ThemeUtil
 import com.deniscerri.ytdlnis.util.UpdateUtil
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.navigation.NavigationBarView
 import com.google.android.material.navigation.NavigationView
-import com.google.android.material.navigationrail.NavigationRailView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.BufferedReader
@@ -62,7 +59,7 @@ class MainActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        ThemeUtil.updateTheme(this)
         setContentView(R.layout.activity_main)
         context = baseContext
         resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]

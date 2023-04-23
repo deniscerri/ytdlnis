@@ -12,7 +12,7 @@
         android:entries="@array/themes"
         android:entryValues="@array/themes_values"
         android:icon="@drawable/baseline_format_paint_24"
-        app:defaultValue="Default"
+        app:defaultValue="System"
         app:key="ytdlnis_theme"
         app:summary="@string/defaultValue"
         app:title="@string/Theme" />

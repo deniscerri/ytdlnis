@@ -112,7 +112,7 @@
             android:id="@+id/home_toolbar"
             android:layout_width="match_parent"
             app:title="@string/app_name"
-            app:layout_scrollFlags="scroll"
+            app:layout_scrollFlags="scroll|enterAlways"
             android:layout_height="wrap_content" />
 
         <com.google.android.material.search.SearchBar

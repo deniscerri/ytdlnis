@@ -38,9 +38,9 @@
 
         <activity
             android:name=".MainActivity"
-            android:configChanges="layoutDirection|locale"
+            android:configChanges="smallestScreenSize|layoutDirection|locale|orientation|screenSize"
             android:exported="true"
-            android:windowSoftInputMode="adjustResize">
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -56,7 +56,7 @@
         </activity>
         <activity
             android:name=".receiver.ShareActivity"
-            android:configChanges="layoutDirection|locale"
+            android:configChanges="smallestScreenSize|layoutDirection|locale|orientation|screenSize"
             android:excludeFromRecents="true"
             android:exported="true"
             android:launchMode="singleInstance"
@@ -71,7 +71,7 @@
         </activity>
         <activity
             android:name=".ui.more.downloadLogs.DownloadLogListActivity"
-            android:configChanges="layoutDirection|locale"
+            android:configChanges="smallestScreenSize|layoutDirection|locale|orientation|screenSize"
             android:exported="true"
             android:parentActivityName=".MainActivity">
             <intent-filter>
@@ -82,7 +82,7 @@
         </activity>
         <activity
             android:name=".ui.downloads.DownloadQueueActivity"
-            android:configChanges="layoutDirection|locale"
+            android:configChanges="smallestScreenSize|layoutDirection|locale|orientation|screenSize"
             android:exported="true"
             android:parentActivityName=".MainActivity">
             <intent-filter>
@@ -93,7 +93,7 @@
         </activity>
         <activity
             android:name=".ui.more.downloadLogs.DownloadLogActivity"
-            android:configChanges="layoutDirection|locale"
+            android:configChanges="smallestScreenSize|layoutDirection|locale|orientation|screenSize"
             android:exported="true"
             android:parentActivityName=".ui.more.downloadLogs.DownloadLogListActivity">
             <intent-filter>
@@ -104,7 +104,7 @@
         </activity>
         <activity
             android:name=".ui.more.settings.SettingsActivity"
-            android:configChanges="layoutDirection|locale"
+            android:configChanges="smallestScreenSize|layoutDirection|locale|orientation|screenSize"
             android:exported="true"
             android:parentActivityName=".MainActivity">
             <intent-filter>
@@ -115,11 +115,10 @@
         </activity>
         <activity
             android:name=".ui.more.TerminalActivity"
-            android:configChanges="layoutDirection|locale|orientation|screenSize"
+            android:configChanges="smallestScreenSize|layoutDirection|locale|orientation|screenSize"
             android:exported="true"
             android:label="@string/terminal"
-            android:parentActivityName=".MainActivity"
-            android:theme="@style/BaseTheme">
+            android:parentActivityName=".MainActivity">
             <intent-filter>
                 <action android:name="ytdlnis.TerminalActivity" />
 
@@ -135,7 +134,7 @@
         </activity>
         <activity
             android:name=".ui.more.CommandTemplatesActivity"
-            android:configChanges="layoutDirection|locale"
+            android:configChanges="smallestScreenSize|layoutDirection|locale|orientation|screenSize"
             android:exported="true"
             android:parentActivityName=".MainActivity"
             android:windowSoftInputMode="adjustResize">
@@ -148,7 +147,7 @@
 
         <activity
             android:name=".ui.more.CookiesActivity"
-            android:configChanges="layoutDirection|locale"
+            android:configChanges="smallestScreenSize|layoutDirection|locale|orientation|screenSize"
             android:exported="true"
             android:parentActivityName=".MainActivity"
             android:windowSoftInputMode="adjustResize">
@@ -161,7 +160,7 @@
 
         <activity
             android:name=".ui.more.WebViewActivity"
-            android:configChanges="layoutDirection|locale"
+            android:configChanges="smallestScreenSize|layoutDirection|locale|orientation|screenSize"
             android:exported="true"
             android:parentActivityName=".MainActivity"
             android:windowSoftInputMode="adjustResize">

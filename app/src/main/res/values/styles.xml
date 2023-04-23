@@ -1,5 +1,5 @@
 <resources>
-    <style name="Theme.BottomSheet" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Theme.BottomSheet" parent="BaseTheme">
         <item name="windowNoTitle">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowIsTranslucent">true</item>

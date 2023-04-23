@@ -162,7 +162,7 @@ class NotificationUtil(var context: Context) {
         val errorPendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE)
 
         notificationBuilder
-            .setContentTitle("${context.getString(R.string.errored)}: $title")
+            .setContentTitle("${context.getString(R.string.failed_download)}: $title")
             .setContentText(error)
             .setSmallIcon(R.drawable.ic_app_icon)
             .setLargeIcon(

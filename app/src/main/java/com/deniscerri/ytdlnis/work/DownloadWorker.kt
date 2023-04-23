@@ -310,6 +310,8 @@ class DownloadWorker(
                     historyDao.insert(historyItem)
                 }
             }
+            notificationUtil.cancelDownloadNotification(downloadItem.id.toInt())
+
             notificationUtil.createDownloadFinished(
                 downloadItem.title,  if (finalPath.equals(context.getString(R.string.unfound_file))) null else finalPath,
                 NotificationUtil.DOWNLOAD_FINISHED_CHANNEL_ID
@@ -338,11 +340,7 @@ class DownloadWorker(
                 }, 1000)
 
                 Log.e(TAG, context.getString(R.string.failed_download), it)
-                notificationUtil.updateDownloadNotification(
-                    downloadItem.id.toInt(),
-                    context.getString(R.string.failed_download), 0, 0, downloadItem.title,
-                    NotificationUtil.DOWNLOAD_SERVICE_CHANNEL_ID
-                )
+                notificationUtil.cancelDownloadNotification(downloadItem.id.toInt())
 
                 downloadItem.status = DownloadRepository.Status.Error.toString()
                 runBlocking {
