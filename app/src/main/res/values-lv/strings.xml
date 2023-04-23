@@ -204,4 +204,8 @@
     <string name="subtitle_languages">Subtitru valodas</string>
     <string name="download_over_metered_networks">Lejupielāde ierobežotos tīklos</string>
     <string name="download_over_metered_networks_summary">Ļaut lejupielādes strādniekam darboties jebkurā tīkla tipā. Ja atspējots, tas gaidīs, kad sāksies lejupielāde neierobežotā tīklā</string>
+    <string name="format_source">Formātu Avots</string>
+    <string name="video_recommendations">Video Ieteikumi</string>
+    <string name="video_recommendations_summary">Saņemiet ieteiktos Youtube videoklipus sākuma ekrānā no Invidious</string>
+    <string name="preferred_search_engine">Vēlamā Meklētājprogramma</string>
 </resources>
