@@ -1,2 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="download_notification_channel_description">Notificare care arată progresul descărcării fișierelor audio și video</string>
+    <string name="best_quality">Cea mai bună calitate</string>
+    <string name="about">Despre</string>
+    <string name="remove_all">Eliminați toate</string>
+    <string name="download_all">Descărcați toate</string>
+    <string name="settings">Setări</string>
+    <string name="home">Acasă</string>
+    <string name="video_directory">Dosar video</string>
+    <string name="updating">Actualizare</string>
+    <string name="ytdl_update_hint">Util dacă aveți probleme la descărcare</string>
+    <string name="update_ytdl">Instalează o nouă versiune de yt-dlp</string>
+    <string name="source_code">Cod sursa</string>
+    <string name="search_hint">Căutare sau Inserare URL</string>
+    <string name="failed_download">Nu s-a putut descărca fișierul.</string>
+    <string name="download_notification_channel_name">Descărcări de fișiere</string>
+    <string name="worst_quality">Cea mai scăzută calitate</string>
+    <string name="search">Căutare</string>
+    <string name="directories">Dosare</string>
+    <string name="music_directory">Dosar de muzică</string>
+</resources>
