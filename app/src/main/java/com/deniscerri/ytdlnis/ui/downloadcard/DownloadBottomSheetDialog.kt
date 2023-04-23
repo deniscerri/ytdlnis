@@ -6,6 +6,7 @@ import android.content.DialogInterface
 import android.os.Bundle
 import android.text.format.DateFormat
 import android.util.DisplayMetrics
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -220,7 +221,9 @@ class DownloadBottomSheetDialog(private val resultItem: ResultItem, private val 
             parentFragmentManager.beginTransaction().remove(parentFragmentManager.findFragmentByTag("downloadSingleSheet")!!).commit()
             parentFragmentManager.beginTransaction().remove(downloadVideoFragment).commit()
             parentFragmentManager.beginTransaction().remove(downloadVideoFragment).commit()
-            parentFragmentManager.beginTransaction().remove(downloadCommandFragment).commit()
+            if (this::downloadCommandFragment.isInitialized){
+                parentFragmentManager.beginTransaction().remove(downloadCommandFragment).commit()
+            }
             if (activity is ShareActivity){
                 (activity as ShareActivity).finish()
             }

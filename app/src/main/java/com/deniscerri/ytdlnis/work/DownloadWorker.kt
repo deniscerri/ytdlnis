@@ -145,7 +145,7 @@ class DownloadWorker(
                 else if (audioQualityId == context.getString(R.string.worst_quality)) audioQualityId = "worstaudio"
 
                 val ext = downloadItem.format.container
-                if (audioQualityId.isBlank() || ext == "Default") request.addOption("-x")
+                if (audioQualityId.isBlank() || ext == "Default" || ext == context.getString(R.string.defaultValue)) request.addOption("-x")
                 else request.addOption("-f", audioQualityId)
 
                 if(ext != "webm"){
@@ -217,7 +217,7 @@ class DownloadWorker(
                 Log.e(TAG, formatArgument)
                 request.addOption("-f", formatArgument)
                 val format = downloadItem.format.container
-                if(format.isNotEmpty() && format != "Default"){
+                if(format.isNotEmpty() && format != "Default" && format != context.getString(R.string.defaultValue)){
                     request.addOption("--merge-output-format", format)
                     if (format != "webm") {
                         val embedThumb = sharedPreferences.getBoolean("embed_thumbnail", false)

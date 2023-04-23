@@ -19,6 +19,7 @@ import androidx.work.WorkManager
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.adapter.ActiveDownloadAdapter
 import com.deniscerri.ytdlnis.database.models.DownloadItem
+import com.deniscerri.ytdlnis.database.repository.DownloadRepository
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.databinding.FragmentHomeBinding
 import com.deniscerri.ytdlnis.ui.more.downloadLogs.DownloadLogActivity
@@ -26,6 +27,7 @@ import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.NotificationUtil
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.yausername.youtubedl_android.YoutubeDL
+import kotlinx.coroutines.runBlocking
 
 
 class ActiveDownloadsFragment() : Fragment(), ActiveDownloadAdapter.OnItemClickListener, OnClickListener {
@@ -124,7 +126,12 @@ class ActiveDownloadsFragment() : Fragment(), ActiveDownloadAdapter.OnItemClickL
     }
 
     private fun cancelDownload(itemID: Long){
-        list.find { it.id == itemID }?.let { downloadViewModel.deleteDownload(it) }
+        list.find { it.id == itemID }?.let {
+            it.status = DownloadRepository.Status.Cancelled.toString()
+            downloadViewModel.updateDownload(it)
+        }
+
+
         val id = itemID.toInt()
         YoutubeDL.getInstance().destroyProcessById(id.toString())
         WorkManager.getInstance(requireContext()).cancelUniqueWork(id.toString())

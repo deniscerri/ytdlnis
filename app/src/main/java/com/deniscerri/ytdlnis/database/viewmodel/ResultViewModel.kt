@@ -104,7 +104,7 @@ class ResultViewModel(application: Application) : AndroidViewModel(application) 
     }
     fun getQueryType(inputQuery: String) : String {
         var type = "Search"
-        val p = Pattern.compile("^(https?)://(www.)?youtu(.be)?")
+        val p = Pattern.compile("^(https?)://(www.)?(music.)?youtu(.be)?")
         val m = p.matcher(inputQuery)
         if (m.find()) {
             type = "Video"

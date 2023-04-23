@@ -59,7 +59,8 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         erroredDownloads = repository.erroredDownloads
 
         val videoFormat = getApplication<App>().resources.getStringArray(R.array.video_formats)
-        val videoContainer = sharedPreferences.getString("video_format",  "Default")
+        var videoContainer = sharedPreferences.getString("video_format",  "Default")
+        if (videoContainer == "Default") videoContainer = application.getString(R.string.defaultValue)
 
         defaultVideoFormats = mutableListOf()
         videoFormat.forEach {
@@ -77,7 +78,8 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
 
         bestVideoFormat = defaultVideoFormats.last()
 
-        val audioContainer = sharedPreferences.getString("audio_format", "mp3")
+        var audioContainer = sharedPreferences.getString("audio_format", "mp3")
+        if (audioContainer == "Default") audioContainer = application.getString(R.string.defaultValue)
         bestAudioFormat = Format(
             getApplication<App>().resources.getString(R.string.best_quality),
             audioContainer!!,
@@ -228,7 +230,7 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
                     try {
                         val theFormats = formats.ifEmpty { defaultVideoFormats }
 
-                        val qualityPreference = sharedPreferences.getString("video_quality", getApplication<App>().resources.getString(R.string.best_quality))
+                        val qualityPreference = sharedPreferences.getString("video_quality", application.getString(R.string.best_quality))
                         if (qualityPreference == getApplication<App>().resources.getString(R.string.worst_quality)){
                             theFormats.first { !it.format_note.contains("audio", ignoreCase = true) }
                         }
@@ -267,7 +269,8 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
     fun getGenericAudioFormats() : MutableList<Format>{
         val audioFormats = application.resources.getStringArray(R.array.audio_formats)
         val formats = mutableListOf<Format>()
-        val containerPreference = sharedPreferences.getString("audio_format", "Default")
+        var containerPreference = sharedPreferences.getString("audio_format", "Default")
+        if (containerPreference == "Default") containerPreference = application.getString(R.string.defaultValue)
         audioFormats.forEach { formats.add(Format(it, containerPreference!!,"","", "",0, it)) }
         return formats
     }
@@ -275,7 +278,8 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
     fun getGenericVideoFormats() : MutableList<Format>{
         val videoFormats = application.resources.getStringArray(R.array.video_formats)
         val formats = mutableListOf<Format>()
-        val containerPreference = sharedPreferences.getString("video_format", "Default")
+        var containerPreference = sharedPreferences.getString("video_format", "Default")
+        if (containerPreference == "Default") containerPreference = application.getString(R.string.defaultValue)
         videoFormats.forEach { formats.add(Format(it, containerPreference!!,"","", "",0, it)) }
         return formats
     }

@@ -135,7 +135,8 @@ class DownloadVideoFragment(private val resultItem: ResultItem, private var curr
                 val container = view.findViewById<TextInputLayout>(R.id.downloadContainer)
                 val containerAutoCompleteTextView =
                     view.findViewById<AutoCompleteTextView>(R.id.container_textview)
-                val containerPreference = sharedPreferences.getString("video_format", "Default")
+                var containerPreference = sharedPreferences.getString("video_format", "Default")
+                if (containerPreference == "Default") containerPreference = getString(R.string.defaultValue)
 
                 if (formats.isEmpty()) formats = downloadViewModel.getGenericVideoFormats()
 

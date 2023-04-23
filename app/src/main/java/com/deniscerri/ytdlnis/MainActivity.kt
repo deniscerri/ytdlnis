@@ -8,6 +8,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.content.res.Configuration
+import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Build
@@ -16,6 +17,7 @@ import android.provider.Settings
 import android.util.Log
 import android.view.View
 import android.view.WindowInsets
+import android.view.WindowManager
 import android.widget.CheckBox
 import android.widget.TextView
 import androidx.core.app.ActivityCompat
@@ -35,6 +37,7 @@ import com.deniscerri.ytdlnis.ui.more.settings.SettingsActivity
 import com.deniscerri.ytdlnis.util.ThemeUtil
 import com.deniscerri.ytdlnis.util.UpdateUtil
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.elevation.SurfaceColors
 import com.google.android.material.navigation.NavigationBarView
 import com.google.android.material.navigation.NavigationView
 import kotlinx.coroutines.Dispatchers
@@ -46,6 +49,7 @@ import java.io.Reader
 import java.nio.charset.Charset
 import java.nio.charset.StandardCharsets
 import kotlin.system.exitProcess
+
 
 class MainActivity : BaseActivity() {
 
@@ -156,6 +160,8 @@ class MainActivity : BaseActivity() {
                 true
             }
         }
+        window.navigationBarColor = SurfaceColors.SURFACE_2.getColor(this)
+
         cookieViewModel.updateCookiesFile()
         val intent = intent
         handleIntents(intent)

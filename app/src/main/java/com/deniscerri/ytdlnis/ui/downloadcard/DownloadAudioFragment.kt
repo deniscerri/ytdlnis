@@ -126,7 +126,8 @@ class DownloadAudioFragment(private var resultItem: ResultItem, private var curr
                 if (formats.isEmpty()) formats.addAll(downloadItem.allFormats.filter { it.format_note.contains("audio", ignoreCase = true) })
 
                 val containers = requireContext().resources.getStringArray(R.array.audio_containers)
-                val containerPreference = sharedPreferences.getString("audio_format", "Default")
+                var containerPreference = sharedPreferences.getString("audio_format", "Default")
+                if (containerPreference == "Default") containerPreference = getString(R.string.defaultValue)
                 val container = view.findViewById<TextInputLayout>(R.id.downloadContainer)
                 val containerAutoCompleteTextView =
                     view.findViewById<AutoCompleteTextView>(R.id.container_textview)
@@ -154,7 +155,7 @@ class DownloadAudioFragment(private var resultItem: ResultItem, private var curr
                         formats = allFormats.first().toMutableList()
                     }
                 }
-                formatCard.setOnClickListener{_ ->
+                formatCard.setOnClickListener{
                     if (parentFragmentManager.findFragmentByTag("formatSheet") == null){
                         val bottomSheet = FormatSelectionBottomSheetDialog(listOf(downloadItem), listOf(formats), listener)
                         bottomSheet.show(parentFragmentManager, "formatSheet")
@@ -215,13 +216,13 @@ class DownloadAudioFragment(private var resultItem: ResultItem, private var curr
                     builder.setMultiChoiceItems(
                         entries,
                         checkedItems.toBooleanArray()
-                    ) { dialog, which, isChecked ->
+                    ) { _, which, isChecked ->
                         checkedItems[which] = isChecked
                     }
 
                     builder.setPositiveButton(
                         getString(R.string.ok)
-                    ) { dialog: DialogInterface?, which: Int ->
+                    ) { _: DialogInterface?, _: Int ->
                         downloadItem.audioPreferences.sponsorBlockFilters.clear()
                         for (i in 0 until checkedItems.size) {
                             if (checkedItems[i]) {
@@ -233,7 +234,7 @@ class DownloadAudioFragment(private var resultItem: ResultItem, private var curr
                     // handle the negative button of the alert dialog
                     builder.setNegativeButton(
                         getString(R.string.cancel)
-                    ) { dialog: DialogInterface?, which: Int -> }
+                    ) { _: DialogInterface?, _: Int -> }
 
 
                     val dialog = builder.create()

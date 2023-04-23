@@ -68,7 +68,7 @@ class ResultRepository(private val resultDao: ResultDao, private val commandTemp
 
     suspend fun getPlaylist(inputQuery: String, resetResults: Boolean) : ArrayList<ResultItem?>{
         val query = inputQuery.split("list=".toRegex()).dropLastWhile { it.isEmpty() }
-                .toTypedArray()[1]
+                .toTypedArray()[1].split("&").first()
         var nextPageToken = ""
         if (resetResults) deleteAll()
         val infoUtil = InfoUtil(context)

@@ -164,6 +164,7 @@ class NotificationUtil(var context: Context) {
         notificationBuilder
             .setContentTitle("${context.getString(R.string.failed_download)}: $title")
             .setContentText(error)
+            .setContentIntent(errorPendingIntent)
             .setSmallIcon(R.drawable.ic_app_icon)
             .setLargeIcon(
                 BitmapFactory.decodeResource(
