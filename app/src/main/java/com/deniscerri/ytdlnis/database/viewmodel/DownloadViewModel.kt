@@ -33,6 +33,7 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
     val allDownloads : LiveData<List<DownloadItem>>
     val queuedDownloads : LiveData<List<DownloadItem>>
     val activeDownloads : LiveData<List<DownloadItem>>
+    val activeDownloadsCount : LiveData<Int>
     val cancelledDownloads : LiveData<List<DownloadItem>>
     val erroredDownloads : LiveData<List<DownloadItem>>
     val processingDownloads : LiveData<List<DownloadItem>>
@@ -54,6 +55,7 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         allDownloads = repository.allDownloads
         queuedDownloads = repository.queuedDownloads
         activeDownloads = repository.activeDownloads
+        activeDownloadsCount = repository.activeDownloadsCount
         processingDownloads = repository.processingDownloads
         cancelledDownloads = repository.cancelledDownloads
         erroredDownloads = repository.erroredDownloads

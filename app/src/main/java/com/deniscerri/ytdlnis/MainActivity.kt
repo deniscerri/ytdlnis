@@ -29,6 +29,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.deniscerri.ytdlnis.database.viewmodel.CookieViewModel
+import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdlnis.ui.BaseActivity
 import com.deniscerri.ytdlnis.ui.HomeFragment
@@ -36,6 +37,7 @@ import com.deniscerri.ytdlnis.ui.downloads.DownloadQueueActivity
 import com.deniscerri.ytdlnis.ui.more.settings.SettingsActivity
 import com.deniscerri.ytdlnis.util.ThemeUtil
 import com.deniscerri.ytdlnis.util.UpdateUtil
+import com.google.android.exoplayer2.offline.Download
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.elevation.SurfaceColors
 import com.google.android.material.navigation.NavigationBarView
@@ -57,6 +59,7 @@ class MainActivity : BaseActivity() {
     private lateinit var preferences: SharedPreferences
     private lateinit var resultViewModel: ResultViewModel
     private lateinit var cookieViewModel: CookieViewModel
+    private lateinit var downloadViewModel: DownloadViewModel
     private lateinit var navigationView: View
     private lateinit var navHostFragment : NavHostFragment
 
@@ -68,6 +71,7 @@ class MainActivity : BaseActivity() {
         context = baseContext
         resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]
         cookieViewModel = ViewModelProvider(this)[CookieViewModel::class.java]
+        downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
         preferences = context.getSharedPreferences("root_preferences", MODE_PRIVATE)
 
         if (preferences.getBoolean("incognito", false)){
@@ -127,6 +131,19 @@ class MainActivity : BaseActivity() {
                     }
                 }
             }
+
+            val activeDownloadsBadge = (navigationView as NavigationBarView).getOrCreateBadge(R.id.historyFragment)
+            downloadViewModel.activeDownloadsCount.observe(this){
+                if (it == 0) {
+                    activeDownloadsBadge.isVisible = false
+                    activeDownloadsBadge.clearNumber()
+                }
+                else {
+                    activeDownloadsBadge.isVisible = true
+                    activeDownloadsBadge.number = it
+                }
+            }
+            window.navigationBarColor = SurfaceColors.SURFACE_2.getColor(this)
         }
         if (navigationView is NavigationView){
             (navigationView as NavigationView).setCheckedItem(graph.startDestinationId)
@@ -160,8 +177,6 @@ class MainActivity : BaseActivity() {
                 true
             }
         }
-        window.navigationBarColor = SurfaceColors.SURFACE_2.getColor(this)
-
         cookieViewModel.updateCookiesFile()
         val intent = intent
         handleIntents(intent)

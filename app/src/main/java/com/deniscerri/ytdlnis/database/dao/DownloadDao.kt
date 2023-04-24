@@ -13,6 +13,9 @@ interface DownloadDao {
     @Query("SELECT * FROM downloads WHERE status='Active'")
     fun getActiveDownloads() : LiveData<List<DownloadItem>>
 
+    @Query("SELECT COUNT(*) FROM downloads WHERE status='Active'")
+    fun getActiveDownloadsCount() : LiveData<Int>
+
     @Query("SELECT * FROM downloads WHERE status='Active'")
     fun getActiveDownloadsList() : List<DownloadItem>
 
