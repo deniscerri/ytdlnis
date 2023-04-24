@@ -26,7 +26,6 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        DynamicColors.applyToActivitiesIfAvailable(this)
         createNotificationChannels()
         PreferenceManager.setDefaultValues(
             this,

@@ -241,4 +241,6 @@
     <string name="downloaded">"Downloaded: "</string>
     <string name="finished_download_notification_channel_name">Finished Downloads</string>
     <string name="finished_download_notification_channel_description">Notification for finished or faulty downloads</string>
+    <string name="quick_download">Quick Download</string>
+    <string name="quick_download_summary">Don\'t fetch data beforehand</string>
 </resources>

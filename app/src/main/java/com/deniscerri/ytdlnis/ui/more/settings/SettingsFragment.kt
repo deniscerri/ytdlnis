@@ -49,6 +49,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
     private var searchEngine : ListPreference? = null
     private var startDestination : ListPreference? = null
     private var downloadCard: SwitchPreferenceCompat? = null
+    private var quickDownload: SwitchPreferenceCompat? = null
     private var meteredNetwork: SwitchPreferenceCompat? = null
     private var apiKey: EditTextPreference? = null
     private var homeRecommendations: SwitchPreferenceCompat? = null
@@ -121,6 +122,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         searchEngine = findPreference("search_engine")
         startDestination = findPreference("start_destination")
         downloadCard = findPreference("download_card")
+        quickDownload = findPreference("quick_download")
         meteredNetwork = findPreference("metered_networks")
         apiKey = findPreference("api_key")
         homeRecommendations = findPreference("home_recommendations")
@@ -193,6 +195,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         editor.putString("search_engine", searchEngine!!.value)
         editor.putString("start_destination", startDestination!!.value)
         editor.putBoolean("download_card", downloadCard!!.isChecked)
+        editor.putBoolean("quick_download", quickDownload!!.isChecked)
         editor.putBoolean("metered_networks", meteredNetwork!!.isChecked)
         editor.putString("api_key", apiKey!!.text)
         editor.putBoolean("home_recommendations", homeRecommendations!!.isChecked)
@@ -379,6 +382,13 @@ class SettingsFragment : PreferenceFragmentCompat() {
             Preference.OnPreferenceChangeListener { _: Preference?, newValue: Any ->
                 val enable = newValue as Boolean
                 editor.putBoolean("download_card", enable)
+                editor.apply()
+                true
+            }
+        quickDownload!!.onPreferenceChangeListener =
+            Preference.OnPreferenceChangeListener { _: Preference?, newValue: Any ->
+                val enable = newValue as Boolean
+                editor.putBoolean("quick_download", enable)
                 editor.apply()
                 true
             }

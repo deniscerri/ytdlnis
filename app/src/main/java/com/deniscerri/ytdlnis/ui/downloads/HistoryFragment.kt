@@ -499,7 +499,7 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
 
         redownload.setOnLongClickListener {
             bottomSheet!!.cancel()
-            val sheet = DownloadBottomSheetDialog(downloadViewModel.createResultItemFromHistory(item), item.type, downloadViewModel.createDownloadItemFromHistory(item))
+            val sheet = DownloadBottomSheetDialog(downloadViewModel.createResultItemFromHistory(item), item.type, downloadViewModel.createDownloadItemFromHistory(item), false)
             sheet.show(parentFragmentManager, "downloadSingleSheet")
             true
         }
@@ -640,7 +640,7 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
                     ItemTouchHelper.RIGHT -> {
                         val item = historyList!![position]!!
                         historyAdapter!!.notifyItemChanged(position)
-                        val sheet = DownloadBottomSheetDialog(downloadViewModel.createResultItemFromHistory(item), item.type, downloadViewModel.createDownloadItemFromHistory(item))
+                        val sheet = DownloadBottomSheetDialog(downloadViewModel.createResultItemFromHistory(item), item.type, downloadViewModel.createDownloadItemFromHistory(item), false)
                         sheet.show(parentFragmentManager, "downloadSingleSheet")
                     }
                 }

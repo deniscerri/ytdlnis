@@ -93,6 +93,14 @@
 
         <SwitchPreferenceCompat
             android:widgetLayout="@layout/preferece_material_switch"
+            app:defaultValue="false"
+            android:icon="@drawable/ic_speed"
+            android:key="quick_download"
+            app:summary="@string/quick_download_summary"
+            app:title="@string/quick_download" />
+
+        <SwitchPreferenceCompat
+            android:widgetLayout="@layout/preferece_material_switch"
             app:defaultValue="true"
             android:icon="@drawable/metered_networks"
             android:key="metered_networks"

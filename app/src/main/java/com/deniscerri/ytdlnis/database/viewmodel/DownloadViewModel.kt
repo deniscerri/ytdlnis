@@ -171,6 +171,22 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
 
     }
 
+    fun createEmptyResultItem(url: String) : ResultItem {
+        return ResultItem(
+            0,
+            url,
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            arrayListOf(),
+            System.currentTimeMillis()
+        )
+
+    }
+
     fun switchDownloadType(list: List<DownloadItem>, type: Type) : List<DownloadItem>{
         list.forEach {
             val format = getFormat(it.allFormats, type)

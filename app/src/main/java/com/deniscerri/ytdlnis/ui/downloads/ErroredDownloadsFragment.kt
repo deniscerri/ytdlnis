@@ -113,9 +113,9 @@ class ErroredDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickL
         bottomSheet.requestWindowFeature(Window.FEATURE_NO_TITLE)
         bottomSheet.setContentView(R.layout.history_item_details_bottom_sheet)
         val title = bottomSheet.findViewById<TextView>(R.id.bottom_sheet_title)
-        title!!.text = item.title
+        title!!.text = item.title.ifEmpty { "`${requireContext().getString(R.string.defaultValue)}`" }
         val author = bottomSheet.findViewById<TextView>(R.id.bottom_sheet_author)
-        author!!.text = item.author
+        author!!.text = item.author.ifEmpty { "`${requireContext().getString(R.string.defaultValue)}`" }
 
         // BUTTON ----------------------------------
         val btn = bottomSheet.findViewById<MaterialButton>(R.id.downloads_download_button_type)
@@ -196,7 +196,7 @@ class ErroredDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickL
 
         redownload.setOnLongClickListener {
             bottomSheet.cancel()
-            val sheet = DownloadBottomSheetDialog(downloadViewModel.createResultItemFromDownload(item), item.type, item)
+            val sheet = DownloadBottomSheetDialog(downloadViewModel.createResultItemFromDownload(item), item.type, item, false)
             sheet.show(parentFragmentManager, "downloadSingleSheet")
             true
         }

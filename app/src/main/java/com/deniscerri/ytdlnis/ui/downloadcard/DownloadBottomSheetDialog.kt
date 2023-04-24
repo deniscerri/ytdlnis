@@ -3,20 +3,19 @@ package com.deniscerri.ytdlnis.ui.downloadcard
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.DialogInterface
+import android.content.Intent
 import android.os.Bundle
 import android.text.format.DateFormat
 import android.util.DisplayMetrics
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.DBManager
@@ -25,28 +24,26 @@ import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel.Type
+import com.deniscerri.ytdlnis.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdlnis.receiver.ShareActivity
+import com.deniscerri.ytdlnis.ui.downloads.DownloadQueueActivity
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.UiUtil
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.tabs.TabLayout
-import com.google.android.material.tabs.TabLayout.TabLayoutOnPageChangeListener
-import com.google.android.material.tabs.TabLayoutMediator
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import java.text.SimpleDateFormat
 import java.util.*
 
 
-class DownloadBottomSheetDialog(private val resultItem: ResultItem, private val type: Type, private val downloadItem: DownloadItem?) : BottomSheetDialogFragment() {
+class DownloadBottomSheetDialog(private val resultItem: ResultItem, private val type: Type, private val downloadItem: DownloadItem?,private val quickDownload: Boolean) : BottomSheetDialogFragment() {
     private lateinit var tabLayout: TabLayout
     private lateinit var viewPager2: ViewPager2
     private lateinit var fragmentAdapter : DownloadFragmentAdapter
     private lateinit var downloadViewModel: DownloadViewModel
+    private lateinit var resultViewModel: ResultViewModel
     private lateinit var behavior: BottomSheetBehavior<View>
     private lateinit var commandTemplateDao : CommandTemplateDao
     private lateinit var uiUtil: UiUtil
@@ -58,6 +55,7 @@ class DownloadBottomSheetDialog(private val resultItem: ResultItem, private val 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
+        resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]
         commandTemplateDao = DBManager.getInstance(requireContext()).commandTemplateDao
         uiUtil = UiUtil(FileUtil())
     }
@@ -185,6 +183,29 @@ class DownloadBottomSheetDialog(private val resultItem: ResultItem, private val 
         link.setOnLongClickListener{
             uiUtil.copyLinkToClipBoard(requireContext(), resultItem.url, null)
             true
+        }
+
+        val updateItem = view.findViewById<Button>(R.id.update_item)
+        if (quickDownload) {
+            (updateItem.parent as LinearLayout).visibility = View.VISIBLE
+            updateItem.setOnClickListener {
+                lifecycleScope.launch(Dispatchers.IO){
+                    if (activity is ShareActivity) {
+                        val intent = Intent(context, ShareActivity::class.java)
+                        intent.action = Intent.ACTION_SEND
+                        intent.type = "text/plain"
+                        intent.putExtra(Intent.EXTRA_TEXT, resultItem.url)
+                        intent.putExtra("quick_download", false)
+                        startActivity(intent)
+                        dismiss()
+                    }else{
+                        resultViewModel.parseQueries(listOf(resultItem.url))
+                        dismiss()
+                    }
+                }
+            }
+        }else{
+            (updateItem.parent as LinearLayout).visibility = View.GONE
         }
     }
 

@@ -157,7 +157,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
             }else if (resultViewModel.itemCount.value!! == 1){
                 if (sharedPreferences!!.getBoolean("download_card", true)){
                     if(it.size == 1 && quickLaunchSheet && parentFragmentManager.findFragmentByTag("downloadSingleSheet") == null){
-                        showSingleDownloadSheet(it[0], DownloadViewModel.Type.valueOf(sharedPreferences!!.getString("preferred_download_type", "video")!!))
+                        showSingleDownloadSheet(it[0], DownloadViewModel.Type.valueOf(sharedPreferences!!.getString("preferred_download_type", "video")!!), false)
                     }
                 }
             }else{
@@ -450,7 +450,28 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
         }
         resultViewModel.deleteAll()
         lifecycleScope.launch(Dispatchers.IO){
-            resultViewModel.parseQueries(queryList)
+            Thread.sleep(300)
+            if(sharedPreferences!!.getBoolean("quick_download", false)){
+                if (queryList.size == 1 && queryList.first().matches("(https?://(?:www\\.|(?!www))[a-zA-Z\\d][a-zA-Z\\d-]+[a-zA-Z\\d]\\.\\S{2,}|www\\.[a-zA-Z\\d][a-zA-Z\\d-]+[a-zA-Z\\d]\\.\\S{2,}|https?://(?:www\\.|(?!www))[a-zA-Z\\d]+\\.\\S{2,}|www\\.[a-zA-Z\\d]+\\.\\S{2,})".toRegex())){
+                    val resultItem = downloadViewModel.createEmptyResultItem(queryList.first())
+                    if (sharedPreferences!!.getBoolean("download_card", true)) {
+                        showSingleDownloadSheet(resultItem, DownloadViewModel.Type.valueOf(sharedPreferences!!.getString("preferred_download_type", "video")!!), true)
+                    } else {
+                        lifecycleScope.launch{
+                            val downloadItem = withContext(Dispatchers.IO){
+                                downloadViewModel.createDownloadItemFromResult(resultItem, DownloadViewModel.Type.valueOf(sharedPreferences!!.getString("preferred_download_type", "video")!!))
+                            }
+                            downloadViewModel.queueDownloads(listOf(downloadItem))
+                        }
+                    }
+
+                }else{
+                    resultViewModel.parseQueries(queryList)
+                }
+            }else{
+                resultViewModel.parseQueries(queryList)
+
+            }
         }
     }
 
@@ -470,7 +491,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
         Log.e(TAG, resultsList!![0].toString() + " " + videoURL)
         val btn = recyclerView!!.findViewWithTag<MaterialButton>("""${item?.url}##$type""")
         if (sharedPreferences!!.getBoolean("download_card", true)) {
-            showSingleDownloadSheet(item!!, type!!)
+            showSingleDownloadSheet(item!!, type!!, false)
         } else {
             lifecycleScope.launch{
                 val downloadItem = withContext(Dispatchers.IO){
@@ -484,11 +505,11 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
     override fun onLongButtonClick(videoURL: String, type: DownloadViewModel.Type?) {
         Log.e(TAG, type.toString() + " " + videoURL)
         val item = resultsList!!.find { it?.url == videoURL }
-        showSingleDownloadSheet(item!!, type!!)
+        showSingleDownloadSheet(item!!, type!!, false)
     }
 
-    private fun showSingleDownloadSheet(resultItem : ResultItem, type: DownloadViewModel.Type){
-        val bottomSheet = DownloadBottomSheetDialog(resultItem, type, null)
+    private fun showSingleDownloadSheet(resultItem : ResultItem, type: DownloadViewModel.Type, quickDownload: Boolean){
+        val bottomSheet = DownloadBottomSheetDialog(resultItem, type, null, quickDownload)
         bottomSheet.show(parentFragmentManager, "downloadSingleSheet")
     }
 
