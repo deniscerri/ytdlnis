@@ -1,8 +1,6 @@
 package com.deniscerri.ytdlnis.database.dao
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
 import com.deniscerri.ytdlnis.database.models.SearchHistoryItem
 
 @Dao
@@ -13,7 +11,7 @@ interface SearchHistoryDao {
     @Query("SELECT * from searchHistory WHERE query COLLATE NOCASE ='%'||:keyword||'%'")
     fun getAllByKeyword(keyword: String) : List<SearchHistoryItem>
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(new: SearchHistoryItem)
 
     @Query("DELETE FROM searchHistory")

@@ -13,6 +13,7 @@ import android.graphics.drawable.RippleDrawable
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.text.Editable
 import android.util.DisplayMetrics
 import android.util.Log
 import android.view.*
@@ -26,6 +27,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.children
 import androidx.core.view.forEach
 import androidx.core.widget.addTextChangedListener
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -256,6 +258,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
                     }else{
                         linkYouCopied.visibility = GONE
                     }
+                    updateSearchViewItems(searchView.editText.text, searchView, linkYouCopied)
                 }catch (e: Exception){
                     e.printStackTrace()
                     linkYouCopied.visibility = GONE
@@ -263,94 +266,9 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
             }
         }
 
-        searchView.editText.addTextChangedListener {
-            searchSuggestionsLinearLayout!!.removeAllViews()
-            searchHistoryLinearLayout!!.removeAllViews()
-
-            searchSuggestionsLinearLayout!!.visibility = GONE
-            searchHistoryLinearLayout!!.visibility = GONE
-            linkYouCopied!!.visibility = GONE
-
-            if (searchView.editText.text.isEmpty()){
-                searchView.editText.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, 0, 0)
-            }else{
-                searchView.editText.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_plus, 0)
-            }
-
-            lifecycleScope.launch {
-                val suggestions = withContext(Dispatchers.IO){
-                    if (it!!.isEmpty()) {
-                        resultViewModel.getSearchHistory().map { it.query }
-                    }else{
-                        infoUtil!!.getSearchSuggestions(it.toString())
-                    }
-                }
-
-                if (it!!.isEmpty()){
-                    for (i in suggestions.indices) {
-                        val v = LayoutInflater.from(fragmentContext)
-                            .inflate(R.layout.search_suggestion_item, null)
-                        val textView = v.findViewById<TextView>(R.id.suggestion_text)
-                        textView.text = suggestions[i]
-                        textView.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_restore, 0, 0, 0)
-                        Handler(Looper.getMainLooper()).post {
-                            searchHistoryLinearLayout!!.addView(
-                                v
-                            )
-                        }
-                        textView.setOnClickListener {
-                            searchView.setText(textView.text)
-                            initSearch(searchView)
-                        }
-                        textView.setOnLongClickListener {
-                            val deleteDialog = MaterialAlertDialogBuilder(requireContext())
-                            deleteDialog.setTitle(getString(R.string.you_are_going_to_delete) + " \"" + textView.text + "\"!")
-                            deleteDialog.setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, _: Int -> dialogInterface.cancel() }
-                            deleteDialog.setPositiveButton(getString(R.string.ok)) { _: DialogInterface?, _: Int ->
-                                searchHistoryLinearLayout!!.removeView(v)
-                                resultViewModel.removeSearchQueryFromHistory(textView.text.toString())
-                            }
-                            deleteDialog.show()
-                            true
-                        }
-
-                        val mb = v.findViewById<ImageButton>(R.id.set_search_query_button)
-                        mb.setOnClickListener {
-                            searchView.setText(textView.text)
-                            searchView.editText.setSelection(searchView.editText.length())
-                        }
-                    }
-                    searchHistoryLinearLayout!!.visibility = VISIBLE
-                    if (linkYouCopied.findViewById<TextView>(R.id.suggestion_text).text.isNotEmpty()){
-                        linkYouCopied.visibility = VISIBLE
-                    }
-                }else{
-                    for (i in suggestions.indices) {
-                        val v = LayoutInflater.from(fragmentContext)
-                            .inflate(R.layout.search_suggestion_item, null)
-                        val textView = v.findViewById<TextView>(R.id.suggestion_text)
-                        textView.text = suggestions[i]
-                        Handler(Looper.getMainLooper()).post {
-                            searchSuggestionsLinearLayout!!.addView(
-                                v
-                            )
-                        }
-                        textView.setOnClickListener {
-                            searchView.setText(textView.text)
-                            initSearch(searchView)
-                        }
-                        val mb = v.findViewById<ImageButton>(R.id.set_search_query_button)
-                        mb.setOnClickListener {
-                            searchView.setText(textView.text)
-                            searchView.editText.setSelection(searchView.editText.length())
-                        }
-                    }
-                    searchSuggestionsLinearLayout!!.visibility = VISIBLE
-                }
-
-
-            }
-            false
+        searchView.editText.doAfterTextChanged {
+            if (searchView.currentTransitionState != SearchView.TransitionState.SHOWN) return@doAfterTextChanged
+            updateSearchViewItems(it, searchView, linkYouCopied)
         }
 
         searchView.editText.setOnTouchListener(OnTouchListener { v, event ->
@@ -415,6 +333,94 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
 
         queriesInitStartBtn.setOnClickListener {
             initSearch(searchView)
+        }
+    }
+
+    private fun updateSearchViewItems(it: Editable?, searchView: SearchView, linkYouCopied: View?){
+        lifecycleScope.launch {
+            searchSuggestionsLinearLayout!!.removeAllViews()
+            searchHistoryLinearLayout!!.removeAllViews()
+
+            searchSuggestionsLinearLayout!!.visibility = GONE
+            searchHistoryLinearLayout!!.visibility = GONE
+            linkYouCopied!!.visibility = GONE
+
+            if (searchView.editText.text.isEmpty()){
+                searchView.editText.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, 0, 0)
+            }else{
+                searchView.editText.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_plus, 0)
+            }
+            val suggestions = withContext(Dispatchers.IO){
+                if (it!!.isEmpty()) {
+                    resultViewModel.getSearchHistory().map { it.query }
+                }else{
+                    infoUtil!!.getSearchSuggestions(it.toString())
+                }
+            }
+
+            if (it!!.isEmpty()){
+                for (i in suggestions.indices) {
+                    val v = LayoutInflater.from(fragmentContext)
+                        .inflate(R.layout.search_suggestion_item, null)
+                    val textView = v.findViewById<TextView>(R.id.suggestion_text)
+                    textView.text = suggestions[i]
+                    textView.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_restore, 0, 0, 0)
+                    Handler(Looper.getMainLooper()).post {
+                        searchHistoryLinearLayout!!.addView(
+                            v
+                        )
+                    }
+                    textView.setOnClickListener {
+                        searchView.setText(textView.text)
+                        initSearch(searchView)
+                    }
+                    textView.setOnLongClickListener {
+                        val deleteDialog = MaterialAlertDialogBuilder(requireContext())
+                        deleteDialog.setTitle(getString(R.string.you_are_going_to_delete) + " \"" + textView.text + "\"!")
+                        deleteDialog.setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, _: Int -> dialogInterface.cancel() }
+                        deleteDialog.setPositiveButton(getString(R.string.ok)) { _: DialogInterface?, _: Int ->
+                            searchHistoryLinearLayout!!.removeView(v)
+                            resultViewModel.removeSearchQueryFromHistory(textView.text.toString())
+                        }
+                        deleteDialog.show()
+                        true
+                    }
+
+                    val mb = v.findViewById<ImageButton>(R.id.set_search_query_button)
+                    mb.setOnClickListener {
+                        searchView.setText(textView.text)
+                        searchView.editText.setSelection(searchView.editText.length())
+                    }
+                }
+                searchHistoryLinearLayout!!.visibility = VISIBLE
+                if (linkYouCopied.findViewById<TextView>(R.id.suggestion_text).text.isNotEmpty()){
+                    linkYouCopied.visibility = VISIBLE
+                }
+            }else{
+                for (i in suggestions.indices) {
+                    val v = LayoutInflater.from(fragmentContext)
+                        .inflate(R.layout.search_suggestion_item, null)
+                    val textView = v.findViewById<TextView>(R.id.suggestion_text)
+                    textView.text = suggestions[i]
+                    Handler(Looper.getMainLooper()).post {
+                        searchSuggestionsLinearLayout!!.addView(
+                            v
+                        )
+                    }
+                    textView.setOnClickListener {
+                        searchView.setText(textView.text)
+                        initSearch(searchView)
+                    }
+                    val mb = v.findViewById<ImageButton>(R.id.set_search_query_button)
+                    mb.setOnClickListener {
+                        searchView.setText(textView.text)
+                        searchView.editText.setSelection(searchView.editText.length())
+                    }
+                }
+                searchSuggestionsLinearLayout!!.visibility = VISIBLE
+            }
+
+
         }
     }
 
