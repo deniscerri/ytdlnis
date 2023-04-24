@@ -535,7 +535,7 @@ class InfoUtil(private val context: Context) {
                         }catch (e: Exception) { continue }
                         val formatProper = Gson().fromJson(format.toString(), Format::class.java)
                         if (formatProper.filesize > 0){
-                            if ( !formatProper.format_note.contains("audio only", true)) {
+                            if ( !formatProper!!.format_note!!.contains("audio only", true)) {
                                 formatProper.format_note = format.getString("format_note")
                             }else{
                                 formatProper.format_note = "${format.getString("format_note")} audio"
@@ -621,8 +621,8 @@ class InfoUtil(private val context: Context) {
                         val format = formatsInJSON.getJSONObject(f)
                         val formatProper = Gson().fromJson(format.toString(), Format::class.java)
                         if (formatProper.filesize > 0){
-                            if (format.has("format_note")){
-                                if ( !formatProper.format_note.contains("audio only", true)) {
+                            if (format.has("format_note") && formatProper.format_note != null){
+                                if (!formatProper!!.format_note.contains("audio only", true)) {
                                     formatProper.format_note = format.getString("format_note")
                                 }else{
                                     formatProper.format_note = "${format.getString("format_note")} audio"
