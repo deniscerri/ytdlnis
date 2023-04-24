@@ -55,10 +55,6 @@ class TemplatesAdapter(onItemClickListener: OnItemClickListener, activity: Activ
         card.setOnClickListener {
             onItemClickListener.onItemClick(item!!, position)
         }
-
-        card.setOnLongClickListener {
-            onItemClickListener.onDelete(item!!); true
-        }
     }
 
     interface OnItemClickListener {

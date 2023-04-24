@@ -7,34 +7,26 @@ import android.content.Context.CLIPBOARD_SERVICE
 import android.content.res.ColorStateList
 import android.content.res.Configuration
 import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
-import android.graphics.drawable.Drawable
-import android.graphics.drawable.RippleDrawable
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.text.Editable
-import android.util.DisplayMetrics
 import android.util.Log
 import android.view.*
 import android.view.View.*
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
-import androidx.appcompat.view.StandaloneActionMode
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.children
 import androidx.core.view.forEach
-import androidx.core.widget.addTextChangedListener
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.deniscerri.ytdlnis.App
 import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.adapter.HomeAdapter
@@ -87,6 +79,8 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
     private var layoutinflater: LayoutInflater? = null
     private var shimmerCards: ShimmerFrameLayout? = null
     private var searchBar: SearchBar? = null
+    private var searchView: SearchView? = null
+    private var linkYouCopied: ConstraintLayout? = null
     private var queriesChipGroup: ChipGroup? = null
     private var recyclerView: RecyclerView? = null
     private var uiHandler: Handler? = null
@@ -130,6 +124,8 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
         //initViews
         shimmerCards = view.findViewById(R.id.shimmer_results_framelayout)
         searchBar = view.findViewById(R.id.search_bar)
+        searchView = view.findViewById(R.id.search_view)
+        linkYouCopied = searchView?.findViewById<ConstraintLayout>(R.id.link_you_copied)
         appBarLayout = view.findViewById(R.id.home_appbarlayout)
         queriesChipGroup = view.findViewById(R.id.queries)
         searchSuggestions = view.findViewById(R.id.search_suggestions_scroll_view)
@@ -206,19 +202,20 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
     override fun onResume() {
         super.onResume()
         resultViewModel.checkTrending()
+        if (searchView?.currentTransitionState == SearchView.TransitionState.SHOWN){
+            updateSearchViewItems(searchView?.editText?.text, linkYouCopied)
+        }
     }
 
     @SuppressLint("ClickableViewAccessibility")
     private fun initMenu() {
-        val searchView = requireView().findViewById<SearchView>(R.id.search_view)
         val queriesConstraint = requireView().findViewById<ConstraintLayout>(R.id.queries_constraint)
         val queriesInitStartBtn = queriesConstraint.findViewById<MaterialButton>(R.id.init_search_query)
         val isRightToLeft = resources.getBoolean(R.bool.is_right_to_left)
 
 
         infoUtil = InfoUtil(requireContext())
-        val linkYouCopied = searchView.findViewById<ConstraintLayout>(R.id.link_you_copied)
-        searchView.addTransitionListener { view, previousState, newState ->
+        searchView!!.addTransitionListener { _, _, newState ->
             if (newState == SearchView.TransitionState.SHOWN) {
                 try{
                     val clipboard =
@@ -227,11 +224,11 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
                         "(https?://(?:www\\.|(?!www))[a-zA-Z\\d][a-zA-Z\\d-]+[a-zA-Z\\d]\\.\\S{2,}|www\\.[a-zA-Z\\d][a-zA-Z\\d-]+[a-zA-Z\\d]\\.\\S{2,}|https?://(?:www\\.|(?!www))[a-zA-Z\\d]+\\.\\S{2,}|www\\.[a-zA-Z\\d]+\\.\\S{2,})".toRegex()
                     val clip = clipboard.primaryClip!!.getItemAt(0).text
                     if (regex.containsMatchIn(clip.toString())) {
-                        linkYouCopied.visibility = VISIBLE
-                        val textView = linkYouCopied.findViewById<TextView>(R.id.suggestion_text)
+                        linkYouCopied!!.visibility = VISIBLE
+                        val textView = linkYouCopied!!.findViewById<TextView>(R.id.suggestion_text)
                         textView.text = getString(R.string.link_you_copied)
                         textView.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_language, 0, 0, 0)
-                        val mb = linkYouCopied.findViewById<ImageButton>(R.id.set_search_query_button)
+                        val mb = linkYouCopied!!.findViewById<ImageButton>(R.id.set_search_query_button)
                         mb.setImageResource(R.drawable.ic_plus)
 
                         mb.setOnClickListener {
@@ -247,31 +244,31 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
                             }
                             if (queriesChipGroup!!.childCount == 0) queriesConstraint.visibility = GONE
                             else queriesConstraint.visibility = VISIBLE
-                            searchView.editText.setText("")
-                            linkYouCopied.visibility = GONE
+                            searchView!!.editText.setText("")
+                            linkYouCopied!!.visibility = GONE
                         }
 
                         textView.setOnClickListener {
-                            searchView.setText(clip.toString())
-                            initSearch(searchView)
+                            searchView!!.setText(clip.toString())
+                            initSearch(searchView!!)
                         }
                     }else{
-                        linkYouCopied.visibility = GONE
+                        linkYouCopied!!.visibility = GONE
                     }
-                    updateSearchViewItems(searchView.editText.text, searchView, linkYouCopied)
+                    updateSearchViewItems(searchView!!.editText.text, linkYouCopied)
                 }catch (e: Exception){
                     e.printStackTrace()
-                    linkYouCopied.visibility = GONE
+                    linkYouCopied!!.visibility = GONE
                 }
             }
         }
 
-        searchView.editText.doAfterTextChanged {
-            if (searchView.currentTransitionState != SearchView.TransitionState.SHOWN) return@doAfterTextChanged
-            updateSearchViewItems(it, searchView, linkYouCopied)
+        searchView!!.editText.doAfterTextChanged {
+            if (searchView!!.currentTransitionState != SearchView.TransitionState.SHOWN) return@doAfterTextChanged
+            updateSearchViewItems(it, linkYouCopied)
         }
 
-        searchView.editText.setOnTouchListener(OnTouchListener { v, event ->
+        searchView!!.editText.setOnTouchListener(OnTouchListener { v, event ->
             try{
                 val drawableLeft = 0
                 val drawableTop = 1
@@ -279,14 +276,14 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
                 val drawableBottom = 3
                 if (event.action == MotionEvent.ACTION_UP) {
                     if (
-                        (isRightToLeft && (event.x < (searchView.editText.left - searchView.editText.compoundDrawables[drawableLeft].bounds.width()))) ||
-                        (!isRightToLeft && (event.x > (searchView.editText.right - searchView.editText.compoundDrawables[drawableRight].bounds.width())))
+                        (isRightToLeft && (event.x < (searchView!!.editText.left - searchView!!.editText.compoundDrawables[drawableLeft].bounds.width()))) ||
+                        (!isRightToLeft && (event.x > (searchView!!.editText.right - searchView!!.editText.compoundDrawables[drawableRight].bounds.width())))
                         ){
 
-                        val present = queriesChipGroup!!.children.firstOrNull { (it as Chip).text.toString() == searchView.editText.text.toString() }
+                        val present = queriesChipGroup!!.children.firstOrNull { (it as Chip).text.toString() == searchView!!.editText.text.toString() }
                         if (present == null) {
                             val chip = layoutinflater!!.inflate(R.layout.input_chip, queriesChipGroup, false) as Chip
-                            chip.text = searchView.editText.text
+                            chip.text = searchView!!.editText.text
                             chip.chipBackgroundColor = ColorStateList.valueOf(MaterialColors.getColor(requireContext(), R.attr.colorSecondaryContainer, Color.BLACK))
                             chip.setOnClickListener {
                                 queriesChipGroup!!.removeView(chip)
@@ -295,7 +292,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
                         }
                         if (queriesChipGroup!!.childCount == 0) queriesConstraint.visibility = GONE
                         else queriesConstraint.visibility = VISIBLE
-                        searchView.editText.setText("")
+                        searchView!!.editText.setText("")
                         return@OnTouchListener true
 
                     }
@@ -304,8 +301,8 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
             false
         })
 
-        searchView.editText.setOnEditorActionListener { textView, i, keyEvent ->
-            initSearch(searchView)
+        searchView!!.editText.setOnEditorActionListener { _, _, _ ->
+            initSearch(searchView!!)
             true
         }
 
@@ -314,7 +311,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
                 R.id.delete_results -> {
                     resultViewModel.getTrending()
                     selectedObjects = ArrayList()
-                    searchBar!!.setText("")
+                    searchBar!!.text = ""
                     downloadAllFabCoordinator!!.visibility = GONE
                     downloadFabs!!.visibility = GONE
                 }
@@ -328,15 +325,15 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
         queriesChipGroup!!.addOnLayoutChangeListener { view, i, i2, i3, i4, i5, i6, i7, i8 ->
             if (queriesChipGroup!!.childCount == 0) queriesConstraint.visibility = GONE
             else queriesConstraint.visibility = VISIBLE
-            searchView.editText.setText("")
+            searchView!!.editText.setText("")
         }
 
         queriesInitStartBtn.setOnClickListener {
-            initSearch(searchView)
+            initSearch(searchView!!)
         }
     }
 
-    private fun updateSearchViewItems(it: Editable?, searchView: SearchView, linkYouCopied: View?){
+    private fun updateSearchViewItems(it: Editable?, linkYouCopied: View?){
         lifecycleScope.launch {
             searchSuggestionsLinearLayout!!.removeAllViews()
             searchHistoryLinearLayout!!.removeAllViews()
@@ -345,10 +342,10 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
             searchHistoryLinearLayout!!.visibility = GONE
             linkYouCopied!!.visibility = GONE
 
-            if (searchView.editText.text.isEmpty()){
-                searchView.editText.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, 0, 0)
+            if (searchView!!.editText.text.isEmpty()){
+                searchView!!.editText.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, 0, 0)
             }else{
-                searchView.editText.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_plus, 0)
+                searchView!!.editText.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_plus, 0)
             }
             val suggestions = withContext(Dispatchers.IO){
                 if (it!!.isEmpty()) {
@@ -371,8 +368,8 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
                         )
                     }
                     textView.setOnClickListener {
-                        searchView.setText(textView.text)
-                        initSearch(searchView)
+                        searchView!!.setText(textView.text)
+                        initSearch(searchView!!)
                     }
                     textView.setOnLongClickListener {
                         val deleteDialog = MaterialAlertDialogBuilder(requireContext())
@@ -388,8 +385,8 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
 
                     val mb = v.findViewById<ImageButton>(R.id.set_search_query_button)
                     mb.setOnClickListener {
-                        searchView.setText(textView.text)
-                        searchView.editText.setSelection(searchView.editText.length())
+                        searchView!!.setText(textView.text)
+                        searchView!!.editText.setSelection(searchView!!.editText.length())
                     }
                 }
                 searchHistoryLinearLayout!!.visibility = VISIBLE
@@ -408,13 +405,13 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
                         )
                     }
                     textView.setOnClickListener {
-                        searchView.setText(textView.text)
-                        initSearch(searchView)
+                        searchView!!.setText(textView.text)
+                        initSearch(searchView!!)
                     }
                     val mb = v.findViewById<ImageButton>(R.id.set_search_query_button)
                     mb.setOnClickListener {
-                        searchView.setText(textView.text)
-                        searchView.editText.setSelection(searchView.editText.length())
+                        searchView!!.setText(textView.text)
+                        searchView!!.editText.setSelection(searchView!!.editText.length())
                     }
                 }
                 searchSuggestionsLinearLayout!!.visibility = VISIBLE
@@ -442,7 +439,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
 
         if (queryList.isEmpty()) return
         if (queryList.size == 1){
-            searchBar!!.setText(searchView.text)
+            searchBar!!.text = searchView.text
         }
 
         searchView.hide()
@@ -464,16 +461,6 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
     fun scrollToTop() {
         recyclerView!!.scrollToPosition(0)
         (searchBar!!.parent as AppBarLayout).setExpanded(true, true)
-    }
-
-    private fun findVideo(url: String): ResultItem? {
-        for (i in resultsList!!.indices) {
-            val v = resultsList!![i]
-            if (v!!.url == url) {
-                return v
-            }
-        }
-        return null
     }
 
     @SuppressLint("ResourceType")

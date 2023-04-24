@@ -50,9 +50,6 @@ class CookieAdapter(onItemClickListener: OnItemClickListener, activity: Activity
             onItemClickListener.onItemClick(item!!)
         }
 
-        card.setOnLongClickListener {
-            onItemClickListener.onDelete(item!!); true
-        }
     }
 
     interface OnItemClickListener {

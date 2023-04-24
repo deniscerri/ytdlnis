@@ -2,12 +2,15 @@ package com.deniscerri.ytdlnis.ui.more
 
 import android.content.Context
 import android.content.DialogInterface
+import android.graphics.Canvas
+import android.graphics.Color
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdlnis.R
@@ -20,6 +23,7 @@ import com.deniscerri.ytdlnis.util.UiUtil
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.chip.Chip
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -31,12 +35,14 @@ class CommandTemplatesActivity : BaseActivity(), TemplatesAdapter.OnItemClickLis
     private lateinit var topAppBar: MaterialToolbar
     private lateinit var commandTemplateViewModel: CommandTemplateViewModel
     private lateinit var uiUtil: UiUtil
+    private lateinit var templatesList: List<CommandTemplate>
     var context: Context? = null
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_command_templates)
         context = baseContext
+        templatesList = listOf()
 
         topAppBar = findViewById(R.id.logs_toolbar)
         topAppBar.setNavigationOnClickListener { onBackPressedDispatcher.onBackPressed() }
@@ -49,11 +55,14 @@ class CommandTemplatesActivity : BaseActivity(), TemplatesAdapter.OnItemClickLis
         recyclerView = findViewById(R.id.template_recyclerview)
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = templatesAdapter
+        val itemTouchHelper = ItemTouchHelper(simpleCallback)
+        itemTouchHelper.attachToRecyclerView(recyclerView)
 
         uiUtil = UiUtil(FileUtil())
 
         commandTemplateViewModel = ViewModelProvider(this)[CommandTemplateViewModel::class.java]
         commandTemplateViewModel.items.observe(this) {
+            templatesList = it
             templatesAdapter.submitList(it)
         }
         initMenu()
@@ -117,4 +126,58 @@ class CommandTemplatesActivity : BaseActivity(), TemplatesAdapter.OnItemClickLis
         }
         deleteDialog.show()
     }
+
+    private var simpleCallback: ItemTouchHelper.SimpleCallback =
+        object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT ) {
+            override fun onMove(recyclerView: RecyclerView,viewHolder: RecyclerView.ViewHolder,target: RecyclerView.ViewHolder
+            ): Boolean {
+                return false
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val position = viewHolder.bindingAdapterPosition
+                when (direction) {
+                    ItemTouchHelper.LEFT -> {
+                        val deletedItem = templatesList[position]
+                        templatesAdapter.notifyItemChanged(position)
+                        onDelete(deletedItem)
+                    }
+
+                }
+            }
+
+            override fun onChildDraw(
+                c: Canvas,
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                dX: Float,
+                dY: Float,
+                actionState: Int,
+                isCurrentlyActive: Boolean
+            ) {
+                RecyclerViewSwipeDecorator.Builder(
+                    context,
+                    c,
+                    recyclerView,
+                    viewHolder,
+                    dX,
+                    dY,
+                    actionState,
+                    isCurrentlyActive
+                )
+                    .addSwipeLeftBackgroundColor(Color.RED)
+                    .addSwipeLeftActionIcon(R.drawable.baseline_delete_24)
+                    .create()
+                    .decorate()
+                super.onChildDraw(
+                    c,
+                    recyclerView,
+                    viewHolder,
+                    dX,
+                    dY,
+                    actionState,
+                    isCurrentlyActive
+                )
+            }
+        }
 }
