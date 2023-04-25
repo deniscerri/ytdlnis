@@ -21,7 +21,9 @@ import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.NotificationUtil
 import com.yausername.youtubedl_android.YoutubeDL
 import com.yausername.youtubedl_android.YoutubeDLRequest
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import java.io.File
 
 
@@ -260,17 +262,31 @@ class DownloadWorker(
         val logFolder = File(context.filesDir.absolutePath + "/logs")
         val logFile = fileUtil.getLogFile(context, downloadItem)
 
-        runCatching {
-            if (logDownloads){
-                logFolder.mkdirs()
-                logFile.createNewFile()
-                logFile.writeText("Downloading:\n" +
-                        "Title: ${downloadItem.title}\n" +
-                        "URL: ${downloadItem.url}\n" +
-                        "Type: ${downloadItem.type}\n" +
-                        "Format: ${downloadItem.format}\n\n")
-            }
+        if (logDownloads){
+            logFolder.mkdirs()
+            logFile.createNewFile()
+            logFile.writeText("Downloading:\n" +
+                    "Title: ${downloadItem.title}\n" +
+                    "URL: ${downloadItem.url}\n" +
+                    "Type: ${downloadItem.type}\n" +
+                    "Format: ${downloadItem.format}\n\n")
+        }
 
+        //update item if its incomplete
+        if (downloadItem.title.isEmpty() || downloadItem.author.isEmpty() || downloadItem.thumb.isEmpty()){
+            runCatching {
+                setProgressAsync(workDataOf("progress" to 0, "output" to "Updating Download Item Data", "id" to downloadItem.id, "log" to logDownloads))
+                val info = YoutubeDL.getInfo(downloadItem.url)
+                if (downloadItem.title.isEmpty()) downloadItem.title = info.title.toString()
+                if (downloadItem.author.isEmpty()) downloadItem.author = info.uploader.toString()
+                if (downloadItem.thumb.isEmpty()) downloadItem.thumb = info.thumbnail.toString()
+                runBlocking {
+                    dao.update(downloadItem)
+                }
+            }
+        }
+
+        runCatching {
             YoutubeDL.getInstance().execute(request, downloadItem.id.toString()){ progress, _, line ->
                 setProgressAsync(workDataOf("progress" to progress.toInt(), "output" to line.chunked(5000).first().toString(), "id" to downloadItem.id, "log" to logDownloads))
                 val title: String = downloadItem.title

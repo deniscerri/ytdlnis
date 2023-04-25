@@ -166,7 +166,7 @@ class ActiveDownloadAdapter(onItemClickListener: OnItemClickListener, activity: 
             }
 
             override fun areContentsTheSame(oldItem: DownloadItem, newItem: DownloadItem): Boolean {
-                return oldItem.id == newItem.id
+                return oldItem.id == newItem.id && oldItem.title == newItem.title && oldItem.author == newItem.author && oldItem.thumb == newItem.thumb
             }
         }
     }

@@ -12,7 +12,7 @@ data class DownloadItem(
     val url: String,
     var title: String,
     var author: String,
-    val thumb: String,
+    var thumb: String,
     val duration: String,
     var type: DownloadViewModel.Type,
     var format: Format,
