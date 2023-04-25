@@ -205,7 +205,7 @@
     <string name="delete_all_cookies">Delete All Cookies</string>
     <string name="confirm_delete_cookies_desc">Delete all the cookies, permanently</string>
     <string name="download_over_metered_networks">Download over Metered Networks</string>
-    <string name="download_over_metered_networks_summary">Downloads using any network type. Otherwise waits for an unmetered network.</string>
+    <string name="download_over_metered_networks_summary">Downloads using any network type. Otherwise waits for an unmetered network</string>
     <string name="metered_network_download_start_info">Download will start once you are connected to an unmetered network</string>
     <string name="invert_selected">Invert Selected</string>
     <string name="save_subs">Save Subtitles</string>
