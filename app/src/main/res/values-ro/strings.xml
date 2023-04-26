@@ -19,4 +19,10 @@
     <string name="search">Căutare</string>
     <string name="directories">Dosare</string>
     <string name="music_directory">Dosar de muzică</string>
+    <string name="you_are_in_latest_version">Folosind cea mai recentă versiune</string>
+    <string name="ytld_update_success">Versiune nouă instalată</string>
+    <string name="ytdl_already_updating">Se instalează nouă versiune…</string>
+    <string name="ytdl_updating_started">Se descarcă versiunea nouă…</string>
+    <string name="Remove">Elimină</string>
+    <string name="cancel">Anulează</string>
 </resources>
