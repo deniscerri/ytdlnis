@@ -66,7 +66,6 @@ class MainActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        ThemeUtil.updateTheme(this)
         setContentView(R.layout.activity_main)
         context = baseContext
         resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]

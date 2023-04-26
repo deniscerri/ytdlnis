@@ -47,14 +47,6 @@ class App : Application() {
             }
         }
 
-        AppCompatDelegate.setDefaultNightMode(
-            when(sharedPreferences.getString("ytdlnis_theme", "Default")){
-                "Default" -> MODE_NIGHT_FOLLOW_SYSTEM
-                "Dark" -> MODE_NIGHT_YES
-                else -> MODE_NIGHT_NO
-            }
-        )
-
         WorkManager.initialize(
             this@App,
             Configuration.Builder()

@@ -127,31 +127,33 @@ class NotificationUtil(var context: Context) {
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .clearActions()
         if (filepath != null){
-            val file = File(filepath)
-            val uri = FileProvider.getUriForFile(
-                context,
-                "com.deniscerri.ytdl.fileprovider",
-                file
-            )
+            try{
+                val file = File(filepath)
+                val uri = FileProvider.getUriForFile(
+                    context,
+                    "com.deniscerri.ytdl.fileprovider",
+                    file
+                )
 
-            //open intent
-            val intent = Intent()
-            intent.action = Intent.ACTION_VIEW
-            intent.setDataAndType(uri, "*/*")
-            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-            val openNotificationPendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE)
+                //open intent
+                val intent = Intent()
+                intent.action = Intent.ACTION_VIEW
+                intent.setDataAndType(uri, "*/*")
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                val openNotificationPendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE)
 
-            //share intent
-            val shareIntent = Intent(context, SharedDownloadNotificationReceiver::class.java)
-            shareIntent.putExtra("share", "")
-            shareIntent.putExtra("path", filepath)
-            shareIntent.putExtra("notificationID", DOWNLOAD_FINISHED_NOTIFICATION_ID)
-            shareIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-            val shareNotificationPendingIntent = PendingIntent.getActivity(context, 0, shareIntent, PendingIntent.FLAG_IMMUTABLE)
+                //share intent
+                val shareIntent = Intent(context, SharedDownloadNotificationReceiver::class.java)
+                shareIntent.putExtra("share", "")
+                shareIntent.putExtra("path", filepath)
+                shareIntent.putExtra("notificationID", DOWNLOAD_FINISHED_NOTIFICATION_ID)
+                shareIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                val shareNotificationPendingIntent = PendingIntent.getActivity(context, 0, shareIntent, PendingIntent.FLAG_IMMUTABLE)
 
 
-            notificationBuilder.addAction(0, context.getString(R.string.Open_File), openNotificationPendingIntent)
-            notificationBuilder.addAction(0, context.getString(R.string.share), shareNotificationPendingIntent)
+                notificationBuilder.addAction(0, context.getString(R.string.Open_File), openNotificationPendingIntent)
+                notificationBuilder.addAction(0, context.getString(R.string.share), shareNotificationPendingIntent)
+            }catch (_: Exception){}
         }
         notificationManager.notify(DOWNLOAD_FINISHED_NOTIFICATION_ID, notificationBuilder.build())
     }
