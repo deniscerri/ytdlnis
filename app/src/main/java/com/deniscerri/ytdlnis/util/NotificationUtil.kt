@@ -6,14 +6,20 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.content.pm.ResolveInfo
 import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Build
 import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat.startActivity
+import androidx.core.content.FileProvider
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.receiver.CancelDownloadNotificationReceiver
-import com.deniscerri.ytdlnis.receiver.OpenDownloadNotificationReceiver
 import com.deniscerri.ytdlnis.receiver.SharedDownloadNotificationReceiver
 import com.deniscerri.ytdlnis.ui.more.downloadLogs.DownloadLogActivity
+import java.io.File
+
 
 class NotificationUtil(var context: Context) {
     private val downloadNotificationBuilder: NotificationCompat.Builder = NotificationCompat.Builder(context, DOWNLOAD_SERVICE_CHANNEL_ID)
@@ -108,41 +114,42 @@ class NotificationUtil(var context: Context) {
     ) {
         val notificationBuilder = getBuilder(channel)
 
-        val openIntent = Intent(context, OpenDownloadNotificationReceiver::class.java)
-        openIntent.putExtra("open", "")
-        openIntent.putExtra("path", filepath)
-        openIntent.putExtra("notificationID", DOWNLOAD_FINISHED_NOTIFICATION_ID)
-        val openNotificationPendingIntent = PendingIntent.getBroadcast(
-            context,
-            1,
-            openIntent,
-            PendingIntent.FLAG_IMMUTABLE
-        )
-
-        val shareIntent = Intent(context, SharedDownloadNotificationReceiver::class.java)
-        shareIntent.putExtra("share", "")
-        shareIntent.putExtra("path", filepath)
-        openIntent.putExtra("notificationID", DOWNLOAD_FINISHED_NOTIFICATION_ID)
-        val shareNotificationPendingIntent = PendingIntent.getBroadcast(
-            context,
-            1,
-            shareIntent,
-            PendingIntent.FLAG_IMMUTABLE
-        )
-
         notificationBuilder
             .setContentTitle("${context.getString(R.string.downloaded)} $title")
-            .setSmallIcon(R.drawable.ic_app_icon)
+            .setSmallIcon(R.drawable.ic_launcher_foreground_large)
             .setLargeIcon(
                 BitmapFactory.decodeResource(
                     context.resources,
-                    R.drawable.ic_app_icon
+                    R.drawable.ic_launcher_foreground_large
                 )
             )
             .setPriority(NotificationCompat.PRIORITY_MAX)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .clearActions()
         if (filepath != null){
+            val file = File(filepath)
+            val uri = FileProvider.getUriForFile(
+                context,
+                "com.deniscerri.ytdl.fileprovider",
+                file
+            )
+
+            //open intent
+            val intent = Intent()
+            intent.action = Intent.ACTION_VIEW
+            intent.setDataAndType(uri, "*/*")
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            val openNotificationPendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE)
+
+            //share intent
+            val shareIntent = Intent(context, SharedDownloadNotificationReceiver::class.java)
+            shareIntent.putExtra("share", "")
+            shareIntent.putExtra("path", filepath)
+            shareIntent.putExtra("notificationID", DOWNLOAD_FINISHED_NOTIFICATION_ID)
+            shareIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            val shareNotificationPendingIntent = PendingIntent.getActivity(context, 0, shareIntent, PendingIntent.FLAG_IMMUTABLE)
+
+
             notificationBuilder.addAction(0, context.getString(R.string.Open_File), openNotificationPendingIntent)
             notificationBuilder.addAction(0, context.getString(R.string.share), shareNotificationPendingIntent)
         }

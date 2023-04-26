@@ -172,8 +172,29 @@
         </activity>
 
         <receiver android:name=".receiver.CancelDownloadNotificationReceiver" />
-        <receiver android:name=".receiver.SharedDownloadNotificationReceiver" />
-        <receiver android:name=".receiver.OpenDownloadNotificationReceiver" />
+        <activity
+            android:name=".receiver.BlankActivity"
+            android:exported="true"
+            android:excludeFromRecents="true"
+            android:launchMode="singleInstance"
+            android:theme="@style/Theme.BottomSheet">
+            <intent-filter>
+                <action android:name="ytdlnis.BlankActivity" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".receiver.SharedDownloadNotificationReceiver"
+            android:exported="true"
+            android:excludeFromRecents="true"
+            android:launchMode="singleInstance"
+            android:theme="@style/Theme.BottomSheet">
+            <intent-filter>
+                <action android:name="ytdlnis.SharedDownloadNotificationReceiver" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
 
         <service
             android:name="androidx.appcompat.app.AppLocalesMetadataHolderService"
@@ -188,6 +209,7 @@
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.deniscerri.ytdl.fileprovider"
             android:exported="false"
+            android:enabled="true"
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"

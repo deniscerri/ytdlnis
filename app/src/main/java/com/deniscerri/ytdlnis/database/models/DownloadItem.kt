@@ -13,7 +13,7 @@ data class DownloadItem(
     var title: String,
     var author: String,
     var thumb: String,
-    val duration: String,
+    var duration: String,
     var type: DownloadViewModel.Type,
     var format: Format,
     @ColumnInfo(defaultValue = "")

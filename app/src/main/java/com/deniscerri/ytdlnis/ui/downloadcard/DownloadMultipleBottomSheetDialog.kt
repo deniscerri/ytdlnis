@@ -148,7 +148,7 @@ class DownloadMultipleBottomSheetDialog(private var results: List<ResultItem?>, 
                 }
                 items.forEachIndexed { index, it ->
                     it.allFormats.clear()
-                    it.allFormats.addAll(formatCollection[index])
+                    if (formatCollection.isNotEmpty() && formatCollection[index].isNotEmpty()) it.allFormats.addAll(formatCollection[index])
                     it.format = selectedFormats[index]
                 }
                 listAdapter.submitList(items.toList())

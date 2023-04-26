@@ -360,6 +360,11 @@ class DownloadVideoFragment(private val resultItem: ResultItem, private var curr
                     dialog.getButton(AlertDialog.BUTTON_NEUTRAL).gravity = Gravity.START
                 }
 
+                val removeAudio = view.findViewById<Chip>(R.id.remove_audio)
+                removeAudio.setOnCheckedChangeListener { compoundButton, b ->
+                    downloadItem.videoPreferences.removeAudio = removeAudio.isChecked
+                }
+
             } catch (e: Exception) {
                 e.printStackTrace()
             }

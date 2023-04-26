@@ -18,6 +18,7 @@ import com.deniscerri.ytdlnis.database.repository.DownloadRepository
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.ui.more.downloadLogs.DownloadLogActivity
 import com.deniscerri.ytdlnis.util.FileUtil
+import com.deniscerri.ytdlnis.util.InfoUtil
 import com.deniscerri.ytdlnis.util.NotificationUtil
 import com.yausername.youtubedl_android.YoutubeDL
 import com.yausername.youtubedl_android.YoutubeDLRequest
@@ -25,6 +26,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import java.io.File
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class DownloadWorker(
@@ -37,6 +40,7 @@ class DownloadWorker(
 
         val notificationUtil = NotificationUtil(context)
         val fileUtil = FileUtil()
+        val infoUtil = InfoUtil(context)
         val dbManager = DBManager.getInstance(context)
         val dao = dbManager.downloadDao
         val repository = DownloadRepository(dao)
@@ -209,12 +213,12 @@ class DownloadWorker(
 
                 var videoFormatID = downloadItem.format.format_id
                 Log.e(TAG, videoFormatID)
-                var formatArgument = "bestvideo+bestaudio/best"
+                var formatArgument = if (downloadItem.videoPreferences.removeAudio) "bestvideo" else "bestvideo+bestaudio/best"
                 if (videoFormatID.isNotEmpty()) {
                     if (videoFormatID == context.resources.getString(R.string.best_quality)) videoFormatID = "bestvideo"
                     else if (videoFormatID == context.resources.getString(R.string.worst_quality)) videoFormatID = "worst"
                     else if (defaultFormats.contains(videoFormatID)) videoFormatID = "bestvideo[height<="+videoFormatID.substring(0, videoFormatID.length -1)+"]"
-                    formatArgument = "$videoFormatID+bestaudio/best/$videoFormatID"
+                    if (!downloadItem.videoPreferences.removeAudio) formatArgument = "$videoFormatID+bestaudio/best/$videoFormatID"
                 }
                 Log.e(TAG, formatArgument)
                 request.addOption("-f", formatArgument)
@@ -235,6 +239,11 @@ class DownloadWorker(
                     request.addOption("--sub-format", "str/ass/best")
                     request.addOption("--convert-subtitles", "srt")
                     request.addOption("--sub-langs", downloadItem.videoPreferences.subsLanguages)
+                }
+
+                if (downloadItem.videoPreferences.removeAudio &&
+                    (downloadItem.format.acodec.isNotEmpty() && downloadItem.format.acodec != "none")){
+                    request.addOption("--ppa", "ffmpeg:-an")
                 }
 
                 if (downloadItem.videoPreferences.splitByChapters  && downloadItem.downloadSections.isBlank()){
@@ -280,6 +289,7 @@ class DownloadWorker(
                 if (downloadItem.title.isEmpty()) downloadItem.title = info.title.toString()
                 if (downloadItem.author.isEmpty()) downloadItem.author = info.uploader.toString()
                 if (downloadItem.thumb.isEmpty()) downloadItem.thumb = info.thumbnail.toString()
+                downloadItem.duration = infoUtil.formatIntegerDuration(info.duration, Locale.US)
                 runBlocking {
                     dao.update(downloadItem)
                 }

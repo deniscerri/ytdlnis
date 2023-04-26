@@ -55,7 +55,7 @@
             app:title="@string/video_directory" />
 
         <Preference
-            app:icon="@drawable/ic_baseline_keyboard_arrow_right_24"
+            app:icon="@drawable/ic_terminal"
             app:key="command_path"
             app:defaultValue="@string/command_path"
             app:title="@string/command_directory" />

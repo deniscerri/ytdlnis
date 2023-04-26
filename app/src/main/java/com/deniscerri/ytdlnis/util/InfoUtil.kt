@@ -310,7 +310,23 @@ class InfoUtil(private val context: Context) {
                 for (f in 0 until formatsInJSON.length()){
                     val format = formatsInJSON.getJSONObject(f)
                     if(!format.has("container")) continue
-                    formats.add(Gson().fromJson(format.toString(), Format::class.java))
+                    val formatObj = Gson().fromJson(format.toString(), Format::class.java)
+                    try{
+                        if (!formatObj.format_note.contains("audio", ignoreCase = true)){
+                            val codecs = "\"([^\"]*)\"".toRegex().find(format.getString("type").split(";")[1])!!.value.split(",")
+                            if (codecs.size > 1){
+                                formatObj.vcodec = codecs[0].replace("\"", "")
+                                formatObj.acodec = codecs[1].replace("\"", "")
+                            }else if (codecs.size == 1){
+                                formatObj.vcodec = codecs[0].replace("\"", "")
+                                formatObj.acodec = "none"
+                            }
+                        }
+                    }catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+
+                    formats.add(formatObj)
                 }
             }
 

@@ -243,4 +243,5 @@
     <string name="finished_download_notification_channel_description">Notification for finished or faulty downloads</string>
     <string name="quick_download">Quick Download</string>
     <string name="quick_download_summary">Don\'t fetch data beforehand</string>
+    <string name="remove_audio">Remove Audio</string>
 </resources>

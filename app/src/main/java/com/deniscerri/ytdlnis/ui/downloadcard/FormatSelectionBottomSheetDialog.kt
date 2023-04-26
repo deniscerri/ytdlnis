@@ -199,6 +199,11 @@ class FormatSelectionBottomSheetDialog(private val items: List<DownloadItem?>, p
                     formatCollection.forEach {
                         selectedFormats.add(it.first{ f -> f.format_id == format.format_id})
                     }
+                    if (selectedFormats.isEmpty()) {
+                        items.forEach {
+                            selectedFormats.add(format)
+                        }
+                    }
                     listener.onFormatClick(formatCollection, selectedFormats)
                 }
                 dismiss()
@@ -220,7 +225,7 @@ class FormatSelectionBottomSheetDialog(private val items: List<DownloadItem?>, p
                 else {
                     formatIdParent?.findViewById<TextView>(R.id.format_id_value)?.text = format.format_id
                     formatIdParent?.setOnClickListener {
-                        copyToClipboard(format.format_note)
+                        copyToClipboard(format.format_id)
                     }
                 }
 

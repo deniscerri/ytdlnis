@@ -15,14 +15,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
-import android.widget.LinearLayout
-import android.widget.ScrollView
-import android.widget.TextView
+import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.forEach
+import androidx.core.view.get
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.work.*
@@ -86,31 +84,49 @@ class TerminalActivity : BaseActivity() {
 
 
         bottomAppBar = findViewById(R.id.bottomAppBar)
+        var templateCount = 0
+        var shortcutCount = 0
         lifecycleScope.launch {
-            val templateCount = withContext(Dispatchers.IO){
+            templateCount = withContext(Dispatchers.IO){
                 commandTemplateViewModel.getTotalNumber()
             }
-            if (templateCount == 0) bottomAppBar.menu.getItem(0).isEnabled = false
+            if (templateCount == 0){
+                bottomAppBar.menu.getItem(0).icon?.alpha = 30
+            }else{
+                bottomAppBar.menu.getItem(0).icon?.alpha = 255
+            }
 
-            val shortcutCount = withContext(Dispatchers.IO){
+            shortcutCount = withContext(Dispatchers.IO){
                 commandTemplateViewModel.getTotalShortcutNumber()
             }
-            if (shortcutCount == 0) bottomAppBar.menu.getItem(1).isEnabled = false
+            if (shortcutCount == 0) {
+                bottomAppBar.menu.getItem(1).icon?.alpha = 30
+            }else{
+                bottomAppBar.menu.getItem(1).icon?.alpha = 255
+            }
         }
         bottomAppBar.setOnMenuItemClickListener {
             when(it.itemId){
                 R.id.command_templates -> {
-                    lifecycleScope.launch {
-                        uiUtil.showCommandTemplates(this@TerminalActivity, commandTemplateViewModel){ template ->
-                            input!!.text.insert(input!!.selectionStart, template.content + " ")
-                            input!!.postDelayed({
-                                input!!.requestFocus()
-                                imm.showSoftInput(input!!, 0)
-                            }, 200)
+                    if (templateCount == 0){
+                        Toast.makeText(context, getString(R.string.add_template_first), Toast.LENGTH_SHORT).show()
+                    }else{
+                        lifecycleScope.launch {
+                            uiUtil.showCommandTemplates(this@TerminalActivity, commandTemplateViewModel){ template ->
+                                input!!.text.insert(input!!.selectionStart, template.content + " ")
+                                input!!.postDelayed({
+                                    input!!.requestFocus()
+                                    imm.showSoftInput(input!!, 0)
+                                }, 200)
+                            }
                         }
                     }
                 }
-                R.id.shortcuts -> showShortcuts()
+                R.id.shortcuts -> {
+                    if (shortcutCount > 0){
+                        showShortcuts()
+                    }
+                }
                 R.id.folder -> {
                     val intent = Intent(Intent.ACTION_OPEN_DOCUMENT_TREE)
                     intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
