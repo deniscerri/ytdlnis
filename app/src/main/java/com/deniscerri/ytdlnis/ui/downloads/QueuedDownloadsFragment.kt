@@ -211,11 +211,27 @@ class QueuedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLi
         val openFile = bottomSheet.findViewById<Button>(R.id.bottomsheet_open_file_button)
         openFile!!.visibility = View.GONE
 
-        val redownload = bottomSheet.findViewById<Button>(R.id.bottomsheet_redownload_button)
-        redownload!!.visibility = View.GONE
+
+
+        val downloadNow = bottomSheet.findViewById<Button>(R.id.bottomsheet_redownload_button)
+        if (item.downloadStartTime <= System.currentTimeMillis() / 1000) downloadNow!!.visibility = View.GONE
+        else{
+            downloadNow!!.text = getString(R.string.download_now)
+            downloadNow.setOnClickListener {
+                bottomSheet.dismiss()
+                downloadViewModel.deleteDownload(item)
+                item.downloadStartTime = 0
+                WorkManager.getInstance(requireContext()).cancelUniqueWork(item.id.toString())
+                runBlocking {
+                    downloadViewModel.queueDownloads(listOf(item))
+                }
+            }
+        }
 
         bottomSheet.show()
-        bottomSheet.behavior.peekHeight = 512
+        val displayMetrics = DisplayMetrics()
+        requireActivity().windowManager.defaultDisplay.getMetrics(displayMetrics)
+        bottomSheet.behavior.peekHeight = displayMetrics.heightPixels
         bottomSheet.window!!.setLayout(
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.MATCH_PARENT

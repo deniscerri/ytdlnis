@@ -244,4 +244,6 @@
     <string name="quick_download">Quick Download</string>
     <string name="quick_download_summary">Don\'t fetch data beforehand</string>
     <string name="remove_audio">Remove Audio</string>
+    <string name="preferred_format_id">Preferred Format ID</string>
+    <string name="download_now">Download Now</string>
 </resources>

@@ -308,6 +308,11 @@
             app:summary="@string/best_quality"
             app:title="@string/video_quality" />
 
+        <EditTextPreference
+            app:key="format_id"
+            app:defaultValue=""
+            app:title="@string/preferred_format_id" />
+
     </PreferenceCategory>
 
 

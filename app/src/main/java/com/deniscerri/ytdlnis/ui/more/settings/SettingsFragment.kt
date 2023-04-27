@@ -71,6 +71,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
     private var videoFormat: ListPreference? = null
     private var audioQuality: SeekBarPreference? = null
     private var videoQuality: ListPreference? = null
+    private var formatID: EditTextPreference? = null
     private var updateYTDL: Preference? = null
     private var updateNightlyYTDL: SwitchPreferenceCompat? = null
     private var updateFormats: SwitchPreferenceCompat? = null
@@ -144,6 +145,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         videoFormat = findPreference("video_format")
         audioQuality = findPreference("audio_quality")
         videoQuality = findPreference("video_quality")
+        formatID = findPreference("format_id")
         updateYTDL = findPreference("update_ytdl")
         updateNightlyYTDL = findPreference("nightly_ytdl")
         updateFormats = findPreference("update_formats")
@@ -217,6 +219,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         editor.putString("video_format", videoFormat!!.value)
         editor.putInt("audio_quality", audioQuality!!.value)
         editor.putString("video_quality", videoQuality!!.value)
+        editor.putString("format_id", formatID!!.text)
         editor.putBoolean("nightly_ytdl", updateNightlyYTDL!!.isChecked)
         editor.putBoolean("update_formats", updateFormats!!.isChecked)
         editor.putString("formats_source", formatSource!!.value)
@@ -553,6 +556,14 @@ class SettingsFragment : PreferenceFragmentCompat() {
             Preference.OnPreferenceChangeListener { _: Preference?, newValue: Any ->
                 editor.putString("video_quality", newValue.toString())
                 videoQuality!!.summary = newValue.toString()
+                editor.apply()
+                true
+            }
+        formatID!!.summary = formatID!!.text
+        formatID!!.onPreferenceChangeListener =
+            Preference.OnPreferenceChangeListener { _: Preference?, newValue: Any ->
+                formatID!!.summary = newValue.toString()
+                editor.putString("format_id", newValue.toString())
                 editor.apply()
                 true
             }
