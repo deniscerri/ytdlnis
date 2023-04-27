@@ -102,7 +102,12 @@ class DownloadMultipleBottomSheetDialog(private var results: List<ResultItem?>, 
         listAdapter.submitList(items.toList())
 
         val scheduleBtn = view.findViewById<MaterialButton>(R.id.bottomsheet_schedule_button)
+        val download = view.findViewById<Button>(R.id.bottomsheet_download_button)
+
+
         scheduleBtn.setOnClickListener{
+            scheduleBtn.isEnabled = false
+            download.isEnabled = false
             uiUtil.showDatePicker(parentFragmentManager) {
                 items.forEach { item ->
                     item.downloadStartTime = it.timeInMillis
@@ -117,8 +122,9 @@ class DownloadMultipleBottomSheetDialog(private var results: List<ResultItem?>, 
             }
         }
 
-        val download = view.findViewById<Button>(R.id.bottomsheet_download_button)
         download!!.setOnClickListener {
+            scheduleBtn.isEnabled = false
+            download.isEnabled = false
             runBlocking {
                 downloadViewModel.queueDownloads(items)
             }

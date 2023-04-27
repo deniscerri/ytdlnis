@@ -354,14 +354,33 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         return repository.getActiveDownloads()
     }
 
+    fun getActiveAndQueuedDownloads() : List<DownloadItem>{
+        return repository.getActiveAndQueuedDownloads()
+    }
+
     suspend fun queueDownloads(items: List<DownloadItem>) {
         val context = getApplication<App>().applicationContext
+        val activeAndQueuedDownloads = withContext(Dispatchers.IO){
+            repository.getActiveAndQueuedDownloads()
+        }
         val allowMeteredNetworks = sharedPreferences.getBoolean("metered_networks", true)
-        items.forEach { it.status = DownloadRepository.Status.Queued.toString() }
-        val ids = repository.insertAll(items)
-        for (i in ids.indices){
-            val it = items[i]
-            it.id = ids[i]
+        val queuedItems = mutableListOf<DownloadItem>()
+        items.forEach {
+            it.status = DownloadRepository.Status.Queued.toString()
+            if (activeAndQueuedDownloads.firstOrNull{d ->
+                    d.id = 0
+                    d.status = DownloadRepository.Status.Queued.toString()
+                    d.toString() == it.toString()
+            } != null) {
+                Toast.makeText(context, context.getString(R.string.download_already_exists), Toast.LENGTH_LONG).show()
+            }else{
+                it.id = withContext(Dispatchers.IO){
+                    repository.insert(it)
+                }
+                queuedItems.add(it)
+            }
+        }
+        queuedItems.forEach {
             val currentTime = System.currentTimeMillis()
             var delay = if (it.downloadStartTime != 0L){
                 it.downloadStartTime - currentTime
@@ -383,8 +402,7 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
                 ExistingWorkPolicy.KEEP,
                 workRequest
             ).enqueue()
-        }
-        items.forEach {
+
             it.id = withContext(Dispatchers.IO){
                 repository.checkIfReDownloadingErroredOrCancelled(it)
             }
@@ -392,6 +410,7 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
                 repository.delete(it)
             }
         }
+
         val isCurrentNetworkMetered = (context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager).isActiveNetworkMetered
         if (!allowMeteredNetworks && isCurrentNetworkMetered){
             Toast.makeText(context, context.getString(R.string.metered_network_download_start_info), Toast.LENGTH_LONG).show()

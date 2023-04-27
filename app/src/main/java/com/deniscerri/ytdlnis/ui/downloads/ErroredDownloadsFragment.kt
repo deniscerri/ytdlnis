@@ -229,7 +229,7 @@ class ErroredDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickL
     }
 
     private var simpleCallback: ItemTouchHelper.SimpleCallback =
-        object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+        object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
             override fun onMove(recyclerView: RecyclerView,viewHolder: RecyclerView.ViewHolder,target: RecyclerView.ViewHolder
             ): Boolean {
                 return false
@@ -238,6 +238,11 @@ class ErroredDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickL
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val position = viewHolder.bindingAdapterPosition
                 when (direction) {
+                    ItemTouchHelper.RIGHT -> {
+                        runBlocking{
+                            downloadViewModel.queueDownloads(listOf(items[position]))
+                        }
+                    }
                     ItemTouchHelper.LEFT -> {
                         val deletedItem = items[position]
                         downloadViewModel.deleteDownload(deletedItem)
@@ -277,6 +282,7 @@ class ErroredDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickL
                             R.attr.colorOnSurfaceInverse, Color.TRANSPARENT
                         )
                     )
+                    .addSwipeRightActionIcon(R.drawable.ic_refresh)
                     .create()
                     .decorate()
                 super.onChildDraw(

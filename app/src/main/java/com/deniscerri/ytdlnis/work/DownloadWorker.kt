@@ -55,6 +55,7 @@ class DownloadWorker(
             e.printStackTrace()
             return Result.failure()
         }
+        if (downloadItem.status != DownloadRepository.Status.Queued.toString()) return Result.failure()
 
         Log.e(TAG, downloadItem.toString())
 

@@ -1,6 +1,7 @@
 package com.deniscerri.ytdlnis.ui.downloads
 
 import android.app.Activity
+import android.content.DialogInterface
 import android.content.res.Configuration
 import android.graphics.Canvas
 import android.graphics.Color
@@ -35,6 +36,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.chip.Chip
 import com.google.android.material.color.MaterialColors
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.yausername.youtubedl_android.YoutubeDL
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
@@ -111,7 +113,7 @@ class QueuedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLi
                 downloadViewModel.deleteDownload(downloadViewModel.getItemByID(itemID))
             }
         }
-        cancelDownload(itemID)
+        removeItem(itemID)
     }
 
     override fun onCardClick(itemID: Long) {
@@ -206,7 +208,8 @@ class QueuedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLi
         val remove = bottomSheet.findViewById<Button>(R.id.bottomsheet_remove_button)
         remove!!.tag = itemID
         remove.setOnClickListener{
-            cancelDownload(itemID)
+            bottomSheet.hide()
+            removeItem(itemID)
         }
         val openFile = bottomSheet.findViewById<Button>(R.id.bottomsheet_open_file_button)
         openFile!!.visibility = View.GONE
@@ -238,11 +241,19 @@ class QueuedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLi
         )
     }
 
-    private fun cancelDownload(itemID: Long){
-        val id = itemID.toInt()
-        YoutubeDL.getInstance().destroyProcessById(id.toString())
-        WorkManager.getInstance(requireContext()).cancelUniqueWork(id.toString())
-        notificationUtil.cancelDownloadNotification(id)
+    private fun removeItem(itemID: Long){
+        val item = items.find { it.id == itemID }
+        val deleteDialog = MaterialAlertDialogBuilder(requireContext())
+        deleteDialog.setTitle(getString(R.string.you_are_going_to_delete) + " \"" + item?.title + "\"!")
+        deleteDialog.setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, _: Int -> dialogInterface.cancel() }
+        deleteDialog.setPositiveButton(getString(R.string.ok)) { _: DialogInterface?, _: Int ->
+            val id = itemID.toInt()
+            YoutubeDL.getInstance().destroyProcessById(id.toString())
+            WorkManager.getInstance(requireContext()).cancelUniqueWork(id.toString())
+            notificationUtil.cancelDownloadNotification(id)
+            downloadViewModel.deleteDownload(item!!)
+        }
+        deleteDialog.show()
     }
 
     private var simpleCallback: ItemTouchHelper.SimpleCallback =
@@ -257,7 +268,7 @@ class QueuedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLi
                 when (direction) {
                     ItemTouchHelper.LEFT -> {
                         val deletedItem = items[position]
-                        cancelDownload(deletedItem.id)
+                        removeItem(deletedItem.id)
                         Snackbar.make(queuedRecyclerView, getString(R.string.cancelled) + ": " + deletedItem.title, Snackbar.LENGTH_LONG)
                             .setAction(getString(R.string.undo)) {
                                 lifecycleScope.launch(Dispatchers.IO) {

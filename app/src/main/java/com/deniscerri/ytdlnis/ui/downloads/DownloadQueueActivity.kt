@@ -14,6 +14,7 @@ import androidx.viewpager2.widget.ViewPager2
 import androidx.work.WorkManager
 import androidx.work.await
 import com.deniscerri.ytdlnis.R
+import com.deniscerri.ytdlnis.database.repository.DownloadRepository
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.ui.BaseActivity
 import com.deniscerri.ytdlnis.util.NotificationUtil
@@ -126,19 +127,19 @@ class DownloadQueueActivity : BaseActivity(){
     }
 
     private fun cancelAllDownloads() {
+        workManager.cancelAllWorkByTag("download")
         lifecycleScope.launch {
             val notificationUtil = NotificationUtil(this@DownloadQueueActivity)
-            val activeDownloads = withContext(Dispatchers.IO){
-                downloadViewModel.getActiveDownloads()
+            val activeAndQueued = withContext(Dispatchers.IO){
+                downloadViewModel.getActiveAndQueuedDownloads()
             }
-            val workManager = WorkManager.getInstance(this@DownloadQueueActivity)
-            activeDownloads.forEach {
+            activeAndQueued.forEach {
+                it.status = DownloadRepository.Status.Cancelled.toString()
+                downloadViewModel.updateDownload(it)
                 val id = it.id.toInt()
                 YoutubeDL.getInstance().destroyProcessById(id.toString())
-                workManager.cancelUniqueWork(id.toString())
                 notificationUtil.cancelDownloadNotification(id)
             }
-            workManager.cancelAllWorkByTag("download")
         }
     }
 

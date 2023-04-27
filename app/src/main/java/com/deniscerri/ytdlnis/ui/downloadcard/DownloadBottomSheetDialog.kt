@@ -154,7 +154,12 @@ class DownloadBottomSheetDialog(private val resultItem: ResultItem, private val 
         viewPager2.setPageTransformer(BackgroundToForegroundPageTransformer())
 
         val scheduleBtn = view.findViewById<MaterialButton>(R.id.bottomsheet_schedule_button)
+        val download = view.findViewById<Button>(R.id.bottomsheet_download_button)
+
+
         scheduleBtn.setOnClickListener{
+            scheduleBtn.isEnabled = false
+            download.isEnabled = false
             uiUtil.showDatePicker(fragmentManager) {
                 val item: DownloadItem = getDownloadItem();
                 item.downloadStartTime = it.timeInMillis
@@ -166,8 +171,9 @@ class DownloadBottomSheetDialog(private val resultItem: ResultItem, private val 
                 dismiss()
             }
         }
-        val download = view.findViewById<Button>(R.id.bottomsheet_download_button)
         download!!.setOnClickListener {
+            scheduleBtn.isEnabled = false
+            download.isEnabled = false
             val item: DownloadItem = getDownloadItem();
             runBlocking {
                 downloadViewModel.queueDownloads(listOf(item))
