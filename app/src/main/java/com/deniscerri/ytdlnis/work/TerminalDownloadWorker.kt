@@ -131,6 +131,11 @@ class TerminalDownloadWorker(
         return Result.success()
 
     }
+    override fun onStopped() {
+        YoutubeDL.getInstance().destroyProcessById(DownloadWorker.itemId.toInt().toString())
+        super.onStopped()
+    }
+
     @Throws(Exception::class)
     private fun moveFile(originDir: File, downLocation: String, progress: (progress: Int) -> Unit) : String{
         val fileUtil = FileUtil()

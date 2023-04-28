@@ -613,8 +613,10 @@ class InfoUtil(private val context: Context) {
                     author = jsonObject.getString("uploader")
                 }
                 var duration = ""
-                if (jsonObject.has("duration")) {
-                    duration = formatIntegerDuration(jsonObject.getInt("duration"), Locale.getDefault())
+                runCatching {
+                    if (jsonObject.has("duration")) {
+                        duration = formatIntegerDuration(jsonObject.getInt("duration"), Locale.getDefault())
+                    }
                 }
                 val url = jsonObject.getString("webpage_url")
                 var thumb: String? = ""

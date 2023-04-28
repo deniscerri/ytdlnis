@@ -241,6 +241,10 @@ class QueuedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLi
         )
     }
 
+    override fun onCardSelect(itemID: Long, isChecked: Boolean) {
+        TODO("Not yet implemented")
+    }
+
     private fun removeItem(itemID: Long){
         val item = items.find { it.id == itemID }
         val deleteDialog = MaterialAlertDialogBuilder(requireContext())

@@ -75,7 +75,8 @@ class ResultViewModel(application: Application) : AndroidViewModel(application) 
     }
 
     suspend fun parseQuery(inputQuery: String, resetResults: Boolean) : ArrayList<ResultItem?> {
-        if (resetResults) loadingItems.postValue(true)
+        if (resetResults)
+            loadingItems.postValue(true)
         val type = getQueryType(inputQuery)
         var res = arrayListOf<ResultItem?>()
         return withContext(Dispatchers.IO){

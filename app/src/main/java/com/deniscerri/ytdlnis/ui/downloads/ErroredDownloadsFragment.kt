@@ -8,14 +8,13 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.os.Bundle
 import android.util.DisplayMetrics
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.view.Window
+import android.view.*
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemClickListener
 import android.widget.Button
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.view.ActionMode
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -40,6 +39,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
 import kotlinx.coroutines.runBlocking
+import java.util.ArrayList
 
 
 class ErroredDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickListener, OnItemClickListener {
@@ -50,6 +50,8 @@ class ErroredDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickL
     private lateinit var erroredRecyclerView : RecyclerView
     private lateinit var erroredDownloads : GenericDownloadAdapter
     private lateinit var items : MutableList<DownloadItem>
+    private var selectedObjects: ArrayList<DownloadItem>? = null
+    private var actionMode : ActionMode? = null
     private lateinit var fileUtil: FileUtil
     private lateinit var uiUtil : UiUtil
     override fun onCreateView(
@@ -62,6 +64,7 @@ class ErroredDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickL
         activity = getActivity()
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
         items = mutableListOf()
+        selectedObjects = arrayListOf()
         fileUtil = FileUtil()
         uiUtil = UiUtil(fileUtil)
         return fragmentView
@@ -213,6 +216,26 @@ class ErroredDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickL
         )
     }
 
+    override fun onCardSelect(itemID: Long, isChecked: Boolean) {
+        val item = items.find { it.id == itemID }
+        if (isChecked) {
+            selectedObjects!!.add(item!!)
+            if (actionMode == null){
+                actionMode = (getActivity() as AppCompatActivity?)!!.startSupportActionMode(contextualActionBar)
+
+            }else{
+                actionMode!!.title = "${selectedObjects!!.size} ${getString(R.string.selected)}"
+            }
+        }
+        else {
+            selectedObjects!!.remove(item)
+            actionMode?.title = "${selectedObjects!!.size} ${getString(R.string.selected)}"
+            if (selectedObjects!!.isEmpty()){
+                actionMode?.finish()
+            }
+        }
+    }
+
     private fun removeItem(item: DownloadItem, bottomSheet: BottomSheetDialog?){
         bottomSheet?.hide()
         val deleteDialog = MaterialAlertDialogBuilder(requireContext())
@@ -226,6 +249,81 @@ class ErroredDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickL
 
     override fun onItemClick(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
         TODO("Not yet implemented")
+    }
+
+
+
+    private val contextualActionBar = object : ActionMode.Callback {
+        override fun onCreateActionMode(mode: ActionMode?, menu: Menu?): Boolean {
+            mode!!.menuInflater.inflate(R.menu.cancelled_downloads_menu_context, menu)
+            mode.title = "${selectedObjects!!.size} ${getString(R.string.selected)}"
+            return true
+        }
+
+        override fun onPrepareActionMode(
+            mode: ActionMode?,
+            menu: Menu?
+        ): Boolean {
+            return false
+        }
+
+        override fun onActionItemClicked(
+            mode: ActionMode?,
+            item: MenuItem?
+        ): Boolean {
+            return when (item!!.itemId) {
+                R.id.delete_results -> {
+                    val deleteDialog = MaterialAlertDialogBuilder(requireContext())
+                    deleteDialog.setTitle(getString(R.string.you_are_going_to_delete_multiple_items))
+                    deleteDialog.setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, _: Int -> dialogInterface.cancel() }
+                    deleteDialog.setPositiveButton(getString(R.string.ok)) { _: DialogInterface?, _: Int ->
+                        for (obj in selectedObjects!!){
+                            downloadViewModel.deleteDownload(obj)
+                        }
+                        clearCheckedItems()
+                        actionMode?.finish()
+                    }
+                    deleteDialog.show()
+                    true
+                }
+                R.id.redownload -> {
+                    runBlocking {
+                        downloadViewModel.queueDownloads(selectedObjects!!.toMutableList())
+                        actionMode?.finish()
+                    }
+                    true
+                }
+                R.id.select_all -> {
+                    erroredDownloads.checkAll(items)
+                    selectedObjects?.clear()
+                    items.forEach { selectedObjects?.add(it) }
+                    mode?.title = getString(R.string.all_items_selected)
+                    true
+                }
+                R.id.invert_selected -> {
+                    erroredDownloads.invertSelected(items)
+                    val invertedList = arrayListOf<DownloadItem>()
+                    items.forEach {
+                        if (!selectedObjects?.contains(it)!!) invertedList.add(it)
+                    }
+                    selectedObjects?.clear()
+                    selectedObjects?.addAll(invertedList)
+                    actionMode!!.title = "${selectedObjects!!.size} ${getString(R.string.selected)}"
+                    true
+                }
+                else -> false
+            }
+        }
+
+        override fun onDestroyActionMode(mode: ActionMode?) {
+            actionMode = null
+            clearCheckedItems()
+        }
+    }
+
+    private fun clearCheckedItems(){
+        erroredDownloads.clearCheckeditems()
+        selectedObjects?.clear()
     }
 
     private var simpleCallback: ItemTouchHelper.SimpleCallback =

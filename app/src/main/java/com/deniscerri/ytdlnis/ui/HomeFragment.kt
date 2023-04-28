@@ -191,6 +191,13 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
         downloadAllFab.tag = "downloadAll"
         downloadAllFab.setOnClickListener(this)
 
+        if (arguments?.getString("url") != null){
+            val url = requireArguments().getString("url")
+            if (inputQueries == null) inputQueries = mutableListOf()
+            searchBar?.text = url
+            inputQueries!!.add(url!!)
+        }
+
         if (inputQueries != null) {
             resultViewModel.deleteAll()
             lifecycleScope.launch(Dispatchers.IO){
@@ -470,7 +477,6 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
                 }
             }else{
                 resultViewModel.parseQueries(queryList)
-
             }
         }
     }
@@ -653,6 +659,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
         actionMode?.finish()
         super.onStop()
     }
+
 
     companion object {
         private const val TAG = "HomeFragment"

@@ -15,6 +15,7 @@ import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.deniscerri.ytdlnis.R
@@ -195,19 +196,23 @@ class DownloadBottomSheetDialog(private val resultItem: ResultItem, private val 
         if (quickDownload) {
             (updateItem.parent as LinearLayout).visibility = View.VISIBLE
             updateItem.setOnClickListener {
-                lifecycleScope.launch(Dispatchers.IO){
-                    if (activity is ShareActivity) {
-                        val intent = Intent(context, ShareActivity::class.java)
-                        intent.action = Intent.ACTION_SEND
-                        intent.type = "text/plain"
-                        intent.putExtra(Intent.EXTRA_TEXT, resultItem.url)
-                        intent.putExtra("quick_download", false)
-                        startActivity(intent)
-                        dismiss()
-                    }else{
-                        resultViewModel.parseQueries(listOf(resultItem.url))
-                        dismiss()
-                    }
+                if (activity is ShareActivity) {
+                    val intent = Intent(context, ShareActivity::class.java)
+                    intent.action = Intent.ACTION_SEND
+                    intent.type = "text/plain"
+                    intent.putExtra(Intent.EXTRA_TEXT, resultItem.url)
+                    intent.putExtra("quick_download", false)
+                    startActivity(intent)
+                    dismiss()
+                }else{
+                    dismiss()
+                    val bundle = Bundle()
+                    bundle.putString("url", resultItem.url)
+                    findNavController().popBackStack(R.id.homeFragment, true)
+                    findNavController().navigate(
+                        R.id.homeFragment,
+                        bundle
+                    )
                 }
             }
         }else{

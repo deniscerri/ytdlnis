@@ -126,16 +126,16 @@ class ActiveDownloadsFragment() : Fragment(), ActiveDownloadAdapter.OnItemClickL
     }
 
     private fun cancelDownload(itemID: Long){
+        val id = itemID.toInt()
+        YoutubeDL.getInstance().destroyProcessById(id.toString())
+        WorkManager.getInstance(requireContext()).cancelUniqueWork(id.toString())
+        notificationUtil.cancelDownloadNotification(id)
+
         list.find { it.id == itemID }?.let {
             it.status = DownloadRepository.Status.Cancelled.toString()
             downloadViewModel.updateDownload(it)
         }
 
-
-        val id = itemID.toInt()
-        YoutubeDL.getInstance().destroyProcessById(id.toString())
-        WorkManager.getInstance(requireContext()).cancelUniqueWork(id.toString())
-        notificationUtil.cancelDownloadNotification(id)
     }
 
     override fun onClick(p0: View?) {
