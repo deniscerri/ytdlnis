@@ -234,4 +234,6 @@
     <string name="downloaded">"U shkarkua: "</string>
     <string name="finished_download_notification_channel_name">Shkarkimet e Përfunduara</string>
     <string name="finished_download_notification_channel_description">Njoftimet për shkarkimet e mbaruar ose me probleme</string>
+    <string name="quick_download">Shkarkim i Shpejtë</string>
+    <string name="quick_download_summary">Mos merr informacion përpara shkarkimit</string>
 </resources>

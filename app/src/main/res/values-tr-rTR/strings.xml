@@ -181,7 +181,7 @@
     <string name="restrict_filenames">Dosya Adların Kısıtla</string>
     <string name="restrict_filenames_summary">Dosya adların yalnızca ASCII karakterleriyle sınırla ve dosya adlarında \"&amp;\" ve boşluklardan kaçının</string>
     <string name="kill_app">Uygulamayı Sonlandır</string>
-    <string name="confirm_terminate">Tüm indirmeler durdurulacak ve uygulama zorla kapatılacak</string>
+    <string name="confirm_terminate">Tüm indirmeleri durdurur ve uygulamayı zorla kapatır</string>
     <string name="dont_ask_again">Tekrar sorma</string>
     <string name="end">Son</string>
     <string name="start">Başlangıç</string>
@@ -200,8 +200,8 @@
     <string name="delete_all_cookies">Tüm Verileri Sil</string>
     <string name="confirm_delete_cookies_desc">Tüm verileri kalıcı olarak sil</string>
     <string name="download_over_metered_networks">Ölçülen Ağlar aracılığıyla yükleme</string>
-    <string name="download_over_metered_networks_summary">İndirme çalışanına herhangi bir ağ türünde çalışmaya izin ver. Devre dışı bırakılırsa, ölçülmemiş bir ağın indirmeleri başlatmasını bekler</string>
-    <string name="metered_network_download_start_info">İndirme çalışanı, ölçülmeyen ağa bağlandıktan sonra başlayacak</string>
+    <string name="download_over_metered_networks_summary">Herhangi ağ türün kullanan indirmeler. Aksi takdirde ölçülmemiş ağ için bekler</string>
+    <string name="metered_network_download_start_info">Sınırsız ağa bağlandığınızda indirme işlemi başlayacak</string>
     <string name="invert_selected">Seçilenleri Çevir</string>
     <string name="save_subs">Altyazıları Kaydet</string>
     <string name="subtitle_languages">Altyazı dilleri</string>
@@ -210,7 +210,7 @@
     <string name="ignore_battery_optimization">Pil Optimizasyonun Yoksay</string>
     <string name="format_source">Format Kaynağı</string>
     <string name="video_recommendations">Video Önerileri</string>
-    <string name="video_recommendations_summary">Invidious ile Ana Ekrana Video Önerileri Getir</string>
+    <string name="video_recommendations_summary">Ana ekranda önerilen YouTube videoların Invidious\'tan al</string>
     <string name="preferred_search_engine">Tercih Edilen Arama Motoru</string>
     <string name="preferred_search_engine_summary">Uygulama içi aramalar için kullanılacak arama motoru</string>
     <string name="format_filtering_hint">Bu seçeneği kullanmak için tüm öğeler aynı türde olmalıdır</string>
@@ -218,4 +218,26 @@
     <string name="undo">Geri alma</string>
     <string name="format_id">Biçim Kimliği</string>
     <string name="copied_to_clipboard">Kopyalandı</string>
+    <string name="purple">Mor</string>
+    <string name="yellow">Sarı</string>
+    <string name="quick_download">Hızlı İndirme</string>
+    <string name="quick_download_summary">Verileri önceden getirme</string>
+    <string name="codec">Kodlayıcı</string>
+    <string name="audio_samplerate">Ses Örnek Hızı</string>
+    <string name="Theme">Tema</string>
+    <string name="dark">Karanlık</string>
+    <string name="light">Aydınlık</string>
+    <string name="quality">Kalite</string>
+    <string name="system">Sistem</string>
+    <string name="accents">Tonlar</string>
+    <string name="high_contrast">Yüksek Kontrast</string>
+    <string name="pure_theme_summary">Saf Siyah / Beyaz Tema</string>
+    <string name="material_you">Material You</string>
+    <string name="blue">Mavi</string>
+    <string name="red">Kırmızı</string>
+    <string name="green">Yeşil</string>
+    <string name="monochrome">Tek Renkli</string>
+    <string name="downloaded">"İndirildi: "</string>
+    <string name="finished_download_notification_channel_name">Tamamlanan İndirmeler</string>
+    <string name="finished_download_notification_channel_description">Bitmiş veya hatalı indirmeler için bildirim</string>
 </resources>
