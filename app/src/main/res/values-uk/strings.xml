@@ -234,4 +234,6 @@
     <string name="monochrome">Монохромна</string>
     <string name="downloaded">"Завантажено: "</string>
     <string name="finished_download_notification_channel_description">Сповіщення про завершені або помилкові завантаження</string>
+    <string name="quick_download">Швидке завантаження</string>
+    <string name="quick_download_summary">Не завантажувати дані заздалегідь</string>
 </resources>

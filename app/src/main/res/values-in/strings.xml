@@ -177,7 +177,7 @@
     <string name="restrict_filenames">Batasi Penamaan Berkas</string>
     <string name="restrict_filenames_summary">Batasi nama berkas hanya pada karakter ASCII, dan hindari \"&amp;\" dan spasi pada nama berkas</string>
     <string name="kill_app">Hentikan Aplikasi</string>
-    <string name="confirm_terminate">Semua unduhan akan dihentikan &amp; aplikasi akan ditutup paksa</string>
+    <string name="confirm_terminate">Menghentikan semua unduhan dan menutup paksa aplikasi</string>
     <string name="dont_ask_again">Jangan tanya lagi</string>
     <string name="update_formats_summary">Secara otomatis menelusuri format yang hilang saat menge-klik kartu format</string>
     <string name="ignore_battery_optimization">Abaikan Pengoptimalan Baterai</string>
@@ -197,14 +197,14 @@
     <string name="get_cookies">Dapatkan Kuki</string>
     <string name="add_template_first">Kamu harus membuat setidaknya satu templat perintah!</string>
     <string name="invert_selected">Balikkan yang Dipilih</string>
-    <string name="metered_network_download_start_info">Pekerja unduhan akan dimulai setelah kamu terhubung ke jaringan yang tidak terukur</string>
-    <string name="download_over_metered_networks_summary">Mengizinkan pekerja unduhan bekerja di semua jenis jaringan. Jika dinonaktifkan, pekerja unduhan akan menunggu jaringan yang tidak terukur untuk memulai unduhan</string>
+    <string name="metered_network_download_start_info">Unduhan akan dimulai setelah kamu terhubung ke jaringan yang tidak terukur</string>
+    <string name="download_over_metered_networks_summary">Mengunduh dengan menggunakan semua jenis jaringan. Jika tidak diaktifkan, pengunduhan menunggu jaringan yang tidak terukur</string>
     <string name="end">Akhir</string>
     <string name="start">Awal</string>
     <string name="save_subs">Simpan Takarir</string>
     <string name="save_subs_desc">Menulis berkas takarir</string>
     <string name="subtitle_languages">Bahasa takarir</string>
-    <string name="video_recommendations_summary">Dapatkan Rekomendasi Video YouTube di Layar Beranda dari Invidious</string>
+    <string name="video_recommendations_summary">Dapatkan rekomendasi video YouTube di layar beranda dari Invidious</string>
     <string name="format_source">Sumber Format</string>
     <string name="video_recommendations">Rekomendasi Video</string>
     <string name="copied_to_clipboard">Disalin ke Papan Klip</string>
@@ -231,4 +231,9 @@
     <string name="purple">Ungu</string>
     <string name="monochrome">Monokrom</string>
     <string name="red">Merah</string>
+    <string name="quick_download_summary">Jangan mengambil data sebelum pengunduhan</string>
+    <string name="downloaded">"Terunduh: "</string>
+    <string name="finished_download_notification_channel_name">Unduhan yang Selesai</string>
+    <string name="finished_download_notification_channel_description">Notifikasi unduhan yang selesai atau cacat</string>
+    <string name="quick_download">Unduhan Lekas</string>
 </resources>

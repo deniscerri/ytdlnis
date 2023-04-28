@@ -177,7 +177,7 @@
     <string name="restrict_filenames">ফাইল নাম সীমাবদ্ধ করুন</string>
     <string name="restrict_filenames_summary">ফাইলের নামগুলিকে শুধুমাত্র ASCII অক্ষরের মধ্যে সীমাবদ্ধ করুন এবং ফাইলের নামগুলিতে \"&amp;\" এবং স্পেস এড়িয়ে চলুন</string>
     <string name="kill_app">অ্যাপ বন্ধ করুন</string>
-    <string name="confirm_terminate">সমস্ত ডাউনলোড বন্ধ করা হবে এবং তারপরে অ্যাপটি জোর করে বন্ধ করা হবে</string>
+    <string name="confirm_terminate">সমস্ত ডাউনলোড বন্ধ করা হবে এবং অ্যাপটি জোর করে বন্ধ করা হবে</string>
     <string name="dont_ask_again">আবার জিজ্ঞাসা করবেন না</string>
     <string name="end">শেষ</string>
     <string name="start">শুরু</string>
@@ -198,8 +198,8 @@
     <string name="confirm_delete_cookies_desc">সব কুকি স্থায়ীভাবে মুছুন</string>
     <string name="get_cookies">কুকিজ পান</string>
     <string name="download_over_metered_networks">সীমিত নেটওয়ার্কে ডাউনলোড করুন</string>
-    <string name="download_over_metered_networks_summary">"ডাউনলোড ওয়ার্কারকে যেকোনো নেটওয়ার্ক টাইপের কাজ করতে দিন।  অক্ষম থাকলে, এটি ডাউনলোডগুলি শুরু করার জন্য একটি মিটারবিহীন নেটওয়ার্কের জন্য অপেক্ষা করবে"</string>
-    <string name="metered_network_download_start_info">"আপনি একটি  wifi নেটওয়ার্কের সাথে সংযুক্ত হওয়ার পরে ডাউনলোড কর্মী শুরু হবে"</string>
+    <string name="download_over_metered_networks_summary">ডাউনলোড যেকোনো নেটওয়ার্কএ করা হবে। অক্ষম থাকলে, এটি ডাউনলোডগুলি মিটারবিহীন নেটওয়ার্কের জন্য অপেক্ষা করবে</string>
+    <string name="metered_network_download_start_info">আপনি একটি wifi নেটওয়ার্কের সাথে সংযুক্ত হওয়ার পরে ডাউনলোড শুরু হবে</string>
     <string name="invert_selected">উল্টানো নির্বাচিত</string>
     <string name="save_subs_desc">সাবটাইটেল ফাইল সেভ করুন</string>
     <string name="subtitle_languages">সাবটাইটেল ভাষা</string>
@@ -216,4 +216,24 @@
     <string name="codec">কোডেক</string>
     <string name="audio_samplerate">অডিও নমুনা হার</string>
     <string name="copied_to_clipboard">ক্লিপবোর্ডে কপি করা হয়েছে</string>
+    <string name="quick_download">দ্রুত ডাউনলোড</string>
+    <string name="quick_download_summary">আগে থেকে ডেটা আনবেন না</string>
+    <string name="Theme">থিম</string>
+    <string name="dark">গারো</string>
+    <string name="light">হালকা</string>
+    <string name="quality">গুনগতমান</string>
+    <string name="system">সিস্টেম</string>
+    <string name="accents">কথা</string>
+    <string name="high_contrast">উচ্চ বৈসাদৃশ্য</string>
+    <string name="pure_theme_summary">শুদ্ধ সাদা বা কালো থিম</string>
+    <string name="material_you">ফোনের রং</string>
+    <string name="blue">নীল</string>
+    <string name="red">লাল</string>
+    <string name="green">সবুজ</string>
+    <string name="purple">বেগুনি</string>
+    <string name="yellow">হলুদ</string>
+    <string name="monochrome">কলোরড</string>
+    <string name="downloaded">"ডাউনলোডেড "</string>
+    <string name="finished_download_notification_channel_name">ডাউনলোড সম্পন্ন</string>
+    <string name="finished_download_notification_channel_description">সমাপ্ত বা ত্রুটিপূর্ণ ডাউনলোডের জন্য বিজ্ঞপ্তি</string>
 </resources>
