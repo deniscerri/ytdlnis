@@ -45,7 +45,7 @@ class DownloadLogActivity : BaseActivity() {
             clipboard.setText(content.text)
         }
 
-        val path = intent.getStringExtra("path")
+        val path = intent.getStringExtra("logpath")
         if (path == null) {
             onBackPressedDispatcher.onBackPressed()
         }

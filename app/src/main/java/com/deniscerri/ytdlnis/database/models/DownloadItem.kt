@@ -20,7 +20,7 @@ data class DownloadItem(
     var downloadSections: String,
     val allFormats: ArrayList<Format>,
     var downloadPath: String,
-    val website: String,
+    var website: String,
     val downloadSize: String,
     val playlistTitle: String,
     val audioPreferences : AudioPreferences,

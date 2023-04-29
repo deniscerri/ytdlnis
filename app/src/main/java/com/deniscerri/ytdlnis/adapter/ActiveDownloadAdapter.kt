@@ -77,7 +77,7 @@ class ActiveDownloadAdapter(onItemClickListener: OnItemClickListener, activity: 
         if (title.length > 100) {
             title = title.substring(0, 40) + "..."
         }
-        itemTitle.text = title.ifEmpty { "`${activity.getString(R.string.defaultValue)}`" }
+        itemTitle.text = title.ifEmpty { "<${activity.getString(R.string.defaultValue)}>" }
 
         // Author ----------------------------------
         val author = card.findViewById<TextView>(R.id.author)
@@ -86,7 +86,7 @@ class ActiveDownloadAdapter(onItemClickListener: OnItemClickListener, activity: 
             if (item.author.isNotEmpty()) info += " • "
             info += item.duration
         }
-        author.text = info.ifEmpty { "`${activity.getString(R.string.defaultValue)}`" }
+        author.text = info.ifEmpty { "<${activity.getString(R.string.defaultValue)}>" }
 
         val type = card.findViewById<MaterialButton>(R.id.download_type)
         when(item.type){

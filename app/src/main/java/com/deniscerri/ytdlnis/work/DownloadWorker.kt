@@ -268,6 +268,22 @@ class DownloadWorker(
             }
         }
 
+        //update item if its incomplete
+        if (downloadItem.title.isEmpty() || downloadItem.author.isEmpty() || downloadItem.thumb.isEmpty()){
+            runCatching {
+                setProgressAsync(workDataOf("progress" to 0, "output" to "Updating Download Item Data", "id" to downloadItem.id, "log" to false))
+                val info = infoUtil.getMissingInfo(downloadItem.url)
+                if (downloadItem.title.isEmpty()) downloadItem.title = info?.title.toString()
+                if (downloadItem.author.isEmpty()) downloadItem.author = info?.author.toString()
+                if (downloadItem.thumb.isEmpty()) downloadItem.thumb = info?.thumb.toString()
+                downloadItem.duration = info?.duration.toString()
+                downloadItem.website = info?.website.toString()
+                runBlocking {
+                    dao.update(downloadItem)
+                }
+            }
+        }
+
         val logDownloads = sharedPreferences.getBoolean("log_downloads", false) && !sharedPreferences.getBoolean("incognito", false)
         val logFolder = File(context.filesDir.absolutePath + "/logs")
         val logFile = fileUtil.getLogFile(context, downloadItem)
@@ -280,21 +296,6 @@ class DownloadWorker(
                     "URL: ${downloadItem.url}\n" +
                     "Type: ${downloadItem.type}\n" +
                     "Format: ${downloadItem.format}\n\n")
-        }
-
-        //update item if its incomplete
-        if (downloadItem.title.isEmpty() || downloadItem.author.isEmpty() || downloadItem.thumb.isEmpty()){
-            runCatching {
-                setProgressAsync(workDataOf("progress" to 0, "output" to "Updating Download Item Data", "id" to downloadItem.id, "log" to logDownloads))
-                val info = YoutubeDL.getInfo(downloadItem.url)
-                if (downloadItem.title.isEmpty()) downloadItem.title = info.title.toString()
-                if (downloadItem.author.isEmpty()) downloadItem.author = info.uploader.toString()
-                if (downloadItem.thumb.isEmpty()) downloadItem.thumb = info.thumbnail.toString()
-                downloadItem.duration = infoUtil.formatIntegerDuration(info.duration, Locale.US)
-                runBlocking {
-                    dao.update(downloadItem)
-                }
-            }
         }
 
         runCatching {
@@ -376,7 +377,7 @@ class DownloadWorker(
 
                 notificationUtil.createDownloadErrored(
                     downloadItem.title, it.message,
-                    if (logDownloads) logFile.absolutePath else null,
+                    if (logDownloads) logFile else null,
                     NotificationUtil.DOWNLOAD_FINISHED_CHANNEL_ID
                 )
 

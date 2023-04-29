@@ -193,6 +193,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
 
         if (arguments?.getString("url") != null){
             val url = requireArguments().getString("url")
+            arguments?.remove("url")
             if (inputQueries == null) inputQueries = mutableListOf()
             searchBar?.text = url
             inputQueries!!.add(url!!)
@@ -202,6 +203,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
             resultViewModel.deleteAll()
             lifecycleScope.launch(Dispatchers.IO){
                 resultViewModel.parseQueries(inputQueries!!)
+                inputQueries = null
             }
         }
     }

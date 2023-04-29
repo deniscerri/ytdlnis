@@ -120,7 +120,7 @@ class ActiveDownloadsFragment() : Fragment(), ActiveDownloadAdapter.OnItemClickL
         val logFile = fileUtil.getLogFile(requireContext(), item)
         if (logFile.exists()) {
             val intent = Intent(requireContext(), DownloadLogActivity::class.java)
-            intent.putExtra("path", logFile.absolutePath)
+            intent.putExtra("logpath", logFile.absolutePath)
             startActivity(intent)
         }
     }

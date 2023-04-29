@@ -1,9 +1,6 @@
 package com.deniscerri.ytdlnis.util
 
-import android.app.Notification
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
+import android.app.*
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -140,16 +137,22 @@ class NotificationUtil(var context: Context) {
                 intent.action = Intent.ACTION_VIEW
                 intent.setDataAndType(uri, "*/*")
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                val openNotificationPendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE)
+                val openNotificationPendingIntent: PendingIntent = TaskStackBuilder.create(context).run {
+                    addNextIntentWithParentStack(intent)
+                    getPendingIntent(0,
+                        PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
+                }
 
                 //share intent
                 val shareIntent = Intent(context, SharedDownloadNotificationReceiver::class.java)
                 shareIntent.putExtra("share", "")
                 shareIntent.putExtra("path", filepath)
                 shareIntent.putExtra("notificationID", DOWNLOAD_FINISHED_NOTIFICATION_ID)
-                shareIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                val shareNotificationPendingIntent = PendingIntent.getActivity(context, 0, shareIntent, PendingIntent.FLAG_IMMUTABLE)
-
+                val shareNotificationPendingIntent: PendingIntent = TaskStackBuilder.create(context).run {
+                    addNextIntentWithParentStack(shareIntent)
+                    getPendingIntent(0,
+                        PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
+                }
 
                 notificationBuilder.addAction(0, context.getString(R.string.Open_File), openNotificationPendingIntent)
                 notificationBuilder.addAction(0, context.getString(R.string.share), shareNotificationPendingIntent)
@@ -160,31 +163,34 @@ class NotificationUtil(var context: Context) {
 
     fun createDownloadErrored(title: String?,
                                error: String?,
-                               logFilePath: String?,
+                               logFile: File?,
                                channel: String
     ) {
         val notificationBuilder = getBuilder(channel)
 
         val intent = Intent(context, DownloadLogActivity::class.java)
-        intent.putExtra("path", logFilePath)
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-        val errorPendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE)
+        intent.putExtra("logpath", logFile?.absolutePath)
 
+        val errorPendingIntent: PendingIntent = TaskStackBuilder.create(context).run {
+            addNextIntentWithParentStack(intent)
+            getPendingIntent(0,
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
+        }
         notificationBuilder
             .setContentTitle("${context.getString(R.string.failed_download)}: $title")
             .setContentText(error)
-            .setContentIntent(errorPendingIntent)
-            .setSmallIcon(R.drawable.ic_app_icon)
+            .setSmallIcon(R.drawable.ic_launcher_foreground_large)
             .setLargeIcon(
                 BitmapFactory.decodeResource(
                     context.resources,
-                    R.drawable.ic_app_icon
+                    R.drawable.ic_launcher_foreground_large
                 )
             )
             .setPriority(NotificationCompat.PRIORITY_MAX)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .clearActions()
-        if (logFilePath != null){
+        if (logFile != null){
+            notificationBuilder.setContentIntent(errorPendingIntent)
             notificationBuilder.addAction(0, context.getString(R.string.logs), errorPendingIntent)
         }
         notificationManager.notify(DOWNLOAD_FINISHED_NOTIFICATION_ID, notificationBuilder.build())

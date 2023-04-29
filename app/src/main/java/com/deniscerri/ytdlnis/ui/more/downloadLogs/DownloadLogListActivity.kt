@@ -125,7 +125,7 @@ class DownloadLogListActivity : BaseActivity(), DownloadLogsAdapter.OnItemClickL
 
     override fun onItemClick(file: File) {
         val intent = Intent(this, DownloadLogActivity::class.java)
-        intent.putExtra("path", file.absolutePath)
+        intent.putExtra("logpath", file.absolutePath)
         startActivity(intent)
     }
 

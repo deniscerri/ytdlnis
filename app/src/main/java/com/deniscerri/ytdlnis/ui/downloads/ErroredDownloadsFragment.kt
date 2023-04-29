@@ -105,7 +105,7 @@ class ErroredDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickL
         val item = items.find { it.id == itemID } ?: return
         val file = fileUtil.getLogFile(requireContext(), item)
         val intent = Intent(requireContext(), DownloadLogActivity::class.java)
-        intent.putExtra("path", file.absolutePath)
+        intent.putExtra("logpath", file.absolutePath)
         startActivity(intent)
     }
 

@@ -106,9 +106,9 @@ class DownloadMultipleBottomSheetDialog(private var results: List<ResultItem?>, 
 
 
         scheduleBtn.setOnClickListener{
-            scheduleBtn.isEnabled = false
-            download.isEnabled = false
             uiUtil.showDatePicker(parentFragmentManager) {
+                scheduleBtn.isEnabled = false
+                download.isEnabled = false
                 items.forEach { item ->
                     item.downloadStartTime = it.timeInMillis
                 }

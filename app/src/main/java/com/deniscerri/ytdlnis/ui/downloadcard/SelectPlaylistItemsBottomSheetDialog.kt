@@ -88,13 +88,13 @@ class SelectPlaylistItemsBottomSheetDialog(private val items: List<ResultItem?>,
             val end = toTextInput.editText!!.text.toString()
 
             if (checkRanges(start, end)) {
-                if (start < end){
+                if (start.toInt() < end.toInt()){
                     var startNr = Integer.parseInt(start)
                     startNr--
                     var endNr = Integer.parseInt(end)
                     endNr--
                     if (startNr <= 0) startNr = 0
-                    if (endNr > items.size) endNr = items.size
+                    if (endNr > items.size) endNr = items.size - 1
                     listAdapter.checkRange(startNr, endNr)
                     selectedText.text = "${listAdapter.getCheckedItems().size} ${resources.getString(R.string.selected)}"
                 }
@@ -108,13 +108,13 @@ class SelectPlaylistItemsBottomSheetDialog(private val items: List<ResultItem?>,
             val end = _text.toString()
 
             if (checkRanges(start, end)) {
-                if (start < end){
+                if (start.toInt() < end.toInt()){
                     var startNr = Integer.parseInt(start)
                     startNr--
                     var endNr = Integer.parseInt(end)
                     endNr--
                     if (startNr <= 0) startNr = 0
-                    if (endNr > items.size) endNr = items.size
+                    if (endNr > items.size) endNr = items.size -1
                     listAdapter.checkRange(startNr, endNr)
                     selectedText.text = "${listAdapter.getCheckedItems().size} ${resources.getString(R.string.selected)}"
                 }

@@ -7,6 +7,7 @@ import android.os.Looper
 import android.util.Log
 import android.widget.Toast
 import com.deniscerri.ytdlnis.R
+import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.models.Format
 import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.google.gson.Gson
@@ -673,6 +674,51 @@ class InfoUtil(private val context: Context) {
         Log.e("aa", items.toString())
         return items
     }
+
+    fun getMissingInfo(url: String): ResultItem? {
+        try {
+            val request = YoutubeDLRequest(url)
+            request.addOption("--flat-playlist")
+            request.addOption("-J")
+            request.addOption("--skip-download")
+            request.addOption("-R", "1")
+            request.addOption("--socket-timeout", "5")
+
+            val cookiesFile = File(context.cacheDir, "cookies.txt")
+            if (cookiesFile.exists()){
+                request.addOption("--cookies", cookiesFile.absolutePath)
+            }
+
+            val youtubeDLResponse = YoutubeDL.getInstance().execute(request)
+            val jsonObject = JSONObject(youtubeDLResponse.out)
+            val thumbs = jsonObject.getJSONArray("thumbnails")
+            val thumb = thumbs.getJSONObject(thumbs.length() - 1).getString("url")
+            val isPlaylist = jsonObject.has("playlist_count")
+            return ResultItem(
+                0,
+                url,
+                if (isPlaylist){
+                    "[${jsonObject.getInt("playlist_count")} Items] ${jsonObject.getString("title")}"
+                }else{
+                    jsonObject.getString("title")
+                },
+                jsonObject.getString("uploader"),
+                if (jsonObject.has("duration")) formatIntegerDuration(jsonObject.getInt("duration"), Locale.US) else "",
+                thumb,
+                jsonObject.getString("extractor"),
+                if (isPlaylist) jsonObject.getString("title") else "",
+                arrayListOf(),
+                System.currentTimeMillis()
+            )
+        } catch (e: Exception) {
+            Looper.prepare().run {
+                Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
+            }
+            e.printStackTrace()
+        }
+        return null
+    }
+
 
     fun getSearchSuggestions(query: String): ArrayList<String> {
         val url = "https://suggestqueries.google.com/complete/search?client=youtube&ds=yt&client=firefox&q=$query"

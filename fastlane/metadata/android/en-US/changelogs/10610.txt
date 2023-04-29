@@ -1,0 +1,11 @@
+## Introducing Quick Download Mode
+You can launch a download (or card) immediately without fetching data at first.
+
+Added Theme Picker, Accents and High Contrast Mode
+Added swipe actions on history,downloads,cookies,templates cards
+Added finished download notification with actions
+Fixed Tiktok videos not creating result cards
+Added active downloads badge in the navigation bar
+Added remove audio feature for videos
+Added check for present downloads
+Added preferred Format ID

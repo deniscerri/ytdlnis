@@ -71,7 +71,7 @@ class DownloadBottomSheetDialog(private val resultItem: ResultItem, private val 
             behavior = BottomSheetBehavior.from(view.parent as View)
             val displayMetrics = DisplayMetrics()
             requireActivity().windowManager.defaultDisplay.getMetrics(displayMetrics)
-            behavior.peekHeight = displayMetrics.heightPixels - 700
+            behavior.peekHeight = displayMetrics.heightPixels
         }
 
 
@@ -159,9 +159,9 @@ class DownloadBottomSheetDialog(private val resultItem: ResultItem, private val 
 
 
         scheduleBtn.setOnClickListener{
-            scheduleBtn.isEnabled = false
-            download.isEnabled = false
             uiUtil.showDatePicker(fragmentManager) {
+                scheduleBtn.isEnabled = false
+                download.isEnabled = false
                 val item: DownloadItem = getDownloadItem();
                 item.downloadStartTime = it.timeInMillis
                 runBlocking {
@@ -197,13 +197,13 @@ class DownloadBottomSheetDialog(private val resultItem: ResultItem, private val 
             (updateItem.parent as LinearLayout).visibility = View.VISIBLE
             updateItem.setOnClickListener {
                 if (activity is ShareActivity) {
+                    dismiss()
                     val intent = Intent(context, ShareActivity::class.java)
                     intent.action = Intent.ACTION_SEND
                     intent.type = "text/plain"
                     intent.putExtra(Intent.EXTRA_TEXT, resultItem.url)
                     intent.putExtra("quick_download", false)
                     startActivity(intent)
-                    dismiss()
                 }else{
                     dismiss()
                     val bundle = Bundle()
