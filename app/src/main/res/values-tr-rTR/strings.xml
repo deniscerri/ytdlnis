@@ -240,4 +240,8 @@
     <string name="downloaded">"İndirildi: "</string>
     <string name="finished_download_notification_channel_name">Tamamlanan İndirmeler</string>
     <string name="finished_download_notification_channel_description">Bitmiş veya hatalı indirmeler için bildirim</string>
+    <string name="preferred_format_id">Tercih Edilen Format Kimliği</string>
+    <string name="download_already_exists">İndirme zaten mevcut</string>
+    <string name="download_now">Şimdi İndir</string>
+    <string name="remove_audio">Sesi Kaldır</string>
 </resources>

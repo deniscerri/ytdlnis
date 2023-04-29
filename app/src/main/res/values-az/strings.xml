@@ -236,4 +236,8 @@
     <string name="finished_download_notification_channel_description">Bitmiş və ya nasaz yükləmələr üçün bildiriş</string>
     <string name="quick_download">Sürətli Yükləmə</string>
     <string name="quick_download_summary">Əvvəlcədən məlumat əldə etməyin</string>
+    <string name="remove_audio">Səsi Sil</string>
+    <string name="download_now">İndi Yüklə</string>
+    <string name="preferred_format_id">Üstünlük Verilən Format ID</string>
+    <string name="download_already_exists">Yükləmə artıq mövcuddur</string>
 </resources>
