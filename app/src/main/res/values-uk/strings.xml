@@ -236,4 +236,8 @@
     <string name="finished_download_notification_channel_description">Сповіщення про завершені або помилкові завантаження</string>
     <string name="quick_download">Швидке завантаження</string>
     <string name="quick_download_summary">Не завантажувати дані заздалегідь</string>
+    <string name="remove_audio">Видалити аудіо</string>
+    <string name="preferred_format_id">ID, якому надається перевага</string>
+    <string name="download_now">Завантажити зараз</string>
+    <string name="download_already_exists">Завантаження вже існує</string>
 </resources>
