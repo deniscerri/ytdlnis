@@ -236,4 +236,8 @@
     <string name="downloaded">"ডাউনলোডেড "</string>
     <string name="finished_download_notification_channel_name">ডাউনলোড সম্পন্ন</string>
     <string name="finished_download_notification_channel_description">সমাপ্ত বা ত্রুটিপূর্ণ ডাউনলোডের জন্য বিজ্ঞপ্তি</string>
+    <string name="remove_audio">অডিও সরান</string>
+    <string name="preferred_format_id">পছন্দের ফরম্যাট আইডি</string>
+    <string name="download_now">এখনই ডাউনলোড করুন</string>
+    <string name="download_already_exists">ডাউনলোড আগে থেকেই আছে</string>
 </resources>
