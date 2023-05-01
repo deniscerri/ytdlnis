@@ -25,4 +25,10 @@
     <string name="ytdl_updating_started">Se descarcă versiunea nouă…</string>
     <string name="Remove">Elimină</string>
     <string name="cancel">Anulează</string>
+    <string name="ok">OK</string>
+    <string name="confirm_delete_history_desc">Șterge întreagă istorie, permanent.</string>
+    <string name="confirm_delete_history">Confirma</string>
+    <string name="search_history_hint">Căutare din Istoric</string>
+    <string name="no_results">Fără rezultate</string>
+    <string name="more">Mai mult</string>
 </resources>
