@@ -5,6 +5,7 @@ import android.content.Context.POWER_SERVICE
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
+import android.os.Build.VERSION
 import android.os.Build.VERSION_CODES
 import android.os.Bundle
 import android.os.Environment
@@ -158,14 +159,18 @@ class SettingsFragment : PreferenceFragmentCompat() {
         version = findPreference("version")
         version!!.summary = BuildConfig.VERSION_NAME
 
-        val values = resources.getStringArray(R.array.language_values)
-        val entries = mutableListOf<String>()
-        values.forEach {
-            entries.add(Locale(it).getDisplayName(Locale(it)))
+        if(VERSION.SDK_INT < VERSION_CODES.TIRAMISU){
+            val values = resources.getStringArray(R.array.language_values)
+            val entries = mutableListOf<String>()
+            values.forEach {
+                entries.add(Locale(it).getDisplayName(Locale(it)))
+            }
+            language!!.entries = entries.toTypedArray()
+            val lang = if (values.contains(Locale.getDefault().language)) Locale.getDefault().language else "en"
+            editor.putString("app_language", lang)
+        }else{
+            language!!.isVisible = false
         }
-        language!!.entries = entries.toTypedArray()
-        val lang = if (values.contains(Locale.getDefault().language)) Locale.getDefault().language else "en"
-        editor.putString("app_language", lang)
 
         val packageName: String = requireContext().packageName
         val pm = requireContext().applicationContext.getSystemService(POWER_SERVICE) as PowerManager
@@ -239,7 +244,6 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 language!!.summary = Locale(newValue.toString()).getDisplayLanguage(Locale(newValue.toString()))
                 editor.apply()
                 AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(newValue.toString()))
-                if (Build.VERSION.SDK_INT >= VERSION_CODES.TIRAMISU) requireActivity().recreate()
                 true
             }
 

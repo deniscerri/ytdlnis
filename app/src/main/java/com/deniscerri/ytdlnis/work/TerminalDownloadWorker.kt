@@ -106,9 +106,11 @@ class TerminalDownloadWorker(
                 }, 1000)
             }
 
-            outputFile.appendText("${it.out}\n")
-            if (logDownloads && logFile.exists()){
-                logFile.appendText("${it.out}\n")
+            if (it.out.length > 5000){
+                outputFile.appendText("${it.out}\n")
+                if (logDownloads && logFile.exists()){
+                    logFile.appendText("${it.out}\n")
+                }
             }
             notificationUtil.cancelDownloadNotification(itemId)
 
