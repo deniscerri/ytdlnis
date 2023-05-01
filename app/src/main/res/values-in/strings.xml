@@ -236,4 +236,8 @@
     <string name="finished_download_notification_channel_name">Unduhan yang Selesai</string>
     <string name="finished_download_notification_channel_description">Notifikasi unduhan yang selesai atau cacat</string>
     <string name="quick_download">Unduhan Lekas</string>
+    <string name="download_already_exists">Unduhan sudah ada</string>
+    <string name="preferred_format_id">Preferensi ID Format</string>
+    <string name="download_now">Unduh Sekarang</string>
+    <string name="remove_audio">Hilangkan Audio</string>
 </resources>
