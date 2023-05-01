@@ -13,7 +13,7 @@
     <string name="updating">Đang cập nhật</string>
     <string name="ytdl_update_hint">Hữu ích nếu bạn gặp sự cố khi tải xuống</string>
     <string name="source_code">Mã nguồn</string>
-    <string name="search_hint">"Tìm  kiếm hoặc chèn URL"</string>
+    <string name="search_hint">Tìm kiếm hoặc chèn URL</string>
     <string name="failed_download">Không thể tải xuống tệp.</string>
     <string name="download_notification_channel_name">Tệp tải xuống</string>
     <string name="you_are_in_latest_version">Sử dụng phiên bản mới nhất</string>
