@@ -260,7 +260,7 @@ class MainActivity : BaseActivity() {
         if (preferences.getBoolean("update_app", false)) {
             val updateUtil = UpdateUtil(this)
             lifecycleScope.launch(Dispatchers.IO){
-                updateUtil.updateApp()
+                updateUtil.updateApp{}
             }
         }
     }

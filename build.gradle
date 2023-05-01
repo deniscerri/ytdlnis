@@ -21,7 +21,7 @@ buildscript {
         commonsIoVer = '2.5'
         // supports java 1.6
         commonsCompressVer = '1.12'
-        youtubedlAndroidVer = "7222fe9637"
+        youtubedlAndroidVer = "23b26d55f8"
         workVer = "2.8.1"
         composeVer = '1.4.2'
         kotlinVer = "1.7.21"

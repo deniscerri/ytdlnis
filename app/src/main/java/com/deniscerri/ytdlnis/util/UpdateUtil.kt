@@ -30,7 +30,7 @@ class UpdateUtil(var context: Context) {
     private val downloadManager: DownloadManager = context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
     private val ytdlpNightly = "https://api.github.com/repos/yt-dlp/yt-dlp-nightly-builds/releases/latest"
 
-    fun updateApp(): Boolean {
+    fun updateApp(result: (result: String) -> Unit) {
         try {
             if (updatingApp) {
                 Toast.makeText(
@@ -38,7 +38,6 @@ class UpdateUtil(var context: Context) {
                     context.getString(R.string.ytdl_already_updating),
                     Toast.LENGTH_LONG
                 ).show()
-                return true
             }
             val res = checkForAppUpdate()
             val version: String
@@ -46,13 +45,15 @@ class UpdateUtil(var context: Context) {
             try {
                 version = res.getString("tag_name")
                 body = res.getString("body")
-            } catch (ignored: JSONException) {
-                return false
+            } catch (e: JSONException) {
+                result(e.message.toString())
+                return
             }
             val versionNameInt = version.split("v")[1].replace(".","").toInt()
             val currentVersionNameInt = BuildConfig.VERSION_NAME.replace(".","").toInt()
             if (currentVersionNameInt >= versionNameInt) {
-                return false
+                result(context.getString(R.string.you_are_in_latest_version))
+                return
             }
             Handler(Looper.getMainLooper()).post {
                 val updateDialog = MaterialAlertDialogBuilder(context)
@@ -67,10 +68,11 @@ class UpdateUtil(var context: Context) {
                     }
                 updateDialog.show()
             }
-            return true
+            return
         }catch (e: Exception){
             e.printStackTrace()
-            return false
+            result(e.message.toString())
+            return
         }
     }
 
@@ -167,7 +169,7 @@ class UpdateUtil(var context: Context) {
 
             try {
                 YoutubeDL.getInstance().updateYoutubeDL(
-                    context, if (sharedPreferences.getBoolean("nightly_ytdl", false) ) ytdlpNightly else null
+                    context, if (sharedPreferences.getBoolean("nightly_ytdl", false) ) YoutubeDL.UpdateChannel._NIGHTLY else YoutubeDL.UpdateChannel._STABLE
                 ).apply {
                     updatingYTDL = false
                 }

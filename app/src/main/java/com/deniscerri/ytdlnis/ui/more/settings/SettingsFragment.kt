@@ -28,6 +28,7 @@ import com.deniscerri.ytdlnis.util.ThemeUtil
 import com.deniscerri.ytdlnis.util.UpdateUtil
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yausername.youtubedl_android.YoutubeDL
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 import java.io.File
@@ -697,9 +698,10 @@ class SettingsFragment : PreferenceFragmentCompat() {
 //            }
         version!!.onPreferenceClickListener =
             Preference.OnPreferenceClickListener {
-                if (!updateUtil!!.updateApp()) {
-                    Toast.makeText(context, R.string.you_are_in_latest_version, Toast.LENGTH_SHORT)
-                        .show()
+                lifecycleScope.launch(Dispatchers.IO){
+                    updateUtil!!.updateApp(){ msg ->
+                        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+                    }
                 }
                 true
             }
