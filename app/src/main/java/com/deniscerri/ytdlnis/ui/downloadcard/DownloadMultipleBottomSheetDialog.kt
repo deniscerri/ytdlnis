@@ -69,12 +69,6 @@ class DownloadMultipleBottomSheetDialog(private var results: List<ResultItem?>, 
         uiUtil = UiUtil(fileUtil)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        val behavior = BottomSheetBehavior.from(view.parent as View)
-        behavior.state = BottomSheetBehavior.STATE_EXPANDED
-    }
-
     @SuppressLint("RestrictedApi", "NotifyDataSetChanged")
     override fun setupDialog(dialog: Dialog, style: Int) {
         super.setupDialog(dialog, style)
@@ -85,7 +79,7 @@ class DownloadMultipleBottomSheetDialog(private var results: List<ResultItem?>, 
             behavior = BottomSheetBehavior.from(view.parent as View)
             val displayMetrics = DisplayMetrics()
             requireActivity().windowManager.defaultDisplay.getMetrics(displayMetrics)
-            behavior.peekHeight = displayMetrics.heightPixels / 2
+            behavior.state = BottomSheetBehavior.STATE_EXPANDED
         }
 
         listAdapter =

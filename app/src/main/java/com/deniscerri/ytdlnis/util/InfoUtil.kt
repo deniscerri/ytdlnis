@@ -7,16 +7,11 @@ import android.os.Looper
 import android.util.Log
 import android.widget.Toast
 import com.deniscerri.ytdlnis.R
-import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.models.Format
 import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.google.gson.Gson
-import com.google.gson.JsonArray
-import com.google.gson.JsonObject
-import com.google.gson.reflect.TypeToken
 import com.yausername.youtubedl_android.YoutubeDL
 import com.yausername.youtubedl_android.YoutubeDLRequest
-import kotlinx.serialization.json.Json
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -137,7 +132,7 @@ class InfoUtil(private val context: Context) {
                 "thumb",
                 element.getJSONArray("videoThumbnails").getJSONObject(0).getString("url")
             )
-            val v = createVideofromInvidiousJSON(element)
+            val v = createVideoFromInvidiousJSON(element)
             if (v == null || v.thumb.isEmpty()) {
                 continue
             }
@@ -225,7 +220,7 @@ class InfoUtil(private val context: Context) {
             val vids = res.getJSONArray("videos")
             for (i in 0 until vids.length()) {
                 val element = vids.getJSONObject(i)
-                val v = createVideofromInvidiousJSON(element)
+                val v = createVideoFromInvidiousJSON(element)
                 if (v == null || v.thumb.isEmpty()) continue
                 v.playlistTitle = res.getString("title")
                 items.add(v)
@@ -243,7 +238,7 @@ class InfoUtil(private val context: Context) {
             if (key!!.isEmpty()) {
                 return if (useInvidous) {
                     val res = genericRequest(invidousURL + "videos/" + id)
-                    if (res.length() == 0) getFromYTDL("https://www.youtube.com/watch?v=$id")[0] else createVideofromInvidiousJSON(
+                    if (res.length() == 0) getFromYTDL("https://www.youtube.com/watch?v=$id")[0] else createVideoFromInvidiousJSON(
                         res
                     )
                 } else {
@@ -293,7 +288,7 @@ class InfoUtil(private val context: Context) {
         return video
     }
 
-    private fun createVideofromInvidiousJSON(obj: JSONObject): ResultItem? {
+    private fun createVideoFromInvidiousJSON(obj: JSONObject): ResultItem? {
         var video: ResultItem? = null
         try {
             val id = obj.getString("videoId")
@@ -476,7 +471,7 @@ class InfoUtil(private val context: Context) {
             for (i in 0 until res.length()) {
                 val element = res.getJSONObject(i)
                 if (element.getString("type") != "video") continue
-                val v = createVideofromInvidiousJSON(element)
+                val v = createVideoFromInvidiousJSON(element)
                 if (v == null || v.thumb.isEmpty()) continue
                 v.playlistTitle = context.getString(R.string.trendingPlaylist)
                 items.add(v)
@@ -513,7 +508,7 @@ class InfoUtil(private val context: Context) {
             val id = getIDFromYoutubeURL(url)
             val res = genericRequest(invidousURL + "videos/" + id)
             if (res.length() == 0) getFromYTDL(url)[0]!!
-            else createVideofromInvidiousJSON(
+            else createVideoFromInvidiousJSON(
                 res
             )!!
         }else{
@@ -691,8 +686,29 @@ class InfoUtil(private val context: Context) {
 
             val youtubeDLResponse = YoutubeDL.getInstance().execute(request)
             val jsonObject = JSONObject(youtubeDLResponse.out)
-            val thumbs = jsonObject.getJSONArray("thumbnails")
-            val thumb = thumbs.getJSONObject(thumbs.length() - 1).getString("url")
+
+            var author: String? = ""
+            if (jsonObject.has("uploader")) {
+                author = jsonObject.getString("uploader")
+            }
+
+            var duration = ""
+            runCatching {
+                if (jsonObject.has("duration")) {
+                    duration = formatIntegerDuration(jsonObject.getInt("duration"), Locale.getDefault())
+                }
+            }
+
+            var thumb: String? = ""
+            if (jsonObject.has("thumbnail")) {
+                thumb = jsonObject.getString("thumbnail")
+            } else if (jsonObject.has("thumbnails")) {
+                val thumbs = jsonObject.getJSONArray("thumbnails")
+                if (thumbs.length() > 0){
+                    thumb = thumbs.getJSONObject(thumbs.length() - 1).getString("url")
+                }
+            }
+
             val isPlaylist = jsonObject.has("playlist_count")
             return ResultItem(
                 0,
@@ -702,9 +718,9 @@ class InfoUtil(private val context: Context) {
                 }else{
                     jsonObject.getString("title")
                 },
-                jsonObject.getString("uploader"),
-                if (jsonObject.has("duration")) formatIntegerDuration(jsonObject.getInt("duration"), Locale.US) else "",
-                thumb,
+                author!!,
+                duration,
+                thumb!!,
                 jsonObject.getString("extractor"),
                 if (isPlaylist) jsonObject.getString("title") else "",
                 arrayListOf(),

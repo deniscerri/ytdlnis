@@ -256,6 +256,13 @@ class QueuedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLi
             WorkManager.getInstance(requireContext()).cancelUniqueWork(id.toString())
             notificationUtil.cancelDownloadNotification(id)
             downloadViewModel.deleteDownload(item!!)
+
+            Snackbar.make(queuedRecyclerView, getString(R.string.cancelled) + ": " + item.title, Snackbar.LENGTH_LONG)
+                .setAction(getString(R.string.undo)) {
+                    lifecycleScope.launch(Dispatchers.IO) {
+                        downloadViewModel.queueDownloads(listOf(item))
+                    }
+                }.show()
         }
         deleteDialog.show()
     }
@@ -273,12 +280,6 @@ class QueuedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLi
                     ItemTouchHelper.LEFT -> {
                         val deletedItem = items[position]
                         removeItem(deletedItem.id)
-                        Snackbar.make(queuedRecyclerView, getString(R.string.cancelled) + ": " + deletedItem.title, Snackbar.LENGTH_LONG)
-                            .setAction(getString(R.string.undo)) {
-                                lifecycleScope.launch(Dispatchers.IO) {
-                                    downloadViewModel.queueDownloads(listOf(deletedItem))
-                                }
-                            }.show()
                     }
 
                 }

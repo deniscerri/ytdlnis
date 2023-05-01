@@ -23,6 +23,8 @@ import com.deniscerri.ytdlnis.util.NotificationUtil
 import com.yausername.youtubedl_android.YoutubeDL
 import com.yausername.youtubedl_android.YoutubeDLRequest
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import java.io.File
@@ -45,6 +47,7 @@ class DownloadWorker(
         val dao = dbManager.downloadDao
         val repository = DownloadRepository(dao)
         val historyDao = dbManager.historyDao
+        val resultDao = dbManager.resultDao
         val handler = Handler(Looper.getMainLooper())
 
 
@@ -152,7 +155,7 @@ class DownloadWorker(
                 else if (audioQualityId == context.getString(R.string.worst_quality)) audioQualityId = "worstaudio"
 
                 val ext = downloadItem.format.container
-                if (audioQualityId.isBlank() || ext == "Default" || ext == context.getString(R.string.defaultValue)) request.addOption("-x")
+                if (audioQualityId.isBlank()) request.addOption("-x")
                 else request.addOption("-f", audioQualityId)
 
                 if(ext != "webm"){
@@ -224,7 +227,7 @@ class DownloadWorker(
                 Log.e(TAG, formatArgument)
                 request.addOption("-f", formatArgument)
                 val format = downloadItem.format.container
-                if(format.isNotEmpty() && format != "Default" && format != context.getString(R.string.defaultValue)){
+                if(format.isNotEmpty()){
                     request.addOption("--merge-output-format", format)
                     if (format != "webm") {
                         val embedThumb = sharedPreferences.getBoolean("embed_thumbnail", false)
@@ -267,7 +270,7 @@ class DownloadWorker(
 
             }
         }
-
+        var wasQuickDownloaded = false
         //update item if its incomplete
         if (downloadItem.title.isEmpty() || downloadItem.author.isEmpty() || downloadItem.thumb.isEmpty()){
             runCatching {
@@ -275,10 +278,11 @@ class DownloadWorker(
                 val info = infoUtil.getMissingInfo(downloadItem.url)
                 if (downloadItem.title.isEmpty()) downloadItem.title = info?.title.toString()
                 if (downloadItem.author.isEmpty()) downloadItem.author = info?.author.toString()
-                if (downloadItem.thumb.isEmpty()) downloadItem.thumb = info?.thumb.toString()
                 downloadItem.duration = info?.duration.toString()
                 downloadItem.website = info?.website.toString()
+                if (downloadItem.thumb.isEmpty()) downloadItem.thumb = info?.thumb.toString()
                 runBlocking {
+                    wasQuickDownloaded = resultDao.getCountInt() == 0
                     dao.update(downloadItem)
                 }
             }
@@ -344,6 +348,19 @@ class DownloadWorker(
                 downloadItem.title,  if (finalPath.equals(context.getString(R.string.unfound_file))) null else finalPath,
                 NotificationUtil.DOWNLOAD_FINISHED_CHANNEL_ID
             )
+
+            if (wasQuickDownloaded){
+                runCatching {
+                    setProgressAsync(workDataOf("progress" to 100, "output" to "Creating Result Items", "id" to downloadItem.id, "log" to false))
+                    runBlocking {
+                        infoUtil.getFromYTDL(downloadItem.url).forEach { res ->
+                            if (res != null) {
+                                resultDao.insert(res)
+                            }
+                        }
+                    }
+                }
+            }
 
             runBlocking {
                 dao.delete(downloadItem.id)

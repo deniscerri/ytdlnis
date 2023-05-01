@@ -8,6 +8,7 @@ import android.content.Intent
 import android.net.Uri
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.DisplayMetrics
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
@@ -28,6 +29,7 @@ import com.deniscerri.ytdlnis.database.models.CommandTemplate
 import com.deniscerri.ytdlnis.database.models.Format
 import com.deniscerri.ytdlnis.database.models.TemplateShortcut
 import com.deniscerri.ytdlnis.database.viewmodel.CommandTemplateViewModel
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
@@ -154,6 +156,7 @@ class UiUtil(private val fileUtil: FileUtil) {
         }
 
         bottomSheet.show()
+        bottomSheet.behavior.state = BottomSheetBehavior.STATE_EXPANDED
         bottomSheet.window!!.setLayout(
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.MATCH_PARENT
@@ -195,6 +198,7 @@ class UiUtil(private val fileUtil: FileUtil) {
         }
 
         bottomSheet.show()
+        bottomSheet.behavior.state = BottomSheetBehavior.STATE_EXPANDED
         bottomSheet.window!!.setLayout(
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.MATCH_PARENT

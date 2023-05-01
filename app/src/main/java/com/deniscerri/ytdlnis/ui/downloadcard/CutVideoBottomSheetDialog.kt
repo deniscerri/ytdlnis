@@ -33,7 +33,7 @@ import com.google.android.exoplayer2.source.DefaultMediaSourceFactory
 import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.source.MergingMediaSource
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
-import com.google.android.exoplayer2.ui.PlayerView
+import com.google.android.exoplayer2.ui.StyledPlayerView
 import com.google.android.exoplayer2.util.MimeTypes
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -96,7 +96,7 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val list
     }
 
 
-    @SuppressLint("RestrictedApi")
+    @SuppressLint("RestrictedApi", "SetTextI18n")
     override fun setupDialog(dialog: Dialog, style: Int) {
         super.setupDialog(dialog, style)
         val view = LayoutInflater.from(context).inflate(R.layout.cut_video_sheet, null)
@@ -106,14 +106,14 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val list
             behavior = BottomSheetBehavior.from(view.parent as View)
             val displayMetrics = DisplayMetrics()
             requireActivity().windowManager.defaultDisplay.getMetrics(displayMetrics)
-            behavior.peekHeight = displayMetrics.heightPixels / 2
+            behavior.peekHeight = displayMetrics.heightPixels
         }
 
         val renderersFactory = DefaultRenderersFactory(requireContext().applicationContext)
             .setEnableDecoderFallback(true)
             .setExtensionRendererMode(EXTENSION_RENDERER_MODE_PREFER)
             .setMediaCodecSelector { mimeType, requiresSecureDecoder, requiresTunnelingDecoder ->
-                var decoderInfos: MutableList<MediaCodecInfo> =
+                var decoderInfo: MutableList<MediaCodecInfo> =
                     MediaCodecSelector.DEFAULT
                         .getDecoderInfos(
                             mimeType,
@@ -122,13 +122,13 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val list
                         )
                 if (MimeTypes.VIDEO_H264 == mimeType) {
                     // copy the list because MediaCodecSelector.DEFAULT returns an unmodifiable list
-                    decoderInfos = ArrayList(decoderInfos)
-                    decoderInfos.reverse()
+                    decoderInfo = ArrayList(decoderInfo)
+                    decoderInfo.reverse()
                 }
-                decoderInfos
+                decoderInfo
             }
 
-        val trackSelector = DefaultTrackSelector()
+        val trackSelector = DefaultTrackSelector(requireContext())
         val loadControl = DefaultLoadControl()
 
         player = ExoPlayer.Builder(requireContext(), renderersFactory)
@@ -136,7 +136,7 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val list
             .setLoadControl(loadControl)
             .build()
         val frame = view.findViewById<MaterialCardView>(R.id.frame_layout)
-        val videoView = view.findViewById<PlayerView>(R.id.video_view)
+        val videoView = view.findViewById<StyledPlayerView>(R.id.video_view)
         videoView.player = player
         timeSeconds = convertStringToTimestamp(item.duration)
         chapters = emptyList()
@@ -207,9 +207,9 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val list
                 progress.visibility = View.GONE
                 populateSuggestedChapters()
 
-                player.prepare()
-                player.seekTo((((rangeSlider.valueFrom.toInt() * timeSeconds) / 100) * 1000).toLong())
-                player.play()
+                player.prepare().apply {
+                    player.play()
+                }
             }catch (e: Exception){
                 progress.visibility = View.GONE
                 frame.visibility = View.GONE
@@ -253,11 +253,12 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val list
 
     }
 
+    @SuppressLint("SetTextI18n")
     private fun initCutSection(){
         fromTextInput.editText!!.setText("0:00")
         toTextInput.editText!!.setText(item.duration)
 
-        rangeSlider.addOnChangeListener { rangeSlider, value, fromUser ->
+        rangeSlider.addOnChangeListener { rangeSlider, _, _ ->
             val values = rangeSlider.values
             val startTimestamp = (values[0].toInt() * timeSeconds) / 100
             val endTimestamp = (values[1].toInt() * timeSeconds) / 100
@@ -304,9 +305,9 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val list
                     val startValueTimeStampSeconds = (startValue.toInt() * timeSeconds) / 100
                     fromTextInput.editText!!.setText(infoUtil.formatIntegerDuration(startValueTimeStampSeconds, Locale.US))
 
-                    return true;
+                    return true
                 }
-                return false;
+                return false
             }
         })
 
@@ -336,9 +337,9 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val list
                     val endValueTimeStampSeconds = (endValue.toInt() * timeSeconds) / 100
                     toTextInput.editText!!.setText(infoUtil.formatIntegerDuration(endValueTimeStampSeconds, Locale.US))
 
-                    return true;
+                    return true
                 }
-                return false;
+                return false
             }
         })
 
@@ -409,7 +410,7 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val list
 
         if (item.downloadSections.isNotBlank()){
             chipGroup.removeAllViews()
-            item.downloadSections.split(";").forEachIndexed { index, it ->
+            item.downloadSections.split(";").forEachIndexed { _, it ->
                 if (it.isBlank()) return
                 if (it.contains(":")) createChip(it.replace(";", ""))
                 else createChapterChip(ChapterItem(0, 0, it), null)
@@ -436,7 +437,7 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val list
             if (chip.isChecked) {
                 rangeSlider.setValues(startingValue.toFloat(), endingValue.toFloat())
                 player.prepare()
-                player.seekTo((((startingValue * timeSeconds) / 100) * 1000).toLong())
+                player.seekTo((startTimestamp * 1000).toLong())
                 player.play()
             }else {
                 player.seekTo(0)

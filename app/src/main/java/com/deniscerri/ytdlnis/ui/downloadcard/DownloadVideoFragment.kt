@@ -178,8 +178,10 @@ class DownloadVideoFragment(private val resultItem: ResultItem, private var curr
                         containers
                     )
                 )
-                downloadItem.format.container = containerPreference!!
-                containerAutoCompleteTextView!!.setText(downloadItem.format.container, false)
+                downloadItem.format.container = if (containerPreference == getString(R.string.defaultValue)) "" else containerPreference!!
+                containerAutoCompleteTextView!!.setText(
+                    downloadItem.format.container.ifEmpty { getString(R.string.defaultValue) },
+                    false)
 
                 (container!!.editText as AutoCompleteTextView?)!!.onItemClickListener =
                     AdapterView.OnItemClickListener { _: AdapterView<*>?, _: View?, index: Int, _: Long ->

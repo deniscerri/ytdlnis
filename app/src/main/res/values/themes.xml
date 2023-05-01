@@ -1,11 +1,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-
     <style name="BaseTheme" parent="Theme.Material3.Light.NoActionBar">
         <item name="android:windowLightStatusBar">?attr/isLightTheme</item>
-        <item name="android:navigationBarColor">@android:color/transparent</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="windowActionModeOverlay">true</item>
         <item name="alertDialogTheme">@style/ThemeOverlay.Material3.MaterialAlertDialog</item>
         <item name="dialogCornerRadius">28dp</item>
         <item name="switchPreferenceCompatStyle">@style/Preference.SwitchPreferenceCompat.Material3</item>

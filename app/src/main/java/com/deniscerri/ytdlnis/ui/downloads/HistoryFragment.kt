@@ -358,6 +358,7 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
         //val websites = historyRecyclerViewAdapter!!.websites
         for (i in websites.indices) {
             val w = websites[i]
+            if (w == "null" || w.isEmpty()) continue
             val tmp = layoutinflater!!.inflate(R.layout.filter_chip, websiteGroup, false) as Chip
             tmp.text = w
             tmp.id = i

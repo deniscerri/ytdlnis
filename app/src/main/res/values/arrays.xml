@@ -11,7 +11,7 @@
     </string-array>
 
     <string-array name="audio_containers_values">
-        <item>Default</item>
+        <item />
         <item>mp3</item>
         <item>m4a</item>
         <item>aac</item>
@@ -29,7 +29,7 @@
     </string-array>
 
     <string-array name="video_containers_values">
-        <item>Default</item>
+        <item />
         <item>mp4</item>
         <item>mkv</item>
         <item>webm</item>
@@ -96,6 +96,7 @@
         <item>tr</item>
         <item>uk</item>
         <item>vi</item>
+        <item>zh</item>
     </string-array>
 
 

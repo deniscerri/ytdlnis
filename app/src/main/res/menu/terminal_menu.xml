@@ -15,5 +15,5 @@
         android:id="@+id/folder"
         android:title="@string/command_directory"
         android:icon="@drawable/baseline_folder_24"
-        app:showAsAction="collapseActionView|ifRoom"/>
+        app:showAsAction="ifRoom"/>
 </menu>

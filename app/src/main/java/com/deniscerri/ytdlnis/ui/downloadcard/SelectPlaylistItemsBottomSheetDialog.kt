@@ -45,12 +45,6 @@ class SelectPlaylistItemsBottomSheetDialog(private val items: List<ResultItem?>,
         resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        val behavior = BottomSheetBehavior.from(view.parent as View)
-        behavior.state = BottomSheetBehavior.STATE_EXPANDED
-    }
-
     @SuppressLint("RestrictedApi")
     override fun setupDialog(dialog: Dialog, style: Int) {
         super.setupDialog(dialog, style)
@@ -61,7 +55,7 @@ class SelectPlaylistItemsBottomSheetDialog(private val items: List<ResultItem?>,
             behavior = BottomSheetBehavior.from(view.parent as View)
             val displayMetrics = DisplayMetrics()
             requireActivity().windowManager.defaultDisplay.getMetrics(displayMetrics)
-            behavior.peekHeight = displayMetrics.heightPixels / 2
+            behavior.state = BottomSheetBehavior.STATE_EXPANDED
         }
 
         listAdapter =
