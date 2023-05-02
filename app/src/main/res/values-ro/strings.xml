@@ -31,4 +31,10 @@
     <string name="search_history_hint">Căutare din Istoric</string>
     <string name="no_results">Fără rezultate</string>
     <string name="more">Mai mult</string>
+    <string name="remove_results">Șterge Rezultăți</string>
+    <string name="update_app">Căutați actualizări</string>
+    <string name="version">Versiune</string>
+    <string name="command_directory">Dosar de comandă personalizat</string>
+    <string name="couldnt_find_apk">Nu s-a putut găsi un APK potrivit.</string>
+    <string name="downloading_update">Se descarcă versiunea nouă…</string>
 </resources>
