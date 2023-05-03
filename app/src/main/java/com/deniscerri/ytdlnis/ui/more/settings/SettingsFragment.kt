@@ -9,6 +9,7 @@ import android.os.Build.VERSION
 import android.os.Build.VERSION_CODES
 import android.os.Bundle
 import android.os.Environment
+import android.os.Looper
 import android.os.PowerManager
 import android.provider.Settings
 import android.widget.Toast
@@ -30,6 +31,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yausername.youtubedl_android.YoutubeDL
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
 import java.io.File
 import java.util.*
@@ -55,6 +57,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
     private var meteredNetwork: SwitchPreferenceCompat? = null
     private var apiKey: EditTextPreference? = null
     private var homeRecommendations: SwitchPreferenceCompat? = null
+    private var locale: ListPreference? = null
     private var concurrentFragments: SeekBarPreference? = null
     private var concurrentDownloads: SeekBarPreference? = null
     private var limitRate: EditTextPreference? = null
@@ -129,6 +132,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         meteredNetwork = findPreference("metered_networks")
         apiKey = findPreference("api_key")
         homeRecommendations = findPreference("home_recommendations")
+        locale = findPreference("locale")
         concurrentFragments = findPreference("concurrent_fragments")
         concurrentDownloads = findPreference("concurrent_downloads")
         limitRate = findPreference("limit_rate")
@@ -207,6 +211,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         editor.putBoolean("metered_networks", meteredNetwork!!.isChecked)
         editor.putString("api_key", apiKey!!.text)
         editor.putBoolean("home_recommendations", homeRecommendations!!.isChecked)
+        editor.putString("locale", locale!!.value)
         editor.putInt("concurrent_fragments", concurrentFragments!!.value)
         editor.putInt("concurrent_downloads", concurrentDownloads!!.value)
         editor.putString("limit_rate", limitRate!!.text)
@@ -417,6 +422,14 @@ class SettingsFragment : PreferenceFragmentCompat() {
             Preference.OnPreferenceChangeListener { _: Preference?, newValue: Any ->
                 val enable = newValue as Boolean
                 editor.putBoolean("home_recommendations", enable)
+                editor.apply()
+                true
+            }
+        locale!!.summary = locale!!.value
+        locale!!.onPreferenceChangeListener =
+            Preference.OnPreferenceChangeListener { _: Preference?, newValue: Any ->
+                editor.putString("locale", newValue.toString())
+                locale!!.summary = newValue.toString()
                 editor.apply()
                 true
             }
@@ -698,10 +711,15 @@ class SettingsFragment : PreferenceFragmentCompat() {
 //            }
         version!!.onPreferenceClickListener =
             Preference.OnPreferenceClickListener {
-                lifecycleScope.launch(Dispatchers.IO){
-                    updateUtil!!.updateApp(){ msg ->
-                        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+                lifecycleScope.launch{
+                    withContext(Dispatchers.IO){
+                        updateUtil!!.updateApp{ msg ->
+                            lifecycleScope.launch(Dispatchers.Main){
+                                Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+                            }
+                        }
                     }
+
                 }
                 true
             }

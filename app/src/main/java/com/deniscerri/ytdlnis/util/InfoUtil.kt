@@ -35,6 +35,7 @@ class InfoUtil(private val context: Context) {
             sharedPreferences =
                 context.getSharedPreferences("root_preferences", Activity.MODE_PRIVATE)
             key = sharedPreferences.getString("api_key", "")
+            countryCODE = sharedPreferences.getString("locale", "")!!
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -42,7 +43,7 @@ class InfoUtil(private val context: Context) {
     }
 
     private fun init(){
-        if (countryCODE == null){
+        if (countryCODE.isEmpty()){
             val country = genericRequest("https://ipwho.is/")
             countryCODE = try {
                 country.getString("country_code")
@@ -843,6 +844,6 @@ class InfoUtil(private val context: Context) {
     companion object {
         private const val TAG = "API MANAGER"
         private const val invidousURL = "https://invidious.nerdvpn.de/api/v1/"
-        private var countryCODE: String? = null
+        private var countryCODE: String = ""
     }
 }

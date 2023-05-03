@@ -106,7 +106,7 @@ class TerminalDownloadWorker(
                 }, 1000)
             }
 
-            if (it.out.length > 5000){
+            if (it.out.length > 500){
                 outputFile.appendText("${it.out}\n")
                 if (logDownloads && logFile.exists()){
                     logFile.appendText("${it.out}\n")

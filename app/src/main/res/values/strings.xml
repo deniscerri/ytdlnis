@@ -247,4 +247,5 @@
     <string name="preferred_format_id">Preferred Format ID</string>
     <string name="download_now">Download Now</string>
     <string name="download_already_exists">Download already exists</string>
+    <string name="preferred_locale">Preferred Locale</string>
 </resources>

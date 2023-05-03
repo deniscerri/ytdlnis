@@ -134,12 +134,6 @@
             app:key="start_destination"
             app:title="@string/preferred_home_screen" />
 
-        <EditTextPreference
-            android:icon="@drawable/ic_key"
-            app:key="api_key"
-            app:defaultValue=""
-            app:summary="@string/api_key_summary"
-            app:title="@string/api_key" />
 
         <SwitchPreferenceCompat
             android:widgetLayout="@layout/preferece_material_switch"
@@ -148,6 +142,22 @@
             android:key="home_recommendations"
             app:summary="@string/video_recommendations_summary"
             app:title="@string/video_recommendations" />
+
+        <ListPreference
+            android:defaultValue=""
+            android:entries="@array/countries"
+            android:entryValues="@array/countries_values"
+            app:icon="@drawable/ic_language"
+            app:dependency="home_recommendations"
+            app:key="locale"
+            app:title="@string/preferred_locale" />
+
+        <EditTextPreference
+            android:icon="@drawable/ic_key"
+            app:key="api_key"
+            app:defaultValue=""
+            app:summary="@string/api_key_summary"
+            app:title="@string/api_key" />
 
         <SeekBarPreference
             app:dependency="aria2"
