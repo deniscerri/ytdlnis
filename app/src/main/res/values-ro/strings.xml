@@ -37,4 +37,6 @@
     <string name="command_directory">Dosar de comandă personalizat</string>
     <string name="couldnt_find_apk">Nu s-a putut găsi un APK potrivit.</string>
     <string name="downloading_update">Se descarcă versiunea nouă…</string>
+    <string name="audio">Audio</string>
+    <string name="video">Video</string>
 </resources>
