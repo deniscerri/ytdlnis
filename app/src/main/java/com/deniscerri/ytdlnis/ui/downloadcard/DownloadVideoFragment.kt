@@ -264,48 +264,52 @@ class DownloadVideoFragment(private val resultItem: ResultItem, private var curr
                         getString(R.string.cancel)
                     ) { _: DialogInterface?, _: Int -> }
 
-
                     val dialog = builder.create()
                     dialog.show()
                 }
 
                 val cut = view.findViewById<Chip>(R.id.cut)
-                if (downloadItem.downloadSections.isNotBlank()) cut.text = downloadItem.downloadSections
-                val cutVideoListener = object : VideoCutListener {
+                if(downloadItem.duration.isNotEmpty()){
+                    cut.isEnabled = true
+                    if (downloadItem.downloadSections.isNotBlank()) cut.text = downloadItem.downloadSections
+                    val cutVideoListener = object : VideoCutListener {
 
-                    override fun onChangeCut(list: List<String>) {
-                        if (list.isEmpty()){
-                            downloadItem.downloadSections = ""
-                            cut.text = getString(R.string.cut)
+                        override fun onChangeCut(list: List<String>) {
+                            if (list.isEmpty()){
+                                downloadItem.downloadSections = ""
+                                cut.text = getString(R.string.cut)
 
-                            splitByChapters.isEnabled = true
-                            splitByChapters.isChecked = downloadItem.videoPreferences.splitByChapters
-                            if (splitByChapters.isChecked){
-                                addChapters.isEnabled = false
-                                addChapters.isChecked = false
+                                splitByChapters.isEnabled = true
+                                splitByChapters.isChecked = downloadItem.videoPreferences.splitByChapters
+                                if (splitByChapters.isChecked){
+                                    addChapters.isEnabled = false
+                                    addChapters.isChecked = false
+                                }else{
+                                    addChapters.isEnabled = true
+                                }
                             }else{
+                                var value = ""
+                                list.forEach {
+                                    value += "$it;"
+                                }
+                                downloadItem.downloadSections = value
+                                cut.text = value.dropLast(1)
+
+                                splitByChapters.isEnabled = false
+                                splitByChapters.isChecked = false
                                 addChapters.isEnabled = true
                             }
-                        }else{
-                            var value = ""
-                            list.forEach {
-                                value += "$it;"
-                            }
-                            downloadItem.downloadSections = value
-                            cut.text = value.dropLast(1)
 
-                            splitByChapters.isEnabled = false
-                            splitByChapters.isChecked = false
-                            addChapters.isEnabled = true
                         }
-
                     }
-                }
-                cut.setOnClickListener {
-                    if (parentFragmentManager.findFragmentByTag("cutVideoSheet") == null){
-                        val bottomSheet = CutVideoBottomSheetDialog(downloadItem, cutVideoListener)
-                        bottomSheet.show(parentFragmentManager, "cutVideoSheet")
+                    cut.setOnClickListener {
+                        if (parentFragmentManager.findFragmentByTag("cutVideoSheet") == null){
+                            val bottomSheet = CutVideoBottomSheetDialog(downloadItem, cutVideoListener)
+                            bottomSheet.show(parentFragmentManager, "cutVideoSheet")
+                        }
                     }
+                }else{
+                    cut.isEnabled = false
                 }
 
                 val saveSubtitles = view.findViewById<Chip>(R.id.save_subtitles)

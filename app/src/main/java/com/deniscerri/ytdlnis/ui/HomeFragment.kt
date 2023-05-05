@@ -48,6 +48,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.search.SearchBar
 import com.google.android.material.search.SearchView
+import com.google.android.material.search.SearchView.TransitionState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -206,6 +207,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
                 inputQueries = null
             }
         }
+
     }
 
     override fun onResume() {
@@ -656,7 +658,6 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
         }
         selectedObjects?.clear()
     }
-
     override fun onStop() {
         actionMode?.finish()
         super.onStop()

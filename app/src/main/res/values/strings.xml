@@ -248,4 +248,7 @@
     <string name="download_now">Download Now</string>
     <string name="download_already_exists">Download already exists</string>
     <string name="preferred_locale">Preferred Locale</string>
+    <string name="pause">Pause\n</string>
+    <string name="resume">Resume</string>
+    <string name="updating_download_data">Updating Download Item Data</string>
 </resources>

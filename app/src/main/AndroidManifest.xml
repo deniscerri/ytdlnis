@@ -172,14 +172,17 @@
         </activity>
 
         <receiver android:name=".receiver.CancelDownloadNotificationReceiver" />
+        <receiver android:name=".receiver.PauseDownloadNotificationReceiver" />
+
         <activity
-            android:name=".receiver.BlankActivity"
-            android:exported="true"
+            android:name=".receiver.ResumeActivity"
+            android:configChanges="smallestScreenSize|layoutDirection|locale|orientation|screenSize"
             android:excludeFromRecents="true"
+            android:exported="true"
             android:launchMode="singleInstance"
             android:theme="@style/Theme.BottomSheet">
             <intent-filter>
-                <action android:name="ytdlnis.BlankActivity" />
+                <action android:name="ytdlnis.ResumeActivity" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>

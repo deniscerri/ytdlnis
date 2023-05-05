@@ -108,11 +108,6 @@ class QueuedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLi
     }
 
     override fun onActionButtonClick(itemID: Long) {
-        lifecycleScope.launch{
-            withContext(Dispatchers.IO){
-                downloadViewModel.deleteDownload(downloadViewModel.getItemByID(itemID))
-            }
-        }
         removeItem(itemID)
     }
 

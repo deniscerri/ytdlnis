@@ -242,35 +242,40 @@ class DownloadAudioFragment(private var resultItem: ResultItem, private var curr
                 }
 
                 val cut = view.findViewById<Chip>(R.id.cut)
-                if (downloadItem.downloadSections.isNotBlank()) cut.text = downloadItem.downloadSections
-                val cutVideoListener = object : VideoCutListener {
-                    override fun onChangeCut(list: List<String>) {
-                        if (list.isEmpty()){
-                            downloadItem.downloadSections = ""
-                            cut.text = getString(R.string.cut)
+                if (downloadItem.duration.isNotEmpty()){
+                    cut.isEnabled = true
+                    if (downloadItem.downloadSections.isNotBlank()) cut.text = downloadItem.downloadSections
+                    val cutVideoListener = object : VideoCutListener {
+                        override fun onChangeCut(list: List<String>) {
+                            if (list.isEmpty()){
+                                downloadItem.downloadSections = ""
+                                cut.text = getString(R.string.cut)
 
-                            splitByChapters.isEnabled = true
-                            splitByChapters.isChecked = downloadItem.audioPreferences.splitByChapters
-                        }else{
-                            var value = ""
-                            list.forEach {
-                                value += "$it;"
+                                splitByChapters.isEnabled = true
+                                splitByChapters.isChecked = downloadItem.audioPreferences.splitByChapters
+                            }else{
+                                var value = ""
+                                list.forEach {
+                                    value += "$it;"
+                                }
+                                downloadItem.downloadSections = value
+                                cut.text = value.dropLast(1)
+
+                                splitByChapters.isEnabled = false
+                                splitByChapters.isChecked = false
                             }
-                            downloadItem.downloadSections = value
-                            cut.text = value.dropLast(1)
-
-                            splitByChapters.isEnabled = false
-                            splitByChapters.isChecked = false
                         }
                     }
-                }
-                cut.setOnClickListener {
-                    if (parentFragmentManager.findFragmentByTag("cutVideoSheet") == null){
-                        val bottomSheet = CutVideoBottomSheetDialog(downloadItem, cutVideoListener)
-                        bottomSheet.show(parentFragmentManager, "cutVideoSheet")
+                    cut.setOnClickListener {
+                        if (parentFragmentManager.findFragmentByTag("cutVideoSheet") == null){
+                            val bottomSheet = CutVideoBottomSheetDialog(downloadItem, cutVideoListener)
+                            bottomSheet.show(parentFragmentManager, "cutVideoSheet")
+                        }
                     }
-                }
 
+                }else{
+                    cut.isEnabled = false
+                }
             }catch (e : Exception){
                 e.printStackTrace()
             }

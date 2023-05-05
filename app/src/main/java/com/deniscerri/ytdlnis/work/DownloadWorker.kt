@@ -65,6 +65,28 @@ class DownloadWorker(
         runBlocking{
             repository.setDownloadStatus(downloadItem, DownloadRepository.Status.Active)
         }
+
+        var wasQuickDownloaded = false
+        //update item if its incomplete
+        if (downloadItem.title.isEmpty() || downloadItem.author.isEmpty() || downloadItem.thumb.isEmpty()){
+            notificationUtil.createUpdatingItemNotification(NotificationUtil.DOWNLOAD_SERVICE_CHANNEL_ID);
+
+            runCatching {
+                setProgressAsync(workDataOf("progress" to 0, "output" to context.getString(R.string.updating_download_data), "id" to downloadItem.id, "log" to false))
+                val info = infoUtil.getMissingInfo(downloadItem.url)
+                if (downloadItem.title.isEmpty()) downloadItem.title = info?.title.toString()
+                if (downloadItem.author.isEmpty()) downloadItem.author = info?.author.toString()
+                downloadItem.duration = info?.duration.toString()
+                downloadItem.website = info?.website.toString()
+                if (downloadItem.thumb.isEmpty()) downloadItem.thumb = info?.thumb.toString()
+                runBlocking {
+                    wasQuickDownloaded = resultDao.getCountInt() == 0
+                    dao.update(downloadItem)
+                }
+            }
+            notificationUtil.cancelDownloadNotification(NotificationUtil.DOWNLOAD_UPDATING_NOTIFICATION_ID)
+        }
+
         val intent = Intent(context, MainActivity::class.java)
         val pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE)
         val notification = notificationUtil.createDownloadServiceNotification(pendingIntent, downloadItem.title, downloadItem.id.toInt(), NotificationUtil.DOWNLOAD_SERVICE_CHANNEL_ID)
@@ -270,23 +292,6 @@ class DownloadWorker(
 
             }
         }
-        var wasQuickDownloaded = false
-        //update item if its incomplete
-        if (downloadItem.title.isEmpty() || downloadItem.author.isEmpty() || downloadItem.thumb.isEmpty()){
-            runCatching {
-                setProgressAsync(workDataOf("progress" to 0, "output" to "Updating Download Item Data", "id" to downloadItem.id, "log" to false))
-                val info = infoUtil.getMissingInfo(downloadItem.url)
-                if (downloadItem.title.isEmpty()) downloadItem.title = info?.title.toString()
-                if (downloadItem.author.isEmpty()) downloadItem.author = info?.author.toString()
-                downloadItem.duration = info?.duration.toString()
-                downloadItem.website = info?.website.toString()
-                if (downloadItem.thumb.isEmpty()) downloadItem.thumb = info?.thumb.toString()
-                runBlocking {
-                    wasQuickDownloaded = resultDao.getCountInt() == 0
-                    dao.update(downloadItem)
-                }
-            }
-        }
 
         val logDownloads = sharedPreferences.getBoolean("log_downloads", false) && !sharedPreferences.getBoolean("incognito", false)
         val logFolder = File(context.filesDir.absolutePath + "/logs")
@@ -299,7 +304,8 @@ class DownloadWorker(
                     "Title: ${downloadItem.title}\n" +
                     "URL: ${downloadItem.url}\n" +
                     "Type: ${downloadItem.type}\n" +
-                    "Format: ${downloadItem.format}\n\n")
+                    "Format: ${downloadItem.format}\n\n" +
+                    "Command: ${java.lang.String.join(" ", request.buildCommand())}\n\n")
         }
 
         runCatching {
