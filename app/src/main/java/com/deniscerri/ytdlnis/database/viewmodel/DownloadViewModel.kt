@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
+import androidx.preference.PreferenceManager
 import androidx.work.*
 import com.deniscerri.ytdlnis.App
 import com.deniscerri.ytdlnis.R
@@ -48,8 +49,7 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
     init {
         val dao = DBManager.getInstance(application).downloadDao
         repository = DownloadRepository(dao)
-        sharedPreferences =
-            getApplication<App>().getSharedPreferences("root_preferences", Activity.MODE_PRIVATE)
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(application)
         commandTemplateDao = DBManager.getInstance(application).commandTemplateDao
 
         allDownloads = repository.allDownloads

@@ -8,6 +8,7 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.widget.Toast
+import androidx.preference.PreferenceManager
 import androidx.work.*
 import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
@@ -103,9 +104,7 @@ class DownloadWorker(
         tempFileDir.delete()
         tempFileDir.mkdirs()
 
-        val sharedPreferences = context.getSharedPreferences("root_preferences",
-            Service.MODE_PRIVATE
-        )
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
         val aria2 = sharedPreferences.getBoolean("aria2", false)
         if (aria2) {
             request.addOption("--downloader", "libaria2c.so")

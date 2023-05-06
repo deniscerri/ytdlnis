@@ -25,6 +25,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.preference.PreferenceManager
 import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.DownloadItem
@@ -81,7 +82,7 @@ class ShareActivity : BaseActivity() {
         resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
         cookieViewModel = ViewModelProvider(this)[CookieViewModel::class.java]
-        sharedPreferences = getSharedPreferences("root_preferences", Activity.MODE_PRIVATE)
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
 
         cookieViewModel.updateCookiesFile()
         val intent = intent

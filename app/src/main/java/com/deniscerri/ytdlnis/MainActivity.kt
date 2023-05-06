@@ -1,7 +1,6 @@
 package com.deniscerri.ytdlnis
 
 import android.Manifest
-import android.app.Activity
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -18,6 +17,7 @@ import android.view.View
 import android.view.WindowInsets
 import android.widget.CheckBox
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.forEach
@@ -26,6 +26,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
+import androidx.preference.PreferenceManager
 import com.deniscerri.ytdlnis.database.viewmodel.CookieViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.ResultViewModel
@@ -69,7 +70,7 @@ class MainActivity : BaseActivity() {
         resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]
         cookieViewModel = ViewModelProvider(this)[CookieViewModel::class.java]
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
-        preferences = context.getSharedPreferences("root_preferences", MODE_PRIVATE)
+        preferences = PreferenceManager.getDefaultSharedPreferences(context)
 
         if (preferences.getBoolean("incognito", false)){
             resultViewModel.deleteAll()
@@ -98,7 +99,7 @@ class MainActivity : BaseActivity() {
             }
         }
 
-        val sharedPreferences = getSharedPreferences("root_preferences", Activity.MODE_PRIVATE)
+        val sharedPreferences =  PreferenceManager.getDefaultSharedPreferences(this)
 
         val startDestination = sharedPreferences.getString("start_destination", "")
         val graph = navController.navInflater.inflate(R.navigation.nav_graph)
@@ -154,7 +155,7 @@ class MainActivity : BaseActivity() {
                     val dialogView = layoutInflater.inflate(R.layout.dialog_terminate_app, null)
                     val checkbox = dialogView.findViewById<CheckBox>(R.id.doNotShowAgain)
                     terminateDialog.setView(dialogView)
-                    checkbox.setOnCheckedChangeListener { compoundButton, b ->
+                    checkbox.setOnCheckedChangeListener { compoundButton, _ ->
                         doNotShowAgain = compoundButton.isChecked
                     }
 
@@ -177,14 +178,6 @@ class MainActivity : BaseActivity() {
         cookieViewModel.updateCookiesFile()
         val intent = intent
         handleIntents(intent)
-    }
-
-    fun hideNav() {
-        navigationView.visibility = View.GONE
-    }
-
-    fun showNav() {
-        navigationView.visibility = View.VISIBLE
     }
 
     fun disableBottomNavigation(){
@@ -272,8 +265,10 @@ class MainActivity : BaseActivity() {
                 permissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
             }
         }
-        if (!checkNotificationPermission()){
-            permissions.add(Manifest.permission.POST_NOTIFICATIONS)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (!checkNotificationPermission()){
+                permissions.add(Manifest.permission.POST_NOTIFICATIONS)
+            }
         }
 
         if (permissions.isNotEmpty()){
@@ -329,6 +324,7 @@ class MainActivity : BaseActivity() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     private fun checkNotificationPermission(): Boolean {
         return (ActivityCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
                 == PackageManager.PERMISSION_GRANTED)

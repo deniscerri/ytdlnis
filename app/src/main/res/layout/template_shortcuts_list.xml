@@ -44,29 +44,22 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <ScrollView
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
+            android:padding="15dp"
             android:layout_height="wrap_content">
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/shortcutsChipGroup"
+                android:layout_width="wrap_content"
+                app:chipSpacingVertical="-10dp"
+                app:chipSpacing="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="15dp">
+                app:singleLine="false">
 
-                <com.google.android.material.chip.ChipGroup
-                    android:id="@+id/shortcutsChipGroup"
-                    android:layout_width="wrap_content"
-                    app:chipSpacingVertical="-10dp"
-                    app:chipSpacing="0dp"
-                    android:layout_height="wrap_content"
-                    app:singleLine="false">
+            </com.google.android.material.chip.ChipGroup>
 
-                </com.google.android.material.chip.ChipGroup>
-
-            </LinearLayout>
-
-        </ScrollView>
+        </androidx.core.widget.NestedScrollView>
 
     </LinearLayout>
 

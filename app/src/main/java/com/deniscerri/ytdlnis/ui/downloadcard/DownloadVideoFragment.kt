@@ -21,6 +21,7 @@ import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.preference.PreferenceManager
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.models.Format
@@ -86,7 +87,7 @@ class DownloadVideoFragment(private val resultItem: ResultItem, private var curr
                 }
             }
 
-            val sharedPreferences = requireContext().getSharedPreferences("root_preferences", Activity.MODE_PRIVATE)
+            val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
             try {
                 title = view.findViewById(R.id.title_textinput)
                 title.editText!!.setText(downloadItem.title)

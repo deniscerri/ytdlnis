@@ -7,8 +7,10 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import android.widget.RelativeLayout
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doOnTextChanged
@@ -29,6 +31,7 @@ import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.chip.Chip
 import com.google.android.material.color.MaterialColors
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -42,6 +45,7 @@ class CookiesActivity : BaseActivity(), CookieAdapter.OnItemClickListener {
     private lateinit var cookiesViewModel: CookieViewModel
     private lateinit var uiUtil: UiUtil
     private lateinit var cookiesList: List<CookieItem>
+    private lateinit var noResults : RelativeLayout
     var context: Context? = null
 
     public override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,6 +56,7 @@ class CookiesActivity : BaseActivity(), CookieAdapter.OnItemClickListener {
         topAppBar = findViewById(R.id.logs_toolbar)
         topAppBar.setNavigationOnClickListener { onBackPressedDispatcher.onBackPressed() }
         cookiesList = listOf()
+        noResults = findViewById(R.id.no_results)
 
         listAdapter =
             CookieAdapter(
@@ -68,6 +73,8 @@ class CookiesActivity : BaseActivity(), CookieAdapter.OnItemClickListener {
 
         cookiesViewModel = ViewModelProvider(this)[CookieViewModel::class.java]
         cookiesViewModel.items.observe(this) {
+            if (it.isEmpty()) noResults.visibility = View.VISIBLE
+            else noResults.visibility = View.GONE
             cookiesList = it
             listAdapter.submitList(it)
         }
@@ -98,6 +105,7 @@ class CookiesActivity : BaseActivity(), CookieAdapter.OnItemClickListener {
                 }
                 R.id.export_clipboard -> {
                     cookiesViewModel.exportToClipboard()
+                    Snackbar.make(recyclerView, getString(R.string.copied_to_clipboard), Snackbar.LENGTH_LONG).show()
                 }
             }
             true

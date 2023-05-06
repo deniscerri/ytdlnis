@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.preference.PreferenceManager
 import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.ui.downloads.DownloadQueueActivity
@@ -42,7 +43,7 @@ class MoreFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        mainSharedPreferences = requireContext().getSharedPreferences("root_preferences", Activity.MODE_PRIVATE)
+        mainSharedPreferences =  PreferenceManager.getDefaultSharedPreferences(requireContext())
         mainSharedPreferencesEditor = mainSharedPreferences.edit()
         terminal = view.findViewById(R.id.terminal)
         logs = view.findViewById(R.id.logs)

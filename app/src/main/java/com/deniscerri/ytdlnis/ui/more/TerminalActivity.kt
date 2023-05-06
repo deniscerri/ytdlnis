@@ -23,6 +23,7 @@ import androidx.core.view.forEach
 import androidx.core.view.get
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.preference.PreferenceManager
 import androidx.work.*
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.viewmodel.CommandTemplateViewModel
@@ -80,7 +81,7 @@ class TerminalActivity : BaseActivity() {
         topAppBar!!.setNavigationOnClickListener { onBackPressedDispatcher.onBackPressed() }
 
         commandTemplateViewModel = ViewModelProvider(this)[CommandTemplateViewModel::class.java]
-        sharedPreferences = getSharedPreferences("root_preferences", Activity.MODE_PRIVATE)
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
 
 
         bottomAppBar = findViewById(R.id.bottomAppBar)

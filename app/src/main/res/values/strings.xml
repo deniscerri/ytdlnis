@@ -253,4 +253,6 @@
     <string name="updating_download_data">Updating Download Item Data</string>
     <string name="keep_cache">Keep Cache</string>
     <string name="keep_cache_summary">Don\'t delete temporary files after the download is finished</string>
+    <string name="backup">Backup</string>
+    <string name="restore">Restore</string>
 </resources>

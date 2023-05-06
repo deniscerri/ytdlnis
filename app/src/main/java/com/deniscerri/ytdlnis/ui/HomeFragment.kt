@@ -25,6 +25,7 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdlnis.MainActivity
@@ -48,14 +49,13 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.search.SearchBar
 import com.google.android.material.search.SearchView
-import com.google.android.material.search.SearchView.TransitionState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.*
 
 
-class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickListener {
+class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListener {
     private var inputQueries: MutableList<String>? = null
     private var homeAdapter: HomeAdapter? = null
 
@@ -120,13 +120,13 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
         resultsList = mutableListOf()
         selectedObjects = ArrayList()
 
-        sharedPreferences = requireContext().getSharedPreferences("root_preferences", Activity.MODE_PRIVATE)
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
 
         //initViews
         shimmerCards = view.findViewById(R.id.shimmer_results_framelayout)
         searchBar = view.findViewById(R.id.search_bar)
         searchView = view.findViewById(R.id.search_view)
-        linkYouCopied = searchView?.findViewById<ConstraintLayout>(R.id.link_you_copied)
+        linkYouCopied = searchView?.findViewById(R.id.link_you_copied)
         appBarLayout = view.findViewById(R.id.home_appbarlayout)
         queriesChipGroup = view.findViewById(R.id.queries)
         searchSuggestions = view.findViewById(R.id.search_suggestions_scroll_view)
@@ -279,12 +279,10 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
             updateSearchViewItems(it, linkYouCopied)
         }
 
-        searchView!!.editText.setOnTouchListener(OnTouchListener { v, event ->
+        searchView!!.editText.setOnTouchListener(OnTouchListener { _, event ->
             try{
                 val drawableLeft = 0
-                val drawableTop = 1
                 val drawableRight = 2
-                val drawableBottom = 3
                 if (event.action == MotionEvent.ACTION_UP) {
                     if (
                         (isRightToLeft && (event.x < (searchView!!.editText.left - searchView!!.editText.compoundDrawables[drawableLeft].bounds.width()))) ||
@@ -333,7 +331,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
             }
             true
         }
-        queriesChipGroup!!.addOnLayoutChangeListener { view, i, i2, i3, i4, i5, i6, i7, i8 ->
+        queriesChipGroup!!.addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ ->
             if (queriesChipGroup!!.childCount == 0) queriesConstraint.visibility = GONE
             else queriesConstraint.visibility = VISIBLE
             searchView!!.editText.setText("")
@@ -344,6 +342,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
         }
     }
 
+    @SuppressLint("InflateParams")
     private fun updateSearchViewItems(it: Editable?, linkYouCopied: View?){
         lifecycleScope.launch {
             searchSuggestionsLinearLayout!!.removeAllViews()
@@ -499,7 +498,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
         Log.e(TAG, type.toString() + " " + videoURL)
         val item = resultsList!!.find { it?.url == videoURL }
         Log.e(TAG, resultsList!![0].toString() + " " + videoURL)
-        val btn = recyclerView!!.findViewWithTag<MaterialButton>("""${item?.url}##$type""")
+        recyclerView!!.findViewWithTag<MaterialButton>("""${item?.url}##$type""")
         if (sharedPreferences!!.getBoolean("download_card", true)) {
             showSingleDownloadSheet(item!!, type!!, false)
         } else {
@@ -524,7 +523,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLi
     }
 
     override fun onCardClick(videoURL: String, add: Boolean) {
-        val item = resultsList?.find { it -> it?.url == videoURL }
+        val item = resultsList?.find { it?.url == videoURL }
         if (add) {
             selectedObjects!!.add(item!!)
             if (actionMode == null){

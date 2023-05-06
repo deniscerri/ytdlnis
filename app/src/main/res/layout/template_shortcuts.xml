@@ -44,49 +44,42 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <ScrollView
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/title"
+            android:padding="15dp"
             android:layout_width="match_parent"
+            android:paddingBottom="10dp"
+            android:layout_height="wrap_content"
+            app:endIconMode="custom"
+            app:endIconDrawable="@drawable/ic_plus"
+            android:hint="@string/create_shortcut"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:maxLines="4"
+                android:inputType="textMultiLine"
+                android:layout_height="wrap_content"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:paddingHorizontal="15dp"
+            android:scrollbars="none"
             android:layout_height="wrap_content">
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/shortcutsChipGroup"
+                android:layout_width="wrap_content"
+                app:chipSpacingVertical="-10dp"
+                app:chipSpacing="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="15dp">
+                app:singleLine="false">
 
-                <com.google.android.material.chip.ChipGroup
-                    android:id="@+id/shortcutsChipGroup"
-                    android:layout_width="wrap_content"
-                    app:chipSpacingVertical="-10dp"
-                    app:chipSpacing="0dp"
-                    android:layout_height="wrap_content"
-                    app:singleLine="false">
+            </com.google.android.material.chip.ChipGroup>
 
-                </com.google.android.material.chip.ChipGroup>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/title"
-                    android:layout_width="match_parent"
-                    android:paddingBottom="10dp"
-                    android:layout_height="wrap_content"
-                    app:endIconMode="custom"
-                    app:endIconDrawable="@drawable/ic_plus"
-                    android:hint="@string/create_shortcut"
-                    style="@style/Widget.Material3.TextInputLayout.FilledBox">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:layout_width="match_parent"
-                        android:maxLines="4"
-                        android:inputType="textMultiLine"
-                        android:layout_height="wrap_content"/>
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-
-
-            </LinearLayout>
-
-        </ScrollView>
+        </androidx.core.widget.NestedScrollView>
 
     </LinearLayout>
 

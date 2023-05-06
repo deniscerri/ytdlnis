@@ -6,6 +6,7 @@ import android.content.SharedPreferences
 import android.os.Looper
 import android.util.Log
 import android.widget.Toast
+import androidx.preference.PreferenceManager
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.Format
 import com.deniscerri.ytdlnis.database.models.ResultItem
@@ -32,8 +33,7 @@ class InfoUtil(private val context: Context) {
 
     init {
         try {
-            sharedPreferences =
-                context.getSharedPreferences("root_preferences", Activity.MODE_PRIVATE)
+            sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
             key = sharedPreferences.getString("api_key", "")
             countryCODE = sharedPreferences.getString("locale", "")!!
         } catch (e: Exception) {

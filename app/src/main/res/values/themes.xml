@@ -5,6 +5,7 @@
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="alertDialogTheme">@style/ThemeOverlay.Material3.MaterialAlertDialog</item>
         <item name="dialogCornerRadius">28dp</item>
+        <item name="android:windowLightNavigationBar" tools:ignore="NewApi">true</item>
         <item name="switchPreferenceCompatStyle">@style/Preference.SwitchPreferenceCompat.Material3</item>
         <item name="snackbarStyle">@style/snackBarStyle</item>
     </style>

@@ -383,17 +383,15 @@
 
     <PreferenceCategory android:title="@string/about">
 
-<!--        <Preference-->
-<!--            app:isPreferenceVisible="false"-->
-<!--            app:icon="@drawable/ic_clipboard"-->
-<!--            app:key="export_preferences"-->
-<!--            app:title="@string/export_from_clipboard"/>-->
+        <Preference
+            app:icon="@drawable/baseline_save_alt_24"
+            app:key="export_preferences"
+            app:title="@string/backup"/>
 
-<!--        <Preference-->
-<!--            app:isPreferenceVisible="false"-->
-<!--            app:icon="@drawable/ic_copy"-->
-<!--            app:key="import_preferences"-->
-<!--            app:title="@string/import_from_clipboard"/>-->
+        <Preference
+            app:icon="@drawable/baseline_restore_page_24"
+            app:key="import_preferences"
+            app:title="@string/restore"/>
 
         <Preference
             app:icon="@drawable/ic_discord"

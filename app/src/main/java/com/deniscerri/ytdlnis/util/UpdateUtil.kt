@@ -11,6 +11,7 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.widget.Toast
+import androidx.preference.PreferenceManager
 import com.deniscerri.ytdlnis.BuildConfig
 import com.deniscerri.ytdlnis.R
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -146,7 +147,7 @@ class UpdateUtil(var context: Context) {
     suspend fun updateYoutubeDL() : UpdateStatus? =
         withContext(Dispatchers.IO){
             val sharedPreferences =
-                context.getSharedPreferences("root_preferences", Activity.MODE_PRIVATE)
+                 PreferenceManager.getDefaultSharedPreferences(context)
             if (updatingYTDL) {
                 withContext(Dispatchers.Main){
                     Toast.makeText(
@@ -156,13 +157,6 @@ class UpdateUtil(var context: Context) {
                     ).show()
                 }
                 UpdateStatus.ALREADY_UP_TO_DATE
-            }
-            withContext(Dispatchers.Main){
-                Toast.makeText(
-                    context,
-                    context.getString(R.string.ytdl_updating_started),
-                    Toast.LENGTH_SHORT
-                ).show()
             }
             updatingYTDL = true
 

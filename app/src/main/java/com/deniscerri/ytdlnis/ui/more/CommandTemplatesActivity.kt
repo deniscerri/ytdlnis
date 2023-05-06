@@ -6,6 +6,8 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
+import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
@@ -23,6 +25,7 @@ import com.deniscerri.ytdlnis.util.UiUtil
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.chip.Chip
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -36,6 +39,7 @@ class CommandTemplatesActivity : BaseActivity(), TemplatesAdapter.OnItemClickLis
     private lateinit var commandTemplateViewModel: CommandTemplateViewModel
     private lateinit var uiUtil: UiUtil
     private lateinit var templatesList: List<CommandTemplate>
+    private lateinit var noResults: RelativeLayout
     var context: Context? = null
 
     public override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,6 +50,7 @@ class CommandTemplatesActivity : BaseActivity(), TemplatesAdapter.OnItemClickLis
 
         topAppBar = findViewById(R.id.logs_toolbar)
         topAppBar.setNavigationOnClickListener { onBackPressedDispatcher.onBackPressed() }
+        noResults = findViewById(R.id.no_results)
 
         templatesAdapter =
             TemplatesAdapter(
@@ -62,6 +67,8 @@ class CommandTemplatesActivity : BaseActivity(), TemplatesAdapter.OnItemClickLis
 
         commandTemplateViewModel = ViewModelProvider(this)[CommandTemplateViewModel::class.java]
         commandTemplateViewModel.items.observe(this) {
+            if (it.isEmpty()) noResults.visibility = View.VISIBLE
+            else noResults.visibility = View.GONE
             templatesList = it
             templatesAdapter.submitList(it)
         }
@@ -73,15 +80,18 @@ class CommandTemplatesActivity : BaseActivity(), TemplatesAdapter.OnItemClickLis
         topAppBar.setOnMenuItemClickListener { m: MenuItem ->
             val itemId = m.itemId
             if (itemId == R.id.export_clipboard) {
-                lifecycleScope.launch(Dispatchers.IO){
-                    commandTemplateViewModel.exportToClipboard()
+                lifecycleScope.launch{
+                    withContext(Dispatchers.IO){
+                        commandTemplateViewModel.exportToClipboard()
+                    }
+                    Snackbar.make(recyclerView, getString(R.string.copied_to_clipboard), Snackbar.LENGTH_LONG).show()
                 }
             }else if (itemId == R.id.import_clipboard){
                 lifecycleScope.launch{
                     withContext(Dispatchers.IO){
                         val count = commandTemplateViewModel.importFromClipboard()
                         runOnUiThread{
-                            Toast.makeText(this@CommandTemplatesActivity, "${getString(R.string.items_imported)} (${count})", Toast.LENGTH_LONG).show()
+                            Snackbar.make(recyclerView, "${getString(R.string.items_imported)} (${count})", Snackbar.LENGTH_LONG).show()
                         }
                     }
 

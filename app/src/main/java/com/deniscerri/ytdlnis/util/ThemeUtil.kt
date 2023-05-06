@@ -4,6 +4,7 @@ import android.app.Application
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.preference.PreferenceManager
 import com.deniscerri.ytdlnis.R
 import com.google.android.material.color.DynamicColors
 
@@ -11,7 +12,7 @@ import com.google.android.material.color.DynamicColors
 object ThemeUtil {
 
     fun updateTheme(activity: AppCompatActivity) {
-        val sharedPreferences = activity.getSharedPreferences("root_preferences", Application.MODE_PRIVATE)
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity)
 
         //update accent
         when (sharedPreferences.getString("theme_accent","blue")) {

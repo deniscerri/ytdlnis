@@ -8,6 +8,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import androidx.preference.PreferenceManager
 import com.deniscerri.ytdlnis.App
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.DBManager
@@ -37,7 +38,7 @@ class ResultViewModel(application: Application) : AndroidViewModel(application) 
         items = repository.allResults
         loadingItems.postValue(false)
         itemCount = repository.itemCount
-        sharedPreferences = application.getSharedPreferences("root_preferences", Activity.MODE_PRIVATE)
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(application)
     }
 
     fun checkTrending() = viewModelScope.launch(Dispatchers.IO){

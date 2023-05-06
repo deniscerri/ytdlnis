@@ -18,6 +18,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
+import androidx.preference.PreferenceManager
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.models.Format
@@ -56,7 +57,7 @@ class FormatSelectionBottomSheetDialog(private val items: List<DownloadItem?>, p
         infoUtil = InfoUtil(requireActivity().applicationContext)
         formatCollection = mutableListOf()
         chosenFormats = listOf()
-        sharedPreferences = requireContext().getSharedPreferences("root_preferences", Activity.MODE_PRIVATE)
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
     }
 
 
