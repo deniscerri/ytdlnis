@@ -93,20 +93,18 @@ class TerminalDownloadWorker(
             }
         }.onSuccess {
             //move file from internal to set download directory
-            var finalPath : String?
             try {
-                finalPath = moveFile(tempFileDir.absoluteFile, downloadLocation!!){ progress ->
-                    setProgressAsync(workDataOf("progress" to progress))
+                fileUtil.moveFile(tempFileDir.absoluteFile,context, downloadLocation!!, false){ p ->
+                    setProgressAsync(workDataOf("progress" to p))
                 }
             }catch (e: Exception){
-                finalPath = context.getString(R.string.unfound_file)
                 e.printStackTrace()
                 handler.postDelayed({
                     Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
                 }, 1000)
             }
 
-            if (it.out.length > 500){
+            if (it.out.length > 200){
                 outputFile.appendText("${it.out}\n")
                 if (logDownloads && logFile.exists()){
                     logFile.appendText("${it.out}\n")
@@ -136,15 +134,6 @@ class TerminalDownloadWorker(
     override fun onStopped() {
         YoutubeDL.getInstance().destroyProcessById(DownloadWorker.itemId.toInt().toString())
         super.onStopped()
-    }
-
-    @Throws(Exception::class)
-    private fun moveFile(originDir: File, downLocation: String, progress: (progress: Int) -> Unit) : String{
-        val fileUtil = FileUtil()
-        val path = fileUtil.moveFile(originDir, context, downLocation){ p ->
-            progress(p)
-        }
-        return path
     }
 
     companion object {

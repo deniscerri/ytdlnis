@@ -170,6 +170,12 @@ class DownloadWorker(
             request.addOption("--cookies", cookiesFile.absolutePath)
         }
 
+        val keepCache = sharedPreferences.getBoolean("keep_cache", false)
+        if(keepCache){
+            request.addOption("--part")
+            request.addOption("--keep-fragments")
+        }
+
         when(type){
             DownloadViewModel.Type.audio -> {
                 var audioQualityId : String = downloadItem.format.format_id
@@ -177,25 +183,15 @@ class DownloadWorker(
                 else if (audioQualityId == context.getString(R.string.worst_quality)) audioQualityId = "worstaudio"
 
                 val ext = downloadItem.format.container
-                if (audioQualityId.isBlank()) request.addOption("-x")
-                else request.addOption("-f", audioQualityId)
+                if (audioQualityId.isNotBlank()) request.addOption("-f", audioQualityId)
+                request.addOption("-x")
 
-                if(ext != "webm"){
-                    val codec = when(downloadItem.format.container){
-                        "aac" -> "aac"
-                        "mp3" -> "libmp3lame"
-                        "flac" -> "flac"
-                        "opus" -> "libopus"
-                        else -> ""
-                    }
-                    Log.e("aa", codec)
-                    if (codec.isEmpty()){
-                        request.addOption("-x")
-                    }else{
-                        request.addOption("--remux-video", ext)
-                        request.addOption("--ppa", "VideoRemuxer:-vn -c:a $codec")
+                if(ext.isNotBlank()){
+                    if(!ext.matches("(webm)|(Default)|(${context.getString(R.string.defaultValue)})".toRegex())){
+                        request.addOption("--audio-format", downloadItem.format.container)
                     }
                 }
+
 
                 request.addOption("--embed-metadata")
 
@@ -203,7 +199,7 @@ class DownloadWorker(
                     request.addOption("--embed-thumbnail")
                     request.addOption("--convert-thumbnails", "jpg")
                     try {
-                        val config = File(context.cacheDir.absolutePath + "/downloads/config" + downloadItem.title + "##" + downloadItem.format.format_id + ".txt")
+                        val config = File(context.cacheDir.absolutePath + "/downloads/${downloadItem.id}/config" + downloadItem.title + "##" + downloadItem.format.format_id + ".txt")
                         val configData = "--ppa \"ffmpeg: -c:v mjpeg -vf crop=\\\"'if(gt(ih,iw),iw,ih)':'if(gt(iw,ih),ih,iw)'\\\"\""
                         config.writeText(configData)
                         request.addOption("--ppa", "ThumbnailsConvertor:-qmin 1 -q:v 1")
@@ -326,8 +322,8 @@ class DownloadWorker(
             setProgressAsync(workDataOf("progress" to 100, "output" to "Moving file to ${fileUtil.formatPath(downloadLocation)}", "id" to downloadItem.id, "log" to logDownloads))
             var finalPath : String?
             try {
-                finalPath = moveFile(tempFileDir.absoluteFile, downloadLocation){ progress ->
-                    setProgressAsync(workDataOf("progress" to progress, "output" to "Moving file to ${fileUtil.formatPath(downloadLocation)}", "id" to downloadItem.id, "log" to logDownloads))
+                finalPath = fileUtil.moveFile(tempFileDir.absoluteFile,context, downloadLocation, keepCache){ p ->
+                    setProgressAsync(workDataOf("progress" to p, "output" to "Moving file to ${fileUtil.formatPath(downloadLocation)}", "id" to downloadItem.id, "log" to logDownloads))
                 }
                 setProgressAsync(workDataOf("progress" to 100, "output" to "Moved file to $finalPath", "id" to downloadItem.id, "log" to logDownloads))
             }catch (e: Exception){
@@ -343,7 +339,7 @@ class DownloadWorker(
                 val unixtime = System.currentTimeMillis() / 1000
                 val file = File(finalPath!!)
                 downloadItem.format.filesize = if (file.exists()) file.length() else 0L
-                val historyItem = HistoryItem(0, downloadItem.url, downloadItem.title, downloadItem.author, downloadItem.duration, downloadItem.thumb, downloadItem.type, unixtime, finalPath, downloadItem.website, downloadItem.format)
+                val historyItem = HistoryItem(0, downloadItem.url, downloadItem.title, downloadItem.author, downloadItem.duration, downloadItem.thumb, downloadItem.type, unixtime, finalPath, downloadItem.website, downloadItem.format, downloadItem.id)
                 runBlocking {
                     historyDao.insert(historyItem)
                 }
@@ -418,14 +414,6 @@ class DownloadWorker(
         super.onStopped()
     }
 
-    @Throws(Exception::class)
-    private fun moveFile(originDir: File, downLocation: String, progress: (progress: Int) -> Unit) : String{
-        val fileUtil = FileUtil()
-        val path = fileUtil.moveFile(originDir, context, downLocation){ p ->
-            progress(p)
-        }
-        return path
-    }
 
     companion object {
         var itemId: Long = 0

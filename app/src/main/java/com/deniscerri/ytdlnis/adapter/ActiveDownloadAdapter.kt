@@ -120,10 +120,10 @@ class ActiveDownloadAdapter(onItemClickListener: OnItemClickListener, activity: 
 
         if (fileSize.visibility == View.VISIBLE && codec.visibility == View.GONE){
             fileSize.shapeAppearanceModel = ShapeAppearanceModel.builder()
-                .setTopRightCorner(CornerFamily.ROUNDED, 40F)
-                .setBottomRightCorner(CornerFamily.ROUNDED, 40F)
                 .setTopLeftCorner(CornerFamily.ROUNDED, 0F)
                 .setBottomLeftCorner(CornerFamily.ROUNDED, 0F)
+                .setTopRightCorner(CornerFamily.ROUNDED, 20F)
+                .setBottomRightCorner(CornerFamily.ROUNDED, 20F)
                 .build()
         }
 

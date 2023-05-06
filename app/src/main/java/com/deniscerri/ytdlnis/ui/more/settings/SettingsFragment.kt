@@ -48,6 +48,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
     private var commandPath: Preference? = null
     private var accessAllFiles : Preference? = null
     private var clearCache: Preference? = null
+    private var keepCache: SwitchPreferenceCompat? = null
     private var incognito: SwitchPreferenceCompat? = null
     private var preferredDownloadType : ListPreference? = null
     private var searchEngine : ListPreference? = null
@@ -123,6 +124,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         commandPath = findPreference("command_path")
         accessAllFiles = findPreference("access_all_files")
         clearCache = findPreference("clear_cache")
+        keepCache = findPreference("keep_cache")
         incognito = findPreference("incognito")
         preferredDownloadType = findPreference("preferred_download_type")
         searchEngine = findPreference("search_engine")
@@ -171,8 +173,6 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 entries.add(Locale(it).getDisplayName(Locale(it)))
             }
             language!!.entries = entries.toTypedArray()
-            val lang = if (values.contains(Locale.getDefault().language)) Locale.getDefault().language else "en"
-            editor.putString("app_language", lang)
         }else{
             language!!.isVisible = false
         }
@@ -183,9 +183,6 @@ class SettingsFragment : PreferenceFragmentCompat() {
             ignoreBatteryOptimization!!.isVisible = false
         }
 
-        editor.putString("ytdlnis_theme", theme!!.value)
-        editor.putString("theme_accent", accent!!.value)
-        editor.putBoolean("high_contrast", highContrast!!.isChecked)
 
         if (preferences.getString("music_path", "")!!.isEmpty()) {
             editor.putString("music_path", getString(R.string.music_path))
@@ -197,44 +194,11 @@ class SettingsFragment : PreferenceFragmentCompat() {
             editor.putString("command_path", getString(R.string.command_path))
         }
 
-        if((Build.VERSION.SDK_INT >= 30 && Environment.isExternalStorageManager()) ||
-                Build.VERSION.SDK_INT < 30) {
+        if((VERSION.SDK_INT >= 30 && Environment.isExternalStorageManager()) ||
+                VERSION.SDK_INT < 30) {
             accessAllFiles!!.isVisible = false
         }
 
-        editor.putBoolean("incognito", incognito!!.isChecked)
-        editor.putString("preferred_download_type", preferredDownloadType!!.value)
-        editor.putString("search_engine", searchEngine!!.value)
-        editor.putString("start_destination", startDestination!!.value)
-        editor.putBoolean("download_card", downloadCard!!.isChecked)
-        editor.putBoolean("quick_download", quickDownload!!.isChecked)
-        editor.putBoolean("metered_networks", meteredNetwork!!.isChecked)
-        editor.putString("api_key", apiKey!!.text)
-        editor.putBoolean("home_recommendations", homeRecommendations!!.isChecked)
-        editor.putString("locale", locale!!.value)
-        editor.putInt("concurrent_fragments", concurrentFragments!!.value)
-        editor.putInt("concurrent_downloads", concurrentDownloads!!.value)
-        editor.putString("limit_rate", limitRate!!.text)
-        editor.putBoolean("aria2", aria2!!.isChecked)
-        editor.putBoolean("log_downloads", logDownloads!!.isChecked)
-        editor.putStringSet("sponsorblock_filters", sponsorblockFilters!!.values)
-        editor.putString("file_name_template", filenameTemplate!!.text)
-        editor.putBoolean("restrict_filenames", restrictFilenames!!.isChecked)
-        editor.putBoolean("mtime", mtime!!.isChecked)
-        editor.putBoolean("embed_subtitles", embedSubtitles!!.isChecked)
-        editor.putBoolean("write_subtitles", writeSubtitles!!.isChecked)
-        editor.putBoolean("embed_thumbnail", embedThumbnail!!.isChecked)
-        editor.putBoolean("add_chapters", addChapters!!.isChecked)
-        editor.putBoolean("write_thumbnail", writeThumbnail!!.isChecked)
-        editor.putString("audio_format", audioFormat!!.value)
-        editor.putString("video_format", videoFormat!!.value)
-        editor.putInt("audio_quality", audioQuality!!.value)
-        editor.putString("video_quality", videoQuality!!.value)
-        editor.putString("format_id", formatID!!.text)
-        editor.putBoolean("nightly_ytdl", updateNightlyYTDL!!.isChecked)
-        editor.putBoolean("update_formats", updateFormats!!.isChecked)
-        editor.putString("formats_source", formatSource!!.value)
-        editor.putBoolean("update_app", updateApp!!.isChecked)
         editor.apply()
     }
 
@@ -364,6 +328,13 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 }else{
                     Toast.makeText(requireContext(), getString(R.string.downloads_running_try_later), Toast.LENGTH_SHORT).show()
                 }
+                true
+            }
+        keepCache!!.onPreferenceChangeListener =
+            Preference.OnPreferenceChangeListener { _: Preference?, newValue: Any ->
+                val enable = newValue as Boolean
+                editor.putBoolean("keep_cache", enable)
+                editor.apply()
                 true
             }
         incognito!!.onPreferenceChangeListener =

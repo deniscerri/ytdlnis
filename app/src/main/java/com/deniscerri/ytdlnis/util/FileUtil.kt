@@ -5,6 +5,7 @@ import android.media.MediaScannerConnection
 import android.net.Uri
 import android.os.Build
 import android.provider.DocumentsContract
+import android.util.Log
 import android.webkit.MimeTypeMap
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.DownloadItem
@@ -77,18 +78,21 @@ class FileUtil() {
         return context.getString(R.string.unfound_file);
     }
     @Throws(Exception::class)
-     fun moveFile(originDir: File, context: Context, destDir: String, progress: (p: Int) -> Unit) : String {
+     fun moveFile(originDir: File, context: Context, destDir: String, keepCache: Boolean, progress: (p: Int) -> Unit) : String {
         val fileList = mutableListOf<File>()
         val dir = File(formatPath(destDir))
         if (!dir.exists()) dir.mkdirs()
         originDir.listFiles()?.forEach {
+            Log.e("zz", it.name)
             val destFile = File(dir.absolutePath + "/${it.name}")
 
             try {
-                if (it.name.equals("rList")){
+                if (it.name.matches("(^config.*.\\.txt\$)|(rList)|(part-Frag)".toRegex())){
                     it.delete()
                     return@forEach
                 }
+
+                if(it.name.contains(".part-Frag")) return@forEach
 
                 val mimeType =
                     MimeTypeMap.getSingleton().getMimeTypeFromExtension(it.extension) ?: "*/*"
@@ -132,7 +136,9 @@ class FileUtil() {
             }
 
         }
-        originDir.deleteRecursively()
+        if (!keepCache){
+            originDir.deleteRecursively()
+        }
         return scanMedia(fileList, context)
     }
 

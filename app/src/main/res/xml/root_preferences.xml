@@ -72,6 +72,14 @@
             android:summary="@string/clear_temporary_files_summary"
             app:title="@string/clear_temporary_files" />
 
+        <SwitchPreferenceCompat
+            android:widgetLayout="@layout/preferece_material_switch"
+            app:defaultValue="false"
+            android:icon="@drawable/baseline_save_24"
+            android:key="keep_cache"
+            app:summary="@string/keep_cache_summary"
+            app:title="@string/keep_cache" />
+
     </PreferenceCategory>
 
     <PreferenceCategory app:title="@string/downloading">

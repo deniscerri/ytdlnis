@@ -1,5 +1,6 @@
 package com.deniscerri.ytdlnis.database.models
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
@@ -17,5 +18,7 @@ data class HistoryItem(
     val time: Long,
     val downloadPath: String,
     val website: String,
-    val format: Format
+    val format: Format,
+    @ColumnInfo(defaultValue = "0")
+    val downloadId: Long
 )

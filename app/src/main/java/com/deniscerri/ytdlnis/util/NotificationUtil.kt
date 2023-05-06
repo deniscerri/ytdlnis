@@ -148,11 +148,11 @@ class NotificationUtil(var context: Context) {
 
         notificationBuilder
             .setContentTitle(context.getString(R.string.updating_download_data))
-            .setSmallIcon(R.drawable.ic_launcher_foreground_large)
+            .setSmallIcon(android.R.drawable.stat_sys_download)
             .setLargeIcon(
                 BitmapFactory.decodeResource(
                     context.resources,
-                    R.drawable.ic_launcher_foreground_large
+                    android.R.drawable.stat_sys_download
                 )
             )
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)

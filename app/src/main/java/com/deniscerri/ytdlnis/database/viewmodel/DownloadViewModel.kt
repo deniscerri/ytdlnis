@@ -218,7 +218,7 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         val audioPreferences = AudioPreferences(embedThumb, false, ArrayList(sponsorblock!!))
         val videoPreferences = VideoPreferences(embedSubs, addChapters, false, ArrayList(sponsorblock), saveSubs)
 
-        return DownloadItem(0,
+        return DownloadItem(historyItem.downloadId,
             historyItem.url,
             historyItem.title,
             historyItem.author,
