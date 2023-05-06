@@ -240,4 +240,5 @@
     <string name="downloaded">"Descargado: "</string>
     <string name="finished_download_notification_channel_name">Descargas terminadas</string>
     <string name="finished_download_notification_channel_description">Notificación de descargas finalizadas o defectuosas</string>
+    <string name="preferred_locale">Ubicación preferida</string>
 </resources>
