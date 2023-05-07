@@ -53,7 +53,7 @@
             app:endIconMode="custom"
             app:endIconDrawable="@drawable/ic_plus"
             android:hint="@string/create_shortcut"
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
+            style="@style/Widget.Material3.TextInputLayout.FilledBox">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"

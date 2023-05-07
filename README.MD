@@ -9,6 +9,10 @@
 
 <div align="center">
 
+[![Github Download](https://custom-icon-badges.herokuapp.com/badge/Download-blue?style=for-the-badge&logo=download&logoColor=white)](https://github.com/deniscerri/ytdlnis/releases/latest)
+[![IZZY](https://custom-icon-badges.herokuapp.com/badge/Izzy-red?style=for-the-badge&logo=download&logoColor=white)](https://android.izzysoft.de/repo/apk/com.deniscerri.ytdl)
+
+
 ![CI](https://github.com/deniscerri/ytdlnis/actions/workflows/android.yml/badge.svg?branch=main&event=pull) 
 [![stable release](https://img.shields.io/github/release/deniscerri/ytdlnis.svg?maxAge=3600&label=download)](https://github.com/deniscerri/ytdlnis/releases/latest) 
 [![preview release](https://img.shields.io/github/release/deniscerri/ytdlnis.svg?maxAge=3600&include_prereleases&label=preview)](https://github.com/deniscerri/ytdlnis/releases) 
