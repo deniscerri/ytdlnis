@@ -36,4 +36,16 @@
     <string name="failed_download">फ़ाइल डाउनलोड नहीं हो सकी।</string>
     <string name="search_hint">खोजें या नया URL डालें</string>
     <string name="ytdl_updating_started">नया संस्करण डाउनलोड हो रहा है</string>
+    <string name="downloading_update">नया संस्करण डाउनलोड हो रहा है</string>
+    <string name="audio">संगीत</string>
+    <string name="video">वीडियो</string>
+    <string name="concurrent_fragments_summary">एक साथ डाउनलोड करने के लिए DASH/HLS नेटिव वीडियो के टुकड़ों की संख्या</string>
+    <string name="concurrent_fragments">समवर्ती टुकड़े</string>
+    <string name="downloading">डाउनलोड हो रहा है</string>
+    <string name="limit_rate">सीमा दर</string>
+    <string name="limit_rate_summary">अधिकतम डाउनलोड दर (प्रति सेकंड बाइट में), उदा. 50K या 4.2M</string>
+    <string name="aria2_summary">डिफ़ॉल्ट के बजाय डाउनलोडर के रूप में aria2c का उपयोग करें</string>
+    <string name="processing">प्रोसेसिंग हो रही है</string>
+    <string name="embed_subs_summary">वीडियो में सबटाइटल जोड़ें</string>
+    <string name="embed_thumb">थंबनेल कवर</string>
 </resources>
