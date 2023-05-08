@@ -241,4 +241,12 @@
     <string name="preferred_format_id">Üstünlük Verilən Format ID</string>
     <string name="download_already_exists">Yükləmə artıq mövcuddur</string>
     <string name="preferred_locale">Üstünlük Verilən Yerli</string>
+    <string name="pause">Fasilə
+\n</string>
+    <string name="resume">Təkrar başlat</string>
+    <string name="updating_download_data">Yükləmə Element Məlumatı Yenilənir</string>
+    <string name="keep_cache">Keşi Saxla</string>
+    <string name="keep_cache_summary">Yükləmə bitəndən sonra müvəqqəti faylları silmə</string>
+    <string name="backup">Nüsxələmə</string>
+    <string name="restore">Bərpa et</string>
 </resources>
