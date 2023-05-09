@@ -240,4 +240,13 @@
     <string name="preferred_format_id">ID, якому надається перевага</string>
     <string name="download_now">Завантажити зараз</string>
     <string name="download_already_exists">Завантаження вже існує</string>
+    <string name="preferred_locale">Бажане розташування</string>
+    <string name="pause">Пауза
+\n</string>
+    <string name="resume">Відновити</string>
+    <string name="updating_download_data">Оновлення даних завантажуваного елемента</string>
+    <string name="keep_cache">Зберегти кеш</string>
+    <string name="keep_cache_summary">Не видаляйте тимчасові файли після завершення завантаження</string>
+    <string name="backup">Резервне копіювання</string>
+    <string name="restore">Відновити</string>
 </resources>
