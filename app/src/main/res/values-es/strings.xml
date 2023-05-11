@@ -241,4 +241,12 @@
     <string name="finished_download_notification_channel_name">Descargas terminadas</string>
     <string name="finished_download_notification_channel_description">Notificación de descargas finalizadas o defectuosas</string>
     <string name="preferred_locale">Ubicación preferida</string>
+    <string name="pause">Pausa
+\n</string>
+    <string name="resume">Resumen</string>
+    <string name="updating_download_data">Actualizando los datos de los elementos de la descarga</string>
+    <string name="keep_cache">Conservar la caché</string>
+    <string name="keep_cache_summary">No eliminar los archivos temporales una vez finalizada la descarga</string>
+    <string name="backup">Copia de seguridad</string>
+    <string name="restore">Restaurar</string>
 </resources>

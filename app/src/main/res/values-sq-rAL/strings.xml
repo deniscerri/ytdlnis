@@ -240,4 +240,13 @@
     <string name="download_already_exists">Sharkimi ekziston tashmë</string>
     <string name="remove_audio">Hiq Audion</string>
     <string name="download_now">Shkarko Tani</string>
+    <string name="preferred_locale">Vendi i Preferuar</string>
+    <string name="resume">Vazhdo</string>
+    <string name="keep_cache">Mbaj Memoriken Kashe</string>
+    <string name="keep_cache_summary">Mos fshi skedarët e përkohshëm pasi shkarkimi ka mbaruar</string>
+    <string name="restore">Rikthe</string>
+    <string name="pause">Pauzë
+\n</string>
+    <string name="updating_download_data">Duke Përditësuar Informacionet e Objektit</string>
+    <string name="backup">Ruaj</string>
 </resources>
