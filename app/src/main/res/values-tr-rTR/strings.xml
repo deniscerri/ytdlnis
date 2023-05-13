@@ -190,7 +190,7 @@
     <string name="add_template_first">Oluşturulmuş en az bir komut şablonuna sahip olmanız gerekir!</string>
     <string name="formatid_copied_to_clipboard">Biçim kimliği panoya kopyalandı</string>
     <string name="suggested">Önerildi</string>
-    <string name="select_all">Hepsin seç</string>
+    <string name="select_all">Tümünü Seç</string>
     <string name="share">Paylaş</string>
     <string name="cookies">Veritabanlar</string>
     <string name="new_cookie">Yeni Veritabanı</string>
@@ -244,4 +244,13 @@
     <string name="download_already_exists">İndirme zaten mevcut</string>
     <string name="download_now">Şimdi İndir</string>
     <string name="remove_audio">Sesi Kaldır</string>
+    <string name="preferred_locale">Tercih Edilen Konum</string>
+    <string name="pause">Duraklat
+\n</string>
+    <string name="resume">Sürdür</string>
+    <string name="updating_download_data">İndirilen Öğe Verilerini Güncelleme</string>
+    <string name="keep_cache">Önbelleği Kaydet</string>
+    <string name="keep_cache_summary">İndirme tamamlandıktan sonra geçici dosyaları silmesin</string>
+    <string name="backup">Yedekle</string>
+    <string name="restore">Geri yükle</string>
 </resources>
