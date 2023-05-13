@@ -29,6 +29,9 @@ interface HistoryDao {
     @Query("SELECT * FROM history")
     fun getAllHistory() : LiveData<List<HistoryItem>>
 
+    @Query("SELECT * FROM history")
+    fun getAllHistoryList() : List<HistoryItem>
+
     @Query("SELECT * FROM history WHERE id=:id LIMIT 1")
     suspend fun getHistoryItem(id: Int) : HistoryItem
 

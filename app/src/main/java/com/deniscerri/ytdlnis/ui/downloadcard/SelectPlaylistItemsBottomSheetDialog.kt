@@ -2,13 +2,16 @@ package com.deniscerri.ytdlnis.ui.downloadcard
 
 import android.annotation.SuppressLint
 import android.app.Dialog
+import android.content.ClipboardManager
 import android.content.DialogInterface
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -21,8 +24,10 @@ import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdlnis.receiver.ShareActivity
+import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.Dispatchers
@@ -115,12 +120,14 @@ class SelectPlaylistItemsBottomSheetDialog(private val items: List<ResultItem?>,
             }
         }
 
-        val checkAll = view.findViewById<FloatingActionButton>(R.id.check_all)
+        val checkAll = view.findViewById<ExtendedFloatingActionButton>(R.id.check_all)
         checkAll!!.setOnClickListener {
             if (listAdapter.getCheckedItems().size != items.size){
                 fromTextInput.editText!!.setText("1")
                 toTextInput.editText!!.setText(items.size.toString())
                 listAdapter.checkAll()
+                fromTextInput.isEnabled = true
+                toTextInput.isEnabled = true
                 selectedText.text = resources.getString(R.string.all_items_selected)
             }else{
                 reset()
@@ -159,6 +166,24 @@ class SelectPlaylistItemsBottomSheetDialog(private val items: List<ResultItem?>,
                 dismiss()
 
             }
+        }
+
+        view.findViewById<BottomAppBar>(R.id.bottomAppBar).setOnMenuItemClickListener { m: MenuItem ->
+            val itemId = m.itemId
+            if (itemId == R.id.invert_selected) {
+                listAdapter.invertSelected(items)
+                val checkedItems = listAdapter.getCheckedItems()
+                if (checkedItems.size == items.size){
+                    selectedText.text = resources.getString(R.string.all_items_selected)
+                }else{
+                    selectedText.text = "${checkedItems.size} ${resources.getString(R.string.selected)}"
+                }
+                if(checkedItems.isNotEmpty() && checkedItems.size < items.size){
+                    fromTextInput.isEnabled = false
+                    toTextInput.isEnabled = false
+                }
+            }
+            true
         }
     }
 

@@ -6,6 +6,7 @@
     android:checkable="true"
     android:clickable="true"
     android:focusable="true"
+    app:checkedIcon="@null"
     app:cardPreventCornerOverlap="true"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"

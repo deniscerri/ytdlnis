@@ -148,11 +148,6 @@ class DownloadVideoFragment(private val resultItem: ResultItem, private var curr
                 val listener = object : OnFormatClickListener {
                     override fun onFormatClick(allFormats: List<List<Format>>, item: List<Format>) {
                         downloadItem.format = item.first()
-
-                        if (containers.contains(item.first().container)){
-                            downloadItem.format.container = item.first().container
-                            containerAutoCompleteTextView.setText(item.first().container, false)
-                        }
                         lifecycleScope.launch {
                             withContext(Dispatchers.IO){
                                 resultItem.formats.removeAll(formats.toSet())
@@ -171,6 +166,11 @@ class DownloadVideoFragment(private val resultItem: ResultItem, private var curr
                     }
                 }
 
+                formatCard.setOnLongClickListener {
+                    uiUtil.showFormatDetails(downloadItem.format, requireActivity())
+                    true
+                }
+
                 container?.isEnabled = true
                 containerAutoCompleteTextView?.setAdapter(
                     ArrayAdapter(
@@ -187,6 +187,7 @@ class DownloadVideoFragment(private val resultItem: ResultItem, private var curr
                 (container!!.editText as AutoCompleteTextView?)!!.onItemClickListener =
                     AdapterView.OnItemClickListener { _: AdapterView<*>?, _: View?, index: Int, _: Long ->
                         downloadItem.format.container = containers[index]
+                        if (containers[index] == getString(R.string.defaultValue)) downloadItem.format.container = ""
                     }
 
 
@@ -311,6 +312,41 @@ class DownloadVideoFragment(private val resultItem: ResultItem, private var curr
                     }
                 }else{
                     cut.isEnabled = false
+                }
+
+                val filenameTemplate = view.findViewById<Chip>(R.id.filename_template)
+                filenameTemplate.setOnClickListener {
+                    val builder = MaterialAlertDialogBuilder(requireContext())
+                    builder.setTitle(getString(R.string.file_name_template))
+                    val inputLayout = layoutInflater.inflate(R.layout.textinput, null)
+                    val editText = inputLayout.findViewById<EditText>(R.id.url_edittext)
+                    inputLayout.findViewById<TextInputLayout>(R.id.url_textinput).hint = getString(R.string.file_name_template)
+                    editText.setText(downloadItem.customFileNameTemplate)
+                    editText.setSelection(editText.text.length)
+                    builder.setView(inputLayout)
+                    builder.setPositiveButton(
+                        getString(R.string.ok)
+                    ) { dialog: DialogInterface?, which: Int ->
+                        downloadItem.customFileNameTemplate = editText.text.toString()
+                    }
+
+                    // handle the negative button of the alert dialog
+                    builder.setNegativeButton(
+                        getString(R.string.cancel)
+                    ) { dialog: DialogInterface?, which: Int -> }
+
+                    val dialog = builder.create()
+                    editText.doOnTextChanged { text, start, before, count ->
+                        dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = editText.text.isNotEmpty()
+                    }
+                    dialog.show()
+                    val imm = context?.getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager
+                    editText!!.postDelayed({
+                        editText.requestFocus()
+                        imm.showSoftInput(editText, 0)
+                    }, 300)
+                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = editText.text.isNotEmpty()
+                    dialog.getButton(AlertDialog.BUTTON_NEUTRAL).gravity = Gravity.START
                 }
 
                 val saveSubtitles = view.findViewById<Chip>(R.id.save_subtitles)

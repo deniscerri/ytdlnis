@@ -21,12 +21,14 @@ import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.InfoUtil
 import com.deniscerri.ytdlnis.util.UiUtil
+import com.google.android.exoplayer2.C
 import com.google.android.exoplayer2.DefaultLoadControl
 import com.google.android.exoplayer2.DefaultRenderersFactory
 import com.google.android.exoplayer2.DefaultRenderersFactory.EXTENSION_RENDERER_MODE_PREFER
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem.fromUri
 import com.google.android.exoplayer2.Player
+import com.google.android.exoplayer2.audio.AudioAttributes
 import com.google.android.exoplayer2.mediacodec.MediaCodecInfo
 import com.google.android.exoplayer2.mediacodec.MediaCodecSelector
 import com.google.android.exoplayer2.source.DefaultMediaSourceFactory
@@ -131,9 +133,18 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val list
         val trackSelector = DefaultTrackSelector(requireContext())
         val loadControl = DefaultLoadControl()
 
-        player = ExoPlayer.Builder(requireContext(), renderersFactory)
+        player = ExoPlayer.Builder(requireContext())
+            .setUsePlatformDiagnostics(false)
             .setTrackSelector(trackSelector)
             .setLoadControl(loadControl)
+            .setHandleAudioBecomingNoisy(true)
+            .setAudioAttributes(
+                AudioAttributes.Builder()
+                    .setUsage(C.USAGE_MEDIA)
+                    .setContentType(C.AUDIO_CONTENT_TYPE_MOVIE)
+                    .build()
+                ,
+                true)
             .build()
         val frame = view.findViewById<MaterialCardView>(R.id.frame_layout)
         val videoView = view.findViewById<StyledPlayerView>(R.id.video_view)
@@ -207,9 +218,8 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val list
                 progress.visibility = View.GONE
                 populateSuggestedChapters()
 
-                player.prepare().apply {
-                    player.play()
-                }
+                player.prepare()
+                player.play()
             }catch (e: Exception){
                 progress.visibility = View.GONE
                 frame.visibility = View.GONE

@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <SwitchPreferenceCompat
+        android:widgetLayout="@layout/preferece_material_switch"
+        app:defaultValue="false"
+        android:icon="@drawable/ic_incognito"
+        android:key="incognito"
+        app:summary="@string/incognito_summary"
+        app:title="@string/incognito" />
+
+    <SwitchPreferenceCompat
+        android:widgetLayout="@layout/preferece_material_switch"
+        app:defaultValue="true"
+        android:icon="@drawable/ic_card"
+        android:key="download_card"
+        app:summary="@string/download_card_summary"
+        app:title="@string/show_download_card" />
+
+    <SwitchPreferenceCompat
+        android:widgetLayout="@layout/preferece_material_switch"
+        app:defaultValue="false"
+        android:icon="@drawable/ic_speed"
+        android:key="quick_download"
+        app:summary="@string/quick_download_summary"
+        app:title="@string/quick_download" />
+
+    <SwitchPreferenceCompat
+        android:widgetLayout="@layout/preferece_material_switch"
+        app:defaultValue="true"
+        android:icon="@drawable/metered_networks"
+        android:key="metered_networks"
+        app:summary="@string/download_over_metered_networks_summary"
+        app:title="@string/download_over_metered_networks" />
+
+    <ListPreference
+        android:dependency="download_card"
+        android:defaultValue="video"
+        android:entries="@array/download_types"
+        android:entryValues="@array/download_types_values"
+        android:icon="@drawable/ic_download_type"
+        app:key="preferred_download_type"
+        app:summary="@string/preferred_download_type_summary"
+        app:title="@string/preferred_download_type" />
+
+    <ListPreference
+        android:defaultValue="ytsearch"
+        android:entries="@array/search_engines"
+        android:entryValues="@array/search_engines_values"
+        android:icon="@drawable/baseline_manage_search_24"
+        app:key="search_engine"
+        app:summary="@string/preferred_search_engine_summary"
+        app:title="@string/preferred_search_engine" />
+
+    <ListPreference
+        android:defaultValue="Home"
+        android:entries="@array/start_destination"
+        android:entryValues="@array/start_destination_values"
+        app:icon="@drawable/baseline_add_to_home_screen_24"
+        app:key="start_destination"
+        app:title="@string/preferred_home_screen" />
+
+
+    <SwitchPreferenceCompat
+        android:widgetLayout="@layout/preferece_material_switch"
+        app:defaultValue="false"
+        android:icon="@drawable/baseline_recommend_24"
+        android:key="home_recommendations"
+        app:summary="@string/video_recommendations_summary"
+        app:title="@string/video_recommendations" />
+
+    <ListPreference
+        android:defaultValue=""
+        android:entries="@array/countries"
+        android:entryValues="@array/countries_values"
+        app:icon="@drawable/ic_language"
+        app:dependency="home_recommendations"
+        app:key="locale"
+        app:title="@string/preferred_locale" />
+
+    <EditTextPreference
+        android:icon="@drawable/ic_key"
+        app:key="api_key"
+        app:defaultValue=""
+        app:summary="@string/api_key_summary"
+        app:title="@string/api_key" />
+
+    <SeekBarPreference
+        app:dependency="aria2"
+        android:defaultValue="3"
+        android:icon="@drawable/ic_lines"
+        android:max="25"
+        app:key="concurrent_fragments"
+        app:min="1"
+        app:showSeekBarValue="true"
+        android:dependency="aria2"
+        app:summary="@string/concurrent_fragments_summary"
+        app:title="@string/concurrent_fragments" />
+
+    <SeekBarPreference
+        android:defaultValue="1"
+        android:icon="@drawable/ic_concurrent_downloads"
+        android:max="10"
+        app:key="concurrent_downloads"
+        app:min="1"
+        app:showSeekBarValue="true"
+        app:summary="@string/concurrent_downloads_summary"
+        app:title="@string/concurrent_downloads" />
+
+    <EditTextPreference
+        android:icon="@drawable/ic_down"
+        app:key="limit_rate"
+        app:summary="@string/limit_rate_summary"
+        app:title="@string/limit_rate" />
+
+    <SwitchPreferenceCompat
+        android:widgetLayout="@layout/preferece_material_switch"
+        app:defaultValue="false"
+        android:icon="@drawable/ic_speed"
+        android:key="aria2"
+        app:summary="@string/aria2_summary"
+        android:disableDependentsState="true"
+        app:title="Aria2" />
+
+    <SwitchPreferenceCompat
+        android:widgetLayout="@layout/preferece_material_switch"
+        app:defaultValue="false"
+        android:icon="@drawable/ic_baseline_file_open_24"
+        android:key="log_downloads"
+        app:summary="@string/log_downloads_summary"
+        app:title="@string/log_downloads" />
+
+    <Preference
+        app:icon="@drawable/ic_battery"
+        app:key="ignore_battery"
+        app:title="@string/ignore_battery_optimization" />
+
+</PreferenceScreen>

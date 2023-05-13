@@ -178,8 +178,8 @@ class DownloadWorker(
         when(type){
             DownloadViewModel.Type.audio -> {
                 var audioQualityId : String = downloadItem.format.format_id
-                if (audioQualityId.isBlank() || audioQualityId == "0" || audioQualityId == context.getString(R.string.best_quality)) audioQualityId = ""
-                else if (audioQualityId == context.getString(R.string.worst_quality)) audioQualityId = "worstaudio"
+                if (audioQualityId.isBlank() || audioQualityId == "0" || audioQualityId == context.getString(R.string.best_quality) || audioQualityId == "best") audioQualityId = ""
+                else if (audioQualityId == context.getString(R.string.worst_quality) || audioQualityId == "worst") audioQualityId = "worstaudio"
 
                 val ext = downloadItem.format.container
                 if (audioQualityId.isNotBlank()) request.addOption("-f", audioQualityId)
@@ -236,15 +236,15 @@ class DownloadWorker(
                 Log.e(TAG, videoFormatID)
                 var formatArgument = if (downloadItem.videoPreferences.removeAudio) "bestvideo" else "bestvideo+bestaudio/best"
                 if (videoFormatID.isNotEmpty()) {
-                    if (videoFormatID == context.resources.getString(R.string.best_quality)) videoFormatID = "bestvideo"
-                    else if (videoFormatID == context.resources.getString(R.string.worst_quality)) videoFormatID = "worst"
+                    if (videoFormatID == context.resources.getString(R.string.best_quality) || videoFormatID == "best") videoFormatID = "bestvideo"
+                    else if (videoFormatID == context.resources.getString(R.string.worst_quality) || videoFormatID == "worst") videoFormatID = "worst"
                     else if (defaultFormats.contains(videoFormatID)) videoFormatID = "bestvideo[height<="+videoFormatID.substring(0, videoFormatID.length -1)+"]"
                     if (!downloadItem.videoPreferences.removeAudio) formatArgument = "$videoFormatID+bestaudio/best/$videoFormatID"
                 }
                 Log.e(TAG, formatArgument)
                 request.addOption("-f", formatArgument)
                 val format = downloadItem.format.container
-                if(format.isNotEmpty()){
+                if(format.isNotEmpty() && format != "Default" && format != context.getString(R.string.defaultValue)){
                     request.addOption("--merge-output-format", format)
                     if (format != "webm") {
                         val embedThumb = sharedPreferences.getBoolean("embed_thumbnail", false)

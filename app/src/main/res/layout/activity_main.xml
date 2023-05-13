@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="Incognito"
+        android:text="@string/incognito"
         android:textStyle="bold"
         android:visibility="gone"
         android:padding="5dp"

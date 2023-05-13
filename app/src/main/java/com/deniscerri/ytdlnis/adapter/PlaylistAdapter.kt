@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdlnis.R
+import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.squareup.picasso.Picasso
 import java.util.*
@@ -117,6 +118,16 @@ class PlaylistAdapter(onItemClickListener: OnItemClickListener, activity: Activi
             checkedItems.add(item!!.url)
             notifyItemChanged(i)
         }
+    }
+
+    fun invertSelected(items: List<ResultItem?>?){
+        val invertedList = mutableListOf<String>()
+        items?.forEach {
+            if (!checkedItems.contains(it!!.url)) invertedList.add(it.url)
+        }
+        checkedItems.clear()
+        checkedItems.addAll(invertedList)
+        notifyDataSetChanged()
     }
 
     fun checkRange(start: Int, end: Int){

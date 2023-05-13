@@ -525,49 +525,63 @@ class InfoUtil(private val context: Context) {
         urls.forEach {
             urlsFile.appendText(it+"\n")
         }
-        try {
-            val request = YoutubeDLRequest(emptyList())
-            request.addOption("--print", "%(formats)s")
-            request.addOption("-a", urlsFile.absolutePath)
-            request.addOption("--skip-download")
-            request.addOption("-R", "1")
-            request.addOption("--socket-timeout", "5")
-            val cookiesFile = File(context.cacheDir, "cookies.txt")
-            if (cookiesFile.exists()){
-                request.addOption("--cookies", cookiesFile.absolutePath)
-            }
 
-            YoutubeDL.getInstance().execute(request){ progress, _, line ->
-                try{
-                    val formats = mutableListOf<Format>()
-                    val listOfStrings = JSONArray(line)
-                    for (f in 0 until listOfStrings.length()){
-                        val format = listOfStrings.get(f) as JSONObject
-                        try{
-                            if (format.getString("filesize") == "None") continue
-                        }catch (e: Exception) { continue }
-                        val formatProper = Gson().fromJson(format.toString(), Format::class.java)
-                        if (formatProper.filesize > 0){
-                            if ( !formatProper!!.format_note!!.contains("audio only", true)) {
-                                formatProper.format_note = format.getString("format_note")
-                            }else{
-                                formatProper.format_note = "${format.getString("format_note")} audio"
-                            }
-                            formatProper.container = format.getString("ext")
-                            formats.add(formatProper)
-                        }
-                    }
-                    progress(formats)
-                }catch (e: Exception){
-                    progress(emptyList())
+        val formatSource = sharedPreferences.getString("formats_source", "yt-dlp")
+        val p = Pattern.compile("^(https?)://(www.)?youtu(.be)?")
+        val allYoutubeLinks = urls.any {p.matcher(it).find() }
+        if (formatSource == "yt-dlp" || !allYoutubeLinks){
+            try {
+                val request = YoutubeDLRequest(emptyList())
+                request.addOption("--print", "%(formats)s")
+                request.addOption("-a", urlsFile.absolutePath)
+                request.addOption("--skip-download")
+                request.addOption("-R", "1")
+                request.addOption("--socket-timeout", "5")
+                val cookiesFile = File(context.cacheDir, "cookies.txt")
+                if (cookiesFile.exists()){
+                    request.addOption("--cookies", cookiesFile.absolutePath)
                 }
+
+                YoutubeDL.getInstance().execute(request){ progress, _, line ->
+                    try{
+                        val formats = mutableListOf<Format>()
+                        val listOfStrings = JSONArray(line)
+                        for (f in 0 until listOfStrings.length()){
+                            val format = listOfStrings.get(f) as JSONObject
+                            try{
+                                if (format.getString("filesize") == "None") continue
+                            }catch (e: Exception) { continue }
+                            val formatProper = Gson().fromJson(format.toString(), Format::class.java)
+                            if (formatProper.filesize > 0){
+                                if ( !formatProper!!.format_note!!.contains("audio only", true)) {
+                                    formatProper.format_note = format.getString("format_note")
+                                }else{
+                                    formatProper.format_note = "${format.getString("format_note")} audio"
+                                }
+                                formatProper.container = format.getString("ext")
+                                formats.add(formatProper)
+                            }
+                        }
+                        progress(formats)
+                    }catch (e: Exception){
+                        progress(emptyList())
+                    }
+                }
+            } catch (e: Exception) {
+                Looper.prepare().run {
+                    Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
+                }
+                e.printStackTrace()
             }
-        } catch (e: Exception) {
-            Looper.prepare().run {
-                Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
+        }else{
+            urls.forEach {
+                val id = getIDFromYoutubeURL(it)
+                val res = genericRequest(invidousURL + "videos/" + id)
+                val vid = createVideoFromInvidiousJSON(res)
+                progress(vid!!.formats)
             }
-            e.printStackTrace()
         }
+
         urlsFile.delete()
     }
 
@@ -741,6 +755,7 @@ class InfoUtil(private val context: Context) {
         val url = "https://suggestqueries.google.com/complete/search?client=youtube&ds=yt&client=firefox&q=$query"
         // invidousURL + "search/suggestions?q=" + query
         val res = genericArrayRequest(url)
+        Log.e("aa", res.toString())
         if (res.length() == 0) return ArrayList()
         val suggestionList = ArrayList<String>()
         try {

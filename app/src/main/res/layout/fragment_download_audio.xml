@@ -156,6 +156,21 @@
                             android:checked="false"
                             android:text="@string/split_by_chapters"/>
 
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/cut"
+                            style="@style/Widget.Material3.Chip.Assist.Elevated"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            app:chipIconVisible="true"
+                            app:chipIcon="@drawable/ic_cut"
+                            android:text="@string/cut"
+                            android:minWidth="30dp"
+                            app:cornerRadius="10dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
 
                     </com.google.android.material.chip.ChipGroup>
 
@@ -180,7 +195,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="SponsorBlock"
+                            android:text="@string/sponsorblock"
                             app:chipIconVisible="true"
                             app:chipIcon="@drawable/ic_money"
                             android:minWidth="30dp"
@@ -190,20 +205,19 @@
                             app:layout_constraintTop_toTopOf="parent" />
 
                         <com.google.android.material.chip.Chip
-                            android:id="@+id/cut"
+                            android:id="@+id/filename_template"
                             style="@style/Widget.Material3.Chip.Assist.Elevated"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"
+                            android:text="@string/file_name_template"
                             app:chipIconVisible="true"
-                            app:chipIcon="@drawable/ic_cut"
-                            android:text="@string/cut"
+                            app:chipIcon="@drawable/ic_edit"
                             android:minWidth="30dp"
                             app:cornerRadius="10dp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
-
 
 
                     </com.google.android.material.chip.ChipGroup>

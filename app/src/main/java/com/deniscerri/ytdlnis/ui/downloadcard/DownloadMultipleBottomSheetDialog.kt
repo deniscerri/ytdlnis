@@ -79,7 +79,9 @@ class DownloadMultipleBottomSheetDialog(private var results: List<ResultItem?>, 
             behavior = BottomSheetBehavior.from(view.parent as View)
             val displayMetrics = DisplayMetrics()
             requireActivity().windowManager.defaultDisplay.getMetrics(displayMetrics)
-            behavior.state = BottomSheetBehavior.STATE_EXPANDED
+            if(resources.getBoolean(R.bool.isTablet)){
+                behavior.state = BottomSheetBehavior.STATE_EXPANDED
+            }
         }
 
         listAdapter =
@@ -409,11 +411,16 @@ class DownloadMultipleBottomSheetDialog(private var results: List<ResultItem?>, 
                         val deletedItem = items[position]
                         items.remove(deletedItem)
                         listAdapter.submitList(items.toList())
-                        Snackbar.make(recyclerView, getString(R.string.you_are_going_to_delete) + ": " + deletedItem.title, Snackbar.LENGTH_LONG)
-                            .setAction(getString(R.string.undo)) {
-                                items.add(position, deletedItem)
-                                listAdapter.submitList(items.toList())
-                            }.show()
+                        if (items.isNotEmpty()){
+                            Snackbar.make(recyclerView, getString(R.string.you_are_going_to_delete) + ": " + deletedItem.title, Snackbar.LENGTH_LONG)
+                                .setAction(getString(R.string.undo)) {
+                                    items.add(position, deletedItem)
+                                    listAdapter.submitList(items.toList())
+                                }.show()
+                        }else{
+                            dismiss()
+                        }
+
                     }
 
                 }

@@ -61,7 +61,6 @@
     public <init>(android.content.Context,androidx.work.WorkerParameters);
 }
 
--dontobfuscate
 -dontwarn com.google.android.exoplayer2.**
 # Retain generic signatures of TypeToken and its subclasses with R8 version 3.0 and higher.
 -keep,allowobfuscation,allowshrinking class com.google.gson.reflect.TypeToken

@@ -3,18 +3,19 @@ package com.deniscerri.ytdlnis.database.dao
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.deniscerri.ytdlnis.database.models.DownloadItem
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface DownloadDao {
 
     @Query("SELECT * FROM downloads ORDER BY status")
-    fun getAllDownloads() : LiveData<List<DownloadItem>>
+    fun getAllDownloads() : Flow<List<DownloadItem>>
 
     @Query("SELECT * FROM downloads WHERE status='Active'")
-    fun getActiveDownloads() : LiveData<List<DownloadItem>>
+    fun getActiveDownloads() : Flow<List<DownloadItem>>
 
     @Query("SELECT COUNT(*) FROM downloads WHERE status='Active'")
-    fun getActiveDownloadsCount() : LiveData<Int>
+    fun getActiveDownloadsCount() : Flow<Int>
 
     @Query("SELECT * FROM downloads WHERE status='Active'")
     fun getActiveDownloadsList() : List<DownloadItem>
@@ -23,16 +24,22 @@ interface DownloadDao {
     fun getActiveAndQueuedDownloadsList() : List<DownloadItem>
 
     @Query("SELECT * FROM downloads WHERE status='Queued' ORDER BY downloadStartTime, id")
-    fun getQueuedDownloads() : LiveData<List<DownloadItem>>
+    fun getQueuedDownloads() : Flow<List<DownloadItem>>
+
+    @Query("SELECT * FROM downloads WHERE status='Queued' ORDER BY downloadStartTime, id")
+    fun getQueuedDownloadsList() : List<DownloadItem>
 
     @Query("SELECT * FROM downloads WHERE status='Cancelled' ORDER BY id DESC")
-    fun getCancelledDownloads() : LiveData<List<DownloadItem>>
+    fun getCancelledDownloads() : Flow<List<DownloadItem>>
+
+    @Query("SELECT * FROM downloads WHERE status='Cancelled' ORDER BY id DESC")
+    fun getCancelledDownloadsList() : List<DownloadItem>
 
     @Query("SELECT * FROM downloads WHERE status='Error' ORDER BY id DESC")
-    fun getErroredDownloads() : LiveData<List<DownloadItem>>
+    fun getErroredDownloads() : Flow<List<DownloadItem>>
 
     @Query("SELECT * FROM downloads WHERE status='Processing' ORDER BY id DESC")
-    fun getProcessingDownloads() : LiveData<List<DownloadItem>>
+    fun getProcessingDownloads() : Flow<List<DownloadItem>>
 
     @Query("SELECT * FROM downloads WHERE id=:id LIMIT 1")
     fun getDownloadById(id: Long) : DownloadItem

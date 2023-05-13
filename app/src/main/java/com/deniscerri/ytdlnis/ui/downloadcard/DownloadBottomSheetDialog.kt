@@ -71,7 +71,9 @@ class DownloadBottomSheetDialog(private val resultItem: ResultItem, private val 
             behavior = BottomSheetBehavior.from(view.parent as View)
             val displayMetrics = DisplayMetrics()
             requireActivity().windowManager.defaultDisplay.getMetrics(displayMetrics)
-            behavior.state = BottomSheetBehavior.STATE_EXPANDED
+            if(resources.getBoolean(R.bool.isTablet)){
+                behavior.state = BottomSheetBehavior.STATE_EXPANDED
+            }
         }
 
 

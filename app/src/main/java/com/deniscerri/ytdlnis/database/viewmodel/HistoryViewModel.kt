@@ -48,7 +48,6 @@ class HistoryViewModel(application: Application) : AndroidViewModel(application)
         return _items
     }
 
-
     fun setSorting(sort: HistorySortType){
         if (sortType.value != sort){
             sortOrder.value = HistorySort.DESC
@@ -74,6 +73,10 @@ class HistoryViewModel(application: Application) : AndroidViewModel(application)
 
     private fun filter(query : String, format : String, site : String, sortType: HistorySortType, sort: HistorySort) = viewModelScope.launch(Dispatchers.IO){
         _items.postValue(repository.getFiltered(query, format, site, sortType, sort))
+    }
+
+    fun getAll() : List<HistoryItem> {
+        return repository.getAll()
     }
 
     fun insert(item: HistoryItem) = viewModelScope.launch(Dispatchers.IO){

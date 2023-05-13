@@ -29,15 +29,8 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        instance = this
         createNotificationChannels()
-        PreferenceManager.setDefaultValues(
-            this,
-            "root_preferences",
-            MODE_PRIVATE,
-            R.xml.root_preferences,
-            false
-        )
-
         val sharedPreferences =  PreferenceManager.getDefaultSharedPreferences(this)
 
         applicationScope = CoroutineScope(SupervisorJob())
@@ -80,5 +73,6 @@ class App : Application() {
     companion object {
         private const val TAG = "App"
         private lateinit var applicationScope: CoroutineScope
+        lateinit var instance: App
     }
 }

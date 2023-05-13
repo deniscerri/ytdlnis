@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:theme="@style/BaseTheme">
+
+    <item android:title="@string/invert_selected"
+        android:icon="@drawable/ic_terminal"
+        app:showAsAction="never"
+        android:id="@+id/invert_selected"/>
+</menu>

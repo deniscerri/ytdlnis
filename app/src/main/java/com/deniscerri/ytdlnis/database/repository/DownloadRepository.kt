@@ -5,15 +5,16 @@ import com.deniscerri.ytdlnis.database.Converters
 import com.deniscerri.ytdlnis.database.dao.DownloadDao
 import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.models.ResultItem
+import kotlinx.coroutines.flow.Flow
 
 class DownloadRepository(private val downloadDao: DownloadDao) {
-    val allDownloads : LiveData<List<DownloadItem>> = downloadDao.getAllDownloads()
-    val activeDownloads : LiveData<List<DownloadItem>> = downloadDao.getActiveDownloads()
-    val activeDownloadsCount : LiveData<Int> = downloadDao.getActiveDownloadsCount()
-    val queuedDownloads : LiveData<List<DownloadItem>> = downloadDao.getQueuedDownloads()
-    val cancelledDownloads : LiveData<List<DownloadItem>> = downloadDao.getCancelledDownloads()
-    val erroredDownloads : LiveData<List<DownloadItem>> = downloadDao.getErroredDownloads()
-    val processingDownloads : LiveData<List<DownloadItem>> = downloadDao.getProcessingDownloads()
+    val allDownloads : Flow<List<DownloadItem>> = downloadDao.getAllDownloads()
+    val activeDownloads : Flow<List<DownloadItem>> = downloadDao.getActiveDownloads()
+    val activeDownloadsCount : Flow<Int> = downloadDao.getActiveDownloadsCount()
+    val queuedDownloads : Flow<List<DownloadItem>> = downloadDao.getQueuedDownloads()
+    val cancelledDownloads : Flow<List<DownloadItem>> = downloadDao.getCancelledDownloads()
+    val erroredDownloads : Flow<List<DownloadItem>> = downloadDao.getErroredDownloads()
+    val processingDownloads : Flow<List<DownloadItem>> = downloadDao.getProcessingDownloads()
 
     enum class Status {
         Active, Queued, Error, Processing, Cancelled
@@ -51,6 +52,14 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
 
     fun getActiveAndQueuedDownloads() : List<DownloadItem> {
         return downloadDao.getActiveAndQueuedDownloadsList()
+    }
+
+    fun getQueuedDownloads() : List<DownloadItem> {
+        return downloadDao.getQueuedDownloadsList();
+    }
+
+    fun getCancelledDownloads() : List<DownloadItem> {
+        return downloadDao.getCancelledDownloadsList()
     }
 
     suspend fun deleteCancelled(){

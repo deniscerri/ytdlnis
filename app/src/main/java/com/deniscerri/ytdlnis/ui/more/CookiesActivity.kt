@@ -32,6 +32,7 @@ import com.google.android.material.chip.Chip
 import com.google.android.material.color.MaterialColors
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.textfield.TextInputLayout
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -124,6 +125,7 @@ class CookiesActivity : BaseActivity(), CookieAdapter.OnItemClickListener {
         builder.setTitle(getString(R.string.cookies))
         val inputLayout = layoutInflater.inflate(R.layout.textinput, null)
         val editText = inputLayout.findViewById<EditText>(R.id.url_edittext)
+        inputLayout.findViewById<TextInputLayout>(R.id.url_textinput).hint = "URL"
         val text = if (url.isNullOrBlank()) "https://" else url
         editText.setText(text)
         editText.setSelection(editText.text.length)

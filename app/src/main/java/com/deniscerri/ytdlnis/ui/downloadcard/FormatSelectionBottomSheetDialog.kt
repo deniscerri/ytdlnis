@@ -210,109 +210,12 @@ class FormatSelectionBottomSheetDialog(private val items: List<DownloadItem?>, p
                 dismiss()
             }
             formatItem.setOnLongClickListener {
-                val bottomSheet = BottomSheetDialog(requireContext())
-                bottomSheet.requestWindowFeature(Window.FEATURE_NO_TITLE)
-                bottomSheet.setContentView(R.layout.format_details_sheet)
-
-                val formatIdParent = bottomSheet.findViewById<LinearLayout>(R.id.format_id_parent)
-                val containerParent = bottomSheet.findViewById<LinearLayout>(R.id.container_parent)
-                val codecParent = bottomSheet.findViewById<LinearLayout>(R.id.codec_parent)
-                val filesizeParent = bottomSheet.findViewById<LinearLayout>(R.id.filesize_parent)
-                val formatnoteParent = bottomSheet.findViewById<LinearLayout>(R.id.format_note_parent)
-                val fpsParent = bottomSheet.findViewById<LinearLayout>(R.id.fps_parent)
-                val asrParent = bottomSheet.findViewById<LinearLayout>(R.id.asr_parent)
-
-                if (format.format_id.isBlank()) formatIdParent?.visibility = View.GONE
-                else {
-                    formatIdParent?.findViewById<TextView>(R.id.format_id_value)?.text = format.format_id
-                    formatIdParent?.setOnClickListener {
-                        copyToClipboard(format.format_id)
-                    }
-                }
-
-
-                if (format.container.isBlank()) containerParent?.visibility = View.GONE
-                else {
-                    containerParent?.findViewById<TextView>(R.id.container_value)?.text = format.container
-                    containerParent?.setOnClickListener {
-                        copyToClipboard(format.container)
-                    }
-                }
-
-                val codecField =
-                    if (format.encoding != "") {
-                        format.encoding.uppercase()
-                    }else if (format.vcodec != "none" && format.vcodec != ""){
-                        format.vcodec.uppercase()
-                    } else {
-                        format.acodec.uppercase()
-                    }
-
-                if (codecField.isBlank()) codecParent?.visibility = View.GONE
-                else {
-                    codecParent?.findViewById<TextView>(R.id.codec_value)?.text = codecField
-                    codecParent?.setOnClickListener {
-                        copyToClipboard(codecField)
-                    }
-                }
-
-                if (format.filesize != 0L) filesizeParent?.visibility = View.GONE
-                else {
-                    filesizeParent?.findViewById<TextView>(R.id.filesize_value)?.text = fileUtil.convertFileSize(format.filesize)
-                    filesizeParent?.setOnClickListener {
-                        copyToClipboard(fileUtil.convertFileSize(format.filesize))
-                    }
-                }
-
-                if (format.format_note.isBlank()) formatnoteParent?.visibility = View.GONE
-                else {
-                    formatnoteParent?.findViewById<TextView>(R.id.format_note_value)?.text = format.format_note
-                    formatnoteParent?.setOnClickListener {
-                        copyToClipboard(format.format_note)
-                    }
-                }
-
-                if (format.fps.isNullOrBlank()) fpsParent?.visibility = View.GONE
-                else {
-                    fpsParent?.findViewById<TextView>(R.id.fps_value)?.text = format.fps
-                    fpsParent?.setOnClickListener {
-                        copyToClipboard(format.fps!!)
-                    }
-                }
-
-                if (format.asr.isNullOrBlank()) asrParent?.visibility = View.GONE
-                else {
-                    asrParent?.findViewById<TextView>(R.id.asr_value)?.text = format.asr
-                    asrParent?.setOnClickListener {
-                        copyToClipboard(format.asr!!)
-                    }
-                }
-
-
-
-                bottomSheet.show()
-                val displayMetrics = DisplayMetrics()
-                requireActivity().windowManager.defaultDisplay.getMetrics(displayMetrics)
-                bottomSheet.behavior.peekHeight = displayMetrics.heightPixels
-                bottomSheet.window!!.setLayout(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.MATCH_PARENT
-                )
-
+                uiUtil.showFormatDetails(format, requireActivity())
                 true
             }
             linearLayout.addView(formatItem)
         }
     }
-
-    private fun copyToClipboard(text: String){
-        val clipboard = requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-        val clip = ClipData.newPlainText(text, text)
-        clipboard.setPrimaryClip(clip)
-        Toast.makeText(context, requireContext().getString(R.string.copied_to_clipboard), Toast.LENGTH_SHORT)
-            .show()
-    }
-
 
     override fun onCancel(dialog: DialogInterface) {
         super.onCancel(dialog)

@@ -7,6 +7,7 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.preference.PreferenceManager
 import com.deniscerri.ytdlnis.App
@@ -35,7 +36,7 @@ class ResultViewModel(application: Application) : AndroidViewModel(application) 
         val commandDao = DBManager.getInstance(application).commandTemplateDao
         repository = ResultRepository(dao, commandDao, getApplication<Application>().applicationContext)
         searchHistoryRepository = SearchHistoryRepository(DBManager.getInstance(application).searchHistoryDao)
-        items = repository.allResults
+        items = repository.allResults.asLiveData()
         loadingItems.postValue(false)
         itemCount = repository.itemCount
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(application)

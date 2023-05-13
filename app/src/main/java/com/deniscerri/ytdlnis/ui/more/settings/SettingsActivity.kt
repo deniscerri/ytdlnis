@@ -3,28 +3,56 @@ package com.deniscerri.ytdlnis.ui.more.settings
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import androidx.activity.addCallback
 import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.commit
+import androidx.fragment.app.replace
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
+import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
+import com.deniscerri.ytdlnis.databinding.ActivitySettingsBinding
 import com.deniscerri.ytdlnis.ui.BaseActivity
 import com.google.android.material.appbar.MaterialToolbar
 
 
 class SettingsActivity : BaseActivity() {
-    private var fm: FragmentManager? = null
-    private var topAppBar: MaterialToolbar? = null
-    private lateinit var sharedPreferences: SharedPreferences
-    private lateinit var editor: SharedPreferences.Editor
     var context: Context? = null
+    lateinit var binding: ActivitySettingsBinding
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_settings)
         context = baseContext
-        topAppBar = findViewById(R.id.settings_toolbar)
-        topAppBar!!.setNavigationOnClickListener { onBackPressedDispatcher.onBackPressed() }
-        fm = supportFragmentManager
-        fm!!.beginTransaction()
-            .replace(R.id.settings_frame_layout, SettingsFragment())
-            .commit()
+        binding = ActivitySettingsBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.frame_layout) as NavHostFragment
+        val navController = navHostFragment.findNavController()
+
+        val listener = NavController.OnDestinationChangedListener { controller, destination, arguments ->
+            if (destination.id == R.id.mainSettingsFragment){
+                changeTopAppbarTitle(getString(R.string.settings))
+            }
+        }
+
+        navController.addOnDestinationChangedListener(listener)
+        binding.settingsToolbar.setNavigationOnClickListener {
+            onBackPressedDispatcher.onBackPressed()
+        }
+
+        onBackPressedDispatcher.addCallback(this) {
+            if (navController.currentDestination?.id == R.id.mainSettingsFragment) {
+                navController.popBackStack()
+                finishAndRemoveTask()
+            }else{
+                navController.navigateUp()
+            }
+        }
+
+        navController.navigate(R.id.mainSettingsFragment)
+    }
+
+    fun changeTopAppbarTitle(text: String) {
+        if (this::binding.isInitialized) binding.collapsingToolbar.title = text
     }
 }

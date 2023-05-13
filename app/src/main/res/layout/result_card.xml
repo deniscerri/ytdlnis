@@ -20,6 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:cardCornerRadius="20dp"
+            app:checkedIcon="@null"
             app:cardElevation="5dp"
             app:cardMaxElevation="12dp"
             app:cardPreventCornerOverlap="true"

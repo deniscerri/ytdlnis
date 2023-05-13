@@ -58,7 +58,7 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             debuggable false
             signingConfig signingConfigs.debug
@@ -178,4 +178,5 @@ dependencies {
     implementation 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0'
     implementation "com.google.android.exoplayer:exoplayer:2.18.6"
     implementation 'it.xabaras.android:recyclerview-swipedecorator:1.4'
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.6.1"
 }

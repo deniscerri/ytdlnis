@@ -8,6 +8,7 @@ import android.net.ConnectivityManager
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.preference.PreferenceManager
 import androidx.work.*
@@ -52,13 +53,13 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(application)
         commandTemplateDao = DBManager.getInstance(application).commandTemplateDao
 
-        allDownloads = repository.allDownloads
-        queuedDownloads = repository.queuedDownloads
-        activeDownloads = repository.activeDownloads
-        activeDownloadsCount = repository.activeDownloadsCount
-        processingDownloads = repository.processingDownloads
-        cancelledDownloads = repository.cancelledDownloads
-        erroredDownloads = repository.erroredDownloads
+        allDownloads = repository.allDownloads.asLiveData()
+        queuedDownloads = repository.queuedDownloads.asLiveData()
+        activeDownloads = repository.activeDownloads.asLiveData()
+        activeDownloadsCount = repository.activeDownloadsCount.asLiveData()
+        processingDownloads = repository.processingDownloads.asLiveData()
+        cancelledDownloads = repository.cancelledDownloads.asLiveData()
+        erroredDownloads = repository.erroredDownloads.asLiveData()
 
         videoQualityPreference = sharedPreferences.getString("video_quality", application.getString(R.string.best_quality)).toString()
         formatIDPreference = sharedPreferences.getString("format_id", "").toString()
@@ -114,7 +115,11 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         val addChapters = sharedPreferences.getBoolean("add_chapters", false)
         val saveThumb = sharedPreferences.getBoolean("write_thumbnail", false)
         val embedThumb = sharedPreferences.getBoolean("embed_thumbnail", false)
-        val customFileNameTemplate = sharedPreferences.getString("file_name_template", "%(uploader)s - %(title)s")
+        val customFileNameTemplate = when(type) {
+            Type.audio -> sharedPreferences.getString("file_name_template_audio", "%(uploader)s - %(title)s")
+            Type.video -> sharedPreferences.getString("file_name_template", "%(uploader)s - %(title)s")
+            else -> ""
+        }
 
         val downloadPath = when(type){
             Type.audio -> sharedPreferences.getString("music_path", getApplication<App>().resources.getString(R.string.music_path))
@@ -205,7 +210,11 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         val addChapters = sharedPreferences.getBoolean("add_chapters", false)
         val saveThumb = sharedPreferences.getBoolean("write_thumbnail", false)
         val embedThumb = sharedPreferences.getBoolean("embed_thumbnail", false)
-        val customFileNameTemplate = sharedPreferences.getString("file_name_template", "%(uploader)s - %(title)s")
+        val customFileNameTemplate = when(historyItem.type) {
+            Type.audio -> sharedPreferences.getString("file_name_template_audio", "%(uploader)s - %(title)s")
+            Type.video -> sharedPreferences.getString("file_name_template", "%(uploader)s - %(title)s")
+            else -> ""
+        }
 
         val downloadPath = when(historyItem.type){
             Type.audio -> sharedPreferences.getString("music_path", getApplication<App>().resources.getString(R.string.music_path))
@@ -343,6 +352,14 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
 
     fun cancelQueued() = viewModelScope.launch(Dispatchers.IO) {
         repository.cancelQueued()
+    }
+
+    fun getQueued() : List<DownloadItem> {
+        return repository.getQueuedDownloads()
+    }
+
+    fun getCancelled() : List<DownloadItem> {
+        return repository.getCancelledDownloads()
     }
 
     private fun cloneFormat(item: Format) : Format {

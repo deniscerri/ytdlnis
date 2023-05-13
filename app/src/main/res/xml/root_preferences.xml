@@ -1,398 +1,44 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <ListPreference
-        android:entries="@array/language_values"
-        android:entryValues="@array/language_values"
-        android:icon="@drawable/ic_language"
-        app:key="app_language"
-        app:summary="en"
-        app:title="@string/language" />
-
-    <ListPreference
-        android:entries="@array/themes"
-        android:entryValues="@array/themes_values"
-        android:icon="@drawable/baseline_format_paint_24"
-        app:defaultValue="System"
-        app:key="ytdlnis_theme"
-        app:summary="@string/defaultValue"
-        app:title="@string/Theme" />
-
-    <ListPreference
-        android:entries="@array/accents"
-        android:entryValues="@array/accents_values"
-        android:icon="@drawable/baseline_color_lens_24"
-        app:defaultValue="blue"
-        app:key="theme_accent"
-        app:summary="Blue"
-        app:title="@string/accents" />
-
-    <SwitchPreferenceCompat
-        android:widgetLayout="@layout/preferece_material_switch"
-        app:defaultValue="false"
-        android:icon="@drawable/baseline_invert_colors_24"
-        android:key="high_contrast"
-        app:summary="@string/pure_theme_summary"
-        app:title="@string/high_contrast" />
 
     <Preference
-        app:icon="@drawable/ic_battery"
-        app:key="ignore_battery"
-        app:title="@string/ignore_battery_optimization" />
+        android:key="appearance"
+        app:icon="@drawable/baseline_format_paint_24"
+        android:title="@string/appearance"/>
 
-    <PreferenceCategory android:title="@string/directories">
+    <Preference
+        android:key="folders"
+        app:icon="@drawable/baseline_folder_24"
+        android:title="@string/directories"/>
 
+    <Preference
+        android:key="downloading"
+        app:icon="@drawable/baseline_download_24"
+        android:title="@string/downloading"/>
 
-        <Preference
-            app:icon="@drawable/ic_music_downloaded"
-            app:key="music_path"
-            app:defaultValue="@string/music_path"
-            app:title="@string/music_directory" />
+    <Preference
+        android:key="processing"
+        app:icon="@drawable/ic_code"
+        android:title="@string/processing"/>
 
-        <Preference
-            app:icon="@drawable/ic_video_downloaded"
-            app:key="video_path"
-            app:defaultValue="@string/video_path"
-            app:title="@string/video_directory" />
+    <Preference
+        android:key="updating"
+        app:icon="@drawable/ic_update"
+        android:title="@string/updating"/>
 
-        <Preference
-            app:icon="@drawable/ic_terminal"
-            app:key="command_path"
-            app:defaultValue="@string/command_path"
-            app:title="@string/command_directory" />
-
-        <Preference
-            app:icon="@drawable/ic_access_folder"
-            app:key="access_all_files"
-            android:summary="@string/access_all_directories_summary"
-            app:title="@string/access_all_directories" />
-
-        <Preference
-            app:icon="@drawable/ic_folder_delete"
-            app:key="clear_cache"
-            android:summary="@string/clear_temporary_files_summary"
-            app:title="@string/clear_temporary_files" />
-
-        <SwitchPreferenceCompat
-            android:widgetLayout="@layout/preferece_material_switch"
-            app:defaultValue="false"
-            android:icon="@drawable/baseline_save_24"
-            android:key="keep_cache"
-            app:summary="@string/keep_cache_summary"
-            app:title="@string/keep_cache" />
-
-    </PreferenceCategory>
-
-    <PreferenceCategory app:title="@string/downloading">
-        <SwitchPreferenceCompat
-            android:widgetLayout="@layout/preferece_material_switch"
-            app:defaultValue="false"
-            android:icon="@drawable/ic_incognito"
-            android:key="incognito"
-            app:summary="@string/incognito_summary"
-            app:title="Incognito" />
-
-        <SwitchPreferenceCompat
-            android:widgetLayout="@layout/preferece_material_switch"
-            app:defaultValue="true"
-            android:icon="@drawable/ic_card"
-            android:key="download_card"
-            app:summary="@string/download_card_summary"
-            app:title="@string/show_download_card" />
-
-        <SwitchPreferenceCompat
-            android:widgetLayout="@layout/preferece_material_switch"
-            app:defaultValue="false"
-            android:icon="@drawable/ic_speed"
-            android:key="quick_download"
-            app:summary="@string/quick_download_summary"
-            app:title="@string/quick_download" />
-
-        <SwitchPreferenceCompat
-            android:widgetLayout="@layout/preferece_material_switch"
-            app:defaultValue="true"
-            android:icon="@drawable/metered_networks"
-            android:key="metered_networks"
-            app:summary="@string/download_over_metered_networks_summary"
-            app:title="@string/download_over_metered_networks" />
-
-        <ListPreference
-            android:dependency="download_card"
-            android:defaultValue="video"
-            android:entries="@array/download_types"
-            android:entryValues="@array/download_types_values"
-            android:icon="@drawable/ic_download_type"
-            app:key="preferred_download_type"
-            app:summary="@string/preferred_download_type_summary"
-            app:title="@string/preferred_download_type" />
-
-        <ListPreference
-            android:defaultValue="ytsearch"
-            android:entries="@array/search_engines"
-            android:entryValues="@array/search_engines_values"
-            android:icon="@drawable/baseline_manage_search_24"
-            app:key="search_engine"
-            app:summary="@string/preferred_search_engine_summary"
-            app:title="@string/preferred_search_engine" />
-
-        <ListPreference
-            android:defaultValue="Home"
-            android:entries="@array/start_destination"
-            android:entryValues="@array/start_destination_values"
-            app:icon="@drawable/baseline_add_to_home_screen_24"
-            app:key="start_destination"
-            app:title="@string/preferred_home_screen" />
-
-
-        <SwitchPreferenceCompat
-            android:widgetLayout="@layout/preferece_material_switch"
-            app:defaultValue="false"
-            android:icon="@drawable/baseline_recommend_24"
-            android:key="home_recommendations"
-            app:summary="@string/video_recommendations_summary"
-            app:title="@string/video_recommendations" />
-
-        <ListPreference
-            android:defaultValue=""
-            android:entries="@array/countries"
-            android:entryValues="@array/countries_values"
-            app:icon="@drawable/ic_language"
-            app:dependency="home_recommendations"
-            app:key="locale"
-            app:title="@string/preferred_locale" />
-
-        <EditTextPreference
-            android:icon="@drawable/ic_key"
-            app:key="api_key"
-            app:defaultValue=""
-            app:summary="@string/api_key_summary"
-            app:title="@string/api_key" />
-
-        <SeekBarPreference
-            app:dependency="aria2"
-            android:defaultValue="3"
-            android:icon="@drawable/ic_lines"
-            android:max="25"
-            app:key="concurrent_fragments"
-            app:min="1"
-            app:showSeekBarValue="true"
-            android:dependency="aria2"
-            app:summary="@string/concurrent_fragments_summary"
-            app:title="@string/concurrent_fragments" />
-
-        <SeekBarPreference
-            android:defaultValue="1"
-            android:icon="@drawable/ic_concurrent_downloads"
-            android:max="10"
-            app:key="concurrent_downloads"
-            app:min="1"
-            app:showSeekBarValue="true"
-            app:summary="@string/concurrent_downloads_summary"
-            app:title="@string/concurrent_downloads" />
-
-        <EditTextPreference
-            android:icon="@drawable/ic_down"
-            app:key="limit_rate"
-            app:summary="@string/limit_rate_summary"
-            app:title="@string/limit_rate" />
-
-        <SwitchPreferenceCompat
-            android:widgetLayout="@layout/preferece_material_switch"
-            app:defaultValue="false"
-            android:icon="@drawable/ic_speed"
-            android:key="aria2"
-            app:summary="@string/aria2_summary"
-            android:disableDependentsState="true"
-            app:title="Aria2" />
-
-        <SwitchPreferenceCompat
-            android:widgetLayout="@layout/preferece_material_switch"
-            app:defaultValue="false"
-            android:icon="@drawable/ic_baseline_file_open_24"
-            android:key="log_downloads"
-            app:summary="@string/log_downloads_summary"
-            app:title="@string/log_downloads" />
-
-    </PreferenceCategory>
-
-
-    <PreferenceCategory android:title="@string/processing">
-        <MultiSelectListPreference
-            app:defaultValue="@array/sponsorblock_settings_default"
-            app:icon="@drawable/ic_money"
-            app:dialogTitle="@string/select_sponsorblock_filtering"
-            app:entries="@array/sponsorblock_settings_entries"
-            app:entryValues="@array/sponsorblock_settings_values"
-            app:key="sponsorblock_filters"
-            app:summary="@string/select_sponsorblock_filtering"
-            app:title="SponsorBlock" />
-
-        <EditTextPreference
-            android:icon="@drawable/ic_textformat"
-            app:key="file_name_template"
-            app:defaultValue="%(uploader)s - %(title)s"
-            app:title="@string/file_name_template" />
-
-        <SwitchPreferenceCompat
-            android:widgetLayout="@layout/preferece_material_switch"
-            app:defaultValue="false"
-            app:icon="@drawable/if_file_rename"
-            app:key="restrict_filenames"
-            app:summary="@string/restrict_filenames_summary"
-            app:title="@string/restrict_filenames" />
-
-        <SwitchPreferenceCompat
-            android:widgetLayout="@layout/preferece_material_switch"
-            app:defaultValue="false"
-            app:icon="@drawable/ic_clock"
-            app:key="mtime"
-            app:summary="@string/enable_mtime_summary"
-            app:title="@string/enable_mtime" />
-
-        <SwitchPreferenceCompat
-            android:widgetLayout="@layout/preferece_material_switch"
-            app:defaultValue="true"
-            app:icon="@drawable/ic_subtitles"
-            app:key="embed_subtitles"
-            app:summary="@string/embed_subs_summary"
-            app:title="@string/embed_subtitles" />
-
-        <SwitchPreferenceCompat
-            android:widgetLayout="@layout/preferece_material_switch"
-            app:defaultValue="false"
-            app:icon="@drawable/ic_subtitles_alternative"
-            app:key="write_subtitles"
-            app:summary="@string/save_subs_desc"
-            app:title="@string/save_subs" />
-
-        <SwitchPreferenceCompat
-            android:widgetLayout="@layout/preferece_material_switch"
-            app:defaultValue="true"
-            app:icon="@drawable/ic_image"
-            app:key="embed_thumbnail"
-            app:summary="@string/embed_thumb_summary"
-            app:title="@string/embed_thumb" />
-
-        <SwitchPreferenceCompat
-            android:widgetLayout="@layout/preferece_material_switch"
-            app:defaultValue="true"
-            app:icon="@drawable/ic_chapters"
-            app:key="add_chapters"
-            app:summary="@string/add_chapters_summary"
-            app:title="@string/add_chapters" />
-
-        <SwitchPreferenceCompat
-            android:widgetLayout="@layout/preferece_material_switch"
-            app:defaultValue="false"
-            app:icon="@drawable/ic_image"
-            app:key="write_thumbnail"
-            app:summary="@string/save_thumb_summary"
-            app:title="@string/save_thumb" />
-
-        <ListPreference
-            android:defaultValue="Default"
-            android:entries="@array/audio_containers"
-            android:entryValues="@array/audio_containers_values"
-            android:icon="@drawable/ic_code"
-            app:key="audio_format"
-            app:summary="@string/defaultValue"
-            app:title="@string/audio_format" />
-
-        <ListPreference
-            android:defaultValue="Default"
-            android:entries="@array/video_containers"
-            android:entryValues="@array/video_containers_values"
-            android:icon="@drawable/ic_code"
-            app:key="video_format"
-            app:summary="@string/defaultValue"
-            app:title="@string/video_format" />
-
-
-        <SeekBarPreference
-            android:defaultValue="0"
-            android:icon="@drawable/ic_music"
-            android:max="10"
-            app:key="audio_quality"
-            app:min="0"
-            app:showSeekBarValue="true"
-            app:summary="@string/audio_quality_summary"
-            app:title="@string/audio_quality" />
-
-        <ListPreference
-            android:defaultValue="@string/best_quality"
-            android:entries="@array/video_formats"
-            android:entryValues="@array/video_formats"
-            android:icon="@drawable/ic_video"
-            app:key="video_quality"
-            app:summary="@string/best_quality"
-            app:title="@string/video_quality" />
-
-        <EditTextPreference
-            app:key="format_id"
-            app:defaultValue=""
-            app:title="@string/preferred_format_id" />
-
-    </PreferenceCategory>
-
-
-    <PreferenceCategory android:title="@string/updating">
-        <Preference
-            app:icon="@drawable/ic_update"
-            app:key="update_ytdl"
-            app:summary="@string/ytdl_update_hint"
-            app:title="@string/update_ytdl" />
-
-        <Preference
-            app:icon="@drawable/ic_info"
-            app:key="ytdl-version"
-            app:title="@string/ytdl_version"/>
-
-        <SwitchPreferenceCompat
-            android:widgetLayout="@layout/preferece_material_switch"
-            android:defaultValue="false"
-            app:icon="@drawable/ic_nightly"
-            app:key="nightly_ytdl"
-            android:title="@string/update_ytdl_nightly"
-            />
-
-        <SwitchPreferenceCompat
-            android:widgetLayout="@layout/preferece_material_switch"
-            app:defaultValue="false"
-            android:icon="@drawable/ic_format"
-            android:key="update_formats"
-            app:summary="@string/update_formats_summary"
-            app:title="@string/update_formats" />
-
-        <ListPreference
-            android:defaultValue="yt-dlp"
-            android:entries="@array/formats_source"
-            android:entryValues="@array/formats_source_values"
-            android:icon="@drawable/baseline_manage_search_24"
-            app:key="formats_source"
-            app:summary="yt-dlp"
-            app:title="@string/format_source" />
-
-        <SwitchPreferenceCompat
-            android:widgetLayout="@layout/preferece_material_switch"
-            app:defaultValue="true"
-            android:icon="@drawable/ic_update_app"
-            android:key="update_app"
-            app:summary="@string/update_app_summary"
-            app:title="@string/update_app" />
-
-    </PreferenceCategory>
-
-    <PreferenceCategory android:title="@string/about">
-
+    <PreferenceCategory android:title="@string/backup">
         <Preference
             app:icon="@drawable/baseline_save_alt_24"
-            app:key="export_preferences"
+            app:key="backup"
             app:title="@string/backup"/>
 
         <Preference
             app:icon="@drawable/baseline_restore_page_24"
-            app:key="import_preferences"
+            app:key="restore"
             app:title="@string/restore"/>
+    </PreferenceCategory>
 
+    <PreferenceCategory android:title="@string/about" >
         <Preference
             app:icon="@drawable/ic_discord"
             app:key="discord"
@@ -433,11 +79,6 @@
                 android:action="android.intent.action.VIEW"
                 android:data="https://github.com/deniscerri/ytdlnis" />
         </Preference>
-
-        <Preference
-            app:icon="@drawable/ic_info"
-            app:key="version"
-            app:title="@string/version"/>
 
     </PreferenceCategory>
 

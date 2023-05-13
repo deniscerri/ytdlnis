@@ -26,13 +26,21 @@
         android:label="More"
         tools:layout="@layout/fragment_more" >
         <action
-            android:id="@+id/action_moreFragment_to_settingsFragment"
-            app:destination="@id/settingsFragment" />
+            android:id="@+id/action_moreFragment_to_terminalActivity"
+            app:destination="@id/terminalActivity" />
+        <action
+            android:id="@+id/action_moreFragment_to_cookiesActivity"
+            app:destination="@id/cookiesActivity" />
+        <action
+            android:id="@+id/action_moreFragment_to_downloadQueueActivity"
+            app:destination="@id/downloadQueueActivity" />
+        <action
+            android:id="@+id/action_moreFragment_to_downloadLogListActivity"
+            app:destination="@id/downloadLogListActivity" />
+        <action
+            android:id="@+id/action_moreFragment_to_commandTemplatesActivity"
+            app:destination="@id/commandTemplatesActivity" />
     </fragment>
-    <fragment
-        android:id="@+id/settingsFragment"
-        android:name="com.deniscerri.ytdlnis.ui.more.settings.SettingsFragment"
-        android:label="SettingsFragment" />
     <activity
         android:id="@+id/downloadQueueActivity"
         android:name="com.deniscerri.ytdlnis.ui.downloads.DownloadQueueActivity"
@@ -50,11 +58,6 @@
         android:id="@+id/cookiesActivity"
         android:name="com.deniscerri.ytdlnis.ui.more.CookiesActivity"
         android:label="CookiesActivity" />
-    <activity
-        android:id="@+id/settingsActivity"
-        android:name="com.deniscerri.ytdlnis.ui.more.settings.SettingsActivity"
-        android:label="activity_settings"
-        tools:layout="@layout/activity_settings" />
     <activity
         android:id="@+id/terminalActivity"
         android:name="com.deniscerri.ytdlnis.ui.more.TerminalActivity"

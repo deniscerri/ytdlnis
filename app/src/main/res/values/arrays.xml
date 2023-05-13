@@ -11,7 +11,7 @@
     </string-array>
 
     <string-array name="audio_containers_values">
-        <item />
+        <item>Default</item>
         <item>mp3</item>
         <item>m4a</item>
         <item>aac</item>
@@ -29,7 +29,7 @@
     </string-array>
 
     <string-array name="video_containers_values">
-        <item />
+        <item>Default</item>
         <item>mp4</item>
         <item>mkv</item>
         <item>webm</item>
@@ -44,6 +44,17 @@
         <item>1440p</item>
         <item>2160p</item>
         <item>@string/best_quality</item>
+    </string-array>
+
+    <string-array name="video_formats_values">
+        <item>worst</item>
+        <item>360p</item>
+        <item>480p</item>
+        <item>720p</item>
+        <item>1080p</item>
+        <item>1440p</item>
+        <item>2160p</item>
+        <item>best</item>
     </string-array>
 
     <string-array name="audio_formats">
@@ -681,6 +692,30 @@
         <item>YE</item>
         <item>ZM</item>
         <item>ZW</item>
+    </array>
+
+
+
+    <array name="backup_category_entries">
+        <item>@string/settings</item>
+        <item>@string/downloads</item>
+        <item>@string/in_queue</item>
+        <item>@string/cancelled</item>
+        <item>@string/cookies</item>
+        <item>@string/command_templates</item>
+        <item>@string/shortcuts</item>
+        <item>@string/search_history</item>
+    </array>
+
+    <array name="backup_category_values">
+        <item>settings</item>
+        <item>downloads</item>
+        <item>queued</item>
+        <item>cancelled</item>
+        <item>cookies</item>
+        <item>templates</item>
+        <item>shortcuts</item>
+        <item>searchHistory</item>
     </array>
 
 </resources>

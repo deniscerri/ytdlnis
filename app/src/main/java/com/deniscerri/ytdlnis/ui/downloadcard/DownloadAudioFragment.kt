@@ -3,18 +3,25 @@ package com.deniscerri.ytdlnis.ui.downloadcard
 import android.app.Activity
 import android.content.DialogInterface
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
+import android.widget.EditText
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -142,10 +149,6 @@ class DownloadAudioFragment(private var resultItem: ResultItem, private var curr
                     override fun onFormatClick(allFormats: List<List<Format>>, item: List<Format>) {
                         downloadItem.format = item.first()
                         uiUtil.populateFormatCard(formatCard, item.first())
-                        if (containers.contains(item.first().container)){
-                            downloadItem.format.container = item.first().container
-                            containerAutoCompleteTextView.setText(item.first().container, false)
-                        }
                         lifecycleScope.launch {
                             withContext(Dispatchers.IO){
                                 resultItem.formats.removeAll(formats.toSet())
@@ -162,6 +165,10 @@ class DownloadAudioFragment(private var resultItem: ResultItem, private var curr
                         bottomSheet.show(parentFragmentManager, "formatSheet")
                     }
                 }
+                formatCard.setOnLongClickListener {
+                    uiUtil.showFormatDetails(downloadItem.format, requireActivity())
+                    true
+                }
 
 
                 container?.isEnabled = true
@@ -173,12 +180,13 @@ class DownloadAudioFragment(private var resultItem: ResultItem, private var curr
                     )
                 )
 
-                downloadItem.format.container = containerPreference!!
-                containerAutoCompleteTextView.setText(downloadItem.format.container, false)
+                downloadItem.format.container = if (containerPreference == getString(R.string.defaultValue)) "" else containerPreference!!
+                containerAutoCompleteTextView.setText(downloadItem.format.container.ifEmpty { getString(R.string.defaultValue) }, false)
 
                 (container!!.editText as AutoCompleteTextView?)!!.onItemClickListener =
                     AdapterView.OnItemClickListener { _: AdapterView<*>?, _: View?, index: Int, _: Long ->
                         downloadItem.format.container = containers[index]
+                        if (containers[index] == getString(R.string.defaultValue)) downloadItem.format.container = ""
                     }
 
                 val embedThumb = view.findViewById<Chip>(R.id.embed_thumb)
@@ -197,6 +205,41 @@ class DownloadAudioFragment(private var resultItem: ResultItem, private var curr
 
                 splitByChapters.setOnClickListener {
                     downloadItem.audioPreferences.splitByChapters = splitByChapters.isChecked
+                }
+
+                val filenameTemplate = view.findViewById<Chip>(R.id.filename_template)
+                filenameTemplate.setOnClickListener {
+                    val builder = MaterialAlertDialogBuilder(requireContext())
+                    builder.setTitle(getString(R.string.file_name_template))
+                    val inputLayout = layoutInflater.inflate(R.layout.textinput, null)
+                    val editText = inputLayout.findViewById<EditText>(R.id.url_edittext)
+                    inputLayout.findViewById<TextInputLayout>(R.id.url_textinput).hint = getString(R.string.file_name_template)
+                    editText.setText(downloadItem.customFileNameTemplate)
+                    editText.setSelection(editText.text.length)
+                    builder.setView(inputLayout)
+                    builder.setPositiveButton(
+                        getString(R.string.ok)
+                    ) { dialog: DialogInterface?, which: Int ->
+                        downloadItem.customFileNameTemplate = editText.text.toString()
+                    }
+
+                    // handle the negative button of the alert dialog
+                    builder.setNegativeButton(
+                        getString(R.string.cancel)
+                    ) { dialog: DialogInterface?, which: Int -> }
+
+                    val dialog = builder.create()
+                    editText.doOnTextChanged { text, start, before, count ->
+                        dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = editText.text.isNotEmpty()
+                    }
+                    dialog.show()
+                    val imm = context?.getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager
+                    editText!!.postDelayed({
+                        editText.requestFocus()
+                        imm.showSoftInput(editText, 0)
+                    }, 300)
+                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = editText.text.isNotEmpty()
+                    dialog.getButton(AlertDialog.BUTTON_NEUTRAL).gravity = Gravity.START
                 }
 
                 val sponsorblock = view.findViewById<Chip>(R.id.sponsorblock_filters)

@@ -19,6 +19,10 @@ class HistoryRepository(private val historyDao: HistoryDao) {
         return historyDao.getHistoryItem(id)
     }
 
+    fun getAll() : List<HistoryItem> {
+        return historyDao.getAllHistoryList()
+    }
+
     fun getFiltered(query : String, format : String, site : String, sortType: HistorySortType, sort: HistorySort) : List<HistoryItem> {
         return when(sortType){
             HistorySortType.DATE ->  historyDao.getHistorySortedByID(query, format, site, sort.toString())

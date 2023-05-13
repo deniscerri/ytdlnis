@@ -255,4 +255,13 @@
     <string name="keep_cache_summary">Don\'t delete temporary files after the download is finished</string>
     <string name="backup">Backup</string>
     <string name="restore">Restore</string>
+    <string name="network_error">Network Error</string>
+    <string name="incognito">Incognito</string>
+    <string name="sponsorblock">SponsorBlock</string>
+    <string name="couldnt_parse_file">Couldn\'t parse file</string>
+    <string name="restore_complete">App Restore Complete. The following items have been restored:</string>
+    <string name="select_backup_categories">Select backup categories</string>
+    <string name="search_history">Search History</string>
+    <string name="backup_created_successfully">Backup file saved in the downloads folder</string>
+    <string name="appearance">Appearance</string>
 </resources>

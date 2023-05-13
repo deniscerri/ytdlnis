@@ -123,7 +123,6 @@ class MainActivity : BaseActivity() {
                         startActivity(intent)
                     }
                     R.id.moreFragment -> {
-                        //navController.navigate(R.id.settingsFragment)
                         val intent = Intent(context, SettingsActivity::class.java)
                         startActivity(intent)
                     }

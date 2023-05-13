@@ -20,23 +20,26 @@
             style="@style/Widget.Material3.BottomAppBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:menu="@menu/select_playlist_menu"
             android:layout_gravity="bottom">
 
             <TextView
                 android:id="@+id/selected"
                 android:layout_width="wrap_content"
                 android:textStyle="bold"
+                android:layout_marginHorizontal="30dp"
                 android:layout_height="wrap_content" />
 
 
         </com.google.android.material.bottomappbar.BottomAppBar>
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/check_all"
             android:layout_width="wrap_content"
+            android:text="@string/select_all"
+            app:icon="@drawable/ic_select_all"
             android:layout_height="wrap_content"
-            app:layout_anchor="@id/bottomAppBar"
-            app:srcCompat="@drawable/ic_select_all" />
+            app:layout_anchor="@id/bottomAppBar"/>
 
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
@@ -83,6 +86,7 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:gravity="center"
                 android:orientation="horizontal"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

@@ -47,7 +47,7 @@ class UpdateUtil(var context: Context) {
                 version = res.getString("tag_name")
                 body = res.getString("body")
             } catch (e: JSONException) {
-                result(e.message.toString())
+                result(context.getString(R.string.network_error))
                 return
             }
             val versionNameInt = version.split("v")[1].replace(".","").toInt()
