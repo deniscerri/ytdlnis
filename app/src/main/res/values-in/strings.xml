@@ -240,4 +240,10 @@
     <string name="preferred_format_id">Preferensi ID Format</string>
     <string name="download_now">Unduh Sekarang</string>
     <string name="remove_audio">Hilangkan Audio</string>
+    <string name="pause">Jeda
+\n</string>
+    <string name="updating_download_data">Memutakhirkan Data Butir Unduhan</string>
+    <string name="preferred_locale">Preferensi Wilayah</string>
+    <string name="resume">Lanjutkan</string>
+    <string name="keep_cache">Simpan Berkas Singgahan</string>
 </resources>
