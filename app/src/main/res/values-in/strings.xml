@@ -9,7 +9,7 @@
     <string name="no_results">Tidak Ada Hasil</string>
     <string name="remove_all">Bersihkan Semua</string>
     <string name="download_all">Unduh Semua</string>
-    <string name="settings">Pengaturan</string>
+    <string name="settings">Penyetelan</string>
     <string name="search">Telusuri</string>
     <string name="failed_download">Tidak bisa mengunduh berkas.</string>
     <string name="download_notification_channel_name">Unduhan Berkas</string>
@@ -258,4 +258,5 @@
     <string name="backup_created_successfully">Berkas cadangan disimpan di folder unduhan</string>
     <string name="backup">Cadangkan</string>
     <string name="restore">Pulihkan</string>
+    <string name="backup_restore">Pencadangan &amp; Pemulihan</string>
 </resources>
