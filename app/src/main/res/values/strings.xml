@@ -91,7 +91,6 @@
     <string name="show_download_card">Show Options for Downloading</string>
     <string name="download_card_summary">Settings for how to download items</string>
     <string name="Open_File">Open File</string>
-    <string name="delete_selected">Delete Selected</string>
     <string name="you_are_going_to_delete_multiple_items">Deleting multiple items…</string>
     <string name="delete_file_too">Delete the file from the device</string>
     <string name="delete_files_too">Delete the files from the device</string>
@@ -162,7 +161,6 @@
     <string name="access_all_directories">Allow access to all directories</string>
     <string name="access_all_directories_summary">Let the app download on directories that are restricted by default</string>
     <string name="redownload">Redownload</string>
-    <string name="copy_url">Copy URL</string>
     <string name="in_queue">In Queue</string>
     <string name="clear_cancelled">Clear Cancelled</string>
     <string name="clear_errored">Clear Errored</string>
@@ -193,14 +191,11 @@
     <string name="cut">Cut</string>
     <string name="new_cut">New Cut</string>
     <string name="add_template_first">You need to have at least one command template created!</string>
-    <string name="formatid_copied_to_clipboard">Format ID copied to clipboard</string>
     <string name="suggested">Suggested</string>
     <string name="select_all">Select All</string>
     <string name="share">Share</string>
     <string name="cookies">Cookies</string>
     <string name="new_cookie">New Cookie</string>
-    <string name="cookie">Cookie</string>
-    <string name="create_cookie">Create Cookie</string>
     <string name="get_cookies">Get Cookies</string>
     <string name="delete_all_cookies">Delete All Cookies</string>
     <string name="confirm_delete_cookies_desc">Delete all the cookies, permanently</string>

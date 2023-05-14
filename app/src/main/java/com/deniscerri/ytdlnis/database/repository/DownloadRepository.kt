@@ -1,10 +1,8 @@
 package com.deniscerri.ytdlnis.database.repository
 
-import androidx.lifecycle.LiveData
 import com.deniscerri.ytdlnis.database.Converters
 import com.deniscerri.ytdlnis.database.dao.DownloadDao
 import com.deniscerri.ytdlnis.database.models.DownloadItem
-import com.deniscerri.ytdlnis.database.models.ResultItem
 import kotlinx.coroutines.flow.Flow
 
 class DownloadRepository(private val downloadDao: DownloadDao) {

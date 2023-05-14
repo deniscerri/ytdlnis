@@ -19,7 +19,6 @@
     <string name="show_download_card">Mostra opzioni per il download</string>
     <string name="download_card_summary">Impostazioni su come scaricare gli elementi</string>
     <string name="Open_File">Apri il file</string>
-    <string name="delete_selected">Elimina selezionato</string>
     <string name="delete_files_too">Elimina i file dal dispositivo</string>
     <string name="sponsorblock_intro">Introduzione</string>
     <string name="select_sponsorblock_filtering">Selezionare Filtraggio SponsorBlock</string>

@@ -112,7 +112,6 @@
     <string name="access_all_directories">Atļaut piekļuvi visiem direktorijiem</string>
     <string name="access_all_directories_summary">Ļaut lietotnei lejupielādēt no direktorijiem, kas pēc noklusējuma ir ierobežoti</string>
     <string name="redownload">Atkārtoti Lejupielādēt</string>
-    <string name="copy_url">Kopēt URL</string>
     <string name="in_queue">Rindā</string>
     <string name="clear_cancelled">Notīrīt Atceltos</string>
     <string name="split_by_chapters">Sadalīt Pēc Sadaļām</string>
@@ -156,7 +155,6 @@
     <string name="Open_File">Atvērt Failu</string>
     <string name="show_download_card">Rādīt Lejupielādes Opcijas</string>
     <string name="download_card_summary">Iestatījumi, kā lejupielādēt vienumus</string>
-    <string name="delete_selected">Dzēst Atlasīto</string>
     <string name="edit_selected">Rediģēt atlasīto</string>
     <string name="you_are_going_to_delete_multiple_items">Dzēš vairākus elementus…</string>
     <string name="defaultValue">Noklusējums</string>
@@ -191,12 +189,9 @@
     <string name="share">Koplietot</string>
     <string name="cookies">Sīkfaili</string>
     <string name="new_cookie">Jauns Sīkfails</string>
-    <string name="cookie">Sīkfails</string>
-    <string name="create_cookie">Izveidot Sīkfailu</string>
     <string name="get_cookies">Iegūt Sīkfailus</string>
     <string name="delete_all_cookies">Dzēst Visus Sīkfailus</string>
     <string name="confirm_delete_cookies_desc">Neatgriezeniski dzēst visas sīkdatnes</string>
-    <string name="formatid_copied_to_clipboard">Formāta ID kopēts starpliktuvē</string>
     <string name="metered_network_download_start_info">Lejupielādes strādnieks sāks pēc tam, kad būsiet pieslēgti neierobežotam tīklam</string>
     <string name="invert_selected">Invertēt Atlasīto</string>
     <string name="save_subs">Saglabāt Subtitrus</string>

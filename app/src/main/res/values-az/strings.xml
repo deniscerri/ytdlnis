@@ -82,7 +82,6 @@
     <string name="show_download_card">Yükləmə üçün seçimlər göstər</string>
     <string name="download_card_summary">Elementləri yükləmək üçün tənzimləmələr</string>
     <string name="Open_File">Faylı Aç</string>
-    <string name="delete_selected">Seçiləni Sil</string>
     <string name="you_are_going_to_delete_multiple_items">Çoxlu element silinir…</string>
     <string name="delete_file_too">Faylı cihazdan sil</string>
     <string name="delete_files_too">Faylları cihazdan sil</string>
@@ -151,7 +150,6 @@
     <string name="selected">Seçildi</string>
     <string name="access_all_directories">Bütün kataloqlara girişə icazə ver</string>
     <string name="redownload">Təkrar yüklə</string>
-    <string name="copy_url">URL-i Köçür</string>
     <string name="in_queue">Növbədə</string>
     <string name="clear_cancelled">Ləğv ediləni təmizlə</string>
     <string name="access_all_directories_summary">Tətbiqin standart olaraq məhdudlaşdırılan qovluqlarda yükləməsinə icazə ver</string>
@@ -185,7 +183,6 @@
     <string name="ignore_battery_optimization">Batareya Optimallaşdırmasına Məhəl Qoyma</string>
     <string name="cut">Kəs</string>
     <string name="new_cut">Yeni Kəsik</string>
-    <string name="formatid_copied_to_clipboard">Format ID buferə nüsxələndi</string>
     <string name="suggested">Təklif edilən</string>
     <string name="add_template_first">Heç olmasa, bir əmr şablonu yaratmalısınız!</string>
     <string name="select_all">Hamısın Seç</string>
@@ -193,8 +190,6 @@
     <string name="share">Paylaş</string>
     <string name="cookies">Məlumat Bazaları</string>
     <string name="new_cookie">Yeni Məlumat Baza</string>
-    <string name="cookie">Məlumat Bazası</string>
-    <string name="create_cookie">Məlumat Bazası Yarat</string>
     <string name="get_cookies">Məlumatlar Əldə Et</string>
     <string name="confirm_delete_cookies_desc">Bütün bazaları həmişəlik sil</string>
     <string name="download_over_metered_networks">Ölçülən Şəbəkələrlə yüklə</string>

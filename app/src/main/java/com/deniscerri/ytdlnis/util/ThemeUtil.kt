@@ -1,7 +1,5 @@
 package com.deniscerri.ytdlnis.util
 
-import android.app.Application
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.PreferenceManager

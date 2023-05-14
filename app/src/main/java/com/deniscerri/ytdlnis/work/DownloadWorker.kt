@@ -1,7 +1,6 @@
 package com.deniscerri.ytdlnis.work
 
 import android.app.PendingIntent
-import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.os.Handler
@@ -9,7 +8,11 @@ import android.os.Looper
 import android.util.Log
 import android.widget.Toast
 import androidx.preference.PreferenceManager
-import androidx.work.*
+import androidx.work.Data
+import androidx.work.ForegroundInfo
+import androidx.work.Worker
+import androidx.work.WorkerParameters
+import androidx.work.workDataOf
 import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.DBManager
@@ -17,20 +20,13 @@ import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.models.HistoryItem
 import com.deniscerri.ytdlnis.database.repository.DownloadRepository
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
-import com.deniscerri.ytdlnis.ui.more.downloadLogs.DownloadLogActivity
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.InfoUtil
 import com.deniscerri.ytdlnis.util.NotificationUtil
 import com.yausername.youtubedl_android.YoutubeDL
 import com.yausername.youtubedl_android.YoutubeDLRequest
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
 import java.io.File
-import java.util.*
-import kotlin.collections.ArrayList
 
 
 class DownloadWorker(
@@ -59,7 +55,6 @@ class DownloadWorker(
             e.printStackTrace()
             return Result.failure()
         }
-        if (downloadItem.status != DownloadRepository.Status.Queued.toString()) return Result.failure()
 
         Log.e(TAG, downloadItem.toString())
 
@@ -135,7 +130,7 @@ class DownloadWorker(
             }
 
             if (sponsorBlockFilters.isNotEmpty()) {
-                val filters = java.lang.String.join(",", sponsorBlockFilters)
+                val filters = java.lang.String.join(",", sponsorBlockFilters.filter { it.isNotBlank() })
                 request.addOption("--sponsorblock-remove", filters)
             }
 
@@ -302,7 +297,6 @@ class DownloadWorker(
                     "Format: ${downloadItem.format}\n\n" +
                     "Command: ${java.lang.String.join(" ", request.buildCommand())}\n\n")
         }
-
         runCatching {
             YoutubeDL.getInstance().execute(request, downloadItem.id.toString()){ progress, _, line ->
                 setProgressAsync(workDataOf("progress" to progress.toInt(), "output" to line.chunked(5000).first().toString(), "id" to downloadItem.id, "log" to logDownloads))
@@ -412,7 +406,6 @@ class DownloadWorker(
         YoutubeDL.getInstance().destroyProcessById(itemId.toInt().toString())
         super.onStopped()
     }
-
 
     companion object {
         var itemId: Long = 0

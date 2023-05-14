@@ -62,7 +62,6 @@
     <string name="add_chapter">チャプターを追加</string>
     <string name="show_download_card">ダウンロードオプションを表示</string>
     <string name="download_card_summary">アイテムをダウンロードする方法の設定</string>
-    <string name="delete_selected">選択項目を削除</string>
     <string name="ytdl_updating_started">新しいバージョンをダウンロード中…</string>
     <string name="you_are_going_to_delete_multiple_items">複数のアイテムを削除中…</string>
     <string name="delete_file_too">デバイスからファイルを削除する</string>
@@ -129,7 +128,6 @@
     <string name="preferred_download_type">優先ダウンロード形式</string>
     <string name="selected">選択された</string>
     <string name="redownload">再ダウンロード</string>
-    <string name="copy_url">コピーURL</string>
     <string name="workmanager_updated">この設定を有効にする、アプリを再起動しアクティブなダウンロードがない状態にする必要があります！</string>
     <string name="select">選択</string>
     <string name="confirm_delete_logs_desc">ログリスト全体を永久に削除する。</string>

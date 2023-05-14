@@ -8,7 +8,6 @@ import android.os.FileObserver
 import android.view.View
 import android.widget.ScrollView
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.ui.BaseActivity
 import com.google.android.material.appbar.MaterialToolbar

@@ -93,7 +93,6 @@
     <string name="delete_files_too">Удалить файлы с устройства</string>
     <string name="Open_File">Открыть файл</string>
     <string name="you_are_going_to_delete_multiple_items">Удаление нескольких элементов…</string>
-    <string name="delete_selected">Удалить выбранное</string>
     <string name="delete_file_too">Удалить файл с устройства</string>
     <string name="request_permission_desc">Приложению необходим доступ к файлам для сохранения загрузок на устройстве</string>
     <string name="download_notification_channel_description">Уведомление показывает процесс загрузки аудио- и видеофайлов</string>
@@ -104,7 +103,6 @@
     <string name="access_all_directories">Дать доступ ко всем каталогам</string>
     <string name="access_all_directories_summary">Разрешить приложению загружать контент в каталоги, которые по умолчанию ограничены</string>
     <string name="redownload">Загрузить заново</string>
-    <string name="copy_url">Копировать URL</string>
     <string name="in_queue">В очереди</string>
     <string name="clear_cancelled">Очистить отмененные</string>
     <string name="about">О приложении</string>
@@ -170,13 +168,10 @@
     <string name="freespace">Свободное место</string>
     <string name="link_you_copied">Скопированная ссылка</string>
     <string name="add_template_first">Вам необходимо создать хотя бы один шаблон команды!</string>
-    <string name="formatid_copied_to_clipboard">ID формата скопирован в буфер обмена</string>
     <string name="suggested">Предложено</string>
     <string name="select_all">Выбрать все</string>
     <string name="cookies">Cookies</string>
     <string name="new_cookie">Новый Cookie</string>
-    <string name="cookie">Cookie</string>
-    <string name="create_cookie">Создать Cookie</string>
     <string name="get_cookies">Получить Cookie</string>
     <string name="delete_all_cookies">Удалить все Cookie</string>
     <string name="log_downloads">Сохранять отчеты о загрузках</string>

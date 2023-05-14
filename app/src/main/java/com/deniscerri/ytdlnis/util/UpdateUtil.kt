@@ -1,6 +1,5 @@
 package com.deniscerri.ytdlnis.util
 
-import android.app.Activity
 import android.app.DownloadManager
 import android.content.Context
 import android.content.DialogInterface

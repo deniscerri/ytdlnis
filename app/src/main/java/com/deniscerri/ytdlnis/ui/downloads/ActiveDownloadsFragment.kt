@@ -13,7 +13,6 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.work.WorkManager
 import com.deniscerri.ytdlnis.R
@@ -27,7 +26,6 @@ import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.NotificationUtil
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.yausername.youtubedl_android.YoutubeDL
-import kotlinx.coroutines.runBlocking
 
 
 class ActiveDownloadsFragment() : Fragment(), ActiveDownloadAdapter.OnItemClickListener, OnClickListener {

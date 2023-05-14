@@ -7,7 +7,6 @@ import android.os.Build
 import android.os.Bundle
 import android.view.Window
 import android.view.WindowManager
-import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
@@ -22,7 +21,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import kotlin.system.exitProcess
 
 class ResumeActivity : BaseActivity() {
 

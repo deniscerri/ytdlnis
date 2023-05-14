@@ -77,7 +77,6 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/audio_quality_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingTop="10dp"
@@ -113,7 +112,6 @@
                 android:layout_height="wrap_content" />
 
             <LinearLayout
-                android:id="@+id/adjust_audio"
                 android:layout_width="match_parent"
                 android:paddingHorizontal="10dp"
                 android:layout_height="wrap_content"
@@ -134,7 +132,6 @@
                     android:layout_height="wrap_content" >
 
                     <com.google.android.material.chip.ChipGroup
-                        android:id="@+id/chipGroup"
                         android:layout_width="wrap_content"
                         app:chipSpacingVertical="0dp"
                         app:singleLine="true"
@@ -182,7 +179,6 @@
                     android:layout_height="wrap_content" >
 
                     <com.google.android.material.chip.ChipGroup
-                        android:id="@+id/chipGroup2"
                         android:layout_width="wrap_content"
                         app:chipSpacingVertical="0dp"
                         app:singleLine="true"

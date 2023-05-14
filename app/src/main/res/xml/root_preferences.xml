@@ -18,7 +18,7 @@
 
     <Preference
         android:key="processing"
-        app:icon="@drawable/ic_code"
+        app:icon="@drawable/baseline_star_half_24"
         android:title="@string/processing"/>
 
     <Preference

@@ -57,7 +57,6 @@
     <string name="download">ডাউনলোড</string>
     <string name="video_quality">ভিডিও এর ধরন</string>
     <string name="embed_subtitles">সাবটাইটেল এম্বেড করুন</string>
-    <string name="delete_selected">নির্বাচিতগুলি মুছুন</string>
     <string name="you_are_going_to_delete_multiple_items">একাধিক আইটেম মুছে ফেলা হচ্ছে…</string>
     <string name="delete_file_too">ডিভাইস থেকে ফাইল মুছুন</string>
     <string name="delete_files_too">ডিভাইস থেকে ফাইল মুছুন</string>
@@ -162,7 +161,6 @@
     <string name="all_items_selected">সমস্ত আইটেম নির্বাচিত</string>
     <string name="access_all_directories">সমস্ত ডিরেক্টরিতে অ্যাক্সেসের অনুমতি দিন</string>
     <string name="redownload">পুনরায় ডাউনলোড করুন</string>
-    <string name="copy_url">URL কপি করুন</string>
     <string name="in_queue">কিউ তে আছে</string>
     <string name="clear_cancelled">সাফ করুন বাতিলগুলি</string>
     <string name="clear_errored">পরিষ্কার ত্রুটি</string>
@@ -186,14 +184,11 @@
     <string name="add_template_first">আপনার কমপক্ষে একটি কমান্ড টেমপ্লেট তৈরি করা দরকার!</string>
     <string name="suggested">প্রস্তাবিত</string>
     <string name="select_all">সব নির্বাচন করুন</string>
-    <string name="formatid_copied_to_clipboard">ফর্ম্যাট আইডি ক্লিপবোর্ডে কপি করা হয়েছে</string>
     <string name="update_formats_summary">ফর্ম্যাট কার্ডে ক্লিক করার সময় স্বয়ংক্রিয়ভাবে অনুপস্থিত ফর্ম্যাটগুলির জন্য অনুসন্ধান করুন৷</string>
     <string name="ignore_battery_optimization">ব্যাটারি অপ্টিমাইজেশান উপেক্ষা করুন</string>
     <string name="share">শেয়ার করুন</string>
     <string name="cookies">কুকি</string>
     <string name="new_cookie">নতুন কুকি</string>
-    <string name="cookie">কুকি</string>
-    <string name="create_cookie">কুকি তৈরি করুন</string>
     <string name="delete_all_cookies">সমস্ত কুকি মুছুন</string>
     <string name="confirm_delete_cookies_desc">সব কুকি স্থায়ীভাবে মুছুন</string>
     <string name="get_cookies">কুকিজ পান</string>

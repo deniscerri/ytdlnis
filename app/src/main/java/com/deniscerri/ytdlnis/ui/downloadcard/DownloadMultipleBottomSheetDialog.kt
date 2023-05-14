@@ -10,7 +10,11 @@ import android.graphics.Color
 import android.os.Bundle
 import android.text.format.DateFormat
 import android.util.DisplayMetrics
-import android.view.*
+import android.view.LayoutInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
+import android.view.Window
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
@@ -45,7 +49,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Locale
 
 class DownloadMultipleBottomSheetDialog(private var results: List<ResultItem?>, private var items: MutableList<DownloadItem>) : BottomSheetDialogFragment(), ConfigureMultipleDownloadsAdapter.OnItemClickListener, View.OnClickListener,
     ConfigureDownloadBottomSheetDialog.OnDownloadItemUpdateListener {

@@ -1,6 +1,5 @@
 package com.deniscerri.ytdlnis.database.dao
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.deniscerri.ytdlnis.database.models.DownloadItem
 import kotlinx.coroutines.flow.Flow

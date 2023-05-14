@@ -140,7 +140,6 @@
     <string name="show_download_card">إظهار بطاقة تخصيص التحميل</string>
     <string name="download_card_summary">إعدادات لكيفية تحميل العناصر</string>
     <string name="Open_File">فتح</string>
-    <string name="delete_selected">إزالة المحدَدة</string>
     <string name="delete_files_too">الحذف من الجهاز أيضًا</string>
     <string name="delete_file_too">الحذف من الجهاز أيضًا</string>
     <string name="you_are_going_to_delete_multiple_items">إزالة بعض العناصر…</string>
@@ -167,7 +166,6 @@
     <string name="access_all_directories">السماح بالوصول إلى كل المجلدات</string>
     <string name="access_all_directories_summary">السماح بتنزيل التطبيق على المجلدات المقيدة إفتراضيًا</string>
     <string name="redownload">إعادة التحميل</string>
-    <string name="copy_url">نسخ الرابط</string>
     <string name="in_queue">المنتظرة</string>
     <string name="clear_cancelled">تنظيف الملغاة</string>
     <string name="clear_errored">تنظيف المتعطلة</string>
@@ -186,14 +184,11 @@
     <string name="cut">قص</string>
     <string name="new_cut">قصٌ آخر</string>
     <string name="add_template_first">يجب إنشاء قالب يحتوي أمر واحد على الأقل!</string>
-    <string name="formatid_copied_to_clipboard">تم نسخ معرف التنسيق إلى الحافظة</string>
     <string name="suggested">مقترحة</string>
     <string name="select_all">تحديد الكل</string>
     <string name="share">مشاركة</string>
     <string name="cookies">ملفات تعريف الارتباط (الكوكيز)</string>
     <string name="new_cookie">كوكيز جديدة</string>
-    <string name="cookie">ملف تعريف ارتباط</string>
-    <string name="create_cookie">إنشاء الكوكيز</string>
     <string name="get_cookies">الحصول على الكوكيز</string>
     <string name="delete_all_cookies">حذف كل الكوكيز</string>
     <string name="confirm_delete_cookies_desc">حذف كل الكوكيز، نهائيًا</string>

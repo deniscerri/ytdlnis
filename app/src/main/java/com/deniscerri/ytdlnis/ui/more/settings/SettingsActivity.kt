@@ -1,20 +1,14 @@
 package com.deniscerri.ytdlnis.ui.more.settings
 
 import android.content.Context
-import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.activity.addCallback
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.commit
-import androidx.fragment.app.replace
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
-import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.databinding.ActivitySettingsBinding
 import com.deniscerri.ytdlnis.ui.BaseActivity
-import com.google.android.material.appbar.MaterialToolbar
 
 
 class SettingsActivity : BaseActivity() {

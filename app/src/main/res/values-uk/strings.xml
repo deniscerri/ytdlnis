@@ -92,7 +92,6 @@
     <string name="add_chapter">Додати розділи</string>
     <string name="download_card_summary">Налаштування завантаження елементів</string>
     <string name="author">Автор</string>
-    <string name="delete_selected">Видалити вибране</string>
     <string name="sponsorblock_intro">Вступ</string>
     <string name="save_dir">Зберегти каталог</string>
     <string name="you_are_going_to_delete_multiple_items">Видалення кількох елементів…</string>
@@ -161,7 +160,6 @@
     <string name="file_size">Розмір файлу</string>
     <string name="clear_temporary_files">Очистити тимчасові файли</string>
     <string name="clear_temporary_files_summary">Видалення кешованих файлів зі збійних/помилкових/скасованих завантажень</string>
-    <string name="copy_url">Копіювати URL</string>
     <string name="clear_cancelled">Очистити скасоване</string>
     <string name="split_by_chapters">Розподіл за розділами</string>
     <string name="workmanager_updated">Щоб це налаштування набуло чинності, вам потрібно перезапустити застосунок і не мати активних завантажень!</string>
@@ -185,7 +183,6 @@
     <string name="ignore_battery_optimization">Ігноруйте оптимізацію батареї</string>
     <string name="cut">Вирізати</string>
     <string name="new_cut">Новий виріз</string>
-    <string name="formatid_copied_to_clipboard">Ідентифікатор формату скопійовано до буфера обміну</string>
     <string name="add_template_first">Вам потрібно створити принаймні один шаблон команди!</string>
     <string name="suggested">Запропоновано</string>
     <string name="cookies">Cookies</string>
@@ -195,8 +192,6 @@
     <string name="confirm_delete_cookies_desc">Видалити всі cookie назавжди</string>
     <string name="delete_all_cookies">Видалити всі cookie</string>
     <string name="new_cookie">Нові cookie</string>
-    <string name="cookie">Cookie</string>
-    <string name="create_cookie">Створити cookie</string>
     <string name="metered_network_download_start_info">Завантаження почнеться, як тільки ви підключитесь до безлімітної мережі</string>
     <string name="invert_selected">Інвертувати вибране</string>
     <string name="save_subs">Зберегти субтитри</string>

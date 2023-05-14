@@ -1,0 +1,10 @@
+added pause button in notification
+added ability keep cached files when download is finished
+added multiple pages to settings
+Add backup for history, queued downloads, cancelled downloads, cookies, shortcuts, templates
+Add long click format to show details in audio video tab
+Implement common format fetching on playlist items from invidious
+Invert selected items in playlist bottom sheet
+added filename templates as a chip on download card
+fixed searchbar not closing on back gesture
+small bug fixes

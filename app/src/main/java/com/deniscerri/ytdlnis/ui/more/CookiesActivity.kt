@@ -12,7 +12,6 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.RelativeLayout
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -24,12 +23,10 @@ import com.deniscerri.ytdlnis.adapter.CookieAdapter
 import com.deniscerri.ytdlnis.database.models.CookieItem
 import com.deniscerri.ytdlnis.database.viewmodel.CookieViewModel
 import com.deniscerri.ytdlnis.ui.BaseActivity
-import com.deniscerri.ytdlnis.ui.downloadcard.DownloadBottomSheetDialog
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.UiUtil
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.chip.Chip
-import com.google.android.material.color.MaterialColors
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout

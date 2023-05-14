@@ -6,7 +6,7 @@
     <ListPreference
         android:entries="@array/language_values"
         android:entryValues="@array/language_values"
-        android:icon="@drawable/ic_language"
+        android:icon="@drawable/baseline_translate_24"
         app:key="app_language"
         app:summary="en"
         app:title="@string/language" />

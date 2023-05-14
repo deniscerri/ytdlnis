@@ -43,7 +43,6 @@
     <string name="ytdl_already_updating">Instalowanie nowszej wersji…</string>
     <string name="cancel">Anuluj</string>
     <string name="downloading_update">Pobieranie nowszej wersji…</string>
-    <string name="delete_selected">Usuń zaznaczone</string>
     <string name="ok">OK</string>
     <string name="confirm_delete_history_desc">Usuń całą historię, permanentnie.</string>
     <string name="concurrent_fragments_summary">Liczba fragmentów natywnego wideo DASH/HLS do jednoczesnego pobrania</string>

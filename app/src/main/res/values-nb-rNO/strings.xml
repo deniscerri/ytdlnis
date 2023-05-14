@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="delete_selected">Slett valgte</string>
     <string name="directories">Mapper</string>
     <string name="music_directory">Musikkmappe</string>
     <string name="video_directory">Videomappe</string>
@@ -126,7 +125,6 @@
     <string name="enable_mtime_summary">Sett «HTTP Last-Modified»-hode som siste endringstid</string>
     <string name="running">Kjører</string>
     <string name="create_template">Opprett mal</string>
-    <string name="copy_url">Kopier nettadresse</string>
     <string name="in_queue">I kø</string>
     <string name="cancelled">Kansellert</string>
     <string name="errored">Feilaktig</string>
@@ -183,7 +181,6 @@
     <string name="link_you_copied">Lenke du kopierte</string>
     <string name="cut">Klipp ut</string>
     <string name="new_cut">Nytt utklipp</string>
-    <string name="formatid_copied_to_clipboard">Format-ID kopiert til utklippstavlen</string>
     <string name="select_all">Velg alle</string>
     <string name="share">Del</string>
     <string name="kill_app">Avslutt program</string>
@@ -191,8 +188,6 @@
     <string name="suggested">Foreslått</string>
     <string name="cookies">Informasjonskapsler</string>
     <string name="new_cookie">Ny informasjonskapsel</string>
-    <string name="cookie">Informasjonskapsel</string>
-    <string name="create_cookie">Opprett informasjonskapsel</string>
     <string name="confirm_delete_cookies_desc">Slett informasjonskapslene for godt</string>
     <string name="download_over_metered_networks">Nedlasting på kvotebaserte nettverk</string>
     <string name="invert_selected">Inverter utvalg</string>

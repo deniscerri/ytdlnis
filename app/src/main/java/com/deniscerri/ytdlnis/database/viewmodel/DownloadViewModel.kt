@@ -1,6 +1,5 @@
 package com.deniscerri.ytdlnis.database.viewmodel
 
-import android.app.Activity
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
@@ -11,12 +10,23 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.preference.PreferenceManager
-import androidx.work.*
+import androidx.work.Constraints
+import androidx.work.Data
+import androidx.work.ExistingWorkPolicy
+import androidx.work.NetworkType
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
 import com.deniscerri.ytdlnis.App
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.DBManager
 import com.deniscerri.ytdlnis.database.dao.CommandTemplateDao
-import com.deniscerri.ytdlnis.database.models.*
+import com.deniscerri.ytdlnis.database.models.AudioPreferences
+import com.deniscerri.ytdlnis.database.models.CommandTemplate
+import com.deniscerri.ytdlnis.database.models.DownloadItem
+import com.deniscerri.ytdlnis.database.models.Format
+import com.deniscerri.ytdlnis.database.models.HistoryItem
+import com.deniscerri.ytdlnis.database.models.ResultItem
+import com.deniscerri.ytdlnis.database.models.VideoPreferences
 import com.deniscerri.ytdlnis.database.repository.DownloadRepository
 import com.deniscerri.ytdlnis.work.DownloadWorker
 import com.google.gson.Gson

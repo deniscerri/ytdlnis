@@ -95,10 +95,13 @@
         <item name="colorOnErrorContainer">@color/yellow_md_theme_dark_onErrorContainer</item>
         <item name="android:colorBackground">@color/yellow_md_theme_dark_background</item>
         <item name="colorOnBackground">@color/yellow_md_theme_dark_onBackground</item>
+        <item name="colorSurface">@color/yellow_md_theme_dark_surface</item>
         <item name="colorOnSurface">@color/yellow_md_theme_dark_onSurface</item>
+        <item name="colorSurfaceVariant">@color/yellow_md_theme_dark_surfaceVariant</item>
         <item name="colorOnSurfaceVariant">@color/yellow_md_theme_dark_onSurfaceVariant</item>
         <item name="colorOutline">@color/yellow_md_theme_dark_outline</item>
         <item name="colorOnSurfaceInverse">@color/yellow_md_theme_dark_inverseOnSurface</item>
+        <item name="colorSurfaceInverse">@color/yellow_md_theme_dark_inverseSurface</item>
         <item name="colorPrimaryInverse">@color/yellow_md_theme_dark_inversePrimary</item>
 
     </style>

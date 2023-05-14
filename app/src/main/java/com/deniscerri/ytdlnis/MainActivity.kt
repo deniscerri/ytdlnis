@@ -175,6 +175,16 @@ class MainActivity : BaseActivity() {
             }
         }
         cookieViewModel.updateCookiesFile()
+//        lifecycleScope.launch(Dispatchers.IO){
+//            val active = downloadViewModel.getActiveDownloads()
+//            if (active.isNotEmpty()){
+//                val wm = WorkManager.getInstance(this@MainActivity)
+//                active.forEach {
+//                    if (wm.getWorkInfosByTag())
+//                }
+//                WorkManager.getInstance(this@MainActivity).get
+//            }
+//        }
         val intent = intent
         handleIntents(intent)
     }

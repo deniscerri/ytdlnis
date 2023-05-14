@@ -60,7 +60,6 @@
     <string name="sort_by">Sắp xếp</string>
     <string name="url">URL</string>
     <string name="Open_File">Mở tệp</string>
-    <string name="delete_selected">Xóa đã chọn</string>
     <string name="delete_files_too">Xóa các tệp tin khỏi thiết bị</string>
     <string name="request_permission_desc">Ứng dụng này cần có Quyền truy cập tệp để lưu các bản tải xuống trên thiết bị</string>
     <string name="exit_app">Thoát ứng dụng</string>

@@ -82,7 +82,6 @@
     <string name="show_download_card">Afficher les options de téléchargement</string>
     <string name="download_card_summary">Paramètres de téléchargement des éléments</string>
     <string name="Open_File">Ouvrir le fichier</string>
-    <string name="delete_selected">Supprimer la sélection</string>
     <string name="you_are_going_to_delete_multiple_items">Suppression de plusieurs éléments…</string>
     <string name="delete_file_too">Supprimer le fichier de l\'appareil</string>
     <string name="delete_files_too">Supprimer les fichiers de l\'appareil</string>
@@ -147,15 +146,12 @@
     <string name="export_from_clipboard">Exporter vers le presse-papiers</string>
     <string name="import_from_clipboard">Importer depuis le presse-papiers</string>
     <string name="help_translate_summary">Traduisez cette application dans votre langue en utilisant Weblate</string>
-    <string name="cookie">Cookie</string>
     <string name="dont_ask_again">Ne plus le redemander</string>
     <string name="start">Commencer</string>
     <string name="restrict_filenames_summary">Limitez les noms de fichiers aux caractères ASCII et évitez les \"&amp;\" et les espaces dans les noms de fichiers</string>
     <string name="get_cookies">Obtenir des cookies</string>
-    <string name="formatid_copied_to_clipboard">Format ID copié dans le presse-papiers</string>
     <string name="share">Partager</string>
     <string name="cookies">Cookies</string>
-    <string name="create_cookie">Créer un cookie</string>
     <string name="new_cookie">Nouveau Cookie</string>
     <string name="new_template">Nouveau modèle</string>
     <string name="adjust_templates">Ajuster les modèles</string>
@@ -191,7 +187,6 @@
     <string name="redownload">Télécharger à nouveau</string>
     <string name="preferred_download_type_summary">Onglet par défaut dans lequel la carte de téléchargement s\'ouvrira</string>
     <string name="confirm_delete_logs_desc">Supprimez définitivement la liste complète des journaux.</string>
-    <string name="copy_url">Copier l\'URL</string>
     <string name="clear_temporary_files">Effacer les fichiers temporaires</string>
     <string name="ytdl_version">Version d\'yt-dlp</string>
     <string name="ignore_battery_optimization">Ignorer l’optimisation de la batterie</string>

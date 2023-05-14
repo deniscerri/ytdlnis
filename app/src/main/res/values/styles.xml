@@ -7,15 +7,6 @@
         <item name="android:windowContentOverlay">@null</item>
     </style>
 
-    <style name="Toolbar" parent="Theme.Material3.DayNight.NoActionBar">
-        <item name="searchViewStyle">@style/searchStyle</item>
-    </style>
-
-    <style name="searchStyle" parent="Widget.AppCompat.SearchView.ActionBar">
-        <item name="android:queryHint">@string/search</item>
-        <item name="android:searchIcon">@null</item>
-    </style>
-
     <style name="Divider">
         <item name="android:background">@color/light_grey</item>
     </style>
@@ -72,6 +63,5 @@
         <item name="maxLines">2</item>
         <item name="animationMode">slide</item>
     </style>
-
 
 </resources>

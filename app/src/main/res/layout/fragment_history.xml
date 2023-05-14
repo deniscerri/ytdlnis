@@ -2,11 +2,9 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/historycoordinator"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/history_appbarlayout"
         app:liftOnScroll="true"
         android:background="@android:color/transparent"
         android:elevation="0dp"
@@ -30,7 +28,6 @@
             app:layout_scrollFlags="scroll|enterAlways"
             android:layout_margin="10dp">
             <HorizontalScrollView
-                android:id="@+id/chips_recycler_horizontalscrollview"
                 android:layout_width="wrap_content"
                 android:scrollbars="none"
                 android:layout_height="wrap_content">
@@ -60,7 +57,6 @@
                     <View style="@style/Divider.Vertical"/>
 
                     <com.google.android.material.chip.ChipGroup
-                        android:id="@+id/format_chip_group"
                         android:layout_width="wrap_content"
                         app:selectionRequired="false"
                         app:singleSelection="true"

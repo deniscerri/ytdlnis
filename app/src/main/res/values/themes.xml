@@ -42,19 +42,6 @@
 
     </style>
 
-    <style name="Theme.Amoled" parent="BaseTheme">
-        <item name="android:colorForeground">@color/black</item>
-        <item name="android:colorPrimaryDark">@color/black</item>
-        <item name="android:textColorPrimary">@color/white</item>
-        <item name="android:colorAccent">@color/white</item>
-        <item name="android:color">@color/white</item>
-        <item name="android:windowBackground">#111</item>
-        <item name="android:colorBackground">#111</item>
-        <item name="colorOnBackground">#111</item>
-        <item name="android:navigationBarColor">@color/black</item>
-        <item name="android:actionBarStyle">@color/black</item>
-    </style>
-
     <style name="Theme.Blue" parent="BaseTheme">
 
         <item name="colorPrimary">@color/blue_md_theme_light_primary</item>

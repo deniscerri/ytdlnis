@@ -7,6 +7,8 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Environment
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.os.LocaleListCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -363,6 +365,8 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
                         }
                         finalMessage.append("${getString(R.string.settings)}: ${prefs.count()}\n")
                     }
+                    editor.commit()
+
                     //history restore
                     if(json.has("downloads")){
                         val items = json.getAsJsonArray("downloads")
@@ -399,6 +403,9 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
                             val item = Gson().fromJson(it.toString().replace("^\"|\"$", ""), DownloadItem::class.java)
                             item.id = 0L
                             cancelled.add(item)
+                            withContext(Dispatchers.IO){
+                                downloadViewModel.insert(item)
+                            }
                         }
                         if(cancelled.isNotEmpty()){
                             finalMessage.append("${getString(R.string.cancelled)}: ${cancelled.count()}\n")
@@ -476,16 +483,21 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
                         val intent = Intent(context, MainActivity::class.java)
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                         requireContext().startActivity(intent)
-                        if (context is Activity) {
-                            (context as Activity).finish()
+                        if(json.has("settings")){
+                            AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(preferences.getString("app_language", "en")))
                         }
+                        activity?.finishAffinity()
                         Runtime.getRuntime().exit(0)
                     }
 
                     // handle the negative button of the alert dialog
                     builder.setNegativeButton(
                         getString(R.string.cancel)
-                    ) { _: DialogInterface?, _: Int -> }
+                    ) { _: DialogInterface?, _: Int ->
+                        if(json.has("settings")){
+                            AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(preferences.getString("app_language", "en")))
+                        }
+                    }
 
                     val dialog = builder.create()
                     dialog.show()

@@ -83,7 +83,6 @@
     <string name="incognito_summary">Descargar sin agregar al historial</string>
     <string name="author">Autor</string>
     <string name="Open_File">Abrir Archivo</string>
-    <string name="delete_selected">Eliminar Selección</string>
     <string name="warning">Advertencia</string>
     <string name="show_download_card">Mostrar Opciones de Descarga</string>
     <string name="download_card_summary">Ajustes de descargas</string>
@@ -146,7 +145,6 @@
     <string name="items_imported">Elementos importados</string>
     <string name="help_translate">Ayuda a la traducción</string>
     <string name="redownload">Volver a descargar</string>
-    <string name="copy_url">Copiar la URL</string>
     <string name="in_queue">En espera</string>
     <string name="clear_cancelled">Borrardo Cancelado</string>
     <string name="clear_errored">Error al borrar</string>
@@ -184,12 +182,9 @@
     <string name="update_formats_summary">Busca automáticamente los formatos que faltan al hacer clic en la tarjeta de formato</string>
     <string name="ignore_battery_optimization">Ignorar la optimización de la batería</string>
     <string name="cut">Cortar</string>
-    <string name="formatid_copied_to_clipboard">El identificador del formato se copió en el portapapeles</string>
     <string name="suggested">Sugerido</string>
     <string name="select_all">Seleccionar todo</string>
     <string name="share">Compartir</string>
-    <string name="cookie">Cookie</string>
-    <string name="create_cookie">Crear una Cookie</string>
     <string name="new_cookie">Nueva Cookie</string>
     <string name="confirm_delete_cookies_desc">Borrar permanentemente toda las cookies</string>
     <string name="add_template_first">¡Necesitas tener al menos una plantilla de comando creada!</string>

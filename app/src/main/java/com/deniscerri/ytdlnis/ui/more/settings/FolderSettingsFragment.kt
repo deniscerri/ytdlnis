@@ -12,7 +12,6 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceManager
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.util.FileUtil
-import com.deniscerri.ytdlnis.util.UpdateUtil
 import com.google.android.material.snackbar.Snackbar
 import java.io.File
 

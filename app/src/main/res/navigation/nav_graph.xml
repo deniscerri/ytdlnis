@@ -2,7 +2,6 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nav_graph"
     android:label="@string/more"
     app:startDestination="@id/homeFragment">
 
@@ -40,6 +39,9 @@
         <action
             android:id="@+id/action_moreFragment_to_commandTemplatesActivity"
             app:destination="@id/commandTemplatesActivity" />
+        <action
+            android:id="@+id/action_moreFragment_to_settingsActivity2"
+            app:destination="@id/activitySettings" />
     </fragment>
     <activity
         android:id="@+id/downloadQueueActivity"
@@ -63,4 +65,9 @@
         android:name="com.deniscerri.ytdlnis.ui.more.TerminalActivity"
         android:label="activity_terminal"
         tools:layout="@layout/activity_terminal" />
+    <activity
+        android:id="@+id/activitySettings"
+        android:name="com.deniscerri.ytdlnis.ui.more.settings.SettingsActivity"
+        android:label="activity_settings"
+        tools:layout="@layout/activity_settings" />
 </navigation>

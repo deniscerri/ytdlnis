@@ -1,7 +1,6 @@
 package com.deniscerri.ytdlnis.receiver
 
 import android.Manifest
-import android.app.Activity
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -16,10 +15,8 @@ import android.provider.Settings
 import android.util.Log
 import android.view.Window
 import android.view.WindowManager
-import android.widget.FrameLayout
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat

@@ -1,6 +1,5 @@
 package com.deniscerri.ytdlnis.util
 
-import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Looper
@@ -23,7 +22,6 @@ import java.net.HttpURLConnection
 import java.net.URL
 import java.util.*
 import java.util.regex.Pattern
-import kotlin.collections.ArrayList
 
 class InfoUtil(private val context: Context) {
     private var items: ArrayList<ResultItem?>

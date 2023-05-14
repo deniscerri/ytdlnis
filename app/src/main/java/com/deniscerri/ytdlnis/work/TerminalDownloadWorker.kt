@@ -1,7 +1,6 @@
 package com.deniscerri.ytdlnis.work
 
 import android.app.PendingIntent
-import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.os.Handler
@@ -9,7 +8,10 @@ import android.os.Looper
 import android.util.Log
 import android.widget.Toast
 import androidx.preference.PreferenceManager
-import androidx.work.*
+import androidx.work.ForegroundInfo
+import androidx.work.Worker
+import androidx.work.WorkerParameters
+import androidx.work.workDataOf
 import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.util.FileUtil
@@ -17,7 +19,6 @@ import com.deniscerri.ytdlnis.util.NotificationUtil
 import com.yausername.youtubedl_android.YoutubeDL
 import com.yausername.youtubedl_android.YoutubeDLRequest
 import java.io.File
-import java.util.*
 
 
 class TerminalDownloadWorker(

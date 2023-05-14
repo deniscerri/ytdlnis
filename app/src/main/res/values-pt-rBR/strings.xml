@@ -55,7 +55,6 @@
     <string name="show_download_card">Mostrar Opções para Baixar</string>
     <string name="download_card_summary">Configurações para como baixar items</string>
     <string name="Open_File">Abrir Arquivo</string>
-    <string name="delete_selected">Deletar Selecionado</string>
     <string name="you_are_going_to_delete_multiple_items">Deletando vários items…</string>
     <string name="delete_file_too">Deletar o arquivo do dispositivo</string>
     <string name="request_permission_desc">Esse aplicativo necessita de Permissões de Arquivo para salvar os arquivos no dispositivo</string>
@@ -146,7 +145,6 @@
     <string name="all_items_selected">Todos os items selecionados</string>
     <string name="access_all_directories">Permitir acesso a todos os diretórios</string>
     <string name="access_all_directories_summary">Permitir o aplicativo fazer download em diretórios restritos por padrão</string>
-    <string name="copy_url">Copiar URL</string>
     <string name="in_queue">Em Fila</string>
     <string name="clear_cancelled">Limpar Cancelado</string>
     <string name="clear_errored">Limpar Falhas</string>

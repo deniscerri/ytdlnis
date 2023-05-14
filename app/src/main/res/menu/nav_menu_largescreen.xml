@@ -36,5 +36,5 @@
     <item android:title="@string/settings"
         android:checkable="true"
         android:icon="@drawable/ic_settings"
-        android:id="@+id/settingsActivity"/>
+        android:id="@+id/activitySettings"/>
 </menu>

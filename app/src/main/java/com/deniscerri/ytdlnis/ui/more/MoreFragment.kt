@@ -1,6 +1,5 @@
 package com.deniscerri.ytdlnis.ui.more
 
-import android.app.Activity
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
@@ -109,11 +108,13 @@ class MoreFragment : Fragment() {
                         mainSharedPreferencesEditor.commit()
                     }
                     mainActivity.finishAndRemoveTask()
+                    mainActivity.finishAffinity()
                     exitProcess(0)
                 }
                 terminateDialog.show()
             }else{
                 mainActivity.finishAndRemoveTask()
+                mainActivity.finishAffinity()
                 exitProcess(0)
             }
 

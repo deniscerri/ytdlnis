@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout android:id="@+id/result_shimmer_relative_layout"
-    android:layout_width="match_parent"
+<RelativeLayout android:layout_width="match_parent"
     android:layout_height="230dp"
     app:layout_constraintDimensionRatio="H,16:9"
     app:layout_constraintStart_toStartOf="parent"
@@ -10,7 +9,6 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/result_shimmer_card_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:cardCornerRadius="20dp"
@@ -22,12 +20,10 @@
         >
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/result_shimmer_image_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
         <TextView
-            android:id="@+id/result_shimmer_title"
             android:layout_width="300dp"
             android:layout_height="10dp"
             android:layout_marginTop="20dp"

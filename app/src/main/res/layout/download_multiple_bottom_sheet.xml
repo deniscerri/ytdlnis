@@ -23,7 +23,6 @@
             app:menu="@menu/download_multiple_menu" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/edit_selected"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="gone"
@@ -34,7 +33,6 @@
 
 
     <LinearLayout
-        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"

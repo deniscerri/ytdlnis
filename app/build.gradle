@@ -134,6 +134,7 @@ dependencies {
     implementation 'androidx.preference:preference:1.2.0'
     implementation "androidx.navigation:navigation-fragment-ktx:$navVer"
     implementation "androidx.navigation:navigation-ui-ktx:$navVer"
+    implementation "androidx.navigation:navigation-dynamic-features-fragment:$navVer"
     implementation 'androidx.core:core-ktx:1.10.0'
     implementation 'androidx.test.ext:junit-ktx:1.1.5'
     implementation 'androidx.benchmark:benchmark-macro:1.1.1'
@@ -141,13 +142,13 @@ dependencies {
     androidTestImplementation "junit:junit:$junitVer"
     androidTestImplementation "androidx.test.ext:junit:$androidJunitVer"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVer"
-    androidTestImplementation "androidx.benchmark:benchmark-macro-junit4:1.2.0-alpha13"
+    androidTestImplementation "androidx.benchmark:benchmark-macro-junit4:1.2.0-alpha14"
     androidTestImplementation "androidx.test:runner:1.5.2"
     androidTestImplementation "androidx.test:core:1.5.0"
     androidTestImplementation "androidx.test:rules:1.5.0"
     androidTestImplementation "androidx.navigation:navigation-testing:$navVer"
 
-    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
+    implementation "io.reactivex.rxjava2:rxandroid:2.1.1"
     implementation "com.devbrackets.android:exomedia:4.3.0"
 
     implementation("androidx.cardview:cardview:1.0.0")
@@ -173,9 +174,9 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:$retrofitVer"
     implementation "com.squareup.retrofit2:converter-gson:$retrofitVer"
     implementation "com.squareup.okhttp3:okhttp:5.0.0-alpha.10"
-    implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.11'
+    implementation "com.squareup.okhttp3:logging-interceptor:4.7.2"
 
-    implementation 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0'
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0"
     implementation "com.google.android.exoplayer:exoplayer:2.18.6"
     implementation 'it.xabaras.android:recyclerview-swipedecorator:1.4'
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.6.1"

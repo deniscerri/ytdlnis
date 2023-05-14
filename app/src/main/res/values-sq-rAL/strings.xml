@@ -98,7 +98,6 @@
     <string name="show_download_card">Shfaq Opsionet e Shkarkimit</string>
     <string name="download_card_summary">Konfiguro përpara se sa ta shkarkosh</string>
     <string name="Open_File">Hap Skedarin</string>
-    <string name="delete_selected">Fshi të zgjedhurat</string>
     <string name="you_are_going_to_delete_multiple_items">Fshi disa elementë…</string>
     <string name="delete_files_too">Fshi skedarët nga paisja</string>
     <string name="request_permission_desc">Ky aplikacion ka nevojë për lejen e Skedarëve për të ruajtur shkarkimet në paisje</string>
@@ -155,7 +154,6 @@
     <string name="access_all_directories">Lejo akses te të gjithë direktoritë</string>
     <string name="access_all_directories_summary">Ler aplikacionin të shkarkojë në direktori të pasuportuara</string>
     <string name="redownload">Rishkarko</string>
-    <string name="copy_url">Kopjo URL</string>
     <string name="in_queue">Në Rradhë</string>
     <string name="clear_cancelled">Fshi Të Anulluarit</string>
     <string name="clear_errored">Fshi Me Probleme</string>
@@ -185,7 +183,6 @@
     <string name="update_formats_summary">Kërko automatikishit për formatet e munugara kur klikon kartën e formatit</string>
     <string name="cut">Prit</string>
     <string name="new_cut">Prerje e Re</string>
-    <string name="formatid_copied_to_clipboard">ID e Formatit u kopjua</string>
     <string name="suggested">Sygjerime</string>
     <string name="add_template_first">Duhet të keni të paktën një model komande të krijuar!</string>
     <string name="select_all">Zgjidhi të gjithë</string>
@@ -193,8 +190,6 @@
     <string name="delete_all_cookies">Fshi të gjitha Biskotat</string>
     <string name="new_cookie">Biskotë e Re</string>
     <string name="share">Shpërnda</string>
-    <string name="cookie">Biskotë</string>
-    <string name="create_cookie">Krijo Biskotë</string>
     <string name="get_cookies">Merr Biskotat</string>
     <string name="confirm_delete_cookies_desc">Fshi të gjitha biskotat, përgjithmonë</string>
     <string name="download_over_metered_networks">Shkarko me Rrjetet Celulare</string>
