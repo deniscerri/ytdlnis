@@ -244,4 +244,13 @@
 \n</string>
     <string name="updating_download_data">Duke Përditësuar Informacionet e Objektit</string>
     <string name="backup">Ruaj</string>
+    <string name="select_backup_categories">Zgjidh kategoritë për ruajtje</string>
+    <string name="backup_created_successfully">Skedari u ruajt në direktorinë e shkarkimeve</string>
+    <string name="couldnt_parse_file">Nuk mund të përkthej skedarin</string>
+    <string name="network_error">Problem Interneti</string>
+    <string name="incognito">Inkognito</string>
+    <string name="sponsorblock">SponsorBlok</string>
+    <string name="restore_complete">Restaurimi i Aplikacionit u kompletua. Objektet e mëposhtme u vendosën:</string>
+    <string name="search_history">Historia e Kërkimit</string>
+    <string name="appearance">Pamja</string>
 </resources>

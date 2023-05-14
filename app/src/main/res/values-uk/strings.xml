@@ -244,4 +244,13 @@
     <string name="keep_cache_summary">Не видаляйте тимчасові файли після завершення завантаження</string>
     <string name="backup">Резервне копіювання</string>
     <string name="restore">Відновити</string>
+    <string name="incognito">Інкогніто</string>
+    <string name="couldnt_parse_file">Не вдалося проаналізувати файл</string>
+    <string name="restore_complete">Відновлення застосунку завершено. Наступні елементи було відновлено:</string>
+    <string name="search_history">Історія пошуку</string>
+    <string name="appearance">Зовнішній вигляд</string>
+    <string name="sponsorblock">SponsorBlock</string>
+    <string name="network_error">Помилка мережі</string>
+    <string name="select_backup_categories">Виберіть категорії резервного копіювання</string>
+    <string name="backup_created_successfully">Файл резервної копії збережено в папці завантажень</string>
 </resources>
