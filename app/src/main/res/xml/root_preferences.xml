@@ -26,7 +26,7 @@
         app:icon="@drawable/ic_update"
         android:title="@string/updating"/>
 
-    <PreferenceCategory android:title="@string/backup">
+    <PreferenceCategory android:title="@string/backup_restore">
         <Preference
             app:icon="@drawable/baseline_save_alt_24"
             app:key="backup"

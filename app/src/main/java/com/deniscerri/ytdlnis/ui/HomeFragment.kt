@@ -15,6 +15,8 @@ import android.util.Log
 import android.view.*
 import android.view.View.*
 import android.widget.*
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -25,6 +27,7 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -205,6 +208,14 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
             lifecycleScope.launch(Dispatchers.IO){
                 resultViewModel.parseQueries(inputQueries!!)
                 inputQueries = null
+            }
+        }
+
+        mainActivity?.onBackPressedDispatcher?.addCallback(this) {
+            if (searchView?.isShowing == true) {
+                searchView?.hide()
+            }else{
+                mainActivity?.finishAndRemoveTask()
             }
         }
 
@@ -657,6 +668,8 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
         }
         selectedObjects?.clear()
     }
+
+
     override fun onStop() {
         actionMode?.finish()
         super.onStop()

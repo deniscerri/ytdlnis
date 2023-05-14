@@ -264,4 +264,5 @@
     <string name="search_history">Search History</string>
     <string name="backup_created_successfully">Backup file saved in the downloads folder</string>
     <string name="appearance">Appearance</string>
+    <string name="backup_restore"><![CDATA[Backup & Restore]]></string>
 </resources>
