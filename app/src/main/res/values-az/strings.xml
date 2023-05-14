@@ -9,7 +9,7 @@
     <string name="directories">Qovluqlar</string>
     <string name="music_directory">Musiqi Qovluğu</string>
     <string name="video_directory">Video Qovluq</string>
-    <string name="updating">Yenilənir</string>
+    <string name="updating">Yenilənmə</string>
     <string name="ytdl_update_hint">Yükləyərkən probleminiz varsa faydalıdır</string>
     <string name="update_ytdl">yt-dlp yeni versiyasın quraşdır</string>
     <string name="source_code">Mənbə Kodu</string>
@@ -38,11 +38,11 @@
     <string name="video">Video</string>
     <string name="concurrent_fragments_summary">Eynivaxtlı yükləmək üçün DASH/HLS yerli video hissələri sayı</string>
     <string name="concurrent_fragments">Eynivaxtlı Hissələr</string>
-    <string name="downloading">Yüklənilir</string>
+    <string name="downloading">Yüklənilmə</string>
     <string name="limit_rate">Sürəti Məhdudlaşdır</string>
     <string name="limit_rate_summary">Maksimum yükləmə sürəti (saniyədə baytla), məsələn, 50K və ya 4,2M</string>
     <string name="aria2_summary">Standart əvəzində yükləyici kimi aria2c istifadə et</string>
-    <string name="processing">Emal edilir</string>
+    <string name="processing">Emal</string>
     <string name="embed_subs_summary">Videoya titrlər əlavə edilir</string>
     <string name="embed_thumb">Miniatür Örtüklər</string>
     <string name="embed_thumb_summary">Miniatür, örtük təsviri kimi işlədilir</string>
@@ -140,7 +140,7 @@
     <string name="cancelled">Ləğv edilən</string>
     <string name="errored">Xəta olan</string>
     <string name="copy_log">Jurnalı nüsxələ</string>
-    <string name="create_shortcut">Qısayol Yarat</string>
+    <string name="create_shortcut">Qısa Kəsik Yarat</string>
     <string name="error_restarting_download">Yükləməni yenidən başlatmağa çalışarkən xəta</string>
     <string name="update_template">Şablonu Yenilə</string>
     <string name="create">Yarat</string>
@@ -245,8 +245,17 @@
 \n</string>
     <string name="resume">Təkrar başlat</string>
     <string name="updating_download_data">Yükləmə Element Məlumatı Yenilənir</string>
-    <string name="keep_cache">Keşi Saxla</string>
+    <string name="keep_cache">Qalığı Saxla</string>
     <string name="keep_cache_summary">Yükləmə bitəndən sonra müvəqqəti fayllar silinmir</string>
     <string name="backup">Nüsxələmə</string>
     <string name="restore">Bərpa et</string>
+    <string name="network_error">Şəbəkə Xətası</string>
+    <string name="incognito">Gizli</string>
+    <string name="sponsorblock">SponsorBlock</string>
+    <string name="couldnt_parse_file">Faylı təhlil etmək alınmadı</string>
+    <string name="restore_complete">Tətbiq Bərpa Edildi. Aşağıdakı elementlər bərpa edildi:</string>
+    <string name="select_backup_categories">Nüsxə kateqoriyaları seç</string>
+    <string name="search_history">Axtarış Tarixçəsi</string>
+    <string name="appearance">Görünüş</string>
+    <string name="backup_created_successfully">Yükləmələr qovluğunda saxlanılan nüsxə faylı</string>
 </resources>

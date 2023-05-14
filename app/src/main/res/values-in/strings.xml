@@ -166,7 +166,7 @@
     <string name="restart">Mulai Ulang</string>
     <string name="download_rescheduled_to">Unduhan dijadwalkan ulang menjadi:</string>
     <string name="file_size">Ukuran berkas</string>
-    <string name="clear_temporary_files_summary">Hapus berkas singgahan dari unduhan yang gagal/galat/dibatalkan</string>
+    <string name="clear_temporary_files_summary">Hapus berkas singgahan dari unduhan yang mogok/galat/dibatalkan</string>
     <string name="cache_cleared">Berkas sementara dikosongkan</string>
     <string name="freespace">Ruang kosong penyimpanan</string>
     <string name="command_download_notification_channel_description">Notifikasi yang memperlihatkan kemajuan pengunduhan yang menggunakan perintah yt-dlp</string>
@@ -246,4 +246,16 @@
     <string name="preferred_locale">Preferensi Wilayah</string>
     <string name="resume">Lanjutkan</string>
     <string name="keep_cache">Simpan Berkas Singgahan</string>
+    <string name="incognito">Penyamaran</string>
+    <string name="sponsorblock">SponsorBlock</string>
+    <string name="couldnt_parse_file">Tidak bisa mengurai berkas</string>
+    <string name="search_history">Riwayat Penelusuran</string>
+    <string name="appearance">Penampilan</string>
+    <string name="keep_cache_summary">Jangan hapus berkas sementara setelah pengunduhan selesai</string>
+    <string name="network_error">Galat pada Jaringan</string>
+    <string name="restore_complete">Pemulihan Aplikasi Selesai. Butir berikut ini telah dipulihkan:</string>
+    <string name="select_backup_categories">Pilih kategori yang ingin dicadangkan</string>
+    <string name="backup_created_successfully">Berkas cadangan disimpan di folder unduhan</string>
+    <string name="backup">Cadangkan</string>
+    <string name="restore">Pulihkan</string>
 </resources>
