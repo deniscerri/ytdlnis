@@ -131,17 +131,7 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
         recyclerView?.adapter = historyAdapter
         val itemTouchHelper = ItemTouchHelper(simpleCallback)
         itemTouchHelper.attachToRecyclerView(recyclerView)
-
-        val landScape = resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
-        val displayMetrics: DisplayMetrics = requireContext().resources.displayMetrics
-        val dpWidth: Float = displayMetrics.widthPixels / displayMetrics.density
-        if (dpWidth >= 1600 && landScape) {
-            recyclerView?.layoutManager = GridLayoutManager(context, 4)
-        }else if (dpWidth > 1200 && landScape){
-            recyclerView?.layoutManager = GridLayoutManager(context, 3)
-        }else if (landScape || dpWidth >= 650){
-            recyclerView?.layoutManager = GridLayoutManager(context, 2)
-        }
+        recyclerView?.layoutManager = GridLayoutManager(context, resources.getInteger(R.integer.grid_size))
         noResults?.visibility = GONE
 
 

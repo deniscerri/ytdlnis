@@ -1,4 +1,5 @@
 <resources>
+    <integer name="grid_size">1</integer>
     <bool name="isTablet">false</bool>
     <bool name="is_right_to_left">false</bool>
 </resources>

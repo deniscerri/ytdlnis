@@ -86,17 +86,7 @@ class ErroredDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickL
         erroredRecyclerView.adapter = erroredDownloads
         val itemTouchHelper = ItemTouchHelper(simpleCallback)
         itemTouchHelper.attachToRecyclerView(erroredRecyclerView)
-
-        val landScape = resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
-        val displayMetrics: DisplayMetrics = requireContext().resources.displayMetrics
-        val dpWidth: Float = displayMetrics.widthPixels / displayMetrics.density
-        if (dpWidth >= 1600 && landScape) {
-            erroredRecyclerView.layoutManager = GridLayoutManager(context, 4)
-        }else if (dpWidth > 1200 && landScape){
-            erroredRecyclerView.layoutManager = GridLayoutManager(context, 3)
-        }else if (landScape || dpWidth >= 650){
-            erroredRecyclerView.layoutManager = GridLayoutManager(context, 2)
-        }
+        erroredRecyclerView.layoutManager = GridLayoutManager(context, resources.getInteger(R.integer.grid_size))
 
         downloadViewModel.erroredDownloads.observe(viewLifecycleOwner) {
             items = it.toMutableList()

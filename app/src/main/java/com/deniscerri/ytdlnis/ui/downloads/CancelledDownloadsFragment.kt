@@ -84,17 +84,8 @@ class CancelledDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClic
         cancelledRecyclerView.adapter = cancelledDownloads
         val itemTouchHelper = ItemTouchHelper(simpleCallback)
         itemTouchHelper.attachToRecyclerView(cancelledRecyclerView)
+        cancelledRecyclerView.layoutManager = GridLayoutManager(context, resources.getInteger(R.integer.grid_size))
 
-        val landScape = resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
-        val displayMetrics: DisplayMetrics = requireContext().resources.displayMetrics
-        val dpWidth: Float = displayMetrics.widthPixels / displayMetrics.density
-        if (dpWidth >= 1600 && landScape) {
-            cancelledRecyclerView.layoutManager = GridLayoutManager(context, 4)
-        }else if (dpWidth > 1200 && landScape){
-            cancelledRecyclerView.layoutManager = GridLayoutManager(context, 3)
-        }else if (landScape || dpWidth >= 650){
-            cancelledRecyclerView.layoutManager = GridLayoutManager(context, 2)
-        }
 
         downloadViewModel.cancelledDownloads.observe(viewLifecycleOwner) {
             items = it.toMutableList()

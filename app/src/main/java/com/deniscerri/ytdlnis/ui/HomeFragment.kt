@@ -141,9 +141,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
                 requireActivity()
             )
         recyclerView = view.findViewById(R.id.recyclerViewHome)
-        if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE && ! resources.getBoolean(R.bool.isTablet)){
-            recyclerView?.layoutManager = GridLayoutManager(context, 2)
-        }
+        recyclerView?.layoutManager = GridLayoutManager(context, resources.getInteger(R.integer.grid_size))
         recyclerView?.adapter = homeAdapter
 
         resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]
@@ -195,7 +193,6 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
 
         if (arguments?.getString("url") != null){
             val url = requireArguments().getString("url")
-            arguments?.remove("url")
             if (inputQueries == null) inputQueries = mutableListOf()
             searchBar?.text = url
             inputQueries!!.add(url!!)
@@ -221,7 +218,11 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
 
     override fun onResume() {
         super.onResume()
-        resultViewModel.checkTrending()
+        if(arguments?.getString("url") == null){
+            resultViewModel.checkTrending()
+        }else{
+            arguments?.remove("url")
+        }
         if (searchView?.currentTransitionState == SearchView.TransitionState.SHOWN){
             updateSearchViewItems(searchView?.editText?.text, linkYouCopied)
         }

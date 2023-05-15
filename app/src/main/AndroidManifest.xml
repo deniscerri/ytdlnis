@@ -109,7 +109,6 @@
             android:parentActivityName=".MainActivity">
             <intent-filter>
                 <action android:name="ytdlnis.settings.SettingsActivity" />
-
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
