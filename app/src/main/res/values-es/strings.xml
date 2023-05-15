@@ -251,4 +251,7 @@
     <string name="couldnt_parse_file">No se pudo analizar el archivo</string>
     <string name="restore_complete">Restauración de la aplicación completa. Se han restaurado los siguientes elementos:</string>
     <string name="network_error">Error de red</string>
+    <string name="backup_created_successfully">Archivo de la copia de seguridad guardado en la carpeta de descargas</string>
+    <string name="appearance">Apariencia</string>
+    <string name="backup_restore">Copia de seguridad y restauracion</string>
 </resources>
