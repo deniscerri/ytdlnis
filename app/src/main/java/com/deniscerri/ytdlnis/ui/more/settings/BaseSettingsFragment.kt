@@ -57,33 +57,6 @@ abstract class BaseSettingsFragment : PreferenceFragmentCompat() {
                     .setNegativeButton(R.string.cancel, null)
                     .show()
             }
-            is MultiSelectListPreference -> {
-                val values = preference.entryValues
-                val entries = preference.entries
-                val checkedItems : ArrayList<Boolean> = arrayListOf()
-                values.forEach {
-                    if (preference.values.contains(it)) {
-                        checkedItems.add(true)
-                    }else{
-                        checkedItems.add(false)
-                    }
-                }
-                MaterialAlertDialogBuilder(requireContext())
-                    .setTitle(preference.title)
-                    .setMultiChoiceItems(entries, checkedItems.toBooleanArray()) { _, which, isChecked ->
-                        checkedItems[which] = isChecked
-                    }
-                    .setNegativeButton(R.string.cancel, null)
-                    .setPositiveButton(R.string.ok) { _: DialogInterface?, _: Int ->
-                        preference.values.clear()
-                        for (i in 0 until checkedItems.size) {
-                            if (checkedItems[i]) {
-                                preference.values.add(values[i].toString())
-                            }
-                        }
-                    }
-                    .show()
-            }
             /**
              * Otherwise show the normal dialog, dialogs for other preference types are not supported yet
              */

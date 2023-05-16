@@ -45,24 +45,6 @@
         app:summary="@string/preferred_download_type_summary"
         app:title="@string/preferred_download_type" />
 
-    <ListPreference
-        android:defaultValue="ytsearch"
-        android:entries="@array/search_engines"
-        android:entryValues="@array/search_engines_values"
-        android:icon="@drawable/baseline_manage_search_24"
-        app:key="search_engine"
-        app:summary="@string/preferred_search_engine_summary"
-        app:title="@string/preferred_search_engine" />
-
-    <ListPreference
-        android:defaultValue=""
-        android:entries="@array/countries"
-        android:entryValues="@array/countries_values"
-        app:icon="@drawable/ic_language"
-        app:dependency="home_recommendations"
-        app:key="locale"
-        app:title="@string/preferred_locale" />
-
     <EditTextPreference
         android:icon="@drawable/ic_key"
         app:key="api_key"

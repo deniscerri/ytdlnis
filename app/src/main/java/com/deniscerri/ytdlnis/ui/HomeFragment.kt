@@ -211,7 +211,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
             if (searchView?.isShowing == true) {
                 searchView?.hide()
             }else{
-                mainActivity?.finishAndRemoveTask()
+                mainActivity?.finishAffinity()
             }
         }
 
