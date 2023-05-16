@@ -107,7 +107,7 @@
     <string name="sponsorblock_reminders">Subscription Reminders</string>
     <string name="select_sponsorblock_filtering">Select SponsorBlock Filtering</string>
     <string name="unfound_file" translatable="false">/404.404</string>
-    <string name="save_dir">Save dir</string>
+    <string name="save_dir">Save in directory</string>
     <string name="new_template">New template</string>
     <string name="adjust_templates">Adjust templates</string>
     <string name="edit_selected">Edit selected</string>
@@ -133,7 +133,7 @@
     <string name="enable_mtime_summary">Set the HTTP Last-Modified header as last modified time</string>
     <string name="update_formats">Update Formats</string>
     <string name="error_updating_formats">Error updating formats!</string>
-    <string name="log_downloads">Log Downloads</string>
+    <string name="log_downloads">Log for downloads</string>
     <string name="log_downloads_summary">Create a log file for each download</string>
     <string name="download_queue">Download Queue</string>
     <string name="running">Running</string>
