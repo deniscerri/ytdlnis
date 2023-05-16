@@ -158,14 +158,16 @@ class FormatSelectionBottomSheetDialog(private val items: List<DownloadItem?>, p
                    shimmers.visibility = View.GONE
                    shimmers.stopShimmer()
                }catch (e: Exception){
-                   refreshBtn.isEnabled = true
-                   refreshBtn.text = getString(R.string.update_formats)
-                   linearLayout.visibility = View.VISIBLE
-                   shimmers.visibility = View.GONE
-                   shimmers.stopShimmer()
+                   runCatching {
+                       refreshBtn.isEnabled = true
+                       refreshBtn.text = getString(R.string.update_formats)
+                       linearLayout.visibility = View.VISIBLE
+                       shimmers.visibility = View.GONE
+                       shimmers.stopShimmer()
 
-                   e.printStackTrace()
-                   Toast.makeText(context, getString(R.string.error_updating_formats), Toast.LENGTH_SHORT).show()
+                       e.printStackTrace()
+                       Toast.makeText(context, getString(R.string.error_updating_formats), Toast.LENGTH_SHORT).show()
+                   }
                }
            }
         }

@@ -55,23 +55,6 @@
         app:title="@string/preferred_search_engine" />
 
     <ListPreference
-        android:defaultValue="Home"
-        android:entries="@array/start_destination"
-        android:entryValues="@array/start_destination_values"
-        app:icon="@drawable/baseline_add_to_home_screen_24"
-        app:key="start_destination"
-        app:title="@string/preferred_home_screen" />
-
-
-    <SwitchPreferenceCompat
-        android:widgetLayout="@layout/preferece_material_switch"
-        app:defaultValue="false"
-        android:icon="@drawable/baseline_recommend_24"
-        android:key="home_recommendations"
-        app:summary="@string/video_recommendations_summary"
-        app:title="@string/video_recommendations" />
-
-    <ListPreference
         android:defaultValue=""
         android:entries="@array/countries"
         android:entryValues="@array/countries_values"
