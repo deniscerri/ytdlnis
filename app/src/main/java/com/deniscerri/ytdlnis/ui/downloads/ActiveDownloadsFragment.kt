@@ -2,9 +2,7 @@ package com.deniscerri.ytdlnis.ui.downloads
 
 import android.app.Activity
 import android.content.Intent
-import android.content.res.Configuration
 import android.os.Bundle
-import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
@@ -12,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.work.WorkManager
@@ -21,7 +20,7 @@ import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.repository.DownloadRepository
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.databinding.FragmentHomeBinding
-import com.deniscerri.ytdlnis.ui.more.downloadLogs.DownloadLogActivity
+import com.deniscerri.ytdlnis.ui.more.downloadLogs.DownloadLogFragment
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.NotificationUtil
 import com.google.android.material.progressindicator.LinearProgressIndicator
@@ -107,9 +106,12 @@ class ActiveDownloadsFragment() : Fragment(), ActiveDownloadAdapter.OnItemClickL
     override fun onOutputClick(item: DownloadItem) {
         val logFile = fileUtil.getLogFile(requireContext(), item)
         if (logFile.exists()) {
-            val intent = Intent(requireContext(), DownloadLogActivity::class.java)
-            intent.putExtra("logpath", logFile.absolutePath)
-            startActivity(intent)
+            val bundle = Bundle()
+            bundle.putString("logpath", logFile.absolutePath)
+            findNavController().navigate(
+                R.id.downloadLogFragment,
+                bundle
+            )
         }
     }
 

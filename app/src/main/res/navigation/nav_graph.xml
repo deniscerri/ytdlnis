@@ -16,8 +16,8 @@
         android:label="@string/downloads"
         tools:layout="@layout/fragment_history" >
         <action
-            android:id="@+id/action_historyFragment_to_downloadQueueActivity"
-            app:destination="@id/downloadQueueActivity" />
+            android:id="@+id/action_historyFragment_to_downloadQueueMainFragment"
+            app:destination="@id/downloadQueueMainFragment" />
     </fragment>
     <fragment
         android:id="@+id/moreFragment"
@@ -28,38 +28,21 @@
             android:id="@+id/action_moreFragment_to_terminalActivity"
             app:destination="@id/terminalActivity" />
         <action
-            android:id="@+id/action_moreFragment_to_cookiesActivity"
-            app:destination="@id/cookiesActivity" />
-        <action
-            android:id="@+id/action_moreFragment_to_downloadQueueActivity"
-            app:destination="@id/downloadQueueActivity" />
-        <action
-            android:id="@+id/action_moreFragment_to_downloadLogListActivity"
-            app:destination="@id/downloadLogListActivity" />
-        <action
-            android:id="@+id/action_moreFragment_to_commandTemplatesActivity"
-            app:destination="@id/commandTemplatesActivity" />
-        <action
             android:id="@+id/action_moreFragment_to_settingsActivity2"
             app:destination="@id/activitySettings" />
+        <action
+            android:id="@+id/action_moreFragment_to_cookiesFragment"
+            app:destination="@id/cookiesFragment" />
+        <action
+            android:id="@+id/action_moreFragment_to_commandTemplatesFragment"
+            app:destination="@id/commandTemplatesFragment" />
+        <action
+            android:id="@+id/action_moreFragment_to_downloadQueueMainFragment"
+            app:destination="@id/downloadQueueMainFragment" />
+        <action
+            android:id="@+id/action_moreFragment_to_downloadLogListFragment2"
+            app:destination="@id/downloadLogListFragment" />
     </fragment>
-    <activity
-        android:id="@+id/downloadQueueActivity"
-        android:name="com.deniscerri.ytdlnis.ui.downloads.DownloadQueueActivity"
-        android:label="DownloadQueueActivity"
-        tools:layout="@layout/activity_download_queue" />
-    <activity
-        android:id="@+id/downloadLogListActivity"
-        android:name="com.deniscerri.ytdlnis.ui.more.downloadLogs.DownloadLogListActivity"
-        android:label="DownloadLogListActivity" />
-    <activity
-        android:id="@+id/commandTemplatesActivity"
-        android:name="com.deniscerri.ytdlnis.ui.more.CommandTemplatesActivity"
-        android:label="CommandTemplatesActivity" />
-    <activity
-        android:id="@+id/cookiesActivity"
-        android:name="com.deniscerri.ytdlnis.ui.more.CookiesActivity"
-        android:label="CookiesActivity" />
     <activity
         android:id="@+id/terminalActivity"
         android:name="com.deniscerri.ytdlnis.ui.more.TerminalActivity"
@@ -70,4 +53,31 @@
         android:name="com.deniscerri.ytdlnis.ui.more.settings.SettingsActivity"
         android:label="activity_settings"
         tools:layout="@layout/activity_settings" />
+    <fragment
+        android:id="@+id/cookiesFragment"
+        android:name="com.deniscerri.ytdlnis.ui.more.CookiesFragment"
+        tools:layout="@layout/fragment_cookies"
+        android:label="CookiesFragment" />
+    <fragment
+        android:id="@+id/commandTemplatesFragment"
+        android:name="com.deniscerri.ytdlnis.ui.more.CommandTemplatesFragment"
+        tools:layout="@layout/fragment_command_templates"
+        android:label="CommandTemplatesFragment" />
+    <fragment
+        android:id="@+id/downloadQueueMainFragment"
+        android:name="com.deniscerri.ytdlnis.ui.downloads.DownloadQueueMainFragment"
+        tools:layout="@layout/fragment_download_queue_main_screen"
+        android:label="DownloadQueueMainFragment" />
+    <fragment
+        android:id="@+id/downloadLogListFragment"
+        android:name="com.deniscerri.ytdlnis.ui.more.downloadLogs.DownloadLogListFragment"
+        android:label="DownloadLogListFragment" >
+        <action
+            android:id="@+id/action_downloadLogListFragment2_to_downloadLogFragment2"
+            app:destination="@id/downloadLogFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/downloadLogFragment"
+        android:name="com.deniscerri.ytdlnis.ui.more.downloadLogs.DownloadLogFragment"
+        android:label="DownloadLogFragment" />
 </navigation>

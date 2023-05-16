@@ -2,12 +2,17 @@ package com.deniscerri.ytdlnis.ui.more.downloadLogs
 
 import android.content.ClipboardManager
 import android.content.Context
+import android.content.Context.CLIPBOARD_SERVICE
 import android.os.Build
 import android.os.Bundle
 import android.os.FileObserver
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ScrollView
 import android.widget.TextView
+import androidx.fragment.app.Fragment
+import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.ui.BaseActivity
 import com.google.android.material.appbar.MaterialToolbar
@@ -15,38 +20,49 @@ import com.google.android.material.floatingactionbutton.ExtendedFloatingActionBu
 import java.io.File
 
 
-class DownloadLogActivity : BaseActivity() {
+class DownloadLogFragment : Fragment() {
     private lateinit var content: TextView
     private lateinit var contentScrollView : ScrollView
     private lateinit var topAppBar: MaterialToolbar
     private lateinit var observer: FileObserver
     private lateinit var copyLog : ExtendedFloatingActionButton
-    var context: Context? = null
+    private lateinit var mainActivity: MainActivity
 
-    public override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_download_log)
-        context = baseContext
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        mainActivity = activity as MainActivity
+        mainActivity.hideBottomNavigation()
+        return inflater.inflate(R.layout.fragment_download_log, container, false)
+    }
 
-        topAppBar = findViewById(R.id.title)
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        topAppBar = view.findViewById(R.id.title)
         topAppBar.setNavigationOnClickListener {
-            onBackPressedDispatcher.onBackPressed()
+            mainActivity.onBackPressedDispatcher.onBackPressed()
         }
 
-        content = findViewById(R.id.content)
+        content = view.findViewById(R.id.content)
         content.setTextIsSelectable(true)
-        contentScrollView = findViewById(R.id.content_scrollview)
+        contentScrollView = view.findViewById(R.id.content_scrollview)
 
-        copyLog = findViewById(R.id.copy_log)
+        copyLog = view.findViewById(R.id.copy_log)
         copyLog.setOnClickListener {
             val clipboard: ClipboardManager =
-                getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+                mainActivity.getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
             clipboard.setText(content.text)
         }
 
-        val path = intent.getStringExtra("logpath")
+        val path = arguments?.getString("logpath")
         if (path == null) {
-            onBackPressedDispatcher.onBackPressed()
+            mainActivity.onBackPressedDispatcher.onBackPressed()
+        }else{
+            arguments?.remove("logpath")
         }
 
         val file = File(path!!)
@@ -56,7 +72,7 @@ class DownloadLogActivity : BaseActivity() {
         if(Build.VERSION.SDK_INT < 29){
             observer = object : FileObserver(file.absolutePath, MODIFY) {
                 override fun onEvent(event: Int, p: String?) {
-                    runOnUiThread{
+                    mainActivity.runOnUiThread{
                         val newText = File(path).readText()
                         content.text = newText
                         content.scrollTo(0, content.height)
@@ -68,7 +84,7 @@ class DownloadLogActivity : BaseActivity() {
         }else{
             observer = object : FileObserver(file, MODIFY) {
                 override fun onEvent(event: Int, p: String?) {
-                    runOnUiThread{
+                    mainActivity.runOnUiThread{
                         val newText = File(path).readText()
                         content.text = newText
                         content.scrollTo(0, content.height)

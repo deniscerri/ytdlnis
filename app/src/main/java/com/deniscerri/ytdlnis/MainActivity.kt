@@ -1,6 +1,7 @@
 package com.deniscerri.ytdlnis
 
 import android.Manifest
+import android.app.ActionBar.LayoutParams
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -13,14 +14,18 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
+import androidx.drawerlayout.widget.DrawerLayout
 import android.view.View
 import android.view.WindowInsets
 import android.widget.CheckBox
+import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.forEach
+import androidx.core.view.updateLayoutParams
+import androidx.fragment.app.FragmentContainerView
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
@@ -32,10 +37,11 @@ import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdlnis.ui.BaseActivity
 import com.deniscerri.ytdlnis.ui.HomeFragment
-import com.deniscerri.ytdlnis.ui.downloads.DownloadQueueActivity
+import com.deniscerri.ytdlnis.ui.downloads.DownloadQueueMainFragment
 import com.deniscerri.ytdlnis.ui.more.settings.SettingsActivity
 import com.deniscerri.ytdlnis.util.ThemeUtil
 import com.deniscerri.ytdlnis.util.UpdateUtil
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.elevation.SurfaceColors
 import com.google.android.material.navigation.NavigationBarView
@@ -119,8 +125,7 @@ class MainActivity : BaseActivity() {
                         (navHostFragment.childFragmentManager.primaryNavigationFragment!! as HomeFragment).scrollToTop()
                     }
                     R.id.historyFragment -> {
-                        val intent = Intent(context, DownloadQueueActivity::class.java)
-                        startActivity(intent)
+                        navController.navigate(R.id.downloadQueueMainFragment)
                     }
                     R.id.moreFragment -> {
                         val intent = Intent(context, SettingsActivity::class.java)
@@ -175,18 +180,48 @@ class MainActivity : BaseActivity() {
             }
         }
         cookieViewModel.updateCookiesFile()
-//        lifecycleScope.launch(Dispatchers.IO){
-//            val active = downloadViewModel.getActiveDownloads()
-//            if (active.isNotEmpty()){
-//                val wm = WorkManager.getInstance(this@MainActivity)
-//                active.forEach {
-//                    if (wm.getWorkInfosByTag())
-//                }
-//                WorkManager.getInstance(this@MainActivity).get
-//            }
-//        }
         val intent = intent
         handleIntents(intent)
+    }
+
+    fun hideBottomNavigation(){
+        if(navigationView is NavigationBarView){
+            if (navigationView is BottomNavigationView){
+                findViewById<FragmentContainerView>(R.id.frame_layout).updateLayoutParams {
+                    this.height = LayoutParams.MATCH_PARENT
+                }
+                navigationView.animate()?.translationY(navigationView.height.toFloat())?.setDuration(300)?.withEndAction {
+                    navigationView.visibility = View.GONE
+                }?.start()
+            }else{
+                findViewById<FragmentContainerView>(R.id.frame_layout).updateLayoutParams {
+                    this.width = LayoutParams.MATCH_PARENT
+                }
+                navigationView.animate()?.translationX(-navigationView.width.toFloat())?.setDuration(300)?.withEndAction {
+                    navigationView.visibility = View.GONE
+                }?.start()
+            }
+        }
+    }
+
+    fun showBottomNavigation(){
+        if(navigationView is NavigationBarView){
+            if (navigationView is BottomNavigationView){
+                findViewById<FragmentContainerView>(R.id.frame_layout).updateLayoutParams {
+                    this.height = 0
+                }
+                navigationView.animate()?.translationY(0F)?.setDuration(300)?.withEndAction {
+                    navigationView.visibility = View.VISIBLE
+                }?.start()
+            }else{
+                findViewById<FragmentContainerView>(R.id.frame_layout).updateLayoutParams {
+                    this.width = 0
+                }
+                navigationView.animate()?.translationX(0F)?.setDuration(300)?.withEndAction {
+                    navigationView.visibility = View.VISIBLE
+                }?.start()
+            }
+        }
     }
 
     fun disableBottomNavigation(){
@@ -207,6 +242,7 @@ class MainActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
+        //incognito header
         val incognitoHeader = findViewById<TextView>(R.id.incognito_header)
         if (preferences.getBoolean("incognito", false)){
             incognitoHeader.visibility = View.VISIBLE
@@ -214,6 +250,10 @@ class MainActivity : BaseActivity() {
         }else{
             window.statusBarColor = getColor(android.R.color.transparent)
             incognitoHeader.visibility = View.GONE
+        }
+        //check logs option
+        if (navigationView is NavigationView){
+            (navigationView as NavigationView).menu.findItem(R.id.downloadLogListFragment).isVisible = preferences.getBoolean("log_downloads", false)
         }
     }
 

@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
-import android.content.res.Configuration
 import android.graphics.Canvas
 import android.graphics.Color
 import android.os.Bundle
@@ -100,7 +99,7 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
         fragmentView = inflater.inflate(R.layout.fragment_history, container, false)
         activity = getActivity()
         mainActivity = activity as MainActivity?
-
+        mainActivity?.showBottomNavigation()
         return fragmentView
     }
 
@@ -156,7 +155,6 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
         }
 
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
-
         initMenu()
         initChips()
     }
@@ -217,7 +215,7 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
                     }
                 }
                 R.id.download_queue -> {
-                    val intent = Intent(context, DownloadQueueActivity::class.java)
+                    val intent = Intent(context, DownloadQueueMainFragment::class.java)
                     startActivity(intent)
                 }
                 R.id.remove_deleted_history -> {

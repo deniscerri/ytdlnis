@@ -16,7 +16,7 @@ import com.deniscerri.ytdlnis.receiver.CancelDownloadNotificationReceiver
 import com.deniscerri.ytdlnis.receiver.PauseDownloadNotificationReceiver
 import com.deniscerri.ytdlnis.receiver.ResumeActivity
 import com.deniscerri.ytdlnis.receiver.SharedDownloadNotificationReceiver
-import com.deniscerri.ytdlnis.ui.more.downloadLogs.DownloadLogActivity
+import com.deniscerri.ytdlnis.ui.more.downloadLogs.DownloadLogFragment
 import java.io.File
 
 
@@ -228,7 +228,7 @@ class NotificationUtil(var context: Context) {
     ) {
         val notificationBuilder = getBuilder(channel)
 
-        val intent = Intent(context, DownloadLogActivity::class.java)
+        val intent = Intent(context, DownloadLogFragment::class.java)
         intent.putExtra("logpath", logFile?.absolutePath)
 
         val errorPendingIntent: PendingIntent = TaskStackBuilder.create(context).run {

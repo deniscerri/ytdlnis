@@ -5,19 +5,22 @@ import android.content.DialogInterface
 import android.graphics.Canvas
 import android.graphics.Color
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
+import android.view.ViewGroup
 import android.widget.RelativeLayout
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.adapter.TemplatesAdapter
 import com.deniscerri.ytdlnis.database.models.CommandTemplate
 import com.deniscerri.ytdlnis.database.viewmodel.CommandTemplateViewModel
-import com.deniscerri.ytdlnis.ui.BaseActivity
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.UiUtil
 import com.google.android.material.appbar.MaterialToolbar
@@ -30,7 +33,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 
-class CommandTemplatesActivity : BaseActivity(), TemplatesAdapter.OnItemClickListener {
+class CommandTemplatesFragment : Fragment(), TemplatesAdapter.OnItemClickListener {
     private lateinit var recyclerView: RecyclerView
     private lateinit var templatesAdapter: TemplatesAdapter
     private lateinit var topAppBar: MaterialToolbar
@@ -38,24 +41,32 @@ class CommandTemplatesActivity : BaseActivity(), TemplatesAdapter.OnItemClickLis
     private lateinit var uiUtil: UiUtil
     private lateinit var templatesList: List<CommandTemplate>
     private lateinit var noResults: RelativeLayout
-    var context: Context? = null
+    private lateinit var mainActivity: MainActivity
 
-    public override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_command_templates)
-        context = baseContext
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        mainActivity = activity as MainActivity
+        mainActivity.hideBottomNavigation()
+        return inflater.inflate(R.layout.fragment_command_templates, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         templatesList = listOf()
 
-        topAppBar = findViewById(R.id.logs_toolbar)
-        topAppBar.setNavigationOnClickListener { onBackPressedDispatcher.onBackPressed() }
-        noResults = findViewById(R.id.no_results)
+        topAppBar = view.findViewById(R.id.logs_toolbar)
+        topAppBar.setNavigationOnClickListener { mainActivity.onBackPressedDispatcher.onBackPressed() }
+        noResults = view.findViewById(R.id.no_results)
 
         templatesAdapter =
             TemplatesAdapter(
                 this,
-                this@CommandTemplatesActivity
+                mainActivity
             )
-        recyclerView = findViewById(R.id.template_recyclerview)
+        recyclerView = view.findViewById(R.id.template_recyclerview)
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = templatesAdapter
         val itemTouchHelper = ItemTouchHelper(simpleCallback)
@@ -64,7 +75,7 @@ class CommandTemplatesActivity : BaseActivity(), TemplatesAdapter.OnItemClickLis
         uiUtil = UiUtil(FileUtil())
 
         commandTemplateViewModel = ViewModelProvider(this)[CommandTemplateViewModel::class.java]
-        commandTemplateViewModel.items.observe(this) {
+        commandTemplateViewModel.items.observe(viewLifecycleOwner) {
             if (it.isEmpty()) noResults.visibility = View.VISIBLE
             else noResults.visibility = View.GONE
             templatesList = it
@@ -88,7 +99,7 @@ class CommandTemplatesActivity : BaseActivity(), TemplatesAdapter.OnItemClickLis
                 lifecycleScope.launch{
                     withContext(Dispatchers.IO){
                         val count = commandTemplateViewModel.importFromClipboard()
-                        runOnUiThread{
+                        mainActivity.runOnUiThread{
                             Snackbar.make(recyclerView, "${getString(R.string.items_imported)} (${count})", Snackbar.LENGTH_LONG).show()
                         }
                     }
@@ -100,13 +111,13 @@ class CommandTemplatesActivity : BaseActivity(), TemplatesAdapter.OnItemClickLis
     }
 
     private fun initChips() {
-        val new = findViewById<Chip>(R.id.newTemplate)
-        new.setOnClickListener {
-            uiUtil.showCommandTemplateCreationOrUpdatingSheet(null,this@CommandTemplatesActivity, this, commandTemplateViewModel) {}
+        val new = view?.findViewById<Chip>(R.id.newTemplate)
+        new?.setOnClickListener {
+            uiUtil.showCommandTemplateCreationOrUpdatingSheet(null,mainActivity, this, commandTemplateViewModel) {}
         }
-        val shortcuts = findViewById<Chip>(R.id.shortcuts)
-        shortcuts.setOnClickListener {
-            uiUtil.showShortcutsSheet(this@CommandTemplatesActivity,this, commandTemplateViewModel)
+        val shortcuts = view?.findViewById<Chip>(R.id.shortcuts)
+        shortcuts?.setOnClickListener {
+            uiUtil.showShortcutsSheet(mainActivity,this, commandTemplateViewModel)
         }
     }
 
@@ -115,7 +126,7 @@ class CommandTemplatesActivity : BaseActivity(), TemplatesAdapter.OnItemClickLis
     }
 
     override fun onItemClick(commandTemplate: CommandTemplate, index: Int) {
-        uiUtil.showCommandTemplateCreationOrUpdatingSheet(commandTemplate,this@CommandTemplatesActivity, this, commandTemplateViewModel) {
+        uiUtil.showCommandTemplateCreationOrUpdatingSheet(commandTemplate,mainActivity, this, commandTemplateViewModel) {
             templatesAdapter.notifyItemChanged(index)
         }
 
@@ -126,7 +137,7 @@ class CommandTemplatesActivity : BaseActivity(), TemplatesAdapter.OnItemClickLis
     }
 
     override fun onDelete(commandTemplate: CommandTemplate) {
-        val deleteDialog = MaterialAlertDialogBuilder(this)
+        val deleteDialog = MaterialAlertDialogBuilder(requireContext())
         deleteDialog.setTitle(getString(R.string.you_are_going_to_delete) + " \"" + commandTemplate.title + "\"!")
         deleteDialog.setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, _: Int -> dialogInterface.cancel() }
         deleteDialog.setPositiveButton(getString(R.string.ok)) { _: DialogInterface?, _: Int ->

@@ -3,7 +3,6 @@ package com.deniscerri.ytdlnis.ui.downloads
 import android.app.Activity
 import android.content.DialogInterface
 import android.content.Intent
-import android.content.res.Configuration
 import android.graphics.Canvas
 import android.graphics.Color
 import android.os.Bundle
@@ -32,7 +31,7 @@ import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.databinding.FragmentHomeBinding
 import com.deniscerri.ytdlnis.ui.downloadcard.DownloadBottomSheetDialog
-import com.deniscerri.ytdlnis.ui.more.downloadLogs.DownloadLogActivity
+import com.deniscerri.ytdlnis.ui.more.downloadLogs.DownloadLogFragment
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.UiUtil
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -97,7 +96,7 @@ class ErroredDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickL
     override fun onActionButtonClick(itemID: Long) {
         val item = items.find { it.id == itemID } ?: return
         val file = fileUtil.getLogFile(requireContext(), item)
-        val intent = Intent(requireContext(), DownloadLogActivity::class.java)
+        val intent = Intent(requireContext(), DownloadLogFragment::class.java)
         intent.putExtra("logpath", file.absolutePath)
         startActivity(intent)
     }

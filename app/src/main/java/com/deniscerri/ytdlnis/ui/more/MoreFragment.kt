@@ -10,11 +10,11 @@ import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceManager
 import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
-import com.deniscerri.ytdlnis.ui.downloads.DownloadQueueActivity
-import com.deniscerri.ytdlnis.ui.more.downloadLogs.DownloadLogListActivity
+import com.deniscerri.ytdlnis.ui.more.downloadLogs.DownloadLogListFragment
 import com.deniscerri.ytdlnis.ui.more.settings.SettingsActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlin.system.exitProcess
@@ -36,6 +36,7 @@ class MoreFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         mainActivity = activity as MainActivity
+        mainActivity.showBottomNavigation()
         return inflater.inflate(R.layout.fragment_more, container, false)
     }
 
@@ -67,23 +68,19 @@ class MoreFragment : Fragment() {
         }
 
         logs.setOnClickListener {
-            val intent = Intent(context, DownloadLogListActivity::class.java)
-            startActivity(intent)
+            findNavController().navigate(R.id.downloadLogListFragment)
         }
 
         commandTemplates.setOnClickListener {
-            val intent = Intent(context, CommandTemplatesActivity::class.java)
-            startActivity(intent)
+            findNavController().navigate(R.id.commandTemplatesFragment)
         }
 
         downloadQueue.setOnClickListener {
-            val intent = Intent(context, DownloadQueueActivity::class.java)
-            startActivity(intent)
+            findNavController().navigate(R.id.downloadQueueMainFragment)
         }
 
         cookies.setOnClickListener {
-            val intent = Intent(context, CookiesActivity::class.java)
-            startActivity(intent)
+            findNavController().navigate(R.id.cookiesFragment)
         }
 
         terminateApp.setOnClickListener {

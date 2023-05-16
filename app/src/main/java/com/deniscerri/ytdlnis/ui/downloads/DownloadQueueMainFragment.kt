@@ -1,20 +1,22 @@
 package com.deniscerri.ytdlnis.ui.downloads
 
-import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import androidx.work.WorkManager
+import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.repository.DownloadRepository
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
-import com.deniscerri.ytdlnis.ui.BaseActivity
 import com.deniscerri.ytdlnis.util.NotificationUtil
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -25,25 +27,31 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 
-class DownloadQueueActivity : BaseActivity(){
+class DownloadQueueMainFragment : Fragment(){
     private lateinit var downloadViewModel: DownloadViewModel
     private lateinit var topAppBar: MaterialToolbar
     private lateinit var workManager: WorkManager
     private lateinit var tabLayout: TabLayout
     private lateinit var viewPager2: ViewPager2
     private lateinit var fragmentAdapter : DownloadListFragmentAdapter
-    var context: Context? = null
+    private lateinit var mainActivity: MainActivity
 
-    public override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_download_queue)
-        context = baseContext
-        val view : View = window.decorView.findViewById(android.R.id.content)
-        workManager = WorkManager.getInstance(this)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        mainActivity = activity as MainActivity
+        return inflater.inflate(R.layout.fragment_download_queue_main_screen, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        workManager = WorkManager.getInstance(requireContext())
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
 
-        topAppBar = findViewById(R.id.logs_toolbar)
-        topAppBar.setNavigationOnClickListener { onBackPressedDispatcher.onBackPressed() }
+        topAppBar = view.findViewById(R.id.logs_toolbar)
+        topAppBar.setNavigationOnClickListener { mainActivity.onBackPressedDispatcher.onBackPressed() }
 
         tabLayout = view.findViewById(R.id.download_tablayout)
         viewPager2 = view.findViewById(R.id.download_viewpager)
@@ -56,7 +64,7 @@ class DownloadQueueActivity : BaseActivity(){
         val fragments = mutableListOf(ActiveDownloadsFragment(), QueuedDownloadsFragment(), CancelledDownloadsFragment(), ErroredDownloadsFragment())
 
         fragmentAdapter = DownloadListFragmentAdapter(
-            supportFragmentManager,
+            childFragmentManager,
             lifecycle,
             fragments
         )
@@ -81,7 +89,7 @@ class DownloadQueueActivity : BaseActivity(){
                 tabLayout.selectTab(tabLayout.getTabAt(position))
             }
         })
-
+        mainActivity.hideBottomNavigation()
         initMenu()
     }
 
@@ -115,7 +123,7 @@ class DownloadQueueActivity : BaseActivity(){
     }
 
     private fun showDeleteDialog (deleteClicked: (deleteClicked: Boolean) -> Unit){
-        val deleteDialog = MaterialAlertDialogBuilder(this)
+        val deleteDialog = MaterialAlertDialogBuilder(requireContext())
         deleteDialog.setTitle(getString(R.string.you_are_going_to_delete_multiple_items))
         deleteDialog.setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, _: Int -> dialogInterface.cancel() }
         deleteDialog.setPositiveButton(getString(R.string.ok)) { _: DialogInterface?, _: Int ->
@@ -127,7 +135,7 @@ class DownloadQueueActivity : BaseActivity(){
     private fun cancelAllDownloads() {
         workManager.cancelAllWorkByTag("download")
         lifecycleScope.launch {
-            val notificationUtil = NotificationUtil(this@DownloadQueueActivity)
+            val notificationUtil = NotificationUtil(requireContext())
             val activeAndQueued = withContext(Dispatchers.IO){
                 downloadViewModel.getActiveAndQueuedDownloads()
             }

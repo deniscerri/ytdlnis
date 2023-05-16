@@ -70,39 +70,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.more.downloadLogs.DownloadLogListActivity"
-            android:configChanges="smallestScreenSize|layoutDirection|locale|orientation|screenSize"
-            android:exported="true"
-            android:parentActivityName=".MainActivity">
-            <intent-filter>
-                <action android:name="ytdlnis.downloadLogs.DownloadLogListActivity" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".ui.downloads.DownloadQueueActivity"
-            android:configChanges="smallestScreenSize|layoutDirection|locale|orientation|screenSize"
-            android:exported="true"
-            android:parentActivityName=".MainActivity">
-            <intent-filter>
-                <action android:name="ytdlnis.DownloadQueueActivity" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".ui.more.downloadLogs.DownloadLogActivity"
-            android:configChanges="smallestScreenSize|layoutDirection|locale|orientation|screenSize"
-            android:exported="true"
-            android:parentActivityName=".ui.more.downloadLogs.DownloadLogListActivity">
-            <intent-filter>
-                <action android:name="ytdlnis.downloadLogs.DownloadLogActivity" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
             android:name=".ui.more.settings.SettingsActivity"
             android:configChanges="smallestScreenSize|layoutDirection|locale|orientation|screenSize"
             android:exported="true"
@@ -129,31 +96,6 @@
                 <category android:name="android.intent.category.DEFAULT" />
 
                 <data android:mimeType="text/plain" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".ui.more.CommandTemplatesActivity"
-            android:configChanges="smallestScreenSize|layoutDirection|locale|orientation|screenSize"
-            android:exported="true"
-            android:parentActivityName=".MainActivity"
-            android:windowSoftInputMode="adjustResize">
-            <intent-filter>
-                <action android:name="ytdlnis.CommandTemplatesActivity" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-
-        <activity
-            android:name=".ui.more.CookiesActivity"
-            android:configChanges="smallestScreenSize|layoutDirection|locale|orientation|screenSize"
-            android:exported="true"
-            android:parentActivityName=".MainActivity"
-            android:windowSoftInputMode="adjustResize">
-            <intent-filter>
-                <action android:name="ytdlnis.CookiesActivity" />
-
-                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
 

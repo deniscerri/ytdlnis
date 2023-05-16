@@ -1,28 +1,32 @@
 package com.deniscerri.ytdlnis.ui.more
 
 import android.content.Context
+import android.content.Context.INPUT_METHOD_SERVICE
 import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Canvas
 import android.graphics.Color
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.RelativeLayout
 import androidx.appcompat.app.AlertDialog
 import androidx.core.widget.doOnTextChanged
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.adapter.CookieAdapter
 import com.deniscerri.ytdlnis.database.models.CookieItem
 import com.deniscerri.ytdlnis.database.viewmodel.CookieViewModel
-import com.deniscerri.ytdlnis.ui.BaseActivity
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.UiUtil
 import com.google.android.material.appbar.MaterialToolbar
@@ -36,7 +40,7 @@ import kotlinx.coroutines.launch
 import java.io.File
 
 
-class CookiesActivity : BaseActivity(), CookieAdapter.OnItemClickListener {
+class CookiesFragment : Fragment(), CookieAdapter.OnItemClickListener {
     private lateinit var recyclerView: RecyclerView
     private lateinit var listAdapter: CookieAdapter
     private lateinit var topAppBar: MaterialToolbar
@@ -44,24 +48,30 @@ class CookiesActivity : BaseActivity(), CookieAdapter.OnItemClickListener {
     private lateinit var uiUtil: UiUtil
     private lateinit var cookiesList: List<CookieItem>
     private lateinit var noResults : RelativeLayout
-    var context: Context? = null
+    private lateinit var mainActivity: MainActivity
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        mainActivity = activity as MainActivity
+        mainActivity.hideBottomNavigation()
+        return inflater.inflate(R.layout.fragment_cookies, container, false)
+    }
 
-    public override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_cookies)
-        context = baseContext
-
-        topAppBar = findViewById(R.id.logs_toolbar)
-        topAppBar.setNavigationOnClickListener { onBackPressedDispatcher.onBackPressed() }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        topAppBar = view.findViewById(R.id.logs_toolbar)
+        topAppBar.setNavigationOnClickListener { mainActivity.onBackPressedDispatcher.onBackPressed() }
         cookiesList = listOf()
-        noResults = findViewById(R.id.no_results)
+        noResults = view.findViewById(R.id.no_results)
 
         listAdapter =
             CookieAdapter(
                 this,
-                this@CookiesActivity
+                mainActivity
             )
-        recyclerView = findViewById(R.id.template_recyclerview)
+        recyclerView = view.findViewById(R.id.template_recyclerview)
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = listAdapter
         val itemTouchHelper = ItemTouchHelper(simpleCallback)
@@ -70,7 +80,7 @@ class CookiesActivity : BaseActivity(), CookieAdapter.OnItemClickListener {
         uiUtil = UiUtil(FileUtil())
 
         cookiesViewModel = ViewModelProvider(this)[CookieViewModel::class.java]
-        cookiesViewModel.items.observe(this) {
+        cookiesViewModel.items.observe(viewLifecycleOwner) {
             if (it.isEmpty()) noResults.visibility = View.VISIBLE
             else noResults.visibility = View.GONE
             cookiesList = it
@@ -84,14 +94,14 @@ class CookiesActivity : BaseActivity(), CookieAdapter.OnItemClickListener {
         topAppBar.setOnMenuItemClickListener { m: MenuItem ->
             when (m.itemId) {
                 R.id.delete_cookies -> {
-                    val deleteDialog = MaterialAlertDialogBuilder(this)
+                    val deleteDialog = MaterialAlertDialogBuilder(requireContext())
                     deleteDialog.setTitle(getString(R.string.confirm_delete_history))
                     deleteDialog.setMessage(getString(R.string.confirm_delete_cookies_desc))
                     deleteDialog.setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, _: Int -> dialogInterface.cancel() }
                     deleteDialog.setPositiveButton(getString(R.string.ok)) { _: DialogInterface?, _: Int ->
                         cookiesViewModel.deleteAll()
                         kotlin.runCatching {
-                            File(cacheDir, "cookies.txt").apply { writeText("") }
+                            File(context?.cacheDir, "cookies.txt").apply { writeText("") }
                         }
                     }
                     deleteDialog.show()
@@ -111,14 +121,14 @@ class CookiesActivity : BaseActivity(), CookieAdapter.OnItemClickListener {
     }
 
     private fun initChips() {
-        val new = findViewById<Chip>(R.id.newCookie)
-        new.setOnClickListener {
+        val new = view?.findViewById<Chip>(R.id.newCookie)
+        new?.setOnClickListener {
             showDialog("")
         }
     }
 
     private fun showDialog(url: String){
-        val builder = MaterialAlertDialogBuilder(this)
+        val builder = MaterialAlertDialogBuilder(requireContext())
         builder.setTitle(getString(R.string.cookies))
         val inputLayout = layoutInflater.inflate(R.layout.textinput, null)
         val editText = inputLayout.findViewById<EditText>(R.id.url_edittext)
@@ -130,7 +140,7 @@ class CookiesActivity : BaseActivity(), CookieAdapter.OnItemClickListener {
         builder.setPositiveButton(
             getString(R.string.get_cookies)
         ) { dialog: DialogInterface?, which: Int ->
-            val myIntent = Intent(this, WebViewActivity::class.java)
+            val myIntent = Intent(requireContext(), WebViewActivity::class.java)
             myIntent.putExtra("url", editText.text.toString())
             startActivity(myIntent)
         }
@@ -144,7 +154,7 @@ class CookiesActivity : BaseActivity(), CookieAdapter.OnItemClickListener {
             dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = editText.text.isNotEmpty()
         }
         dialog.show()
-        val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        val imm = mainActivity.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
         editText!!.postDelayed({
             editText.requestFocus()
             imm.showSoftInput(editText, 0)
@@ -165,7 +175,7 @@ class CookiesActivity : BaseActivity(), CookieAdapter.OnItemClickListener {
     }
 
     override fun onDelete(cookie: CookieItem) {
-        val deleteDialog = MaterialAlertDialogBuilder(this)
+        val deleteDialog = MaterialAlertDialogBuilder(requireContext())
         deleteDialog.setTitle(getString(R.string.you_are_going_to_delete) + " \"" + cookie.url + "\"!")
         deleteDialog.setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, _: Int -> dialogInterface.cancel() }
         deleteDialog.setPositiveButton(getString(R.string.ok)) { _: DialogInterface?, _: Int ->
