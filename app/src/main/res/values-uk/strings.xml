@@ -253,4 +253,5 @@
     <string name="network_error">Помилка мережі</string>
     <string name="select_backup_categories">Виберіть категорії резервного копіювання</string>
     <string name="backup_created_successfully">Файл резервної копії збережено в папці завантажень</string>
+    <string name="backup_restore">Резервне копіювання і відновлення</string>
 </resources>
