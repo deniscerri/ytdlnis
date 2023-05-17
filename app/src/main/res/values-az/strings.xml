@@ -16,8 +16,8 @@
     <string name="search_hint">Axtar və ya URL Əlavə Et</string>
     <string name="failed_download">Faylı yükləmək mümkün olmadı.</string>
     <string name="download_notification_channel_name">Fayl Yükləmələri</string>
-    <string name="download_notification_channel_description">Səs və video faylların endirilmə irəliləyişin göstərən bildiriş</string>
-    <string name="you_are_in_latest_version">Son versiya işlədilir</string>
+    <string name="download_notification_channel_description">Səs və video faylların yüklənilmə irəliləyişin göstərən bildiriş</string>
+    <string name="you_are_in_latest_version">Ən son versiya işlədilir</string>
     <string name="ytld_update_success">Yeni versiya quraşdırıldı</string>
     <string name="ytdl_already_updating">Yeni versiya quraşdırılır…</string>
     <string name="ytdl_updating_started">Yeni versiya yüklənilir…</string>
@@ -26,7 +26,7 @@
     <string name="cancel">Ləğv et</string>
     <string name="confirm_delete_history_desc">Bütün tarixçəni həmişəlik sil.</string>
     <string name="confirm_delete_history">Təsdiqlə</string>
-    <string name="search_history_hint">Tarixçədən Axtarış</string>
+    <string name="search_history_hint">Tarixçədən Axtar</string>
     <string name="no_results">Nəticə Yoxdur</string>
     <string name="more">Daha çox</string>
     <string name="update_app">Yeniləmələr üçün yoxla</string>
@@ -47,7 +47,7 @@
     <string name="embed_thumb">Miniatür Örtüklər</string>
     <string name="embed_thumb_summary">Miniatür, örtük təsviri kimi işlədilir</string>
     <string name="add_chapters">Videolardakı Bölmələr</string>
-    <string name="add_chapters_summary">YouTube / SponsorBlock bölümləri video üçün bölmələr kimi nişanlanır</string>
+    <string name="add_chapters_summary">YouTube / SponsorBlock bölümləri video üçün bölmələr kimi işarələnir</string>
     <string name="save_thumb">Miniatürü Saxla</string>
     <string name="save_thumb_summary">Miniatürü yükləmə qovluğunda saxla</string>
     <string name="audio_format">Səs Formatı</string>
@@ -62,7 +62,7 @@
     <string name="history_is_empty">Tarixçə boşdur.</string>
     <string name="you_are_going_to_delete">Silinir</string>
     <string name="url">URL</string>
-    <string name="link_copied_to_clipboard">Link buferə nüsxələndi</string>
+    <string name="link_copied_to_clipboard">Link buferə köçürüldü</string>
     <string name="api_key">API Açar İşlət</string>
     <string name="api_key_summary">YouTube\'dan daha sürətli nəticələr</string>
     <string name="update_app_summary">Açıldıqda, tətbiqin yeni versiyası bildirilir</string>
@@ -112,11 +112,11 @@
     <string name="adjust_templates">Şablonları tənzimlə</string>
     <string name="edit_selected">Seçiləni redaktə et</string>
     <string name="adjust_video">Videonu tənzimlə</string>
-    <string name="concurrent_downloads">Eynivaxtlı Endirmələr</string>
+    <string name="concurrent_downloads">Eynivaxtlı Yükləmələr</string>
     <string name="concurrent_downloads_summary">Eyni vaxtda icra edilən yükləmələrin sayı</string>
     <string name="container">Konteyner</string>
     <string name="logs">Jurnallar</string>
-    <string name="date_added">Əlavə edilən vaxt</string>
+    <string name="date_added">Əlavə edilən tarix</string>
     <string name="update_ytdl_nightly">Yt-dlp Gecə Versiyası</string>
     <string name="file_name_template">Şablon Fayl Adı</string>
     <string name="language">Dil</string>
@@ -134,11 +134,11 @@
     <string name="command">Əmr</string>
     <string name="export_from_clipboard">Buferə ixrac et</string>
     <string name="shortcuts">Qısa kəsiklər</string>
-    <string name="create_template">Şablon yarat</string>
+    <string name="create_template">Şablon Yarat</string>
     <string name="shortcuts_desc">Şablonlar yaratmaq üçün çox istifadə olunan əmrlər işlət</string>
     <string name="cancelled">Ləğv edilən</string>
     <string name="errored">Xəta olan</string>
-    <string name="copy_log">Jurnalı nüsxələ</string>
+    <string name="copy_log">Jurnalı köçür</string>
     <string name="create_shortcut">Qısa Kəsik Yarat</string>
     <string name="error_restarting_download">Yükləməni yenidən başlatmağa çalışarkən xəta</string>
     <string name="update_template">Şablonu Yenilə</string>
@@ -207,7 +207,7 @@
     <string name="preferred_search_engine_summary">Tətbiqdaxili axtarışlar üçün istifadə edilməli axtarış mühərriki</string>
     <string name="preferred_home_screen">Üstünlük Verilən Ev Ekran</string>
     <string name="audio_samplerate">Səs Nümunə Sürəti</string>
-    <string name="copied_to_clipboard">Buferə Nüsxələndi</string>
+    <string name="copied_to_clipboard">Buferə Köçürüldü</string>
     <string name="undo">Ləğv et</string>
     <string name="codec">Kodlaşdırıcı</string>
     <string name="format_id">Format ID</string>
@@ -226,7 +226,7 @@
     <string name="purple">Bənövşəyi</string>
     <string name="yellow">Sarı</string>
     <string name="monochrome">Saya</string>
-    <string name="downloaded">"Yükləndi: "</string>
+    <string name="downloaded">"Yüklənildi: "</string>
     <string name="finished_download_notification_channel_name">Bitmiş Yükləmələr</string>
     <string name="finished_download_notification_channel_description">Bitmiş və ya nasaz yükləmələr üçün bildiriş</string>
     <string name="quick_download">Sürətli Yükləmə</string>
@@ -236,20 +236,22 @@
     <string name="preferred_format_id">Üstünlük Verilən Format ID</string>
     <string name="download_already_exists">Yükləmə artıq var</string>
     <string name="preferred_locale">Üstünlük Verilən Yer</string>
-    <string name="pause">Dayandır</string>
+    <string name="pause">Dayandır
+\n</string>
     <string name="resume">Təkrar başlat</string>
     <string name="updating_download_data">Yükləmə Element Məlumatı Yenilənir</string>
     <string name="keep_cache">Qalığı Saxla</string>
     <string name="keep_cache_summary">Yükləmə bitəndən sonra müvəqqəti fayllar silinmir</string>
     <string name="backup">Nüsxələmə</string>
     <string name="restore">Bərpa et</string>
-    <string name="network_error">Şəbəkə Xətası</string>
-    <string name="incognito">Gizli</string>
+    <string name="network_error">Şəbəkə Səhvi</string>
+    <string name="incognito">Gizlincə</string>
     <string name="sponsorblock">SponsorBlock</string>
     <string name="couldnt_parse_file">Faylı təhlil etmək alınmadı</string>
-    <string name="restore_complete">Tətbiq Bərpa Edildi. Aşağıdakı elementlər bərpa edildi:</string>
+    <string name="restore_complete">Tətbiq Bərpa Edildi. Aşağıdakı elementlər bərpa edilib:</string>
     <string name="select_backup_categories">Nüsxə kateqoriyaları seç</string>
     <string name="search_history">Axtarış Tarixçəsi</string>
     <string name="appearance">Görünüş</string>
     <string name="backup_created_successfully">Yükləmələr qovluğunda saxlanılan nüsxə faylı</string>
+    <string name="backup_restore">Nüsxələmə və Bərpa et</string>
 </resources>
