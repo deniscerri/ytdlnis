@@ -32,6 +32,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.forEach
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -215,8 +216,7 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
                     }
                 }
                 R.id.download_queue -> {
-                    val intent = Intent(context, DownloadQueueMainFragment::class.java)
-                    startActivity(intent)
+                    findNavController().navigate(R.id.downloadQueueMainFragment)
                 }
                 R.id.remove_deleted_history -> {
                     if(allhistoryList!!.isEmpty()){

@@ -540,6 +540,11 @@ class InfoUtil(private val context: Context) {
                     request.addOption("--cookies", cookiesFile.absolutePath)
                 }
 
+                val proxy = sharedPreferences.getString("proxy", "")
+                if (proxy!!.isNotBlank()){
+                    request.addOption("--proxy", proxy)
+                }
+
                 YoutubeDL.getInstance().execute(request){ progress, _, line ->
                     try{
                         val formats = mutableListOf<Format>()
@@ -599,6 +604,11 @@ class InfoUtil(private val context: Context) {
             val cookiesFile = File(context.cacheDir, "cookies.txt")
             if (cookiesFile.exists()){
                 request.addOption("--cookies", cookiesFile.absolutePath)
+            }
+
+            val proxy = sharedPreferences.getString("proxy", "")
+            if (proxy!!.isNotBlank()){
+               request.addOption("--proxy", proxy)
             }
 
             val youtubeDLResponse = YoutubeDL.getInstance().execute(request)
@@ -695,6 +705,11 @@ class InfoUtil(private val context: Context) {
             val cookiesFile = File(context.cacheDir, "cookies.txt")
             if (cookiesFile.exists()){
                 request.addOption("--cookies", cookiesFile.absolutePath)
+            }
+
+            val proxy = sharedPreferences.getString("proxy", "")
+            if (proxy!!.isNotBlank()){
+                request.addOption("--proxy", proxy)
             }
 
             val youtubeDLResponse = YoutubeDL.getInstance().execute(request)
@@ -834,6 +849,11 @@ class InfoUtil(private val context: Context) {
             val cookiesFile = File(context.cacheDir, "cookies.txt")
             if (cookiesFile.exists()){
                 request.addOption("--cookies", cookiesFile.absolutePath)
+            }
+
+            val proxy = sharedPreferences.getString("proxy", "")
+            if (proxy!!.isNotBlank()){
+                request.addOption("--proxy", proxy)
             }
 
             val youtubeDLResponse = YoutubeDL.getInstance().execute(request)

@@ -207,6 +207,14 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
             }
         }
 
+        searchView?.addTransitionListener { _, _, newState ->
+            if (newState == SearchView.TransitionState.SHOWING){
+                mainActivity?.hideBottomNavigation()
+            }else if (newState == SearchView.TransitionState.HIDING){
+                mainActivity?.showBottomNavigation()
+            }
+        }
+
         mainActivity?.onBackPressedDispatcher?.addCallback(this) {
             if (searchView?.isShowing == true) {
                 searchView?.hide()

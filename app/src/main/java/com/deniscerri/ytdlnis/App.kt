@@ -19,6 +19,7 @@ import kotlinx.coroutines.launch
 import java.util.*
 import java.util.concurrent.Executors
 
+
 class App : Application() {
 
     override fun onCreate() {
@@ -26,7 +27,7 @@ class App : Application() {
         instance = this
         createNotificationChannels()
         val sharedPreferences =  PreferenceManager.getDefaultSharedPreferences(this)
-
+        setDefaultValues()
         applicationScope = CoroutineScope(SupervisorJob())
         applicationScope.launch((Dispatchers.IO)) {
             try {
@@ -57,6 +58,21 @@ class App : Application() {
         YoutubeDL.getInstance().init(this)
         FFmpeg.getInstance().init(this)
         Aria2c.getInstance().init(this)
+    }
+
+    private fun setDefaultValues(){
+        val SPL = 1
+        val sp = PreferenceManager.getDefaultSharedPreferences(this)
+        if (sp.getInt("spl", 0) != SPL) {
+            PreferenceManager.setDefaultValues(this, R.xml.root_preferences, true)
+            PreferenceManager.setDefaultValues(this, R.xml.downloading_preferences, true)
+            PreferenceManager.setDefaultValues(this, R.xml.appearance_preferences, true)
+            PreferenceManager.setDefaultValues(this, R.xml.processing_preferences, true)
+            PreferenceManager.setDefaultValues(this, R.xml.folders_preference, true)
+            PreferenceManager.setDefaultValues(this, R.xml.updating_preferences, true)
+            sp.edit().putInt("spl", SPL).apply()
+        }
+
     }
 
     private fun createNotificationChannels() {

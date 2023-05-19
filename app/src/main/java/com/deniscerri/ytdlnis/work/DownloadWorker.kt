@@ -16,6 +16,8 @@ import androidx.work.workDataOf
 import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.DBManager
+import com.deniscerri.ytdlnis.database.dao.DownloadDao
+import com.deniscerri.ytdlnis.database.dao.ResultDao
 import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.models.HistoryItem
 import com.deniscerri.ytdlnis.database.repository.DownloadRepository
@@ -25,6 +27,9 @@ import com.deniscerri.ytdlnis.util.InfoUtil
 import com.deniscerri.ytdlnis.util.NotificationUtil
 import com.yausername.youtubedl_android.YoutubeDL
 import com.yausername.youtubedl_android.YoutubeDLRequest
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import java.io.File
 
@@ -62,25 +67,9 @@ class DownloadWorker(
             repository.setDownloadStatus(downloadItem, DownloadRepository.Status.Active)
         }
 
-        var wasQuickDownloaded = false
-        //update item if its incomplete
-        if (downloadItem.title.isEmpty() || downloadItem.author.isEmpty() || downloadItem.thumb.isEmpty()){
-            notificationUtil.createUpdatingItemNotification(NotificationUtil.DOWNLOAD_SERVICE_CHANNEL_ID);
-
-            runCatching {
-                setProgressAsync(workDataOf("progress" to 0, "output" to context.getString(R.string.updating_download_data), "id" to downloadItem.id, "log" to false))
-                val info = infoUtil.getMissingInfo(downloadItem.url)
-                if (downloadItem.title.isEmpty()) downloadItem.title = info?.title.toString()
-                if (downloadItem.author.isEmpty()) downloadItem.author = info?.author.toString()
-                downloadItem.duration = info?.duration.toString()
-                downloadItem.website = info?.website.toString()
-                if (downloadItem.thumb.isEmpty()) downloadItem.thumb = info?.thumb.toString()
-                runBlocking {
-                    wasQuickDownloaded = resultDao.getCountInt() == 0
-                    dao.update(downloadItem)
-                }
-            }
-            notificationUtil.cancelDownloadNotification(NotificationUtil.DOWNLOAD_UPDATING_NOTIFICATION_ID)
+        CoroutineScope(Dispatchers.IO).launch {
+            //update item if its incomplete
+            updateDownloadItem(downloadItem, infoUtil, dao, resultDao)
         }
 
         val intent = Intent(context, MainActivity::class.java)
@@ -344,7 +333,7 @@ class DownloadWorker(
                 NotificationUtil.DOWNLOAD_FINISHED_CHANNEL_ID
             )
 
-            if (wasQuickDownloaded){
+            if (updateDownloadItem(downloadItem, infoUtil, dao, resultDao)){
                 runCatching {
                     setProgressAsync(workDataOf("progress" to 100, "output" to "Creating Result Items", "id" to downloadItem.id, "log" to false))
                     runBlocking {
@@ -398,8 +387,28 @@ class DownloadWorker(
                 )
             }
         }
-        
         return Result.success()
+    }
+
+    private fun updateDownloadItem(downloadItem: DownloadItem, infoUtil: InfoUtil, dao: DownloadDao, resultDao: ResultDao) : Boolean {
+        var wasQuickDownloaded = false
+        if (downloadItem.title.isEmpty() || downloadItem.author.isEmpty() || downloadItem.thumb.isEmpty()){
+
+            runCatching {
+                setProgressAsync(workDataOf("progress" to 0, "output" to context.getString(R.string.updating_download_data), "id" to downloadItem.id, "log" to false))
+                val info = infoUtil.getMissingInfo(downloadItem.url)
+                if (downloadItem.title.isEmpty()) downloadItem.title = info?.title.toString()
+                if (downloadItem.author.isEmpty()) downloadItem.author = info?.author.toString()
+                downloadItem.duration = info?.duration.toString()
+                downloadItem.website = info?.website.toString()
+                if (downloadItem.thumb.isEmpty()) downloadItem.thumb = info?.thumb.toString()
+                runBlocking {
+                    wasQuickDownloaded = resultDao.getCountInt() == 0
+                    dao.update(downloadItem)
+                }
+            }
+        }
+        return wasQuickDownloaded
     }
 
     override fun onStopped() {

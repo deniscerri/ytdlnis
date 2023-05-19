@@ -35,6 +35,13 @@
         app:summary="@string/download_over_metered_networks_summary"
         app:title="@string/download_over_metered_networks" />
 
+    <EditTextPreference
+        android:icon="@drawable/baseline_network_locked_24"
+        app:key="proxy"
+        app:defaultValue=""
+        app:summary="@string/socks5_proxy_summary"
+        app:title="@string/socks5_proxy" />
+
     <ListPreference
         android:dependency="download_card"
         android:defaultValue="video"

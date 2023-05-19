@@ -4,10 +4,12 @@ import android.app.Activity
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
+import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.content.edit
 import androidx.core.os.LocaleListCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -18,7 +20,6 @@ import androidx.preference.PreferenceManager
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import com.deniscerri.ytdlnis.BuildConfig
-import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.CommandTemplate
 import com.deniscerri.ytdlnis.database.models.CookieItem
@@ -65,7 +66,7 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
         setPreferencesFromResource(R.xml.root_preferences, rootKey)
         val navController = findNavController()
         val appearance = findPreference<Preference>("appearance")
-        appearance?.summary = "${getString(R.string.language)}, ${getString(R.string.Theme)}, ${getString(R.string.accents)}"
+        appearance?.summary = "${if (Build.VERSION.SDK_INT < 33) getString(R.string.language) + ", " else ""}${getString(R.string.Theme)}, ${getString(R.string.accents)}, ${getString(R.string.preferred_search_engine)}"
         appearance?.setOnPreferenceClickListener {
             navController.navigate(R.id.action_mainSettingsFragment_to_appearanceSettingsFragment)
             true
@@ -338,34 +339,36 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
 
                     //preference restore
                     if(json.has("settings")){
-                        val prefs = json.getAsJsonArray("settings")
-                        val preferencesKeys = preferences.all.map { it.key }
-                        prefs.forEach {
-                            val key : String = it.asJsonObject.get("key").toString().replace("\"", "")
-                            if (preferencesKeys.contains(key)){
-                                when(it.asJsonObject.get("type").toString().replace("\"", "")){
-                                    "String" -> {
-                                        val value = it.asJsonObject.get("value").toString().replace("\"", "")
-                                        editor.putString(key, value)
-                                    }
-                                    "Boolean" -> {
-                                        val value = it.asJsonObject.get("value").toString().replace("\"", "").toBoolean()
-                                        editor.putBoolean(key, value)
-                                    }
-                                    "Int" -> {
-                                        val value = it.asJsonObject.get("value").toString().replace("\"", "").toInt()
-                                        editor.putInt(key, value)
-                                    }
-                                    "HashSet" -> {
-                                        val value = hashSetOf(it.asJsonObject.get("value").toString().replace("(\")|(\\[)|(])".toRegex(), ""))
-                                        editor.putStringSet(key, value)
+                        PreferenceManager.getDefaultSharedPreferences(requireContext()).edit(commit = true){
+                            clear()
+                            val prefs = json.getAsJsonArray("settings")
+                            val preferencesKeys = preferences.all.map { it.key }
+                            prefs.forEach {
+                                val key : String = it.asJsonObject.get("key").toString().replace("\"", "")
+                                if (preferencesKeys.contains(key)){
+                                    when(it.asJsonObject.get("type").toString().replace("\"", "")){
+                                        "String" -> {
+                                            val value = it.asJsonObject.get("value").toString().replace("\"", "")
+                                            putString(key, value)
+                                        }
+                                        "Boolean" -> {
+                                            val value = it.asJsonObject.get("value").toString().replace("\"", "").toBoolean()
+                                            putBoolean(key, value)
+                                        }
+                                        "Int" -> {
+                                            val value = it.asJsonObject.get("value").toString().replace("\"", "").toInt()
+                                            putInt(key, value)
+                                        }
+                                        "HashSet" -> {
+                                            val value = it.asJsonObject.get("value").toString().replace("(\")|(\\[)|(])|([ \\t])".toRegex(), "").split(",")
+                                            putStringSet(key, value.toHashSet())
+                                        }
                                     }
                                 }
                             }
+                            finalMessage.append("${getString(R.string.settings)}: ${prefs.count()}\n")
                         }
-                        finalMessage.append("${getString(R.string.settings)}: ${prefs.count()}\n")
                     }
-                    editor.commit()
 
                     //history restore
                     if(json.has("downloads")){
@@ -480,14 +483,14 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
                     builder.setPositiveButton(
                         getString(R.string.restart)
                     ) { _: DialogInterface?, _: Int ->
-                        val intent = Intent(context, MainActivity::class.java)
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                        requireContext().startActivity(intent)
+                        val intent: Intent? = requireContext().packageManager
+                            .getLaunchIntentForPackage(requireContext().packageName)
+                        intent?.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                        startActivity(intent)
                         if(json.has("settings")){
                             AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(preferences.getString("app_language", "en")))
                         }
                         activity?.finishAffinity()
-                        Runtime.getRuntime().exit(0)
                     }
 
                     // handle the negative button of the alert dialog

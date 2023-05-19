@@ -50,11 +50,11 @@
     <string name="limit_rate_summary">Maximum download rate (in bytes per second), e.g. 50K or 4.2M</string>
     <string name="aria2_summary">Use aria2c as downloader instead of the default</string>
     <string name="processing">Processing</string>
-    <string name="embed_subs_summary">Adds subtitles in the video</string>
+    <string name="embed_subs_summary">Add subtitles in the video</string>
     <string name="embed_thumb">Thumbnail Covers</string>
-    <string name="embed_thumb_summary">Uses the thumbnail as cover art</string>
+    <string name="embed_thumb_summary">Use the thumbnail as cover art</string>
     <string name="add_chapters">Chapters in Videos</string>
-    <string name="add_chapters_summary">Marks YouTube / SponsorBlock segments as chapters for the video</string>
+    <string name="add_chapters_summary">Mark YouTube / SponsorBlock segments as chapters for the video</string>
     <string name="save_thumb">Save Thumbnail</string>
     <string name="save_thumb_summary">Save the thumbnail in the download folder</string>
     <string name="audio_format">Audio Format</string>
@@ -66,13 +66,13 @@
     <string name="command_download_notification_channel_name">Command Downloads</string>
     <string name="command_download_notification_channel_description">Notification showing the progress of downloading using a yt-dlp command</string>
     <string name="items_left">item(s) left</string>
-    <string name="history_is_empty">History empty.</string>
+    <string name="history_is_empty">History is empty.</string>
     <string name="you_are_going_to_delete">Deleting</string>
     <string name="url">URL</string>
     <string name="link_copied_to_clipboard">Link copied to clipboard</string>
     <string name="api_key">Use API Key</string>
     <string name="api_key_summary">Faster results from YouTube</string>
-    <string name="update_app_summary">Announces new versions of the app when it is opened</string>
+    <string name="update_app_summary">Announce new versions of the app when it is opened</string>
     <string name="downloads">Downloads</string>
     <string name="remove_deleted">Remove Deleted</string>
     <string name="remove_duplicates">Remove Duplicates</string>
@@ -260,4 +260,6 @@
     <string name="backup_created_successfully">Backup file saved in the downloads folder</string>
     <string name="appearance">Appearance</string>
     <string name="backup_restore">Backup And Restore</string>
+    <string name="socks5_proxy_summary">Use the specified HTTP/HTTPS/SOCKS proxy</string>
+    <string name="socks5_proxy">Socks5 Proxy URL</string>
 </resources>
