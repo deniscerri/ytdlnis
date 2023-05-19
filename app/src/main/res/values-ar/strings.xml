@@ -74,7 +74,7 @@
     <string name="language">اللغة</string>
     <string name="command_templates">قوالب الأوامر</string>
     <string name="terminal">سطر الأوامر</string>
-    <string name="format">التنسيقات</string>
+    <string name="format">التنسيق</string>
     <string name="select_format">إختيار التنسيق</string>
     <string name="please_wait">انتظر من فضلك</string>
     <string name="remove_search_history">مسح البحث السابق</string>
@@ -219,7 +219,7 @@
     <string name="preferred_format_id">معرف التنسيق المفضل</string>
     <string name="download_now">التحميل الآن</string>
     <string name="download_already_exists">التحميل موجود بالفعل</string>
-    <string name="quick_download">وصول سريع</string>
+    <string name="quick_download">وصول سريع لبطاقة التحميل</string>
     <string name="preferred_locale">المنطقة</string>
     <string name="quick_download_summary">عدم جلب البيانات مسبقًا</string>
     <string name="system">تبعًا للنظام</string>
@@ -236,4 +236,22 @@
     <string name="downloaded">"تم تحميل: "</string>
     <string name="finished_download_notification_channel_name">التحميلات المنتهية</string>
     <string name="finished_download_notification_channel_description">إشعارٌ بإنتهاء/تعطل التحميلات</string>
+    <string name="incognito">وضع الاستخدام المتخفي</string>
+    <string name="network_error">خطأ في الشبكة</string>
+    <string name="sponsorblock">حاجب شرائح الإعلانات</string>
+    <string name="keep_cache">الاحتفاظ بالملفات المؤقتة</string>
+    <string name="backup">نسخ احتياطي</string>
+    <string name="pause">إيقاف
+\n</string>
+    <string name="resume">استئناف</string>
+    <string name="updating_download_data">يتم جلب بيانات التحميل</string>
+    <string name="keep_cache_summary">عدم مسح ملفات الكاش بعد اكتمال التحميل</string>
+    <string name="search_history">سجل البحث</string>
+    <string name="appearance">المظهر</string>
+    <string name="backup_restore">النسخ الاحتياطي والاستعادة</string>
+    <string name="couldnt_parse_file">تعذرَ تحليل الملف</string>
+    <string name="restore">استعادة</string>
+    <string name="restore_complete">اكتملت عملية الاستعادة، تمت استعادة العناصر التالية:</string>
+    <string name="backup_created_successfully">تم حفظ ملف النسخ الاحتياطي في مجلد \"Download\"</string>
+    <string name="select_backup_categories">اختيار فئات النسخ الاحتياطي</string>
 </resources>
