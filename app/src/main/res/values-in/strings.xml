@@ -254,4 +254,6 @@
     <string name="backup">Cadangkan</string>
     <string name="restore">Pulihkan</string>
     <string name="backup_restore">Pencadangan dan Pemulihan</string>
+    <string name="socks5_proxy_summary">Gunakan proksi HTTP/HTTPS/SOCKS yang dispesifikasikan</string>
+    <string name="socks5_proxy">URL Proksi SOCKS5</string>
 </resources>
