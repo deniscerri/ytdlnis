@@ -21,6 +21,7 @@ import android.widget.CheckBox
 import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.annotation.RequiresApi
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.forEach
@@ -187,8 +188,9 @@ class MainActivity : BaseActivity() {
     fun hideBottomNavigation(){
         if(navigationView is NavigationBarView){
             if (navigationView is BottomNavigationView){
-                findViewById<FragmentContainerView>(R.id.frame_layout).updateLayoutParams {
-                    this.height = LayoutParams.MATCH_PARENT
+                findViewById<FragmentContainerView>(R.id.frame_layout).updateLayoutParams<ConstraintLayout.LayoutParams> {
+                    bottomToTop = ConstraintLayout.LayoutParams.UNSET
+                    bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID
                 }
                 navigationView.animate()?.translationY(navigationView.height.toFloat())?.setDuration(300)?.withEndAction {
                     navigationView.visibility = View.GONE
@@ -207,8 +209,9 @@ class MainActivity : BaseActivity() {
     fun showBottomNavigation(){
         if(navigationView is NavigationBarView){
             if (navigationView is BottomNavigationView){
-                findViewById<FragmentContainerView>(R.id.frame_layout).updateLayoutParams {
-                    this.height = 0
+                findViewById<FragmentContainerView>(R.id.frame_layout).updateLayoutParams<ConstraintLayout.LayoutParams> {
+                    bottomToTop = R.id.bottomNavigationView
+                    bottomToBottom = ConstraintLayout.LayoutParams.UNSET
                 }
                 navigationView.animate()?.translationY(0F)?.setDuration(300)?.withEndAction {
                     navigationView.visibility = View.VISIBLE

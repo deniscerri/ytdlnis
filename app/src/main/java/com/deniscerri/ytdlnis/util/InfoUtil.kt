@@ -292,7 +292,11 @@ class InfoUtil(private val context: Context) {
         try {
             val id = obj.getString("videoId")
             val title = obj.getString("title").toString()
+            title.replace("&#39;s", "'")
+            title.replace("&amp", "&")
             val author = obj.getString("author").toString()
+            author.replace("&#39;s", "'")
+            author.replace("&amp", "&")
 
             if (author.isBlank()) throw Exception()
 

@@ -147,6 +147,24 @@ class NotificationUtil(var context: Context) {
         notificationManager.notify(DOWNLOAD_RESUME_NOTIFICATION_ID, notificationBuilder.build())
     }
 
+    fun createUpdatingItemNotification(channel: String){
+        val notificationBuilder = getBuilder(channel)
+
+        notificationBuilder
+            .setContentTitle(context.getString(R.string.updating_download_data))
+            .setSmallIcon(android.R.drawable.stat_sys_download)
+            .setLargeIcon(
+                BitmapFactory.decodeResource(
+                    context.resources,
+                    android.R.drawable.stat_sys_download
+                )
+            )
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+            .clearActions()
+        notificationManager.notify(DOWNLOAD_UPDATING_NOTIFICATION_ID, notificationBuilder.build())
+    }
+
     fun createDownloadFinished(title: String?,
         filepath: String?,
         channel: String
@@ -271,6 +289,7 @@ class NotificationUtil(var context: Context) {
         const val DOWNLOAD_FINISHED_CHANNEL_ID = "3"
         const val DOWNLOAD_FINISHED_NOTIFICATION_ID = 3
         const val DOWNLOAD_RESUME_NOTIFICATION_ID = 4
+        const val DOWNLOAD_UPDATING_NOTIFICATION_ID = 5
         private const val PROGRESS_MAX = 100
         private const val PROGRESS_CURR = 0
     }

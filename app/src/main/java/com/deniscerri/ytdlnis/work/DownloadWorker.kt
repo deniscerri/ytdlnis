@@ -66,10 +66,15 @@ class DownloadWorker(
         runBlocking{
             repository.setDownloadStatus(downloadItem, DownloadRepository.Status.Active)
         }
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 
-        CoroutineScope(Dispatchers.IO).launch {
-            //update item if its incomplete
-            updateDownloadItem(downloadItem, infoUtil, dao, resultDao)
+        if (sharedPreferences.getBoolean("log_downloads", false)){
+            updateDownloadItem(downloadItem, infoUtil, dao, resultDao, true, notificationUtil)
+        }else{
+            CoroutineScope(Dispatchers.IO).launch {
+                //update item if its incomplete
+                updateDownloadItem(downloadItem, infoUtil, dao, resultDao, false, notificationUtil)
+            }
         }
 
         val intent = Intent(context, MainActivity::class.java)
@@ -88,7 +93,6 @@ class DownloadWorker(
         tempFileDir.delete()
         tempFileDir.mkdirs()
 
-        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
         val aria2 = sharedPreferences.getBoolean("aria2", false)
         if (aria2) {
             request.addOption("--downloader", "libaria2c.so")
@@ -151,6 +155,11 @@ class DownloadWorker(
         val cookiesFile = File(context.cacheDir, "cookies.txt")
         if (cookiesFile.exists()){
             request.addOption("--cookies", cookiesFile.absolutePath)
+        }
+
+        val proxy = sharedPreferences.getString("proxy", "")
+        if (proxy!!.isNotBlank()){
+            request.addOption("--proxy", proxy)
         }
 
         val keepCache = sharedPreferences.getBoolean("keep_cache", false)
@@ -333,7 +342,7 @@ class DownloadWorker(
                 NotificationUtil.DOWNLOAD_FINISHED_CHANNEL_ID
             )
 
-            if (updateDownloadItem(downloadItem, infoUtil, dao, resultDao)){
+            if (updateDownloadItem(downloadItem, infoUtil, dao, resultDao, false, notificationUtil)){
                 runCatching {
                     setProgressAsync(workDataOf("progress" to 100, "output" to "Creating Result Items", "id" to downloadItem.id, "log" to false))
                     runBlocking {
@@ -390,10 +399,10 @@ class DownloadWorker(
         return Result.success()
     }
 
-    private fun updateDownloadItem(downloadItem: DownloadItem, infoUtil: InfoUtil, dao: DownloadDao, resultDao: ResultDao) : Boolean {
+    private fun updateDownloadItem(downloadItem: DownloadItem, infoUtil: InfoUtil, dao: DownloadDao, resultDao: ResultDao, logDownloads: Boolean, notificationUtil: NotificationUtil) : Boolean {
         var wasQuickDownloaded = false
         if (downloadItem.title.isEmpty() || downloadItem.author.isEmpty() || downloadItem.thumb.isEmpty()){
-
+            if (logDownloads) notificationUtil.createUpdatingItemNotification(NotificationUtil.DOWNLOAD_SERVICE_CHANNEL_ID)
             runCatching {
                 setProgressAsync(workDataOf("progress" to 0, "output" to context.getString(R.string.updating_download_data), "id" to downloadItem.id, "log" to false))
                 val info = infoUtil.getMissingInfo(downloadItem.url)
@@ -407,6 +416,7 @@ class DownloadWorker(
                     dao.update(downloadItem)
                 }
             }
+            if (logDownloads) notificationUtil.cancelDownloadNotification(NotificationUtil.DOWNLOAD_UPDATING_NOTIFICATION_ID)
         }
         return wasQuickDownloaded
     }

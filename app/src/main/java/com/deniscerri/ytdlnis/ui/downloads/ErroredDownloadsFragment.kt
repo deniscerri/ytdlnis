@@ -22,6 +22,7 @@ import androidx.appcompat.view.ActionMode
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -95,10 +96,15 @@ class ErroredDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickL
 
     override fun onActionButtonClick(itemID: Long) {
         val item = items.find { it.id == itemID } ?: return
-        val file = fileUtil.getLogFile(requireContext(), item)
-        val intent = Intent(requireContext(), DownloadLogFragment::class.java)
-        intent.putExtra("logpath", file.absolutePath)
-        startActivity(intent)
+        val logFile = fileUtil.getLogFile(requireContext(), item)
+        if (logFile.exists()) {
+            val bundle = Bundle()
+            bundle.putString("logpath", logFile.absolutePath)
+            findNavController().navigate(
+                R.id.downloadLogFragment,
+                bundle
+            )
+        }
     }
 
     override fun onCardClick(itemID: Long) {
