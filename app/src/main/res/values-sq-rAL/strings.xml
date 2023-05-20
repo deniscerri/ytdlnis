@@ -254,4 +254,6 @@
     <string name="search_history">Historia e Kërkimit</string>
     <string name="appearance">Pamja</string>
     <string name="backup_restore">Ruaj Dhe Rikthe</string>
+    <string name="socks5_proxy_summary">Përdor proksin HTTP/HTTPS/SOCKS të specifikuar</string>
+    <string name="socks5_proxy">URL e Proksit Socks5</string>
 </resources>

@@ -84,4 +84,9 @@
     <string name="video_quality">کیفیت ویدیو</string>
     <string name="add_chapter">اضافه کردن فصل ها</string>
     <string name="download_card_summary">تنظیمات نحوه دانلود موارد</string>
+    <string name="concurrent_downloads_summary">تعداد دانلودهایی که همزمان اجرا می شوند</string>
+    <string name="template">قالب</string>
+    <string name="concurrent_downloads">دانلودهای همزمان</string>
+    <string name="defaultValue">پیش فرض</string>
+    <string name="container">ظرف</string>
 </resources>
