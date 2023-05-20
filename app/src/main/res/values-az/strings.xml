@@ -43,11 +43,11 @@
     <string name="limit_rate_summary">Maksimum yükləmə sürəti (saniyədə baytla), məsələn, 50K və ya 4,2M</string>
     <string name="aria2_summary">Standart əvəzində yükləyici kimi aria2c istifadə et</string>
     <string name="processing">Emal</string>
-    <string name="embed_subs_summary">Videoya titrlər əlavə edilir</string>
+    <string name="embed_subs_summary">Videoya titrlər əlavə edir</string>
     <string name="embed_thumb">Miniatür Örtüklər</string>
-    <string name="embed_thumb_summary">Miniatür, örtük təsviri kimi işlədilir</string>
+    <string name="embed_thumb_summary">Miniatürü, örtük təsviri kimi işlət</string>
     <string name="add_chapters">Videolardakı Bölmələr</string>
-    <string name="add_chapters_summary">YouTube / SponsorBlock bölümləri video üçün bölmələr kimi işarələnir</string>
+    <string name="add_chapters_summary">YouTube / SponsorBlock bölümlərin video üçün bölmələr kimi işarələ</string>
     <string name="save_thumb">Miniatürü Saxla</string>
     <string name="save_thumb_summary">Miniatürü yükləmə qovluğunda saxla</string>
     <string name="audio_format">Səs Formatı</string>
@@ -65,7 +65,7 @@
     <string name="link_copied_to_clipboard">Link buferə köçürüldü</string>
     <string name="api_key">API Açar İşlət</string>
     <string name="api_key_summary">YouTube\'dan daha sürətli nəticələr</string>
-    <string name="update_app_summary">Açıldıqda, tətbiqin yeni versiyası bildirilir</string>
+    <string name="update_app_summary">Açıldıqda, tətbiqin yeni versiyasın bildir</string>
     <string name="downloads">Yükləmələr</string>
     <string name="remove_deleted">Silinənləri Təmizlə</string>
     <string name="remove_duplicates">Nüsxələri Təmizlə</string>
@@ -254,4 +254,6 @@
     <string name="appearance">Görünüş</string>
     <string name="backup_created_successfully">Yükləmələr qovluğunda saxlanılan nüsxə faylı</string>
     <string name="backup_restore">Nüsxələmə və Bərpa et</string>
+    <string name="socks5_proxy_summary">Xüsusi HTTP/HTTPS/SOCKS proksi istifadə et</string>
+    <string name="socks5_proxy">Socks5 Proksi URL</string>
 </resources>
