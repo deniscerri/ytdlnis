@@ -39,4 +39,6 @@
     <string name="downloading_update">Se descarcă versiunea nouă…</string>
     <string name="audio">Audio</string>
     <string name="video">Video</string>
+    <string name="concurrent_fragments">Fragmente concurente</string>
+    <string name="concurrent_fragments_summary">Numărul de fragmente dintr-un videoclip nativ DASH/HLS de descărcat simultan</string>
 </resources>
