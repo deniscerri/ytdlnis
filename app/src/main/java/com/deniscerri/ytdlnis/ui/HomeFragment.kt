@@ -196,7 +196,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
             val url = requireArguments().getString("url")
             if (inputQueries == null) inputQueries = mutableListOf()
             searchBar?.text = url
-            inputQueries!!.add(url!!)
+            inputQueries!!.addAll(url!!.split("\n"))
         }
 
         if (inputQueries != null) {
@@ -501,10 +501,6 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
                 resultViewModel.parseQueries(queryList)
             }
         }
-    }
-
-    fun handleFileIntent(lines: List<String>) {
-        inputQueries = lines.toMutableList()
     }
 
     fun scrollToTop() {

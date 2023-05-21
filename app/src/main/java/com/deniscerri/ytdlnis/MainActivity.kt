@@ -14,11 +14,9 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
-import androidx.drawerlayout.widget.DrawerLayout
 import android.view.View
 import android.view.WindowInsets
 import android.widget.CheckBox
-import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -29,6 +27,7 @@ import androidx.core.view.updateLayoutParams
 import androidx.fragment.app.FragmentContainerView
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
@@ -38,7 +37,6 @@ import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdlnis.ui.BaseActivity
 import com.deniscerri.ytdlnis.ui.HomeFragment
-import com.deniscerri.ytdlnis.ui.downloads.DownloadQueueMainFragment
 import com.deniscerri.ytdlnis.ui.more.settings.SettingsActivity
 import com.deniscerri.ytdlnis.util.ThemeUtil
 import com.deniscerri.ytdlnis.util.UpdateUtil
@@ -67,6 +65,7 @@ class MainActivity : BaseActivity() {
     private lateinit var downloadViewModel: DownloadViewModel
     private lateinit var navigationView: View
     private lateinit var navHostFragment : NavHostFragment
+    private lateinit var navController : NavController
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -87,7 +86,7 @@ class MainActivity : BaseActivity() {
         checkUpdate()
 
         navHostFragment = supportFragmentManager.findFragmentById(R.id.frame_layout) as NavHostFragment
-        val navController = navHostFragment.findNavController()
+        navController = navHostFragment.findNavController()
         navigationView = try {
             findViewById(R.id.bottomNavigationView)
         }catch (e: Exception){
@@ -289,8 +288,13 @@ class MainActivity : BaseActivity() {
                 while (reader.read().also { c = it } != -1) {
                     textBuilder.append(c.toChar())
                 }
-                val l = listOf(*textBuilder.toString().split("\n").toTypedArray())
-                (navHostFragment.childFragmentManager.primaryNavigationFragment!! as HomeFragment).handleFileIntent(l)
+                val bundle = Bundle()
+                bundle.putString("url", textBuilder.toString())
+                navController.popBackStack(R.id.homeFragment, true)
+                navController.navigate(
+                    R.id.homeFragment,
+                    bundle
+                )
             } catch (e: Exception) {
                 e.printStackTrace()
             }
