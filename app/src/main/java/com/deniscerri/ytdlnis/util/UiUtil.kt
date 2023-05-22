@@ -1,5 +1,6 @@
 package com.deniscerri.ytdlnis.util
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.ClipData
 import android.content.ClipboardManager
@@ -30,6 +31,7 @@ import com.deniscerri.ytdlnis.database.models.TemplateShortcut
 import com.deniscerri.ytdlnis.database.viewmodel.CommandTemplateViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.card.MaterialCardView
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.datepicker.CalendarConstraints
@@ -44,9 +46,15 @@ import java.io.File
 import java.util.Calendar
 
 class UiUtil(private val fileUtil: FileUtil) {
-    fun populateFormatCard(formatCard : ConstraintLayout, chosenFormat: Format){
+    @SuppressLint("SetTextI18n")
+    fun populateFormatCard(formatCard : MaterialCardView, chosenFormat: Format, audioFormats: List<String>?){
         formatCard.findViewById<TextView>(R.id.container).text = chosenFormat.container.uppercase()
-        formatCard.findViewById<TextView>(R.id.format_note).text = chosenFormat.format_note.uppercase()
+        if (audioFormats.isNullOrEmpty()){
+            formatCard.findViewById<TextView>(R.id.format_note).text = chosenFormat.format_note.uppercase()
+        }else{
+            val title = "${chosenFormat.format_note.uppercase()} + [${audioFormats.joinToString("/")}]"
+            formatCard.findViewById<TextView>(R.id.format_note).text = title
+        }
         formatCard.findViewById<TextView>(R.id.format_id).text = "id: ${chosenFormat.format_id}"
         val codec =
             if (chosenFormat.encoding != "") {

@@ -8,7 +8,7 @@ import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
-import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.forEach
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceManager
@@ -22,6 +22,8 @@ import com.deniscerri.ytdlnis.util.UiUtil
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.android.material.card.MaterialCardView
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -36,6 +38,14 @@ class FormatSelectionBottomSheetDialog(private val items: List<DownloadItem?>, p
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var formatCollection: MutableList<List<Format>>
     private lateinit var chosenFormats: List<Format>
+    private lateinit var selectedVideo : Format
+    private lateinit var selectedAudios : MutableList<Format>
+
+    private lateinit var videoFormatList : LinearLayout
+    private lateinit var audioFormatList : LinearLayout
+    private lateinit var okBtn : Button
+    private lateinit var videoTitle : TextView
+    private lateinit var audioTitle : TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,6 +54,7 @@ class FormatSelectionBottomSheetDialog(private val items: List<DownloadItem?>, p
         infoUtil = InfoUtil(requireActivity().applicationContext)
         formatCollection = mutableListOf()
         chosenFormats = listOf()
+        selectedAudios = mutableListOf()
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
     }
 
@@ -61,8 +72,15 @@ class FormatSelectionBottomSheetDialog(private val items: List<DownloadItem?>, p
             behavior.peekHeight = displayMetrics.heightPixels / 2
         }
 
-        val linearLayout = view.findViewById<LinearLayout>(R.id.format_list_linear_layout)
+        val formatListLinearLayout = view.findViewById<LinearLayout>(R.id.format_list_linear_layout)
         val shimmers = view.findViewById<ShimmerFrameLayout>(R.id.format_list_shimmer)
+
+        videoFormatList = view.findViewById(R.id.video_linear_layout)
+        audioFormatList = view.findViewById(R.id.audio_linear_layout)
+        videoTitle = view.findViewById(R.id.video_title)
+        audioTitle = view.findViewById(R.id.audio_title)
+        okBtn = view.findViewById(R.id.format_ok)
+
         shimmers.visibility = View.GONE
         val hasGenericFormats =  when(items.first()!!.type){
             Type.audio -> formats.first().size == resources.getStringArray(R.array.audio_formats).size
@@ -87,16 +105,15 @@ class FormatSelectionBottomSheetDialog(private val items: List<DownloadItem?>, p
             }else{
                 chosenFormats = formats.flatten()
             }
-            addFormatsToView(linearLayout)
+            addFormatsToView()
         }else{
             chosenFormats = formats.flatten()
             if(!hasGenericFormats){
-                chosenFormats = when(items.first()?.type){
-                    Type.audio -> chosenFormats.filter { it.format_note.contains("audio", ignoreCase = true) }
-                    else -> chosenFormats.filter { !it.format_note.contains("audio", ignoreCase = true) }
+                if(items.first()?.type == Type.audio){
+                    chosenFormats =  chosenFormats.filter { it.format_note.contains("audio", ignoreCase = true) }
                 }
             }
-            addFormatsToView(linearLayout)
+            addFormatsToView()
         }
 
         val refreshBtn = view.findViewById<Button>(R.id.format_refresh)
@@ -107,7 +124,7 @@ class FormatSelectionBottomSheetDialog(private val items: List<DownloadItem?>, p
            lifecycleScope.launch {
                try {
                    refreshBtn.isEnabled = false
-                   linearLayout.visibility = View.GONE
+                   formatListLinearLayout.visibility = View.GONE
                    shimmers.visibility = View.VISIBLE
                    shimmers.startShimmer()
 
@@ -117,9 +134,8 @@ class FormatSelectionBottomSheetDialog(private val items: List<DownloadItem?>, p
                            infoUtil.getFormats(items.first()!!.url)
                        }
                        chosenFormats = res.formats.filter { it.filesize != 0L }
-                       chosenFormats = when(items.first()?.type){
-                           Type.audio -> chosenFormats.filter { it.format_note.contains("audio", ignoreCase = true) }
-                           else -> chosenFormats.filter { !it.format_note.contains("audio", ignoreCase = true) }
+                       if(items.first()?.type == Type.audio){
+                           chosenFormats = chosenFormats.filter { it.format_note.contains("audio", ignoreCase = true) }
                        }
                        if (chosenFormats.isEmpty()) throw Exception()
                    //playlist format filtering
@@ -150,18 +166,16 @@ class FormatSelectionBottomSheetDialog(private val items: List<DownloadItem?>, p
                                    .sumOf { itt -> itt.filesize }
                        }
                    }
-
-                   addFormatsToView(linearLayout)
-                   refreshBtn.visibility = View.GONE
-
-                   linearLayout.visibility = View.VISIBLE
                    shimmers.visibility = View.GONE
                    shimmers.stopShimmer()
+                   addFormatsToView()
+                   refreshBtn.visibility = View.GONE
+                   formatListLinearLayout.visibility = View.VISIBLE
                }catch (e: Exception){
                    runCatching {
                        refreshBtn.isEnabled = true
                        refreshBtn.text = getString(R.string.update_formats)
-                       linearLayout.visibility = View.VISIBLE
+                       formatListLinearLayout.visibility = View.VISIBLE
                        shimmers.visibility = View.GONE
                        shimmers.stopShimmer()
 
@@ -171,38 +185,96 @@ class FormatSelectionBottomSheetDialog(private val items: List<DownloadItem?>, p
                }
            }
         }
+
+        okBtn.setOnClickListener {
+            val selectedFormats = mutableListOf<Format>()
+            selectedFormats.add(selectedVideo)
+            selectedFormats.addAll(selectedAudios)
+            listener.onFormatClick(List(items.size){chosenFormats}, selectedFormats)
+            dismiss()
+        }
+
         if (sharedPreferences.getBoolean("update_formats", false) && refreshBtn.isVisible && items.size == 1){
             refreshBtn.performClick()
         }
     }
-    private fun addFormatsToView(linearLayout: LinearLayout){
-        linearLayout.removeAllViews()
+    private fun addFormatsToView(){
+        val isSingleAndVideo = items.first()?.type == Type.video && items.count() == 1
+        videoFormatList.removeAllViews()
+        audioFormatList.removeAllViews()
+
+        if (!isSingleAndVideo) {
+            audioFormatList.visibility = View.GONE
+            videoTitle.visibility = View.GONE
+            audioTitle.visibility = View.GONE
+            okBtn.visibility = View.GONE
+        }else{
+            if (chosenFormats.count { it.vcodec.isBlank() || it.vcodec == "none" } == 0){
+                audioFormatList.visibility = View.GONE
+                audioTitle.visibility = View.GONE
+                videoTitle.visibility = View.GONE
+                okBtn.visibility = View.GONE
+            }else{
+                audioFormatList.visibility = View.VISIBLE
+                audioTitle.visibility = View.VISIBLE
+                videoTitle.visibility = View.VISIBLE
+                okBtn.visibility = View.VISIBLE
+            }
+        }
+
         for (i in chosenFormats.lastIndex downTo 0){
             val format = chosenFormats[i]
             val formatItem = LayoutInflater.from(context).inflate(R.layout.format_item, null)
-            uiUtil.populateFormatCard(formatItem as ConstraintLayout, format)
-            formatItem.setOnClickListener{_ ->
-                if (items.size == 1){
-                    listener.onFormatClick(List(items.size){chosenFormats}, listOf(format))
-                }else{
-                    val selectedFormats = mutableListOf<Format>()
-                    formatCollection.forEach {
-                        selectedFormats.add(it.first{ f -> f.format_id == format.format_id})
-                    }
-                    if (selectedFormats.isEmpty()) {
-                        items.forEach {
-                            selectedFormats.add(format)
+            formatItem.tag = "${format.format_id}${format.format_note}"
+            uiUtil.populateFormatCard(formatItem as MaterialCardView, format, null)
+            formatItem.setOnClickListener{ clickedformat ->
+                //if the context is behind a single download card and its a video, allow the ability to multiselect audio formats
+                if (isSingleAndVideo){
+                    val clickedCard = (clickedformat as MaterialCardView)
+                    if (format.vcodec.isNotBlank() && format.vcodec != "none") {
+                        videoFormatList.forEach { (it as MaterialCardView).isChecked = false }
+                        selectedVideo = format
+                        clickedCard.isChecked = true
+                    }else{
+                        if(selectedAudios.contains(format)) {
+                            selectedAudios.remove(format)
+                        } else {
+                            selectedAudios.add(format)
                         }
                     }
-                    listener.onFormatClick(formatCollection, selectedFormats)
+                    audioFormatList.forEach { (it as MaterialCardView).isChecked = false }
+                    audioFormatList.forEach {
+                        (it as MaterialCardView).isChecked = selectedAudios.map { a -> "${a.format_id}${a.format_note}" }.contains(it.tag)
+                    }
+                }else{
+                    if (items.size == 1){
+                        listener.onFormatClick(List(items.size){chosenFormats}, listOf(format))
+                    }else{
+                        val selectedFormats = mutableListOf<Format>()
+                        formatCollection.forEach {
+                            selectedFormats.add(it.first{ f -> f.format_id == format.format_id})
+                        }
+                        if (selectedFormats.isEmpty()) {
+                            items.forEach {
+                                selectedFormats.add(format)
+                            }
+                        }
+                        listener.onFormatClick(formatCollection, selectedFormats)
+                    }
+                    dismiss()
                 }
-                dismiss()
             }
             formatItem.setOnLongClickListener {
                 uiUtil.showFormatDetails(format, requireActivity())
                 true
             }
-            linearLayout.addView(formatItem)
+
+            if (isSingleAndVideo){
+                if (format.vcodec.isNotBlank() && format.vcodec != "none") videoFormatList.addView(formatItem)
+                else audioFormatList.addView(formatItem)
+            }else{
+                videoFormatList.addView(formatItem)
+            }
         }
     }
 

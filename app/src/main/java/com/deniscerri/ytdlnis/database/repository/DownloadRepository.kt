@@ -72,6 +72,10 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
         downloadDao.cancelQueued()
     }
 
+    fun getLastDownloadId() : Long {
+        return downloadDao.getLastDownloadId()
+    }
+
 
     fun checkIfReDownloadingErroredOrCancelled(item: DownloadItem) : Long {
         val converters = Converters()

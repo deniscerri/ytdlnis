@@ -187,7 +187,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="10dp"
                     app:backgroundTint="?attr/colorSurface"
-                    app:cornerRadius="10dp"
+                    app:cornerRadius="15dp"
                     app:icon="@drawable/ic_cancel"
                     app:iconSize="30dp"
                     app:iconTint="?android:textColorPrimary"
@@ -199,7 +199,7 @@
                 <TextView
                     android:id="@+id/output"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                    android:layout_height="40dp"
                     android:clickable="true"
                     android:ellipsize="end"
                     android:focusable="true"

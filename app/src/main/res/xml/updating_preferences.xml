@@ -45,8 +45,4 @@
         android:key="update_app"
         app:summary="@string/update_app_summary"
         app:title="@string/update_app" />
-    <Preference
-        app:icon="@drawable/ic_info"
-        app:key="version"
-        app:title="@string/version"/>
 </PreferenceScreen>

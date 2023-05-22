@@ -133,12 +133,12 @@
     </array>
 
     <array name="formats_source">
-        <item>Invidious API [Youtube]</item>
+        <item>PIPED [Youtube]</item>
         <item>yt-dlp</item>
     </array>
 
     <array name="formats_source_values">
-        <item>invidious</item>
+        <item>piped</item>
         <item>yt-dlp</item>
     </array>
 

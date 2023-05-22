@@ -7,6 +7,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.format.DateFormat
 import android.util.DisplayMetrics
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,6 +29,7 @@ import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel.Type
 import com.deniscerri.ytdlnis.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdlnis.receiver.ShareActivity
 import com.deniscerri.ytdlnis.util.FileUtil
+import com.deniscerri.ytdlnis.util.InfoUtil
 import com.deniscerri.ytdlnis.util.UiUtil
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -47,6 +49,7 @@ class DownloadBottomSheetDialog(private val resultItem: ResultItem, private val 
     private lateinit var behavior: BottomSheetBehavior<View>
     private lateinit var commandTemplateDao : CommandTemplateDao
     private lateinit var uiUtil: UiUtil
+    private lateinit var infoUtil: InfoUtil
 
     private lateinit var downloadAudioFragment: DownloadAudioFragment
     private lateinit var downloadVideoFragment: DownloadVideoFragment
@@ -58,6 +61,7 @@ class DownloadBottomSheetDialog(private val resultItem: ResultItem, private val 
         resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]
         commandTemplateDao = DBManager.getInstance(requireContext()).commandTemplateDao
         uiUtil = UiUtil(FileUtil())
+        infoUtil = InfoUtil(requireContext())
     }
 
     @SuppressLint("RestrictedApi")

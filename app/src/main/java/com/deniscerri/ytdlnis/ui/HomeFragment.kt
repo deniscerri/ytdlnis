@@ -376,13 +376,15 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
             }else{
                 searchView!!.editText.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_plus, 0)
             }
-            val suggestions = withContext(Dispatchers.IO){
-                if (it!!.isEmpty()) {
-                    resultViewModel.getSearchHistory().map { it.query }
-                }else{
-                    infoUtil!!.getSearchSuggestions(it.toString())
+            val suggestions = if (sharedPreferences!!.getBoolean("search_suggestions", false)){
+                withContext(Dispatchers.IO){
+                    if (it!!.isEmpty()) {
+                        resultViewModel.getSearchHistory().map { it.query }
+                    }else{
+                        infoUtil!!.getSearchSuggestions(it.toString())
+                    }
                 }
-            }
+            } else emptyList()
 
             if (it!!.isEmpty()){
                 for (i in suggestions.indices) {
@@ -445,8 +447,6 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
                 }
                 searchSuggestionsLinearLayout!!.visibility = VISIBLE
             }
-
-
         }
     }
 

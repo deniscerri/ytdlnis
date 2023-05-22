@@ -62,6 +62,9 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
     private lateinit var downloadViewModel: DownloadViewModel
     private lateinit var cookieViewModel: CookieViewModel
     private lateinit var commandTemplateViewModel: CommandTemplateViewModel
+
+    private var version: Preference? = null
+
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.root_preferences, rootKey)
         val navController = findNavController()
@@ -190,6 +193,24 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
                     type = "*/*"
                 }
                 appRestoreResultLauncher.launch(intent)
+                true
+            }
+
+        version = findPreference("version")
+        version!!.summary = BuildConfig.VERSION_NAME
+
+        version!!.onPreferenceClickListener =
+            Preference.OnPreferenceClickListener {
+                lifecycleScope.launch{
+                    withContext(Dispatchers.IO){
+                        updateUtil!!.updateApp{ msg ->
+                            lifecycleScope.launch(Dispatchers.Main){
+                                Snackbar.make(requireView(), msg, Snackbar.LENGTH_LONG).show()
+                            }
+                        }
+                    }
+
+                }
                 true
             }
     }

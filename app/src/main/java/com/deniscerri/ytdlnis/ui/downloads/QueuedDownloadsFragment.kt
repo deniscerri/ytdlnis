@@ -9,12 +9,16 @@ import android.os.Bundle
 import android.text.format.DateFormat
 import android.util.DisplayMetrics
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.view.ActionMode
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -55,6 +59,8 @@ class QueuedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLi
     private lateinit var queuedRecyclerView : RecyclerView
     private lateinit var queuedDownloads : GenericDownloadAdapter
     private lateinit var notificationUtil: NotificationUtil
+    private var selectedObjects: ArrayList<DownloadItem>? = null
+    private var actionMode : ActionMode? = null
     private lateinit var items : MutableList<DownloadItem>
     private lateinit var fileUtil: FileUtil
     private lateinit var uiUtil: UiUtil
@@ -70,6 +76,7 @@ class QueuedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLi
         notificationUtil = NotificationUtil(requireContext())
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
         items = mutableListOf()
+        selectedObjects = arrayListOf()
         fileUtil = FileUtil()
         uiUtil = UiUtil(fileUtil)
         return fragmentView
@@ -226,7 +233,23 @@ class QueuedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLi
     }
 
     override fun onCardSelect(itemID: Long, isChecked: Boolean) {
-        TODO("Not yet implemented")
+        val item = items.find { it.id == itemID }
+        if (isChecked) {
+            selectedObjects!!.add(item!!)
+            if (actionMode == null){
+                actionMode = (getActivity() as AppCompatActivity?)!!.startSupportActionMode(contextualActionBar)
+
+            }else{
+                actionMode!!.title = "${selectedObjects!!.size} ${getString(R.string.selected)}"
+            }
+        }
+        else {
+            selectedObjects!!.remove(item)
+            actionMode?.title = "${selectedObjects!!.size} ${getString(R.string.selected)}"
+            if (selectedObjects!!.isEmpty()){
+                actionMode?.finish()
+            }
+        }
     }
 
     private fun removeItem(itemID: Long){
@@ -249,6 +272,76 @@ class QueuedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLi
                 }.show()
         }
         deleteDialog.show()
+    }
+
+    private val contextualActionBar = object : ActionMode.Callback {
+        override fun onCreateActionMode(mode: ActionMode?, menu: Menu?): Boolean {
+            mode!!.menuInflater.inflate(R.menu.queued_menu_context, menu)
+            mode.title = "${selectedObjects!!.size} ${getString(R.string.selected)}"
+            return true
+        }
+
+        override fun onPrepareActionMode(
+            mode: ActionMode?,
+            menu: Menu?
+        ): Boolean {
+            return false
+        }
+
+        override fun onActionItemClicked(
+            mode: ActionMode?,
+            item: MenuItem?
+        ): Boolean {
+            return when (item!!.itemId) {
+                R.id.delete_results -> {
+                    val deleteDialog = MaterialAlertDialogBuilder(requireContext())
+                    deleteDialog.setTitle(getString(R.string.you_are_going_to_delete_multiple_items))
+                    deleteDialog.setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, _: Int -> dialogInterface.cancel() }
+                    deleteDialog.setPositiveButton(getString(R.string.ok)) { _: DialogInterface?, _: Int ->
+                        for (obj in selectedObjects!!){
+                            val id = obj.id.toInt()
+                            YoutubeDL.getInstance().destroyProcessById(id.toString())
+                            WorkManager.getInstance(requireContext()).cancelUniqueWork(id.toString())
+                            notificationUtil.cancelDownloadNotification(id)
+                            downloadViewModel.deleteDownload(obj)
+                        }
+                        clearCheckedItems()
+                        actionMode?.finish()
+                    }
+                    deleteDialog.show()
+                    true
+                }
+                R.id.select_all -> {
+                    queuedDownloads.checkAll(items)
+                    selectedObjects?.clear()
+                    items.forEach { selectedObjects?.add(it) }
+                    mode?.title = getString(R.string.all_items_selected)
+                    true
+                }
+                R.id.invert_selected -> {
+                    queuedDownloads.invertSelected(items)
+                    val invertedList = arrayListOf<DownloadItem>()
+                    items.forEach {
+                        if (!selectedObjects?.contains(it)!!) invertedList.add(it)
+                    }
+                    selectedObjects?.clear()
+                    selectedObjects?.addAll(invertedList)
+                    actionMode!!.title = "${selectedObjects!!.size} ${getString(R.string.selected)}"
+                    true
+                }
+                else -> false
+            }
+        }
+
+        override fun onDestroyActionMode(mode: ActionMode?) {
+            actionMode = null
+            clearCheckedItems()
+        }
+    }
+
+    private fun clearCheckedItems(){
+        queuedDownloads.clearCheckeditems()
+        selectedObjects?.clear()
     }
 
     private var simpleCallback: ItemTouchHelper.SimpleCallback =

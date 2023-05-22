@@ -122,6 +122,6 @@
     <EditTextPreference
         app:key="format_id"
         app:defaultValue=""
-        app:useSimpleSummaryProvider="true"
+        app:summary="@string/preferred_format_id_summary"
         app:title="@string/preferred_format_id" />
 </PreferenceScreen>

@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import android.net.ConnectivityManager
+import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
@@ -28,9 +29,12 @@ import com.deniscerri.ytdlnis.database.models.HistoryItem
 import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.deniscerri.ytdlnis.database.models.VideoPreferences
 import com.deniscerri.ytdlnis.database.repository.DownloadRepository
+import com.deniscerri.ytdlnis.util.InfoUtil
 import com.deniscerri.ytdlnis.work.DownloadWorker
 import com.google.gson.Gson
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.concurrent.TimeUnit
@@ -39,6 +43,7 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
     private val repository : DownloadRepository
     private val sharedPreferences: SharedPreferences
     private val commandTemplateDao: CommandTemplateDao
+    private val infoUtil : InfoUtil
     val allDownloads : LiveData<List<DownloadItem>>
     val queuedDownloads : LiveData<List<DownloadItem>>
     val activeDownloads : LiveData<List<DownloadItem>>
@@ -62,6 +67,7 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         repository = DownloadRepository(dao)
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(application)
         commandTemplateDao = DBManager.getInstance(application).commandTemplateDao
+        infoUtil = InfoUtil(application)
 
         allDownloads = repository.allDownloads.asLiveData()
         queuedDownloads = repository.queuedDownloads.asLiveData()
@@ -74,9 +80,9 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         videoQualityPreference = sharedPreferences.getString("video_quality", application.getString(R.string.best_quality)).toString()
         formatIDPreference = sharedPreferences.getString("format_id", "").toString()
 
-        val videoFormat = getApplication<App>().resources.getStringArray(R.array.video_formats)
+        val videoFormat = App.instance.resources.getStringArray(R.array.video_formats)
         var videoContainer = sharedPreferences.getString("video_format",  "Default")
-        if (videoContainer == "Default") videoContainer = application.getString(R.string.defaultValue)
+        if (videoContainer == "Default") videoContainer = App.instance.getString(R.string.defaultValue)
 
         defaultVideoFormats = mutableListOf()
         videoFormat.forEach {
@@ -95,7 +101,7 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         bestVideoFormat = defaultVideoFormats.last()
 
         var audioContainer = sharedPreferences.getString("audio_format", "mp3")
-        if (audioContainer == "Default") audioContainer = application.getString(R.string.defaultValue)
+        if (audioContainer == "Default") audioContainer = App.instance.getString(R.string.defaultValue)
         bestAudioFormat = Format(
             getApplication<App>().resources.getString(R.string.best_quality),
             audioContainer!!,
@@ -112,7 +118,7 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
     }
 
     fun updateDownload(item: DownloadItem) = viewModelScope.launch(Dispatchers.IO){
-        repository.update(item);
+        repository.update(item)
     }
 
     fun getItemByID(id: Long) : DownloadItem {
@@ -317,20 +323,20 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
     }
 
     fun getGenericAudioFormats() : MutableList<Format>{
-        val audioFormats = application.resources.getStringArray(R.array.audio_formats)
+        val audioFormats = App.instance.resources.getStringArray(R.array.audio_formats)
         val formats = mutableListOf<Format>()
         var containerPreference = sharedPreferences.getString("audio_format", "Default")
-        if (containerPreference == "Default") containerPreference = application.getString(R.string.defaultValue)
+        if (containerPreference == "Default") containerPreference = App.instance.getString(R.string.defaultValue)
         audioFormats.forEach { formats.add(Format(it, containerPreference!!,"","", "",0, it)) }
         return formats
     }
 
     fun getGenericVideoFormats() : MutableList<Format>{
-        val videoFormats = application.resources.getStringArray(R.array.video_formats)
+        val videoFormats = App.instance.resources.getStringArray(R.array.video_formats)
         val formats = mutableListOf<Format>()
         var containerPreference = sharedPreferences.getString("video_format", "Default")
         if (containerPreference == "Default") containerPreference = application.getString(R.string.defaultValue)
-        videoFormats.forEach { formats.add(Format(it, containerPreference!!,"","", "",0, it)) }
+        videoFormats.forEach { formats.add(Format(it, containerPreference!!,application.getString(R.string.defaultValue),"", "",0, it)) }
         return formats
     }
 
@@ -385,14 +391,14 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         return repository.getActiveAndQueuedDownloads()
     }
 
-    suspend fun queueDownloads(items: List<DownloadItem>) {
-        val context = getApplication<App>().applicationContext
-        val activeAndQueuedDownloads = withContext(Dispatchers.IO){
-            repository.getActiveAndQueuedDownloads()
-        }
+    suspend fun queueDownloads(items: List<DownloadItem>) = CoroutineScope(Dispatchers.IO).launch {
+        val context = App.instance
+        val activeAndQueuedDownloads = repository.getActiveAndQueuedDownloads()
         val allowMeteredNetworks = sharedPreferences.getBoolean("metered_networks", true)
         val queuedItems = mutableListOf<DownloadItem>()
+        var lastDownloadId = repository.getLastDownloadId()
         items.forEach {
+            lastDownloadId++
             it.status = DownloadRepository.Status.Queued.toString()
             if (activeAndQueuedDownloads.firstOrNull{d ->
                     d.id = 0
@@ -401,12 +407,32 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
             } != null) {
                 Toast.makeText(context, context.getString(R.string.download_already_exists), Toast.LENGTH_LONG).show()
             }else{
-                it.id = withContext(Dispatchers.IO){
-                    repository.insert(it)
-                }
+                it.id = lastDownloadId
+                val insert = async {repository.insert(it)}
+                val id = insert.await()
+                it.id = id
                 queuedItems.add(it)
             }
         }
+
+        //if the download was quick downloaded and are incomplete
+        if (queuedItems.count() == 1){
+            val item = queuedItems.first()
+            if (item.title.isEmpty() || item.author.isEmpty() || item.thumb.isEmpty()){
+                runCatching {
+                    val info = infoUtil.getMissingInfo(item.url)
+                    if (item.title.isEmpty()) item.title = info?.title.toString()
+                    if (item.author.isEmpty()) item.author = info?.author.toString()
+                    item.duration = info?.duration.toString()
+                    item.website = info?.website.toString()
+                    if (item.thumb.isEmpty()) item.thumb = info?.thumb.toString()
+                    repository.update(item)
+                }.onFailure {  err ->
+                    Log.e("error", err.message.toString())
+                }
+            }
+        }
+
         queuedItems.forEach {
             val currentTime = System.currentTimeMillis()
             var delay = if (it.downloadStartTime != 0L){

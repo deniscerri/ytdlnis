@@ -35,6 +35,7 @@ import com.deniscerri.ytdlnis.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdlnis.databinding.FragmentHomeBinding
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.UiUtil
+import com.google.android.material.card.MaterialCardView
 import com.google.android.material.chip.Chip
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
@@ -141,13 +142,13 @@ class DownloadAudioFragment(private var resultItem: ResultItem, private var curr
 
                 if (formats.isEmpty()) formats = downloadViewModel.getGenericAudioFormats()
 
-                val formatCard = view.findViewById<ConstraintLayout>(R.id.format_card_constraintLayout)
+                val formatCard = view.findViewById<MaterialCardView>(R.id.format_card_constraintLayout)
                 val chosenFormat = downloadItem.format
-                uiUtil.populateFormatCard(formatCard, chosenFormat)
+                uiUtil.populateFormatCard(formatCard, chosenFormat, null)
                 val listener = object : OnFormatClickListener {
                     override fun onFormatClick(allFormats: List<List<Format>>, item: List<Format>) {
                         downloadItem.format = item.first()
-                        uiUtil.populateFormatCard(formatCard, item.first())
+                        uiUtil.populateFormatCard(formatCard, item.first(), null)
                         lifecycleScope.launch {
                             withContext(Dispatchers.IO){
                                 resultItem.formats.removeAll(formats.toSet())
@@ -156,6 +157,7 @@ class DownloadAudioFragment(private var resultItem: ResultItem, private var curr
                             }
                         }
                         formats = allFormats.first().toMutableList()
+                        downloadItem.format.container = container.editText?.text.toString()
                     }
                 }
                 formatCard.setOnClickListener{

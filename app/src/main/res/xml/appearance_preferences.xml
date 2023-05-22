@@ -64,6 +64,14 @@
         app:summary="@string/preferred_search_engine_summary"
         app:title="@string/preferred_search_engine" />
 
+    <SwitchPreferenceCompat
+        android:widgetLayout="@layout/preferece_material_switch"
+        app:defaultValue="false"
+        android:icon="@drawable/ic_search_accent"
+        android:key="search_suggestions"
+        app:summary="@string/search_suggestions_summary"
+        app:title="@string/search_suggestions" />
+
     <ListPreference
         android:defaultValue=""
         android:entries="@array/countries"

@@ -36,6 +36,7 @@ import com.deniscerri.ytdlnis.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdlnis.databinding.FragmentHomeBinding
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.UiUtil
+import com.google.android.material.card.MaterialCardView
 import com.google.android.material.chip.Chip
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
@@ -133,8 +134,8 @@ class DownloadVideoFragment(private val resultItem: ResultItem, private var curr
                 ))
 
                 var formats = mutableListOf<Format>()
-                formats.addAll(resultItem.formats.filter { !it.format_note.contains("audio", ignoreCase = true) })
-                if (formats.isEmpty()) formats.addAll(downloadItem.allFormats.filter { !it.format_note.contains("audio", ignoreCase = true) })
+                formats.addAll(resultItem.formats)
+                if (formats.isEmpty()) formats.addAll(downloadItem.allFormats)
 
                 val containers = requireContext().resources.getStringArray(R.array.video_containers)
                 val container = view.findViewById<TextInputLayout>(R.id.downloadContainer)
@@ -145,13 +146,14 @@ class DownloadVideoFragment(private val resultItem: ResultItem, private var curr
 
                 if (formats.isEmpty()) formats = downloadViewModel.getGenericVideoFormats()
 
-                val formatCard = view.findViewById<ConstraintLayout>(R.id.format_card_constraintLayout)
+                val formatCard = view.findViewById<MaterialCardView>(R.id.format_card_constraintLayout)
 
                 val chosenFormat = downloadItem.format
-                uiUtil.populateFormatCard(formatCard, chosenFormat)
+                uiUtil.populateFormatCard(formatCard, chosenFormat, null)
                 val listener = object : OnFormatClickListener {
                     override fun onFormatClick(allFormats: List<List<Format>>, item: List<Format>) {
                         downloadItem.format = item.first()
+                        downloadItem.videoPreferences.audioFormatIDs.addAll(item.drop(1).map { it.format_id })
                         lifecycleScope.launch {
                             withContext(Dispatchers.IO){
                                 resultItem.formats.removeAll(formats.toSet())
@@ -160,7 +162,8 @@ class DownloadVideoFragment(private val resultItem: ResultItem, private var curr
                             }
                         }
                         formats = allFormats.first().toMutableList()
-                        uiUtil.populateFormatCard(formatCard, item.first())
+                        uiUtil.populateFormatCard(formatCard, item.first(), item.drop(1).map { it.format_note })
+                        downloadItem.format.container = container.editText?.text.toString()
                     }
                 }
                 formatCard.setOnClickListener{

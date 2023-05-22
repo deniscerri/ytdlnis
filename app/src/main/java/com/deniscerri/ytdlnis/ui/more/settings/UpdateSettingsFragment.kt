@@ -18,7 +18,6 @@ class UpdateSettingsFragment : BaseSettingsFragment() {
     override val title: Int = R.string.updating
     private var updateYTDL: Preference? = null
     private var ytdlVersion: Preference? = null
-    private var version: Preference? = null
     private var updateUtil: UpdateUtil? = null
 
 
@@ -30,8 +29,6 @@ class UpdateSettingsFragment : BaseSettingsFragment() {
         val editor = preferences.edit()
         updateYTDL = findPreference("update_ytdl")
         ytdlVersion = findPreference("ytdl-version")
-        version = findPreference("version")
-        version!!.summary = BuildConfig.VERSION_NAME
 
         YoutubeDL.getInstance().version(context)?.let {
             editor.putString("ytdl-version", it)
@@ -69,20 +66,6 @@ class UpdateSettingsFragment : BaseSettingsFragment() {
                 true
             }
 
-        version!!.onPreferenceClickListener =
-            Preference.OnPreferenceClickListener {
-                lifecycleScope.launch{
-                    withContext(Dispatchers.IO){
-                        updateUtil!!.updateApp{ msg ->
-                            lifecycleScope.launch(Dispatchers.Main){
-                                Snackbar.make(requireView(), msg, Snackbar.LENGTH_LONG).show()
-                            }
-                        }
-                    }
-
-                }
-                true
-            }
     }
 
 

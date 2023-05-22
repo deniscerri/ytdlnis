@@ -198,7 +198,7 @@ class GenericDownloadAdapter(onItemClickListener: OnItemClickListener, activity:
             }
 
             override fun areContentsTheSame(oldItem: DownloadItem, newItem: DownloadItem): Boolean {
-                return oldItem.url == newItem.url && oldItem.format.format_id == newItem.format.format_id
+                return oldItem.id == newItem.id && oldItem.title == newItem.title && oldItem.author == newItem.author && oldItem.thumb == newItem.thumb
             }
         }
     }

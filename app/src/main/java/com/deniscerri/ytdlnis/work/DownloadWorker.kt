@@ -221,9 +221,12 @@ class DownloadWorker(
                     request.addOption("--embed-chapters")
                 }
                 if (downloadItem.videoPreferences.embedSubs) {
-                    request.addOption("--embed-subs", "")
+                    request.addOption("--embed-subs")
+                    request.addOption("--sub-langs", "en.*,.*-orig")
                 }
                 val defaultFormats = context.resources.getStringArray(R.array.video_formats)
+
+                if (downloadItem.videoPreferences.audioFormatIDs.isNotEmpty()) request.addOption("--audio-multistreams")
 
                 var videoFormatID = downloadItem.format.format_id
                 Log.e(TAG, videoFormatID)
@@ -232,13 +235,19 @@ class DownloadWorker(
                     if (videoFormatID == context.resources.getString(R.string.best_quality) || videoFormatID == "best") videoFormatID = "bestvideo"
                     else if (videoFormatID == context.resources.getString(R.string.worst_quality) || videoFormatID == "worst") videoFormatID = "worst"
                     else if (defaultFormats.contains(videoFormatID)) videoFormatID = "bestvideo[height<="+videoFormatID.substring(0, videoFormatID.length -1)+"]"
-                    if (!downloadItem.videoPreferences.removeAudio) formatArgument = "$videoFormatID+bestaudio/best/$videoFormatID"
+
+                    formatArgument = if (downloadItem.videoPreferences.audioFormatIDs.isNotEmpty()){
+                        val audioIds = downloadItem.videoPreferences.audioFormatIDs.joinToString("+")
+                        "$videoFormatID+$audioIds/best/$videoFormatID"
+                    }else{
+                        "$videoFormatID+bestaudio/best/$videoFormatID"
+                    }
                 }
                 Log.e(TAG, formatArgument)
                 request.addOption("-f", formatArgument)
                 val format = downloadItem.format.container
                 if(format.isNotEmpty() && format != "Default" && format != context.getString(R.string.defaultValue)){
-                    request.addOption("--merge-output-format", format)
+                    request.addOption("--merge-output-format", format.lowercase())
                     if (format != "webm") {
                         val embedThumb = sharedPreferences.getBoolean("embed_thumbnail", false)
                         if (embedThumb) {
@@ -324,6 +333,9 @@ class DownloadWorker(
                     Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
                 }, 1000)
             }
+
+            val wasQuickDownloaded = updateDownloadItem(downloadItem, infoUtil, dao, resultDao, false, notificationUtil)
+
             //put download in history
             val incognito = sharedPreferences.getBoolean("incognito", false)
             if (!incognito) {
@@ -342,7 +354,7 @@ class DownloadWorker(
                 NotificationUtil.DOWNLOAD_FINISHED_CHANNEL_ID
             )
 
-            if (updateDownloadItem(downloadItem, infoUtil, dao, resultDao, false, notificationUtil)){
+            if (wasQuickDownloaded){
                 runCatching {
                     setProgressAsync(workDataOf("progress" to 100, "output" to "Creating Result Items", "id" to downloadItem.id, "log" to false))
                     runBlocking {
