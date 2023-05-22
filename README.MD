@@ -50,6 +50,7 @@
 - Material You interface
 - MVVM Architecture w/ WorkManager
 - easy to use :)
+- [YT-DLP](https://github.com/yt-dlp/yt-dlp) and [Piped](https://github.com/TeamPiped/Piped) options as source formats
 
 ## 📲 Screenshots
 
