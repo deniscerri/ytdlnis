@@ -49,13 +49,13 @@
     <string name="downloading">Descargando</string>
     <string name="limit_rate">Velocidad Límite</string>
     <string name="limit_rate_summary">Máxima velocidad de descarga (en bytes por segundo), como 50K o 4.2M</string>
-    <string name="embed_subs_summary">Agrega subtítulos del video</string>
+    <string name="embed_subs_summary">Añadir subtítulos al vídeo</string>
     <string name="aria2_summary">Usar aria2c como descargador en vez del predeterminado</string>
     <string name="processing">Procesando</string>
-    <string name="embed_thumb_summary">Usa la miniatura como imagen de portada</string>
+    <string name="embed_thumb_summary">Utilizar la miniatura como portada</string>
     <string name="add_chapters">Capítulos en Videos</string>
     <string name="you_are_going_to_delete">Borrando</string>
-    <string name="add_chapters_summary">Marca segmentos de YouTube/SponsorBlock como capítulos del video</string>
+    <string name="add_chapters_summary">Marcar segmentos de YouTube / SponsorBlock como capítulos del vídeo</string>
     <string name="audio_format">Formato de Audio</string>
     <string name="items_left">objeto(s) restante(s)</string>
     <string name="download">Descargar</string>
@@ -67,10 +67,10 @@
     <string name="audio_quality">Calidad de Audio</string>
     <string name="audio_quality_summary">0 (mejor) 10 (peor)</string>
     <string name="command_download_notification_channel_name">Descargas de Comandos</string>
-    <string name="history_is_empty">Historial vacío.</string>
+    <string name="history_is_empty">La historia está vacía.</string>
     <string name="api_key">Usar llave API</string>
     <string name="link_copied_to_clipboard">Vínculo copiado al portapapeles</string>
-    <string name="update_app_summary">Avisa sobre nuevas versiones de la aplicación al abrir</string>
+    <string name="update_app_summary">Anunciar nuevas versiones de la aplicación al abrirla</string>
     <string name="remove_downloading">Cancelar Descargas</string>
     <string name="embed_subtitles">Insertar Subtítulos</string>
     <string name="add_chapter">Agregar Capítulos</string>
@@ -253,5 +253,7 @@
     <string name="network_error">Error de red</string>
     <string name="backup_created_successfully">Archivo de la copia de seguridad guardado en la carpeta de descargas</string>
     <string name="appearance">Apariencia</string>
-    <string name="backup_restore">Copia de seguridad y restauracion</string>
+    <string name="backup_restore">Copia de seguridad y recuperación</string>
+    <string name="socks5_proxy_summary">Utilizar el proxy HTTP/HTTPS/SOCKS especificado</string>
+    <string name="socks5_proxy">URL del proxy Socks5</string>
 </resources>
