@@ -223,7 +223,7 @@
     <string name="green">Зелена</string>
     <string name="purple">Фіолетова</string>
     <string name="yellow">Жовта</string>
-    <string name="material_you">Material You</string>
+    <string name="material_you">Материал</string>
     <string name="red">Червона</string>
     <string name="finished_download_notification_channel_name">Готові завантаження</string>
     <string name="monochrome">Монохромна</string>
@@ -249,7 +249,7 @@
     <string name="restore_complete">Відновлення застосунку завершено. Наступні елементи було відновлено:</string>
     <string name="search_history">Історія пошуку</string>
     <string name="appearance">Зовнішній вигляд</string>
-    <string name="sponsorblock">SponsorBlock</string>
+    <string name="sponsorblock">СпонсорБлок</string>
     <string name="network_error">Помилка мережі</string>
     <string name="select_backup_categories">Виберіть категорії резервного копіювання</string>
     <string name="backup_created_successfully">Файл резервної копії збережено в папці завантажень</string>
