@@ -53,12 +53,12 @@
     <string name="concurrent_fragments_summary">Кількість фрагментів власного відео DASH/HLS, які можна завантажити одночасно</string>
     <string name="history_is_empty">Історія порожня.</string>
     <string name="processing">Обробка</string>
-    <string name="embed_subs_summary">Додає субтитри до відео</string>
+    <string name="embed_subs_summary">Додати субтитри до відео</string>
     <string name="embed_thumb">Обкладинки мініатюр</string>
     <string name="aria2_summary">Використовувати aria2c як завантажувач замість стандартного</string>
-    <string name="embed_thumb_summary">Використовує мініатюру як обкладинку</string>
+    <string name="embed_thumb_summary">Використовувати мініатюру як обкладинку</string>
     <string name="add_chapters">Розділи у відео</string>
-    <string name="add_chapters_summary">Позначає сегменти YouTube / SponsorBlock як розділи для відео</string>
+    <string name="add_chapters_summary">Позначити сегменти YouTube / SponsorBlock як розділи для відео</string>
     <string name="audio_quality">Якість звуку</string>
     <string name="video_format">Формат відео</string>
     <string name="save_thumb">Зберегти мініатюру</string>
@@ -79,7 +79,7 @@
     <string name="video_quality">Якість відео</string>
     <string name="Open_File">Відкрити файл</string>
     <string name="api_key_summary">Швидші результати з YouTube</string>
-    <string name="update_app_summary">Анонсує нові версії застосунку при її відкритті</string>
+    <string name="update_app_summary">Оголошувати про нові версії застосунку, коли його відкривають</string>
     <string name="remove_deleted">Вилучити видалене</string>
     <string name="title">Назва</string>
     <string name="show_download_card">Показати параметри для завантаження</string>
@@ -223,7 +223,7 @@
     <string name="green">Зелена</string>
     <string name="purple">Фіолетова</string>
     <string name="yellow">Жовта</string>
-    <string name="material_you">Material You</string>
+    <string name="material_you">Материал</string>
     <string name="red">Червона</string>
     <string name="finished_download_notification_channel_name">Готові завантаження</string>
     <string name="monochrome">Монохромна</string>
@@ -249,9 +249,11 @@
     <string name="restore_complete">Відновлення застосунку завершено. Наступні елементи було відновлено:</string>
     <string name="search_history">Історія пошуку</string>
     <string name="appearance">Зовнішній вигляд</string>
-    <string name="sponsorblock">SponsorBlock</string>
+    <string name="sponsorblock">СпонсорБлок</string>
     <string name="network_error">Помилка мережі</string>
     <string name="select_backup_categories">Виберіть категорії резервного копіювання</string>
     <string name="backup_created_successfully">Файл резервної копії збережено в папці завантажень</string>
     <string name="backup_restore">Резервне копіювання і відновлення</string>
+    <string name="socks5_proxy_summary">Використовуйте вказаний проксі HTTP/HTTPS/SOCKS</string>
+    <string name="socks5_proxy">URL-адреса проксі Socks5</string>
 </resources>
