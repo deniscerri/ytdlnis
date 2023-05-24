@@ -66,7 +66,7 @@
     <string name="command_download_notification_channel_name">Command Downloads</string>
     <string name="command_download_notification_channel_description">Notification showing the progress of downloading using a yt-dlp command</string>
     <string name="items_left">item(s) left</string>
-    <string name="history_is_empty">History is empty.</string>
+    <string name="history_is_empty">History is empty</string>
     <string name="you_are_going_to_delete">Deleting</string>
     <string name="url">URL</string>
     <string name="link_copied_to_clipboard">Link copied to clipboard</string>
@@ -81,7 +81,7 @@
     <string name="trendingPlaylist" translatable="false">ytdlnis-TRENDING</string>
     <string name="remove_downloading">Cancel Downloads</string>
     <string name="incognito_summary">Download without adding to history</string>
-    <string name="configure_download">Adjust Download</string>
+    <string name="configure_download">Сonfigure Download</string>
     <string name="title">Title</string>
     <string name="author">Author</string>
     <string name="download">Download</string>
