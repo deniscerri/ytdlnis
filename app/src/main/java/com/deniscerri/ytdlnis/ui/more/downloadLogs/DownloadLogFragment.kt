@@ -1,7 +1,6 @@
 package com.deniscerri.ytdlnis.ui.more.downloadLogs
 
 import android.content.ClipboardManager
-import android.content.Context
 import android.content.Context.CLIPBOARD_SERVICE
 import android.os.Build
 import android.os.Bundle
@@ -14,7 +13,6 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
-import com.deniscerri.ytdlnis.ui.BaseActivity
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import java.io.File

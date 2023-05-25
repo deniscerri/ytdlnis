@@ -5,7 +5,6 @@ import android.app.Activity
 import android.content.*
 import android.content.Context.CLIPBOARD_SERVICE
 import android.content.res.ColorStateList
-import android.content.res.Configuration
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
@@ -42,6 +41,7 @@ import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.InfoUtil
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.material.appbar.AppBarLayout
+import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
@@ -94,6 +94,8 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
     private var _binding : FragmentHomeBinding? = null
     private var actionMode: ActionMode? = null
     private var appBarLayout: AppBarLayout? = null
+    private var materialToolbar: MaterialToolbar? = null
+    private var loadingItems: Boolean = false
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -130,6 +132,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
         searchView = view.findViewById(R.id.search_view)
         linkYouCopied = searchView?.findViewById(R.id.link_you_copied)
         appBarLayout = view.findViewById(R.id.home_appbarlayout)
+        materialToolbar = view.findViewById(R.id.home_toolbar)
         queriesChipGroup = view.findViewById(R.id.queries)
         searchSuggestions = view.findViewById(R.id.search_suggestions_scroll_view)
         searchSuggestionsLinearLayout = view.findViewById(R.id.search_suggestions_linear_layout)
@@ -150,7 +153,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
             homeAdapter!!.submitList(it)
             resultsList = it
             if(resultViewModel.itemCount.value!! > 1 || resultViewModel.itemCount.value!! == -1){
-                if (it.size > 1 && it[0].playlistTitle.isNotEmpty() && it[0].playlistTitle != getString(R.string.trendingPlaylist)){
+                if (it.size > 1 && it[0].playlistTitle.isNotEmpty() && it[0].playlistTitle != getString(R.string.trendingPlaylist) && !loadingItems){
                     downloadAllFabCoordinator!!.visibility = VISIBLE
                 }else{
                     downloadAllFabCoordinator!!.visibility = GONE
@@ -167,7 +170,9 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
             quickLaunchSheet = true
         }
 
+
         resultViewModel.loadingItems.observe(viewLifecycleOwner){
+            loadingItems = it
             if (it){
                 recyclerView?.setPadding(0,0,0,0)
                 shimmerCards!!.startShimmer()
@@ -176,6 +181,11 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
                 recyclerView?.setPadding(0,0,0,100)
                 shimmerCards!!.stopShimmer()
                 shimmerCards!!.visibility = GONE
+                if (resultsList!!.size > 1 && resultsList!![0]!!.playlistTitle.isNotEmpty() && resultsList!![0]!!.playlistTitle != getString(R.string.trendingPlaylist)){
+                    downloadAllFabCoordinator!!.visibility = VISIBLE
+                }else{
+                    downloadAllFabCoordinator!!.visibility = GONE
+                }
             }
         }
 
@@ -196,7 +206,9 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
             val url = requireArguments().getString("url")
             if (inputQueries == null) inputQueries = mutableListOf()
             searchBar?.text = url
-            inputQueries!!.addAll(url!!.split("\n"))
+            val argList = url!!.split("\n").toMutableList()
+            argList.removeAll(listOf("", null))
+            inputQueries!!.addAll(argList)
         }
 
         if (inputQueries != null) {

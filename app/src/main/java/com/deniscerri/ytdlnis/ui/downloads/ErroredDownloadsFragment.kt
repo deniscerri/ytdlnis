@@ -2,7 +2,6 @@ package com.deniscerri.ytdlnis.ui.downloads
 
 import android.app.Activity
 import android.content.DialogInterface
-import android.content.Intent
 import android.graphics.Canvas
 import android.graphics.Color
 import android.os.Bundle
@@ -23,6 +22,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -32,7 +32,6 @@ import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.databinding.FragmentHomeBinding
 import com.deniscerri.ytdlnis.ui.downloadcard.DownloadBottomSheetDialog
-import com.deniscerri.ytdlnis.ui.more.downloadLogs.DownloadLogFragment
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.UiUtil
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -84,8 +83,11 @@ class ErroredDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickL
 
         erroredRecyclerView = view.findViewById(R.id.download_recyclerview)
         erroredRecyclerView.adapter = erroredDownloads
-        val itemTouchHelper = ItemTouchHelper(simpleCallback)
-        itemTouchHelper.attachToRecyclerView(erroredRecyclerView)
+        val preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
+        if (preferences.getBoolean("swipe_gestures", true)){
+            val itemTouchHelper = ItemTouchHelper(simpleCallback)
+            itemTouchHelper.attachToRecyclerView(erroredRecyclerView)
+        }
         erroredRecyclerView.layoutManager = GridLayoutManager(context, resources.getInteger(R.integer.grid_size))
 
         downloadViewModel.erroredDownloads.observe(viewLifecycleOwner) {

@@ -66,7 +66,7 @@ class ResultViewModel(application: Application) : AndroidViewModel(application) 
         if (inputQueries.size == 1){
             parseQuery(inputQueries[0], true)
         }else {
-            repository.itemCount.postValue(2)
+            repository.itemCount.postValue(inputQueries.size)
             loadingItems.postValue(true)
             inputQueries.forEach {
                 parseQuery(it, false)
@@ -100,7 +100,7 @@ class ResultViewModel(application: Application) : AndroidViewModel(application) 
             } catch (e: Exception) {
                 Log.e(tag, e.toString())
             }
-            loadingItems.postValue(false)
+            if (resetResults) loadingItems.postValue(false)
             res
         }
     }

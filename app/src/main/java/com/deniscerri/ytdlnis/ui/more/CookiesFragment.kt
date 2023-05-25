@@ -1,6 +1,5 @@
 package com.deniscerri.ytdlnis.ui.more
 
-import android.content.Context
 import android.content.Context.INPUT_METHOD_SERVICE
 import android.content.DialogInterface
 import android.content.Intent
@@ -19,6 +18,7 @@ import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -74,9 +74,11 @@ class CookiesFragment : Fragment(), CookieAdapter.OnItemClickListener {
         recyclerView = view.findViewById(R.id.template_recyclerview)
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = listAdapter
-        val itemTouchHelper = ItemTouchHelper(simpleCallback)
-        itemTouchHelper.attachToRecyclerView(recyclerView)
-
+        val preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
+        if (preferences.getBoolean("swipe_gestures", true)){
+            val itemTouchHelper = ItemTouchHelper(simpleCallback)
+            itemTouchHelper.attachToRecyclerView(recyclerView)
+        }
         uiUtil = UiUtil(FileUtil())
 
         cookiesViewModel = ViewModelProvider(this)[CookieViewModel::class.java]

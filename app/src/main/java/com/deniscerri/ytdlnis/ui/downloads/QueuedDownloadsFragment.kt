@@ -2,7 +2,6 @@ package com.deniscerri.ytdlnis.ui.downloads
 
 import android.app.Activity
 import android.content.DialogInterface
-import android.content.res.Configuration
 import android.graphics.Canvas
 import android.graphics.Color
 import android.os.Bundle
@@ -23,6 +22,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -30,6 +30,7 @@ import androidx.work.WorkManager
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.adapter.GenericDownloadAdapter
 import com.deniscerri.ytdlnis.database.models.DownloadItem
+import com.deniscerri.ytdlnis.database.repository.DownloadRepository
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.databinding.FragmentHomeBinding
 import com.deniscerri.ytdlnis.util.FileUtil
@@ -93,8 +94,11 @@ class QueuedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLi
 
         queuedRecyclerView = view.findViewById(R.id.download_recyclerview)
         queuedRecyclerView.adapter = queuedDownloads
-        val itemTouchHelper = ItemTouchHelper(simpleCallback)
-        itemTouchHelper.attachToRecyclerView(queuedRecyclerView)
+        val preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
+        if (preferences.getBoolean("swipe_gestures", true)){
+            val itemTouchHelper = ItemTouchHelper(simpleCallback)
+            itemTouchHelper.attachToRecyclerView(queuedRecyclerView)
+        }
         queuedRecyclerView.layoutManager = GridLayoutManager(context, resources.getInteger(R.integer.grid_size))
 
         downloadViewModel.queuedDownloads.observe(viewLifecycleOwner) {
@@ -262,11 +266,13 @@ class QueuedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLi
             YoutubeDL.getInstance().destroyProcessById(id.toString())
             WorkManager.getInstance(requireContext()).cancelUniqueWork(id.toString())
             notificationUtil.cancelDownloadNotification(id)
-            downloadViewModel.deleteDownload(item!!)
+            item!!.status = DownloadRepository.Status.Cancelled.toString()
+            downloadViewModel.updateDownload(item)
 
             Snackbar.make(queuedRecyclerView, getString(R.string.cancelled) + ": " + item.title, Snackbar.LENGTH_LONG)
                 .setAction(getString(R.string.undo)) {
                     lifecycleScope.launch(Dispatchers.IO) {
+                        downloadViewModel.deleteDownload(item)
                         downloadViewModel.queueDownloads(listOf(item))
                     }
                 }.show()

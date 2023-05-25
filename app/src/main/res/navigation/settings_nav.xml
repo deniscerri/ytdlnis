@@ -4,7 +4,7 @@
     app:startDestination="@id/mainSettingsFragment">
     <fragment
         android:id="@+id/appearanceSettingsFragment"
-        android:name="com.deniscerri.ytdlnis.ui.more.settings.AppearanceSettingsFragment"
+        android:name="com.deniscerri.ytdlnis.ui.more.settings.GeneralSettingsFragment"
         android:label="AppearanceSettingsFragment" />
     <fragment
         android:id="@+id/processingSettingsFragment"

@@ -256,6 +256,21 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
+                </com.google.android.material.chip.ChipGroup>
+
+            </HorizontalScrollView>
+
+            <HorizontalScrollView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scrollbars="none">
+
+                <com.google.android.material.chip.ChipGroup
+                    android:scrollbars="none"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+
                     <com.google.android.material.chip.Chip
                         android:id="@+id/save_subtitles"
                         style="@style/Widget.Material3.Chip.Filter.Elevated"

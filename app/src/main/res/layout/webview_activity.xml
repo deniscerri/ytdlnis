@@ -11,6 +11,7 @@
         android:background="@android:color/transparent"
         android:elevation="0dp"
         app:elevation="0dp"
+        android:fitsSystemWindows="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 

@@ -264,5 +264,9 @@
     <string name="socks5_proxy">Socks5 Proxy URL</string>
     <string name="search_suggestions">Search Suggestions</string>
     <string name="search_suggestions_summary">Get search suggestions from google</string>
-    <string name="preferred_format_id_summary">Selec the format with this ID in the download card</string>
+    <string name="preferred_format_id_summary">Select the format with this ID in the download card</string>
+    <string name="misc">Misc</string>
+    <string name="general">General</string>
+    <string name="swipe_gestures">Swipe Gestures</string>
+    <string name="swipe_gestures_summary">Swipe items for certain actions</string>
 </resources>

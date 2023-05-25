@@ -3,8 +3,8 @@
 
     <Preference
         android:key="appearance"
-        app:icon="@drawable/baseline_format_paint_24"
-        android:title="@string/appearance"/>
+        app:icon="@drawable/ic_settings"
+        android:title="@string/general"/>
 
     <Preference
         android:key="folders"

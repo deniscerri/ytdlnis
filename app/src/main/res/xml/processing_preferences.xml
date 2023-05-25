@@ -57,6 +57,15 @@
         app:summary="@string/save_subs_desc"
         app:title="@string/save_subs" />
 
+    <EditTextPreference
+        android:icon="@drawable/baseline_subject_24"
+        app:key="subs_lang"
+
+        android:dependency="write_subtitles"
+        app:useSimpleSummaryProvider="true"
+        app:defaultValue="en.*,.*-orig"
+        app:title="@string/subtitle_languages" />
+
     <SwitchPreferenceCompat
         android:widgetLayout="@layout/preferece_material_switch"
         app:defaultValue="true"

@@ -2,7 +2,6 @@ package com.deniscerri.ytdlnis.ui.downloads
 
 import android.app.Activity
 import android.content.DialogInterface
-import android.content.res.Configuration
 import android.graphics.Canvas
 import android.graphics.Color
 import android.os.Bundle
@@ -21,6 +20,7 @@ import androidx.appcompat.view.ActionMode
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -82,8 +82,11 @@ class CancelledDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClic
 
         cancelledRecyclerView = view.findViewById(R.id.download_recyclerview)
         cancelledRecyclerView.adapter = cancelledDownloads
-        val itemTouchHelper = ItemTouchHelper(simpleCallback)
-        itemTouchHelper.attachToRecyclerView(cancelledRecyclerView)
+        val preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
+        if (preferences.getBoolean("swipe_gestures", true)){
+            val itemTouchHelper = ItemTouchHelper(simpleCallback)
+            itemTouchHelper.attachToRecyclerView(cancelledRecyclerView)
+        }
         cancelledRecyclerView.layoutManager = GridLayoutManager(context, resources.getInteger(R.integer.grid_size))
 
 

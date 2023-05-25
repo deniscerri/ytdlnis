@@ -20,6 +20,13 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 -if @kotlinx.serialization.Serializable class **
+-keep class androidx.lifecycle.LiveData { *; }
+-keep class com.google.gson.** { *; }
+-keep class com.deniscerri.ytdlnis.database.models.AudioPreferences
+-keep class com.deniscerri.ytdlnis.database.models.VideoPreferences
+-keepclassmembers class * {
+    @com.google.gson.annotations.SerializedName <fields>;
+}
 -keepclassmembers class <1> {
     static <1>$Companion Companion;
 }

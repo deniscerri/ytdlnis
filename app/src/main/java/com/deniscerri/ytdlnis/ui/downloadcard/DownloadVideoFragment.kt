@@ -3,7 +3,6 @@ package com.deniscerri.ytdlnis.ui.downloadcard
 import android.app.Activity
 import android.content.DialogInterface
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -20,7 +19,6 @@ import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -129,9 +127,10 @@ class DownloadVideoFragment(private val resultItem: ResultItem, private var curr
                 }
 
                 freeSpace = view.findViewById(R.id.freespace)
-                freeSpace.text = String.format(getString(R.string.freespace) + ": " + fileUtil.convertFileSize(
-                    File(fileUtil.formatPath(downloadItem.downloadPath)).freeSpace
-                ))
+                val free = fileUtil.convertFileSize(
+                    File(fileUtil.formatPath(downloadItem.downloadPath)).freeSpace)
+                freeSpace.text = String.format( getString(R.string.freespace) + ": " + free)
+                if (free == "?") freeSpace.visibility = View.GONE
 
                 var formats = mutableListOf<Format>()
                 formats.addAll(resultItem.formats)
@@ -358,6 +357,7 @@ class DownloadVideoFragment(private val resultItem: ResultItem, private var curr
 
                 val saveSubtitles = view.findViewById<Chip>(R.id.save_subtitles)
                 val subtitleLanguages = view.findViewById<Chip>(R.id.subtitle_languages)
+                downloadItem.videoPreferences.subsLanguages = sharedPreferences.getString("subs_lang", "en.*,.*-orig")!!
                 if (downloadItem.videoPreferences.writeSubs) {
                     saveSubtitles.isChecked = true
                     subtitleLanguages.visibility = View.VISIBLE
@@ -370,44 +370,9 @@ class DownloadVideoFragment(private val resultItem: ResultItem, private var curr
                 }
 
                 subtitleLanguages.setOnClickListener {
-                    val builder = MaterialAlertDialogBuilder(requireContext())
-                    builder.setTitle(getString(R.string.subtitle_languages))
-                    val inputLayout = layoutInflater.inflate(R.layout.textinput, null)
-                    val editText = inputLayout.findViewById<EditText>(R.id.url_edittext)
-                    editText.setHint(R.string.subtitle_languages)
-                    editText.setText(downloadItem.videoPreferences.subsLanguages)
-                    editText.setSelection(editText.text.length)
-                    builder.setView(inputLayout)
-                    builder.setPositiveButton(
-                        getString(R.string.ok)
-                    ) { dialog: DialogInterface?, which: Int ->
-                        downloadItem.videoPreferences.subsLanguages = editText.text.toString()
+                    uiUtil.showSubtitleLanguagesDialog(requireActivity(), downloadItem.videoPreferences.subsLanguages){
+                        downloadItem.videoPreferences.subsLanguages = it
                     }
-
-                    // handle the negative button of the alert dialog
-                    builder.setNegativeButton(
-                        getString(R.string.cancel)
-                    ) { dialog: DialogInterface?, which: Int -> }
-
-                    builder.setNeutralButton("?")  { dialog: DialogInterface?, which: Int ->
-                        val browserIntent =
-                            Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/yt-dlp/yt-dlp#subtitle-options"))
-                        startActivity(browserIntent)
-                    }
-
-
-                    val dialog = builder.create()
-                    editText.doOnTextChanged { text, start, before, count ->
-                        dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = editText.text.isNotEmpty()
-                    }
-                    dialog.show()
-                    val imm = context?.getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager
-                    editText!!.postDelayed({
-                        editText.requestFocus()
-                        imm.showSoftInput(editText, 0)
-                    }, 300)
-                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = editText.text.isNotEmpty()
-                    dialog.getButton(AlertDialog.BUTTON_NEUTRAL).gravity = Gravity.START
                 }
 
                 val removeAudio = view.findViewById<Chip>(R.id.remove_audio)
@@ -436,9 +401,10 @@ class DownloadVideoFragment(private val resultItem: ResultItem, private var curr
             //downloadviewmodel.updateDownload(downloadItem)
             saveDir.editText?.setText(fileUtil.formatPath(result.data?.data.toString()), TextView.BufferType.EDITABLE)
 
-            freeSpace.text = String.format(getString(R.string.freespace) + ": " + fileUtil.convertFileSize(
-                File(fileUtil.formatPath(downloadItem.downloadPath)).freeSpace
-            ))
+            val free = fileUtil.convertFileSize(
+                File(fileUtil.formatPath(downloadItem.downloadPath)).freeSpace)
+            freeSpace.text = String.format( getString(R.string.freespace) + ": " + free)
+            if (free == "?") freeSpace.visibility = View.GONE
         }
     }
 

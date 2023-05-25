@@ -1,14 +1,15 @@
 package com.deniscerri.ytdlnis.ui.more.settings
 
-import android.content.DialogInterface
+import android.view.inputmethod.InputMethodManager
+import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.EditTextPreference
 import androidx.preference.ListPreference
-import androidx.preference.MultiSelectListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.deniscerri.ytdlnis.R
-import com.deniscerri.ytdlnis.databinding.DialogTextPreferenceBinding
+import com.deniscerri.ytdlnis.databinding.TextinputBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.textfield.TextInputLayout
 
 
 abstract class BaseSettingsFragment : PreferenceFragmentCompat() {
@@ -43,19 +44,26 @@ abstract class BaseSettingsFragment : PreferenceFragmentCompat() {
                     .show()
             }
             is EditTextPreference -> {
-                val binding = DialogTextPreferenceBinding.inflate(layoutInflater)
-                binding.input.setText(preference.text)
-                MaterialAlertDialogBuilder(requireContext())
+                val binding = TextinputBinding.inflate(layoutInflater)
+                binding.urlEdittext.setText(preference.text)
+                binding.urlTextinput.findViewById<TextInputLayout>(R.id.url_textinput).hint = preference.title
+                val dialog = MaterialAlertDialogBuilder(requireContext())
                     .setTitle(preference.title)
                     .setView(binding.root)
                     .setPositiveButton(android.R.string.ok) { _, _ ->
-                        val newValue = binding.input.text.toString()
+                        val newValue = binding.urlEdittext.text.toString()
                         if (preference.callChangeListener(newValue)) {
                             preference.text = newValue
                         }
                     }
                     .setNegativeButton(R.string.cancel, null)
-                    .show()
+                dialog.show()
+                val imm = context?.getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager
+                binding.urlEdittext.setSelection(binding.urlEdittext.text!!.length)
+                binding.urlEdittext.postDelayed({
+                    binding.urlEdittext.requestFocus()
+                    imm.showSoftInput(binding.urlEdittext, 0)
+                }, 300)
             }
             /**
              * Otherwise show the normal dialog, dialogs for other preference types are not supported yet

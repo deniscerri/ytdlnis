@@ -4,14 +4,11 @@ import android.os.Bundle
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.Preference
 import androidx.preference.PreferenceManager
-import com.deniscerri.ytdlnis.BuildConfig
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.util.UpdateUtil
 import com.google.android.material.snackbar.Snackbar
 import com.yausername.youtubedl_android.YoutubeDL
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 
 class UpdateSettingsFragment : BaseSettingsFragment() {

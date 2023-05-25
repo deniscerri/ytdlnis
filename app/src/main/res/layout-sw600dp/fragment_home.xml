@@ -103,6 +103,7 @@
         app:liftOnScroll="true"
         android:background="@null"
         android:elevation="0dp"
+        android:fitsSystemWindows="true"
         app:elevation="0dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">

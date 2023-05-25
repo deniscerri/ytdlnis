@@ -3,7 +3,6 @@ package com.deniscerri.ytdlnis.ui.downloads
 import android.app.Activity
 import android.content.Context
 import android.content.DialogInterface
-import android.content.Intent
 import android.graphics.Canvas
 import android.graphics.Color
 import android.os.Bundle
@@ -33,6 +32,7 @@ import androidx.core.view.forEach
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -129,8 +129,13 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
             )
         recyclerView = view.findViewById(R.id.recyclerviewhistorys)
         recyclerView?.adapter = historyAdapter
-        val itemTouchHelper = ItemTouchHelper(simpleCallback)
-        itemTouchHelper.attachToRecyclerView(recyclerView)
+
+        val preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
+        if (preferences.getBoolean("swipe_gestures", true)){
+            val itemTouchHelper = ItemTouchHelper(simpleCallback)
+            itemTouchHelper.attachToRecyclerView(recyclerView)
+        }
+
         recyclerView?.layoutManager = GridLayoutManager(context, resources.getInteger(R.integer.grid_size))
         noResults?.visibility = GONE
 

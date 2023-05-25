@@ -20,8 +20,8 @@ import com.deniscerri.ytdlnis.util.UpdateUtil
 import java.util.Locale
 
 
-class AppearanceSettingsFragment : BaseSettingsFragment() {
-    override val title: Int = R.string.appearance
+class GeneralSettingsFragment : BaseSettingsFragment() {
+    override val title: Int = R.string.general
 
     private var language: ListPreference? = null
     private var theme: ListPreference? = null
@@ -34,7 +34,7 @@ class AppearanceSettingsFragment : BaseSettingsFragment() {
     private var activeDownloadCount = 0
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-        setPreferencesFromResource(R.xml.appearance_preferences, rootKey)
+        setPreferencesFromResource(R.xml.general_preferences, rootKey)
         updateUtil = UpdateUtil(requireContext())
         fileUtil = FileUtil()
 

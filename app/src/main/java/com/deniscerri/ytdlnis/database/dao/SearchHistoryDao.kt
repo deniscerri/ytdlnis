@@ -5,7 +5,7 @@ import com.deniscerri.ytdlnis.database.models.SearchHistoryItem
 
 @Dao
 interface SearchHistoryDao {
-    @Query("SELECT * from searchHistory ORDER BY id DESC LIMIT 10")
+    @Query("SELECT * from searchHistory ORDER BY id DESC LIMIT 25")
     fun getAll() : List<SearchHistoryItem>
 
     @Query("SELECT * from searchHistory WHERE `query` COLLATE NOCASE ='%'||:keyword||'%'")

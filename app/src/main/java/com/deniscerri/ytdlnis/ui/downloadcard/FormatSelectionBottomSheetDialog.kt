@@ -23,7 +23,6 @@ import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.card.MaterialCardView
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -188,6 +187,10 @@ class FormatSelectionBottomSheetDialog(private val items: List<DownloadItem?>, p
 
         okBtn.setOnClickListener {
             val selectedFormats = mutableListOf<Format>()
+            if (!::selectedVideo.isInitialized) {
+                selectedVideo =
+                    chosenFormats.filter { it.vcodec.isNotBlank() && it.vcodec != "none" }.maxByOrNull { it.filesize }!!
+            }
             selectedFormats.add(selectedVideo)
             selectedFormats.addAll(selectedAudios)
             listener.onFormatClick(List(items.size){chosenFormats}, selectedFormats)
@@ -199,11 +202,11 @@ class FormatSelectionBottomSheetDialog(private val items: List<DownloadItem?>, p
         }
     }
     private fun addFormatsToView(){
-        val isSingleAndVideo = items.first()?.type == Type.video && items.count() == 1
+        val canMultiSelectAudio = items.first()?.type == Type.video && items.count() == 1 && chosenFormats.find { it.format_note.contains("audio", ignoreCase = true) } != null
         videoFormatList.removeAllViews()
         audioFormatList.removeAllViews()
 
-        if (!isSingleAndVideo) {
+        if (!canMultiSelectAudio) {
             audioFormatList.visibility = View.GONE
             videoTitle.visibility = View.GONE
             audioTitle.visibility = View.GONE
@@ -229,9 +232,13 @@ class FormatSelectionBottomSheetDialog(private val items: List<DownloadItem?>, p
             uiUtil.populateFormatCard(formatItem as MaterialCardView, format, null)
             formatItem.setOnClickListener{ clickedformat ->
                 //if the context is behind a single download card and its a video, allow the ability to multiselect audio formats
-                if (isSingleAndVideo){
+                if (canMultiSelectAudio){
                     val clickedCard = (clickedformat as MaterialCardView)
                     if (format.vcodec.isNotBlank() && format.vcodec != "none") {
+                        if (clickedCard.isChecked) {
+                            listener.onFormatClick(List(items.size){chosenFormats}, listOf(format))
+                            dismiss()
+                        }
                         videoFormatList.forEach { (it as MaterialCardView).isChecked = false }
                         selectedVideo = format
                         clickedCard.isChecked = true
@@ -269,7 +276,7 @@ class FormatSelectionBottomSheetDialog(private val items: List<DownloadItem?>, p
                 true
             }
 
-            if (isSingleAndVideo){
+            if (canMultiSelectAudio){
                 if (format.vcodec.isNotBlank() && format.vcodec != "none") videoFormatList.addView(formatItem)
                 else audioFormatList.addView(formatItem)
             }else{

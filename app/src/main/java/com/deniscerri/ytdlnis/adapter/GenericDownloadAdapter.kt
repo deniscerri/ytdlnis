@@ -70,7 +70,7 @@ class GenericDownloadAdapter(onItemClickListener: OnItemClickListener, activity:
         if (title.length > 100) {
             title = title.substring(0, 40) + "..."
         }
-        itemTitle.text = title.ifEmpty { "<${activity.getString(R.string.defaultValue)}>" }
+        itemTitle.text = title.ifEmpty { item.url }
 
         val formatNote = card.findViewById<TextView>(R.id.format_note)
         if (item.format.format_note == "?" || item.format.format_note == "") formatNote!!.visibility =

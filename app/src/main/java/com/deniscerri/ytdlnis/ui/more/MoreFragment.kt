@@ -14,7 +14,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceManager
 import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
-import com.deniscerri.ytdlnis.ui.more.downloadLogs.DownloadLogListFragment
 import com.deniscerri.ytdlnis.ui.more.settings.SettingsActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlin.system.exitProcess

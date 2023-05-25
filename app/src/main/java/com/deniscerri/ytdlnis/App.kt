@@ -66,7 +66,7 @@ class App : Application() {
         if (sp.getInt("spl", 0) != SPL) {
             PreferenceManager.setDefaultValues(this, R.xml.root_preferences, true)
             PreferenceManager.setDefaultValues(this, R.xml.downloading_preferences, true)
-            PreferenceManager.setDefaultValues(this, R.xml.appearance_preferences, true)
+            PreferenceManager.setDefaultValues(this, R.xml.general_preferences, true)
             PreferenceManager.setDefaultValues(this, R.xml.processing_preferences, true)
             PreferenceManager.setDefaultValues(this, R.xml.folders_preference, true)
             PreferenceManager.setDefaultValues(this, R.xml.updating_preferences, true)

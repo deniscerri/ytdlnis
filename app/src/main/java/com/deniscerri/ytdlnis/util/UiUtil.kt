@@ -5,23 +5,29 @@ import android.app.Activity
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.DisplayMetrics
 import android.util.Log
+import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
+import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.FileProvider
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LifecycleOwner
 import com.deniscerri.ytdlnis.R
@@ -37,6 +43,7 @@ import com.google.android.material.chip.ChipGroup
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
@@ -372,7 +379,7 @@ class UiUtil(private val fileUtil: FileUtil) {
             }
         }
 
-        if (format.fps.isNullOrBlank()) fpsParent?.visibility = View.GONE
+        if (format.fps.isNullOrBlank() || format.fps == "0") fpsParent?.visibility = View.GONE
         else {
             fpsParent?.findViewById<TextView>(R.id.fps_value)?.text = format.fps
             fpsParent?.setOnClickListener {
@@ -398,6 +405,48 @@ class UiUtil(private val fileUtil: FileUtil) {
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.MATCH_PARENT
         )
+    }
+
+    fun showSubtitleLanguagesDialog(context: Activity, currentValue: String, ok: (newValue: String) -> Unit){
+        val builder = MaterialAlertDialogBuilder(context)
+        builder.setTitle(context.getString(R.string.subtitle_languages))
+        val inputLayout = context.layoutInflater.inflate(R.layout.textinput, null)
+        val editText = inputLayout.findViewById<EditText>(R.id.url_edittext)
+        inputLayout.findViewById<TextInputLayout>(R.id.url_textinput).hint = context.getString(R.string.subtitle_languages)
+        editText.setText(currentValue)
+        editText.setSelection(editText.text.length)
+        builder.setView(inputLayout)
+        builder.setPositiveButton(
+            context.getString(R.string.ok)
+        ) { dialog: DialogInterface?, which: Int ->
+            ok(editText.text.toString())
+        }
+
+        // handle the negative button of the alert dialog
+        builder.setNegativeButton(
+            context.getString(R.string.cancel)
+        ) { dialog: DialogInterface?, which: Int -> }
+
+        builder.setNeutralButton("?")  { dialog: DialogInterface?, which: Int ->
+            val browserIntent =
+                Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/yt-dlp/yt-dlp#subtitle-options"))
+            context.startActivity(browserIntent)
+        }
+
+
+        val dialog = builder.create()
+        editText.doOnTextChanged { text, start, before, count ->
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = editText.text.isNotEmpty()
+        }
+        dialog.show()
+        val imm = context.getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager
+        editText.setSelection(editText.text!!.length)
+        editText!!.postDelayed({
+            editText.requestFocus()
+            imm.showSoftInput(editText, 0)
+        }, 300)
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = editText.text.isNotEmpty()
+        dialog.getButton(AlertDialog.BUTTON_NEUTRAL).gravity = Gravity.START
     }
 
 

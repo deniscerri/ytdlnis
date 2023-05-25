@@ -19,7 +19,6 @@ import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -125,9 +124,10 @@ class DownloadAudioFragment(private var resultItem: ResultItem, private var curr
                     audioPathResultLauncher.launch(intent)
                 }
                 freeSpace = view.findViewById(R.id.freespace)
-                freeSpace.text = String.format( getString(R.string.freespace) + ": " + fileUtil.convertFileSize(
-                    File(fileUtil.formatPath(downloadItem.downloadPath)).freeSpace
-                ))
+                val free = fileUtil.convertFileSize(
+                    File(fileUtil.formatPath(downloadItem.downloadPath)).freeSpace)
+                freeSpace.text = String.format( getString(R.string.freespace) + ": " + free)
+                if (free == "?") freeSpace.visibility = View.GONE
 
                 var formats = mutableListOf<Format>()
                 formats.addAll(resultItem.formats.filter { it.format_note.contains("audio", ignoreCase = true) })
@@ -342,9 +342,10 @@ class DownloadAudioFragment(private var resultItem: ResultItem, private var curr
             //downloadViewModel.updateDownload(downloadItem)
             saveDir.editText?.setText(fileUtil.formatPath(result.data?.data.toString()), TextView.BufferType.EDITABLE)
 
-            freeSpace.text = String.format( getString(R.string.freespace) + ": " + fileUtil.convertFileSize(
-                File(fileUtil.formatPath(downloadItem.downloadPath)).freeSpace
-            ))
+            val free = fileUtil.convertFileSize(
+                File(fileUtil.formatPath(downloadItem.downloadPath)).freeSpace)
+            freeSpace.text = String.format( getString(R.string.freespace) + ": " + free)
+            if (free == "?") freeSpace.visibility = View.GONE
         }
     }
 
