@@ -388,15 +388,15 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
             }else{
                 searchView!!.editText.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_plus, 0)
             }
-            val suggestions = if (sharedPreferences!!.getBoolean("search_suggestions", false)){
-                withContext(Dispatchers.IO){
-                    if (it!!.isEmpty()) {
-                        resultViewModel.getSearchHistory().map { it.query }
-                    }else{
-                        infoUtil!!.getSearchSuggestions(it.toString())
-                    }
+            val suggestions = withContext(Dispatchers.IO){
+                if (it!!.isEmpty()) {
+                    resultViewModel.getSearchHistory().map { it.query }
+                }else if (sharedPreferences!!.getBoolean("search_suggestions", false)){
+                    infoUtil!!.getSearchSuggestions(it.toString())
+                }else{
+                    emptyList()
                 }
-            } else emptyList()
+            }
 
             if (it!!.isEmpty()){
                 for (i in suggestions.indices) {

@@ -263,7 +263,7 @@
     <string name="socks5_proxy_summary">Use the specified HTTP/HTTPS/SOCKS proxy</string>
     <string name="socks5_proxy">Socks5 Proxy URL</string>
     <string name="search_suggestions">Search Suggestions</string>
-    <string name="search_suggestions_summary">Get search suggestions from google</string>
+    <string name="search_suggestions_summary">Get search suggestions from Google</string>
     <string name="preferred_format_id_summary">Select the format with this ID in the download card</string>
     <string name="misc">Misc</string>
     <string name="general">General</string>
