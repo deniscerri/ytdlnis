@@ -67,7 +67,7 @@
     <string name="audio_quality">Calidad de Audio</string>
     <string name="audio_quality_summary">0 (mejor) 10 (peor)</string>
     <string name="command_download_notification_channel_name">Descargas de Comandos</string>
-    <string name="history_is_empty">La historia está vacía.</string>
+    <string name="history_is_empty">La historia está vacía</string>
     <string name="api_key">Usar llave API</string>
     <string name="link_copied_to_clipboard">Vínculo copiado al portapapeles</string>
     <string name="update_app_summary">Anunciar nuevas versiones de la aplicación al abrirla</string>
@@ -79,7 +79,7 @@
     <string name="title">Título</string>
     <string name="remove_duplicates">Quitar Duplicados</string>
     <string name="sort_by">Organizar</string>
-    <string name="configure_download">Ajustar Descarga</string>
+    <string name="configure_download">Configurar la descarga</string>
     <string name="incognito_summary">Descargar sin agregar al historial</string>
     <string name="author">Autor</string>
     <string name="Open_File">Abrir Archivo</string>
@@ -256,4 +256,8 @@
     <string name="backup_restore">Copia de seguridad y recuperación</string>
     <string name="socks5_proxy_summary">Utilizar el proxy HTTP/HTTPS/SOCKS especificado</string>
     <string name="socks5_proxy">URL del proxy Socks5</string>
+    <string name="search_suggestions">Sugerencias de la búsqueda</string>
+    <string name="search_suggestions_summary">Obtener las sugerencias de la búsqueda de Google</string>
+    <string name="preferred_format_id_summary">Selecciona el formato con este ID en la tarjeta de
+\nlas descargas</string>
 </resources>
