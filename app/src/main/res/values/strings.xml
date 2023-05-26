@@ -269,4 +269,6 @@
     <string name="general">General</string>
     <string name="swipe_gestures">Swipe Gestures</string>
     <string name="swipe_gestures_summary">Swipe items for certain actions</string>
+    <string name="crop_thumb">Crop Thumbnail</string>
+    <string name="crop_thumb_summary">Crop the thumbnail into a square for audio downloads</string>
 </resources>

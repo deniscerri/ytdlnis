@@ -37,6 +37,9 @@ interface DownloadDao {
     @Query("SELECT * FROM downloads WHERE status='Error' ORDER BY id DESC")
     fun getErroredDownloads() : Flow<List<DownloadItem>>
 
+    @Query("SELECT * FROM downloads WHERE status='Error' ORDER BY id DESC")
+    fun getErroredDownloadsList() : List<DownloadItem>
+
     @Query("SELECT * FROM downloads WHERE status='Processing' ORDER BY id DESC")
     fun getProcessingDownloads() : Flow<List<DownloadItem>>
 

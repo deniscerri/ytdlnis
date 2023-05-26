@@ -3,8 +3,10 @@ package com.deniscerri.ytdlnis.util
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Looper
+import android.text.Html
 import android.util.Log
 import android.widget.Toast
+import androidx.core.text.HtmlCompat
 import androidx.preference.PreferenceManager
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.Format
@@ -282,12 +284,8 @@ class InfoUtil(private val context: Context) {
         var video: ResultItem? = null
         try {
             val id = obj.getString("videoId")
-            val title = obj.getString("title").toString()
-            title.replace("&#39;s", "'")
-            title.replace("&amp", "&")
-            val author = obj.getString("author").toString()
-            author.replace("&#39;s", "'")
-            author.replace("&amp", "&")
+            val title = Html.fromHtml(obj.getString("title").toString()).toString()
+            val author = Html.fromHtml(obj.getString("author").toString()).toString()
 
             if (author.isBlank()) throw Exception()
 

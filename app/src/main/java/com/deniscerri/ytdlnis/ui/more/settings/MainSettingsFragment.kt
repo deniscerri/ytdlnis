@@ -155,6 +155,7 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
                                     "downloads" -> json.add("downloads", backupHistory())
                                     "queued" -> json.add("queued", backupQueuedDownloads() )
                                     "cancelled" -> json.add("cancelled", backupCancelledDownloads() )
+                                    "errored" -> json.add("errored", backupErroredDownloads() )
                                     "cookies" -> json.add("cookies", backupCookies() )
                                     "templates" -> json.add("templates", backupCommandTemplates() )
                                     "shortcuts" -> json.add("shortcuts", backupShortcuts() )
@@ -263,6 +264,20 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
         runCatching {
             val items = withContext(Dispatchers.IO) {
                 downloadViewModel.getCancelled()
+            }
+            val arr = JsonArray()
+            items.forEach {
+                arr.add(JsonParser().parse(Gson().toJson(it)).asJsonObject)
+            }
+            return arr
+        }
+        return JsonArray()
+    }
+
+    private suspend fun backupErroredDownloads() : JsonArray {
+        runCatching {
+            val items = withContext(Dispatchers.IO) {
+                downloadViewModel.getErrored()
             }
             val arr = JsonArray()
             items.forEach {
@@ -433,6 +448,23 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
                         }
                         if(cancelled.isNotEmpty()){
                             finalMessage.append("${getString(R.string.cancelled)}: ${cancelled.count()}\n")
+                        }
+                    }
+
+                    //erorred downloads restore
+                    if(json.has("errored")){
+                        val items = json.getAsJsonArray("errored")
+                        val errored = mutableListOf<DownloadItem>()
+                        items.forEach {
+                            val item = Gson().fromJson(it.toString().replace("^\"|\"$", ""), DownloadItem::class.java)
+                            item.id = 0L
+                            errored.add(item)
+                            withContext(Dispatchers.IO){
+                                downloadViewModel.insert(item)
+                            }
+                        }
+                        if(errored.isNotEmpty()){
+                            finalMessage.append("${getString(R.string.errored)}: ${errored.count()}\n")
                         }
                     }
 

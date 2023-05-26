@@ -60,6 +60,10 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
         return downloadDao.getCancelledDownloadsList()
     }
 
+    fun getErroredDownloads() : List<DownloadItem> {
+        return downloadDao.getErroredDownloadsList()
+    }
+
     suspend fun deleteCancelled(){
         downloadDao.deleteCancelled()
     }

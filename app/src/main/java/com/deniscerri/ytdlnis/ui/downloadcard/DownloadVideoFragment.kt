@@ -161,7 +161,7 @@ class DownloadVideoFragment(private val resultItem: ResultItem, private var curr
                             }
                         }
                         formats = allFormats.first().toMutableList()
-                        uiUtil.populateFormatCard(formatCard, item.first(), item.drop(1).map { it.format_note })
+                        uiUtil.populateFormatCard(formatCard, item.first(), item.drop(1))
                         downloadItem.format.container = container.editText?.text.toString()
                     }
                 }

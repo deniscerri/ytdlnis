@@ -54,12 +54,12 @@ import java.util.Calendar
 
 class UiUtil(private val fileUtil: FileUtil) {
     @SuppressLint("SetTextI18n")
-    fun populateFormatCard(formatCard : MaterialCardView, chosenFormat: Format, audioFormats: List<String>?){
+    fun populateFormatCard(formatCard : MaterialCardView, chosenFormat: Format, audioFormats: List<Format>?){
         formatCard.findViewById<TextView>(R.id.container).text = chosenFormat.container.uppercase()
         if (audioFormats.isNullOrEmpty()){
             formatCard.findViewById<TextView>(R.id.format_note).text = chosenFormat.format_note.uppercase()
         }else{
-            val title = "${chosenFormat.format_note.uppercase()} + [${audioFormats.joinToString("/")}]"
+            val title = "${chosenFormat.format_note.uppercase()} + [${audioFormats.joinToString("/") { it.format_note }}]"
             formatCard.findViewById<TextView>(R.id.format_note).text = title
         }
         formatCard.findViewById<TextView>(R.id.format_id).text = "id: ${chosenFormat.format_id}"
@@ -77,7 +77,9 @@ class UiUtil(private val fileUtil: FileUtil) {
             formatCard.findViewById<TextView>(R.id.codec).visibility = View.VISIBLE
             formatCard.findViewById<TextView>(R.id.codec).text = codec
         }
-        formatCard.findViewById<TextView>(R.id.file_size).text = fileUtil.convertFileSize(chosenFormat.filesize)
+        var filesize = chosenFormat.filesize
+        if (!audioFormats.isNullOrEmpty()) filesize += audioFormats.sumOf { it.filesize }
+        formatCard.findViewById<TextView>(R.id.file_size).text = fileUtil.convertFileSize(filesize)
 
     }
 

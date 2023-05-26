@@ -702,6 +702,7 @@
         <item>@string/downloads</item>
         <item>@string/in_queue</item>
         <item>@string/cancelled</item>
+        <item>@string/errored</item>
         <item>@string/cookies</item>
         <item>@string/command_templates</item>
         <item>@string/shortcuts</item>
@@ -713,6 +714,7 @@
         <item>downloads</item>
         <item>queued</item>
         <item>cancelled</item>
+        <item>errored</item>
         <item>cookies</item>
         <item>templates</item>
         <item>shortcuts</item>

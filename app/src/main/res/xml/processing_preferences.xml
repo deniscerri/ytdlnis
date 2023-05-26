@@ -77,6 +77,15 @@
     <SwitchPreferenceCompat
         android:widgetLayout="@layout/preferece_material_switch"
         app:defaultValue="true"
+        android:dependency="embed_thumbnail"
+        app:icon="@drawable/ic_cut"
+        app:key="crop_thumbnail"
+        app:summary="@string/crop_thumb_summary"
+        app:title="@string/crop_thumb" />
+
+    <SwitchPreferenceCompat
+        android:widgetLayout="@layout/preferece_material_switch"
+        app:defaultValue="true"
         app:icon="@drawable/ic_chapters"
         app:key="add_chapters"
         app:summary="@string/add_chapters_summary"

@@ -184,19 +184,20 @@ class DownloadWorker(
                     }
                 }
 
-
                 request.addOption("--embed-metadata")
 
                 if (downloadItem.audioPreferences.embedThumb) {
                     request.addOption("--embed-thumbnail")
                     request.addOption("--convert-thumbnails", "jpg")
-                    try {
-                        val config = File(context.cacheDir.absolutePath + "/downloads/${downloadItem.id}/config" + downloadItem.title + "##" + downloadItem.format.format_id + ".txt")
-                        val configData = "--ppa \"ffmpeg: -c:v mjpeg -vf crop=\\\"'if(gt(ih,iw),iw,ih)':'if(gt(iw,ih),ih,iw)'\\\"\""
-                        config.writeText(configData)
-                        request.addOption("--ppa", "ThumbnailsConvertor:-qmin 1 -q:v 1")
-                        request.addOption("--config", config.absolutePath)
-                    } catch (ignored: Exception) {}
+                    if (sharedPreferences.getBoolean("crop_thumbnail", true)){
+                        try {
+                            val config = File(context.cacheDir.absolutePath + "/downloads/${downloadItem.id}/config" + downloadItem.title + "##" + downloadItem.format.format_id + ".txt")
+                            val configData = "--ppa \"ffmpeg: -c:v mjpeg -vf crop=\\\"'if(gt(ih,iw),iw,ih)':'if(gt(iw,ih),ih,iw)'\\\"\""
+                            config.writeText(configData)
+                            request.addOption("--ppa", "ThumbnailsConvertor:-qmin 1 -q:v 1")
+                            request.addOption("--config", config.absolutePath)
+                        } catch (ignored: Exception) {}
+                    }
                 }
                 request.addOption("--parse-metadata", "%(release_year,upload_date)s:%(meta_date)s")
 
