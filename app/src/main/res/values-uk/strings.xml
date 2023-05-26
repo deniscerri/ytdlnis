@@ -51,7 +51,7 @@
     <string name="audio">Аудіо</string>
     <string name="video">Відео</string>
     <string name="concurrent_fragments_summary">Кількість фрагментів власного відео DASH/HLS, які можна завантажити одночасно</string>
-    <string name="history_is_empty">Історія порожня.</string>
+    <string name="history_is_empty">Історія порожня</string>
     <string name="processing">Обробка</string>
     <string name="embed_subs_summary">Додати субтитри до відео</string>
     <string name="embed_thumb">Обкладинки мініатюр</string>
@@ -256,4 +256,7 @@
     <string name="backup_restore">Резервне копіювання і відновлення</string>
     <string name="socks5_proxy_summary">Використовуйте вказаний проксі HTTP/HTTPS/SOCKS</string>
     <string name="socks5_proxy">URL-адреса проксі Socks5</string>
+    <string name="search_suggestions">Пошукові пропозиції</string>
+    <string name="search_suggestions_summary">Отримувати пошукові пропозиції від Google</string>
+    <string name="preferred_format_id_summary">Виберіть формат із цим ID у картці завантаження</string>
 </resources>
