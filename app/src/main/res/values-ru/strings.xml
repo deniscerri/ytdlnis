@@ -80,7 +80,7 @@
     <string name="aria2_summary">Использовать aria2c вместо стандартного загрузчика</string>
     <string name="embed_thumb_summary">Используйте миниатюру в качестве обложки</string>
     <string name="command_download_notification_channel_description">Уведомление, показывающее ход загрузки с помощью команды yt-dlp</string>
-    <string name="history_is_empty">История пуста.</string>
+    <string name="history_is_empty">История пуста</string>
     <string name="update_app_summary">Анонсировать новые версии приложения при его открытии</string>
     <string name="configure_download">Управлять загрузкой</string>
     <string name="incognito_summary">Загрузить, не отмечая в истории</string>
@@ -256,4 +256,7 @@
     <string name="audio_samplerate">Частота дискретизации аудио</string>
     <string name="yellow">Желтый</string>
     <string name="monochrome">Монохромный</string>
+    <string name="search_suggestions">Предложения по поиску</string>
+    <string name="search_suggestions_summary">Получайте поисковые подсказки от Google</string>
+    <string name="preferred_format_id_summary">Выберите формат с этим идентификатором в карточке загрузки</string>
 </resources>

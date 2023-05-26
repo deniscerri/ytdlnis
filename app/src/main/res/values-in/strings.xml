@@ -58,7 +58,7 @@
     <string name="downloads_running_try_later">Pekerja unduhan sedang berjalan. Cobalah lagi nanti</string>
     <string name="video_format">Format Video</string>
     <string name="items_left">butir tersisa</string>
-    <string name="history_is_empty">Riwayat kosong.</string>
+    <string name="history_is_empty">Riwayat kosong</string>
     <string name="you_are_going_to_delete">Menghapus</string>
     <string name="url">URL</string>
     <string name="link_copied_to_clipboard">Pranala disalin ke papan klip</string>
@@ -99,7 +99,7 @@
     <string name="remove_duplicates">Bersihkan Duplikat</string>
     <string name="sort_by">Penyortiran</string>
     <string name="incognito_summary">Unduh tanpa menambahkannya ke riwayat</string>
-    <string name="configure_download">Sesuaikan Pengunduhan</string>
+    <string name="configure_download">Pengaturan Pengunduhan</string>
     <string name="author">Penggubah</string>
     <string name="embed_subtitles">Tanamkan Takarir</string>
     <string name="show_download_card">Tampilkan Opsi untuk Pengunduhan</string>
@@ -256,4 +256,7 @@
     <string name="backup_restore">Pencadangan dan Pemulihan</string>
     <string name="socks5_proxy_summary">Gunakan proksi HTTP/HTTPS/SOCKS yang dispesifikasikan</string>
     <string name="socks5_proxy">URL Proksi SOCKS5</string>
+    <string name="search_suggestions">Saran Pencarian</string>
+    <string name="search_suggestions_summary">Dapatkan saran pencarian dari google</string>
+    <string name="preferred_format_id_summary">Pilih format dengan ID ini di kartu unduhan</string>
 </resources>
