@@ -59,7 +59,7 @@
     <string name="command_download_notification_channel_name">Əmr Yükləmələri</string>
     <string name="command_download_notification_channel_description">Yt-dlp əmri işlədərkən yükləmə irəliləyişi göstərən bildiriş</string>
     <string name="items_left">sol element(lər)</string>
-    <string name="history_is_empty">Tarixçə boşdur.</string>
+    <string name="history_is_empty">Tarixçə boşdur</string>
     <string name="you_are_going_to_delete">Silinir</string>
     <string name="url">URL</string>
     <string name="link_copied_to_clipboard">Link buferə köçürüldü</string>
@@ -256,4 +256,7 @@
     <string name="backup_restore">Nüsxələmə və Bərpa et</string>
     <string name="socks5_proxy_summary">Xüsusi HTTP/HTTPS/SOCKS proksi istifadə et</string>
     <string name="socks5_proxy">Socks5 Proksi URL</string>
+    <string name="search_suggestions">Axtarış Təklifləri</string>
+    <string name="search_suggestions_summary">Google-dan axtarış təklifləri əldə et</string>
+    <string name="preferred_format_id_summary">Yükləmə kartında bu ID ilə format seç</string>
 </resources>
