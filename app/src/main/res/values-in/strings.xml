@@ -181,7 +181,7 @@
     <string name="ignore_battery_optimization">Abaikan Pengoptimalan Baterai</string>
     <string name="cut">Potong</string>
     <string name="new_cut">Potongan Baru</string>
-    <string name="suggested">Dianjurkan</string>
+    <string name="suggested">Disarankan</string>
     <string name="delete_all_cookies">Hapus Semua Kuki</string>
     <string name="new_cookie">Kuki Baru</string>
     <string name="cookies">Kuki</string>
@@ -256,7 +256,15 @@
     <string name="backup_restore">Pencadangan dan Pemulihan</string>
     <string name="socks5_proxy_summary">Gunakan proksi HTTP/HTTPS/SOCKS yang dispesifikasikan</string>
     <string name="socks5_proxy">URL Proksi SOCKS5</string>
-    <string name="search_suggestions">Saran Pencarian</string>
-    <string name="search_suggestions_summary">Dapatkan saran pencarian dari google</string>
-    <string name="preferred_format_id_summary">Pilih format dengan ID ini di kartu unduhan</string>
+    <string name="search_suggestions">Saran Penelusuran</string>
+    <string name="search_suggestions_summary">Dapatkan saran penelusuran dari Google</string>
+    <string name="preferred_format_id_summary">Pilih format yang ada di kartu unduhan yang ber-ID ini</string>
+    <string name="locale">Wilayah</string>
+    <string name="audio_only_item">Butir ini hanya berisi format audio</string>
+    <string name="swipe_gestures_summary">Usap butir untuk melakukan tindakan-tindakan tertentu</string>
+    <string name="crop_thumb">Potong Gambar Keluku</string>
+    <string name="crop_thumb_summary">Potong gambar keluku menjadi persegi bagi pengunduhan audio</string>
+    <string name="swipe_gestures">Gestur Usap</string>
+    <string name="general">Umum</string>
+    <string name="misc">Aneka Ragam</string>
 </resources>
