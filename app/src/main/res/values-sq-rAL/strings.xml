@@ -74,7 +74,7 @@
     <string name="command_download_notification_channel_name">Shkarkimet e Skedarëve nga Komanda</string>
     <string name="command_download_notification_channel_description">Njoftimi i cili tregon progresin e shkarkimeve te skedarëve audio dhe video nga komanda</string>
     <string name="items_left">element(e) në rradhë</string>
-    <string name="history_is_empty">Historia është bosh.</string>
+    <string name="history_is_empty">Historia është bosh</string>
     <string name="you_are_going_to_delete">Duke fshirë</string>
     <string name="url">URL</string>
     <string name="link_copied_to_clipboard">Linku u kopjua</string>
@@ -260,4 +260,11 @@
     <string name="search_suggestions">Sygjerimet e Kërkimit</string>
     <string name="preferred_format_id_summary">Zgjidhni formatin me këtë ID në kartën e shkarkimit</string>
     <string name="misc">Të Tjera</string>
+    <string name="audio_only_item">Ky artikull ka vetëm formate audio</string>
+    <string name="locale">Lokaliteti</string>
+    <string name="general">Të Përgjithshme</string>
+    <string name="swipe_gestures">Gjestet e rrëshqitjes</string>
+    <string name="swipe_gestures_summary">Rrëshqitni artikujt për veprime të caktuara</string>
+    <string name="crop_thumb">Preje Thumbnailin</string>
+    <string name="crop_thumb_summary">Preje thumbnailin në formë katrore për shkarkimet audio</string>
 </resources>
