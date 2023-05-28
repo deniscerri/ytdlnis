@@ -70,7 +70,7 @@ object FileUtil {
 
 
     @Throws(Exception::class)
-     fun moveFile(originDir: File, context: Context, destDir: String, keepCache: Boolean, progress: (p: Int) -> Unit) : String {
+     fun moveFile(originDir: File, context: Context, destDir: String, keepCache: Boolean, progress: (p: Int) -> Unit) : List<String> {
         val fileList = mutableListOf<File>()
         val dir = File(formatPath(destDir))
         if (!dir.exists()) dir.mkdirs()
@@ -159,17 +159,17 @@ object FileUtil {
         }
         return scanMedia(fileList, context)
     }
-    private fun scanMedia(files: List<File>, context: Context) : String {
+    private fun scanMedia(files: List<File>, context: Context) : List<String> {
 
         try {
             val paths = files.map { it.absolutePath }.toTypedArray()
             MediaScannerConnection.scanFile(context, paths, null, null)
-            return files.reduce(Compare::max).absolutePath
+            return files.sortedByDescending { it.length() }.map { it.absolutePath }
         }catch (e: Exception){
             e.printStackTrace()
         }
 
-        return context.getString(R.string.unfound_file);
+        return listOf(context.getString(R.string.unfound_file))
     }
 
     fun getLogFile(context: Context, item: DownloadItem) : File {

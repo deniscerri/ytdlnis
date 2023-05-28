@@ -23,6 +23,35 @@
         android:summary="@string/access_all_directories_summary"
         app:title="@string/access_all_directories" />
 
+
+    <EditTextPreference
+        android:icon="@drawable/ic_textformat"
+        app:key="file_name_template"
+        app:useSimpleSummaryProvider="true"
+        app:defaultValue="%(uploader)s - %(title)s"
+        app:title="@string/file_name_template" />
+
+    <EditTextPreference
+        android:icon="@drawable/ic_textformat"
+        app:key="file_name_template_audio"
+        app:useSimpleSummaryProvider="true"
+        app:defaultValue="%(uploader)s - %(title)s"
+        app:title="@string/file_name_template" />
+
+    <SwitchPreferenceCompat
+        android:widgetLayout="@layout/preferece_material_switch"
+        app:defaultValue="false"
+        app:icon="@drawable/if_file_rename"
+        app:key="restrict_filenames"
+        app:summary="@string/restrict_filenames_summary"
+        app:title="@string/restrict_filenames" />
+
+    <Preference
+        app:icon="@drawable/baseline_drive_file_move_24"
+        app:key="move_cache"
+        android:summary="@string/move_temporary_files_summary"
+        app:title="@string/move_temporary_files" />
+
     <Preference
         app:icon="@drawable/ic_folder_delete"
         app:key="clear_cache"

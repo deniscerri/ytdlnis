@@ -63,7 +63,6 @@ class TerminalActivity : BaseActivity() {
     private lateinit var downloadFile : File
     private lateinit var observer: FileObserver
     private lateinit var imm : InputMethodManager
-    private lateinit var uiUtil: UiUtil
     var context: Context? = null
 
     public override fun onCreate(savedInstanceState: Bundle?) {
@@ -74,7 +73,6 @@ class TerminalActivity : BaseActivity() {
         downloadFile = File(cacheDir.absolutePath + "/$downloadID.txt")
         if (! downloadFile.exists()) downloadFile.createNewFile()
         imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-        uiUtil = UiUtil()
 
         context = baseContext
         scrollView = findViewById(R.id.custom_command_scrollview)
@@ -114,7 +112,7 @@ class TerminalActivity : BaseActivity() {
                         Toast.makeText(context, getString(R.string.add_template_first), Toast.LENGTH_SHORT).show()
                     }else{
                         lifecycleScope.launch {
-                            uiUtil.showCommandTemplates(this@TerminalActivity, commandTemplateViewModel){ template ->
+                            UiUtil.showCommandTemplates(this@TerminalActivity, commandTemplateViewModel){ template ->
                                 input!!.text.insert(input!!.selectionStart, template.content + " ")
                                 input!!.postDelayed({
                                     input!!.requestFocus()

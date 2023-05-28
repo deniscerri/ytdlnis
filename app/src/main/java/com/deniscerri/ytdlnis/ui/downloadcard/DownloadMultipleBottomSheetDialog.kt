@@ -59,7 +59,6 @@ class DownloadMultipleBottomSheetDialog(private var results: List<ResultItem?>, 
     private lateinit var listAdapter : ConfigureMultipleDownloadsAdapter
     private lateinit var recyclerView: RecyclerView
     private lateinit var behavior: BottomSheetBehavior<View>
-    private lateinit var uiUtil: UiUtil
     private lateinit var bottomAppBar: BottomAppBar
 
 
@@ -68,7 +67,6 @@ class DownloadMultipleBottomSheetDialog(private var results: List<ResultItem?>, 
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
         resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]
         commandTemplateViewModel = ViewModelProvider(this)[CommandTemplateViewModel::class.java]
-        uiUtil = UiUtil()
     }
 
     @SuppressLint("RestrictedApi", "NotifyDataSetChanged")
@@ -104,7 +102,7 @@ class DownloadMultipleBottomSheetDialog(private var results: List<ResultItem?>, 
 
 
         scheduleBtn.setOnClickListener{
-            uiUtil.showDatePicker(parentFragmentManager) {
+            UiUtil.showDatePicker(parentFragmentManager) {
                 scheduleBtn.isEnabled = false
                 download.isEnabled = false
                 items.forEach { item ->
@@ -238,7 +236,7 @@ class DownloadMultipleBottomSheetDialog(private var results: List<ResultItem?>, 
                     }else{
                         if (items.first().type == DownloadViewModel.Type.command){
                             lifecycleScope.launch {
-                                uiUtil.showCommandTemplates(requireActivity(), commandTemplateViewModel) {
+                                UiUtil.showCommandTemplates(requireActivity(), commandTemplateViewModel) {
                                     val format = downloadViewModel.generateCommandFormat(it)
                                     items.forEach { f ->
                                         f.format = format

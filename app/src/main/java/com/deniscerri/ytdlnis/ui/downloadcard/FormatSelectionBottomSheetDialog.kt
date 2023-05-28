@@ -32,7 +32,6 @@ import java.util.*
 class FormatSelectionBottomSheetDialog(private val items: List<DownloadItem?>, private var formats: List<List<Format>>, private val listener: OnFormatClickListener) : BottomSheetDialogFragment() {
     private lateinit var behavior: BottomSheetBehavior<View>
     private lateinit var infoUtil: InfoUtil
-    private lateinit var uiUtil: UiUtil
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var formatCollection: MutableList<List<Format>>
     private lateinit var chosenFormats: List<Format>
@@ -47,7 +46,6 @@ class FormatSelectionBottomSheetDialog(private val items: List<DownloadItem?>, p
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        uiUtil = UiUtil()
         infoUtil = InfoUtil(requireActivity().applicationContext)
         formatCollection = mutableListOf()
         chosenFormats = listOf()
@@ -230,7 +228,7 @@ class FormatSelectionBottomSheetDialog(private val items: List<DownloadItem?>, p
             val format = chosenFormats[i]
             val formatItem = LayoutInflater.from(context).inflate(R.layout.format_item, null)
             formatItem.tag = "${format.format_id}${format.format_note}"
-            uiUtil.populateFormatCard(formatItem as MaterialCardView, format, null)
+            UiUtil.populateFormatCard(formatItem as MaterialCardView, format, null)
             formatItem.setOnClickListener{ clickedformat ->
                 //if the context is behind a single download card and its a video, allow the ability to multiselect audio formats
                 if (canMultiSelectAudio){
@@ -273,7 +271,7 @@ class FormatSelectionBottomSheetDialog(private val items: List<DownloadItem?>, p
                 }
             }
             formatItem.setOnLongClickListener {
-                uiUtil.showFormatDetails(format, requireActivity())
+                UiUtil.showFormatDetails(format, requireActivity())
                 true
             }
 

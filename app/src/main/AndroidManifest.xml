@@ -128,18 +128,6 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name=".receiver.SharedDownloadNotificationReceiver"
-            android:exported="true"
-            android:excludeFromRecents="true"
-            android:launchMode="singleInstance"
-            android:theme="@style/Theme.BottomSheet">
-            <intent-filter>
-                <action android:name="ytdlnis.SharedDownloadNotificationReceiver" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-
         <service
             android:name="androidx.appcompat.app.AppLocalesMetadataHolderService"
             android:enabled="false"
@@ -148,6 +136,10 @@
                 android:name="autoStoreLocales"
                 android:value="true" />
         </service>
+
+        <service
+            android:name=".receiver.ShareFileService"
+            android:exported="false" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

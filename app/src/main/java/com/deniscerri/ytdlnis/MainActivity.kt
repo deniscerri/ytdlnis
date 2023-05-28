@@ -299,6 +299,21 @@ class MainActivity : BaseActivity() {
                 e.printStackTrace()
             }
         }
+        else{
+            //coming from errored notification
+            if (intent.hasExtra("logpath")){
+                val bundle = Bundle()
+                bundle.putString("logpath", intent.getStringExtra("logpath"))
+                navController.navigate(
+                    R.id.downloadLogFragment,
+                    bundle
+                )
+            //coming from active download notification
+            }else if (intent.hasExtra("activedownload")){
+                navController.popBackStack(R.id.downloadQueueMainFragment, true)
+                navController.navigate(R.id.downloadQueueMainFragment)
+            }
+        }
     }
 
 

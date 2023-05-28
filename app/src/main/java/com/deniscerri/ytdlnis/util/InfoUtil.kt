@@ -56,13 +56,18 @@ class InfoUtil(private val context: Context) {
         }
     }
 
-    @Throws(JSONException::class)
     fun search(query: String): ArrayList<ResultItem?> {
         init()
         items = ArrayList()
         val searchEngine = sharedPreferences.getString("search_engine", "ytsearch")
         return if (searchEngine == "ytsearch"){
-            if (key!!.isNotEmpty()) searchFromKey(query) else if (useInvidous) searchFromInvidous(query) else getFromYTDL(query)
+            if (key!!.isNotEmpty()) searchFromKey(query) else {
+                try{
+                    searchFromPiped(query)
+                }catch (e: Exception){
+                    getFromYTDL(query)
+                }
+            }
         }else getFromYTDL(query)
     }
 
@@ -116,22 +121,15 @@ class InfoUtil(private val context: Context) {
     }
 
     @Throws(JSONException::class)
-    fun searchFromInvidous(query: String): ArrayList<ResultItem?> {
-        val dataArray = genericArrayRequest(invidousURL + "search?q=" + query + "?type=video")
+    fun searchFromPiped(query: String): ArrayList<ResultItem?> {
+        val data = genericRequest(pipedURL + "search?q=" + query + "?filter=videos")
+        val dataArray = data.getJSONArray("items")
         if (dataArray.length() == 0) return getFromYTDL(query)
         for (i in 0 until dataArray.length()) {
             val element = dataArray.getJSONObject(i)
-            if (!element.getString("type").equals("video")) continue
-            val duration = formatIntegerDuration(element.getInt("lengthSeconds"), Locale.getDefault())
-            if (duration == "0:00") {
-                continue
-            }
-            element.put("duration", duration)
-            element.put(
-                "thumb",
-                element.getJSONArray("videoThumbnails").getJSONObject(0).getString("url")
-            )
-            val v = createVideoFromInvidiousJSON(element)
+            if (element.getInt("duration") == -1) continue
+            element.put("uploader", element.getString("uploaderName"))
+            val v = createVideoFromPipedJSON(element, element.getString("url").removePrefix("/watch?v="))
             if (v == null || v.thumb.isEmpty()) {
                 continue
             }
@@ -511,7 +509,7 @@ class InfoUtil(private val context: Context) {
         init()
         items = ArrayList()
         return if (key!!.isEmpty()) {
-            if (useInvidous) getTrendingFromInvidous(context) else ArrayList()
+            getTrendingFromPiped()
         } else getTrendingFromKey(context)
     }
 
@@ -545,14 +543,15 @@ class InfoUtil(private val context: Context) {
         return items
     }
 
-    private fun getTrendingFromInvidous(context: Context): ArrayList<ResultItem?> {
-        val url = invidousURL + "trending?type=music&region=" + countryCODE
+    private fun getTrendingFromPiped(): ArrayList<ResultItem?> {
+        val url = pipedURL + "trending?region=" + countryCODE
         val res = genericArrayRequest(url)
         try {
             for (i in 0 until res.length()) {
                 val element = res.getJSONObject(i)
-                if (element.getString("type") != "video") continue
-                val v = createVideoFromInvidiousJSON(element)
+                if (element.getInt("duration") < 0) continue
+                element.put("uploader", element.getString("uploaderName"))
+                val v = createVideoFromPipedJSON(element,  element.getString("url").removePrefix("/watch?v="))
                 if (v == null || v.thumb.isEmpty()) continue
                 v.playlistTitle = context.getString(R.string.trendingPlaylist)
                 items.add(v)

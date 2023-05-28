@@ -45,7 +45,6 @@ class CookiesFragment : Fragment(), CookieAdapter.OnItemClickListener {
     private lateinit var listAdapter: CookieAdapter
     private lateinit var topAppBar: MaterialToolbar
     private lateinit var cookiesViewModel: CookieViewModel
-    private lateinit var uiUtil: UiUtil
     private lateinit var cookiesList: List<CookieItem>
     private lateinit var noResults : RelativeLayout
     private lateinit var mainActivity: MainActivity
@@ -79,7 +78,6 @@ class CookiesFragment : Fragment(), CookieAdapter.OnItemClickListener {
             val itemTouchHelper = ItemTouchHelper(simpleCallback)
             itemTouchHelper.attachToRecyclerView(recyclerView)
         }
-        uiUtil = UiUtil()
 
         cookiesViewModel = ViewModelProvider(this)[CookieViewModel::class.java]
         cookiesViewModel.items.observe(viewLifecycleOwner) {

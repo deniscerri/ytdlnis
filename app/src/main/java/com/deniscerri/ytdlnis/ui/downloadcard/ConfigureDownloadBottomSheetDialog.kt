@@ -42,7 +42,6 @@ class ConfigureDownloadBottomSheetDialog(private val resultItem: ResultItem, pri
     private lateinit var commandTemplateDao: CommandTemplateDao
     private lateinit var behavior: BottomSheetBehavior<View>
     private lateinit var onDownloadItemUpdateListener: OnDownloadItemUpdateListener
-    private lateinit var uiUtil: UiUtil
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,7 +49,6 @@ class ConfigureDownloadBottomSheetDialog(private val resultItem: ResultItem, pri
         resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]
         commandTemplateDao = DBManager.getInstance(requireContext()).commandTemplateDao
         onDownloadItemUpdateListener = listener
-        uiUtil = UiUtil()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -188,10 +186,10 @@ class ConfigureDownloadBottomSheetDialog(private val resultItem: ResultItem, pri
         val link = view.findViewById<Button>(R.id.bottom_sheet_link)
         link.text = resultItem.url
         link.setOnClickListener{
-            uiUtil.openLinkIntent(requireContext(), resultItem.url, null)
+            UiUtil.openLinkIntent(requireContext(), resultItem.url, null)
         }
         link.setOnLongClickListener{
-            uiUtil.copyLinkToClipBoard(requireContext(), resultItem.url, null)
+            UiUtil.copyLinkToClipBoard(requireContext(), resultItem.url, null)
             true
         }
 

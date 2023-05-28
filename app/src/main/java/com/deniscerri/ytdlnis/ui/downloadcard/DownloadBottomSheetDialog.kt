@@ -47,7 +47,6 @@ class DownloadBottomSheetDialog(private val resultItem: ResultItem, private val 
     private lateinit var resultViewModel: ResultViewModel
     private lateinit var behavior: BottomSheetBehavior<View>
     private lateinit var commandTemplateDao : CommandTemplateDao
-    private lateinit var uiUtil: UiUtil
     private lateinit var infoUtil: InfoUtil
 
     private lateinit var downloadAudioFragment: DownloadAudioFragment
@@ -59,7 +58,6 @@ class DownloadBottomSheetDialog(private val resultItem: ResultItem, private val 
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
         resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]
         commandTemplateDao = DBManager.getInstance(requireContext()).commandTemplateDao
-        uiUtil = UiUtil()
         infoUtil = InfoUtil(requireContext())
     }
 
@@ -180,7 +178,7 @@ class DownloadBottomSheetDialog(private val resultItem: ResultItem, private val 
 
 
         scheduleBtn.setOnClickListener{
-            uiUtil.showDatePicker(fragmentManager) {
+            UiUtil.showDatePicker(fragmentManager) {
                 scheduleBtn.isEnabled = false
                 download.isEnabled = false
                 val item: DownloadItem = getDownloadItem();
@@ -206,10 +204,10 @@ class DownloadBottomSheetDialog(private val resultItem: ResultItem, private val 
         val link = view.findViewById<Button>(R.id.bottom_sheet_link)
         link.text = resultItem.url
         link.setOnClickListener{
-            uiUtil.openLinkIntent(requireContext(), resultItem.url, null)
+            UiUtil.openLinkIntent(requireContext(), resultItem.url, null)
         }
         link.setOnLongClickListener{
-            uiUtil.copyLinkToClipBoard(requireContext(), resultItem.url, null)
+            UiUtil.copyLinkToClipBoard(requireContext(), resultItem.url, null)
             true
         }
 

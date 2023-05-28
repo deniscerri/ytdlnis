@@ -51,7 +51,6 @@ class DownloadVideoFragment(private val resultItem: ResultItem, private var curr
     private var activity: Activity? = null
     private lateinit var downloadViewModel : DownloadViewModel
     private lateinit var resultViewModel: ResultViewModel
-    private lateinit var uiUtil : UiUtil
 
     private lateinit var title : TextInputLayout
     private lateinit var author : TextInputLayout
@@ -70,8 +69,6 @@ class DownloadVideoFragment(private val resultItem: ResultItem, private var curr
         activity = getActivity()
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
         resultViewModel = ViewModelProvider(this@DownloadVideoFragment)[ResultViewModel::class.java]
-
-        uiUtil = UiUtil()
         return fragmentView
     }
 
@@ -146,7 +143,7 @@ class DownloadVideoFragment(private val resultItem: ResultItem, private var curr
                 val formatCard = view.findViewById<MaterialCardView>(R.id.format_card_constraintLayout)
 
                 val chosenFormat = downloadItem.format
-                uiUtil.populateFormatCard(formatCard, chosenFormat, downloadItem.allFormats.filter { downloadItem.videoPreferences.audioFormatIDs.contains(it.format_id) })
+                UiUtil.populateFormatCard(formatCard, chosenFormat, downloadItem.allFormats.filter { downloadItem.videoPreferences.audioFormatIDs.contains(it.format_id) })
                 val listener = object : OnFormatClickListener {
                     override fun onFormatClick(allFormats: List<List<Format>>, item: List<Format>) {
                         downloadItem.format = item.first()
@@ -159,7 +156,7 @@ class DownloadVideoFragment(private val resultItem: ResultItem, private var curr
                             }
                         }
                         formats = allFormats.first().toMutableList()
-                        uiUtil.populateFormatCard(formatCard, item.first(), item.drop(1))
+                        UiUtil.populateFormatCard(formatCard, item.first(), item.drop(1))
                     }
                 }
                 formatCard.setOnClickListener{
@@ -170,7 +167,7 @@ class DownloadVideoFragment(private val resultItem: ResultItem, private var curr
                 }
 
                 formatCard.setOnLongClickListener {
-                    uiUtil.showFormatDetails(downloadItem.format, requireActivity())
+                    UiUtil.showFormatDetails(downloadItem.format, requireActivity())
                     true
                 }
 
@@ -367,7 +364,7 @@ class DownloadVideoFragment(private val resultItem: ResultItem, private var curr
                 }
 
                 subtitleLanguages.setOnClickListener {
-                    uiUtil.showSubtitleLanguagesDialog(requireActivity(), downloadItem.videoPreferences.subsLanguages){
+                    UiUtil.showSubtitleLanguagesDialog(requireActivity(), downloadItem.videoPreferences.subsLanguages){
                         downloadItem.videoPreferences.subsLanguages = it
                     }
                 }

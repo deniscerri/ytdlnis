@@ -51,7 +51,6 @@ class DownloadAudioFragment(private var resultItem: ResultItem, private var curr
     private var activity: Activity? = null
     private lateinit var downloadViewModel : DownloadViewModel
     private lateinit var resultViewModel : ResultViewModel
-    private lateinit var uiUtil : UiUtil
 
     private lateinit var title : TextInputLayout
     private lateinit var author : TextInputLayout
@@ -70,7 +69,6 @@ class DownloadAudioFragment(private var resultItem: ResultItem, private var curr
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
         resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]
 
-        uiUtil = UiUtil()
         return fragmentView
     }
 
@@ -142,11 +140,11 @@ class DownloadAudioFragment(private var resultItem: ResultItem, private var curr
 
                 val formatCard = view.findViewById<MaterialCardView>(R.id.format_card_constraintLayout)
                 val chosenFormat = downloadItem.format
-                uiUtil.populateFormatCard(formatCard, chosenFormat, null)
+                UiUtil.populateFormatCard(formatCard, chosenFormat, null)
                 val listener = object : OnFormatClickListener {
                     override fun onFormatClick(allFormats: List<List<Format>>, item: List<Format>) {
                         downloadItem.format = item.first()
-                        uiUtil.populateFormatCard(formatCard, item.first(), null)
+                        UiUtil.populateFormatCard(formatCard, item.first(), null)
                         lifecycleScope.launch {
                             withContext(Dispatchers.IO){
                                 resultItem.formats.removeAll(formats.toSet())
@@ -164,7 +162,7 @@ class DownloadAudioFragment(private var resultItem: ResultItem, private var curr
                     }
                 }
                 formatCard.setOnLongClickListener {
-                    uiUtil.showFormatDetails(downloadItem.format, requireActivity())
+                    UiUtil.showFormatDetails(downloadItem.format, requireActivity())
                     true
                 }
 

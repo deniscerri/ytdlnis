@@ -73,6 +73,7 @@ class DownloadWorker(
         }
 
         val intent = Intent(context, MainActivity::class.java)
+        intent.putExtra("activedownload", "")
         val pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE)
         val notification = notificationUtil.createDownloadServiceNotification(pendingIntent, downloadItem.title, downloadItem.id.toInt(), NotificationUtil.DOWNLOAD_SERVICE_CHANNEL_ID)
         val foregroundInfo = ForegroundInfo(downloadItem.id.toInt(), notification)
@@ -316,14 +317,14 @@ class DownloadWorker(
         }.onSuccess {
             //move file from internal to set download directory
             setProgressAsync(workDataOf("progress" to 100, "output" to "Moving file to ${FileUtil.formatPath(downloadLocation)}", "id" to downloadItem.id, "log" to logDownloads))
-            var finalPath : String?
+            var finalPaths : List<String>?
             try {
-                finalPath = FileUtil.moveFile(tempFileDir.absoluteFile,context, downloadLocation, keepCache){ p ->
+                finalPaths = FileUtil.moveFile(tempFileDir.absoluteFile,context, downloadLocation, keepCache){ p ->
                     setProgressAsync(workDataOf("progress" to p, "output" to "Moving file to ${FileUtil.formatPath(downloadLocation)}", "id" to downloadItem.id, "log" to logDownloads))
                 }
-                setProgressAsync(workDataOf("progress" to 100, "output" to "Moved file to $finalPath", "id" to downloadItem.id, "log" to logDownloads))
+                setProgressAsync(workDataOf("progress" to 100, "output" to "Moved file to $downloadLocation", "id" to downloadItem.id, "log" to logDownloads))
             }catch (e: Exception){
-                finalPath = context.getString(R.string.unfound_file)
+                finalPaths = listOf(context.getString(R.string.unfound_file))
                 e.printStackTrace()
                 handler.postDelayed({
                     Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
@@ -336,9 +337,9 @@ class DownloadWorker(
             val incognito = sharedPreferences.getBoolean("incognito", false)
             if (!incognito) {
                 val unixtime = System.currentTimeMillis() / 1000
-                val file = File(finalPath!!)
+                val file = File(finalPaths?.first()!!)
                 downloadItem.format.filesize = if (file.exists()) file.length() else 0L
-                val historyItem = HistoryItem(0, downloadItem.url, downloadItem.title, downloadItem.author, downloadItem.duration, downloadItem.thumb, downloadItem.type, unixtime, finalPath, downloadItem.website, downloadItem.format, downloadItem.id)
+                val historyItem = HistoryItem(0, downloadItem.url, downloadItem.title, downloadItem.author, downloadItem.duration, downloadItem.thumb, downloadItem.type, unixtime, finalPaths.first(), downloadItem.website, downloadItem.format, downloadItem.id)
                 runBlocking {
                     historyDao.insert(historyItem)
                 }
@@ -346,7 +347,7 @@ class DownloadWorker(
             notificationUtil.cancelDownloadNotification(downloadItem.id.toInt())
 
             notificationUtil.createDownloadFinished(
-                downloadItem.title,  if (finalPath.equals(context.getString(R.string.unfound_file))) null else finalPath,
+                downloadItem.title,  if (finalPaths?.first().equals(context.getString(R.string.unfound_file))) null else finalPaths,
                 NotificationUtil.DOWNLOAD_FINISHED_CHANNEL_ID
             )
 

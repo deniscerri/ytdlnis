@@ -273,4 +273,6 @@
     <string name="crop_thumb_summary">Crop the thumbnail into a square for audio downloads</string>
     <string name="locale">Locale</string>
     <string name="audio_only_item">This item only contains audio formats</string>
+    <string name="move_temporary_files">Move Temporary Files</string>
+    <string name="move_temporary_files_summary">Transfer cached files to the downloads folder</string>
 </resources>

@@ -33,6 +33,7 @@ import com.deniscerri.ytdlnis.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdlnis.ui.BaseActivity
 import com.deniscerri.ytdlnis.ui.downloadcard.DownloadBottomSheetDialog
 import com.deniscerri.ytdlnis.ui.downloadcard.SelectPlaylistItemsBottomSheetDialog
+import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.ThemeUtil
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -207,9 +208,9 @@ class ShareActivity : BaseActivity() {
 
 
     private fun createDefaultFolders(){
-        val audio = File(getString(R.string.music_path))
-        val video = File(getString(R.string.video_path))
-        val command = File(getString(R.string.command_path))
+        val audio = File(FileUtil.getDefautAudioPath())
+        val video = File(FileUtil.getDefautVideoPath())
+        val command = File(FileUtil.getDefaultCommandPath())
 
         audio.mkdirs()
         video.mkdirs()
@@ -266,9 +267,5 @@ class ShareActivity : BaseActivity() {
     override fun onConfigurationChanged(newConfig: Configuration) {
         startActivity(Intent(this, MainActivity::class.java))
         super.onConfigurationChanged(newConfig)
-    }
-
-    companion object {
-        private const val TAG = "ShareActivity"
     }
 }

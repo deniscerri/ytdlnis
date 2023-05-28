@@ -8,12 +8,21 @@ import android.os.Bundle
 import android.os.Environment
 import android.provider.Settings
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.preference.EditTextPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceManager
+import androidx.work.Data
+import androidx.work.ExistingWorkPolicy
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkInfo
+import androidx.work.WorkManager
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.util.FileUtil
+import com.deniscerri.ytdlnis.work.DownloadWorker
+import com.deniscerri.ytdlnis.work.MoveCacheFilesWorker
 import com.google.android.material.snackbar.Snackbar
 import java.io.File
+import java.util.concurrent.TimeUnit
 
 
 class FolderSettingsFragment : BaseSettingsFragment() {
@@ -23,7 +32,10 @@ class FolderSettingsFragment : BaseSettingsFragment() {
     private var videoPath: Preference? = null
     private var commandPath: Preference? = null
     private var accessAllFiles : Preference? = null
+    private var audioFilenameTemplate : EditTextPreference? = null
+    private var videoFilenameTemplate : EditTextPreference? = null
     private var clearCache: Preference? = null
+    private var moveCache: Preference? = null
 
     private var activeDownloadCount = 0
 
@@ -37,7 +49,10 @@ class FolderSettingsFragment : BaseSettingsFragment() {
         videoPath = findPreference("video_path")
         commandPath = findPreference("command_path")
         accessAllFiles = findPreference("access_all_files")
+        videoFilenameTemplate = findPreference("file_name_template")
+        audioFilenameTemplate = findPreference("file_name_template_audio")
         clearCache = findPreference("clear_cache")
+        moveCache = findPreference("move_cache")
 
         if (preferences.getString("music_path", "")!!.isEmpty()) {
             editor.putString("music_path", FileUtil.getDefautAudioPath())
@@ -95,6 +110,12 @@ class FolderSettingsFragment : BaseSettingsFragment() {
                 true
             }
 
+        videoFilenameTemplate?.title = "${getString(R.string.file_name_template)} [${getString(R.string.video)}]"
+        videoFilenameTemplate?.dialogTitle = "${getString(R.string.file_name_template)} [${getString(R.string.video)}]"
+
+        audioFilenameTemplate?.title = "${getString(R.string.file_name_template)} [${getString(R.string.audio)}]"
+        audioFilenameTemplate?.dialogTitle = "${getString(R.string.file_name_template)} [${getString(R.string.audio)}]"
+
         var cacheSize = File(requireContext().cacheDir.absolutePath + "/downloads").walkBottomUp().fold(0L) { acc, file -> acc + file.length() }
         clearCache!!.summary = "(${FileUtil.convertFileSize(cacheSize)}) ${resources.getString(R.string.clear_temporary_files_summary)}"
         clearCache!!.onPreferenceClickListener =
@@ -109,6 +130,34 @@ class FolderSettingsFragment : BaseSettingsFragment() {
                 }
                 true
             }
+
+        moveCache!!.onPreferenceClickListener =
+            Preference.OnPreferenceClickListener {
+                val workRequest = OneTimeWorkRequestBuilder<MoveCacheFilesWorker>()
+                    .addTag("cacheFiles")
+                    .build()
+
+                WorkManager.getInstance(requireContext()).beginUniqueWork(
+                    System.currentTimeMillis().toString(),
+                    ExistingWorkPolicy.KEEP,
+                    workRequest
+                ).enqueue()
+
+                WorkManager.getInstance(requireContext())
+                    .getWorkInfosByTagLiveData("cacheFiles")
+                    .observe(viewLifecycleOwner){ list ->
+                        if (list == null) return@observe
+                        if (list.first() == null) return@observe
+
+                        if (list.first().state == WorkInfo.State.SUCCEEDED){
+                            cacheSize = File(requireContext().cacheDir.absolutePath + "/downloads").walkBottomUp().fold(0L) { acc, file -> acc + file.length() }
+                            clearCache!!.summary = "(${FileUtil.convertFileSize(cacheSize)}) ${resources.getString(R.string.clear_temporary_files_summary)}"
+                        }
+                    }
+
+                true
+            }
+
 
     }
 

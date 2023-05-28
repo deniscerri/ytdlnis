@@ -87,7 +87,6 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
     private var historyList: List<HistoryItem?>? = null
     private var allhistoryList: List<HistoryItem?>? = null
     private var selectedObjects: ArrayList<HistoryItem>? = null
-    private var uiUtil: UiUtil? = null
     private var _binding : FragmentHistoryBinding? = null
     private var actionMode : ActionMode? = null
 
@@ -112,7 +111,6 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
         noResults = view.findViewById(R.id.no_results)
         selectionChips = view.findViewById(R.id.history_selection_chips)
         websiteGroup = view.findViewById(R.id.website_chip_group)
-        uiUtil = UiUtil()
         uiHandler = Handler(Looper.getMainLooper())
         selectedObjects = ArrayList()
 
@@ -424,7 +422,7 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
 
         if (isPresent){
             btn.setOnClickListener {
-                uiUtil!!.shareFileIntent(requireContext(), listOf(item.downloadPath))
+                UiUtil!!.shareFileIntent(requireContext(), listOf(item.downloadPath))
             }
         }
 
@@ -469,10 +467,10 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
         link!!.text = url
         link.tag = itemID
         link.setOnClickListener{
-            uiUtil!!.openLinkIntent(requireContext(), item.url, bottomSheet)
+            UiUtil.openLinkIntent(requireContext(), item.url, bottomSheet)
         }
         link.setOnLongClickListener{
-            uiUtil!!.copyLinkToClipBoard(requireContext(), item.url, bottomSheet)
+            UiUtil.copyLinkToClipBoard(requireContext(), item.url, bottomSheet)
             true
         }
         val remove = bottomSheet!!.findViewById<Button>(R.id.bottomsheet_remove_button)
@@ -483,7 +481,7 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
         val openFile = bottomSheet!!.findViewById<Button>(R.id.bottomsheet_open_file_button)
         openFile!!.tag = itemID
         openFile.setOnClickListener{
-            uiUtil!!.openFileIntent(requireContext(), item.downloadPath)
+            UiUtil.openFileIntent(requireContext(), item.downloadPath)
         }
 
         val redownload = bottomSheet!!.findViewById<Button>(R.id.bottomsheet_redownload_button)
@@ -582,7 +580,7 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
                     true
                 }
                 R.id.share -> {
-                    uiUtil?.shareFileIntent(requireContext(), selectedObjects!!.map { it.downloadPath })
+                    UiUtil.shareFileIntent(requireContext(), selectedObjects!!.map { it.downloadPath })
                     clearCheckedItems()
                     actionMode?.finish()
                     true

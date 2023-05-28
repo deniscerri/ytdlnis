@@ -63,7 +63,6 @@ class QueuedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLi
     private var selectedObjects: ArrayList<DownloadItem>? = null
     private var actionMode : ActionMode? = null
     private lateinit var items : MutableList<DownloadItem>
-    private lateinit var uiUtil: UiUtil
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -77,7 +76,6 @@ class QueuedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLi
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
         items = mutableListOf()
         selectedObjects = arrayListOf()
-        uiUtil = UiUtil()
         return fragmentView
     }
 
@@ -148,7 +146,7 @@ class QueuedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLi
             time!!.text = SimpleDateFormat(DateFormat.getBestDateTimePattern(Locale.getDefault(), "ddMMMyyyy - HHmm"), Locale.getDefault()).format(calendar.time)
 
             time.setOnClickListener {
-                uiUtil.showDatePicker(parentFragmentManager) {
+                UiUtil.showDatePicker(parentFragmentManager) {
                     bottomSheet.dismiss()
                     Toast.makeText(context, getString(R.string.download_rescheduled_to) + " " + it.time, Toast.LENGTH_LONG).show()
                     downloadViewModel.deleteDownload(item)
@@ -192,10 +190,10 @@ class QueuedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLi
         link!!.text = url
         link.tag = itemID
         link.setOnClickListener{
-            uiUtil.openLinkIntent(requireContext(), item.url, bottomSheet)
+            UiUtil.openLinkIntent(requireContext(), item.url, bottomSheet)
         }
         link.setOnLongClickListener{
-            uiUtil.copyLinkToClipBoard(requireContext(), item.url, bottomSheet)
+            UiUtil.copyLinkToClipBoard(requireContext(), item.url, bottomSheet)
             true
         }
         val remove = bottomSheet.findViewById<Button>(R.id.bottomsheet_remove_button)

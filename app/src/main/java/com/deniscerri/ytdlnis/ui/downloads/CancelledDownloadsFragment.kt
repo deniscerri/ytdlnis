@@ -52,7 +52,6 @@ class CancelledDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClic
     private var selectedObjects: ArrayList<DownloadItem>? = null
     private var actionMode : ActionMode? = null
     private lateinit var items : MutableList<DownloadItem>
-    private lateinit var uiUtil : UiUtil
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -65,7 +64,6 @@ class CancelledDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClic
         selectedObjects = arrayListOf()
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
         items = mutableListOf()
-        uiUtil = UiUtil()
         return fragmentView
     }
 
@@ -170,10 +168,10 @@ class CancelledDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClic
         link!!.text = url
         link.tag = itemID
         link.setOnClickListener{
-            uiUtil.openLinkIntent(requireContext(), item.url, bottomSheet)
+            UiUtil.openLinkIntent(requireContext(), item.url, bottomSheet)
         }
         link.setOnLongClickListener{
-            uiUtil.copyLinkToClipBoard(requireContext(), item.url, bottomSheet)
+            UiUtil.copyLinkToClipBoard(requireContext(), item.url, bottomSheet)
             true
         }
         val remove = bottomSheet.findViewById<Button>(R.id.bottomsheet_remove_button)

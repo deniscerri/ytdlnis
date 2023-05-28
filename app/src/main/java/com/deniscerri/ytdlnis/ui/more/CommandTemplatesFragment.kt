@@ -38,7 +38,6 @@ class CommandTemplatesFragment : Fragment(), TemplatesAdapter.OnItemClickListene
     private lateinit var templatesAdapter: TemplatesAdapter
     private lateinit var topAppBar: MaterialToolbar
     private lateinit var commandTemplateViewModel: CommandTemplateViewModel
-    private lateinit var uiUtil: UiUtil
     private lateinit var templatesList: List<CommandTemplate>
     private lateinit var noResults: RelativeLayout
     private lateinit var mainActivity: MainActivity
@@ -75,7 +74,6 @@ class CommandTemplatesFragment : Fragment(), TemplatesAdapter.OnItemClickListene
             itemTouchHelper.attachToRecyclerView(recyclerView)
         }
 
-        uiUtil = UiUtil()
 
         commandTemplateViewModel = ViewModelProvider(this)[CommandTemplateViewModel::class.java]
         commandTemplateViewModel.items.observe(viewLifecycleOwner) {
@@ -116,11 +114,11 @@ class CommandTemplatesFragment : Fragment(), TemplatesAdapter.OnItemClickListene
     private fun initChips() {
         val new = view?.findViewById<Chip>(R.id.newTemplate)
         new?.setOnClickListener {
-            uiUtil.showCommandTemplateCreationOrUpdatingSheet(null,mainActivity, this, commandTemplateViewModel) {}
+            UiUtil.showCommandTemplateCreationOrUpdatingSheet(null,mainActivity, this, commandTemplateViewModel) {}
         }
         val shortcuts = view?.findViewById<Chip>(R.id.shortcuts)
         shortcuts?.setOnClickListener {
-            uiUtil.showShortcutsSheet(mainActivity,this, commandTemplateViewModel)
+            UiUtil.showShortcutsSheet(mainActivity,this, commandTemplateViewModel)
         }
     }
 
@@ -129,7 +127,7 @@ class CommandTemplatesFragment : Fragment(), TemplatesAdapter.OnItemClickListene
     }
 
     override fun onItemClick(commandTemplate: CommandTemplate, index: Int) {
-        uiUtil.showCommandTemplateCreationOrUpdatingSheet(commandTemplate,mainActivity, this, commandTemplateViewModel) {
+        UiUtil.showCommandTemplateCreationOrUpdatingSheet(commandTemplate,mainActivity, this, commandTemplateViewModel) {
             templatesAdapter.notifyItemChanged(index)
         }
 

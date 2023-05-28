@@ -14,6 +14,7 @@ import androidx.work.WorkerParameters
 import androidx.work.workDataOf
 import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
+import com.deniscerri.ytdlnis.ui.more.TerminalActivity
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.NotificationUtil
 import com.yausername.youtubedl_android.YoutubeDL
@@ -34,7 +35,7 @@ class TerminalDownloadWorker(
         val notificationUtil = NotificationUtil(context)
         val handler = Handler(Looper.getMainLooper())
 
-        val intent = Intent(context, MainActivity::class.java)
+        val intent = Intent(context, TerminalActivity::class.java)
         val pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE)
         val notification = notificationUtil.createDownloadServiceNotification(pendingIntent, command.take(65), itemId, NotificationUtil.DOWNLOAD_SERVICE_CHANNEL_ID)
         val foregroundInfo = ForegroundInfo(itemId, notification)

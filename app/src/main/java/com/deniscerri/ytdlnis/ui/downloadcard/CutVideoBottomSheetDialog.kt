@@ -18,9 +18,7 @@ import androidx.lifecycle.lifecycleScope
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.ChapterItem
 import com.deniscerri.ytdlnis.database.models.DownloadItem
-import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.InfoUtil
-import com.deniscerri.ytdlnis.util.UiUtil
 import com.google.android.exoplayer2.C
 import com.google.android.exoplayer2.DefaultLoadControl
 import com.google.android.exoplayer2.DefaultRenderersFactory
@@ -63,7 +61,6 @@ import kotlin.properties.Delegates
 class CutVideoBottomSheetDialog(private val item: DownloadItem, private val urls : String?, private var chapters: List<ChapterItem>?, private val listener: VideoCutListener) : BottomSheetDialogFragment() {
     private lateinit var behavior: BottomSheetBehavior<View>
     private lateinit var infoUtil: InfoUtil
-    private lateinit var uiUtil: UiUtil
     private lateinit var player: Player
     
     private lateinit var cutSection : ConstraintLayout
@@ -90,7 +87,6 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val urls
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        uiUtil = UiUtil()
         infoUtil = InfoUtil(requireActivity().applicationContext)
     }
 

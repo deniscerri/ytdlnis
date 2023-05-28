@@ -52,7 +52,7 @@ import kotlinx.coroutines.withContext
 import java.io.File
 import java.util.Calendar
 
-class UiUtil() {
+object UiUtil {
     @SuppressLint("SetTextI18n")
     fun populateFormatCard(formatCard : MaterialCardView, chosenFormat: Format, audioFormats: List<Format>?){
         formatCard.findViewById<TextView>(R.id.container).text = chosenFormat.container.uppercase()
@@ -276,9 +276,9 @@ class UiUtil() {
             putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
         }
         try {
-            fragmentContext.startActivity(Intent.createChooser(shareIntent, null))
+            fragmentContext.startActivity(Intent.createChooser(shareIntent, fragmentContext.getString(R.string.share)))
         }catch (e: Exception){
-            val intent = Intent.createChooser(shareIntent, null)
+            val intent = Intent.createChooser(shareIntent, fragmentContext.getString(R.string.share))
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
             fragmentContext.startActivity(intent)
         }

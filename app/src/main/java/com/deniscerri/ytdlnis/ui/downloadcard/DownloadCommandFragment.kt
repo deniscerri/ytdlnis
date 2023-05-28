@@ -42,7 +42,6 @@ class DownloadCommandFragment(private val resultItem: ResultItem, private var cu
     private var activity: Activity? = null
     private lateinit var downloadViewModel : DownloadViewModel
     private lateinit var commandTemplateViewModel : CommandTemplateViewModel
-    private lateinit var uiUtil : UiUtil
     private lateinit var saveDir : TextInputLayout
     private lateinit var freeSpace : TextView
 
@@ -58,7 +57,6 @@ class DownloadCommandFragment(private val resultItem: ResultItem, private var cu
         activity = getActivity()
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
         commandTemplateViewModel = ViewModelProvider(this)[CommandTemplateViewModel::class.java]
-        uiUtil = UiUtil()
         return fragmentView
     }
 
@@ -155,7 +153,7 @@ class DownloadCommandFragment(private val resultItem: ResultItem, private var cu
 
                 val newTemplate : Chip = view.findViewById(R.id.newTemplate)
                 newTemplate.setOnClickListener {
-                    uiUtil.showCommandTemplateCreationOrUpdatingSheet(null, requireActivity(), viewLifecycleOwner, commandTemplateViewModel) {
+                    UiUtil.showCommandTemplateCreationOrUpdatingSheet(null, requireActivity(), viewLifecycleOwner, commandTemplateViewModel) {
                         templates.add(it)
                         chosenCommandView.editText!!.setText(it.content)
                         downloadItem.format = Format(
@@ -175,7 +173,7 @@ class DownloadCommandFragment(private val resultItem: ResultItem, private var cu
                 editSelected.setOnClickListener {
                     var current = templates.find { it.title == autoCompleteTextView.text.toString() }
                     if (current == null) current = CommandTemplate(0, "", chosenCommandView.editText!!.text.toString())
-                    uiUtil.showCommandTemplateCreationOrUpdatingSheet(current, requireActivity(), viewLifecycleOwner, commandTemplateViewModel) {
+                    UiUtil.showCommandTemplateCreationOrUpdatingSheet(current, requireActivity(), viewLifecycleOwner, commandTemplateViewModel) {
                         templates.add(it)
                         chosenCommandView.editText!!.setText(it.content)
                         downloadItem.format = Format(
