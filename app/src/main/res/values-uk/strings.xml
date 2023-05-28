@@ -259,4 +259,10 @@
     <string name="search_suggestions">Пошукові пропозиції</string>
     <string name="search_suggestions_summary">Отримувати пошукові пропозиції від Google</string>
     <string name="preferred_format_id_summary">Виберіть формат із цим ID у картці завантаження</string>
+    <string name="misc">Різне</string>
+    <string name="general">Загальні</string>
+    <string name="swipe_gestures">Жести пальцем</string>
+    <string name="swipe_gestures_summary">Проведіть по елементам для виконання певних дій</string>
+    <string name="crop_thumb">Обрізати мініатюру</string>
+    <string name="crop_thumb_summary">Обріжте ескіз у квадрат для завантаження аудіо</string>
 </resources>
