@@ -265,4 +265,6 @@
     <string name="swipe_gestures_summary">Bəzi fəaliyyətlər üçün elementləri sürüşdür</string>
     <string name="crop_thumb">Miniatürü Kəs</string>
     <string name="crop_thumb_summary">Səs yükləmələr üçün miniatürü kvadrat şəklində kəs</string>
+    <string name="locale">Yer</string>
+    <string name="audio_only_item">Bu element yalnız səs formatları ehtiva edir</string>
 </resources>
