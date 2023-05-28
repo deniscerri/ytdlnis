@@ -8,10 +8,12 @@ import android.os.Environment
 import android.provider.DocumentsContract
 import android.util.Log
 import android.webkit.MimeTypeMap
+import androidx.core.net.toUri
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.DownloadItem
 import okhttp3.internal.closeQuietly
 import java.io.File
+import java.io.FileOutputStream
 import java.net.URLDecoder
 import java.nio.charset.StandardCharsets
 import java.nio.file.Files
@@ -66,27 +68,20 @@ object FileUtil {
         return formattedPath.toString()
     }
 
-    private fun scanMedia(files: List<File>, context: Context) : String {
 
-        try {
-            val paths = files.map { it.absolutePath }.toTypedArray()
-            MediaScannerConnection.scanFile(context, paths, null, null)
-            return files.reduce(Compare::max).absolutePath
-        }catch (e: Exception){
-            e.printStackTrace()
-        }
-
-        return context.getString(R.string.unfound_file);
-    }
     @Throws(Exception::class)
      fun moveFile(originDir: File, context: Context, destDir: String, keepCache: Boolean, progress: (p: Int) -> Unit) : String {
         val fileList = mutableListOf<File>()
         val dir = File(formatPath(destDir))
         if (!dir.exists()) dir.mkdirs()
-        originDir.listFiles()?.forEach {
-            Log.e("zz", it.name)
-            val destFile = File(dir.absolutePath + "/${it.name}")
-
+        var currentDirectory = dir
+        originDir.walk().forEach {
+            var destFile = File(dir.absolutePath + "/${it.absolutePath.removePrefix(originDir.absolutePath)}")
+            if (it.isDirectory) {
+                destFile.mkdirs()
+                currentDirectory = destFile
+                return@forEach
+            }
             try {
                 if (it.name.matches("(^config.*.\\.txt\$)|(rList)|(part-Frag)".toRegex())){
                     it.delete()
@@ -95,31 +90,52 @@ object FileUtil {
 
                 if(it.name.contains(".part-Frag")) return@forEach
 
-                val mimeType =
-                    MimeTypeMap.getSingleton().getMimeTypeFromExtension(it.extension) ?: "*/*"
+                //sending to main or SD CARD
+                if (currentDirectory.exists()){
+                    val inputStream = context.contentResolver.openInputStream(it.toUri())!!
+                    val outputStream = FileOutputStream(destFile)
 
-                val dest = Uri.parse(destDir).run {
-                    DocumentsContract.buildDocumentUriUsingTree(
-                        this,
-                        DocumentsContract.getTreeDocumentId(this)
-                    )
+                    val buffer = ByteArray(DEFAULT_BUFFER_SIZE)
+                    var bytesRead: Int
+                    val totalBytes = it.length()
+
+                    // Transfer the file contents
+                    while (inputStream.read(buffer).also { bytesRead = it } != -1) {
+                        progress((bytesRead / totalBytes).toInt() * 100)
+                        outputStream.write(buffer, 0, bytesRead)
+                    }
+
+                    inputStream.close()
+                    outputStream.closeQuietly()
+                }else{
+                    //sending to USB OTG
+                    val mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(it.extension) ?: "*/*"
+                    destFile = File(currentDirectory.absolutePath + "/${it.name}")
+
+                    val dest = Uri.parse(destDir).run {
+                        DocumentsContract.buildDocumentUriUsingTree(
+                            this,
+                            DocumentsContract.getTreeDocumentId(this)
+                        )
+                    }
+                    val destUri = DocumentsContract.createDocument(
+                        context.contentResolver,
+                        dest,
+                        mimeType,
+                        it.name
+                    ) ?: return@forEach
+
+                    val inputStream = it.inputStream()
+                    val outputStream =
+                        context.contentResolver.openOutputStream(destUri) ?: return@forEach
+                    inputStream.copyTo(outputStream)
+                    inputStream.closeQuietly()
+                    outputStream.closeQuietly()
                 }
-                val destUri = DocumentsContract.createDocument(
-                    context.contentResolver,
-                    dest,
-                    mimeType,
-                    it.name
-                ) ?: return@forEach
-
-                val inputStream = it.inputStream()
-                val outputStream =
-                    context.contentResolver.openOutputStream(destUri) ?: return@forEach
-                inputStream.copyTo(outputStream)
-                inputStream.closeQuietly()
-                outputStream.closeQuietly()
 
                 fileList.add(destFile)
             }catch (e: java.lang.Exception) {
+                Log.e("error", e.message.toString())
 
                 if (destFile.absolutePath.contains("/storage/emulated/0/Download")
                     || destFile.absolutePath.contains("/storage/emulated/0/Documents")
@@ -133,6 +149,7 @@ object FileUtil {
                 }
                 return@forEach
             }catch(e : Exception){
+                Log.e("error", e.message.toString())
                 return@forEach
             }
 
@@ -141,6 +158,18 @@ object FileUtil {
             originDir.deleteRecursively()
         }
         return scanMedia(fileList, context)
+    }
+    private fun scanMedia(files: List<File>, context: Context) : String {
+
+        try {
+            val paths = files.map { it.absolutePath }.toTypedArray()
+            MediaScannerConnection.scanFile(context, paths, null, null)
+            return files.reduce(Compare::max).absolutePath
+        }catch (e: Exception){
+            e.printStackTrace()
+        }
+
+        return context.getString(R.string.unfound_file);
     }
 
     fun getLogFile(context: Context, item: DownloadItem) : File {

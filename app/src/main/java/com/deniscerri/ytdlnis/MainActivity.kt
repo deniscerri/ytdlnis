@@ -319,6 +319,7 @@ class MainActivity : BaseActivity() {
                 permissions.add(Manifest.permission.READ_MEDIA_VIDEO)
             }else{
                 permissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                permissions.add(Manifest.permission.READ_EXTERNAL_STORAGE)
             }
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -376,6 +377,8 @@ class MainActivity : BaseActivity() {
                     == PackageManager.PERMISSION_GRANTED)
         }else{
             (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    == PackageManager.PERMISSION_GRANTED) &&
+                (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
                     == PackageManager.PERMISSION_GRANTED)
         }
     }
