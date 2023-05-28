@@ -259,4 +259,10 @@
     <string name="search_suggestions">Axtarış Təklifləri</string>
     <string name="search_suggestions_summary">Google-dan axtarış təklifləri əldə et</string>
     <string name="preferred_format_id_summary">Yükləmə kartında bu ID ilə format seç</string>
+    <string name="swipe_gestures">Sürüşdürmə Jestləri</string>
+    <string name="misc">Müxtəlif</string>
+    <string name="general">Ümumi</string>
+    <string name="swipe_gestures_summary">Bəzi fəaliyyətlər üçün elementləri sürüşdür</string>
+    <string name="crop_thumb">Miniatürü Kəs</string>
+    <string name="crop_thumb_summary">Səs yükləmələr üçün miniatürü kvadrat şəklində kəs</string>
 </resources>

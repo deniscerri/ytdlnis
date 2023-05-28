@@ -256,7 +256,8 @@
     <string name="backup_restore">Ruaj Dhe Rikthe</string>
     <string name="socks5_proxy_summary">Përdor proksin HTTP/HTTPS/SOCKS të specifikuar</string>
     <string name="socks5_proxy">URL e Proksit Socks5</string>
-    <string name="search_suggestions_summary">Merr sugjerime kërkimi nga google</string>
+    <string name="search_suggestions_summary">Merr sugjerime kërkimi nga Google</string>
     <string name="search_suggestions">Sygjerimet e Kërkimit</string>
     <string name="preferred_format_id_summary">Zgjidhni formatin me këtë ID në kartën e shkarkimit</string>
+    <string name="misc">Të Tjera</string>
 </resources>
