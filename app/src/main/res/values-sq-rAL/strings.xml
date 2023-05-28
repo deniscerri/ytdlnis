@@ -267,4 +267,6 @@
     <string name="swipe_gestures_summary">Rrëshqitni artikujt për veprime të caktuara</string>
     <string name="crop_thumb">Preje Thumbnailin</string>
     <string name="crop_thumb_summary">Preje thumbnailin në formë katrore për shkarkimet audio</string>
+    <string name="move_temporary_files">Zhvendos skedarët e përkohshëm</string>
+    <string name="move_temporary_files_summary">Transfero skedarët e përkohshëm në dosjen e shkarkimeve</string>
 </resources>
