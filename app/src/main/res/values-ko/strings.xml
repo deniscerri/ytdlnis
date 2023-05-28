@@ -13,7 +13,7 @@
     <string name="cancel">취소</string>
     <string name="confirm_delete_history_desc">전체 기록을 영구적으로 삭제합니다.</string>
     <string name="more">더보기</string>
-    <string name="downloading">다운로드 중</string>
+    <string name="downloading">다운로드</string>
     <string name="limit_rate">제한율</string>
     <string name="limit_rate_summary">최대 다운로드 속도 (초당 바이트), 예: 50K 또는 4.2M</string>
     <string name="embed_thumb">썸네일 커버</string>
@@ -29,18 +29,18 @@
     <string name="download_all">모두 다운로드</string>
     <string name="settings">설정</string>
     <string name="home">홈</string>
-    <string name="ytdl_update_hint">다운로드에 문제가 있는 경우 유용합니다</string>
+    <string name="ytdl_update_hint">다운로드에 문제가 있는 경우 업데이트로 해결될 수 있습니다</string>
     <string name="source_code">소스 코드</string>
     <string name="ytdl_updating_started">새 버전 다운로드 중…</string>
-    <string name="updating">업데이트 중</string>
+    <string name="updating">업데이트</string>
     <string name="video">비디오</string>
     <string name="save_thumb_summary">다운로드 폴더에 썸네일 저장</string>
     <string name="video_format">비디오 형식</string>
-    <string name="about">정보</string>
+    <string name="about">개발자 정보</string>
     <string name="audio_format">오디오 형식</string>
     <string name="failed_download">파일을 다운로드할 수 없습니다.</string>
     <string name="download_notification_channel_name">파일 다운로드</string>
-    <string name="ok">좋아요</string>
+    <string name="ok">확인</string>
     <string name="confirm_delete_history">확인</string>
     <string name="search_history_hint">기록에서 검색</string>
     <string name="no_results">결과 없음</string>
@@ -69,7 +69,7 @@
     <string name="remove_downloading">다운로드 취소</string>
     <string name="incognito_summary">기록에 추가하지 않고 다운로드</string>
     <string name="title">제목</string>
-    <string name="author">저자</string>
+    <string name="author">제작자</string>
     <string name="download">다운로드</string>
     <string name="show_download_card">다운로드 옵션 표시</string>
     <string name="download_card_summary">항목 다운로드 방법 설정</string>
@@ -91,7 +91,7 @@
     <string name="enable_mtime_summary">HTTP Last-Modified 헤더를 마지막 수정 시간으로 설정</string>
     <string name="update_formats">업데이트 형식</string>
     <string name="error_updating_formats">형식을 업데이트하는 중 오류가 발생했습니다!</string>
-    <string name="download_queue">대기열 다운로드</string>
+    <string name="download_queue">다운로드 대기열</string>
     <string name="running">실행</string>
     <string name="cancelled">취소됨</string>
     <string name="update_template">업데이트 템플릿</string>
@@ -153,7 +153,7 @@
     <string name="swipe_gestures_summary">특정 작업에 대한 항목 스와이프</string>
     <string name="crop_thumb_summary">오디오 다운로드를 위해 썸네일을 사각형으로 자릅니다</string>
     <string name="update_app_summary">앱이 열릴 때 앱의 새 버전을 알림</string>
-    <string name="locale">지역</string>
+    <string name="locale">언어</string>
     <string name="run_command">실행 명령</string>
     <string name="command_download_notification_channel_description">yt-dlp 명령을 사용한 다운로드 진행률을 보여주는 알림</string>
     <string name="sponsorblock_fillers">필러</string>
@@ -170,7 +170,7 @@
     <string name="configure_download">다운로드 구성</string>
     <string name="add_chapter">챕터 추가</string>
     <string name="warning">경고</string>
-    <string name="you_are_going_to_delete_multiple_items">여러 항목 삭제 중…</string>
+    <string name="you_are_going_to_delete_multiple_items">여러 항목 삭제…</string>
     <string name="delete_file_too">장치에서 파일 삭제</string>
     <string name="delete_files_too">장치에서 파일 삭제</string>
     <string name="request_permission_desc">이 앱은 기기에 다운로드를 저장하려면 파일 권한이 필요합니다</string>
@@ -223,7 +223,7 @@
     <string name="end">끝</string>
     <string name="cut">잘라내기</string>
     <string name="new_cookie">새로운 쿠키</string>
-    <string name="share">공유하다</string>
+    <string name="share">공유</string>
     <string name="subtitle_languages">자막 언어</string>
     <string name="download_over_metered_networks_summary">모든 네트워크 유형을 사용하여 다운로드합니다. 그렇지 않으면 제한없는 네트워크를 기다립니다</string>
     <string name="metered_network_download_start_info">제한없는 네트워크에 연결되면 다운로드가 시작됩니다</string>
@@ -236,7 +236,7 @@
     <string name="quality">품질</string>
     <string name="format_filtering_hint">이 옵션을 사용하려면 모든 항목이 동일한 유형이어야 합니다</string>
     <string name="light">라이트</string>
-    <string name="accents">악센트</string>
+    <string name="accents">색상</string>
     <string name="high_contrast">고대비</string>
     <string name="system">시스템</string>
     <string name="red">레드</string>
@@ -265,6 +265,6 @@
     <string name="socks5_proxy">Socks5 프록시 URL</string>
     <string name="crop_thumb">썸네일 자르기</string>
     <string name="search_suggestions">검색 제안</string>
-    <string name="general">일반적인</string>
+    <string name="general">일반</string>
     <string name="downloads_running_try_later">다운로드 작업자가 실행 중입니다. 나중에 다시 시도하세요</string>
 </resources>
