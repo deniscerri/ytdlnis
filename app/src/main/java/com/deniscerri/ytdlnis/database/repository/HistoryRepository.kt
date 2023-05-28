@@ -59,9 +59,8 @@ class HistoryRepository(private val historyDao: HistoryDao) {
     }
 
     suspend fun clearDeletedHistory(){
-        val fileUtil = FileUtil()
         items.value?.forEach { item ->
-            if (!fileUtil.exists(item.downloadPath)){
+            if (!FileUtil.exists(item.downloadPath)){
                 historyDao.delete(item.id)
             }
         }

@@ -42,7 +42,6 @@ class DownloadCommandFragment(private val resultItem: ResultItem, private var cu
     private var activity: Activity? = null
     private lateinit var downloadViewModel : DownloadViewModel
     private lateinit var commandTemplateViewModel : CommandTemplateViewModel
-    private lateinit var fileUtil : FileUtil
     private lateinit var uiUtil : UiUtil
     private lateinit var saveDir : TextInputLayout
     private lateinit var freeSpace : TextView
@@ -59,8 +58,7 @@ class DownloadCommandFragment(private val resultItem: ResultItem, private var cu
         activity = getActivity()
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
         commandTemplateViewModel = ViewModelProvider(this)[CommandTemplateViewModel::class.java]
-        fileUtil = FileUtil()
-        uiUtil = UiUtil(fileUtil)
+        uiUtil = UiUtil()
         return fragmentView
     }
 
@@ -138,7 +136,7 @@ class DownloadCommandFragment(private val resultItem: ResultItem, private var cu
 
                 saveDir = view.findViewById(R.id.outputPath)
                 saveDir.editText!!.setText(
-                    fileUtil.formatPath(downloadItem.downloadPath)
+                    FileUtil.formatPath(downloadItem.downloadPath)
                 )
                 saveDir.editText!!.isFocusable = false
                 saveDir.editText!!.isClickable = true
@@ -151,8 +149,8 @@ class DownloadCommandFragment(private val resultItem: ResultItem, private var cu
                 }
 
                 freeSpace = view.findViewById(R.id.freespace)
-                freeSpace.text = String.format(getString(R.string.freespace) + ": " + fileUtil.convertFileSize(
-                    File(fileUtil.formatPath(downloadItem.downloadPath)).freeSpace
+                freeSpace.text = String.format(getString(R.string.freespace) + ": " + FileUtil.convertFileSize(
+                    File(FileUtil.formatPath(downloadItem.downloadPath)).freeSpace
                 ))
 
                 val newTemplate : Chip = view.findViewById(R.id.newTemplate)
@@ -226,10 +224,10 @@ class DownloadCommandFragment(private val resultItem: ResultItem, private var cu
                 )
             }
             downloadItem.downloadPath = result.data?.data.toString()
-            saveDir.editText?.setText(fileUtil.formatPath(result.data?.data.toString()), TextView.BufferType.EDITABLE)
+            saveDir.editText?.setText(FileUtil.formatPath(result.data?.data.toString()), TextView.BufferType.EDITABLE)
 
-            freeSpace.text = String.format(getString(R.string.freespace) + ": " + fileUtil.convertFileSize(
-                File(fileUtil.formatPath(downloadItem.downloadPath)).freeSpace
+            freeSpace.text = String.format(getString(R.string.freespace) + ": " + FileUtil.convertFileSize(
+                File(FileUtil.formatPath(downloadItem.downloadPath)).freeSpace
             ))
         }
     }

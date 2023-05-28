@@ -52,7 +52,6 @@ class CancelledDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClic
     private var selectedObjects: ArrayList<DownloadItem>? = null
     private var actionMode : ActionMode? = null
     private lateinit var items : MutableList<DownloadItem>
-    private lateinit var fileUtil: FileUtil
     private lateinit var uiUtil : UiUtil
 
     override fun onCreateView(
@@ -66,8 +65,7 @@ class CancelledDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClic
         selectedObjects = arrayListOf()
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
         items = mutableListOf()
-        fileUtil = FileUtil()
-        uiUtil = UiUtil(fileUtil)
+        uiUtil = UiUtil()
         return fragmentView
     }
 
@@ -163,7 +161,7 @@ class CancelledDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClic
             codec.text = codecText
         }
 
-        val fileSizeReadable = fileUtil.convertFileSize(item.format.filesize)
+        val fileSizeReadable = FileUtil.convertFileSize(item.format.filesize)
         if (fileSizeReadable == "?") fileSize!!.visibility = View.GONE
         else fileSize!!.text = fileSizeReadable
 

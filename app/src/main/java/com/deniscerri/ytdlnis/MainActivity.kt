@@ -38,6 +38,7 @@ import com.deniscerri.ytdlnis.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdlnis.ui.BaseActivity
 import com.deniscerri.ytdlnis.ui.HomeFragment
 import com.deniscerri.ytdlnis.ui.more.settings.SettingsActivity
+import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.ThemeUtil
 import com.deniscerri.ytdlnis.util.UpdateUtil
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -66,7 +67,6 @@ class MainActivity : BaseActivity() {
     private lateinit var navigationView: View
     private lateinit var navHostFragment : NavHostFragment
     private lateinit var navController : NavController
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -338,9 +338,9 @@ class MainActivity : BaseActivity() {
 
 
     private fun createDefaultFolders(){
-        val audio = File(getString(R.string.music_path))
-        val video = File(getString(R.string.video_path))
-        val command = File(getString(R.string.command_path))
+        val audio = File(FileUtil.getDefautAudioPath())
+        val video = File(FileUtil.getDefautVideoPath())
+        val command = File(FileUtil.getDefaultCommandPath())
 
         audio.mkdirs()
         video.mkdirs()

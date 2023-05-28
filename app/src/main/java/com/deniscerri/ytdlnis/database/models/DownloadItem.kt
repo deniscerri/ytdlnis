@@ -16,6 +16,8 @@ data class DownloadItem(
     var duration: String,
     var type: DownloadViewModel.Type,
     var format: Format,
+    @ColumnInfo(defaultValue = "Default")
+    var container: String,
     @ColumnInfo(defaultValue = "")
     var downloadSections: String,
     val allFormats: ArrayList<Format>,

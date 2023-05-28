@@ -25,7 +25,6 @@ class FolderSettingsFragment : BaseSettingsFragment() {
     private var accessAllFiles : Preference? = null
     private var clearCache: Preference? = null
 
-    private var fileUtil: FileUtil? = null
     private var activeDownloadCount = 0
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
@@ -33,7 +32,6 @@ class FolderSettingsFragment : BaseSettingsFragment() {
 
         val preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
         val editor = preferences.edit()
-        fileUtil = FileUtil()
 
         musicPath = findPreference("music_path")
         videoPath = findPreference("video_path")
@@ -42,13 +40,13 @@ class FolderSettingsFragment : BaseSettingsFragment() {
         clearCache = findPreference("clear_cache")
 
         if (preferences.getString("music_path", "")!!.isEmpty()) {
-            editor.putString("music_path", getString(R.string.music_path))
+            editor.putString("music_path", FileUtil.getDefautAudioPath())
         }
         if (preferences.getString("video_path", "")!!.isEmpty()) {
-            editor.putString("video_path", getString(R.string.video_path))
+            editor.putString("video_path", FileUtil.getDefautVideoPath())
         }
         if (preferences.getString("command_path", "")!!.isEmpty()) {
-            editor.putString("command_path", getString(R.string.command_path))
+            editor.putString("command_path", FileUtil.getDefaultCommandPath())
         }
 
         if((VERSION.SDK_INT >= 30 && Environment.isExternalStorageManager()) ||
@@ -58,7 +56,7 @@ class FolderSettingsFragment : BaseSettingsFragment() {
 
         editor.apply()
 
-        musicPath!!.summary = fileUtil?.formatPath(preferences.getString("music_path", "")!!)
+        musicPath!!.summary = FileUtil.formatPath(preferences.getString("music_path", "")!!)
         musicPath!!.onPreferenceClickListener =
             Preference.OnPreferenceClickListener {
                 val intent = Intent(Intent.ACTION_OPEN_DOCUMENT_TREE)
@@ -68,7 +66,7 @@ class FolderSettingsFragment : BaseSettingsFragment() {
                 musicPathResultLauncher.launch(intent)
                 true
             }
-        videoPath!!.summary = fileUtil?.formatPath(preferences.getString("video_path", "")!!)
+        videoPath!!.summary = FileUtil.formatPath(preferences.getString("video_path", "")!!)
         videoPath!!.onPreferenceClickListener =
             Preference.OnPreferenceClickListener {
                 val intent = Intent(Intent.ACTION_OPEN_DOCUMENT_TREE)
@@ -78,7 +76,7 @@ class FolderSettingsFragment : BaseSettingsFragment() {
                 videoPathResultLauncher.launch(intent)
                 true
             }
-        commandPath!!.summary = fileUtil?.formatPath(preferences.getString("command_path", "")!!)
+        commandPath!!.summary = FileUtil.formatPath(preferences.getString("command_path", "")!!)
         commandPath!!.onPreferenceClickListener =
             Preference.OnPreferenceClickListener {
                 val intent = Intent(Intent.ACTION_OPEN_DOCUMENT_TREE)
@@ -98,14 +96,14 @@ class FolderSettingsFragment : BaseSettingsFragment() {
             }
 
         var cacheSize = File(requireContext().cacheDir.absolutePath + "/downloads").walkBottomUp().fold(0L) { acc, file -> acc + file.length() }
-        clearCache!!.summary = "(${fileUtil!!.convertFileSize(cacheSize)}) ${resources.getString(R.string.clear_temporary_files_summary)}"
+        clearCache!!.summary = "(${FileUtil.convertFileSize(cacheSize)}) ${resources.getString(R.string.clear_temporary_files_summary)}"
         clearCache!!.onPreferenceClickListener =
             Preference.OnPreferenceClickListener {
                 if (activeDownloadCount == 0){
                     File(requireContext().cacheDir.absolutePath + "/downloads").deleteRecursively()
                     Snackbar.make(requireView(), getString(R.string.cache_cleared), Snackbar.LENGTH_SHORT).show()
                     cacheSize = File(requireContext().cacheDir.absolutePath + "/downloads").walkBottomUp().fold(0L) { acc, file -> acc + file.length() }
-                    clearCache!!.summary = "(${fileUtil!!.convertFileSize(cacheSize)}) ${resources.getString(R.string.clear_temporary_files_summary)}"
+                    clearCache!!.summary = "(${FileUtil.convertFileSize(cacheSize)}) ${resources.getString(R.string.clear_temporary_files_summary)}"
                 }else{
                     Snackbar.make(requireView(), getString(R.string.downloads_running_try_later), Snackbar.LENGTH_SHORT).show()
                 }
@@ -159,7 +157,7 @@ class FolderSettingsFragment : BaseSettingsFragment() {
 
     private fun changePath(p: Preference?, data: Intent?, requestCode: Int) {
         val path = data!!.data.toString()
-        p!!.summary = fileUtil?.formatPath(data.data.toString())
+        p!!.summary = FileUtil.formatPath(data.data.toString())
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
         val editor = sharedPreferences.edit()
         when (requestCode) {

@@ -75,7 +75,7 @@ class CommandTemplatesFragment : Fragment(), TemplatesAdapter.OnItemClickListene
             itemTouchHelper.attachToRecyclerView(recyclerView)
         }
 
-        uiUtil = UiUtil(FileUtil())
+        uiUtil = UiUtil()
 
         commandTemplateViewModel = ViewModelProvider(this)[CommandTemplateViewModel::class.java]
         commandTemplateViewModel.items.observe(viewLifecycleOwner) {

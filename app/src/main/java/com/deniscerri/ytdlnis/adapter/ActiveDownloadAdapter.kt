@@ -28,12 +28,10 @@ import com.squareup.picasso.Picasso
 class ActiveDownloadAdapter(onItemClickListener: OnItemClickListener, activity: Activity) : ListAdapter<DownloadItem?, ActiveDownloadAdapter.ViewHolder>(AsyncDifferConfig.Builder(DIFF_CALLBACK).build()) {
     private val onItemClickListener: OnItemClickListener
     private val activity: Activity
-    private val fileUtil: FileUtil
 
     init {
         this.onItemClickListener = onItemClickListener
         this.activity = activity
-        fileUtil = FileUtil()
     }
 
     class ViewHolder(itemView: View, onItemClickListener: OnItemClickListener?) : RecyclerView.ViewHolder(itemView) {
@@ -113,7 +111,7 @@ class ActiveDownloadAdapter(onItemClickListener: OnItemClickListener, activity: 
         }
 
         val fileSize = card.findViewById<Chip>(R.id.file_size)
-        fileSize.text = fileUtil.convertFileSize(item.format.filesize)
+        fileSize.text = FileUtil.convertFileSize(item.format.filesize)
         if (fileSize.text == "?") fileSize.visibility = View.GONE
 
         if (fileSize.visibility == View.VISIBLE && codec.visibility == View.GONE){

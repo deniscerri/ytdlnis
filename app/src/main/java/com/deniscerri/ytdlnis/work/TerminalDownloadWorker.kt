@@ -32,7 +32,6 @@ class TerminalDownloadWorker(
         if (command!!.isEmpty()) return Result.failure()
 
         val notificationUtil = NotificationUtil(context)
-        val fileUtil = FileUtil()
         val handler = Handler(Looper.getMainLooper())
 
         val intent = Intent(context, MainActivity::class.java)
@@ -68,7 +67,7 @@ class TerminalDownloadWorker(
 
         val logDownloads = sharedPreferences.getBoolean("log_downloads", false) && !sharedPreferences.getBoolean("incognito", false)
         val logFolder = File(context.filesDir.absolutePath + "/logs")
-        val logFile = fileUtil.getLogFileForTerminal(context, command)
+        val logFile = FileUtil.getLogFileForTerminal(context, command)
 
         runCatching {
             if (logDownloads){
@@ -94,7 +93,7 @@ class TerminalDownloadWorker(
         }.onSuccess {
             //move file from internal to set download directory
             try {
-                fileUtil.moveFile(tempFileDir.absoluteFile,context, downloadLocation!!, false){ p ->
+                FileUtil.moveFile(tempFileDir.absoluteFile,context, downloadLocation!!, false){ p ->
                     setProgressAsync(workDataOf("progress" to p))
                 }
             }catch (e: Exception){

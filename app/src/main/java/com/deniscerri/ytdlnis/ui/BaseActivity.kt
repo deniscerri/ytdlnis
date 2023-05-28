@@ -11,10 +11,5 @@ open class BaseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         ThemeUtil.updateTheme(this)
         super.onCreate(savedInstanceState)
-        WindowCompat.setDecorFitsSystemWindows(window, false)
-        ViewCompat.setOnApplyWindowInsetsListener(window.decorView) { v, insets ->
-            v.setPadding(0, 0, 0, 0)
-            insets
-        }
     }
 }

@@ -87,7 +87,6 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
     private var historyList: List<HistoryItem?>? = null
     private var allhistoryList: List<HistoryItem?>? = null
     private var selectedObjects: ArrayList<HistoryItem>? = null
-    private var fileUtil: FileUtil? = null
     private var uiUtil: UiUtil? = null
     private var _binding : FragmentHistoryBinding? = null
     private var actionMode : ActionMode? = null
@@ -113,8 +112,7 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
         noResults = view.findViewById(R.id.no_results)
         selectionChips = view.findViewById(R.id.history_selection_chips)
         websiteGroup = view.findViewById(R.id.website_chip_group)
-        fileUtil = FileUtil()
-        uiUtil = UiUtil(FileUtil())
+        uiUtil = UiUtil()
         uiHandler = Handler(Looper.getMainLooper())
         selectedObjects = ArrayList()
 
@@ -462,7 +460,7 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
             codec.text = codecText
         }
 
-        val fileSizeReadable = fileUtil!!.convertFileSize(item.format.filesize)
+        val fileSizeReadable = FileUtil.convertFileSize(item.format.filesize)
         if (fileSizeReadable == "?") fileSize!!.visibility = GONE
         else fileSize!!.text = fileSizeReadable
 

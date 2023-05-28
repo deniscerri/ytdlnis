@@ -31,7 +31,6 @@ import java.util.*
 
 class FormatSelectionBottomSheetDialog(private val items: List<DownloadItem?>, private var formats: List<List<Format>>, private val listener: OnFormatClickListener) : BottomSheetDialogFragment() {
     private lateinit var behavior: BottomSheetBehavior<View>
-    private lateinit var fileUtil: FileUtil
     private lateinit var infoUtil: InfoUtil
     private lateinit var uiUtil: UiUtil
     private lateinit var sharedPreferences: SharedPreferences
@@ -48,8 +47,7 @@ class FormatSelectionBottomSheetDialog(private val items: List<DownloadItem?>, p
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        fileUtil = FileUtil()
-        uiUtil = UiUtil(fileUtil)
+        uiUtil = UiUtil()
         infoUtil = InfoUtil(requireActivity().applicationContext)
         formatCollection = mutableListOf()
         chosenFormats = listOf()
@@ -116,11 +114,12 @@ class FormatSelectionBottomSheetDialog(private val items: List<DownloadItem?>, p
         }
 
         val refreshBtn = view.findViewById<Button>(R.id.format_refresh)
-        if (formats.flatten().none { it.filesize == 0L } || items.isEmpty()) refreshBtn.visibility = View.GONE
+        if (!hasGenericFormats || items.isEmpty()) refreshBtn.visibility = View.GONE
 
 
         refreshBtn.setOnClickListener {
            lifecycleScope.launch {
+               chosenFormats = emptyList()
                try {
                    refreshBtn.isEnabled = false
                    formatListLinearLayout.visibility = View.GONE
@@ -132,9 +131,11 @@ class FormatSelectionBottomSheetDialog(private val items: List<DownloadItem?>, p
                        val res = withContext(Dispatchers.IO){
                            infoUtil.getFormats(items.first()!!.url)
                        }
-                       chosenFormats = res.formats.filter { it.filesize != 0L }
+                       res.filter { it.format_note != "storyboard" }
                        if(items.first()?.type == Type.audio){
-                           chosenFormats = chosenFormats.filter { it.format_note.contains("audio", ignoreCase = true) }
+                           chosenFormats = res.filter { it.format_note.contains("audio", ignoreCase = true) }
+                       }else{
+                           chosenFormats = res
                        }
                        if (chosenFormats.isEmpty()) throw Exception()
                    //playlist format filtering

@@ -79,7 +79,7 @@ class CookiesFragment : Fragment(), CookieAdapter.OnItemClickListener {
             val itemTouchHelper = ItemTouchHelper(simpleCallback)
             itemTouchHelper.attachToRecyclerView(recyclerView)
         }
-        uiUtil = UiUtil(FileUtil())
+        uiUtil = UiUtil()
 
         cookiesViewModel = ViewModelProvider(this)[CookieViewModel::class.java]
         cookiesViewModel.items.observe(viewLifecycleOwner) {

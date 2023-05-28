@@ -43,7 +43,6 @@ class DownloadWorker(
         if (itemId == 0L) return Result.failure()
 
         val notificationUtil = NotificationUtil(context)
-        val fileUtil = FileUtil()
         val infoUtil = InfoUtil(context)
         val dbManager = DBManager.getInstance(context)
         val dao = dbManager.downloadDao
@@ -68,13 +67,9 @@ class DownloadWorker(
         }
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 
-        if (sharedPreferences.getBoolean("log_downloads", false)){
-            updateDownloadItem(downloadItem, infoUtil, dao, resultDao, true, notificationUtil)
-        }else{
-            CoroutineScope(Dispatchers.IO).launch {
-                //update item if its incomplete
-                updateDownloadItem(downloadItem, infoUtil, dao, resultDao, false, notificationUtil)
-            }
+        CoroutineScope(Dispatchers.IO).launch {
+            //update item if its incomplete
+            updateDownloadItem(downloadItem, infoUtil, dao, resultDao, false, notificationUtil)
         }
 
         val intent = Intent(context, MainActivity::class.java)
@@ -174,13 +169,13 @@ class DownloadWorker(
                 if (audioQualityId.isBlank() || audioQualityId == "0" || audioQualityId == context.getString(R.string.best_quality) || audioQualityId == "best") audioQualityId = ""
                 else if (audioQualityId == context.getString(R.string.worst_quality) || audioQualityId == "worst") audioQualityId = "worstaudio"
 
-                val ext = downloadItem.format.container
+                val ext = downloadItem.container
                 if (audioQualityId.isNotBlank()) request.addOption("-f", audioQualityId)
                 request.addOption("-x")
 
                 if(ext.isNotBlank()){
                     if(!ext.matches("(webm)|(Default)|(${context.getString(R.string.defaultValue)})".toRegex())){
-                        request.addOption("--audio-format", downloadItem.format.container)
+                        request.addOption("--audio-format", ext)
                     }
                 }
 
@@ -246,10 +241,10 @@ class DownloadWorker(
                 }
                 Log.e(TAG, formatArgument)
                 request.addOption("-f", formatArgument)
-                val format = downloadItem.format.container
-                if(format.isNotEmpty() && format != "Default" && format != context.getString(R.string.defaultValue)){
-                    request.addOption("--merge-output-format", format.lowercase())
-                    if (format != "webm") {
+                val outputFormat = downloadItem.container
+                if(outputFormat.isNotEmpty() && outputFormat != "Default" && outputFormat != context.getString(R.string.defaultValue)){
+                    request.addOption("--merge-output-format", outputFormat.lowercase())
+                    if (outputFormat != "webm") {
                         val embedThumb = sharedPreferences.getBoolean("embed_thumbnail", false)
                         if (embedThumb) {
                             request.addOption("--embed-thumbnail")
@@ -293,7 +288,7 @@ class DownloadWorker(
 
         val logDownloads = sharedPreferences.getBoolean("log_downloads", false) && !sharedPreferences.getBoolean("incognito", false)
         val logFolder = File(context.filesDir.absolutePath + "/logs")
-        val logFile = fileUtil.getLogFile(context, downloadItem)
+        val logFile = FileUtil.getLogFile(context, downloadItem)
 
         if (logDownloads){
             logFolder.mkdirs()
@@ -320,11 +315,11 @@ class DownloadWorker(
             }
         }.onSuccess {
             //move file from internal to set download directory
-            setProgressAsync(workDataOf("progress" to 100, "output" to "Moving file to ${fileUtil.formatPath(downloadLocation)}", "id" to downloadItem.id, "log" to logDownloads))
+            setProgressAsync(workDataOf("progress" to 100, "output" to "Moving file to ${FileUtil.formatPath(downloadLocation)}", "id" to downloadItem.id, "log" to logDownloads))
             var finalPath : String?
             try {
-                finalPath = fileUtil.moveFile(tempFileDir.absoluteFile,context, downloadLocation, keepCache){ p ->
-                    setProgressAsync(workDataOf("progress" to p, "output" to "Moving file to ${fileUtil.formatPath(downloadLocation)}", "id" to downloadItem.id, "log" to logDownloads))
+                finalPath = FileUtil.moveFile(tempFileDir.absoluteFile,context, downloadLocation, keepCache){ p ->
+                    setProgressAsync(workDataOf("progress" to p, "output" to "Moving file to ${FileUtil.formatPath(downloadLocation)}", "id" to downloadItem.id, "log" to logDownloads))
                 }
                 setProgressAsync(workDataOf("progress" to 100, "output" to "Moved file to $finalPath", "id" to downloadItem.id, "log" to logDownloads))
             }catch (e: Exception){

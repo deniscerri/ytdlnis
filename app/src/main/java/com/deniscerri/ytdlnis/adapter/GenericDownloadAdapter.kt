@@ -24,14 +24,12 @@ import com.squareup.picasso.Picasso
 class GenericDownloadAdapter(onItemClickListener: OnItemClickListener, activity: Activity) : ListAdapter<DownloadItem?, GenericDownloadAdapter.ViewHolder>(AsyncDifferConfig.Builder(DIFF_CALLBACK).build()) {
     private val onItemClickListener: OnItemClickListener
     private val activity: Activity
-    private var fileUtil: FileUtil
     private val checkedItems: ArrayList<Long>
 
     init {
         checkedItems = ArrayList()
         this.onItemClickListener = onItemClickListener
         this.activity = activity
-        fileUtil = FileUtil()
     }
 
     class ViewHolder(itemView: View, onItemClickListener: OnItemClickListener?) : RecyclerView.ViewHolder(itemView) {
@@ -94,7 +92,7 @@ class GenericDownloadAdapter(onItemClickListener: OnItemClickListener, activity:
         }
 
         val fileSize = card.findViewById<TextView>(R.id.file_size)
-        val fileSizeReadable = fileUtil.convertFileSize(item.format.filesize)
+        val fileSizeReadable = FileUtil.convertFileSize(item.format.filesize)
         if (fileSizeReadable == "?") fileSize.visibility = View.GONE
         else fileSize.text = fileSizeReadable
 
@@ -107,7 +105,7 @@ class GenericDownloadAdapter(onItemClickListener: OnItemClickListener, activity:
             DownloadRepository.Status.Queued.toString() -> actionButton.setIconResource(R.drawable.ic_baseline_delete_outline_24)
             else -> {
                 actionButton.setIconResource(R.drawable.ic_baseline_file_open_24)
-                val logFile = fileUtil.getLogFile(activity, item)
+                val logFile = FileUtil.getLogFile(activity, item)
                 if (!logFile.exists()){
                     actionButton.visibility = View.GONE
                 }

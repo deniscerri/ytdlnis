@@ -1,5 +1,6 @@
 package com.deniscerri.ytdlnis.database.models
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
@@ -15,5 +16,8 @@ data class ResultItem(
     val website: String,
     var playlistTitle: String,
     var formats: ArrayList<Format>,
+    @ColumnInfo(defaultValue = "")
+    var urls: String,
+    var chapters: ArrayList<ChapterItem>?,
     var creationTime: Long = System.currentTimeMillis() / 1000,
 )

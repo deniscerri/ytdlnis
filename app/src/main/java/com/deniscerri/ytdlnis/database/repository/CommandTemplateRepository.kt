@@ -10,7 +10,7 @@ class CommandTemplateRepository(private val commandDao: CommandTemplateDao) {
     val shortcuts : LiveData<List<TemplateShortcut>> = commandDao.getAllShortcutsLiveData()
 
     fun getAll() : List<CommandTemplate> {
-        return commandDao.getAllTemplates();
+        return commandDao.getAllTemplates()
     }
 
     fun getTotalNumber() : Int {
@@ -34,7 +34,7 @@ class CommandTemplateRepository(private val commandDao: CommandTemplateDao) {
     }
 
     fun getAllShortCuts() : List<TemplateShortcut> {
-        return commandDao.getAllShortcuts();
+        return commandDao.getAllShortcuts()
     }
 
     suspend fun insertShortcut(item: TemplateShortcut){

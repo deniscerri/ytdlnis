@@ -90,8 +90,7 @@ class HistoryViewModel(application: Application) : AndroidViewModel(application)
     fun delete(item: HistoryItem, deleteFile: Boolean) = viewModelScope.launch(Dispatchers.IO){
         repository.delete(item)
         if (deleteFile){
-            val fileUtil = FileUtil()
-            fileUtil.deleteFile(item.downloadPath)
+            FileUtil.deleteFile(item.downloadPath)
         }
     }
 

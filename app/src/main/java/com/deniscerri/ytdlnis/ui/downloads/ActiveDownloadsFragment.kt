@@ -25,7 +25,7 @@ import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.yausername.youtubedl_android.YoutubeDL
 
 
-class ActiveDownloadsFragment() : Fragment(), ActiveDownloadAdapter.OnItemClickListener, OnClickListener {
+class ActiveDownloadsFragment : Fragment(), ActiveDownloadAdapter.OnItemClickListener, OnClickListener {
     private var _binding : FragmentHomeBinding? = null
     private var fragmentView: View? = null
     private var activity: Activity? = null
@@ -34,7 +34,6 @@ class ActiveDownloadsFragment() : Fragment(), ActiveDownloadAdapter.OnItemClickL
     private lateinit var activeDownloads : ActiveDownloadAdapter
     lateinit var downloadItem: DownloadItem
     private lateinit var notificationUtil: NotificationUtil
-    private lateinit var fileUtil: FileUtil
     private lateinit var list: List<DownloadItem>
 
 
@@ -47,7 +46,6 @@ class ActiveDownloadsFragment() : Fragment(), ActiveDownloadAdapter.OnItemClickL
         fragmentView = inflater.inflate(R.layout.fragment_generic_download_queue, container, false)
         activity = getActivity()
         notificationUtil = NotificationUtil(requireContext())
-        fileUtil = FileUtil()
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
         list = listOf()
         return fragmentView
@@ -102,7 +100,7 @@ class ActiveDownloadsFragment() : Fragment(), ActiveDownloadAdapter.OnItemClickL
     }
 
     override fun onOutputClick(item: DownloadItem) {
-        val logFile = fileUtil.getLogFile(requireContext(), item)
+        val logFile = FileUtil.getLogFile(requireContext(), item)
         if (logFile.exists()) {
             val bundle = Bundle()
             bundle.putString("logpath", logFile.absolutePath)

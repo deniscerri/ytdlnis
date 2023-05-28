@@ -51,7 +51,6 @@ class DownloadAudioFragment(private var resultItem: ResultItem, private var curr
     private var activity: Activity? = null
     private lateinit var downloadViewModel : DownloadViewModel
     private lateinit var resultViewModel : ResultViewModel
-    private lateinit var fileUtil : FileUtil
     private lateinit var uiUtil : UiUtil
 
     private lateinit var title : TextInputLayout
@@ -71,8 +70,7 @@ class DownloadAudioFragment(private var resultItem: ResultItem, private var curr
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
         resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]
 
-        fileUtil = FileUtil()
-        uiUtil = UiUtil(fileUtil)
+        uiUtil = UiUtil()
         return fragmentView
     }
 
@@ -112,7 +110,7 @@ class DownloadAudioFragment(private var resultItem: ResultItem, private var curr
                 })
                 saveDir = view.findViewById(R.id.outputPath)
                 saveDir.editText!!.setText(
-                    fileUtil.formatPath(downloadItem.downloadPath)
+                    FileUtil.formatPath(downloadItem.downloadPath)
                 )
                 saveDir.editText!!.isFocusable = false
                 saveDir.editText!!.isClickable = true
@@ -124,8 +122,8 @@ class DownloadAudioFragment(private var resultItem: ResultItem, private var curr
                     audioPathResultLauncher.launch(intent)
                 }
                 freeSpace = view.findViewById(R.id.freespace)
-                val free = fileUtil.convertFileSize(
-                    File(fileUtil.formatPath(downloadItem.downloadPath)).freeSpace)
+                val free = FileUtil.convertFileSize(
+                    File(FileUtil.formatPath(downloadItem.downloadPath)).freeSpace)
                 freeSpace.text = String.format( getString(R.string.freespace) + ": " + free)
                 if (free == "?") freeSpace.visibility = View.GONE
 
@@ -157,7 +155,6 @@ class DownloadAudioFragment(private var resultItem: ResultItem, private var curr
                             }
                         }
                         formats = allFormats.first().toMutableList()
-                        downloadItem.format.container = container.editText?.text.toString()
                     }
                 }
                 formatCard.setOnClickListener{
@@ -181,13 +178,13 @@ class DownloadAudioFragment(private var resultItem: ResultItem, private var curr
                     )
                 )
 
-                downloadItem.format.container = if (containerPreference == getString(R.string.defaultValue)) "" else containerPreference!!
-                containerAutoCompleteTextView.setText(downloadItem.format.container.ifEmpty { getString(R.string.defaultValue) }, false)
+                downloadItem.container = if (containerPreference == getString(R.string.defaultValue)) "" else containerPreference!!
+                containerAutoCompleteTextView.setText(downloadItem.container.ifEmpty { getString(R.string.defaultValue) }, false)
 
                 (container!!.editText as AutoCompleteTextView?)!!.onItemClickListener =
                     AdapterView.OnItemClickListener { _: AdapterView<*>?, _: View?, index: Int, _: Long ->
-                        downloadItem.format.container = containers[index]
-                        if (containers[index] == getString(R.string.defaultValue)) downloadItem.format.container = ""
+                        downloadItem.container = containers[index]
+                        if (containers[index] == getString(R.string.defaultValue)) downloadItem.container = ""
                     }
 
                 val embedThumb = view.findViewById<Chip>(R.id.embed_thumb)
@@ -313,7 +310,7 @@ class DownloadAudioFragment(private var resultItem: ResultItem, private var curr
                     }
                     cut.setOnClickListener {
                         if (parentFragmentManager.findFragmentByTag("cutVideoSheet") == null){
-                            val bottomSheet = CutVideoBottomSheetDialog(downloadItem, cutVideoListener)
+                            val bottomSheet = CutVideoBottomSheetDialog(downloadItem, resultItem.urls, resultItem.chapters, cutVideoListener)
                             bottomSheet.show(parentFragmentManager, "cutVideoSheet")
                         }
                     }
@@ -340,10 +337,10 @@ class DownloadAudioFragment(private var resultItem: ResultItem, private var curr
             }
             downloadItem.downloadPath = result.data?.data.toString()
             //downloadViewModel.updateDownload(downloadItem)
-            saveDir.editText?.setText(fileUtil.formatPath(result.data?.data.toString()), TextView.BufferType.EDITABLE)
+            saveDir.editText?.setText(FileUtil.formatPath(result.data?.data.toString()), TextView.BufferType.EDITABLE)
 
-            val free = fileUtil.convertFileSize(
-                File(fileUtil.formatPath(downloadItem.downloadPath)).freeSpace)
+            val free = FileUtil.convertFileSize(
+                File(FileUtil.formatPath(downloadItem.downloadPath)).freeSpace)
             freeSpace.text = String.format( getString(R.string.freespace) + ": " + free)
             if (free == "?") freeSpace.visibility = View.GONE
         }

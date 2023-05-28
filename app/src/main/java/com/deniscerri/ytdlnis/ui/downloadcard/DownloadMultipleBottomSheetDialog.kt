@@ -59,7 +59,6 @@ class DownloadMultipleBottomSheetDialog(private var results: List<ResultItem?>, 
     private lateinit var listAdapter : ConfigureMultipleDownloadsAdapter
     private lateinit var recyclerView: RecyclerView
     private lateinit var behavior: BottomSheetBehavior<View>
-    private lateinit var fileUtil: FileUtil
     private lateinit var uiUtil: UiUtil
     private lateinit var bottomAppBar: BottomAppBar
 
@@ -69,8 +68,7 @@ class DownloadMultipleBottomSheetDialog(private var results: List<ResultItem?>, 
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
         resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]
         commandTemplateViewModel = ViewModelProvider(this)[CommandTemplateViewModel::class.java]
-        fileUtil = FileUtil()
-        uiUtil = UiUtil(fileUtil)
+        uiUtil = UiUtil()
     }
 
     @SuppressLint("RestrictedApi", "NotifyDataSetChanged")
@@ -291,7 +289,7 @@ class DownloadMultipleBottomSheetDialog(private var results: List<ResultItem?>, 
             items.forEach {
                 it.downloadPath = result.data?.data.toString()
             }
-            Toast.makeText(requireContext(), "Changed every item's download path to: ${fileUtil.formatPath(result.data!!.data.toString())}", Toast.LENGTH_LONG).show()
+            Toast.makeText(requireContext(), "Changed every item's download path to: ${FileUtil.formatPath(result.data!!.data.toString())}", Toast.LENGTH_LONG).show()
         }
     }
 

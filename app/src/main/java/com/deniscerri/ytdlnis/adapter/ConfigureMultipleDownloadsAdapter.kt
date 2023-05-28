@@ -24,12 +24,10 @@ import java.util.Locale
 class ConfigureMultipleDownloadsAdapter(onItemClickListener: OnItemClickListener, activity: Activity) : ListAdapter<DownloadItem?, ConfigureMultipleDownloadsAdapter.ViewHolder>(AsyncDifferConfig.Builder(DIFF_CALLBACK).build()) {
     private val onItemClickListener: OnItemClickListener
     private val activity: Activity
-    private var fileUtil: FileUtil
 
     init {
         this.onItemClickListener = onItemClickListener
         this.activity = activity
-        fileUtil = FileUtil()
     }
 
     class ViewHolder(itemView: View, onItemClickListener: OnItemClickListener?) : RecyclerView.ViewHolder(itemView) {
@@ -96,7 +94,7 @@ class ConfigureMultipleDownloadsAdapter(onItemClickListener: OnItemClickListener
         }
 
         val fileSize = card.findViewById<TextView>(R.id.file_size)
-        val fileSizeReadable = fileUtil.convertFileSize(item.format.filesize)
+        val fileSizeReadable = FileUtil.convertFileSize(item.format.filesize)
         if (fileSizeReadable == "?") fileSize.visibility = View.GONE
         else {
             fileSize.text = fileSizeReadable

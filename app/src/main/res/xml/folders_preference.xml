@@ -5,19 +5,16 @@
     <Preference
         app:icon="@drawable/ic_music_downloaded"
         app:key="music_path"
-        app:defaultValue="@string/music_path"
         app:title="@string/music_directory" />
 
     <Preference
         app:icon="@drawable/ic_video_downloaded"
         app:key="video_path"
-        app:defaultValue="@string/video_path"
         app:title="@string/video_directory" />
 
     <Preference
         app:icon="@drawable/ic_terminal"
         app:key="command_path"
-        app:defaultValue="@string/command_path"
         app:title="@string/command_directory" />
 
     <Preference

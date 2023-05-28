@@ -42,6 +42,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
 import kotlinx.coroutines.runBlocking
+import java.io.File
 
 
 class ErroredDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickListener, OnItemClickListener {
@@ -54,7 +55,6 @@ class ErroredDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickL
     private lateinit var items : MutableList<DownloadItem>
     private var selectedObjects: ArrayList<DownloadItem>? = null
     private var actionMode : ActionMode? = null
-    private lateinit var fileUtil: FileUtil
     private lateinit var uiUtil : UiUtil
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -67,8 +67,7 @@ class ErroredDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickL
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
         items = mutableListOf()
         selectedObjects = arrayListOf()
-        fileUtil = FileUtil()
-        uiUtil = UiUtil(fileUtil)
+        uiUtil = UiUtil()
         return fragmentView
     }
 
@@ -98,7 +97,7 @@ class ErroredDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickL
 
     override fun onActionButtonClick(itemID: Long) {
         val item = items.find { it.id == itemID } ?: return
-        val logFile = fileUtil.getLogFile(requireContext(), item)
+        val logFile = FileUtil.getLogFile(requireContext(), item)
         if (logFile.exists()) {
             val bundle = Bundle()
             bundle.putString("logpath", logFile.absolutePath)
@@ -165,7 +164,7 @@ class ErroredDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickL
             codec.text = codecText
         }
 
-        val fileSizeReadable = fileUtil.convertFileSize(item.format.filesize)
+        val fileSizeReadable = FileUtil.convertFileSize(item.format.filesize)
         if (fileSizeReadable == "?") fileSize!!.visibility = View.GONE
         else fileSize!!.text = fileSizeReadable
 

@@ -64,7 +64,6 @@ class TerminalActivity : BaseActivity() {
     private lateinit var observer: FileObserver
     private lateinit var imm : InputMethodManager
     private lateinit var uiUtil: UiUtil
-    private lateinit var fileUtil: FileUtil
     var context: Context? = null
 
     public override fun onCreate(savedInstanceState: Bundle?) {
@@ -75,8 +74,7 @@ class TerminalActivity : BaseActivity() {
         downloadFile = File(cacheDir.absolutePath + "/$downloadID.txt")
         if (! downloadFile.exists()) downloadFile.createNewFile()
         imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-        fileUtil = FileUtil()
-        uiUtil = UiUtil(fileUtil)
+        uiUtil = UiUtil()
 
         context = baseContext
         scrollView = findViewById(R.id.custom_command_scrollview)
@@ -311,7 +309,7 @@ class TerminalActivity : BaseActivity() {
                             Intent.FLAG_GRANT_WRITE_URI_PERMISSION
                 )
             }
-            input!!.text.insert(input!!.selectionStart, fileUtil.formatPath(result.data?.data.toString()))
+            input!!.text.insert(input!!.selectionStart, FileUtil.formatPath(result.data?.data.toString()))
         }
     }
 

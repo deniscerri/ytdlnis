@@ -2,6 +2,7 @@ package com.deniscerri.ytdlnis.database
 
 import androidx.room.TypeConverter
 import com.deniscerri.ytdlnis.database.models.AudioPreferences
+import com.deniscerri.ytdlnis.database.models.ChapterItem
 import com.deniscerri.ytdlnis.database.models.Format
 import com.deniscerri.ytdlnis.database.models.VideoPreferences
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
@@ -50,4 +51,16 @@ class Converters {
     fun videoPreferencesToString(videoPreferences: VideoPreferences): String = Gson().toJson(videoPreferences)
     @TypeConverter
     fun stringToVideoPreferences(string: String): VideoPreferences = Gson().fromJson(string, VideoPreferences::class.java)
+
+    @TypeConverter
+    fun stringToListOfChapters(value: String?): ArrayList<ChapterItem>? {
+        val listType: Type = object : TypeToken<ArrayList<ChapterItem?>?>() {}.type
+        return Gson().fromJson(value, listType)
+    }
+
+    @TypeConverter
+    fun listOfChaptersToString(list: ArrayList<ChapterItem?>?): String {
+        val gson = Gson()
+        return gson.toJson(list)
+    }
 }

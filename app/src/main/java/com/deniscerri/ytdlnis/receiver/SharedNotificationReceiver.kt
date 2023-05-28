@@ -17,7 +17,7 @@ class SharedDownloadNotificationReceiver : AppCompatActivity() {
         val notificationId = intent.getIntExtra("notificationID", 0)
         if (message != null && path != null) {
             if (notificationId != 0) NotificationUtil(this).cancelDownloadNotification(notificationId)
-            val uiUtil = UiUtil(FileUtil())
+            val uiUtil = UiUtil()
             uiUtil.shareFileIntent(this, listOf(path))
             this.finishAffinity()
         }

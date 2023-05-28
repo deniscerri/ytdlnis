@@ -9,9 +9,11 @@ import android.widget.Toast
 import androidx.core.text.HtmlCompat
 import androidx.preference.PreferenceManager
 import com.deniscerri.ytdlnis.R
+import com.deniscerri.ytdlnis.database.models.ChapterItem
 import com.deniscerri.ytdlnis.database.models.Format
 import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.yausername.youtubedl_android.YoutubeDL
 import com.yausername.youtubedl_android.YoutubeDLRequest
 import org.json.JSONArray
@@ -20,6 +22,7 @@ import org.json.JSONObject
 import java.io.BufferedReader
 import java.io.File
 import java.io.InputStreamReader
+import java.lang.reflect.Type
 import java.net.HttpURLConnection
 import java.net.URL
 import java.util.*
@@ -272,7 +275,9 @@ class InfoUtil(private val context: Context) {
                     thumb,
                     "youtube",
                     "",
-                    ArrayList()
+                    ArrayList(),
+                "",
+                ArrayList()
                 )
         } catch (e: Exception) {
             Log.e(TAG, e.toString())
@@ -326,7 +331,9 @@ class InfoUtil(private val context: Context) {
                     thumb,
                     "youtube",
                     "",
-                    formats
+                    formats,
+                "",
+                ArrayList()
                 )
         } catch (e: Exception) {
             Log.e(TAG, e.toString())
@@ -337,13 +344,8 @@ class InfoUtil(private val context: Context) {
     private fun createVideoFromPipedJSON(obj: JSONObject, id: String): ResultItem? {
         var video: ResultItem? = null
         try {
-            val title = obj.getString("title").toString()
-            title.replace("&#39;s", "'")
-            title.replace("&amp", "&")
-            val author = obj.getString("uploader").toString()
-            author.replace("&#39;s", "'")
-            author.replace("&amp", "&")
-
+            val title = Html.fromHtml(obj.getString("title").toString()).toString()
+            val author = Html.fromHtml(obj.getString("uploader").toString()).toString()
             if (author.isBlank()) throw Exception()
 
             val duration = formatIntegerDuration(obj.getInt("duration"), Locale.getDefault())
@@ -360,7 +362,6 @@ class InfoUtil(private val context: Context) {
                         formatObj.acodec = format.getString("codec")
                         val streamURL = format.getString("url")
                         formatObj.format_id = streamURL.substringAfter("itag=").substringBefore("&")
-                        formatObj.filesize = (format.getInt("bitrate") / 8 * obj.getInt("duration")).toLong()
                         formatObj.asr = format.getString("quality")
                         if (! format.getString("audioTrackName").equals("null", ignoreCase = true)){
                             formatObj.format_note = format.getString("audioTrackName") + " Audio, " + formatObj.format_note
@@ -385,7 +386,6 @@ class InfoUtil(private val context: Context) {
                         formatObj.vcodec = format.getString("codec")
                         val streamURL = format.getString("url")
                         formatObj.format_id = streamURL.substringAfter("itag=").substringBefore("&")
-                        formatObj.filesize = (format.getInt("bitrate") / 8 * obj.getInt("duration")).toLong()
                     }catch (e: Exception) {
                         e.printStackTrace()
                     }
@@ -393,6 +393,17 @@ class InfoUtil(private val context: Context) {
                 }
             }
             formats.sortBy { it.filesize }
+
+            val chapters = ArrayList<ChapterItem>()
+            if (obj.has("chapters") && obj.getJSONArray("chapters").length() > 0){
+                val chaptersJArray = obj.getJSONArray("chapters")
+                for (c in 0 until chaptersJArray.length()){
+                    val chapter = chaptersJArray.getJSONObject(c)
+                    val end = if (c == chaptersJArray.length() - 1) obj.getInt("duration") else chaptersJArray.getJSONObject(c+1).getInt("start")
+                    val item = ChapterItem(chapter.getInt("start").toLong(), end.toLong(), chapter.getString("title"))
+                    chapters.add(item)
+                }
+            }
 
             video = ResultItem(0,
                 url,
@@ -402,7 +413,9 @@ class InfoUtil(private val context: Context) {
                 thumb,
                 "youtube",
                 "",
-                formats
+                formats,
+                if (obj.has("hls")) obj.getString("hls") else "",
+                chapters
             )
         } catch (e: Exception) {
             Log.e(TAG, e.toString())
@@ -567,7 +580,7 @@ class InfoUtil(private val context: Context) {
         return query!!
     }
 
-    fun getFormats(url: String) : ResultItem {
+    fun getFormats(url: String) : List<Format> {
         init()
         val p = Pattern.compile("^(https?)://(www.)?youtu(.be)?")
         val m = p.matcher(url)
@@ -576,12 +589,68 @@ class InfoUtil(private val context: Context) {
             val id = getIDFromYoutubeURL(url)
             val res = genericRequest(pipedURL + "streams/" + id)
             if (res.length() == 0) getFromYTDL(url)[0]!!
-            else createVideoFromPipedJSON(
-                res, id
-            )!!
+            val item = createVideoFromPipedJSON(res, id)
+            item!!.formats
         }else{
-            getFromYTDL(url)[0]!!
+            getFormatsFromYTDL(url)
         }
+    }
+
+    private fun getFormatsFromYTDL(url: String) : List<Format> {
+        try {
+            val request = YoutubeDLRequest(url)
+            request.addOption("--print", "%(formats)s")
+            request.addOption("--skip-download")
+            request.addOption("-R", "1")
+            request.addOption("--socket-timeout", "5")
+            val cookiesFile = File(context.cacheDir, "cookies.txt")
+            if (cookiesFile.exists()){
+                request.addOption("--cookies", cookiesFile.absolutePath)
+            }
+
+            val proxy = sharedPreferences.getString("proxy", "")
+            if (proxy!!.isNotBlank()){
+                request.addOption("--proxy", proxy)
+            }
+
+            val res = YoutubeDL.getInstance().execute(request)
+            val results: Array<String?> = try {
+                val lineSeparator = System.getProperty("line.separator")
+                res.out.split(lineSeparator!!).toTypedArray()
+            } catch (e: Exception) {
+                arrayOf(res.out)
+            }
+            val json = results[0]
+            val jsonArray = JSONArray(json)
+
+            val formats : ArrayList<Format> = ArrayList()
+            for (f in 0 until jsonArray.length()){
+                val format = jsonArray.getJSONObject(f)
+                if (format.has("filesize") && format.get("filesize") == "None"){
+                    format.remove("filesize")
+                    format.put("filesize", 0)
+                }
+                val formatProper = Gson().fromJson(format.toString(), Format::class.java)
+                if (format.has("format_note")){
+                    if (!formatProper!!.format_note.contains("audio only", true)) {
+                        formatProper.format_note = format.getString("format_note")
+                    }else{
+                        formatProper.format_note = "${format.getString("format_note")} audio"
+                    }
+                }
+                if (formatProper!!.format_note == "storyboard") continue
+                formatProper.container = format.getString("ext")
+                formats.add(formatProper)
+            }
+
+            return formats
+        } catch (e: Exception) {
+            Looper.prepare().run {
+                Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
+            }
+            e.printStackTrace()
+        }
+        return emptyList()
     }
 
     fun getFormatsMultiple(urls: List<String>, progress: (progress: List<Format>) -> Unit){
@@ -623,16 +692,19 @@ class InfoUtil(private val context: Context) {
                             try{
                                 if (format.getString("filesize") == "None") continue
                             }catch (e: Exception) { continue }
-                            val formatProper = Gson().fromJson(format.toString(), Format::class.java)
-                            if (formatProper.filesize > 0){
-                                if ( !formatProper!!.format_note!!.contains("audio only", true)) {
-                                    formatProper.format_note = format.getString("format_note")
-                                }else{
-                                    formatProper.format_note = "${format.getString("format_note")} audio"
-                                }
-                                formatProper.container = format.getString("ext")
-                                formats.add(formatProper)
+                            if (format.has("filesize") && format.get("filesize") == "None"){
+                                format.remove("filesize")
+                                format.put("filesize", 0)
                             }
+                            val formatProper = Gson().fromJson(format.toString(), Format::class.java)
+                            if ( !formatProper!!.format_note.contains("audio only", true)) {
+                                formatProper.format_note = format.getString("format_note")
+                            }else{
+                                formatProper.format_note = "${format.getString("format_note")} audio"
+                            }
+                            if (formatProper.format_note == "storyboard") continue
+                            formatProper.container = format.getString("ext")
+                            formats.add(formatProper)
                         }
                         progress(formats)
                     }catch (e: Exception){
@@ -725,20 +797,28 @@ class InfoUtil(private val context: Context) {
                 if (formatsInJSON != null) {
                     for (f in 0 until formatsInJSON.length()){
                         val format = formatsInJSON.getJSONObject(f)
-                        val formatProper = Gson().fromJson(format.toString(), Format::class.java)
-                        if (formatProper.filesize > 0){
-                            if (format.has("format_note") && formatProper.format_note != null){
-                                if (!formatProper!!.format_note.contains("audio only", true)) {
-                                    formatProper.format_note = format.getString("format_note")
-                                }else{
-                                    formatProper.format_note = "${format.getString("format_note")} audio"
-                                }
-                            }
-                            formatProper.container = format.getString("ext")
-                            formats.add(formatProper)
+                        if (format.has("filesize") && format.get("filesize") == "None"){
+                            format.remove("filesize")
+                            format.put("filesize", 0)
                         }
+                        val formatProper = Gson().fromJson(format.toString(), Format::class.java)
+                        if (format.has("format_note") && formatProper.format_note != null){
+                            if (!formatProper!!.format_note.contains("audio only", true)) {
+                                formatProper.format_note = format.getString("format_note")
+                            }else{
+                                formatProper.format_note = "${format.getString("format_note")} audio"
+                            }
+                        }
+                        if (formatProper.format_note == "storyboard") continue
+                        formatProper.container = format.getString("ext")
+                        formats.add(formatProper)
                     }
                 }
+
+                val chaptersInJSON = if (jsonObject.has("formats") && jsonObject.get("formats") is JSONArray) jsonObject.getJSONArray("formats") else null
+                val listType: Type = object : TypeToken<List<ChapterItem>>() {}.type
+                val chapters : ArrayList<ChapterItem> = Gson().fromJson(chaptersInJSON?.toString(), listType)
+
                 Log.e("aa", formats.toString())
                 items.add(ResultItem(0,
                         url,
@@ -748,7 +828,9 @@ class InfoUtil(private val context: Context) {
                         thumb!!,
                         website,
                         playlistTitle!!,
-                        formats
+                        formats,
+                        jsonObject.getString("urls") ?: "",
+                        chapters
                     )
                 )
             }
@@ -820,6 +902,8 @@ class InfoUtil(private val context: Context) {
                 thumb!!,
                 jsonObject.getString("extractor"),
                 if (isPlaylist) jsonObject.getString("title") else "",
+                arrayListOf(),
+                "",
                 arrayListOf(),
                 System.currentTimeMillis()
             )
@@ -945,7 +1029,7 @@ class InfoUtil(private val context: Context) {
 
     companion object {
         private const val TAG = "API MANAGER"
-        private const val invidousURL = "https://invidious.nerdvpn.de/api/v1/"
+        private const val invidousURL = "https://invidious.baczek.me/api/v1/"
         private const val pipedURL = "https://pipedapi.kavin.rocks/"
         private var countryCODE: String = ""
     }

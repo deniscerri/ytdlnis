@@ -59,7 +59,7 @@ class DownloadBottomSheetDialog(private val resultItem: ResultItem, private val 
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
         resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]
         commandTemplateDao = DBManager.getInstance(requireContext()).commandTemplateDao
-        uiUtil = UiUtil(FileUtil())
+        uiUtil = UiUtil()
         infoUtil = InfoUtil(requireContext())
     }
 
@@ -103,6 +103,13 @@ class DownloadBottomSheetDialog(private val resultItem: ResultItem, private val 
             }
         }
 
+        //check if the item has formats and its audio-only
+        val isAudioOnly = resultItem.formats.isNotEmpty() && resultItem.formats.none { !it.format_note.contains("audio") }
+        if (isAudioOnly){
+            (tabLayout.getChildAt(0) as? ViewGroup)?.getChildAt(1)?.isClickable = true
+            (tabLayout.getChildAt(0) as? ViewGroup)?.getChildAt(1)?.alpha = 0.3f
+        }
+
 
         val fragmentManager = parentFragmentManager
         fragmentAdapter = DownloadFragmentAdapter(
@@ -121,8 +128,14 @@ class DownloadBottomSheetDialog(private val resultItem: ResultItem, private val 
                 viewPager2.setCurrentItem(0, false)
             }
             Type.video -> {
-                tabLayout.getTabAt(1)!!.select()
-                viewPager2.setCurrentItem(1, false)
+                if (isAudioOnly){
+                    tabLayout.getTabAt(0)!!.select()
+                    viewPager2.setCurrentItem(0, false)
+                    Toast.makeText(context, getString(R.string.audio_only_item), Toast.LENGTH_SHORT).show()
+                }else{
+                    tabLayout.getTabAt(1)!!.select()
+                    viewPager2.setCurrentItem(1, false)
+                }
             }
             else -> {
                 tabLayout.getTabAt(2)!!.select()
@@ -138,7 +151,11 @@ class DownloadBottomSheetDialog(private val resultItem: ResultItem, private val 
                 if (tab!!.position == 2 && commandTemplateNr == 0){
                     tabLayout.selectTab(tabLayout.getTabAt(1))
                     Toast.makeText(context, getString(R.string.add_template_first), Toast.LENGTH_SHORT).show()
-                }else{
+                }else if (tab.position == 1 && isAudioOnly){
+                    tabLayout.selectTab(tabLayout.getTabAt(0))
+                    Toast.makeText(context, getString(R.string.audio_only_item), Toast.LENGTH_SHORT).show()
+                }
+                else{
                     viewPager2.setCurrentItem(tab.position, false)
                 }
             }

@@ -4,6 +4,7 @@ import android.content.Context
 import android.media.MediaScannerConnection
 import android.net.Uri
 import android.os.Build
+import android.os.Environment
 import android.provider.DocumentsContract
 import android.util.Log
 import android.webkit.MimeTypeMap
@@ -21,7 +22,7 @@ import kotlin.math.log10
 import kotlin.math.pow
 
 
-class FileUtil() {
+object FileUtil {
     fun deleteFile(path: String){
         val file = File(path)
         if (file.exists()) {
@@ -144,11 +145,24 @@ class FileUtil() {
 
     fun getLogFile(context: Context, item: DownloadItem) : File {
         val titleRegex = Regex("[^A-Za-z\\d ]")
-        return File(context.filesDir.absolutePath + """/logs/${item.id} - ${titleRegex.replace(item.title, "").take(150)}##${item.type}##${item.format.format_id}.log""")
+        val title = item.title.ifEmpty { item.url }
+        return File(context.filesDir.absolutePath + """/logs/${item.id} - ${titleRegex.replace(title, "").take(150)}##${item.type}##${item.format.format_id}.log""")
     }
     fun getLogFileForTerminal(context: Context, command: String) : File {
         val titleRegex = Regex("[^A-Za-z\\d ]")
         return File(context.filesDir.absolutePath + """/logs/Terminal - ${titleRegex.replace(command.take(30), "")}##terminal.log""")
+    }
+
+    fun getDefautAudioPath() : String{
+        return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).absolutePath + File.separator + "YTDLnis/Audio"
+    }
+
+    fun getDefautVideoPath() : String{
+        return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).absolutePath + File.separator + "YTDLnis/Video"
+    }
+
+    fun getDefaultCommandPath() : String {
+        return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).absolutePath + File.separator + "YTDLnis/Command"
     }
 
     fun convertFileSize(s: Long): String{

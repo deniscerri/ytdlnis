@@ -51,7 +51,6 @@ class DownloadVideoFragment(private val resultItem: ResultItem, private var curr
     private var activity: Activity? = null
     private lateinit var downloadViewModel : DownloadViewModel
     private lateinit var resultViewModel: ResultViewModel
-    private lateinit var fileUtil : FileUtil
     private lateinit var uiUtil : UiUtil
 
     private lateinit var title : TextInputLayout
@@ -72,8 +71,7 @@ class DownloadVideoFragment(private val resultItem: ResultItem, private var curr
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
         resultViewModel = ViewModelProvider(this@DownloadVideoFragment)[ResultViewModel::class.java]
 
-        fileUtil = FileUtil()
-        uiUtil = UiUtil(fileUtil)
+        uiUtil = UiUtil()
         return fragmentView
     }
 
@@ -114,7 +112,7 @@ class DownloadVideoFragment(private val resultItem: ResultItem, private var curr
 
                 saveDir = view.findViewById(R.id.outputPath)
                 saveDir.editText!!.setText(
-                    fileUtil.formatPath(downloadItem.downloadPath)
+                    FileUtil.formatPath(downloadItem.downloadPath)
                 )
                 saveDir.editText!!.isFocusable = false
                 saveDir.editText!!.isClickable = true
@@ -127,8 +125,8 @@ class DownloadVideoFragment(private val resultItem: ResultItem, private var curr
                 }
 
                 freeSpace = view.findViewById(R.id.freespace)
-                val free = fileUtil.convertFileSize(
-                    File(fileUtil.formatPath(downloadItem.downloadPath)).freeSpace)
+                val free = FileUtil.convertFileSize(
+                    File(FileUtil.formatPath(downloadItem.downloadPath)).freeSpace)
                 freeSpace.text = String.format( getString(R.string.freespace) + ": " + free)
                 if (free == "?") freeSpace.visibility = View.GONE
 
@@ -148,7 +146,7 @@ class DownloadVideoFragment(private val resultItem: ResultItem, private var curr
                 val formatCard = view.findViewById<MaterialCardView>(R.id.format_card_constraintLayout)
 
                 val chosenFormat = downloadItem.format
-                uiUtil.populateFormatCard(formatCard, chosenFormat, null)
+                uiUtil.populateFormatCard(formatCard, chosenFormat, downloadItem.allFormats.filter { downloadItem.videoPreferences.audioFormatIDs.contains(it.format_id) })
                 val listener = object : OnFormatClickListener {
                     override fun onFormatClick(allFormats: List<List<Format>>, item: List<Format>) {
                         downloadItem.format = item.first()
@@ -162,7 +160,6 @@ class DownloadVideoFragment(private val resultItem: ResultItem, private var curr
                         }
                         formats = allFormats.first().toMutableList()
                         uiUtil.populateFormatCard(formatCard, item.first(), item.drop(1))
-                        downloadItem.format.container = container.editText?.text.toString()
                     }
                 }
                 formatCard.setOnClickListener{
@@ -185,15 +182,15 @@ class DownloadVideoFragment(private val resultItem: ResultItem, private var curr
                         containers
                     )
                 )
-                downloadItem.format.container = if (containerPreference == getString(R.string.defaultValue)) "" else containerPreference!!
+                downloadItem.container = if (containerPreference == getString(R.string.defaultValue)) "" else containerPreference!!
                 containerAutoCompleteTextView!!.setText(
-                    downloadItem.format.container.ifEmpty { getString(R.string.defaultValue) },
+                    downloadItem.container.ifEmpty { getString(R.string.defaultValue) },
                     false)
 
                 (container!!.editText as AutoCompleteTextView?)!!.onItemClickListener =
                     AdapterView.OnItemClickListener { _: AdapterView<*>?, _: View?, index: Int, _: Long ->
-                        downloadItem.format.container = containers[index]
-                        if (containers[index] == getString(R.string.defaultValue)) downloadItem.format.container = ""
+                        downloadItem.container = containers[index]
+                        if (containers[index] == getString(R.string.defaultValue)) downloadItem.container = ""
                     }
 
 
@@ -312,7 +309,7 @@ class DownloadVideoFragment(private val resultItem: ResultItem, private var curr
                     }
                     cut.setOnClickListener {
                         if (parentFragmentManager.findFragmentByTag("cutVideoSheet") == null){
-                            val bottomSheet = CutVideoBottomSheetDialog(downloadItem, cutVideoListener)
+                            val bottomSheet = CutVideoBottomSheetDialog(downloadItem, resultItem.urls, resultItem.chapters, cutVideoListener)
                             bottomSheet.show(parentFragmentManager, "cutVideoSheet")
                         }
                     }
@@ -332,17 +329,17 @@ class DownloadVideoFragment(private val resultItem: ResultItem, private var curr
                     builder.setView(inputLayout)
                     builder.setPositiveButton(
                         getString(R.string.ok)
-                    ) { dialog: DialogInterface?, which: Int ->
+                    ) { _: DialogInterface?, _: Int ->
                         downloadItem.customFileNameTemplate = editText.text.toString()
                     }
 
                     // handle the negative button of the alert dialog
                     builder.setNegativeButton(
                         getString(R.string.cancel)
-                    ) { dialog: DialogInterface?, which: Int -> }
+                    ) { _: DialogInterface?, _: Int -> }
 
                     val dialog = builder.create()
-                    editText.doOnTextChanged { text, start, before, count ->
+                    editText.doOnTextChanged { _, _, _, _ ->
                         dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = editText.text.isNotEmpty()
                     }
                     dialog.show()
@@ -363,7 +360,7 @@ class DownloadVideoFragment(private val resultItem: ResultItem, private var curr
                     subtitleLanguages.visibility = View.VISIBLE
                 }
 
-                saveSubtitles.setOnCheckedChangeListener { compoundButton, b ->
+                saveSubtitles.setOnCheckedChangeListener { _, _ ->
                     if (saveSubtitles.isChecked) subtitleLanguages.visibility = View.VISIBLE
                     else subtitleLanguages.visibility = View.GONE
                     downloadItem.videoPreferences.writeSubs = saveSubtitles.isChecked
@@ -376,7 +373,7 @@ class DownloadVideoFragment(private val resultItem: ResultItem, private var curr
                 }
 
                 val removeAudio = view.findViewById<Chip>(R.id.remove_audio)
-                removeAudio.setOnCheckedChangeListener { compoundButton, b ->
+                removeAudio.setOnCheckedChangeListener { _, _ ->
                     downloadItem.videoPreferences.removeAudio = removeAudio.isChecked
                 }
 
@@ -398,11 +395,10 @@ class DownloadVideoFragment(private val resultItem: ResultItem, private var curr
                 )
             }
             downloadItem.downloadPath = result.data?.data.toString()
-            //downloadviewmodel.updateDownload(downloadItem)
-            saveDir.editText?.setText(fileUtil.formatPath(result.data?.data.toString()), TextView.BufferType.EDITABLE)
+            saveDir.editText?.setText(FileUtil.formatPath(result.data?.data.toString()), TextView.BufferType.EDITABLE)
 
-            val free = fileUtil.convertFileSize(
-                File(fileUtil.formatPath(downloadItem.downloadPath)).freeSpace)
+            val free = FileUtil.convertFileSize(
+                File(FileUtil.formatPath(downloadItem.downloadPath)).freeSpace)
             freeSpace.text = String.format( getString(R.string.freespace) + ": " + free)
             if (free == "?") freeSpace.visibility = View.GONE
         }

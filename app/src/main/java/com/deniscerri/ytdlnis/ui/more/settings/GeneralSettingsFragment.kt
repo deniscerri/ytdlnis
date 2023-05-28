@@ -30,13 +30,11 @@ class GeneralSettingsFragment : BaseSettingsFragment() {
     private var locale: ListPreference? = null
 
     private var updateUtil: UpdateUtil? = null
-    private var fileUtil: FileUtil? = null
     private var activeDownloadCount = 0
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.general_preferences, rootKey)
         updateUtil = UpdateUtil(requireContext())
-        fileUtil = FileUtil()
 
         WorkManager.getInstance(requireContext()).getWorkInfosByTagLiveData("download").observe(this){
             activeDownloadCount = 0

@@ -60,9 +60,8 @@ import java.util.*
 import kotlin.properties.Delegates
 
 
-class CutVideoBottomSheetDialog(private val item: DownloadItem, private val listener: VideoCutListener) : BottomSheetDialogFragment() {
+class CutVideoBottomSheetDialog(private val item: DownloadItem, private val urls : String?, private var chapters: List<ChapterItem>?, private val listener: VideoCutListener) : BottomSheetDialogFragment() {
     private lateinit var behavior: BottomSheetBehavior<View>
-    private lateinit var fileUtil: FileUtil
     private lateinit var infoUtil: InfoUtil
     private lateinit var uiUtil: UiUtil
     private lateinit var player: Player
@@ -86,14 +85,12 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val list
     private lateinit var chipGroup : ChipGroup
 
     private var timeSeconds by Delegates.notNull<Int>()
-    private lateinit var chapters: List<ChapterItem>
     private lateinit var selectedCuts: MutableList<String>
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        fileUtil = FileUtil()
-        uiUtil = UiUtil(fileUtil)
+        uiUtil = UiUtil()
         infoUtil = InfoUtil(requireActivity().applicationContext)
     }
 
@@ -150,7 +147,7 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val list
         val videoView = view.findViewById<StyledPlayerView>(R.id.video_view)
         videoView.player = player
         timeSeconds = convertStringToTimestamp(item.duration)
-        chapters = emptyList()
+        if (chapters == null) chapters = emptyList()
 
         //cut section
         cutSection = view.findViewById(R.id.cut_section)
@@ -166,13 +163,14 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val list
         okBtn = view.findViewById(R.id.okButton)
         suggestedChips = view.findViewById(R.id.chapters)
         suggestedChapters = view.findViewById(R.id.suggested_cuts)
-        initCutSection()
+
 
         //cut list section
         cutListSection = view.findViewById(R.id.list_section)
         newCutBtn = view.findViewById(R.id.new_cut)
         resetBtn = view.findViewById(R.id.reset_all)
         chipGroup = view.findViewById(R.id.cut_list_chip_group)
+
 
         selectedCuts = if (chipGroup.childCount == 0){
             mutableListOf()
@@ -183,6 +181,7 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val list
             chipGroup.children.map { (it as Chip).text.toString() }.toMutableList()
         }
 
+        initCutSection()
         initCutListSection()
 
         if (item.downloadSections.isBlank()) cutSection.visibility = View.VISIBLE
@@ -190,16 +189,22 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val list
 
         lifecycleScope.launch {
             try {
-                val data = withContext(Dispatchers.IO){
-                    infoUtil.getStreamingUrlAndChapters(item.url)
+                val data : MutableList<String?>  = withContext(Dispatchers.IO){
+                    if (urls.isNullOrEmpty() || chapters.isNullOrEmpty()) {
+                        infoUtil.getStreamingUrlAndChapters(item.url)
+                    }else {
+                        urls.split("\n").toMutableList()
+                    }
                 }
-                if (data.isEmpty()) throw Exception("No Data found!")
-                try{
-                    val listType: Type = object : TypeToken<List<ChapterItem>>() {}.type
-                    chapters = Gson().fromJson(data.first().toString(), listType)
-                }catch (ignored: Exception) {}
-                data.removeFirst()
 
+                if (data.isEmpty()) throw Exception("No Data found!")
+                if (chapters!!.isEmpty()){
+                    try{
+                        val listType: Type = object : TypeToken<List<ChapterItem>>() {}.type
+                        chapters = Gson().fromJson(data.first().toString(), listType)
+                    }catch (ignored: Exception) {}
+                    data.removeFirst()
+                }
 
                 if (data.isEmpty()) throw Exception("No Streaming URL found!")
                 if (data.size == 2){
@@ -375,11 +380,11 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val list
     }
 
     private fun populateSuggestedChapters(){
-        if (chapters.isEmpty()) suggestedChapters.visibility = View.GONE
+        if (chapters!!.isEmpty()) suggestedChapters.visibility = View.GONE
         else {
             suggestedChapters.visibility = View.VISIBLE
             suggestedChips.removeAllViews()
-            chapters.forEach {
+            chapters!!.forEach {
                 val chip = layoutInflater.inflate(R.layout.suggestion_chip, chipGroup, false) as Chip
                 chip.text = it.title
                 chip.chipBackgroundColor = ColorStateList.valueOf(MaterialColors.getColor(requireContext(), R.attr.colorSecondaryContainer, Color.BLACK))

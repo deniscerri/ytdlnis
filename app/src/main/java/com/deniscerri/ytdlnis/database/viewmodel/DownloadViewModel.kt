@@ -33,6 +33,7 @@ import com.deniscerri.ytdlnis.database.models.HistoryItem
 import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.deniscerri.ytdlnis.database.models.VideoPreferences
 import com.deniscerri.ytdlnis.database.repository.DownloadRepository
+import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.InfoUtil
 import com.deniscerri.ytdlnis.work.DownloadWorker
 import com.google.gson.Gson
@@ -46,7 +47,7 @@ import java.util.Locale
 import java.util.concurrent.TimeUnit
 
 
-class DownloadViewModel(private val application: Application) : AndroidViewModel(application) {
+class DownloadViewModel(application: Application) : AndroidViewModel(application) {
     private val repository : DownloadRepository
     private val sharedPreferences: SharedPreferences
     private val commandTemplateDao: CommandTemplateDao
@@ -152,9 +153,9 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         }
 
         val downloadPath = when(type){
-            Type.audio -> sharedPreferences.getString("music_path", File(Environment.DIRECTORY_DOWNLOADS, "YTDLnis/Audio").absolutePath)
-            Type.video -> sharedPreferences.getString("video_path", File(Environment.DIRECTORY_DOWNLOADS, "YTDLnis/Video").absolutePath)
-            else -> sharedPreferences.getString("command_path", File(Environment.DIRECTORY_DOWNLOADS, "YTDLnis/Command").absolutePath)
+            Type.audio -> sharedPreferences.getString("music_path", FileUtil.getDefautAudioPath())
+            Type.video -> sharedPreferences.getString("video_path",  FileUtil.getDefautVideoPath())
+            else -> sharedPreferences.getString("command_path", FileUtil.getDefaultCommandPath())
         }
 
         val sponsorblock = sharedPreferences.getStringSet("sponsorblock_filters", emptySet())
@@ -170,6 +171,7 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
             resultItem.duration,
             type,
             getFormat(resultItem.formats, type),
+            sharedPreferences.getString("video_format", "Default")!!,
             "",
             resultItem.formats,
             downloadPath!!, resultItem.website, "", resultItem.playlistTitle, audioPreferences, videoPreferences,customFileNameTemplate!!, saveThumb, DownloadRepository.Status.Processing.toString(), 0
@@ -188,6 +190,8 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
             downloadItem.website,
             downloadItem.playlistTitle,
             downloadItem.allFormats,
+            "",
+            arrayListOf(),
             System.currentTimeMillis()
         )
 
@@ -204,6 +208,8 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
             downloadItem.website,
             "",
             arrayListOf(),
+            "",
+            arrayListOf(),
             System.currentTimeMillis()
         )
 
@@ -218,6 +224,8 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
             "",
             "",
             "",
+            "",
+            arrayListOf(),
             "",
             arrayListOf(),
             System.currentTimeMillis()
@@ -247,9 +255,15 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         }
 
         val downloadPath = when(historyItem.type){
-            Type.audio -> sharedPreferences.getString("music_path", File(Environment.DIRECTORY_DOWNLOADS, "YTDLnis/Audio").absolutePath)
-            Type.video -> sharedPreferences.getString("video_path", File(Environment.DIRECTORY_DOWNLOADS, "YTDLnis/Video").absolutePath)
-            else -> sharedPreferences.getString("command_path", File(Environment.DIRECTORY_DOWNLOADS, "YTDLnis/Command").absolutePath)
+            Type.audio -> sharedPreferences.getString("music_path", FileUtil.getDefautAudioPath())
+            Type.video -> sharedPreferences.getString("video_path", FileUtil.getDefautVideoPath())
+            else -> sharedPreferences.getString("command_path", FileUtil.getDefaultCommandPath())
+        }
+
+        val container = when(historyItem.type){
+            Type.audio -> sharedPreferences.getString("audio_format", "Default")!!
+            Type.video -> sharedPreferences.getString("video_format", "Default")!!
+            else -> ""
         }
 
         val sponsorblock = sharedPreferences.getStringSet("sponsorblock_filters", emptySet())
@@ -265,6 +279,7 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
             historyItem.duration,
             historyItem.type,
             historyItem.format,
+            container,
             "",
             ArrayList(),
             downloadPath!!, historyItem.website, "", "", audioPreferences, videoPreferences,customFileNameTemplate!!, saveThumb, DownloadRepository.Status.Processing.toString(), 0
@@ -435,24 +450,6 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
                 }
 
                 queuedItems.add(it)
-            }
-        }
-
-        //if the download was quick downloaded and are incomplete
-        if (queuedItems.count() == 1){
-            val item = queuedItems.first()
-            if (item.title.isEmpty() || item.author.isEmpty() || item.thumb.isEmpty()){
-                runCatching {
-                    val info = infoUtil.getMissingInfo(item.url)
-                    if (item.title.isEmpty()) item.title = info?.title.toString()
-                    if (item.author.isEmpty()) item.author = info?.author.toString()
-                    item.duration = info?.duration.toString()
-                    item.website = info?.website.toString()
-                    if (item.thumb.isEmpty()) item.thumb = info?.thumb.toString()
-                    repository.update(item)
-                }.onFailure {  err ->
-                    Log.e("error", err.message.toString())
-                }
             }
         }
 

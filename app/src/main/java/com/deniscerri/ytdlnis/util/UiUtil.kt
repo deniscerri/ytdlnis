@@ -52,7 +52,7 @@ import kotlinx.coroutines.withContext
 import java.io.File
 import java.util.Calendar
 
-class UiUtil(private val fileUtil: FileUtil) {
+class UiUtil() {
     @SuppressLint("SetTextI18n")
     fun populateFormatCard(formatCard : MaterialCardView, chosenFormat: Format, audioFormats: List<Format>?){
         formatCard.findViewById<TextView>(R.id.container).text = chosenFormat.container.uppercase()
@@ -79,7 +79,7 @@ class UiUtil(private val fileUtil: FileUtil) {
         }
         var filesize = chosenFormat.filesize
         if (!audioFormats.isNullOrEmpty()) filesize += audioFormats.sumOf { it.filesize }
-        formatCard.findViewById<TextView>(R.id.file_size).text = fileUtil.convertFileSize(filesize)
+        formatCard.findViewById<TextView>(R.id.file_size).text = FileUtil.convertFileSize(filesize)
 
     }
 
@@ -139,7 +139,7 @@ class UiUtil(private val fileUtil: FileUtil) {
             }
         }
 
-        commandTemplateViewModel.shortcuts.observe(lifeCycle){ it ->
+        commandTemplateViewModel.shortcuts.observe(lifeCycle){
             shortcutsChipGroup.removeAllViews()
             it.forEach {shortcut ->
                 val chip = context.layoutInflater.inflate(R.layout.suggestion_chip, shortcutsChipGroup, false) as Chip
@@ -200,7 +200,7 @@ class UiUtil(private val fileUtil: FileUtil) {
             title.isEndIconVisible = false
         }
 
-        commandTemplateViewModel.shortcuts.observe(lifeCycle){ it ->
+        commandTemplateViewModel.shortcuts.observe(lifeCycle){
             shortcutsChipGroup.removeAllViews()
             it.forEach {shortcut ->
                 val chip = context.layoutInflater.inflate(R.layout.input_chip, shortcutsChipGroup, false) as Chip
@@ -324,6 +324,7 @@ class UiUtil(private val fileUtil: FileUtil) {
         bottomSheet.setContentView(R.layout.format_details_sheet)
 
         val formatIdParent = bottomSheet.findViewById<LinearLayout>(R.id.format_id_parent)
+        val formatURLParent = bottomSheet.findViewById<LinearLayout>(R.id.format_url_parent)
         val containerParent = bottomSheet.findViewById<LinearLayout>(R.id.container_parent)
         val codecParent = bottomSheet.findViewById<LinearLayout>(R.id.codec_parent)
         val filesizeParent = bottomSheet.findViewById<LinearLayout>(R.id.filesize_parent)
@@ -336,6 +337,14 @@ class UiUtil(private val fileUtil: FileUtil) {
             formatIdParent?.findViewById<TextView>(R.id.format_id_value)?.text = format.format_id
             formatIdParent?.setOnClickListener {
                 copyToClipboard(format.format_id, activity)
+            }
+        }
+
+        if (format.url.isNullOrBlank()) formatURLParent?.visibility = View.GONE
+        else {
+            formatURLParent?.findViewById<TextView>(R.id.format_url_value)?.text = format.url
+            formatURLParent?.setOnClickListener {
+                copyToClipboard(format.url!!, activity)
             }
         }
 
@@ -367,9 +376,9 @@ class UiUtil(private val fileUtil: FileUtil) {
 
         if (format.filesize != 0L) filesizeParent?.visibility = View.GONE
         else {
-            filesizeParent?.findViewById<TextView>(R.id.filesize_value)?.text = fileUtil.convertFileSize(format.filesize)
+            filesizeParent?.findViewById<TextView>(R.id.filesize_value)?.text = FileUtil.convertFileSize(format.filesize)
             filesizeParent?.setOnClickListener {
-                copyToClipboard(fileUtil.convertFileSize(format.filesize), activity)
+                copyToClipboard(FileUtil.convertFileSize(format.filesize), activity)
             }
         }
 

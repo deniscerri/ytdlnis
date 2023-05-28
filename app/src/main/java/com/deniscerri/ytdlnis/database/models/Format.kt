@@ -13,7 +13,7 @@ data class Format(
     var acodec: String = "",
     @SerializedName(value = "encoding")
     var encoding: String = "",
-    @SerializedName(value = "filesize", alternate = ["clen", "filesize_approx"])
+    @SerializedName(value = "filesize", alternate = ["clen", "filesize_approx", "contentLength"])
     var filesize: Long = 0,
     @SerializedName(value = "format_note", alternate = ["resolution", "audioQuality", "quality"])
     var format_note: String = "",
@@ -21,5 +21,6 @@ data class Format(
     var fps: String? = "",
     @SerializedName(value = "asr", alternate = ["audioSampleRate"])
     var asr: String? = "",
-
+    @SerializedName(value = "url")
+    var url: String? = ""
 )

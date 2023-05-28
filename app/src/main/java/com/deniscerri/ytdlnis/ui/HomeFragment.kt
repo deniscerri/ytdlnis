@@ -37,7 +37,6 @@ import com.deniscerri.ytdlnis.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdlnis.databinding.FragmentHomeBinding
 import com.deniscerri.ytdlnis.ui.downloadcard.DownloadBottomSheetDialog
 import com.deniscerri.ytdlnis.ui.downloadcard.DownloadMultipleBottomSheetDialog
-import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.InfoUtil
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.material.appbar.AppBarLayout
@@ -88,7 +87,6 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
     private var uiHandler: Handler? = null
     private var resultsList: List<ResultItem?>? = null
     private var selectedObjects: ArrayList<ResultItem>? = null
-    private var fileUtil: FileUtil? = null
     private var quickLaunchSheet = false
     private var sharedPreferences: SharedPreferences? = null
     private var _binding : FragmentHomeBinding? = null
@@ -114,7 +112,6 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
 
         fragmentContext = context
         layoutinflater = LayoutInflater.from(context)
-        fileUtil = FileUtil()
         uiHandler = Handler(Looper.getMainLooper())
         selectedObjects = ArrayList()
 

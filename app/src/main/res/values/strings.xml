@@ -271,4 +271,6 @@
     <string name="swipe_gestures_summary">Swipe items for certain actions</string>
     <string name="crop_thumb">Crop Thumbnail</string>
     <string name="crop_thumb_summary">Crop the thumbnail into a square for audio downloads</string>
+    <string name="locale">Locale</string>
+    <string name="audio_only_item">This item only contains audio formats</string>
 </resources>

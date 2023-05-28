@@ -54,7 +54,6 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
     private var restore : Preference? = null
 
     private var updateUtil: UpdateUtil? = null
-    private var fileUtil: FileUtil? = null
     private var activeDownloadCount = 0
 
     private lateinit var resultViewModel: ResultViewModel
@@ -105,7 +104,6 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
 
         //about section -------------------------
         updateUtil = UpdateUtil(requireContext())
-        fileUtil = FileUtil()
 
         WorkManager.getInstance(requireContext()).getWorkInfosByTagLiveData("download").observe(this){
             activeDownloadCount = 0
