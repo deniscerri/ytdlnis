@@ -257,7 +257,14 @@
     <string name="socks5_proxy_summary">Utilizar el proxy HTTP/HTTPS/SOCKS especificado</string>
     <string name="socks5_proxy">URL del proxy Socks5</string>
     <string name="search_suggestions">Sugerencias de la búsqueda</string>
-    <string name="search_suggestions_summary">Obtener las sugerencias de la búsqueda de Google</string>
-    <string name="preferred_format_id_summary">Selecciona el formato con este ID en la tarjeta de
-\nlas descargas</string>
+    <string name="search_suggestions_summary">Obtener las sugerencias de las búsqueda de Google</string>
+    <string name="preferred_format_id_summary">Selecciona el formato con este ID en la tarjeta de descargas</string>
+    <string name="locale">Ubicación</string>
+    <string name="audio_only_item">Este elemento solo contiene formatos de audio</string>
+    <string name="general">General</string>
+    <string name="misc">Varios</string>
+    <string name="swipe_gestures">Gestos del deslizamiento</string>
+    <string name="swipe_gestures_summary">Deslizar un elemento para una acción específica</string>
+    <string name="crop_thumb">Recortar miniatura</string>
+    <string name="crop_thumb_summary">Recorta la miniatura en un cuadrado para las descargas del audio</string>
 </resources>
