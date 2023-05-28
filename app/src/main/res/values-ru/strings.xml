@@ -258,5 +258,13 @@
     <string name="monochrome">Монохромный</string>
     <string name="search_suggestions">Предложения по поиску</string>
     <string name="search_suggestions_summary">Получайте поисковые подсказки от Google</string>
-    <string name="preferred_format_id_summary">Выберите формат с этим идентификатором в карточке загрузки</string>
+    <string name="preferred_format_id_summary">Выберите формат с этим ID в карточке загрузки</string>
+    <string name="locale">Регион</string>
+    <string name="crop_thumb_summary">Обрежьте миниатюру в квадрат для загрузки аудио</string>
+    <string name="audio_only_item">Этот элемент содержит только аудио форматы</string>
+    <string name="misc">Разное</string>
+    <string name="swipe_gestures">Жесты смахивания</string>
+    <string name="swipe_gestures_summary">Проведите элементы для определенных действий</string>
+    <string name="crop_thumb">Обрезать миниатюру</string>
+    <string name="general">Общие</string>
 </resources>
