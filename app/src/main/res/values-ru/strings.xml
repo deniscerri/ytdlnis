@@ -267,4 +267,6 @@
     <string name="swipe_gestures_summary">Проведите элементы для определенных действий</string>
     <string name="crop_thumb">Обрезать миниатюру</string>
     <string name="general">Общие</string>
+    <string name="move_temporary_files">Переместить временные файлы</string>
+    <string name="move_temporary_files_summary">Перенесите кешированные файлы в папку загрузок</string>
 </resources>
