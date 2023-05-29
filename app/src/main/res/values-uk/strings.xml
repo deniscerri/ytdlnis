@@ -155,7 +155,7 @@
     <string name="redownload">Повторне завантаження</string>
     <string name="restrict_filenames_summary">Обмежуйте назви файлів лише символами ASCII та уникайте символів \"&amp;\" і пробілів у назвах файлів</string>
     <string name="selected">Вибрано</string>
-    <string name="access_all_directories_summary">Дозволити застосунку завантажуватися з каталогів, обмежених за замовчуванням</string>
+    <string name="access_all_directories_summary">Дозволити застосунку завантажувати в каталоги, обмежених за замовчуванням</string>
     <string name="download_rescheduled_to">Завантаження перенесено на:</string>
     <string name="file_size">Розмір файлу</string>
     <string name="clear_temporary_files">Очистити тимчасові файли</string>
@@ -180,7 +180,7 @@
     <string name="confirm_terminate">Зупиняє всі завантаження та примусово закриває застосунок</string>
     <string name="dont_ask_again">Більше не питай</string>
     <string name="update_formats_summary">Автоматичний пошук відсутніх форматів при натисканні на картку формату</string>
-    <string name="ignore_battery_optimization">Ігноруйте оптимізацію батареї</string>
+    <string name="ignore_battery_optimization">Ігноруваты оптимізацію батареї</string>
     <string name="cut">Вирізати</string>
     <string name="new_cut">Новий виріз</string>
     <string name="add_template_first">Вам потрібно створити принаймні один шаблон команди!</string>
@@ -257,7 +257,7 @@
     <string name="socks5_proxy_summary">Використовуйте вказаний проксі HTTP/HTTPS/SOCKS</string>
     <string name="socks5_proxy">URL-адреса проксі Socks5</string>
     <string name="search_suggestions">Пошукові пропозиції</string>
-    <string name="search_suggestions_summary">Отримувати пошукові пропозиції від Google</string>
+    <string name="search_suggestions_summary">Отримуйте пошукові пропозиції від Google</string>
     <string name="preferred_format_id_summary">Виберіть формат із цим ID у картці завантаження</string>
     <string name="misc">Різне</string>
     <string name="general">Загальні</string>
@@ -268,4 +268,5 @@
     <string name="locale">Локаль</string>
     <string name="audio_only_item">Цей елемент містить лише аудіоформати</string>
     <string name="move_temporary_files_summary">Перенесіть кешовані файли в папку завантажень</string>
+    <string name="move_temporary_files">Перемістити тимчасові файли</string>
 </resources>
