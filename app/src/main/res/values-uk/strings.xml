@@ -265,4 +265,7 @@
     <string name="swipe_gestures_summary">Проведіть по елементам для виконання певних дій</string>
     <string name="crop_thumb">Обрізати мініатюру</string>
     <string name="crop_thumb_summary">Обріжте ескіз у квадрат для завантаження аудіо</string>
+    <string name="locale">Локаль</string>
+    <string name="audio_only_item">Цей елемент містить лише аудіоформати</string>
+    <string name="move_temporary_files_summary">Перенесіть кешовані файли в папку завантажень</string>
 </resources>
