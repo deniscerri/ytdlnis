@@ -86,7 +86,7 @@
     <string name="language">언어</string>
     <string name="command_templates">명령 템플릿</string>
     <string name="format">형식</string>
-    <string name="please_wait">정보를 분석하고 있습니다.</string>
+    <string name="please_wait">미디어 정보를 분석하고 있습니다.</string>
     <string name="enable_mtime">mtime 활성화</string>
     <string name="enable_mtime_summary">HTTP Last-Modified 헤더를 마지막 수정 시간으로 설정</string>
     <string name="update_formats">미디어 정보 자동 업데이트</string>
