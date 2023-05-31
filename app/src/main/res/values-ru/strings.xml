@@ -92,7 +92,7 @@
     <string name="download_card_summary">Параметры загрузки файлов</string>
     <string name="delete_files_too">Удалить файлы с устройства</string>
     <string name="Open_File">Открыть файл</string>
-    <string name="you_are_going_to_delete_multiple_items">Удаление нескольких элементов…</string>
+    <string name="you_are_going_to_delete_multiple_items">Удаление нескольких элементов</string>
     <string name="delete_file_too">Удалить файл с устройства</string>
     <string name="request_permission_desc">Приложению необходим доступ к файлам для сохранения загрузок на устройстве</string>
     <string name="download_notification_channel_description">Уведомление показывает процесс загрузки аудио- и видеофайлов</string>

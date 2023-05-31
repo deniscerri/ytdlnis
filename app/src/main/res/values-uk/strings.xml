@@ -94,7 +94,7 @@
     <string name="author">Автор</string>
     <string name="sponsorblock_intro">Вступ</string>
     <string name="save_dir">Зберегти каталог</string>
-    <string name="you_are_going_to_delete_multiple_items">Видалення кількох елементів…</string>
+    <string name="you_are_going_to_delete_multiple_items">Видалення декількох елементів</string>
     <string name="delete_file_too">Видалити файл з пристрою</string>
     <string name="delete_files_too">Видалити файли з пристрою</string>
     <string name="request_permission_desc">Цей застосунок потребує дозволів на файли, щоб зберігати завантаження на пристрої</string>
