@@ -86,7 +86,7 @@
 
                     </com.google.android.material.chip.ChipGroup>
 
-                    <View style="@style/Divider.Vertical"/>
+                    <View android:id="@+id/website_divider" style="@style/Divider.Vertical"/>
 
                     <com.google.android.material.chip.ChipGroup
                         android:id="@+id/website_chip_group"

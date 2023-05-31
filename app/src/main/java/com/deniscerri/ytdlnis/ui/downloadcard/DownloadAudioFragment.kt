@@ -142,9 +142,9 @@ class DownloadAudioFragment(private var resultItem: ResultItem, private var curr
                 val chosenFormat = downloadItem.format
                 UiUtil.populateFormatCard(formatCard, chosenFormat, null)
                 val listener = object : OnFormatClickListener {
-                    override fun onFormatClick(allFormats: List<List<Format>>, item: List<Format>) {
-                        downloadItem.format = item.first()
-                        UiUtil.populateFormatCard(formatCard, item.first(), null)
+                    override fun onFormatClick(allFormats: List<List<Format>>, item: List<FormatTuple>) {
+                        downloadItem.format = item.first().format
+                        UiUtil.populateFormatCard(formatCard, item.first().format, null)
                         lifecycleScope.launch {
                             withContext(Dispatchers.IO){
                                 resultItem.formats.removeAll(formats.toSet())

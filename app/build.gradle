@@ -179,4 +179,5 @@ dependencies {
     implementation "com.google.android.exoplayer:exoplayer:2.18.5"
     implementation 'it.xabaras.android:recyclerview-swipedecorator:1.4'
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.6.1"
+    implementation "com.github.Irineu333:Highlight-KT:1.0.4"
 }

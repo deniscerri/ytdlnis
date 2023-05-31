@@ -351,7 +351,10 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
             if (!websites.contains(item.website.lowercase())) websites.add(item.website.lowercase())
         }
         websiteGroup!!.removeAllViews()
-        if (websites.size <= 1) return
+        if (websites.size <= 1) {
+            requireView().findViewById<View>(R.id.website_divider).visibility = GONE
+            return
+        }
         //val websites = historyRecyclerViewAdapter!!.websites
         for (i in websites.indices) {
             val w = websites[i]
@@ -374,6 +377,7 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
             }
             websiteGroup!!.addView(tmp)
         }
+         requireView().findViewById<View>(R.id.website_divider).visibility = VISIBLE
     }
 
 
@@ -458,7 +462,8 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
             codec.text = codecText
         }
 
-        val fileSizeReadable = FileUtil.convertFileSize(item.format.filesize)
+        val file = File(item.downloadPath)
+        val fileSizeReadable = FileUtil.convertFileSize(if (file.exists()) file.length() else item.format.filesize)
         if (fileSizeReadable == "?") fileSize!!.visibility = GONE
         else fileSize!!.text = fileSizeReadable
 
@@ -686,6 +691,11 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
             }
         }
 
+    override fun onButtonClick(itemID: Long, isPresent: Boolean) {
+        if (isPresent){
+            UiUtil.shareFileIntent(requireContext(), listOf(historyList!!.first { it!!.id == itemID }!!.downloadPath))
+        }
+    }
     companion object {
         private const val TAG = "historyFragment"
     }

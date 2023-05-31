@@ -13,7 +13,7 @@
 
     <Preference
         android:key="downloading"
-        app:icon="@drawable/baseline_download_24"
+        app:icon="@drawable/ic_downloads"
         android:title="@string/downloading"/>
 
     <Preference

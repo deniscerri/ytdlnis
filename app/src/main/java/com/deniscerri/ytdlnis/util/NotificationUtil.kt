@@ -9,8 +9,10 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Build
+import android.os.Bundle
 import androidx.core.app.NotificationCompat
 import androidx.core.content.FileProvider
+import androidx.navigation.NavDeepLinkBuilder
 import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.receiver.CancelDownloadNotificationReceiver
@@ -235,14 +237,15 @@ class NotificationUtil(var context: Context) {
     ) {
         val notificationBuilder = getBuilder(channel)
 
-        val intent = Intent(context, MainActivity::class.java)
-        intent.putExtra("logpath", logFile?.absolutePath)
+        val bundle = Bundle()
+        bundle.putString("logpath", logFile?.absolutePath)
 
-        val errorPendingIntent: PendingIntent = TaskStackBuilder.create(context).run {
-            addNextIntentWithParentStack(intent)
-            getPendingIntent(0,
-                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
-        }
+        val errorPendingIntent = NavDeepLinkBuilder(context)
+            .setGraph(R.navigation.nav_graph)
+            .setDestination(R.id.downloadLogFragment)
+            .setArguments(bundle)
+            .createPendingIntent()
+
         notificationBuilder
             .setContentTitle("${context.getString(R.string.failed_download)}: $title")
             .setContentText(error)

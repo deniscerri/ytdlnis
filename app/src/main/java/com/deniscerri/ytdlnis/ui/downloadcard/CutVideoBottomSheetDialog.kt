@@ -186,7 +186,7 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val urls
         lifecycleScope.launch {
             try {
                 val data : MutableList<String?>  = withContext(Dispatchers.IO){
-                    if (urls.isNullOrEmpty() || chapters.isNullOrEmpty()) {
+                    if (urls.isNullOrEmpty()) {
                         infoUtil.getStreamingUrlAndChapters(item.url)
                     }else {
                         urls.split("\n").toMutableList()

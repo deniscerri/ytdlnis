@@ -118,7 +118,8 @@ class HistoryAdapter(onItemClickListener: OnItemClickListener, activity: Activit
             btn.icon = ContextCompat.getDrawable(activity, R.drawable.ic_terminal)
         }
         if (btn.hasOnClickListeners()) btn.setOnClickListener(null)
-        btn.isClickable = false
+        btn.isClickable = filePresent
+
         if (checkedItems.contains(item.id)) {
             card.isChecked = true
             card.strokeWidth = 5
@@ -138,6 +139,10 @@ class HistoryAdapter(onItemClickListener: OnItemClickListener, activity: Activit
                 onItemClickListener.onCardClick(item.id, finalFilePresent)
             }
         }
+
+        btn.setOnClickListener {
+            onItemClickListener.onButtonClick(item.id, finalFilePresent)
+        }
     }
 
     private fun checkCard(card: MaterialCardView, itemID: Long) {
@@ -154,6 +159,7 @@ class HistoryAdapter(onItemClickListener: OnItemClickListener, activity: Activit
 
     interface OnItemClickListener {
         fun onCardClick(itemID: Long, isPresent: Boolean)
+        fun onButtonClick(itemID: Long, isPresent: Boolean)
         fun onCardSelect(itemID: Long, isChecked: Boolean)
     }
 

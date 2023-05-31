@@ -816,7 +816,11 @@ class InfoUtil(private val context: Context) {
 
                 val chaptersInJSON = if (jsonObject.has("formats") && jsonObject.get("formats") is JSONArray) jsonObject.getJSONArray("formats") else null
                 val listType: Type = object : TypeToken<List<ChapterItem>>() {}.type
-                val chapters : ArrayList<ChapterItem> = Gson().fromJson(chaptersInJSON?.toString(), listType)
+                var chapters : ArrayList<ChapterItem> = arrayListOf()
+
+                if (chaptersInJSON != null){
+                    chapters = Gson().fromJson(chaptersInJSON.toString(), listType)
+                }
 
                 Log.e("aa", formats.toString())
                 items.add(ResultItem(0,

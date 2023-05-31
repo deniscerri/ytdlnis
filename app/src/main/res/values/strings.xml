@@ -275,4 +275,5 @@
     <string name="audio_only_item">This item only contains audio formats</string>
     <string name="move_temporary_files">Move Temporary Files</string>
     <string name="move_temporary_files_summary">Transfer cached files to the downloads folder</string>
+    <string name="format_filtering_hint_2">All items must either be audio or video to use this option</string>
 </resources>

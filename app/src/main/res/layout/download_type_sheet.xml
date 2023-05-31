@@ -9,15 +9,12 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:padding="10dp"
-        android:layout_marginVertical="10dp"
         android:orientation="vertical">
 
         <TextView
             android:layout_width="wrap_content"
             android:text="@string/preferred_download_type"
-            android:paddingBottom="20dp"
+            android:layout_margin="20dp"
             android:layout_height="wrap_content"/>
 
         <TextView
@@ -25,6 +22,7 @@
             android:clickable="true"
             android:focusable="true"
             android:background="?attr/selectableItemBackground"
+            android:paddingHorizontal="20dp"
             android:paddingVertical="10dp"
             android:drawablePadding="30dp"
             android:layout_width="match_parent"
@@ -39,6 +37,7 @@
             android:clickable="true"
             android:focusable="true"
             android:background="?attr/selectableItemBackground"
+            android:paddingHorizontal="20dp"
             android:paddingVertical="10dp"
             android:drawablePadding="30dp"
             android:layout_width="match_parent"
@@ -53,6 +52,7 @@
             android:clickable="true"
             android:focusable="true"
             android:background="?attr/selectableItemBackground"
+            android:paddingHorizontal="20dp"
             android:paddingVertical="10dp"
             android:drawablePadding="30dp"
             android:layout_width="match_parent"

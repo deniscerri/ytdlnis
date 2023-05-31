@@ -206,17 +206,6 @@ class ShareActivity : BaseActivity() {
         }
     }
 
-
-    private fun createDefaultFolders(){
-        val audio = File(FileUtil.getDefautAudioPath())
-        val video = File(FileUtil.getDefautVideoPath())
-        val command = File(FileUtil.getDefaultCommandPath())
-
-        audio.mkdirs()
-        video.mkdirs()
-        command.mkdirs()
-    }
-
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<String>,
@@ -227,8 +216,6 @@ class ShareActivity : BaseActivity() {
             if (permissions.contains(Manifest.permission.POST_NOTIFICATIONS)) break
             if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
                 createPermissionRequestDialog()
-            }else{
-                createDefaultFolders()
             }
         }
     }

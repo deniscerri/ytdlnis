@@ -7,6 +7,7 @@ import android.content.res.Configuration
 import android.content.res.Resources
 import android.net.ConnectivityManager
 import android.os.Environment
+import android.os.Looper
 import android.util.DisplayMetrics
 import android.util.Log
 import android.widget.Toast
@@ -438,7 +439,9 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
                     d.status = DownloadRepository.Status.Queued.toString()
                     d.toString() == it.toString()
             } != null) {
-                Toast.makeText(context, context.getString(R.string.download_already_exists), Toast.LENGTH_LONG).show()
+                Looper.prepare().run {
+                    Toast.makeText(context, context.getString(R.string.download_already_exists), Toast.LENGTH_LONG).show()
+                }
             }else{
                 if (it.id == 0L){
                     it.id = lastDownloadId
@@ -486,7 +489,9 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
 
         val isCurrentNetworkMetered = (context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager).isActiveNetworkMetered
         if (!allowMeteredNetworks && isCurrentNetworkMetered){
-            Toast.makeText(context, context.getString(R.string.metered_network_download_start_info), Toast.LENGTH_LONG).show()
+            Looper.prepare().run {
+                Toast.makeText(context, context.getString(R.string.metered_network_download_start_info), Toast.LENGTH_LONG).show()
+            }
         }
     }
 

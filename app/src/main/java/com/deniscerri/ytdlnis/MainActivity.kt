@@ -12,6 +12,7 @@ import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.provider.Settings
 import android.util.Log
 import android.view.View
@@ -184,6 +185,7 @@ class MainActivity : BaseActivity() {
         handleIntents(intent)
     }
 
+
     fun hideBottomNavigation(){
         if(navigationView is NavigationBarView){
             if (navigationView is BottomNavigationView){
@@ -299,21 +301,6 @@ class MainActivity : BaseActivity() {
                 e.printStackTrace()
             }
         }
-        else{
-            //coming from errored notification
-            if (intent.hasExtra("logpath")){
-                val bundle = Bundle()
-                bundle.putString("logpath", intent.getStringExtra("logpath"))
-                navController.navigate(
-                    R.id.downloadLogFragment,
-                    bundle
-                )
-            //coming from active download notification
-            }else if (intent.hasExtra("activedownload")){
-                navController.popBackStack(R.id.downloadQueueMainFragment, true)
-                navController.navigate(R.id.downloadQueueMainFragment)
-            }
-        }
     }
 
 
@@ -352,17 +339,6 @@ class MainActivity : BaseActivity() {
         }
     }
 
-
-    private fun createDefaultFolders(){
-        val audio = File(FileUtil.getDefautAudioPath())
-        val video = File(FileUtil.getDefautVideoPath())
-        val command = File(FileUtil.getDefaultCommandPath())
-
-        audio.mkdirs()
-        video.mkdirs()
-        command.mkdirs()
-    }
-
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<String>,
@@ -373,8 +349,6 @@ class MainActivity : BaseActivity() {
             if (permissions.contains(Manifest.permission.POST_NOTIFICATIONS)) continue
             if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
                 createPermissionRequestDialog()
-            }else{
-                createDefaultFolders()
             }
         }
     }

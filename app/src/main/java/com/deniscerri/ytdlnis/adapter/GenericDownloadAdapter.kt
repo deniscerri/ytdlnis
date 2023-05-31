@@ -105,8 +105,8 @@ class GenericDownloadAdapter(onItemClickListener: OnItemClickListener, activity:
             DownloadRepository.Status.Queued.toString() -> actionButton.setIconResource(R.drawable.ic_baseline_delete_outline_24)
             else -> {
                 actionButton.setIconResource(R.drawable.ic_baseline_file_open_24)
-                val logFile = FileUtil.getLogFile(activity, item)
-                if (!logFile.exists()){
+                val logFile = FileUtil.checkLogFileExists(activity, item)
+                if (logFile == null){
                     actionButton.visibility = View.GONE
                 }
             }

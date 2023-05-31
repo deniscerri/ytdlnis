@@ -145,9 +145,10 @@ class DownloadVideoFragment(private val resultItem: ResultItem, private var curr
                 val chosenFormat = downloadItem.format
                 UiUtil.populateFormatCard(formatCard, chosenFormat, downloadItem.allFormats.filter { downloadItem.videoPreferences.audioFormatIDs.contains(it.format_id) })
                 val listener = object : OnFormatClickListener {
-                    override fun onFormatClick(allFormats: List<List<Format>>, item: List<Format>) {
-                        downloadItem.format = item.first()
-                        downloadItem.videoPreferences.audioFormatIDs.addAll(item.drop(1).map { it.format_id })
+                    override fun onFormatClick(allFormats: List<List<Format>>, item: List<FormatTuple>) {
+                        downloadItem.format = item.first().format
+                        item.first().audioFormats?.map { it.format_id }
+                            ?.let { downloadItem.videoPreferences.audioFormatIDs.addAll(it) }
                         lifecycleScope.launch {
                             withContext(Dispatchers.IO){
                                 resultItem.formats.removeAll(formats.toSet())
@@ -156,7 +157,7 @@ class DownloadVideoFragment(private val resultItem: ResultItem, private var curr
                             }
                         }
                         formats = allFormats.first().toMutableList()
-                        UiUtil.populateFormatCard(formatCard, item.first(), item.drop(1))
+                        UiUtil.populateFormatCard(formatCard, item.first().format, item.first().audioFormats)
                     }
                 }
                 formatCard.setOnClickListener{

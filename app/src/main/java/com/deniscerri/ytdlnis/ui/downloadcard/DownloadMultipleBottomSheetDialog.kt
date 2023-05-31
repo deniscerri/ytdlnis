@@ -5,23 +5,32 @@ import android.app.Activity
 import android.app.Dialog
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Canvas
 import android.graphics.Color
 import android.os.Bundle
+import android.provider.MediaStore.Video
 import android.text.format.DateFormat
 import android.util.DisplayMetrics
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
+import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.get
+import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -42,7 +51,9 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.color.MaterialColors
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.textfield.TextInputLayout
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -60,6 +71,7 @@ class DownloadMultipleBottomSheetDialog(private var results: List<ResultItem?>, 
     private lateinit var recyclerView: RecyclerView
     private lateinit var behavior: BottomSheetBehavior<View>
     private lateinit var bottomAppBar: BottomAppBar
+    private lateinit var sharedPreferences: SharedPreferences
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,6 +79,7 @@ class DownloadMultipleBottomSheetDialog(private var results: List<ResultItem?>, 
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
         resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]
         commandTemplateViewModel = ViewModelProvider(this)[CommandTemplateViewModel::class.java]
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
     }
 
     @SuppressLint("RestrictedApi", "NotifyDataSetChanged")
@@ -143,15 +156,16 @@ class DownloadMultipleBottomSheetDialog(private var results: List<ResultItem?>, 
         }
 
         val formatListener = object : OnFormatClickListener {
-            override fun onFormatClick(allFormats: List<List<Format>>, selectedFormats: List<Format>) {
+            override fun onFormatClick(allFormats: List<List<Format>>, selectedFormats: List<FormatTuple>) {
                 val formatCollection = mutableListOf<List<Format>>()
                 allFormats.forEach {f ->
                     formatCollection.add(f.mapTo(mutableListOf()) {it.copy()})
                 }
-                items.forEachIndexed { index, it ->
-                    it.allFormats.clear()
-                    if (formatCollection.isNotEmpty() && formatCollection[index].isNotEmpty()) it.allFormats.addAll(formatCollection[index])
-                    it.format = selectedFormats[index]
+                items.forEachIndexed { index, i ->
+                    i.allFormats.clear()
+                    if (formatCollection.isNotEmpty() && formatCollection[index].isNotEmpty()) i.allFormats.addAll(formatCollection[index])
+                    i.format = selectedFormats[index].format
+                    if (i.type == DownloadViewModel.Type.video) selectedFormats[index].audioFormats?.map { it.format_id }?.let { i.videoPreferences.audioFormatIDs.addAll(it) }
                 }
                 listAdapter.submitList(items.toList())
                 listAdapter.notifyDataSetChanged()
@@ -193,7 +207,7 @@ class DownloadMultipleBottomSheetDialog(private var results: List<ResultItem?>, 
                             listAdapter.submitList(items.toList())
                             listAdapter.notifyDataSetChanged()
                             preferredDownloadType.setIcon(R.drawable.baseline_audio_file_24)
-                            bottomAppBar.menu[2].icon?.alpha = 255
+                            bottomAppBar.menu[1].icon?.alpha = 255
                             bottomSheet.cancel()
                         }
 
@@ -202,7 +216,7 @@ class DownloadMultipleBottomSheetDialog(private var results: List<ResultItem?>, 
                             listAdapter.submitList(items.toList())
                             listAdapter.notifyDataSetChanged()
                             preferredDownloadType.setIcon(R.drawable.baseline_video_file_24)
-                            bottomAppBar.menu[2].icon?.alpha = 255
+                            bottomAppBar.menu[1].icon?.alpha = 255
                             bottomSheet.cancel()
                         }
 
@@ -214,7 +228,7 @@ class DownloadMultipleBottomSheetDialog(private var results: List<ResultItem?>, 
                                 listAdapter.submitList(items.toList())
                                 listAdapter.notifyDataSetChanged()
                                 preferredDownloadType.setIcon(R.drawable.baseline_insert_drive_file_24)
-                                bottomAppBar.menu[2].icon?.alpha = 255
+                                bottomAppBar.menu[1].icon?.alpha = 255
                                 bottomSheet.cancel()
                             }
                         }
@@ -228,6 +242,52 @@ class DownloadMultipleBottomSheetDialog(private var results: List<ResultItem?>, 
                             ViewGroup.LayoutParams.MATCH_PARENT
                         )
                     }
+
+                }
+                R.id.filename_template -> {
+                    if (items.count { it.type == DownloadViewModel.Type.command } != 0){
+                        Toast.makeText(requireContext(), getString(R.string.format_filtering_hint_2), Toast.LENGTH_SHORT).show()
+                    }else{
+                        val builder = MaterialAlertDialogBuilder(requireContext())
+                        builder.setTitle(getString(R.string.file_name_template))
+                        val inputLayout = layoutInflater.inflate(R.layout.textinput, null)
+                        val editText = inputLayout.findViewById<EditText>(R.id.url_edittext)
+                        inputLayout.findViewById<TextInputLayout>(R.id.url_textinput).hint = getString(R.string.file_name_template)
+                        editText.setSelection(editText.text.length)
+                        builder.setView(inputLayout)
+                        builder.setPositiveButton(
+                            getString(R.string.ok)
+                        ) { dialog: DialogInterface?, which: Int ->
+
+                            lifecycleScope.launch {
+                                items.forEach {
+                                    it.customFileNameTemplate = editText.text.toString()
+                                }
+                                listAdapter.submitList(items.toList())
+                                listAdapter.notifyDataSetChanged()
+                            }
+
+                        }
+
+                        // handle the negative button of the alert dialog
+                        builder.setNegativeButton(
+                            getString(R.string.cancel)
+                        ) { dialog: DialogInterface?, which: Int -> }
+
+                        val filenameTemplateDialog = builder.create()
+                        editText.doOnTextChanged { text, start, before, count ->
+                            filenameTemplateDialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = editText.text.isNotEmpty()
+                        }
+                        filenameTemplateDialog.show()
+                        val imm = context?.getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager
+                        editText!!.postDelayed({
+                            editText.requestFocus()
+                            imm.showSoftInput(editText, 0)
+                        }, 300)
+                        filenameTemplateDialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = editText.text.isNotEmpty()
+                        filenameTemplateDialog.getButton(AlertDialog.BUTTON_NEUTRAL).gravity = Gravity.START
+                    }
+
 
                 }
                 R.id.format -> {
@@ -390,10 +450,17 @@ class DownloadMultipleBottomSheetDialog(private var results: List<ResultItem?>, 
         val i = items.indexOf(items.find { it.url == item.url })
         items[i] = item
         if (! items.all { it.type == items[0].type }){
-            bottomAppBar.menu[2].icon?.alpha = 30
+            bottomAppBar.menu[1].icon?.alpha = 30
         }else{
-            bottomAppBar.menu[2].icon?.alpha = 255
+            bottomAppBar.menu[1].icon?.alpha = 255
         }
+
+        if (items.count { it.type == DownloadViewModel.Type.command } == 0){
+            bottomAppBar.menu[2].icon?.alpha = 255
+        }else{
+            bottomAppBar.menu[2].icon?.alpha = 30
+        }
+
         listAdapter.submitList(items.toList())
     }
 

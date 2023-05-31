@@ -7,6 +7,7 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.widget.Toast
+import androidx.navigation.NavDeepLinkBuilder
 import androidx.preference.PreferenceManager
 import androidx.work.Data
 import androidx.work.ForegroundInfo
@@ -72,9 +73,11 @@ class DownloadWorker(
             updateDownloadItem(downloadItem, infoUtil, dao, resultDao, false, notificationUtil)
         }
 
-        val intent = Intent(context, MainActivity::class.java)
-        intent.putExtra("activedownload", "")
-        val pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE)
+        val pendingIntent = NavDeepLinkBuilder(context)
+            .setGraph(R.navigation.nav_graph)
+            .setDestination(R.id.downloadQueueMainFragment)
+            .createPendingIntent()
+
         val notification = notificationUtil.createDownloadServiceNotification(pendingIntent, downloadItem.title, downloadItem.id.toInt(), NotificationUtil.DOWNLOAD_SERVICE_CHANNEL_ID)
         val foregroundInfo = ForegroundInfo(downloadItem.id.toInt(), notification)
         setForegroundAsync(foregroundInfo)
@@ -129,6 +132,7 @@ class DownloadWorker(
             if (downloadItem.author.isNotBlank()){
                 request.addCommands(listOf("--replace-in-metadata","uploader",".*.",downloadItem.author.take(25)))
             }
+            request.addCommands(listOf("--replace-in-metadata","uploader"," - Topic",""))
             if (downloadItem.customFileNameTemplate.isBlank()) downloadItem.customFileNameTemplate = "%(uploader)s - %(title)s"
 
             if (downloadItem.downloadSections.isNotBlank()){
@@ -281,7 +285,6 @@ class DownloadWorker(
                         writeText(downloadItem.format.format_note)
                     }.absolutePath
                 )
-
                 request.addOption("-P", tempFileDir.absolutePath)
 
             }
@@ -322,7 +325,11 @@ class DownloadWorker(
                 finalPaths = FileUtil.moveFile(tempFileDir.absoluteFile,context, downloadLocation, keepCache){ p ->
                     setProgressAsync(workDataOf("progress" to p, "output" to "Moving file to ${FileUtil.formatPath(downloadLocation)}", "id" to downloadItem.id, "log" to logDownloads))
                 }
-                setProgressAsync(workDataOf("progress" to 100, "output" to "Moved file to $downloadLocation", "id" to downloadItem.id, "log" to logDownloads))
+                if (finalPaths.isNotEmpty()){
+                    setProgressAsync(workDataOf("progress" to 100, "output" to "Moved file to $downloadLocation", "id" to downloadItem.id, "log" to logDownloads))
+                }else{
+                    finalPaths = listOf(context.getString(R.string.unfound_file))
+                }
             }catch (e: Exception){
                 finalPaths = listOf(context.getString(R.string.unfound_file))
                 e.printStackTrace()
@@ -338,8 +345,8 @@ class DownloadWorker(
             if (!incognito) {
                 val unixtime = System.currentTimeMillis() / 1000
                 val file = File(finalPaths?.first()!!)
-                downloadItem.format.filesize = if (file.exists()) file.length() else 0L
-                val historyItem = HistoryItem(0, downloadItem.url, downloadItem.title, downloadItem.author, downloadItem.duration, downloadItem.thumb, downloadItem.type, unixtime, finalPaths.first(), downloadItem.website, downloadItem.format, downloadItem.id)
+                downloadItem.format.filesize = file.length()
+                val historyItem = HistoryItem(0, downloadItem.url, downloadItem.title, downloadItem.author, downloadItem.duration, downloadItem.thumb, downloadItem.type, unixtime, finalPaths.first() , downloadItem.website, downloadItem.format, downloadItem.id)
                 runBlocking {
                     historyDao.insert(historyItem)
                 }

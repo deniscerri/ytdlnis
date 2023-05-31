@@ -15,6 +15,7 @@ import androidx.preference.PreferenceManager
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.models.Format
+import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel.Type
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.InfoUtil
@@ -90,7 +91,7 @@ class FormatSelectionBottomSheetDialog(private val items: List<DownloadItem?>, p
                 chosenFormats = commonFormats.mapTo(mutableListOf()) {it.copy()}
                 chosenFormats = when(items.first()?.type){
                     Type.audio -> chosenFormats.filter { it.format_note.contains("audio", ignoreCase = true) }
-                    else -> chosenFormats.filter { !it.format_note.contains("audio", ignoreCase = true) }
+                    else -> chosenFormats
                 }
                 chosenFormats.forEach {
                     it.filesize =
@@ -155,7 +156,7 @@ class FormatSelectionBottomSheetDialog(private val items: List<DownloadItem?>, p
                        chosenFormats = commonFormats.filter { it.filesize != 0L }.mapTo(mutableListOf()) {it.copy()}
                        chosenFormats = when(items.first()?.type){
                            Type.audio -> chosenFormats.filter { it.format_note.contains("audio", ignoreCase = true) }
-                           else -> chosenFormats.filter { !it.format_note.contains("audio", ignoreCase = true) }
+                           else -> chosenFormats
                        }
                        if (chosenFormats.isEmpty()) throw Exception()
                        chosenFormats.forEach {
@@ -185,14 +186,28 @@ class FormatSelectionBottomSheetDialog(private val items: List<DownloadItem?>, p
         }
 
         okBtn.setOnClickListener {
-            val selectedFormats = mutableListOf<Format>()
             if (!::selectedVideo.isInitialized) {
                 selectedVideo =
                     chosenFormats.filter { it.vcodec.isNotBlank() && it.vcodec != "none" }.maxByOrNull { it.filesize }!!
             }
-            selectedFormats.add(selectedVideo)
-            selectedFormats.addAll(selectedAudios)
-            listener.onFormatClick(List(items.size){chosenFormats}, selectedFormats)
+
+            //simple video format selection
+            if (items.size == 1){
+                listener.onFormatClick(List(items.size){chosenFormats}, listOf(FormatTuple(selectedVideo, selectedAudios)))
+            }else{
+                //playlist format selection
+                val selectedFormats = mutableListOf<Format>()
+                formatCollection.forEach {
+                    selectedFormats.add(it.first{ f -> f.format_id == selectedVideo.format_id})
+                }
+                if (selectedFormats.isEmpty()) {
+                    items.forEach { _ ->
+                        selectedFormats.add(selectedVideo)
+                    }
+                }
+                listener.onFormatClick(formatCollection, selectedFormats.map { FormatTuple(it, selectedAudios) })
+            }
+
             dismiss()
         }
 
@@ -201,7 +216,7 @@ class FormatSelectionBottomSheetDialog(private val items: List<DownloadItem?>, p
         }
     }
     private fun addFormatsToView(){
-        val canMultiSelectAudio = items.first()?.type == Type.video && items.count() == 1 && chosenFormats.find { it.format_note.contains("audio", ignoreCase = true) } != null
+        val canMultiSelectAudio = items.first()?.type == Type.video && chosenFormats.find { it.format_note.contains("audio", ignoreCase = true) } != null
         videoFormatList.removeAllViews()
         audioFormatList.removeAllViews()
 
@@ -230,12 +245,12 @@ class FormatSelectionBottomSheetDialog(private val items: List<DownloadItem?>, p
             formatItem.tag = "${format.format_id}${format.format_note}"
             UiUtil.populateFormatCard(formatItem as MaterialCardView, format, null)
             formatItem.setOnClickListener{ clickedformat ->
-                //if the context is behind a single download card and its a video, allow the ability to multiselect audio formats
+                //if the context is behind a video or playlist, allow the ability to multiselect audio formats
                 if (canMultiSelectAudio){
                     val clickedCard = (clickedformat as MaterialCardView)
                     if (format.vcodec.isNotBlank() && format.vcodec != "none") {
                         if (clickedCard.isChecked) {
-                            listener.onFormatClick(List(items.size){chosenFormats}, listOf(format))
+                            listener.onFormatClick(List(items.size){chosenFormats}, listOf(FormatTuple(format, null)))
                             dismiss()
                         }
                         videoFormatList.forEach { (it as MaterialCardView).isChecked = false }
@@ -253,20 +268,8 @@ class FormatSelectionBottomSheetDialog(private val items: List<DownloadItem?>, p
                         (it as MaterialCardView).isChecked = selectedAudios.map { a -> "${a.format_id}${a.format_note}" }.contains(it.tag)
                     }
                 }else{
-                    if (items.size == 1){
-                        listener.onFormatClick(List(items.size){chosenFormats}, listOf(format))
-                    }else{
-                        val selectedFormats = mutableListOf<Format>()
-                        formatCollection.forEach {
-                            selectedFormats.add(it.first{ f -> f.format_id == format.format_id})
-                        }
-                        if (selectedFormats.isEmpty()) {
-                            items.forEach {
-                                selectedFormats.add(format)
-                            }
-                        }
-                        listener.onFormatClick(formatCollection, selectedFormats)
-                    }
+                    //if its a simple audio format selection
+                    listener.onFormatClick(List(items.size){chosenFormats}, listOf(FormatTuple(format, null)))
                     dismiss()
                 }
             }
@@ -303,5 +306,10 @@ class FormatSelectionBottomSheetDialog(private val items: List<DownloadItem?>, p
 }
 
 interface OnFormatClickListener{
-    fun onFormatClick(allFormats: List<List<Format>>, item: List<Format>)
+    fun onFormatClick(allFormats: List<List<Format>>, item: List<FormatTuple>)
 }
+
+class FormatTuple internal constructor(
+    var format: Format,
+    var audioFormats: List<Format>?
+)

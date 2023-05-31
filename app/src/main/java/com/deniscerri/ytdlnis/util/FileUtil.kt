@@ -92,21 +92,12 @@ object FileUtil {
 
                 //sending to main or SD CARD
                 if (currentDirectory.exists()){
-                    val inputStream = context.contentResolver.openInputStream(it.toUri())!!
-                    val outputStream = FileOutputStream(destFile)
-
-                    val buffer = ByteArray(DEFAULT_BUFFER_SIZE)
-                    var bytesRead: Int
-                    val totalBytes = it.length()
-
-                    // Transfer the file contents
-                    while (inputStream.read(buffer).also { bytesRead = it } != -1) {
-                        progress((bytesRead / totalBytes).toInt() * 100)
-                        outputStream.write(buffer, 0, bytesRead)
+                    if (Build.VERSION.SDK_INT >= 26 ){
+                        Files.move(it.toPath(), destFile.toPath(), StandardCopyOption.REPLACE_EXISTING)
+                    }else{
+                        it.renameTo(destFile)
                     }
-
-                    inputStream.close()
-                    outputStream.closeQuietly()
+                    fileList.add(destFile)
                 }else{
                     //sending to USB OTG
                     val mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(it.extension) ?: "*/*"
@@ -177,6 +168,12 @@ object FileUtil {
         val title = item.title.ifEmpty { item.url }
         return File(context.filesDir.absolutePath + """/logs/${item.id} - ${titleRegex.replace(title, "").take(150)}##${item.type}##${item.format.format_id}.log""")
     }
+
+    fun checkLogFileExists(context: Context, item: DownloadItem) : File? {
+        val dir = File(context.filesDir.absolutePath + "/logs/")
+        return dir.listFiles()?.toList()?.first { it.name.startsWith(item.id.toString()) }
+    }
+
     fun getLogFileForTerminal(context: Context, command: String) : File {
         val titleRegex = Regex("[^A-Za-z\\d ]")
         return File(context.filesDir.absolutePath + """/logs/Terminal - ${titleRegex.replace(command.take(30), "")}##terminal.log""")
