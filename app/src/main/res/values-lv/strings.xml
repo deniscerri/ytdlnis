@@ -267,4 +267,6 @@
     <string name="crop_thumb">Apcirpt Sīktēlu</string>
     <string name="crop_thumb_summary">Sīktēla apcirpšana kvadrātā audio lejupielādēm</string>
     <string name="finished_download_notification_channel_description">Paziņojums par pabeigtām vai kļūdainām lejupielādēm</string>
+    <string name="move_temporary_files">Pārvietot Pagaidu Failus</string>
+    <string name="move_temporary_files_summary">Kešatmiņā esošo failu pārvietošana uz lejupielādes mapi</string>
 </resources>

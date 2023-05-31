@@ -91,7 +91,7 @@
     <string name="show_download_card">Show Options for Downloading</string>
     <string name="download_card_summary">Settings for how to download items</string>
     <string name="Open_File">Open File</string>
-    <string name="you_are_going_to_delete_multiple_items">Deleting multiple items…</string>
+    <string name="you_are_going_to_delete_multiple_items">Deleting multiple items</string>
     <string name="delete_file_too">Delete the file from the device</string>
     <string name="delete_files_too">Delete the files from the device</string>
     <string name="request_permission_desc">This app needs File Permissions to save downloads on the device</string>
