@@ -41,4 +41,14 @@
     <string name="video">Video</string>
     <string name="concurrent_fragments">Fragmente concurente</string>
     <string name="concurrent_fragments_summary">Numărul de fragmente dintr-un videoclip nativ DASH/HLS de descărcat simultan</string>
+    <string name="downloading">Descărcarea</string>
+    <string name="limit_rate">Rata limită</string>
+    <string name="limit_rate_summary">Rata maximă de descărcare (în octeți pe secundă), de ex. 50K sau 4,2M</string>
+    <string name="aria2_summary">Utilizează aria2c ca downloader în loc de cel implicit</string>
+    <string name="processing">Prelucrare</string>
+    <string name="embed_thumb">Coperți miniatură</string>
+    <string name="add_chapters">Capitole în Videoclipuri</string>
+    <string name="embed_thumb_summary">Utilizează miniatura ca imagine de copertă</string>
+    <string name="embed_subs_summary">Adaugă subtitrări în videoclip</string>
+    <string name="add_chapters_summary">Marcați segmentele YouTube / SponsorBlock ca capitole pentru videoclip</string>
 </resources>
