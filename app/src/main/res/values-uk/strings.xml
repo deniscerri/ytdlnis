@@ -269,4 +269,5 @@
     <string name="audio_only_item">Цей елемент містить лише аудіоформати</string>
     <string name="move_temporary_files_summary">Перенесіть кешовані файли в папку завантажень</string>
     <string name="move_temporary_files">Перемістити тимчасові файли</string>
+    <string name="format_filtering_hint_2">Щоб скористатися цією опцією, усі елементи мають бути аудіо чи відео</string>
 </resources>
