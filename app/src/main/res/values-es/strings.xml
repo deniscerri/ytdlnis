@@ -20,7 +20,7 @@
     <string name="ytdl_updating_started">Descargando nueva versión…</string>
     <string name="Remove">Quitar</string>
     <string name="cancel">Cancelar</string>
-    <string name="confirm_delete_history_desc">Borrar el historial completo, permanentemente.</string>
+    <string name="confirm_delete_history_desc">Borrar todo el historial, de forma permanente</string>
     <string name="confirm_delete_history">Confirmar</string>
     <string name="search_history_hint">Buscar historial</string>
     <string name="no_results">No Hay Resultados</string>
@@ -87,7 +87,7 @@
     <string name="show_download_card">Mostrar Opciones de Descarga</string>
     <string name="download_card_summary">Ajustes de descargas</string>
     <string name="delete_file_too">Eliminar el archivo del dispositivo</string>
-    <string name="you_are_going_to_delete_multiple_items">Eliminando varios archivos…</string>
+    <string name="you_are_going_to_delete_multiple_items">Eliminando varios archivos</string>
     <string name="delete_files_too">Eliminar los archivos del dispositivo</string>
     <string name="request_permission_desc">Esta aplicación necesita Permisos de Archivo para guardar descargas en este dispositivo</string>
     <string name="exit_app">Salir de la Aplicación</string>
@@ -267,4 +267,6 @@
     <string name="swipe_gestures_summary">Deslizar un elemento para una acción específica</string>
     <string name="crop_thumb">Recortar miniatura</string>
     <string name="crop_thumb_summary">Recorta la miniatura en un cuadrado para las descargas del audio</string>
+    <string name="move_temporary_files">Mover los archivos temporales</string>
+    <string name="move_temporary_files_summary">Transferir los archivos de la caché a la carpeta de las descargas</string>
 </resources>
