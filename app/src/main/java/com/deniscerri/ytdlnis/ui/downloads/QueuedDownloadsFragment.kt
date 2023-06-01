@@ -329,6 +329,7 @@ class QueuedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLi
                     selectedObjects?.clear()
                     selectedObjects?.addAll(invertedList)
                     actionMode!!.title = "${selectedObjects!!.size} ${getString(R.string.selected)}"
+                    if (invertedList.isEmpty()) actionMode?.finish()
                     true
                 }
                 else -> false

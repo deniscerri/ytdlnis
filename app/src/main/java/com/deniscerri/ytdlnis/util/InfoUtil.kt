@@ -822,6 +822,9 @@ class InfoUtil(private val context: Context) {
                     chapters = Gson().fromJson(chaptersInJSON.toString(), listType)
                 }
 
+                var urls = "";
+                if(jsonObject.has("urls")) urls = jsonObject.getString("urls");
+
                 Log.e("aa", formats.toString())
                 items.add(ResultItem(0,
                         url,
@@ -832,7 +835,7 @@ class InfoUtil(private val context: Context) {
                         website,
                         playlistTitle!!,
                         formats,
-                        jsonObject.getString("urls") ?: "",
+                    urls,
                         chapters
                     )
                 )

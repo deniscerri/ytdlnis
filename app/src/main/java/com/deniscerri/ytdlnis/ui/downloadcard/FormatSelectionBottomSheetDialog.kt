@@ -268,8 +268,20 @@ class FormatSelectionBottomSheetDialog(private val items: List<DownloadItem?>, p
                         (it as MaterialCardView).isChecked = selectedAudios.map { a -> "${a.format_id}${a.format_note}" }.contains(it.tag)
                     }
                 }else{
-                    //if its a simple audio format selection
-                    listener.onFormatClick(List(items.size){chosenFormats}, listOf(FormatTuple(format, null)))
+                    if (items.size == 1){
+                        listener.onFormatClick(List(items.size){chosenFormats}, listOf(FormatTuple(format, null)))
+                    }else{
+                        val selectedFormats = mutableListOf<Format>()
+                        formatCollection.forEach {
+                            selectedFormats.add(it.first{ f -> f.format_id == format.format_id})
+                        }
+                        if (selectedFormats.isEmpty()) {
+                            items.forEach {
+                                selectedFormats.add(format)
+                            }
+                        }
+                        listener.onFormatClick(formatCollection, selectedFormats.map { FormatTuple(it, null) })
+                    }
                     dismiss()
                 }
             }

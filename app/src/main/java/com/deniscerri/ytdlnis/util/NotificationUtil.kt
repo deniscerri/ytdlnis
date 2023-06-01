@@ -13,12 +13,11 @@ import android.os.Bundle
 import androidx.core.app.NotificationCompat
 import androidx.core.content.FileProvider
 import androidx.navigation.NavDeepLinkBuilder
-import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.receiver.CancelDownloadNotificationReceiver
 import com.deniscerri.ytdlnis.receiver.PauseDownloadNotificationReceiver
 import com.deniscerri.ytdlnis.receiver.ResumeActivity
-import com.deniscerri.ytdlnis.receiver.ShareFileService
+import com.deniscerri.ytdlnis.receiver.ShareFileActivity
 import java.io.File
 
 
@@ -213,10 +212,10 @@ class NotificationUtil(var context: Context) {
                 }
 
                 //share intent
-                val shareIntent = Intent(context, ShareFileService::class.java)
+                val shareIntent = Intent(context, ShareFileActivity::class.java)
                 shareIntent.putExtra("path", filepath.toTypedArray())
                 shareIntent.putExtra("notificationID", DOWNLOAD_FINISHED_NOTIFICATION_ID)
-                val shareNotificationPendingIntent: PendingIntent = PendingIntent.getService(
+                val shareNotificationPendingIntent: PendingIntent = PendingIntent.getActivity(
                     context,
                     0,
                     shareIntent,

@@ -2,6 +2,7 @@ package com.deniscerri.ytdlnis.ui.more.downloadLogs
 
 import android.content.ClipboardManager
 import android.content.Context.CLIPBOARD_SERVICE
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.os.FileObserver
@@ -15,7 +16,11 @@ import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+import com.neo.highlight.core.Highlight
+import com.neo.highlight.util.listener.HighlightTextWatcher
+import com.neo.highlight.util.scheme.ColorScheme
 import java.io.File
+import java.util.regex.Pattern
 
 
 class DownloadLogFragment : Fragment() {
@@ -92,6 +97,26 @@ class DownloadLogFragment : Fragment() {
             }
             observer.startWatching();
         }
+
+        //init syntax highlighter
+        val highlight = Highlight()
+        val highlightWatcher = HighlightTextWatcher()
+
+        val schemes = listOf(
+            ColorScheme(Pattern.compile("([\"'])(?:\\\\1|.)*?\\1"), Color.parseColor("#FC8500")),
+            ColorScheme(Pattern.compile("yt-dlp"), Color.parseColor("#00FF00")),
+            ColorScheme(Pattern.compile("(https?://(?:www\\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|www\\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|https?://(?:www\\.|(?!www))[a-zA-Z0-9]+\\.[^\\s]{2,}|www\\.[a-zA-Z0-9]+\\.[^\\s]{2,})"), Color.parseColor("#b5942f")),
+            ColorScheme(Pattern.compile("\\d+(\\.\\d)?%"), Color.parseColor("#43a564"))
+        )
+
+        highlight.addScheme(
+            *schemes.map { it }.toTypedArray()
+        )
+        highlightWatcher.addScheme(
+            *schemes.map { it }.toTypedArray()
+        )
+        highlight.setSpan(content)
+        content.addTextChangedListener(highlightWatcher)
     }
 
     override fun onDestroy() {

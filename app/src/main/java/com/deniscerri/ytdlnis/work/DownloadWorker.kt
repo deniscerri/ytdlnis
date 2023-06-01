@@ -132,7 +132,7 @@ class DownloadWorker(
             if (downloadItem.author.isNotBlank()){
                 request.addCommands(listOf("--replace-in-metadata","uploader",".*.",downloadItem.author.take(25)))
             }
-            request.addCommands(listOf("--replace-in-metadata","uploader"," - Topic",""))
+            request.addCommands(listOf("--replace-in-metadata","uploader"," - Topic$",""))
             if (downloadItem.customFileNameTemplate.isBlank()) downloadItem.customFileNameTemplate = "%(uploader)s - %(title)s"
 
             if (downloadItem.downloadSections.isNotBlank()){

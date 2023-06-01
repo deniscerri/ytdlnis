@@ -70,6 +70,17 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".receiver.ShareFileActivity"
+            android:configChanges="smallestScreenSize|layoutDirection|locale|orientation|screenSize"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:launchMode="singleInstance"
+            android:theme="@style/Theme.BottomSheet">
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".ui.more.settings.SettingsActivity"
             android:configChanges="smallestScreenSize|layoutDirection|locale|orientation|screenSize"
             android:exported="true"
@@ -136,11 +147,6 @@
                 android:name="autoStoreLocales"
                 android:value="true" />
         </service>
-
-        <service
-            android:name=".receiver.ShareFileService"
-            android:exported="false" />
-
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.deniscerri.ytdl.fileprovider"
