@@ -63,7 +63,7 @@
     <string name="sponsorblock_previews">Превью</string>
     <string name="sponsorblock_reminders">Напоминания о подписке</string>
     <string name="select_sponsorblock_filtering">Выберите фильтрацию SponsorBlock</string>
-    <string name="sponsorblock_fillers">Заглушки</string>
+    <string name="sponsorblock_fillers">Наполнители</string>
     <string name="sponsorblock_nonmusic">Немузыкальные и неуместные части</string>
     <string name="settings">Настройки</string>
     <string name="video_directory">Папка с видео</string>
@@ -71,7 +71,7 @@
     <string name="directories">Папки</string>
     <string name="updating">Обновляется</string>
     <string name="ytdl_update_hint">Полезно в случае проблем с загрузкой</string>
-    <string name="confirm_delete_history_desc">Удалить всю историю, навсегда.</string>
+    <string name="confirm_delete_history_desc">Удалить всю историю, навсегда</string>
     <string name="ytdl_already_updating">Установка новой версии…</string>
     <string name="command_directory">Папка пользовательских команд</string>
     <string name="save_thumb_summary">Сохраните обложку видео в папке загрузки</string>
@@ -121,7 +121,7 @@
     <string name="shortcuts">Ярлыки</string>
     <string name="create_template">Создать шаблон</string>
     <string name="edit">Редактировать</string>
-    <string name="errored">Ошибка</string>
+    <string name="errored">Ошибки</string>
     <string name="copy_log">Копировать лог</string>
     <string name="update_template">Обновить шаблон</string>
     <string name="create">Создать</string>
@@ -146,7 +146,7 @@
     <string name="command">Команда</string>
     <string name="date_added">Дата добавления</string>
     <string name="help_translate">Помочь с переводом</string>
-    <string name="workmanager_updated">Перезагрузите приложение и ничего не загружайте, чтобы настройки имели эффект!</string>
+    <string name="workmanager_updated">Вам нужно перезапустить приложение и не иметь активных загрузок, чтобы эта настройка вступила в силу!</string>
     <string name="template">Шаблон</string>
     <string name="logs">Логи</string>
     <string name="command_templates">Шаблоны команд</string>
@@ -214,10 +214,10 @@
     <string name="video_recommendations_summary">Получите рекомендуемые видео YouTube на главном экране от Invidious</string>
     <string name="copied_to_clipboard">Скопировано в буфер обмена</string>
     <string name="Theme">Тема</string>
-    <string name="dark">Темный</string>
-    <string name="light">Светлый</string>
+    <string name="dark">Темная</string>
+    <string name="light">Светлая</string>
     <string name="quality">Качество</string>
-    <string name="system">Система</string>
+    <string name="system">Системная</string>
     <string name="updating_download_data">Обновление данных элемента загрузки</string>
     <string name="backup">Резервировать</string>
     <string name="pure_theme_summary">Чистая черная / белая тема</string>
