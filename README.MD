@@ -10,11 +10,10 @@
 <div align="center">
 
 [![Github Download](https://custom-icon-badges.herokuapp.com/badge/Download-blue?style=for-the-badge&logo=download&logoColor=white)](https://github.com/deniscerri/ytdlnis/releases/latest)
-[![IZZY](https://custom-icon-badges.herokuapp.com/badge/Izzy-red?style=for-the-badge&logo=download&logoColor=white)](https://android.izzysoft.de/repo/apk/com.deniscerri.ytdl)
+[![IzzyOnDroid Repo](https://custom-icon-badges.herokuapp.com/badge/IzzyOnDroid%20Repo-red?style=for-the-badge&logo=download&logoColor=white)](https://android.izzysoft.de/repo/apk/com.deniscerri.ytdl)
 
 
-![CI](https://github.com/deniscerri/ytdlnis/actions/workflows/android.yml/badge.svg?branch=main&event=pull) 
-[![stable release](https://img.shields.io/github/release/deniscerri/ytdlnis.svg?maxAge=3600&label=download)](https://github.com/deniscerri/ytdlnis/releases/latest) 
+![CI](https://github.com/deniscerri/ytdlnis/actions/workflows/android.yml/badge.svg?branch=main&event=pull)
 [![preview release](https://img.shields.io/github/release/deniscerri/ytdlnis.svg?maxAge=3600&include_prereleases&label=preview)](https://github.com/deniscerri/ytdlnis/releases) 
 [![downloads](https://img.shields.io/github/downloads/deniscerri/ytdlnis/total?style=flat-square)](https://github.com/deniscerri/ytdlnis/releases) 
 [![Translation status](https://hosted.weblate.org/widgets/ytdlnis/-/svg-badge.svg)](https://hosted.weblate.org/engage/ytdlnis/?utm_source=widget) 
@@ -30,26 +29,43 @@
 ## 💡 Features:
 
 - download audio/video files from more than <a href="https://github.com/yt-dlp/yt-dlp/blob/master/supportedsites.md">1000 websites</a>
-- download playlists or multi select items
+- process playlists
+	- edit every playlist item separately just like in a normal download item.
+	- select a common format for all items and/or select multiple audio formats in case you are downloading them as a video
+	- select a download path for all items
+	- select a filename template for all items
+	- batch update download type to audio/video/custom command in one click
 - queue downloads and schedule them by date and time
-- use custom commands and templates or go full terminal mode
+	- you can also schedule multiple items at the same time
+- download multiple items at the same time
+- use custom commands and templates or go full yt-dlp mode with a built in terminal
+	- you can backup and restore templates, so you can share with your buddies
+- COOKIES support. Log in with your accounts and download private/unavailable videos, unlock premium formats etc.
 - cut videos based on timestamps and video chapters (This yt-dlp feature is experimental on the original project)
-- remove sponsorblock chapters
+	- you can make unlimited cuts
+- remove sponsorblock elements from the item
+	- embed them as a chapters in your video 
 - embed subtitles/metadata/chapters etc
 - modify metadata such as title and author
 - split item into separate files depending on its chapters
 - select different download formats
-- process multiple items before download
-- quick share card right from the share menu 
+- bottom card right from the share menu, no need to open the app 
+	- you can create a txt file and fill it with links/playlists/search queries separate by a new line and the app will process them
 - search or insert a link from the app
-- log downloads
+	- you can stack searches so you can process them at the same time
+- log downloads in case of problems
 - re-download cancelled or failed downloads
-- incognito mode when you don't want to save a download history
-- download multiple items at the same time
-- change preferred audio/video formats and qualities
+	- you can use gestures to swipe left to redownload and right to delete
+	- you can long click the redownload button in the details sheet to show the download card for more functionality
+- incognito mode when you don't want to save a download history or logs
+- quick download mode
+	- download immediately without having to wait for data to process. Turn off the bottom card and it will instantly start
+- open / share downloaded files right from the finished notification
+- most yt-dlp features are implemented, suggestions are welcome
 - Material You interface
+- Theming options
+- Backup and restore features. (Almost everything can be backed up)
 - MVVM Architecture w/ WorkManager
-- easy to use :)
 
 ## 📲 Screenshots
 
