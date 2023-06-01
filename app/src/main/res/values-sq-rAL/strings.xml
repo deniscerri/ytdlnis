@@ -27,7 +27,7 @@
     <string name="Remove">Hiqe</string>
     <string name="ok">OK</string>
     <string name="cancel">Anullo</string>
-    <string name="confirm_delete_history_desc">Fshi komplet historinë, përgjithmonë.</string>
+    <string name="confirm_delete_history_desc">Fshi komplet historinë, përgjithmonë</string>
     <string name="confirm_delete_history">Konfirmo</string>
     <string name="search_history_hint">Kërko nga Historia</string>
     <string name="no_results">Nuk ka Rezultate</string>
@@ -98,7 +98,7 @@
     <string name="show_download_card">Shfaq Opsionet e Shkarkimit</string>
     <string name="download_card_summary">Konfiguro përpara se sa ta shkarkosh</string>
     <string name="Open_File">Hap Skedarin</string>
-    <string name="you_are_going_to_delete_multiple_items">Fshi disa elementë…</string>
+    <string name="you_are_going_to_delete_multiple_items">Fshi disa elementë</string>
     <string name="delete_files_too">Fshi skedarët nga paisja</string>
     <string name="request_permission_desc">Ky aplikacion ka nevojë për lejen e Skedarëve për të ruajtur shkarkimet në paisje</string>
     <string name="exit_app">Dil</string>
@@ -269,4 +269,5 @@
     <string name="crop_thumb_summary">Preje thumbnailin në formë katrore për shkarkimet audio</string>
     <string name="move_temporary_files">Zhvendos skedarët e përkohshëm</string>
     <string name="move_temporary_files_summary">Transfero skedarët e përkohshëm në dosjen e shkarkimeve</string>
+    <string name="format_filtering_hint_2">Të gjithë artikujt duhet të jenë audio ose video për të përdorur këtë opsion</string>
 </resources>
