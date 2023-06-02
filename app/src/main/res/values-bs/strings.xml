@@ -1,2 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="video_directory">Video fascikla</string>
+    <string name="updating">Ažuriranje</string>
+    <string name="download_notification_channel_name">Preuzimanja fajlova</string>
+    <string name="update_ytdl">Instaliraj novu verziju yt-dlp(a)</string>
+    <string name="source_code">Izvorni kod</string>
+    <string name="failed_download">Ne može se preuzeti fajl.</string>
+    <string name="search">Pretraga</string>
+    <string name="remove_all">Ukloniti sve</string>
+    <string name="remove_results">Obriši rezultate</string>
+    <string name="download_all">Preuzmi sve</string>
+    <string name="home">Kuća</string>
+    <string name="about">U vezi</string>
+    <string name="search_hint">Traži ili ubaci URL</string>
+    <string name="worst_quality">Najgori kvalitet</string>
+    <string name="directories">Fascikla</string>
+    <string name="best_quality">Najbolji kvalitet</string>
+    <string name="settings">Podešavanja</string>
+    <string name="ytdl_update_hint">Korisno ako imaš probleme sa preuzimanjem</string>
+    <string name="music_directory">Muzička fascikla</string>
+</resources>
