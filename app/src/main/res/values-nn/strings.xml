@@ -34,7 +34,7 @@
     <string name="you_are_in_latest_version">Nyttar den nyaste utgåva</string>
     <string name="ytld_update_success">La inn den nyaste utgåva</string>
     <string name="ytdl_updating_started">Hentar den nyaste utgåva …</string>
-    <string name="confirm_delete_history_desc">Slett heile historikken for godt\?</string>
+    <string name="confirm_delete_history_desc">Slett heile historikken for godt</string>
     <string name="confirm_delete_history">Stadfest</string>
     <string name="no_results">Ingen svar</string>
     <string name="more">Meir</string>
@@ -89,7 +89,7 @@
     <string name="format">Format</string>
     <string name="remove_search_history">Tøm søkjehistorikken</string>
     <string name="update_formats">Oppdater formata</string>
-    <string name="error_updating_formats">Greidde ikkje å oppdatera formata.</string>
+    <string name="error_updating_formats">Feil under oppdatering av formater!</string>
     <string name="log_downloads">Hentelogg</string>
     <string name="running">Køyrer</string>
     <string name="import_from_clipboard">Lim inn ifrå utklippstavla</string>
@@ -101,7 +101,7 @@
     <string name="items_imported">Ting førte inn</string>
     <string name="help_translate">Omset</string>
     <string name="help_translate_summary">Omset denne appen til tunga di med Weblate</string>
-    <string name="workmanager_updated">Stans alle hentingar og byrj om appen for å nytte dette brigdet.</string>
+    <string name="workmanager_updated">Du må starte appen på nytt og ikke ha noen aktive nedlastinger for at denne preferansen skal tre i kraft!</string>
     <string name="restart">Byrj om</string>
     <string name="file_size">Filstorleik</string>
     <string name="clear_temporary_files">Tøm mellombelse filer</string>
@@ -132,7 +132,7 @@
     <string name="backup">Tryggleikskopier</string>
     <string name="restore">Gjenopprett</string>
     <string name="incognito">Privat</string>
-    <string name="sponsorblock">SponsorBlock</string>
+    <string name="sponsorblock">Sponsor Block</string>
     <string name="select_backup_categories">Vel tryggleikskopieringsslag</string>
     <string name="backup_created_successfully">Gøymde tryggleikskopifila i hentingsmappa</string>
     <string name="backup_restore">Tryggleikskopier og gjenopprett</string>
@@ -186,7 +186,7 @@
     <string name="author">Skapar</string>
     <string name="download_card_summary">Innstillingar for henting av ting</string>
     <string name="warning">Åtvaring</string>
-    <string name="you_are_going_to_delete_multiple_items">Slettar fleire ting …</string>
+    <string name="you_are_going_to_delete_multiple_items">Slettar fleire ting</string>
     <string name="exit_app">Lat att appen</string>
     <string name="delete_file_too">Slett fila ifrå eininga</string>
     <string name="sponsorblock_reminders">Tingepåminningar</string>
@@ -208,7 +208,7 @@
     <string name="logs">Loggar</string>
     <string name="command_templates">Påbodmalar</string>
     <string name="select_format">Vel format</string>
-    <string name="please_wait">Vent …</string>
+    <string name="please_wait">Vennligst vent</string>
     <string name="enable_mtime">Slå på mtime</string>
     <string name="enable_mtime_summary">Set «HTTP Last-Modified»-hovudet som den siste brigdetida</string>
     <string name="download_queue">Hentekø</string>
@@ -235,7 +235,7 @@
     <string name="download_over_metered_networks_summary">Hent uansett nettverksslag. Vil ellers vente på eit nettverk utan forbruksmåling</string>
     <string name="ignore_battery_optimization">Slå av batteriforlenging</string>
     <string name="cut">Klipp</string>
-    <string name="add_template_first">Du må ha laga minst ein påbodmal først.</string>
+    <string name="add_template_first">Du må ha opprettet minst én kommandomal!</string>
     <string name="new_cookie">Ny infokapsel</string>
     <string name="suggested">Tilrådde</string>
     <string name="select_all">Vel alle</string>
@@ -258,7 +258,7 @@
     <string name="light">Lys</string>
     <string name="quality">Kvalitet</string>
     <string name="pure_theme_summary">Svart/kvit bakgrunnslet</string>
-    <string name="material_you">Material You</string>
+    <string name="material_you">Material</string>
     <string name="monochrome">Einsléta</string>
     <string name="resume">Hald fram</string>
     <string name="red">Raud</string>
@@ -266,4 +266,8 @@
     <string name="yellow">Gul</string>
     <string name="downloaded">"Henta: "</string>
     <string name="access_all_directories_summary">La appen hente til avgrensa mapper som ellers er utilgjengelege</string>
+    <string name="preferred_locale">Foretrukket lokalitet</string>
+    <string name="format_filtering_hint_2">Alle elementer må enten være lyd eller video for å bruke dette alternativet</string>
+    <string name="updating_download_data">Oppdaterer nedlastningselementdata</string>
+    <string name="locale">Lokalt</string>
 </resources>
