@@ -269,4 +269,5 @@
     <string name="general">Общие</string>
     <string name="move_temporary_files">Переместить временные файлы</string>
     <string name="move_temporary_files_summary">Перенесите кешированные файлы в папку загрузок</string>
+    <string name="format_filtering_hint_2">Все элементы должны быть либо аудио, либо видео, чтобы использовать эту опцию</string>
 </resources>
