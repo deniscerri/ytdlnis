@@ -71,7 +71,7 @@
     <string name="directories">Папки</string>
     <string name="updating">Обновляется</string>
     <string name="ytdl_update_hint">Полезно в случае проблем с загрузкой</string>
-    <string name="confirm_delete_history_desc">Удалить всю историю, навсегда</string>
+    <string name="confirm_delete_history_desc">Удалить всю историю,навсегда</string>
     <string name="ytdl_already_updating">Установка новой версии…</string>
     <string name="command_directory">Папка пользовательских команд</string>
     <string name="save_thumb_summary">Сохраните обложку видео в папке загрузки</string>
@@ -197,7 +197,7 @@
     <string name="invert_selected">Инвертировать выбранное</string>
     <string name="shortcuts_desc">Используйте часто используемые команды для создания шаблонов</string>
     <string name="restore">Восстановить</string>
-    <string name="sponsorblock">СпонсорБлок</string>
+    <string name="sponsorblock">Спонсор Блок</string>
     <string name="quick_download_summary">Не получать данные заранее</string>
     <string name="keep_cache">Сохранить кеш</string>
     <string name="remove_audio">Удалить аудио</string>
