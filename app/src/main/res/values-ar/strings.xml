@@ -22,7 +22,7 @@
     <string name="ytdl_updating_started">تحميل أحدث إصدار…</string>
     <string name="cancel">إلغاء</string>
     <string name="Remove">إزالة</string>
-    <string name="confirm_delete_history_desc">الإزالة من سجل التحميلات تمامًا.</string>
+    <string name="confirm_delete_history_desc">احذف السجل بالكامل بشكل دائم</string>
     <string name="you_are_in_latest_version">لديك أحدث إصدار</string>
     <string name="ytld_update_success">تم تثبيت أحدث نسخة</string>
     <string name="confirm_delete_history">تأكيد</string>
@@ -153,7 +153,7 @@
     <string name="dont_ask_again">لا تسألني بعد الآن</string>
     <string name="end">النهاية</string>
     <string name="start">البداية</string>
-    <string name="save_dir">الحفظ في المسار:</string>
+    <string name="save_dir">حفظ دير</string>
     <string name="preferred_download_type_summary">التبويب الذي ستُفتح عليه بطاقة تخصيص التحميل</string>
     <string name="help_translate">المساعدة في الترجمة</string>
     <string name="help_translate_summary">المساعدة في توطين/تحسين الترجمة على Weblate</string>
@@ -241,7 +241,7 @@
     <string name="sponsorblock">حاجب شرائح الإعلانات</string>
     <string name="keep_cache">الاحتفاظ بالملفات المؤقتة</string>
     <string name="backup">عمل نسخة احتياطية</string>
-    <string name="pause">إيقاف
+    <string name="pause">يوقف
 \n</string>
     <string name="resume">استئناف</string>
     <string name="updating_download_data">يتم جلب بيانات التحميل</string>
@@ -269,4 +269,5 @@
     <string name="swipe_gestures_summary">سحب العناصر يمينًا/يسارًا لـ التحميل/الإزالة</string>
     <string name="crop_thumb">قص الصورة المصغرة</string>
     <string name="crop_thumb_summary">قص الصورة المصغرة على شكل مربع للتحميلات الصوتية</string>
+    <string name="format_filtering_hint_2">يجب أن تكون جميع العناصر إما صوتية أو فيديو لاستخدام هذا الخيار</string>
 </resources>
