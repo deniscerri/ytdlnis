@@ -142,7 +142,7 @@
     <string name="link_copied_to_clipboard">Saite kopēta starpliktuvē</string>
     <string name="add_chapters">Sadaļas videoklipos</string>
     <string name="author">Autors</string>
-    <string name="audio_quality_summary">0 (labākais) 10 (sliktākais)</string>
+    <string name="audio_quality_summary">0 (labākā) 10 (sliktākā)</string>
     <string name="url">URL</string>
     <string name="api_key">Izmantot API Atslēgu</string>
     <string name="api_key_summary">Ātrāki rezultāti no YouTube</string>
@@ -163,9 +163,9 @@
     <string name="download_queue">Lejupielāžu Rinda</string>
     <string name="error_updating_formats">Kļūda atjauninot formātus!</string>
     <string name="export_from_clipboard">Eksportēt uz starpliktuvi</string>
-    <string name="cancelled">Atcelts</string>
+    <string name="cancelled">Atcelti</string>
     <string name="update_template">Atjaunināt Veidni</string>
-    <string name="errored">Kļūdains</string>
+    <string name="errored">Kļūdaini</string>
     <string name="create">Izveidot</string>
     <string name="preferred_download_type_summary">Noklusējuma cilne, kurā tiks atvērts lejupielādes logs</string>
     <string name="update">Atjaunināt</string>
@@ -195,7 +195,7 @@
     <string name="metered_network_download_start_info">Lejupielāde tiks sākta, tiklīdz būs izveidots savienojums ar tīklu bez maksas</string>
     <string name="invert_selected">Invertēt Atlasīto</string>
     <string name="save_subs">Saglabāt Subtitrus</string>
-    <string name="save_subs_desc">Rakstīt subtitru failu</string>
+    <string name="save_subs_desc">Izveidot subtitru failu</string>
     <string name="subtitle_languages">Subtitru valodas</string>
     <string name="download_over_metered_networks">Lejupielāde ierobežotos tīklos</string>
     <string name="download_over_metered_networks_summary">Lejupielāde, izmantojot jebkura veida tīklu. Pretējā gadījumā tiek gaidīts tīkls bez mērīšanas</string>
