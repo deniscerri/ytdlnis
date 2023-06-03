@@ -24,7 +24,7 @@
     <string name="Remove">Təmizlə</string>
     <string name="ok">Oldu</string>
     <string name="cancel">Ləğv et</string>
-    <string name="confirm_delete_history_desc">Bütün tarixçəni həmişəlik silin</string>
+    <string name="confirm_delete_history_desc">Bütün tarixçəni həmişəlik sil</string>
     <string name="confirm_delete_history">Təsdiqlə</string>
     <string name="search_history_hint">Tarixçədən Axtar</string>
     <string name="no_results">Nəticə Yoxdur</string>
