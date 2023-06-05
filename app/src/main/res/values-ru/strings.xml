@@ -114,7 +114,7 @@
     <string name="language">Язык</string>
     <string name="terminal">Терминал</string>
     <string name="format">Формат</string>
-    <string name="please_wait">Подождите...</string>
+    <string name="please_wait">Пожалуйста, подождите</string>
     <string name="remove_search_history">Удалить историю поиска</string>
     <string name="update_formats">Обновить форматы</string>
     <string name="download_queue">Очередь загрузки</string>
@@ -246,7 +246,7 @@
     <string name="couldnt_parse_file">Не удалось разобрать файл</string>
     <string name="keep_cache_summary">Не удалять временные файлы после завершения загрузки</string>
     <string name="backup_created_successfully">Файл резервной копии, сохраненный в папке загрузок</string>
-    <string name="material_you">Material You</string>
+    <string name="material_you">Material</string>
     <string name="finished_download_notification_channel_description">Уведомление о завершенных или ошибочных загрузках</string>
     <string name="incognito">Инкогнито</string>
     <string name="preferred_home_screen">Предпочтительный главный экран</string>
