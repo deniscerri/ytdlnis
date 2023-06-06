@@ -3,7 +3,7 @@
     <string name="remove_results">Kosongkan Hasil</string>
     <string name="updating">Pemutakhiran</string>
     <string name="you_are_in_latest_version">Versi yang terkini sedang digunakan</string>
-    <string name="confirm_delete_history_desc">Hapus seluruh riwayat, secara permanen.</string>
+    <string name="confirm_delete_history_desc">Hapus seluruh riwayat, secara permanen</string>
     <string name="confirm_delete_history">Konfirmasikan</string>
     <string name="search_history_hint">Telusuri dari Riwayat</string>
     <string name="no_results">Tidak Ada Hasil</string>
@@ -84,7 +84,7 @@
     <string name="api_key">Gunakan Kunci API</string>
     <string name="ytdl_version">Versi yt-dlp</string>
     <string name="Open_File">Buka Berkas</string>
-    <string name="you_are_going_to_delete_multiple_items">Menghapus beberapa butir…</string>
+    <string name="you_are_going_to_delete_multiple_items">Menghapus beberapa item</string>
     <string name="delete_file_too">Hapus berkas dari perangkat</string>
     <string name="delete_files_too">Hapus berkas-berkas dari perangkat</string>
     <string name="run_command">Jalankan Perintah</string>
@@ -92,7 +92,7 @@
     <string name="sponsorblock_nonmusic">Bagian Non-Musik dan Di Luar Topik</string>
     <string name="sponsorblock_sponsors">Sponsor</string>
     <string name="sponsorblock_intro">Intro</string>
-    <string name="sponsorblock_outro">Outro</string>
+    <string name="sponsorblock_outro">Lainnya</string>
     <string name="sponsorblock_promos">Promo Diri Sendiri</string>
     <string name="api_key_summary">Hasil yang lebih cepat dari YouTube</string>
     <string name="update_app_summary">Mengumumkan versi aplikasi yang baru saat membukanya</string>
@@ -222,7 +222,7 @@
     <string name="yellow">Kuning</string>
     <string name="green">Hijau</string>
     <string name="blue">Biru</string>
-    <string name="material_you">Material You</string>
+    <string name="material_you">Material</string>
     <string name="purple">Ungu</string>
     <string name="monochrome">Monokrom</string>
     <string name="red">Merah</string>
@@ -242,7 +242,7 @@
     <string name="resume">Lanjutkan</string>
     <string name="keep_cache">Simpan Berkas Singgahan</string>
     <string name="incognito">Penyamaran</string>
-    <string name="sponsorblock">SponsorBlock</string>
+    <string name="sponsorblock">Sponsor Block</string>
     <string name="couldnt_parse_file">Tidak bisa mengurai berkas</string>
     <string name="search_history">Riwayat Penelusuran</string>
     <string name="appearance">Penampilan</string>
@@ -267,4 +267,7 @@
     <string name="swipe_gestures">Gestur Usap</string>
     <string name="general">Umum</string>
     <string name="misc">Aneka Ragam</string>
+    <string name="format_filtering_hint_2">Semua item harus berupa audio atau video untuk menggunakan opsi ini</string>
+    <string name="move_temporary_files_summary">Transfer file yang di-cache ke folder unduhan</string>
+    <string name="move_temporary_files">Pindahkan File Sementara</string>
 </resources>

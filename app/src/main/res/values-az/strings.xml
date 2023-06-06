@@ -24,7 +24,7 @@
     <string name="Remove">Təmizlə</string>
     <string name="ok">Oldu</string>
     <string name="cancel">Ləğv et</string>
-    <string name="confirm_delete_history_desc">Bütün tarixçəni həmişəlik sil.</string>
+    <string name="confirm_delete_history_desc">Bütün tarixçəni həmişəlik sil</string>
     <string name="confirm_delete_history">Təsdiqlə</string>
     <string name="search_history_hint">Tarixçədən Axtar</string>
     <string name="no_results">Nəticə Yoxdur</string>
@@ -82,7 +82,7 @@
     <string name="show_download_card">Yükləmə üçün seçimlər göstər</string>
     <string name="download_card_summary">Elementləri yükləmək üçün tənzimləmələr</string>
     <string name="Open_File">Faylı Aç</string>
-    <string name="you_are_going_to_delete_multiple_items">Çoxlu element silinir…</string>
+    <string name="you_are_going_to_delete_multiple_items">Çoxlu element silinməsi</string>
     <string name="delete_file_too">Faylı cihazdan sil</string>
     <string name="delete_files_too">Faylları cihazdan sil</string>
     <string name="request_permission_desc">Bu tətbiq cihazda yükləmələri saxlamaq üçün fayl icazələri tələb edir</string>
@@ -267,4 +267,7 @@
     <string name="crop_thumb_summary">Səs yükləmələr üçün miniatürü kvadrat şəklində kəs</string>
     <string name="locale">Yer</string>
     <string name="audio_only_item">Bu element yalnız səs formatları ehtiva edir</string>
+    <string name="move_temporary_files">Müvəqqəti faylları köçürün</string>
+    <string name="move_temporary_files_summary">Toplanan faylları yükləmələr qovluğuna köçür</string>
+    <string name="format_filtering_hint_2">Bu seçimi işlətmək üçün bütün elementlər səs və ya video olmalıdır</string>
 </resources>

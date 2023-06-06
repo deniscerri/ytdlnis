@@ -249,7 +249,7 @@
     <string name="restore_complete">Відновлення застосунку завершено. Наступні елементи було відновлено:</string>
     <string name="search_history">Історія пошуку</string>
     <string name="appearance">Зовнішній вигляд</string>
-    <string name="sponsorblock">СпонсорБлок</string>
+    <string name="sponsorblock">Спонсор Блок</string>
     <string name="network_error">Помилка мережі</string>
     <string name="select_backup_categories">Виберіть категорії резервного копіювання</string>
     <string name="backup_created_successfully">Файл резервної копії збережено в папці завантажень</string>
