@@ -44,7 +44,7 @@
     <string name="cancel">Anuluj</string>
     <string name="downloading_update">Pobieranie nowszej wersji…</string>
     <string name="ok">OK</string>
-    <string name="confirm_delete_history_desc">Usuń całą historię, permanentnie.</string>
+    <string name="confirm_delete_history_desc">Usuń całą historię trwale</string>
     <string name="concurrent_fragments_summary">Liczba fragmentów natywnego wideo DASH/HLS do jednoczesnego pobrania</string>
     <string name="limit_rate">Limit pobierania</string>
     <string name="confirm_delete_history">Potwierdź</string>
@@ -64,7 +64,7 @@
     <string name="audio">Audio</string>
     <string name="concurrent_fragments">Jednoczesne fragmenty</string>
     <string name="limit_rate_summary">Maksymalna szybkość pobierania (w bajtach na sekundę), np. 50 tys. lub 4,2 mln</string>
-    <string name="embed_subs_summary">Dodaj napisy w wideo</string>
+    <string name="embed_subs_summary">Dodaj napisy do wideo</string>
     <string name="embed_thumb">Okładki miniatur</string>
     <string name="embed_thumb_summary">Używa miniatury jako okładki</string>
     <string name="audio_quality">Jakość dźwięku</string>

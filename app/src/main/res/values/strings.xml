@@ -81,7 +81,7 @@
     <string name="trendingPlaylist" translatable="false">ytdlnis-TRENDING</string>
     <string name="remove_downloading">Cancel Downloads</string>
     <string name="incognito_summary">Download without adding to history</string>
-    <string name="configure_download">Сonfigure Download</string>
+    <string name="configure_download">Adjust Download</string>
     <string name="title">Title</string>
     <string name="author">Author</string>
     <string name="download">Download</string>

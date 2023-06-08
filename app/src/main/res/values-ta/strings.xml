@@ -1,2 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="search">தேடு</string>
+    <string name="home">முதற்பக்கம்</string>
+    <string name="update_ytdl">yt-dlp இன் புதிய பதிப்பை நிறுவவும்</string>
+    <string name="failed_download">கோப்பைப் பதிவிறக்க முடியவில்லை.</string>
+    <string name="worst_quality">மோசமான தரம்</string>
+    <string name="best_quality">சிறந்த தரம்</string>
+    <string name="remove_all">அனைத்தையும் அகற்று</string>
+    <string name="remove_results">முடிவுகளை அகற்று</string>
+    <string name="download_all">அனைத்தயும் பதிவிறக்கு</string>
+    <string name="settings">அமைப்புகள்</string>
+    <string name="directories">கோப்புறைகள்</string>
+    <string name="music_directory">இசை கோப்புறை</string>
+    <string name="video_directory">காணொளி கோப்புறை</string>
+    <string name="updating">புதுப்பிக்கப்படுகிறது</string>
+    <string name="ytdl_update_hint">பதிவிறக்கம் செய்வதில் ஏதேனும் சிக்கல் இருந்தால் இது பயனுள்ளதாக இருக்கும்</string>
+    <string name="about">இதைப்பற்றி</string>
+    <string name="source_code">மூல குறியீடு</string>
+    <string name="search_hint">தேடு அல்லது URL ஐத் பதிவிடு</string>
+    <string name="download_notification_channel_name">கோப்பு பதிவிறக்கங்கள்</string>
+</resources>
