@@ -76,14 +76,15 @@ class CommandTemplateViewModel(private val application: Application) : AndroidVi
     }
 
     suspend fun importFromClipboard() : Int {
-        val allTemplates = repository.getAll()
-        val allShortcuts = repository.getAllShortCuts()
         var count = 0
-        val clipboard = withContext(Dispatchers.Main){
-            application.getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
-        }
-        val clip = clipboard.primaryClip!!.getItemAt(0).text.toString()
         try{
+            val allTemplates = repository.getAll()
+            val allShortcuts = repository.getAllShortCuts()
+            val clipboard = withContext(Dispatchers.Main){
+                application.getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+            }
+            val clip = clipboard.primaryClip!!.getItemAt(0).text.toString()
+
             jsonFormat.decodeFromString<CommandTemplateExport>(clip).run {
                 templates.filterNot {t ->
                     allTemplates.find { it.content == t.content} != null

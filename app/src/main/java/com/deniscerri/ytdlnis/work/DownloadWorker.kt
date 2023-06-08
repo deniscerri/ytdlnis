@@ -207,7 +207,7 @@ class DownloadWorker(
                     request.addOption("--parse-metadata", "%(album,title)s:%(meta_album)s")
                 }
 
-                request.addOption("--audio-quality", sharedPreferences.getInt("audio_quality", 5))
+                request.addOption("--audio-quality", sharedPreferences.getInt("audio_quality", 0))
 
                 if (downloadItem.audioPreferences.splitByChapters && downloadItem.downloadSections.isBlank()){
                     request.addOption("--split-chapters")
