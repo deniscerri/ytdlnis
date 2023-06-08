@@ -54,7 +54,6 @@ class CookiesFragment : Fragment(), CookieAdapter.OnItemClickListener {
         savedInstanceState: Bundle?
     ): View? {
         mainActivity = activity as MainActivity
-        mainActivity.hideBottomNavigation()
         return inflater.inflate(R.layout.fragment_cookies, container, false)
     }
 

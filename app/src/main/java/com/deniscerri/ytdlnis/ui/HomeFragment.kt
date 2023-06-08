@@ -102,7 +102,6 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
         fragmentView = inflater.inflate(R.layout.fragment_home, container, false)
         activity = getActivity()
         mainActivity = activity as MainActivity?
-        mainActivity?.showBottomNavigation()
         quickLaunchSheet = false
         return fragmentView
     }

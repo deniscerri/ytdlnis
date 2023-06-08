@@ -53,7 +53,6 @@ import java.util.Locale
 
 
 class QueuedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickListener {
-    private var _binding : FragmentHomeBinding? = null
     private var fragmentView: View? = null
     private var activity: Activity? = null
     private lateinit var downloadViewModel : DownloadViewModel
@@ -69,7 +68,6 @@ class QueuedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLi
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
         fragmentView = inflater.inflate(R.layout.fragment_generic_download_queue, container, false)
         activity = getActivity()
         notificationUtil = NotificationUtil(requireContext())

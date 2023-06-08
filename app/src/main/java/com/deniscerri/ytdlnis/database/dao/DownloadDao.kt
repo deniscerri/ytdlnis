@@ -49,6 +49,9 @@ interface DownloadDao {
     @Query("SELECT id FROM downloads ORDER BY id DESC LIMIT 1")
     fun getLastDownloadId(): Long
 
+    @Query("SELECT status FROM downloads WHERE id=:id")
+    fun checkStatus(id: Long) : String
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(item: DownloadItem) : Long
 

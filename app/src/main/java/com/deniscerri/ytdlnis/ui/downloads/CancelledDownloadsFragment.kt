@@ -43,7 +43,6 @@ import kotlinx.coroutines.runBlocking
 
 
 class CancelledDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickListener {
-    private var _binding : FragmentHomeBinding? = null
     private var fragmentView: View? = null
     private var activity: Activity? = null
     private lateinit var downloadViewModel : DownloadViewModel
@@ -58,7 +57,6 @@ class CancelledDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClic
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
         fragmentView = inflater.inflate(R.layout.fragment_generic_download_queue, container, false)
         activity = getActivity()
         selectedObjects = arrayListOf()

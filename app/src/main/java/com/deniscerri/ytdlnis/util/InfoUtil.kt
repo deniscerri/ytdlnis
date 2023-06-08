@@ -122,7 +122,7 @@ class InfoUtil(private val context: Context) {
 
     @Throws(JSONException::class)
     fun searchFromPiped(query: String): ArrayList<ResultItem?> {
-        val data = genericRequest(pipedURL + "search?q=" + query + "?filter=videos")
+        val data = genericRequest(pipedURL + "/search?q=" + query + "?filter=videos")
         val dataArray = data.getJSONArray("items")
         if (dataArray.length() == 0) return getFromYTDL(query)
         for (i in 0 until dataArray.length()) {
@@ -233,7 +233,7 @@ class InfoUtil(private val context: Context) {
         try {
             init()
             if (key!!.isEmpty()) {
-                val res = genericRequest(pipedURL + "streams/" + id)
+                val res = genericRequest(pipedURL + "/streams/" + id)
                 return if (res.length() == 0) getFromYTDL("https://www.youtube.com/watch?v=$id")[0] else createVideoFromPipedJSON(
                     res, id
                 )
@@ -544,7 +544,7 @@ class InfoUtil(private val context: Context) {
     }
 
     private fun getTrendingFromPiped(): ArrayList<ResultItem?> {
-        val url = pipedURL + "trending?region=" + countryCODE
+        val url = pipedURL + "/trending?region=" + countryCODE
         val res = genericArrayRequest(url)
         try {
             for (i in 0 until res.length()) {
@@ -586,7 +586,7 @@ class InfoUtil(private val context: Context) {
         val formatSource = sharedPreferences.getString("formats_source", "yt-dlp")
         return if(m.find() && formatSource == "piped"){
             val id = getIDFromYoutubeURL(url)
-            val res = genericRequest(pipedURL + "streams/" + id)
+            val res = genericRequest(pipedURL + "/streams/" + id)
             if (res.length() == 0) getFromYTDL(url)[0]!!
             val item = createVideoFromPipedJSON(res, id)
             item!!.formats
@@ -719,7 +719,7 @@ class InfoUtil(private val context: Context) {
         }else{
             urls.forEach {
                 val id = getIDFromYoutubeURL(it)
-                val res = genericRequest(pipedURL + "streams/" + id)
+                val res = genericRequest(pipedURL + "/streams/" + id)
                 val vid = createVideoFromPipedJSON(res, id)
                 progress(vid!!.formats)
             }
@@ -1028,6 +1028,8 @@ class InfoUtil(private val context: Context) {
         }
     }
 
+    private val pipedURL = sharedPreferences.getString("piped_instance", defaultPipedURL)?.ifEmpty { defaultPipedURL }?.removeSuffix("/")
+
     class PlaylistTuple internal constructor(
         var nextPageToken: String,
         var videos: ArrayList<ResultItem?>
@@ -1036,7 +1038,7 @@ class InfoUtil(private val context: Context) {
     companion object {
         private const val TAG = "API MANAGER"
         private const val invidousURL = "https://invidious.baczek.me/api/v1/"
-        private const val pipedURL = "https://pipedapi.kavin.rocks/"
+        private const val defaultPipedURL = "https://pipedapi.kavin.rocks/"
         private var countryCODE: String = ""
     }
 }

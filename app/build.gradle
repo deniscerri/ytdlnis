@@ -64,10 +64,11 @@ android {
             signingConfig signingConfigs.debug
         }
 
-        dev {
-            minifyEnabled false
+        beta {
+            minifyEnabled true
+            versionNameSuffix "$project.betaVersionNameSuffix"
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            debuggable true
+            debuggable false
             signingConfig signingConfigs.debug
         }
 
@@ -180,4 +181,5 @@ dependencies {
     implementation 'it.xabaras.android:recyclerview-swipedecorator:1.4'
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.6.1"
     implementation "com.github.Irineu333:Highlight-KT:1.0.4"
+    implementation "com.anggrayudi:storage:1.5.4"
 }

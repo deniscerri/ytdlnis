@@ -93,6 +93,7 @@
         <item>ar</item>
         <item>az</item>
         <item>bn</item>
+        <item>bs</item>
         <item>de</item>
         <item>es</item>
         <item>fa</item>
@@ -173,12 +174,14 @@
     <array name="start_destination">
         <item>@string/home</item>
         <item>@string/downloads</item>
+        <item>@string/download_queue</item>
         <item>@string/more</item>
     </array>
 
     <array name="start_destination_values">
         <item>Home</item>
         <item>History</item>
+        <item>Queue</item>
         <item>More</item>
     </array>
 

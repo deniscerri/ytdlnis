@@ -7,19 +7,19 @@ import com.deniscerri.ytdlnis.database.models.HistoryItem
 @Dao
 interface HistoryDao {
 
-    @Query("SELECT * FROM history WHERE title LIKE '%'||:query||'%' AND type LIKE '%'||:format||'%' AND website LIKE '%'||:site||'%' ORDER BY " +
+    @Query("SELECT * FROM history WHERE (title LIKE '%'||:query||'%' OR author LIKE '%'||:query||'%') AND type LIKE '%'||:format||'%' AND website LIKE '%'||:site||'%' ORDER BY " +
             "CASE WHEN :sort = 'ASC' THEN id END ASC," +
             "CASE WHEN :sort = 'DESC' THEN id END DESC," +
             "CASE WHEN :sort = '' THEN id END DESC ")
     fun getHistorySortedByID(query : String, format : String, site : String, sort : String) : List<HistoryItem>
 
-    @Query("SELECT * FROM history WHERE title LIKE '%'||:query||'%' AND type LIKE '%'||:format||'%' AND website LIKE '%'||:site||'%' ORDER BY " +
+    @Query("SELECT * FROM history WHERE (title LIKE '%'||:query||'%' OR author LIKE '%'||:query||'%') AND type LIKE '%'||:format||'%' AND website LIKE '%'||:site||'%' ORDER BY " +
             "CASE WHEN :sort = 'ASC' THEN title END ASC," +
             "CASE WHEN :sort = 'DESC' THEN title END DESC," +
             "CASE WHEN :sort = '' THEN title END DESC ")
     fun getHistorySortedByTitle(query : String, format : String, site : String, sort : String) : List<HistoryItem>
 
-    @Query("SELECT * FROM history WHERE title LIKE '%'||:query||'%' AND type LIKE '%'||:format||'%' AND website LIKE '%'||:site||'%' ORDER BY " +
+    @Query("SELECT * FROM history WHERE (title LIKE '%'||:query||'%' OR author LIKE '%'||:query||'%') AND type LIKE '%'||:format||'%' AND website LIKE '%'||:site||'%' ORDER BY " +
             "CASE WHEN :sort = 'ASC' THEN author END ASC," +
             "CASE WHEN :sort = 'DESC' THEN author END DESC," +
             "CASE WHEN :sort = '' THEN author END DESC ")

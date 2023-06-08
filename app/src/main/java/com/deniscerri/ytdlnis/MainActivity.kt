@@ -12,7 +12,6 @@ import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.provider.Settings
 import android.util.Log
 import android.view.View
@@ -24,6 +23,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.forEach
+import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
 import androidx.fragment.app.FragmentContainerView
 import androidx.lifecycle.ViewModelProvider
@@ -39,7 +39,6 @@ import com.deniscerri.ytdlnis.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdlnis.ui.BaseActivity
 import com.deniscerri.ytdlnis.ui.HomeFragment
 import com.deniscerri.ytdlnis.ui.more.settings.SettingsActivity
-import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.ThemeUtil
 import com.deniscerri.ytdlnis.util.UpdateUtil
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -50,7 +49,6 @@ import com.google.android.material.navigation.NavigationView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.BufferedReader
-import java.io.File
 import java.io.InputStreamReader
 import java.io.Reader
 import java.nio.charset.Charset
@@ -108,13 +106,7 @@ class MainActivity : BaseActivity() {
 
         val sharedPreferences =  PreferenceManager.getDefaultSharedPreferences(this)
 
-        val startDestination = sharedPreferences.getString("start_destination", "")
         val graph = navController.navInflater.inflate(R.navigation.nav_graph)
-        when(startDestination) {
-            "History" -> graph.setStartDestination(R.id.historyFragment)
-            "More" -> if (navigationView is NavigationBarView) graph.setStartDestination(R.id.moreFragment) else graph.setStartDestination(R.id.homeFragment)
-            else -> graph.setStartDestination(R.id.homeFragment)
-        }
         navController.graph = graph
 
         if (navigationView is NavigationBarView){
@@ -183,48 +175,78 @@ class MainActivity : BaseActivity() {
         cookieViewModel.updateCookiesFile()
         val intent = intent
         handleIntents(intent)
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            if (navigationView is NavigationBarView){
+                when(destination.id){
+                    R.id.homeFragment, R.id.historyFragment, R.id.moreFragment -> showBottomNavigation()
+                    else -> hideBottomNavigation()
+                }
+
+            }
+        }
+
+        navigationView.visibilityChanged {
+            if (it.isVisible){
+                val curr = navController.currentDestination?.id
+                if (curr != R.id.homeFragment && curr != R.id.historyFragment && curr != R.id.moreFragment) hideBottomNavigation()
+            }
+        }
+
+        when(sharedPreferences.getString("start_destination", "")) {
+            "History" -> navController.navigate(R.id.historyFragment)
+            "Queue" -> navController.navigate(R.id.downloadQueueMainFragment)
+            "More" -> if (navigationView is NavigationBarView) graph.setStartDestination(R.id.moreFragment)
+        }
     }
 
-
-    fun hideBottomNavigation(){
-        if(navigationView is NavigationBarView){
-            if (navigationView is BottomNavigationView){
-                findViewById<FragmentContainerView>(R.id.frame_layout).updateLayoutParams<ConstraintLayout.LayoutParams> {
-                    bottomToTop = ConstraintLayout.LayoutParams.UNSET
-                    bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID
-                }
-                navigationView.animate()?.translationY(navigationView.height.toFloat())?.setDuration(300)?.withEndAction {
-                    navigationView.visibility = View.GONE
-                }?.start()
-            }else{
-                findViewById<FragmentContainerView>(R.id.frame_layout).updateLayoutParams {
-                    this.width = LayoutParams.MATCH_PARENT
-                }
-                navigationView.animate()?.translationX(-navigationView.width.toFloat())?.setDuration(300)?.withEndAction {
-                    navigationView.visibility = View.GONE
-                }?.start()
+    private fun View.visibilityChanged(action: (View) -> Unit) {
+        this.viewTreeObserver.addOnGlobalLayoutListener {
+            val newVis: Int = this.visibility
+            if (this.tag as Int? != newVis) {
+                this.tag = this.visibility
+                // visibility has changed
+                action(this)
             }
         }
     }
 
-    fun showBottomNavigation(){
-        if(navigationView is NavigationBarView){
-            if (navigationView is BottomNavigationView){
-                findViewById<FragmentContainerView>(R.id.frame_layout).updateLayoutParams<ConstraintLayout.LayoutParams> {
-                    bottomToTop = R.id.bottomNavigationView
-                    bottomToBottom = ConstraintLayout.LayoutParams.UNSET
-                }
-                navigationView.animate()?.translationY(0F)?.setDuration(300)?.withEndAction {
-                    navigationView.visibility = View.VISIBLE
-                }?.start()
-            }else{
-                findViewById<FragmentContainerView>(R.id.frame_layout).updateLayoutParams {
-                    this.width = 0
-                }
-                navigationView.animate()?.translationX(0F)?.setDuration(300)?.withEndAction {
-                    navigationView.visibility = View.VISIBLE
-                }?.start()
+
+    fun hideBottomNavigation(){
+        if (navigationView is BottomNavigationView){
+            findViewById<FragmentContainerView>(R.id.frame_layout).updateLayoutParams<ConstraintLayout.LayoutParams> {
+                bottomToTop = ConstraintLayout.LayoutParams.UNSET
+                bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID
             }
+            navigationView.animate()?.translationY(navigationView.height.toFloat())?.setDuration(300)?.withEndAction {
+                navigationView.visibility = View.GONE
+            }?.start()
+        }else{
+            findViewById<FragmentContainerView>(R.id.frame_layout).updateLayoutParams {
+                this.width = LayoutParams.MATCH_PARENT
+            }
+            navigationView.animate()?.translationX(-navigationView.width.toFloat())?.setDuration(300)?.withEndAction {
+                navigationView.visibility = View.GONE
+            }?.start()
+        }
+    }
+
+    fun showBottomNavigation(){
+        if (navigationView is BottomNavigationView){
+            findViewById<FragmentContainerView>(R.id.frame_layout).updateLayoutParams<ConstraintLayout.LayoutParams> {
+                bottomToTop = R.id.bottomNavigationView
+                bottomToBottom = ConstraintLayout.LayoutParams.UNSET
+            }
+            navigationView.animate()?.translationY(0F)?.setDuration(300)?.withEndAction {
+                navigationView.visibility = View.VISIBLE
+            }?.start()
+        }else{
+            findViewById<FragmentContainerView>(R.id.frame_layout).updateLayoutParams {
+                this.width = 0
+            }
+            navigationView.animate()?.translationX(0F)?.setDuration(300)?.withEndAction {
+                navigationView.visibility = View.VISIBLE
+            }?.start()
         }
     }
 

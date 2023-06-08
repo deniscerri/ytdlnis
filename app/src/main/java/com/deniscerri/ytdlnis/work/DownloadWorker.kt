@@ -1,8 +1,6 @@
 package com.deniscerri.ytdlnis.work
 
-import android.app.PendingIntent
 import android.content.Context
-import android.content.Intent
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
@@ -14,7 +12,6 @@ import androidx.work.ForegroundInfo
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import androidx.work.workDataOf
-import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.DBManager
 import com.deniscerri.ytdlnis.database.dao.DownloadDao
@@ -60,6 +57,8 @@ class DownloadWorker(
             e.printStackTrace()
             return Result.failure()
         }
+
+        if (downloadItem.status != DownloadRepository.Status.Queued.toString()) return Result.failure()
 
         Log.e(TAG, downloadItem.toString())
 
@@ -207,6 +206,8 @@ class DownloadWorker(
                 } else {
                     request.addOption("--parse-metadata", "%(album,title)s:%(meta_album)s")
                 }
+
+                request.addOption("--audio-quality", sharedPreferences.getInt("audio_quality", 5))
 
                 if (downloadItem.audioPreferences.splitByChapters && downloadItem.downloadSections.isBlank()){
                     request.addOption("--split-chapters")

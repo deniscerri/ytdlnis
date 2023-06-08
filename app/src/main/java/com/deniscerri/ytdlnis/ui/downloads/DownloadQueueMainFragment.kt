@@ -18,9 +18,11 @@ import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.repository.DownloadRepository
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.util.NotificationUtil
+import com.deniscerri.ytdlnis.work.DownloadWorker
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 import com.yausername.youtubedl_android.YoutubeDL
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -71,6 +73,15 @@ class DownloadQueueMainFragment : Fragment(){
 
         viewPager2.adapter = fragmentAdapter
         viewPager2.isSaveFromParentEnabled = false
+
+        TabLayoutMediator(tabLayout, viewPager2) { tab, position ->
+            when (position) {
+                0 -> tab.text = getString(R.string.running)
+                1 -> tab.text = getString(R.string.in_queue)
+                2 -> tab.text = getString(R.string.cancelled)
+                3 -> tab.text = getString(R.string.errored)
+            }
+        }.attach()
 
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {

@@ -8,25 +8,25 @@
         android:id="@+id/preferred_download_type"
         android:title="@string/preferred_download_type"
         android:icon="@drawable/baseline_insert_drive_file_24"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="always"/>
 
     <item
         android:id="@+id/format"
         android:title="@string/format"
-        android:icon="@drawable/baseline_high_quality_24"
-        app:showAsAction="ifRoom"/>
+        android:icon="@drawable/ic_format"
+        app:showAsAction="always"/>
 
     <item
         android:id="@+id/filename_template"
         android:title="@string/file_name_template"
         android:icon="@drawable/if_file_rename"
-        app:showAsAction="collapseActionView|ifRoom"/>
+        app:showAsAction="always"/>
 
     <item
         android:id="@+id/folder"
         android:title="@string/directories"
-        android:icon="@drawable/ic_folders"
-        app:showAsAction="ifRoom"/>
+        android:icon="@drawable/baseline_folder_24"
+        app:showAsAction="always"/>
 
 
 </menu>

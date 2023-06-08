@@ -35,7 +35,6 @@ class MoreFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         mainActivity = activity as MainActivity
-        mainActivity.showBottomNavigation()
         return inflater.inflate(R.layout.fragment_more, container, false)
     }
 

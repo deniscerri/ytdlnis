@@ -8,12 +8,12 @@ import android.os.Environment
 import android.provider.DocumentsContract
 import android.util.Log
 import android.webkit.MimeTypeMap
-import androidx.core.net.toUri
+import com.anggrayudi.storage.callback.FileCallback
+import com.anggrayudi.storage.file.moveTo
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.DownloadItem
 import okhttp3.internal.closeQuietly
 import java.io.File
-import java.io.FileOutputStream
 import java.net.URLDecoder
 import java.nio.charset.StandardCharsets
 import java.nio.file.Files
@@ -91,7 +91,7 @@ object FileUtil {
                 if(it.name.contains(".part-Frag")) return@forEach
 
                 //sending to main or SD CARD
-                if (currentDirectory.exists()){
+                if (currentDirectory.exists() && Build.VERSION.SDK_INT >= 26){
                     if (Build.VERSION.SDK_INT >= 26 ){
                         Files.move(it.toPath(), destFile.toPath(), StandardCopyOption.REPLACE_EXISTING)
                     }else{
@@ -134,7 +134,7 @@ object FileUtil {
                     if (Build.VERSION.SDK_INT >= 26 ){
                         Files.move(it.toPath(), destFile.toPath(), StandardCopyOption.REPLACE_EXISTING)
                     }else{
-                        it.renameTo(destFile)
+                        it.moveTo(context, destFile.parent!!, destFile.name, FileCallback.ConflictResolution.REPLACE)
                     }
                     fileList.add(destFile)
                 }
@@ -170,8 +170,12 @@ object FileUtil {
     }
 
     fun checkLogFileExists(context: Context, item: DownloadItem) : File? {
-        val dir = File(context.filesDir.absolutePath + "/logs/")
-        return dir.listFiles()?.toList()?.first { it.name.startsWith(item.id.toString()) }
+        return try {
+            val dir = File(context.filesDir.absolutePath + "/logs/")
+            dir.listFiles()?.toList()?.first { it.name.startsWith(item.id.toString()) }
+        }catch (e: Exception){
+            null
+        }
     }
 
     fun getLogFileForTerminal(context: Context, command: String) : File {

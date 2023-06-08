@@ -48,7 +48,6 @@ class CommandTemplatesFragment : Fragment(), TemplatesAdapter.OnItemClickListene
         savedInstanceState: Bundle?
     ): View? {
         mainActivity = activity as MainActivity
-        mainActivity.hideBottomNavigation()
         return inflater.inflate(R.layout.fragment_command_templates, container, false)
     }
 

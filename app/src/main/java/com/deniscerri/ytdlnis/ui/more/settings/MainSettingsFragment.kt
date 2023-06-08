@@ -7,10 +7,12 @@ import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
+import android.util.LayoutDirection
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.edit
 import androidx.core.os.LocaleListCompat
+import androidx.core.text.layoutDirection
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -47,6 +49,7 @@ import java.io.BufferedReader
 import java.io.File
 import java.io.InputStreamReader
 import java.util.Calendar
+import java.util.Locale
 
 
 class MainSettingsFragment : PreferenceFragmentCompat() {
@@ -67,36 +70,38 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.root_preferences, rootKey)
         val navController = findNavController()
+        val preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
         val appearance = findPreference<Preference>("appearance")
-        appearance?.summary = "${if (Build.VERSION.SDK_INT < 33) getString(R.string.language) + ", " else ""}${getString(R.string.Theme)}, ${getString(R.string.accents)}, ${getString(R.string.preferred_search_engine)}"
+        val separator = if (Locale(preferences.getString("app_language", "en")!!).layoutDirection == LayoutDirection.RTL) "،" else ","
+        appearance?.summary = "${if (Build.VERSION.SDK_INT < 33) getString(R.string.language) + "$separator " else ""}${getString(R.string.Theme)}$separator ${getString(R.string.accents)}$separator ${getString(R.string.preferred_search_engine)}"
         appearance?.setOnPreferenceClickListener {
             navController.navigate(R.id.action_mainSettingsFragment_to_appearanceSettingsFragment)
             true
         }
 
         val folders = findPreference<Preference>("folders")
-        folders?.summary = "${getString(R.string.music_directory)}, ${getString(R.string.video_directory)}, ${getString(R.string.command_directory)}"
+        folders?.summary = "${getString(R.string.music_directory)}$separator ${getString(R.string.video_directory)}$separator ${getString(R.string.command_directory)}"
         folders?.setOnPreferenceClickListener {
             navController.navigate(R.id.action_mainSettingsFragment_to_folderSettingsFragment)
             true
         }
 
         val downloading = findPreference<Preference>("downloading")
-        downloading?.summary = "${getString(R.string.quick_download)}, ${getString(R.string.concurrent_downloads)}, ${getString(R.string.limit_rate)}"
+        downloading?.summary = "${getString(R.string.quick_download)}$separator ${getString(R.string.concurrent_downloads)}$separator ${getString(R.string.limit_rate)}"
         downloading?.setOnPreferenceClickListener {
             navController.navigate(R.id.action_mainSettingsFragment_to_downloadSettingsFragment)
             true
         }
 
         val processing = findPreference<Preference>("processing")
-        processing?.summary = "${getString(R.string.sponsorblock)}, ${getString(R.string.embed_subtitles)}, ${getString(R.string.add_chapters)}"
+        processing?.summary = "${getString(R.string.sponsorblock)}$separator ${getString(R.string.embed_subtitles)}$separator ${getString(R.string.add_chapters)}"
         processing?.setOnPreferenceClickListener {
             navController.navigate(R.id.action_mainSettingsFragment_to_processingSettingsFragment)
             true
         }
 
         val updating = findPreference<Preference>("updating")
-        updating?.summary = "${getString(R.string.update_ytdl)}, ${getString(R.string.format_source)}, ${getString(R.string.update_app)}"
+        updating?.summary = "${getString(R.string.update_ytdl)}$separator ${getString(R.string.format_source)}$separator ${getString(R.string.update_app)}"
         updating?.setOnPreferenceClickListener {
             navController.navigate(R.id.action_mainSettingsFragment_to_updateSettingsFragment)
             true
@@ -118,7 +123,6 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
         cookieViewModel = ViewModelProvider(this)[CookieViewModel::class.java]
         commandTemplateViewModel = ViewModelProvider(this)[CommandTemplateViewModel::class.java]
 
-        val preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
         backup = findPreference("backup")
         restore = findPreference("restore")
 

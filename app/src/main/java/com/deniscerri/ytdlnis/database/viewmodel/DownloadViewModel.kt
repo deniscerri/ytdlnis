@@ -6,10 +6,8 @@ import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.content.res.Resources
 import android.net.ConnectivityManager
-import android.os.Environment
 import android.os.Looper
 import android.util.DisplayMetrics
-import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
@@ -43,7 +41,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.io.File
 import java.util.Locale
 import java.util.concurrent.TimeUnit
 
@@ -141,12 +138,16 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
         return repository.getItemByID(id)
     }
 
-    fun createDownloadItemFromResult(resultItem: ResultItem, type: Type) : DownloadItem {
+    fun createDownloadItemFromResult(resultItem: ResultItem, givenType: Type) : DownloadItem {
         val embedSubs = sharedPreferences.getBoolean("embed_subtitles", false)
         val saveSubs = sharedPreferences.getBoolean("write_subtitles", false)
         val addChapters = sharedPreferences.getBoolean("add_chapters", false)
         val saveThumb = sharedPreferences.getBoolean("write_thumbnail", false)
         val embedThumb = sharedPreferences.getBoolean("embed_thumbnail", false)
+
+        var type = givenType
+        if(type == Type.command && commandTemplateDao.getTotalNumber() == 0) type = Type.video
+
         val customFileNameTemplate = when(type) {
             Type.audio -> sharedPreferences.getString("file_name_template_audio", "%(uploader)s - %(title)s")
             Type.video -> sharedPreferences.getString("file_name_template", "%(uploader)s - %(title)s")
@@ -158,6 +159,7 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
             Type.video -> sharedPreferences.getString("video_path",  FileUtil.getDefautVideoPath())
             else -> sharedPreferences.getString("command_path", FileUtil.getDefaultCommandPath())
         }
+
 
         val sponsorblock = sharedPreferences.getStringSet("sponsorblock_filters", emptySet())
 
@@ -272,7 +274,7 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
         val audioPreferences = AudioPreferences(embedThumb, false, ArrayList(sponsorblock!!))
         val videoPreferences = VideoPreferences(embedSubs, addChapters, false, ArrayList(sponsorblock), saveSubs)
 
-        return DownloadItem(historyItem.downloadId,
+        return DownloadItem(0,
             historyItem.url,
             historyItem.title,
             historyItem.author,

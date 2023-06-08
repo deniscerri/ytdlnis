@@ -98,7 +98,6 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
         fragmentView = inflater.inflate(R.layout.fragment_history, container, false)
         activity = getActivity()
         mainActivity = activity as MainActivity?
-        mainActivity?.showBottomNavigation()
         return fragmentView
     }
 

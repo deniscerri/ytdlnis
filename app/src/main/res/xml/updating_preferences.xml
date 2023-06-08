@@ -38,6 +38,12 @@
         app:useSimpleSummaryProvider="true"
         app:title="@string/format_source" />
 
+    <EditTextPreference
+        app:key="piped_instance"
+        app:defaultValue="https://pipedapi.kavin.rocks"
+        android:summary="@string/piped_instance_summary"
+        app:title="@string/piped_instance" />
+
     <SwitchPreferenceCompat
         android:widgetLayout="@layout/preferece_material_switch"
         app:defaultValue="true"

@@ -6,11 +6,12 @@ buildscript {
     def versionMajor = 1
     def versionMinor = 6
     def versionPatch = 2
-    def versionBuild = 0 // bump for dogfood builds, public betas, etc.
+    def versionBuild = 1 // bump for dogfood builds, public betas, etc.
 
     ext {
         versionCode = versionMajor * 100000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
         versionName = "${versionMajor}.${versionMinor}.${versionPatch}"
+        betaVersionNameSuffix = ".${versionBuild}-beta"
         // dependency versions
         appCompatVer = '1.6.1'
         junitVer = '4.13.2'
