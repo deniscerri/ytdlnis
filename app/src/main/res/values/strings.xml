@@ -28,7 +28,7 @@
     <string name="Remove">Remove</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
-    <string name="confirm_delete_history_desc">Delete the entire history,permanently</string>
+    <string name="confirm_delete_history_desc">Delete the entire history, permanently</string>
     <string name="confirm_delete_history">Confirm</string>
     <string name="search_history_hint">Search from History</string>
     <string name="no_results">No Results</string>
@@ -81,7 +81,7 @@
     <string name="trendingPlaylist" translatable="false">ytdlnis-TRENDING</string>
     <string name="remove_downloading">Cancel Downloads</string>
     <string name="incognito_summary">Download without adding to history</string>
-    <string name="configure_download">Сonfigure Download</string>
+    <string name="configure_download">Adjust Download</string>
     <string name="title">Title</string>
     <string name="author">Author</string>
     <string name="download">Download</string>
@@ -252,7 +252,7 @@
     <string name="restore">Restore</string>
     <string name="network_error">Network Error</string>
     <string name="incognito">Incognito</string>
-    <string name="sponsorblock">Sponsor Block</string>
+    <string name="sponsorblock">SponsorBlock</string>
     <string name="couldnt_parse_file">Couldn\'t parse file</string>
     <string name="restore_complete">App Restore Complete. The following items have been restored:</string>
     <string name="select_backup_categories">Select backup categories</string>
