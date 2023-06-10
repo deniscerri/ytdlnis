@@ -6,7 +6,6 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.preference.PreferenceManager
 import com.deniscerri.ytdlnis.App
@@ -35,7 +34,7 @@ class ResultViewModel(application: Application) : AndroidViewModel(application) 
         val commandDao = DBManager.getInstance(application).commandTemplateDao
         repository = ResultRepository(dao, commandDao, getApplication<Application>().applicationContext)
         searchHistoryRepository = SearchHistoryRepository(DBManager.getInstance(application).searchHistoryDao)
-        items = repository.allResults.asLiveData()
+        items = repository.allResults
         loadingItems.postValue(false)
         itemCount = repository.itemCount
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(application)
@@ -104,7 +103,7 @@ class ResultViewModel(application: Application) : AndroidViewModel(application) 
             res
         }
     }
-    fun getQueryType(inputQuery: String) : String {
+    private fun getQueryType(inputQuery: String) : String {
         var type = "Search"
         val p = Pattern.compile("^(https?)://(www.)?(music.)?youtu(.be)?")
         val m = p.matcher(inputQuery)

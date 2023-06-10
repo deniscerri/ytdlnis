@@ -96,11 +96,18 @@
         app:useSimpleSummaryProvider="true"
         app:title="@string/video_format" />
 
+    <SwitchPreferenceCompat
+        android:widgetLayout="@layout/preferece_material_switch"
+        app:defaultValue="false"
+        app:icon="@drawable/ic_music"
+        app:key="use_audio_quality"
+        app:title="@string/custom_audio_quality" />
+
 
     <SeekBarPreference
         android:defaultValue="0"
-        android:icon="@drawable/ic_music"
         android:max="10"
+        android:dependency="use_audio_quality"
         app:key="audio_quality"
         app:min="0"
         app:showSeekBarValue="true"

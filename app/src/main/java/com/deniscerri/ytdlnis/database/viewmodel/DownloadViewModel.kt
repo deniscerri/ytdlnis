@@ -11,7 +11,6 @@ import android.util.DisplayMetrics
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.preference.PreferenceManager
 import androidx.work.Constraints
@@ -41,6 +40,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.File
 import java.util.Locale
 import java.util.concurrent.TimeUnit
 
@@ -76,13 +76,13 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
         commandTemplateDao = DBManager.getInstance(application).commandTemplateDao
         infoUtil = InfoUtil(application)
 
-        allDownloads = repository.allDownloads.asLiveData()
-        queuedDownloads = repository.queuedDownloads.asLiveData()
-        activeDownloads = repository.activeDownloads.asLiveData()
-        activeDownloadsCount = repository.activeDownloadsCount.asLiveData()
-        processingDownloads = repository.processingDownloads.asLiveData()
-        cancelledDownloads = repository.cancelledDownloads.asLiveData()
-        erroredDownloads = repository.erroredDownloads.asLiveData()
+        allDownloads = repository.allDownloads
+        queuedDownloads = repository.queuedDownloads
+        activeDownloads = repository.activeDownloads
+        activeDownloadsCount = repository.activeDownloadsCount
+        processingDownloads = repository.processingDownloads
+        cancelledDownloads = repository.cancelledDownloads
+        erroredDownloads = repository.erroredDownloads
 
         videoQualityPreference = sharedPreferences.getString("video_quality", application.getString(R.string.best_quality)).toString()
         formatIDPreference = sharedPreferences.getString("format_id", "").toString()
@@ -257,12 +257,6 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
             else -> ""
         }
 
-        val downloadPath = when(historyItem.type){
-            Type.audio -> sharedPreferences.getString("music_path", FileUtil.getDefautAudioPath())
-            Type.video -> sharedPreferences.getString("video_path", FileUtil.getDefautVideoPath())
-            else -> sharedPreferences.getString("command_path", FileUtil.getDefaultCommandPath())
-        }
-
         val container = when(historyItem.type){
             Type.audio -> sharedPreferences.getString("audio_format", "Default")!!
             Type.video -> sharedPreferences.getString("video_format", "Default")!!
@@ -285,7 +279,7 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
             container,
             "",
             ArrayList(),
-            downloadPath!!, historyItem.website, "", "", audioPreferences, videoPreferences,customFileNameTemplate!!, saveThumb, DownloadRepository.Status.Processing.toString(), 0
+            File(historyItem.downloadPath).parent!!, historyItem.website, "", "", audioPreferences, videoPreferences,customFileNameTemplate!!, saveThumb, DownloadRepository.Status.Processing.toString(), 0
         )
 
     }

@@ -122,7 +122,7 @@ class DownloadWorker(
 
             if (sponsorBlockFilters.isNotEmpty()) {
                 val filters = java.lang.String.join(",", sponsorBlockFilters.filter { it.isNotBlank() })
-                request.addOption("--sponsorblock-remove", filters)
+                if (filters.isNotBlank()) request.addOption("--sponsorblock-remove", filters)
             }
 
             if(downloadItem.title.isNotBlank()){
@@ -144,6 +144,10 @@ class DownloadWorker(
                 }
                 downloadItem.customFileNameTemplate += " %(section_title)s %(autonumber)s"
                 request.addOption("--output-na-placeholder", " ")
+            }
+
+            if (sharedPreferences.getBoolean("use_audio_quality", false)){
+                request.addOption("--audio-quality", sharedPreferences.getInt("audio_quality", 0))
             }
         }
 
@@ -206,8 +210,6 @@ class DownloadWorker(
                 } else {
                     request.addOption("--parse-metadata", "%(album,title)s:%(meta_album)s")
                 }
-
-                request.addOption("--audio-quality", sharedPreferences.getInt("audio_quality", 0))
 
                 if (downloadItem.audioPreferences.splitByChapters && downloadItem.downloadSections.isBlank()){
                     request.addOption("--split-chapters")
