@@ -270,4 +270,6 @@
     <string name="move_temporary_files">Müvəqqəti faylları köçürün</string>
     <string name="move_temporary_files_summary">Toplanan faylları yükləmələr qovluğuna köçür</string>
     <string name="format_filtering_hint_2">Bu seçimi işlətmək üçün bütün elementlər səs və ya video olmalıdır</string>
+    <string name="piped_instance">Piped İnstansiya</string>
+    <string name="piped_instance_summary">PIPED API Server yazın, tətbiq youtube sorğuları və formatları üçün işlədə bilər</string>
 </resources>
