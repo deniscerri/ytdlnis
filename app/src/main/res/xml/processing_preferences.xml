@@ -39,10 +39,8 @@
     <EditTextPreference
         android:icon="@drawable/baseline_subject_24"
         app:key="subs_lang"
-
-        android:dependency="write_subtitles"
         app:useSimpleSummaryProvider="true"
-        app:defaultValue="en.*,.*-orig"
+        app:defaultValue="all"
         app:title="@string/subtitle_languages" />
 
     <SwitchPreferenceCompat

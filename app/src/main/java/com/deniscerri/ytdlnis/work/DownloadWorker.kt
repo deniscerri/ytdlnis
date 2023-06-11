@@ -226,7 +226,7 @@ class DownloadWorker(
                 }
                 if (downloadItem.videoPreferences.embedSubs) {
                     request.addOption("--embed-subs")
-                    request.addOption("--sub-langs", "en.*,.*-orig")
+                    request.addOption("--sub-langs", downloadItem.videoPreferences.subsLanguages)
                 }
                 val defaultFormats = context.resources.getStringArray(R.array.video_formats)
 
@@ -265,7 +265,9 @@ class DownloadWorker(
                     request.addOption("--write-auto-subs")
                     request.addOption("--sub-format", "str/ass/best")
                     request.addOption("--convert-subtitles", "srt")
-                    request.addOption("--sub-langs", downloadItem.videoPreferences.subsLanguages)
+                    if (!downloadItem.videoPreferences.embedSubs) {
+                        request.addOption("--sub-langs", downloadItem.videoPreferences.subsLanguages)
+                    }
                 }
 
                 if (downloadItem.videoPreferences.removeAudio &&

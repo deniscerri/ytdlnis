@@ -24,6 +24,7 @@ import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.android.material.shape.CornerFamily
 import com.google.android.material.shape.ShapeAppearanceModel
 import com.squareup.picasso.Picasso
+import java.lang.StringBuilder
 
 class ActiveDownloadAdapter(onItemClickListener: OnItemClickListener, activity: Activity) : ListAdapter<DownloadItem?, ActiveDownloadAdapter.ViewHolder>(AsyncDifferConfig.Builder(DIFF_CALLBACK).build()) {
     private val onItemClickListener: OnItemClickListener
@@ -91,10 +92,9 @@ class ActiveDownloadAdapter(onItemClickListener: OnItemClickListener, activity: 
             DownloadViewModel.Type.command -> type.setIconResource(R.drawable.ic_terminal)
         }
 
-        val formatNote = card.findViewById<Chip>(R.id.format_note)
-        formatNote.text = item.format.format_note.uppercase()
+        val formatDetailsChip = card.findViewById<Chip>(R.id.format_note)
+        val formatDetailsText = StringBuilder(item.format.format_note.uppercase()+"\t")
 
-        val codec = card.findViewById<Chip>(R.id.codec)
         val codecText =
             if (item.format.encoding != "") {
                 item.format.encoding.uppercase()
@@ -103,34 +103,14 @@ class ActiveDownloadAdapter(onItemClickListener: OnItemClickListener, activity: 
             } else {
                 item.format.acodec.uppercase()
             }
-        if (codecText == "" || codecText == "none"){
-            codec.visibility = View.GONE
-        }else{
-            codec.visibility = View.VISIBLE
-            codec.text = codecText
+        if (codecText != "" && codecText != "none"){
+            formatDetailsText.append("\t|\t$codecText")
         }
 
-        val fileSize = card.findViewById<Chip>(R.id.file_size)
-        fileSize.text = FileUtil.convertFileSize(item.format.filesize)
-        if (fileSize.text == "?") fileSize.visibility = View.GONE
+        val fileSize = FileUtil.convertFileSize(item.format.filesize)
+        if (fileSize != "?") formatDetailsText.append("\t|\t$fileSize")
 
-        if (fileSize.visibility == View.VISIBLE && codec.visibility == View.GONE){
-            fileSize.shapeAppearanceModel = ShapeAppearanceModel.builder()
-                .setTopLeftCorner(CornerFamily.ROUNDED, 0F)
-                .setBottomLeftCorner(CornerFamily.ROUNDED, 0F)
-                .setTopRightCorner(CornerFamily.ROUNDED, 20F)
-                .setBottomRightCorner(CornerFamily.ROUNDED, 20F)
-                .build()
-        }
-
-        if (fileSize.visibility == View.GONE && codec.visibility == View.GONE){
-            formatNote.shapeAppearanceModel = ShapeAppearanceModel.builder()
-                .setTopLeftCorner(CornerFamily.ROUNDED, 40F)
-                .setBottomLeftCorner(CornerFamily.ROUNDED, 40F)
-                .setTopRightCorner(CornerFamily.ROUNDED, 40F)
-                .setBottomRightCorner(CornerFamily.ROUNDED, 40F)
-                .build()
-        }
+        formatDetailsChip.text = formatDetailsText
 
         //OUTPUT
         val output = card.findViewById<TextView>(R.id.output)

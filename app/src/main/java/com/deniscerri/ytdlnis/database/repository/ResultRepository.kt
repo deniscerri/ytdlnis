@@ -9,11 +9,12 @@ import com.deniscerri.ytdlnis.database.dao.ResultDao
 import com.deniscerri.ytdlnis.database.models.CommandTemplate
 import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.deniscerri.ytdlnis.util.InfoUtil
+import kotlinx.coroutines.flow.MutableStateFlow
 
 class ResultRepository(private val resultDao: ResultDao, private val commandTemplateDao: CommandTemplateDao, private val context: Context) {
     private val tag: String = "ResultRepository"
     val allResults : LiveData<List<ResultItem>> = resultDao.getResults()
-    var itemCount = MutableLiveData(-1)
+    var itemCount = MutableStateFlow(-1)
 
     suspend fun insert(it: ResultItem){
         resultDao.insert(it)
@@ -27,7 +28,7 @@ class ResultRepository(private val resultDao: ResultDao, private val commandTemp
         deleteAll()
         val infoUtil = InfoUtil(context)
         val items = infoUtil.getTrending(context)
-        itemCount.postValue(items.size)
+        itemCount.value = items.size
         for (i in items){
             resultDao.insert(i!!)
         }
@@ -38,7 +39,7 @@ class ResultRepository(private val resultDao: ResultDao, private val commandTemp
         try{
             if (resetResults) deleteAll()
             val res = infoUtil.search(inputQuery)
-            itemCount.postValue(res.size)
+            itemCount.value = res.size
             res.forEach {
                 resultDao.insert(it!!)
             }
@@ -54,7 +55,7 @@ class ResultRepository(private val resultDao: ResultDao, private val commandTemp
             val v = infoUtil.getVideo(query)
             if (resetResults) {
                 deleteAll()
-                itemCount.postValue(1)
+                itemCount.value = 1
             }else{
                 v!!.playlistTitle = "ytdlnis-Search"
             }
@@ -81,10 +82,10 @@ class ResultRepository(private val resultDao: ResultDao, private val commandTemp
             if (tmpToken == nextPageToken) break
             nextPageToken = tmpToken
         } while (true)
-        itemCount.postValue(items.size)
         items.forEach {
             resultDao.insert(it!!)
         }
+        itemCount.value = items.size
         return items
     }
 
@@ -94,7 +95,7 @@ class ResultRepository(private val resultDao: ResultDao, private val commandTemp
             val items = infoUtil.getFromYTDL(inputQuery)
             if (resetResults) {
                 deleteAll()
-                itemCount.postValue(items.size)
+                itemCount.value = items.size
             }else{
                 items.forEach { it!!.playlistTitle = "ytdlnis-Search" }
             }
@@ -113,7 +114,7 @@ class ResultRepository(private val resultDao: ResultDao, private val commandTemp
     }
 
     suspend fun deleteAll(){
-        itemCount.postValue(0)
+        itemCount.value = 0
         resultDao.deleteAll()
     }
 

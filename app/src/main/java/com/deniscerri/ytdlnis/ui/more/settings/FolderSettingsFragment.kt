@@ -11,18 +11,15 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.preference.EditTextPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceManager
-import androidx.work.Data
 import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.util.FileUtil
-import com.deniscerri.ytdlnis.work.DownloadWorker
 import com.deniscerri.ytdlnis.work.MoveCacheFilesWorker
 import com.google.android.material.snackbar.Snackbar
 import java.io.File
-import java.util.concurrent.TimeUnit
 
 
 class FolderSettingsFragment : BaseSettingsFragment() {
@@ -55,10 +52,10 @@ class FolderSettingsFragment : BaseSettingsFragment() {
         moveCache = findPreference("move_cache")
 
         if (preferences.getString("music_path", "")!!.isEmpty()) {
-            editor.putString("music_path", FileUtil.getDefautAudioPath())
+            editor.putString("music_path", FileUtil.getDefaultAudioPath())
         }
         if (preferences.getString("video_path", "")!!.isEmpty()) {
-            editor.putString("video_path", FileUtil.getDefautVideoPath())
+            editor.putString("video_path", FileUtil.getDefaultVideoPath())
         }
         if (preferences.getString("command_path", "")!!.isEmpty()) {
             editor.putString("command_path", FileUtil.getDefaultCommandPath())

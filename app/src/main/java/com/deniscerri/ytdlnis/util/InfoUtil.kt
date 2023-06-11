@@ -6,7 +6,6 @@ import android.os.Looper
 import android.text.Html
 import android.util.Log
 import android.widget.Toast
-import androidx.core.text.HtmlCompat
 import androidx.preference.PreferenceManager
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.ChapterItem
@@ -16,9 +15,13 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.yausername.youtubedl_android.YoutubeDL
 import com.yausername.youtubedl_android.YoutubeDLRequest
+import okhttp3.ResponseBody
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
+import retrofit2.Call
+import retrofit2.Retrofit
+import retrofit2.http.GET
 import java.io.BufferedReader
 import java.io.File
 import java.io.InputStreamReader
@@ -32,32 +35,23 @@ import java.util.regex.Pattern
 class InfoUtil(private val context: Context) {
     private var items: ArrayList<ResultItem?>
     private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var retrofit : Retrofit
     private var key: String? = null
-    private var useInvidous = false
 
     init {
         try {
             sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
             key = sharedPreferences.getString("api_key", "")
             countryCODE = sharedPreferences.getString("locale", "")!!
+            if (countryCODE.isEmpty()) countryCODE = "US"
         } catch (e: Exception) {
             e.printStackTrace()
         }
         items = ArrayList()
     }
 
-    private fun init(){
-        if (countryCODE.isEmpty()){
-            countryCODE = "US"
-        }
-        if (!useInvidous){
-            val res = genericRequest(invidousURL + "stats")
-            useInvidous = res.length() != 0
-        }
-    }
 
     fun search(query: String): ArrayList<ResultItem?> {
-        init()
         items = ArrayList()
         val searchEngine = sharedPreferences.getString("search_engine", "ytsearch")
         return if (searchEngine == "ytsearch"){
@@ -122,7 +116,7 @@ class InfoUtil(private val context: Context) {
 
     @Throws(JSONException::class)
     fun searchFromPiped(query: String): ArrayList<ResultItem?> {
-        val data = genericRequest(pipedURL + "/search?q=" + query + "?filter=videos")
+        val data = genericRequest("$pipedURL/search?q=$query?filter=videos")
         val dataArray = data.getJSONArray("items")
         if (dataArray.length() == 0) return getFromYTDL(query)
         for (i in 0 until dataArray.length()) {
@@ -141,14 +135,27 @@ class InfoUtil(private val context: Context) {
     @Throws(JSONException::class)
     fun getPlaylist(id: String, nextPageToken: String): PlaylistTuple {
         try{
-            init()
             items = ArrayList()
             if (key!!.isEmpty()) {
-                return if (useInvidous) getPlaylistFromInvidous(id) else PlaylistTuple(
-                    "",
-                    getFromYTDL("https://www.youtube.com/playlist?list=$id")
-                )
+                // -------------- PIPED API FUNCTION -------------------
+                var url = ""
+                url = if (nextPageToken.isBlank()) "$pipedURL/playlists/$id"
+                else """$pipedURL/nextpage/playlists/$id?nextpage=${nextPageToken.replace("&prettyPrint", "%26prettyPrint")}"""
+
+                val res = genericRequest(url)
+                if (!res.has("relatedStreams")) throw Exception()
+
+                val dataArray = res.getJSONArray("relatedStreams")
+                var nextpage = res.getString("nextpage")
+                for (i in 0 until dataArray.length()){
+                    val obj = dataArray.getJSONObject(i)
+                    items.add(createVideoFromPipedJSON(obj, obj.getString("url").removePrefix("/watch?v=")))
+                }
+                if (nextpage == "null") nextpage = ""
+                return PlaylistTuple(nextpage, items)
             }
+
+            //---------- YOUTUBE API FUNCTION --------------------------------
             val url = "https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet&pageToken=$nextPageToken&maxResults=50&regionCode=$countryCODE&playlistId=$id&key=$key"
             //short data
             val res = genericRequest(url)
@@ -206,34 +213,12 @@ class InfoUtil(private val context: Context) {
         }
     }
 
-    private fun getPlaylistFromInvidous(id: String): PlaylistTuple {
-        val url = invidousURL + "playlists/" + id
-        val res = genericRequest(url)
-        if (res.length() == 0) return PlaylistTuple(
-            "",
-            getFromYTDL("https://www.youtube.com/playlist?list=$id")
-        )
-        try {
-            val vids = res.getJSONArray("videos")
-            for (i in 0 until vids.length()) {
-                val element = vids.getJSONObject(i)
-                val v = createVideoFromInvidiousJSON(element)
-                if (v == null || v.thumb.isEmpty()) continue
-                v.playlistTitle = res.getString("title")
-                items.add(v)
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-        return PlaylistTuple("", items)
-    }
-
     @Throws(JSONException::class)
     fun getVideo(id: String): ResultItem? {
         try {
-            init()
+            
             if (key!!.isEmpty()) {
-                val res = genericRequest(pipedURL + "/streams/" + id)
+                val res = genericRequest("$pipedURL/streams/$id")
                 return if (res.length() == 0) getFromYTDL("https://www.youtube.com/watch?v=$id")[0] else createVideoFromPipedJSON(
                     res, id
                 )
@@ -282,71 +267,17 @@ class InfoUtil(private val context: Context) {
         }
         return video
     }
-
-    private fun createVideoFromInvidiousJSON(obj: JSONObject): ResultItem? {
-        var video: ResultItem? = null
-        try {
-            val id = obj.getString("videoId")
-            val title = Html.fromHtml(obj.getString("title").toString()).toString()
-            val author = Html.fromHtml(obj.getString("author").toString()).toString()
-
-            if (author.isBlank()) throw Exception()
-
-            val duration = formatIntegerDuration(obj.getInt("lengthSeconds"), Locale.getDefault())
-            val thumb = "https://i.ytimg.com/vi/$id/hqdefault.jpg"
-            val url = "https://www.youtube.com/watch?v=$id"
-            val formats : ArrayList<Format> = ArrayList()
-            if (obj.has("adaptiveFormats")){
-                val formatsInJSON = obj.getJSONArray("adaptiveFormats")
-                for (f in 0 until formatsInJSON.length()){
-                    val format = formatsInJSON.getJSONObject(f)
-                    if(!format.has("container")) continue
-                    val formatObj = Gson().fromJson(format.toString(), Format::class.java)
-                    try{
-                        if (!formatObj.format_note.contains("audio", ignoreCase = true)){
-                            val codecs = "\"([^\"]*)\"".toRegex().find(format.getString("type").split(";")[1])!!.value.split(",")
-                            if (codecs.size > 1){
-                                formatObj.vcodec = codecs[0].replace("\"", "")
-                                formatObj.acodec = codecs[1].replace("\"", "")
-                            }else if (codecs.size == 1){
-                                formatObj.vcodec = codecs[0].replace("\"", "")
-                                formatObj.acodec = "none"
-                            }
-                        }
-                    }catch (e: Exception) {
-                        e.printStackTrace()
-                    }
-
-                    formats.add(formatObj)
-                }
-            }
-
-            video = ResultItem(0,
-                    url,
-                    title,
-                    author,
-                    duration,
-                    thumb,
-                    "youtube",
-                    "",
-                    formats,
-                "",
-                ArrayList()
-                )
-        } catch (e: Exception) {
-            Log.e(TAG, e.toString())
-        }
-        return video
-    }
-
     private fun createVideoFromPipedJSON(obj: JSONObject, id: String): ResultItem? {
         var video: ResultItem? = null
         try {
             val title = Html.fromHtml(obj.getString("title").toString()).toString()
-            val author = Html.fromHtml(obj.getString("uploader").toString()).toString()
-            if (author.isBlank()) throw Exception()
+            val author = try {
+                 Html.fromHtml(obj.getString("uploader").toString()).toString()
+            }catch (e: Exception){
+                Html.fromHtml(obj.getString("uploaderName").toString()).toString()
+            }
 
-            val duration = formatIntegerDuration(obj.getInt("duration"), Locale.getDefault())
+            val duration = formatIntegerDuration(obj.getInt("duration"), Locale.US)
             val thumb = "https://i.ytimg.com/vi/$id/hqdefault.jpg"
             val url = "https://www.youtube.com/watch?v=$id"
             val formats : ArrayList<Format> = ArrayList()
@@ -358,8 +289,6 @@ class InfoUtil(private val context: Context) {
                     val formatObj = Gson().fromJson(format.toString(), Format::class.java)
                     try{
                         formatObj.acodec = format.getString("codec")
-                        val streamURL = format.getString("url")
-                        formatObj.format_id = streamURL.substringAfter("itag=").substringBefore("&")
                         formatObj.asr = format.getString("quality")
                         if (! format.getString("audioTrackName").equals("null", ignoreCase = true)){
                             formatObj.format_note = format.getString("audioTrackName") + " Audio, " + formatObj.format_note
@@ -382,8 +311,6 @@ class InfoUtil(private val context: Context) {
                     val formatObj = Gson().fromJson(format.toString(), Format::class.java)
                     try{
                         formatObj.vcodec = format.getString("codec")
-                        val streamURL = format.getString("url")
-                        formatObj.format_id = streamURL.substringAfter("itag=").substringBefore("&")
                     }catch (e: Exception) {
                         e.printStackTrace()
                     }
@@ -391,6 +318,13 @@ class InfoUtil(private val context: Context) {
                 }
             }
             formats.sortBy { it.filesize }
+            formats.groupBy { it.format_id }.forEach {
+                if (it.value.count() > 1) {
+                    it.value.filter { f-> !f.format_note.contains("original", true) }.forEachIndexed { index, format -> format.format_id = format.format_id.split("-")[0] + "-${index}" }
+                    val engDefault = it.value.find { f -> f.format_note.contains("original", true) }
+                    engDefault?.format_id = (engDefault?.format_id?.split("-")?.get(0) ?: "") + "-${it.value.size-1}"
+                }
+            }
 
             val chapters = ArrayList<ChapterItem>()
             if (obj.has("chapters") && obj.getJSONArray("chapters").length() > 0){
@@ -506,7 +440,7 @@ class InfoUtil(private val context: Context) {
 
     @Throws(JSONException::class)
     fun getTrending(context: Context): ArrayList<ResultItem?> {
-        init()
+        
         items = ArrayList()
         return if (key!!.isEmpty()) {
             getTrendingFromPiped()
@@ -580,7 +514,7 @@ class InfoUtil(private val context: Context) {
     }
 
     fun getFormats(url: String) : List<Format> {
-        init()
+        
         val p = Pattern.compile("^(https?)://(www.)?youtu(.be)?")
         val m = p.matcher(url)
         val formatSource = sharedPreferences.getString("formats_source", "yt-dlp")
@@ -653,7 +587,7 @@ class InfoUtil(private val context: Context) {
     }
 
     fun getFormatsMultiple(urls: List<String>, progress: (progress: List<Format>) -> Unit){
-        init()
+        
         val urlsFile = File(context.cacheDir, "urls.txt")
         urlsFile.delete()
         urlsFile.createNewFile()
@@ -729,7 +663,6 @@ class InfoUtil(private val context: Context) {
     }
 
     fun getFromYTDL(query: String): ArrayList<ResultItem?> {
-        init()
         items = ArrayList()
         val searchEngine = sharedPreferences.getString("search_engine", "ytsearch")
         try {
@@ -774,7 +707,7 @@ class InfoUtil(private val context: Context) {
                 var duration = ""
                 runCatching {
                     if (jsonObject.has("duration")) {
-                        duration = formatIntegerDuration(jsonObject.getInt("duration"), Locale.getDefault())
+                        duration = formatIntegerDuration(jsonObject.getInt("duration"), Locale.US)
                     }
                 }
                 val url = jsonObject.getString("webpage_url")
@@ -801,11 +734,14 @@ class InfoUtil(private val context: Context) {
                             format.put("filesize", 0)
                         }
                         val formatProper = Gson().fromJson(format.toString(), Format::class.java)
-                        if (format.has("format_note") && formatProper.format_note != null){
+                        if (formatProper.format_note == null) continue
+                        if (format.has("format_note")){
                             if (!formatProper!!.format_note.contains("audio only", true)) {
                                 formatProper.format_note = format.getString("format_note")
                             }else{
-                                formatProper.format_note = "${format.getString("format_note")} audio"
+                                if (!formatProper.format_note.endsWith("audio", true)){
+                                    formatProper.format_note = "${format.getString("format_note")} audio"
+                                }
                             }
                         }
                         if (formatProper.format_note == "storyboard") continue
@@ -825,7 +761,6 @@ class InfoUtil(private val context: Context) {
                 var urls = "";
                 if(jsonObject.has("urls")) urls = jsonObject.getString("urls");
 
-                Log.e("aa", formats.toString())
                 items.add(ResultItem(0,
                         url,
                         title,
@@ -846,7 +781,6 @@ class InfoUtil(private val context: Context) {
             }
             e.printStackTrace()
         }
-        Log.e("aa", items.toString())
         return items
     }
 
@@ -880,7 +814,7 @@ class InfoUtil(private val context: Context) {
             var duration = ""
             runCatching {
                 if (jsonObject.has("duration")) {
-                    duration = formatIntegerDuration(jsonObject.getInt("duration"), Locale.getDefault())
+                    duration = formatIntegerDuration(jsonObject.getInt("duration"), Locale.US)
                 }
             }
 
@@ -1037,7 +971,6 @@ class InfoUtil(private val context: Context) {
 
     companion object {
         private const val TAG = "API MANAGER"
-        private const val invidousURL = "https://invidious.baczek.me/api/v1/"
         private const val defaultPipedURL = "https://pipedapi.kavin.rocks/"
         private var countryCODE: String = ""
     }

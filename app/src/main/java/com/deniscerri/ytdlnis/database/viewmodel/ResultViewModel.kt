@@ -3,6 +3,7 @@ package com.deniscerri.ytdlnis.database.viewmodel
 import android.app.Application
 import android.content.SharedPreferences
 import android.util.Log
+import androidx.compose.runtime.MutableState
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -16,17 +17,17 @@ import com.deniscerri.ytdlnis.database.models.SearchHistoryItem
 import com.deniscerri.ytdlnis.database.repository.ResultRepository
 import com.deniscerri.ytdlnis.database.repository.SearchHistoryRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.regex.Pattern
 
 class ResultViewModel(application: Application) : AndroidViewModel(application) {
     private val tag: String = "ResultViewModel"
-    private val repository : ResultRepository
+    val repository : ResultRepository
     private val searchHistoryRepository : SearchHistoryRepository
     val items : LiveData<List<ResultItem>>
     val loadingItems = MutableLiveData<Boolean>()
-    var itemCount : LiveData<Int>
     private val sharedPreferences: SharedPreferences
 
     init {
@@ -36,7 +37,6 @@ class ResultViewModel(application: Application) : AndroidViewModel(application) 
         searchHistoryRepository = SearchHistoryRepository(DBManager.getInstance(application).searchHistoryDao)
         items = repository.allResults
         loadingItems.postValue(false)
-        itemCount = repository.itemCount
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(application)
     }
 
@@ -65,7 +65,7 @@ class ResultViewModel(application: Application) : AndroidViewModel(application) 
         if (inputQueries.size == 1){
             parseQuery(inputQueries[0], true)
         }else {
-            repository.itemCount.postValue(inputQueries.size)
+            repository.itemCount.value = inputQueries.size
             loadingItems.postValue(true)
             inputQueries.forEach {
                 parseQuery(it, false)
@@ -90,7 +90,6 @@ class ResultViewModel(application: Application) : AndroidViewModel(application) 
                     }
                     "Playlist" -> {
                         res = repository.getPlaylist(inputQuery, resetResults)
-
                     }
                     "Default" -> {
                         res = repository.getDefault(inputQuery, resetResults)

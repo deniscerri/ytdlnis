@@ -96,36 +96,7 @@
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:shapeAppearance="@style/ShapeAppearanceOverlay.Chip.RoundedStart" />
-
-
-                        <com.google.android.material.chip.Chip
-                            android:id="@+id/codec"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:clickable="false"
-                            android:textSize="11sp"
-                            app:chipBackgroundColor="?attr/colorSurface"
-                            app:chipMinTouchTargetSize="0dp"
-                            app:chipStrokeWidth="0.5dp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:shapeAppearance="@style/ShapeAppearanceOverlay.Chip.Middle" />
-
-                        <com.google.android.material.chip.Chip
-                            android:id="@+id/file_size"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:clickable="false"
-                            android:textSize="11sp"
-                            app:chipBackgroundColor="?attr/colorSurface"
-                            app:chipMinTouchTargetSize="0dp"
-                            app:chipStrokeWidth="0.5dp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:shapeAppearance="@style/ShapeAppearanceOverlay.Chip.RoundedEnd" />
+                            app:shapeAppearance="@style/ShapeAppearanceOverlay.Chip.Rounded" />
 
                     </com.google.android.material.chip.ChipGroup>
 

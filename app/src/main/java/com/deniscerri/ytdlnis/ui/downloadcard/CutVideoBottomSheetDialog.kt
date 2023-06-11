@@ -198,8 +198,8 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val urls
                     try{
                         val listType: Type = object : TypeToken<List<ChapterItem>>() {}.type
                         chapters = Gson().fromJson(data.first().toString(), listType)
+                        data.removeFirst()
                     }catch (ignored: Exception) {}
-                    data.removeFirst()
                 }
 
                 if (data.isEmpty()) throw Exception("No Streaming URL found!")

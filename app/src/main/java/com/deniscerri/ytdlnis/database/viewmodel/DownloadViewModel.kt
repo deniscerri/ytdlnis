@@ -94,13 +94,14 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
 
 
         val videoFormat = resources.getStringArray(R.array.video_formats)
+        val videoFormatValues = resources.getStringArray(R.array.video_formats_values)
         var videoContainer = sharedPreferences.getString("video_format",  "Default")
         if (videoContainer == "Default") videoContainer = App.instance.getString(R.string.defaultValue)
 
         defaultVideoFormats = mutableListOf()
-        videoFormat.forEach {
+        videoFormat.forEachIndexed { index , it ->
             val tmp = Format(
-                it,
+                videoFormatValues[index],
                 videoContainer!!,
                 "",
                 "",
@@ -116,7 +117,7 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
         var audioContainer = sharedPreferences.getString("audio_format", "mp3")
         if (audioContainer == "Default") audioContainer = App.instance.getString(R.string.defaultValue)
         bestAudioFormat = Format(
-            resources.getString(R.string.best_quality),
+            "best",
             audioContainer!!,
             "",
             "",
@@ -155,8 +156,8 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
         }
 
         val downloadPath = when(type){
-            Type.audio -> sharedPreferences.getString("music_path", FileUtil.getDefautAudioPath())
-            Type.video -> sharedPreferences.getString("video_path",  FileUtil.getDefautVideoPath())
+            Type.audio -> sharedPreferences.getString("music_path", FileUtil.getDefaultAudioPath())
+            Type.video -> sharedPreferences.getString("video_path",  FileUtil.getDefaultVideoPath())
             else -> sharedPreferences.getString("command_path", FileUtil.getDefaultCommandPath())
         }
 
@@ -263,11 +264,18 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
             else -> ""
         }
 
+        val defaultPath = when(historyItem.type) {
+            Type.audio -> FileUtil.getDefaultAudioPath()
+            Type.video -> FileUtil.getDefaultVideoPath()
+            Type.command -> FileUtil.getDefaultCommandPath()
+        }
+
         val sponsorblock = sharedPreferences.getStringSet("sponsorblock_filters", emptySet())
 
         val audioPreferences = AudioPreferences(embedThumb, false, ArrayList(sponsorblock!!))
         val videoPreferences = VideoPreferences(embedSubs, addChapters, false, ArrayList(sponsorblock), saveSubs)
-
+        val downloadPath = File(historyItem.downloadPath)
+        val path = if (downloadPath.exists()) downloadPath.parent else defaultPath
         return DownloadItem(0,
             historyItem.url,
             historyItem.title,
@@ -279,7 +287,7 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
             container,
             "",
             ArrayList(),
-            File(historyItem.downloadPath).parent!!, historyItem.website, "", "", audioPreferences, videoPreferences,customFileNameTemplate!!, saveThumb, DownloadRepository.Status.Processing.toString(), 0
+            path, historyItem.website, "", "", audioPreferences, videoPreferences,customFileNameTemplate!!, saveThumb, DownloadRepository.Status.Processing.toString(), 0
         )
 
     }

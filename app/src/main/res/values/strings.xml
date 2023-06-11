@@ -277,6 +277,6 @@
     <string name="move_temporary_files_summary">Transfer cached files to the downloads folder</string>
     <string name="format_filtering_hint_2">All items must either be audio or video to use this option</string>
     <string name="piped_instance">Piped Instance</string>
-    <string name="piped_instance_summary">Write a PIPED API Server, the app can use for youtube queries and formats</string>
+    <string name="piped_instance_summary">Write a PIPED API Server, the app can use for YouTube queries and formats</string>
     <string name="custom_audio_quality">Use Custom Audio Quality</string>
 </resources>

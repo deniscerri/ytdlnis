@@ -8,8 +8,6 @@ import android.os.Environment
 import android.provider.DocumentsContract
 import android.util.Log
 import android.webkit.MimeTypeMap
-import com.anggrayudi.storage.callback.FileCallback
-import com.anggrayudi.storage.file.moveTo
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.DownloadItem
 import okhttp3.internal.closeQuietly
@@ -19,12 +17,14 @@ import java.nio.charset.StandardCharsets
 import java.nio.file.Files
 import java.nio.file.StandardCopyOption
 import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
 import java.util.*
 import kotlin.math.log10
 import kotlin.math.pow
 
 
 object FileUtil {
+
     fun deleteFile(path: String){
         val file = File(path)
         if (file.exists()) {
@@ -134,7 +134,7 @@ object FileUtil {
                     if (Build.VERSION.SDK_INT >= 26 ){
                         Files.move(it.toPath(), destFile.toPath(), StandardCopyOption.REPLACE_EXISTING)
                     }else{
-                        it.moveTo(context, destFile.parent!!, destFile.name, FileCallback.ConflictResolution.REPLACE)
+                        it.renameTo(destFile)
                     }
                     fileList.add(destFile)
                 }
@@ -183,11 +183,11 @@ object FileUtil {
         return File(context.filesDir.absolutePath + """/logs/Terminal - ${titleRegex.replace(command.take(30), "")}##terminal.log""")
     }
 
-    fun getDefautAudioPath() : String{
+    fun getDefaultAudioPath() : String{
         return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).absolutePath + File.separator + "YTDLnis/Audio"
     }
 
-    fun getDefautVideoPath() : String{
+    fun getDefaultVideoPath() : String{
         return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).absolutePath + File.separator + "YTDLnis/Video"
     }
 
@@ -199,6 +199,7 @@ object FileUtil {
         if (s <= 0) return "?"
         val units = arrayOf("B", "kB", "MB", "GB", "TB")
         val digitGroups = (log10(s.toDouble()) / log10(1024.0)).toInt()
-        return DecimalFormat("#,##0.#").format(s / 1024.0.pow(digitGroups.toDouble())) + " " + units[digitGroups]
+        val symbols = DecimalFormatSymbols(Locale.US)
+        return "${DecimalFormat("#,##0.#", symbols).format(s / 1024.0.pow(digitGroups.toDouble()))} ${units[digitGroups]}"
     }
 }
