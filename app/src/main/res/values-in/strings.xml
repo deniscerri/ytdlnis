@@ -92,14 +92,14 @@
     <string name="sponsorblock_nonmusic">Bagian Non-Musik dan Di Luar Topik</string>
     <string name="sponsorblock_sponsors">Sponsor</string>
     <string name="sponsorblock_intro">Intro</string>
-    <string name="sponsorblock_outro">Lainnya</string>
+    <string name="sponsorblock_outro">Outro</string>
     <string name="sponsorblock_promos">Promo Diri Sendiri</string>
     <string name="api_key_summary">Hasil yang lebih cepat dari YouTube</string>
     <string name="update_app_summary">Mengumumkan versi aplikasi yang baru saat membukanya</string>
     <string name="remove_duplicates">Bersihkan Duplikat</string>
     <string name="sort_by">Penyortiran</string>
     <string name="incognito_summary">Unduh tanpa menambahkannya ke riwayat</string>
-    <string name="configure_download">Pengaturan Pengunduhan</string>
+    <string name="configure_download">Sesuaikan Pengunduhan</string>
     <string name="author">Penggubah</string>
     <string name="embed_subtitles">Tanamkan Takarir</string>
     <string name="show_download_card">Tampilkan Opsi untuk Pengunduhan</string>
@@ -222,7 +222,7 @@
     <string name="yellow">Kuning</string>
     <string name="green">Hijau</string>
     <string name="blue">Biru</string>
-    <string name="material_you">Material</string>
+    <string name="material_you">Material You</string>
     <string name="purple">Ungu</string>
     <string name="monochrome">Monokrom</string>
     <string name="red">Merah</string>
@@ -242,7 +242,7 @@
     <string name="resume">Lanjutkan</string>
     <string name="keep_cache">Simpan Berkas Singgahan</string>
     <string name="incognito">Penyamaran</string>
-    <string name="sponsorblock">Sponsor Block</string>
+    <string name="sponsorblock">SponsorBlock</string>
     <string name="couldnt_parse_file">Tidak bisa mengurai berkas</string>
     <string name="search_history">Riwayat Penelusuran</string>
     <string name="appearance">Penampilan</string>
@@ -268,6 +268,7 @@
     <string name="general">Umum</string>
     <string name="misc">Aneka Ragam</string>
     <string name="format_filtering_hint_2">Semua item harus berupa audio atau video untuk menggunakan opsi ini</string>
-    <string name="move_temporary_files_summary">Transfer file yang di-cache ke folder unduhan</string>
-    <string name="move_temporary_files">Pindahkan File Sementara</string>
+    <string name="move_temporary_files_summary">Transfer berkas singgahan ke folder unduhan</string>
+    <string name="move_temporary_files">Pindahkan Berkas Sementara</string>
+    <string name="piped_instance">Instansi Piped</string>
 </resources>

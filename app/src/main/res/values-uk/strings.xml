@@ -249,7 +249,7 @@
     <string name="restore_complete">Відновлення застосунку завершено. Наступні елементи було відновлено:</string>
     <string name="search_history">Історія пошуку</string>
     <string name="appearance">Зовнішній вигляд</string>
-    <string name="sponsorblock">Спонсор Блок</string>
+    <string name="sponsorblock">Sponsor Block</string>
     <string name="network_error">Помилка мережі</string>
     <string name="select_backup_categories">Виберіть категорії резервного копіювання</string>
     <string name="backup_created_successfully">Файл резервної копії збережено в папці завантажень</string>
@@ -270,4 +270,7 @@
     <string name="move_temporary_files_summary">Перенесіть кешовані файли в папку завантажень</string>
     <string name="move_temporary_files">Перемістити тимчасові файли</string>
     <string name="format_filtering_hint_2">Щоб скористатися цією опцією, усі елементи мають бути аудіо чи відео</string>
+    <string name="custom_audio_quality">Використовуйте спеціальну якість звуку</string>
+    <string name="piped_instance">Конвеєрний екземпляр</string>
+    <string name="piped_instance_summary">Напишіть сервер PIPED API, який програма може використовувати для запитів і форматів YouTube</string>
 </resources>

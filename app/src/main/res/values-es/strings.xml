@@ -20,7 +20,7 @@
     <string name="ytdl_updating_started">Descargando nueva versión…</string>
     <string name="Remove">Quitar</string>
     <string name="cancel">Cancelar</string>
-    <string name="confirm_delete_history_desc">Borrar todo el historial,de forma permanente</string>
+    <string name="confirm_delete_history_desc">Borrar todo el historial, de forma permanente</string>
     <string name="confirm_delete_history">Confirmar</string>
     <string name="search_history_hint">Buscar historial</string>
     <string name="no_results">No Hay Resultados</string>
@@ -79,7 +79,7 @@
     <string name="title">Título</string>
     <string name="remove_duplicates">Quitar Duplicados</string>
     <string name="sort_by">Organizar</string>
-    <string name="configure_download">Configurar Descargar</string>
+    <string name="configure_download">Configurar la descarga</string>
     <string name="incognito_summary">Descargar sin agregar al historial</string>
     <string name="author">Autor</string>
     <string name="Open_File">Abrir Archivo</string>
@@ -245,7 +245,7 @@
     <string name="backup">Copia de seguridad</string>
     <string name="restore">Restaurar</string>
     <string name="incognito">Incógnito</string>
-    <string name="sponsorblock">Sponsor Block</string>
+    <string name="sponsorblock">SponsorBlock</string>
     <string name="select_backup_categories">Seleccionar las categorías de la copia de seguridad</string>
     <string name="search_history">Buscar en el historial</string>
     <string name="couldnt_parse_file">No se pudo analizar el archivo</string>
@@ -270,4 +270,7 @@
     <string name="move_temporary_files">Mover archivos temporales</string>
     <string name="move_temporary_files_summary">Transferir archivos almacenados en caché a la carpeta de descargas</string>
     <string name="format_filtering_hint_2">Todos los elementos deben ser de audio o video para usar esta opción</string>
+    <string name="custom_audio_quality">Calidad de audio personalizada</string>
+    <string name="piped_instance">Instancia para Piped</string>
+    <string name="piped_instance_summary">Escribe un servidor para la API PIPED, la aplicación puede usarse para consultas y formatos de YouTube</string>
 </resources>
