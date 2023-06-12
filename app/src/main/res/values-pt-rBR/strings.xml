@@ -21,7 +21,7 @@
     <string name="ytdl_updating_started">Baixando nova versão…</string>
     <string name="Remove">Remover</string>
     <string name="ok">OK</string>
-    <string name="confirm_delete_history_desc">Deletar o histórico, permanentemente.</string>
+    <string name="confirm_delete_history_desc">Deletar o histórico, permanentemente</string>
     <string name="confirm_delete_history">Confirmar</string>
     <string name="search_history_hint">Procurar no Histórico</string>
     <string name="no_results">Sem Resultados</string>
@@ -42,7 +42,7 @@
     <string name="video_format">Formato de Vídeo</string>
     <string name="audio_quality">Qualidade do Áudio</string>
     <string name="command_download_notification_channel_description">Mostrar uma notificação do progresso de download usando um comando do yt-dlp</string>
-    <string name="history_is_empty">O Histórico está vazio.</string>
+    <string name="history_is_empty">O Histórico está vazio</string>
     <string name="api_key">Usar chave de API</string>
     <string name="api_key_summary">Resultados mais rápidos do YouTube</string>
     <string name="remove_duplicates">Remover Duplicatas</string>
@@ -55,7 +55,7 @@
     <string name="show_download_card">Mostrar Opções de Download</string>
     <string name="download_card_summary">Configurações de como baixar itens</string>
     <string name="Open_File">Abrir Arquivo</string>
-    <string name="you_are_going_to_delete_multiple_items">Deletando vários items…</string>
+    <string name="you_are_going_to_delete_multiple_items">Deletando vários itens</string>
     <string name="delete_file_too">Deletar o arquivo do dispositivo</string>
     <string name="request_permission_desc">Este aplicativo precisa de acesso aos arquivos para salvar downloads no dispositivo</string>
     <string name="exit_app">Sair</string>
@@ -256,4 +256,18 @@
     <string name="template">Modelo</string>
     <string name="sponsorblock_nonmusic">Partes sem música e sem relação com o tema</string>
     <string name="container">Contêiner</string>
+    <string name="locale">Local</string>
+    <string name="audio_only_item">Este item contém apenas formatos de áudio</string>
+    <string name="format_filtering_hint_2">Todos os itens devem ser de áudio ou vídeo para usar esta opção</string>
+    <string name="custom_audio_quality">Usar qualidade de áudio personalizada</string>
+    <string name="move_temporary_files">Mover arquivos temporários</string>
+    <string name="move_temporary_files_summary">Transferir arquivos em cache para a pasta de downloads</string>
+    <string name="search_suggestions">Sugestões de Pesquisa</string>
+    <string name="search_suggestions_summary">Obtenha sugestões de pesquisa do Google</string>
+    <string name="preferred_format_id_summary">Selecione o formato com este ID no cartão de download</string>
+    <string name="misc">Diversos</string>
+    <string name="general">Geral</string>
+    <string name="swipe_gestures_summary">Deslize os itens para determinadas ações</string>
+    <string name="crop_thumb">Cortar Miniatura</string>
+    <string name="crop_thumb_summary">Recorte a miniatura em um quadrado para downloads de áudio</string>
 </resources>
