@@ -10,8 +10,8 @@
 <div align="center">
 
 [![Github Download](https://custom-icon-badges.herokuapp.com/badge/Download-blue?style=for-the-badge&logo=download&logoColor=white)](https://github.com/deniscerri/ytdlnis/releases/latest)
-[![IzzyOnDroid Repo](https://custom-icon-badges.herokuapp.com/badge/IzzyOnDroid%20Repo-red?style=for-the-badge&logo=download&logoColor=white)](https://android.izzysoft.de/repo/apk/com.deniscerri.ytdl)
-[![UpToDown](https://custom-icon-badges.herokuapp.com/badge/UpToDown-green?style=for-the-badge&logo=download&logoColor=white)]([https://android.izzysoft.de/repo/apk/com.deniscerri.ytdl](https://ytdlnis.en.uptodown.com/android/download))
+[![IzzyOnDroid Repo](https://custom-icon-badges.herokuapp.com/badge/IzzyOnDroid%20Repo-red?style=for-the-badge&logo=download&logoColor=white)]([https://android.izzysoft.de/repo/apk/com.deniscerri.ytdl])
+[![UpToDown](https://custom-icon-badges.herokuapp.com/badge/UpToDown-green?style=for-the-badge&logo=download&logoColor=white)]([https://ytdlnis.en.uptodown.com/android/download])
 
 ![CI](https://github.com/deniscerri/ytdlnis/actions/workflows/android.yml/badge.svg?branch=main&event=pull)
 [![preview release](https://img.shields.io/github/release/deniscerri/ytdlnis.svg?maxAge=3600&include_prereleases&label=preview)](https://github.com/deniscerri/ytdlnis/releases) 
@@ -89,9 +89,9 @@
 
 Join our [Telegram Channel](https://t.me/ytdlnis) or [Discord](https://discord.gg/WW3KYWxAPm) for discussion, announcements, and releases!
 
-## 🔑 Connect with YouTube ReVanced
+## 🔑 Connect with ReVanced
 
-The App's package name is com.deniscerri.ytdl
+The App's package name is "com.deniscerri.ytdl"
 
 ## 📝 Help Translate on Weblate
 <a href="https://hosted.weblate.org/engage/ytdlnis/">
