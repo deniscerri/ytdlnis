@@ -197,13 +197,13 @@
     <string name="invert_selected">Инвертировать выбранное</string>
     <string name="shortcuts_desc">Используйте часто используемые команды для создания шаблонов</string>
     <string name="restore">Восстановить</string>
-    <string name="sponsorblock">Sponsor Block</string>
+    <string name="sponsorblock">SponsorBlock</string>
     <string name="quick_download_summary">Не получать данные заранее</string>
     <string name="keep_cache">Сохранить кеш</string>
     <string name="remove_audio">Удалить аудио</string>
     <string name="downloaded">"Скачано: "</string>
     <string name="red">Красный</string>
-    <string name="format_source">Форматы Источник</string>
+    <string name="format_source">Источник форматов</string>
     <string name="high_contrast">Высокий контраст</string>
     <string name="green">Зеленый</string>
     <string name="finished_download_notification_channel_name">Завершенные загрузки</string>
@@ -221,7 +221,7 @@
     <string name="updating_download_data">Обновление данных элемента загрузки</string>
     <string name="backup">Резервировать</string>
     <string name="pure_theme_summary">Чистая черная / белая тема</string>
-    <string name="accents">Акценты</string>
+    <string name="accents">Акцент</string>
     <string name="network_error">Ошибка сети</string>
     <string name="select_backup_categories">Выберите категории резервного копирования</string>
     <string name="search_history">История поиска</string>
@@ -235,14 +235,14 @@
     <string name="socks5_proxy_summary">Используйте указанный HTTP/HTTPS/SOCKS прокси</string>
     <string name="socks5_proxy">Socks5 Прокси URL</string>
     <string name="preferred_search_engine">Предпочтительная поисковая система</string>
-    <string name="preferred_search_engine_summary">Поисковая система для поиска в приложении</string>
+    <string name="preferred_search_engine_summary">Поисковая система в приложении</string>
     <string name="format_filtering_hint">Чтобы использовать эту опцию, все элементы должны быть одного типа</string>
     <string name="restore_complete">Восстановление приложения завершено. Были восстановлены следующие объекты:</string>
     <string name="download_already_exists">Загрузка уже существует</string>
     <string name="pause">Пауза
 \n</string>
     <string name="preferred_locale">Предпочтительный регион</string>
-    <string name="video_recommendations">Видео Рекомендации</string>
+    <string name="video_recommendations">Видеорекомендации</string>
     <string name="couldnt_parse_file">Не удалось разобрать файл</string>
     <string name="keep_cache_summary">Не удалять временные файлы после завершения загрузки</string>
     <string name="backup_created_successfully">Файл резервной копии, сохраненный в папке загрузок</string>
@@ -264,13 +264,13 @@
     <string name="audio_only_item">Этот элемент содержит только аудио форматы</string>
     <string name="misc">Разное</string>
     <string name="swipe_gestures">Жесты смахивания</string>
-    <string name="swipe_gestures_summary">Проведите элементы для определенных действий</string>
+    <string name="swipe_gestures_summary">Включить жесты для определенных действий</string>
     <string name="crop_thumb">Обрезать миниатюру</string>
     <string name="general">Общие</string>
     <string name="move_temporary_files">Переместить временные файлы</string>
     <string name="move_temporary_files_summary">Перенесите кешированные файлы в папку загрузок</string>
     <string name="format_filtering_hint_2">Все элементы должны быть либо аудио, либо видео, чтобы использовать эту опцию</string>
-    <string name="custom_audio_quality">Использовать пользовательское качество звука</string>
-    <string name="piped_instance">Конвейерный экземпляр</string>
-    <string name="piped_instance_summary">Напишите сервер PIPED API, который приложение может использовать для запросов и форматов YouTube</string>
+    <string name="custom_audio_quality">Выбор качества аудио</string>
+    <string name="piped_instance">Piped сервер</string>
+    <string name="piped_instance_summary">Впишите сервер PIPED API для получения запросов и форматов YouTube</string>
 </resources>

@@ -272,4 +272,5 @@
     <string name="format_filtering_hint_2">Bu seçimi işlətmək üçün bütün elementlər səs və ya video olmalıdır</string>
     <string name="piped_instance">Piped İnstansiya</string>
     <string name="piped_instance_summary">PIPED API Server yazın, tətbiq youtube sorğuları və formatları üçün işlədə bilər</string>
+    <string name="custom_audio_quality">Fərdi Səs Keyfiyyəti İşlət</string>
 </resources>

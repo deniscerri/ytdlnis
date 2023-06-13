@@ -272,5 +272,5 @@
     <string name="format_filtering_hint_2">Lai izmantotu šo opciju, visiem vienumiem ir jābūt audio vai video</string>
     <string name="piped_instance">Piped Instance</string>
     <string name="piped_instance_summary">Izmanto PIPED API Serveri, ko lietotne var izmantot YouTube vaicājumiem un formātiem</string>
-    <string name="custom_audio_quality">Izmantojiet pielāgotu audio kvalitāti</string>
+    <string name="custom_audio_quality">Izmantot Pielāgotu Audio Kvalitāti</string>
 </resources>
