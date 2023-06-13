@@ -89,9 +89,9 @@
 
 Join our [Telegram Channel](https://t.me/ytdlnis) or [Discord](https://discord.gg/WW3KYWxAPm) for discussion, announcements, and releases!
 
-## 🔑 Connect with YouTube ReVanced
+## 🔑 Connect with ReVanced
 
-The App's package name is com.deniscerri.ytdl
+The App's package name is "com.deniscerri.ytdl"
 
 ## 📝 Help Translate on Weblate
 <a href="https://hosted.weblate.org/engage/ytdlnis/">
