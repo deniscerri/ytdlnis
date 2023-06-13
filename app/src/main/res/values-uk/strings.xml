@@ -33,7 +33,7 @@
     <string name="adjust_video">Налаштування відео</string>
     <string name="ytld_update_success">Нову версію встановлено</string>
     <string name="ok">OK</string>
-    <string name="ytdl_updating_started">Завантажуємо нову версію…</string>
+    <string name="ytdl_updating_started">Завантажується нова версія…</string>
     <string name="Remove">Видалити</string>
     <string name="cancel">Скасувати</string>
     <string name="no_results">Немає результатів</string>
@@ -47,7 +47,7 @@
     <string name="couldnt_find_apk">Не вдалося знайти відповідний APK.</string>
     <string name="limit_rate">Обмежена швидкість</string>
     <string name="downloading">Завантаження</string>
-    <string name="downloading_update">Завантажуємо нову версію…</string>
+    <string name="downloading_update">Завантажується нова версія…</string>
     <string name="audio">Аудіо</string>
     <string name="video">Відео</string>
     <string name="concurrent_fragments_summary">Кількість фрагментів власного відео DASH/HLS, які можна завантажити одночасно</string>
@@ -63,7 +63,7 @@
     <string name="video_format">Формат відео</string>
     <string name="save_thumb">Зберегти мініатюру</string>
     <string name="audio_format">Формат аудіо</string>
-    <string name="save_thumb_summary">Збережіть мініатюру в папці завантаження</string>
+    <string name="save_thumb_summary">Зберегти мініатюру в папці завантаження</string>
     <string name="audio_quality_summary">0 (найкраще) 10 (найгірше)</string>
     <string name="cancel_download">Скасувати Завантаження</string>
     <string name="run_command">Виконати команду</string>
@@ -74,7 +74,7 @@
     <string name="you_are_going_to_delete">Видалення</string>
     <string name="downloads">Завантаження</string>
     <string name="link_copied_to_clipboard">Посилання скопійовано в буфер обміну</string>
-    <string name="api_key">Використання ключа API</string>
+    <string name="api_key">Використати ключ API</string>
     <string name="download">Завантажити</string>
     <string name="video_quality">Якість відео</string>
     <string name="Open_File">Відкрити файл</string>
