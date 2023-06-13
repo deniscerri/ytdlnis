@@ -65,7 +65,7 @@
     <string name="audio_format">Формат аудіо</string>
     <string name="save_thumb_summary">Збережіть мініатюру в папці завантаження</string>
     <string name="audio_quality_summary">0 (найкраще) 10 (найгірше)</string>
-    <string name="cancel_download">Скасувати завантаження</string>
+    <string name="cancel_download">Скасувати Завантаження</string>
     <string name="run_command">Виконати команду</string>
     <string name="command_download_notification_channel_name">Завантаження команд</string>
     <string name="items_left">елементів залишилося</string>
@@ -75,7 +75,7 @@
     <string name="downloads">Завантаження</string>
     <string name="link_copied_to_clipboard">Посилання скопійовано в буфер обміну</string>
     <string name="api_key">Використання ключа API</string>
-    <string name="download">Завантаження</string>
+    <string name="download">Завантажити</string>
     <string name="video_quality">Якість відео</string>
     <string name="Open_File">Відкрити файл</string>
     <string name="api_key_summary">Швидші результати з YouTube</string>
@@ -238,12 +238,12 @@
     <string name="preferred_locale">Бажане розташування</string>
     <string name="pause">Пауза
 \n</string>
-    <string name="resume">Відновити</string>
+    <string name="resume">Резюме</string>
     <string name="updating_download_data">Оновлення даних завантажуваного елемента</string>
     <string name="keep_cache">Зберегти кеш</string>
     <string name="keep_cache_summary">Не видаляйте тимчасові файли після завершення завантаження</string>
     <string name="backup">Резервне копіювання</string>
-    <string name="restore">Відновити</string>
+    <string name="restore">Відновлення</string>
     <string name="incognito">Інкогніто</string>
     <string name="couldnt_parse_file">Не вдалося проаналізувати файл</string>
     <string name="restore_complete">Відновлення застосунку завершено. Наступні елементи було відновлено:</string>
