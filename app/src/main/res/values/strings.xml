@@ -28,7 +28,7 @@
     <string name="Remove">Remove</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
-    <string name="confirm_delete_history_desc">Delete the entire history,permanently</string>
+    <string name="confirm_delete_history_desc">Delete the entire history permanently</string>
     <string name="confirm_delete_history">Confirm</string>
     <string name="search_history_hint">Search from History</string>
     <string name="no_results">No Results</string>
