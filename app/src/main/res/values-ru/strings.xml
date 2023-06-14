@@ -197,7 +197,7 @@
     <string name="invert_selected">Инвертировать выбранное</string>
     <string name="shortcuts_desc">Используйте часто используемые команды для создания шаблонов</string>
     <string name="restore">Восстановить</string>
-    <string name="sponsorblock">SponsorBlock</string>
+    <string name="sponsorblock">Спонсор Блок</string>
     <string name="quick_download_summary">Не получать данные заранее</string>
     <string name="keep_cache">Сохранить кеш</string>
     <string name="remove_audio">Удалить аудио</string>
@@ -272,5 +272,5 @@
     <string name="format_filtering_hint_2">Все элементы должны быть либо аудио, либо видео, чтобы использовать эту опцию</string>
     <string name="custom_audio_quality">Выбор качества аудио</string>
     <string name="piped_instance">Piped сервер</string>
-    <string name="piped_instance_summary">Впишите сервер PIPED API для получения запросов и форматов YouTube</string>
+    <string name="piped_instance_summary">Напишите сервер PIPED API, который приложение может использовать для запросов и форматов YouTube</string>
 </resources>
