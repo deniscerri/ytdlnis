@@ -11,7 +11,7 @@
     <string name="ytdl_already_updating">새 버전 설치 중…</string>
     <string name="Remove">삭제</string>
     <string name="cancel">취소</string>
-    <string name="confirm_delete_history_desc">전체 기록을 영구적으로 삭제</string>
+    <string name="confirm_delete_history_desc">전체 기록을 완전히 삭제</string>
     <string name="more">메뉴</string>
     <string name="downloading">다운로드 중</string>
     <string name="limit_rate">제한율</string>
