@@ -28,7 +28,6 @@ import java.net.URL
 class UpdateUtil(var context: Context) {
     private val tag = "UpdateUtil"
     private val downloadManager: DownloadManager = context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
-    private val ytdlpNightly = "https://api.github.com/repos/yt-dlp/yt-dlp-nightly-builds/releases/latest"
 
     fun updateApp(result: (result: String) -> Unit) {
         try {

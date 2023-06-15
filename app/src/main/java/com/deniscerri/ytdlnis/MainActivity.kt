@@ -46,6 +46,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.elevation.SurfaceColors
 import com.google.android.material.navigation.NavigationBarView
 import com.google.android.material.navigation.NavigationView
+import com.google.android.material.navigationrail.NavigationRailView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.BufferedReader
@@ -221,7 +222,7 @@ class MainActivity : BaseActivity() {
             navigationView.animate()?.translationY(navigationView.height.toFloat())?.setDuration(300)?.withEndAction {
                 navigationView.visibility = View.GONE
             }?.start()
-        }else{
+        }else if (navigationView is NavigationRailView){
             findViewById<FragmentContainerView>(R.id.frame_layout).updateLayoutParams {
                 this.width = LayoutParams.MATCH_PARENT
             }
@@ -240,7 +241,7 @@ class MainActivity : BaseActivity() {
             navigationView.animate()?.translationY(0F)?.setDuration(300)?.withEndAction {
                 navigationView.visibility = View.VISIBLE
             }?.start()
-        }else{
+        }else if (navigationView is NavigationRailView){
             findViewById<FragmentContainerView>(R.id.frame_layout).updateLayoutParams {
                 this.width = 0
             }

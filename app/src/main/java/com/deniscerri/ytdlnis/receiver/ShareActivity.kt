@@ -33,14 +33,12 @@ import com.deniscerri.ytdlnis.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdlnis.ui.BaseActivity
 import com.deniscerri.ytdlnis.ui.downloadcard.DownloadBottomSheetDialog
 import com.deniscerri.ytdlnis.ui.downloadcard.SelectPlaylistItemsBottomSheetDialog
-import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.ThemeUtil
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.io.File
 import kotlin.properties.Delegates
 import kotlin.system.exitProcess
 
@@ -117,31 +115,35 @@ class ShareActivity : BaseActivity() {
                 this.finish()
             }
 
-            val inputQuery = intent.getStringExtra(Intent.EXTRA_TEXT)
-            try {
-                val result = resultViewModel.getItemByURL(inputQuery!!)
-                loadingBottomSheet.dismiss()
-                showDownloadSheet(result)
-            }catch (e: Exception){
-                resultViewModel.deleteAll()
-                if (quickDownload && inputQuery!!.matches("(https?://(?:www\\.|(?!www))[a-zA-Z\\d][a-zA-Z\\d-]+[a-zA-Z\\d]\\.\\S{2,}|www\\.[a-zA-Z\\d][a-zA-Z\\d-]+[a-zA-Z\\d]\\.\\S{2,}|https?://(?:www\\.|(?!www))[a-zA-Z\\d]+\\.\\S{2,}|www\\.[a-zA-Z\\d]+\\.\\S{2,})".toRegex())){
-                    val result = downloadViewModel.createEmptyResultItem(inputQuery)
+            val inputQuery = intent.getStringExtra(Intent.EXTRA_TEXT)!!
+            lifecycleScope.launch {
+                try {
+                    val result = withContext(Dispatchers.IO){
+                        resultViewModel.getItemByURL(inputQuery)
+                    }
                     loadingBottomSheet.dismiss()
                     showDownloadSheet(result)
-                }else{
-                    lifecycleScope.launch {
-                        val res = withContext(Dispatchers.IO){
-                            resultViewModel.parseQuery(inputQuery!!, true)
-                        }
-                        if (res.isEmpty()) {
-                            Toast.makeText(this@ShareActivity, "No Results Found!", Toast.LENGTH_SHORT).show()
-                            exit()
-                        }else{
-                            loadingBottomSheet.dismiss()
-                            if (res.size == 1){
-                                showDownloadSheet(res[0]!!)
+                }catch (e: Exception){
+                    resultViewModel.deleteAll()
+                    if (quickDownload && inputQuery.matches("(https?://(?:www\\.|(?!www))[a-zA-Z\\d][a-zA-Z\\d-]+[a-zA-Z\\d]\\.\\S{2,}|www\\.[a-zA-Z\\d][a-zA-Z\\d-]+[a-zA-Z\\d]\\.\\S{2,}|https?://(?:www\\.|(?!www))[a-zA-Z\\d]+\\.\\S{2,}|www\\.[a-zA-Z\\d]+\\.\\S{2,})".toRegex())){
+                        val result = downloadViewModel.createEmptyResultItem(inputQuery)
+                        loadingBottomSheet.dismiss()
+                        showDownloadSheet(result)
+                    }else{
+                        lifecycleScope.launch {
+                            val res = withContext(Dispatchers.IO){
+                                resultViewModel.parseQuery(inputQuery, true)
+                            }
+                            if (res.isEmpty()) {
+                                Toast.makeText(this@ShareActivity, "No Results Found!", Toast.LENGTH_SHORT).show()
+                                exit()
                             }else{
-                                showSelectPlaylistItems(res.toList())
+                                loadingBottomSheet.dismiss()
+                                if (res.size == 1){
+                                    showDownloadSheet(res[0]!!)
+                                }else{
+                                    showSelectPlaylistItems(res.toList())
+                                }
                             }
                         }
                     }

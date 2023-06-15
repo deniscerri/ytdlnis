@@ -9,7 +9,6 @@ import android.content.SharedPreferences
 import android.graphics.Canvas
 import android.graphics.Color
 import android.os.Bundle
-import android.provider.MediaStore.Video
 import android.text.format.DateFormat
 import android.util.DisplayMetrics
 import android.view.Gravity

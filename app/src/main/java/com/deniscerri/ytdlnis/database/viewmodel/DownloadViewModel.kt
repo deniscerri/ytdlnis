@@ -238,9 +238,22 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
     }
 
     fun switchDownloadType(list: List<DownloadItem>, type: Type) : List<DownloadItem>{
+        val updatedDownloadPath : String = when(type){
+            Type.audio -> sharedPreferences.getString("music_path", FileUtil.getDefaultAudioPath())!!
+            Type.video -> sharedPreferences.getString("video_path", FileUtil.getDefaultVideoPath())!!
+            Type.command -> sharedPreferences.getString("command_path", FileUtil.getDefaultCommandPath())!!
+        }
+
         list.forEach {
             val format = getFormat(it.allFormats, type)
             it.format = format
+            val currentDownloadPath = when(it.type){
+                Type.audio -> sharedPreferences.getString("music_path", FileUtil.getDefaultAudioPath())
+                Type.video -> sharedPreferences.getString("video_path", FileUtil.getDefaultVideoPath())
+                Type.command -> sharedPreferences.getString("command_path", FileUtil.getDefaultCommandPath())
+            }
+            if (it.downloadPath == currentDownloadPath) it.downloadPath = updatedDownloadPath
+
             it.type = type
         }
         return list

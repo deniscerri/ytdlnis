@@ -1,0 +1,7 @@
+Fixed txt file import not working
+added ability to select multiple audio streams for a single video
+make swipe gestures a preference
+crop thumb preference
+added support for multiple folders in a single download through filename templates
+added code syntax highlighter
+moved from invidious to piped for youtube queries

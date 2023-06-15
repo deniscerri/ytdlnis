@@ -89,7 +89,6 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
     private var selectedObjects: ArrayList<ResultItem>? = null
     private var quickLaunchSheet = false
     private var sharedPreferences: SharedPreferences? = null
-    private var _binding : FragmentHomeBinding? = null
     private var actionMode: ActionMode? = null
     private var appBarLayout: AppBarLayout? = null
     private var materialToolbar: MaterialToolbar? = null
@@ -98,7 +97,6 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
         fragmentView = inflater.inflate(R.layout.fragment_home, container, false)
         activity = getActivity()
         mainActivity = activity as MainActivity?

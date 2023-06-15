@@ -15,13 +15,10 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.yausername.youtubedl_android.YoutubeDL
 import com.yausername.youtubedl_android.YoutubeDLRequest
-import okhttp3.ResponseBody
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
-import retrofit2.Call
 import retrofit2.Retrofit
-import retrofit2.http.GET
 import java.io.BufferedReader
 import java.io.File
 import java.io.InputStreamReader
@@ -346,7 +343,7 @@ class InfoUtil(private val context: Context) {
                 "youtube",
                 "",
                 formats,
-                if (obj.has("hls")) obj.getString("hls") else "",
+                if (obj.has("hls") && obj.getString("hls") != "null") obj.getString("hls") else "",
                 chapters
             )
         } catch (e: Exception) {
@@ -478,7 +475,7 @@ class InfoUtil(private val context: Context) {
     }
 
     private fun getTrendingFromPiped(): ArrayList<ResultItem?> {
-        val url = pipedURL + "/trending?region=" + countryCODE
+        val url = "$pipedURL/trending?region=$countryCODE"
         val res = genericArrayRequest(url)
         try {
             for (i in 0 until res.length()) {
@@ -653,7 +650,7 @@ class InfoUtil(private val context: Context) {
         }else{
             urls.forEach {
                 val id = getIDFromYoutubeURL(it)
-                val res = genericRequest(pipedURL + "/streams/" + id)
+                val res = genericRequest("$pipedURL/streams/$id")
                 val vid = createVideoFromPipedJSON(res, id)
                 progress(vid!!.formats)
             }

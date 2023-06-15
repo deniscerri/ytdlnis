@@ -46,7 +46,7 @@
 
     <SwitchPreferenceCompat
         android:widgetLayout="@layout/preferece_material_switch"
-        app:defaultValue="true"
+        app:defaultValue="false"
         android:icon="@drawable/ic_update_app"
         android:key="update_app"
         app:summary="@string/update_app_summary"

@@ -2,16 +2,8 @@
 
 
 buildscript {
-
-    def versionMajor = 1
-    def versionMinor = 6
-    def versionPatch = 2
-    def versionBuild = 1 // bump for dogfood builds, public betas, etc.
-
     ext {
-        versionCode = versionMajor * 100000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
-        versionName = "${versionMajor}.${versionMinor}.${versionPatch}"
-        betaVersionNameSuffix = ".${versionBuild}-beta"
+        abiCodes = ['armeabi-v7a': 1, 'x86': 2, 'x86_64': 3, 'arm64-v8a': 4]
         // dependency versions
         appCompatVer = '1.6.1'
         junitVer = '4.13.2'
