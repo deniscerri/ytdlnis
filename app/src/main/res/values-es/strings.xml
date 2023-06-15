@@ -20,7 +20,7 @@
     <string name="ytdl_updating_started">Descargando nueva versión…</string>
     <string name="Remove">Quitar</string>
     <string name="cancel">Cancelar</string>
-    <string name="confirm_delete_history_desc">Borrar todo el historial, de forma permanente</string>
+    <string name="confirm_delete_history_desc">Eliminar todo el historial, de forma permanente</string>
     <string name="confirm_delete_history">Confirmar</string>
     <string name="search_history_hint">Buscar historial</string>
     <string name="no_results">No Hay Resultados</string>
