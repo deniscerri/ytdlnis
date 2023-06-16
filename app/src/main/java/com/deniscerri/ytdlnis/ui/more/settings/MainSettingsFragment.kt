@@ -541,7 +541,7 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
                         val intent: Intent? = requireContext().packageManager
                             .getLaunchIntentForPackage(requireContext().packageName)
                         intent?.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                        startActivity(intent)
+                        startActivity(intent!!)
                         if(json.has("settings")){
                             AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(preferences.getString("app_language", "en")))
                         }

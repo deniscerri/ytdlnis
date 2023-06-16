@@ -69,7 +69,7 @@ class DownloadWorker(
 
         CoroutineScope(Dispatchers.IO).launch {
             //update item if its incomplete
-            updateDownloadItem(downloadItem, infoUtil, dao, resultDao, false, notificationUtil)
+            updateDownloadItem(downloadItem, infoUtil, dao, resultDao)
         }
 
         val pendingIntent = NavDeepLinkBuilder(context)
@@ -173,6 +173,8 @@ class DownloadWorker(
 
         when(type){
             DownloadViewModel.Type.audio -> {
+                val supportedContainers = context.resources.getStringArray(R.array.audio_containers)
+
                 var audioQualityId : String = downloadItem.format.format_id
                 if (audioQualityId.isBlank() || audioQualityId == "0" || audioQualityId == context.getString(R.string.best_quality) || audioQualityId == "best") audioQualityId = ""
                 else if (audioQualityId == context.getString(R.string.worst_quality) || audioQualityId == "worst") audioQualityId = "worstaudio"
@@ -182,7 +184,7 @@ class DownloadWorker(
                 request.addOption("-x")
 
                 if(ext.isNotBlank()){
-                    if(!ext.matches("(webm)|(Default)|(${context.getString(R.string.defaultValue)})".toRegex())){
+                    if(!ext.matches("(webm)|(Default)|(${context.getString(R.string.defaultValue)})".toRegex()) && supportedContainers.contains(ext)){
                         request.addOption("--audio-format", ext)
                     }
                 }
@@ -220,6 +222,8 @@ class DownloadWorker(
 
             }
             DownloadViewModel.Type.video -> {
+                val supportedContainers = context.resources.getStringArray(R.array.video_containers)
+
                 if (downloadItem.videoPreferences.addChapters) {
                     request.addOption("--sponsorblock-mark", "all")
                     request.addOption("--embed-chapters")
@@ -250,7 +254,7 @@ class DownloadWorker(
                 Log.e(TAG, formatArgument)
                 request.addOption("-f", formatArgument)
                 val outputFormat = downloadItem.container
-                if(outputFormat.isNotEmpty() && outputFormat != "Default" && outputFormat != context.getString(R.string.defaultValue)){
+                if(outputFormat.isNotEmpty() && outputFormat != "Default" && outputFormat != context.getString(R.string.defaultValue) && supportedContainers.contains(outputFormat)){
                     request.addOption("--merge-output-format", outputFormat.lowercase())
                     if (outputFormat != "webm") {
                         val embedThumb = sharedPreferences.getBoolean("embed_thumbnail", false)
@@ -343,7 +347,7 @@ class DownloadWorker(
                 }, 1000)
             }
 
-            val wasQuickDownloaded = updateDownloadItem(downloadItem, infoUtil, dao, resultDao, false, notificationUtil)
+            val wasQuickDownloaded = updateDownloadItem(downloadItem, infoUtil, dao, resultDao)
 
             //put download in history
             val incognito = sharedPreferences.getBoolean("incognito", false)
@@ -359,7 +363,9 @@ class DownloadWorker(
             notificationUtil.cancelDownloadNotification(downloadItem.id.toInt())
 
             notificationUtil.createDownloadFinished(
-                downloadItem.title,  if (finalPaths?.first().equals(context.getString(R.string.unfound_file))) null else finalPaths,
+                downloadItem.title,  if (finalPaths?.first().equals(context.getString(R.string.unfound_file))) null else listOf(
+                    finalPaths!!.maxByOrNull { it.length }!!
+                ),
                 NotificationUtil.DOWNLOAD_FINISHED_CHANNEL_ID
             )
 
@@ -420,10 +426,14 @@ class DownloadWorker(
         return Result.success()
     }
 
-    private fun updateDownloadItem(downloadItem: DownloadItem, infoUtil: InfoUtil, dao: DownloadDao, resultDao: ResultDao, logDownloads: Boolean, notificationUtil: NotificationUtil) : Boolean {
+    private fun updateDownloadItem(
+        downloadItem: DownloadItem,
+        infoUtil: InfoUtil,
+        dao: DownloadDao,
+        resultDao: ResultDao
+    ) : Boolean {
         var wasQuickDownloaded = false
         if (downloadItem.title.isEmpty() || downloadItem.author.isEmpty() || downloadItem.thumb.isEmpty()){
-            if (logDownloads) notificationUtil.createUpdatingItemNotification(NotificationUtil.DOWNLOAD_SERVICE_CHANNEL_ID)
             runCatching {
                 setProgressAsync(workDataOf("progress" to 0, "output" to context.getString(R.string.updating_download_data), "id" to downloadItem.id, "log" to false))
                 val info = infoUtil.getMissingInfo(downloadItem.url)
@@ -437,7 +447,6 @@ class DownloadWorker(
                     dao.update(downloadItem)
                 }
             }
-            if (logDownloads) notificationUtil.cancelDownloadNotification(NotificationUtil.DOWNLOAD_UPDATING_NOTIFICATION_ID)
         }
         return wasQuickDownloaded
     }

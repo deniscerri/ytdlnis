@@ -118,9 +118,7 @@ class ShareActivity : BaseActivity() {
             val inputQuery = intent.getStringExtra(Intent.EXTRA_TEXT)!!
             lifecycleScope.launch {
                 try {
-                    val result = withContext(Dispatchers.IO){
-                        resultViewModel.getItemByURL(inputQuery)
-                    }
+                    val result = resultViewModel.getItemByURL(inputQuery)
                     loadingBottomSheet.dismiss()
                     showDownloadSheet(result)
                 }catch (e: Exception){
@@ -130,20 +128,18 @@ class ShareActivity : BaseActivity() {
                         loadingBottomSheet.dismiss()
                         showDownloadSheet(result)
                     }else{
-                        lifecycleScope.launch {
-                            val res = withContext(Dispatchers.IO){
-                                resultViewModel.parseQuery(inputQuery, true)
-                            }
-                            if (res.isEmpty()) {
-                                Toast.makeText(this@ShareActivity, "No Results Found!", Toast.LENGTH_SHORT).show()
-                                exit()
+                        val res = withContext(Dispatchers.IO){
+                            resultViewModel.parseQuery(inputQuery, true)
+                        }
+                        if (res.isEmpty()) {
+                            Toast.makeText(this@ShareActivity, "No Results Found!", Toast.LENGTH_SHORT).show()
+                            exit()
+                        }else{
+                            loadingBottomSheet.dismiss()
+                            if (res.size == 1){
+                                showDownloadSheet(res[0]!!)
                             }else{
-                                loadingBottomSheet.dismiss()
-                                if (res.size == 1){
-                                    showDownloadSheet(res[0]!!)
-                                }else{
-                                    showSelectPlaylistItems(res.toList())
-                                }
+                                showSelectPlaylistItems(res.toList())
                             }
                         }
                     }

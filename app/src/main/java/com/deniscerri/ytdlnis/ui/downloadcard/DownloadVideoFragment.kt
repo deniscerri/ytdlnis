@@ -180,7 +180,9 @@ class DownloadVideoFragment(private val resultItem: ResultItem, private var curr
                         containers
                     )
                 )
-                downloadItem.container = if (containerPreference == getString(R.string.defaultValue)) "" else containerPreference!!
+                if (currentDownloadItem == null || !containers.contains(downloadItem.container)){
+                    downloadItem.container = if (containerPreference == getString(R.string.defaultValue)) "" else containerPreference!!
+                }
                 containerAutoCompleteTextView!!.setText(
                     downloadItem.container.ifEmpty { getString(R.string.defaultValue) },
                     false)

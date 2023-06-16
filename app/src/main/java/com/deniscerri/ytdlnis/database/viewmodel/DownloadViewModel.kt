@@ -64,6 +64,7 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
 
     private val videoQualityPreference: String
     private val formatIDPreference: String
+    private val audioFormatIDPreference: String
     private val resources : Resources
     enum class Type {
         audio, video, command
@@ -86,6 +87,7 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
 
         videoQualityPreference = sharedPreferences.getString("video_quality", application.getString(R.string.best_quality)).toString()
         formatIDPreference = sharedPreferences.getString("format_id", "").toString()
+        audioFormatIDPreference = sharedPreferences.getString("format_id_audio", "").toString()
 
         val confTmp = Configuration(application.resources.configuration)
         confTmp.locale = Locale(sharedPreferences.getString("app_language", "en")!!)
@@ -165,7 +167,7 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
         val sponsorblock = sharedPreferences.getStringSet("sponsorblock_filters", emptySet())
 
         val audioPreferences = AudioPreferences(embedThumb, false, ArrayList(sponsorblock!!))
-        val videoPreferences = VideoPreferences(embedSubs, addChapters, false, ArrayList(sponsorblock), saveSubs)
+        val videoPreferences = VideoPreferences(embedSubs, addChapters, false, ArrayList(sponsorblock), saveSubs, audioFormatIDs = ArrayList(resultItem.formats.filter { it.format_id == audioFormatIDPreference }.map { it.format_id }))
 
         return DownloadItem(0,
             resultItem.url,
@@ -312,7 +314,7 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
                 return cloneFormat (
                     try {
                         try{
-                            formats.first { it.format_note.contains("audio", ignoreCase = true) && it.format_id == formatIDPreference }
+                            formats.first { it.format_note.contains("audio", ignoreCase = true) && it.format_id == audioFormatIDPreference }
                         }catch (e: Exception){
                             formats.last { it.format_note.contains("audio", ignoreCase = true) }
                         }

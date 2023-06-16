@@ -132,7 +132,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:id="@+id/codec"
+                        android:id="@+id/container"
                         style="@style/Widget.Material3.FloatingActionButton.Large.Secondary"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

@@ -126,4 +126,10 @@
         app:defaultValue=""
         app:summary="@string/preferred_format_id_summary"
         app:title="@string/preferred_format_id" />
+
+    <EditTextPreference
+        app:key="format_id_audio"
+        app:defaultValue=""
+        app:summary="@string/preferred_format_id_summary"
+        app:title="@string/preferred_format_id" />
 </PreferenceScreen>

@@ -12,6 +12,7 @@ import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.provider.Settings
 import android.util.Log
 import android.view.View
@@ -67,6 +68,7 @@ class MainActivity : BaseActivity() {
     private lateinit var navigationView: View
     private lateinit var navHostFragment : NavHostFragment
     private lateinit var navController : NavController
+    private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -105,13 +107,18 @@ class MainActivity : BaseActivity() {
             }
         }
 
-        val sharedPreferences =  PreferenceManager.getDefaultSharedPreferences(this)
+        sharedPreferences =  PreferenceManager.getDefaultSharedPreferences(this)
 
         val graph = navController.navInflater.inflate(R.navigation.nav_graph)
+        graph.setStartDestination(R.id.homeFragment)
+        when(sharedPreferences.getString("start_destination", "")) {
+            "History" -> graph.setStartDestination(R.id.historyFragment)
+            "More" -> if (navigationView is NavigationBarView) graph.setStartDestination(R.id.moreFragment)
+        }
+
         navController.graph = graph
 
         if (navigationView is NavigationBarView){
-            (navigationView as NavigationBarView).selectedItemId = graph.startDestinationId
             (navigationView as NavigationBarView).setupWithNavController(navController)
             (navigationView as NavigationBarView).setOnItemReselectedListener {
                 when (it.itemId) {
@@ -142,7 +149,6 @@ class MainActivity : BaseActivity() {
             window.navigationBarColor = SurfaceColors.SURFACE_2.getColor(this)
         }
         if (navigationView is NavigationView){
-            (navigationView as NavigationView).setCheckedItem(graph.startDestinationId)
             (navigationView as NavigationView).setupWithNavController(navController)
             //terminate button
             (navigationView as NavigationView).menu.getItem(7).setOnMenuItemClickListener {
@@ -194,12 +200,13 @@ class MainActivity : BaseActivity() {
             }
         }
 
+
         when(sharedPreferences.getString("start_destination", "")) {
-            "History" -> navController.navigate(R.id.historyFragment)
             "Queue" -> navController.navigate(R.id.downloadQueueMainFragment)
-            "More" -> if (navigationView is NavigationBarView) graph.setStartDestination(R.id.moreFragment)
         }
+
     }
+
 
     private fun View.visibilityChanged(action: (View) -> Unit) {
         this.viewTreeObserver.addOnGlobalLayoutListener {
