@@ -22,7 +22,7 @@
     <string name="more">Больше</string>
     <string name="update_app">Проверить обновления</string>
     <string name="version">Версия</string>
-    <string name="couldnt_find_apk">Не удалось найти подходящий APK.</string>
+    <string name="couldnt_find_apk">Подходящий APK не найден.</string>
     <string name="downloading_update">Загрузка обновления…</string>
     <string name="audio">Аудио</string>
     <string name="video">Видео</string>
@@ -73,7 +73,7 @@
     <string name="ytdl_update_hint">Полезно в случае проблем с загрузкой</string>
     <string name="confirm_delete_history_desc">Удалить всю историю навсегда</string>
     <string name="ytdl_already_updating">Установка новой версии…</string>
-    <string name="command_directory">Папка пользовательских команд</string>
+    <string name="command_directory">Папка кастомных команд</string>
     <string name="save_thumb_summary">Сохраните обложку видео в папке загрузки</string>
     <string name="limit_rate_summary">Максимальная скорость загрузки (в байтах в секунду), например, 50К или 4.2М</string>
     <string name="concurrent_fragments">Параллельные фрагменты</string>

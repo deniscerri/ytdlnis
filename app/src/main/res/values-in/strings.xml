@@ -84,7 +84,7 @@
     <string name="api_key">Gunakan Kunci API</string>
     <string name="ytdl_version">Versi yt-dlp</string>
     <string name="Open_File">Buka Berkas</string>
-    <string name="you_are_going_to_delete_multiple_items">Menghapus beberapa item</string>
+    <string name="you_are_going_to_delete_multiple_items">Menghapus beberapa butir</string>
     <string name="delete_file_too">Hapus berkas dari perangkat</string>
     <string name="delete_files_too">Hapus berkas-berkas dari perangkat</string>
     <string name="run_command">Jalankan Perintah</string>
@@ -267,8 +267,10 @@
     <string name="swipe_gestures">Gestur Usap</string>
     <string name="general">Umum</string>
     <string name="misc">Aneka Ragam</string>
-    <string name="format_filtering_hint_2">Semua item harus berupa audio atau video untuk menggunakan opsi ini</string>
+    <string name="format_filtering_hint_2">Semua butir harus berupa audio atau video untuk bisa menggunakan opsi ini</string>
     <string name="move_temporary_files_summary">Transfer berkas singgahan ke folder unduhan</string>
     <string name="move_temporary_files">Pindahkan Berkas Sementara</string>
     <string name="piped_instance">Instansi Piped</string>
+    <string name="custom_audio_quality">Gunakan Kualitas Audio Kustom</string>
+    <string name="piped_instance_summary">Tulis Server API PIPED yang bisa aplikasi gunakan untuk kueri dan format YouTube</string>
 </resources>
