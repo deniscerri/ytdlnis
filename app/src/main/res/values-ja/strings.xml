@@ -63,7 +63,7 @@
     <string name="show_download_card">ダウンロードのオプションを表示</string>
     <string name="download_card_summary">アイテムのダウンロード方法に関する設定です</string>
     <string name="ytdl_updating_started">最新版をダウンロード中です…</string>
-    <string name="you_are_going_to_delete_multiple_items">複数のアイテムを削除</string>
+    <string name="you_are_going_to_delete_multiple_items">複数のアイテムを削除します</string>
     <string name="delete_file_too">デバイスからファイルを削除</string>
     <string name="delete_files_too">デバイスからファイルを削除</string>
     <string name="source_code">ソースコード</string>
@@ -71,11 +71,11 @@
     <string name="search">検索</string>
     <string name="download_all">すべてダウンロード</string>
     <string name="search_hint">検索または URL を入力してください</string>
-    <string name="ytdl_update_hint">ダウンロードに問題が起きる場合に有効</string>
+    <string name="ytdl_update_hint">ダウンロードに問題が発生する場合に有効です</string>
     <string name="download_notification_channel_description">音声ファイルや動画ファイルのダウンロードの進捗状況を通知で表示</string>
     <string name="Remove">削除</string>
     <string name="audio">音声</string>
-    <string name="aria2_summary">ダウンローダーとしてaria2cを使用します</string>
+    <string name="aria2_summary">ダウンローダーとしてAria2cを使用します</string>
     <string name="audio_quality">音声の品質</string>
     <string name="cancel_download">ダウンロードをキャンセル</string>
     <string name="save_thumb">サムネイルを保存</string>
@@ -211,7 +211,7 @@
     <string name="metered_network_download_start_info">従量制のネットワークに接続をするとダウンロードを開始します</string>
     <string name="invert_selected">選択を反転</string>
     <string name="save_subs">字幕を保存</string>
-    <string name="save_subs_desc">字幕ファイルを書き込む</string>
+    <string name="save_subs_desc">字幕ファイルを書き込みます</string>
     <string name="subtitle_languages">字幕の言語</string>
     <string name="format_source">フォーマットのソース</string>
     <string name="video_recommendations">おすすめの動画</string>
