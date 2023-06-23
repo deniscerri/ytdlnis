@@ -12,13 +12,13 @@ import com.deniscerri.ytdlnis.database.models.ChapterItem
 import com.deniscerri.ytdlnis.database.models.Format
 import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import com.yausername.youtubedl_android.YoutubeDL
 import com.yausername.youtubedl_android.YoutubeDLRequest
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
-import retrofit2.Retrofit
 import java.io.BufferedReader
 import java.io.File
 import java.io.InputStreamReader
@@ -32,7 +32,6 @@ import java.util.regex.Pattern
 class InfoUtil(private val context: Context) {
     private var items: ArrayList<ResultItem?>
     private lateinit var sharedPreferences: SharedPreferences
-    private lateinit var retrofit : Retrofit
     private var key: String? = null
 
     init {
@@ -146,7 +145,9 @@ class InfoUtil(private val context: Context) {
                 var nextpage = res.getString("nextpage")
                 for (i in 0 until dataArray.length()){
                     val obj = dataArray.getJSONObject(i)
-                    items.add(createVideoFromPipedJSON(obj, obj.getString("url").removePrefix("/watch?v=")))
+                    val itm = createVideoFromPipedJSON(obj, obj.getString("url").removePrefix("/watch?v="))
+                    itm?.playlistTitle = "YTDLnis"
+                    items.add(itm)
                 }
                 if (nextpage == "null") nextpage = ""
                 return PlaylistTuple(nextpage, items)
@@ -211,20 +212,20 @@ class InfoUtil(private val context: Context) {
     }
 
     @Throws(JSONException::class)
-    fun getVideo(id: String): ResultItem? {
+    fun getVideo(url: String): List<ResultItem?> {
         try {
-            
+            val id = getIDFromYoutubeURL(url)
             if (key!!.isEmpty()) {
                 val res = genericRequest("$pipedURL/streams/$id")
-                return if (res.length() == 0) getFromYTDL("https://www.youtube.com/watch?v=$id")[0] else createVideoFromPipedJSON(
+                return if (res.length() == 0) getFromYTDL(url) else listOf(createVideoFromPipedJSON(
                     res, id
-                )
+                ))
             }
 
             //short data
             var res =
                 genericRequest("https://youtube.googleapis.com/youtube/v3/videos?part=snippet,contentDetails&id=$id&key=$key")
-            if (!res.has("items")) return getFromYTDL("https://www.youtube.com/watch?v=$id")[0]
+            if (!res.has("items")) return getFromYTDL(url)
             var duration = res.getJSONArray("items").getJSONObject(0).getJSONObject("contentDetails")
                 .getString("duration")
             duration = formatDuration(duration)
@@ -232,9 +233,9 @@ class InfoUtil(private val context: Context) {
             res.put("videoID", id)
             res.put("duration", duration)
             fixThumbnail(res)
-            return createVideofromJSON(res)
+            return listOf(createVideofromJSON(res))
         }catch (e: Exception){
-            return getFromYTDL("https://www.youtube.com/watch?v=$id")[0]
+            return getFromYTDL(url)
         }
     }
 
@@ -697,9 +698,12 @@ class InfoUtil(private val context: Context) {
                 } else {
                     jsonObject.getString("webpage_url_basename")
                 }
-                var author: String? = ""
-                if (jsonObject.has("uploader")) {
-                    author = jsonObject.getString("uploader")
+                var author: String = if (jsonObject.has("uploader")) jsonObject.getString("uploader") else ""
+                if (author.isEmpty() || author == "null"){
+                    author = if (jsonObject.has("channel")) jsonObject.getString("channel") else ""
+                    if (author.isEmpty() || author == "null"){
+                        author = if (jsonObject.has("playlist_uploader")) jsonObject.getString("playlist_uploader") else ""
+                    }
                 }
                 var duration = ""
                 runCatching {
@@ -747,7 +751,7 @@ class InfoUtil(private val context: Context) {
                     }
                 }
 
-                val chaptersInJSON = if (jsonObject.has("formats") && jsonObject.get("formats") is JSONArray) jsonObject.getJSONArray("formats") else null
+                val chaptersInJSON = if (jsonObject.has("chapters") && jsonObject.get("chapters") is JSONArray) jsonObject.getJSONArray("chapters") else null
                 val listType: Type = object : TypeToken<List<ChapterItem>>() {}.type
                 var chapters : ArrayList<ChapterItem> = arrayListOf()
 
@@ -803,9 +807,12 @@ class InfoUtil(private val context: Context) {
             val youtubeDLResponse = YoutubeDL.getInstance().execute(request)
             val jsonObject = JSONObject(youtubeDLResponse.out)
 
-            var author: String? = ""
-            if (jsonObject.has("uploader")) {
-                author = jsonObject.getString("uploader")
+            var author: String = if (jsonObject.has("uploader")) jsonObject.getString("uploader") else ""
+            if (author.isEmpty() || author == "null"){
+                author = if (jsonObject.has("channel")) jsonObject.getString("channel") else ""
+                if (author.isEmpty() || author == "null"){
+                    author = if (jsonObject.has("playlist_uploader")) jsonObject.getString("playlist_uploader") else ""
+                }
             }
 
             var duration = ""

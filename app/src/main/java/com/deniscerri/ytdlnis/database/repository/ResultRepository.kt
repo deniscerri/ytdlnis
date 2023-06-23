@@ -50,17 +50,18 @@ class ResultRepository(private val resultDao: ResultDao, private val commandTemp
 
     suspend fun getOne(inputQuery: String, resetResults: Boolean) : ArrayList<ResultItem?>{
         val infoUtil = InfoUtil(context)
-        val query = infoUtil.getIDFromYoutubeURL(inputQuery)
         try {
-            val v = infoUtil.getVideo(query)
+            val v = infoUtil.getVideo(inputQuery)
             if (resetResults) {
                 deleteAll()
-                itemCount.value = 1
+                itemCount.value = v.size
             }else{
-                v!!.playlistTitle = "ytdlnis-Search"
+                v.forEach { it?.playlistTitle = "ytdlnis-Search" }
             }
-            resultDao.insert(v!!)
-            return arrayListOf(v)
+            v.forEach {
+                resultDao.insert(it!!)
+            }
+            return ArrayList(v)
         } catch (e: Exception) {
             Log.e(tag, e.toString())
         }
@@ -82,10 +83,10 @@ class ResultRepository(private val resultDao: ResultDao, private val commandTemp
             if (tmpToken == nextPageToken) break
             nextPageToken = tmpToken
         } while (true)
+        itemCount.value = items.size
         items.forEach {
             resultDao.insert(it!!)
         }
-        itemCount.value = items.size
         return items
     }
 
@@ -120,10 +121,6 @@ class ResultRepository(private val resultDao: ResultDao, private val commandTemp
 
     suspend fun update(item: ResultItem){
         resultDao.update(item)
-    }
-
-    fun getTemplates() : List<CommandTemplate> {
-        return commandTemplateDao.getAllTemplates()
     }
 
     fun getItemByURL(url: String): ResultItem {

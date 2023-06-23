@@ -49,7 +49,7 @@ class UpdateUtil(var context: Context) {
                 return
             }
             val versionNameInt = version.split("v")[1].replace(".","").toInt()
-            val currentVersionNameInt = BuildConfig.VERSION_NAME.replace(".","").toInt()
+            val currentVersionNameInt = BuildConfig.VERSION_CODE.toString().replace("0", "").substring(0, versionNameInt.toString().length).toInt()
             if (currentVersionNameInt >= versionNameInt) {
                 result(context.getString(R.string.you_are_in_latest_version))
                 return

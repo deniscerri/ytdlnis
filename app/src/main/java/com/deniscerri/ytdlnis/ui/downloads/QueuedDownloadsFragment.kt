@@ -357,6 +357,7 @@ class QueuedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLi
                 when (direction) {
                     ItemTouchHelper.LEFT -> {
                         val deletedItem = items[position]
+                        queuedDownloads.notifyItemChanged(position)
                         removeItem(deletedItem.id)
                     }
 

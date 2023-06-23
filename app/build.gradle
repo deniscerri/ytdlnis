@@ -10,7 +10,12 @@ def properties = new Properties()
 def versionMajor = 1
 def versionMinor = 6
 def versionPatch = 3
-def versionBuild = 0 // bump for dogfood builds, public betas, etc.
+def versionBuild = 1 // bump for dogfood builds, public betas, etc.
+def versionExt = ""
+
+if (versionBuild > 0){
+    versionExt = ".${versionBuild}-beta"
+}
 
 android {
     namespace 'com.deniscerri.ytdlnis'
@@ -37,7 +42,7 @@ android {
         minSdk 23
         targetSdk 33
         versionCode versionMajor * 1000000 + versionMinor * 10000 + versionPatch * 100 + versionBuild
-        versionName "${versionMajor}.${versionMinor}.${versionPatch}"
+        versionName "${versionMajor}.${versionMinor}.${versionPatch}${versionExt}"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         archivesBaseName = "YTDLnis-$versionName"
         vectorDrawables {
@@ -181,10 +186,8 @@ dependencies {
     api "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutineVer"
     api "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVer"
 
-    implementation "com.squareup.retrofit2:retrofit:$retrofitVer"
-    implementation "com.squareup.retrofit2:converter-gson:$retrofitVer"
+    implementation 'com.google.code.gson:gson:2.9.1'
     implementation "com.squareup.okhttp3:okhttp:5.0.0-alpha.10"
-    implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.11'
 
     implementation 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0'
     implementation "com.google.android.exoplayer:exoplayer:2.18.5"

@@ -24,7 +24,7 @@
 -keep class com.google.gson.** { *; }
 -keep class com.deniscerri.ytdlnis.database.models.AudioPreferences
 -keep class com.deniscerri.ytdlnis.database.models.VideoPreferences
--keepclassmembers class * {
+-keepclassmembers,allowobfuscation class * {
     @com.google.gson.annotations.SerializedName <fields>;
 }
 -keepclassmembers class <1> {
@@ -67,6 +67,9 @@
 -keepclassmembers class * extends androidx.work.Worker {
     public <init>(android.content.Context,androidx.work.WorkerParameters);
 }
+-keep @androidx.room.Entity class *
+-keep class * extends androidx.room.RoomDatabase
+-dontwarn androidx.room.paging.**
 
 -dontwarn com.google.android.exoplayer2.**
 # Retain generic signatures of TypeToken and its subclasses with R8 version 3.0 and higher.

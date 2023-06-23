@@ -85,10 +85,10 @@ class ResultViewModel(application: Application) : AndroidViewModel(application) 
                     "Search" -> {
                         res = repository.search(inputQuery, resetResults)
                     }
-                    "Video" -> {
+                    "YT_Video" -> {
                         res = repository.getOne(inputQuery, resetResults)
                     }
-                    "Playlist" -> {
+                    "YT_Playlist" -> {
                         res = repository.getPlaylist(inputQuery, resetResults)
                     }
                     "Default" -> {
@@ -107,9 +107,9 @@ class ResultViewModel(application: Application) : AndroidViewModel(application) 
         val p = Pattern.compile("^(https?)://(www.)?(music.)?youtu(.be)?")
         val m = p.matcher(inputQuery)
         if (m.find()) {
-            type = "Video"
+            type = "YT_Video"
             if (inputQuery.contains("playlist?list=")) {
-                type = "Playlist"
+                type = "YT_Playlist"
             }
         } else if (inputQuery.contains("http")) {
             type = "Default"
