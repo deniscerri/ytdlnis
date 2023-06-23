@@ -13,7 +13,7 @@
     <string name="cancel">취소</string>
     <string name="confirm_delete_history_desc">전체 기록을 완전히 삭제</string>
     <string name="more">메뉴</string>
-    <string name="downloading">다운로드 중</string>
+    <string name="downloading">다운로드</string>
     <string name="limit_rate">제한율</string>
     <string name="limit_rate_summary">최대 다운로드 속도(초당 바이트), 예: 50K 또는 4.2M</string>
     <string name="embed_thumb">썸네일 커버</string>
@@ -52,7 +52,7 @@
     <string name="command_directory">사용자 명령 폴더</string>
     <string name="downloading_update">새 버전 다운로드 중…</string>
     <string name="concurrent_fragments">동시에 다운로드할 조각</string>
-    <string name="processing">처리</string>
+    <string name="processing">미디어 처리 방식</string>
     <string name="aria2_summary">기본값 대신 aria2c를 다운로더로 사용</string>
     <string name="embed_subs_summary">비디오에 자막 추가</string>
     <string name="audio_quality_summary">0 (최고) 10 (최저)</string>
@@ -72,7 +72,7 @@
     <string name="author">제작자</string>
     <string name="download">다운로드</string>
     <string name="show_download_card">다운로드 옵션 표시</string>
-    <string name="download_card_summary">다운로드시 항목의 다운로드 방법 설정</string>
+    <string name="download_card_summary">다운로드할 항목의 다운로드 방법 설정</string>
     <string name="Open_File">파일 열기</string>
     <string name="exit_app">앱 종료</string>
     <string name="sponsorblock_nonmusic">비음악 및 오프토픽 부분</string>
@@ -121,7 +121,7 @@
     <string name="select_all">모두 선택</string>
     <string name="get_cookies">쿠키 얻기</string>
     <string name="delete_all_cookies">모든 쿠키 삭제</string>
-    <string name="download_over_metered_networks">데이터 통신 네트워크를 통한 다운로드</string>
+    <string name="download_over_metered_networks">모바일 네트워크를 통한 다운로드</string>
     <string name="invert_selected">선택 반전</string>
     <string name="save_subs">자막 저장</string>
     <string name="save_subs_desc">자막 파일 저장</string>
@@ -136,7 +136,7 @@
     <string name="finished_download_notification_channel_name">완료된 다운로드</string>
     <string name="quick_download">빠른 다운로드</string>
     <string name="resume">재시작</string>
-    <string name="updating_download_data">다운로드시 항목의 다운로드 방법 설정</string>
+    <string name="updating_download_data">다운로드 항목 데이터 업데이트</string>
     <string name="keep_cache">캐시 유지</string>
     <string name="backup">백업</string>
     <string name="incognito">비밀모드</string>
@@ -186,7 +186,7 @@
     <string name="concurrent_downloads_summary">동시에 실행되는 다운로드 수</string>
     <string name="defaultValue">기본</string>
     <string name="update_ytdl_nightly">빠른 업데이트 yt-dlp 엔진 버전</string>
-    <string name="terminal">단말기</string>
+    <string name="terminal">명령 터미널</string>
     <string name="remove_search_history">검색 기록 지우기</string>
     <string name="select_format">형식 선택</string>
     <string name="export_from_clipboard">클립보드로 내보내기</string>
@@ -243,7 +243,7 @@
     <string name="pure_theme_summary">퓨어 블랙 / 화이트 테마</string>
     <string name="pause">일시정지
 \n</string>
-    <string name="material_you">매터리얼</string>
+    <string name="material_you">머터리얼</string>
     <string name="green">녹색</string>
     <string name="blue">파란색</string>
     <string name="purple">보라색</string>
@@ -260,7 +260,7 @@
     <string name="restore">복원</string>
     <string name="network_error">네트워크 오류</string>
     <string name="search_history">검색 기록</string>
-    <string name="backup_created_successfully">다운로드 폴더에 저장된 백업 파일</string>
+    <string name="backup_created_successfully">백업파일이 기본 다운로드 폴더에 저장됨</string>
     <string name="search_suggestions_summary">구글에서 추천 검색어 받기</string>
     <string name="socks5_proxy">Socks5 프록시 URL</string>
     <string name="crop_thumb">썸네일 자르기</string>
