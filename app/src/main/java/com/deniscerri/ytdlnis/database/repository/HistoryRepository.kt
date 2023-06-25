@@ -4,9 +4,11 @@ import androidx.lifecycle.LiveData
 import com.deniscerri.ytdlnis.database.dao.HistoryDao
 import com.deniscerri.ytdlnis.database.models.HistoryItem
 import com.deniscerri.ytdlnis.util.FileUtil
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collectLatest
 
 class HistoryRepository(private val historyDao: HistoryDao) {
-    val items : LiveData<List<HistoryItem>> = historyDao.getAllHistory()
+    val items : Flow<List<HistoryItem>> = historyDao.getAllHistory()
     enum class HistorySort{
         DESC, ASC
     }
@@ -59,9 +61,11 @@ class HistoryRepository(private val historyDao: HistoryDao) {
     }
 
     suspend fun clearDeletedHistory(){
-        items.value?.forEach { item ->
-            if (!FileUtil.exists(item.downloadPath)){
-                historyDao.delete(item.id)
+        items.collectLatest {
+            it.forEach { item ->
+                if (!FileUtil.exists(item.downloadPath)){
+                    historyDao.delete(item.id)
+                }
             }
         }
     }

@@ -4,10 +4,11 @@ import androidx.lifecycle.LiveData
 import com.deniscerri.ytdlnis.database.dao.CommandTemplateDao
 import com.deniscerri.ytdlnis.database.models.CommandTemplate
 import com.deniscerri.ytdlnis.database.models.TemplateShortcut
+import kotlinx.coroutines.flow.Flow
 
 class CommandTemplateRepository(private val commandDao: CommandTemplateDao) {
-    val items : LiveData<List<CommandTemplate>> = commandDao.getAllTemplatesLiveData()
-    val shortcuts : LiveData<List<TemplateShortcut>> = commandDao.getAllShortcutsLiveData()
+    val items : Flow<List<CommandTemplate>> = commandDao.getAllTemplatesFlow()
+    val shortcuts : Flow<List<TemplateShortcut>> = commandDao.getAllShortcutsFlow()
 
     fun getAll() : List<CommandTemplate> {
         return commandDao.getAllTemplates()

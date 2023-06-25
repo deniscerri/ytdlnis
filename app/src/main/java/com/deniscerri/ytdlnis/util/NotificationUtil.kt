@@ -245,6 +245,15 @@ class NotificationUtil(var context: Context) {
             .setArguments(bundle)
             .createPendingIntent()
 
+        val tabBundle = Bundle()
+        tabBundle.putString("tab", "error")
+
+        val errorTabPendingIntent = NavDeepLinkBuilder(context)
+            .setGraph(R.navigation.nav_graph)
+            .setDestination(R.id.downloadQueueMainFragment)
+            .setArguments(tabBundle)
+            .createPendingIntent()
+
         notificationBuilder
             .setContentTitle("${context.getString(R.string.failed_download)}: $title")
             .setContentText(error)
@@ -255,6 +264,7 @@ class NotificationUtil(var context: Context) {
                     R.drawable.ic_launcher_foreground_large
                 )
             )
+            .setContentIntent(errorTabPendingIntent)
             .setPriority(NotificationCompat.PRIORITY_MAX)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .clearActions()

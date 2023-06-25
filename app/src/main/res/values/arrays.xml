@@ -58,8 +58,20 @@
     </string-array>
 
     <string-array name="audio_formats">
-        <item>@string/worst_quality</item>
-        <item>@string/best_quality</item>
+        <item>worst</item>
+        <item>best</item>
+    </string-array>
+
+    <string-array name="format_ordering">
+        <item>@string/file_size</item>
+        <item>@string/container</item>
+        <item>ID</item>
+    </string-array>
+
+    <string-array name="format_ordering_values">
+        <item>filesize</item>
+        <item>container</item>
+        <item>id</item>
     </string-array>
 
     <string-array name="sponsorblock_settings_entries">

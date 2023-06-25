@@ -3,10 +3,10 @@ package com.deniscerri.ytdlnis.database.viewmodel
 import android.app.Application
 import android.content.SharedPreferences
 import android.util.Log
-import androidx.compose.runtime.MutableState
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.preference.PreferenceManager
 import com.deniscerri.ytdlnis.App
@@ -17,7 +17,6 @@ import com.deniscerri.ytdlnis.database.models.SearchHistoryItem
 import com.deniscerri.ytdlnis.database.repository.ResultRepository
 import com.deniscerri.ytdlnis.database.repository.SearchHistoryRepository
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.regex.Pattern
@@ -33,9 +32,9 @@ class ResultViewModel(application: Application) : AndroidViewModel(application) 
     init {
         val dao = DBManager.getInstance(application).resultDao
         val commandDao = DBManager.getInstance(application).commandTemplateDao
-        repository = ResultRepository(dao, commandDao, getApplication<Application>().applicationContext)
+        repository = ResultRepository(dao, getApplication<Application>().applicationContext)
         searchHistoryRepository = SearchHistoryRepository(DBManager.getInstance(application).searchHistoryDao)
-        items = repository.allResults
+        items = repository.allResults.asLiveData()
         loadingItems.postValue(false)
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(application)
     }

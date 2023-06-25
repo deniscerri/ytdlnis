@@ -3,9 +3,10 @@ package com.deniscerri.ytdlnis.database.repository
 import androidx.lifecycle.LiveData
 import com.deniscerri.ytdlnis.database.dao.CookieDao
 import com.deniscerri.ytdlnis.database.models.CookieItem
+import kotlinx.coroutines.flow.Flow
 
 class CookieRepository(private val cookieDao: CookieDao) {
-    val items : LiveData<List<CookieItem>> = cookieDao.getAllCookiesLiveData()
+    val items : Flow<List<CookieItem>> = cookieDao.getAllCookiesFlow()
 
     fun getAll() : List<CookieItem> {
         return cookieDao.getAllCookies()

@@ -1,8 +1,8 @@
 package com.deniscerri.ytdlnis.database.dao
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.deniscerri.ytdlnis.database.models.HistoryItem
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface HistoryDao {
@@ -27,7 +27,7 @@ interface HistoryDao {
 
 
     @Query("SELECT * FROM history")
-    fun getAllHistory() : LiveData<List<HistoryItem>>
+    fun getAllHistory() : Flow<List<HistoryItem>>
 
     @Query("SELECT * FROM history")
     fun getAllHistoryList() : List<HistoryItem>

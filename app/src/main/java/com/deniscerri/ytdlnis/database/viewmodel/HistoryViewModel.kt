@@ -5,6 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.deniscerri.ytdlnis.database.DBManager
 import com.deniscerri.ytdlnis.database.models.HistoryItem
@@ -28,7 +29,7 @@ class HistoryViewModel(application: Application) : AndroidViewModel(application)
     init {
         val dao = DBManager.getInstance(application).historyDao
         repository = HistoryRepository(dao)
-        allItems = repository.items
+        allItems = repository.items.asLiveData()
 
         _items.addSource(allItems){
             filter(queryFilter.value!!, formatFilter.value!!, websiteFilter.value!!, sortType.value!!, sortOrder.value!!)

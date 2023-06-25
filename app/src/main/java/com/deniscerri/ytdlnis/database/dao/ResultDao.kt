@@ -1,16 +1,16 @@
 package com.deniscerri.ytdlnis.database.dao
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.deniscerri.ytdlnis.database.models.ResultItem
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ResultDao {
     @Query("SELECT * FROM results")
-    fun getResults() : LiveData<List<ResultItem>>
+    fun getResults() : Flow<List<ResultItem>>
 
     @Query("SELECT COUNT(id) FROM results")
-    fun getCount() : LiveData<Int>
+    fun getCount() : Flow<Int>
 
     @Query("SELECT COUNT(id) FROM results")
     fun getCountInt() :Int

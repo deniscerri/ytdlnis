@@ -76,7 +76,7 @@ class DownloadAudioFragment(private var resultItem: ResultItem, private var curr
         super.onViewCreated(view, savedInstanceState)
         lifecycleScope.launch {
             downloadItem = withContext(Dispatchers.IO) {
-                if (currentDownloadItem != null && currentDownloadItem!!.type == Type.audio){
+                if (currentDownloadItem != null){
                     val string = Gson().toJson(currentDownloadItem, DownloadItem::class.java)
                     Gson().fromJson(string, DownloadItem::class.java)
                 }else{
@@ -126,7 +126,17 @@ class DownloadAudioFragment(private var resultItem: ResultItem, private var curr
                 if (free == "?") freeSpace.visibility = View.GONE
 
                 var formats = mutableListOf<Format>()
-                formats.addAll(resultItem.formats.filter { it.format_note.contains("audio", ignoreCase = true) })
+                if (currentDownloadItem == null) {
+                    formats.addAll(resultItem.formats.filter { it.format_note.contains("audio", ignoreCase = true) })
+                }else{
+                    //if its updating a present downloaditem and its the wrong category
+                    if (currentDownloadItem!!.type != Type.audio){
+                        downloadItem.type = Type.audio
+                        downloadItem.format =
+                            downloadItem.allFormats.filter { it.format_note.contains("audio", ignoreCase = true) }
+                                .maxByOrNull { it.filesize }!!
+                    }
+                }
                 if (formats.isEmpty()) formats.addAll(downloadItem.allFormats.filter { it.format_note.contains("audio", ignoreCase = true) })
 
                 val containers = requireContext().resources.getStringArray(R.array.audio_containers)

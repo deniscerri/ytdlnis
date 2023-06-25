@@ -1,9 +1,9 @@
 package com.deniscerri.ytdlnis.database.dao
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.deniscerri.ytdlnis.database.models.CommandTemplate
 import com.deniscerri.ytdlnis.database.models.TemplateShortcut
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface CommandTemplateDao {
@@ -11,10 +11,10 @@ interface CommandTemplateDao {
     fun getAllTemplates() : List<CommandTemplate>
 
     @Query("SELECT * FROM commandTemplates ORDER BY id DESC")
-    fun getAllTemplatesLiveData() : LiveData<List<CommandTemplate>>
+    fun getAllTemplatesFlow() : Flow<List<CommandTemplate>>
 
     @Query("SELECT * FROM templateShortcuts ORDER BY id DESC")
-    fun getAllShortcutsLiveData() : LiveData<List<TemplateShortcut>>
+    fun getAllShortcutsFlow() : Flow<List<TemplateShortcut>>
 
     @Query("SELECT * FROM templateShortcuts ORDER BY id DESC")
     fun getAllShortcuts() : List<TemplateShortcut>

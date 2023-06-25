@@ -2,18 +2,15 @@ package com.deniscerri.ytdlnis.database.repository
 
 import android.content.Context
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import com.deniscerri.ytdlnis.database.dao.CommandTemplateDao
 import com.deniscerri.ytdlnis.database.dao.ResultDao
-import com.deniscerri.ytdlnis.database.models.CommandTemplate
 import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.deniscerri.ytdlnis.util.InfoUtil
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 
-class ResultRepository(private val resultDao: ResultDao, private val commandTemplateDao: CommandTemplateDao, private val context: Context) {
+class ResultRepository(private val resultDao: ResultDao, private val context: Context) {
     private val tag: String = "ResultRepository"
-    val allResults : LiveData<List<ResultItem>> = resultDao.getResults()
+    val allResults : Flow<List<ResultItem>> = resultDao.getResults()
     var itemCount = MutableStateFlow(-1)
 
     suspend fun insert(it: ResultItem){

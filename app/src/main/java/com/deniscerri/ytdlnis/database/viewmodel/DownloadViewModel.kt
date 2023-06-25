@@ -11,6 +11,7 @@ import android.util.DisplayMetrics
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.preference.PreferenceManager
 import androidx.work.Constraints
@@ -77,13 +78,13 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
         commandTemplateDao = DBManager.getInstance(application).commandTemplateDao
         infoUtil = InfoUtil(application)
 
-        allDownloads = repository.allDownloads
-        queuedDownloads = repository.queuedDownloads
-        activeDownloads = repository.activeDownloads
-        activeDownloadsCount = repository.activeDownloadsCount
-        processingDownloads = repository.processingDownloads
-        cancelledDownloads = repository.cancelledDownloads
-        erroredDownloads = repository.erroredDownloads
+        allDownloads = repository.allDownloads.asLiveData()
+        queuedDownloads = repository.queuedDownloads.asLiveData()
+        activeDownloads = repository.activeDownloads.asLiveData()
+        activeDownloadsCount = repository.activeDownloadsCount.asLiveData()
+        processingDownloads = repository.processingDownloads.asLiveData()
+        cancelledDownloads = repository.cancelledDownloads.asLiveData()
+        erroredDownloads = repository.erroredDownloads.asLiveData()
 
         videoQualityPreference = sharedPreferences.getString("video_quality", application.getString(R.string.best_quality)).toString()
         formatIDPreference = sharedPreferences.getString("format_id", "").toString()
@@ -95,15 +96,14 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
         resources = Resources(application.assets, metrics, confTmp)
 
 
-        val videoFormat = resources.getStringArray(R.array.video_formats)
         val videoFormatValues = resources.getStringArray(R.array.video_formats_values)
         var videoContainer = sharedPreferences.getString("video_format",  "Default")
         if (videoContainer == "Default") videoContainer = App.instance.getString(R.string.defaultValue)
 
         defaultVideoFormats = mutableListOf()
-        videoFormat.forEachIndexed { index , it ->
+        videoFormatValues.forEach {
             val tmp = Format(
-                videoFormatValues[index],
+                it,
                 videoContainer!!,
                 "",
                 "",
@@ -125,7 +125,7 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
             "",
             "",
             0,
-            resources.getString(R.string.best_quality)
+            "best"
         )
     }
 
@@ -381,7 +381,7 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
     }
 
     fun getGenericVideoFormats() : MutableList<Format>{
-        val videoFormats = resources.getStringArray(R.array.video_formats)
+        val videoFormats = resources.getStringArray(R.array.video_formats_values)
         val formats = mutableListOf<Format>()
         var containerPreference = sharedPreferences.getString("video_format", "Default")
         if (containerPreference == "Default") containerPreference = resources.getString(R.string.defaultValue)

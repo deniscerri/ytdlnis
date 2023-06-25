@@ -102,6 +102,10 @@ class DownloadQueueMainFragment : Fragment(){
         })
         mainActivity.hideBottomNavigation()
         initMenu()
+
+        if (arguments?.getString("tab") != null){
+            tabLayout.selectTab(tabLayout.getTabAt(3))
+        }
     }
 
     private fun initMenu() {

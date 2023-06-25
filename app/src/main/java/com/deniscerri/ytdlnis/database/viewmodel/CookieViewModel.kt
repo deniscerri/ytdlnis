@@ -10,6 +10,7 @@ import android.util.Log
 import android.webkit.CookieManager
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.deniscerri.ytdlnis.database.DBManager
 import com.deniscerri.ytdlnis.database.models.CookieItem
@@ -31,7 +32,7 @@ class CookieViewModel(private val application: Application) : AndroidViewModel(a
     init {
         val dao = DBManager.getInstance(application).cookieDao
         repository = CookieRepository(dao)
-        items = repository.items
+        items = repository.items.asLiveData()
     }
 
     fun getAll(): List<CookieItem> {

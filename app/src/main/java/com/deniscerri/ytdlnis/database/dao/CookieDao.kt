@@ -1,8 +1,8 @@
 package com.deniscerri.ytdlnis.database.dao
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.deniscerri.ytdlnis.database.models.CookieItem
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface CookieDao {
@@ -10,7 +10,7 @@ interface CookieDao {
     fun getAllCookies() : List<CookieItem>
 
     @Query("SELECT * FROM cookies ORDER BY id DESC")
-    fun getAllCookiesLiveData() : LiveData<List<CookieItem>>
+    fun getAllCookiesFlow() : Flow<List<CookieItem>>
 
     @Query("SELECT EXISTS(SELECT * FROM cookies WHERE url=:url LIMIT 1)")
     fun checkIfExistsWithSameURL(url: String) : Boolean

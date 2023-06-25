@@ -90,39 +90,28 @@ object FileUtil {
 
                 if(it.name.contains(".part-Frag")) return@forEach
 
-                //sending to main or SD CARD
-                if (currentDirectory.exists() && Build.VERSION.SDK_INT >= 26){
-                    if (Build.VERSION.SDK_INT >= 26 ){
-                        Files.move(it.toPath(), destFile.toPath(), StandardCopyOption.REPLACE_EXISTING)
-                    }else{
-                        it.renameTo(destFile)
-                    }
-                    fileList.add(destFile)
-                }else{
-                    //sending to USB OTG
-                    val mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(it.extension) ?: "*/*"
-                    destFile = File(currentDirectory.absolutePath + "/${it.name}")
+                val mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(it.extension) ?: "*/*"
+                destFile = File(currentDirectory.absolutePath + "/${it.name}")
 
-                    val dest = Uri.parse(destDir).run {
-                        DocumentsContract.buildDocumentUriUsingTree(
-                            this,
-                            DocumentsContract.getTreeDocumentId(this)
-                        )
-                    }
-                    val destUri = DocumentsContract.createDocument(
-                        context.contentResolver,
-                        dest,
-                        mimeType,
-                        it.name
-                    ) ?: return@forEach
-
-                    val inputStream = it.inputStream()
-                    val outputStream =
-                        context.contentResolver.openOutputStream(destUri) ?: return@forEach
-                    inputStream.copyTo(outputStream)
-                    inputStream.closeQuietly()
-                    outputStream.closeQuietly()
+                val dest = Uri.parse(destDir).run {
+                    DocumentsContract.buildDocumentUriUsingTree(
+                        this,
+                        DocumentsContract.getTreeDocumentId(this)
+                    )
                 }
+                val destUri = DocumentsContract.createDocument(
+                    context.contentResolver,
+                    dest,
+                    mimeType,
+                    it.name
+                ) ?: return@forEach
+
+                val inputStream = it.inputStream()
+                val outputStream =
+                    context.contentResolver.openOutputStream(destUri) ?: return@forEach
+                inputStream.copyTo(outputStream)
+                inputStream.closeQuietly()
+                outputStream.closeQuietly()
 
                 fileList.add(destFile)
             }catch (e: java.lang.Exception) {

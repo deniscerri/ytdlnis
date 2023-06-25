@@ -1,6 +1,7 @@
 package com.deniscerri.ytdlnis.work
 
 import android.content.Context
+import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
@@ -91,6 +92,16 @@ class DownloadWorker(
         tempFileDir.delete()
         tempFileDir.mkdirs()
 
+        var useCacheFolder = true
+        val downloadLocationFile = File(downloadLocation)
+        if (downloadLocationFile.canWrite()) {
+            File(downloadLocation).mkdirs()
+            if(Build.VERSION.SDK_INT > 23) request.addOption("-P", "temp:" + tempFileDir.absolutePath)
+            useCacheFolder = false
+        }
+        val pathUsed = if (useCacheFolder) tempFileDir.absolutePath else downloadLocation
+
+
         val aria2 = sharedPreferences.getBoolean("aria2", false)
         if (aria2) {
             request.addOption("--downloader", "libaria2c.so")
@@ -99,6 +110,13 @@ class DownloadWorker(
             val concurrentFragments = sharedPreferences.getInt("concurrent_fragments", 1)
             if (concurrentFragments > 1) request.addOption("-N", concurrentFragments)
         }
+
+        val retries = sharedPreferences.getString("--retries", "")!!
+        val fragmentRetries = sharedPreferences.getString("--fragment_retries", "")!!
+
+        if(retries.isNotEmpty()) request.addOption("retries", retries)
+        if(fragmentRetries.isNotEmpty()) request.addOption("fragment-retries", fragmentRetries)
+
         val limitRate = sharedPreferences.getString("limit_rate", "")
         if (limitRate != "") request.addOption("-r", limitRate!!)
         if(downloadItem.type != DownloadViewModel.Type.command){
@@ -215,9 +233,9 @@ class DownloadWorker(
 
                 if (downloadItem.audioPreferences.splitByChapters && downloadItem.downloadSections.isBlank()){
                     request.addOption("--split-chapters")
-                    request.addOption("-P", tempFileDir.absolutePath)
+                    request.addOption("-P", pathUsed)
                 }else{
-                    request.addOption("-o", tempFileDir.absolutePath + "/${downloadItem.customFileNameTemplate}.%(ext)s")
+                    request.addOption("-o", pathUsed + "/${downloadItem.customFileNameTemplate}.%(ext)s")
                 }
 
             }
@@ -281,9 +299,9 @@ class DownloadWorker(
 
                 if (downloadItem.videoPreferences.splitByChapters  && downloadItem.downloadSections.isBlank()){
                     request.addOption("--split-chapters")
-                    request.addOption("-P", tempFileDir.absolutePath)
+                    request.addOption("-P", pathUsed)
                 }else{
-                    request.addOption("-o", tempFileDir.absolutePath + "/${downloadItem.customFileNameTemplate}.%(ext)s")
+                    request.addOption("-o", pathUsed + "/${downloadItem.customFileNameTemplate}.%(ext)s")
                 }
 
             }
@@ -294,7 +312,7 @@ class DownloadWorker(
                         writeText(downloadItem.format.format_note)
                     }.absolutePath
                 )
-                request.addOption("-P", tempFileDir.absolutePath)
+                request.addOption("-P", pathUsed)
 
             }
         }
@@ -327,33 +345,43 @@ class DownloadWorker(
                 }
             }
         }.onSuccess {
-            //move file from internal to set download directory
-            setProgressAsync(workDataOf("progress" to 100, "output" to "Moving file to ${FileUtil.formatPath(downloadLocation)}", "id" to downloadItem.id, "log" to logDownloads))
-            var finalPaths : List<String>?
-            try {
-                finalPaths = FileUtil.moveFile(tempFileDir.absoluteFile,context, downloadLocation, keepCache){ p ->
-                    setProgressAsync(workDataOf("progress" to p, "output" to "Moving file to ${FileUtil.formatPath(downloadLocation)}", "id" to downloadItem.id, "log" to logDownloads))
-                }
-                if (finalPaths.isNotEmpty()){
-                    setProgressAsync(workDataOf("progress" to 100, "output" to "Moved file to $downloadLocation", "id" to downloadItem.id, "log" to logDownloads))
-                }else{
-                    finalPaths = listOf(context.getString(R.string.unfound_file))
-                }
-            }catch (e: Exception){
-                finalPaths = listOf(context.getString(R.string.unfound_file))
-                e.printStackTrace()
-                handler.postDelayed({
-                    Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
-                }, 1000)
-            }
-
             val wasQuickDownloaded = updateDownloadItem(downloadItem, infoUtil, dao, resultDao)
+            var finalPaths: List<String>
+            if (useCacheFolder){
+                //move file from internal to set download directory
+                setProgressAsync(workDataOf("progress" to 100, "output" to "Moving file to ${FileUtil.formatPath(downloadLocation)}", "id" to downloadItem.id, "log" to logDownloads))
+                try {
+                    finalPaths = FileUtil.moveFile(tempFileDir.absoluteFile,context, downloadLocation, keepCache){ p ->
+                        setProgressAsync(workDataOf("progress" to p, "output" to "Moving file to ${FileUtil.formatPath(downloadLocation)}", "id" to downloadItem.id, "log" to logDownloads))
+                    }
+                    if (finalPaths.isNotEmpty()){
+                        setProgressAsync(workDataOf("progress" to 100, "output" to "Moved file to $downloadLocation", "id" to downloadItem.id, "log" to logDownloads))
+                    }else{
+                        finalPaths = listOf(context.getString(R.string.unfound_file))
+                    }
+                }catch (e: Exception){
+                    finalPaths = listOf(context.getString(R.string.unfound_file))
+                    e.printStackTrace()
+                    handler.postDelayed({
+                        Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
+                    }, 1000)
+                }
+            }else{
+                val now = System.currentTimeMillis()
+                finalPaths = downloadLocationFile
+                    .walkTopDown()
+                    .filter { it.isFile && it.absolutePath.contains(downloadItem.title) && it.lastModified() > now - 10000000}
+                    .map { it.absolutePath }
+                    .toList()
+
+                if (finalPaths.isEmpty()) finalPaths = listOf(context.getString(R.string.unfound_file))
+            }
 
             //put download in history
             val incognito = sharedPreferences.getBoolean("incognito", false)
             if (!incognito) {
                 val unixtime = System.currentTimeMillis() / 1000
-                val file = File(finalPaths?.first()!!)
+                val file = File(finalPaths.first()!!)
                 downloadItem.format.filesize = file.length()
                 val historyItem = HistoryItem(0, downloadItem.url, downloadItem.title, downloadItem.author, downloadItem.duration, downloadItem.thumb, downloadItem.type, unixtime, finalPaths.first() , downloadItem.website, downloadItem.format, downloadItem.id)
                 runBlocking {
@@ -363,9 +391,7 @@ class DownloadWorker(
             notificationUtil.cancelDownloadNotification(downloadItem.id.toInt())
 
             notificationUtil.createDownloadFinished(
-                downloadItem.title,  if (finalPaths?.first().equals(context.getString(R.string.unfound_file))) null else listOf(
-                    finalPaths!!.maxByOrNull { it.length }!!
-                ),
+                downloadItem.title,  if (finalPaths?.first().equals(context.getString(R.string.unfound_file))) null else finalPaths,
                 NotificationUtil.DOWNLOAD_FINISHED_CHANNEL_ID
             )
 

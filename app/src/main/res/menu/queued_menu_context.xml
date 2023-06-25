@@ -8,6 +8,13 @@
         android:title="@string/remove_results"
         android:icon="@drawable/baseline_delete_24"
         app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/download"
+        android:title="@string/download"
+        android:icon="@drawable/baseline_download_24"
+        app:showAsAction="ifRoom" />
+
     <item
         android:id="@+id/select_all"
         android:title="@string/select_all"

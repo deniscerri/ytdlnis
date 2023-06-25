@@ -279,4 +279,7 @@
     <string name="piped_instance">Piped Instance</string>
     <string name="piped_instance_summary">Write a PIPED API Server, the app can use for YouTube queries and formats</string>
     <string name="custom_audio_quality">Use Custom Audio Quality</string>
+    <string name="retries">Retries</string>
+    <string name="fragment_retries">Fragment Retries</string>
+    <string name="format_order">Format Order</string>
 </resources>

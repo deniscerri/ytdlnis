@@ -77,7 +77,7 @@ class DownloadVideoFragment(private val resultItem: ResultItem, private var curr
         super.onViewCreated(view, savedInstanceState)
         lifecycleScope.launch {
             downloadItem = withContext(Dispatchers.IO){
-                if (currentDownloadItem != null && currentDownloadItem!!.type == Type.video){
+                if (currentDownloadItem != null){
                     val string = Gson().toJson(currentDownloadItem, DownloadItem::class.java)
                     Gson().fromJson(string, DownloadItem::class.java)
                 }else{
@@ -127,8 +127,19 @@ class DownloadVideoFragment(private val resultItem: ResultItem, private var curr
                 freeSpace.text = String.format( getString(R.string.freespace) + ": " + free)
                 if (free == "?") freeSpace.visibility = View.GONE
 
+
                 var formats = mutableListOf<Format>()
-                formats.addAll(resultItem.formats)
+                if (currentDownloadItem == null) {
+                    formats.addAll(resultItem.formats)
+                }else{
+                    //if its updating a present downloaditem and its the wrong category
+                    if (currentDownloadItem!!.type != Type.video){
+                        downloadItem.type = Type.video
+                        downloadItem.format =
+                            downloadItem.allFormats.filter { it.vcodec.isNotEmpty() }
+                                .maxByOrNull { it.filesize }!!
+                    }
+                }
                 if (formats.isEmpty()) formats.addAll(downloadItem.allFormats)
 
                 val containers = requireContext().resources.getStringArray(R.array.video_containers)

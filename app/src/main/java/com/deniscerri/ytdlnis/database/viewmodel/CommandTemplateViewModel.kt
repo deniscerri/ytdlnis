@@ -5,6 +5,7 @@ import android.content.ClipboardManager
 import android.content.Context.CLIPBOARD_SERVICE
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.deniscerri.ytdlnis.database.DBManager
 import com.deniscerri.ytdlnis.database.models.CommandTemplate
@@ -27,8 +28,8 @@ class CommandTemplateViewModel(private val application: Application) : AndroidVi
     init {
         val dao = DBManager.getInstance(application).commandTemplateDao
         repository = CommandTemplateRepository(dao)
-        items = repository.items
-        shortcuts = repository.shortcuts
+        items = repository.items.asLiveData()
+        shortcuts = repository.shortcuts.asLiveData()
     }
 
     fun getTemplate(itemId: Long): CommandTemplate {

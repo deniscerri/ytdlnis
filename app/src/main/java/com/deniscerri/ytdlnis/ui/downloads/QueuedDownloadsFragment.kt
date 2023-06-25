@@ -1,5 +1,6 @@
 package com.deniscerri.ytdlnis.ui.downloads
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.DialogInterface
 import android.graphics.Canvas
@@ -59,6 +60,7 @@ class QueuedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLi
     private lateinit var queuedRecyclerView : RecyclerView
     private lateinit var queuedDownloads : GenericDownloadAdapter
     private lateinit var notificationUtil: NotificationUtil
+    private lateinit var fileSize: TextView
     private var selectedObjects: ArrayList<DownloadItem>? = null
     private var actionMode : ActionMode? = null
     private lateinit var items : MutableList<DownloadItem>
@@ -68,7 +70,7 @@ class QueuedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLi
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        fragmentView = inflater.inflate(R.layout.fragment_generic_download_queue, container, false)
+        fragmentView = inflater.inflate(R.layout.fragment_inqueue, container, false)
         activity = getActivity()
         notificationUtil = NotificationUtil(requireContext())
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
@@ -77,9 +79,10 @@ class QueuedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLi
         return fragmentView
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        fileSize = view.findViewById(R.id.filesize)
         queuedDownloads =
             GenericDownloadAdapter(
                 this,
@@ -97,6 +100,11 @@ class QueuedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLi
 
         downloadViewModel.queuedDownloads.observe(viewLifecycleOwner) {
             items = it.toMutableList()
+            if (it.isEmpty()) fileSize.visibility = View.GONE
+            else{
+                fileSize.visibility = View.VISIBLE
+                fileSize.text = "${getString(R.string.file_size)}: ~ ${FileUtil.convertFileSize(it.sumOf { i -> i.format.filesize })}"
+            }
             queuedDownloads.submitList(it)
         }
     }
@@ -232,6 +240,7 @@ class QueuedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLi
 
     override fun onCardSelect(itemID: Long, isChecked: Boolean) {
         val item = items.find { it.id == itemID }
+        val now = System.currentTimeMillis()
         if (isChecked) {
             selectedObjects!!.add(item!!)
             if (actionMode == null){
@@ -247,6 +256,9 @@ class QueuedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLi
             if (selectedObjects!!.isEmpty()){
                 actionMode?.finish()
             }
+        }
+        if (actionMode != null){
+            actionMode!!.menu.getItem(1).isVisible = selectedObjects!!.all { it.downloadStartTime > now }
         }
     }
 
@@ -309,6 +321,16 @@ class QueuedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLi
                         actionMode?.finish()
                     }
                     deleteDialog.show()
+                    true
+                }
+                R.id.download -> {
+                    for (obj in selectedObjects!!){
+                        WorkManager.getInstance(requireContext()).cancelUniqueWork(obj.id.toInt().toString())
+                    }
+                    selectedObjects!!.forEach { it.downloadStartTime = 0L }
+                    lifecycleScope.launch(Dispatchers.IO) {
+                        downloadViewModel.queueDownloads(selectedObjects!!)
+                    }
                     true
                 }
                 R.id.select_all -> {

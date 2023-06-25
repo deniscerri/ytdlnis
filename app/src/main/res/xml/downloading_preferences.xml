@@ -104,6 +104,14 @@
         app:summary="@string/log_downloads_summary"
         app:title="@string/log_downloads" />
 
+    <EditTextPreference
+        app:key="retries"
+        app:title="@string/retries" />
+
+    <EditTextPreference
+        app:key="fragment_retries"
+        app:title="@string/fragment_retries" />
+
     <Preference
         app:icon="@drawable/ic_battery"
         app:key="ignore_battery"

@@ -38,6 +38,15 @@
         app:useSimpleSummaryProvider="true"
         app:title="@string/format_source" />
 
+    <ListPreference
+        android:defaultValue="filesize"
+        android:entries="@array/format_ordering"
+        android:entryValues="@array/format_ordering_values"
+        android:icon="@drawable/baseline_sort_24"
+        app:key="format_order"
+        app:useSimpleSummaryProvider="true"
+        app:title="@string/format_order" />
+
     <EditTextPreference
         app:key="piped_instance"
         app:defaultValue="https://pipedapi.kavin.rocks"
