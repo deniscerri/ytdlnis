@@ -273,4 +273,7 @@
     <string name="custom_audio_quality">Выбор качества аудио</string>
     <string name="piped_instance">Piped сервер</string>
     <string name="piped_instance_summary">Напишите сервер PIPED API, который приложение может использовать для запросов и форматов YouTube</string>
+    <string name="fragment_retries">Повторить попытку фрагмента</string>
+    <string name="retries">Повторить попытку</string>
+    <string name="format_order">Порядок форматов</string>
 </resources>
