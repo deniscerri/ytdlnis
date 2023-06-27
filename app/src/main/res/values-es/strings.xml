@@ -273,4 +273,7 @@
     <string name="custom_audio_quality">Calidad de audio personalizada</string>
     <string name="piped_instance">Instancia para Piped</string>
     <string name="piped_instance_summary">Escribe un servidor para la API PIPED, la aplicación puede usarse para consultas y formatos de YouTube</string>
+    <string name="retries">Reintentos</string>
+    <string name="fragment_retries">Reintentos de los fragmentos</string>
+    <string name="format_order">Orden del formato</string>
 </resources>
