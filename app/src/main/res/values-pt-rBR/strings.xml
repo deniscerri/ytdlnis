@@ -21,7 +21,7 @@
     <string name="ytdl_updating_started">Baixando nova versão…</string>
     <string name="Remove">Remover</string>
     <string name="ok">OK</string>
-    <string name="confirm_delete_history_desc">Excluir o histórico permanentemente\?</string>
+    <string name="confirm_delete_history_desc">Excluir o histórico permanentemente</string>
     <string name="confirm_delete_history">Confirmar</string>
     <string name="search_history_hint">Procurar no Histórico</string>
     <string name="no_results">Sem Resultados</string>
@@ -98,7 +98,7 @@
     <string name="sponsorblock_sponsors">Patrocinadores</string>
     <string name="command_download_notification_channel_name">Comandos de Download</string>
     <string name="items_left">Item(s) excluídos</string>
-    <string name="sponsorblock_outro">Outro</string>
+    <string name="sponsorblock_outro"></string>
     <string name="save_dir">Salvar no diretório</string>
     <string name="edit_selected">Editar selecionado</string>
     <string name="adjust_video">Ajustar video</string>
@@ -223,7 +223,7 @@
     <string name="network_error">Erro de rede</string>
     <string name="restore">Restaurar</string>
     <string name="incognito">Incógnito</string>
-    <string name="sponsorblock">SponsorBlock</string>
+    <string name="sponsorblock"></string>
     <string name="appearance">Aparência</string>
     <string name="backup_created_successfully">Arquivo de backup salvo na pasta de downloads</string>
     <string name="search_history">Histórico de pesquisa</string>
