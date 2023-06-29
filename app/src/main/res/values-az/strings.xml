@@ -273,4 +273,7 @@
     <string name="piped_instance">Piped İnstansiya</string>
     <string name="piped_instance_summary">PIPED API Server yazın, tətbiq YouTube sorğuları və formatları üçün işlədə bilər</string>
     <string name="custom_audio_quality">Fərdi Səs Keyfiyyəti İşlət</string>
+    <string name="retries">Təkrar cəhdlər</string>
+    <string name="fragment_retries">Hissə təkrar cəhdləri</string>
+    <string name="format_order">Format Düzülüşü</string>
 </resources>
