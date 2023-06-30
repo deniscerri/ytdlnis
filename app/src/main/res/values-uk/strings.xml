@@ -273,4 +273,7 @@
     <string name="custom_audio_quality">Використовуйте спеціальну якість звуку</string>
     <string name="piped_instance">Конвеєрний екземпляр</string>
     <string name="piped_instance_summary">Напишіть сервер PIPED API, який програма може використовувати для запитів і форматів YouTube</string>
+    <string name="retries">Повторні спроби</string>
+    <string name="format_order">Порядок формату</string>
+    <string name="fragment_retries">Повторні спроби фрагмента</string>
 </resources>

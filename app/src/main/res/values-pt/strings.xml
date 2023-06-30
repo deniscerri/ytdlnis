@@ -11,7 +11,7 @@
     <string name="embed_thumb">Imagem de miniatura</string>
     <string name="ok">OK</string>
     <string name="you_are_in_latest_version">Está a utilizar a versão mais recente</string>
-    <string name="confirm_delete_history_desc">Remove, permanentemente, o histórico</string>
+    <string name="confirm_delete_history_desc">Excluir todo o histórico permanentemente</string>
     <string name="confirm_delete_history">Confirmação</string>
     <string name="command_directory">Pasta do comando personalizado</string>
     <string name="add_chapters">Capítulos dos vídeos</string>
@@ -273,4 +273,7 @@
     <string name="piped_instance">Instância do servidor Piped</string>
     <string name="piped_instance_summary">Escreva um servidor API PIPED, o aplicativo pode usar para consultas e formatos do YouTube</string>
     <string name="custom_audio_quality">Usar qualidade de áudio personalizada</string>
+    <string name="retries">Novas tentativas</string>
+    <string name="fragment_retries">Novas tentativas de fragmento</string>
+    <string name="format_order">Ordem do formato</string>
 </resources>
