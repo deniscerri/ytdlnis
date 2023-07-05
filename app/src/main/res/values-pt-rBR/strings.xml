@@ -274,4 +274,6 @@
     <string name="piped_instance">Instância do servidor Piped</string>
     <string name="piped_instance_summary">Escreva um servidor API PIPED, o aplicativo pode usar para consultas e formatos do YouTube</string>
     <string name="retries">Novas tentativas</string>
+    <string name="sponsorblock_outro">Outro</string>
+    <string name="sponsorblock">SponsorBlock</string>
 </resources>
