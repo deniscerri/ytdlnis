@@ -93,7 +93,7 @@
     <string name="select_sponsorblock_filtering">Wybierz filtrowanie SponsorBlock</string>
     <string name="sponsorblock_nonmusic">Części niezwiązane z muzyką i nie na temat</string>
     <string name="sponsorblock_sponsors">Sponsorzy</string>
-    <string name="sponsorblock_outro">Outro</string>
+    <string name="sponsorblock_outro">Inny</string>
     <string name="sponsorblock_promos">Promocje własne</string>
     <string name="sponsorblock_previews">Podglądy</string>
     <string name="sponsorblock_fillers">Wypełniacze</string>
@@ -197,7 +197,7 @@
     <string name="pure_theme_summary">Czysty czarno-biały motyw</string>
     <string name="blue">Niebieski</string>
     <string name="downloaded">"Pobrano: "</string>
-    <string name="material_you">Material You</string>
+    <string name="material_you">MaterialYou</string>
     <string name="finished_download_notification_channel_description">Powiadomienie o zakończonym lub błędnym pobieraniu</string>
     <string name="quick_download">Szybkie pobieranie</string>
     <string name="remove_audio">Usuń dźwięk</string>
@@ -233,7 +233,7 @@
     <string name="appearance">Wygląd</string>
     <string name="purple">Fioletowy</string>
     <string name="keep_cache">Zachowaj pamięć podręczną</string>
-    <string name="locale">Język</string>
+    <string name="locale">Lokalny</string>
     <string name="audio_only_item">Ten element zawiera tylko formaty audio</string>
     <string name="format_filtering_hint_2">Aby można było użyć tej opcji, wszystkie elementy muszą być audio lub wideo</string>
     <string name="subtitle_languages">Języki napisów</string>
