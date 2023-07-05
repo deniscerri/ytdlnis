@@ -41,7 +41,7 @@
     <string name="video">Video</string>
     <string name="concurrent_fragments_summary">Numri i fragmenteve të një videoje që duhen shkarkuar në të njëjtën kohë</string>
     <string name="concurrent_fragments">Fragmentet e njëkohëshme</string>
-    <string name="downloading">Shkarkimet</string>
+    <string name="downloading">Po shkarkohet</string>
     <string name="limit_rate">Limito Shpejtësinë</string>
     <string name="limit_rate_summary">Shpejtësia maksimale e shkarkimit (në byte për sekond), p.sh 50K ose 4.2M</string>
     <string name="aria2_summary">Përdor Aria2c si shkarkues në vend të atij normal</string>
@@ -88,7 +88,7 @@
     <string name="remove_downloading">Hiq në shkarkim</string>
     <string name="delete_file_too">Fshije skedarin nga paisja</string>
     <string name="incognito_summary">Shkarko pa histori shkarkimi</string>
-    <string name="configure_download">Konfiguro Shkarkimin</string>
+    <string name="configure_download">Rregullo shkarkimin</string>
     <string name="title">Titulli</string>
     <string name="author">Autori</string>
     <string name="download">Shkarko</string>
@@ -144,7 +144,7 @@
     <string name="error_restarting_download">Gabim në përpjekjen për të rifilluar shkarkimin</string>
     <string name="update_template">Redakto Modelin</string>
     <string name="create">Krijo</string>
-    <string name="update">Redakto</string>
+    <string name="update">Përditëso</string>
     <string name="preferred_download_type">Lloji i preferuar i Shkarkimit</string>
     <string name="preferred_download_type_summary">Tabi i zgjedhur nga karta e shkarkimit</string>
     <string name="confirm_delete_logs_desc">Fshi të gjithë listën e shënimeve, përgjithmmonë.</string>
@@ -271,9 +271,9 @@
     <string name="move_temporary_files_summary">Transfero skedarët e përkohshëm në dosjen e shkarkimeve</string>
     <string name="format_filtering_hint_2">Të gjithë artikujt duhet të jenë audio ose video për të përdorur këtë opsion</string>
     <string name="custom_audio_quality">Përdor cilësinë e personalizuar të audios</string>
-    <string name="piped_instance">Instanca e PIPED</string>
+    <string name="piped_instance">Shembull me tubacione</string>
     <string name="piped_instance_summary">Shkruani një Server API PIPED, aplikacioni mund të përdorë për kërkimet dhe formatet në youtube</string>
-    <string name="retries">Riprovimet</string>
-    <string name="fragment_retries">Riprovimet e fragmenteve</string>
-    <string name="format_order">Rradha e Formateve</string>
+    <string name="retries">Riprovon</string>
+    <string name="fragment_retries">Riprovimet e fragmentit</string>
+    <string name="format_order">Renditja e formatit</string>
 </resources>
