@@ -25,7 +25,7 @@
     <string name="Remove">Kaldır</string>
     <string name="ok">Tamam</string>
     <string name="cancel">İptal et</string>
-    <string name="confirm_delete_history_desc">Tüm geçmişi kalıcı olarak sil.</string>
+    <string name="confirm_delete_history_desc">Tüm geçmişi kalıcı olarak sil</string>
     <string name="confirm_delete_history">Onayla</string>
     <string name="search_history_hint">Geçmişten Ara</string>
     <string name="no_results">Sonuç yok</string>
@@ -45,11 +45,11 @@
     <string name="limit_rate_summary">Maksimum indirme hızı (bayt/saniye), örneğin 50K veya 4,2M</string>
     <string name="aria2_summary">İndirici olarak varsayılan yerine aria2c kullan</string>
     <string name="processing">İşleme</string>
-    <string name="embed_subs_summary">Videoya altyazı ekler</string>
+    <string name="embed_subs_summary">Videoya altyazı ekle</string>
     <string name="embed_thumb">Küçük Resim Kapaklar</string>
-    <string name="embed_thumb_summary">Küçük resmi kapak resmi olarak kullanır</string>
+    <string name="embed_thumb_summary">Küçük resmi kapak resmi olarak kullan</string>
     <string name="add_chapters">Videolardaki Bölümler</string>
-    <string name="add_chapters_summary">YouTube / SponsorBlock segmentlerini video için bölümler olarak işaretler</string>
+    <string name="add_chapters_summary">YouTube / SponsorBlock segmentlerini video için bölümler olarak işaretle</string>
     <string name="save_thumb">Küçük Resmi Kaydet</string>
     <string name="save_thumb_summary">Küçük resmi indirme klasörüne kaydet</string>
     <string name="audio_format">Ses Biçimi</string>
@@ -61,13 +61,13 @@
     <string name="command_download_notification_channel_name">Komut İndirmeleri</string>
     <string name="command_download_notification_channel_description">Yt-dlp komutu kullanarak indirme işlemi ilerleyişini gösteren bildirim</string>
     <string name="items_left">sol öğe(ler)</string>
-    <string name="history_is_empty">Geçmiş boş.</string>
+    <string name="history_is_empty">Geçmiş boş</string>
     <string name="you_are_going_to_delete">Siliniyor</string>
     <string name="url">URL</string>
     <string name="link_copied_to_clipboard">Panoya kopyalanan bağlantı</string>
     <string name="api_key">API Anahtarı Kullan</string>
     <string name="api_key_summary">YouTube\'dan daha hızlı sonuçlar</string>
-    <string name="update_app_summary">Açıldığında uygulamanın yeni sürümlerini bildirir</string>
+    <string name="update_app_summary">Açıldığında uygulamanın yeni sürümlerini bildir</string>
     <string name="downloads">İndirilenler</string>
     <string name="remove_deleted">Silinenleri Kaldır</string>
     <string name="remove_duplicates">Kopyaları Kaldır</string>
@@ -175,7 +175,7 @@
     <string name="update_formats">Biçimleri Güncelle</string>
     <string name="link_you_copied">Kopyaladığınız URL</string>
     <string name="worst_quality">En Kötü Kalite</string>
-    <string name="best_quality">En Iyi Kalite</string>
+    <string name="best_quality">En İyi Kalite</string>
     <string name="restrict_filenames">Dosya Adların Kısıtla</string>
     <string name="restrict_filenames_summary">Dosya adların yalnızca ASCII karakterleriyle sınırla ve dosya adlarında \"&amp;\" ve boşluklardan kaçının</string>
     <string name="kill_app">Uygulamayı Sonlandır</string>
@@ -277,4 +277,7 @@
     <string name="crop_thumb_summary">Ses indirmeleri için küçük resmi bir kareye kırpın</string>
     <string name="piped_instance_summary">Uygulamanın youtube sorguları ve biçimleri için kullanabileceği bir PIPED API Sunucusu yazın</string>
     <string name="search_suggestions_summary">Google\'dan arama önerileri alın</string>
+    <string name="retries">Yeniden Denemeler</string>
+    <string name="fragment_retries">Parça Tekrarları</string>
+    <string name="format_order">Biçim sırası</string>
 </resources>
