@@ -103,8 +103,8 @@
     <string name="redownload">Επανάληψη Λήψης</string>
     <string name="clear_errored">Αφαίρεση Εσφαλμένων</string>
     <string name="split_by_chapters">Διαχωρισμός Ανά Κεφάλαια</string>
-    <string name="home">Αρχική Σελίδα</string>
-    <string name="confirm_delete_history_desc">Διαγραφή όλου του ιστορικού, μόνιμα</string>
+    <string name="home">Αρχική</string>
+    <string name="confirm_delete_history_desc">Διαγραφή όλου του ιστορικού,μόνιμα</string>
     <string name="in_queue">Στην Ουρά</string>
     <string name="confirm_delete_logs_desc">Διαγραφή ολόκληρης της λίστας αρχείων καταγραφής, μόνιμα.</string>
     <string name="all_items_selected">Όλα τα στοιχεία επιλέχθηκαν</string>
@@ -118,15 +118,15 @@
     <string name="directories">Φάκελοι</string>
     <string name="remove_all">Αφαίρεση Όλων</string>
     <string name="remove_results">Εκκαθάριση Αποτελεσμάτων</string>
-    <string name="download_all">Κατέβασμα Όλων</string>
+    <string name="download_all">Λήψη Όλων</string>
     <string name="settings">Ρυθμίσεις</string>
     <string name="video_directory">Φάκελος Βίντεο</string>
-    <string name="updating">Ενημέρωση</string>
+    <string name="updating">Γίνεται Ενημέρωση</string>
     <string name="ytdl_update_hint">Χρήσιμο αν αντιμετωπίζετε προβλήματα με τις λήψεις</string>
     <string name="update_ytdl">Εγκατάσταση νέας έκδοσης του yt-dlp</string>
     <string name="about">Περί</string>
     <string name="source_code">Πηγαίος Κώδικας</string>
-    <string name="search_hint">Αναζήτηση ή Εισαγωγή Συνδέσμου</string>
+    <string name="search_hint">Αναζήτηση ή Εισαγωγή URL</string>
     <string name="failed_download">Αδύνατη η λήψη του αρχείου.</string>
     <string name="download_notification_channel_name">Λήψεις Αρχείων</string>
     <string name="download_notification_channel_description">Ειδοποίηση που δείχνει την πρόοδο της λήψης αρχείων ήχου και εικόνας</string>
@@ -273,4 +273,7 @@
     <string name="custom_audio_quality">Χρήση Προσαρμοσμένης Ποιότητας Ήχου</string>
     <string name="piped_instance_summary">Γράψε έναν διακομιστή API PIPED που η εφαρμογή μπορεί να χρησιμοποιήσει για ερωτήματα και μορφές YouTube</string>
     <string name="clear_temporary_files_summary">Διαγραφή προσωρινά αποθηκευμένων αρχείων από λήψεις που έχουν καταρρεύσει/έχουν σφάλματα/έχουν ακυρωθεί</string>
+    <string name="retries">Προσπάθειες</string>
+    <string name="fragment_retries">Προσπάθειες Θραυσμάτων</string>
+    <string name="format_order">Σειρά Μορφών</string>
 </resources>

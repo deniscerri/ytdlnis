@@ -273,4 +273,7 @@
     <string name="swipe_gestures_summary">Streichen von Elementen für bestimmte Aktionen</string>
     <string name="crop_thumb">Vorschaubild zuschneiden</string>
     <string name="piped_instance_summary">Schreiben eines PIPED API Servers, den die App für YouTube Abfragen und Formate nutzen kann</string>
+    <string name="retries">Wiederholungen</string>
+    <string name="fragment_retries">Fragment-Wiederholungen</string>
+    <string name="format_order">Format-Reihenfolge</string>
 </resources>

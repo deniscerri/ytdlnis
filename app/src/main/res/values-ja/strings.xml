@@ -273,4 +273,7 @@
     <string name="swipe_gestures_summary">項目をスワイプで特定の操作をします</string>
     <string name="crop_thumb">サムネイルをクロップ</string>
     <string name="crop_thumb_summary">音声のダウンロード用にサムネイルを正方形に切り抜きます</string>
+    <string name="retries">再試行</string>
+    <string name="format_order">フォーマット順</string>
+    <string name="fragment_retries">分割ダウンロードの再試行</string>
 </resources>
