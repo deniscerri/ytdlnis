@@ -18,8 +18,6 @@ import com.deniscerri.ytdlnis.adapter.ActiveDownloadAdapter
 import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.repository.DownloadRepository
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
-import com.deniscerri.ytdlnis.databinding.FragmentHomeBinding
-import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.NotificationUtil
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.yausername.youtubedl_android.YoutubeDL
@@ -98,10 +96,9 @@ class ActiveDownloadsFragment : Fragment(), ActiveDownloadAdapter.OnItemClickLis
     }
 
     override fun onOutputClick(item: DownloadItem) {
-        val logFile = FileUtil.getLogFile(requireContext(), item)
-        if (logFile.exists()) {
+        if (item.logID != null) {
             val bundle = Bundle()
-            bundle.putString("logpath", logFile.absolutePath)
+            bundle.putLong("logID", item.logID!!)
             findNavController().navigate(
                 R.id.downloadLogFragment,
                 bundle

@@ -32,5 +32,6 @@ data class DownloadItem(
     @ColumnInfo(defaultValue = "Queued")
     var status: String,
     @ColumnInfo(defaultValue = "0")
-    var downloadStartTime: Long
+    var downloadStartTime: Long,
+    var logID: Long?
 )

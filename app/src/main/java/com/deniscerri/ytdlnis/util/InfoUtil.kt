@@ -279,48 +279,51 @@ class InfoUtil(private val context: Context) {
             val thumb = "https://i.ytimg.com/vi/$id/hqdefault.jpg"
             val url = "https://www.youtube.com/watch?v=$id"
             val formats : ArrayList<Format> = ArrayList()
-            if (obj.has("audioStreams")){
-                val formatsInJSON = obj.getJSONArray("audioStreams")
-                for (f in 0 until formatsInJSON.length()){
-                    val format = formatsInJSON.getJSONObject(f)
-                    if (format.getInt("bitrate") == 0) continue
-                    val formatObj = Gson().fromJson(format.toString(), Format::class.java)
-                    try{
-                        formatObj.acodec = format.getString("codec")
-                        formatObj.asr = format.getString("quality")
-                        if (! format.getString("audioTrackName").equals("null", ignoreCase = true)){
-                            formatObj.format_note = format.getString("audioTrackName") + " Audio, " + formatObj.format_note
-                        }else{
-                            formatObj.format_note = formatObj.format_note + " Audio"
+
+            if(sharedPreferences.getString("formats_source", "yt-dlp") == "piped"){
+                if (obj.has("audioStreams")){
+                    val formatsInJSON = obj.getJSONArray("audioStreams")
+                    for (f in 0 until formatsInJSON.length()){
+                        val format = formatsInJSON.getJSONObject(f)
+                        if (format.getInt("bitrate") == 0) continue
+                        val formatObj = Gson().fromJson(format.toString(), Format::class.java)
+                        try{
+                            formatObj.acodec = format.getString("codec")
+                            formatObj.asr = format.getString("quality")
+                            if (! format.getString("audioTrackName").equals("null", ignoreCase = true)){
+                                formatObj.format_note = format.getString("audioTrackName") + " Audio, " + formatObj.format_note
+                            }else{
+                                formatObj.format_note = formatObj.format_note + " Audio"
+                            }
+
+                        }catch (e: Exception) {
+                            e.printStackTrace()
                         }
-
-                    }catch (e: Exception) {
-                        e.printStackTrace()
+                        formats.add(formatObj)
                     }
-                    formats.add(formatObj)
                 }
-            }
 
-            if (obj.has("videoStreams")){
-                val formatsInJSON = obj.getJSONArray("videoStreams")
-                for (f in 0 until formatsInJSON.length()){
-                    val format = formatsInJSON.getJSONObject(f)
-                    if (format.getInt("bitrate") == 0) continue
-                    val formatObj = Gson().fromJson(format.toString(), Format::class.java)
-                    try{
-                        formatObj.vcodec = format.getString("codec")
-                    }catch (e: Exception) {
-                        e.printStackTrace()
+                if (obj.has("videoStreams")){
+                    val formatsInJSON = obj.getJSONArray("videoStreams")
+                    for (f in 0 until formatsInJSON.length()){
+                        val format = formatsInJSON.getJSONObject(f)
+                        if (format.getInt("bitrate") == 0) continue
+                        val formatObj = Gson().fromJson(format.toString(), Format::class.java)
+                        try{
+                            formatObj.vcodec = format.getString("codec")
+                        }catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                        formats.add(formatObj)
                     }
-                    formats.add(formatObj)
                 }
-            }
-            formats.sortBy { it.filesize }
-            formats.groupBy { it.format_id }.forEach {
-                if (it.value.count() > 1) {
-                    it.value.filter { f-> !f.format_note.contains("original", true) }.forEachIndexed { index, format -> format.format_id = format.format_id.split("-")[0] + "-${index}" }
-                    val engDefault = it.value.find { f -> f.format_note.contains("original", true) }
-                    engDefault?.format_id = (engDefault?.format_id?.split("-")?.get(0) ?: "") + "-${it.value.size-1}"
+                formats.sortBy { it.filesize }
+                formats.groupBy { it.format_id }.forEach {
+                    if (it.value.count() > 1) {
+                        it.value.filter { f-> !f.format_note.contains("original", true) }.forEachIndexed { index, format -> format.format_id = format.format_id.split("-")[0] + "-${index}" }
+                        val engDefault = it.value.find { f -> f.format_note.contains("original", true) }
+                        engDefault?.format_id = (engDefault?.format_id?.split("-")?.get(0) ?: "") + "-${it.value.size-1}"
+                    }
                 }
             }
 

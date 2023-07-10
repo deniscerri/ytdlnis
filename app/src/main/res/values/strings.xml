@@ -282,4 +282,6 @@
     <string name="retries">Retries</string>
     <string name="fragment_retries">Fragment Retries</string>
     <string name="format_order">Format Order</string>
+    <string name="force_keyframes">Force Keyframes At Cuts</string>
+    <string name="force_keyframes_summary">Accurate Video Cuts. Slower</string>
 </resources>

@@ -10,11 +10,11 @@ def properties = new Properties()
 def versionMajor = 1
 def versionMinor = 6
 def versionPatch = 3
-def versionBuild = 2 // bump for dogfood builds, public betas, etc.
+def versionBuild = 4 // bump for dogfood builds, public betas, etc.
 def versionExt = ""
 
 if (versionBuild > 0){
-    versionExt = ".${versionBuild}-beta"
+    versionExt = ".${versionBuild}"
 }
 
 android {
@@ -72,7 +72,8 @@ android {
 
         beta {
             minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             debuggable false
             signingConfig signingConfigs.debug
         }

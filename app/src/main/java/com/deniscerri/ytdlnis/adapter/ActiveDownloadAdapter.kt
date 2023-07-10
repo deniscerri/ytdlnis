@@ -84,6 +84,7 @@ class ActiveDownloadAdapter(onItemClickListener: OnItemClickListener, activity: 
             if (item.author.isNotEmpty()) info += " • "
             info += item.duration
         }
+        author.text = info
 
         val type = card.findViewById<MaterialButton>(R.id.download_type)
         when(item.type){
@@ -93,7 +94,7 @@ class ActiveDownloadAdapter(onItemClickListener: OnItemClickListener, activity: 
         }
 
         val formatDetailsChip = card.findViewById<Chip>(R.id.format_note)
-        val formatDetailsText = StringBuilder(item.format.format_note.uppercase()+"\t")
+        val formatDetailsText = StringBuilder(item.format.format_note.uppercase())
 
         val codecText =
             if (item.format.encoding != "") {
@@ -104,11 +105,11 @@ class ActiveDownloadAdapter(onItemClickListener: OnItemClickListener, activity: 
                 item.format.acodec.uppercase()
             }
         if (codecText != "" && codecText != "none"){
-            formatDetailsText.append("\t|\t$codecText")
+            formatDetailsText.append(" \t •\t $codecText")
         }
 
         val fileSize = FileUtil.convertFileSize(item.format.filesize)
-        if (fileSize != "?") formatDetailsText.append("\t|\t$fileSize")
+        if (fileSize != "?") formatDetailsText.append(" \t •\t $fileSize")
 
         formatDetailsChip.text = formatDetailsText
 

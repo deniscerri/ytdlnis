@@ -2,7 +2,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <PreferenceCategory android:title="@string/locale">
+    <PreferenceCategory android:title="@string/appearance">
         <ListPreference
             android:entries="@array/language_values"
             android:entryValues="@array/language_values"
@@ -11,18 +11,7 @@
             app:summary="en"
             app:title="@string/language" />
 
-        <ListPreference
-            android:defaultValue=""
-            android:entries="@array/countries"
-            android:entryValues="@array/countries_values"
-            app:icon="@drawable/ic_language"
-            app:useSimpleSummaryProvider="true"
-            app:dependency="home_recommendations"
-            app:key="locale"
-            app:title="@string/preferred_locale" />
-    </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/appearance">
         <ListPreference
             android:entries="@array/themes"
             android:entryValues="@array/themes_values"
@@ -59,6 +48,17 @@
             android:key="home_recommendations"
             app:summary="@string/video_recommendations_summary"
             app:title="@string/video_recommendations" />
+
+
+        <ListPreference
+            android:defaultValue=""
+            android:entries="@array/countries"
+            android:entryValues="@array/countries_values"
+            app:icon="@drawable/ic_language"
+            app:useSimpleSummaryProvider="true"
+            app:dependency="home_recommendations"
+            app:key="locale"
+            app:title="@string/preferred_locale" />
 
         <ListPreference
             android:defaultValue="Home"

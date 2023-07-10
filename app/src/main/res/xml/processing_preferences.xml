@@ -62,6 +62,14 @@
 
     <SwitchPreferenceCompat
         android:widgetLayout="@layout/preferece_material_switch"
+        app:defaultValue="false"
+        app:icon="@drawable/ic_cut"
+        app:key="force_keyframes"
+        app:summary="@string/force_keyframes_summary"
+        app:title="@string/force_keyframes" />
+
+    <SwitchPreferenceCompat
+        android:widgetLayout="@layout/preferece_material_switch"
         app:defaultValue="true"
         app:icon="@drawable/ic_chapters"
         app:key="add_chapters"

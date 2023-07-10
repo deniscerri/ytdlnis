@@ -12,9 +12,10 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdlnis.R
+import com.deniscerri.ytdlnis.database.models.LogItem
 import java.io.File
 
-class DownloadLogsAdapter(onItemClickListener: OnItemClickListener, activity: Activity) : ListAdapter<File?, DownloadLogsAdapter.ViewHolder>(AsyncDifferConfig.Builder(DIFF_CALLBACK).build()) {
+class DownloadLogsAdapter(onItemClickListener: OnItemClickListener, activity: Activity) : ListAdapter<LogItem?, DownloadLogsAdapter.ViewHolder>(AsyncDifferConfig.Builder(DIFF_CALLBACK).build()) {
     private val onItemClickListener: OnItemClickListener
     private val activity: Activity
 
@@ -42,7 +43,7 @@ class DownloadLogsAdapter(onItemClickListener: OnItemClickListener, activity: Ac
         val card = holder.item
 
         val title = card.findViewById<TextView>(R.id.title)
-        title.text = item?.name
+        title.text = item?.title
 
         val delete = card.findViewById<Button>(R.id.delete)
 
@@ -56,18 +57,18 @@ class DownloadLogsAdapter(onItemClickListener: OnItemClickListener, activity: Ac
     }
 
     interface OnItemClickListener {
-        fun onItemClick(file: File)
-        fun onDeleteClick(file: File)
+        fun onItemClick(item: LogItem)
+        fun onDeleteClick(item: LogItem)
     }
 
     companion object {
-        private val DIFF_CALLBACK: DiffUtil.ItemCallback<File> = object : DiffUtil.ItemCallback<File>() {
-            override fun areItemsTheSame(oldItem: File, newItem: File): Boolean {
-                return oldItem == newItem
+        private val DIFF_CALLBACK: DiffUtil.ItemCallback<LogItem> = object : DiffUtil.ItemCallback<LogItem>() {
+            override fun areItemsTheSame(oldItem: LogItem, newItem: LogItem): Boolean {
+                return oldItem.id == newItem.id
             }
 
-            override fun areContentsTheSame(oldItem: File, newItem: File): Boolean {
-                return oldItem.absolutePath == newItem.absolutePath
+            override fun areContentsTheSame(oldItem: LogItem, newItem: LogItem): Boolean {
+                return oldItem.content == newItem.content
             }
         }
     }

@@ -34,7 +34,6 @@ import com.deniscerri.ytdlnis.database.viewmodel.CookieViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.HistoryViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.ResultViewModel
-import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.UpdateUtil
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
@@ -65,6 +64,7 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
     private lateinit var cookieViewModel: CookieViewModel
     private lateinit var commandTemplateViewModel: CommandTemplateViewModel
 
+    private var arch: Preference? = null
     private var version: Preference? = null
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
@@ -200,7 +200,7 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
             }
 
         version = findPreference("version")
-        version!!.summary = BuildConfig.VERSION_NAME
+        version!!.summary = "${BuildConfig.VERSION_NAME} [${Build.SUPPORTED_ABIS[0]}] ${BuildConfig.BUILD_TYPE}"
 
         version!!.onPreferenceClickListener =
             Preference.OnPreferenceClickListener {
@@ -223,11 +223,13 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
             val prefs = preferences.all
             val arr = JsonArray()
             prefs.forEach {
-                val obj = JsonObject()
-                obj.addProperty("key", it.key)
-                obj.addProperty("value", it.value.toString())
-                obj.addProperty("type", it.value!!::class.simpleName)
-                arr.add(obj)
+                if (it.key != "app_language"){
+                    val obj = JsonObject()
+                    obj.addProperty("key", it.key)
+                    obj.addProperty("value", it.value.toString())
+                    obj.addProperty("type", it.value!!::class.simpleName)
+                    arr.add(obj)
+                }
             }
             return arr
         }

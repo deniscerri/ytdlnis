@@ -19,6 +19,7 @@ import com.deniscerri.ytdlnis.receiver.PauseDownloadNotificationReceiver
 import com.deniscerri.ytdlnis.receiver.ResumeActivity
 import com.deniscerri.ytdlnis.receiver.ShareFileActivity
 import java.io.File
+import kotlin.math.log
 
 
 class NotificationUtil(var context: Context) {
@@ -231,13 +232,15 @@ class NotificationUtil(var context: Context) {
 
     fun createDownloadErrored(title: String?,
                                error: String?,
-                               logFile: File?,
+                               logID: Long?,
                                channel: String
     ) {
         val notificationBuilder = getBuilder(channel)
 
         val bundle = Bundle()
-        bundle.putString("logpath", logFile?.absolutePath)
+        if (logID != null){
+            bundle.putLong("logID", logID)
+        }
 
         val errorPendingIntent = NavDeepLinkBuilder(context)
             .setGraph(R.navigation.nav_graph)
@@ -268,7 +271,7 @@ class NotificationUtil(var context: Context) {
             .setPriority(NotificationCompat.PRIORITY_MAX)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .clearActions()
-        if (logFile != null){
+        if (logID != null){
             notificationBuilder.setContentIntent(errorPendingIntent)
             notificationBuilder.addAction(0, context.getString(R.string.logs), errorPendingIntent)
         }

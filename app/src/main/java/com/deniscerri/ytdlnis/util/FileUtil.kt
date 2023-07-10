@@ -152,25 +152,6 @@ object FileUtil {
         return listOf(context.getString(R.string.unfound_file))
     }
 
-    fun getLogFile(context: Context, item: DownloadItem) : File {
-        val titleRegex = Regex("[^A-Za-z\\d ]")
-        val title = item.title.ifEmpty { item.url }
-        return File(context.filesDir.absolutePath + """/logs/${item.id} - ${titleRegex.replace(title, "").take(150)}##${item.type}##${item.format.format_id}.log""")
-    }
-
-    fun checkLogFileExists(context: Context, item: DownloadItem) : File? {
-        return try {
-            val dir = File(context.filesDir.absolutePath + "/logs/")
-            dir.listFiles()?.toList()?.first { it.name.startsWith(item.id.toString()) }
-        }catch (e: Exception){
-            null
-        }
-    }
-
-    fun getLogFileForTerminal(context: Context, command: String) : File {
-        val titleRegex = Regex("[^A-Za-z\\d ]")
-        return File(context.filesDir.absolutePath + """/logs/Terminal - ${titleRegex.replace(command.take(30), "")}##terminal.log""")
-    }
 
     fun getDefaultAudioPath() : String{
         return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).absolutePath + File.separator + "YTDLnis/Audio"

@@ -30,7 +30,7 @@
         app:title="@string/update_formats" />
 
     <ListPreference
-        android:defaultValue="yt-dlp"
+        android:defaultValue="piped"
         android:entries="@array/formats_source"
         android:entryValues="@array/formats_source_values"
         android:icon="@drawable/baseline_manage_search_24"
@@ -49,7 +49,7 @@
 
     <EditTextPreference
         app:key="piped_instance"
-        app:defaultValue="https://pipedapi.kavin.rocks"
+        app:defaultValue="https://pipedapi.syncpundit.io"
         android:summary="@string/piped_instance_summary"
         app:title="@string/piped_instance" />
 

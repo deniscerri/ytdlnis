@@ -1,9 +1,7 @@
 package com.deniscerri.ytdlnis.ui.more.downloadLogs
 
 import android.content.DialogInterface
-import android.os.Build
 import android.os.Bundle
-import android.os.FileObserver
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -11,12 +9,15 @@ import android.view.ViewGroup
 import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.adapter.DownloadLogsAdapter
+import com.deniscerri.ytdlnis.database.models.LogItem
+import com.deniscerri.ytdlnis.database.viewmodel.LogViewModel
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.io.File
@@ -28,8 +29,9 @@ class DownloadLogListFragment : Fragment(), DownloadLogsAdapter.OnItemClickListe
     private lateinit var noResults: RelativeLayout
     private lateinit var fileList: MutableList<File>
     private lateinit var topAppBar: MaterialToolbar
-    private lateinit var logFolder : File
     private lateinit var mainActivity: MainActivity
+    private lateinit var logViewModel: LogViewModel
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -56,32 +58,17 @@ class DownloadLogListFragment : Fragment(), DownloadLogsAdapter.OnItemClickListe
         noResults = view.findViewById(R.id.no_results)
         noResults.visibility = View.GONE
 
-        logFolder = File(requireContext().filesDir.absolutePath + "/logs")
-        updateList(logFolder)
-
-        if(Build.VERSION.SDK_INT < 29){
-            val observer: FileObserver = object : FileObserver(logFolder.absolutePath) {
-                override fun onEvent(event: Int, path: String?) {
-                    when(event) {
-                        CREATE, DELETE -> updateList(logFolder)
-                    }
-                }
-            }
-            observer.startWatching()
-        }else{
-            val observer: FileObserver = object : FileObserver(logFolder) {
-                override fun onEvent(event: Int, path: String?) {
-                    when(event) {
-                        CREATE, DELETE -> updateList(logFolder)
-                    }
-                }
-            }
-            observer.startWatching()
+        logViewModel = ViewModelProvider(this)[LogViewModel::class.java]
+        logViewModel.items.observe(viewLifecycleOwner) {
+            if (it.isEmpty()) noResults.visibility = View.VISIBLE
+            else noResults.visibility = View.GONE
+            downloadLogAdapter.submitList(it)
         }
-        initMenu(logFolder)
+
+        initMenu()
     }
 
-    private fun initMenu(logFolder: File) {
+    private fun initMenu() {
         topAppBar.setOnMenuItemClickListener { m: MenuItem ->
             val itemId = m.itemId
             if (itemId == R.id.remove_logs) {
@@ -91,11 +78,7 @@ class DownloadLogListFragment : Fragment(), DownloadLogsAdapter.OnItemClickListe
                     deleteDialog.setMessage(getString(R.string.confirm_delete_logs_desc))
                     deleteDialog.setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, _: Int -> dialogInterface.cancel() }
                     deleteDialog.setPositiveButton(getString(R.string.ok)) { _: DialogInterface?, _: Int ->
-                        logFolder.listFiles()!!.forEach {
-                            it.delete()
-                        }.run {
-                            updateList(logFolder)
-                        }
+                        logViewModel.deleteAll()
                     }
                     deleteDialog.show()
                 }catch (e: Exception){
@@ -106,43 +89,22 @@ class DownloadLogListFragment : Fragment(), DownloadLogsAdapter.OnItemClickListe
         }
     }
 
-    private fun updateList(logFolder: File){
-        fileList = mutableListOf()
-        try{
-            fileList.addAll(logFolder.listFiles()!!)
-            fileList.sortByDescending { it.lastModified()}
-        }catch (e: Exception){
-            e.printStackTrace()
-        }
-        downloadLogAdapter.submitList(fileList.toList())
-        mainActivity.runOnUiThread{
-            if (fileList.isNotEmpty()) {
-                noResults.visibility = View.GONE
-                topAppBar.menu.findItem(R.id.remove_logs).isVisible = true
-            }else{
-                topAppBar.menu.findItem(R.id.remove_logs).isVisible = false
-                noResults.visibility = View.VISIBLE
-            }
-        }
-    }
-
-    override fun onItemClick(file: File) {
+    override fun onItemClick(item: LogItem) {
         val bundle = Bundle()
-        bundle.putString("logpath", file.absolutePath)
+        bundle.putLong("logID", item.id)
         findNavController().navigate(
             R.id.downloadLogFragment,
             bundle
         )
     }
 
-    override fun onDeleteClick(file: File) {
+    override fun onDeleteClick(item: LogItem) {
         val deleteDialog = MaterialAlertDialogBuilder(requireContext())
-        deleteDialog.setTitle(getString(R.string.you_are_going_to_delete) + " \"" + file.name + "\"!")
+        deleteDialog.setTitle(getString(R.string.you_are_going_to_delete) + " \"" + item.title + "\"!")
         deleteDialog.setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, _: Int -> dialogInterface.cancel() }
         deleteDialog.setPositiveButton(getString(R.string.ok)) { _: DialogInterface?, _: Int ->
-            file.delete().run {
-                updateList(logFolder)
-            }
+            logViewModel.delete(item)
+
         }
         deleteDialog.show()
     }

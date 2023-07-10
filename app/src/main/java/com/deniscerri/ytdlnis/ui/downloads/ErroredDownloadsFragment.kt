@@ -30,7 +30,6 @@ import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.adapter.GenericDownloadAdapter
 import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
-import com.deniscerri.ytdlnis.databinding.FragmentHomeBinding
 import com.deniscerri.ytdlnis.ui.downloadcard.DownloadBottomSheetDialog
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.UiUtil
@@ -42,7 +41,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
 import kotlinx.coroutines.runBlocking
-import java.io.File
 
 
 class ErroredDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickListener, OnItemClickListener {
@@ -93,10 +91,9 @@ class ErroredDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickL
 
     override fun onActionButtonClick(itemID: Long) {
         val item = items.find { it.id == itemID } ?: return
-        val logFile = FileUtil.getLogFile(requireContext(), item)
-        if (logFile.exists()) {
+        if (item.logID != null) {
             val bundle = Bundle()
-            bundle.putString("logpath", logFile.absolutePath)
+            bundle.putLong("logID", item.logID!!)
             findNavController().navigate(
                 R.id.downloadLogFragment,
                 bundle

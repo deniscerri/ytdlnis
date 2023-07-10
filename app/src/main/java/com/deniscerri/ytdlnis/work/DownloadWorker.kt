@@ -1,7 +1,6 @@
 package com.deniscerri.ytdlnis.work
 
 import android.content.Context
-import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
@@ -19,7 +18,9 @@ import com.deniscerri.ytdlnis.database.dao.DownloadDao
 import com.deniscerri.ytdlnis.database.dao.ResultDao
 import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.models.HistoryItem
+import com.deniscerri.ytdlnis.database.models.LogItem
 import com.deniscerri.ytdlnis.database.repository.DownloadRepository
+import com.deniscerri.ytdlnis.database.repository.LogRepository
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.InfoUtil
@@ -48,6 +49,7 @@ class DownloadWorker(
         val repository = DownloadRepository(dao)
         val historyDao = dbManager.historyDao
         val resultDao = dbManager.resultDao
+        val logRepo = LogRepository(dbManager.logDao)
         val handler = Handler(Looper.getMainLooper())
 
 
@@ -91,16 +93,6 @@ class DownloadWorker(
         val tempFileDir = File(context.cacheDir.absolutePath + "/downloads/" + downloadItem.id)
         tempFileDir.delete()
         tempFileDir.mkdirs()
-
-        var useCacheFolder = true
-        val downloadLocationFile = File(downloadLocation)
-        if (downloadLocationFile.canWrite()) {
-            File(downloadLocation).mkdirs()
-            if(Build.VERSION.SDK_INT > 23) request.addOption("-P", "temp:" + tempFileDir.absolutePath)
-            useCacheFolder = false
-        }
-        val pathUsed = if (useCacheFolder) tempFileDir.absolutePath else downloadLocation
-
 
         val aria2 = sharedPreferences.getBoolean("aria2", false)
         if (aria2) {
@@ -159,6 +151,10 @@ class DownloadWorker(
                         request.addOption("--download-sections", "*$it")
                     else
                         request.addOption("--download-sections", it)
+
+                    if (sharedPreferences.getBoolean("force_keyframes", false)){
+                        request.addOption("--force-keyframes-at-cuts")
+                    }
                 }
                 downloadItem.customFileNameTemplate += " %(section_title)s %(autonumber)s"
                 request.addOption("--output-na-placeholder", " ")
@@ -233,9 +229,9 @@ class DownloadWorker(
 
                 if (downloadItem.audioPreferences.splitByChapters && downloadItem.downloadSections.isBlank()){
                     request.addOption("--split-chapters")
-                    request.addOption("-P", pathUsed)
+                    request.addOption("-P", tempFileDir.absolutePath)
                 }else{
-                    request.addOption("-o", pathUsed + "/${downloadItem.customFileNameTemplate}.%(ext)s")
+                    request.addOption("-o", tempFileDir.absolutePath + "/${downloadItem.customFileNameTemplate}.%(ext)s")
                 }
 
             }
@@ -262,7 +258,7 @@ class DownloadWorker(
                     else if (videoFormatID == context.resources.getString(R.string.worst_quality) || videoFormatID == "worst") videoFormatID = "worst"
                     else if (defaultFormats.contains(videoFormatID)) videoFormatID = "bestvideo[height<="+videoFormatID.substring(0, videoFormatID.length -1)+"]"
 
-                    formatArgument = if (downloadItem.videoPreferences.audioFormatIDs.isNotEmpty()){
+                    formatArgument = if (downloadItem.videoPreferences.audioFormatIDs.isNotEmpty() && ! downloadItem.videoPreferences.removeAudio){
                         val audioIds = downloadItem.videoPreferences.audioFormatIDs.joinToString("+")
                         "$videoFormatID+$audioIds/best/$videoFormatID"
                     }else{
@@ -292,16 +288,15 @@ class DownloadWorker(
                     }
                 }
 
-                if (downloadItem.videoPreferences.removeAudio &&
-                    (downloadItem.format.acodec.isNotEmpty() && downloadItem.format.acodec != "none")){
+                if (downloadItem.videoPreferences.removeAudio){
                     request.addOption("--ppa", "ffmpeg:-an")
                 }
 
                 if (downloadItem.videoPreferences.splitByChapters  && downloadItem.downloadSections.isBlank()){
                     request.addOption("--split-chapters")
-                    request.addOption("-P", pathUsed)
+                    request.addOption("-P", tempFileDir.absolutePath)
                 }else{
-                    request.addOption("-o", pathUsed + "/${downloadItem.customFileNameTemplate}.%(ext)s")
+                    request.addOption("-o", tempFileDir.absolutePath + "/${downloadItem.customFileNameTemplate}.%(ext)s")
                 }
 
             }
@@ -312,24 +307,32 @@ class DownloadWorker(
                         writeText(downloadItem.format.format_note)
                     }.absolutePath
                 )
-                request.addOption("-P", pathUsed)
+                request.addOption("-P", tempFileDir.absolutePath)
 
             }
         }
 
         val logDownloads = sharedPreferences.getBoolean("log_downloads", false) && !sharedPreferences.getBoolean("incognito", false)
-        val logFolder = File(context.filesDir.absolutePath + "/logs")
-        val logFile = FileUtil.getLogFile(context, downloadItem)
 
-        if (logDownloads){
-            logFolder.mkdirs()
-            logFile.createNewFile()
-            logFile.writeText("Downloading:\n" +
+        val logItem = LogItem(
+            0,
+            downloadItem.title,
+            "Downloading:\n" +
                     "Title: ${downloadItem.title}\n" +
                     "URL: ${downloadItem.url}\n" +
                     "Type: ${downloadItem.type}\n" +
                     "Format: ${downloadItem.format}\n\n" +
-                    "Command: ${java.lang.String.join(" ", request.buildCommand())}\n\n")
+                    "Command: ${java.lang.String.join(" ", request.buildCommand())}\n\n"
+        )
+
+
+        if (logDownloads){
+            runBlocking {
+                logItem.id = logRepo.insert(logItem)
+                downloadItem.logID = logItem.id
+                dao.update(downloadItem)
+            }
+
         }
         runCatching {
             YoutubeDL.getInstance().execute(request, downloadItem.id.toString()){ progress, _, line ->
@@ -340,48 +343,41 @@ class DownloadWorker(
                     line, progress.toInt(), 0, title,
                     NotificationUtil.DOWNLOAD_SERVICE_CHANNEL_ID
                 )
-                if (logDownloads && logFile.exists()){
-                    logFile.appendText("${line}\n")
+                if (logDownloads){
+                    CoroutineScope(Dispatchers.IO).launch {
+                        logRepo.update(line, logItem.id)
+                    }
                 }
             }
         }.onSuccess {
             val wasQuickDownloaded = updateDownloadItem(downloadItem, infoUtil, dao, resultDao)
-            var finalPaths: List<String>
-            if (useCacheFolder){
-                //move file from internal to set download directory
-                setProgressAsync(workDataOf("progress" to 100, "output" to "Moving file to ${FileUtil.formatPath(downloadLocation)}", "id" to downloadItem.id, "log" to logDownloads))
-                try {
-                    finalPaths = FileUtil.moveFile(tempFileDir.absoluteFile,context, downloadLocation, keepCache){ p ->
-                        setProgressAsync(workDataOf("progress" to p, "output" to "Moving file to ${FileUtil.formatPath(downloadLocation)}", "id" to downloadItem.id, "log" to logDownloads))
-                    }
-                    if (finalPaths.isNotEmpty()){
-                        setProgressAsync(workDataOf("progress" to 100, "output" to "Moved file to $downloadLocation", "id" to downloadItem.id, "log" to logDownloads))
-                    }else{
-                        finalPaths = listOf(context.getString(R.string.unfound_file))
-                    }
-                }catch (e: Exception){
-                    finalPaths = listOf(context.getString(R.string.unfound_file))
-                    e.printStackTrace()
-                    handler.postDelayed({
-                        Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
-                    }, 1000)
-                }
-            }else{
-                val now = System.currentTimeMillis()
-                finalPaths = downloadLocationFile
-                    .walkTopDown()
-                    .filter { it.isFile && it.absolutePath.contains(downloadItem.title) && it.lastModified() > now - 10000000}
-                    .map { it.absolutePath }
-                    .toList()
 
-                if (finalPaths.isEmpty()) finalPaths = listOf(context.getString(R.string.unfound_file))
+            var finalPaths : List<String>?
+            //move file from internal to set download directory
+            setProgressAsync(workDataOf("progress" to 100, "output" to "Moving file to ${FileUtil.formatPath(downloadLocation)}", "id" to downloadItem.id, "log" to logDownloads))
+            try {
+                finalPaths = FileUtil.moveFile(tempFileDir.absoluteFile,context, downloadLocation, keepCache){ p ->
+                    setProgressAsync(workDataOf("progress" to p, "output" to "Moving file to ${FileUtil.formatPath(downloadLocation)}", "id" to downloadItem.id, "log" to logDownloads))
+                }
+                if (finalPaths.isNotEmpty()){
+                    setProgressAsync(workDataOf("progress" to 100, "output" to "Moved file to $downloadLocation", "id" to downloadItem.id, "log" to logDownloads))
+                }else{
+                    finalPaths = listOf(context.getString(R.string.unfound_file))
+                }
+            }catch (e: Exception){
+                finalPaths = listOf(context.getString(R.string.unfound_file))
+                e.printStackTrace()
+                handler.postDelayed({
+                    Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
+                }, 1000)
             }
+
 
             //put download in history
             val incognito = sharedPreferences.getBoolean("incognito", false)
             if (!incognito) {
                 val unixtime = System.currentTimeMillis() / 1000
-                val file = File(finalPaths.first()!!)
+                val file = File(finalPaths?.first()!!)
                 downloadItem.format.filesize = file.length()
                 val historyItem = HistoryItem(0, downloadItem.url, downloadItem.title, downloadItem.author, downloadItem.duration, downloadItem.thumb, downloadItem.type, unixtime, finalPaths.first() , downloadItem.website, downloadItem.format, downloadItem.id)
                 runBlocking {
@@ -421,8 +417,12 @@ class DownloadWorker(
                     Data.Builder().putString("output", "Download has been cancelled!").build()
                 )
             }else{
-                if (logDownloads && logFile.exists()){
-                    logFile.appendText("${it.message}\n")
+                if (logDownloads){
+                    CoroutineScope(Dispatchers.IO).launch {
+                        if(it.message != null){
+                            logRepo.update(it.message!!, logItem.id)
+                        }
+                    }
                 }
 
                 tempFileDir.delete()
@@ -440,7 +440,7 @@ class DownloadWorker(
 
                 notificationUtil.createDownloadErrored(
                     downloadItem.title, it.message,
-                    if (logDownloads) logFile else null,
+                    if (logDownloads) logItem.id else null,
                     NotificationUtil.DOWNLOAD_FINISHED_CHANNEL_ID
                 )
 

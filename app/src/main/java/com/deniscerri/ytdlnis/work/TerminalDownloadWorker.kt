@@ -14,12 +14,22 @@ import androidx.work.WorkerParameters
 import androidx.work.workDataOf
 import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
+import com.deniscerri.ytdlnis.database.DBManager
+import com.deniscerri.ytdlnis.database.models.LogItem
+import com.deniscerri.ytdlnis.database.repository.LogRepository
 import com.deniscerri.ytdlnis.ui.more.TerminalActivity
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.NotificationUtil
 import com.yausername.youtubedl_android.YoutubeDL
 import com.yausername.youtubedl_android.YoutubeDLRequest
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import java.io.File
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.util.Calendar
 
 
 class TerminalDownloadWorker(
@@ -31,6 +41,9 @@ class TerminalDownloadWorker(
         val command = inputData.getString("command")
         if (itemId == 0) return Result.failure()
         if (command!!.isEmpty()) return Result.failure()
+
+        val dbManager = DBManager.getInstance(context)
+        val logRepo = LogRepository(dbManager.logDao)
 
         val notificationUtil = NotificationUtil(context)
         val handler = Handler(Looper.getMainLooper())
@@ -67,16 +80,20 @@ class TerminalDownloadWorker(
         request.addOption("-P", tempFileDir.absolutePath)
 
         val logDownloads = sharedPreferences.getBoolean("log_downloads", false) && !sharedPreferences.getBoolean("incognito", false)
-        val logFolder = File(context.filesDir.absolutePath + "/logs")
-        val logFile = FileUtil.getLogFileForTerminal(context, command)
+
+        val logItem = LogItem(
+            0,
+            "Terminal Download at " + Calendar.getInstance().time,
+            "Downloading:\n" +
+                    "Terminal Download\n" +
+                    "Command: ${command}\n\n"
+        )
 
         runCatching {
             if (logDownloads){
-                logFolder.mkdirs()
-                logFile.createNewFile()
-                logFile.writeText("Downloading:\n" +
-                        "Terminal Download\n" +
-                        "Command: ${command}\n\n")
+                runBlocking {
+                    logItem.id = logRepo.insert(logItem)
+                }
             }
 
             YoutubeDL.getInstance().execute(request, itemId.toString()){ progress, _, line ->
@@ -87,8 +104,10 @@ class TerminalDownloadWorker(
                     line, progress.toInt(), 0, title,
                     NotificationUtil.DOWNLOAD_SERVICE_CHANNEL_ID
                 )
-                if (logDownloads && logFile.exists()){
-                    logFile.appendText("${line}\n")
+                if (logDownloads){
+                    CoroutineScope(Dispatchers.IO).launch {
+                        logRepo.update(line, logItem.id)
+                    }
                 }
             }
         }.onSuccess {
@@ -106,8 +125,10 @@ class TerminalDownloadWorker(
 
             if (it.out.length > 200){
                 outputFile.appendText("${it.out}\n")
-                if (logDownloads && logFile.exists()){
-                    logFile.appendText("${it.out}\n")
+                if (logDownloads){
+                    CoroutineScope(Dispatchers.IO).launch {
+                        logRepo.update(it.out, logItem.id)
+                    }
                 }
             }
             notificationUtil.cancelDownloadNotification(itemId)
@@ -117,8 +138,12 @@ class TerminalDownloadWorker(
                 return Result.failure()
             }
             outputFile.appendText("${it.message}\n")
-            if (logDownloads && logFile.exists()){
-                logFile.appendText("${it.message}\n")
+            if (logDownloads){
+                CoroutineScope(Dispatchers.IO).launch {
+                    if (it.message != null){
+                        logRepo.update(it.message!!, logItem.id)
+                    }
+                }
             }
             tempFileDir.delete()
 

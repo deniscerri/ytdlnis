@@ -7,15 +7,16 @@ import com.deniscerri.ytdlnis.database.models.*
 
 @TypeConverters(Converters::class)
 @Database(
-    entities = [ResultItem::class, HistoryItem::class, DownloadItem::class, CommandTemplate::class, SearchHistoryItem::class, TemplateShortcut::class, CookieItem::class],
-    version = 7,
+    entities = [ResultItem::class, HistoryItem::class, DownloadItem::class, CommandTemplate::class, SearchHistoryItem::class, TemplateShortcut::class, CookieItem::class, LogItem::class],
+    version = 8,
     autoMigrations = [
         AutoMigration (from = 1, to = 2),
         AutoMigration (from = 2, to = 3),
         AutoMigration (from = 3, to = 4),
         AutoMigration (from = 4, to = 5),
         AutoMigration (from = 5, to = 6),
-        AutoMigration (from = 6, to = 7)
+        AutoMigration (from = 6, to = 7),
+        AutoMigration (from = 7, to = 8)
     ]
 )
 abstract class DBManager : RoomDatabase(){
@@ -25,6 +26,7 @@ abstract class DBManager : RoomDatabase(){
     abstract val commandTemplateDao : CommandTemplateDao
     abstract val searchHistoryDao: SearchHistoryDao
     abstract val cookieDao: CookieDao
+    abstract val logDao: LogDao
 
     companion object {
         //prevents multiple instances of db getting created at the same time
