@@ -276,4 +276,6 @@
     <string name="backup_created_successfully">Zapisano plik kopii zapasowej w katalogu pobierania</string>
     <string name="general">Ogólne</string>
     <string name="crop_thumb_summary">Przytnij miniaturę do kwadratu, aby pobrać dźwięk</string>
+    <string name="force_keyframes">Wymuś klatki kluczowe na cięciach</string>
+    <string name="force_keyframes_summary">Dokładne cięcia wideo. Wolniejsze</string>
 </resources>
