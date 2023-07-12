@@ -200,7 +200,10 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
             }
 
         version = findPreference("version")
-        version!!.summary = "${BuildConfig.VERSION_NAME} [${Build.SUPPORTED_ABIS[0]}] ${BuildConfig.BUILD_TYPE}"
+        val nativeLibraryDir = context?.applicationInfo?.nativeLibraryDir
+        val installedABI = Build.SUPPORTED_ABIS.first {  nativeLibraryDir!!.contains(it) }
+
+        version!!.summary = "${BuildConfig.VERSION_NAME} [${installedABI}] ${BuildConfig.BUILD_TYPE}"
 
         version!!.onPreferenceClickListener =
             Preference.OnPreferenceClickListener {

@@ -14,7 +14,7 @@
     <Preference
         android:key="downloading"
         app:icon="@drawable/ic_downloads"
-        android:title="@string/downloading"/>
+        android:title="@string/downloads"/>
 
     <Preference
         android:key="processing"

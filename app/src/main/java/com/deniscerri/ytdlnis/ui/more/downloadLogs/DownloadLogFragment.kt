@@ -19,6 +19,7 @@ import com.deniscerri.ytdlnis.database.models.LogItem
 import com.deniscerri.ytdlnis.database.viewmodel.LogViewModel
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+import com.google.android.material.snackbar.Snackbar
 import com.neo.highlight.core.Highlight
 import com.neo.highlight.util.listener.HighlightTextWatcher
 import com.neo.highlight.util.scheme.ColorScheme
@@ -65,6 +66,7 @@ class DownloadLogFragment : Fragment() {
             val clipboard: ClipboardManager =
                 mainActivity.getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
             clipboard.setText(content.text)
+            Snackbar.make(content, getString(R.string.copied_to_clipboard), Snackbar.LENGTH_LONG).show()
         }
 
         val id = arguments?.getLong("logID")

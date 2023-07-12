@@ -180,7 +180,7 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
             sharedPreferences.getString("video_format", "Default")!!,
             "",
             resultItem.formats,
-            downloadPath!!, resultItem.website, "", resultItem.playlistTitle, audioPreferences, videoPreferences,customFileNameTemplate!!, saveThumb, DownloadRepository.Status.Processing.toString(), 0, null
+            downloadPath!!, resultItem.website, "", resultItem.playlistTitle, audioPreferences, videoPreferences, "", customFileNameTemplate!!, saveThumb, DownloadRepository.Status.Processing.toString(), 0, null
         )
 
     }
@@ -302,7 +302,7 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
             container,
             "",
             ArrayList(),
-            path, historyItem.website, "", "", audioPreferences, videoPreferences,customFileNameTemplate!!, saveThumb, DownloadRepository.Status.Processing.toString(), 0, null
+            path, historyItem.website, "", "", audioPreferences, videoPreferences, "", customFileNameTemplate!!, saveThumb, DownloadRepository.Status.Processing.toString(), 0, null
         )
 
     }

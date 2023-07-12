@@ -27,8 +27,6 @@ import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.adapter.CookieAdapter
 import com.deniscerri.ytdlnis.database.models.CookieItem
 import com.deniscerri.ytdlnis.database.viewmodel.CookieViewModel
-import com.deniscerri.ytdlnis.util.FileUtil
-import com.deniscerri.ytdlnis.util.UiUtil
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.chip.Chip
 import com.google.android.material.dialog.MaterialAlertDialogBuilder

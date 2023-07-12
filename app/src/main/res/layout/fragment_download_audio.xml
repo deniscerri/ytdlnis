@@ -218,6 +218,22 @@
                     </com.google.android.material.chip.ChipGroup>
 
                 </HorizontalScrollView>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/extra_commands"
+                    android:visibility="gone"
+                    style="@style/Widget.Material3.Chip.Assist.Elevated"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/use_extra_commands"
+                    app:chipIconVisible="true"
+                    app:chipIcon="@drawable/ic_terminal"
+                    android:minWidth="30dp"
+                    app:cornerRadius="10dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
             </LinearLayout>
 
 

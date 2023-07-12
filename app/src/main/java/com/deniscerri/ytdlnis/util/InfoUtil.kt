@@ -9,10 +9,12 @@ import android.widget.Toast
 import androidx.preference.PreferenceManager
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.ChapterItem
+import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.models.Format
 import com.deniscerri.ytdlnis.database.models.ResultItem
+import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
+import com.deniscerri.ytdlnis.work.DownloadWorker
 import com.google.gson.Gson
-import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import com.yausername.youtubedl_android.YoutubeDL
 import com.yausername.youtubedl_android.YoutubeDLRequest
@@ -560,9 +562,16 @@ class InfoUtil(private val context: Context) {
             val formats : ArrayList<Format> = ArrayList()
             for (f in 0 until jsonArray.length()){
                 val format = jsonArray.getJSONObject(f)
-                if (format.has("filesize") && format.get("filesize") == "None"){
-                    format.remove("filesize")
-                    format.put("filesize", 0)
+                if (format.has("filesize")){
+                    if (format.get("filesize") == "None"){
+                        format.remove("filesize")
+                        format.put("filesize", 0)
+                    }
+                    try{
+                        val size = format.get("filesize").toString().toFloat()
+                        format.remove("filesize")
+                        format.put("filesize", size)
+                    }catch (ignored: Exception){}
                 }
                 val formatProper = Gson().fromJson(format.toString(), Format::class.java)
                 if (format.has("format_note")){
@@ -626,9 +635,16 @@ class InfoUtil(private val context: Context) {
                             try{
                                 if (format.getString("filesize") == "None") continue
                             }catch (e: Exception) { continue }
-                            if (format.has("filesize") && format.get("filesize") == "None"){
-                                format.remove("filesize")
-                                format.put("filesize", 0)
+                            if (format.has("filesize")){
+                                if (format.get("filesize") == "None"){
+                                    format.remove("filesize")
+                                    format.put("filesize", 0)
+                                }
+                                try{
+                                    val size = format.get("filesize").toString().toFloat()
+                                    format.remove("filesize")
+                                    format.put("filesize", size)
+                                }catch (ignored: Exception){}
                             }
                             val formatProper = Gson().fromJson(format.toString(), Format::class.java)
                             if ( !formatProper!!.format_note.contains("audio only", true)) {
@@ -733,9 +749,16 @@ class InfoUtil(private val context: Context) {
                 if (formatsInJSON != null) {
                     for (f in 0 until formatsInJSON.length()){
                         val format = formatsInJSON.getJSONObject(f)
-                        if (format.has("filesize") && format.get("filesize") == "None"){
-                            format.remove("filesize")
-                            format.put("filesize", 0)
+                        if (format.has("filesize")){
+                            if (format.get("filesize") == "None"){
+                                format.remove("filesize")
+                                format.put("filesize", 0)
+                            }
+                            try{
+                                val size = format.get("filesize").toString().toFloat()
+                                format.remove("filesize")
+                                format.put("filesize", size)
+                            }catch (ignored: Exception){}
                         }
                         val formatProper = Gson().fromJson(format.toString(), Format::class.java)
                         if (formatProper.format_note == null) continue
@@ -768,7 +791,7 @@ class InfoUtil(private val context: Context) {
                 items.add(ResultItem(0,
                         url,
                         title,
-                        author!!,
+                        author,
                         duration,
                         thumb!!,
                         website,
@@ -844,7 +867,7 @@ class InfoUtil(private val context: Context) {
                 }else{
                     jsonObject.getString("title")
                 },
-                author!!,
+                author,
                 duration,
                 thumb!!,
                 jsonObject.getString("extractor"),
@@ -967,6 +990,244 @@ class InfoUtil(private val context: Context) {
         } catch (e: Exception) {
             return mutableListOf()
         }
+    }
+
+    fun buildYoutubeDLRequest(downloadItem: DownloadItem) : YoutubeDLRequest{
+        val tempFileDir = File(context.cacheDir.absolutePath + "/downloads/" + downloadItem.id)
+
+        val url = downloadItem.url
+        val request = YoutubeDLRequest(url)
+        val type = downloadItem.type
+
+        val aria2 = sharedPreferences.getBoolean("aria2", false)
+        if (aria2) {
+            request.addOption("--downloader", "libaria2c.so")
+            request.addOption("--external-downloader-args", "aria2c:\"--summary-interval=1\"")
+        } else {
+            val concurrentFragments = sharedPreferences.getInt("concurrent_fragments", 1)
+            if (concurrentFragments > 1) request.addOption("-N", concurrentFragments)
+        }
+
+        val retries = sharedPreferences.getString("--retries", "")!!
+        val fragmentRetries = sharedPreferences.getString("--fragment_retries", "")!!
+
+        if(retries.isNotEmpty()) request.addOption("retries", retries)
+        if(fragmentRetries.isNotEmpty()) request.addOption("fragment-retries", fragmentRetries)
+
+        val limitRate = sharedPreferences.getString("limit_rate", "")
+        if (limitRate != "") request.addOption("-r", limitRate!!)
+        if(downloadItem.type != DownloadViewModel.Type.command){
+            if (downloadItem.SaveThumb) {
+                request.addOption("--write-thumbnail")
+                request.addOption("--convert-thumbnails", "png")
+            }
+            if (!sharedPreferences.getBoolean("mtime", false)){
+                request.addOption("--no-mtime")
+            }
+
+            val sponsorBlockFilters : ArrayList<String> = when(downloadItem.type) {
+                DownloadViewModel.Type.audio -> {
+                    downloadItem.audioPreferences.sponsorBlockFilters
+                }
+                //video
+                else -> {
+                    downloadItem.videoPreferences.sponsorBlockFilters
+                }
+            }
+
+            if (sponsorBlockFilters.isNotEmpty()) {
+                val filters = java.lang.String.join(",", sponsorBlockFilters.filter { it.isNotBlank() })
+                if (filters.isNotBlank()) request.addOption("--sponsorblock-remove", filters)
+            }
+
+            if(downloadItem.title.isNotBlank()){
+                request.addCommands(listOf("--replace-in-metadata","title",".*.",downloadItem.title.take(200)))
+            }
+            if (downloadItem.author.isNotBlank()){
+                request.addCommands(listOf("--replace-in-metadata","uploader",".*.",downloadItem.author.take(25)))
+            }
+            request.addCommands(listOf("--replace-in-metadata","uploader"," - Topic$",""))
+            if (downloadItem.customFileNameTemplate.isBlank()) downloadItem.customFileNameTemplate = "%(uploader)s - %(title)s"
+
+            if (downloadItem.downloadSections.isNotBlank()){
+                downloadItem.downloadSections.split(";").forEach {
+                    if (it.isBlank()) return@forEach
+                    if (it.contains(":"))
+                        request.addOption("--download-sections", "*$it")
+                    else
+                        request.addOption("--download-sections", it)
+
+                    if (sharedPreferences.getBoolean("force_keyframes", false)){
+                        request.addOption("--force-keyframes-at-cuts")
+                    }
+                }
+                downloadItem.customFileNameTemplate += " %(section_title)s %(autonumber)s"
+                request.addOption("--output-na-placeholder", " ")
+            }
+
+            if (sharedPreferences.getBoolean("use_audio_quality", false)){
+                request.addOption("--audio-quality", sharedPreferences.getInt("audio_quality", 0))
+            }
+
+            if (downloadItem.extraCommands.isNotBlank()){
+                val conf = File(context.cacheDir.absolutePath + "/downloads/configExtraCommands${System.currentTimeMillis()}.txt")
+                conf.createNewFile()
+                conf.writeText(downloadItem.extraCommands)
+                request.addOption(
+                    "--config-locations",
+                    conf.absolutePath
+                )
+            }
+        }
+
+        if (sharedPreferences.getBoolean("restrict_filenames", true)) {
+            request.addOption("--restrict-filenames")
+        }
+
+        val cookiesFile = File(context.cacheDir, "cookies.txt")
+        if (cookiesFile.exists()){
+            request.addOption("--cookies", cookiesFile.absolutePath)
+        }
+
+        val proxy = sharedPreferences.getString("proxy", "")
+        if (proxy!!.isNotBlank()){
+            request.addOption("--proxy", proxy)
+        }
+
+        val keepCache = sharedPreferences.getBoolean("keep_cache", false)
+        if(keepCache){
+            request.addOption("--part")
+            request.addOption("--keep-fragments")
+        }
+
+        when(type){
+            DownloadViewModel.Type.audio -> {
+                val supportedContainers = context.resources.getStringArray(R.array.audio_containers)
+
+                var audioQualityId : String = downloadItem.format.format_id
+                if (audioQualityId.isBlank() || audioQualityId == "0" || audioQualityId == context.getString(R.string.best_quality) || audioQualityId == "best") audioQualityId = ""
+                else if (audioQualityId == context.getString(R.string.worst_quality) || audioQualityId == "worst") audioQualityId = "worstaudio"
+
+                val ext = downloadItem.container
+                if (audioQualityId.isNotBlank()) request.addOption("-f", audioQualityId)
+                request.addOption("-x")
+
+                if(ext.isNotBlank()){
+                    if(!ext.matches("(webm)|(Default)|(${context.getString(R.string.defaultValue)})".toRegex()) && supportedContainers.contains(ext)){
+                        request.addOption("--audio-format", ext)
+                    }
+                }
+
+                request.addOption("--embed-metadata")
+
+                if (downloadItem.audioPreferences.embedThumb) {
+                    request.addOption("--embed-thumbnail")
+                    request.addOption("--convert-thumbnails", "jpg")
+                    if (sharedPreferences.getBoolean("crop_thumbnail", true)){
+                        try {
+                            val config = File(context.cacheDir.absolutePath + "/downloads/${downloadItem.id}/config" + downloadItem.title + "##" + downloadItem.format.format_id + ".txt")
+                            val configData = "--ppa \"ffmpeg: -c:v mjpeg -vf crop=\\\"'if(gt(ih,iw),iw,ih)':'if(gt(iw,ih),ih,iw)'\\\"\""
+                            config.writeText(configData)
+                            request.addOption("--ppa", "ThumbnailsConvertor:-qmin 1 -q:v 1")
+                            request.addOption("--config", config.absolutePath)
+                        } catch (ignored: Exception) {}
+                    }
+                }
+                request.addOption("--parse-metadata", "%(release_year,upload_date)s:%(meta_date)s")
+
+                if (downloadItem.playlistTitle.isNotEmpty()) {
+                    request.addOption("--parse-metadata", "%(album,playlist,title)s:%(meta_album)s")
+                    request.addOption("--parse-metadata", "%(track_number,playlist_index)d:%(meta_track)s")
+                } else {
+                    request.addOption("--parse-metadata", "%(album,title)s:%(meta_album)s")
+                }
+
+                if (downloadItem.audioPreferences.splitByChapters && downloadItem.downloadSections.isBlank()){
+                    request.addOption("--split-chapters")
+                    request.addOption("-P", tempFileDir.absolutePath)
+                }else{
+                    request.addOption("-o", tempFileDir.absolutePath + "/${downloadItem.customFileNameTemplate}.%(ext)s")
+                }
+
+            }
+            DownloadViewModel.Type.video -> {
+                val supportedContainers = context.resources.getStringArray(R.array.video_containers)
+
+                if (downloadItem.videoPreferences.addChapters) {
+                    request.addOption("--sponsorblock-mark", "all")
+                    request.addOption("--embed-chapters")
+                }
+                if (downloadItem.videoPreferences.embedSubs) {
+                    request.addOption("--embed-subs")
+                    request.addOption("--sub-langs", downloadItem.videoPreferences.subsLanguages)
+                }
+                val defaultFormats = context.resources.getStringArray(R.array.video_formats)
+
+                if (downloadItem.videoPreferences.audioFormatIDs.isNotEmpty()) request.addOption("--audio-multistreams")
+
+                var videoFormatID = downloadItem.format.format_id
+                Log.e(DownloadWorker.TAG, videoFormatID)
+                var formatArgument = if (downloadItem.videoPreferences.removeAudio) "bestvideo" else "bestvideo+bestaudio/best"
+                if (videoFormatID.isNotEmpty()) {
+                    if (videoFormatID == context.resources.getString(R.string.best_quality) || videoFormatID == "best") videoFormatID = "bestvideo"
+                    else if (videoFormatID == context.resources.getString(R.string.worst_quality) || videoFormatID == "worst") videoFormatID = "worst"
+                    else if (defaultFormats.contains(videoFormatID)) videoFormatID = "bestvideo[height<="+videoFormatID.substring(0, videoFormatID.length -1)+"]"
+
+                    formatArgument = if (downloadItem.videoPreferences.audioFormatIDs.isNotEmpty() && ! downloadItem.videoPreferences.removeAudio){
+                        val audioIds = downloadItem.videoPreferences.audioFormatIDs.joinToString("+")
+                        "$videoFormatID+$audioIds/best/$videoFormatID"
+                    }else{
+                        "$videoFormatID+bestaudio/best/$videoFormatID"
+                    }
+                }
+                Log.e(DownloadWorker.TAG, formatArgument)
+                request.addOption("-f", formatArgument)
+                val outputFormat = downloadItem.container
+                if(outputFormat.isNotEmpty() && outputFormat != "Default" && outputFormat != context.getString(R.string.defaultValue) && supportedContainers.contains(outputFormat)){
+                    request.addOption("--merge-output-format", outputFormat.lowercase())
+                    if (outputFormat != "webm") {
+                        val embedThumb = sharedPreferences.getBoolean("embed_thumbnail", false)
+                        if (embedThumb) {
+                            request.addOption("--embed-thumbnail")
+                        }
+                    }
+                }
+
+                if (downloadItem.videoPreferences.writeSubs){
+                    request.addOption("--write-subs")
+                    request.addOption("--write-auto-subs")
+                    request.addOption("--sub-format", "str/ass/best")
+                    request.addOption("--convert-subtitles", "srt")
+                    if (!downloadItem.videoPreferences.embedSubs) {
+                        request.addOption("--sub-langs", downloadItem.videoPreferences.subsLanguages)
+                    }
+                }
+
+                if (downloadItem.videoPreferences.removeAudio){
+                    request.addOption("--ppa", "ffmpeg:-an")
+                }
+
+                if (downloadItem.videoPreferences.splitByChapters  && downloadItem.downloadSections.isBlank()){
+                    request.addOption("--split-chapters")
+                    request.addOption("-P", tempFileDir.absolutePath)
+                }else{
+                    request.addOption("-o", tempFileDir.absolutePath + "/${downloadItem.customFileNameTemplate}.%(ext)s")
+                }
+
+            }
+            DownloadViewModel.Type.command -> {
+                request.addOption(
+                    "--config-locations",
+                    File(context.cacheDir.absolutePath + "/downloads/config${System.currentTimeMillis()}.txt").apply {
+                        writeText(downloadItem.format.format_note)
+                    }.absolutePath
+                )
+                request.addOption("-P", tempFileDir.absolutePath)
+
+            }
+        }
+
+        return request
     }
 
     private val pipedURL = sharedPreferences.getString("piped_instance", defaultPipedURL)?.ifEmpty { defaultPipedURL }?.removeSuffix("/")

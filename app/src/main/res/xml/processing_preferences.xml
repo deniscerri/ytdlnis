@@ -140,4 +140,13 @@
         app:defaultValue=""
         app:summary="@string/preferred_format_id_summary"
         app:title="@string/preferred_format_id" />
+
+    <SwitchPreferenceCompat
+        android:widgetLayout="@layout/preferece_material_switch"
+        app:defaultValue="false"
+        app:icon="@drawable/ic_terminal"
+        app:key="use_extra_commands"
+        android:summary="@string/use_extra_commands_summary"
+        app:title="@string/use_extra_commands" />
+
 </PreferenceScreen>

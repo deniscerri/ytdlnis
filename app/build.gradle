@@ -192,8 +192,18 @@ dependencies {
     implementation "com.squareup.okhttp3:okhttp:5.0.0-alpha.10"
 
     implementation 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0'
-    implementation "com.google.android.exoplayer:exoplayer:2.18.7"
     implementation 'it.xabaras.android:recyclerview-swipedecorator:1.4'
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.6.1"
     implementation "com.github.Irineu333:Highlight-KT:1.0.4"
+
+    // For media playback using ExoPlayer
+    implementation("androidx.media3:media3-exoplayer:$media3_version")
+    // For DASH playback support with ExoPlayer
+    implementation("androidx.media3:media3-exoplayer-dash:$media3_version")
+    // For HLS playback support with ExoPlayer
+    implementation("androidx.media3:media3-exoplayer-hls:$media3_version")
+    implementation("androidx.media3:media3-ui:$media3_version")
+    // For RTSP playback support with ExoPlayer
+    implementation("androidx.media3:media3-exoplayer-rtsp:$media3_version")
+    implementation("androidx.media3:media3-datasource-cronet:$media3_version")
 }

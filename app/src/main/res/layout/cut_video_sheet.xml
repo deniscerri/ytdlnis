@@ -15,7 +15,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" >
 
-        <com.google.android.exoplayer2.ui.StyledPlayerView
+
+
+        <androidx.media3.ui.PlayerView
             android:id="@+id/video_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -159,7 +161,7 @@
                 app:layout_constraintStart_toEndOf="@+id/colon">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:inputType="text" />
 

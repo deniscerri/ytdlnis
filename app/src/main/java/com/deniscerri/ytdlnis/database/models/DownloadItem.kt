@@ -27,6 +27,8 @@ data class DownloadItem(
     val playlistTitle: String,
     val audioPreferences : AudioPreferences,
     val videoPreferences: VideoPreferences,
+    @ColumnInfo(defaultValue = "")
+    var extraCommands: String,
     var customFileNameTemplate: String,
     var SaveThumb: Boolean,
     @ColumnInfo(defaultValue = "Queued")

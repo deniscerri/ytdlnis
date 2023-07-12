@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 8,
-    "identityHash": "b21f2aa737d29eef2c1bf6418b314726",
+    "identityHash": "3d472df655311f8e531602dca2886c34",
     "entities": [
       {
         "tableName": "results",
@@ -180,7 +180,7 @@
       },
       {
         "tableName": "downloads",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `url` TEXT NOT NULL, `title` TEXT NOT NULL, `author` TEXT NOT NULL, `thumb` TEXT NOT NULL, `duration` TEXT NOT NULL, `type` TEXT NOT NULL, `format` TEXT NOT NULL, `container` TEXT NOT NULL DEFAULT 'Default', `downloadSections` TEXT NOT NULL DEFAULT '', `allFormats` TEXT NOT NULL, `downloadPath` TEXT NOT NULL, `website` TEXT NOT NULL, `downloadSize` TEXT NOT NULL, `playlistTitle` TEXT NOT NULL, `audioPreferences` TEXT NOT NULL, `videoPreferences` TEXT NOT NULL, `customFileNameTemplate` TEXT NOT NULL, `SaveThumb` INTEGER NOT NULL, `status` TEXT NOT NULL DEFAULT 'Queued', `downloadStartTime` INTEGER NOT NULL DEFAULT 0, `logID` INTEGER)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `url` TEXT NOT NULL, `title` TEXT NOT NULL, `author` TEXT NOT NULL, `thumb` TEXT NOT NULL, `duration` TEXT NOT NULL, `type` TEXT NOT NULL, `format` TEXT NOT NULL, `container` TEXT NOT NULL DEFAULT 'Default', `downloadSections` TEXT NOT NULL DEFAULT '', `allFormats` TEXT NOT NULL, `downloadPath` TEXT NOT NULL, `website` TEXT NOT NULL, `downloadSize` TEXT NOT NULL, `playlistTitle` TEXT NOT NULL, `audioPreferences` TEXT NOT NULL, `videoPreferences` TEXT NOT NULL, `extraCommands` TEXT NOT NULL DEFAULT '', `customFileNameTemplate` TEXT NOT NULL, `SaveThumb` INTEGER NOT NULL, `status` TEXT NOT NULL DEFAULT 'Queued', `downloadStartTime` INTEGER NOT NULL DEFAULT 0, `logID` INTEGER)",
         "fields": [
           {
             "fieldPath": "id",
@@ -285,6 +285,13 @@
             "columnName": "videoPreferences",
             "affinity": "TEXT",
             "notNull": true
+          },
+          {
+            "fieldPath": "extraCommands",
+            "columnName": "extraCommands",
+            "affinity": "TEXT",
+            "notNull": true,
+            "defaultValue": "''"
           },
           {
             "fieldPath": "customFileNameTemplate",
@@ -446,7 +453,7 @@
       },
       {
         "tableName": "logs",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `title` TEXT NOT NULL, `content` TEXT NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `title` TEXT NOT NULL, `content` TEXT NOT NULL, `format` TEXT NOT NULL, `downloadType` TEXT NOT NULL, `downloadTime` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -465,6 +472,24 @@
             "columnName": "content",
             "affinity": "TEXT",
             "notNull": true
+          },
+          {
+            "fieldPath": "format",
+            "columnName": "format",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "downloadType",
+            "columnName": "downloadType",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "downloadTime",
+            "columnName": "downloadTime",
+            "affinity": "INTEGER",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -480,7 +505,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'b21f2aa737d29eef2c1bf6418b314726')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '3d472df655311f8e531602dca2886c34')"
     ]
   }
 }

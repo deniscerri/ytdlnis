@@ -1,24 +1,29 @@
 package com.deniscerri.ytdlnis.ui.downloadcard
 
 import android.app.Activity
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.DisplayMetrics
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
 import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
+import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -33,7 +38,10 @@ import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel.Type
 import com.deniscerri.ytdlnis.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdlnis.databinding.FragmentHomeBinding
 import com.deniscerri.ytdlnis.util.FileUtil
+import com.deniscerri.ytdlnis.util.InfoUtil
 import com.deniscerri.ytdlnis.util.UiUtil
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.chip.Chip
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -41,6 +49,7 @@ import com.google.android.material.textfield.TextInputLayout
 import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import java.io.File
 
@@ -56,6 +65,7 @@ class DownloadAudioFragment(private var resultItem: ResultItem, private var curr
     private lateinit var author : TextInputLayout
     private lateinit var saveDir : TextInputLayout
     private lateinit var freeSpace : TextView
+    private lateinit var infoUtil: InfoUtil
 
     lateinit var downloadItem : DownloadItem
     override fun onCreateView(
@@ -68,7 +78,7 @@ class DownloadAudioFragment(private var resultItem: ResultItem, private var curr
         activity = getActivity()
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
         resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]
-
+        infoUtil = InfoUtil(requireContext())
         return fragmentView
     }
 
@@ -327,6 +337,47 @@ class DownloadAudioFragment(private var resultItem: ResultItem, private var curr
 
                 }else{
                     cut.isEnabled = false
+                }
+
+
+                val extraCommands = view.findViewById<Chip>(R.id.extra_commands)
+                if (sharedPreferences.getBoolean("use_extra_commands", false)){
+                    extraCommands.visibility = View.VISIBLE
+                    extraCommands.setOnClickListener {
+                        val bottomSheet = BottomSheetDialog(requireContext())
+                        bottomSheet.requestWindowFeature(Window.FEATURE_NO_TITLE)
+                        bottomSheet.setContentView(R.layout.extra_commands_bottom_sheet)
+
+                        val text = bottomSheet.findViewById<EditText>(R.id.command)
+                        val currentCommand = infoUtil.buildYoutubeDLRequest(downloadItem).buildCommand().joinToString(" ")
+                        bottomSheet.findViewById<TextView>(R.id.currentText)?.text = currentCommand
+
+                        text?.setText(downloadItem.extraCommands)
+
+                        val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                        text!!.postDelayed({
+                            text.setSelection(text.length())
+                            text.requestFocus()
+                            imm.showSoftInput(text, 0)
+                        }, 300)
+
+                        val ok = bottomSheet.findViewById<Button>(R.id.okButton)
+                        ok?.setOnClickListener {
+                            downloadItem.extraCommands = text.text.toString()
+                            bottomSheet.dismiss()
+                        }
+
+                        bottomSheet.show()
+                        val displayMetrics = DisplayMetrics()
+                        requireActivity().windowManager.defaultDisplay.getMetrics(displayMetrics)
+                        bottomSheet.behavior.peekHeight = displayMetrics.heightPixels
+                        bottomSheet.window!!.setLayout(
+                            ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.MATCH_PARENT
+                        )
+                    }
+                }else{
+                    extraCommands.visibility = View.GONE
                 }
             }catch (e : Exception){
                 e.printStackTrace()

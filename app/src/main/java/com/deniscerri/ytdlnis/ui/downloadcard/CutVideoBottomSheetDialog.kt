@@ -15,26 +15,23 @@ import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.children
 import androidx.lifecycle.lifecycleScope
+import androidx.media3.common.AudioAttributes
+import androidx.media3.common.C
+import androidx.media3.common.MediaItem.fromUri
+import androidx.media3.datasource.DefaultDataSource
+import androidx.media3.datasource.cronet.CronetDataSource
+import androidx.media3.exoplayer.DefaultLoadControl
+import androidx.media3.exoplayer.ExoPlayer
+import androidx.media3.exoplayer.source.DefaultMediaSourceFactory
+import androidx.media3.exoplayer.source.MediaSource
+import androidx.media3.exoplayer.source.MergingMediaSource
+import androidx.media3.exoplayer.trackselection.DefaultTrackSelector
+import androidx.media3.ui.PlayerView
+import com.deniscerri.ytdlnis.App
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.ChapterItem
 import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.util.InfoUtil
-import com.google.android.exoplayer2.C
-import com.google.android.exoplayer2.DefaultLoadControl
-import com.google.android.exoplayer2.DefaultRenderersFactory
-import com.google.android.exoplayer2.DefaultRenderersFactory.EXTENSION_RENDERER_MODE_PREFER
-import com.google.android.exoplayer2.ExoPlayer
-import com.google.android.exoplayer2.MediaItem.fromUri
-import com.google.android.exoplayer2.Player
-import com.google.android.exoplayer2.audio.AudioAttributes
-import com.google.android.exoplayer2.mediacodec.MediaCodecInfo
-import com.google.android.exoplayer2.mediacodec.MediaCodecSelector
-import com.google.android.exoplayer2.source.DefaultMediaSourceFactory
-import com.google.android.exoplayer2.source.MediaSource
-import com.google.android.exoplayer2.source.MergingMediaSource
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
-import com.google.android.exoplayer2.ui.StyledPlayerView
-import com.google.android.exoplayer2.util.MimeTypes
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.button.MaterialButton
@@ -53,15 +50,17 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.chromium.net.CronetEngine
 import java.lang.reflect.Type
 import java.util.*
+import java.util.concurrent.Executors
 import kotlin.properties.Delegates
 
 
 class CutVideoBottomSheetDialog(private val item: DownloadItem, private val urls : String?, private var chapters: List<ChapterItem>?, private val listener: VideoCutListener) : BottomSheetDialogFragment() {
     private lateinit var behavior: BottomSheetBehavior<View>
     private lateinit var infoUtil: InfoUtil
-    private lateinit var player: Player
+    private lateinit var player: ExoPlayer
     
     private lateinit var cutSection : ConstraintLayout
     private lateinit var durationText: TextView
@@ -92,6 +91,7 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val urls
 
 
     @SuppressLint("RestrictedApi", "SetTextI18n")
+    @androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
     override fun setupDialog(dialog: Dialog, style: Int) {
         super.setupDialog(dialog, style)
         val view = LayoutInflater.from(context).inflate(R.layout.cut_video_sheet, null)
@@ -104,30 +104,53 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val urls
             behavior.peekHeight = displayMetrics.heightPixels
         }
 
-        val renderersFactory = DefaultRenderersFactory(requireContext().applicationContext)
-            .setEnableDecoderFallback(true)
-            .setExtensionRendererMode(EXTENSION_RENDERER_MODE_PREFER)
-            .setMediaCodecSelector { mimeType, requiresSecureDecoder, requiresTunnelingDecoder ->
-                var decoderInfo: MutableList<MediaCodecInfo> =
-                    MediaCodecSelector.DEFAULT
-                        .getDecoderInfos(
-                            mimeType,
-                            requiresSecureDecoder,
-                            requiresTunnelingDecoder
-                        )
-                if (MimeTypes.VIDEO_H264 == mimeType) {
-                    // copy the list because MediaCodecSelector.DEFAULT returns an unmodifiable list
-                    decoderInfo = ArrayList(decoderInfo)
-                    decoderInfo.reverse()
-                }
-                decoderInfo
-            }
+//        val renderersFactory = DefaultRenderersFactory(requireContext().applicationContext)
+//            .setEnableDecoderFallback(true)
+//            .setExtensionRendererMode(EXTENSION_RENDERER_MODE_PREFER)
+//            .setMediaCodecSelector { mimeType, requiresSecureDecoder, requiresTunnelingDecoder ->
+//                var decoderInfo: MutableList<MediaCodecInfo> =
+//                    MediaCodecSelector.DEFAULT
+//                        .getDecoderInfos(
+//                            mimeType,
+//                            requiresSecureDecoder,
+//                            requiresTunnelingDecoder
+//                        )
+//                if (MimeTypes.VIDEO_H264 == mimeType) {
+//                    // copy the list because MediaCodecSelector.DEFAULT returns an unmodifiable list
+//                    decoderInfo = ArrayList(decoderInfo)
+//                    decoderInfo.reverse()
+//                }
+//                decoderInfo
+//            }
+
+        val cronetEngine: CronetEngine = CronetEngine.Builder(App.instance)
+            .enableHttp2(true)
+            .enableQuic(true)
+            .enableBrotli(true)
+            .enableHttpCache(CronetEngine.Builder.HTTP_CACHE_IN_MEMORY, 1024L * 1024L) // 1MiB
+            .build()
 
         val trackSelector = DefaultTrackSelector(requireContext())
-        val loadControl = DefaultLoadControl()
+        val loadControl = DefaultLoadControl.Builder()
+            // cache the last three minutes
+            .setBackBuffer(1000 * 60 * 3, true)
+            .setBufferDurationsMs(
+                1000 * 10, // exo default is 50s
+                50000,
+                DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_MS,
+                DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_AFTER_REBUFFER_MS
+            )
+            .build()
+
+        val cronetDataSourceFactory = CronetDataSource.Factory(
+            cronetEngine,
+            Executors.newCachedThreadPool()
+        )
+        val dataSourceFactory = DefaultDataSource.Factory(requireContext(), cronetDataSourceFactory)
 
         player = ExoPlayer.Builder(requireContext())
             .setUsePlatformDiagnostics(false)
+            .setMediaSourceFactory(DefaultMediaSourceFactory(dataSourceFactory))
             .setTrackSelector(trackSelector)
             .setLoadControl(loadControl)
             .setHandleAudioBecomingNoisy(true)
@@ -139,8 +162,9 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val urls
                 ,
                 true)
             .build()
+
         val frame = view.findViewById<MaterialCardView>(R.id.frame_layout)
-        val videoView = view.findViewById<StyledPlayerView>(R.id.video_view)
+        val videoView = view.findViewById<PlayerView>(R.id.video_view)
         videoView.player = player
         timeSeconds = convertStringToTimestamp(item.duration)
         if (chapters == null) chapters = emptyList()
@@ -199,7 +223,9 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val urls
                         val listType: Type = object : TypeToken<List<ChapterItem>>() {}.type
                         chapters = Gson().fromJson(data.first().toString(), listType)
                         data.removeFirst()
-                    }catch (ignored: Exception) {}
+                    }catch (ignored: Exception) {
+                        data.removeFirst()
+                    }
                 }
 
                 if (data.isEmpty()) throw Exception("No Streaming URL found!")
@@ -210,7 +236,7 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val urls
                     val videoSource: MediaSource =
                         DefaultMediaSourceFactory(requireContext())
                             .createMediaSource(fromUri(Uri.parse(data[1])))
-                    (player as ExoPlayer).setMediaSource(MergingMediaSource(videoSource, audioSource))
+                    player.setMediaSource(MergingMediaSource(videoSource, audioSource))
                 }else{
                     player.addMediaItem(fromUri(Uri.parse(data[0])))
                 }
@@ -229,12 +255,12 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val urls
         }
         //poll video progress
         lifecycleScope.launch {
-            videoProgress(player).collect {
-                val currentTime = infoUtil.formatIntegerDuration(it, Locale.US)
+            videoProgress(player).collect { p ->
+                val currentTime = infoUtil.formatIntegerDuration(p, Locale.US)
                 durationText.text = "$currentTime / ${item.duration}"
                 val startTimestamp = convertStringToTimestamp(fromTextInput.editText!!.text.toString())
                 val endTimestamp = convertStringToTimestamp(toTextInput.editText!!.text.toString())
-                if (it >= endTimestamp){
+                if (p >= endTimestamp){
                     player.prepare()
                     player.seekTo((startTimestamp * 1000).toLong())
                 }
@@ -536,7 +562,7 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val urls
     }
 
 
-    private fun videoProgress(player: Player?) = flow {
+    private fun videoProgress(player: ExoPlayer?) = flow {
         while (true) {
             emit((player!!.currentPosition / 1000).toInt())
             delay(1000)

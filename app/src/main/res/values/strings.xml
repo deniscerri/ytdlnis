@@ -284,4 +284,7 @@
     <string name="format_order">Format Order</string>
     <string name="force_keyframes">Force Keyframes At Cuts</string>
     <string name="force_keyframes_summary">Accurate Video Cuts. Slower</string>
+    <string name="use_extra_commands">Add Extra Commands</string>
+    <string name="use_extra_commands_summary">For Audio / Video downloads. Add extra commands along with the GUI configuration</string>
+    <string name="current">Current Command</string>
 </resources>

@@ -15,8 +15,10 @@ import androidx.work.workDataOf
 import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.DBManager
+import com.deniscerri.ytdlnis.database.models.Format
 import com.deniscerri.ytdlnis.database.models.LogItem
 import com.deniscerri.ytdlnis.database.repository.LogRepository
+import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.ui.more.TerminalActivity
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.NotificationUtil
@@ -83,10 +85,13 @@ class TerminalDownloadWorker(
 
         val logItem = LogItem(
             0,
-            "Terminal Download at " + Calendar.getInstance().time,
+            "Terminal Download",
             "Downloading:\n" +
                     "Terminal Download\n" +
-                    "Command: ${command}\n\n"
+                    "Command: ${command}\n\n",
+            Format(),
+            DownloadViewModel.Type.command,
+            System.currentTimeMillis(),
         )
 
         runCatching {
