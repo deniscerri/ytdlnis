@@ -3,7 +3,7 @@
     <string name="remove_results">Kosongkan Hasil</string>
     <string name="updating">Pemutakhiran</string>
     <string name="you_are_in_latest_version">Versi yang terkini sedang digunakan</string>
-    <string name="confirm_delete_history_desc">Hapus seluruh riwayat, secara permanen</string>
+    <string name="confirm_delete_history_desc">Hapus seluruh riwayat,secara permanen</string>
     <string name="confirm_delete_history">Konfirmasikan</string>
     <string name="search_history_hint">Telusuri dari Riwayat</string>
     <string name="no_results">Tidak Ada Hasil</string>
@@ -273,4 +273,9 @@
     <string name="piped_instance">Instansi Piped</string>
     <string name="custom_audio_quality">Gunakan Kualitas Audio Kustom</string>
     <string name="piped_instance_summary">Tulis Server API PIPED yang bisa aplikasi gunakan untuk kueri dan format YouTube</string>
+    <string name="retries">Percobaan Ulang</string>
+    <string name="fragment_retries">Fragmen Percobaan</string>
+    <string name="format_order">Urutan Format</string>
+    <string name="force_keyframes">Paksa Keyframe Pada Potongan</string>
+    <string name="force_keyframes_summary">Potongan Video yang Akurat. Lebih Lambat</string>
 </resources>
