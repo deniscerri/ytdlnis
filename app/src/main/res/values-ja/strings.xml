@@ -276,4 +276,6 @@
     <string name="retries">再試行</string>
     <string name="format_order">フォーマット順</string>
     <string name="fragment_retries">分割ダウンロードの再試行</string>
+    <string name="force_keyframes">切り取り時にキーフレームを強制する</string>
+    <string name="force_keyframes_summary">正確な動画の切り取りですが低速です</string>
 </resources>
