@@ -7,6 +7,8 @@ assignees: ''
 
 ---
 
+** Before making an issue make sure you are using the latest version of yt-dlp in the settings. Perhaps try using the nightly version of yt-dlp. If that didn't help, proceed with the issue
+
 **Describe the bug**
 A clear and concise description of what the bug is.
 
