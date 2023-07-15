@@ -18,7 +18,7 @@
     <string name="download_notification_channel_name">Arquivos Baixados</string>
     <string name="you_are_in_latest_version">Usando a última versão</string>
     <string name="ytld_update_success">Nova versão instalada</string>
-    <string name="ytdl_updating_started">Baixando nova versão…</string>
+    <string name="ytdl_updating_started">Baixando nova versão</string>
     <string name="Remove">Remover</string>
     <string name="ok">OK</string>
     <string name="confirm_delete_history_desc">Excluir o histórico permanentemente</string>
@@ -27,7 +27,7 @@
     <string name="no_results">Sem Resultados</string>
     <string name="command_directory">Comando De Pastas Personalizado</string>
     <string name="couldnt_find_apk">Não foi possível encontrar o apk adequado.</string>
-    <string name="downloading_update">Baixando nova versão…</string>
+    <string name="downloading_update">Baixando nova versão</string>
     <string name="audio">Áudio</string>
     <string name="video">Video</string>
     <string name="concurrent_fragments_summary">Número de fragmentos de um vídeo nativo em DASH/HLS para baixar paralelamente</string>
@@ -70,7 +70,7 @@
     <string name="update_ytdl">Instalar nova versão do yt-dlp</string>
     <string name="update_app">Buscar atualizações</string>
     <string name="version">Versão</string>
-    <string name="ytdl_already_updating">Instalando nova versão…</string>
+    <string name="ytdl_already_updating">Instalando nova versão</string>
     <string name="cancel">Cancelar</string>
     <string name="more">Mais</string>
     <string name="processing">Processamento</string>
@@ -149,7 +149,7 @@
     <string name="clear_errored">Limpar downloads com Falhas</string>
     <string name="split_by_chapters">Dividir Por Capítulos</string>
     <string name="items_imported">Itens Importados</string>
-    <string name="help_translate">Ajudar Na Tradução</string>
+    <string name="help_translate">Ajudar na Tradução</string>
     <string name="help_translate_summary">Traduzir este aplicativo em seu idioma usando Weblate</string>
     <string name="workmanager_updated">Você precisa reiniciar o aplicativo quando não há downloads ativos para aplicar as mudanças!</string>
     <string name="restart">Reiniciar</string>
@@ -164,7 +164,7 @@
     <string name="copied_to_clipboard">Copiado para a área de transferência</string>
     <string name="audio_samplerate">Taxa de amostragem de áudio</string>
     <string name="format_id">ID do formato</string>
-    <string name="enable_mtime_summary">Defina o cabeçalho HTTP \"Last-Modified\" como a hora da última modificação</string>
+    <string name="enable_mtime_summary">Define o cabeçalho HTTP \"Last-Modified\" com a hora da última modificação</string>
     <string name="preferred_download_type_summary">Guia padrão na qual o cartão de download será aberto</string>
     <string name="download_rescheduled_to">Download reagendado para:</string>
     <string name="suggested">Sugerido</string>
@@ -185,7 +185,7 @@
     <string name="format_filtering_hint">Todos os itens devem ser do mesmo tipo para usar esta opção</string>
     <string name="preferred_search_engine_summary">O mecanismo de pesquisa a ser usado para pesquisas no aplicativo</string>
     <string name="preferred_search_engine">Mecanismo de pesquisa preferido</string>
-    <string name="video_recommendations_summary">Obtenha vídeos recomendados do YouTube na tela inicial do Invidious</string>
+    <string name="video_recommendations_summary">Obtenha vídeos recomendados do YouTube na tela inicial</string>
     <string name="video_recommendations">Recomendações de vídeo</string>
     <string name="format_source">Origem dos formatos</string>
     <string name="subtitle_languages">Idiomas das legendas</string>
@@ -247,7 +247,7 @@
     <string name="start">Começar</string>
     <string name="ytdl_version">Versão do yt-dlp</string>
     <string name="end">Fim</string>
-    <string name="kill_app">Encerrar aplicativo</string>
+    <string name="kill_app">Fechar Aplicativo</string>
     <string name="freespace">Espaço livre</string>
     <string name="dont_ask_again">Não perguntar novamente</string>
     <string name="restrict_filenames_summary">Restrinja os nomes de arquivo a apenas caracteres ASCII e evite \"&amp;\" e espaços nos nomes de arquivo</string>
@@ -277,5 +277,15 @@
     <string name="sponsorblock_outro">Cartões Finais/Créditos (Outro)</string>
     <string name="sponsorblock">Bloqueio de Patrocinadores</string>
     <string name="force_keyframes">Forçar quadros-chave nos cortes</string>
-    <string name="force_keyframes_summary">Cortes de vídeo precisos. Mais devagar</string>
+    <string name="force_keyframes_summary">Processo lento, mas cortes mais precisos</string>
+    <string name="subtitle_format">Formato da Legenda
+\n</string>
+    <string name="hide_thumbnails">Ocultar Miniaturas</string>
+    <string name="hide_terminal">Ocultar Terminal do menu de compartilhamento</string>
+    <string name="saved">Salvo</string>
+    <string name="clear_saved">Limpar Salvo</string>
+    <string name="save_for_later">Salvar download para mais tarde\?</string>
+    <string name="use_extra_commands">Adicionar Comandos Extras</string>
+    <string name="use_extra_commands_summary">Para downloads de Áudio/Vídeo. Adicione comandos extras junto com a configuração da Interface Gráfica do Usuário</string>
+    <string name="current">Comando Atual</string>
 </resources>
