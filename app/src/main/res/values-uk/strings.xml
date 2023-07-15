@@ -278,4 +278,7 @@
     <string name="fragment_retries">Повторні спроби фрагмента</string>
     <string name="force_keyframes_summary">Точні нарізки відео. Повільніше</string>
     <string name="force_keyframes">Примусові ключові кадри під час вирізів</string>
+    <string name="use_extra_commands">Додайте додаткові команди</string>
+    <string name="current">Поточна команда</string>
+    <string name="use_extra_commands_summary">Для завантаження аудіо/відео. Додайте додаткові команди разом із конфігурацією GUI</string>
 </resources>
