@@ -276,4 +276,9 @@
     <string name="fragment_retries">Повторить попытку фрагмента</string>
     <string name="retries">Повторить попытку</string>
     <string name="format_order">Порядок форматов</string>
+    <string name="force_keyframes">Принудительно использовать ключевые кадры при монтаже</string>
+    <string name="force_keyframes_summary">Точная нарезка видео. Помедленнее</string>
+    <string name="use_extra_commands_summary">Для загрузки аудио/видео. Добавьте дополнительные команды вместе с конфигурацией графического интерфейса</string>
+    <string name="use_extra_commands">Добавить дополнительные команды</string>
+    <string name="current">Текущая команда</string>
 </resources>
