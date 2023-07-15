@@ -23,8 +23,8 @@
     <string name="download_notification_channel_description">Notification showing the progress of downloading audio and video files</string>
     <string name="you_are_in_latest_version">Using the latest version</string>
     <string name="ytld_update_success">New version installed</string>
-    <string name="ytdl_already_updating">Installing new version…</string>
-    <string name="ytdl_updating_started">Downloading new version…</string>
+    <string name="ytdl_already_updating">Installing new version</string>
+    <string name="ytdl_updating_started">Downloading new version</string>
     <string name="Remove">Remove</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
@@ -37,7 +37,7 @@
     <string name="version">Version</string>
     <string name="command_directory">Custom Command Folder</string>
     <string name="couldnt_find_apk">Could not find a suitable APK.</string>
-    <string name="downloading_update">Downloading new version…</string>
+    <string name="downloading_update">Downloading new version</string>
     <string name="audio">Audio</string>
     <string name="video">Video</string>
     <string name="music_path" translatable="false">content://com.android.externalstorage.documents/tree/primary%3ADownload%2FYTDLnis%2FAudio</string>

@@ -278,4 +278,7 @@
     <string name="crop_thumb_summary">Przytnij miniaturę do kwadratu, aby pobrać dźwięk</string>
     <string name="force_keyframes">Wymuś klatki kluczowe na cięciach</string>
     <string name="force_keyframes_summary">Dokładne cięcia wideo. Wolniejsze</string>
+    <string name="use_extra_commands">Dodaj dodatkowe polecenia</string>
+    <string name="use_extra_commands_summary">Do pobierania audio/wideo. Dodaj dodatkowe polecenia wraz z konfiguracją GUI</string>
+    <string name="current">Bieżące polecenie</string>
 </resources>

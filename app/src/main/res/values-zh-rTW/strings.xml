@@ -111,7 +111,7 @@
     <string name="dark">暗色</string>
     <string name="quality">品質</string>
     <string name="system">系統</string>
-    <string name="material_you">Material You</string>
+    <string name="material_you">物質的你</string>
     <string name="blue">藍色</string>
     <string name="finished_download_notification_channel_name">完成的下載</string>
     <string name="finished_download_notification_channel_description">已完成或錯誤的下載通知</string>
@@ -128,7 +128,7 @@
     <string name="updating_download_data">正在更新下載項目資料</string>
     <string name="keep_cache">保留快取</string>
     <string name="backup">備份</string>
-    <string name="sponsorblock">SponsorBlock</string>
+    <string name="sponsorblock">贊助塊</string>
     <string name="couldnt_parse_file">無法解析檔案</string>
     <string name="restore_complete">應用程式還原完成。已還原以下項目：</string>
     <string name="select_backup_categories">選擇備份類別</string>
