@@ -40,8 +40,8 @@ interface DownloadDao {
     @Query("SELECT * FROM downloads WHERE status='Error' ORDER BY id DESC")
     fun getErroredDownloadsList() : List<DownloadItem>
 
-    @Query("SELECT * FROM downloads WHERE status='Processing' ORDER BY id DESC")
-    fun getProcessingDownloads() : Flow<List<DownloadItem>>
+    @Query("SELECT * FROM downloads WHERE status='Saved' ORDER BY id DESC")
+    fun getSavedDownloads() : Flow<List<DownloadItem>>
 
     @Query("SELECT * FROM downloads WHERE id=:id LIMIT 1")
     fun getDownloadById(id: Long) : DownloadItem
@@ -69,6 +69,9 @@ interface DownloadDao {
 
     @Query("DELETE FROM downloads WHERE status='Error'")
     suspend fun deleteErrored()
+
+    @Query("DELETE FROM downloads WHERE status='Saved'")
+    suspend fun deleteSaved()
 
     @Query("UPDATE downloads SET status='Cancelled' WHERE status='Queued'")
     suspend fun cancelQueued()

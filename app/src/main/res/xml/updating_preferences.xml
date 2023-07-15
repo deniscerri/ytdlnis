@@ -49,7 +49,7 @@
 
     <EditTextPreference
         app:key="piped_instance"
-        app:defaultValue="https://pipedapi.syncpundit.io"
+        app:defaultValue="https://api.piped.projectsegfau.lt"
         android:summary="@string/piped_instance_summary"
         app:title="@string/piped_instance" />
 

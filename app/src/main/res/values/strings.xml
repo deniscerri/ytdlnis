@@ -208,7 +208,7 @@
     <string name="subtitle_languages">Subtitle languages</string>
     <string name="format_source">Formats Source</string>
     <string name="video_recommendations">Video Recommendations</string>
-    <string name="video_recommendations_summary">Get recommended YouTube videos on the home screen from Invidious</string>
+    <string name="video_recommendations_summary">Get recommended YouTube videos on the home screen from PIPED API</string>
     <string name="preferred_search_engine">Preferred Search Engine</string>
     <string name="preferred_search_engine_summary">The search engine to use for in-app searches</string>
     <string name="format_filtering_hint">All items must be of the same type to use this option</string>
@@ -283,8 +283,14 @@
     <string name="fragment_retries">Fragment Retries</string>
     <string name="format_order">Format Order</string>
     <string name="force_keyframes">Force Keyframes At Cuts</string>
-    <string name="force_keyframes_summary">Accurate Video Cuts. Slower</string>
+    <string name="force_keyframes_summary">Slower process, but more accurate cuts</string>
     <string name="use_extra_commands">Add Extra Commands</string>
     <string name="use_extra_commands_summary">For Audio / Video downloads. Add extra commands along with the GUI configuration</string>
     <string name="current">Current Command</string>
+    <string name="subtitle_format">Subtitle Format\n</string>
+    <string name="hide_thumbnails">Hide Thumbnails</string>
+    <string name="hide_terminal">Hide Terminal from share menu</string>
+    <string name="saved">Saved</string>
+    <string name="clear_saved">Clear Saved</string>
+    <string name="save_for_later">Save Download for Later?</string>
 </resources>

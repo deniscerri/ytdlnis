@@ -147,9 +147,13 @@ class DownloadVideoFragment(private val resultItem: ResultItem, private var curr
                     //if its updating a present downloaditem and its the wrong category
                     if (currentDownloadItem!!.type != Type.video){
                         downloadItem.type = Type.video
-                        downloadItem.format =
-                            downloadItem.allFormats.filter { it.vcodec.isNotEmpty() }
-                                .maxByOrNull { it.filesize }!!
+                        runCatching {
+                            downloadItem.format =
+                                downloadItem.allFormats.filter { it.vcodec.isNotEmpty() }
+                                    .maxByOrNull { it.filesize }!!
+                        }.onFailure {
+                            downloadItem.format = downloadViewModel.getGenericVideoFormats().last()
+                        }
                     }
                 }
                 if (formats.isEmpty()) formats.addAll(downloadItem.allFormats)
@@ -166,7 +170,7 @@ class DownloadVideoFragment(private val resultItem: ResultItem, private var curr
                 val formatCard = view.findViewById<MaterialCardView>(R.id.format_card_constraintLayout)
 
                 val chosenFormat = downloadItem.format
-                UiUtil.populateFormatCard(formatCard, chosenFormat, downloadItem.allFormats.filter { downloadItem.videoPreferences.audioFormatIDs.contains(it.format_id) })
+                UiUtil.populateFormatCard(requireContext(), formatCard, chosenFormat, downloadItem.allFormats.filter { downloadItem.videoPreferences.audioFormatIDs.contains(it.format_id) })
                 val listener = object : OnFormatClickListener {
                     override fun onFormatClick(allFormats: List<List<Format>>, item: List<FormatTuple>) {
                         downloadItem.format = item.first().format
@@ -180,7 +184,7 @@ class DownloadVideoFragment(private val resultItem: ResultItem, private var curr
                             }
                         }
                         formats = allFormats.first().toMutableList()
-                        UiUtil.populateFormatCard(formatCard, item.first().format, item.first().audioFormats)
+                        UiUtil.populateFormatCard(requireContext(), formatCard, item.first().format, item.first().audioFormats)
                     }
                 }
                 formatCard.setOnClickListener{

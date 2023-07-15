@@ -64,7 +64,6 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
     private lateinit var cookieViewModel: CookieViewModel
     private lateinit var commandTemplateViewModel: CommandTemplateViewModel
 
-    private var arch: Preference? = null
     private var version: Preference? = null
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
@@ -201,9 +200,8 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
 
         version = findPreference("version")
         val nativeLibraryDir = context?.applicationInfo?.nativeLibraryDir
-        val installedABI = Build.SUPPORTED_ABIS.first {  nativeLibraryDir!!.contains(it) }
 
-        version!!.summary = "${BuildConfig.VERSION_NAME} [${installedABI}] ${BuildConfig.BUILD_TYPE}"
+        version!!.summary = "${BuildConfig.VERSION_NAME} [${nativeLibraryDir?.split("/lib/")?.get(1)}] ${BuildConfig.BUILD_TYPE}"
 
         version!!.onPreferenceClickListener =
             Preference.OnPreferenceClickListener {

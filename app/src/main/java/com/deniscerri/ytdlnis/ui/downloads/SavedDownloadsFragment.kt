@@ -1,12 +1,10 @@
 package com.deniscerri.ytdlnis.ui.downloads
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.DialogInterface
 import android.graphics.Canvas
 import android.graphics.Color
 import android.os.Bundle
-import android.text.format.DateFormat
 import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.Menu
@@ -22,20 +20,16 @@ import androidx.appcompat.view.ActionMode
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import androidx.work.WorkManager
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.adapter.GenericDownloadAdapter
 import com.deniscerri.ytdlnis.database.models.DownloadItem
-import com.deniscerri.ytdlnis.database.repository.DownloadRepository
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
-import com.deniscerri.ytdlnis.databinding.FragmentHomeBinding
+import com.deniscerri.ytdlnis.ui.downloadcard.DownloadBottomSheetDialog
 import com.deniscerri.ytdlnis.util.FileUtil
-import com.deniscerri.ytdlnis.util.NotificationUtil
 import com.deniscerri.ytdlnis.util.UiUtil
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
@@ -43,25 +37,16 @@ import com.google.android.material.chip.Chip
 import com.google.android.material.color.MaterialColors
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
-import com.yausername.youtubedl_android.YoutubeDL
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Locale
-import java.util.UUID
 
 
-class QueuedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickListener {
+class SavedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickListener {
     private var fragmentView: View? = null
     private var activity: Activity? = null
     private lateinit var downloadViewModel : DownloadViewModel
-    private lateinit var queuedRecyclerView : RecyclerView
-    private lateinit var queuedDownloads : GenericDownloadAdapter
-    private lateinit var notificationUtil: NotificationUtil
-    private lateinit var fileSize: TextView
+    private lateinit var savedRecyclerView: RecyclerView
+    private lateinit var savedDownloads: GenericDownloadAdapter
     private var selectedObjects: ArrayList<DownloadItem>? = null
     private var actionMode : ActionMode? = null
     private lateinit var items : MutableList<DownloadItem>
@@ -71,51 +56,48 @@ class QueuedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLi
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        fragmentView = inflater.inflate(R.layout.fragment_inqueue, container, false)
+        fragmentView = inflater.inflate(R.layout.fragment_generic_download_queue, container, false)
         activity = getActivity()
-        notificationUtil = NotificationUtil(requireContext())
+        selectedObjects = arrayListOf()
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
         items = mutableListOf()
-        selectedObjects = arrayListOf()
         return fragmentView
     }
 
-    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        fileSize = view.findViewById(R.id.filesize)
-        queuedDownloads =
+
+        savedDownloads =
             GenericDownloadAdapter(
                 this,
                 requireActivity()
             )
 
-        queuedRecyclerView = view.findViewById(R.id.download_recyclerview)
-        queuedRecyclerView.adapter = queuedDownloads
+        savedRecyclerView = view.findViewById(R.id.download_recyclerview)
+        savedRecyclerView.adapter = savedDownloads
         val preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
         if (preferences.getBoolean("swipe_gestures", true)){
             val itemTouchHelper = ItemTouchHelper(simpleCallback)
-            itemTouchHelper.attachToRecyclerView(queuedRecyclerView)
+            itemTouchHelper.attachToRecyclerView(savedRecyclerView)
         }
-        queuedRecyclerView.layoutManager = GridLayoutManager(context, resources.getInteger(R.integer.grid_size))
+        savedRecyclerView.layoutManager = GridLayoutManager(context, resources.getInteger(R.integer.grid_size))
 
-        downloadViewModel.queuedDownloads.observe(viewLifecycleOwner) {
+
+        downloadViewModel.savedDownloads.observe(viewLifecycleOwner) {
             items = it.toMutableList()
-            if (it.isEmpty()) fileSize.visibility = View.GONE
-            else{
-                val size = FileUtil.convertFileSize(it.sumOf { i -> i.format.filesize })
-                if (size == "?")  fileSize.visibility = View.GONE
-                else {
-                    fileSize.visibility = View.VISIBLE
-                    fileSize.text = "${getString(R.string.file_size)}: ~ $size"
-                }
-             }
-            queuedDownloads.submitList(it)
+            savedDownloads.submitList(it)
         }
     }
 
     override fun onActionButtonClick(itemID: Long) {
-        removeItem(itemID)
+        val item = items.find { it.id == itemID }
+        if (item != null){
+            runBlocking {
+                downloadViewModel.queueDownloads(listOf(item))
+            }
+        }else{
+            Toast.makeText(requireContext(), getString(R.string.error_restarting_download), Toast.LENGTH_LONG).show()
+        }
     }
 
     override fun onCardClick(itemID: Long) {
@@ -150,25 +132,7 @@ class QueuedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLi
         val codec = bottomSheet.findViewById<Chip>(R.id.codec)
         val fileSize = bottomSheet.findViewById<Chip>(R.id.file_size)
 
-        if (item.downloadStartTime <= System.currentTimeMillis() / 1000) time!!.visibility = View.GONE
-        else {
-            val calendar = Calendar.getInstance()
-            calendar.timeInMillis = item.downloadStartTime
-            time!!.text = SimpleDateFormat(DateFormat.getBestDateTimePattern(Locale.getDefault(), "ddMMMyyyy - HHmm"), Locale.getDefault()).format(calendar.time)
-
-            time.setOnClickListener {
-                UiUtil.showDatePicker(parentFragmentManager) {
-                    bottomSheet.dismiss()
-                    Toast.makeText(context, getString(R.string.download_rescheduled_to) + " " + it.time, Toast.LENGTH_LONG).show()
-                    downloadViewModel.deleteDownload(item)
-                    item.downloadStartTime = it.timeInMillis
-                    WorkManager.getInstance(requireContext()).cancelUniqueWork(item.id.toString())
-                    runBlocking {
-                        downloadViewModel.queueDownloads(listOf(item))
-                    }
-                }
-            }
-        }
+        time!!.visibility = View.GONE
 
         if (item.format.format_note == "?" || item.format.format_note == "") formatNote!!.visibility =
             View.GONE
@@ -210,28 +174,30 @@ class QueuedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLi
         val remove = bottomSheet.findViewById<Button>(R.id.bottomsheet_remove_button)
         remove!!.tag = itemID
         remove.setOnClickListener{
-            bottomSheet.hide()
-            removeItem(itemID)
+            removeItem(item, bottomSheet)
         }
         val openFile = bottomSheet.findViewById<Button>(R.id.bottomsheet_open_file_button)
         openFile!!.visibility = View.GONE
 
-
-
-        val downloadNow = bottomSheet.findViewById<Button>(R.id.bottomsheet_redownload_button)
-        if (item.downloadStartTime <= System.currentTimeMillis() / 1000) downloadNow!!.visibility = View.GONE
-        else{
-            downloadNow!!.text = getString(R.string.download_now)
-            downloadNow.setOnClickListener {
-                bottomSheet.dismiss()
-                downloadViewModel.deleteDownload(item)
-                item.downloadStartTime = 0
-                WorkManager.getInstance(requireContext()).cancelUniqueWork(item.id.toString())
-                runBlocking {
-                    downloadViewModel.queueDownloads(listOf(item))
-                }
+        val download = bottomSheet.findViewById<Button>(R.id.bottomsheet_redownload_button)
+        download!!.text = getString(R.string.download)
+        download.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_downloads, 0, 0, 0);
+        download.tag = itemID
+        download.setOnClickListener{
+            runBlocking {
+                downloadViewModel.queueDownloads(listOf(item))
             }
+            bottomSheet.cancel()
         }
+
+        download.setOnLongClickListener {
+            bottomSheet.cancel()
+            val sheet = DownloadBottomSheetDialog(downloadViewModel.createResultItemFromDownload(item), item.type, item, false)
+            sheet.show(parentFragmentManager, "downloadSingleSheet")
+            true
+        }
+
+        openFile.visibility = View.GONE
 
         bottomSheet.show()
         val displayMetrics = DisplayMetrics()
@@ -245,7 +211,6 @@ class QueuedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLi
 
     override fun onCardSelect(itemID: Long, isChecked: Boolean) {
         val item = items.find { it.id == itemID }
-        val now = System.currentTimeMillis()
         if (isChecked) {
             selectedObjects!!.add(item!!)
             if (actionMode == null){
@@ -262,34 +227,24 @@ class QueuedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLi
                 actionMode?.finish()
             }
         }
-        if (actionMode != null){
-            actionMode!!.menu.getItem(1).isVisible = selectedObjects!!.all { it.downloadStartTime > now }
-        }
     }
 
-    private fun removeItem(id: Long){
-        val item = items.find { it.id == id } ?: return
+
+    private fun removeItem(item: DownloadItem, bottomSheet: BottomSheetDialog?){
+        bottomSheet?.hide()
         val deleteDialog = MaterialAlertDialogBuilder(requireContext())
         deleteDialog.setTitle(getString(R.string.you_are_going_to_delete) + " \"" + item.title + "\"!")
         deleteDialog.setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, _: Int -> dialogInterface.cancel() }
         deleteDialog.setPositiveButton(getString(R.string.ok)) { _: DialogInterface?, _: Int ->
-            item.status = DownloadRepository.Status.Cancelled.toString()
-            downloadViewModel.updateDownload(item)
-
-            Snackbar.make(queuedRecyclerView, getString(R.string.cancelled) + ": " + item.title, Snackbar.LENGTH_LONG)
-                .setAction(getString(R.string.undo)) {
-                    lifecycleScope.launch(Dispatchers.IO) {
-                        downloadViewModel.deleteDownload(item)
-                        downloadViewModel.queueDownloads(listOf(item))
-                    }
-                }.show()
+            downloadViewModel.deleteDownload(item)
         }
         deleteDialog.show()
     }
 
+
     private val contextualActionBar = object : ActionMode.Callback {
         override fun onCreateActionMode(mode: ActionMode?, menu: Menu?): Boolean {
-            mode!!.menuInflater.inflate(R.menu.queued_menu_context, menu)
+            mode!!.menuInflater.inflate(R.menu.saved_downloads_menu_context, menu)
             mode.title = "${selectedObjects!!.size} ${getString(R.string.selected)}"
             return true
         }
@@ -312,10 +267,6 @@ class QueuedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLi
                     deleteDialog.setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, _: Int -> dialogInterface.cancel() }
                     deleteDialog.setPositiveButton(getString(R.string.ok)) { _: DialogInterface?, _: Int ->
                         for (obj in selectedObjects!!){
-                            val id = obj.id.toInt()
-                            YoutubeDL.getInstance().destroyProcessById(id.toString())
-                            WorkManager.getInstance(requireContext()).cancelUniqueWork(id.toString())
-                            notificationUtil.cancelDownloadNotification(id)
                             downloadViewModel.deleteDownload(obj)
                         }
                         clearCheckedItems()
@@ -325,24 +276,21 @@ class QueuedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLi
                     true
                 }
                 R.id.download -> {
-                    for (obj in selectedObjects!!){
-                        WorkManager.getInstance(requireContext()).cancelUniqueWork(obj.id.toInt().toString())
-                    }
-                    selectedObjects!!.forEach { it.downloadStartTime = 0L }
-                    lifecycleScope.launch(Dispatchers.IO) {
-                        downloadViewModel.queueDownloads(selectedObjects!!)
+                    runBlocking {
+                        downloadViewModel.queueDownloads(selectedObjects!!.toMutableList())
+                        actionMode?.finish()
                     }
                     true
                 }
                 R.id.select_all -> {
-                    queuedDownloads.checkAll(items)
+                    savedDownloads.checkAll(items)
                     selectedObjects?.clear()
                     items.forEach { selectedObjects?.add(it) }
                     mode?.title = getString(R.string.all_items_selected)
                     true
                 }
                 R.id.invert_selected -> {
-                    queuedDownloads.invertSelected(items)
+                    savedDownloads.invertSelected(items)
                     val invertedList = arrayListOf<DownloadItem>()
                     items.forEach {
                         if (!selectedObjects?.contains(it)!!) invertedList.add(it)
@@ -364,12 +312,12 @@ class QueuedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLi
     }
 
     private fun clearCheckedItems(){
-        queuedDownloads.clearCheckeditems()
+        savedDownloads.clearCheckeditems()
         selectedObjects?.clear()
     }
 
     private var simpleCallback: ItemTouchHelper.SimpleCallback =
-        object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+        object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
             override fun onMove(recyclerView: RecyclerView,viewHolder: RecyclerView.ViewHolder,target: RecyclerView.ViewHolder
             ): Boolean {
                 return false
@@ -380,10 +328,15 @@ class QueuedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLi
                 when (direction) {
                     ItemTouchHelper.LEFT -> {
                         val deletedItem = items[position]
-                        queuedDownloads.notifyItemChanged(position)
-                        removeItem(deletedItem.id)
+                        downloadViewModel.deleteDownload(deletedItem)
+                        Snackbar.make(savedRecyclerView, getString(R.string.you_are_going_to_delete) + ": " + deletedItem.title, Snackbar.LENGTH_LONG)
+                            .setAction(getString(R.string.undo)) {
+                                downloadViewModel.insert(deletedItem)
+                            }.show()
                     }
-
+                    ItemTouchHelper.RIGHT -> {
+                        onActionButtonClick(items[position].id)
+                    }
                 }
             }
 
@@ -411,9 +364,10 @@ class QueuedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLi
                     .addSwipeRightBackgroundColor(
                         MaterialColors.getColor(
                             requireContext(),
-                            R.attr.colorOnSurfaceInverse, Color.TRANSPARENT
+                            R.attr.colorOnSurfaceInverse,Color.TRANSPARENT
                         )
                     )
+                    .addSwipeRightActionIcon(R.drawable.ic_downloads)
                     .create()
                     .decorate()
                 super.onChildDraw(

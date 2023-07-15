@@ -8,7 +8,6 @@ import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.preference.PreferenceManager
@@ -21,13 +20,18 @@ import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.card.MaterialCardView
+import com.google.android.material.chip.Chip
+import com.google.android.material.progressindicator.LinearProgressIndicator
+import com.google.android.material.shape.CornerFamily
+import com.google.android.material.shape.ShapeAppearanceModel
 import com.squareup.picasso.Picasso
-import java.util.Locale
+import java.lang.StringBuilder
 
-class ConfigureMultipleDownloadsAdapter(onItemClickListener: OnItemClickListener, activity: Activity) : ListAdapter<DownloadItem?, ConfigureMultipleDownloadsAdapter.ViewHolder>(AsyncDifferConfig.Builder(DIFF_CALLBACK).build()) {
+class ActiveDownloadMinifiedAdapter(onItemClickListener: OnItemClickListener, activity: Activity) : ListAdapter<DownloadItem?, ActiveDownloadMinifiedAdapter.ViewHolder>(AsyncDifferConfig.Builder(DIFF_CALLBACK).build()) {
     private val onItemClickListener: OnItemClickListener
     private val activity: Activity
-    private val sharedPreferences : SharedPreferences
+    private val sharedPreferences: SharedPreferences
 
     init {
         this.onItemClickListener = onItemClickListener
@@ -36,28 +40,27 @@ class ConfigureMultipleDownloadsAdapter(onItemClickListener: OnItemClickListener
     }
 
     class ViewHolder(itemView: View, onItemClickListener: OnItemClickListener?) : RecyclerView.ViewHolder(itemView) {
-        val cardView: FrameLayout
+        val cardView: MaterialCardView
 
         init {
-            cardView = itemView.findViewById(R.id.download_card_view)
+            cardView = itemView.findViewById(R.id.active_download_card_view)
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val cardView = LayoutInflater.from(parent.context)
-            .inflate(R.layout.download_card, parent, false)
+                .inflate(R.layout.active_download_card_minified, parent, false)
         return ViewHolder(cardView, onItemClickListener)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)
         val card = holder.cardView
-
         val uiHandler = Handler(Looper.getMainLooper())
-        val thumbnail = card.findViewById<ImageView>(R.id.downloads_image_view)
+        val thumbnail = card.findViewById<ImageView>(R.id.image_view)
 
         // THUMBNAIL ----------------------------------
-        if (!sharedPreferences.getStringSet("hide_thumbnails", emptySet())!!.contains("home")){
+        if (!sharedPreferences.getStringSet("hide_thumbnails", emptySet())!!.contains("queue")){
             val imageURL = item!!.thumb
             if (imageURL.isNotEmpty()) {
                 uiHandler.post { Picasso.get().load(imageURL).into(thumbnail) }
@@ -69,8 +72,11 @@ class ConfigureMultipleDownloadsAdapter(onItemClickListener: OnItemClickListener
             uiHandler.post { Picasso.get().load(R.color.black).into(thumbnail) }
         }
 
-        val duration = card.findViewById<TextView>(R.id.duration)
-        duration.text = item!!.duration
+        // PROGRESS BAR ----------------------------------------------------
+        val progressBar = card.findViewById<LinearProgressIndicator>(R.id.progress)
+        progressBar.tag = "${item!!.id}##progress"
+        progressBar.progress = 0
+        progressBar.isIndeterminate = true
 
         // TITLE  ----------------------------------
         val itemTitle = card.findViewById<TextView>(R.id.title)
@@ -78,18 +84,15 @@ class ConfigureMultipleDownloadsAdapter(onItemClickListener: OnItemClickListener
         if (title.length > 100) {
             title = title.substring(0, 40) + "..."
         }
-        itemTitle.text = title
+        itemTitle.text = title.ifEmpty { item.url }
 
-        // Format Note ----------------------------------
-        val formatNote = card.findViewById<TextView>(R.id.format_note)
-        if (item.format.format_note.isNotEmpty()){
-            formatNote.text = item.format.format_note.uppercase(Locale.getDefault())
-            formatNote.visibility = View.VISIBLE
-        }else{
-            formatNote.visibility = View.GONE
-        }
+        val duration = card.findViewById<TextView>(R.id.duration)
+        duration.text = item.duration
 
-        val codec = card.findViewById<TextView>(R.id.codec)
+
+        val formatDetailsChip = card.findViewById<TextView>(R.id.format_note)
+        val formatDetailsText = StringBuilder(item.format.format_note.uppercase())
+
         val codecText =
             if (item.format.encoding != "") {
                 item.format.encoding.uppercase()
@@ -98,59 +101,41 @@ class ConfigureMultipleDownloadsAdapter(onItemClickListener: OnItemClickListener
             } else {
                 item.format.acodec.uppercase()
             }
-        if (codecText == "" || codecText == "none"){
-            codec.visibility = View.GONE
-        }else{
-            codec.visibility = View.VISIBLE
-            codec.text = codecText
+        if (codecText != "" && codecText != "none"){
+            formatDetailsText.append(" \t •\t $codecText")
         }
 
-        val fileSize = card.findViewById<TextView>(R.id.file_size)
-        val fileSizeReadable = FileUtil.convertFileSize(item.format.filesize)
-        if (fileSizeReadable == "?") fileSize.visibility = View.GONE
-        else {
-            fileSize.text = fileSizeReadable
-            fileSize.visibility = View.VISIBLE
-        }
+        val fileSize = FileUtil.convertFileSize(item.format.filesize)
+        if (fileSize != "?") formatDetailsText.append(" \t •\t $fileSize")
 
-        // Type Icon Button
-        val btn = card.findViewById<MaterialButton>(R.id.action_button)
-        if (btn.hasOnClickListeners()) btn.setOnClickListener(null)
+        formatDetailsChip.text = formatDetailsText
 
-        btn.setOnClickListener {
-            onItemClickListener.onButtonClick(item.url)
-        }
+        // CANCEL BUTTON ----------------------------------
+        val cancelButton = card.findViewById<MaterialButton>(R.id.active_download_cancel)
+        if (cancelButton.hasOnClickListeners()) cancelButton.setOnClickListener(null)
 
-        when(item.type) {
-            DownloadViewModel.Type.audio -> {
-                btn.setIconResource(R.drawable.ic_music)
-            }
-            DownloadViewModel.Type.video -> {
-                btn.setIconResource(R.drawable.ic_video)
-            }
-            else -> {
-                btn.setIconResource(R.drawable.ic_terminal)
-            }
+        cancelButton.setOnClickListener {
+            onItemClickListener.onCancelClick(item.id)
         }
 
         card.setOnClickListener {
-            onItemClickListener.onCardClick(item.url)
+            onItemClickListener.onCardClick()
         }
     }
-
     interface OnItemClickListener {
-        fun onButtonClick(itemURL: String)
-        fun onCardClick(itemURL: String)
+        fun onCancelClick(itemID: Long)
+        fun onCardClick()
     }
 
     companion object {
         private val DIFF_CALLBACK: DiffUtil.ItemCallback<DownloadItem> = object : DiffUtil.ItemCallback<DownloadItem>() {
             override fun areItemsTheSame(oldItem: DownloadItem, newItem: DownloadItem): Boolean {
-                return oldItem.url == newItem.url
+                val ranged = arrayListOf(oldItem.id, newItem.id)
+                return ranged[0] == ranged[1]
             }
 
             override fun areContentsTheSame(oldItem: DownloadItem, newItem: DownloadItem): Boolean {
-                return oldItem.title == newItem.title && oldItem.author == newItem.author && oldItem.type == newItem.type && oldItem.format == newItem.format
+                return oldItem.id == newItem.id && oldItem.title == newItem.title && oldItem.author == newItem.author && oldItem.thumb == newItem.thumb
             }
         }
     }

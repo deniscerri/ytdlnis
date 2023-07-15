@@ -24,7 +24,7 @@ class ResultRepository(private val resultDao: ResultDao, private val context: Co
     suspend fun updateTrending(){
         deleteAll()
         val infoUtil = InfoUtil(context)
-        val items = infoUtil.getTrending(context)
+        val items = infoUtil.getTrending()
         itemCount.value = items.size
         for (i in items){
             resultDao.insert(i!!)

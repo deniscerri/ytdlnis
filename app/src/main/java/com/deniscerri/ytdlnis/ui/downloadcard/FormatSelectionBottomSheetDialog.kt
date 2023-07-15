@@ -253,7 +253,7 @@ class FormatSelectionBottomSheetDialog(private val items: List<DownloadItem?>, p
             val format = finalFormats[i]
             val formatItem = LayoutInflater.from(context).inflate(R.layout.format_item, null)
             formatItem.tag = "${format.format_id}${format.format_note}"
-            UiUtil.populateFormatCard(formatItem as MaterialCardView, format, null)
+            UiUtil.populateFormatCard(requireContext(), formatItem as MaterialCardView, format, null)
             formatItem.setOnClickListener{ clickedformat ->
                 //if the context is behind a video or playlist, allow the ability to multiselect audio formats
                 if (canMultiSelectAudio){

@@ -35,6 +35,15 @@
         app:summary="@string/download_over_metered_networks_summary"
         app:title="@string/download_over_metered_networks" />
 
+    <MultiSelectListPreference
+        app:icon="@drawable/baseline_hide_image_24"
+        app:dialogTitle="@string/hide_thumbnails"
+        app:entries="@array/hide_thumbnail"
+        app:entryValues="@array/hide_thumbnail_values"
+        app:key="hide_thumbnails"
+        app:title="@string/hide_thumbnails" />
+
+
     <EditTextPreference
         android:icon="@drawable/baseline_network_locked_24"
         app:key="proxy"
@@ -51,13 +60,6 @@
         app:key="preferred_download_type"
         app:summary="@string/preferred_download_type_summary"
         app:title="@string/preferred_download_type" />
-
-    <EditTextPreference
-        android:icon="@drawable/ic_key"
-        app:key="api_key"
-        app:defaultValue=""
-        app:summary="@string/api_key_summary"
-        app:title="@string/api_key" />
 
     <SeekBarPreference
         app:dependency="aria2"

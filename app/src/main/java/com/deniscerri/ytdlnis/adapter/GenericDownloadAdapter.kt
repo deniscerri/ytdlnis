@@ -2,6 +2,8 @@ package com.deniscerri.ytdlnis.adapter
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.SharedPreferences
+import android.graphics.Color
 import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
@@ -9,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.AsyncDifferConfig
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -25,11 +28,13 @@ class GenericDownloadAdapter(onItemClickListener: OnItemClickListener, activity:
     private val onItemClickListener: OnItemClickListener
     private val activity: Activity
     private val checkedItems: ArrayList<Long>
+    private val sharedPreferences: SharedPreferences
 
     init {
         checkedItems = ArrayList()
         this.onItemClickListener = onItemClickListener
         this.activity = activity
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity)
     }
 
     class ViewHolder(itemView: View, onItemClickListener: OnItemClickListener?) : RecyclerView.ViewHolder(itemView) {
@@ -49,18 +54,23 @@ class GenericDownloadAdapter(onItemClickListener: OnItemClickListener, activity:
         val item = getItem(position)
         val card = holder.cardView
 
-        // THUMBNAIL ----------------------------------
-        val thumbnail = card.findViewById<ImageView>(R.id.downloads_image_view)
-        val imageURL = item!!.thumb
         val uiHandler = Handler(Looper.getMainLooper())
-        if (imageURL.isNotEmpty()) {
-            uiHandler.post { Picasso.get().load(imageURL).into(thumbnail) }
-        } else {
+        val thumbnail = card.findViewById<ImageView>(R.id.downloads_image_view)
+
+        // THUMBNAIL ----------------------------------
+        if (!sharedPreferences.getStringSet("hide_thumbnails", emptySet())!!.contains("queue")){
+            val imageURL = item!!.thumb
+            if (imageURL.isNotEmpty()) {
+                uiHandler.post { Picasso.get().load(imageURL).into(thumbnail) }
+            } else {
+                uiHandler.post { Picasso.get().load(R.color.black).into(thumbnail) }
+            }
+        }else{
             uiHandler.post { Picasso.get().load(R.color.black).into(thumbnail) }
         }
 
         val duration = card.findViewById<TextView>(R.id.duration)
-        duration.text = item.duration
+        duration.text = item!!.duration
 
         // TITLE  ----------------------------------
         val itemTitle = card.findViewById<TextView>(R.id.title)
@@ -102,6 +112,7 @@ class GenericDownloadAdapter(onItemClickListener: OnItemClickListener, activity:
 
         when(item.status){
             DownloadRepository.Status.Cancelled.toString() -> actionButton.setIconResource(R.drawable.ic_refresh)
+            DownloadRepository.Status.Saved.toString() -> actionButton.setIconResource(R.drawable.ic_downloads)
             DownloadRepository.Status.Queued.toString() -> actionButton.setIconResource(R.drawable.ic_baseline_delete_outline_24)
             else -> {
                 actionButton.setIconResource(R.drawable.ic_baseline_file_open_24)

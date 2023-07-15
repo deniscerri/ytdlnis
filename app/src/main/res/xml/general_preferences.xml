@@ -38,6 +38,16 @@
             app:summary="@string/pure_theme_summary"
             app:title="@string/high_contrast" />
 
+
+        <MultiSelectListPreference
+            app:icon="@drawable/baseline_hide_image_24"
+            app:dialogTitle="@string/hide_thumbnails"
+            app:entries="@array/hide_thumbnail"
+            app:entryValues="@array/hide_thumbnail_values"
+            app:key="hide_thumbnails"
+            app:title="@string/hide_thumbnails" />
+
+
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/misc">
@@ -93,5 +103,12 @@
             android:key="swipe_gestures"
             app:summary="@string/swipe_gestures_summary"
             app:title="@string/swipe_gestures" />
+
+        <SwitchPreferenceCompat
+            android:widgetLayout="@layout/preferece_material_switch"
+            app:defaultValue="false"
+            android:icon="@drawable/baseline_share_24"
+            android:key="hide_terminal"
+            app:title="@string/hide_terminal" />
     </PreferenceCategory>
 </PreferenceScreen>

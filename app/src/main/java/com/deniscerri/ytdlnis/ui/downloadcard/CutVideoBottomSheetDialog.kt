@@ -32,6 +32,7 @@ import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.ChapterItem
 import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.util.InfoUtil
+import com.deniscerri.ytdlnis.util.VideoPlayerUtil
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.button.MaterialButton
@@ -104,64 +105,7 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val urls
             behavior.peekHeight = displayMetrics.heightPixels
         }
 
-//        val renderersFactory = DefaultRenderersFactory(requireContext().applicationContext)
-//            .setEnableDecoderFallback(true)
-//            .setExtensionRendererMode(EXTENSION_RENDERER_MODE_PREFER)
-//            .setMediaCodecSelector { mimeType, requiresSecureDecoder, requiresTunnelingDecoder ->
-//                var decoderInfo: MutableList<MediaCodecInfo> =
-//                    MediaCodecSelector.DEFAULT
-//                        .getDecoderInfos(
-//                            mimeType,
-//                            requiresSecureDecoder,
-//                            requiresTunnelingDecoder
-//                        )
-//                if (MimeTypes.VIDEO_H264 == mimeType) {
-//                    // copy the list because MediaCodecSelector.DEFAULT returns an unmodifiable list
-//                    decoderInfo = ArrayList(decoderInfo)
-//                    decoderInfo.reverse()
-//                }
-//                decoderInfo
-//            }
-
-        val cronetEngine: CronetEngine = CronetEngine.Builder(App.instance)
-            .enableHttp2(true)
-            .enableQuic(true)
-            .enableBrotli(true)
-            .enableHttpCache(CronetEngine.Builder.HTTP_CACHE_IN_MEMORY, 1024L * 1024L) // 1MiB
-            .build()
-
-        val trackSelector = DefaultTrackSelector(requireContext())
-        val loadControl = DefaultLoadControl.Builder()
-            // cache the last three minutes
-            .setBackBuffer(1000 * 60 * 3, true)
-            .setBufferDurationsMs(
-                1000 * 10, // exo default is 50s
-                50000,
-                DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_MS,
-                DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_AFTER_REBUFFER_MS
-            )
-            .build()
-
-        val cronetDataSourceFactory = CronetDataSource.Factory(
-            cronetEngine,
-            Executors.newCachedThreadPool()
-        )
-        val dataSourceFactory = DefaultDataSource.Factory(requireContext(), cronetDataSourceFactory)
-
-        player = ExoPlayer.Builder(requireContext())
-            .setUsePlatformDiagnostics(false)
-            .setMediaSourceFactory(DefaultMediaSourceFactory(dataSourceFactory))
-            .setTrackSelector(trackSelector)
-            .setLoadControl(loadControl)
-            .setHandleAudioBecomingNoisy(true)
-            .setAudioAttributes(
-                AudioAttributes.Builder()
-                    .setUsage(C.USAGE_MEDIA)
-                    .setContentType(C.AUDIO_CONTENT_TYPE_MOVIE)
-                    .build()
-                ,
-                true)
-            .build()
+        player = VideoPlayerUtil.buildPlayer(requireContext())
 
         val frame = view.findViewById<MaterialCardView>(R.id.frame_layout)
         val videoView = view.findViewById<PlayerView>(R.id.video_view)

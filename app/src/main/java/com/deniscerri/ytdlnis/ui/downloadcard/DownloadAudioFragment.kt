@@ -142,9 +142,13 @@ class DownloadAudioFragment(private var resultItem: ResultItem, private var curr
                     //if its updating a present downloaditem and its the wrong category
                     if (currentDownloadItem!!.type != Type.audio){
                         downloadItem.type = Type.audio
-                        downloadItem.format =
-                            downloadItem.allFormats.filter { it.format_note.contains("audio", ignoreCase = true) }
-                                .maxByOrNull { it.filesize }!!
+                        runCatching {
+                            downloadItem.format =
+                                downloadItem.allFormats.filter { it.format_note.contains("audio", ignoreCase = true) }
+                                    .maxByOrNull { it.filesize }!!
+                        }.onFailure {
+                            downloadItem.format = downloadViewModel.getGenericAudioFormats().last()
+                        }
                     }
                 }
                 if (formats.isEmpty()) formats.addAll(downloadItem.allFormats.filter { it.format_note.contains("audio", ignoreCase = true) })
@@ -160,11 +164,11 @@ class DownloadAudioFragment(private var resultItem: ResultItem, private var curr
 
                 val formatCard = view.findViewById<MaterialCardView>(R.id.format_card_constraintLayout)
                 val chosenFormat = downloadItem.format
-                UiUtil.populateFormatCard(formatCard, chosenFormat, null)
+                UiUtil.populateFormatCard(requireContext(), formatCard, chosenFormat, null)
                 val listener = object : OnFormatClickListener {
                     override fun onFormatClick(allFormats: List<List<Format>>, item: List<FormatTuple>) {
                         downloadItem.format = item.first().format
-                        UiUtil.populateFormatCard(formatCard, item.first().format, null)
+                        UiUtil.populateFormatCard(requireContext(), formatCard, item.first().format, null)
                         lifecycleScope.launch {
                             withContext(Dispatchers.IO){
                                 resultItem.formats.removeAll(formats.toSet())

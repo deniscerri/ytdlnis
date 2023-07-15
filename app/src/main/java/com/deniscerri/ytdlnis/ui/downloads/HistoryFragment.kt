@@ -90,6 +90,8 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
     private var _binding : FragmentHistoryBinding? = null
     private var actionMode : ActionMode? = null
 
+    private lateinit var sortChip: Chip
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -111,6 +113,7 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
         selectionChips = view.findViewById(R.id.history_selection_chips)
         websiteGroup = view.findViewById(R.id.website_chip_group)
         uiHandler = Handler(Looper.getMainLooper())
+        sortChip = view.findViewById(R.id.sortChip)
         selectedObjects = ArrayList()
 
 
@@ -153,6 +156,27 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
             historyAdapter!!.submitList(it)
             historyList = it
             scrollToTop()
+        }
+
+        historyViewModel.sortOrder.observe(viewLifecycleOwner){
+            if (it != null){
+                when(it){
+                    HistorySort.ASC -> sortChip.chipIcon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_down)
+                    HistorySort.DESC -> sortChip.chipIcon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_up)
+                }
+            }
+        }
+
+        historyViewModel.sortType.observe(viewLifecycleOwner){
+            if(it != null){
+                when(it){
+                    HistoryRepository.HistorySortType.AUTHOR -> sortChip.text = getString(R.string.author)
+                    HistoryRepository.HistorySortType.DATE -> sortChip.text = getString(R.string.date_added)
+                    HistoryRepository.HistorySortType.TITLE -> sortChip.text = getString(R.string.title)
+                    HistoryRepository.HistorySortType.FILESIZE -> sortChip.text = getString(R.string.file_size)
+
+                }
+            }
         }
 
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]

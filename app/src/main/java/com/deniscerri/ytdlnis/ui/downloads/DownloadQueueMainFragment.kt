@@ -63,7 +63,7 @@ class DownloadQueueMainFragment : Fragment(){
             overScrollMode = View.OVER_SCROLL_NEVER
         }
 
-        val fragments = mutableListOf(ActiveDownloadsFragment(), QueuedDownloadsFragment(), CancelledDownloadsFragment(), ErroredDownloadsFragment())
+        val fragments = mutableListOf(ActiveDownloadsFragment(), QueuedDownloadsFragment(), CancelledDownloadsFragment(), ErroredDownloadsFragment(), SavedDownloadsFragment())
 
         fragmentAdapter = DownloadListFragmentAdapter(
             childFragmentManager,
@@ -80,6 +80,7 @@ class DownloadQueueMainFragment : Fragment(){
                 1 -> tab.text = getString(R.string.in_queue)
                 2 -> tab.text = getString(R.string.cancelled)
                 3 -> tab.text = getString(R.string.errored)
+                4 -> tab.text = getString(R.string.saved)
             }
         }.attach()
 
@@ -113,19 +114,24 @@ class DownloadQueueMainFragment : Fragment(){
             try{
                 when(m.itemId){
                     R.id.clear_queue -> {
-                        showDeleteDialog() {
+                        showDeleteDialog {
                             cancelAllDownloads()
                             downloadViewModel.cancelQueued()
                         }
                     }
                     R.id.clear_cancelled -> {
-                        showDeleteDialog() {
+                        showDeleteDialog {
                             downloadViewModel.deleteCancelled()
                         }
                     }
                     R.id.clear_errored -> {
-                        showDeleteDialog() {
+                        showDeleteDialog {
                             downloadViewModel.deleteErrored()
+                        }
+                    }
+                    R.id.clear_saved -> {
+                        showDeleteDialog {
+                            downloadViewModel.deleteSaved()
                         }
                     }
                 }

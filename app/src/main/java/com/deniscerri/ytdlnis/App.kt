@@ -5,9 +5,17 @@ import android.widget.Toast
 import androidx.core.content.edit
 import androidx.preference.PreferenceManager
 import androidx.work.Configuration
+import androidx.work.Constraints
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.NetworkType
+import androidx.work.PeriodicWorkRequest
+import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
+import androidx.work.WorkQuery
 import com.deniscerri.ytdlnis.util.NotificationUtil
 import com.deniscerri.ytdlnis.util.UpdateUtil
+import com.deniscerri.ytdlnis.work.UpdateYTDLWorker
+import com.google.android.gms.common.internal.Constants
 import com.yausername.aria2c.Aria2c
 import com.yausername.ffmpeg.FFmpeg
 import com.yausername.youtubedl_android.YoutubeDL
@@ -18,6 +26,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import java.util.*
 import java.util.concurrent.Executors
+import java.util.concurrent.TimeUnit
 
 
 class App : Application() {
@@ -39,6 +48,23 @@ class App : Application() {
                         putString("version", BuildConfig.VERSION_NAME)
                     }
                 }
+
+                //init yt-dlp auto update with work request
+                val constraints = Constraints.Builder()
+                    .setRequiredNetworkType(NetworkType.UNMETERED)
+                    .setRequiresDeviceIdle(true)
+                    .build()
+
+                val periodicWorkRequest = PeriodicWorkRequestBuilder<UpdateYTDLWorker>(1, TimeUnit.DAYS)
+                    .setConstraints(constraints)
+                    .build()
+
+                WorkManager.getInstance(this@App).enqueueUniquePeriodicWork(
+                    "ytdlp-Updater",
+                    ExistingPeriodicWorkPolicy.KEEP,
+                    periodicWorkRequest
+                )
+
             }catch (e: Exception){
                 Toast.makeText(this@App, e.message, Toast.LENGTH_SHORT).show()
                 e.printStackTrace()

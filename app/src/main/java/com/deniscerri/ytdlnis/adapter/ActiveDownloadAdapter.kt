@@ -1,6 +1,7 @@
 package com.deniscerri.ytdlnis.adapter
 
 import android.app.Activity
+import android.content.SharedPreferences
 import android.graphics.Color
 import android.os.Handler
 import android.os.Looper
@@ -9,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.AsyncDifferConfig
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -29,10 +31,12 @@ import java.lang.StringBuilder
 class ActiveDownloadAdapter(onItemClickListener: OnItemClickListener, activity: Activity) : ListAdapter<DownloadItem?, ActiveDownloadAdapter.ViewHolder>(AsyncDifferConfig.Builder(DIFF_CALLBACK).build()) {
     private val onItemClickListener: OnItemClickListener
     private val activity: Activity
+    private val sharedPreferences: SharedPreferences
 
     init {
         this.onItemClickListener = onItemClickListener
         this.activity = activity
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity)
     }
 
     class ViewHolder(itemView: View, onItemClickListener: OnItemClickListener?) : RecyclerView.ViewHolder(itemView) {
@@ -52,20 +56,25 @@ class ActiveDownloadAdapter(onItemClickListener: OnItemClickListener, activity: 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)
         val card = holder.cardView
-        // THUMBNAIL ----------------------------------
-        val thumbnail = card.findViewById<ImageView>(R.id.image_view)
-        val imageURL = item!!.thumb
         val uiHandler = Handler(Looper.getMainLooper())
-        if (imageURL.isNotEmpty()) {
-            uiHandler.post { Picasso.get().load(imageURL).into(thumbnail) }
-        } else {
+        val thumbnail = card.findViewById<ImageView>(R.id.image_view)
+
+        // THUMBNAIL ----------------------------------
+        if (!sharedPreferences.getStringSet("hide_thumbnails", emptySet())!!.contains("queue")){
+            val imageURL = item!!.thumb
+            if (imageURL.isNotEmpty()) {
+                uiHandler.post { Picasso.get().load(imageURL).into(thumbnail) }
+            } else {
+                uiHandler.post { Picasso.get().load(R.color.black).into(thumbnail) }
+            }
+            thumbnail.setColorFilter(Color.argb(20, 0, 0, 0))
+        }else{
             uiHandler.post { Picasso.get().load(R.color.black).into(thumbnail) }
         }
-        thumbnail.setColorFilter(Color.argb(20, 0, 0, 0))
 
         // PROGRESS BAR ----------------------------------------------------
         val progressBar = card.findViewById<LinearProgressIndicator>(R.id.progress)
-        progressBar.tag = "${item.id}##progress"
+        progressBar.tag = "${item!!.id}##progress"
         progressBar.progress = 0
         progressBar.isIndeterminate = true
 

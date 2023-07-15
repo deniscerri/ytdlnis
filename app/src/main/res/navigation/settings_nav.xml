@@ -28,18 +28,23 @@
         android:label="MainSettingsFragment" >
         <action
             android:id="@+id/action_mainSettingsFragment_to_appearanceSettingsFragment"
-            app:destination="@id/appearanceSettingsFragment" />
+            app:destination="@id/appearanceSettingsFragment"
+            app:enterAnim="@anim/fade_in" />
         <action
             android:id="@+id/action_mainSettingsFragment_to_folderSettingsFragment"
-            app:destination="@id/folderSettingsFragment" />
+            app:destination="@id/folderSettingsFragment"
+            app:enterAnim="@anim/fade_in" />
         <action
             android:id="@+id/action_mainSettingsFragment_to_downloadSettingsFragment"
-            app:destination="@id/downloadSettingsFragment" />
+            app:destination="@id/downloadSettingsFragment"
+            app:enterAnim="@anim/fade_in" />
         <action
             android:id="@+id/action_mainSettingsFragment_to_processingSettingsFragment"
-            app:destination="@id/processingSettingsFragment" />
+            app:destination="@id/processingSettingsFragment"
+            app:enterAnim="@anim/fade_in" />
         <action
             android:id="@+id/action_mainSettingsFragment_to_updateSettingsFragment"
-            app:destination="@id/updateSettingsFragment" />
+            app:destination="@id/updateSettingsFragment"
+            app:enterAnim="@anim/fade_in" />
     </fragment>
 </navigation>

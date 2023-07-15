@@ -23,6 +23,7 @@ import com.deniscerri.ytdlnis.database.DBManager
 import com.deniscerri.ytdlnis.database.dao.CommandTemplateDao
 import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.models.ResultItem
+import com.deniscerri.ytdlnis.database.repository.DownloadRepository
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel.Type
 import com.deniscerri.ytdlnis.database.viewmodel.ResultViewModel
@@ -33,6 +34,7 @@ import com.deniscerri.ytdlnis.util.UiUtil
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.tabs.TabLayout
 import kotlinx.coroutines.*
 import java.text.SimpleDateFormat
@@ -199,6 +201,22 @@ class DownloadBottomSheetDialog(private val resultItem: ResultItem, private val 
                 downloadViewModel.queueDownloads(listOf(item))
             }
             dismiss()
+        }
+
+        download.setOnLongClickListener {
+            val dd = MaterialAlertDialogBuilder(requireContext())
+            dd.setTitle(getString(R.string.save_for_later))
+            dd.setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, _: Int -> dialogInterface.cancel() }
+            dd.setPositiveButton(getString(R.string.ok)) { _: DialogInterface?, _: Int ->
+                lifecycleScope.launch(Dispatchers.IO){
+                    val item = getDownloadItem()
+                    item.status = DownloadRepository.Status.Saved.toString()
+                    downloadViewModel.updateDownload(item)
+                    dismiss()
+                }
+            }
+            dd.show()
+            true
         }
 
         val link = view.findViewById<Button>(R.id.bottom_sheet_link)

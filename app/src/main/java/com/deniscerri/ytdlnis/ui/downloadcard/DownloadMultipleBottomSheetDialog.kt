@@ -38,6 +38,7 @@ import com.deniscerri.ytdlnis.adapter.ConfigureMultipleDownloadsAdapter
 import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.models.Format
 import com.deniscerri.ytdlnis.database.models.ResultItem
+import com.deniscerri.ytdlnis.database.repository.DownloadRepository
 import com.deniscerri.ytdlnis.database.viewmodel.CommandTemplateViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.ResultViewModel
@@ -137,6 +138,23 @@ class DownloadMultipleBottomSheetDialog(private var results: List<ResultItem?>, 
                 downloadViewModel.queueDownloads(items)
             }
             dismiss()
+        }
+
+        download.setOnLongClickListener {
+            val dd = MaterialAlertDialogBuilder(requireContext())
+            dd.setTitle(getString(R.string.save_for_later))
+            dd.setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, _: Int -> dialogInterface.cancel() }
+            dd.setPositiveButton(getString(R.string.ok)) { _: DialogInterface?, _: Int ->
+                lifecycleScope.launch(Dispatchers.IO){
+                    items.forEach {
+                        it.status = DownloadRepository.Status.Saved.toString()
+                        downloadViewModel.updateDownload(it)
+                    }
+                    dismiss()
+                }
+            }
+            dd.show()
+            true
         }
 
         bottomAppBar = view.findViewById(R.id.bottomAppBar)

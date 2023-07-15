@@ -1,6 +1,9 @@
 package com.deniscerri.ytdlnis.ui.more.settings
 
+import android.os.Bundle
+import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.EditTextPreference
 import androidx.preference.ListPreference

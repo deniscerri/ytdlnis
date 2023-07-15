@@ -5,12 +5,14 @@ import android.app.Activity
 import android.content.*
 import android.content.Context.CLIPBOARD_SERVICE
 import android.content.res.ColorStateList
+import android.content.res.Resources.Theme
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.text.Editable
 import android.util.Log
+import android.util.TypedValue
 import android.view.*
 import android.view.View.*
 import android.widget.*
@@ -37,7 +39,9 @@ import com.deniscerri.ytdlnis.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdlnis.databinding.FragmentHomeBinding
 import com.deniscerri.ytdlnis.ui.downloadcard.DownloadBottomSheetDialog
 import com.deniscerri.ytdlnis.ui.downloadcard.DownloadMultipleBottomSheetDialog
+import com.deniscerri.ytdlnis.ui.downloadcard.ResultCardDetailsDialog
 import com.deniscerri.ytdlnis.util.InfoUtil
+import com.deniscerri.ytdlnis.util.ThemeUtil
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.MaterialToolbar
@@ -132,6 +136,8 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
         searchSuggestionsLinearLayout = view.findViewById(R.id.search_suggestions_linear_layout)
         searchHistory = view.findViewById(R.id.search_history_scroll_view)
         searchHistoryLinearLayout = view.findViewById(R.id.search_history_linear_layout)
+
+        materialToolbar!!.title = ThemeUtil.getStyledAppName(requireContext())
 
         homeAdapter =
             HomeAdapter(
@@ -565,6 +571,13 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
         }
 
 
+    }
+
+    override fun onCardDetailsClick(videoURL: String) {
+        if (parentFragmentManager.findFragmentByTag("resultDetails") == null && resultsList != null && resultsList!!.isNotEmpty()){
+            val bottomSheet = ResultCardDetailsDialog(resultsList!!.first{it!!.url == videoURL}!!)
+            bottomSheet.show(parentFragmentManager, "cutVideoSheet")
+        }
     }
 
     override fun onClick(v: View) {

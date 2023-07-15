@@ -13,10 +13,10 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
     val queuedDownloads : Flow<List<DownloadItem>> = downloadDao.getQueuedDownloads()
     val cancelledDownloads : Flow<List<DownloadItem>> = downloadDao.getCancelledDownloads()
     val erroredDownloads : Flow<List<DownloadItem>> = downloadDao.getErroredDownloads()
-    val processingDownloads : Flow<List<DownloadItem>> = downloadDao.getProcessingDownloads()
+    val savedDownloads : Flow<List<DownloadItem>> = downloadDao.getSavedDownloads()
 
     enum class Status {
-        Active, Queued, Error, Processing, Cancelled
+        Active, Queued, Error, Processing, Cancelled, Saved
     }
 
     suspend fun insert(item: DownloadItem) : Long {
@@ -71,6 +71,10 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
 
     suspend fun deleteErrored(){
         downloadDao.deleteErrored()
+    }
+
+    suspend fun deleteSaved(){
+        downloadDao.deleteSaved()
     }
 
     suspend fun cancelQueued(){

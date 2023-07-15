@@ -2,6 +2,7 @@ package com.deniscerri.ytdlnis.adapter
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.SharedPreferences
 import android.graphics.Color
 import android.graphics.ColorMatrix
 import android.graphics.ColorMatrixColorFilter
@@ -13,6 +14,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.AsyncDifferConfig
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -32,11 +34,13 @@ class HistoryAdapter(onItemClickListener: OnItemClickListener, activity: Activit
     private val checkedItems: ArrayList<Long>
     private val onItemClickListener: OnItemClickListener
     private val activity: Activity
+    private val sharedPreferences: SharedPreferences
 
     init {
         checkedItems = ArrayList()
         this.onItemClickListener = onItemClickListener
         this.activity = activity
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity)
     }
 
     class ViewHolder(itemView: View, onItemClickListener: OnItemClickListener?) : RecyclerView.ViewHolder(itemView) {
@@ -56,20 +60,26 @@ class HistoryAdapter(onItemClickListener: OnItemClickListener, activity: Activit
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)
         val card = holder.cardView
-        // THUMBNAIL ----------------------------------
-        val thumbnail = card.findViewById<ImageView>(R.id.downloads_image_view)
-        val imageURL = item!!.thumb
+
         val uiHandler = Handler(Looper.getMainLooper())
-        if (imageURL.isNotEmpty()) {
-            uiHandler.post { Picasso.get().load(imageURL).into(thumbnail) }
-        } else {
+        val thumbnail = card.findViewById<ImageView>(R.id.downloads_image_view)
+
+        // THUMBNAIL ----------------------------------
+        if (!sharedPreferences.getStringSet("hide_thumbnails", emptySet())!!.contains("downloads")){
+            val imageURL = item!!.thumb
+            if (imageURL.isNotEmpty()) {
+                uiHandler.post { Picasso.get().load(imageURL).into(thumbnail) }
+            } else {
+                uiHandler.post { Picasso.get().load(R.color.black).into(thumbnail) }
+            }
+            thumbnail.setColorFilter(Color.argb(20, 0, 0, 0))
+        }else{
             uiHandler.post { Picasso.get().load(R.color.black).into(thumbnail) }
         }
-        thumbnail.setColorFilter(Color.argb(20, 0, 0, 0))
 
         // TITLE  ----------------------------------
         val itemTitle = card.findViewById<TextView>(R.id.downloads_title)
-        var title = item.title
+        var title = item!!.title
         if (title.length > 100) {
             title = title.substring(0, 40) + "..."
         }

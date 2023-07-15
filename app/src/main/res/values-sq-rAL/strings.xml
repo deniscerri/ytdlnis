@@ -271,7 +271,7 @@
     <string name="move_temporary_files_summary">Transfero skedarët e përkohshëm në dosjen e shkarkimeve</string>
     <string name="format_filtering_hint_2">Të gjithë artikujt duhet të jenë audio ose video për të përdorur këtë opsion</string>
     <string name="custom_audio_quality">Përdor cilësinë e personalizuar të audios</string>
-    <string name="piped_instance">Shembull me tubacione</string>
+    <string name="piped_instance">Instanca e PIPED</string>
     <string name="piped_instance_summary">Shkruani një Server API PIPED, aplikacioni mund të përdorë për kërkimet dhe formatet në youtube</string>
     <string name="retries">Riprovimet</string>
     <string name="fragment_retries">Riprovimet e fragmentit</string>

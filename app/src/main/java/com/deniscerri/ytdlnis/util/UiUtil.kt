@@ -54,12 +54,20 @@ import java.util.Calendar
 
 object UiUtil {
     @SuppressLint("SetTextI18n")
-    fun populateFormatCard(formatCard : MaterialCardView, chosenFormat: Format, audioFormats: List<Format>?){
-        formatCard.findViewById<TextView>(R.id.container).text = chosenFormat.container.uppercase()
+    fun populateFormatCard(context: Context, formatCard : MaterialCardView, chosenFormat: Format, audioFormats: List<Format>?){
+        var formatNote = chosenFormat.format_note
+        if (formatNote.isEmpty()) formatNote = context.getString(R.string.defaultValue)
+        else if (formatNote == "best") formatNote = context.getString(R.string.best_quality)
+        else if (formatNote == "worst") formatNote = context.getString(R.string.worst_quality)
+
+        var container = chosenFormat.container
+        if (container == "Default") container = context.getString(R.string.defaultValue)
+
+        formatCard.findViewById<TextView>(R.id.container).text = container.uppercase()
         if (audioFormats.isNullOrEmpty()){
-            formatCard.findViewById<TextView>(R.id.format_note).text = chosenFormat.format_note.uppercase()
+            formatCard.findViewById<TextView>(R.id.format_note).text = formatNote.uppercase()
         }else{
-            val title = "${chosenFormat.format_note.uppercase()} + [${audioFormats.joinToString("/") { it.format_note }}]"
+            val title = "${formatNote.uppercase()} + [${audioFormats.joinToString("/") { it.format_note }}]"
             formatCard.findViewById<TextView>(R.id.format_note).text = title
         }
         formatCard.findViewById<TextView>(R.id.format_id).text = "id: ${chosenFormat.format_id}"

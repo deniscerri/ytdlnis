@@ -1,13 +1,38 @@
 package com.deniscerri.ytdlnis.util
 
+import android.content.ComponentName
+import android.content.Context
+import android.content.pm.PackageManager
+import android.text.Spanned
+import android.util.TypedValue
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.text.HtmlCompat
+import androidx.core.text.parseAsHtml
 import androidx.preference.PreferenceManager
+import androidx.preference.SwitchPreferenceCompat
 import com.deniscerri.ytdlnis.R
 import com.google.android.material.color.DynamicColors
 
 
 object ThemeUtil {
+
+    sealed class AppIcon(
+        @DrawableRes val iconResource: Int,
+        val activityAlias: String
+    ) {
+        object Default : AppIcon(R.mipmap.ic_launcher, "Default")
+        object Light : AppIcon(R.mipmap.ic_launcher_light, "LightIcon")
+        object Dark : AppIcon(R.mipmap.ic_launcher_dark, "DarkIcon")
+    }
+
+    private val availableIcons = listOf(
+        AppIcon.Default,
+        AppIcon.Light,
+        AppIcon.Dark
+    )
 
     fun updateTheme(activity: AppCompatActivity) {
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity)
@@ -31,12 +56,79 @@ object ThemeUtil {
             activity.theme.applyStyle(R.style.Pure, true)
         }
 
-        when (sharedPreferences.getString("ytdlnis_theme", "System")!!) {
-            "System" -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
-            "Light" -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-            "Dark" -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-            else -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+        //disable old icons
+        for (appIcon in availableIcons) {
+            val activityClass = "com.deniscerri.ytdlnis." + appIcon.activityAlias
+
+            // remove old icons
+            activity.packageManager.setComponentEnabledSetting(
+                ComponentName(activity.packageName, activityClass),
+                PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+                PackageManager.DONT_KILL_APP
+            )
         }
 
+        when (sharedPreferences.getString("ytdlnis_theme", "System")!!) {
+            "System" -> {
+                //set dynamic icon
+                val aliasComponentName = ComponentName(activity, "com.deniscerri.ytdlnis.Default")
+                activity.packageManager.setComponentEnabledSetting(aliasComponentName,
+                    PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+                    PackageManager.DONT_KILL_APP)
+
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+            }
+            "Light" -> {
+                //set light icon
+                val aliasComponentName = ComponentName(activity, "com.deniscerri.ytdlnis.LightIcon")
+                activity.packageManager.setComponentEnabledSetting(aliasComponentName,
+                    PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+                    PackageManager.DONT_KILL_APP)
+
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            }
+            "Dark" -> {
+                //set dark icon
+                val aliasComponentName = ComponentName(activity, "com.deniscerri.ytdlnis.DarkIcon")
+                activity.packageManager.setComponentEnabledSetting(aliasComponentName,
+                    PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+                    PackageManager.DONT_KILL_APP)
+
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            }
+            else -> {
+                //set dynamic icon
+                val aliasComponentName = ComponentName(activity, "com.deniscerri.ytdlnis.Default")
+                activity.packageManager.setComponentEnabledSetting(aliasComponentName,
+                    PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+                    PackageManager.DONT_KILL_APP)
+
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+            }
+        }
+
+    }
+
+    fun getThemeColor(context: Context, colorCode: Int): Int {
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+        val accent = sharedPreferences.getString("theme_accent", "blue")
+        return if (accent == "Default" || accent == "blue"){
+            "c22727".toInt(16)
+        }else{
+            val value = TypedValue()
+            context.theme.resolveAttribute(colorCode, value, true)
+            value.data
+        }
+
+    }
+
+    /**
+     * Get the styled app name
+     */
+    fun getStyledAppName(context: Context): Spanned {
+        val colorPrimary = getThemeColor(context, androidx.appcompat.R.attr.colorPrimaryDark)
+        val hexColor = "#%06X".format(0xFFFFFF and colorPrimary)
+        return "<span  style='color:$hexColor';>YTDL</span>nis"
+            .parseAsHtml(HtmlCompat.FROM_HTML_MODE_COMPACT)
     }
 }

@@ -161,6 +161,7 @@
 
     <array name="search_engines">
         <item>YouTube</item>
+        <item>YouTube Music</item>
         <item>Nico video</item>
         <item>PRX Series</item>
         <item>PRX Stories</item>
@@ -170,10 +171,14 @@
         <item>Google Video</item>
         <item>Bilibili</item>
         <item>Netverse</item>
+        <item>All Clips of a trovo.live channel</item>
+        <item>All VODs of a trovo.live channel</item>
+        <item>web.archive.org saved youtube videos</item>
     </array>
 
     <array name="search_engines_values">
         <item>ytsearch</item>
+        <item>ytsearchmusic</item>
         <item>nicosearch</item>
         <item>PRX Series</item>
         <item>PRX Stories</item>
@@ -183,6 +188,9 @@
         <item>gvsearch</item>
         <item>bilisearch</item>
         <item>netsearch</item>
+        <item>trovoclip</item>
+        <item>trovovod</item>
+        <item>ytarchive</item>
     </array>
 
     <array name="start_destination">
@@ -739,5 +747,24 @@
         <item>shortcuts</item>
         <item>searchHistory</item>
     </array>
+
+    <string-array name="sub_formats">
+        <item>srt</item>
+        <item>ass</item>
+        <item>lrc</item>
+        <item>vtt</item>
+    </string-array>
+
+    <string-array name="hide_thumbnail">
+        <item>@string/home</item>
+        <item>@string/downloads</item>
+        <item>@string/download_queue</item>
+    </string-array>
+
+    <string-array name="hide_thumbnail_values">
+        <item>home</item>
+        <item>downloads</item>
+        <item>queue</item>
+    </string-array>
 
 </resources>

@@ -1,6 +1,7 @@
 package com.deniscerri.ytdlnis.adapter
 
 import android.app.Activity
+import android.content.SharedPreferences
 import android.graphics.Color
 import android.os.Handler
 import android.os.Looper
@@ -10,6 +11,8 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.preference.Preference
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.AsyncDifferConfig
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -26,11 +29,13 @@ class HomeAdapter(onItemClickListener: OnItemClickListener, activity: Activity) 
     private val checkedVideos: ArrayList<String>
     private val onItemClickListener: OnItemClickListener
     private val activity: Activity
+    private val sharedPreferences: SharedPreferences
 
     init {
         checkedVideos = ArrayList()
         this.onItemClickListener = onItemClickListener
         this.activity = activity
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity)
     }
 
     class ViewHolder(itemView: View, onItemClickListener: OnItemClickListener?) : RecyclerView.ViewHolder(itemView) {
@@ -50,22 +55,26 @@ class HomeAdapter(onItemClickListener: OnItemClickListener, activity: Activity) 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val video = getItem(position)
         val card = holder.cardView
-        // THUMBNAIL ----------------------------------
+
+        val uiHandler = Handler(Looper.getMainLooper())
         val thumbnail = card.findViewById<ImageView>(R.id.result_image_view)
-        val imageURL = video!!.thumb
-        if (imageURL.isNotEmpty()) {
-            val uiHandler = Handler(Looper.getMainLooper())
-            uiHandler.post { Picasso.get().load(imageURL).into(thumbnail) }
+
+        // THUMBNAIL ----------------------------------
+        if (!sharedPreferences.getStringSet("hide_thumbnails", emptySet())!!.contains("home")){
+            val imageURL = video!!.thumb
+            if (imageURL.isNotEmpty()) {
+                uiHandler.post { Picasso.get().load(imageURL).into(thumbnail) }
+            } else {
+                uiHandler.post { Picasso.get().load(R.color.black).into(thumbnail) }
+            }
             thumbnail.setColorFilter(Color.argb(20, 0, 0, 0))
-        } else {
-            val uiHandler = Handler(Looper.getMainLooper())
+        }else{
             uiHandler.post { Picasso.get().load(R.color.black).into(thumbnail) }
-            thumbnail.setColorFilter(Color.argb(20, 0, 0, 0))
         }
 
         // TITLE  ----------------------------------
         val videoTitle = card.findViewById<TextView>(R.id.result_title)
-        var title = video.title
+        var title = video!!.title
         if (title.length > 100) {
             title = title.substring(0, 40) + "..."
         }
@@ -145,6 +154,8 @@ class HomeAdapter(onItemClickListener: OnItemClickListener, activity: Activity) 
         card.setOnClickListener {
             if (checkedVideos.size > 0) {
                 checkCard(card, videoURL)
+            }else{
+                onItemClickListener.onCardDetailsClick(videoURL)
             }
         }
     }
@@ -165,6 +176,7 @@ class HomeAdapter(onItemClickListener: OnItemClickListener, activity: Activity) 
         fun onButtonClick(videoURL: String, type: DownloadViewModel.Type?)
         fun onLongButtonClick(videoURL: String, type: DownloadViewModel.Type?)
         fun onCardClick(videoURL: String, add: Boolean)
+        fun onCardDetailsClick(videoURL: String)
     }
 
     fun checkAll(items: List<ResultItem?>?){

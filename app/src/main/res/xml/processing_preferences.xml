@@ -68,6 +68,15 @@
         app:summary="@string/force_keyframes_summary"
         app:title="@string/force_keyframes" />
 
+    <ListPreference
+        android:defaultValue="srt"
+        android:entries="@array/sub_formats"
+        android:entryValues="@array/sub_formats"
+        android:icon="@drawable/baseline_format_quote_24"
+        app:key="sub_format"
+        app:useSimpleSummaryProvider="true"
+        app:title="@string/subtitle_format" />
+
     <SwitchPreferenceCompat
         android:widgetLayout="@layout/preferece_material_switch"
         app:defaultValue="true"
