@@ -276,4 +276,6 @@
     <string name="retries">Təkrar cəhdlər</string>
     <string name="fragment_retries">Hissə təkrar cəhdləri</string>
     <string name="format_order">Format Düzülüşü</string>
+    <string name="force_keyframes">Kəsiklərdə əsas kadrları məcbur et</string>
+    <string name="force_keyframes_summary">Dəqiq Video Kəsikləri. Daha yavaş</string>
 </resources>

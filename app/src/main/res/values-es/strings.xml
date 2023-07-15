@@ -276,4 +276,9 @@
     <string name="retries">Reintentos</string>
     <string name="fragment_retries">Reintentos de los fragmentos</string>
     <string name="format_order">Orden del formato</string>
+    <string name="force_keyframes">Forzar los fotogramas clave durante los cortes</string>
+    <string name="force_keyframes_summary">Cortes de video precisos. Más lento</string>
+    <string name="use_extra_commands">Añadir comandos adicionales</string>
+    <string name="current">Comando actual</string>
+    <string name="use_extra_commands_summary">Para descargas de audio y vídeo. Añadir comandos adicionales junto con la configuración de la interfaz gráfica del usuario</string>
 </resources>

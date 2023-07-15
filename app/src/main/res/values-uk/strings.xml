@@ -276,4 +276,6 @@
     <string name="retries">Повторні спроби</string>
     <string name="format_order">Порядок формату</string>
     <string name="fragment_retries">Повторні спроби фрагмента</string>
+    <string name="force_keyframes_summary">Точні нарізки відео. Повільніше</string>
+    <string name="force_keyframes">Примусові ключові кадри під час вирізів</string>
 </resources>

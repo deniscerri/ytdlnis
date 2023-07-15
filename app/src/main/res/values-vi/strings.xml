@@ -194,4 +194,14 @@
     <string name="help_translate_summary">Dịch ứng dụng này sang ngôn ngữ của bạn bằng Weblate</string>
     <string name="workmanager_updated">Bạn cần khởi động lại ứng dụng và không có lượt tải xuống nào đang hoạt động để tùy chọn này có hiệu lực!</string>
     <string name="restart">Khởi động lại</string>
+    <string name="metered_network_download_start_info">Tải xuống sẽ bắt đầu sau khi bạn được kết nối với mạng không đo lưu lượng</string>
+    <string name="invert_selected">Đảo ngược đã chọn</string>
+    <string name="format_source">Nguồn định dạng</string>
+    <string name="video_recommendations">Đề xuất video</string>
+    <string name="video_recommendations_summary">Nhận các video YouTube được đề xuất trên màn hình chính từ Invidious</string>
+    <string name="preferred_search_engine_summary">Công cụ tìm kiếm để sử dụng cho tìm kiếm trong ứng dụng</string>
+    <string name="save_subs">Lưu phụ đề</string>
+    <string name="save_subs_desc">Viết tập tin phụ đề</string>
+    <string name="subtitle_languages">Ngôn ngữ phụ đề</string>
+    <string name="preferred_search_engine">Công cụ tìm kiếm ưa thích</string>
 </resources>
