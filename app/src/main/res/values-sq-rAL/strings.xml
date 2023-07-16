@@ -22,8 +22,8 @@
     <string name="download_notification_channel_description">Njoftimi i cili tregon progresin e shkarkimeve te skedarëve audio dhe video</string>
     <string name="you_are_in_latest_version">Je ne versionin e fundit</string>
     <string name="ytld_update_success">Perditesimi u krye me sukses</string>
-    <string name="ytdl_already_updating">Duke u përditësuar…</string>
-    <string name="ytdl_updating_started">Filloi Perditesimi…</string>
+    <string name="ytdl_already_updating">Duke u përditësuar</string>
+    <string name="ytdl_updating_started">Filloi Perditesimi</string>
     <string name="Remove">Hiqe</string>
     <string name="ok">OK</string>
     <string name="cancel">Anullo</string>
@@ -36,7 +36,7 @@
     <string name="version">Versioni</string>
     <string name="command_directory">Direktoria e Komandës</string>
     <string name="couldnt_find_apk">Nuk u gjet një APK e vlefshme.</string>
-    <string name="downloading_update">Duke Përditësuar…</string>
+    <string name="downloading_update">Duke Përditësuar</string>
     <string name="audio">Audio</string>
     <string name="video">Video</string>
     <string name="concurrent_fragments_summary">Numri i fragmenteve të një videoje që duhen shkarkuar në të njëjtën kohë</string>
@@ -201,7 +201,7 @@
     <string name="subtitle_languages">Gjuhet e Titrave</string>
     <string name="format_source">Burimi i Formateve</string>
     <string name="video_recommendations">Rekomendimet e Videove</string>
-    <string name="video_recommendations_summary">Merr video Youtube te rekomanduara në faqen kryesore nga Invidious</string>
+    <string name="video_recommendations_summary">Merr video Youtube te rekomanduara në faqen kryesore nga PIPED API</string>
     <string name="preferred_search_engine">Kërkuesi i Preferuar</string>
     <string name="preferred_search_engine_summary">Kërkuesi që do të përdoret për kërkimet në aplikacion</string>
     <string name="format_filtering_hint">Të gjithë elementet duhet të jenë të një i njëjti lloj për të përdorur këtë opsion</string>
@@ -276,4 +276,16 @@
     <string name="retries">Riprovimet</string>
     <string name="fragment_retries">Riprovimet e fragmentit</string>
     <string name="format_order">Renditja e formatit</string>
+    <string name="hide_thumbnails">Fshehi Thumbnailet</string>
+    <string name="force_keyframes_summary">Proçes më i ngadaltë, por prerje më të sakta</string>
+    <string name="subtitle_format">Formati i Titrave
+\n</string>
+    <string name="hide_terminal">Fshihe Terminalin nga fleta e shpërndarjes</string>
+    <string name="saved">Të ruajtura</string>
+    <string name="clear_saved">Pastro të ruajturat</string>
+    <string name="save_for_later">Ruaj Shkarkimin për më vonë\?</string>
+    <string name="force_keyframes">Përforco frame-t gjatë Prerjeve</string>
+    <string name="use_extra_commands">Shto Komanda Ekstra</string>
+    <string name="use_extra_commands_summary">For Shkarkimet Audio / Video. Shto komanda ekstra bashkë me konfigurimin e ndërfaqes</string>
+    <string name="current">Komanda Aktuale</string>
 </resources>
