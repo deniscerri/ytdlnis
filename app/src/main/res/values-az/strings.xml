@@ -19,8 +19,8 @@
     <string name="download_notification_channel_description">Səs və video faylların yüklənilmə irəliləyişin göstərən bildiriş</string>
     <string name="you_are_in_latest_version">Ən son versiya işlədilir</string>
     <string name="ytld_update_success">Yeni versiya quraşdırıldı</string>
-    <string name="ytdl_already_updating">Yeni versiya quraşdırılır…</string>
-    <string name="ytdl_updating_started">Yeni versiya yüklənilir…</string>
+    <string name="ytdl_already_updating">Yeni versiya quraşdırılır</string>
+    <string name="ytdl_updating_started">Yeni versiya yüklənilir</string>
     <string name="Remove">Təmizlə</string>
     <string name="ok">Oldu</string>
     <string name="cancel">Ləğv et</string>
@@ -33,7 +33,7 @@
     <string name="version">Versiya</string>
     <string name="command_directory">Şəxsi Əmr Qovluğu</string>
     <string name="couldnt_find_apk">Uyğun APK tapılmadı.</string>
-    <string name="downloading_update">Yeni versiya yüklənilir…</string>
+    <string name="downloading_update">Yeni versiya yüklənilir</string>
     <string name="audio">Səs</string>
     <string name="video">Video</string>
     <string name="concurrent_fragments_summary">Eynivaxtlı yükləmək üçün DASH/HLS yerli video hissələri sayı</string>
@@ -201,7 +201,7 @@
     <string name="subtitle_languages">Titr dilləri</string>
     <string name="format_source">Formatlar Mənbəsi</string>
     <string name="video_recommendations">Video Tövsiyələr</string>
-    <string name="video_recommendations_summary">Ev ekranında tövsiyə olunan YouTube videoların Invidious-dan əldə et</string>
+    <string name="video_recommendations_summary">Ev ekranında tövsiyə olunan YouTube videoların PIPED API-dən əldə et</string>
     <string name="preferred_search_engine">Üstünlük Verilən Axtarış Mühərrik</string>
     <string name="format_filtering_hint">Bu seçimi işlətmək üçün bütün elementlər eyni növdə olmalıdır</string>
     <string name="preferred_search_engine_summary">Tətbiqdaxili axtarışlar üçün istifadə edilməli axtarış mühərriki</string>
@@ -277,5 +277,15 @@
     <string name="fragment_retries">Hissə təkrar cəhdləri</string>
     <string name="format_order">Format Düzülüşü</string>
     <string name="force_keyframes">Kəsiklərdə əsas kadrları məcbur et</string>
-    <string name="force_keyframes_summary">Dəqiq Video Kəsikləri. Daha yavaş</string>
+    <string name="force_keyframes_summary">Daha yavaş emal, lakin daha dəqiq kəsiklər</string>
+    <string name="save_for_later">Yükləmə Sonraya Saxlanılsın\?</string>
+    <string name="subtitle_format">Titr Formatı
+\n</string>
+    <string name="hide_thumbnails">Miniatürləri Gizlət</string>
+    <string name="hide_terminal">Sıxacı paylaşma menyusundan gizlət</string>
+    <string name="saved">Saxlanıldı</string>
+    <string name="clear_saved">Saxlanılanları Təmizlə</string>
+    <string name="use_extra_commands">Əlavə Əmrlər Əlavə Et</string>
+    <string name="use_extra_commands_summary">Səs / Video yükləmələr üçün. GUI konfiqurasiyası ilə birlikdə əlavə əmrlər əlavə et</string>
+    <string name="current">Cari Əmr</string>
 </resources>
