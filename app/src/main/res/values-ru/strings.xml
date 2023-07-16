@@ -283,8 +283,8 @@
     <string name="current">Текущая команда</string>
     <string name="subtitle_format">Формат субтиров
 \n</string>
-    <string name="hide_thumbnails">Скрыть обложку видео</string>
-    <string name="hide_terminal">Скрыть терминал из меню \\\"Поделиться\\\"</string>
+    <string name="hide_thumbnails">Скрыть миниатюры видео</string>
+    <string name="hide_terminal">Скрыть терминал из меню \"Поделиться\"</string>
     <string name="saved">Сохраненные</string>
     <string name="clear_saved">Очистить сохраненные</string>
     <string name="save_for_later">Сохранить загрузку для возврата к ней позднее\?</string>
