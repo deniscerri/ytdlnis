@@ -221,7 +221,7 @@
     <string name="resume">Continuar</string>
     <string name="network_error">Erro de rede</string>
     <string name="restore">Restaurar</string>
-    <string name="incognito">Incógnito</string>
+    <string name="incognito">Modo Anônimo</string>
     <string name="appearance">Aparência</string>
     <string name="backup_created_successfully">Arquivo de backup salvo na pasta de downloads</string>
     <string name="search_history">Histórico de pesquisa</string>
