@@ -13,16 +13,16 @@
     <string name="search_hint">搜尋或插入網址</string>
     <string name="download_notification_channel_name">檔案下載</string>
     <string name="download_notification_channel_description">顯示音訊和影片檔案下載進度的通知</string>
-    <string name="ytdl_already_updating">正在安裝新版本…</string>
-    <string name="ytdl_updating_started">正在下載新版本…</string>
+    <string name="ytdl_already_updating">正在安裝新版本</string>
+    <string name="ytdl_updating_started">正在下載新版本</string>
     <string name="Remove">移除</string>
     <string name="ok">確定</string>
     <string name="cancel">取消</string>
-    <string name="confirm_delete_history_desc">永久刪除全部歷史記錄</string>
+    <string name="confirm_delete_history_desc">刪除完整的歷史紀錄，永久清除</string>
     <string name="confirm_delete_history">確認</string>
     <string name="search_history_hint">從歷史記錄中搜尋</string>
     <string name="no_results">沒有結果</string>
-    <string name="downloading_update">正在下載新版本…</string>
+    <string name="downloading_update">正在下載新版本</string>
     <string name="audio">音訊</string>
     <string name="video">影片</string>
     <string name="concurrent_fragments_summary">同時下載的 DASH/HLS 原生影片片段數量</string>
@@ -111,7 +111,7 @@
     <string name="dark">暗色</string>
     <string name="quality">品質</string>
     <string name="system">系統</string>
-    <string name="material_you">物質的你</string>
+    <string name="material_you">Material You</string>
     <string name="blue">藍色</string>
     <string name="finished_download_notification_channel_name">完成的下載</string>
     <string name="finished_download_notification_channel_description">已完成或錯誤的下載通知</string>
@@ -128,7 +128,7 @@
     <string name="updating_download_data">正在更新下載項目資料</string>
     <string name="keep_cache">保留快取</string>
     <string name="backup">備份</string>
-    <string name="sponsorblock">贊助塊</string>
+    <string name="sponsorblock">SponsorBlock</string>
     <string name="couldnt_parse_file">無法解析檔案</string>
     <string name="restore_complete">應用程式還原完成。已還原以下項目：</string>
     <string name="select_backup_categories">選擇備份類別</string>
@@ -230,7 +230,7 @@
     <string name="split_by_chapters">依章節分割</string>
     <string name="confirm_delete_cookies_desc">永久刪除所有 Cookies</string>
     <string name="save_subs">儲存字幕</string>
-    <string name="video_recommendations_summary">在主畫面從 Invidious 取得推薦的 YouTube 影片</string>
+    <string name="video_recommendations_summary">在主畫面從 PIPED API 取得推薦的 YouTube 影片</string>
     <string name="help_translate_summary">使用 Weblate 將此應用程式翻譯為您的語言</string>
     <string name="file_size">檔案大小</string>
     <string name="workmanager_updated">您需要重新啟動此應用程式並且沒有進行中的下載，以便此偏好設定生效！</string>
@@ -276,4 +276,16 @@
     <string name="locale">地區</string>
     <string name="crop_thumb_summary">將縮圖裁剪成正方形，適用於音訊下載</string>
     <string name="retries">重試次數</string>
+    <string name="use_extra_commands">新增額外指令</string>
+    <string name="use_extra_commands_summary">為了音訊 / 影片下載，請在圖形使用者介面配置中新增額外的指令</string>
+    <string name="hide_thumbnails">隱藏縮略圖</string>
+    <string name="subtitle_format">字幕格式
+\n</string>
+    <string name="force_keyframes_summary">較為緩慢的處理過程，但能得到更準確的剪輯結果</string>
+    <string name="hide_terminal">隱藏分享選單中的終端機</string>
+    <string name="saved">已儲存</string>
+    <string name="clear_saved">清除已儲存的內容</string>
+    <string name="save_for_later">儲存下載以供日後使用？</string>
+    <string name="force_keyframes">在剪輯處強制產生關鍵幀</string>
+    <string name="current">目前指令</string>
 </resources>
