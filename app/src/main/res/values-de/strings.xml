@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="remove_all">Alles löschen</string>
-    <string name="ytdl_update_hint">Nützlich, wenn du Probleme beim Herunterladen hast.</string>
+    <string name="ytdl_update_hint">Nützlich, wenn du Probleme beim Herunterladen hast</string>
     <string name="remove_results">Ergebnisse leeren</string>
     <string name="download_all">Alles herunterladen</string>
     <string name="settings">Einstellungen</string>
@@ -14,12 +14,12 @@
     <string name="search_hint">URL suchen oder einfügen</string>
     <string name="download_notification_channel_description">Benachrichtigung über den Fortschritt des Herunterladens von Audio- und Videodateien</string>
     <string name="ytld_update_success">Neuste Version installiert</string>
-    <string name="ytdl_already_updating">Installation der neuen Version…</string>
-    <string name="ytdl_updating_started">Herunterladen der neusten Version…</string>
+    <string name="ytdl_already_updating">Neue Version installieren</string>
+    <string name="ytdl_updating_started">Neue Version herunterladen</string>
     <string name="Remove">Entfernen</string>
     <string name="ok">Ok</string>
     <string name="cancel">Abbrechen</string>
-    <string name="confirm_delete_history_desc">Den gesamten Verlauf dauerhaft löschen.</string>
+    <string name="confirm_delete_history_desc">Den gesamten Verlauf dauerhaft löschen</string>
     <string name="confirm_delete_history">Bestätigen</string>
     <string name="search_history_hint">Im Verlauf suchen</string>
     <string name="no_results">Keine Ergebnisse</string>
@@ -30,14 +30,14 @@
     <string name="couldnt_find_apk">Es konnte keine passende APK gefunden werden.</string>
     <string name="audio">Audio</string>
     <string name="video">Video</string>
-    <string name="add_chapters_summary">Markiere YouTube-/SponsorBlock-Segmente als Kapitel für das Video.</string>
+    <string name="add_chapters_summary">Markiere YouTube-/SponsorBlock-Segmente als Kapitel für das Video</string>
     <string name="audio_quality">Audioqualität</string>
     <string name="audio_quality_summary">0 (beste Qualität) 10 (schlechteste Qualität)</string>
     <string name="run_command">Befehl ausführen</string>
     <string name="command_download_notification_channel_name">Befehl Downloads</string>
     <string name="command_download_notification_channel_description">Benachrichtigung über den Fortschritt des Herunterladens mit einem yt-dlp-Befehl</string>
     <string name="items_left">Element(e) verbleiben</string>
-    <string name="history_is_empty">Der Verlauf ist leer.</string>
+    <string name="history_is_empty">Der Verlauf ist leer</string>
     <string name="url">URL</string>
     <string name="link_copied_to_clipboard">Link wurde in die Zwischenablage kopiert</string>
     <string name="api_key">API-Schlüssel nutzen</string>
@@ -64,17 +64,17 @@
     <string name="failed_download">Datei konnte nicht heruntergeladen werden.</string>
     <string name="download_notification_channel_name">Datei-Downloads</string>
     <string name="you_are_in_latest_version">Du verwendest die neueste Version</string>
-    <string name="downloading_update">Neuste Version herunterladen…</string>
+    <string name="downloading_update">Neuste Version wird heruntergeladen</string>
     <string name="concurrent_fragments_summary">Anzahl der Fragmente eines nativen DASH/HLS-Videos, die gleichzeitig heruntergeladen werden sollen</string>
     <string name="concurrent_fragments">Gleichzeitige Fragmente</string>
     <string name="limit_rate">Grenzrate</string>
     <string name="embed_thumb">Vorschaubilder</string>
     <string name="processing">Verarbeitung</string>
     <string name="downloading">Herunterladen</string>
-    <string name="limit_rate_summary">Maximale Download-Geschwindigkeit (in Bytes pro Sekunde), z.B. 50K oder 4,2M.</string>
+    <string name="limit_rate_summary">Maximale Download-Geschwindigkeit (in Bytes pro Sekunde), z.B. 50K oder 4,2M</string>
     <string name="aria2_summary">Verwende aria2c als Downloader anstelle des Standard-Downloaders</string>
     <string name="embed_subs_summary">Füge Untertitel zum Video hinzu</string>
-    <string name="save_thumb_summary">Das Vorschaubild im Download-Ordner speichern.</string>
+    <string name="save_thumb_summary">Das Vorschaubild im Download-Ordner speichern</string>
     <string name="audio_format">Audioformat</string>
     <string name="add_chapters">Kapitel in Videos</string>
     <string name="embed_thumb_summary">Verwende das Vorschaubild als Cover-Art</string>
@@ -137,7 +137,7 @@
     <string name="cache_cleared">Temporäre Dateien gelöscht</string>
     <string name="freespace">Freier Platz</string>
     <string name="worst_quality">Schlechteste Qualität</string>
-    <string name="request_permission_desc">Diese App benötigt Dateiberechtigungen, um Downloads auf dem Gerät zu speichern.</string>
+    <string name="request_permission_desc">Diese App benötigt Dateiberechtigungen, um Downloads auf dem Gerät zu speichern</string>
     <string name="create_template">Vorlage erstellen</string>
     <string name="shortcuts_desc">Häufig verwendete Befehle zur Erstellung von Vorlagen verwenden</string>
     <string name="sponsorblock_promos">Eigenwerbung</string>
@@ -145,7 +145,7 @@
     <string name="sponsorblock_fillers">Füllwörter</string>
     <string name="sponsorblock_reminders">Abonnement-Erinnerungen</string>
     <string name="select_sponsorblock_filtering">Auswahl der SponsorBlock-Filter</string>
-    <string name="save_dir">Speicherordner</string>
+    <string name="save_dir">Im Verzeichnis speichern</string>
     <string name="date_added">Datum hinzugefügt</string>
     <string name="please_wait">Bitte warten</string>
     <string name="error_updating_formats">Fehler beim Aktualisieren von Formaten!</string>
@@ -160,7 +160,7 @@
     <string name="downloads_running_try_later">Der Download-Worker läuft. Später erneut versuchen</string>
     <string name="link_you_copied">Kopierter Link</string>
     <string name="restrict_filenames">Dateinamen einschränken</string>
-    <string name="restrict_filenames_summary">Beschränke die Dateinamen auf ASCII-Zeichen und vermeiden \"&amp;\" und Leerzeichen in Dateinamen.</string>
+    <string name="restrict_filenames_summary">Beschränke die Dateinamen auf ASCII-Zeichen und vermeiden \"&amp;\" und Leerzeichen in Dateinamen</string>
     <string name="sponsorblock_sponsors">Sponsoren</string>
     <string name="sponsorblock_intro">Intro</string>
     <string name="sponsorblock_outro">Outro</string>
@@ -193,18 +193,18 @@
     <string name="delete_all_cookies">Alle Cookies löschen</string>
     <string name="confirm_delete_cookies_desc">Alle Cookies löschen, dauerhaft</string>
     <string name="download_over_metered_networks">Herunterladen über kostenpflichtige Netzwerke</string>
-    <string name="download_over_metered_networks_summary">Downloads über jedes Netzwerk möglich. Andernfalls auf ein Netzwerk ohne Datenbegrenzung warten.</string>
-    <string name="metered_network_download_start_info">Der Download beginnt, sobald du mit einem Netzwerk ohne Datenvolumenbegrenzung verbunden bist.</string>
+    <string name="download_over_metered_networks_summary">Downloads über jedes Netzwerk möglich. Andernfalls auf ein Netzwerk ohne Datenbegrenzung warten</string>
+    <string name="metered_network_download_start_info">Der Download beginnt, sobald du mit einem Netzwerk ohne Datenvolumenbegrenzung verbunden bist</string>
     <string name="invert_selected">Ausgewähltes invertieren</string>
     <string name="save_subs_desc">Untertiteldatei schreiben</string>
     <string name="save_subs">Untertitel speichern</string>
     <string name="subtitle_languages">Untertitelsprachen</string>
     <string name="format_source">Formatquelle</string>
     <string name="video_recommendations">Videoempfehlungen</string>
-    <string name="video_recommendations_summary">Erhalte empfohlene YouTube-Videos auf dem Startbildschirm von Invidious</string>
+    <string name="video_recommendations_summary">Erhalte empfohlene YouTube-Videos auf dem Startbildschirm von PIPED API</string>
     <string name="preferred_search_engine">Bevorzugte Suchmaschine</string>
     <string name="preferred_search_engine_summary">Die Suchmaschine für die In-App-Suche</string>
-    <string name="format_filtering_hint">Um diese Option nutzen zu können, müssen alle Elemente vom gleichen Typ sein.</string>
+    <string name="format_filtering_hint">Um diese Option nutzen zu können, müssen alle Elemente vom gleichen Typ sein</string>
     <string name="preferred_home_screen">Bevorzugter Startbildschirm</string>
     <string name="undo">Rückgängig</string>
     <string name="format_id">Format ID</string>
@@ -234,7 +234,7 @@
     <string name="download_already_exists">Download bereits vorhanden</string>
     <string name="pause">Pause
 \n</string>
-    <string name="backup">Sicherung</string>
+    <string name="backup">Sichern</string>
     <string name="restore">Wiederherstellen</string>
     <string name="network_error">Netzwerkfehler</string>
     <string name="couldnt_parse_file">Datei konnte nicht analysiert werden</string>
@@ -248,7 +248,7 @@
     <string name="updating_download_data">Aktualisieren der Daten von heruntergeladenen Elemente</string>
     <string name="appearance">Aussehen</string>
     <string name="incognito">Inkognito</string>
-    <string name="locale">Lokales</string>
+    <string name="locale">Gebietsschema</string>
     <string name="audio_only_item">Dieses Element enthält nur Audioformate</string>
     <string name="format_filtering_hint_2">Alle Elemente müssen entweder Audio oder Video sein, um diese Option zu nutzen</string>
     <string name="sponsorblock">SponsorBlock</string>
@@ -274,6 +274,18 @@
     <string name="crop_thumb">Vorschaubild zuschneiden</string>
     <string name="piped_instance_summary">Schreiben eines PIPED API Servers, den die App für YouTube Abfragen und Formate nutzen kann</string>
     <string name="retries">Wiederholungen</string>
-    <string name="fragment_retries">Fragment-Wiederholungen</string>
-    <string name="format_order">Format-Reihenfolge</string>
+    <string name="fragment_retries">Fragmentwiederholungen</string>
+    <string name="format_order">Formatreihenfolge</string>
+    <string name="subtitle_format">Untertitelformat
+\n</string>
+    <string name="hide_thumbnails">Vorschaubilder verstecken</string>
+    <string name="hide_terminal">Terminal im Freigabemenü ausblenden</string>
+    <string name="saved">Gespeichert</string>
+    <string name="save_for_later">Download für später merken\?</string>
+    <string name="clear_saved">Gespeichertes leeren</string>
+    <string name="force_keyframes_summary">Präzise Videoschnitte. Langsamer</string>
+    <string name="force_keyframes">Keyframes bei Schnitten erzwingen</string>
+    <string name="use_extra_commands">Zusätzliche Befehle hinzufügen</string>
+    <string name="use_extra_commands_summary">Für Audio-/Videodownloads. Zusätzliche Befehle zusammen mit der GUI-Konfiguration hinzufügen</string>
+    <string name="current">Aktueller Befehl</string>
 </resources>
