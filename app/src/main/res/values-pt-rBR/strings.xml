@@ -10,7 +10,7 @@
     <string name="ytdl_update_hint">Útil se você tiver problemas ao baixar</string>
     <string name="remove_results">Limpar Resultados</string>
     <string name="download_all">Baixar Todos</string>
-    <string name="video_directory">Pasta De Videos</string>
+    <string name="video_directory">Pasta de Vídeos</string>
     <string name="about">Sobre</string>
     <string name="source_code">Código Fonte</string>
     <string name="search_hint">Pesquise ou Insira uma URL</string>
@@ -21,7 +21,7 @@
     <string name="ytdl_updating_started">Baixando nova versão</string>
     <string name="Remove">Remover</string>
     <string name="ok">OK</string>
-    <string name="confirm_delete_history_desc">Excluir o histórico permanentemente</string>
+    <string name="confirm_delete_history_desc">O histórico será excluído permanentemente</string>
     <string name="confirm_delete_history">Confirmar</string>
     <string name="search_history_hint">Procurar no Histórico</string>
     <string name="no_results">Sem Resultados</string>
@@ -65,7 +65,7 @@
     <string name="sponsorblock_fillers">Filtros</string>
     <string name="sponsorblock_reminders">Lembrete de Inscrição</string>
     <string name="worst_quality">Menor Qualidade</string>
-    <string name="music_directory">Pasta De Músicas</string>
+    <string name="music_directory">Pasta de Músicas</string>
     <string name="download_notification_channel_description">Mostrar notificações do progresso de download dos arquivos de video e áudio</string>
     <string name="update_ytdl">Instalar nova versão do yt-dlp</string>
     <string name="update_app">Buscar atualizações</string>
