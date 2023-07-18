@@ -14,12 +14,12 @@
     <string name="update_ytdl">النقر لتثبيت أحدث إصدار من yt-dlp</string>
     <string name="source_code">رمز المصدر</string>
     <string name="search_hint">بحث أو إدخال رابط</string>
-    <string name="failed_download">لم يتم تحميل الملف.</string>
+    <string name="failed_download">لم يتم تحميل الملف</string>
     <string name="download_notification_channel_description">إشعار يُظهر مستوى التقدم في تحميل ملفات الصوت والفيديو</string>
     <string name="download_notification_channel_name">تحميلات الملفات</string>
     <string name="ok">حسنًا</string>
-    <string name="ytdl_already_updating">يتم تثبيت أحدث إصدار…</string>
-    <string name="ytdl_updating_started">بحث/تحميل أحدث إصدار…</string>
+    <string name="ytdl_already_updating">يتم تثبيت أحدث إصدار</string>
+    <string name="ytdl_updating_started">بحث/تحميل أحدث إصدار</string>
     <string name="cancel">إلغاء</string>
     <string name="Remove">إزالة</string>
     <string name="confirm_delete_history_desc">الإزالة من سجل التحميلات تمامًا.</string>
@@ -40,7 +40,7 @@
     <string name="add_chapters">فصول الفيديو</string>
     <string name="worst_quality">أدنى جودة</string>
     <string name="embed_thumb">الصورة المصغرة غلافًا للصوت</string>
-    <string name="downloading_update">تحميل أحدث إصدار…</string>
+    <string name="downloading_update">يتم تحميل أحدث إصدار</string>
     <string name="audio">الصوت</string>
     <string name="video">الفيديو</string>
     <string name="concurrent_fragments">الأجزاء المتزامنة</string>
@@ -201,7 +201,7 @@
     <string name="subtitle_languages">لغات الترجمة</string>
     <string name="format_source">مصدر التنسيقات</string>
     <string name="video_recommendations">توصيات الفيديو</string>
-    <string name="video_recommendations_summary">الحصول على فيديوهات يوتيوب الموصى بها على الشاشة الرئيسية من خلال واجهة Invidious</string>
+    <string name="video_recommendations_summary">الحصول على فيديوهات يوتيوب الموصى بها على الشاشة الرئيسية من خلال PIPED API</string>
     <string name="preferred_search_engine">محرك البحث عن الوسائط</string>
     <string name="preferred_search_engine_summary">المحرك المراد استخدامه بعمليات البحث من داخل التطبيق</string>
     <string name="format_filtering_hint">يجب أن تكون كل العناصر من نفس النوع حتى تعمل هذا الميزة</string>
@@ -273,4 +273,19 @@
     <string name="custom_audio_quality">استخدام جودة صوت مخصصة</string>
     <string name="piped_instance">مثيل Piped</string>
     <string name="piped_instance_summary">إدخال خادم PIPED API، يمكن للتطبيق استخدامه لاستعلامات وتنسيقات يوتيوب</string>
+    <string name="subtitle_format">صيغة الترجمة
+\n</string>
+    <string name="hide_thumbnails">إخفاء الصور المصغرة من الشاشة المحددة</string>
+    <string name="hide_terminal">إخفاء أيقونة سطر الأوامر من قائمة \"مشاركة\"</string>
+    <string name="saved">المحفوظة</string>
+    <string name="clear_saved">تنظيف المحفوظة</string>
+    <string name="save_for_later">حفظ، للتحميل فيما بعد؟</string>
+    <string name="format_order">ترتيب التنسيقات</string>
+    <string name="retries">المحاولات العامة</string>
+    <string name="fragment_retries">المحاولات الخاصة بالأجزاء</string>
+    <string name="force_keyframes">تدعيم الإطارات أثناء القص</string>
+    <string name="force_keyframes_summary">ستكون العملية بطيئة، مقابل قص أكثر دقة</string>
+    <string name="use_extra_commands">إلحاق أوامر إضافية</string>
+    <string name="use_extra_commands_summary">لتحميلات الصوت/الفيديو. بالإمكان إضافة أوامر مع تكوين واجهة المستخدم الرسومية</string>
+    <string name="current">الأوامر الحالية</string>
 </resources>
