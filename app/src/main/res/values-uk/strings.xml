@@ -17,7 +17,7 @@
     <string name="video_directory">Папка \"Відео\"</string>
     <string name="search_hint">Пошук або вставка URL-адреси</string>
     <string name="updating">Оновлення</string>
-    <string name="ytdl_already_updating">Встановлення нової версії…</string>
+    <string name="ytdl_already_updating">Встановлення нової версії</string>
     <string name="ytdl_update_hint">Корисно, якщо у вас виникли проблеми із завантаженням</string>
     <string name="source_code">Вихідний код</string>
     <string name="update_ytdl">Встановити нову версію yt-dlp</string>
@@ -33,7 +33,7 @@
     <string name="adjust_video">Налаштування відео</string>
     <string name="ytld_update_success">Нову версію встановлено</string>
     <string name="ok">OK</string>
-    <string name="ytdl_updating_started">Завантажується нова версія…</string>
+    <string name="ytdl_updating_started">Завантаження нової версії</string>
     <string name="Remove">Видалити</string>
     <string name="cancel">Скасувати</string>
     <string name="no_results">Немає результатів</string>
@@ -47,7 +47,7 @@
     <string name="couldnt_find_apk">Не вдалося знайти відповідний APK.</string>
     <string name="limit_rate">Обмеження швидкості завантаження</string>
     <string name="downloading">Завантаження</string>
-    <string name="downloading_update">Завантажується нова версія…</string>
+    <string name="downloading_update">Завантаження нової версії</string>
     <string name="audio">Аудіо</string>
     <string name="video">Відео</string>
     <string name="concurrent_fragments_summary">Кількість фрагментів власного відео DASH/HLS, які можна завантажити одночасно</string>
@@ -201,7 +201,7 @@
     <string name="download_over_metered_networks">Завантажувати через мережі з обмеженнями</string>
     <string name="format_source">Джерело форматів</string>
     <string name="video_recommendations">Відеорекомендації</string>
-    <string name="video_recommendations_summary">Отримувати рекомендовані відео з YouTube на головному екрані від Piped API</string>
+    <string name="video_recommendations_summary">Отримайте рекомендовані відео YouTube на головному екрані від PIPED API</string>
     <string name="preferred_search_engine">Бажана пошукова система</string>
     <string name="preferred_search_engine_summary">Пошукова система в застосунку</string>
     <string name="format_filtering_hint">Для використання цієї опції всі елементи повинні бути одного типу</string>
@@ -276,16 +276,16 @@
     <string name="retries">Повторні спроби</string>
     <string name="format_order">Порядок форматів</string>
     <string name="fragment_retries">Повторні спроби фрагмента</string>
-    <string name="force_keyframes_summary">Довший процес, з більш точною вирізкою</string>
+    <string name="force_keyframes_summary">Повільніший процес, але більш точні розрізи</string>
     <string name="force_keyframes">Вставити ключові кадри</string>
     <string name="use_extra_commands">Додайте додаткові команди</string>
     <string name="current">Поточна команда</string>
     <string name="use_extra_commands_summary">Додайте свої додаткові команди перед завантаженням аудіо/відео</string>
-    <string name="hide_thumbnails">Приховати мініатюри відео</string>
-    <string name="hide_terminal">Приховати термінал з меню \"Поділитися\"</string>
-    <string name="saved">Збережені</string>
-    <string name="clear_saved">Очистити збережені</string>
+    <string name="hide_thumbnails">Приховати мініатюри</string>
+    <string name="hide_terminal">Приховати термінал у меню спільного доступу</string>
+    <string name="saved">Збережено</string>
+    <string name="clear_saved">Очистити збережене</string>
     <string name="subtitle_format">Формат субтитрів
 \n</string>
-    <string name="save_for_later">Зберегти завантаження для повернення до нього пізніше\?</string>
+    <string name="save_for_later">Зберегти завантаження на потім\?</string>
 </resources>
