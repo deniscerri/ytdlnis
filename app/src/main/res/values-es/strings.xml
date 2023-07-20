@@ -16,11 +16,11 @@
     <string name="download_notification_channel_name">Descargas de Archivos</string>
     <string name="download_notification_channel_description">Notificación que muestra el progreso de las descargas de archivos de audio y video</string>
     <string name="you_are_in_latest_version">Estás usando la última versión</string>
-    <string name="ytdl_already_updating">Instalando nueva versión…</string>
-    <string name="ytdl_updating_started">Descargando nueva versión…</string>
+    <string name="ytdl_already_updating">Instalando una nueva versión</string>
+    <string name="ytdl_updating_started">Descargando una nueva versión</string>
     <string name="Remove">Quitar</string>
     <string name="cancel">Cancelar</string>
-    <string name="confirm_delete_history_desc">Eliminar todo el historial, de forma permanente</string>
+    <string name="confirm_delete_history_desc">Borrar todo el historial, de forma permanente</string>
     <string name="confirm_delete_history">Confirmar</string>
     <string name="search_history_hint">Buscar historial</string>
     <string name="no_results">No Hay Resultados</string>
@@ -29,7 +29,7 @@
     <string name="version">Versión</string>
     <string name="command_directory">Directorio de Comandos Personalizados</string>
     <string name="couldnt_find_apk">No se pudo encontrar un instalador APK correcto.</string>
-    <string name="downloading_update">Descargando nueva versión…</string>
+    <string name="downloading_update">Descargando una nueva versión</string>
     <string name="audio">Audio</string>
     <string name="video">Video</string>
     <string name="concurrent_fragments_summary">Número de fragmentos de un video DASH/HLS nativo para descargar a la vez</string>
@@ -201,7 +201,7 @@
     <string name="subtitle_languages">Idiomas de los subtítulos</string>
     <string name="format_source">Formatos de la fuente</string>
     <string name="video_recommendations">Videos recomendados</string>
-    <string name="video_recommendations_summary">Obtener vídeos recomendados de YouTube en la pantalla de inicio de Invidious</string>
+    <string name="video_recommendations_summary">Obtener los vídeos recomendados de YouTube en la pantalla de inicio desde la API PIPED</string>
     <string name="preferred_search_engine">Buscador favorito</string>
     <string name="preferred_search_engine_summary">El buscador para las búsquedas dentro de la aplicación</string>
     <string name="format_filtering_hint">Todos los artículos deben ser del mismo tipo para utilizar esta opción</string>
@@ -277,8 +277,15 @@
     <string name="fragment_retries">Reintentos de los fragmentos</string>
     <string name="format_order">Orden del formato</string>
     <string name="force_keyframes">Forzar los fotogramas clave durante los cortes</string>
-    <string name="force_keyframes_summary">Cortes de video precisos. Más lento</string>
+    <string name="force_keyframes_summary">Proceso más lento, pero cortes más precisos</string>
     <string name="use_extra_commands">Añadir comandos adicionales</string>
     <string name="current">Comando actual</string>
     <string name="use_extra_commands_summary">Para descargas de audio y vídeo. Añadir comandos adicionales junto con la configuración de la interfaz gráfica del usuario</string>
+    <string name="subtitle_format">Formato de los subtítulos
+\n</string>
+    <string name="hide_thumbnails">Ocultar las miniaturas</string>
+    <string name="saved">Guardado</string>
+    <string name="hide_terminal">Ocultar Terminal del menú compartir</string>
+    <string name="save_for_later">¿Guardar la descarga para más tarde\?</string>
+    <string name="clear_saved">Borrar lo Guardado</string>
 </resources>
