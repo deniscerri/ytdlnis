@@ -148,7 +148,7 @@
     <string name="clear_cancelled">Remover downloads Cancelados</string>
     <string name="clear_errored">Remover downloads com Falhas</string>
     <string name="split_by_chapters">Dividir Por Capítulos</string>
-    <string name="items_imported">Itens Importados</string>
+    <string name="items_imported">Items Importados</string>
     <string name="help_translate">Ajudar na Tradução</string>
     <string name="help_translate_summary">Traduzir este aplicativo em seu idioma usando Weblate</string>
     <string name="workmanager_updated">Você precisa reiniciar o aplicativo quando não há downloads ativos para aplicar as mudanças!</string>
