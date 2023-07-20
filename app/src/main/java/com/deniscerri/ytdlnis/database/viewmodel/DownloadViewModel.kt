@@ -68,8 +68,8 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
     private var defaultVideoFormats : MutableList<Format>
 
     private val videoQualityPreference: String
-    private val formatIDPreference: String
-    private val audioFormatIDPreference: String
+    private val formatIDPreference: List<String>
+    private val audioFormatIDPreference: List<String>
     private val resources : Resources
     enum class Type {
         audio, video, command
@@ -92,8 +92,8 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
         erroredDownloads = repository.erroredDownloads.asLiveData()
 
         videoQualityPreference = sharedPreferences.getString("video_quality", application.getString(R.string.best_quality)).toString()
-        formatIDPreference = sharedPreferences.getString("format_id", "").toString()
-        audioFormatIDPreference = sharedPreferences.getString("format_id_audio", "").toString()
+        formatIDPreference = sharedPreferences.getString("format_id", "").toString().split(",")
+        audioFormatIDPreference = sharedPreferences.getString("format_id_audio", "").toString().split(",")
 
         val confTmp = Configuration(application.resources.configuration)
         confTmp.locale = Locale(sharedPreferences.getString("app_language", "en")!!)
@@ -170,7 +170,9 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
         val sponsorblock = sharedPreferences.getStringSet("sponsorblock_filters", emptySet())
 
         val audioPreferences = AudioPreferences(embedThumb, false, ArrayList(sponsorblock!!))
-        val videoPreferences = VideoPreferences(embedSubs, addChapters, false, ArrayList(sponsorblock), saveSubs, audioFormatIDs = ArrayList(resultItem.formats.filter { it.format_id == audioFormatIDPreference }.map { it.format_id }))
+
+        val hasPreferredAudioFormats = resultItem.formats.filter { audioFormatIDPreference.contains(it.format_id) }
+        val videoPreferences = VideoPreferences(embedSubs, addChapters, false, ArrayList(sponsorblock), saveSubs, audioFormatIDs = if (hasPreferredAudioFormats.isEmpty()) arrayListOf() else arrayListOf(hasPreferredAudioFormats.map { it.format_id }.first()))
 
         return DownloadItem(0,
             resultItem.url,
@@ -317,7 +319,7 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
                 return cloneFormat (
                     try {
                         try{
-                            formats.first { it.format_note.contains("audio", ignoreCase = true) && it.format_id == audioFormatIDPreference }
+                            formats.first { it.format_note.contains("audio", ignoreCase = true) && audioFormatIDPreference.contains(it.format_id)}
                         }catch (e: Exception){
                             formats.last { it.format_note.contains("audio", ignoreCase = true) }
                         }
@@ -332,7 +334,7 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
                     try {
                         val theFormats = formats.ifEmpty { defaultVideoFormats }
                         try {
-                            formats.first { !it.format_note.contains("audio", ignoreCase = true) && it.format_id == formatIDPreference }
+                            formats.first { !it.format_note.contains("audio", ignoreCase = true) && formatIDPreference.contains(it.format_id)}
                         }catch (e: Exception){
                             when (videoQualityPreference) {
                                 "worst" -> {
@@ -397,7 +399,7 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
 
     fun turnResultItemsToDownloadItems(items: List<ResultItem?>) : List<DownloadItem> {
         val list : MutableList<DownloadItem> = mutableListOf()
-        val preferredType = sharedPreferences.getString("preferred_download_type", "video");
+        val preferredType = sharedPreferences.getString("preferred_download_type", "video")
         items.forEach {
             list.add(createDownloadItemFromResult(it!!, Type.valueOf(preferredType!!)))
         }
@@ -454,12 +456,9 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
         val activeAndQueuedDownloads = repository.getActiveAndQueuedDownloads()
         val allowMeteredNetworks = sharedPreferences.getBoolean("metered_networks", true)
         val queuedItems = mutableListOf<DownloadItem>()
-        var lastDownloadId = repository.getLastDownloadId()
-
         var exists = false
 
         items.forEach {
-            lastDownloadId++
             it.status = DownloadRepository.Status.Queued.toString()
             if (activeAndQueuedDownloads.firstOrNull{d ->
                     d.id = 0
@@ -469,7 +468,6 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
                 exists = true
             }else{
                 if (it.id == 0L){
-                    it.id = lastDownloadId
                     val insert = async {repository.insert(it)}
                     val id = insert.await()
                     it.id = id
@@ -492,7 +490,7 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
             var delay = if (it.downloadStartTime != 0L){
                 it.downloadStartTime - currentTime
             } else 0
-            if (delay < 0L) delay = 0L
+            if (delay < 0L) delay = 1L
 
             val workConstraints = Constraints.Builder()
             if (!allowMeteredNetworks) workConstraints.setRequiredNetworkType(NetworkType.UNMETERED)
@@ -501,7 +499,7 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
                 .setInputData(Data.Builder().putLong("id", it.id).build())
                 .addTag("download")
                 .setConstraints(workConstraints.build())
-                .setInitialDelay(delay, TimeUnit.MILLISECONDS)
+                .setInitialDelay(delay, TimeUnit.SECONDS)
                 .build()
 
             WorkManager.getInstance(context).beginUniqueWork(

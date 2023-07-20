@@ -29,6 +29,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import java.io.File
 
 
@@ -133,44 +134,47 @@ class DownloadWorker(
         }.onSuccess {
             val wasQuickDownloaded = updateDownloadItem(downloadItem, infoUtil, dao, resultDao)
 
-            var finalPaths : List<String>?
-            //move file from internal to set download directory
-            setProgressAsync(workDataOf("progress" to 100, "output" to "Moving file to ${FileUtil.formatPath(downloadLocation)}", "id" to downloadItem.id, "log" to logDownloads))
-            try {
-                finalPaths = FileUtil.moveFile(tempFileDir.absoluteFile,context, downloadLocation, keepCache){ p ->
-                    setProgressAsync(workDataOf("progress" to p, "output" to "Moving file to ${FileUtil.formatPath(downloadLocation)}", "id" to downloadItem.id, "log" to logDownloads))
-                }
-                if (finalPaths.isNotEmpty()){
-                    setProgressAsync(workDataOf("progress" to 100, "output" to "Moved file to $downloadLocation", "id" to downloadItem.id, "log" to logDownloads))
-                }else{
+            CoroutineScope(Dispatchers.IO).launch {
+                var finalPaths : List<String>?
+                //move file from internal to set download directory
+                setProgressAsync(workDataOf("progress" to 100, "output" to "Moving file to ${FileUtil.formatPath(downloadLocation)}", "id" to downloadItem.id, "log" to logDownloads))
+                try {
+                    finalPaths = withContext(Dispatchers.IO){
+                        FileUtil.moveFile(tempFileDir.absoluteFile,context, downloadLocation, keepCache){ p ->
+                            setProgressAsync(workDataOf("progress" to p, "output" to "Moving file to ${FileUtil.formatPath(downloadLocation)}", "id" to downloadItem.id, "log" to logDownloads))
+                        }
+                    }
+
+                    if (finalPaths.isNotEmpty()){
+                        setProgressAsync(workDataOf("progress" to 100, "output" to "Moved file to $downloadLocation", "id" to downloadItem.id, "log" to logDownloads))
+                    }else{
+                        finalPaths = listOf(context.getString(R.string.unfound_file))
+                    }
+                }catch (e: Exception){
                     finalPaths = listOf(context.getString(R.string.unfound_file))
+                    e.printStackTrace()
+                    handler.postDelayed({
+                        Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
+                    }, 1000)
                 }
-            }catch (e: Exception){
-                finalPaths = listOf(context.getString(R.string.unfound_file))
-                e.printStackTrace()
-                handler.postDelayed({
-                    Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
-                }, 1000)
-            }
 
 
-            //put download in history
-            val incognito = sharedPreferences.getBoolean("incognito", false)
-            if (!incognito) {
-                val unixtime = System.currentTimeMillis() / 1000
-                val file = File(finalPaths?.first()!!)
-                downloadItem.format.filesize = file.length()
-                val historyItem = HistoryItem(0, downloadItem.url, downloadItem.title, downloadItem.author, downloadItem.duration, downloadItem.thumb, downloadItem.type, unixtime, finalPaths.first() , downloadItem.website, downloadItem.format, downloadItem.id)
-                runBlocking {
+                //put download in history
+                val incognito = sharedPreferences.getBoolean("incognito", false)
+                if (!incognito) {
+                    val unixtime = System.currentTimeMillis() / 1000
+                    val file = File(finalPaths?.first()!!)
+                    downloadItem.format.filesize = file.length()
+                    val historyItem = HistoryItem(0, downloadItem.url, downloadItem.title, downloadItem.author, downloadItem.duration, downloadItem.thumb, downloadItem.type, unixtime, finalPaths.first() , downloadItem.website, downloadItem.format, downloadItem.id)
                     historyDao.insert(historyItem)
                 }
-            }
-            notificationUtil.cancelDownloadNotification(downloadItem.id.toInt())
 
-            notificationUtil.createDownloadFinished(
-                downloadItem.title,  if (finalPaths?.first().equals(context.getString(R.string.unfound_file))) null else finalPaths,
-                NotificationUtil.DOWNLOAD_FINISHED_CHANNEL_ID
-            )
+                notificationUtil.cancelDownloadNotification(downloadItem.id.toInt())
+                notificationUtil.createDownloadFinished(
+                    downloadItem.title,  if (finalPaths?.first().equals(context.getString(R.string.unfound_file))) null else finalPaths,
+                    NotificationUtil.DOWNLOAD_FINISHED_CHANNEL_ID
+                )
+            }
 
             if (wasQuickDownloaded){
                 runCatching {

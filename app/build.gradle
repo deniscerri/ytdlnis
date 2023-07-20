@@ -10,7 +10,7 @@ def properties = new Properties()
 def versionMajor = 1
 def versionMinor = 6
 def versionPatch = 3
-def versionBuild = 5 // bump for dogfood builds, public betas, etc.
+def versionBuild = 9 // bump for dogfood builds, public betas, etc.
 def versionExt = ""
 
 if (versionBuild > 0){
@@ -206,4 +206,6 @@ dependencies {
     // For RTSP playback support with ExoPlayer
     implementation("androidx.media3:media3-exoplayer-rtsp:$media3_version")
     implementation("androidx.media3:media3-datasource-cronet:$media3_version")
+
+    implementation "com.anggrayudi:storage:1.5.5"
 }

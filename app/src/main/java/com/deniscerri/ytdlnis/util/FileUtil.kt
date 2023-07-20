@@ -2,15 +2,21 @@ package com.deniscerri.ytdlnis.util
 
 import android.content.Context
 import android.media.MediaScannerConnection
-import android.net.Uri
 import android.os.Build
 import android.os.Environment
-import android.provider.DocumentsContract
 import android.util.Log
-import android.webkit.MimeTypeMap
+import androidx.core.net.toUri
+import androidx.documentfile.provider.DocumentFile
+import com.anggrayudi.storage.callback.FileCallback
+import com.anggrayudi.storage.callback.FolderCallback
+import com.anggrayudi.storage.file.copyFileTo
+import com.anggrayudi.storage.file.copyFolderTo
+import com.anggrayudi.storage.file.getAbsolutePath
+import com.anggrayudi.storage.file.moveFileTo
+import com.anggrayudi.storage.file.moveFolderTo
 import com.deniscerri.ytdlnis.R
-import com.deniscerri.ytdlnis.database.models.DownloadItem
-import okhttp3.internal.closeQuietly
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.io.File
 import java.net.URLDecoder
 import java.nio.charset.StandardCharsets
@@ -70,81 +76,105 @@ object FileUtil {
 
 
     @Throws(Exception::class)
-     fun moveFile(originDir: File, context: Context, destDir: String, keepCache: Boolean, progress: (p: Int) -> Unit) : List<String> {
-        val fileList = mutableListOf<File>()
-        val dir = File(formatPath(destDir))
-        if (!dir.exists()) dir.mkdirs()
-        var currentDirectory = dir
-        originDir.walk().forEach {
-            var destFile = File(dir.absolutePath + "/${it.absolutePath.removePrefix(originDir.absolutePath)}")
-            if (it.isDirectory) {
-                destFile.mkdirs()
-                currentDirectory = destFile
-                return@forEach
-            }
-            try {
-                if (it.name.matches("(^config.*.\\.txt\$)|(rList)|(part-Frag)".toRegex())){
-                    it.delete()
+     suspend fun moveFile(originDir: File, context: Context, destDir: String, keepCache: Boolean, progress: (p: Int) -> Unit) : List<String> {
+        return withContext(Dispatchers.Main){
+            val fileList = mutableListOf<String>()
+            val dir = File(formatPath(destDir))
+            if (!dir.exists()) dir.mkdirs()
+            originDir.walk().forEach {
+                if (it.isDirectory && it.absolutePath == originDir.absolutePath) return@forEach
+                var destFile: DocumentFile
+                try {
+                    if (it.name.matches("(^config.*.\\.txt\$)|(rList)|(part-Frag)".toRegex())){
+                        it.delete()
+                        return@forEach
+                    }
+
+                    if(it.name.contains(".part-Frag")) return@forEach
+
+
+                    val curr = DocumentFile.fromFile(it)
+                    val dst =  DocumentFile.fromTreeUri(context, destDir.toUri())
+
+                    if (it.isDirectory){
+                        withContext(Dispatchers.IO){
+                            curr.copyFolderTo(context, dst!!, skipEmptyFiles = false, callback = object : FolderCallback() {
+                                override fun onStart(folder: DocumentFile, totalFilesToCopy: Int, workerThread: Thread): Long {
+                                    return 1000 // update progress every 1 second
+                                }
+
+                                override fun onParentConflict(destinationFolder: DocumentFile, action: ParentFolderConflictAction, canMerge: Boolean) {
+                                    if (canMerge){
+                                        action.confirmResolution(ConflictResolution.MERGE)
+                                    }else{
+                                        action.confirmResolution(ConflictResolution.CREATE_NEW)
+                                    }
+                                }
+
+                                override fun onReport(report: Report) {
+                                    progress(report.progress.toInt())
+                                }
+
+                                override fun onCompleted(result: Result) {
+                                    fileList.addAll(result.folder.listFiles().map { f -> f.getAbsolutePath(context) })
+                                    it.deleteRecursively()
+                                }
+
+                            })
+                        }
+                    }else{
+                        withContext(Dispatchers.IO){
+                            curr.copyFileTo(context, dst!!, callback = object : FileCallback() {
+                                override fun onStart(file: Any, workerThread: Thread): Long {
+                                    return 1000 // update progress every 1 second
+                                }
+
+                                override fun onReport(report: Report) {
+                                    progress(report.progress.toInt())
+                                }
+
+                                override fun onCompleted(result: Any) {
+                                    destFile = (result as DocumentFile)
+                                    fileList.add(destFile.getAbsolutePath(context))
+                                    it.deleteRecursively()
+                                    super.onCompleted(result)
+                                }
+                            })
+                        }
+                    }
+                }catch (e: Exception) {
+                    Log.e("error", e.message.toString())
+                    val files = it.listFiles()?.filter { fil -> !fil.isDirectory }?.toTypedArray() ?: arrayOf(it)
+                    for (ff in files){
+                        val newFile =  File(dir.absolutePath + "/${ff.absolutePath.removePrefix(originDir.absolutePath)}")
+                        newFile.mkdirs()
+                        if (Build.VERSION.SDK_INT >= 26 ) {
+                            Files.move(
+                                ff.toPath(),
+                                newFile.toPath(),
+                                StandardCopyOption.REPLACE_EXISTING
+                            )
+                        }else{
+                            ff.renameTo(newFile)
+                        }
+                        fileList.add(newFile.absolutePath)
+                    }
                     return@forEach
                 }
 
-                if(it.name.contains(".part-Frag")) return@forEach
-
-                val mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(it.extension) ?: "*/*"
-                destFile = File(currentDirectory.absolutePath + "/${it.name}")
-
-                val dest = Uri.parse(destDir).run {
-                    DocumentsContract.buildDocumentUriUsingTree(
-                        this,
-                        DocumentsContract.getTreeDocumentId(this)
-                    )
-                }
-                val destUri = DocumentsContract.createDocument(
-                    context.contentResolver,
-                    dest,
-                    mimeType,
-                    it.name
-                ) ?: return@forEach
-
-                val inputStream = it.inputStream()
-                val outputStream =
-                    context.contentResolver.openOutputStream(destUri) ?: return@forEach
-                inputStream.copyTo(outputStream)
-                inputStream.closeQuietly()
-                outputStream.closeQuietly()
-
-                fileList.add(destFile)
-            }catch (e: java.lang.Exception) {
-                Log.e("error", e.message.toString())
-
-                if (destFile.absolutePath.contains("/storage/emulated/0/Download")
-                    || destFile.absolutePath.contains("/storage/emulated/0/Documents")
-                ){
-                    if (Build.VERSION.SDK_INT >= 26 ){
-                        Files.move(it.toPath(), destFile.toPath(), StandardCopyOption.REPLACE_EXISTING)
-                    }else{
-                        it.renameTo(destFile)
-                    }
-                    fileList.add(destFile)
-                }
-                return@forEach
-            }catch(e : Exception){
-                Log.e("error", e.message.toString())
-                return@forEach
             }
-
+            if (!keepCache){
+                originDir.deleteRecursively()
+            }
+            return@withContext scanMedia(fileList, context)
         }
-        if (!keepCache){
-            originDir.deleteRecursively()
-        }
-        return scanMedia(fileList, context)
     }
-    private fun scanMedia(files: List<File>, context: Context) : List<String> {
+    private fun scanMedia(files: List<String>, context: Context) : List<String> {
 
         try {
-            val paths = files.map { it.absolutePath }.toTypedArray()
-            MediaScannerConnection.scanFile(context, paths, null, null)
-            return files.sortedByDescending { it.length() }.map { it.absolutePath }
+            val paths = files.sortedByDescending { File(it).length() }
+            MediaScannerConnection.scanFile(context, paths.toTypedArray(), null, null)
+            return paths
         }catch (e: Exception){
             e.printStackTrace()
         }

@@ -48,6 +48,7 @@ object ThemeUtil {
             "green" -> activity.setTheme(R.style.Theme_Green)
             "purple" -> activity.setTheme(R.style.Theme_Purple)
             "yellow" -> activity.setTheme(R.style.Theme_Yellow)
+            "orange" -> activity.setTheme(R.style.Theme_Orange)
             "monochrome" -> activity.setTheme(R.style.Theme_Monochrome)
         }
 
@@ -71,37 +72,41 @@ object ThemeUtil {
         when (sharedPreferences.getString("ytdlnis_theme", "System")!!) {
             "System" -> {
                 //set dynamic icon
-                val aliasComponentName = ComponentName(activity, "com.deniscerri.ytdlnis.Default")
-                activity.packageManager.setComponentEnabledSetting(aliasComponentName,
+                activity.packageManager.setComponentEnabledSetting(
+                    ComponentName(activity.packageName, "com.deniscerri.ytdlnis.Default"),
                     PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
-                    PackageManager.DONT_KILL_APP)
+                    PackageManager.DONT_KILL_APP
+                )
 
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
             }
             "Light" -> {
                 //set light icon
-                val aliasComponentName = ComponentName(activity, "com.deniscerri.ytdlnis.LightIcon")
-                activity.packageManager.setComponentEnabledSetting(aliasComponentName,
+                activity.packageManager.setComponentEnabledSetting(
+                    ComponentName(activity.packageName, "com.deniscerri.ytdlnis.LightIcon"),
                     PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
-                    PackageManager.DONT_KILL_APP)
+                    PackageManager.DONT_KILL_APP
+                )
 
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
             }
             "Dark" -> {
                 //set dark icon
-                val aliasComponentName = ComponentName(activity, "com.deniscerri.ytdlnis.DarkIcon")
-                activity.packageManager.setComponentEnabledSetting(aliasComponentName,
+                activity.packageManager.setComponentEnabledSetting(
+                    ComponentName(activity.packageName, "com.deniscerri.ytdlnis.DarkIcon"),
                     PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
-                    PackageManager.DONT_KILL_APP)
+                    PackageManager.DONT_KILL_APP
+                )
 
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
             }
             else -> {
                 //set dynamic icon
-                val aliasComponentName = ComponentName(activity, "com.deniscerri.ytdlnis.Default")
-                activity.packageManager.setComponentEnabledSetting(aliasComponentName,
+                activity.packageManager.setComponentEnabledSetting(
+                    ComponentName(activity.packageName, "com.deniscerri.ytdlnis.Default"),
                     PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
-                    PackageManager.DONT_KILL_APP)
+                    PackageManager.DONT_KILL_APP
+                )
 
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
             }
@@ -109,7 +114,7 @@ object ThemeUtil {
 
     }
 
-    fun getThemeColor(context: Context, colorCode: Int): Int {
+    private fun getThemeColor(context: Context, colorCode: Int): Int {
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
         val accent = sharedPreferences.getString("theme_accent", "blue")
         return if (accent == "Default" || accent == "blue"){

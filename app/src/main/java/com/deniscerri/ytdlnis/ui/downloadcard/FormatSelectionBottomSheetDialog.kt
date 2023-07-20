@@ -140,6 +140,9 @@ class FormatSelectionBottomSheetDialog(private val items: List<DownloadItem?>, p
                            res
                        }
                        if (chosenFormats.isEmpty()) throw Exception()
+
+                       formats = listOf(res)
+
                    //playlist format filtering
                    }else{
                        var progress = "0/${items.size}"
@@ -154,6 +157,7 @@ class FormatSelectionBottomSheetDialog(private val items: List<DownloadItem?>, p
                                formatCollection.add(it)
                            }
                        }
+                       formats = formatCollection
                        val flatFormatCollection = formatCollection.flatten()
                        val commonFormats = flatFormatCollection.groupingBy { it.format_id }.eachCount().filter { it.value == items.size }.mapValues { flatFormatCollection.first { f -> f.format_id == it.key } }.map { it.value }
                        chosenFormats = commonFormats.filter { it.filesize != 0L }.mapTo(mutableListOf()) {it.copy()}
@@ -196,7 +200,7 @@ class FormatSelectionBottomSheetDialog(private val items: List<DownloadItem?>, p
 
             //simple video format selection
             if (items.size == 1){
-                listener.onFormatClick(List(items.size){chosenFormats}, listOf(FormatTuple(selectedVideo, selectedAudios)))
+                listener.onFormatClick(formats, listOf(FormatTuple(selectedVideo, selectedAudios)))
             }else{
                 //playlist format selection
                 val selectedFormats = mutableListOf<Format>()
@@ -208,7 +212,7 @@ class FormatSelectionBottomSheetDialog(private val items: List<DownloadItem?>, p
                         selectedFormats.add(selectedVideo)
                     }
                 }
-                listener.onFormatClick(formatCollection, selectedFormats.map { FormatTuple(it, selectedAudios) })
+                listener.onFormatClick(formats, selectedFormats.map { FormatTuple(it, selectedAudios) })
             }
 
             dismiss()
@@ -260,7 +264,7 @@ class FormatSelectionBottomSheetDialog(private val items: List<DownloadItem?>, p
                     val clickedCard = (clickedformat as MaterialCardView)
                     if (format.vcodec.isNotBlank() && format.vcodec != "none") {
                         if (clickedCard.isChecked) {
-                            listener.onFormatClick(List(items.size){finalFormats}, listOf(FormatTuple(format, null)))
+                            listener.onFormatClick(formats, listOf(FormatTuple(format, null)))
                             dismiss()
                         }
                         videoFormatList.forEach { (it as MaterialCardView).isChecked = false }
@@ -279,7 +283,7 @@ class FormatSelectionBottomSheetDialog(private val items: List<DownloadItem?>, p
                     }
                 }else{
                     if (items.size == 1){
-                        listener.onFormatClick(List(items.size){finalFormats}, listOf(FormatTuple(format, null)))
+                        listener.onFormatClick(formats, listOf(FormatTuple(format, null)))
                     }else{
                         val selectedFormats = mutableListOf<Format>()
                         formatCollection.forEach {
@@ -290,7 +294,7 @@ class FormatSelectionBottomSheetDialog(private val items: List<DownloadItem?>, p
                                 selectedFormats.add(format)
                             }
                         }
-                        listener.onFormatClick(formatCollection, selectedFormats.map { FormatTuple(it, null) })
+                        listener.onFormatClick(formats, selectedFormats.map { FormatTuple(it, null) })
                     }
                     dismiss()
                 }

@@ -224,6 +224,7 @@
     <string name="red">E Kuqe</string>
     <string name="purple">Vjollcë</string>
     <string name="yellow">E Verdhë</string>
+    <string name="orange">Portokalli</string>
     <string name="monochrome">Monokrom</string>
     <string name="green">Jeshile</string>
     <string name="downloaded">"U shkarkua: "</string>
@@ -262,7 +263,7 @@
     <string name="misc">Të Tjera</string>
     <string name="audio_only_item">Ky artikull përmban vetëm formate audio</string>
     <string name="locale">Lokal</string>
-    <string name="general">Gjeneral</string>
+    <string name="general">Të Përgjithshme</string>
     <string name="swipe_gestures">Gjestet e rrëshqitjes</string>
     <string name="swipe_gestures_summary">Rrëshqitni artikujt për veprime të caktuara</string>
     <string name="crop_thumb">Preje Thumbnailin</string>

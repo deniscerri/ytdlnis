@@ -116,16 +116,18 @@ class TerminalDownloadWorker(
                 }
             }
         }.onSuccess {
-            //move file from internal to set download directory
-            try {
-                FileUtil.moveFile(tempFileDir.absoluteFile,context, downloadLocation!!, false){ p ->
-                    setProgressAsync(workDataOf("progress" to p))
+            CoroutineScope(Dispatchers.IO).launch {
+                //move file from internal to set download directory
+                try {
+                    FileUtil.moveFile(tempFileDir.absoluteFile,context, downloadLocation!!, false){ p ->
+                        setProgressAsync(workDataOf("progress" to p))
+                    }
+                }catch (e: Exception){
+                    e.printStackTrace()
+                    handler.postDelayed({
+                        Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
+                    }, 1000)
                 }
-            }catch (e: Exception){
-                e.printStackTrace()
-                handler.postDelayed({
-                    Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
-                }, 1000)
             }
 
             if (it.out.length > 200){

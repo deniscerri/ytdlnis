@@ -226,6 +226,7 @@
         <item>@string/green</item>
         <item>@string/purple</item>
         <item>@string/yellow</item>
+        <item>@string/orange</item>
         <item>@string/monochrome</item>
     </array>
 
@@ -236,6 +237,7 @@
         <item>green</item>
         <item>purple</item>
         <item>yellow</item>
+        <item>orange</item>
         <item>monochrome</item>
     </array>
 

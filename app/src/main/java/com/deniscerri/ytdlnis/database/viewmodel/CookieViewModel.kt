@@ -71,8 +71,12 @@ class CookieViewModel(private val application: Application) : AndroidViewModel(a
             if (!hasCookies()) throw Exception("There is no cookies in the database!")
             flush()
         }
+
+        var dbPath = "/data/data/com.deniscerri.ytdl/app_webview/Cookies"
+        if (!File(dbPath).exists()) dbPath = "/data/data/com.deniscerri.ytdl/app_webview/Default/Cookies"
+
         SQLiteDatabase.openDatabase(
-            "/data/data/com.deniscerri.ytdl/app_webview/Default/Cookies", null, OPEN_READONLY
+            dbPath, null, OPEN_READONLY
         ).run {
             val projection = arrayOf(
                 CookieObject.HOST,

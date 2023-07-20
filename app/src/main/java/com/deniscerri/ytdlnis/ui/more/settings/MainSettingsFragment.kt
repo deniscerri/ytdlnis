@@ -447,10 +447,15 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
                             val item = Gson().fromJson(it.toString().replace("^\"|\"$", ""), DownloadItem::class.java)
                             item.id = 0L
                             cancelled.add(item)
+
+                        }
+
+                        cancelled.asReversed().forEach { f ->
                             withContext(Dispatchers.IO){
-                                downloadViewModel.insert(item)
+                                downloadViewModel.insert(f)
                             }
                         }
+
                         if(cancelled.isNotEmpty()){
                             finalMessage.append("${getString(R.string.cancelled)}: ${cancelled.count()}\n")
                         }
@@ -464,10 +469,15 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
                             val item = Gson().fromJson(it.toString().replace("^\"|\"$", ""), DownloadItem::class.java)
                             item.id = 0L
                             errored.add(item)
+
+                        }
+
+                        errored.asReversed().forEach { f ->
                             withContext(Dispatchers.IO){
-                                downloadViewModel.insert(item)
+                                downloadViewModel.insert(f)
                             }
                         }
+
                         if(errored.isNotEmpty()){
                             finalMessage.append("${getString(R.string.errored)}: ${errored.count()}\n")
                         }
@@ -491,13 +501,20 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
                     //command template restore
                     if(json.has("templates")){
                         val items = json.getAsJsonArray("templates")
+                        val templates = mutableListOf<CommandTemplate>()
                         items.forEach {
                             val item = Gson().fromJson(it.toString().replace("^\"|\"$", ""), CommandTemplate::class.java)
                             item.id = 0L
+                            templates.add(item)
+
+                        }
+
+                        templates.asReversed().forEach { t ->
                             withContext(Dispatchers.IO){
-                                commandTemplateViewModel.insert(item)
+                                commandTemplateViewModel.insert(t)
                             }
                         }
+
                         if(items.count() > 0){
                             finalMessage.append("${getString(R.string.command_templates)}: ${items.count()}\n")
                         }

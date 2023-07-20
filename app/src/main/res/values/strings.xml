@@ -71,7 +71,7 @@
     <string name="url">URL</string>
     <string name="link_copied_to_clipboard">Link copied to clipboard</string>
     <string name="api_key">Use API Key</string>
-    <string name="api_key_summary">Faster results from YouTube</string>
+    <string name="api_key_summary">Video Recommendations from Youtube API</string>
     <string name="update_app_summary">Announce new versions of the app when it is opened</string>
     <string name="downloads">Downloads</string>
     <string name="remove_deleted">Remove Deleted</string>
@@ -232,6 +232,7 @@
     <string name="green">Green</string>
     <string name="purple">Purple</string>
     <string name="yellow">Yellow</string>
+    <string name="orange">Orange</string>
     <string name="monochrome">Monochrome</string>
     <string name="downloaded">"Downloaded: "</string>
     <string name="finished_download_notification_channel_name">Finished Downloads</string>

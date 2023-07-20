@@ -114,7 +114,7 @@
     <color name="red_md_theme_dark_inverseSurface">#EDE0DE</color>
     <color name="red_md_theme_dark_inversePrimary">#9F4034</color>
 
-    <color name="yellow_md_theme_light_primary">#745B00</color>
+    <color name="yellow_md_theme_light_primary">#cf9b02</color>
     <color name="yellow_md_theme_light_onPrimary">#FFFFFF</color>
     <color name="yellow_md_theme_light_primaryContainer">#FFE08D</color>
     <color name="yellow_md_theme_light_onPrimaryContainer">#241A00</color>
@@ -272,6 +272,68 @@
     <color name="purple_md_theme_dark_inverseOnSurface">#1F1A1D</color>
     <color name="purple_md_theme_dark_inverseSurface">#EAE0E3</color>
     <color name="purple_md_theme_dark_inversePrimary">#9B3489</color>
+
+
+    <color name="orange_md_theme_light_primary">#855400</color>
+    <color name="orange_md_theme_light_onPrimary">#FFFFFF</color>
+    <color name="orange_md_theme_light_primaryContainer">#FFDDB7</color>
+    <color name="orange_md_theme_light_onPrimaryContainer">#2A1700</color>
+    <color name="orange_md_theme_light_secondary">#705B41</color>
+    <color name="orange_md_theme_light_onSecondary">#FFFFFF</color>
+    <color name="orange_md_theme_light_secondaryContainer">#FCDEBC</color>
+    <color name="orange_md_theme_light_onSecondaryContainer">#281905</color>
+    <color name="orange_md_theme_light_tertiary">#53643E</color>
+    <color name="orange_md_theme_light_onTertiary">#FFFFFF</color>
+    <color name="orange_md_theme_light_tertiaryContainer">#D6E9B9</color>
+    <color name="orange_md_theme_light_onTertiaryContainer">#121F03</color>
+    <color name="orange_md_theme_light_error">#BA1A1A</color>
+    <color name="orange_md_theme_light_errorContainer">#FFDAD6</color>
+    <color name="orange_md_theme_light_onError">#FFFFFF</color>
+    <color name="orange_md_theme_light_onErrorContainer">#410002</color>
+    <color name="orange_md_theme_light_background">#FFFBFF</color>
+    <color name="orange_md_theme_light_onBackground">#1F1B16</color>
+    <color name="orange_md_theme_light_surface">#FFFBFF</color>
+    <color name="orange_md_theme_light_onSurface">#1F1B16</color>
+    <color name="orange_md_theme_light_surfaceVariant">#F0E0D0</color>
+    <color name="orange_md_theme_light_onSurfaceVariant">#504539</color>
+    <color name="orange_md_theme_light_outline">#827568</color>
+    <color name="orange_md_theme_light_inverseOnSurface">#F9EFE7</color>
+    <color name="orange_md_theme_light_inverseSurface">#352F2A</color>
+    <color name="orange_md_theme_light_inversePrimary">#FFB95C</color>
+    <color name="orange_md_theme_light_shadow">#000000</color>
+    <color name="orange_md_theme_light_surfaceTint">#855400</color>
+    <color name="orange_md_theme_light_outlineVariant">#D4C4B5</color>
+    <color name="orange_md_theme_light_scrim">#000000</color>
+    <color name="orange_md_theme_dark_primary">#FFB95C</color>
+    <color name="orange_md_theme_dark_onPrimary">#462A00</color>
+    <color name="orange_md_theme_dark_primaryContainer">#653E00</color>
+    <color name="orange_md_theme_dark_onPrimaryContainer">#FFDDB7</color>
+    <color name="orange_md_theme_dark_secondary">#DFC2A2</color>
+    <color name="orange_md_theme_dark_onSecondary">#3F2D17</color>
+    <color name="orange_md_theme_dark_secondaryContainer">#57432B</color>
+    <color name="orange_md_theme_dark_onSecondaryContainer">#FCDEBC</color>
+    <color name="orange_md_theme_dark_tertiary">#BACD9F</color>
+    <color name="orange_md_theme_dark_onTertiary">#263514</color>
+    <color name="orange_md_theme_dark_tertiaryContainer">#3C4C28</color>
+    <color name="orange_md_theme_dark_onTertiaryContainer">#D6E9B9</color>
+    <color name="orange_md_theme_dark_error">#FFB4AB</color>
+    <color name="orange_md_theme_dark_errorContainer">#93000A</color>
+    <color name="orange_md_theme_dark_onError">#690005</color>
+    <color name="orange_md_theme_dark_onErrorContainer">#FFDAD6</color>
+    <color name="orange_md_theme_dark_background">#1F1B16</color>
+    <color name="orange_md_theme_dark_onBackground">#EBE1D9</color>
+    <color name="orange_md_theme_dark_surface">#1F1B16</color>
+    <color name="orange_md_theme_dark_onSurface">#EBE1D9</color>
+    <color name="orange_md_theme_dark_surfaceVariant">#504539</color>
+    <color name="orange_md_theme_dark_onSurfaceVariant">#D4C4B5</color>
+    <color name="orange_md_theme_dark_outline">#9C8E80</color>
+    <color name="orange_md_theme_dark_inverseOnSurface">#1F1B16</color>
+    <color name="orange_md_theme_dark_inverseSurface">#EBE1D9</color>
+    <color name="orange_md_theme_dark_inversePrimary">#855400</color>
+    <color name="orange_md_theme_dark_shadow">#000000</color>
+    <color name="orange_md_theme_dark_surfaceTint">#FFB95C</color>
+    <color name="orange_md_theme_dark_outlineVariant">#504539</color>
+    <color name="orange_md_theme_dark_scrim">#000000</color>
 
     // Colors without comments seem to be not used
     <color name="monochrome_theme_light_primary">#616161</color>

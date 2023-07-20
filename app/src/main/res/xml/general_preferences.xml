@@ -59,6 +59,12 @@
             app:summary="@string/video_recommendations_summary"
             app:title="@string/video_recommendations" />
 
+        <EditTextPreference
+            android:icon="@drawable/ic_key"
+            app:key="api_key"
+            android:summary="@string/api_key_summary"
+            app:title="@string/api_key" />
+
 
         <ListPreference
             android:defaultValue=""
@@ -106,7 +112,7 @@
 
         <SwitchPreferenceCompat
             android:widgetLayout="@layout/preferece_material_switch"
-            app:defaultValue="false"
+            app:defaultValue="true"
             android:icon="@drawable/baseline_share_24"
             android:key="hide_terminal"
             app:title="@string/hide_terminal" />

@@ -2,13 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-feature
-        android:name="android.software.leanback"
-        android:required="false" />
-    <uses-feature
-        android:name="android.hardware.touchscreen"
-        android:required="false" />
-
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -19,7 +12,7 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
     <uses-permission android:name="android.permission.ACTION_OPEN_DOCUMENT" />
-    <uses-permission  android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS"/>
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
 
@@ -38,8 +31,7 @@
         android:supportsRtl="true"
         android:theme="@style/BaseTheme"
         tools:ignore="DataExtractionRules"
-        tools:targetApi="tiramisu"
-        android:banner="@mipmap/ic_launcher">
+        tools:targetApi="tiramisu">
         <profileable
             android:shell="true"
             tools:targetApi="29" />
@@ -49,18 +41,7 @@
             android:configChanges="smallestScreenSize|layoutDirection|locale|orientation|screenSize"
             android:exported="true"
             android:windowSoftInputMode="adjustPan">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.SEND" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-
-                <data android:mimeType="application/txt" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".receiver.ShareActivity"
@@ -114,7 +95,7 @@
         <activity-alias
             android:name=".terminalShareAlias"
             android:targetActivity=".ui.more.TerminalActivity"
-            android:enabled="true"
+            android:enabled="false"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
@@ -126,17 +107,20 @@
         <activity-alias
             android:name=".Default"
             android:enabled="true"
-            android:exported="true"
             android:icon="@mipmap/ic_launcher"
             android:roundIcon="@mipmap/ic_launcher_round"
             android:configChanges="smallestScreenSize|layoutDirection|locale|orientation|screenSize"
             android:targetActivity=".MainActivity"
-            android:windowSoftInputMode="adjustPan">
+            android:windowSoftInputMode="adjustPan"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
-                <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="application/txt" />
             </intent-filter>
         </activity-alias>
 
@@ -152,9 +136,12 @@
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
-                <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="application/txt" />
             </intent-filter>
         </activity-alias>
 
@@ -169,9 +156,12 @@
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
-                <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="application/txt" />
             </intent-filter>
         </activity-alias>
 

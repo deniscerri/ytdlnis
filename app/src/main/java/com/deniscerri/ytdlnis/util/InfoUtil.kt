@@ -68,7 +68,7 @@ class InfoUtil(private val context: Context) {
 
     @Throws(JSONException::class)
     fun searchFromPiped(query: String): ArrayList<ResultItem?> {
-        val data = genericRequest("$pipedURL/search?q=$query&filter=videos")
+        val data = genericRequest("$pipedURL/search?q=$query&filter=videos&region=${countryCODE}")
         val dataArray = data.getJSONArray("items")
         if (dataArray.length() == 0) return getFromYTDL(query)
         for (i in 0 until dataArray.length()) {
@@ -86,7 +86,7 @@ class InfoUtil(private val context: Context) {
 
     @Throws(JSONException::class)
     fun searchFromPipedMusic(query: String): ArrayList<ResultItem?> {
-        val data = genericRequest("$pipedURL/search?q=$query=&filter=music_songs")
+        val data = genericRequest("$pipedURL/search?q=$query=&filter=music_songs&region=${countryCODE}")
         val dataArray = data.getJSONArray("items")
         if (dataArray.length() == 0) return getFromYTDL(query)
         for (i in 0 until dataArray.length()) {
@@ -350,7 +350,42 @@ class InfoUtil(private val context: Context) {
     @Throws(JSONException::class)
     fun getTrending(): ArrayList<ResultItem?> {
         items = ArrayList()
+        if (sharedPreferences.getString("api_key", "")!!.isNotBlank()){
+            return getTrendingFromYoutubeAPI()
+        }
         return getTrendingFromPiped()
+    }
+
+    @Throws(JSONException::class)
+    fun getTrendingFromYoutubeAPI(): ArrayList<ResultItem?> {
+        val key = sharedPreferences.getString("api_key", "")!!
+
+        val url = "https://www.googleapis.com/youtube/v3/videos?part=snippet&chart=mostPopular&videoCategoryId=10&regionCode=$countryCODE&maxResults=25&key=$key"
+        //short data
+        val res = genericRequest(url)
+        //extra data from the same videos
+        val contentDetails =
+            genericRequest("https://www.googleapis.com/youtube/v3/videos?part=contentDetails&chart=mostPopular&videoCategoryId=10&regionCode=$countryCODE&maxResults=25&key=$key")
+        if (!contentDetails.has("items")) return ArrayList()
+        val dataArray = res.getJSONArray("items")
+        val extraDataArray = contentDetails.getJSONArray("items")
+        for (i in 0 until dataArray.length()) {
+            val element = dataArray.getJSONObject(i)
+            val snippet = element.getJSONObject("snippet")
+            var duration = extraDataArray.getJSONObject(i).getJSONObject("contentDetails")
+                .getString("duration")
+            duration = formatDuration(duration)
+            snippet.put("videoID", element.getString("id"))
+            snippet.put("duration", duration)
+            fixThumbnail(snippet)
+            val v = createVideofromJSON(snippet)
+            if (v == null || v.thumb.isEmpty()) {
+                continue
+            }
+            v.playlistTitle = context.getString(R.string.trendingPlaylist)
+            items.add(v)
+        }
+        return items
     }
 
     private fun getTrendingFromPiped(): ArrayList<ResultItem?> {
@@ -881,7 +916,10 @@ class InfoUtil(private val context: Context) {
     }
 
     fun buildYoutubeDLRequest(downloadItem: DownloadItem) : YoutubeDLRequest{
-        val tempFileDir = File(context.cacheDir.absolutePath + "/downloads/" + downloadItem.id)
+        val cacheDir = File(context.cacheDir.absolutePath + "/downloads/")
+        val tempFileDir = File(cacheDir, downloadItem.id.toString())
+        tempFileDir.delete()
+        tempFileDir.mkdirs()
 
         val url = downloadItem.url
         val request = YoutubeDLRequest(url)
@@ -925,7 +963,12 @@ class InfoUtil(private val context: Context) {
 
             if (sponsorBlockFilters.isNotEmpty()) {
                 val filters = java.lang.String.join(",", sponsorBlockFilters.filter { it.isNotBlank() })
-                if (filters.isNotBlank()) request.addOption("--sponsorblock-remove", filters)
+                if (filters.isNotBlank()) {
+                    request.addOption("--sponsorblock-remove", filters)
+                    if (sharedPreferences.getBoolean("force_keyframes", false)){
+                        request.addOption("--force-keyframes-at-cuts")
+                    }
+                }
             }
 
             if(downloadItem.title.isNotBlank()){
@@ -936,7 +979,7 @@ class InfoUtil(private val context: Context) {
             }
             request.addCommands(listOf("--replace-in-metadata","uploader"," - Topic$",""))
             if (downloadItem.customFileNameTemplate.isBlank()) downloadItem.customFileNameTemplate = "%(uploader|${downloadItem.author})s - %(title)s"
-            downloadItem.customFileNameTemplate.replace("%(uploader)s", "%(uploader|${downloadItem.author})s")
+            downloadItem.customFileNameTemplate = downloadItem.customFileNameTemplate.replace("%(uploader)s", "%(uploader|${downloadItem.author})s")
 
             if (downloadItem.downloadSections.isNotBlank()){
                 downloadItem.downloadSections.split(";").forEach {
@@ -946,7 +989,7 @@ class InfoUtil(private val context: Context) {
                     else
                         request.addOption("--download-sections", it)
 
-                    if (sharedPreferences.getBoolean("force_keyframes", false)){
+                    if (sharedPreferences.getBoolean("force_keyframes", false) && !request.hasOption("--force-keyframes-at-cuts")){
                         request.addOption("--force-keyframes-at-cuts")
                     }
                 }
@@ -1019,7 +1062,9 @@ class InfoUtil(private val context: Context) {
                             config.writeText(configData)
                             request.addOption("--ppa", "ThumbnailsConvertor:-qmin 1 -q:v 1")
                             request.addOption("--config", config.absolutePath)
-                        } catch (ignored: Exception) {}
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
                     }
                 }
                 request.addOption("--parse-metadata", "%(release_year,upload_date)s:%(meta_date)s")

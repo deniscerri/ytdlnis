@@ -3,7 +3,7 @@
     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingBottom="200dp"
+    android:layout_marginBottom="200dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
