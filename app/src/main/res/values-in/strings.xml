@@ -94,7 +94,7 @@
     <string name="sponsorblock_intro">Intro</string>
     <string name="sponsorblock_outro">Outro</string>
     <string name="sponsorblock_promos">Promo Diri Sendiri</string>
-    <string name="api_key_summary">Hasil yang lebih cepat dari YouTube</string>
+    <string name="api_key_summary">Rekomendasi Video dari API YouTube</string>
     <string name="update_app_summary">Mengumumkan versi aplikasi yang baru saat membukanya</string>
     <string name="remove_duplicates">Bersihkan Duplikat</string>
     <string name="sort_by">Penyortiran</string>
@@ -280,10 +280,11 @@
     <string name="show_terminal">Sembunyikan Terminal dari menu berbagi</string>
     <string name="subtitle_format">Format Takarir (Subtitle)</string>
     <string name="hide_thumbnails">Sembunyikan Keluku (Thumbnail)</string>
-    <string name="clear_saved">Bersihkan yang Disimpan</string>
+    <string name="clear_saved">Kosongkan yang Disimpan</string>
     <string name="saved">Disimpan</string>
     <string name="save_for_later">Simpan Unduhan untuk Nanti\?</string>
     <string name="use_extra_commands">Tambahkan Perintah Ekstra</string>
     <string name="use_extra_commands_summary">Bagi pengunduhan Audio / Video. Menambahkan perintah ekstra beserta konfigurasi GUI</string>
     <string name="current">Perintah Saat Ini</string>
+    <string name="orange">Oranye</string>
 </resources>
