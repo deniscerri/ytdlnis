@@ -37,14 +37,14 @@
     <string name="limit_rate_summary">Taxa máxima de download (em bytes por segundo), ex. 50k ou 4.2M</string>
     <string name="aria2_summary">Usar aria2c como ferramenta de download padrão</string>
     <string name="embed_subs_summary">Adicione legendas ao vídeo</string>
-    <string name="add_chapters_summary">Marque segmentos do YouTube / SponsorBlock como capítulos para o vídeo</string>
+    <string name="add_chapters_summary">Marcar segmentos do YouTube / SponsorBlock como capítulos do vídeo</string>
     <string name="save_thumb">Salvar Miniatura</string>
     <string name="video_format">Formato de Vídeo</string>
     <string name="audio_quality">Qualidade do Áudio</string>
     <string name="command_download_notification_channel_description">Mostrar uma notificação do progresso de download usando um comando do yt-dlp</string>
     <string name="history_is_empty">O histórico está vazio</string>
     <string name="api_key">Usar chave de API</string>
-    <string name="api_key_summary">Resultados mais rápidos do YouTube</string>
+    <string name="api_key_summary">Recomendações de vídeo da API do YouTube</string>
     <string name="remove_duplicates">Remover downloads Duplicados</string>
     <string name="sort_by">Ordenar</string>
     <string name="incognito_summary">Baixar sem adicionar no histórico</string>
@@ -85,7 +85,7 @@
     <string name="run_command">Executar Comando</string>
     <string name="audio_quality_summary">0 (melhor) 10 (pior)</string>
     <string name="cancel_download">Cancelar Download</string>
-    <string name="update_app_summary">Anunciar novas versões quando iniciar o aplicativo</string>
+    <string name="update_app_summary">Anuncie novas versões do aplicativo quando ele for aberto</string>
     <string name="configure_download">Ajustar Download</string>
     <string name="save_thumb_summary">Salvar miniatura na pasta de download</string>
     <string name="audio_format">Formato de Áudio</string>
@@ -185,11 +185,11 @@
     <string name="format_filtering_hint">Todos os itens devem ser do mesmo tipo para usar esta opção</string>
     <string name="preferred_search_engine_summary">O mecanismo de pesquisa a ser usado para pesquisas no aplicativo</string>
     <string name="preferred_search_engine">Mecanismo de pesquisa preferido</string>
-    <string name="video_recommendations_summary">Obtenha vídeos recomendados do YouTube na tela inicial da API PIPED</string>
+    <string name="video_recommendations_summary">Obtenha vídeos recomendados do YouTube na tela inicial a partir da API PIPED</string>
     <string name="video_recommendations">Recomendações de vídeo</string>
     <string name="format_source">Origem dos formatos</string>
     <string name="subtitle_languages">Idiomas das legendas</string>
-    <string name="save_subs_desc">O arquivo de legenda será salvo, se disponível.</string>
+    <string name="save_subs_desc">O arquivo de legenda será salvo, se disponível</string>
     <string name="invert_selected">Inverter Seleção</string>
     <string name="download_over_metered_networks_summary">Downloads usando qualquer tipo de rede. Caso contrário, espera por uma rede ilimitada</string>
     <string name="download_over_metered_networks">Download através de redes limitadas</string>
@@ -251,8 +251,8 @@
     <string name="dont_ask_again">Não perguntar novamente</string>
     <string name="restrict_filenames_summary">Restrinja os nomes de arquivo a apenas caracteres ASCII e evite \"&amp;\" e espaços nos nomes de arquivo</string>
     <string name="template">Modelo</string>
-    <string name="sponsorblock_nonmusic">Partes não-musicais e off-topic</string>
-    <string name="container">Container</string>
+    <string name="sponsorblock_nonmusic">Partes não relacionadas à música e off-topic</string>
+    <string name="container">Contêiner</string>
     <string name="locale">Localidade</string>
     <string name="audio_only_item">Este item contém apenas formatos de áudio</string>
     <string name="format_filtering_hint_2">Todos os itens devem ser áudio ou vídeo para usar esta opção</string>
@@ -270,8 +270,8 @@
     <string name="fragment_retries">Novas tentativas de fragmento</string>
     <string name="format_order">Ordem do formato</string>
     <string name="swipe_gestures">Deslize os gestos</string>
-    <string name="piped_instance">instância canalizada</string>
-    <string name="piped_instance_summary">Escreva um servidor API PIPED, o aplicativo pode usar para consultas e formatos do youtube</string>
+    <string name="piped_instance">Instância do servidor Piped</string>
+    <string name="piped_instance_summary">Insira um servidor API PIPED, o aplicativo pode usar para consultas e formatos do youtube</string>
     <string name="retries">Novas tentativas</string>
     <string name="sponsorblock_outro">Cartões Finais/Créditos (Outro)</string>
     <string name="sponsorblock">Bloqueio do Patrocinador</string>
@@ -286,4 +286,5 @@
     <string name="use_extra_commands">Adicionar Comandos Extras</string>
     <string name="use_extra_commands_summary">Para downloads de áudio/vídeo. Adicione comandos extras junto com a configuração da GUI</string>
     <string name="current">Comando atual</string>
+    <string name="orange">Laranja</string>
 </resources>
