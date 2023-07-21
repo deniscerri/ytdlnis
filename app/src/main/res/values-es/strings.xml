@@ -41,7 +41,7 @@
     <string name="download_all">Descargar Todo</string>
     <string name="ytld_update_success">Se instaló la nueva versión</string>
     <string name="ok">Aceptar</string>
-    <string name="api_key_summary">Resultados de YouTube más rápidos</string>
+    <string name="api_key_summary">Recomendaciones de los vídeos por la API de Youtube</string>
     <string name="run_command">Ejecutar Comando</string>
     <string name="embed_thumb">Portadas de las Miniaturas</string>
     <string name="command_download_notification_channel_description">Notificación que muestra el progreso de la descarga a través de un comando yt-dlp</string>
@@ -287,4 +287,5 @@
     <string name="show_terminal">Ocultar Terminal del menú compartir</string>
     <string name="save_for_later">¿Guardar la descarga para más tarde\?</string>
     <string name="clear_saved">Borrar lo Guardado</string>
+    <string name="orange">Naranja</string>
 </resources>
