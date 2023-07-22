@@ -238,8 +238,7 @@
     <string name="quick_download_summary">事前にデータを取得しません</string>
     <string name="remove_audio">音声を削除</string>
     <string name="download_already_exists">ダウンロードに既に存在します</string>
-    <string name="pause">一時停止
-\n</string>
+    <string name="pause">一時停止</string>
     <string name="resume">再開</string>
     <string name="keep_cache">キャッシュを保持</string>
     <string name="keep_cache_summary">ダウンロードの完了後に一時ファイルを削除しないようにします</string>

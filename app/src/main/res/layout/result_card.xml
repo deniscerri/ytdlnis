@@ -2,6 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
 
@@ -53,7 +55,7 @@
                     android:layout_height="0dp"
                     android:dividerPadding="5dp"
                     android:orientation="vertical"
-                    app:layout_constraintBottom_toTopOf="@+id/download_button_layout"
+                    app:layout_constraintBottom_toTopOf="@+id/download_music"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
@@ -62,15 +64,15 @@
                         android:id="@+id/result_title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingStart="10dp"
-                        android:maxLines="2"
                         android:ellipsize="end"
+                        android:maxLines="2"
+                        android:paddingStart="10dp"
                         android:paddingTop="10dp"
                         android:paddingEnd="10dp"
+                        android:scrollbars="none"
                         android:shadowColor="@color/black"
                         android:shadowDx="4"
                         android:shadowDy="4"
-                        android:scrollbars="none"
                         android:shadowRadius="2"
                         android:textColor="#FFF"
                         android:textSize="17sp"
@@ -80,15 +82,15 @@
                         android:id="@+id/author"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="bottom"
-                        android:paddingStart="10dp"
-                        android:maxLines="1"
                         android:ellipsize="end"
+                        android:gravity="bottom"
+                        android:maxLines="1"
+                        android:paddingStart="10dp"
                         android:paddingEnd="10dp"
+                        android:scrollbars="none"
                         android:shadowColor="@color/black"
                         android:shadowDx="4"
                         android:shadowDy="4"
-                        android:scrollbars="none"
                         android:shadowRadius="1.5"
                         android:textColor="#FFF"
                         android:textSize="12sp"
@@ -115,33 +117,32 @@
                     app:layout_constraintStart_toStartOf="parent" />
 
 
-                <LinearLayout
-                    android:id="@+id/download_button_layout"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="5dp"
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/download_music"
+                    style="@style/Widget.Material3.ExtendedFloatingActionButton.Icon.Secondary"
+                    android:layout_width="55dp"
+                    app:elevation="0dp"
+                    android:elevation="0dp"
+                    app:borderWidth="0dp"
+                    android:layout_height="55dp"
+                    android:layout_marginVertical="10dp"
+                    android:layout_marginHorizontal="5dp"
+                    app:icon="@drawable/ic_music"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent">
+                    app:layout_constraintEnd_toStartOf="@+id/download_video" />
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/download_music"
-                        style="@style/Widget.Material3.ExtendedFloatingActionButton.Icon.Secondary"
-                        android:layout_width="55dp"
-                        android:layout_height="55dp"
-                        android:layout_marginVertical="5dp"
-                        android:layout_marginStart="5dp"
-                        app:icon="@drawable/ic_music" />
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/download_video"
-                        style="@style/Widget.Material3.ExtendedFloatingActionButton.Icon.Secondary"
-                        android:layout_width="55dp"
-                        android:layout_height="55dp"
-                        android:layout_margin="5dp"
-                        app:icon="@drawable/ic_video" />
-
-                </LinearLayout>
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/download_video"
+                    style="@style/Widget.Material3.ExtendedFloatingActionButton.Icon.Secondary"
+                    android:layout_width="55dp"
+                    android:layout_height="55dp"
+                    android:layout_margin="10dp"
+                    app:elevation="0dp"
+                    android:elevation="0dp"
+                    app:borderWidth="0dp"
+                    app:icon="@drawable/ic_video"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>

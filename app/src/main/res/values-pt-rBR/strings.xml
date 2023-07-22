@@ -215,8 +215,7 @@
     <string name="download_already_exists">O download já existe</string>
     <string name="keep_cache">manter cache</string>
     <string name="updating_download_data">Atualizando os dados do item de download</string>
-    <string name="pause">Pausar
-\n</string>
+    <string name="pause">Pausar</string>
     <string name="preferred_locale">Local preferido</string>
     <string name="resume">Continuar</string>
     <string name="network_error">Erro de rede</string>
@@ -278,8 +277,7 @@
     <string name="sponsorblock">Bloqueio do Patrocinador</string>
     <string name="force_keyframes">Forçar quadros-chave nos cortes</string>
     <string name="force_keyframes_summary">Processo mais lento, mas cortes mais precisos</string>
-    <string name="subtitle_format">Formato da legenda
-\n</string>
+    <string name="subtitle_format">Formato da legenda</string>
     <string name="hide_thumbnails">Ocultar miniaturas</string>
     <string name="hide_terminal">Ocultar Terminal do menu de compartilhamento</string>
     <string name="saved">Salvou</string>

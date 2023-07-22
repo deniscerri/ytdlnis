@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.AsyncDifferConfig
 import androidx.recyclerview.widget.DiffUtil
@@ -17,6 +18,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.DownloadItem
+import com.deniscerri.ytdlnis.database.repository.DownloadRepository
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.google.android.material.button.MaterialButton
@@ -56,12 +58,13 @@ class ActiveDownloadAdapter(onItemClickListener: OnItemClickListener, activity: 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)
         val card = holder.cardView
+        card.tag = "${item!!.id}##card"
         val uiHandler = Handler(Looper.getMainLooper())
         val thumbnail = card.findViewById<ImageView>(R.id.image_view)
 
         // THUMBNAIL ----------------------------------
         if (!sharedPreferences.getStringSet("hide_thumbnails", emptySet())!!.contains("queue")){
-            val imageURL = item!!.thumb
+            val imageURL = item.thumb
             if (imageURL.isNotEmpty()) {
                 uiHandler.post { Picasso.get().load(imageURL).into(thumbnail) }
             } else {
@@ -74,7 +77,7 @@ class ActiveDownloadAdapter(onItemClickListener: OnItemClickListener, activity: 
 
         // PROGRESS BAR ----------------------------------------------------
         val progressBar = card.findViewById<LinearProgressIndicator>(R.id.progress)
-        progressBar.tag = "${item!!.id}##progress"
+        progressBar.tag = "${item.id}##progress"
         progressBar.progress = 0
         progressBar.isIndeterminate = true
 
@@ -105,17 +108,7 @@ class ActiveDownloadAdapter(onItemClickListener: OnItemClickListener, activity: 
         val formatDetailsChip = card.findViewById<Chip>(R.id.format_note)
         val formatDetailsText = StringBuilder(item.format.format_note.uppercase())
 
-        val codecText =
-            if (item.format.encoding != "") {
-                item.format.encoding.uppercase()
-            }else if (item.format.vcodec != "none" && item.format.vcodec != ""){
-                item.format.vcodec.uppercase()
-            } else {
-                item.format.acodec.uppercase()
-            }
-        if (codecText != "" && codecText != "none"){
-            formatDetailsText.append(" \t •\t $codecText")
-        }
+        formatDetailsText.append(" \t •\t ${item.container.uppercase().ifEmpty { item.format.container.uppercase() }}")
 
         val fileSize = FileUtil.convertFileSize(item.format.filesize)
         if (fileSize != "?") formatDetailsText.append(" \t •\t $fileSize")
@@ -131,17 +124,52 @@ class ActiveDownloadAdapter(onItemClickListener: OnItemClickListener, activity: 
         }
 
 
-        // CANCEL BUTTON ----------------------------------
-        val cancelButton = card.findViewById<MaterialButton>(R.id.active_download_cancel)
-        if (cancelButton.hasOnClickListeners()) cancelButton.setOnClickListener(null)
+        // PAUSE BUTTON ----------------------------------
+        val pauseButton = card.findViewById<MaterialButton>(R.id.active_download_pause)
+        if (pauseButton.hasOnClickListeners()) pauseButton.setOnClickListener(null)
 
-        cancelButton.setOnClickListener {
-            onItemClickListener.onCancelClick(item.id)
+        // CANCEL BUTTON ----------------------------------
+        val cancelButton = card.findViewById<MaterialButton>(R.id.active_download_delete)
+        if (cancelButton.hasOnClickListeners()) cancelButton.setOnClickListener(null)
+        cancelButton.setOnClickListener {onItemClickListener.onCancelClick(item.id)}
+
+        if (item.status == DownloadRepository.Status.Paused.toString()){
+            progressBar.isIndeterminate = false
+            pauseButton.icon = ContextCompat.getDrawable(activity, R.drawable.exomedia_ic_play_arrow_white)
+            pauseButton.tag = ActiveDownloadAction.Resume
+            cancelButton.visibility = View.VISIBLE
+        }else{
+            progressBar.isIndeterminate = true
+            pauseButton.icon = ContextCompat.getDrawable(activity, R.drawable.exomedia_ic_pause_white)
+            cancelButton.visibility = View.GONE
+            pauseButton.tag = ActiveDownloadAction.Pause
         }
+
+        pauseButton.setOnClickListener {
+            if (pauseButton.tag == ActiveDownloadAction.Pause){
+                onItemClickListener.onPauseClick(item.id, ActiveDownloadAction.Pause)
+                pauseButton.icon = ContextCompat.getDrawable(activity, R.drawable.exomedia_ic_play_arrow_white)
+                if (progressBar.progress == 0) progressBar.isIndeterminate = false
+                cancelButton.visibility = View.VISIBLE
+                pauseButton.tag = ActiveDownloadAction.Resume
+            }else{
+                onItemClickListener.onPauseClick(item.id, ActiveDownloadAction.Resume)
+                pauseButton.icon = ContextCompat.getDrawable(activity, R.drawable.exomedia_ic_pause_white)
+                progressBar.isIndeterminate = true
+                cancelButton.visibility = View.GONE
+                pauseButton.tag = ActiveDownloadAction.Pause
+            }
+        }
+
     }
     interface OnItemClickListener {
         fun onCancelClick(itemID: Long)
+        fun onPauseClick(itemID: Long, action: ActiveDownloadAction)
         fun onOutputClick(item: DownloadItem)
+    }
+
+    enum class ActiveDownloadAction {
+        Resume, Pause
     }
 
     companion object {
@@ -152,7 +180,7 @@ class ActiveDownloadAdapter(onItemClickListener: OnItemClickListener, activity: 
             }
 
             override fun areContentsTheSame(oldItem: DownloadItem, newItem: DownloadItem): Boolean {
-                return oldItem.id == newItem.id && oldItem.title == newItem.title && oldItem.author == newItem.author && oldItem.thumb == newItem.thumb
+                return oldItem.id == newItem.id && oldItem.title == newItem.title && oldItem.author == newItem.author && oldItem.thumb == newItem.thumb && oldItem.status == newItem.status
             }
         }
     }

@@ -185,6 +185,8 @@ class MainActivity : BaseActivity() {
                 }
                 true
             }
+
+            (navigationView as NavigationView).getHeaderView(0).findViewById<TextView>(R.id.title).text = ThemeUtil.getStyledAppName(this)
         }
         cookieViewModel.updateCookiesFile()
         val intent = intent

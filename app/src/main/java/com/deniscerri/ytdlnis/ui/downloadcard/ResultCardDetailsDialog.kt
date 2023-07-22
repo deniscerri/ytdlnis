@@ -23,7 +23,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.map
 import androidx.media3.common.MediaItem
-import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.source.DefaultMediaSourceFactory
 import androidx.media3.exoplayer.source.MediaSource
 import androidx.media3.exoplayer.source.MergingMediaSource
@@ -35,6 +34,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.work.WorkManager
 import com.deniscerri.ytdlnis.R
+import com.deniscerri.ytdlnis.adapter.ActiveDownloadAdapter
 import com.deniscerri.ytdlnis.adapter.ActiveDownloadMinifiedAdapter
 import com.deniscerri.ytdlnis.adapter.GenericDownloadAdapter
 import com.deniscerri.ytdlnis.database.models.DownloadItem
@@ -68,7 +68,6 @@ import java.util.*
 class ResultCardDetailsDialog(private val item: ResultItem) : BottomSheetDialogFragment(), GenericDownloadAdapter.OnItemClickListener, ActiveDownloadMinifiedAdapter.OnItemClickListener {
     private lateinit var infoUtil: InfoUtil
     private lateinit var notificationUtil: NotificationUtil
-    private lateinit var player: ExoPlayer
     private lateinit var videoView: PlayerView
     private lateinit var downloadViewModel: DownloadViewModel
     private lateinit var resultViewModel: ResultViewModel
@@ -232,9 +231,8 @@ class ResultCardDetailsDialog(private val item: ResultItem) : BottomSheetDialogF
         }
 
 
-        videoView = view.findViewById<PlayerView>(R.id.video_view)
+        videoView = view.findViewById(R.id.video_view)
         val pause = view.findViewById<MaterialButton>(R.id.pause)
-        val frameLayout = view.findViewById<FrameLayout>(R.id.frame_layout)
 
         val player = VideoPlayerUtil.buildPlayer(requireContext())
         videoView.player = player
@@ -261,7 +259,7 @@ class ResultCardDetailsDialog(private val item: ResultItem) : BottomSheetDialogF
                     }
                 }
 
-                data.removeFirst()
+                if (data.size > 1) data.removeFirst()
 
                 if (data.isEmpty()) throw Exception("No Streaming URL found!")
                 if (data.size == 2){
@@ -280,7 +278,6 @@ class ResultCardDetailsDialog(private val item: ResultItem) : BottomSheetDialogF
                 player.prepare()
                 player.play()
             }catch (e: Exception){
-                frameLayout.visibility = View.GONE
                 e.printStackTrace()
             }
         }
@@ -536,12 +533,35 @@ class ResultCardDetailsDialog(private val item: ResultItem) : BottomSheetDialogF
     override fun onCancelClick(itemID: Long) {
         cancelActiveDownload(itemID)
     }
+    override fun onPauseClick(itemID: Long, action: ActiveDownloadAdapter.ActiveDownloadAction) {
+        val item = activeItems.find { it.id == itemID } ?: return
+        when(action){
+            ActiveDownloadAdapter.ActiveDownloadAction.Pause -> {
+                cancelItem(itemID.toInt())
+                item.status = DownloadRepository.Status.Paused.toString()
+                downloadViewModel.updateDownload(item)
+            }
+            ActiveDownloadAdapter.ActiveDownloadAction.Resume -> {
+                item.status = DownloadRepository.Status.Active.toString()
+                downloadViewModel.updateDownload(item)
+                runBlocking {
+                    downloadViewModel.queueDownloads(listOf(item))
+                }
+            }
+        }
 
+    }
     override fun onCardClick() {
         this.dismiss()
         findNavController().navigate(
             R.id.downloadQueueMainFragment
         )
+    }
+
+    private fun cancelItem(id: Int){
+        YoutubeDL.getInstance().destroyProcessById(id.toString())
+        WorkManager.getInstance(requireContext()).cancelUniqueWork(id.toString())
+        notificationUtil.cancelDownloadNotification(id)
     }
 
     private fun cancelActiveDownload(itemID: Long){

@@ -60,7 +60,7 @@ class DownloadWorker(
             return Result.failure()
         }
 
-        if (downloadItem.status != DownloadRepository.Status.Queued.toString()) return Result.failure()
+        if (downloadItem.status != DownloadRepository.Status.Queued.toString() && downloadItem.status != DownloadRepository.Status.Paused.toString()) return Result.failure()
 
         val pendingIntent = NavDeepLinkBuilder(context)
             .setGraph(R.navigation.nav_graph)
@@ -134,7 +134,7 @@ class DownloadWorker(
         }.onSuccess {
             val wasQuickDownloaded = updateDownloadItem(downloadItem, infoUtil, dao, resultDao)
 
-            CoroutineScope(Dispatchers.IO).launch {
+            runBlocking {
                 var finalPaths : List<String>?
                 //move file from internal to set download directory
                 setProgressAsync(workDataOf("progress" to 100, "output" to "Moving file to ${FileUtil.formatPath(downloadLocation)}", "id" to downloadItem.id, "log" to logDownloads))
@@ -174,30 +174,26 @@ class DownloadWorker(
                     downloadItem.title,  if (finalPaths?.first().equals(context.getString(R.string.unfound_file))) null else finalPaths,
                     NotificationUtil.DOWNLOAD_FINISHED_CHANNEL_ID
                 )
-            }
 
-            if (wasQuickDownloaded){
-                runCatching {
-                    setProgressAsync(workDataOf("progress" to 100, "output" to "Creating Result Items", "id" to downloadItem.id, "log" to false))
-                    runBlocking {
-                        infoUtil.getFromYTDL(downloadItem.url).forEach { res ->
-                            if (res != null) {
-                                resultDao.insert(res)
+                if (wasQuickDownloaded){
+                    runCatching {
+                        setProgressAsync(workDataOf("progress" to 100, "output" to "Creating Result Items", "id" to downloadItem.id, "log" to false))
+                        runBlocking {
+                            infoUtil.getFromYTDL(downloadItem.url).forEach { res ->
+                                if (res != null) {
+                                    resultDao.insert(res)
+                                }
                             }
                         }
                     }
                 }
-            }
 
-            runBlocking {
                 dao.delete(downloadItem.id)
             }
+
+
         }.onFailure {
             if (it is YoutubeDL.CanceledException) {
-                downloadItem.status = DownloadRepository.Status.Cancelled.toString()
-                runBlocking {
-                    dao.update(downloadItem)
-                }
                 return Result.failure(
                     Data.Builder().putString("output", "Download has been cancelled!").build()
                 )

@@ -232,8 +232,7 @@
     <string name="quick_download">Schneller Download</string>
     <string name="quick_download_summary">Daten nicht vorab abrufen</string>
     <string name="download_already_exists">Download bereits vorhanden</string>
-    <string name="pause">Pause
-\n</string>
+    <string name="pause">Pause</string>
     <string name="backup">Sichern</string>
     <string name="restore">Wiederherstellen</string>
     <string name="network_error">Netzwerkfehler</string>

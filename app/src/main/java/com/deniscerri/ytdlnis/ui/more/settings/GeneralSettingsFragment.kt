@@ -2,8 +2,6 @@ package com.deniscerri.ytdlnis.ui.more.settings
 
 import android.content.ComponentName
 import android.content.Intent
-import android.content.IntentFilter
-import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.os.Build.VERSION
 import android.os.Build.VERSION_CODES
@@ -18,10 +16,8 @@ import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
-import com.deniscerri.ytdlnis.ui.more.TerminalActivity
 import com.deniscerri.ytdlnis.util.ThemeUtil
 import com.deniscerri.ytdlnis.util.UpdateUtil
-import com.google.android.gms.common.wrappers.Wrappers.packageManager
 import java.util.Locale
 
 
@@ -33,7 +29,7 @@ class GeneralSettingsFragment : BaseSettingsFragment() {
     private var accent: ListPreference? = null
     private var highContrast: SwitchPreferenceCompat? = null
     private var locale: ListPreference? = null
-    private var hideTerminal: SwitchPreferenceCompat? = null
+    private var showTerminalShareIcon: SwitchPreferenceCompat? = null
 
     private var updateUtil: UpdateUtil? = null
     private var activeDownloadCount = 0
@@ -54,7 +50,7 @@ class GeneralSettingsFragment : BaseSettingsFragment() {
         accent = findPreference("theme_accent")
         highContrast = findPreference("high_contrast")
         locale = findPreference("locale")
-        hideTerminal = findPreference("hide_terminal")
+        showTerminalShareIcon = findPreference("show_terminal")
 
         if(VERSION.SDK_INT < VERSION_CODES.TIRAMISU){
             val values = resources.getStringArray(R.array.language_values)
@@ -115,7 +111,7 @@ class GeneralSettingsFragment : BaseSettingsFragment() {
                 true
             }
 
-        hideTerminal!!.onPreferenceChangeListener =
+        showTerminalShareIcon!!.onPreferenceChangeListener =
             Preference.OnPreferenceChangeListener { pref: Preference?, _: Any ->
                 val packageManager = requireContext().packageManager
                 val aliasComponentName = ComponentName(requireContext(), "com.deniscerri.ytdlnis.terminalShareAlias")

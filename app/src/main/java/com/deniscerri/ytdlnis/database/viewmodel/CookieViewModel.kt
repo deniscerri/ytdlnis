@@ -12,6 +12,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import com.anggrayudi.storage.file.dataDirectory
 import com.deniscerri.ytdlnis.database.DBManager
 import com.deniscerri.ytdlnis.database.models.CookieItem
 import com.deniscerri.ytdlnis.database.repository.CookieRepository
@@ -72,11 +73,11 @@ class CookieViewModel(private val application: Application) : AndroidViewModel(a
             flush()
         }
 
-        var dbPath = "/data/data/com.deniscerri.ytdl/app_webview/Cookies"
-        if (!File(dbPath).exists()) dbPath = "/data/data/com.deniscerri.ytdl/app_webview/Default/Cookies"
+        val dbPath = File("/data/data/com.deniscerri.ytdl/").walkTopDown().find { it.name == "Cookies" }
+            ?: throw Exception("Cookies File not found!")
 
         SQLiteDatabase.openDatabase(
-            dbPath, null, OPEN_READONLY
+            dbPath.absolutePath, null, OPEN_READONLY
         ).run {
             val projection = arrayOf(
                 CookieObject.HOST,

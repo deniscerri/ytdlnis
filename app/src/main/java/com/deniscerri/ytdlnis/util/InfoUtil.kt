@@ -8,6 +8,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.preference.PreferenceManager
 import com.deniscerri.ytdlnis.R
+import com.deniscerri.ytdlnis.database.Converters
 import com.deniscerri.ytdlnis.database.models.ChapterItem
 import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.models.Format
@@ -452,12 +453,12 @@ class InfoUtil(private val context: Context) {
             request.addOption("-R", "1")
             request.addOption("--socket-timeout", "5")
             val cookiesFile = File(context.cacheDir, "cookies.txt")
-            if (cookiesFile.exists()){
+            if (cookiesFile.exists()) {
                 request.addOption("--cookies", cookiesFile.absolutePath)
             }
 
             val proxy = sharedPreferences.getString("proxy", "")
-            if (proxy!!.isNotBlank()){
+            if (proxy!!.isNotBlank()) {
                 request.addOption("--proxy", proxy)
             }
 
@@ -471,34 +472,7 @@ class InfoUtil(private val context: Context) {
             val json = results[0]
             val jsonArray = JSONArray(json)
 
-            val formats : ArrayList<Format> = ArrayList()
-            for (f in 0 until jsonArray.length()){
-                val format = jsonArray.getJSONObject(f)
-                if (format.has("filesize")){
-                    if (format.get("filesize") == "None"){
-                        format.remove("filesize")
-                        format.put("filesize", 0)
-                    }
-                    try{
-                        val size = format.get("filesize").toString().toFloat()
-                        format.remove("filesize")
-                        format.put("filesize", size)
-                    }catch (ignored: Exception){}
-                }
-                val formatProper = Gson().fromJson(format.toString(), Format::class.java)
-                if (format.has("format_note")){
-                    if (!formatProper!!.format_note.contains("audio only", true)) {
-                        formatProper.format_note = format.getString("format_note")
-                    }else{
-                        formatProper.format_note = "${format.getString("format_note")} audio"
-                    }
-                }
-                if (formatProper!!.format_note == "storyboard") continue
-                formatProper.container = format.getString("ext")
-                formats.add(formatProper)
-            }
-
-            return formats
+            return parseYTDLFormats(jsonArray)
         } catch (e: Exception) {
             Looper.prepare().run {
                 Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
@@ -540,35 +514,8 @@ class InfoUtil(private val context: Context) {
 
                 YoutubeDL.getInstance().execute(request){ progress, _, line ->
                     try{
-                        val formats = mutableListOf<Format>()
                         val listOfStrings = JSONArray(line)
-                        for (f in 0 until listOfStrings.length()){
-                            val format = listOfStrings.get(f) as JSONObject
-                            try{
-                                if (format.getString("filesize") == "None") continue
-                            }catch (e: Exception) { continue }
-                            if (format.has("filesize")){
-                                if (format.get("filesize") == "None"){
-                                    format.remove("filesize")
-                                    format.put("filesize", 0)
-                                }
-                                try{
-                                    val size = format.get("filesize").toString().toFloat()
-                                    format.remove("filesize")
-                                    format.put("filesize", size)
-                                }catch (ignored: Exception){}
-                            }
-                            val formatProper = Gson().fromJson(format.toString(), Format::class.java)
-                            if ( !formatProper!!.format_note.contains("audio only", true)) {
-                                formatProper.format_note = format.getString("format_note")
-                            }else{
-                                formatProper.format_note = "${format.getString("format_note")} audio"
-                            }
-                            if (formatProper.format_note == "storyboard") continue
-                            formatProper.container = format.getString("ext")
-                            formats.add(formatProper)
-                        }
-                        progress(formats)
+                        progress(parseYTDLFormats(listOfStrings))
                     }catch (e: Exception){
                         progress(emptyList())
                     }
@@ -668,37 +615,7 @@ class InfoUtil(private val context: Context) {
                 if (jsonObject.has("playlist_title")) playlistTitle = jsonObject.getString("playlist_title")
                 if(playlistTitle.equals(query)) playlistTitle = ""
                 val formatsInJSON = if (jsonObject.has("formats") && jsonObject.get("formats") is JSONArray) jsonObject.getJSONArray("formats") else null
-                val formats : ArrayList<Format> = ArrayList()
-                if (formatsInJSON != null) {
-                    for (f in 0 until formatsInJSON.length()){
-                        val format = formatsInJSON.getJSONObject(f)
-                        if (format.has("filesize")){
-                            if (format.get("filesize") == "None"){
-                                format.remove("filesize")
-                                format.put("filesize", 0)
-                            }
-                            try{
-                                val size = format.get("filesize").toString().toFloat()
-                                format.remove("filesize")
-                                format.put("filesize", size)
-                            }catch (ignored: Exception){}
-                        }
-                        val formatProper = Gson().fromJson(format.toString(), Format::class.java)
-                        if (formatProper.format_note == null) continue
-                        if (format.has("format_note")){
-                            if (!formatProper!!.format_note.contains("audio only", true)) {
-                                formatProper.format_note = format.getString("format_note")
-                            }else{
-                                if (!formatProper.format_note.endsWith("audio", true)){
-                                    formatProper.format_note = "${format.getString("format_note")} audio"
-                                }
-                            }
-                        }
-                        if (formatProper.format_note == "storyboard") continue
-                        formatProper.container = format.getString("ext")
-                        formats.add(formatProper)
-                    }
-                }
+                val formats : ArrayList<Format> = parseYTDLFormats(formatsInJSON)
 
                 val chaptersInJSON = if (jsonObject.has("chapters") && jsonObject.get("chapters") is JSONArray) jsonObject.getJSONArray("chapters") else null
                 val listType: Type = object : TypeToken<List<ChapterItem>>() {}.type
@@ -732,6 +649,47 @@ class InfoUtil(private val context: Context) {
             e.printStackTrace()
         }
         return items
+    }
+
+    private fun parseYTDLFormats(formatsInJSON: JSONArray?) : ArrayList<Format> {
+        val formats = arrayListOf<Format>()
+
+        if (formatsInJSON != null) {
+            for (f in 0 until formatsInJSON.length()){
+                val format = formatsInJSON.getJSONObject(f)
+                if (format.has("filesize")){
+                    if (format.get("filesize") == "None"){
+                        format.remove("filesize")
+                        if (format.has("filesize_approx") && format.get("filesize_approx") != "None"){
+                            format.put("filesize", format.getInt("filesize_approx"))
+                        }else{
+                            format.put("filesize", 0)
+                        }
+                    }
+                    try{
+                        val size = format.get("filesize").toString().toFloat()
+                        format.remove("filesize")
+                        format.put("filesize", size)
+                    }catch (ignored: Exception){}
+                }
+                val formatProper = Gson().fromJson(format.toString(), Format::class.java)
+                if (formatProper.format_note == null) continue
+                if (format.has("format_note")){
+                    if (!formatProper!!.format_note.contains("audio only", true)) {
+                        formatProper.format_note = format.getString("format_note")
+                    }else{
+                        if (!formatProper.format_note.endsWith("audio", true)){
+                            formatProper.format_note = "${format.getString("format_note")} audio"
+                        }
+                    }
+                }
+                if (formatProper.format_note == "storyboard") continue
+                formatProper.container = format.getString("ext")
+                formats.add(formatProper)
+            }
+        }
+
+        return formats
     }
 
     fun getMissingInfo(url: String): ResultItem? {
@@ -885,33 +843,57 @@ class InfoUtil(private val context: Context) {
 
     fun getStreamingUrlAndChapters(url: String) : MutableList<String?> {
         try {
-            val request = YoutubeDLRequest(url)
-            request.addOption("--get-url")
-            request.addOption("--print", "%(chapters)s")
-            request.addOption("--skip-download")
-            request.addOption("-R", "1")
-            request.addOption("--socket-timeout", "5")
+            val p = Pattern.compile("(^(https?)://(www.)?(music.)?youtu(.be)?)|(^(https?)://(www.)?piped.video)")
+            val m = p.matcher(url)
 
-            val cookiesFile = File(context.cacheDir, "cookies.txt")
-            if (cookiesFile.exists()){
-                request.addOption("--cookies", cookiesFile.absolutePath)
+            if (m.find()){
+                return getStreamingUrlAndChaptersFromPIPED(getIDFromYoutubeURL(url))
+            }else{
+                throw Exception()
             }
+        }catch (e: Exception) {
+            try {
+                val request = YoutubeDLRequest(url)
+                request.addOption("--get-url")
+                request.addOption("--print", "%(chapters)s")
+                request.addOption("--skip-download")
+                request.addOption("-R", "1")
+                request.addOption("--socket-timeout", "5")
 
-            val proxy = sharedPreferences.getString("proxy", "")
-            if (proxy!!.isNotBlank()){
-                request.addOption("--proxy", proxy)
-            }
+                val cookiesFile = File(context.cacheDir, "cookies.txt")
+                if (cookiesFile.exists()){
+                    request.addOption("--cookies", cookiesFile.absolutePath)
+                }
 
-            val youtubeDLResponse = YoutubeDL.getInstance().execute(request)
-            val results: Array<String?> = try {
-                val lineSeparator = System.getProperty("line.separator")
-                youtubeDLResponse.out.split(lineSeparator!!).toTypedArray()
+                val proxy = sharedPreferences.getString("proxy", "")
+                if (proxy!!.isNotBlank()){
+                    request.addOption("--proxy", proxy)
+                }
+
+                val youtubeDLResponse = YoutubeDL.getInstance().execute(request)
+                val results: Array<String?> = try {
+                    val lineSeparator = System.getProperty("line.separator")
+                    youtubeDLResponse.out.split(lineSeparator!!).toTypedArray()
+                } catch (e: Exception) {
+                    arrayOf(youtubeDLResponse.out)
+                }
+                return results.filter { it!!.isNotEmpty() }.toMutableList()
             } catch (e: Exception) {
-                arrayOf(youtubeDLResponse.out)
+                return mutableListOf()
             }
-            return results.filter { it!!.isNotEmpty() }.toMutableList()
-        } catch (e: Exception) {
-            return mutableListOf()
+        }
+    }
+
+    private fun getStreamingUrlAndChaptersFromPIPED(id: String) : MutableList<String?> {
+        val res = genericRequest("$pipedURL/streams/$id")
+        if (res.length() == 0) {
+            throw Exception()
+        }else{
+            val item = createVideoFromPipedJSON(res, id)
+            if (item!!.urls.isBlank()) throw Exception()
+            val list = mutableListOf<String?>(Gson().toJson(item.chapters))
+            list.addAll(item.urls.split(","))
+            return list
         }
     }
 
@@ -978,7 +960,6 @@ class InfoUtil(private val context: Context) {
                 request.addCommands(listOf("--replace-in-metadata","uploader",".*.",downloadItem.author.take(25)))
             }
             request.addCommands(listOf("--replace-in-metadata","uploader"," - Topic$",""))
-            if (downloadItem.customFileNameTemplate.isBlank()) downloadItem.customFileNameTemplate = "%(uploader|${downloadItem.author})s - %(title)s"
             downloadItem.customFileNameTemplate = downloadItem.customFileNameTemplate.replace("%(uploader)s", "%(uploader|${downloadItem.author})s")
 
             if (downloadItem.downloadSections.isNotBlank()){
@@ -1050,38 +1031,41 @@ class InfoUtil(private val context: Context) {
                     }
                 }
 
-                request.addOption("--embed-metadata")
-
-                if (downloadItem.audioPreferences.embedThumb) {
-                    request.addOption("--embed-thumbnail")
-                    request.addOption("--convert-thumbnails", "jpg")
-                    if (sharedPreferences.getBoolean("crop_thumbnail", true)){
-                        try {
-                            val config = File(context.cacheDir.absolutePath + "/downloads/${downloadItem.id}/config" + downloadItem.title + "##" + downloadItem.format.format_id + ".txt")
-                            val configData = "--ppa \"ffmpeg: -c:v mjpeg -vf crop=\\\"'if(gt(ih,iw),iw,ih)':'if(gt(iw,ih),ih,iw)'\\\"\""
-                            config.writeText(configData)
-                            request.addOption("--ppa", "ThumbnailsConvertor:-qmin 1 -q:v 1")
-                            request.addOption("--config", config.absolutePath)
-                        } catch (e: Exception) {
-                            e.printStackTrace()
-                        }
-                    }
-                }
-                request.addOption("--parse-metadata", "%(release_year,upload_date)s:%(meta_date)s")
-
-                if (downloadItem.playlistTitle.isNotEmpty()) {
-                    request.addOption("--parse-metadata", "%(album,playlist,title)s:%(meta_album)s")
-                    request.addOption("--parse-metadata", "%(track_number,playlist_index)d:%(meta_track)s")
-                } else {
-                    request.addOption("--parse-metadata", "%(album,title)s:%(meta_album)s")
-                }
-
                 request.addOption("-P", tempFileDir.absolutePath)
 
                 if (downloadItem.audioPreferences.splitByChapters && downloadItem.downloadSections.isBlank()){
                     request.addOption("--split-chapters")
+                    request.addOption("-o", "chapter:%(section_title)s.%(ext)s")
                 }else{
-                    request.addOption("-o", "${downloadItem.customFileNameTemplate}.%(ext)s")
+                    request.addOption("--embed-metadata")
+
+                    if (downloadItem.audioPreferences.embedThumb) {
+                        request.addOption("--embed-thumbnail")
+                        request.addOption("--convert-thumbnails", "jpg")
+                        if (sharedPreferences.getBoolean("crop_thumbnail", true)){
+                            try {
+                                val config = File(context.cacheDir.absolutePath + "/downloads/${downloadItem.id}/config" + downloadItem.title + "##" + downloadItem.format.format_id + ".txt")
+                                val configData = "--ppa \"ffmpeg: -c:v mjpeg -vf crop=\\\"'if(gt(ih,iw),iw,ih)':'if(gt(iw,ih),ih,iw)'\\\"\""
+                                config.writeText(configData)
+                                request.addOption("--ppa", "ThumbnailsConvertor:-qmin 1 -q:v 1")
+                                request.addOption("--config", config.absolutePath)
+                            } catch (e: Exception) {
+                                e.printStackTrace()
+                            }
+                        }
+                    }
+                    request.addOption("--parse-metadata", "%(release_year,upload_date)s:%(meta_date)s")
+
+                    if (downloadItem.playlistTitle.isNotEmpty()) {
+                        request.addOption("--parse-metadata", "%(album,playlist,title)s:%(meta_album)s")
+                        request.addOption("--parse-metadata", "%(track_number,playlist_index)d:%(meta_track)s")
+                    } else {
+                        request.addOption("--parse-metadata", "%(album,title)s:%(meta_album)s")
+                    }
+
+                    if (downloadItem.customFileNameTemplate.isNotBlank()){
+                        request.addOption("-o", "${downloadItem.customFileNameTemplate}.%(ext)s")
+                    }
                 }
 
             }
@@ -1149,7 +1133,9 @@ class InfoUtil(private val context: Context) {
                 if (downloadItem.videoPreferences.splitByChapters  && downloadItem.downloadSections.isBlank()){
                     request.addOption("--split-chapters")
                 }else{
-                    request.addOption("-o", "${downloadItem.customFileNameTemplate}.%(ext)s")
+                    if (downloadItem.customFileNameTemplate.isNotBlank()){
+                        request.addOption("-o", "${downloadItem.customFileNameTemplate}.%(ext)s")
+                    }
                 }
 
             }

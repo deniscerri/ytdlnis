@@ -85,7 +85,6 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:gravity="center"
                 android:orientation="horizontal"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -96,10 +95,9 @@
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/from_textinput"
                     style="@style/Widget.Material3.TextInputLayout.FilledBox"
-                    android:layout_width="70dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="10dp"
-                    app:errorEnabled="true"
                     android:hint="@string/start">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -112,10 +110,9 @@
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/to_textinput"
                     style="@style/Widget.Material3.TextInputLayout.FilledBox"
-                    android:layout_width="70dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:hint="@string/end"
-                    app:errorEnabled="true"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/colon">
 
@@ -139,6 +136,11 @@
             android:focusableInTouchMode="true"
             android:orientation="vertical"
             android:paddingBottom="80dp"
+            app:fastScrollEnabled="true"
+            app:fastScrollHorizontalThumbDrawable="@drawable/thumb_drawable"
+            app:fastScrollHorizontalTrackDrawable="@drawable/line_drawable"
+            app:fastScrollVerticalThumbDrawable="@drawable/thumb_drawable"
+            app:fastScrollVerticalTrackDrawable="@drawable/line_drawable"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
 

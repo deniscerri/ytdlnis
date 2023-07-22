@@ -241,8 +241,7 @@
     <string name="sponsorblock">حاجب شرائح الإعلانات</string>
     <string name="keep_cache">الاحتفاظ بالملفات المؤقتة</string>
     <string name="backup">عمل نسخة احتياطية</string>
-    <string name="pause">إيقاف
-\n</string>
+    <string name="pause">إيقاف</string>
     <string name="resume">استئناف</string>
     <string name="updating_download_data">يتم جلب بيانات التحميل</string>
     <string name="keep_cache_summary">عدم مسح ملفات الكاش بعد اكتمال التحميل</string>

@@ -4,6 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="200dp"
+    app:fastScrollEnabled="true"
+    app:fastScrollHorizontalThumbDrawable="@drawable/thumb_drawable"
+    app:fastScrollHorizontalTrackDrawable="@drawable/line_drawable"
+    app:fastScrollVerticalThumbDrawable="@drawable/thumb_drawable"
+    app:fastScrollVerticalTrackDrawable="@drawable/line_drawable"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 

@@ -10,16 +10,16 @@ interface DownloadDao {
     @Query("SELECT * FROM downloads ORDER BY status")
     fun getAllDownloads() : Flow<List<DownloadItem>>
 
-    @Query("SELECT * FROM downloads WHERE status='Active'")
+    @Query("SELECT * FROM downloads WHERE status='Active' or status='Paused'")
     fun getActiveDownloads() : Flow<List<DownloadItem>>
 
-    @Query("SELECT COUNT(*) FROM downloads WHERE status='Active'")
+    @Query("SELECT COUNT(*) FROM downloads WHERE status='Active' or status='Paused'")
     fun getActiveDownloadsCount() : Flow<Int>
 
-    @Query("SELECT * FROM downloads WHERE status='Active'")
+    @Query("SELECT * FROM downloads WHERE status='Active' or status='Paused'")
     fun getActiveDownloadsList() : List<DownloadItem>
 
-    @Query("SELECT * FROM downloads WHERE status='Active' or status='Queued'")
+    @Query("SELECT * FROM downloads WHERE status='Active' or status='Queued'  or status='Paused'")
     fun getActiveAndQueuedDownloadsList() : List<DownloadItem>
 
     @Query("SELECT * FROM downloads WHERE status='Queued' ORDER BY downloadStartTime, id")

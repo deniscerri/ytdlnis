@@ -90,13 +90,12 @@ class HomeAdapter(onItemClickListener: OnItemClickListener, activity: Activity) 
 
         // BUTTONS ----------------------------------
         val videoURL = video.url
-        val buttonLayout = card.findViewById<LinearLayout>(R.id.download_button_layout)
-        val musicBtn = buttonLayout.findViewById<MaterialButton>(R.id.download_music)
+        val musicBtn = card.findViewById<MaterialButton>(R.id.download_music)
         musicBtn.tag = "$videoURL##audio"
         musicBtn.setTag(R.id.cancelDownload, "false")
         musicBtn.setOnClickListener { onItemClickListener.onButtonClick(videoURL, DownloadViewModel.Type.audio) }
         musicBtn.setOnLongClickListener{ onItemClickListener.onLongButtonClick(videoURL, DownloadViewModel.Type.audio); true}
-        val videoBtn = buttonLayout.findViewById<MaterialButton>(R.id.download_video)
+        val videoBtn = card.findViewById<MaterialButton>(R.id.download_video)
         videoBtn.tag = "$videoURL##video"
         videoBtn.setTag(R.id.cancelDownload, "false")
         videoBtn.setOnClickListener { onItemClickListener.onButtonClick(videoURL, DownloadViewModel.Type.video) }

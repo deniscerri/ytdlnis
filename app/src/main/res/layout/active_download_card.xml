@@ -108,7 +108,7 @@
                     android:dividerPadding="5dp"
                     android:orientation="vertical"
                     app:layout_constraintBottom_toTopOf="@+id/output"
-                    app:layout_constraintEnd_toStartOf="@+id/active_download_cancel"
+                    app:layout_constraintEnd_toStartOf="@+id/active_download_pause"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/linearlayout2_horizontalscrollview">
@@ -152,14 +152,30 @@
                 </LinearLayout>
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/active_download_cancel"
+                    android:id="@+id/active_download_pause"
                     style="?attr/materialIconButtonFilledStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="10dp"
                     app:backgroundTint="?attr/colorSurface"
                     app:cornerRadius="15dp"
-                    app:icon="@drawable/ic_cancel"
+                    android:layout_marginEnd="5dp"
+                    app:icon="@drawable/exomedia_ic_play_arrow_white"
+                    app:iconSize="30dp"
+                    app:iconTint="?android:textColorPrimary"
+                    app:layout_constraintBottom_toTopOf="@+id/output"
+                    app:layout_constraintEnd_toStartOf="@id/active_download_delete"
+                    app:layout_constraintTop_toBottomOf="@+id/linearlayout2_horizontalscrollview"
+                    app:layout_constraintVertical_bias="0.51" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/active_download_delete"
+                    style="?attr/materialIconButtonFilledStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
+                    app:backgroundTint="?attr/colorSurface"
+                    app:cornerRadius="15dp"
+                    app:icon="@drawable/baseline_delete_24"
                     app:iconSize="30dp"
                     app:iconTint="?android:textColorPrimary"
                     app:layout_constraintBottom_toTopOf="@+id/output"

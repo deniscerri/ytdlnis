@@ -112,9 +112,9 @@
 
         <SwitchPreferenceCompat
             android:widgetLayout="@layout/preferece_material_switch"
-            app:defaultValue="true"
+            app:defaultValue="false"
             android:icon="@drawable/baseline_share_24"
-            android:key="hide_terminal"
-            app:title="@string/hide_terminal" />
+            android:key="show_terminal"
+            app:title="@string/show_terminal" />
     </PreferenceCategory>
 </PreferenceScreen>
