@@ -12,7 +12,7 @@
     <string name="download_notification_channel_name">Файл загружается</string>
     <string name="you_are_in_latest_version">Используется последняя версия</string>
     <string name="ytld_update_success">Установлена новая версия</string>
-    <string name="ytdl_updating_started">Загрузка новой версии…</string>
+    <string name="ytdl_updating_started">Загрузка новой версии</string>
     <string name="Remove">Удалить</string>
     <string name="ok">Хорошо</string>
     <string name="cancel">Отмена</string>
@@ -23,7 +23,7 @@
     <string name="update_app">Проверить обновления</string>
     <string name="version">Версия</string>
     <string name="couldnt_find_apk">Подходящий APK не найден.</string>
-    <string name="downloading_update">Загрузка обновления…</string>
+    <string name="downloading_update">Загрузка новой версии</string>
     <string name="audio">Аудио</string>
     <string name="video">Видео</string>
     <string name="concurrent_fragments_summary">Количество фрагментов оригинального видео DASH/HLS для одновременной загрузки</string>
@@ -72,7 +72,7 @@
     <string name="updating">Обновления</string>
     <string name="ytdl_update_hint">Полезно в случае проблем с загрузкой</string>
     <string name="confirm_delete_history_desc">Удалить всю историю навсегда</string>
-    <string name="ytdl_already_updating">Установка новой версии...</string>
+    <string name="ytdl_already_updating">Установка новой версии</string>
     <string name="command_directory">Папка кастомных команд</string>
     <string name="save_thumb_summary">Сохраните обложку видео в папке загрузки</string>
     <string name="limit_rate_summary">Максимальная скорость загрузки (в байтах в секунду), например, 50К или 4.2М</string>
@@ -211,7 +211,7 @@
     <string name="preferred_format_id">Предпочтительный формат ID</string>
     <string name="download_now">Скачать сейчас</string>
     <string name="resume">Продолжить</string>
-    <string name="video_recommendations_summary">Получите рекомендуемые видео YouTube на главном экране от Piped API</string>
+    <string name="video_recommendations_summary">Получайте рекомендуемые видео YouTube на главном экране с помощью PIPED API</string>
     <string name="copied_to_clipboard">Скопировано в буфер обмена</string>
     <string name="Theme">Тема</string>
     <string name="dark">Темная</string>
@@ -276,15 +276,14 @@
     <string name="retries">Повторить попытку</string>
     <string name="format_order">Порядок форматов</string>
     <string name="force_keyframes">Вставить ключевые кадры</string>
-    <string name="force_keyframes_summary">Дольше процесс, с более точной вырезкой</string>
-    <string name="use_extra_commands_summary">Добавьте свои дополнительные команды перед загрузкой аудио/видео.</string>
+    <string name="force_keyframes_summary">Более медленный процесс, но более точные разрезы</string>
+    <string name="use_extra_commands_summary">Добавьте свои дополнительные команды перед загрузкой аудио/видео</string>
     <string name="use_extra_commands">Дополнительные команды</string>
     <string name="current">Текущая команда</string>
-    <string name="subtitle_format">Формат субтиров
-\n</string>
-    <string name="hide_thumbnails">Скрыть миниатюры видео</string>
-    <string name="show_terminal">Скрыть терминал из меню \"Поделиться\"</string>
-    <string name="saved">Сохраненные</string>
-    <string name="clear_saved">Очистить сохраненные</string>
-    <string name="save_for_later">Сохранить загрузку для возврата к ней позднее\?</string>
+    <string name="subtitle_format">Формат субтитров</string>
+    <string name="hide_thumbnails">Скрыть миниатюры</string>
+    <string name="hide_terminal">Скрыть терминал из меню «Поделиться»</string>
+    <string name="saved">Сохранено</string>
+    <string name="clear_saved">Очистить сохраненное</string>
+    <string name="save_for_later">Сохранить загрузку на потом\?</string>
 </resources>

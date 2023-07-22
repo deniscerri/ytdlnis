@@ -39,12 +39,12 @@
     <string name="you_are_in_latest_version">Korzystasz z najnowszej wersji</string>
     <string name="download_notification_channel_name">Pobrane pliki</string>
     <string name="ytld_update_success">Zainstalowano nową wersję</string>
-    <string name="ytdl_updating_started">Pobieranie nowszej wersji…</string>
-    <string name="ytdl_already_updating">Instalowanie nowszej wersji…</string>
+    <string name="ytdl_updating_started">Pobieranie nowej wersji</string>
+    <string name="ytdl_already_updating">Instalacja nowej wersji</string>
     <string name="cancel">Anuluj</string>
-    <string name="downloading_update">Pobieranie nowszej wersji…</string>
+    <string name="downloading_update">Pobieranie nowej wersji</string>
     <string name="ok">OK</string>
-    <string name="confirm_delete_history_desc">Usuń całą historię na stałe</string>
+    <string name="confirm_delete_history_desc">Usuń całą historię, trwale</string>
     <string name="concurrent_fragments_summary">Liczba fragmentów natywnego wideo DASH/HLS do jednoczesnego pobrania</string>
     <string name="limit_rate">Limit pobierania</string>
     <string name="confirm_delete_history">Potwierdź</string>
@@ -140,7 +140,7 @@
     <string name="delete_all_cookies">Usuń wszystkie pliki cookie</string>
     <string name="confirm_delete_cookies_desc">Usuń wszystkie pliki cookie na stałe</string>
     <string name="format_source">Źródło formatów</string>
-    <string name="video_recommendations_summary">Otrzymuj polecane filmy z YouTube na ekranie głównym od Invidious</string>
+    <string name="video_recommendations_summary">Otrzymuj polecane filmy z YouTube na ekranie głównym z PIPED API</string>
     <string name="preferred_format_id">Preferowany identyfikator formatu</string>
     <string name="restrict_filenames">Ogranicz nazwy plików</string>
     <string name="metered_network_download_start_info">Pobieranie rozpocznie się, gdy połączysz się z siecią bez planu taryfowego</string>
@@ -276,8 +276,15 @@
     <string name="general">Ogólne</string>
     <string name="crop_thumb_summary">Przytnij miniaturę do kwadratu, aby pobrać dźwięk</string>
     <string name="force_keyframes">Wymuś klatki kluczowe na cięciach</string>
-    <string name="force_keyframes_summary">Dokładne cięcia wideo. Wolniejsze</string>
+    <string name="force_keyframes_summary">Wolniejszy proces, ale dokładniejsze cięcie</string>
     <string name="use_extra_commands">Dodaj dodatkowe polecenia</string>
     <string name="use_extra_commands_summary">Do pobierania audio/wideo. Dodaj dodatkowe polecenia wraz z konfiguracją GUI</string>
     <string name="current">Bieżące polecenie</string>
+    <string name="hide_thumbnails">Ukryj miniatury</string>
+    <string name="hide_terminal">Ukryj terminal w menu udostępniania</string>
+    <string name="saved">Zapisane</string>
+    <string name="clear_saved">Wyczyść zapisane</string>
+    <string name="save_for_later">Zachować pobieranie na później\?</string>
+    <string name="subtitle_format">Format napisów
+\n</string>
 </resources>
