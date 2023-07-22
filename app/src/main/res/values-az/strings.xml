@@ -24,7 +24,7 @@
     <string name="Remove">Təmizlə</string>
     <string name="ok">Oldu</string>
     <string name="cancel">Ləğv et</string>
-    <string name="confirm_delete_history_desc">Bütün tarixçəni, həmişəlik sil</string>
+    <string name="confirm_delete_history_desc">Bütün tarixçəni həmişəlik sil</string>
     <string name="confirm_delete_history">Təsdiqlə</string>
     <string name="search_history_hint">Tarixçədən Axtar</string>
     <string name="no_results">Nəticə Yoxdur</string>
@@ -62,13 +62,13 @@
     <string name="history_is_empty">Tarixçə boşdur</string>
     <string name="you_are_going_to_delete">Silinir</string>
     <string name="url">URL</string>
-    <string name="link_copied_to_clipboard">Link buferə köçürüldü</string>
+    <string name="link_copied_to_clipboard">Bağlantı buferə köçürüldü</string>
     <string name="api_key">API Açar İşlət</string>
-    <string name="api_key_summary">YouTube\'dan daha sürətli nəticələr</string>
+    <string name="api_key_summary">YouTube API-dən Video Tövsiyələr</string>
     <string name="update_app_summary">Açıldıqda, tətbiqin yeni versiyasın bildir</string>
     <string name="downloads">Yükləmələr</string>
     <string name="remove_deleted">Silinənləri Təmizlə</string>
-    <string name="remove_duplicates">Nüsxələri Təmizlə</string>
+    <string name="remove_duplicates">Dublikatları Təmizlə</string>
     <string name="sort_by">Çeşidlənmə</string>
     <string name="remove_downloading">Yükləmələri Ləğv Et</string>
     <string name="incognito_summary">Tarixçəyə əlavə etmədən yüklə</string>
@@ -130,7 +130,7 @@
     <string name="update_formats">Formatları Yenilə</string>
     <string name="log_downloads_summary">Hər yükləmə üçün jurnal faylı yarat</string>
     <string name="download_queue">Yükləmə Növbəsi</string>
-    <string name="running">İşlədilir</string>
+    <string name="running">Davam edir</string>
     <string name="command">Əmr</string>
     <string name="export_from_clipboard">Buferə ixrac et</string>
     <string name="shortcuts">Qısa kəsiklər</string>
@@ -162,14 +162,14 @@
     <string name="items_imported">İdxal edilən elementlər</string>
     <string name="help_translate">Tərcümə etməyə kömək et</string>
     <string name="file_size">Fayl həcmi</string>
-    <string name="clear_temporary_files_summary">Qəzaya uğrayan/xəta olan/ləğv edilən yükləmələrdən toplanmış faylları sil</string>
+    <string name="clear_temporary_files_summary">Çökən/xəta olan/ləğv edilən yükləmələrdən toplanmış faylları sil</string>
     <string name="cache_cleared">Müvəqqəti fayllar təmizləndi</string>
     <string name="clear_temporary_files">Müvəqqəti faylları təmizlə</string>
     <string name="download_rescheduled_to">Yükləmə vaxtı buna dəyişdirildi:</string>
     <string name="downloads_running_try_later">Yükləmə işçisi işləyir. Daha sonra təkrar cəhd et</string>
     <string name="freespace">Boş yer</string>
     <string name="ytdl_version">yt-dlp Versiyası</string>
-    <string name="link_you_copied">Köçürdüyünüz link</string>
+    <string name="link_you_copied">Köçürdüyünüz bağlantı</string>
     <string name="best_quality">Ən Yaxşı Keyfiyyət</string>
     <string name="worst_quality">Ən Pis Keyfiyyət</string>
     <string name="restrict_filenames">Fayl adların məhdudlaşdır</string>
@@ -273,7 +273,7 @@
     <string name="piped_instance_summary">PIPED API Server yazın, tətbiq YouTube sorğuları və formatları üçün işlədə bilər</string>
     <string name="custom_audio_quality">Fərdi Səs Keyfiyyəti İşlət</string>
     <string name="retries">Təkrar cəhdlər</string>
-    <string name="fragment_retries">Hissə təkrar cəhdləri</string>
+    <string name="fragment_retries">Fraqment təkrar cəhdləri</string>
     <string name="format_order">Format Düzülüşü</string>
     <string name="force_keyframes">Kəsiklərdə əsas kadrları məcbur et</string>
     <string name="force_keyframes_summary">Daha yavaş emal, lakin daha dəqiq kəsiklər</string>
@@ -287,4 +287,5 @@
     <string name="use_extra_commands">Əlavə Əmrlər Əlavə Et</string>
     <string name="use_extra_commands_summary">Səs / Video yükləmələr üçün. GUI konfiqurasiyası ilə birlikdə əlavə əmrlər əlavə et</string>
     <string name="current">Cari Əmr</string>
+    <string name="orange">Narıncı</string>
 </resources>
