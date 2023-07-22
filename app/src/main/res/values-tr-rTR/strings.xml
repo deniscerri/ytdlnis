@@ -20,8 +20,8 @@
     <string name="download_notification_channel_description">Ses ve video dosyaların indirilmesindeki ilerlemeyi gösteren bildirim</string>
     <string name="you_are_in_latest_version">son sürümü kullanıyorsun</string>
     <string name="ytld_update_success">Yeni sürüm yüklendi</string>
-    <string name="ytdl_already_updating">Yeni sürüm yükleniyor…</string>
-    <string name="ytdl_updating_started">Yeni sürüm indiriliyor…</string>
+    <string name="ytdl_already_updating">Yeni sürüm yükleniyor</string>
+    <string name="ytdl_updating_started">Yeni sürüm indiriliyor</string>
     <string name="Remove">Kaldır</string>
     <string name="ok">Tamam</string>
     <string name="cancel">İptal et</string>
@@ -34,7 +34,7 @@
     <string name="version">Sürüm</string>
     <string name="command_directory">Özel Komut Klasörü</string>
     <string name="couldnt_find_apk">Uygun APK bulunamadı.</string>
-    <string name="downloading_update">Yeni sürüm indiriliyor…</string>
+    <string name="downloading_update">Yeni sürüm indiriliyor</string>
     ile sınırla
     <string name="audio">Ses</string>
     <string name="video">Video</string>
@@ -66,7 +66,7 @@
     <string name="url">URL</string>
     <string name="link_copied_to_clipboard">Panoya kopyalanan bağlantı</string>
     <string name="api_key">API Anahtarı Kullan</string>
-    <string name="api_key_summary">YouTube\'dan daha hızlı sonuçlar</string>
+    <string name="api_key_summary">Youtube API\'sinden Video Önerileri</string>
     <string name="update_app_summary">Yeni sürüm varsa bildir</string>
     <string name="downloads">İndirilenler</string>
     <string name="remove_deleted">Silinenleri Kaldır</string>
@@ -205,7 +205,7 @@
     <string name="ignore_battery_optimization">Pil Optimizasyonunu Yoksay</string>
     <string name="format_source">Format Kaynağı</string>
     <string name="video_recommendations">Video Önerileri</string>
-    <string name="video_recommendations_summary">Ana ekrandaki önerilen YouTube videolarını Invidious\'tan getir</string>
+    <string name="video_recommendations_summary">Ana ekrandaki önerilen YouTube videolarını PIPED API\'den getir</string>
     <string name="preferred_search_engine">Tercih Edilen Arama Motoru</string>
     <string name="preferred_search_engine_summary">Uygulama içi aramalar için kullanılacak arama motoru</string>
     <string name="format_filtering_hint">Bu seçeneği kullanabilmek için tüm öğeler aynı türde olmalıdır</string>
@@ -279,6 +279,17 @@
     <string name="retries">Tekrarlamalar</string>
     <string name="fragment_retries">Parça Tekrarları</string>
     <string name="format_order">Format Düzeni</string>
-    <string name="force_keyframes_summary">Daha Doğru Video Kesimi. Yavaş</string>
+    <string name="force_keyframes_summary">Daha yavaş işlem ama daha tutarlı kesimler</string>
     <string name="force_keyframes">Kesmelerde Anahtar Kareleri Zorla</string>
+    <string name="orange">Turuncu</string>
+    <string name="use_extra_commands">Ekstra Komutlar Ekle</string>
+    <string name="use_extra_commands_summary">Ses / Video indirmeleri için. GUI yapılandırması ile birlikte ekstra komutlar ekleyin</string>
+    <string name="current">Geçerli Komut</string>
+    <string name="save_for_later">Daha Sonra İndirmek için Kaydedilsin mi\?</string>
+    <string name="subtitle_format">Altyazı Biçimi
+\n</string>
+    <string name="saved">Kaydedildi</string>
+    <string name="clear_saved">Kaydedilenleri Temizle</string>
+    <string name="hide_terminal">Terminal\'i paylaş menüsünden gizle</string>
+    <string name="hide_thumbnails">Küçük Resimleri Gizle</string>
 </resources>

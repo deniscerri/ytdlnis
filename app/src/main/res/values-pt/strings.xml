@@ -11,7 +11,7 @@
     <string name="embed_thumb">Imagem de miniatura</string>
     <string name="ok">OK</string>
     <string name="you_are_in_latest_version">Está a utilizar a versão mais recente</string>
-    <string name="confirm_delete_history_desc">Excluir todo o histórico permanentemente</string>
+    <string name="confirm_delete_history_desc">Eliminar todo o histórico, de forma permanente</string>
     <string name="confirm_delete_history">Confirmação</string>
     <string name="command_directory">Pasta do comando personalizado</string>
     <string name="add_chapters">Capítulos dos vídeos</string>
@@ -47,7 +47,7 @@
     <string name="audio_quality">Qualidade do áudio</string>
     <string name="items_left">itens restantes</string>
     <string name="download">Descarga</string>
-    <string name="api_key_summary">Resultados mais rápidos no YouTube</string>
+    <string name="api_key_summary">Recomendações de vídeo da API do YouTube</string>
     <string name="update_app_summary">Publicitar atualização da aplicação ao iniciar</string>
     <string name="remove_duplicates">Remover duplicados</string>
     <string name="downloads">Descargas</string>
@@ -200,7 +200,7 @@
     <string name="kill_app">Encerrar aplicativo</string>
     <string name="clear_temporary_files_summary">Excluir arquivos em cache de downloads como falhas/erros/cancelados</string>
     <string name="move_temporary_files_summary">Transferir arquivos em cache para a pasta de downloads</string>
-    <string name="video_recommendations_summary">Obtenha vídeos recomendados do YouTube na tela inicial do Invidious</string>
+    <string name="video_recommendations_summary">Obter vídeos recomendados do YouTube no ecrã inicial a partir da API PIPED</string>
     <string name="add_chapters_summary">Marcar segmentos do YouTube / SponsorBlock como capítulos do vídeo</string>
     <string name="you_are_going_to_delete_multiple_items">Excluindo vários itens</string>
     <string name="request_permission_desc">Este aplicativo precisa de permissões de arquivo para salvar downloads no dispositivo</string>
@@ -275,4 +275,17 @@
     <string name="retries">Novas tentativas</string>
     <string name="fragment_retries">Novas tentativas de fragmento</string>
     <string name="format_order">Ordem do formato</string>
+    <string name="orange">Laranja</string>
+    <string name="use_extra_commands">Adicionar Comandos Extras</string>
+    <string name="current">Comando atual</string>
+    <string name="saved">Guardado</string>
+    <string name="clear_saved">Limpar guardado</string>
+    <string name="use_extra_commands_summary">Para transferências de áudio/vídeo. Adicionar comandos extra juntamente com a configuração GUI</string>
+    <string name="subtitle_format">Formato da legenda
+\n</string>
+    <string name="hide_thumbnails">Esconder miniaturas</string>
+    <string name="hide_terminal">Ocultar o Terminal do menu de partilha</string>
+    <string name="force_keyframes_summary">Processo mais lento, mas cortes mais precisos</string>
+    <string name="save_for_later">Guardar a transferência para mais tarde\?</string>
+    <string name="force_keyframes">Forçar quadros-chave nos cortes</string>
 </resources>
