@@ -153,8 +153,7 @@
     <string name="preferred_format_id">पसंदीदा प्रारूप आईडी</string>
     <string name="download_now">तुरंत डाउनलोड करें</string>
     <string name="preferred_locale">पसंदीदा लोकेल</string>
-    <string name="pause">रोको
-\n</string>
+    <string name="pause">रोको</string>
     <string name="resume">चालू करो</string>
     <string name="keep_cache">कैचे रखें</string>
     <string name="keep_cache_summary">डाउनलोड समाप्त होने के बाद अस्थायी फ़ाइलें न हटाएं</string>

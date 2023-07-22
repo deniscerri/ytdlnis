@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="pause">Stans
-\n</string>
+    <string name="pause">Stans</string>
     <string name="keep_cache">Behald mellomgøymet</string>
     <string name="keep_cache_summary">Ikkje slett mellombelse filer etter at hentinga er ferdig</string>
     <string name="network_error">Nettverksfeil</string>

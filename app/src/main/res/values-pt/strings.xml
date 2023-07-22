@@ -168,8 +168,7 @@
     <string name="download_now">Descarregar agora</string>
     <string name="download_already_exists">Descarga já existente</string>
     <string name="preferred_locale">Idioma preferido</string>
-    <string name="pause">Pausa
-\n</string>
+    <string name="pause">Pausa</string>
     <string name="resume">Retomar</string>
     <string name="keep_cache">Manter em cache</string>
     <string name="backup">Backup</string>

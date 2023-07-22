@@ -5,14 +5,12 @@ import android.app.Activity
 import android.content.*
 import android.content.Context.CLIPBOARD_SERVICE
 import android.content.res.ColorStateList
-import android.content.res.Resources.Theme
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.text.Editable
 import android.util.Log
-import android.util.TypedValue
 import android.view.*
 import android.view.View.*
 import android.widget.*
@@ -36,7 +34,6 @@ import com.deniscerri.ytdlnis.adapter.HomeAdapter
 import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.ResultViewModel
-import com.deniscerri.ytdlnis.databinding.FragmentHomeBinding
 import com.deniscerri.ytdlnis.ui.downloadcard.DownloadBottomSheetDialog
 import com.deniscerri.ytdlnis.ui.downloadcard.DownloadMultipleBottomSheetDialog
 import com.deniscerri.ytdlnis.ui.downloadcard.ResultCardDetailsDialog
@@ -137,7 +134,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
         searchHistory = view.findViewById(R.id.search_history_scroll_view)
         searchHistoryLinearLayout = view.findViewById(R.id.search_history_linear_layout)
 
-        materialToolbar!!.title = ThemeUtil.getStyledAppName(requireContext())
+        runCatching { materialToolbar!!.title = ThemeUtil.getStyledAppName(requireContext()) }
 
         homeAdapter =
             HomeAdapter(
@@ -256,6 +253,30 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
         val queriesConstraint = requireView().findViewById<ConstraintLayout>(R.id.queries_constraint)
         val queriesInitStartBtn = queriesConstraint.findViewById<MaterialButton>(R.id.init_search_query)
         val isRightToLeft = resources.getBoolean(R.bool.is_right_to_left)
+
+        val providersChipGroup = searchView!!.findViewById<ChipGroup>(R.id.providers)
+        val providers = resources.getStringArray(R.array.search_engines)
+        val providersValues = resources.getStringArray(R.array.search_engines_values).toMutableList()
+        val currentProvider = sharedPreferences?.getString("search_engine", "ytsearch")
+
+        for(i in providersValues.indices){
+            val provider = providers[i]
+            val providerValue = providersValues[i]
+            val tmp = layoutinflater!!.inflate(R.layout.filter_chip, providersChipGroup, false) as Chip
+            tmp.text = provider
+            tmp.id = i
+
+            if (currentProvider == providerValue) tmp.isChecked = true
+
+            tmp.setOnClickListener {
+                val editor = sharedPreferences?.edit()
+                editor?.putString("search_engine", providerValue)
+                editor?.apply()
+
+            }
+
+            providersChipGroup!!.addView(tmp)
+        }
 
 
         infoUtil = InfoUtil(requireContext())

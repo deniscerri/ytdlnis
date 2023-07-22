@@ -27,6 +27,28 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
+                    <HorizontalScrollView
+                        android:layout_width="wrap_content"
+                        android:scrollbars="none"
+                        android:layout_height="wrap_content">
+
+                        <com.google.android.material.chip.ChipGroup
+                            android:id="@+id/providers"
+                            android:layout_margin="10dp"
+                            app:chipSpacingVertical="-10dp"
+                            android:layout_width="wrap_content"
+                            app:singleSelection="true"
+                            android:layout_height="wrap_content"
+                            app:singleLine="true" />
+
+                    </HorizontalScrollView>
+
+                    <View
+                        android:id="@+id/divider"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        style="@style/Divider.Vertical"/>
+
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/queries_constraint"
                         android:layout_width="match_parent"
@@ -135,11 +157,16 @@
             android:id="@+id/recyclerViewHome"
             android:orientation="vertical"
             android:layout_height="wrap_content"
-            android:scrollbars="vertical"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
+            android:scrollbars="none"
+
             android:clipToPadding="false"
             android:paddingBottom="100dp"
+            app:fastScrollEnabled="true"
+            app:fastScrollHorizontalThumbDrawable="@drawable/thumb_drawable"
+            app:fastScrollHorizontalTrackDrawable="@drawable/line_drawable"
+            app:fastScrollVerticalThumbDrawable="@drawable/thumb_drawable"
+            app:fastScrollVerticalTrackDrawable="@drawable/line_drawable"
+
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             />
 

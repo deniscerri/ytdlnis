@@ -236,8 +236,7 @@
     <string name="download_now">Завантажити зараз</string>
     <string name="download_already_exists">Завантаження вже існує</string>
     <string name="preferred_locale">Бажане розташування</string>
-    <string name="pause">Пауза
-\n</string>
+    <string name="pause">Пауза</string>
     <string name="resume">Продовжити</string>
     <string name="updating_download_data">Оновлення даних завантажуваного елемента</string>
     <string name="keep_cache">Зберегти кеш</string>
@@ -282,7 +281,7 @@
     <string name="current">Поточна команда</string>
     <string name="use_extra_commands_summary">Додайте свої додаткові команди перед завантаженням аудіо/відео</string>
     <string name="hide_thumbnails">Приховати мініатюри відео</string>
-    <string name="hide_terminal">Приховати термінал з меню \"Поділитися\"</string>
+    <string name="show_terminal">Приховати термінал з меню \"Поділитися\"</string>
     <string name="saved">Збережені</string>
     <string name="clear_saved">Очистити збережені</string>
     <string name="subtitle_format">Формат субтитрів

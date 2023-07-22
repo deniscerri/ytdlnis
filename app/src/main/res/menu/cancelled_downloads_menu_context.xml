@@ -12,7 +12,7 @@
     <item
         android:id="@+id/redownload"
         android:title="@string/redownload"
-        android:icon="@drawable/ic_refresh"
+        android:icon="@drawable/ic_refresh_white"
         app:showAsAction="ifRoom" />
 
     <item

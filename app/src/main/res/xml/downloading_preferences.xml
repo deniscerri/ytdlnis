@@ -44,7 +44,6 @@
         app:title="@string/socks5_proxy" />
 
     <ListPreference
-        android:dependency="download_card"
         android:defaultValue="video"
         android:entries="@array/download_types"
         android:entryValues="@array/download_types_values"

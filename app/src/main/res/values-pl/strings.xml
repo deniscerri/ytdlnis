@@ -204,8 +204,7 @@
     <string name="download_now">Pobierz teraz</string>
     <string name="download_already_exists">Pobieranie już istnieje</string>
     <string name="preferred_locale">Preferowane ustawienia regionalne</string>
-    <string name="pause">Pauza
-\n</string>
+    <string name="pause">Pauza</string>
     <string name="updating_download_data">Aktualizowanie danych elementu do pobrania</string>
     <string name="keep_cache_summary">Nie usuwaj plików tymczasowych po zakończeniu pobierania</string>
     <string name="restore">Przywróć</string>

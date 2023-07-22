@@ -221,8 +221,7 @@
     <string name="download_now">Λήψη Τώρα</string>
     <string name="download_already_exists">Η λήψη υπάρχει ήδη</string>
     <string name="preferred_locale">Προτιμώμενες Τοπικές Ρυθμίσεις</string>
-    <string name="pause">Παύση
-\n</string>
+    <string name="pause">Παύση</string>
     <string name="resume">Συνέχεια</string>
     <string name="incognito">Ανώνυμη Λειτουργία</string>
     <string name="sponsorblock">SponsorBlock</string>

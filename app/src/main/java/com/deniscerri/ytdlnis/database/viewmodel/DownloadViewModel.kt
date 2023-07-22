@@ -166,6 +166,11 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
             else -> sharedPreferences.getString("command_path", FileUtil.getDefaultCommandPath())
         }
 
+        val container = when(type){
+            Type.audio -> sharedPreferences.getString("audio_format", "")
+            else -> sharedPreferences.getString("video_format", "")
+        }
+
 
         val sponsorblock = sharedPreferences.getStringSet("sponsorblock_filters", emptySet())
 
@@ -182,10 +187,10 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
             resultItem.duration,
             type,
             getFormat(resultItem.formats, type),
-            sharedPreferences.getString("video_format", "Default")!!,
+            container!!,
             "",
             resultItem.formats,
-            downloadPath!!, resultItem.website, "", resultItem.playlistTitle, audioPreferences, videoPreferences, "", customFileNameTemplate!!, saveThumb, DownloadRepository.Status.Processing.toString(), 0, null
+            downloadPath!!, resultItem.website, "", resultItem.playlistTitle, audioPreferences, videoPreferences, "", customFileNameTemplate!!, saveThumb, DownloadRepository.Status.Queued.toString(), 0, null
         )
 
     }
@@ -307,7 +312,7 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
             container,
             "",
             ArrayList(),
-            path, historyItem.website, "", "", audioPreferences, videoPreferences, "", customFileNameTemplate!!, saveThumb, DownloadRepository.Status.Processing.toString(), 0, null
+            path, historyItem.website, "", "", audioPreferences, videoPreferences, "", customFileNameTemplate!!, saveThumb, DownloadRepository.Status.Queued.toString(), 0, null
         )
 
     }
@@ -459,7 +464,7 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
         var exists = false
 
         items.forEach {
-            it.status = DownloadRepository.Status.Queued.toString()
+            if (it.status != DownloadRepository.Status.Paused.toString()) it.status = DownloadRepository.Status.Queued.toString()
             if (activeAndQueuedDownloads.firstOrNull{d ->
                     d.id = 0
                     d.status = DownloadRepository.Status.Queued.toString()

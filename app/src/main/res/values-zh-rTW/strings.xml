@@ -122,8 +122,7 @@
     <string name="download_now">立即下載</string>
     <string name="download_already_exists">已存在下載</string>
     <string name="preferred_locale">首選地區設定</string>
-    <string name="pause">暫停
-\n</string>
+    <string name="pause">暫停</string>
     <string name="resume">繼續</string>
     <string name="updating_download_data">正在更新下載項目資料</string>
     <string name="keep_cache">保留快取</string>

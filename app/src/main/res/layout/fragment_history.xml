@@ -112,8 +112,11 @@
         android:orientation="vertical"
         android:layout_height="wrap_content"
         android:scrollbars="vertical"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
+        app:fastScrollEnabled="true"
+        app:fastScrollHorizontalThumbDrawable="@drawable/thumb_drawable"
+        app:fastScrollHorizontalTrackDrawable="@drawable/line_drawable"
+        app:fastScrollVerticalThumbDrawable="@drawable/thumb_drawable"
+        app:fastScrollVerticalTrackDrawable="@drawable/line_drawable"
         android:clipToPadding="false"
         android:paddingBottom="100dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">

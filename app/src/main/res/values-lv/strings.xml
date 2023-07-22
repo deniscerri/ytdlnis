@@ -228,8 +228,7 @@
     <string name="preferred_format_id">Vēlamā Formāta ID</string>
     <string name="download_now">Lejupielādēt Tagad</string>
     <string name="download_already_exists">Lejupielāde jau pastāv</string>
-    <string name="pause">Pauze
-\n</string>
+    <string name="pause">Pauze</string>
     <string name="updating_download_data">Notiek Lejupielādes Vienuma Datu Atjaunināšana</string>
     <string name="keep_cache">Paturēt Kešatmiņu</string>
     <string name="keep_cache_summary">Neizdzēst pagaidu failus pēc lejupielādes pabeigšanas</string>

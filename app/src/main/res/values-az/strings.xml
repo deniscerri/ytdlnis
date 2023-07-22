@@ -236,8 +236,7 @@
     <string name="preferred_format_id">Üstünlük Verilən Format ID</string>
     <string name="download_already_exists">Yükləmə artıq var</string>
     <string name="preferred_locale">Üstünlük Verilən Yer</string>
-    <string name="pause">Dayandır
-\n</string>
+    <string name="pause">Dayandır</string>
     <string name="resume">Təkrar başlat</string>
     <string name="updating_download_data">Yükləmə Element Məlumatı Yenilənir</string>
     <string name="keep_cache">Qalığı Saxla</string>
@@ -282,7 +281,7 @@
     <string name="subtitle_format">Titr Formatı
 \n</string>
     <string name="hide_thumbnails">Miniatürləri Gizlət</string>
-    <string name="hide_terminal">Sıxacı paylaşma menyusundan gizlət</string>
+    <string name="show_terminal">Sıxacı paylaşma menyusundan gizlət</string>
     <string name="saved">Saxlanıldı</string>
     <string name="clear_saved">Saxlanılanları Təmizlə</string>
     <string name="use_extra_commands">Əlavə Əmrlər Əlavə Et</string>

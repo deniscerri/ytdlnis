@@ -17,6 +17,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.view.inputmethod.InputMethodManager
+import android.webkit.MimeTypeMap
 import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
@@ -251,7 +252,7 @@ object UiUtil {
             fragmentContext.packageName + ".fileprovider",
             file
         )
-        val mime = fragmentContext.contentResolver.getType(uri)
+        val mime = MimeTypeMap.getSingleton().getMimeTypeFromExtension(file.extension)
         val i = Intent(Intent.ACTION_VIEW)
         i.setDataAndType(uri, mime)
         i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)

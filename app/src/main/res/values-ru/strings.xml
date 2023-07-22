@@ -239,8 +239,7 @@
     <string name="format_filtering_hint">Чтобы использовать эту опцию, все элементы должны быть одного типа</string>
     <string name="restore_complete">Восстановление приложения завершено. Были восстановлены следующие объекты:</string>
     <string name="download_already_exists">Загрузка уже существует</string>
-    <string name="pause">Пауза
-\n</string>
+    <string name="pause">Пауза</string>
     <string name="preferred_locale">Предпочтительный регион</string>
     <string name="video_recommendations">Видеорекомендации</string>
     <string name="couldnt_parse_file">Не удалось разобрать файл</string>
@@ -284,7 +283,7 @@
     <string name="subtitle_format">Формат субтиров
 \n</string>
     <string name="hide_thumbnails">Скрыть миниатюры видео</string>
-    <string name="hide_terminal">Скрыть терминал из меню \"Поделиться\"</string>
+    <string name="show_terminal">Скрыть терминал из меню \"Поделиться\"</string>
     <string name="saved">Сохраненные</string>
     <string name="clear_saved">Очистить сохраненные</string>
     <string name="save_for_later">Сохранить загрузку для возврата к ней позднее\?</string>

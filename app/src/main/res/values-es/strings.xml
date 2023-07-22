@@ -236,8 +236,7 @@
     <string name="finished_download_notification_channel_name">Descargas terminadas</string>
     <string name="finished_download_notification_channel_description">Notificación de descargas finalizadas o defectuosas</string>
     <string name="preferred_locale">Ubicación preferida</string>
-    <string name="pause">Pausa
-\n</string>
+    <string name="pause">Pausa</string>
     <string name="resume">Resumen</string>
     <string name="updating_download_data">Actualizando los datos de los elementos de la descarga</string>
     <string name="keep_cache">Conservar la caché</string>
@@ -285,7 +284,7 @@
 \n</string>
     <string name="hide_thumbnails">Ocultar las miniaturas</string>
     <string name="saved">Guardado</string>
-    <string name="hide_terminal">Ocultar Terminal del menú compartir</string>
+    <string name="show_terminal">Ocultar Terminal del menú compartir</string>
     <string name="save_for_later">¿Guardar la descarga para más tarde\?</string>
     <string name="clear_saved">Borrar lo Guardado</string>
 </resources>

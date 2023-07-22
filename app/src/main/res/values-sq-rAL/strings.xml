@@ -241,8 +241,7 @@
     <string name="keep_cache">Mbaj Memoriken Kashe</string>
     <string name="keep_cache_summary">Mos fshi skedarët e përkohshëm pasi shkarkimi ka mbaruar</string>
     <string name="restore">Rikthe</string>
-    <string name="pause">Pauzë
-\n</string>
+    <string name="pause">Pauzë</string>
     <string name="updating_download_data">Duke Përditësuar Informacionet e Objektit</string>
     <string name="backup">Ruaj</string>
     <string name="select_backup_categories">Zgjidh kategoritë për ruajtje</string>
@@ -281,7 +280,7 @@
     <string name="force_keyframes_summary">Proçes më i ngadaltë, por prerje më të sakta</string>
     <string name="subtitle_format">Formati i Titrave
 \n</string>
-    <string name="hide_terminal">Fshihe Terminalin nga fleta e shpërndarjes</string>
+    <string name="show_terminal">Fshihe Terminalin nga fleta e shpërndarjes</string>
     <string name="saved">Të ruajtura</string>
     <string name="clear_saved">Pastro të ruajturat</string>
     <string name="save_for_later">Ruaj Shkarkimin për më vonë\?</string>

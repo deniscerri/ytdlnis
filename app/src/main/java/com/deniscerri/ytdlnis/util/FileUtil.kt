@@ -2,9 +2,15 @@ package com.deniscerri.ytdlnis.util
 
 import android.content.Context
 import android.media.MediaScannerConnection
+import android.net.Uri
 import android.os.Build
 import android.os.Environment
+import android.os.storage.StorageManager
+import android.os.storage.StorageVolume
+import android.provider.DocumentsContract
 import android.util.Log
+import android.webkit.MimeTypeMap
+import androidx.core.net.toFile
 import androidx.core.net.toUri
 import androidx.documentfile.provider.DocumentFile
 import com.anggrayudi.storage.callback.FileCallback
@@ -12,11 +18,12 @@ import com.anggrayudi.storage.callback.FolderCallback
 import com.anggrayudi.storage.file.copyFileTo
 import com.anggrayudi.storage.file.copyFolderTo
 import com.anggrayudi.storage.file.getAbsolutePath
-import com.anggrayudi.storage.file.moveFileTo
-import com.anggrayudi.storage.file.moveFolderTo
+import com.anggrayudi.storage.file.getBasePath
+import com.deniscerri.ytdlnis.App
 import com.deniscerri.ytdlnis.R
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import okhttp3.internal.closeQuietly
 import java.io.File
 import java.net.URLDecoder
 import java.nio.charset.StandardCharsets
@@ -32,15 +39,10 @@ import kotlin.math.pow
 object FileUtil {
 
     fun deleteFile(path: String){
-        val file = File(path)
-        if (file.exists()) {
-            file.delete()
-        }
-    }
-
-    internal object Compare {
-        fun max(a: File, b: File): File {
-            return if (a.length() > b.length()) a else b
+        runCatching {
+            if (!File(path).delete()){
+                DocumentFile.fromSingleUri(App.instance, Uri.parse(path))?.delete()
+            }
         }
     }
 
@@ -100,7 +102,7 @@ object FileUtil {
                         withContext(Dispatchers.IO){
                             curr.copyFolderTo(context, dst!!, skipEmptyFiles = false, callback = object : FolderCallback() {
                                 override fun onStart(folder: DocumentFile, totalFilesToCopy: Int, workerThread: Thread): Long {
-                                    return 1000 // update progress every 1 second
+                                    return 500 // update progress every half second
                                 }
 
                                 override fun onParentConflict(destinationFolder: DocumentFile, action: ParentFolderConflictAction, canMerge: Boolean) {
@@ -120,11 +122,66 @@ object FileUtil {
                                     it.deleteRecursively()
                                 }
 
+                                override fun onFailed(errorCode: ErrorCode) {
+                                    //if its usb?
+                                    runCatching {
+                                        it.walkTopDown().forEach { f ->
+                                            if (f.isDirectory) return@forEach
+
+                                            val mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(f.extension) ?: "*/*"
+
+                                            val destUri = DocumentsContract.createDocument(
+                                                context.contentResolver,
+                                                dst.uri,
+                                                mimeType,
+                                                f.name
+                                            ) ?: return@runCatching
+
+                                            val inputStream = f.inputStream()
+                                            val outputStream =
+                                                context.contentResolver.openOutputStream(destUri) ?: return@runCatching
+                                            inputStream.copyTo(outputStream)
+                                            inputStream.closeQuietly()
+                                            outputStream.closeQuietly()
+
+                                            fileList.add(DocumentFile.fromSingleUri(context, destUri)!!.getAbsolutePath(context))
+                                        }
+
+                                        it.deleteRecursively()
+                                    }
+                                    super.onFailed(errorCode)
+                                }
+
                             })
                         }
                     }else{
                         withContext(Dispatchers.IO){
                             curr.copyFileTo(context, dst!!, callback = object : FileCallback() {
+                                override fun onFailed(errorCode: ErrorCode) {
+                                    //if its usb?
+                                    runCatching {
+                                        val mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(it.extension) ?: "*/*"
+
+                                        val destUri = DocumentsContract.createDocument(
+                                            context.contentResolver,
+                                            dst.uri,
+                                            mimeType,
+                                            it.name
+                                        ) ?: return@runCatching
+
+                                        val inputStream = it.inputStream()
+                                        val outputStream =
+                                            context.contentResolver.openOutputStream(destUri) ?: return@runCatching
+                                        inputStream.copyTo(outputStream)
+                                        inputStream.closeQuietly()
+                                        outputStream.closeQuietly()
+
+                                        fileList.add(DocumentFile.fromSingleUri(context, destUri)!!.getAbsolutePath(context))
+                                        it.delete()
+                                    }
+                                    super.onFailed(errorCode)
+                                }
+
                                 override fun onStart(file: Any, workerThread: Thread): Long {
                                     return 1000 // update progress every 1 second
                                 }
@@ -136,7 +193,7 @@ object FileUtil {
                                 override fun onCompleted(result: Any) {
                                     destFile = (result as DocumentFile)
                                     fileList.add(destFile.getAbsolutePath(context))
-                                    it.deleteRecursively()
+                                    it.delete()
                                     super.onCompleted(result)
                                 }
                             })
@@ -170,10 +227,9 @@ object FileUtil {
         }
     }
     private fun scanMedia(files: List<String>, context: Context) : List<String> {
-
         try {
             val paths = files.sortedByDescending { File(it).length() }
-            MediaScannerConnection.scanFile(context, paths.toTypedArray(), null, null)
+            runCatching {MediaScannerConnection.scanFile(context, paths.toTypedArray(), null, null) }
             return paths
         }catch (e: Exception){
             e.printStackTrace()

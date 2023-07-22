@@ -240,8 +240,7 @@
     <string name="download_now">Şimdi İndir</string>
     <string name="remove_audio">Sesi Kaldır</string>
     <string name="preferred_locale">Tercih Edilen Konum</string>
-    <string name="pause">Duraklat
-\n</string>
+    <string name="pause">Duraklat</string>
     <string name="resume">Devam et</string>
     <string name="updating_download_data">İndirilen Öğe Verilerini Güncelleme</string>
     <string name="keep_cache">Önbelleği Sakla</string>

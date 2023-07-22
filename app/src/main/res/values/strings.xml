@@ -244,7 +244,7 @@
     <string name="download_now">Download Now</string>
     <string name="download_already_exists">Download already exists</string>
     <string name="preferred_locale">Preferred Locale</string>
-    <string name="pause">Pause\n</string>
+    <string name="pause">Pause</string>
     <string name="resume">Resume</string>
     <string name="updating_download_data">Updating Download Item Data</string>
     <string name="keep_cache">Keep Cache</string>
@@ -290,7 +290,7 @@
     <string name="current">Current Command</string>
     <string name="subtitle_format">Subtitle Format\n</string>
     <string name="hide_thumbnails">Hide Thumbnails</string>
-    <string name="hide_terminal">Hide Terminal from share menu</string>
+    <string name="show_terminal">Show Terminal in share menu</string>
     <string name="saved">Saved</string>
     <string name="clear_saved">Clear Saved</string>
     <string name="save_for_later">Save Download for Later?</string>

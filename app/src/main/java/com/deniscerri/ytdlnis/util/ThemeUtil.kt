@@ -117,8 +117,8 @@ object ThemeUtil {
     private fun getThemeColor(context: Context, colorCode: Int): Int {
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
         val accent = sharedPreferences.getString("theme_accent", "blue")
-        return if (accent == "Default" || accent == "blue"){
-            "c22727".toInt(16)
+        return if (accent == "blue"){
+            "d43c3b".toInt(16)
         }else{
             val value = TypedValue()
             context.theme.resolveAttribute(colorCode, value, true)

@@ -5,7 +5,7 @@
     <color name="grey">#323232</color>
     <color name="light_grey">#A6A6A6</color>
 	<color name="icon_bg">#FFFFFF</color>
-	<color name="icon_fg">#d43c3c</color>
+	<color name="icon_fg">#db2e2e</color>
 
 
     <color name="blue_md_theme_light_primary">#0058CB</color>
@@ -320,9 +320,9 @@
     <color name="orange_md_theme_dark_errorContainer">#93000A</color>
     <color name="orange_md_theme_dark_onError">#690005</color>
     <color name="orange_md_theme_dark_onErrorContainer">#FFDAD6</color>
-    <color name="orange_md_theme_dark_background">#1F1B16</color>
+    <color name="orange_md_theme_dark_background">#1b1b1b</color>
     <color name="orange_md_theme_dark_onBackground">#EBE1D9</color>
-    <color name="orange_md_theme_dark_surface">#1F1B16</color>
+    <color name="orange_md_theme_dark_surface">#1b1b1b</color>
     <color name="orange_md_theme_dark_onSurface">#EBE1D9</color>
     <color name="orange_md_theme_dark_surfaceVariant">#504539</color>
     <color name="orange_md_theme_dark_onSurfaceVariant">#D4C4B5</color>
