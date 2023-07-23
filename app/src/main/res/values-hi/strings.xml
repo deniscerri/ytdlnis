@@ -19,7 +19,7 @@
     <string name="download_notification_channel_description">ऑडियो और वीडियो फ़ाइलों को डाउनलोड करने की प्रगति दिखाने वाली अधिसूचना</string>
     <string name="you_are_in_latest_version">नए संस्करण का उपयोग कर रहे हैं</string>
     <string name="ytld_update_success">नया संस्करण स्थापित कर लिया गया है</string>
-    <string name="ytdl_already_updating">नया संस्करण स्थापित हो रहा है…</string>
+    <string name="ytdl_already_updating">नया संस्करण स्थापित हो रहा है</string>
     <string name="Remove">हटाएं</string>
     <string name="ok">ठीक है</string>
     <string name="cancel">रद्द करना</string>
@@ -35,8 +35,8 @@
     <string name="source_code">सोर्स कोड</string>
     <string name="failed_download">फ़ाइल डाउनलोड नहीं हो सकी।</string>
     <string name="search_hint">URL खोजें या डालें</string>
-    <string name="ytdl_updating_started">नया संस्करण डाउनलोड हो रहा है…</string>
-    <string name="downloading_update">नया संस्करण डाउनलोड हो रहा है…</string>
+    <string name="ytdl_updating_started">नया संस्करण डाउनलोड हो रहा है</string>
+    <string name="downloading_update">नया संस्करण डाउनलोड हो रहा है</string>
     <string name="audio">संगीत</string>
     <string name="video">वीडियो</string>
     <string name="concurrent_fragments_summary">एक साथ डाउनलोड करने के लिए DASH/HLS नेटिव वीडियो के टुकड़ों की संख्या</string>
@@ -180,7 +180,7 @@
     <string name="items_left">आइटम (ओं) को छोड़ दिया</string>
     <string name="link_copied_to_clipboard">लिंक को क्लिपबोर्ड पर कॉपी किया गया</string>
     <string name="api_key">एपीआई कुंजी का प्रयोग करें</string>
-    <string name="api_key_summary">YouTube से तेज़ परिणाम</string>
+    <string name="api_key_summary">Youtube API से वीडियो रिकमैंडेशन</string>
     <string name="update_app_summary">खोले जाने पर ऐप के नए संस्करणों की घोषणा करता है</string>
     <string name="downloads">डाउनलोड</string>
     <string name="download_card_summary">आइटम डाउनलोड करने के तरीके के लिए सेटिंग</string>
@@ -238,7 +238,7 @@
     <string name="share">शेयर करना</string>
     <string name="save_subs">उपशीर्षक सहेजें</string>
     <string name="subtitle_languages">उपशीर्षक भाषाएँ</string>
-    <string name="video_recommendations_summary">Invidious से होम स्क्रीन पर अनुशंसित YouTube वीडियो प्राप्त करें</string>
+    <string name="video_recommendations_summary">PIPED API से होम स्क्रीन पर रिकमैंडेड YouTube वीडियो प्राप्त करें</string>
     <string name="preferred_search_engine">पसंदीदा खोज इंजन</string>
     <string name="format_filtering_hint">इस विकल्प का उपयोग करने के लिए सभी आइटम एक ही प्रकार के होने चाहिए</string>
     <string name="undo">पूर्ववत</string>
@@ -272,4 +272,20 @@
     <string name="import_from_clipboard">क्लिपबोर्ड से आयात करें</string>
     <string name="cancelled">रद्द</string>
     <string name="errored">त्रुटिपूर्ण</string>
+    <string name="orange">नारंगी</string>
+    <string name="current">मौजूदा कमांड</string>
+    <string name="clear_saved">सहेजे हुए साफ करें</string>
+    <string name="save_for_later">डाउनलोड को बाद के लिए सहेजें\?</string>
+    <string name="force_keyframes_summary">धीमी प्रक्रिया, लेकिन अधिक सटीक कटौती</string>
+    <string name="subtitle_format">सबटाइटल फार्मेट
+\n</string>
+    <string name="hide_thumbnails">थंबनेल छिपाएँ</string>
+    <string name="format_order">प्रारूप क्रम</string>
+    <string name="force_keyframes">कट्स पर मुख्य-फ़्रेमों को बाध्य करें</string>
+    <string name="use_extra_commands">अतिरिक्त कमांड जोड़ें</string>
+    <string name="use_extra_commands_summary">ऑडियो/वीडियो डाउनलोड के लिए, GUI कॉन्फ़िगरेशन के साथ अतिरिक्त कमांड जोड़ें</string>
+    <string name="show_terminal">शेयर मेनू में टर्मिनल दिखाएँ</string>
+    <string name="saved">सहेजा गया</string>
+    <string name="retries">पुन:प्रयास</string>
+    <string name="fragment_retries">खंड पुन:प्रयास</string>
 </resources>
