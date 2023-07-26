@@ -281,7 +281,7 @@
     <string name="subtitle_format">Titr Formatı
 \n</string>
     <string name="hide_thumbnails">Miniatürləri Gizlət</string>
-    <string name="show_terminal">Paylaş Menyusunda Sıxac Göstər</string>
+    <string name="show_terminal">Sıxacı Paylaş Menyusundan Gizlət</string>
     <string name="saved">Saxlanıldı</string>
     <string name="clear_saved">Saxlanılanları Təmizlə</string>
     <string name="use_extra_commands">Əlavə Əmrlər Əlavə Et</string>
