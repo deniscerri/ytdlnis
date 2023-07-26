@@ -35,8 +35,8 @@
     <string name="source_code">सोर्स कोड</string>
     <string name="failed_download">फ़ाइल डाउनलोड नहीं हो सकी।</string>
     <string name="search_hint">URL खोजें या डालें</string>
-    <string name="ytdl_updating_started">नया संस्करण डाउनलोड हो रहा है</string>
-    <string name="downloading_update">नया संस्करण डाउनलोड हो रहा है</string>
+    <string name="ytdl_updating_started">नए अपडेट का डाउनलोड शुरु</string>
+    <string name="downloading_update">नया अपडेट डाउनलोड हो रहा है</string>
     <string name="audio">संगीत</string>
     <string name="video">वीडियो</string>
     <string name="concurrent_fragments_summary">एक साथ डाउनलोड करने के लिए DASH/HLS नेटिव वीडियो के टुकड़ों की संख्या</string>
