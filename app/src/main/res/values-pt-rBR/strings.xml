@@ -32,7 +32,7 @@
     <string name="video">Video</string>
     <string name="concurrent_fragments_summary">Número de fragmentos de um vídeo nativo em DASH/HLS para baixar paralelamente</string>
     <string name="concurrent_fragments">Fragmentos Simultâneos</string>
-    <string name="downloading">Transferência</string>
+    <string name="downloading">Baixando</string>
     <string name="limit_rate">Limite de conexão</string>
     <string name="limit_rate_summary">Taxa máxima de download (em bytes por segundo), ex. 50k ou 4.2M</string>
     <string name="aria2_summary">Usar aria2c como ferramenta de download padrão</string>
@@ -52,7 +52,7 @@
     <string name="video_quality">Qualidade do Vídeo</string>
     <string name="embed_subtitles">Adicionar Legendas</string>
     <string name="add_chapter">Adicionar Capítulos</string>
-    <string name="show_download_card">Mostrar opções de Download</string>
+    <string name="show_download_card">Mostrar opções para download</string>
     <string name="download_card_summary">Configurações de como baixar itens</string>
     <string name="Open_File">Abrir Arquivo</string>
     <string name="you_are_going_to_delete_multiple_items">Excluindo vários itens</string>
@@ -74,11 +74,11 @@
     <string name="cancel">Cancelar</string>
     <string name="more">Mais</string>
     <string name="processing">Processamento</string>
-    <string name="embed_thumb">Miniaturas de Vídeo</string>
+    <string name="embed_thumb">Adicionar Miniatura</string>
     <string name="you_are_going_to_delete">Excluindo</string>
     <string name="link_copied_to_clipboard">Link copiado para a área de transferência</string>
     <string name="delete_files_too">Excluir os arquivos do dispositivo</string>
-    <string name="embed_thumb_summary">Usar miniatura como capa de áudio/vídeo</string>
+    <string name="embed_thumb_summary">Usar miniatura como capa de áudio</string>
     <string name="add_chapters">Capítulos em Videos</string>
     <string name="remove_deleted">Remover downloads Excluídos</string>
     <string name="author">Autor</string>
@@ -156,7 +156,7 @@
     <string name="file_size">Tamanho do Arquivo</string>
     <string name="clear_temporary_files">Remover arquivos temporários</string>
     <string name="import_from_clipboard">Importar da área de transferência</string>
-    <string name="export_from_clipboard">Exportar para área de transferência</string>
+    <string name="export_from_clipboard">Exportar para a área de transferência</string>
     <string name="terminal">Terminal</string>
     <string name="save_subs">Salvar Legendas</string>
     <string name="dark">Escuro</string>
@@ -173,8 +173,8 @@
     <string name="ignore_battery_optimization">Ignorar a otimização da bateria</string>
     <string name="confirm_terminate">Interromper todos os downloads e forçar o fechamento do aplicativo</string>
     <string name="restrict_filenames">Restringir nomes de arquivos</string>
-    <string name="cache_cleared">Arquivos temporários apagados</string>
-    <string name="downloads_running_try_later">O processo de download está em execução. Tente mais tarde</string>
+    <string name="cache_cleared">Arquivos temporários removidos</string>
+    <string name="downloads_running_try_later">O assistente de download está em execução. Tente mais tarde</string>
     <string name="high_contrast">Alto Contraste</string>
     <string name="accents">Cor de destaque</string>
     <string name="system">Sistema</string>
@@ -200,7 +200,7 @@
     <string name="share">Compartilhar</string>
     <string name="select_all">Selecionar todos</string>
     <string name="red">Vermelho</string>
-    <string name="material_you">Material Você</string>
+    <string name="material_you">Material You</string>
     <string name="pure_theme_summary">Tema Preto/Branco Puro</string>
     <string name="downloaded">"Baixado: "</string>
     <string name="monochrome">Monocromático</string>
@@ -213,7 +213,7 @@
     <string name="remove_audio">Remover Áudio</string>
     <string name="download_now">Baixar Agora</string>
     <string name="download_already_exists">O download já existe</string>
-    <string name="keep_cache">manter cache</string>
+    <string name="keep_cache">Manter em cache</string>
     <string name="updating_download_data">Atualizando os dados do item de download</string>
     <string name="pause">Pausar</string>
     <string name="preferred_locale">Local preferido</string>
@@ -230,7 +230,7 @@
     <string name="backup_restore">Restauração de backup</string>
     <string name="codec">codec</string>
     <string name="blue">Azul</string>
-    <string name="cut">Corte</string>
+    <string name="cut">Cortar</string>
     <string name="socks5_proxy">URL do proxy Socks5</string>
     <string name="socks5_proxy_summary">Use o proxy HTTP/HTTPS/SOCKS especificado</string>
     <string name="backup">Backup</string>
@@ -240,7 +240,7 @@
     <string name="link_you_copied">Link que você copiou</string>
     <string name="clear_temporary_files_summary">Excluir arquivos em cache de downloads com falhas/erros/cancelados</string>
     <string name="preferred_format_id">ID do formato preferido</string>
-    <string name="redownload">baixar novamente</string>
+    <string name="redownload">Baixar novamente</string>
     <string name="cookies">Cookies</string>
     <string name="update_formats_summary">Pesquise automaticamente formatos ausentes ao clicar no cartão de formato</string>
     <string name="start">Começar</string>
@@ -251,7 +251,7 @@
     <string name="dont_ask_again">Não perguntar novamente</string>
     <string name="restrict_filenames_summary">Restrinja os nomes de arquivo a apenas caracteres ASCII e evite \"&amp;\" e espaços nos nomes de arquivo</string>
     <string name="template">Modelo</string>
-    <string name="sponsorblock_nonmusic">Partes não relacionadas à música e off-topic</string>
+    <string name="sponsorblock_nonmusic">Partes sem música e sem relação com o tema</string>
     <string name="container">Contêiner</string>
     <string name="locale">Localidade</string>
     <string name="audio_only_item">Este item contém apenas formatos de áudio</string>
@@ -263,7 +263,7 @@
     <string name="search_suggestions_summary">Obtenha sugestões de pesquisa do Google</string>
     <string name="preferred_format_id_summary">Selecione o formato com este ID no cartão de download</string>
     <string name="misc">Diversos</string>
-    <string name="general">Em geral</string>
+    <string name="general">Geral</string>
     <string name="swipe_gestures_summary">Deslize os itens para determinadas ações</string>
     <string name="crop_thumb">Cortar Miniatura</string>
     <string name="crop_thumb_summary">Recortar miniatura em um quadrado para downloads de áudio</string>
@@ -274,10 +274,11 @@
     <string name="piped_instance_summary">Insira um servidor API PIPED, o aplicativo pode usar para consultas e formatos do youtube</string>
     <string name="retries">Novas tentativas</string>
     <string name="sponsorblock_outro">Cartões Finais/Créditos (Outro)</string>
-    <string name="sponsorblock">Bloqueio do Patrocinador</string>
+    <string name="sponsorblock">SponsorBlock</string>
     <string name="force_keyframes">Forçar quadros-chave nos cortes</string>
     <string name="force_keyframes_summary">Processo mais lento, mas cortes mais precisos</string>
-    <string name="subtitle_format">Formato da legenda</string>
+    <string name="subtitle_format">Formato da legenda
+\n</string>
     <string name="hide_thumbnails">Ocultar miniaturas</string>
     <string name="saved">Salvou</string>
     <string name="clear_saved">Remoção Concluída</string>
@@ -286,4 +287,5 @@
     <string name="use_extra_commands_summary">Para downloads de áudio/vídeo. Adicione comandos extras junto com a configuração da GUI</string>
     <string name="current">Comando atual</string>
     <string name="orange">Laranja</string>
+    <string name="show_terminal">Ocultar terminal do menu Compartilhar</string>
 </resources>

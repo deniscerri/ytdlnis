@@ -122,7 +122,7 @@
     <string name="you_are_going_to_delete">إزالة/حذف</string>
     <string name="url">الرابط</string>
     <string name="api_key">استخدام مفتاح API</string>
-    <string name="api_key_summary">نتائج أسرع من اليوتيوب</string>
+    <string name="api_key_summary">توصيات الفيديو من واجهة يوتيوب البرمجية</string>
     <string name="update_app_summary">الإعلام بإصدارات التطبيق الجديدة عند الفتح</string>
     <string name="downloads">التحميلات</string>
     <string name="remove_deleted">إزالة المحذوفة أساسًا</string>
@@ -137,7 +137,7 @@
     <string name="video_quality">جودة الفيديو</string>
     <string name="embed_subtitles">تضمين ترجمات</string>
     <string name="add_chapter">تعيين الفصول</string>
-    <string name="show_download_card">إظهار بطاقة تخصيص التحميل</string>
+    <string name="show_download_card">إظهار بطاقة التحميل</string>
     <string name="download_card_summary">إعدادات لكيفية تحميل العناصر</string>
     <string name="Open_File">فتح</string>
     <string name="delete_files_too">الحذف من وحدة التخزين أيضًا</string>
@@ -277,7 +277,7 @@
     <string name="saved">المحفوظة</string>
     <string name="clear_saved">تنظيف المحفوظة</string>
     <string name="save_for_later">حفظ، للتحميل فيما بعد؟</string>
-    <string name="format_order">ترتيب التنسيقات</string>
+    <string name="format_order">تسلسل التنسيقات وفقًا للقسم المختار</string>
     <string name="retries">المحاولات العامة</string>
     <string name="fragment_retries">المحاولات الخاصة بالأجزاء</string>
     <string name="force_keyframes">تدعيم الإطارات أثناء القص</string>
@@ -285,4 +285,6 @@
     <string name="use_extra_commands">إلحاق أوامر إضافية</string>
     <string name="use_extra_commands_summary">لتحميلات الصوت/الفيديو. بالإمكان إضافة أوامر مع تكوين واجهة المستخدم الرسومية</string>
     <string name="current">الأوامر الحالية</string>
+    <string name="orange">برتقالي</string>
+    <string name="show_terminal">إظهار أيقونة سطر الأوامر في قائمة \"مشاركة\"</string>
 </resources>

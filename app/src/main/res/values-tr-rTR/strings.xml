@@ -290,4 +290,5 @@
     <string name="saved">Kaydedildi</string>
     <string name="clear_saved">Kaydedilenleri Temizle</string>
     <string name="hide_thumbnails">Küçük Resimleri Gizle</string>
+    <string name="show_terminal">Paylaşım menüsünde terminal göster</string>
 </resources>

@@ -36,8 +36,8 @@
     <string name="downloading_update">Yeni versiya yüklənilir</string>
     <string name="audio">Səs</string>
     <string name="video">Video</string>
-    <string name="concurrent_fragments_summary">Eynivaxtlı yükləmək üçün DASH/HLS yerli video hissələri sayı</string>
-    <string name="concurrent_fragments">Eynivaxtlı Hissələr</string>
+    <string name="concurrent_fragments_summary">Eynivaxtlı yükləmək üçün DASH/HLS yerli video fraqmentləri sayı</string>
+    <string name="concurrent_fragments">Eynivaxtlı Fraqmentlər</string>
     <string name="downloading">Yüklənilmə</string>
     <string name="limit_rate">Sürəti Məhdudlaşdır</string>
     <string name="limit_rate_summary">Maksimum yükləmə sürəti (saniyədə baytla), məsələn, 50K və ya 4,2M</string>
@@ -64,7 +64,7 @@
     <string name="url">URL</string>
     <string name="link_copied_to_clipboard">Bağlantı buferə köçürüldü</string>
     <string name="api_key">API Açar İşlət</string>
-    <string name="api_key_summary">YouTube API-dən Video Tövsiyələr</string>
+    <string name="api_key_summary">YouTube API-dən Video Tövsiyələri</string>
     <string name="update_app_summary">Açıldıqda, tətbiqin yeni versiyasın bildir</string>
     <string name="downloads">Yükləmələr</string>
     <string name="remove_deleted">Silinənləri Təmizlə</string>
@@ -86,7 +86,7 @@
     <string name="delete_file_too">Faylı cihazdan sil</string>
     <string name="delete_files_too">Faylları cihazdan sil</string>
     <string name="request_permission_desc">Bu tətbiq cihazda yükləmələri saxlamaq üçün fayl icazələri tələb edir</string>
-    <string name="exit_app">Tətbiq Çıxışı</string>
+    <string name="exit_app">Tətbiqdən Çıxın</string>
     <string name="warning">Xəbərdarlıq</string>
     <string name="sponsorblock_nonmusic">Musiqisiz və Mövzudankənar hissələr</string>
     <string name="sponsorblock_sponsors">Himayədarlar</string>
@@ -165,7 +165,7 @@
     <string name="clear_temporary_files_summary">Çökən/xəta olan/ləğv edilən yükləmələrdən toplanmış faylları sil</string>
     <string name="cache_cleared">Müvəqqəti fayllar təmizləndi</string>
     <string name="clear_temporary_files">Müvəqqəti faylları təmizlə</string>
-    <string name="download_rescheduled_to">Yükləmə vaxtı buna dəyişdirildi:</string>
+    <string name="download_rescheduled_to">Yükləmə cədvəli buna dəyişdirildi:</string>
     <string name="downloads_running_try_later">Yükləmə işçisi işləyir. Daha sonra təkrar cəhd et</string>
     <string name="freespace">Boş yer</string>
     <string name="ytdl_version">yt-dlp Versiyası</string>
@@ -266,7 +266,7 @@
     <string name="crop_thumb_summary">Səs yükləmələr üçün miniatürü kvadrat şəklində kəs</string>
     <string name="locale">Yer</string>
     <string name="audio_only_item">Bu element yalnız səs formatları ehtiva edir</string>
-    <string name="move_temporary_files">Müvəqqəti faylları köçürün</string>
+    <string name="move_temporary_files">Müvəqqəti Faylları Köçür</string>
     <string name="move_temporary_files_summary">Toplanan faylları yükləmələr qovluğuna köçür</string>
     <string name="format_filtering_hint_2">Bu seçimi işlətmək üçün bütün elementlər səs və ya video olmalıdır</string>
     <string name="piped_instance">Piped İnstansiya</string>
@@ -281,7 +281,7 @@
     <string name="subtitle_format">Titr Formatı
 \n</string>
     <string name="hide_thumbnails">Miniatürləri Gizlət</string>
-    <string name="show_terminal">Sıxacı paylaşma menyusundan gizlət</string>
+    <string name="show_terminal">Sıxacı Paylaş Menyusundan Gizlət</string>
     <string name="saved">Saxlanıldı</string>
     <string name="clear_saved">Saxlanılanları Təmizlə</string>
     <string name="use_extra_commands">Əlavə Əmrlər Əlavə Et</string>
