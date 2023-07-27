@@ -74,11 +74,11 @@
     <string name="cancel">Cancelar</string>
     <string name="more">Mais</string>
     <string name="processing">Processamento</string>
-    <string name="embed_thumb">Miniaturas de Vídeo</string>
+    <string name="embed_thumb">Adicionar Miniatura</string>
     <string name="you_are_going_to_delete">Excluindo</string>
     <string name="link_copied_to_clipboard">Link copiado para a área de transferência</string>
     <string name="delete_files_too">Excluir os arquivos do dispositivo</string>
-    <string name="embed_thumb_summary">Usar miniatura como capa de áudio/vídeo</string>
+    <string name="embed_thumb_summary">Usar miniatura como capa de áudio</string>
     <string name="add_chapters">Capítulos em Videos</string>
     <string name="remove_deleted">Remover downloads Excluídos</string>
     <string name="author">Autor</string>
@@ -173,8 +173,8 @@
     <string name="ignore_battery_optimization">Ignorar a otimização da bateria</string>
     <string name="confirm_terminate">Interromper todos os downloads e forçar o fechamento do aplicativo</string>
     <string name="restrict_filenames">Restringir nomes de arquivos</string>
-    <string name="cache_cleared">Arquivos temporários apagados</string>
-    <string name="downloads_running_try_later">O processo de download está em execução. Tente mais tarde</string>
+    <string name="cache_cleared">Arquivos temporários removidos</string>
+    <string name="downloads_running_try_later">O assistente de download está em execução. Tente mais tarde</string>
     <string name="high_contrast">Alto Contraste</string>
     <string name="accents">Cor de destaque</string>
     <string name="system">Sistema</string>
@@ -230,7 +230,7 @@
     <string name="backup_restore">Restauração de backup</string>
     <string name="codec">codec</string>
     <string name="blue">Azul</string>
-    <string name="cut">Corte</string>
+    <string name="cut">Cortar</string>
     <string name="socks5_proxy">URL do proxy Socks5</string>
     <string name="socks5_proxy_summary">Use o proxy HTTP/HTTPS/SOCKS especificado</string>
     <string name="backup">Backup</string>
@@ -240,7 +240,7 @@
     <string name="link_you_copied">Link que você copiou</string>
     <string name="clear_temporary_files_summary">Excluir arquivos em cache de downloads com falhas/erros/cancelados</string>
     <string name="preferred_format_id">ID do formato preferido</string>
-    <string name="redownload">baixar novamente</string>
+    <string name="redownload">Baixar novamente</string>
     <string name="cookies">Cookies</string>
     <string name="update_formats_summary">Pesquise automaticamente formatos ausentes ao clicar no cartão de formato</string>
     <string name="start">Começar</string>
@@ -274,7 +274,7 @@
     <string name="piped_instance_summary">Insira um servidor API PIPED, o aplicativo pode usar para consultas e formatos do youtube</string>
     <string name="retries">Novas tentativas</string>
     <string name="sponsorblock_outro">Cartões Finais/Créditos (Outro)</string>
-    <string name="sponsorblock">Bloqueio do Patrocinador</string>
+    <string name="sponsorblock">SponsorBlock</string>
     <string name="force_keyframes">Forçar quadros-chave nos cortes</string>
     <string name="force_keyframes_summary">Processo mais lento, mas cortes mais precisos</string>
     <string name="subtitle_format">Formato da legenda
@@ -288,5 +288,5 @@
     <string name="use_extra_commands_summary">Para downloads de áudio/vídeo. Adicione comandos extras junto com a configuração da GUI</string>
     <string name="current">Comando atual</string>
     <string name="orange">Laranja</string>
-    <string name="show_terminal">Mostrar Terminal no menu de compartilhamento</string>
+    <string name="show_terminal">Ocultar terminal do menu Compartilhar</string>
 </resources>
