@@ -292,4 +292,5 @@
     <string name="clear_saved">Kaydedilenleri Temizle</string>
     <string name="hide_terminal">Terminal\'i paylaş menüsünden gizle</string>
     <string name="hide_thumbnails">Küçük Resimleri Gizle</string>
+    <string name="show_terminal">Paylaşım menüsünde terminal göster</string>
 </resources>

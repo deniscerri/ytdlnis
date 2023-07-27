@@ -280,12 +280,13 @@
     <string name="use_extra_commands_summary">Добавьте свои дополнительные команды перед загрузкой аудио/видео</string>
     <string name="use_extra_commands">Дополнительные команды</string>
     <string name="current">Текущая команда</string>
-    <string name="subtitle_format">Формат субтитров</string>
+    <string name="subtitle_format">Формат субтитров
+\n</string>
     <string name="hide_thumbnails">Скрыть миниатюры</string>
     <string name="hide_terminal">Скрыть терминал из меню «Поделиться»</string>
     <string name="saved">Сохранено</string>
     <string name="clear_saved">Очистить сохраненное</string>
     <string name="save_for_later">Сохранить загрузку на потом\?</string>
     <string name="orange">Оранжевый</string>
-    <string name="show_terminal">Показать Терминал в меню общего доступа</string>
+    <string name="show_terminal">Скрыть терминал из меню Поделиться</string>
 </resources>

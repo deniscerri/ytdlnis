@@ -2,12 +2,12 @@
 <resources>
     <string name="search_hint">Pesquise ou digite um URL</string>
     <string name="failed_download">Não foi possível descarregar.</string>
-    <string name="ytdl_updating_started">A descarregar nova versão…</string>
+    <string name="ytdl_updating_started">A descarregar nova versão</string>
     <string name="video">Vídeo</string>
     <string name="download_notification_channel_name">Downloads de arquivos</string>
     <string name="download_notification_channel_description">Notificação que mostra o progresso dos ficheiros a serem descarregados</string>
     <string name="search_history_hint">Pesquisa no histórico</string>
-    <string name="ytdl_already_updating">A instalar nova versão…</string>
+    <string name="ytdl_already_updating">A instalar nova versão</string>
     <string name="embed_thumb">Imagem de miniatura</string>
     <string name="ok">OK</string>
     <string name="you_are_in_latest_version">Está a utilizar a versão mais recente</string>
@@ -19,9 +19,9 @@
     <string name="processing">A processar</string>
     <string name="worst_quality">Pior qualidade</string>
     <string name="best_quality">Melhor qualidade</string>
-    <string name="remove_all">Remover tudo</string>
-    <string name="search">Pesquisar</string>
-    <string name="remove_results">Limpar resultados</string>
+    <string name="remove_all">Deletar tudo</string>
+    <string name="search">Procurar</string>
+    <string name="remove_results">Resultados claros</string>
     <string name="settings">Definições</string>
     <string name="home">Início</string>
     <string name="music_directory">Pasta de música</string>
@@ -56,7 +56,7 @@
     <string name="Open_File">Abrir ficheiro</string>
     <string name="download_all">Descarregar tudo</string>
     <string name="couldnt_find_apk">Não foi possível encontrar um APK adequado.</string>
-    <string name="downloading_update">A descarregar nova versão…</string>
+    <string name="downloading_update">A descarregar nova versão</string>
     <string name="audio">Áudio</string>
     <string name="save_thumb">Guardar miniatura</string>
     <string name="save_thumb_summary">Guardar miniatura na pasta de descargas</string>
@@ -120,7 +120,7 @@
     <string name="concurrent_fragments">Fragmentos em simultâneo</string>
     <string name="sponsorblock_sponsors">Patrocínio</string>
     <string name="sponsorblock_intro">Introdução</string>
-    <string name="sponsorblock_outro">Outro</string>
+    <string name="sponsorblock_outro">Cartões Finais/Créditos (Outro)</string>
     <string name="sponsorblock_promos">Auto-promoção</string>
     <string name="sponsorblock_reminders">Lembretes de subscrição</string>
     <string name="adjust_templates">Ajustar modelos</string>
@@ -288,4 +288,5 @@
     <string name="force_keyframes_summary">Processo mais lento, mas cortes mais precisos</string>
     <string name="save_for_later">Guardar a transferência para mais tarde\?</string>
     <string name="force_keyframes">Forçar quadros-chave nos cortes</string>
+    <string name="show_terminal">Ocultar o terminal do menu Partilhar</string>
 </resources>
