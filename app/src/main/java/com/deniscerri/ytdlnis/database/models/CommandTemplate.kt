@@ -1,5 +1,6 @@
 package com.deniscerri.ytdlnis.database.models
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import kotlinx.serialization.Serializable
@@ -10,5 +11,7 @@ data class CommandTemplate(
     @PrimaryKey(autoGenerate = true)
     var id: Long,
     var title: String,
-    var content: String
+    var content: String,
+    @ColumnInfo(defaultValue = "false")
+    var useAsExtraCommand: Boolean
 )

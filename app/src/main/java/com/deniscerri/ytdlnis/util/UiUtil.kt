@@ -13,6 +13,7 @@ import android.text.TextWatcher
 import android.util.DisplayMetrics
 import android.util.Log
 import android.view.Gravity
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
@@ -31,6 +32,8 @@ import androidx.core.content.FileProvider
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.CommandTemplate
 import com.deniscerri.ytdlnis.database.models.Format
@@ -45,10 +48,12 @@ import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.materialswitch.MaterialSwitch
 import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
 import java.util.Calendar
@@ -100,6 +105,7 @@ object UiUtil {
         val ok : Button = bottomSheet.findViewById(R.id.template_create)!!
         val title : TextInputLayout = bottomSheet.findViewById(R.id.title)!!
         val content : TextInputLayout = bottomSheet.findViewById(R.id.content)!!
+        val extraCommandsSwitch : MaterialSwitch = bottomSheet.findViewById(R.id.extra_command_switch)!!
         val shortcutsChipGroup : ChipGroup = bottomSheet.findViewById(R.id.shortcutsChipGroup)!!
         val editShortcuts : Button = bottomSheet.findViewById(R.id.edit_shortcuts)!!
 
@@ -148,6 +154,8 @@ object UiUtil {
             }
         }
 
+        extraCommandsSwitch.isChecked = item!!.useAsExtraCommand
+
         commandTemplateViewModel.shortcuts.observe(lifeCycle){
             shortcutsChipGroup.removeAllViews()
             it.forEach {shortcut ->
@@ -166,7 +174,7 @@ object UiUtil {
 
         ok.setOnClickListener {
             if (item == null){
-                val t = CommandTemplate(0, title.editText!!.text.toString(), content.editText!!.text.toString())
+                val t = CommandTemplate(0, title.editText!!.text.toString(), content.editText!!.text.toString(), extraCommandsSwitch.isChecked)
                 commandTemplateViewModel.insert(t)
                 newTemplate(t)
             }else{
@@ -506,5 +514,49 @@ object UiUtil {
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.MATCH_PARENT
         )
+    }
+
+    suspend fun showShortcuts(activity: Activity, commandTemplateViewModel: CommandTemplateViewModel, itemSelected: (itemSelected: String) -> Unit){
+        val bottomSheet = BottomSheetDialog(activity)
+        bottomSheet.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        bottomSheet.setContentView(R.layout.template_shortcuts_list)
+
+        val chipGroup = bottomSheet.findViewById<ChipGroup>(R.id.shortcutsChipGroup)
+        val shortcutList = withContext(Dispatchers.IO){
+            commandTemplateViewModel.getAllShortcuts()
+        }
+
+        chipGroup!!.removeAllViews()
+        shortcutList.forEach {shortcut ->
+            val chip = activity.layoutInflater.inflate(R.layout.suggestion_chip, chipGroup, false) as Chip
+            chip.text = shortcut.content
+            chip.setOnClickListener {
+                itemSelected(shortcut.content)
+            }
+            chipGroup.addView(chip)
+        }
+
+        bottomSheet.show()
+        bottomSheet.window!!.setLayout(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.MATCH_PARENT
+        )
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    fun RecyclerView.forceFastScrollMode()
+    {
+        overScrollMode = View.OVER_SCROLL_ALWAYS
+        scrollBarStyle = View.SCROLLBARS_INSIDE_INSET
+        isVerticalScrollBarEnabled = true
+        setOnTouchListener { view, event ->
+            if (event.x >= this.width - 30) {
+                view.parent.requestDisallowInterceptTouchEvent(true)
+                when (event.action and MotionEvent.ACTION_MASK) {
+                    MotionEvent.ACTION_UP -> view.parent.requestDisallowInterceptTouchEvent(false)
+                }
+            }
+            false
+        }
     }
 }

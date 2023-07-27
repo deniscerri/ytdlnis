@@ -31,13 +31,25 @@
         android:orientation="vertical"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
+        <com.google.android.material.materialswitch.MaterialSwitch
+            android:id="@+id/use_cookies"
+            android:layout_width="match_parent"
+            android:background="?attr/colorSurfaceContainer"
+            android:paddingHorizontal="20dp"
+            android:layout_height="70dp"
+            android:checked="false"
+            android:text="@string/use_cookies"/>
 
         <com.google.android.material.chip.Chip
             android:id="@+id/newCookie"
-            android:layout_margin="10dp"
             style="@style/Widget.Material3.Chip.Assist"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/use_cookies"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
             android:text="@string/new_cookie"
             app:chipIcon="@drawable/ic_plus" />
 

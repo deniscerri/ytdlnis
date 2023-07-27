@@ -281,10 +281,8 @@
     <string name="use_extra_commands_summary">Do pobierania audio/wideo. Dodaj dodatkowe polecenia wraz z konfiguracją GUI</string>
     <string name="current">Bieżące polecenie</string>
     <string name="hide_thumbnails">Ukryj miniatury</string>
-    <string name="hide_terminal">Ukryj terminal w menu udostępniania</string>
     <string name="saved">Zapisane</string>
     <string name="clear_saved">Wyczyść zapisane</string>
     <string name="save_for_later">Zachować pobieranie na później\?</string>
-    <string name="subtitle_format">Format napisów
-\n</string>
+    <string name="subtitle_format">Format napisów</string>
 </resources>

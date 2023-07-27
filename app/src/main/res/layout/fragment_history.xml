@@ -111,7 +111,7 @@
         android:id="@+id/recyclerviewhistorys"
         android:orientation="vertical"
         android:layout_height="wrap_content"
-        android:scrollbars="vertical"
+        android:scrollbars="none"
         app:fastScrollEnabled="true"
         app:fastScrollHorizontalThumbDrawable="@drawable/thumb_drawable"
         app:fastScrollHorizontalTrackDrawable="@drawable/line_drawable"

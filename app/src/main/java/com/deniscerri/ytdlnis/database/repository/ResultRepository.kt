@@ -48,7 +48,7 @@ class ResultRepository(private val resultDao: ResultDao, private val context: Co
     suspend fun getOne(inputQuery: String, resetResults: Boolean) : ArrayList<ResultItem?>{
         val infoUtil = InfoUtil(context)
         try {
-            val v = infoUtil.getVideo(inputQuery)
+            val v = infoUtil.getYoutubeVideo(inputQuery)
             if (resetResults) {
                 deleteAll()
                 itemCount.value = v.size

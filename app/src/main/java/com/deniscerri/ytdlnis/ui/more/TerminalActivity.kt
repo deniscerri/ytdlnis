@@ -129,8 +129,12 @@ class TerminalActivity : BaseActivity() {
                     }
                 }
                 R.id.shortcuts -> {
-                    if (shortcutCount > 0){
-                        showShortcuts()
+                    lifecycleScope.launch {
+                        if (shortcutCount > 0){
+                            UiUtil.showShortcuts(this@TerminalActivity, commandTemplateViewModel){sh ->
+                                input!!.text.insert(input!!.selectionStart, "$sh ")
+                            }
+                        }
                     }
                 }
                 R.id.folder -> {
@@ -293,35 +297,6 @@ class TerminalActivity : BaseActivity() {
         fab!!.text = getString(R.string.cancel_download)
         fab!!.setIconResource(R.drawable.ic_cancel)
         topAppBar!!.menu.forEach { it.isEnabled = false }
-    }
-
-    private fun showShortcuts() {
-        lifecycleScope.launch {
-            val bottomSheet = BottomSheetDialog(this@TerminalActivity)
-            bottomSheet.requestWindowFeature(Window.FEATURE_NO_TITLE)
-            bottomSheet.setContentView(R.layout.template_shortcuts_list)
-
-            val chipGroup = bottomSheet.findViewById<ChipGroup>(R.id.shortcutsChipGroup)
-            val shortcutList = withContext(Dispatchers.IO){
-                commandTemplateViewModel.getAllShortcuts()
-            }
-
-            chipGroup!!.removeAllViews()
-            shortcutList.forEach {shortcut ->
-                val chip = layoutInflater.inflate(R.layout.suggestion_chip, chipGroup, false) as Chip
-                chip.text = shortcut.content
-                chip.setOnClickListener {
-                    input!!.text.insert(input!!.selectionStart, shortcut.content + " ")
-                }
-                chipGroup.addView(chip)
-            }
-
-            bottomSheet.show()
-            bottomSheet.window!!.setLayout(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT
-            )
-        }
     }
 
     private var commandPathResultLauncher = registerForActivityResult(

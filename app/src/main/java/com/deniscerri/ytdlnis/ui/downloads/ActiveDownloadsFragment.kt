@@ -1,15 +1,20 @@
 package com.deniscerri.ytdlnis.ui.downloads
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.view.allViews
+import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -20,11 +25,15 @@ import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.repository.DownloadRepository
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.util.NotificationUtil
+import com.deniscerri.ytdlnis.util.UiUtil.forceFastScrollMode
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.yausername.youtubedl_android.YoutubeDL
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 
 
 class ActiveDownloadsFragment : Fragment(), ActiveDownloadAdapter.OnItemClickListener, OnClickListener {
@@ -62,45 +71,47 @@ class ActiveDownloadsFragment : Fragment(), ActiveDownloadAdapter.OnItemClickLis
             )
 
         activeRecyclerView = view.findViewById(R.id.download_recyclerview)
+        activeRecyclerView.forceFastScrollMode()
         activeRecyclerView.adapter = activeDownloads
         activeRecyclerView.layoutManager = GridLayoutManager(context, resources.getInteger(R.integer.grid_size))
         pauseResume = view.findViewById(R.id.pause_resume)
 
         pauseResume.setOnClickListener {
             if (pauseResume.text == requireContext().getString(R.string.pause)){
-                list.forEach {
-                    cancelItem(it.id.toInt())
-                    it.status = DownloadRepository.Status.Paused.toString()
-                    downloadViewModel.updateDownload(it)
 
-                    val card = view.findViewWithTag<MaterialCardView>("${it.id}##card")
-                    val progressBar = card.findViewById<LinearProgressIndicator>(R.id.progress)
-                    val pauseButton = card.findViewById<MaterialButton>(R.id.active_download_pause)
-                    val cancelButton = card.findViewById<MaterialButton>(R.id.active_download_delete)
+                lifecycleScope.launch {
+                    runBlocking {
+                        val queued = withContext(Dispatchers.IO){
+                            downloadViewModel.getQueued()
+                        }
+                        queued.forEach {
+                            WorkManager.getInstance(requireContext()).cancelUniqueWork(it.id.toString())
+                        }
+                    }
 
-                    progressBar.isIndeterminate = false
-                    pauseButton.icon = ContextCompat.getDrawable(requireContext(), R.drawable.exomedia_ic_play_arrow_white)
-                    pauseButton.tag = ActiveDownloadAdapter.ActiveDownloadAction.Resume
-                    cancelButton.visibility = View.VISIBLE
+                    list.forEach {
+                        cancelItem(it.id.toInt())
+                        it.status = DownloadRepository.Status.Paused.toString()
+                        downloadViewModel.updateDownload(it)
+                    }
+
+                    activeDownloads.notifyDataSetChanged()
+
                 }
             }else{
-                val toQueue = list.filter { it.status == DownloadRepository.Status.Paused.toString() }
-                toQueue.forEach {
-                    it.status = DownloadRepository.Status.Active.toString()
-                    downloadViewModel.updateDownload(it)
-
-                    val card = view.findViewWithTag<MaterialCardView>("${it.id}##card")
-                    val progressBar = card.findViewById<LinearProgressIndicator>(R.id.progress)
-                    val pauseButton = card.findViewById<MaterialButton>(R.id.active_download_pause)
-                    val cancelButton = card.findViewById<MaterialButton>(R.id.active_download_delete)
-
-                    pauseButton.icon = ContextCompat.getDrawable(requireContext(), R.drawable.exomedia_ic_pause_white)
-                    progressBar.isIndeterminate = true
-                    cancelButton.visibility = View.GONE
-                    pauseButton.tag = ActiveDownloadAdapter.ActiveDownloadAction.Pause
-                }
-                runBlocking {
-                    downloadViewModel.queueDownloads(toQueue)
+                lifecycleScope.launch {
+                    val toQueue = list.filter { it.status == DownloadRepository.Status.Paused.toString() }.toMutableList()
+                    toQueue.forEach {
+                        it.status = DownloadRepository.Status.Active.toString()
+                        downloadViewModel.updateDownload(it)
+                    }
+                    val queuedItems = withContext(Dispatchers.IO){
+                        downloadViewModel.getQueued()
+                    }
+                    toQueue.addAll(queuedItems)
+                    runBlocking {
+                        downloadViewModel.queueDownloads(toQueue)
+                    }
                 }
             }
         }
@@ -109,7 +120,7 @@ class ActiveDownloadsFragment : Fragment(), ActiveDownloadAdapter.OnItemClickLis
             list = it
             activeDownloads.submitList(it)
 
-            if (list.isNotEmpty()){
+            if (it.size > 1){
                 pauseResume.visibility = View.VISIBLE
                 if (list.all { l -> l.status == DownloadRepository.Status.Paused.toString() }){
                     pauseResume.text = requireContext().getString(R.string.resume)
@@ -117,6 +128,7 @@ class ActiveDownloadsFragment : Fragment(), ActiveDownloadAdapter.OnItemClickLis
                     pauseResume.text = requireContext().getString(R.string.pause)
                 }
             }else{
+                activeDownloads.notifyDataSetChanged()
                 pauseResume.visibility = View.GONE
             }
 
@@ -131,7 +143,6 @@ class ActiveDownloadsFragment : Fragment(), ActiveDownloadAdapter.OnItemClickLis
 
                             val progress = work.progress.getInt("progress", 0)
                             val output = work.progress.getString("output")
-                            val log = work.progress.getBoolean("log", false)
 
                             val progressBar = view.findViewWithTag<LinearProgressIndicator>("$id##progress")
                             val outputText = view.findViewWithTag<TextView>("$id##output")

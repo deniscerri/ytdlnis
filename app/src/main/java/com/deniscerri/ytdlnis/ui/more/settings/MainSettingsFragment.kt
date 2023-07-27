@@ -550,8 +550,6 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
                         }
                     }
 
-                    finalMessage.append("${getString(R.string.restart)}?")
-
                     val builder = MaterialAlertDialogBuilder(requireContext())
                     builder.setTitle(getString(R.string.restore))
                     builder.setMessage(finalMessage)

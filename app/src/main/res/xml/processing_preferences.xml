@@ -55,6 +55,14 @@
 
     <SwitchPreferenceCompat
         android:widgetLayout="@layout/preferece_material_switch"
+        app:defaultValue="false"
+        app:icon="@drawable/baseline_description_24"
+        app:key="write_description"
+        android:summary="@string/write_description_summary"
+        app:title="@string/write_description" />
+
+    <SwitchPreferenceCompat
+        android:widgetLayout="@layout/preferece_material_switch"
         app:defaultValue="true"
         app:icon="@drawable/ic_image"
         app:key="embed_thumbnail"

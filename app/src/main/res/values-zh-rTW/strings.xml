@@ -278,10 +278,8 @@
     <string name="use_extra_commands">新增額外指令</string>
     <string name="use_extra_commands_summary">為了音訊 / 影片下載，請在圖形使用者介面配置中新增額外的指令</string>
     <string name="hide_thumbnails">隱藏縮略圖</string>
-    <string name="subtitle_format">字幕格式
-\n</string>
+    <string name="subtitle_format">字幕格式</string>
     <string name="force_keyframes_summary">較為緩慢的處理過程，但能得到更準確的剪輯結果</string>
-    <string name="hide_terminal">隱藏分享選單中的終端機</string>
     <string name="saved">已儲存</string>
     <string name="clear_saved">清除已儲存的內容</string>
     <string name="save_for_later">儲存下載以供日後使用？</string>

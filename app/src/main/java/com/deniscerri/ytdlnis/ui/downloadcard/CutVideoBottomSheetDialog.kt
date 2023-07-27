@@ -8,6 +8,7 @@ import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.util.DisplayMetrics
+import android.util.Range
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -58,7 +59,7 @@ import java.util.concurrent.Executors
 import kotlin.properties.Delegates
 
 
-class CutVideoBottomSheetDialog(private val item: DownloadItem, private val urls : String?, private var chapters: List<ChapterItem>?, private val listener: VideoCutListener) : BottomSheetDialogFragment() {
+class CutVideoBottomSheetDialog(private val item: DownloadItem, private var urls : String?, private var chapters: List<ChapterItem>?, private val listener: VideoCutListener) : BottomSheetDialogFragment() {
     private lateinit var behavior: BottomSheetBehavior<View>
     private lateinit var infoUtil: InfoUtil
     private lateinit var player: ExoPlayer
@@ -83,7 +84,6 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val urls
 
     private var timeSeconds by Delegates.notNull<Int>()
     private lateinit var selectedCuts: MutableList<String>
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -157,12 +157,12 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val urls
                     if (urls.isNullOrEmpty()) {
                         infoUtil.getStreamingUrlAndChapters(item.url)
                     }else {
-                        urls.split("\n").toMutableList()
+                        urls!!.split("\n").toMutableList()
                     }
                 }
 
                 if (data.isEmpty()) throw Exception("No Data found!")
-                if (chapters!!.isEmpty()){
+                if (chapters!!.isEmpty() && urls!!.isBlank()){
                     try{
                         val listType: Type = object : TypeToken<List<ChapterItem>>() {}.type
                         chapters = Gson().fromJson(data.first().toString(), listType)
@@ -239,26 +239,31 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val urls
         fromTextInput.editText!!.setText("0:00")
         toTextInput.editText!!.setText(item.duration)
 
-        rangeSlider.addOnChangeListener { rangeSlider, _, _ ->
-            val values = rangeSlider.values
-            val startTimestamp = (values[0].toInt() * timeSeconds) / 100
-            val endTimestamp = (values[1].toInt() * timeSeconds) / 100
+        rangeSlider.addOnSliderTouchListener(object : RangeSlider.OnSliderTouchListener {
+            override fun onStartTrackingTouch(slider: RangeSlider) {
 
-            val startTimestampString = infoUtil.formatIntegerDuration(startTimestamp, Locale.US)
-            val endTimestampString = infoUtil.formatIntegerDuration(endTimestamp, Locale.US)
+            }
 
-            fromTextInput.editText!!.setText(startTimestampString)
-            toTextInput.editText!!.setText(endTimestampString)
+            override fun onStopTrackingTouch(slider: RangeSlider) {
+                val values = rangeSlider.values
+                val startTimestamp = (values[0].toInt() * timeSeconds) / 100
+                val endTimestamp = (values[1].toInt() * timeSeconds) / 100
+
+                val startTimestampString = infoUtil.formatIntegerDuration(startTimestamp, Locale.US)
+                val endTimestampString = infoUtil.formatIntegerDuration(endTimestamp, Locale.US)
+
+                fromTextInput.editText!!.setText(startTimestampString)
+                toTextInput.editText!!.setText(endTimestampString)
 
 
-            okBtn.isEnabled = !(values[0] == 0F && values[1] == 100F)
+                okBtn.isEnabled = !(values[0] == 0F && values[1] == 100F)
 
-            try {
-                player.seekTo((startTimestamp * 1000).toLong())
-                player.play()
-            }catch (ignored: Exception) {}
-
-        }
+                try {
+                    player.seekTo((startTimestamp * 1000).toLong())
+                    player.play()
+                }catch (ignored: Exception) {}
+            }
+        })
 
         fromTextInput.editText!!.setOnKeyListener(object : View.OnKeyListener {
 
@@ -271,20 +276,23 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val urls
 
                     fromTextInput.editText!!.clearFocus()
                     val seconds = convertStringToTimestamp(fromTextInput.editText!!.text.toString())
-                    if (seconds == 0) {
-                        fromTextInput.editText!!.setText(infoUtil.formatIntegerDuration(startTimestamp, Locale.US))
-                        return true
-                    }
+                    val endSeconds = convertStringToTimestamp(toTextInput.editText!!.text.toString())
 
                     val startValue = (seconds.toFloat() / endTimestamp) * 100
-                    if (startValue > 100){
+                    val endValue = (endSeconds.toFloat() / endTimestamp) * 100
+
+                    if (seconds == 0) {
                         fromTextInput.editText!!.setText(infoUtil.formatIntegerDuration(startTimestamp, Locale.US))
-                        return true
+                    }else if (startValue > 100){
+                        fromTextInput.editText!!.setText(infoUtil.formatIntegerDuration(startTimestamp, Locale.US))
                     }
 
-                    rangeSlider.setValues(startValue, rangeSlider.valueTo)
-                    val startValueTimeStampSeconds = (startValue.toInt() * timeSeconds) / 100
-                    fromTextInput.editText!!.setText(infoUtil.formatIntegerDuration(startValueTimeStampSeconds, Locale.US))
+                    rangeSlider.setValues(startValue, endValue)
+                    okBtn.isEnabled = !(startValue == 0F && endValue == 100F)
+                    try {
+                        player.seekTo((((startValue * timeSeconds) / 100) * 1000).toLong())
+                        player.play()
+                    }catch (ignored: Exception) {}
 
                     return true
                 }
@@ -299,24 +307,28 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val urls
                 if ((event!!.action == KeyEvent.ACTION_DOWN) &&
                     (keyCode == KeyEvent.KEYCODE_ENTER)) {
 
+                    val values = rangeSlider.values
                     val endTimestamp = (rangeSlider.valueTo.toInt() * timeSeconds) / 100
 
                     toTextInput.editText!!.clearFocus()
+                    val startSeconds = convertStringToTimestamp(fromTextInput.editText!!.text.toString())
                     val seconds = convertStringToTimestamp(toTextInput.editText!!.text.toString())
+
+                    val startValue = (startSeconds.toFloat() / endTimestamp) * 100
+                    val endValue = (seconds.toFloat() / endTimestamp) * 100
+
                     if (seconds == 0) {
                         toTextInput.editText!!.setText(infoUtil.formatIntegerDuration(endTimestamp, Locale.US))
-                        return true
-                    }
-
-                    val endValue = (seconds.toFloat() / endTimestamp) * 100
-                    if (endValue > 100 || endValue <= rangeSlider.valueFrom.toInt()){
+                    }else if (endValue > 100 || endValue <= rangeSlider.valueFrom.toInt()){
                         toTextInput.editText!!.setText(infoUtil.formatIntegerDuration(endTimestamp, Locale.US))
-                        return true
                     }
 
-                    rangeSlider.setValues(rangeSlider.valueFrom, endValue)
-                    val endValueTimeStampSeconds = (endValue.toInt() * timeSeconds) / 100
-                    toTextInput.editText!!.setText(infoUtil.formatIntegerDuration(endValueTimeStampSeconds, Locale.US))
+                    rangeSlider.setValues(startValue, endValue)
+                    okBtn.isEnabled = !(startValue == 0F && endValue == 100F)
+                    try {
+                        player.seekTo((((startValue * timeSeconds) / 100) * 1000).toLong())
+                        player.play()
+                    }catch (ignored: Exception) {}
 
                     return true
                 }

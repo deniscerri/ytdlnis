@@ -281,11 +281,9 @@
     <string name="current">Поточна команда</string>
     <string name="use_extra_commands_summary">Додайте свої додаткові команди перед завантаженням аудіо/відео</string>
     <string name="hide_thumbnails">Приховати мініатюри</string>
-    <string name="hide_terminal">Приховати термінал у меню спільного доступу</string>
     <string name="saved">Збережено</string>
     <string name="clear_saved">Очистити збережене</string>
-    <string name="subtitle_format">Формат субтитрів
-\n</string>
+    <string name="subtitle_format">Формат субтитрів</string>
     <string name="save_for_later">Зберегти завантаження на потім\?</string>
     <string name="orange">Помаранчевий</string>
 </resources>

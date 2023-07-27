@@ -39,8 +39,7 @@ class DownloadWorker(
 ) : Worker(context, workerParams) {
     override fun doWork(): Result {
         itemId = inputData.getLong("id", 0)
-        if (itemId == 0L) return Result.failure()
-
+        if (itemId == 0L || isStopped) return Result.failure()
 
         val notificationUtil = NotificationUtil(context)
         val infoUtil = InfoUtil(context)
@@ -74,6 +73,7 @@ class DownloadWorker(
         Log.e(TAG, downloadItem.toString())
 
         runBlocking{
+            YoutubeDL.getInstance().destroyProcessById(itemId.toString())
             repository.setDownloadStatus(downloadItem, DownloadRepository.Status.Active)
         }
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
@@ -118,7 +118,7 @@ class DownloadWorker(
         }
         runCatching {
             YoutubeDL.getInstance().execute(request, downloadItem.id.toString()){ progress, _, line ->
-                setProgressAsync(workDataOf("progress" to progress.toInt(), "output" to line.chunked(5000).first().toString(), "id" to downloadItem.id, "log" to logDownloads))
+                setProgressAsync(workDataOf("progress" to progress.toInt(), "output" to line.chunked(5000).first().toString(), "id" to downloadItem.id))
                 val title: String = downloadItem.title
                 notificationUtil.updateDownloadNotification(
                     downloadItem.id.toInt(),
@@ -137,16 +137,16 @@ class DownloadWorker(
             runBlocking {
                 var finalPaths : List<String>?
                 //move file from internal to set download directory
-                setProgressAsync(workDataOf("progress" to 100, "output" to "Moving file to ${FileUtil.formatPath(downloadLocation)}", "id" to downloadItem.id, "log" to logDownloads))
+                setProgressAsync(workDataOf("progress" to 100, "output" to "Moving file to ${FileUtil.formatPath(downloadLocation)}", "id" to downloadItem.id))
                 try {
                     finalPaths = withContext(Dispatchers.IO){
                         FileUtil.moveFile(tempFileDir.absoluteFile,context, downloadLocation, keepCache){ p ->
-                            setProgressAsync(workDataOf("progress" to p, "output" to "Moving file to ${FileUtil.formatPath(downloadLocation)}", "id" to downloadItem.id, "log" to logDownloads))
+                            setProgressAsync(workDataOf("progress" to p, "output" to "Moving file to ${FileUtil.formatPath(downloadLocation)}", "id" to downloadItem.id))
                         }
                     }
 
                     if (finalPaths.isNotEmpty()){
-                        setProgressAsync(workDataOf("progress" to 100, "output" to "Moved file to $downloadLocation", "id" to downloadItem.id, "log" to logDownloads))
+                        setProgressAsync(workDataOf("progress" to 100, "output" to "Moved file to $downloadLocation", "id" to downloadItem.id))
                     }else{
                         finalPaths = listOf(context.getString(R.string.unfound_file))
                     }
@@ -177,7 +177,7 @@ class DownloadWorker(
 
                 if (wasQuickDownloaded){
                     runCatching {
-                        setProgressAsync(workDataOf("progress" to 100, "output" to "Creating Result Items", "id" to downloadItem.id, "log" to false))
+                        setProgressAsync(workDataOf("progress" to 100, "output" to "Creating Result Items", "id" to downloadItem.id))
                         runBlocking {
                             infoUtil.getFromYTDL(downloadItem.url).forEach { res ->
                                 if (res != null) {
@@ -242,7 +242,8 @@ class DownloadWorker(
         var wasQuickDownloaded = false
         if (downloadItem.title.isEmpty() || downloadItem.author.isEmpty() || downloadItem.thumb.isEmpty()){
             runCatching {
-                setProgressAsync(workDataOf("progress" to 0, "output" to context.getString(R.string.updating_download_data), "id" to downloadItem.id, "log" to false))
+                if (isStopped) destroyYTDLProcess()
+                setProgressAsync(workDataOf("progress" to 0, "output" to context.getString(R.string.updating_download_data), "id" to downloadItem.id))
                 val info = infoUtil.getMissingInfo(downloadItem.url)
                 if (downloadItem.title.isEmpty()) downloadItem.title = info?.title.toString()
                 if (downloadItem.author.isEmpty()) downloadItem.author = info?.author.toString()
@@ -259,8 +260,12 @@ class DownloadWorker(
     }
 
     override fun onStopped() {
-        YoutubeDL.getInstance().destroyProcessById(itemId.toInt().toString())
+        destroyYTDLProcess()
         super.onStopped()
+    }
+
+    private fun destroyYTDLProcess(){
+        YoutubeDL.getInstance().destroyProcessById(itemId.toInt().toString())
     }
 
     companion object {

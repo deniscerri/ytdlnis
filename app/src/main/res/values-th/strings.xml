@@ -98,10 +98,8 @@
     <string name="save_for_later">บันทึกการดาวน์โหลดสำหรับภายหลัง\?</string>
     <string name="clear_saved">ล้างข้อมูลที่บันทึกไว้</string>
     <string name="saved">บันทึกแล้ว</string>
-    <string name="hide_terminal">ซ่อน Terminal จากเมนูแชร์</string>
     <string name="hide_thumbnails">ซ่อนภาพขนาดย่อ</string>
-    <string name="subtitle_format">รูปแบบคำบรรยาย
-\n</string>
+    <string name="subtitle_format">รูปแบบคำบรรยาย</string>
     <string name="current">คำสั่งปัจจุบัน</string>
     <string name="use_extra_commands">เพิ่มคำสั่งพิเศษ</string>
     <string name="force_keyframes_summary">กระบวนการช้าลง แต่มีการตัดที่แม่นยำยิ่งขึ้น</string>

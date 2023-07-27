@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey
 data class ResultItem(
     @PrimaryKey(autoGenerate = true)
     var id: Long,
-    val url: String,
+    var url: String,
     var title: String,
     var author: String,
     val duration: String,

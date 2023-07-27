@@ -129,7 +129,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/from_textinput"
                 style="@style/Widget.Material3.TextInputLayout.FilledBox"
-                android:layout_width="80dp"
+                android:layout_width="90dp"
                 android:layout_height="wrap_content"
                 android:hint="@string/start">
 
@@ -154,7 +154,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/to_textinput"
                 style="@style/Widget.Material3.TextInputLayout.FilledBox"
-                android:layout_width="80dp"
+                android:layout_width="90dp"
                 android:layout_height="wrap_content"
                 android:hint="@string/end"
                 app:layout_constraintBottom_toBottomOf="parent"

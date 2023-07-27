@@ -8,6 +8,7 @@ import android.content.res.Resources
 import android.net.ConnectivityManager
 import android.os.Looper
 import android.util.DisplayMetrics
+import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
@@ -18,8 +19,10 @@ import androidx.work.Constraints
 import androidx.work.Data
 import androidx.work.ExistingWorkPolicy
 import androidx.work.NetworkType
+import androidx.work.OneTimeWorkRequest
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
+import androidx.work.WorkRequest
 import androidx.work.workDataOf
 import com.deniscerri.ytdlnis.App
 import com.deniscerri.ytdlnis.R
@@ -42,8 +45,11 @@ import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import java.io.File
 import java.util.Locale
 import java.util.concurrent.TimeUnit
@@ -71,6 +77,7 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
     private val formatIDPreference: List<String>
     private val audioFormatIDPreference: List<String>
     private val resources : Resources
+    private var extraCommands: String = ""
     enum class Type {
         audio, video, command
     }
@@ -90,6 +97,11 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
         savedDownloads = repository.savedDownloads.asLiveData()
         cancelledDownloads = repository.cancelledDownloads.asLiveData()
         erroredDownloads = repository.erroredDownloads.asLiveData()
+        viewModelScope.launch(Dispatchers.IO){
+            if (sharedPreferences.getBoolean("use_extra_commands", false)){
+                extraCommands = commandTemplateDao.getAllTemplatesAsExtraCommands().joinToString(" ")
+            }
+        }
 
         videoQualityPreference = sharedPreferences.getString("video_quality", application.getString(R.string.best_quality)).toString()
         formatIDPreference = sharedPreferences.getString("format_id", "").toString().split(",")
@@ -190,7 +202,7 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
             container!!,
             "",
             resultItem.formats,
-            downloadPath!!, resultItem.website, "", resultItem.playlistTitle, audioPreferences, videoPreferences, "", customFileNameTemplate!!, saveThumb, DownloadRepository.Status.Queued.toString(), 0, null
+            downloadPath!!, resultItem.website, "", resultItem.playlistTitle, audioPreferences, videoPreferences, extraCommands, customFileNameTemplate!!, saveThumb, DownloadRepository.Status.Queued.toString(), 0, null
         )
 
     }
@@ -312,7 +324,7 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
             container,
             "",
             ArrayList(),
-            path, historyItem.website, "", "", audioPreferences, videoPreferences, "", customFileNameTemplate!!, saveThumb, DownloadRepository.Status.Queued.toString(), 0, null
+            path, historyItem.website, "", "", audioPreferences, videoPreferences, extraCommands, customFileNameTemplate!!, saveThumb, DownloadRepository.Status.Queued.toString(), 0, null
         )
 
     }
@@ -415,6 +427,12 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
         repository.insert(item)
     }
 
+    fun insertAll(items: List<DownloadItem>)= viewModelScope.launch(Dispatchers.IO){
+        items.forEach{
+            repository.insert(it)
+        }
+    }
+
     fun deleteCancelled() = viewModelScope.launch(Dispatchers.IO) {
         repository.deleteCancelled()
     }
@@ -473,10 +491,9 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
                 exists = true
             }else{
                 if (it.id == 0L){
-                    val insert = async {repository.insert(it)}
-                    val id = insert.await()
+                    val id = runBlocking {repository.insert(it)}
                     it.id = id
-                }else{
+                }else if (it.status == DownloadRepository.Status.Queued.toString()){
                     repository.update(it)
                 }
 
@@ -489,7 +506,6 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
                 Toast.makeText(context, context.getString(R.string.download_already_exists), Toast.LENGTH_LONG).show()
             }
         }
-
         queuedItems.forEach {
             val currentTime = System.currentTimeMillis()
             var delay = if (it.downloadStartTime != 0L){

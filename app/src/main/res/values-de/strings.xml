@@ -275,10 +275,8 @@
     <string name="retries">Wiederholungen</string>
     <string name="fragment_retries">Fragmentwiederholungen</string>
     <string name="format_order">Formatreihenfolge</string>
-    <string name="subtitle_format">Untertitelformat
-\n</string>
+    <string name="subtitle_format">Untertitelformat</string>
     <string name="hide_thumbnails">Vorschaubilder verstecken</string>
-    <string name="hide_terminal">Terminal im Freigabemenü ausblenden</string>
     <string name="saved">Gespeichert</string>
     <string name="save_for_later">Download für später merken\?</string>
     <string name="clear_saved">Gespeichertes leeren</string>

@@ -36,6 +36,7 @@ import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel.Type
 import com.deniscerri.ytdlnis.database.viewmodel.ResultViewModel
+import com.deniscerri.ytdlnis.databinding.ExtraCommandsBottomSheetBinding
 import com.deniscerri.ytdlnis.databinding.FragmentHomeBinding
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.InfoUtil
@@ -348,37 +349,14 @@ class DownloadAudioFragment(private var resultItem: ResultItem, private var curr
                 if (sharedPreferences.getBoolean("use_extra_commands", false)){
                     extraCommands.visibility = View.VISIBLE
                     extraCommands.setOnClickListener {
-                        val bottomSheet = BottomSheetDialog(requireContext())
-                        bottomSheet.requestWindowFeature(Window.FEATURE_NO_TITLE)
-                        bottomSheet.setContentView(R.layout.extra_commands_bottom_sheet)
-
-                        val text = bottomSheet.findViewById<EditText>(R.id.command)
-                        val currentCommand = infoUtil.buildYoutubeDLRequest(downloadItem).buildCommand().joinToString(" ")
-                        bottomSheet.findViewById<TextView>(R.id.currentText)?.text = currentCommand
-
-                        text?.setText(downloadItem.extraCommands)
-
-                        val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                        text!!.postDelayed({
-                            text.setSelection(text.length())
-                            text.requestFocus()
-                            imm.showSoftInput(text, 0)
-                        }, 300)
-
-                        val ok = bottomSheet.findViewById<Button>(R.id.okButton)
-                        ok?.setOnClickListener {
-                            downloadItem.extraCommands = text.text.toString()
-                            bottomSheet.dismiss()
+                        val callback = object : ExtraCommandsListener {
+                            override fun onChangeExtraCommand(c: String) {
+                                downloadItem.extraCommands = c
+                            }
                         }
 
-                        bottomSheet.show()
-                        val displayMetrics = DisplayMetrics()
-                        requireActivity().windowManager.defaultDisplay.getMetrics(displayMetrics)
-                        bottomSheet.behavior.peekHeight = displayMetrics.heightPixels
-                        bottomSheet.window!!.setLayout(
-                            ViewGroup.LayoutParams.MATCH_PARENT,
-                            ViewGroup.LayoutParams.MATCH_PARENT
-                        )
+                        val bottomSheetDialog = AddExtraCommandsDialog(downloadItem, callback)
+                        bottomSheetDialog.show(parentFragmentManager, "extraCommands")
                     }
                 }else{
                     extraCommands.visibility = View.GONE

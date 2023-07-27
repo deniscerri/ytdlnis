@@ -51,6 +51,10 @@ class ShareActivity : BaseActivity() {
     private lateinit var sharedPreferences: SharedPreferences
     private var quickDownload by Delegates.notNull<Boolean>()
 
+    override fun onPause() {
+        super.onPause()
+        finishAndRemoveTask()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

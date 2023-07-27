@@ -279,7 +279,6 @@
     <string name="force_keyframes_summary">Processo mais lento, mas cortes mais precisos</string>
     <string name="subtitle_format">Formato da legenda</string>
     <string name="hide_thumbnails">Ocultar miniaturas</string>
-    <string name="hide_terminal">Ocultar Terminal do menu de compartilhamento</string>
     <string name="saved">Salvou</string>
     <string name="clear_saved">Remoção Concluída</string>
     <string name="save_for_later">Salvar download para mais tarde\?</string>

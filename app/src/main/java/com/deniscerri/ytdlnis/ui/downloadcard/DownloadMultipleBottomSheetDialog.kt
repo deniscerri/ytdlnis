@@ -76,7 +76,7 @@ class DownloadMultipleBottomSheetDialog(private var results: List<ResultItem?>, 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
+        downloadViewModel = ViewModelProvider(requireActivity())[DownloadViewModel::class.java]
         resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]
         commandTemplateViewModel = ViewModelProvider(this)[CommandTemplateViewModel::class.java]
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
@@ -145,10 +145,10 @@ class DownloadMultipleBottomSheetDialog(private var results: List<ResultItem?>, 
             dd.setTitle(getString(R.string.save_for_later))
             dd.setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, _: Int -> dialogInterface.cancel() }
             dd.setPositiveButton(getString(R.string.ok)) { _: DialogInterface?, _: Int ->
-                lifecycleScope.launch(Dispatchers.IO){
-                    items.forEach {
-                        it.status = DownloadRepository.Status.Saved.toString()
-                        downloadViewModel.updateDownload(it)
+                lifecycleScope.launch{
+                    items.map { it.status = DownloadRepository.Status.Saved.toString() }
+                    withContext(Dispatchers.IO){
+                        downloadViewModel.insertAll(items)
                     }
                     dismiss()
                 }

@@ -172,7 +172,7 @@ class DownloadCommandFragment(private val resultItem: ResultItem, private var cu
                 val editSelected : Chip = view.findViewById(R.id.editSelected)
                 editSelected.setOnClickListener {
                     var current = templates.find { it.title == autoCompleteTextView.text.toString() }
-                    if (current == null) current = CommandTemplate(0, "", chosenCommandView.editText!!.text.toString())
+                    if (current == null) current = CommandTemplate(0, "", chosenCommandView.editText!!.text.toString(), false)
                     UiUtil.showCommandTemplateCreationOrUpdatingSheet(current, requireActivity(), viewLifecycleOwner, commandTemplateViewModel) {
                         templates.add(it)
                         chosenCommandView.editText!!.setText(it.content)

@@ -282,7 +282,6 @@
     <string name="current">Текущая команда</string>
     <string name="subtitle_format">Формат субтитров</string>
     <string name="hide_thumbnails">Скрыть миниатюры</string>
-    <string name="hide_terminal">Скрыть терминал из меню «Поделиться»</string>
     <string name="saved">Сохранено</string>
     <string name="clear_saved">Очистить сохраненное</string>
     <string name="save_for_later">Сохранить загрузку на потом\?</string>

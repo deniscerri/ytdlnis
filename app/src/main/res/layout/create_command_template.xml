@@ -102,6 +102,18 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <com.google.android.material.materialswitch.MaterialSwitch
+                    android:id="@+id/extra_command_switch"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:checked="false"
+                    android:layout_marginHorizontal="5dp"
+                    android:textSize="15sp"
+                    android:text="@string/extra_command"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+
+
                 <View
                     style="@style/Divider.Horizontal"
                     android:layout_marginVertical="10dp" />

@@ -3,6 +3,7 @@ package com.deniscerri.ytdlnis.ui.more
 import android.content.Context.INPUT_METHOD_SERVICE
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Canvas
 import android.graphics.Color
 import android.os.Bundle
@@ -14,6 +15,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.RelativeLayout
 import androidx.appcompat.app.AlertDialog
+import androidx.core.view.children
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -30,6 +32,7 @@ import com.deniscerri.ytdlnis.database.viewmodel.CookieViewModel
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.chip.Chip
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.materialswitch.MaterialSwitch
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
@@ -42,22 +45,26 @@ class CookiesFragment : Fragment(), CookieAdapter.OnItemClickListener {
     private lateinit var recyclerView: RecyclerView
     private lateinit var listAdapter: CookieAdapter
     private lateinit var topAppBar: MaterialToolbar
+    private lateinit var useCookies : MaterialSwitch
     private lateinit var cookiesViewModel: CookieViewModel
     private lateinit var cookiesList: List<CookieItem>
     private lateinit var noResults : RelativeLayout
     private lateinit var mainActivity: MainActivity
+    private lateinit var preferences: SharedPreferences
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         mainActivity = activity as MainActivity
+        preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
         return inflater.inflate(R.layout.fragment_cookies, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         topAppBar = view.findViewById(R.id.logs_toolbar)
+        useCookies = view.findViewById(R.id.use_cookies)
         topAppBar.setNavigationOnClickListener { mainActivity.onBackPressedDispatcher.onBackPressed() }
         cookiesList = listOf()
         noResults = view.findViewById(R.id.no_results)
@@ -67,6 +74,7 @@ class CookiesFragment : Fragment(), CookieAdapter.OnItemClickListener {
                 this,
                 mainActivity
             )
+        val newCookie = view.findViewById<Chip>(R.id.newCookie)
         recyclerView = view.findViewById(R.id.template_recyclerview)
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = listAdapter
@@ -85,6 +93,16 @@ class CookiesFragment : Fragment(), CookieAdapter.OnItemClickListener {
         }
         initMenu()
         initChips()
+
+
+        useCookies.setOnCheckedChangeListener { compoundButton, b ->
+            newCookie.isEnabled = useCookies.isChecked
+            preferences.edit().putBoolean("use_cookies", useCookies.isChecked).apply()
+        }
+
+        val useCookiesPref = preferences.getBoolean("use_cookies", false)
+        useCookies.isChecked = useCookiesPref
+        newCookie.isEnabled = useCookiesPref
     }
 
     private fun initMenu() {

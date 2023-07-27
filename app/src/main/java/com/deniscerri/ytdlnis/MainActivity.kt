@@ -41,6 +41,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.navOptions
 import androidx.navigation.ui.setupWithNavController
 import androidx.preference.PreferenceManager
+import com.deniscerri.ytdlnis.database.repository.DownloadRepository
 import com.deniscerri.ytdlnis.database.viewmodel.CookieViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.ResultViewModel
@@ -56,7 +57,10 @@ import com.google.android.material.navigation.NavigationBarView
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.navigationrail.NavigationRailView
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.io.Reader
@@ -116,14 +120,14 @@ class MainActivity : BaseActivity() {
 
         sharedPreferences =  PreferenceManager.getDefaultSharedPreferences(this)
 
-        val graph = navController.navInflater.inflate(R.navigation.nav_graph)
-        graph.setStartDestination(R.id.homeFragment)
-        when(sharedPreferences.getString("start_destination", "")) {
-            "History" -> graph.setStartDestination(R.id.historyFragment)
-            "More" -> if (navigationView is NavigationBarView) graph.setStartDestination(R.id.moreFragment)
-        }
-
-        navController.graph = graph
+//        val graph = navController.navInflater.inflate(R.navigation.nav_graph)
+//        graph.setStartDestination(R.id.homeFragment)
+//        when(sharedPreferences.getString("start_destination", "")) {
+//            "History" -> graph.setStartDestination(R.id.historyFragment)
+//            "More" -> if (navigationView is NavigationBarView) graph.setStartDestination(R.id.moreFragment)
+//        }
+//
+//        navController.graph = graph
 
         if (navigationView is NavigationBarView){
             (navigationView as NavigationBarView).setupWithNavController(navController)
@@ -172,11 +176,24 @@ class MainActivity : BaseActivity() {
 
                     terminateDialog.setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, _: Int -> dialogInterface.cancel() }
                     terminateDialog.setPositiveButton(getString(R.string.ok)) { _: DialogInterface?, _: Int ->
-                        if (doNotShowAgain){
-                            sharedPreferences.edit().putBoolean("ask_terminate_app", false).apply()
+                        runBlocking {
+                            val job : Job = lifecycleScope.launch(Dispatchers.IO) {
+                                val activeDownloads = downloadViewModel.getActiveDownloads().toMutableList()
+                                activeDownloads.map { it.status = DownloadRepository.Status.Queued.toString() }
+                                activeDownloads.forEach {
+                                    downloadViewModel.updateDownload(it)
+                                }
+                            }
+                            runBlocking {
+                                job.join()
+                                if (doNotShowAgain){
+                                    sharedPreferences.edit().putBoolean("ask_terminate_app", false).apply()
+                                }
+                                finishAndRemoveTask()
+                                finishAffinity()
+                                exitProcess(0)
+                            }
                         }
-                        finishAndRemoveTask()
-                        exitProcess(0)
                     }
                     terminateDialog.show()
                 }else{
@@ -216,6 +233,14 @@ class MainActivity : BaseActivity() {
 
     }
 
+    override fun onSaveInstanceState(savedInstanceState: Bundle) {
+        super.onSaveInstanceState(savedInstanceState)
+        savedInstanceState.putBundle("nav_state", navController.saveState())
+    }
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        navController.restoreState(savedInstanceState.getBundle("nav_state"))
+    }
 
     private fun View.visibilityChanged(action: (View) -> Unit) {
         this.viewTreeObserver.addOnGlobalLayoutListener {

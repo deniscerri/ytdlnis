@@ -10,7 +10,7 @@ def properties = new Properties()
 def versionMajor = 1
 def versionMinor = 6
 def versionPatch = 3
-def versionBuild = 10 // bump for dogfood builds, public betas, etc.
+def versionBuild = 13 // bump for dogfood builds, public betas, etc.
 def versionExt = ""
 
 if (versionBuild > 0){
@@ -152,18 +152,13 @@ dependencies {
     implementation 'androidx.preference:preference:1.2.0'
     implementation "androidx.navigation:navigation-fragment-ktx:$navVer"
     implementation "androidx.navigation:navigation-ui-ktx:$navVer"
-    implementation 'androidx.core:core-ktx:1.10.0'
+    implementation 'androidx.core:core-ktx:1.10.1'
     implementation 'androidx.test.ext:junit-ktx:1.1.5'
     implementation 'androidx.benchmark:benchmark-macro:1.1.1'
     testImplementation "junit:junit:$junitVer"
     androidTestImplementation "junit:junit:$junitVer"
     androidTestImplementation "androidx.test.ext:junit:$androidJunitVer"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVer"
-    androidTestImplementation "androidx.benchmark:benchmark-macro-junit4:1.2.0-alpha16"
-    androidTestImplementation "androidx.test:runner:1.5.2"
-    androidTestImplementation "androidx.test:core:1.5.0"
-    androidTestImplementation "androidx.test:rules:1.5.0"
-    androidTestImplementation "androidx.navigation:navigation-testing:$navVer"
 
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
     implementation "com.devbrackets.android:exomedia:4.3.0"

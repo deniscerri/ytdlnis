@@ -115,7 +115,7 @@ class DownloadQueueMainFragment : Fragment(){
                 when(m.itemId){
                     R.id.clear_queue -> {
                         showDeleteDialog {
-                            downloadViewModel.cancelQueued()
+                            cancelAllDownloads()
                         }
                     }
                     R.id.clear_cancelled -> {

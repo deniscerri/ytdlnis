@@ -148,16 +148,10 @@ class ActiveDownloadAdapter(onItemClickListener: OnItemClickListener, activity: 
         pauseButton.setOnClickListener {
             if (pauseButton.tag == ActiveDownloadAction.Pause){
                 onItemClickListener.onPauseClick(item.id, ActiveDownloadAction.Pause)
-                pauseButton.icon = ContextCompat.getDrawable(activity, R.drawable.exomedia_ic_play_arrow_white)
-                if (progressBar.progress == 0) progressBar.isIndeterminate = false
-                cancelButton.visibility = View.VISIBLE
-                pauseButton.tag = ActiveDownloadAction.Resume
+
             }else{
                 onItemClickListener.onPauseClick(item.id, ActiveDownloadAction.Resume)
-                pauseButton.icon = ContextCompat.getDrawable(activity, R.drawable.exomedia_ic_pause_white)
-                progressBar.isIndeterminate = true
-                cancelButton.visibility = View.GONE
-                pauseButton.tag = ActiveDownloadAction.Pause
+
             }
         }
 

@@ -1,6 +1,7 @@
 package com.deniscerri.ytdlnis
 
 import android.app.Application
+import android.os.Looper
 import android.widget.Toast
 import androidx.core.content.edit
 import androidx.preference.PreferenceManager
@@ -66,7 +67,9 @@ class App : Application() {
                 )
 
             }catch (e: Exception){
-                Toast.makeText(this@App, e.message, Toast.LENGTH_SHORT).show()
+                Looper.prepare().runCatching {
+                    Toast.makeText(this@App, e.message, Toast.LENGTH_SHORT).show()
+                }
                 e.printStackTrace()
             }
         }

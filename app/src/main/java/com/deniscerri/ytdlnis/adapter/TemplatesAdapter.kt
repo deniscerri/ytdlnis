@@ -1,6 +1,7 @@
 package com.deniscerri.ytdlnis.adapter
 
 import android.app.Activity
+import android.opengl.Visibility
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -46,18 +47,16 @@ class TemplatesAdapter(onItemClickListener: OnItemClickListener, activity: Activ
         val content = card.findViewById<TextView>(R.id.content)
         content.text = item?.content
 
-//        val check = card.findViewById<Button>(R.id.check)
-//
-//        check.setOnClickListener {
-//            onItemClickListener.onSelected(item!!)
-//        }
+        val useInExtraCommands = card.findViewById<TextView>(R.id.useInExtraCommands)
+        if (item!!.useAsExtraCommand) useInExtraCommands.visibility = View.VISIBLE
+        else useInExtraCommands.visibility = View.GONE
 
         card.setOnClickListener {
-            onItemClickListener.onItemClick(item!!, position)
+            onItemClickListener.onItemClick(item, position)
         }
 
         card.setOnLongClickListener {
-            onItemClickListener.onDelete(item!!); true
+            onItemClickListener.onDelete(item); true
         }
     }
 

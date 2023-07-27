@@ -1,5 +1,6 @@
 package com.deniscerri.ytdlnis.ui.downloads
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.DialogInterface
 import android.graphics.Canvas
@@ -9,6 +10,7 @@ import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
@@ -31,6 +33,7 @@ import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.ui.downloadcard.DownloadBottomSheetDialog
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.UiUtil
+import com.deniscerri.ytdlnis.util.UiUtil.forceFastScrollMode
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.chip.Chip
@@ -74,6 +77,7 @@ class SavedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLis
             )
 
         savedRecyclerView = view.findViewById(R.id.download_recyclerview)
+        savedRecyclerView.forceFastScrollMode()
         savedRecyclerView.adapter = savedDownloads
         val preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
         if (preferences.getBoolean("swipe_gestures", true)){

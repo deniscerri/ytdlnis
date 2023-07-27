@@ -294,4 +294,8 @@
     <string name="saved">Saved</string>
     <string name="clear_saved">Clear Saved</string>
     <string name="save_for_later">Save Download for Later?</string>
+    <string name="write_description">Save Description</string>
+    <string name="write_description_summary">Write description file</string>
+    <string name="extra_command">Extra Command</string>
+    <string name="use_cookies">Use Cookies</string>
 </resources>

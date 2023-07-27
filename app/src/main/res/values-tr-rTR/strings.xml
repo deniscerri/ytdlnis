@@ -286,10 +286,8 @@
     <string name="use_extra_commands_summary">Ses / Video indirmeleri için. GUI yapılandırması ile birlikte ekstra komutlar ekleyin</string>
     <string name="current">Geçerli Komut</string>
     <string name="save_for_later">Daha Sonra İndirmek için Kaydedilsin mi\?</string>
-    <string name="subtitle_format">Altyazı Biçimi
-\n</string>
+    <string name="subtitle_format">Altyazı Biçimi</string>
     <string name="saved">Kaydedildi</string>
     <string name="clear_saved">Kaydedilenleri Temizle</string>
-    <string name="hide_terminal">Terminal\'i paylaş menüsünden gizle</string>
     <string name="hide_thumbnails">Küçük Resimleri Gizle</string>
 </resources>

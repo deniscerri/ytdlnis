@@ -120,33 +120,6 @@
 
     </com.google.android.material.search.SearchView>
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/home_appbarlayout"
-        app:liftOnScroll="true"
-        android:background="@null"
-        android:elevation="0dp"
-        app:elevation="0dp"
-        android:fitsSystemWindows="true"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/home_toolbar"
-            android:layout_width="match_parent"
-            app:title="@string/app_name"
-            app:layout_scrollFlags="scroll|enterAlways"
-            android:layout_height="wrap_content" />
-
-        <com.google.android.material.search.SearchBar
-            android:id="@+id/search_bar"
-            app:menu="@menu/main_menu"
-            app:layout_scrollFlags="scroll|enterAlways"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/search_hint" />
-
-    </com.google.android.material.appbar.AppBarLayout>
-
     <RelativeLayout
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:layout_width="match_parent"
@@ -199,6 +172,30 @@
         </com.facebook.shimmer.ShimmerFrameLayout>
 
     </RelativeLayout>
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/home_appbarlayout"
+        android:background="@null"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/home_toolbar"
+            android:layout_width="match_parent"
+            app:title="@string/app_name"
+            app:layout_scrollFlags="scroll|enterAlways"
+            android:layout_height="wrap_content" />
+
+        <com.google.android.material.search.SearchBar
+            android:id="@+id/search_bar"
+            app:menu="@menu/main_menu"
+            app:layout_scrollFlags="scroll|enterAlways"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/search_hint" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/home_fabs"

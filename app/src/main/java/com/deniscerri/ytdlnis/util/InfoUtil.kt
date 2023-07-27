@@ -8,7 +8,6 @@ import android.util.Log
 import android.widget.Toast
 import androidx.preference.PreferenceManager
 import com.deniscerri.ytdlnis.R
-import com.deniscerri.ytdlnis.database.Converters
 import com.deniscerri.ytdlnis.database.models.ChapterItem
 import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.models.Format
@@ -134,15 +133,17 @@ class InfoUtil(private val context: Context) {
     }
 
     @Throws(JSONException::class)
-    fun getVideo(url: String): List<ResultItem?> {
+    fun getYoutubeVideo(url: String): List<ResultItem?> {
         return try {
             val id = getIDFromYoutubeURL(url)
             val res = genericRequest("$pipedURL/streams/$id")
             if (res.length() == 0) getFromYTDL(url) else listOf(createVideoFromPipedJSON(
-                res, id
+                res, url
             ))
         }catch (e: Exception){
-            getFromYTDL(url)
+            val v = getFromYTDL(url)
+            v.forEach { it!!.url = url }
+            v
         }
     }
 
@@ -172,9 +173,11 @@ class InfoUtil(private val context: Context) {
         }
         return video
     }
-    private fun createVideoFromPipedJSON(obj: JSONObject, id: String): ResultItem? {
+    private fun createVideoFromPipedJSON(obj: JSONObject, url: String): ResultItem? {
         var video: ResultItem? = null
         try {
+
+            val id = getIDFromYoutubeURL(url)
             val title = Html.fromHtml(obj.getString("title").toString()).toString()
             val author = try {
                  Html.fromHtml(obj.getString("uploader").toString()).toString()
@@ -184,7 +187,6 @@ class InfoUtil(private val context: Context) {
 
             val duration = formatIntegerDuration(obj.getInt("duration"), Locale.US)
             val thumb = "https://i.ytimg.com/vi/$id/hqdefault.jpg"
-            val url = "https://www.youtube.com/watch?v=$id"
             val formats : ArrayList<Format> = ArrayList()
 
             if(sharedPreferences.getString("formats_source", "yt-dlp") == "piped"){
@@ -452,9 +454,12 @@ class InfoUtil(private val context: Context) {
             request.addOption("--skip-download")
             request.addOption("-R", "1")
             request.addOption("--socket-timeout", "5")
-            val cookiesFile = File(context.cacheDir, "cookies.txt")
-            if (cookiesFile.exists()) {
-                request.addOption("--cookies", cookiesFile.absolutePath)
+
+            if (sharedPreferences.getBoolean("use_cookies", false)){
+                val cookiesFile = File(context.cacheDir, "cookies.txt")
+                if (cookiesFile.exists()) {
+                    request.addOption("--cookies", cookiesFile.absolutePath)
+                }
             }
 
             val proxy = sharedPreferences.getString("proxy", "")
@@ -626,7 +631,16 @@ class InfoUtil(private val context: Context) {
                 }
 
                 var urls = "";
-                if(jsonObject.has("urls")) urls = jsonObject.getString("urls");
+                if(jsonObject.has("requested_formats")) {
+                    val requestedFormats = jsonObject.getJSONArray("requested_formats")
+                    val urlList = mutableListOf<String>()
+                    val length = requestedFormats.length()-1
+                    for (i in length downTo 0) {
+                        urlList.add(requestedFormats.getJSONObject(i).getString("url"))
+                    }
+
+                    urls = urlList.joinToString("\n")
+                }
 
                 items.add(ResultItem(0,
                         url,
@@ -927,7 +941,7 @@ class InfoUtil(private val context: Context) {
         if(downloadItem.type != DownloadViewModel.Type.command){
             if (downloadItem.SaveThumb) {
                 request.addOption("--write-thumbnail")
-                request.addOption("--convert-thumbnails", "png")
+                request.addOption("--convert-thumbnails", "jpg")
             }
             if (!sharedPreferences.getBoolean("mtime", false)){
                 request.addOption("--no-mtime")
@@ -991,6 +1005,10 @@ class InfoUtil(private val context: Context) {
                     conf.absolutePath
                 )
             }
+
+            if (sharedPreferences.getBoolean("write_description", false)){
+                request.addOption("--write-description")
+            }
         }
 
         if (sharedPreferences.getBoolean("restrict_filenames", true)) {
@@ -1041,7 +1059,7 @@ class InfoUtil(private val context: Context) {
 
                     if (downloadItem.audioPreferences.embedThumb) {
                         request.addOption("--embed-thumbnail")
-                        request.addOption("--convert-thumbnails", "jpg")
+                        if (! request.hasOption("--convert-thumbnails")) request.addOption("--convert-thumbnails", "jpg")
                         if (sharedPreferences.getBoolean("crop_thumbnail", true)){
                             try {
                                 val config = File(context.cacheDir.absolutePath + "/downloads/${downloadItem.id}/config" + downloadItem.title + "##" + downloadItem.format.format_id + ".txt")
@@ -1132,6 +1150,7 @@ class InfoUtil(private val context: Context) {
 
                 if (downloadItem.videoPreferences.splitByChapters  && downloadItem.downloadSections.isBlank()){
                     request.addOption("--split-chapters")
+                    request.addOption("-o", "chapter:%(section_title)s.%(ext)s")
                 }else{
                     if (downloadItem.customFileNameTemplate.isNotBlank()){
                         request.addOption("-o", "${downloadItem.customFileNameTemplate}.%(ext)s")

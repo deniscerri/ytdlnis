@@ -12,6 +12,8 @@ interface CommandTemplateDao {
 
     @Query("SELECT * FROM commandTemplates ORDER BY id DESC")
     fun getAllTemplatesFlow() : Flow<List<CommandTemplate>>
+    @Query("SELECT content FROM commandTemplates WHERE useAsExtraCommand is 1")
+    fun getAllTemplatesAsExtraCommands() : List<String>
 
     @Query("SELECT * FROM templateShortcuts ORDER BY id DESC")
     fun getAllShortcutsFlow() : Flow<List<TemplateShortcut>>

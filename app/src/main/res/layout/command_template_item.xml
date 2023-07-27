@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/command_template_item_constraint"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -31,24 +32,26 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title" />
 
-<!--    <View-->
-<!--        android:id="@+id/divider"-->
-<!--        style="@style/Divider.Vertical"-->
-<!--        android:layout_height="0dp"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toStartOf="@+id/check"-->
-<!--        app:layout_constraintStart_toEndOf="@+id/title"-->
-<!--        app:layout_constraintTop_toTopOf="parent" />-->
-
-<!--    <RadioButton-->
-<!--        android:id="@+id/check"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:gravity="center"-->
-<!--        android:minWidth="0dp"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent"-->
-<!--        app:layout_constraintVertical_bias="0.558" />-->
+    <TextView
+        android:id="@+id/useInExtraCommands"
+        style="@style/Widget.Material3.FloatingActionButton.Large.Secondary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_corner"
+        android:backgroundTint="?attr/colorSecondary"
+        android:clickable="false"
+        android:visibility="gone"
+        android:ellipsize="end"
+        android:text="@string/extra_command"
+        android:gravity="center"
+        android:maxLength="17"
+        android:maxLines="1"
+        android:minWidth="30dp"
+        android:paddingHorizontal="5dp"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        app:cornerRadius="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/content" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

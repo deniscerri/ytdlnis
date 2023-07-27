@@ -10,12 +10,24 @@ import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceManager
 import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
+import com.deniscerri.ytdlnis.database.repository.DownloadRepository
+import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.ui.more.settings.SettingsActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.async
+import kotlinx.coroutines.job
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import kotlin.system.exitProcess
 
 class MoreFragment : Fragment() {
@@ -29,12 +41,14 @@ class MoreFragment : Fragment() {
     private lateinit var terminateApp: TextView
     private lateinit var settings: TextView
     private lateinit var mainActivity: MainActivity
+    private lateinit var downloadViewModel: DownloadViewModel
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         mainActivity = activity as MainActivity
+        downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
         return inflater.inflate(R.layout.fragment_more, container, false)
     }
 
@@ -97,14 +111,27 @@ class MoreFragment : Fragment() {
                 }
 
                 terminateDialog.setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, _: Int -> dialogInterface.cancel() }
-                terminateDialog.setPositiveButton(getString(R.string.ok)) { _: DialogInterface?, _: Int ->
-                    if (doNotShowAgain){
-                        mainSharedPreferencesEditor.putBoolean("ask_terminate_app", false)
-                        mainSharedPreferencesEditor.commit()
+                terminateDialog.setPositiveButton(getString(R.string.ok)) { diag: DialogInterface?, _: Int ->
+                    runBlocking {
+                        val job : Job = lifecycleScope.launch(Dispatchers.IO) {
+                            val activeDownloads = downloadViewModel.getActiveDownloads().toMutableList()
+                            activeDownloads.map { it.status = DownloadRepository.Status.Queued.toString() }
+                            activeDownloads.forEach {
+                                downloadViewModel.updateDownload(it)
+                            }
+                        }
+                        runBlocking {
+                            job.join()
+                            if (doNotShowAgain){
+                                mainSharedPreferencesEditor.putBoolean("ask_terminate_app", false)
+                                mainSharedPreferencesEditor.commit()
+                            }
+                            mainActivity.finishAndRemoveTask()
+                            mainActivity.finishAffinity()
+                            exitProcess(0)
+                        }
                     }
-                    mainActivity.finishAndRemoveTask()
-                    mainActivity.finishAffinity()
-                    exitProcess(0)
+
                 }
                 terminateDialog.show()
             }else{
