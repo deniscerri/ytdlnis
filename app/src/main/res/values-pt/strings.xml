@@ -19,9 +19,9 @@
     <string name="processing">A processar</string>
     <string name="worst_quality">Pior qualidade</string>
     <string name="best_quality">Melhor qualidade</string>
-    <string name="remove_all">Remover tudo</string>
-    <string name="search">Pesquisar</string>
-    <string name="remove_results">Limpar resultados</string>
+    <string name="remove_all">Deletar tudo</string>
+    <string name="search">Procurar</string>
+    <string name="remove_results">Resultados claros</string>
     <string name="settings">Definições</string>
     <string name="home">Início</string>
     <string name="music_directory">Pasta de música</string>
@@ -175,7 +175,7 @@
     <string name="restore">Restaurar</string>
     <string name="network_error">Erro de rede</string>
     <string name="incognito">Incógnito</string>
-    <string name="sponsorblock">Bloqueio do Patrocinador</string>
+    <string name="sponsorblock">SponsorBlock</string>
     <string name="search_history">Histórico de pesquisas</string>
     <string name="appearance">Aparência</string>
     <string name="backup_restore">Backup e Restauração</string>
@@ -288,5 +288,5 @@
     <string name="force_keyframes_summary">Processo mais lento, mas cortes mais precisos</string>
     <string name="save_for_later">Guardar a transferência para mais tarde\?</string>
     <string name="force_keyframes">Forçar quadros-chave nos cortes</string>
-    <string name="show_terminal">Mostrar o Terminal no menu de partilha</string>
+    <string name="show_terminal">Ocultar o terminal do menu Partilhar</string>
 </resources>
