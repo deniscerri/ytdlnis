@@ -12,6 +12,6 @@ data class CommandTemplate(
     var id: Long,
     var title: String,
     var content: String,
-    @ColumnInfo(defaultValue = "false")
+    @ColumnInfo(defaultValue = "0")
     var useAsExtraCommand: Boolean
 )

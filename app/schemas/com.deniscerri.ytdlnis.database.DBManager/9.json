@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 9,
-    "identityHash": "d29e09789b7c96b5551b80da253b7330",
+    "identityHash": "57a92066f71582b510b66d4e99dc339e",
     "entities": [
       {
         "tableName": "results",
@@ -337,7 +337,7 @@
       },
       {
         "tableName": "commandTemplates",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `title` TEXT NOT NULL, `content` TEXT NOT NULL, `useAsExtraCommand` INTEGER NOT NULL DEFAULT false)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `title` TEXT NOT NULL, `content` TEXT NOT NULL, `useAsExtraCommand` INTEGER NOT NULL DEFAULT 0)",
         "fields": [
           {
             "fieldPath": "id",
@@ -362,7 +362,7 @@
             "columnName": "useAsExtraCommand",
             "affinity": "INTEGER",
             "notNull": true,
-            "defaultValue": "false"
+            "defaultValue": "0"
           }
         ],
         "primaryKey": {
@@ -512,7 +512,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'd29e09789b7c96b5551b80da253b7330')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '57a92066f71582b510b66d4e99dc339e')"
     ]
   }
 }
