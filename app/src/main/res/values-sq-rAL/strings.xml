@@ -79,7 +79,7 @@
     <string name="url">URL</string>
     <string name="link_copied_to_clipboard">Linku u kopjua</string>
     <string name="api_key">Çelësi API i YouTube</string>
-    <string name="api_key_summary">Rezultate më të shpejta nga YouTube</string>
+    <string name="api_key_summary">Video Rekomandime nga API e YouTube</string>
     <string name="update_app_summary">Njoftoni versionet e reja të aplikacionit kur të hapet</string>
     <string name="downloads">Shkarkimet</string>
     <string name="remove_deleted">Hiq të fshirat</string>
@@ -278,8 +278,7 @@
     <string name="format_order">Renditja e formatit</string>
     <string name="hide_thumbnails">Fshehi Thumbnailet</string>
     <string name="force_keyframes_summary">Proçes më i ngadaltë, por prerje më të sakta</string>
-    <string name="subtitle_format">Formati i Titrave
-\n</string>
+    <string name="subtitle_format">Formati i Titrave</string>
     <string name="show_terminal">Fshihe Terminalin nga fleta e shpërndarjes</string>
     <string name="saved">Të ruajtura</string>
     <string name="clear_saved">Pastro të ruajturat</string>

@@ -46,7 +46,7 @@
     <string name="url">URL</string>
     <string name="link_copied_to_clipboard">Ссылка скопирована</string>
     <string name="api_key">Использовать ключ API</string>
-    <string name="api_key_summary">Видеорекомендации от YouTube API</string>
+    <string name="api_key_summary">Видеорекомендации от Youtube API</string>
     <string name="downloads">Загрузки</string>
     <string name="command_download_notification_channel_name">Команда загружает</string>
     <string name="remove_deleted">Убрать удаленные</string>
@@ -286,4 +286,5 @@
     <string name="clear_saved">Очистить сохраненное</string>
     <string name="save_for_later">Сохранить загрузку на потом\?</string>
     <string name="orange">Оранжевый</string>
+    <string name="show_terminal">Показать Терминал в меню общего доступа</string>
 </resources>
