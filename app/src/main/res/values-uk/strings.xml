@@ -292,4 +292,6 @@
     <string name="write_description">Зберегти опис</string>
     <string name="write_description_summary">Напишіть файл опису</string>
     <string name="extra_command">Додаткова команда</string>
+    <string name="embed_metadata">Вставити метадані</string>
+    <string name="embed_metadata_summary">Вставте метадані у відеофайл. Також вбудовує розділи/infojson, якщо вони присутні</string>
 </resources>
