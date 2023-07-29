@@ -291,4 +291,6 @@
     <string name="write_description_summary">Menulis berkas deskripsi</string>
     <string name="extra_command">Perintah Ekstra</string>
     <string name="use_cookies">Gunakan Kuki</string>
+    <string name="embed_metadata_summary">Sematkan metadata ke file video. Juga menyematkan bab/infojson jika ada</string>
+    <string name="embed_metadata">Sematkan Metadata</string>
 </resources>
