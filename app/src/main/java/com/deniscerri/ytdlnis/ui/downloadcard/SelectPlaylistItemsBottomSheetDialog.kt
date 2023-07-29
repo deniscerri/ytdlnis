@@ -22,6 +22,7 @@ import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdlnis.receiver.ShareActivity
+import com.deniscerri.ytdlnis.util.UiUtil.setTextAndRecalculateWidth
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -120,8 +121,8 @@ class SelectPlaylistItemsBottomSheetDialog(private val items: List<ResultItem?>,
         val checkAll = view.findViewById<ExtendedFloatingActionButton>(R.id.check_all)
         checkAll!!.setOnClickListener {
             if (listAdapter.getCheckedItems().size != items.size){
-                fromTextInput.editText!!.setText("1")
-                toTextInput.editText!!.setText(items.size.toString())
+                fromTextInput.editText!!.setTextAndRecalculateWidth("1")
+                toTextInput.editText!!.setTextAndRecalculateWidth(items.size.toString())
                 listAdapter.checkAll()
                 fromTextInput.isEnabled = true
                 toTextInput.isEnabled = true
@@ -130,8 +131,8 @@ class SelectPlaylistItemsBottomSheetDialog(private val items: List<ResultItem?>,
                 reset()
                 fromTextInput.isEnabled = true
                 toTextInput.isEnabled = true
-                fromTextInput.editText!!.setText("")
-                toTextInput.editText!!.setText("")
+                fromTextInput.editText!!.setTextAndRecalculateWidth("")
+                toTextInput.editText!!.setTextAndRecalculateWidth("")
             }
         }
 

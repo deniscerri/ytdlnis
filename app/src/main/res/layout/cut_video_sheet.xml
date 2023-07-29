@@ -57,6 +57,24 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.button.MaterialButton
+        android:id="@+id/rewind"
+        android:clickable="false"
+        app:iconSize="50dp"
+        style="@style/Widget.Material3.Button.IconButton"
+        app:iconTint="?android:colorAccent"
+        app:icon="@drawable/exomedia_ic_rewind_white"
+        android:layout_marginHorizontal="20dp"
+        android:layout_width="wrap_content"
+        android:indeterminate="true"
+        app:layout_constraintHorizontal_bias="0.0"
+        android:translationZ="10dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/frame_layout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/mute"
         style="@style/Widget.Material3.Button.IconButton"
         android:layout_width="wrap_content"
@@ -129,7 +147,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/from_textinput"
                 style="@style/Widget.Material3.TextInputLayout.FilledBox"
-                android:layout_width="90dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="@string/start">
 
@@ -154,7 +172,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/to_textinput"
                 style="@style/Widget.Material3.TextInputLayout.FilledBox"
-                android:layout_width="90dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="@string/end"
                 app:layout_constraintBottom_toBottomOf="parent"

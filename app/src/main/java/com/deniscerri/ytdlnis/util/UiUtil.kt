@@ -32,7 +32,6 @@ import androidx.core.content.FileProvider
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.CommandTemplate
@@ -53,7 +52,6 @@ import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
 import java.util.Calendar
@@ -105,7 +103,7 @@ object UiUtil {
         val ok : Button = bottomSheet.findViewById(R.id.template_create)!!
         val title : TextInputLayout = bottomSheet.findViewById(R.id.title)!!
         val content : TextInputLayout = bottomSheet.findViewById(R.id.content)!!
-        val extraCommandsSwitch : MaterialSwitch = bottomSheet.findViewById(R.id.extra_command_switch)!!
+        val extraCommandsSwitch : MaterialSwitch = bottomSheet.findViewById(R.id.extraCommandsSwitch)!!
         val shortcutsChipGroup : ChipGroup = bottomSheet.findViewById(R.id.shortcutsChipGroup)!!
         val editShortcuts : Button = bottomSheet.findViewById(R.id.edit_shortcuts)!!
 
@@ -154,7 +152,9 @@ object UiUtil {
             }
         }
 
-        extraCommandsSwitch.isChecked = item!!.useAsExtraCommand
+        if (item != null){
+            extraCommandsSwitch.isChecked = item.useAsExtraCommand
+        }
 
         commandTemplateViewModel.shortcuts.observe(lifeCycle){
             shortcutsChipGroup.removeAllViews()
@@ -180,6 +180,7 @@ object UiUtil {
             }else{
                 item.title = title.editText!!.text.toString()
                 item.content = content.editText!!.text.toString()
+                item.useAsExtraCommand = extraCommandsSwitch.isChecked
                 Log.e("aa", item.toString())
                 commandTemplateViewModel.update(item)
                 newTemplate(item)
@@ -558,5 +559,20 @@ object UiUtil {
             }
             false
         }
+    }
+
+
+    fun EditText.setTextAndRecalculateWidth(t : String){
+        this.setText(t)
+        val widthMeasureSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
+        val heightMeasureSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
+        this.measure(widthMeasureSpec, heightMeasureSpec)
+        val requiredWidth: Int = this.measuredWidth
+        if (t.isEmpty()){
+            this.layoutParams.width = 70
+        }else{
+            this.layoutParams.width = requiredWidth
+        }
+        this.requestLayout()
     }
 }

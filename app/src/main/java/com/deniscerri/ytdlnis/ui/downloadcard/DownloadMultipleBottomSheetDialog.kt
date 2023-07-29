@@ -88,6 +88,8 @@ class DownloadMultipleBottomSheetDialog(private var results: List<ResultItem?>, 
         val view = LayoutInflater.from(context).inflate(R.layout.download_multiple_bottom_sheet, null)
         dialog.setContentView(view)
 
+        if (items.isEmpty()) dismiss()
+
         dialog.setOnShowListener {
             behavior = BottomSheetBehavior.from(view.parent as View)
             val displayMetrics = DisplayMetrics()

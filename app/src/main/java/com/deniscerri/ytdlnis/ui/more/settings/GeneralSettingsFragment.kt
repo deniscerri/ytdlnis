@@ -115,14 +115,13 @@ class GeneralSettingsFragment : BaseSettingsFragment() {
             Preference.OnPreferenceChangeListener { pref: Preference?, _: Any ->
                 val packageManager = requireContext().packageManager
                 val aliasComponentName = ComponentName(requireContext(), "com.deniscerri.ytdlnis.terminalShareAlias")
-
                 if ((pref as SwitchPreferenceCompat).isChecked){
                     packageManager.setComponentEnabledSetting(aliasComponentName,
-                        PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+                        PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
                         PackageManager.DONT_KILL_APP)
                 }else{
                     packageManager.setComponentEnabledSetting(aliasComponentName,
-                        PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+                        PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
                         PackageManager.DONT_KILL_APP)
                 }
                 true

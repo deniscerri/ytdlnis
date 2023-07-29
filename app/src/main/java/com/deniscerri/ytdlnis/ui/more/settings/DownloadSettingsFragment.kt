@@ -15,7 +15,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 
 class DownloadSettingsFragment : BaseSettingsFragment() {
-    override val title: Int = R.string.downloading
+    override val title: Int = R.string.downloads
 
     private var concurrentDownloads: SeekBarPreference? = null
     private var ignoreBatteryOptimization: Preference? = null

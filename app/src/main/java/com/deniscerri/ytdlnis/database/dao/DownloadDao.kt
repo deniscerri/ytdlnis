@@ -19,13 +19,13 @@ interface DownloadDao {
     @Query("SELECT * FROM downloads WHERE status='Active' or status='Paused'")
     fun getActiveDownloadsList() : List<DownloadItem>
 
-    @Query("SELECT * FROM downloads WHERE status='Active' or status='Queued'  or status='Paused'")
+    @Query("SELECT * FROM downloads WHERE status='Active' or status='Queued' or status='QueuedPaused'  or status='Paused'")
     fun getActiveAndQueuedDownloadsList() : List<DownloadItem>
 
-    @Query("SELECT * FROM downloads WHERE status='Queued' ORDER BY downloadStartTime, id")
+    @Query("SELECT * FROM downloads WHERE status='Queued' or status='QueuedPaused' ORDER BY downloadStartTime, id")
     fun getQueuedDownloads() : Flow<List<DownloadItem>>
 
-    @Query("SELECT * FROM downloads WHERE status='Queued' ORDER BY downloadStartTime, id")
+    @Query("SELECT * FROM downloads WHERE status='Queued' or status='QueuedPaused' ORDER BY downloadStartTime, id")
     fun getQueuedDownloadsList() : List<DownloadItem>
 
     @Query("SELECT * FROM downloads WHERE status='Cancelled' ORDER BY id DESC")

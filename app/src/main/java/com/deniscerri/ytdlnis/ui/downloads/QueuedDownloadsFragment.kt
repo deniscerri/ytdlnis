@@ -279,7 +279,9 @@ class QueuedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLi
         deleteDialog.setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, _: Int -> dialogInterface.cancel() }
         deleteDialog.setPositiveButton(getString(R.string.ok)) { _: DialogInterface?, _: Int ->
             item.status = DownloadRepository.Status.Cancelled.toString()
-            downloadViewModel.updateDownload(item)
+            lifecycleScope.launch(Dispatchers.IO){
+                downloadViewModel.updateDownload(item)
+            }
 
             Snackbar.make(queuedRecyclerView, getString(R.string.cancelled) + ": " + item.title, Snackbar.LENGTH_LONG)
                 .setAction(getString(R.string.undo)) {

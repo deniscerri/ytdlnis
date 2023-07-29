@@ -132,13 +132,13 @@ class ActiveDownloadMinifiedAdapter(onItemClickListener: OnItemClickListener, ac
 
         pauseButton.setOnClickListener {
             if (pauseButton.tag == ActiveDownloadAdapter.ActiveDownloadAction.Pause){
-                onItemClickListener.onPauseClick(item.id, ActiveDownloadAdapter.ActiveDownloadAction.Pause)
+                onItemClickListener.onPauseClick(item.id, ActiveDownloadAdapter.ActiveDownloadAction.Pause, position)
                 pauseButton.icon = ContextCompat.getDrawable(activity, R.drawable.exomedia_ic_play_arrow_white)
                 if (progressBar.progress == 0) progressBar.isIndeterminate = false
                 cancelButton.visibility = View.VISIBLE
                 pauseButton.tag = ActiveDownloadAdapter.ActiveDownloadAction.Resume
             }else{
-                onItemClickListener.onPauseClick(item.id, ActiveDownloadAdapter.ActiveDownloadAction.Resume)
+                onItemClickListener.onPauseClick(item.id, ActiveDownloadAdapter.ActiveDownloadAction.Resume, position)
                 pauseButton.icon = ContextCompat.getDrawable(activity, R.drawable.exomedia_ic_pause_white)
                 progressBar.isIndeterminate = true
                 cancelButton.visibility = View.GONE
@@ -152,7 +152,7 @@ class ActiveDownloadMinifiedAdapter(onItemClickListener: OnItemClickListener, ac
     }
     interface OnItemClickListener {
         fun onCancelClick(itemID: Long)
-        fun onPauseClick(itemID: Long, action: ActiveDownloadAdapter.ActiveDownloadAction)
+        fun onPauseClick(itemID: Long, action: ActiveDownloadAdapter.ActiveDownloadAction, position: Int)
         fun onCardClick()
     }
 

@@ -61,6 +61,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
+import java.text.FieldPosition
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -324,7 +325,9 @@ class ResultCardDetailsDialog(private val item: ResultItem) : BottomSheetDialogF
         deleteDialog.setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, _: Int -> dialogInterface.cancel() }
         deleteDialog.setPositiveButton(getString(R.string.ok)) { _: DialogInterface?, _: Int ->
             item.status = DownloadRepository.Status.Cancelled.toString()
-            downloadViewModel.updateDownload(item)
+            lifecycleScope.launch(Dispatchers.IO){
+                downloadViewModel.updateDownload(item)
+            }
 
             Snackbar.make(requireView().rootView, getString(R.string.cancelled) + ": " + item.title, Snackbar.LENGTH_LONG)
                 .setAction(getString(R.string.undo)) {
@@ -533,19 +536,30 @@ class ResultCardDetailsDialog(private val item: ResultItem) : BottomSheetDialogF
     override fun onCancelClick(itemID: Long) {
         cancelActiveDownload(itemID)
     }
-    override fun onPauseClick(itemID: Long, action: ActiveDownloadAdapter.ActiveDownloadAction) {
+    override fun onPauseClick(itemID: Long, action: ActiveDownloadAdapter.ActiveDownloadAction, position: Int) {
         val item = activeItems.find { it.id == itemID } ?: return
         when(action){
             ActiveDownloadAdapter.ActiveDownloadAction.Pause -> {
-                cancelItem(itemID.toInt())
-                item.status = DownloadRepository.Status.Paused.toString()
-                downloadViewModel.updateDownload(item)
+                lifecycleScope.launch {
+                    cancelItem(itemID.toInt())
+                    item.status = DownloadRepository.Status.Paused.toString()
+                    withContext(Dispatchers.IO){
+                        downloadViewModel.updateDownload(item)
+                    }
+                    activeDownloads.notifyItemChanged(position)
+                }
             }
             ActiveDownloadAdapter.ActiveDownloadAction.Resume -> {
-                item.status = DownloadRepository.Status.Active.toString()
-                downloadViewModel.updateDownload(item)
-                runBlocking {
-                    downloadViewModel.queueDownloads(listOf(item))
+                lifecycleScope.launch {
+                    item.status = DownloadRepository.Status.Active.toString()
+                    withContext(Dispatchers.IO){
+                        downloadViewModel.updateDownload(item)
+                    }
+                    activeDownloads.notifyItemChanged(position)
+
+                    runBlocking {
+                        downloadViewModel.queueDownloads(listOf(item))
+                    }
                 }
             }
         }
@@ -572,7 +586,9 @@ class ResultCardDetailsDialog(private val item: ResultItem) : BottomSheetDialogF
 
         activeItems.find { it.id == itemID }?.let {
             it.status = DownloadRepository.Status.Cancelled.toString()
-            downloadViewModel.updateDownload(it)
+            lifecycleScope.launch(Dispatchers.IO){
+                downloadViewModel.updateDownload(it)
+            }
         }
 
     }

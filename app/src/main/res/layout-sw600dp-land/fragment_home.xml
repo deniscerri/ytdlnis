@@ -36,6 +36,8 @@
                             android:id="@+id/providers"
                             android:layout_margin="10dp"
                             app:chipSpacingVertical="-10dp"
+                            android:paddingStart="0dp"
+                            android:paddingEnd="20dp"
                             app:singleSelection="true"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -166,7 +168,6 @@
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         />
 
-
     <com.facebook.shimmer.ShimmerFrameLayout
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:layout_width="match_parent"
@@ -277,6 +278,8 @@
 
 
     </com.facebook.shimmer.ShimmerFrameLayout>
+
+
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/home_fabs"

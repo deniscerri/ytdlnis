@@ -36,6 +36,8 @@
                             android:id="@+id/providers"
                             android:layout_margin="10dp"
                             app:chipSpacingVertical="-10dp"
+                            android:paddingStart="0dp"
+                            android:paddingEnd="20dp"
                             android:layout_width="wrap_content"
                             app:singleSelection="true"
                             android:layout_height="wrap_content"

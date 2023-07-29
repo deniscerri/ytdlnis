@@ -73,7 +73,7 @@ class TemplatesAdapter(onItemClickListener: OnItemClickListener, activity: Activ
             }
 
             override fun areContentsTheSame(oldItem: CommandTemplate, newItem: CommandTemplate): Boolean {
-                return oldItem.title == newItem.title && oldItem.content == newItem.content
+                return oldItem.title == newItem.title && oldItem.content == newItem.content && oldItem.useAsExtraCommand == newItem.useAsExtraCommand
             }
         }
     }

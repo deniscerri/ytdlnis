@@ -148,7 +148,7 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
         repository.delete(item)
     }
 
-    fun updateDownload(item: DownloadItem) = viewModelScope.launch(Dispatchers.IO){
+    suspend fun updateDownload(item: DownloadItem){
         repository.update(item)
     }
 

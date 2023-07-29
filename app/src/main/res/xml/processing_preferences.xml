@@ -23,6 +23,14 @@
     <SwitchPreferenceCompat
         android:widgetLayout="@layout/preferece_material_switch"
         app:defaultValue="true"
+        app:icon="@drawable/baseline_video_metadata"
+        app:key="embed_metadata"
+        app:summary="@string/embed_metadata_summary"
+        app:title="@string/embed_metadata" />
+
+    <SwitchPreferenceCompat
+        android:widgetLayout="@layout/preferece_material_switch"
+        app:defaultValue="true"
         app:icon="@drawable/ic_subtitles"
         app:key="embed_subtitles"
         app:summary="@string/embed_subs_summary"
@@ -169,5 +177,10 @@
         app:key="use_extra_commands"
         android:summary="@string/use_extra_commands_summary"
         app:title="@string/use_extra_commands" />
+
+    <Preference
+        app:isPreferenceVisible="false"
+        android:key="use_cookies"
+        android:defaultValue="false" />
 
 </PreferenceScreen>

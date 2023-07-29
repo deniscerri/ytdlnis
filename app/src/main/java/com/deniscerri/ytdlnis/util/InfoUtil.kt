@@ -75,7 +75,7 @@ class InfoUtil(private val context: Context) {
             val element = dataArray.getJSONObject(i)
             if (element.getInt("duration") == -1) continue
             element.put("uploader", element.getString("uploaderName"))
-            val v = createVideoFromPipedJSON(element, element.getString("url").removePrefix("/watch?v="))
+            val v = createVideoFromPipedJSON(element, "https://youtube.com" + element.getString("url"))
             if (v == null || v.thumb.isEmpty()) {
                 continue
             }
@@ -93,7 +93,7 @@ class InfoUtil(private val context: Context) {
             val element = dataArray.getJSONObject(i)
             if (element.getInt("duration") == -1) continue
             element.put("uploader", element.getString("uploaderName"))
-            val v = createVideoFromPipedJSON(element, element.getString("url").removePrefix("/watch?v="))
+            val v = createVideoFromPipedJSON(element, "https://youtube.com" + element.getString("url"))
             if (v == null || v.thumb.isEmpty()) {
                 continue
             }
@@ -118,7 +118,7 @@ class InfoUtil(private val context: Context) {
             var nextpage = res.getString("nextpage")
             for (i in 0 until dataArray.length()){
                 val obj = dataArray.getJSONObject(i)
-                val itm = createVideoFromPipedJSON(obj, obj.getString("url").removePrefix("/watch?v="))
+                val itm = createVideoFromPipedJSON(obj, "https://youtube.com" + obj.getString("url"))
                 itm?.playlistTitle = "YTDLnis"
                 items.add(itm)
             }
@@ -137,9 +137,7 @@ class InfoUtil(private val context: Context) {
         return try {
             val id = getIDFromYoutubeURL(url)
             val res = genericRequest("$pipedURL/streams/$id")
-            if (res.length() == 0) getFromYTDL(url) else listOf(createVideoFromPipedJSON(
-                res, url
-            ))
+            if (res.length() == 0) getFromYTDL(url) else listOf(createVideoFromPipedJSON(res, url))
         }catch (e: Exception){
             val v = getFromYTDL(url)
             v.forEach { it!!.url = url }
@@ -176,7 +174,6 @@ class InfoUtil(private val context: Context) {
     private fun createVideoFromPipedJSON(obj: JSONObject, url: String): ResultItem? {
         var video: ResultItem? = null
         try {
-
             val id = getIDFromYoutubeURL(url)
             val title = Html.fromHtml(obj.getString("title").toString()).toString()
             val author = try {
@@ -399,7 +396,7 @@ class InfoUtil(private val context: Context) {
                 val element = res.getJSONObject(i)
                 if (element.getInt("duration") < 0) continue
                 element.put("uploader", element.getString("uploaderName"))
-                val v = createVideoFromPipedJSON(element,  element.getString("url").removePrefix("/watch?v="))
+                val v = createVideoFromPipedJSON(element, "https://youtube.com" + element.getString("url"))
                 if (v == null || v.thumb.isEmpty()) continue
                 v.playlistTitle = context.getString(R.string.trendingPlaylist)
                 items.add(v)
@@ -410,7 +407,7 @@ class InfoUtil(private val context: Context) {
         return items
     }
 
-    fun getIDFromYoutubeURL(inputQuery: String) : String {
+    private fun getIDFromYoutubeURL(inputQuery: String) : String {
         var el: Array<String?> =
             inputQuery.split("/".toRegex()).dropLastWhile { it.isEmpty() }
                 .toTypedArray()
@@ -437,7 +434,7 @@ class InfoUtil(private val context: Context) {
                 val id = getIDFromYoutubeURL(url)
                 val res = genericRequest("$pipedURL/streams/$id")
                 if (res.length() == 0) getFromYTDL(url)[0]!!
-                val item = createVideoFromPipedJSON(res, id)
+                val item = createVideoFromPipedJSON(res, "https://youtube.com/watch?v=$id")
                 item!!.formats
             }else{
                 getFormatsFromYTDL(url)
@@ -507,10 +504,15 @@ class InfoUtil(private val context: Context) {
                 request.addOption("--skip-download")
                 request.addOption("-R", "1")
                 request.addOption("--socket-timeout", "5")
-                val cookiesFile = File(context.cacheDir, "cookies.txt")
-                if (cookiesFile.exists()){
-                    request.addOption("--cookies", cookiesFile.absolutePath)
+
+
+                if (sharedPreferences.getBoolean("use_cookies", false)){
+                    val cookiesFile = File(context.cacheDir, "cookies.txt")
+                    if (cookiesFile.exists()){
+                        request.addOption("--cookies", cookiesFile.absolutePath)
+                    }
                 }
+
 
                 val proxy = sharedPreferences.getString("proxy", "")
                 if (proxy!!.isNotBlank()){
@@ -535,7 +537,7 @@ class InfoUtil(private val context: Context) {
             urls.forEach {
                 val id = getIDFromYoutubeURL(it)
                 val res = genericRequest("$pipedURL/streams/$id")
-                val vid = createVideoFromPipedJSON(res, id)
+                val vid = createVideoFromPipedJSON(res, it)
                 progress(vid!!.formats)
             }
         }
@@ -566,10 +568,14 @@ class InfoUtil(private val context: Context) {
             request.addOption("-R", "1")
             request.addOption("--socket-timeout", "5")
 
-            val cookiesFile = File(context.cacheDir, "cookies.txt")
-            if (cookiesFile.exists()){
-                request.addOption("--cookies", cookiesFile.absolutePath)
+            if (sharedPreferences.getBoolean("use_cookies", false)){
+                val cookiesFile = File(context.cacheDir, "cookies.txt")
+                if (cookiesFile.exists()){
+                    request.addOption("--cookies", cookiesFile.absolutePath)
+                }
             }
+
+
 
             val proxy = sharedPreferences.getString("proxy", "")
             if (proxy!!.isNotBlank()){
@@ -715,10 +721,14 @@ class InfoUtil(private val context: Context) {
             request.addOption("-R", "1")
             request.addOption("--socket-timeout", "5")
 
-            val cookiesFile = File(context.cacheDir, "cookies.txt")
-            if (cookiesFile.exists()){
-                request.addOption("--cookies", cookiesFile.absolutePath)
+            if (sharedPreferences.getBoolean("use_cookies", false)){
+                val cookiesFile = File(context.cacheDir, "cookies.txt")
+                if (cookiesFile.exists()){
+                    request.addOption("--cookies", cookiesFile.absolutePath)
+                }
             }
+
+
 
             val proxy = sharedPreferences.getString("proxy", "")
             if (proxy!!.isNotBlank()){
@@ -861,7 +871,7 @@ class InfoUtil(private val context: Context) {
             val m = p.matcher(url)
 
             if (m.find()){
-                return getStreamingUrlAndChaptersFromPIPED(getIDFromYoutubeURL(url))
+                return getStreamingUrlAndChaptersFromPIPED(url)
             }else{
                 throw Exception()
             }
@@ -874,10 +884,14 @@ class InfoUtil(private val context: Context) {
                 request.addOption("-R", "1")
                 request.addOption("--socket-timeout", "5")
 
-                val cookiesFile = File(context.cacheDir, "cookies.txt")
-                if (cookiesFile.exists()){
-                    request.addOption("--cookies", cookiesFile.absolutePath)
+                if (sharedPreferences.getBoolean("use_cookies", false)){
+                    val cookiesFile = File(context.cacheDir, "cookies.txt")
+                    if (cookiesFile.exists()){
+                        request.addOption("--cookies", cookiesFile.absolutePath)
+                    }
                 }
+
+
 
                 val proxy = sharedPreferences.getString("proxy", "")
                 if (proxy!!.isNotBlank()){
@@ -898,12 +912,13 @@ class InfoUtil(private val context: Context) {
         }
     }
 
-    private fun getStreamingUrlAndChaptersFromPIPED(id: String) : MutableList<String?> {
+    private fun getStreamingUrlAndChaptersFromPIPED(url: String) : MutableList<String?> {
+        val id = getIDFromYoutubeURL(url)
         val res = genericRequest("$pipedURL/streams/$id")
         if (res.length() == 0) {
             throw Exception()
         }else{
-            val item = createVideoFromPipedJSON(res, id)
+            val item = createVideoFromPipedJSON(res, url)
             if (item!!.urls.isBlank()) throw Exception()
             val list = mutableListOf<String?>(Gson().toJson(item.chapters))
             list.addAll(item.urls.split(","))
@@ -974,6 +989,7 @@ class InfoUtil(private val context: Context) {
                 request.addCommands(listOf("--replace-in-metadata","uploader",".*.",downloadItem.author.take(25)))
             }
             request.addCommands(listOf("--replace-in-metadata","uploader"," - Topic$",""))
+
             downloadItem.customFileNameTemplate = downloadItem.customFileNameTemplate.replace("%(uploader)s", "%(uploader|${downloadItem.author})s")
 
             if (downloadItem.downloadSections.isNotBlank()){
@@ -1015,9 +1031,11 @@ class InfoUtil(private val context: Context) {
             request.addOption("--restrict-filenames")
         }
 
-        val cookiesFile = File(context.cacheDir, "cookies.txt")
-        if (cookiesFile.exists()){
-            request.addOption("--cookies", cookiesFile.absolutePath)
+        if (sharedPreferences.getBoolean("use_cookies", false)){
+            val cookiesFile = File(context.cacheDir, "cookies.txt")
+            if (cookiesFile.exists()){
+                request.addOption("--cookies", cookiesFile.absolutePath)
+            }
         }
 
         val proxy = sharedPreferences.getString("proxy", "")
@@ -1055,7 +1073,20 @@ class InfoUtil(private val context: Context) {
                     request.addOption("--split-chapters")
                     request.addOption("-o", "chapter:%(section_title)s.%(ext)s")
                 }else{
-                    request.addOption("--embed-metadata")
+
+                    if (sharedPreferences.getBoolean("embed_metadata", true)){
+                        request.addOption("--embed-metadata")
+
+                        request.addOption("--parse-metadata", "%(release_year,upload_date)s:%(meta_date)s")
+
+                        if (downloadItem.playlistTitle.isNotEmpty()) {
+                            request.addOption("--parse-metadata", "%(album,playlist,title)s:%(meta_album)s")
+                            request.addOption("--parse-metadata", "%(track_number,playlist_index)d:%(meta_track)s")
+                        } else {
+                            request.addOption("--parse-metadata", "%(album,title)s:%(meta_album)s")
+                        }
+                    }
+
 
                     if (downloadItem.audioPreferences.embedThumb) {
                         request.addOption("--embed-thumbnail")
@@ -1072,14 +1103,6 @@ class InfoUtil(private val context: Context) {
                             }
                         }
                     }
-                    request.addOption("--parse-metadata", "%(release_year,upload_date)s:%(meta_date)s")
-
-                    if (downloadItem.playlistTitle.isNotEmpty()) {
-                        request.addOption("--parse-metadata", "%(album,playlist,title)s:%(meta_album)s")
-                        request.addOption("--parse-metadata", "%(track_number,playlist_index)d:%(meta_track)s")
-                    } else {
-                        request.addOption("--parse-metadata", "%(album,title)s:%(meta_album)s")
-                    }
 
                     if (downloadItem.customFileNameTemplate.isNotBlank()){
                         request.addOption("-o", "${downloadItem.customFileNameTemplate}.%(ext)s")
@@ -1089,6 +1112,10 @@ class InfoUtil(private val context: Context) {
             }
             DownloadViewModel.Type.video -> {
                 val supportedContainers = context.resources.getStringArray(R.array.video_containers)
+
+                if (!sharedPreferences.getBoolean("embed_metadata", true)){
+                    request.addOption("--no-embed-metadata")
+                }
 
                 if (downloadItem.videoPreferences.addChapters) {
                     request.addOption("--sponsorblock-mark", "all")

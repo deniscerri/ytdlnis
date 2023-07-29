@@ -19,6 +19,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.media3.common.AudioAttributes
 import androidx.media3.common.C
 import androidx.media3.common.MediaItem.fromUri
+import androidx.media3.common.Player
 import androidx.media3.datasource.DefaultDataSource
 import androidx.media3.datasource.cronet.CronetDataSource
 import androidx.media3.exoplayer.DefaultLoadControl
@@ -33,6 +34,7 @@ import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.ChapterItem
 import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.util.InfoUtil
+import com.deniscerri.ytdlnis.util.UiUtil.setTextAndRecalculateWidth
 import com.deniscerri.ytdlnis.util.VideoPlayerUtil
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -68,6 +70,7 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private var urls
     private lateinit var durationText: TextView
     private lateinit var progress : ProgressBar
     private lateinit var pauseBtn : MaterialButton
+    private lateinit var rewindBtn : MaterialButton
     private lateinit var muteBtn : MaterialButton
     private lateinit var rangeSlider : RangeSlider
     private lateinit var fromTextInput : TextInputLayout
@@ -119,6 +122,7 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private var urls
         durationText.text = ""
         progress = view.findViewById(R.id.progress)
         pauseBtn = view.findViewById(R.id.pause)
+        rewindBtn = view.findViewById(R.id.rewind)
         muteBtn = view.findViewById(R.id.mute)
         rangeSlider = view.findViewById(R.id.rangeSlider)
         fromTextInput = view.findViewById(R.id.from_textinput)
@@ -211,14 +215,23 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private var urls
             }
         }
 
+        player.addListener(object : Player.Listener {
+            override fun onIsPlayingChanged(isPlaying: Boolean) {
+                if (isPlaying){
+                    pauseBtn.visibility = View.GONE
+                }else{
+                    pauseBtn.visibility = View.VISIBLE
+                }
+                super.onIsPlayingChanged(isPlaying)
+            }
+        })
+
         videoView.setOnClickListener {
             if (player.isPlaying){
                 player.pause()
-                pauseBtn.visibility = View.VISIBLE
             }
             else {
                 player.play()
-                pauseBtn.visibility = View.GONE
             }
         }
 
@@ -232,12 +245,22 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private var urls
             }
         }
 
+        rewindBtn.setOnClickListener {
+            try {
+                val seconds = convertStringToTimestamp(fromTextInput.editText!!.text.toString())
+                val endTimestamp = (rangeSlider.valueTo.toInt() * timeSeconds) / 100
+                val startValue = (seconds.toFloat() / endTimestamp) * 100
+                player.seekTo((((startValue * timeSeconds) / 100) * 1000).toLong())
+                player.play()
+            }catch (ignored: Exception) {}
+        }
+
     }
 
     @SuppressLint("SetTextI18n")
     private fun initCutSection(){
-        fromTextInput.editText!!.setText("0:00")
-        toTextInput.editText!!.setText(item.duration)
+        fromTextInput.editText!!.setTextAndRecalculateWidth("0:00")
+        toTextInput.editText!!.setTextAndRecalculateWidth(item.duration)
 
         rangeSlider.addOnSliderTouchListener(object : RangeSlider.OnSliderTouchListener {
             override fun onStartTrackingTouch(slider: RangeSlider) {
@@ -252,8 +275,8 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private var urls
                 val startTimestampString = infoUtil.formatIntegerDuration(startTimestamp, Locale.US)
                 val endTimestampString = infoUtil.formatIntegerDuration(endTimestamp, Locale.US)
 
-                fromTextInput.editText!!.setText(startTimestampString)
-                toTextInput.editText!!.setText(endTimestampString)
+                fromTextInput.editText!!.setTextAndRecalculateWidth(startTimestampString)
+                toTextInput.editText!!.setTextAndRecalculateWidth(endTimestampString)
 
 
                 okBtn.isEnabled = !(values[0] == 0F && values[1] == 100F)
@@ -282,9 +305,9 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private var urls
                     val endValue = (endSeconds.toFloat() / endTimestamp) * 100
 
                     if (seconds == 0) {
-                        fromTextInput.editText!!.setText(infoUtil.formatIntegerDuration(startTimestamp, Locale.US))
+                        fromTextInput.editText!!.setTextAndRecalculateWidth(infoUtil.formatIntegerDuration(startTimestamp, Locale.US))
                     }else if (startValue > 100){
-                        fromTextInput.editText!!.setText(infoUtil.formatIntegerDuration(startTimestamp, Locale.US))
+                        fromTextInput.editText!!.setTextAndRecalculateWidth(infoUtil.formatIntegerDuration(startTimestamp, Locale.US))
                     }
 
                     rangeSlider.setValues(startValue, endValue)
@@ -318,9 +341,9 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private var urls
                     val endValue = (seconds.toFloat() / endTimestamp) * 100
 
                     if (seconds == 0) {
-                        toTextInput.editText!!.setText(infoUtil.formatIntegerDuration(endTimestamp, Locale.US))
+                        toTextInput.editText!!.setTextAndRecalculateWidth(infoUtil.formatIntegerDuration(endTimestamp, Locale.US))
                     }else if (endValue > 100 || endValue <= rangeSlider.valueFrom.toInt()){
-                        toTextInput.editText!!.setText(infoUtil.formatIntegerDuration(endTimestamp, Locale.US))
+                        toTextInput.editText!!.setTextAndRecalculateWidth(infoUtil.formatIntegerDuration(endTimestamp, Locale.US))
                     }
 
                     rangeSlider.setValues(startValue, endValue)
@@ -520,8 +543,10 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private var urls
 
     private fun videoProgress(player: ExoPlayer?) = flow {
         while (true) {
-            emit((player!!.currentPosition / 1000).toInt())
-            delay(1000)
+            runCatching {
+                emit((player!!.currentPosition / 1000).toInt())
+                delay(1000)
+            }
         }
     }.flowOn(Dispatchers.Main)
 

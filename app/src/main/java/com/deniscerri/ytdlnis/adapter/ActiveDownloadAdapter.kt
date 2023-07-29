@@ -147,10 +147,10 @@ class ActiveDownloadAdapter(onItemClickListener: OnItemClickListener, activity: 
 
         pauseButton.setOnClickListener {
             if (pauseButton.tag == ActiveDownloadAction.Pause){
-                onItemClickListener.onPauseClick(item.id, ActiveDownloadAction.Pause)
+                onItemClickListener.onPauseClick(item.id, ActiveDownloadAction.Pause, position)
 
             }else{
-                onItemClickListener.onPauseClick(item.id, ActiveDownloadAction.Resume)
+                onItemClickListener.onPauseClick(item.id, ActiveDownloadAction.Resume, position)
 
             }
         }
@@ -158,7 +158,7 @@ class ActiveDownloadAdapter(onItemClickListener: OnItemClickListener, activity: 
     }
     interface OnItemClickListener {
         fun onCancelClick(itemID: Long)
-        fun onPauseClick(itemID: Long, action: ActiveDownloadAction)
+        fun onPauseClick(itemID: Long, action: ActiveDownloadAction, position: Int)
         fun onOutputClick(item: DownloadItem)
     }
 
