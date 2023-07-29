@@ -292,4 +292,6 @@
     <string name="write_description">Salvar Descrição</string>
     <string name="use_cookies">Usar Cookies</string>
     <string name="write_description_summary">Salve a descrição em um arquivo na pasta de downloads</string>
+    <string name="embed_metadata">Incorporar Metadados</string>
+    <string name="embed_metadata_summary">Incorpore metadados ao arquivo de vídeo. Também incorpora capítulos/infojson se presente</string>
 </resources>
