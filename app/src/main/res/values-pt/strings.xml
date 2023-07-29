@@ -292,4 +292,6 @@
     <string name="write_description_summary">Escrever ficheiro de descrição</string>
     <string name="use_cookies">Utilizar Cookies</string>
     <string name="extra_command">Comando Extra</string>
+    <string name="embed_metadata">Incorporar Metadados</string>
+    <string name="embed_metadata_summary">Incorpora metadados ao ficheiro de vídeo. Também incorpora capítulos/infojson se estiverem presentes</string>
 </resources>
