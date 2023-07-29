@@ -277,7 +277,7 @@
     <string name="format_order">Urutan Format</string>
     <string name="force_keyframes">Paksakan Keyframe saat Pemotongan</string>
     <string name="force_keyframes_summary">Proses yang lebih lambat, tetapi pemotongannya lebih akurat</string>
-    <string name="show_terminal">Sembunyikan Terminal Dari Menu Berbagi</string>
+    <string name="show_terminal">Perlihatkan Terminal di Menu Berbagi</string>
     <string name="subtitle_format">Format Takarir (Subtitle)</string>
     <string name="hide_thumbnails">Sembunyikan Keluku (Thumbnail)</string>
     <string name="clear_saved">Kosongkan yang Disimpan</string>
@@ -287,4 +287,8 @@
     <string name="use_extra_commands_summary">Bagi pengunduhan Audio / Video. Menambahkan perintah ekstra beserta konfigurasi GUI</string>
     <string name="current">Perintah Saat Ini</string>
     <string name="orange">Oranye</string>
+    <string name="write_description">Simpan Deskripsi</string>
+    <string name="write_description_summary">Menulis berkas deskripsi</string>
+    <string name="extra_command">Perintah Ekstra</string>
+    <string name="use_cookies">Gunakan Kuki</string>
 </resources>

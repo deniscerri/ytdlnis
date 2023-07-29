@@ -120,7 +120,7 @@
     <string name="concurrent_fragments">Fragmentos em simultâneo</string>
     <string name="sponsorblock_sponsors">Patrocínio</string>
     <string name="sponsorblock_intro">Introdução</string>
-    <string name="sponsorblock_outro">Cartões Finais/Créditos (Outro)</string>
+    <string name="sponsorblock_outro">Cartões Finais/Créditos</string>
     <string name="sponsorblock_promos">Auto-promoção</string>
     <string name="sponsorblock_reminders">Lembretes de subscrição</string>
     <string name="adjust_templates">Ajustar modelos</string>
@@ -281,10 +281,17 @@
     <string name="saved">Guardado</string>
     <string name="clear_saved">Limpar guardado</string>
     <string name="use_extra_commands_summary">Para transferências de áudio/vídeo. Adicionar comandos extra juntamente com a configuração GUI</string>
-    <string name="subtitle_format">Formato da legenda</string>
+    <string name="subtitle_format">Formato da legenda
+\n</string>
     <string name="hide_thumbnails">Esconder miniaturas</string>
     <string name="force_keyframes_summary">Processo mais lento, mas cortes mais precisos</string>
     <string name="save_for_later">Guardar a transferência para mais tarde\?</string>
     <string name="force_keyframes">Forçar quadros-chave nos cortes</string>
-    <string name="show_terminal">Ocultar o terminal do menu Partilhar</string>
+    <string name="show_terminal">Mostrar o terminal no menu Partilhar</string>
+    <string name="write_description">Guardar descrição</string>
+    <string name="write_description_summary">Escrever ficheiro de descrição</string>
+    <string name="use_cookies">Utilizar Cookies</string>
+    <string name="extra_command">Comando Extra</string>
+    <string name="embed_metadata">Incorporar Metadados</string>
+    <string name="embed_metadata_summary">Incorpora metadados ao ficheiro de vídeo. Também incorpora capítulos/infojson se estiverem presentes</string>
 </resources>

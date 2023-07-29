@@ -290,5 +290,9 @@
     <string name="saved">Kaydedildi</string>
     <string name="clear_saved">Kaydedilenleri Temizle</string>
     <string name="hide_thumbnails">Küçük Resimleri Gizle</string>
-    <string name="show_terminal">Paylaşım menüsünde terminal göster</string>
+    <string name="show_terminal">Paylaşım Menüsünde Terminali Göster</string>
+    <string name="write_description">Açıklamayı Kaydet</string>
+    <string name="write_description_summary">Açıklama dosyası yaz</string>
+    <string name="extra_command">Ekstra Komut</string>
+    <string name="use_cookies">Çerezleri Kullan</string>
 </resources>
