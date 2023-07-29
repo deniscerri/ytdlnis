@@ -283,8 +283,13 @@
     <string name="hide_thumbnails">Приховати мініатюри</string>
     <string name="saved">Збережено</string>
     <string name="clear_saved">Очистити збережене</string>
-    <string name="subtitle_format">Формат субтитрів</string>
+    <string name="subtitle_format">Формат субтитрів
+\n</string>
     <string name="save_for_later">Зберегти завантаження на потім\?</string>
     <string name="orange">Помаранчевий</string>
-    <string name="show_terminal">Приховати термінал у меню спільного доступу</string>
+    <string name="show_terminal">Показати термінал у меню Спільний доступ</string>
+    <string name="use_cookies">Використовуйте файли cookie</string>
+    <string name="write_description">Зберегти опис</string>
+    <string name="write_description_summary">Напишіть файл опису</string>
+    <string name="extra_command">Додаткова команда</string>
 </resources>
