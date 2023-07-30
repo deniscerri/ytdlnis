@@ -60,7 +60,7 @@ import kotlin.random.nextInt
 
 class DownloadViewModel(application: Application) : AndroidViewModel(application) {
     private val dbManager: DBManager
-    private val repository : DownloadRepository
+    val repository : DownloadRepository
     private val sharedPreferences: SharedPreferences
     private val commandTemplateDao: CommandTemplateDao
     private val infoUtil : InfoUtil
@@ -339,7 +339,7 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
     }
 
 
-    private fun getFormat(formats: List<Format>, type: Type) : Format {
+    fun getFormat(formats: List<Format>, type: Type) : Format {
         when(type) {
             Type.audio -> {
                 return cloneFormat (
@@ -539,7 +539,7 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
                 .build()
 
             workManager.enqueueUniqueWork(
-                Random.nextInt(1000000000).toString(),
+                it.id.toString(),
                 ExistingWorkPolicy.REPLACE,
                 workRequest
             )

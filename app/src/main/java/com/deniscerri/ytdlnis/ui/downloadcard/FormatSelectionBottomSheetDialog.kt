@@ -22,6 +22,7 @@ import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.card.MaterialCardView
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -45,6 +46,10 @@ class FormatSelectionBottomSheetDialog(private val items: List<DownloadItem?>, p
     private lateinit var audioTitle : TextView
 
     private lateinit var sortBy : FormatSorting
+
+    private lateinit var continueInBackgroundSnackBar : Snackbar
+    private lateinit var view: View
+
     enum class FormatSorting {
         filesize, container, id
     }
@@ -62,7 +67,7 @@ class FormatSelectionBottomSheetDialog(private val items: List<DownloadItem?>, p
     @SuppressLint("RestrictedApi")
     override fun setupDialog(dialog: Dialog, style: Int) {
         super.setupDialog(dialog, style)
-        val view = LayoutInflater.from(context).inflate(R.layout.format_select_bottom_sheet, null)
+        view = LayoutInflater.from(context).inflate(R.layout.format_select_bottom_sheet, null)
         dialog.setContentView(view)
 
         sortBy = FormatSorting.valueOf(sharedPreferences.getString("format_order", "filesize")!!)
@@ -121,6 +126,16 @@ class FormatSelectionBottomSheetDialog(private val items: List<DownloadItem?>, p
 
         refreshBtn.setOnClickListener {
            lifecycleScope.launch {
+               if (items.size > 10){
+                   continueInBackgroundSnackBar = Snackbar.make(view, R.string.update_formats_background, Snackbar.LENGTH_INDEFINITE)
+                   continueInBackgroundSnackBar.setAction(R.string.ok) {
+                       listener.onContinueOnBackground(items)
+                       this@FormatSelectionBottomSheetDialog.dismiss()
+                   }
+                   continueInBackgroundSnackBar.show()
+               }
+
+
                chosenFormats = emptyList()
                try {
                    refreshBtn.isEnabled = false
@@ -333,6 +348,7 @@ class FormatSelectionBottomSheetDialog(private val items: List<DownloadItem?>, p
 
 interface OnFormatClickListener{
     fun onFormatClick(allFormats: List<List<Format>>, item: List<FormatTuple>)
+    fun onContinueOnBackground(items : List<DownloadItem?>) {}
 }
 
 class FormatTuple internal constructor(

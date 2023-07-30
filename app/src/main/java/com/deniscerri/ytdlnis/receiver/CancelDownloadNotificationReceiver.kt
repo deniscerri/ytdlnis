@@ -3,6 +3,7 @@ package com.deniscerri.ytdlnis.receiver
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import androidx.work.WorkManager
 import com.deniscerri.ytdlnis.database.DBManager
 import com.deniscerri.ytdlnis.database.repository.DownloadRepository
 import com.deniscerri.ytdlnis.util.NotificationUtil
@@ -19,14 +20,17 @@ class CancelDownloadNotificationReceiver : BroadcastReceiver() {
         if (message != null) {
             runCatching {
                 val notificationUtil = NotificationUtil(c)
+                WorkManager.getInstance(c).cancelUniqueWork(id.toString())
                 notificationUtil.cancelDownloadNotification(id)
                 YoutubeDL.getInstance().destroyProcessById(id.toString())
 
                 val dbManager = DBManager.getInstance(c)
                 CoroutineScope(Dispatchers.IO).launch{
-                    val item = dbManager.downloadDao.getDownloadById(id.toLong())
-                    item.status = DownloadRepository.Status.Cancelled.toString()
-                    dbManager.downloadDao.update(item)
+                    runCatching {
+                        val item = dbManager.downloadDao.getDownloadById(id.toLong())
+                        item.status = DownloadRepository.Status.Cancelled.toString()
+                        dbManager.downloadDao.update(item)
+                    }
                 }
             }
 

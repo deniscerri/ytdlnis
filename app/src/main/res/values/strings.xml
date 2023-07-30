@@ -300,4 +300,6 @@
     <string name="use_cookies">Use Cookies</string>
     <string name="embed_metadata">Embed Metadata</string>
     <string name="embed_metadata_summary">Embed metadata to the video file. Also embeds chapters/infojson if present</string>
+    <string name="formats_updated">Formats have been updated</string>
+    <string name="update_formats_background">Update Formats in Background</string>
 </resources>

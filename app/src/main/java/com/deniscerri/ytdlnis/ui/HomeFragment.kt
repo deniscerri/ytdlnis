@@ -31,6 +31,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.adapter.HomeAdapter
+import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.ResultViewModel
@@ -50,6 +51,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.search.SearchBar
 import com.google.android.material.search.SearchView
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -232,6 +234,18 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
             }
         }
 
+        if (arguments?.getBoolean("showDownloadsWithUpdatedFormats") == true){
+            CoroutineScope(Dispatchers.IO).launch {
+                val ids = arguments?.getLongArray("downloadIds")
+                val items = mutableListOf<DownloadItem>()
+                ids?.forEach {
+                    items.add(downloadViewModel.getItemByID(it))
+                }
+                val bottomSheet = DownloadMultipleBottomSheetDialog(items.toMutableList())
+                bottomSheet.show(parentFragmentManager, "downloadMultipleSheet")
+            }
+        }
+
     }
 
     override fun onResume() {
@@ -239,7 +253,9 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
         if(arguments?.getString("url") == null){
             resultViewModel.checkTrending()
         }else{
+            arguments
             arguments?.remove("url")
+            arguments?.remove("showDownloadsWithUpdatedFormats")
         }
         if (searchView?.currentTransitionState == SearchView.TransitionState.SHOWN){
             lifecycleScope.launch {
@@ -612,7 +628,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
                         downloadViewModel.turnResultItemsToDownloadItems(resultsList!!)
                     }
                     if (sharedPreferences!!.getBoolean("download_card", true)) {
-                        val bottomSheet = DownloadMultipleBottomSheetDialog(resultsList!!, downloadList.toMutableList())
+                        val bottomSheet = DownloadMultipleBottomSheetDialog(downloadList.toMutableList())
                         bottomSheet.show(parentFragmentManager, "downloadMultipleSheet")
                     } else {
                         downloadViewModel.queueDownloads(downloadList)
@@ -673,7 +689,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
                                 if (selectedObjects!!.size == 1){
                                     showSingleDownloadSheet(selectedObjects!![0], DownloadViewModel.Type.valueOf(sharedPreferences!!.getString("preferred_download_type", "video")!!), false)
                                 }else{
-                                    val bottomSheet = DownloadMultipleBottomSheetDialog(selectedObjects!!, downloadList.toMutableList())
+                                    val bottomSheet = DownloadMultipleBottomSheetDialog(downloadList.toMutableList())
                                     bottomSheet.show(parentFragmentManager, "downloadMultipleSheet")
                                 }
                             } else {

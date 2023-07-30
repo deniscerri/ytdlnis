@@ -138,7 +138,7 @@ class ActiveDownloadsFragment : Fragment(), ActiveDownloadAdapter.OnItemClickLis
 
             it.forEach{item ->
                 WorkManager.getInstance(requireContext())
-                    .getWorkInfosByTagLiveData(item.id.toString())
+                    .getWorkInfosForUniqueWorkLiveData(item.id.toString())
                     .observe(viewLifecycleOwner){ list ->
                         list.forEach {work ->
                             if (work == null) return@observe

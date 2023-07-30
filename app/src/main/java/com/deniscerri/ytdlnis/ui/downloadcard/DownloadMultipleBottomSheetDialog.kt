@@ -33,11 +33,14 @@ import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.work.Data
+import androidx.work.ExistingWorkPolicy
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.adapter.ConfigureMultipleDownloadsAdapter
 import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.models.Format
-import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.deniscerri.ytdlnis.database.repository.DownloadRepository
 import com.deniscerri.ytdlnis.database.viewmodel.CommandTemplateViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
@@ -45,6 +48,7 @@ import com.deniscerri.ytdlnis.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdlnis.receiver.ShareActivity
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.UiUtil
+import com.deniscerri.ytdlnis.work.UpdatePlaylistFormatsWorker
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -62,7 +66,7 @@ import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class DownloadMultipleBottomSheetDialog(private var results: List<ResultItem?>, private var items: MutableList<DownloadItem>) : BottomSheetDialogFragment(), ConfigureMultipleDownloadsAdapter.OnItemClickListener, View.OnClickListener,
+class DownloadMultipleBottomSheetDialog(private var items: MutableList<DownloadItem>) : BottomSheetDialogFragment(), ConfigureMultipleDownloadsAdapter.OnItemClickListener, View.OnClickListener,
     ConfigureDownloadBottomSheetDialog.OnDownloadItemUpdateListener {
     private lateinit var downloadViewModel: DownloadViewModel
     private lateinit var commandTemplateViewModel: CommandTemplateViewModel
@@ -192,6 +196,35 @@ class DownloadMultipleBottomSheetDialog(private var results: List<ResultItem?>, 
                 }
                 listAdapter.submitList(items.toList())
                 listAdapter.notifyDataSetChanged()
+            }
+
+
+            override fun onContinueOnBackground(items: List<DownloadItem?>) {
+                requireActivity().lifecycleScope.launch {
+                    val ids = mutableListOf<Long>()
+                    runBlocking {
+                        items.map { it!!.status = DownloadRepository.Status.Saved.toString() }
+                        items.forEach {
+                            ids.add(downloadViewModel.repository.insert(it!!))
+                        }
+                    }
+                    val id = System.currentTimeMillis().toInt()
+                    val workRequest = OneTimeWorkRequestBuilder<UpdatePlaylistFormatsWorker>()
+                        .setInputData(
+                            Data.Builder()
+                                .putLongArray("ids", ids.toLongArray())
+                                .putInt("id", id)
+                                .build())
+                        .addTag("updateFormats")
+                        .build()
+
+                    WorkManager.getInstance(requireContext()).enqueueUniqueWork(
+                        id.toString(),
+                        ExistingWorkPolicy.REPLACE,
+                        workRequest
+                    )
+                }
+
             }
         }
 

@@ -19,7 +19,6 @@ import com.deniscerri.ytdlnis.receiver.PauseDownloadNotificationReceiver
 import com.deniscerri.ytdlnis.receiver.ResumeActivity
 import com.deniscerri.ytdlnis.receiver.ShareFileActivity
 import java.io.File
-import kotlin.math.log
 
 
 class NotificationUtil(var context: Context) {
@@ -342,10 +341,93 @@ class NotificationUtil(var context: Context) {
         }
     }
 
-    fun showYTDLUpdateNotification() : Notification{
+    fun createYTDLUpdateNotification() : Notification{
         val notificationBuilder = getBuilder(DOWNLOAD_MISC_CHANNEL_ID)
         notificationBuilder.setContentTitle("Updating YT-DLP...")
         return notificationBuilder.build()
+    }
+
+    fun createFormatsUpdateNotification(workID: Int): Notification {
+        val notificationBuilder = getBuilder(DOWNLOAD_MISC_CHANNEL_ID)
+
+        val cancelIntent = Intent(context, CancelDownloadNotificationReceiver::class.java)
+        cancelIntent.putExtra("cancel", "")
+        cancelIntent.putExtra("workID", workID)
+        val cancelNotificationPendingIntent = PendingIntent.getBroadcast(
+            context,
+            workID,
+            cancelIntent,
+            PendingIntent.FLAG_IMMUTABLE
+        )
+
+        return notificationBuilder
+            .setContentTitle(context.getString(R.string.update_formats_background))
+            .setOngoing(true)
+            .setCategory(Notification.CATEGORY_PROGRESS)
+            .setSmallIcon(android.R.drawable.stat_sys_download)
+            .setLargeIcon(
+                BitmapFactory.decodeResource(
+                    context.resources,
+                    android.R.drawable.stat_sys_download
+                )
+            )
+            .setContentText("")
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+            .setProgress(PROGRESS_MAX, PROGRESS_CURR, false)
+            .setForegroundServiceBehavior(NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE)
+            .clearActions()
+            .addAction(0, context.getString(R.string.cancel), cancelNotificationPendingIntent)
+            .build()
+    }
+
+    fun updateFormatUpdateNotification(
+        id: Int,
+        progress: Int,
+        queue: Int,
+    ) {
+
+        val notificationBuilder = getBuilder(DOWNLOAD_MISC_CHANNEL_ID)
+        val contentText = """${queue - progress} ${context.getString(R.string.items_left)}"""
+        try {
+            notificationBuilder.setProgress(queue, progress, false)
+                .setContentTitle(context.getString(R.string.update_formats_background))
+                .setStyle(NotificationCompat.BigTextStyle().bigText(contentText))
+            notificationManager.notify(id, notificationBuilder.build())
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+
+    fun showFormatsUpdatedNotification(downloadIds: List<Long>) {
+        val notificationBuilder = getBuilder(DOWNLOAD_FINISHED_CHANNEL_ID)
+
+        val bundle = Bundle()
+        bundle.putBoolean("showDownloadsWithUpdatedFormats", true)
+        bundle.putLongArray("downloadIds", downloadIds.toLongArray())
+
+        val openMultipleDownloads = NavDeepLinkBuilder(context)
+            .setGraph(R.navigation.nav_graph)
+            .setDestination(R.id.homeFragment)
+            .setArguments(bundle)
+            .createPendingIntent()
+
+        notificationBuilder
+            .setContentTitle(context.getString(R.string.finished_download_notification_channel_name))
+            .setSmallIcon(R.drawable.ic_launcher_foreground_large)
+            .setLargeIcon(
+                BitmapFactory.decodeResource(
+                    context.resources,
+                    R.drawable.ic_launcher_foreground_large
+                )
+            )
+            .setContentIntent(openMultipleDownloads)
+            .setPriority(NotificationCompat.PRIORITY_MAX)
+            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+            .clearActions()
+
+        notificationManager.notify(FORMAT_UPDATING_FINISHED_NOTIFICATION_ID, notificationBuilder.build())
     }
 
     companion object {
@@ -355,6 +437,8 @@ class NotificationUtil(var context: Context) {
         const val DOWNLOAD_FINISHED_NOTIFICATION_ID = 3
         const val DOWNLOAD_RESUME_NOTIFICATION_ID = 4
         const val DOWNLOAD_UPDATING_NOTIFICATION_ID = 5
+        const val FORMAT_UPDATING_NOTIFICATION_ID = 6
+        const val FORMAT_UPDATING_FINISHED_NOTIFICATION_ID = 7
         const val DOWNLOAD_MISC_CHANNEL_ID = "4"
         const val DOWNLOAD_MISC_NOTIFICATION_ID = 4
         private const val PROGRESS_MAX = 100
