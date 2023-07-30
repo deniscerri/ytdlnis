@@ -281,11 +281,17 @@
     <string name="subtitle_format">Titr Formatı
 \n</string>
     <string name="hide_thumbnails">Miniatürləri Gizlət</string>
-    <string name="show_terminal">Sıxacı Paylaş Menyusundan Gizlət</string>
+    <string name="show_terminal">Paylaş Menyusunda Sıxac Göstər</string>
     <string name="saved">Saxlanıldı</string>
     <string name="clear_saved">Saxlanılanları Təmizlə</string>
     <string name="use_extra_commands">Əlavə Əmrlər Əlavə Et</string>
     <string name="use_extra_commands_summary">Səs / Video yükləmələr üçün. GUI konfiqurasiyası ilə birlikdə əlavə əmrlər əlavə et</string>
     <string name="current">Cari Əmr</string>
     <string name="orange">Narıncı</string>
+    <string name="write_description">Açıqlamanı Saxla</string>
+    <string name="write_description_summary">Açıqlama faylın yaz</string>
+    <string name="extra_command">Əlavə Əmr</string>
+    <string name="use_cookies">Məlumat Bazası İstifadə Et</string>
+    <string name="embed_metadata">Üst məlumat yerləşdir</string>
+    <string name="embed_metadata_summary">Video fayla üst məlumat yerləşdir. Həmçinin, əgər varsa, bölmələr/infojsonlar yerləşdirir</string>
 </resources>
