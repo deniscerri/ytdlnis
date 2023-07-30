@@ -39,6 +39,9 @@ class UpdateYTDLWorker(
     workerParams: WorkerParameters
 ) : CoroutineWorker(context, workerParams) {
     override suspend fun doWork(): Result {
+        val notification = NotificationUtil(context).showYTDLUpdateNotification()
+        val foregroundInfo = ForegroundInfo(System.currentTimeMillis().toInt(), notification)
+        setForeground(foregroundInfo)
         UpdateUtil(context).updateYoutubeDL()
         return Result.success()
     }

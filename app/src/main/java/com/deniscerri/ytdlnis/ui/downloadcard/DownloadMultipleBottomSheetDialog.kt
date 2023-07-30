@@ -182,7 +182,11 @@ class DownloadMultipleBottomSheetDialog(private var results: List<ResultItem?>, 
                 }
                 items.forEachIndexed { index, i ->
                     i.allFormats.clear()
-                    if (formatCollection.isNotEmpty() && formatCollection[index].isNotEmpty()) i.allFormats.addAll(formatCollection[index])
+                    if (formatCollection.size == items.size && formatCollection[index].isNotEmpty()) {
+                        runCatching {
+                            i.allFormats.addAll(formatCollection[index])
+                        }
+                    }
                     i.format = selectedFormats[index].format
                     if (i.type == DownloadViewModel.Type.video) selectedFormats[index].audioFormats?.map { it.format_id }?.let { i.videoPreferences.audioFormatIDs.addAll(it) }
                 }

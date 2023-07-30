@@ -39,7 +39,7 @@ class DownloadWorker(
 ) : Worker(context, workerParams) {
     override fun doWork(): Result {
         itemId = inputData.getLong("id", 0)
-        if (itemId == 0L || isStopped) return Result.failure()
+        if (itemId == 0L || isStopped) return Result.success()
 
         val notificationUtil = NotificationUtil(context)
         val infoUtil = InfoUtil(context)
@@ -56,10 +56,10 @@ class DownloadWorker(
             downloadItem = repository.getItemByID(itemId)
         }catch (e: Exception){
             e.printStackTrace()
-            return Result.failure()
+            return Result.success()
         }
 
-        if (downloadItem.status != DownloadRepository.Status.Queued.toString() && downloadItem.status != DownloadRepository.Status.Paused.toString()) return Result.failure()
+        if (downloadItem.status != DownloadRepository.Status.Queued.toString() && downloadItem.status != DownloadRepository.Status.Paused.toString()) return Result.success()
 
         val pendingIntent = NavDeepLinkBuilder(context)
             .setGraph(R.navigation.nav_graph)
@@ -101,7 +101,7 @@ class DownloadWorker(
                     "URL: ${downloadItem.url}\n" +
                     "Type: ${downloadItem.type}\n" +
                     "Format: ${downloadItem.format}\n\n" +
-                    "Command: ${java.lang.String.join(" ", request.buildCommand())}\n\n",
+                    "Command: ${infoUtil.parseYTDLRequestString(request)} ${downloadItem.extraCommands}\n\n",
             downloadItem.format,
             downloadItem.type,
             System.currentTimeMillis(),
@@ -194,7 +194,7 @@ class DownloadWorker(
 
         }.onFailure {
             if (it is YoutubeDL.CanceledException) {
-                return Result.failure(
+                return Result.success(
                     Data.Builder().putString("output", "Download has been cancelled!").build()
                 )
             }else{
@@ -225,7 +225,7 @@ class DownloadWorker(
                     NotificationUtil.DOWNLOAD_FINISHED_CHANNEL_ID
                 )
 
-                return Result.failure(
+                return Result.success(
                     Data.Builder().putString("output", it.toString()).build()
                 )
             }

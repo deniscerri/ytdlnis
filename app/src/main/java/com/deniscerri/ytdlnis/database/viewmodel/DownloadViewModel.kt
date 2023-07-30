@@ -52,7 +52,10 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import java.io.File
 import java.util.Locale
+import java.util.UUID
 import java.util.concurrent.TimeUnit
+import kotlin.random.Random
+import kotlin.random.nextInt
 
 
 class DownloadViewModel(application: Application) : AndroidViewModel(application) {
@@ -149,7 +152,13 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
     }
 
     suspend fun updateDownload(item: DownloadItem){
-        repository.update(item)
+        if (sharedPreferences.getBoolean("incognito", false)){
+            if (item.status == DownloadRepository.Status.Cancelled.toString() || item.status == DownloadRepository.Status.Error.toString()){
+                repository.delete(item)
+            }
+        }else{
+            repository.update(item)
+        }
     }
 
     fun getItemByID(id: Long) : DownloadItem {
@@ -485,6 +494,8 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
             if (it.status != DownloadRepository.Status.Paused.toString()) it.status = DownloadRepository.Status.Queued.toString()
             if (activeAndQueuedDownloads.firstOrNull{d ->
                     d.id = 0
+                    d.logID = null
+                    d.customFileNameTemplate = it.customFileNameTemplate
                     d.status = DownloadRepository.Status.Queued.toString()
                     d.toString() == it.toString()
             } != null) {
@@ -506,6 +517,9 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
                 Toast.makeText(context, context.getString(R.string.download_already_exists), Toast.LENGTH_LONG).show()
             }
         }
+
+        val workManager = WorkManager.getInstance(context)
+
         queuedItems.forEach {
             val currentTime = System.currentTimeMillis()
             var delay = if (it.downloadStartTime != 0L){
@@ -518,18 +532,19 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
 
             val workRequest = OneTimeWorkRequestBuilder<DownloadWorker>()
                 .setInputData(Data.Builder().putLong("id", it.id).build())
+                .addTag(it.id.toString())
                 .addTag("download")
                 .setConstraints(workConstraints.build())
                 .setInitialDelay(delay, TimeUnit.SECONDS)
                 .build()
 
-            WorkManager.getInstance(context).beginUniqueWork(
-                it.id.toString(),
-                ExistingWorkPolicy.KEEP,
+            workManager.enqueueUniqueWork(
+                Random.nextInt(1000000000).toString(),
+                ExistingWorkPolicy.REPLACE,
                 workRequest
-            ).enqueue()
-
+            )
         }
+
 
         val isCurrentNetworkMetered = (context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager).isActiveNetworkMetered
         if (!allowMeteredNetworks && isCurrentNetworkMetered){

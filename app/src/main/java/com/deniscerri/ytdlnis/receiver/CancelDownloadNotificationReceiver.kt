@@ -17,15 +17,17 @@ class CancelDownloadNotificationReceiver : BroadcastReceiver() {
         val message = intent.getStringExtra("cancel")
         val id = intent.getIntExtra("workID", 0)
         if (message != null) {
-            val notificationUtil = NotificationUtil(c)
-            notificationUtil.cancelDownloadNotification(id)
-            YoutubeDL.getInstance().destroyProcessById(id.toString())
+            runCatching {
+                val notificationUtil = NotificationUtil(c)
+                notificationUtil.cancelDownloadNotification(id)
+                YoutubeDL.getInstance().destroyProcessById(id.toString())
 
-            val dbManager = DBManager.getInstance(c)
-            CoroutineScope(Dispatchers.IO).launch{
-                val item = dbManager.downloadDao.getDownloadById(id.toLong())
-                item.status = DownloadRepository.Status.Cancelled.toString()
-                dbManager.downloadDao.update(item)
+                val dbManager = DBManager.getInstance(c)
+                CoroutineScope(Dispatchers.IO).launch{
+                    val item = dbManager.downloadDao.getDownloadById(id.toLong())
+                    item.status = DownloadRepository.Status.Cancelled.toString()
+                    dbManager.downloadDao.update(item)
+                }
             }
 
         }

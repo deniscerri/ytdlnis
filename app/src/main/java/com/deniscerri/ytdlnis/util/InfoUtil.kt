@@ -1139,9 +1139,9 @@ class InfoUtil(private val context: Context) {
 
                     formatArgument = if (downloadItem.videoPreferences.audioFormatIDs.isNotEmpty() && ! downloadItem.videoPreferences.removeAudio){
                         val audioIds = downloadItem.videoPreferences.audioFormatIDs.joinToString("+")
-                        "$videoFormatID+$audioIds/best/$videoFormatID"
+                        "$videoFormatID+$audioIds/$videoFormatID/best"
                     }else{
-                        "$videoFormatID+bestaudio/best/$videoFormatID"
+                        "$videoFormatID+bestaudio/$videoFormatID/best"
                     }
                 }
                 Log.e(DownloadWorker.TAG, formatArgument)
@@ -1198,6 +1198,18 @@ class InfoUtil(private val context: Context) {
         }
 
         return request
+    }
+
+
+    fun parseYTDLRequestString(request : YoutubeDLRequest) : String {
+        val arr = request.buildCommand().toMutableList()
+        for (i in arr.indices) {
+            if (!arr[i].startsWith("-")) {
+                arr[i] = "\"${arr[i]}\""
+            }
+        }
+
+        return java.lang.String.join(" ", arr).replace("\"\"", "\" \"")
     }
 
     private val pipedURL = sharedPreferences.getString("piped_instance", defaultPipedURL)?.ifEmpty { defaultPipedURL }?.removeSuffix("/")

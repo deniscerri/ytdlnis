@@ -10,11 +10,13 @@ class PauseDownloadNotificationReceiver : BroadcastReceiver() {
     override fun onReceive(c: Context, intent: Intent) {
         val id = intent.getIntExtra("workID", 0)
         if (id != 0) {
-            val title = intent.getStringExtra("title")
-            val notificationUtil = NotificationUtil(c)
-            notificationUtil.cancelDownloadNotification(id)
-            YoutubeDL.getInstance().destroyProcessById(id.toString())
-            notificationUtil.createResumeDownload(id, title, NotificationUtil.DOWNLOAD_SERVICE_CHANNEL_ID)
+            runCatching {
+                val title = intent.getStringExtra("title")
+                val notificationUtil = NotificationUtil(c)
+                notificationUtil.cancelDownloadNotification(id)
+                YoutubeDL.getInstance().destroyProcessById(id.toString())
+                notificationUtil.createResumeDownload(id, title, NotificationUtil.DOWNLOAD_SERVICE_CHANNEL_ID)
+            }
         }
     }
 }

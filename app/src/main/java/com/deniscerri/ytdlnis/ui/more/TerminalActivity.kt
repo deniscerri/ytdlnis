@@ -337,7 +337,7 @@ class TerminalActivity : BaseActivity() {
 
     private fun cancelDownload() {
         YoutubeDL.getInstance().destroyProcessById(downloadID.toString())
-        WorkManager.getInstance(this).cancelUniqueWork(downloadID.toString())
+        WorkManager.getInstance(this).cancelAllWorkByTag(downloadID.toString())
         notificationUtil.cancelDownloadNotification(downloadID)
     }
 

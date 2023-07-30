@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.Color
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.LayoutInflater
@@ -26,10 +27,14 @@ import com.deniscerri.ytdlnis.util.UiUtil
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.neo.highlight.core.Highlight
+import com.neo.highlight.util.listener.HighlightTextWatcher
+import com.neo.highlight.util.scheme.ColorScheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.*
+import java.util.regex.Pattern
 
 
 class AddExtraCommandsDialog(private val item: DownloadItem, private val callback: ExtraCommandsListener) : BottomSheetDialogFragment() {
@@ -81,11 +86,32 @@ class AddExtraCommandsDialog(private val item: DownloadItem, private val callbac
         val text = view.findViewById<EditText>(R.id.command)
         val templates = view.findViewById<Button>(R.id.commands)
         val shortcuts = view.findViewById<Button>(R.id.shortcuts)
-        val currentCommand = infoUtil.buildYoutubeDLRequest(item).buildCommand().joinToString(" ")
-        view.findViewById<TextView>(R.id.currentText)?.text = currentCommand
+        val currentCommand = infoUtil.parseYTDLRequestString(infoUtil.buildYoutubeDLRequest(item))
+        val currentText =  view.findViewById<TextView>(R.id.currentText)
+        currentText?.text = currentCommand
+
+
+        //init syntax highlighter
+        val highlight = Highlight()
+        val highlightWatcher = HighlightTextWatcher()
+
+        val schemes = listOf(
+            ColorScheme(Pattern.compile("([\"'])(?:\\\\1|.)*?\\1"), Color.parseColor("#FC8500")),
+            ColorScheme(Pattern.compile("yt-dlp"), Color.parseColor("#00FF00")),
+            ColorScheme(Pattern.compile("(https?://(?:www\\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|www\\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|https?://(?:www\\.|(?!www))[a-zA-Z0-9]+\\.[^\\s]{2,}|www\\.[a-zA-Z0-9]+\\.[^\\s]{2,})"), Color.parseColor("#b5942f")),
+            ColorScheme(Pattern.compile("\\d+(\\.\\d)?%"), Color.parseColor("#43a564"))
+        )
+
+        highlight.addScheme(
+            *schemes.map { it }.toTypedArray()
+        )
+        highlightWatcher.addScheme(
+            *schemes.map { it }.toTypedArray()
+        )
+        highlight.setSpan(currentText)
+        currentText.addTextChangedListener(highlightWatcher)
 
         text?.setText(item.extraCommands)
-
         val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         text!!.postDelayed({
             text.setSelection(text.length())

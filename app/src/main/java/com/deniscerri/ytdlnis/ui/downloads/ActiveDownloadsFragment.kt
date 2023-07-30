@@ -41,6 +41,7 @@ class ActiveDownloadsFragment : Fragment(), ActiveDownloadAdapter.OnItemClickLis
     private lateinit var notificationUtil: NotificationUtil
     private lateinit var list: List<DownloadItem>
     private lateinit var pauseResume: MaterialButton
+    private lateinit var workManager: WorkManager
 
 
     override fun onCreateView(
@@ -53,6 +54,7 @@ class ActiveDownloadsFragment : Fragment(), ActiveDownloadAdapter.OnItemClickLis
         notificationUtil = NotificationUtil(requireContext())
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
         list = listOf()
+        workManager = WorkManager.getInstance(requireContext())
         return fragmentView
     }
 
@@ -87,7 +89,7 @@ class ActiveDownloadsFragment : Fragment(), ActiveDownloadAdapter.OnItemClickLis
                     }
 
                     queued.forEach {
-                        WorkManager.getInstance(requireContext()).cancelUniqueWork(it.id.toString())
+                        workManager.cancelAllWorkByTag(it.id.toString())
                     }
 
                     list.forEach {
@@ -136,7 +138,7 @@ class ActiveDownloadsFragment : Fragment(), ActiveDownloadAdapter.OnItemClickLis
 
             it.forEach{item ->
                 WorkManager.getInstance(requireContext())
-                    .getWorkInfosForUniqueWorkLiveData(item.id.toString())
+                    .getWorkInfosByTagLiveData(item.id.toString())
                     .observe(viewLifecycleOwner){ list ->
                         list.forEach {work ->
                             if (work == null) return@observe
@@ -162,6 +164,21 @@ class ActiveDownloadsFragment : Fragment(), ActiveDownloadAdapter.OnItemClickLis
     }
 
     override fun onCancelClick(itemID: Long) {
+        lifecycleScope.launch {
+            if (list.size == 1){
+                val queue = withContext(Dispatchers.IO){
+                    val list = downloadViewModel.getQueued().toMutableList()
+                    list.map { it.status = DownloadRepository.Status.Queued.toString() }
+                    list
+                }
+
+                runBlocking {
+                    downloadViewModel.queueDownloads(queue)
+                }
+            }
+
+        }
+
         cancelDownload(itemID)
     }
 
@@ -216,7 +233,7 @@ class ActiveDownloadsFragment : Fragment(), ActiveDownloadAdapter.OnItemClickLis
 
     private fun cancelItem(id: Int){
         YoutubeDL.getInstance().destroyProcessById(id.toString())
-        WorkManager.getInstance(requireContext()).cancelUniqueWork(id.toString())
+        WorkManager.getInstance(requireContext()).cancelAllWorkByTag(id.toString())
         notificationUtil.cancelDownloadNotification(id)
     }
 

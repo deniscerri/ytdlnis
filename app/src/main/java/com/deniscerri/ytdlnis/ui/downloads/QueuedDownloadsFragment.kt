@@ -167,7 +167,7 @@ class QueuedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLi
                     Toast.makeText(context, getString(R.string.download_rescheduled_to) + " " + it.time, Toast.LENGTH_LONG).show()
                     downloadViewModel.deleteDownload(item)
                     item.downloadStartTime = it.timeInMillis
-                    WorkManager.getInstance(requireContext()).cancelUniqueWork(item.id.toString())
+                    WorkManager.getInstance(requireContext()).cancelAllWorkByTag(item.id.toString())
                     runBlocking {
                         downloadViewModel.queueDownloads(listOf(item))
                     }
@@ -231,7 +231,7 @@ class QueuedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLi
                 bottomSheet.dismiss()
                 downloadViewModel.deleteDownload(item)
                 item.downloadStartTime = 0
-                WorkManager.getInstance(requireContext()).cancelUniqueWork(item.id.toString())
+                WorkManager.getInstance(requireContext()).cancelAllWorkByTag(item.id.toString())
                 runBlocking {
                     downloadViewModel.queueDownloads(listOf(item))
                 }
@@ -321,7 +321,7 @@ class QueuedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLi
                         for (obj in selectedObjects!!){
                             val id = obj.id.toInt()
                             YoutubeDL.getInstance().destroyProcessById(id.toString())
-                            WorkManager.getInstance(requireContext()).cancelUniqueWork(id.toString())
+                            WorkManager.getInstance(requireContext()).cancelAllWorkByTag(id.toString())
                             notificationUtil.cancelDownloadNotification(id)
                             downloadViewModel.deleteDownload(obj)
                         }
@@ -333,7 +333,7 @@ class QueuedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLi
                 }
                 R.id.download -> {
                     for (obj in selectedObjects!!){
-                        WorkManager.getInstance(requireContext()).cancelUniqueWork(obj.id.toInt().toString())
+                        WorkManager.getInstance(requireContext()).cancelAllWorkByTag(obj.id.toInt().toString())
                     }
                     selectedObjects!!.forEach { it.downloadStartTime = 0L }
                     lifecycleScope.launch(Dispatchers.IO) {

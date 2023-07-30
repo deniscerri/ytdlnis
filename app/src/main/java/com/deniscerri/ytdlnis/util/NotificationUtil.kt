@@ -342,6 +342,12 @@ class NotificationUtil(var context: Context) {
         }
     }
 
+    fun showYTDLUpdateNotification() : Notification{
+        val notificationBuilder = getBuilder(DOWNLOAD_MISC_CHANNEL_ID)
+        notificationBuilder.setContentTitle("Updating YT-DLP...")
+        return notificationBuilder.build()
+    }
+
     companion object {
         const val DOWNLOAD_SERVICE_CHANNEL_ID = "1"
         const val COMMAND_DOWNLOAD_SERVICE_CHANNEL_ID = "2"

@@ -75,6 +75,7 @@ class ResultCardDetailsDialog(private val item: ResultItem) : BottomSheetDialogF
 
     private lateinit var activeDownloads: ActiveDownloadMinifiedAdapter
     private lateinit var queuedDownloads: GenericDownloadAdapter
+    private var activeCount: Int = 0
     
     private lateinit var queuedItems : List<DownloadItem>
     private lateinit var activeItems : List<DownloadItem>
@@ -195,6 +196,10 @@ class ResultCardDetailsDialog(private val item: ResultItem) : BottomSheetDialogF
 
             queuedItems = it
             queuedDownloads.submitList(it)
+        }
+
+        downloadViewModel.activeDownloadsCount.observe(viewLifecycleOwner){
+            activeCount = it
         }
 
 
@@ -448,7 +453,7 @@ class ResultCardDetailsDialog(private val item: ResultItem) : BottomSheetDialogF
                     Toast.makeText(context, getString(R.string.download_rescheduled_to) + " " + it.time, Toast.LENGTH_LONG).show()
                     downloadViewModel.deleteDownload(item)
                     item.downloadStartTime = it.timeInMillis
-                    WorkManager.getInstance(requireContext()).cancelUniqueWork(item.id.toString())
+                    WorkManager.getInstance(requireContext()).cancelAllWorkByTag(item.id.toString())
                     runBlocking {
                         downloadViewModel.queueDownloads(listOf(item))
                     }
@@ -512,7 +517,7 @@ class ResultCardDetailsDialog(private val item: ResultItem) : BottomSheetDialogF
                 bottomSheet.dismiss()
                 downloadViewModel.deleteDownload(item)
                 item.downloadStartTime = 0
-                WorkManager.getInstance(requireContext()).cancelUniqueWork(item.id.toString())
+                WorkManager.getInstance(requireContext()).cancelAllWorkByTag(item.id.toString())
                 runBlocking {
                     downloadViewModel.queueDownloads(listOf(item))
                 }
@@ -534,6 +539,21 @@ class ResultCardDetailsDialog(private val item: ResultItem) : BottomSheetDialogF
     }
 
     override fun onCancelClick(itemID: Long) {
+        lifecycleScope.launch {
+            if (activeCount == 1){
+                val queue = withContext(Dispatchers.IO){
+                    val list = downloadViewModel.getQueued().toMutableList()
+                    list.map { it.status = DownloadRepository.Status.Queued.toString() }
+                    list
+                }
+
+                runBlocking {
+                    downloadViewModel.queueDownloads(queue)
+                }
+            }
+
+        }
+
         cancelActiveDownload(itemID)
     }
     override fun onPauseClick(itemID: Long, action: ActiveDownloadAdapter.ActiveDownloadAction, position: Int) {
@@ -557,8 +577,16 @@ class ResultCardDetailsDialog(private val item: ResultItem) : BottomSheetDialogF
                     }
                     activeDownloads.notifyItemChanged(position)
 
+                    val queue = if (activeCount > 1) listOf(item)
+                    else withContext(Dispatchers.IO){
+                        val list = downloadViewModel.getQueued().toMutableList()
+                        list.map { it.status = DownloadRepository.Status.Queued.toString() }
+                        list.add(0, item)
+                        list
+                    }
+
                     runBlocking {
-                        downloadViewModel.queueDownloads(listOf(item))
+                        downloadViewModel.queueDownloads(queue)
                     }
                 }
             }
@@ -574,14 +602,14 @@ class ResultCardDetailsDialog(private val item: ResultItem) : BottomSheetDialogF
 
     private fun cancelItem(id: Int){
         YoutubeDL.getInstance().destroyProcessById(id.toString())
-        WorkManager.getInstance(requireContext()).cancelUniqueWork(id.toString())
+        WorkManager.getInstance(requireContext()).cancelAllWorkByTag(id.toString())
         notificationUtil.cancelDownloadNotification(id)
     }
 
     private fun cancelActiveDownload(itemID: Long){
         val id = itemID.toInt()
         YoutubeDL.getInstance().destroyProcessById(id.toString())
-        WorkManager.getInstance(requireContext()).cancelUniqueWork(id.toString())
+        WorkManager.getInstance(requireContext()).cancelAllWorkByTag(id.toString())
         notificationUtil.cancelDownloadNotification(id)
 
         activeItems.find { it.id == itemID }?.let {
