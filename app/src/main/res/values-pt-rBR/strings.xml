@@ -281,7 +281,7 @@
 \n</string>
     <string name="hide_thumbnails">Ocultar Miniaturas</string>
     <string name="saved">Salvou</string>
-    <string name="clear_saved">Remoção Concluída</string>
+    <string name="clear_saved">Remover downloads Salvos</string>
     <string name="save_for_later">Salvar download para mais tarde\?</string>
     <string name="use_extra_commands">Adicionar Comandos Extras</string>
     <string name="use_extra_commands_summary">Para downloads de áudio/vídeo. Adicione comandos extras junto com a configuração da GUI</string>
