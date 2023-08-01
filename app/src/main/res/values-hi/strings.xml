@@ -288,4 +288,10 @@
     <string name="saved">सहेजा गया</string>
     <string name="retries">पुन:प्रयास</string>
     <string name="fragment_retries">खंड पुन:प्रयास</string>
+    <string name="write_description">विवरण सहेजें</string>
+    <string name="embed_metadata">मेटाडेटा एम्बेड करें</string>
+    <string name="embed_metadata_summary">वीडियो फ़ाइल में मेटाडेटा एम्बेड करें। यदि मौजूद हो तो अध्याय/जानकारी भी एम्बेड करता है</string>
+    <string name="write_description_summary">विवरण फ़ाइल लिखें</string>
+    <string name="extra_command">अतिरिक्त आदेश</string>
+    <string name="use_cookies">कुकीज़ का प्रयोग करें</string>
 </resources>
