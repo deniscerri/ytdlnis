@@ -13,10 +13,11 @@
     <string name="download_notification_channel_name">ファイルのダウンロード</string>
     <string name="you_are_in_latest_version">最新版を使用しています</string>
     <string name="ytld_update_success">最新版をインストールしました</string>
-    <string name="ytdl_already_updating">最新版をインストールしています…</string>
+    <string name="ytdl_already_updating">最新のバージョンをインストールしています</string>
     <string name="ok">OK</string>
     <string name="cancel">キャンセル</string>
-    <string name="confirm_delete_history_desc">履歴をすべて削除します</string>
+    <string name="confirm_delete_history_desc">履歴をすべて削除します。
+\n元には戻せません</string>
     <string name="confirm_delete_history">確認</string>
     <string name="search_history_hint">履歴から検索</string>
     <string name="no_results">結果なし</string>
@@ -24,7 +25,7 @@
     <string name="version">バージョン</string>
     <string name="command_directory">カスタムコマンドのフォルダ</string>
     <string name="couldnt_find_apk">適切なAPKがありませんでした。</string>
-    <string name="downloading_update">最新版をダウンロード中です…</string>
+    <string name="downloading_update">最新のバージョンをダウンロード中です</string>
     <string name="video">動画</string>
     <string name="concurrent_fragments_summary">DASH/HLS ネイティブ動画の同時分割ダウンロード数</string>
     <string name="concurrent_fragments">分割ダウンロード</string>
@@ -62,7 +63,7 @@
     <string name="add_chapter">チャプターを追加</string>
     <string name="show_download_card">ダウンロードのオプションを表示</string>
     <string name="download_card_summary">アイテムのダウンロード方法に関する設定です</string>
-    <string name="ytdl_updating_started">最新版をダウンロード中です…</string>
+    <string name="ytdl_updating_started">最新のバージョンをダウンロード中です</string>
     <string name="you_are_going_to_delete_multiple_items">複数のアイテムを削除します</string>
     <string name="delete_file_too">デバイスからファイルを削除</string>
     <string name="delete_files_too">デバイスからファイルを削除</string>
@@ -81,7 +82,7 @@
     <string name="save_thumb">サムネイルを保存</string>
     <string name="add_chapters_summary">YouTube / SponsorBlock のセグメントを動画のチャプターとしてマークします</string>
     <string name="run_command">コマンドを実行</string>
-    <string name="api_key_summary">YouTube の検索結果が速く表示されます</string>
+    <string name="api_key_summary">おすすめの動画をYouTube API経由で表示します</string>
     <string name="remove_deleted">削除済みを削除</string>
     <string name="downloads">ダウンロード</string>
     <string name="Open_File">ファイルを開く</string>
@@ -215,7 +216,7 @@
     <string name="subtitle_languages">字幕の言語</string>
     <string name="format_source">フォーマットのソース</string>
     <string name="video_recommendations">おすすめの動画</string>
-    <string name="video_recommendations_summary">Invidious から YouTube のおすすめの動画をホーム画面に表示します</string>
+    <string name="video_recommendations_summary">PIPED API経由でおすすめの動画を取得します</string>
     <string name="preferred_search_engine">優先する検索エンジン</string>
     <string name="preferred_search_engine_summary">アプリ内検索に使用する検索エンジンを設定します</string>
     <string name="format_filtering_hint">このオプションを使用するには、すべてのアイテムが同じ種類である必要があります</string>
@@ -276,5 +277,22 @@
     <string name="format_order">フォーマット順</string>
     <string name="fragment_retries">分割ダウンロードの再試行</string>
     <string name="force_keyframes">切り取り時にキーフレームを強制する</string>
-    <string name="force_keyframes_summary">正確な動画の切り取りですが低速です</string>
+    <string name="force_keyframes_summary">処理は遅くなりますが、高精度な切り取りができます</string>
+    <string name="orange">オレンジ</string>
+    <string name="subtitle_format">字幕のフォーマット
+\n</string>
+    <string name="hide_thumbnails">サムネイルを非表示</string>
+    <string name="saved">保存しました</string>
+    <string name="clear_saved">保存をクリアしました</string>
+    <string name="save_for_later">後でダウンロードを保存しますか\?</string>
+    <string name="write_description">詳細を保存</string>
+    <string name="write_description_summary">詳細のファイルを書き込みます</string>
+    <string name="extra_command">エクストラコマンド</string>
+    <string name="embed_metadata">メタデータを埋め込み</string>
+    <string name="show_terminal">共有メニューにターミナルを表示する</string>
+    <string name="use_cookies">Cookieを使用する</string>
+    <string name="embed_metadata_summary">動画ファイルにメタデータを埋め込みます。チャプターやinfojsonが存在する場合は、それも埋め込みます</string>
+    <string name="use_extra_commands">エクストラコマンドを追加</string>
+    <string name="use_extra_commands_summary">オーディオと動画のダウンロード用。GUIにエクストラコマンドを追加します</string>
+    <string name="current">現在のコマンド</string>
 </resources>
