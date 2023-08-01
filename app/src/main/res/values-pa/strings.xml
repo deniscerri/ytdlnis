@@ -288,4 +288,10 @@
     <string name="delete_all_cookies">ਸਾਰੀਆਂ ਕੂਕੀਜ਼ ਮਿਟਾਓ</string>
     <string name="crop_thumb">ਥੰਮਨੇਲ ਕਰੌਪ ਕਰੋ</string>
     <string name="crop_thumb_summary">ਆਡੀਓ ਡਾਊਨਲੋਡਾਂ ਲਈ ਥੰਮਨੇਲ ਨੂੰ ਵਰਗ ਵਿੱਚ ਕਰੌਪ ਕਰੋ</string>
+    <string name="extra_command">ਵਾਧੂ ਕਮਾਂਡ</string>
+    <string name="use_cookies">ਕੂਕੀਜ਼ ਦੀ ਵਰਤੋਂ ਕਰੋ</string>
+    <string name="embed_metadata">ਮੈਟਾਡਾਟਾ ਏਮਬੇਡ ਕਰੋ</string>
+    <string name="embed_metadata_summary">ਵੀਡੀਓ ਫਾਈਲ ਵਿੱਚ ਮੈਟਾਡੇਟਾ ਏਮਬੇਡ ਕਰੋ। ਜੇਕਰ ਮੌਜੂਦ ਹੋਵੇ ਤਾਂ ਚੈਪਟਰਾਂ/ਜਾਣਕਾਰੀ ਨੂੰ ਵੀ ਸ਼ਾਮਿਲ ਕਰਦਾ ਹੈ</string>
+    <string name="write_description_summary">ਵਰਣਨ ਫਾਈਲ ਲਿਖੋ</string>
+    <string name="write_description">ਵਰਣਨ ਨੂੰ ਸੰਭਾਲੋ</string>
 </resources>
