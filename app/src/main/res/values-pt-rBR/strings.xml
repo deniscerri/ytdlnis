@@ -6,7 +6,7 @@
     <string name="settings">Configurações</string>
     <string name="home">Início</string>
     <string name="directories">Pastas</string>
-    <string name="updating">Atualizando</string>
+    <string name="updating">Atualização</string>
     <string name="ytdl_update_hint">Útil se você tiver problemas ao baixar</string>
     <string name="remove_results">Remover Resultados</string>
     <string name="download_all">Baixar Todos</string>
@@ -25,7 +25,7 @@
     <string name="confirm_delete_history">Confirmar</string>
     <string name="search_history_hint">Pesquise o seu histórico</string>
     <string name="no_results">Sem Resultados</string>
-    <string name="command_directory">Pasta de comando personalizado</string>
+    <string name="command_directory">Pasta de Comando Personalizado</string>
     <string name="couldnt_find_apk">Não foi possível encontrar o apk adequado.</string>
     <string name="downloading_update">Baixando nova versão</string>
     <string name="audio">Áudio</string>
@@ -117,12 +117,12 @@
     <string name="log_downloads">Registro de Downloads</string>
     <string name="concurrent_downloads_summary">Número de downloads executados ao mesmo tempo</string>
     <string name="defaultValue">Padrão</string>
-    <string name="new_template">Novo modelo</string>
+    <string name="new_template">Novo Modelo</string>
     <string name="date_added">Data adicionada</string>
     <string name="adjust_audio">Ajustar Áudio</string>
     <string name="error_updating_formats">Erro ao atualizar formatos!</string>
     <string name="download_queue">Central de Downloads</string>
-    <string name="log_downloads_summary">Criar um arquivo de registro para cada download</string>
+    <string name="log_downloads_summary">Criar arquivo de registro para cada download</string>
     <string name="running">Executando</string>
     <string name="command">Comando</string>
     <string name="shortcuts">Atalhos</string>
@@ -130,7 +130,7 @@
     <string name="edit">Editar</string>
     <string name="shortcuts_desc">Usar comandos frequentes para criar modelos</string>
     <string name="cancelled">Cancelado</string>
-    <string name="errored">Falhou</string>
+    <string name="errored">Falha</string>
     <string name="copy_log">Copiar registro</string>
     <string name="create_shortcut">Criar Atalho</string>
     <string name="error_restarting_download">Erro ao tentar reiniciar o download</string>
@@ -236,9 +236,9 @@
     <string name="backup">Backup</string>
     <string name="finished_download_notification_channel_name">Downloads Concluídos</string>
     <string name="metered_network_download_start_info">O download começará assim que você estiver conectado a uma rede ilimitada</string>
-    <string name="keep_cache_summary">Não exclua arquivos temporários após concluir o download</string>
+    <string name="keep_cache_summary">Não remover arquivos temporários após concluir o download</string>
     <string name="link_you_copied">Link que você copiou</string>
-    <string name="clear_temporary_files_summary">Excluir arquivos em cache de downloads com falhas/erros/cancelados</string>
+    <string name="clear_temporary_files_summary">Remove arquivos em cache de downloads com falhas/erros/cancelados</string>
     <string name="preferred_format_id">ID do formato preferido</string>
     <string name="redownload">Baixar novamente</string>
     <string name="cookies">Cookies</string>
@@ -280,7 +280,7 @@
     <string name="subtitle_format">Formato da Legenda
 \n</string>
     <string name="hide_thumbnails">Ocultar Miniaturas</string>
-    <string name="saved">Salvou</string>
+    <string name="saved">Salvo</string>
     <string name="clear_saved">Remover downloads Salvos</string>
     <string name="save_for_later">Salvar download para mais tarde\?</string>
     <string name="use_extra_commands">Adicionar Comandos Extras</string>
