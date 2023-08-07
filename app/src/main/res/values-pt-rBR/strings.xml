@@ -117,7 +117,7 @@
     <string name="log_downloads">Registro de Downloads</string>
     <string name="concurrent_downloads_summary">Número de downloads executados ao mesmo tempo</string>
     <string name="defaultValue">Padrão</string>
-    <string name="new_template">Novo Modelo</string>
+    <string name="new_template">Novo modelo</string>
     <string name="date_added">Data adicionada</string>
     <string name="adjust_audio">Ajustar Áudio</string>
     <string name="error_updating_formats">Erro ao atualizar formatos!</string>
