@@ -91,7 +91,7 @@
     <string name="audio_format">Formato de Áudio</string>
     <string name="url">URL</string>
     <string name="title">Título</string>
-    <string name="remove_downloading">Cancelar downloads em andamento</string>
+    <string name="remove_downloading">Cancelar downloads em Execução</string>
     <string name="downloads">Downloads</string>
     <string name="select_sponsorblock_filtering">Selecionar Filtro de Anúncios</string>
     <string name="sponsorblock_intro">Introdução</string>
