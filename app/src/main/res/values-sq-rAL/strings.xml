@@ -278,7 +278,8 @@
     <string name="format_order">Renditja e formatit</string>
     <string name="hide_thumbnails">Fshehi Thumbnailet</string>
     <string name="force_keyframes_summary">Proçes më i ngadaltë, por prerje më të sakta</string>
-    <string name="subtitle_format">Formati i Titrave</string>
+    <string name="subtitle_format">Formati i titrave
+\n</string>
     <string name="show_terminal">Shfaq Terminalin në fletën e shpërndarjes</string>
     <string name="saved">Të ruajtura</string>
     <string name="clear_saved">Pastro të ruajturat</string>
