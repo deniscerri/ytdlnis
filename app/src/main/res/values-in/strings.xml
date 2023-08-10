@@ -278,7 +278,8 @@
     <string name="force_keyframes">Paksakan Keyframe saat Pemotongan</string>
     <string name="force_keyframes_summary">Proses yang lebih lambat, tetapi pemotongannya lebih akurat</string>
     <string name="show_terminal">Perlihatkan Terminal di Menu Berbagi</string>
-    <string name="subtitle_format">Format Takarir (Subtitle)</string>
+    <string name="subtitle_format">Subtitel Format
+\n</string>
     <string name="hide_thumbnails">Sembunyikan Keluku (Thumbnail)</string>
     <string name="clear_saved">Kosongkan yang Disimpan</string>
     <string name="saved">Disimpan</string>
@@ -291,6 +292,6 @@
     <string name="write_description_summary">Menulis berkas deskripsi</string>
     <string name="extra_command">Perintah Ekstra</string>
     <string name="use_cookies">Gunakan Kuki</string>
-    <string name="embed_metadata_summary">Sematkan metadata ke file video. Juga menyematkan bab/infojson jika ada</string>
+    <string name="embed_metadata_summary">Sematkan metadata ke file video. Juga sematkan bab/infojson jika ada</string>
     <string name="embed_metadata">Sematkan Metadata</string>
 </resources>
