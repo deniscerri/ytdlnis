@@ -13,11 +13,10 @@
     <string name="download_notification_channel_name">ファイルのダウンロード</string>
     <string name="you_are_in_latest_version">最新版を使用しています</string>
     <string name="ytld_update_success">最新版をインストールしました</string>
-    <string name="ytdl_already_updating">最新のバージョンをインストールしています</string>
+    <string name="ytdl_already_updating">新しいバージョンのインストール</string>
     <string name="ok">OK</string>
     <string name="cancel">キャンセル</string>
-    <string name="confirm_delete_history_desc">履歴をすべて削除します。
-\n元には戻せません</string>
+    <string name="confirm_delete_history_desc">履歴全体を完全に削除します</string>
     <string name="confirm_delete_history">確認</string>
     <string name="search_history_hint">履歴から検索</string>
     <string name="no_results">結果なし</string>
@@ -25,7 +24,7 @@
     <string name="version">バージョン</string>
     <string name="command_directory">カスタムコマンドのフォルダ</string>
     <string name="couldnt_find_apk">適切なAPKがありませんでした。</string>
-    <string name="downloading_update">最新のバージョンをダウンロード中です</string>
+    <string name="downloading_update">新しいバージョンをダウンロードする</string>
     <string name="video">動画</string>
     <string name="concurrent_fragments_summary">DASH/HLS ネイティブ動画の同時分割ダウンロード数</string>
     <string name="concurrent_fragments">分割ダウンロード</string>
@@ -33,7 +32,7 @@
     <string name="limit_rate">リミットレート</string>
     <string name="limit_rate_summary">最大ダウンロード速度 (1秒あたりのバイト数)、例: 50KB または 4.2MB</string>
     <string name="processing">処理</string>
-    <string name="embed_subs_summary">動画内に字幕を追加します</string>
+    <string name="embed_subs_summary">ビデオに字幕を追加する</string>
     <string name="embed_thumb">サムネイルのカバーアート</string>
     <string name="embed_thumb_summary">サムネイルをカバーアートに設定します</string>
     <string name="add_chapters">動画内のチャプター</string>
@@ -63,7 +62,7 @@
     <string name="add_chapter">チャプターを追加</string>
     <string name="show_download_card">ダウンロードのオプションを表示</string>
     <string name="download_card_summary">アイテムのダウンロード方法に関する設定です</string>
-    <string name="ytdl_updating_started">最新のバージョンをダウンロード中です</string>
+    <string name="ytdl_updating_started">新しいバージョンをダウンロードする</string>
     <string name="you_are_going_to_delete_multiple_items">複数のアイテムを削除します</string>
     <string name="delete_file_too">デバイスからファイルを削除</string>
     <string name="delete_files_too">デバイスからファイルを削除</string>
