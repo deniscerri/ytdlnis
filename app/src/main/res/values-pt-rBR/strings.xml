@@ -21,10 +21,10 @@
     <string name="ytdl_updating_started">Baixando nova versão</string>
     <string name="Remove">Remover</string>
     <string name="ok">OK</string>
-    <string name="confirm_delete_history_desc">Excluir todo o histórico, permanentemente</string>
+    <string name="confirm_delete_history_desc">Excluir todo o histórico permanentemente</string>
     <string name="confirm_delete_history">Confirmar</string>
     <string name="search_history_hint">Pesquise o seu histórico</string>
-    <string name="no_results">Sem Resultados</string>
+    <string name="no_results">Não há resultados</string>
     <string name="command_directory">Pasta de Comando Personalizado</string>
     <string name="couldnt_find_apk">Não foi possível encontrar o apk adequado.</string>
     <string name="downloading_update">Baixando nova versão</string>
@@ -48,7 +48,7 @@
     <string name="remove_duplicates">Remover downloads Duplicados</string>
     <string name="sort_by">Ordenar</string>
     <string name="incognito_summary">Baixar sem adicionar no histórico</string>
-    <string name="download">Download</string>
+    <string name="download">Baixar</string>
     <string name="video_quality">Qualidade do Vídeo</string>
     <string name="embed_subtitles">Adicionar Legendas</string>
     <string name="add_chapter">Adicionar Capítulos</string>
@@ -151,7 +151,7 @@
     <string name="items_imported">Itens Importados</string>
     <string name="help_translate">Ajudar na Tradução</string>
     <string name="help_translate_summary">Traduzir este aplicativo em seu idioma usando Weblate</string>
-    <string name="workmanager_updated">Você precisa reiniciar o app e não ter downloads ativos para que essa preferência entre em vigor!</string>
+    <string name="workmanager_updated">Você precisa reiniciar o aplicativo e não ter downloads ativos para que essa preferência entre em vigor!</string>
     <string name="restart">Reiniciar</string>
     <string name="file_size">Tamanho do Arquivo</string>
     <string name="clear_temporary_files">Remover arquivos temporários</string>
@@ -168,7 +168,7 @@
     <string name="preferred_download_type_summary">Guia padrão na qual o cartão de download será aberto</string>
     <string name="download_rescheduled_to">Download reagendado para:</string>
     <string name="suggested">Sugerido</string>
-    <string name="add_template_first">Você precisa ter pelo menos um modelo de comando criado!</string>
+    <string name="add_template_first">Você precisa ter pelo menos um modelo de comando existente!</string>
     <string name="new_cut">Novo corte</string>
     <string name="ignore_battery_optimization">Ignorar a Otimização da Bateria</string>
     <string name="confirm_terminate">Interromper todos os downloads e forçar o fechamento do aplicativo</string>
@@ -185,7 +185,7 @@
     <string name="format_filtering_hint">Todos os itens devem ser do mesmo tipo para usar esta opção</string>
     <string name="preferred_search_engine_summary">O mecanismo de pesquisa a ser usado para pesquisas no aplicativo</string>
     <string name="preferred_search_engine">Mecanismo de pesquisa preferido</string>
-    <string name="video_recommendations_summary">Obtenha vídeos recomendados do YouTube na tela inicial a partir da API PIPED</string>
+    <string name="video_recommendations_summary">Obtenha vídeos recomendados do YouTube na tela inicial a partir da API do servidor PIPED</string>
     <string name="video_recommendations">Recomendações de Vídeo</string>
     <string name="format_source">Origem dos formatos</string>
     <string name="subtitle_languages">Idiomas das legendas</string>
@@ -246,7 +246,7 @@
     <string name="start">Começar</string>
     <string name="ytdl_version">Versão do yt-dlp</string>
     <string name="end">Fim</string>
-    <string name="kill_app">Fechar Aplicativo</string>
+    <string name="kill_app">Encerrar Aplicativo</string>
     <string name="freespace">Espaço livre</string>
     <string name="dont_ask_again">Não perguntar novamente</string>
     <string name="restrict_filenames_summary">Restrinja os nomes de arquivo a apenas caracteres ASCII e evite \"&amp;\" e espaços nos nomes de arquivo</string>
@@ -270,7 +270,7 @@
     <string name="fragment_retries">Novas tentativas de fragmento</string>
     <string name="format_order">Ordem do Formato</string>
     <string name="swipe_gestures">Gestos</string>
-    <string name="piped_instance">Instância do servidor Piped</string>
+    <string name="piped_instance">Instância do servidor PIPED</string>
     <string name="piped_instance_summary">Insira a API do servidor PIPED, o aplicativo pode usar para consultas e formatos do youtube</string>
     <string name="retries">Novas tentativas</string>
     <string name="sponsorblock_outro">Cartões Finais/Créditos</string>
@@ -287,7 +287,7 @@
     <string name="use_extra_commands_summary">Para downloads de áudio/vídeo. Adicione comandos extras junto com a configuração da GUI</string>
     <string name="current">Comando atual</string>
     <string name="orange">Laranja</string>
-    <string name="show_terminal">Mostrar terminal no menu Compartilhar</string>
+    <string name="show_terminal">Mostrar o Terminal no menu Compartilhar</string>
     <string name="extra_command">Comando Extra</string>
     <string name="write_description">Salvar Descrição</string>
     <string name="use_cookies">Usar Cookies</string>
