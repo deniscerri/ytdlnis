@@ -12,7 +12,7 @@
     <string name="source_code">Kod źródłowy</string>
     <string name="search_hint">Szukaj lub wstaw URL</string>
     <string name="Remove">Usuń</string>
-    <string name="api_key_summary">Szybsze wyniki z YouTube</string>
+    <string name="api_key_summary">Rekomendacje wideo z interfejsu YouTube API</string>
     <string name="update_app_summary">Informuj o nowych wersjach aplikacji po jej otwarciu</string>
     <string name="downloads">Pobrane</string>
     <string name="remove_deleted">Usuń usunięte</string>
