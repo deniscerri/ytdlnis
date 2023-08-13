@@ -33,7 +33,7 @@
     <string name="limit_rate">ਲਿਮਟ ਰੇਟ</string>
     <string name="search_history_hint">ਇਤਿਹਾਸ ਤੋਂ ਖੋਜ ਕਰੋ</string>
     <string name="clear_saved">ਸੰਭਾਲਿਆ ਸਾਫ਼ ਕਰੋ</string>
-    <string name="show_terminal">ਸ਼ੇਅਰ ਮੀਨੂ ਵਿੱਚ ਟਰਮੀਨਲ ਦਿਖਾਓ</string>
+    <string name="show_terminal">ਸ਼ੇਅਰ ਮੇਨੂ ਵਿੱਚ ਟਰਮੀਨਲ ਵੇਖੋ</string>
     <string name="current">ਮੌਜੂਦਾ ਕਮਾਂਡ</string>
     <string name="force_keyframes_summary">ਹੌਲੀ ਪ੍ਰਕਿਰਿਆ, ਪਰ ਵਧੇਰੇ ਸਹੀ ਕੱਟ</string>
     <string name="use_extra_commands_summary">ਆਡੀਓ/ਵੀਡੀਓ ਡਾਊਨਲੋਡ ਲਈ, GUI ਸੰਰਚਨਾ ਦੇ ਨਾਲ ਵਾਧੂ ਕਮਾਂਡਾਂ ਸ਼ਾਮਿਲ ਕਰੋ</string>
@@ -289,9 +289,9 @@
     <string name="crop_thumb">ਥੰਮਨੇਲ ਕਰੌਪ ਕਰੋ</string>
     <string name="crop_thumb_summary">ਆਡੀਓ ਡਾਊਨਲੋਡਾਂ ਲਈ ਥੰਮਨੇਲ ਨੂੰ ਵਰਗ ਵਿੱਚ ਕਰੌਪ ਕਰੋ</string>
     <string name="extra_command">ਵਾਧੂ ਕਮਾਂਡ</string>
-    <string name="use_cookies">ਕੂਕੀਜ਼ ਦੀ ਵਰਤੋਂ ਕਰੋ</string>
+    <string name="use_cookies">ਕੂਕੀਜ਼ ਵਰਤੋ</string>
     <string name="embed_metadata">ਮੈਟਾਡਾਟਾ ਏਮਬੇਡ ਕਰੋ</string>
     <string name="embed_metadata_summary">ਵੀਡੀਓ ਫਾਈਲ ਵਿੱਚ ਮੈਟਾਡੇਟਾ ਏਮਬੇਡ ਕਰੋ। ਜੇਕਰ ਮੌਜੂਦ ਹੋਵੇ ਤਾਂ ਚੈਪਟਰਾਂ/ਜਾਣਕਾਰੀ ਨੂੰ ਵੀ ਸ਼ਾਮਿਲ ਕਰਦਾ ਹੈ</string>
-    <string name="write_description_summary">ਵਰਣਨ ਫਾਈਲ ਲਿਖੋ</string>
-    <string name="write_description">ਵਰਣਨ ਨੂੰ ਸੰਭਾਲੋ</string>
+    <string name="write_description_summary">ਵੇਰਵਾ ਫਾਇਲ ਲਿਖੋ</string>
+    <string name="write_description">ਵੇਰਵਾ ਸੰਭਾਲੋ</string>
 </resources>
