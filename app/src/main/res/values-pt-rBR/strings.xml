@@ -45,7 +45,7 @@
     <string name="history_is_empty">O histórico está vazio</string>
     <string name="api_key">Usar chave de API</string>
     <string name="api_key_summary">Recomendações de vídeo da API do YouTube</string>
-    <string name="remove_duplicates">Remover downloads Duplicados</string>
+    <string name="remove_duplicates">Remover Duplicados</string>
     <string name="sort_by">Ordenar</string>
     <string name="incognito_summary">Baixar sem adicionar no histórico</string>
     <string name="download">Baixar</string>
@@ -80,7 +80,7 @@
     <string name="delete_files_too">Excluir os arquivos do dispositivo</string>
     <string name="embed_thumb_summary">Usar miniatura como capa de áudio</string>
     <string name="add_chapters">Capítulos em Vídeos</string>
-    <string name="remove_deleted">Remover downloads Excluídos</string>
+    <string name="remove_deleted">Remover Excluídos</string>
     <string name="author">Autor</string>
     <string name="run_command">Executar Comando</string>
     <string name="audio_quality_summary">0 (melhor) 10 (pior)</string>
@@ -91,7 +91,7 @@
     <string name="audio_format">Formato de Áudio</string>
     <string name="url">URL</string>
     <string name="title">Título</string>
-    <string name="remove_downloading">Cancelar downloads em Execução</string>
+    <string name="remove_downloading">Cancelar Downloads</string>
     <string name="downloads">Downloads</string>
     <string name="select_sponsorblock_filtering">Selecionar Filtro de Anúncios</string>
     <string name="sponsorblock_intro">Introdução</string>
@@ -145,8 +145,8 @@
     <string name="access_all_directories">Permitir acesso a todos os diretórios</string>
     <string name="access_all_directories_summary">Permitir que o aplicativo faça downloads em diretórios restritos por padrão</string>
     <string name="in_queue">Aguardando</string>
-    <string name="clear_cancelled">Remover downloads Cancelados</string>
-    <string name="clear_errored">Remover downloads com Falhas</string>
+    <string name="clear_cancelled">Remover Cancelados</string>
+    <string name="clear_errored">Remover com Falhas</string>
     <string name="split_by_chapters">Dividir por Capítulos</string>
     <string name="items_imported">Itens Importados</string>
     <string name="help_translate">Ajudar na Tradução</string>
@@ -281,7 +281,7 @@
 \n</string>
     <string name="hide_thumbnails">Ocultar Miniaturas</string>
     <string name="saved">Salvo</string>
-    <string name="clear_saved">Remover downloads Salvos</string>
+    <string name="clear_saved">Remover Salvo</string>
     <string name="save_for_later">Salvar download para mais tarde\?</string>
     <string name="use_extra_commands">Adicionar Comandos Extras</string>
     <string name="use_extra_commands_summary">Para downloads de áudio/vídeo. Adicione comandos extras junto com a configuração da GUI</string>
