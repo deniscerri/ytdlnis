@@ -272,7 +272,8 @@
     <string name="custom_audio_quality">استخدام جودة صوت مخصصة</string>
     <string name="piped_instance">مثيل Piped</string>
     <string name="piped_instance_summary">إدخال خادم PIPED API، يمكن للتطبيق استخدامه لاستعلامات وتنسيقات يوتيوب</string>
-    <string name="subtitle_format">صيغة الترجمة</string>
+    <string name="subtitle_format">صيغة الترجمة
+\n</string>
     <string name="hide_thumbnails">إخفاء الصور المصغرة من الشاشة المحددة</string>
     <string name="saved">المحتفَظة</string>
     <string name="clear_saved">تنظيف المحفوظة</string>
