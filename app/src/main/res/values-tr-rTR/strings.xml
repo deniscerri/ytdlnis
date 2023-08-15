@@ -295,4 +295,6 @@
     <string name="write_description_summary">Açıklama dosyası yaz</string>
     <string name="extra_command">Ekstra Komut</string>
     <string name="use_cookies">Çerezleri Kullan</string>
+    <string name="embed_metadata">Meta Verileri Göm</string>
+    <string name="embed_metadata_summary">Meta verileri video dosyasına gömün. Varsa bölümleri/infojson\'u da yerleştirir</string>
 </resources>
