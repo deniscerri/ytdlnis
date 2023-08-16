@@ -113,4 +113,10 @@
     <string name="search_suggestions_summary">รับคำแนะนำการค้นหาจาก Google</string>
     <string name="search_suggestions">ข้อเสนอแนะการค้นหา</string>
     <string name="socks5_proxy">พร็อกซี Socks5 URL</string>
+    <string name="incognito">ไม่ระบุตัวตน</string>
+    <string name="sponsorblock">สปอนเซอร์บล็อก</string>
+    <string name="concurrent_fragments_summary">จำนวนชิ้นส่วนของวิดีโอเนทีฟ DASH/HLS ที่จะดาวน์โหลดพร้อมกัน</string>
+    <string name="concurrent_fragments">ชิ้นส่วนที่เกิดขึ้นพร้อมกัน</string>
+    <string name="limit_rate">อัตราขีดจำกัด</string>
+    <string name="embed_thumb_summary">ใช้ภาพขนาดย่อเป็นหน้าปก</string>
 </resources>

@@ -176,7 +176,7 @@
     <string name="audio_quality">音訊品質</string>
     <string name="command_download_notification_channel_name">命令下載</string>
     <string name="history_is_empty">歷史記錄為空</string>
-    <string name="api_key_summary">從 YouTube 獲得更快的結果</string>
+    <string name="api_key_summary">Youtube API 的影片推薦</string>
     <string name="url">網址</string>
     <string name="update_app_summary">打開應用程式時公佈新版本</string>
     <string name="remove_downloading">取消下載</string>
@@ -285,4 +285,12 @@
     <string name="save_for_later">儲存下載以供日後使用？</string>
     <string name="force_keyframes">在剪輯處強制產生關鍵幀</string>
     <string name="current">目前指令</string>
+    <string name="orange">橘色</string>
+    <string name="show_terminal">在分享功能表中顯示終端機</string>
+    <string name="write_description">儲存描述</string>
+    <string name="write_description_summary">撰寫描述檔案</string>
+    <string name="extra_command">額外指令</string>
+    <string name="use_cookies">使用 Cookies</string>
+    <string name="embed_metadata">嵌入元資料</string>
+    <string name="embed_metadata_summary">將元資料嵌入影片檔案，若有的話，也會嵌入章節 /infojson</string>
 </resources>

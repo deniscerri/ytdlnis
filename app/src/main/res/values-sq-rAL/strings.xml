@@ -278,8 +278,9 @@
     <string name="format_order">Renditja e formatit</string>
     <string name="hide_thumbnails">Fshehi Thumbnailet</string>
     <string name="force_keyframes_summary">Proçes më i ngadaltë, por prerje më të sakta</string>
-    <string name="subtitle_format">Formati i Titrave</string>
-    <string name="show_terminal">Fshihe Terminalin nga fleta e shpërndarjes</string>
+    <string name="subtitle_format">Formati i titrave
+\n</string>
+    <string name="show_terminal">Shfaq Terminalin në fletën e shpërndarjes</string>
     <string name="saved">Të ruajtura</string>
     <string name="clear_saved">Pastro të ruajturat</string>
     <string name="save_for_later">Ruaj Shkarkimin për më vonë\?</string>
@@ -287,4 +288,10 @@
     <string name="use_extra_commands">Shto Komanda Ekstra</string>
     <string name="use_extra_commands_summary">For Shkarkimet Audio / Video. Shto komanda ekstra bashkë me konfigurimin e ndërfaqes</string>
     <string name="current">Komanda Aktuale</string>
+    <string name="write_description">Ruaj Përshkrimin</string>
+    <string name="write_description_summary">Shkruaj skedarin e përshkrimit</string>
+    <string name="extra_command">Komanda Shtesë</string>
+    <string name="use_cookies">Përdor Biskotat</string>
+    <string name="embed_metadata">Vendos Metadatat</string>
+    <string name="embed_metadata_summary">Vendosni të dhënat meta në skedarin e videos. Përfshin gjithashtu kapitujt/infojson nëse janë të pranishëm</string>
 </resources>

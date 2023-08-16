@@ -11,7 +11,7 @@
     <string name="video_directory">مجلد الفيديوهات</string>
     <string name="updating">التحديث</string>
     <string name="ytdl_update_hint">مهم، في حال كانت هناك مشاكل في التحميل</string>
-    <string name="update_ytdl">النقر لتثبيت أحدث إصدار من yt-dlp</string>
+    <string name="update_ytdl">تثبيت أحدث إصدار من yt-dlp</string>
     <string name="source_code">رمز المصدر</string>
     <string name="search_hint">بحث أو إدخال رابط</string>
     <string name="failed_download">لم يتم تحميل الملف</string>
@@ -33,7 +33,7 @@
     <string name="update_app">التحقق من وجود تحديثات</string>
     <string name="command_directory">مجلد الأوامر المخصصة</string>
     <string name="couldnt_find_apk">لم يتم العثور على APK صالح.</string>
-    <string name="best_quality">أفضل جودة</string>
+    <string name="best_quality">أفضل جودة متاحة</string>
     <string name="downloading">التحميل</string>
     <string name="limit_rate">حد السرعة</string>
     <string name="embed_thumb_summary">استخدام الصور المصغرة كغلاف فني</string>
@@ -48,7 +48,7 @@
     <string name="limit_rate_summary">الحد الأقصى لسرعة التحميل (بالبايت في الثانية)، مثلًا 50K أو 4.2M</string>
     <string name="aria2_summary">التحميل بأداة aria2c بدلًا من الإفتراضية</string>
     <string name="processing">المعالجة</string>
-    <string name="embed_subs_summary">إضافة الترجمة للفيديو</string>
+    <string name="embed_subs_summary">دمج الترجمات التي يوفرها الناشر مع ملف الفيديو</string>
     <string name="about">حول</string>
     <string name="link_copied_to_clipboard">تم نسخ الرابط إلى الحافظة</string>
     <string name="request_permission_desc">يحتاج التطبيق إلى إذن \"التخزين\" لحفظ التحميلات على الجهاز</string>
@@ -64,13 +64,13 @@
     <string name="adjust_video">الضبط</string>
     <string name="concurrent_downloads">التحميلات المتزامنة</string>
     <string name="concurrent_downloads_summary">عدد التحميلات الممكن إجراؤها في نفس الوقت</string>
-    <string name="defaultValue">الافتراضية</string>
+    <string name="defaultValue">افتراضي</string>
     <string name="template">قالب</string>
     <string name="logs">السجلات</string>
     <string name="date_added">تاريخ الإضافة</string>
     <string name="update_ytdl_nightly">استخدام الإصدار الليلي من yt-dlp</string>
     <string name="adjust_audio">الضبط</string>
-    <string name="file_name_template">تنسيق اسم الملف</string>
+    <string name="file_name_template">تنسيق العنوان</string>
     <string name="language">اللغة</string>
     <string name="command_templates">قوالب الأوامر</string>
     <string name="terminal">سطر الأوامر</string>
@@ -106,7 +106,7 @@
     <string name="cache_cleared">تم مسح الملفات المؤقتة</string>
     <string name="freespace">التخزين المتاح</string>
     <string name="link_you_copied">الرابط الذي نسخته</string>
-    <string name="restrict_filenames">تقييد أسماء الملفات</string>
+    <string name="restrict_filenames">تقييد العنوان</string>
     <string name="save_thumb">حفظ الصورة المصغرة</string>
     <string name="save_thumb_summary">تخزين الصورة المصغرة في مسار حفظ الفيديو</string>
     <string name="audio_format">صيغة الصوت</string>
@@ -131,11 +131,11 @@
     <string name="remove_downloading">إلغاء التحميلات</string>
     <string name="incognito_summary">البحث والتحميل بدون سجلات</string>
     <string name="configure_download">تخصيص التحميل</string>
-    <string name="title">اسم الملف</string>
+    <string name="title">العنوان</string>
     <string name="author">الناشر</string>
     <string name="download">تحميل</string>
     <string name="video_quality">جودة الفيديو</string>
-    <string name="embed_subtitles">تضمين ترجمات</string>
+    <string name="embed_subtitles">تضمين الترجمات</string>
     <string name="add_chapter">تعيين الفصول</string>
     <string name="show_download_card">إظهار بطاقة التحميل</string>
     <string name="download_card_summary">إعدادات لكيفية تحميل العناصر</string>
@@ -178,7 +178,7 @@
     <string name="ignore_battery_optimization">تجاهل تحسين البطارية</string>
     <string name="log_downloads_summary">إنشاء ملف سجل لكل تحميل</string>
     <string name="shortcuts_desc">طريقة وصول أسرع للأوامر كثيرة الاستخدام</string>
-    <string name="restrict_filenames_summary">حصر أسماء الملفات بأحرف الـ ASCII فقط، وتجنُب «&amp;» والمسافات</string>
+    <string name="restrict_filenames_summary">حصر العنوان بأحرف الـ ASCII فقط، وإزالة \"&amp;\" والمسافات</string>
     <string name="add_chapters_summary">تعليم أجزاء مقطع اليوتيوب و/أو حاجب شرائح الإعلانات كفصول للفيديو</string>
     <string name="container">الصيغة</string>
     <string name="cut">قص</string>
@@ -272,19 +272,26 @@
     <string name="custom_audio_quality">استخدام جودة صوت مخصصة</string>
     <string name="piped_instance">مثيل Piped</string>
     <string name="piped_instance_summary">إدخال خادم PIPED API، يمكن للتطبيق استخدامه لاستعلامات وتنسيقات يوتيوب</string>
-    <string name="subtitle_format">صيغة الترجمة</string>
+    <string name="subtitle_format">صيغة الترجمة
+\n</string>
     <string name="hide_thumbnails">إخفاء الصور المصغرة من الشاشة المحددة</string>
-    <string name="saved">المحفوظة</string>
+    <string name="saved">المحتفَظة</string>
     <string name="clear_saved">تنظيف المحفوظة</string>
-    <string name="save_for_later">حفظ، للتحميل فيما بعد؟</string>
+    <string name="save_for_later">احتفاظ، لتحميله فيما بعد؟</string>
     <string name="format_order">تسلسل التنسيقات وفقًا للقسم المختار</string>
-    <string name="retries">المحاولات العامة</string>
-    <string name="fragment_retries">المحاولات الخاصة بالأجزاء</string>
+    <string name="retries">عدد محاولات إعادة التحميل العام</string>
+    <string name="fragment_retries">عدد محاولات إعادة التحميل للأجزاء</string>
     <string name="force_keyframes">تدعيم الإطارات أثناء القص</string>
     <string name="force_keyframes_summary">ستكون العملية بطيئة، مقابل قص أكثر دقة</string>
     <string name="use_extra_commands">إلحاق أوامر إضافية</string>
     <string name="use_extra_commands_summary">لتحميلات الصوت/الفيديو. بالإمكان إضافة أوامر مع تكوين واجهة المستخدم الرسومية</string>
     <string name="current">الأوامر الحالية</string>
     <string name="orange">برتقالي</string>
-    <string name="show_terminal">إظهار أيقونة سطر الأوامر في قائمة \"مشاركة\"</string>
+    <string name="show_terminal">اختصار لسطر الأوامر في قائمة \"مشاركة\"</string>
+    <string name="write_description">حفظ الوصف</string>
+    <string name="write_description_summary">كتابة ملف الوصف</string>
+    <string name="extra_command">أوامر إضافية</string>
+    <string name="use_cookies">استخدام ملفات تعريف الارتباط</string>
+    <string name="embed_metadata">تضمين البيانات الوصفية</string>
+    <string name="embed_metadata_summary">دمج البيانات الوصفية داخل ملف الفيديو. يمكن أن يشمل ذلك، فهرس الفصول/التفاصيل الإضافية</string>
 </resources>
