@@ -224,7 +224,7 @@
     <string name="kill_app">结束应用</string>
     <string name="confirm_terminate">停止所有下载并强制关闭应用</string>
     <string name="new_cut">新剪辑</string>
-    <string name="new_cookie">新饼干</string>
+    <string name="new_cookie">新 Cookie</string>
     <string name="downloads_running_try_later">下载器正在运行，稍后再试</string>
     <string name="freespace">可用空间</string>
     <string name="update_formats_summary">单击格式卡时自动搜索缺少的格式</string>
@@ -234,8 +234,8 @@
     <string name="share">分享</string>
     <string name="video_recommendations_summary">从 Invidious 的主屏幕上获取推荐的 YouTube 视频</string>
     <string name="copied_to_clipboard">复制到剪贴板</string>
-    <string name="light">明亮的</string>
-    <string name="dark">暗黑的</string>
+    <string name="light">浅色</string>
+    <string name="dark">深色</string>
     <string name="quality">质量</string>
     <string name="system">跟随系统</string>
     <string name="accents">色调</string>
@@ -266,7 +266,7 @@
     <string name="cut">剪辑</string>
     <string name="format_filtering_hint">所有项目必须属于同一类型才能使用此选项</string>
     <string name="backup_restore">备份和恢复</string>
-    <string name="preferred_home_screen">首选主屏幕</string>
+    <string name="preferred_home_screen">预设主屏幕</string>
     <string name="search_suggestions">搜索建议</string>
     <string name="undo">撤消</string>
     <string name="search_suggestions_summary">从谷歌获取搜索建议</string>
@@ -274,4 +274,11 @@
     <string name="extra_command">额外命令</string>
     <string name="write_description_summary">写入描述文件</string>
     <string name="use_cookies">使用 Cookies</string>
+    <string name="preferred_locale">地区偏好</string>
+    <string name="get_cookies">获取 Cookie</string>
+    <string name="delete_all_cookies">删除所有 Cookie</string>
+    <string name="confirm_delete_cookies_desc">永久删除所有cookie</string>
+    <string name="downloaded">"已下载： "</string>
+    <string name="finished_download_notification_channel_description">下载完成或错误时通知</string>
+    <string name="preferred_format_id">预设格式 ID</string>
 </resources>
