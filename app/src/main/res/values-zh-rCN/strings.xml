@@ -43,9 +43,9 @@
     <string name="update_app">检查更新</string>
     <string name="add_chapters">视频中的章节</string>
     <string name="cancel">取消</string>
-    <string name="confirm_delete_history_desc">永久删除整个历史记录。</string>
+    <string name="confirm_delete_history_desc">永久删除整个历史记录</string>
     <string name="couldnt_find_apk">找不到合适的APK。</string>
-    <string name="downloading_update">正在下载新版本…</string>
+    <string name="downloading_update">正在下载新版本</string>
     <string name="audio">音频</string>
     <string name="embed_thumb">缩略图封面</string>
     <string name="save_thumb">保存缩略图</string>
