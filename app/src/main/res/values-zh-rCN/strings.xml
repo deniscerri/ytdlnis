@@ -43,7 +43,7 @@
     <string name="update_app">检查更新</string>
     <string name="add_chapters">视频中的章节</string>
     <string name="cancel">取消</string>
-    <string name="confirm_delete_history_desc">永久删除整个历史记录</string>
+    <string name="confirm_delete_history_desc">永久删除全部历史记录</string>
     <string name="couldnt_find_apk">找不到合适的APK。</string>
     <string name="downloading_update">正在下载新版本</string>
     <string name="audio">音频</string>
@@ -59,7 +59,7 @@
     <string name="orange">橙色</string>
     <string name="remove_audio">移除音频</string>
     <string name="download_already_exists">下载已存在</string>
-    <string name="resume">恢复</string>
+    <string name="resume">继续</string>
     <string name="updating_download_data">更新下载项数据</string>
     <string name="socks5_proxy_summary">使用指定的 HTTP/HTTPS/SOCKS 代理</string>
     <string name="preferred_format_id_summary">在下载卡片中选择带有此 ID 的格式</string>
@@ -72,7 +72,7 @@
     <string name="audio_only_item">此项仅包含音频格式</string>
     <string name="custom_audio_quality">使用自定义音频质量</string>
     <string name="fragment_retries">片段重试</string>
-    <string name="force_keyframes_summary">准确的视频剪辑。慢点</string>
+    <string name="force_keyframes_summary">过程较慢，但剪辑更准确</string>
     <string name="use_extra_commands_summary">用于音频/视频下载。添加额外的命令以及 GUI 配置</string>
     <string name="use_extra_commands">添加额外命令</string>
     <string name="current">当前命令</string>
@@ -117,7 +117,7 @@
     <string name="edit">编辑</string>
     <string name="shortcuts_desc">使用常用命令创建模板</string>
     <string name="cancelled">已取消</string>
-    <string name="confirm_delete_logs_desc">永久删除整个日志列表。</string>
+    <string name="confirm_delete_logs_desc">永久删除全部日志列表。</string>
     <string name="preferred_download_type_summary">下载卡片将默认开启至</string>
     <string name="restart">重新开始</string>
     <string name="metered_network_download_start_info">一旦您连接到不按流量计费的网络，下载就会开始</string>
@@ -136,10 +136,10 @@
     <string name="sponsorblock_reminders">订阅提醒</string>
     <string name="date_added">添加日期</string>
     <string name="container">格式</string>
-    <string name="error_restarting_download">尝试重新开始下载时出错</string>
+    <string name="error_restarting_download">重新下载时出错</string>
     <string name="update_template">更新模板</string>
     <string name="update">更新</string>
-    <string name="workmanager_updated">您需要重新启动应用程序并且没有活动的下载才能使此首选项生效！</string>
+    <string name="workmanager_updated">您需要重新启动应用，并且没有正在进行的下载才能使此首选项生效！</string>
     <string name="clear_temporary_files">清除临时文件</string>
     <string name="download_rescheduled_to">下载已重新添加到：</string>
     <string name="restrict_filenames">限制文件名</string>
@@ -150,7 +150,7 @@
     <string name="blue">蓝色</string>
     <string name="red">红色</string>
     <string name="couldnt_parse_file">无法解析文件</string>
-    <string name="backup_created_successfully">备份保存在下载文件夹中的文件</string>
+    <string name="backup_created_successfully">备份文件保存在下载文件夹中</string>
     <string name="appearance">外观</string>
     <string name="pause">暂停</string>
     <string name="format_filtering_hint_2">所有项目都必须是音频或视频才能使用此选项</string>
@@ -159,8 +159,8 @@
     <string name="socks5_proxy">Socks5 代理网址</string>
     <string name="retries">重试</string>
     <string name="move_temporary_files">移动临时文件</string>
-    <string name="move_temporary_files_summary">将缓存文件传输到下载文件夹</string>
-    <string name="embed_metadata_summary">将元数据嵌入到视频文件中。还嵌入chapters/infojson（如果存在）</string>
+    <string name="move_temporary_files_summary">将缓存文件移动到下载文件夹</string>
+    <string name="embed_metadata_summary">将元数据嵌入到视频文件中。一并嵌入chapters/infojson（如果存在）</string>
     <string name="embed_metadata">嵌入元数据</string>
     <string name="force_keyframes">强制剪切关键帧</string>
     <string name="ytdl_already_updating">安装新版本中</string>
@@ -206,13 +206,13 @@
     <string name="update_formats">更新格式</string>
     <string name="error_updating_formats">更新格式出错！</string>
     <string name="redownload">重新下载</string>
-    <string name="in_queue">队列中</string>
+    <string name="in_queue">等待中</string>
     <string name="clear_cancelled">清除已取消项</string>
     <string name="clear_errored">清除错误项</string>
     <string name="split_by_chapters">按章节拆分</string>
     <string name="preferred_download_type">首选下载类型</string>
     <string name="items_imported">已导入的</string>
-    <string name="help_translate_summary">使用 Weblate 将此应用翻译成您的语言</string>
+    <string name="help_translate_summary">使用 Weblate 将该应用翻译成您的语言</string>
     <string name="file_size">文件大小</string>
     <string name="help_translate">帮助翻译</string>
     <string name="download_card_summary">设置如何下载项目</string>
@@ -225,14 +225,14 @@
     <string name="confirm_terminate">停止所有下载并强制关闭应用</string>
     <string name="new_cut">新剪辑</string>
     <string name="new_cookie">新 Cookie</string>
-    <string name="downloads_running_try_later">下载器正在运行，稍后再试</string>
+    <string name="downloads_running_try_later">下载器正在运行。稍后再试</string>
     <string name="freespace">可用空间</string>
-    <string name="update_formats_summary">单击格式卡时自动搜索缺少的格式</string>
+    <string name="update_formats_summary">单击格式卡片时自动搜索缺少的格式</string>
     <string name="add_template_first">您至少需要创建一个命令模板！</string>
-    <string name="download_over_metered_networks_summary">使用任何网络类型下载，否则等待不按流量计费的网络</string>
+    <string name="download_over_metered_networks_summary">使用任何网络类型下载。否则等待不按流量计费的网络</string>
     <string name="suggested">建议</string>
     <string name="share">分享</string>
-    <string name="video_recommendations_summary">从 Invidious 的主屏幕上获取推荐的 YouTube 视频</string>
+    <string name="video_recommendations_summary">使用 PIPED API 在主屏幕上获取 YouTube 推荐视频</string>
     <string name="copied_to_clipboard">复制到剪贴板</string>
     <string name="light">浅色</string>
     <string name="dark">深色</string>
@@ -244,7 +244,7 @@
     <string name="ignore_battery_optimization">忽略电池优化</string>
     <string name="select_all">全选</string>
     <string name="download_over_metered_networks">通过按流量计费的网络下载</string>
-    <string name="save_subs_desc">字幕保存为文件</string>
+    <string name="save_subs_desc">写入字幕文件</string>
     <string name="subtitle_languages">字幕语言</string>
     <string name="Theme">主题</string>
     <string name="green">绿色</string>
@@ -273,7 +273,7 @@
     <string name="write_description">保存描述</string>
     <string name="extra_command">额外命令</string>
     <string name="write_description_summary">写入描述文件</string>
-    <string name="use_cookies">使用 Cookies</string>
+    <string name="use_cookies">使用 Cookie</string>
     <string name="preferred_locale">首选区域</string>
     <string name="get_cookies">获取 Cookie</string>
     <string name="delete_all_cookies">删除所有 Cookie</string>
@@ -285,4 +285,13 @@
     <string name="sponsorblock_promos">自我推广</string>
     <string name="sponsorblock_fillers">补充</string>
     <string name="enable_mtime_summary">将 HTTP Last-Modified 标头设置为上次修改时间</string>
+    <string name="locale">区域</string>
+    <string name="piped_instance">PIPED 实例</string>
+    <string name="piped_instance_summary">添加 PIPED API 服务器，用于 youtube 查询和格式化</string>
+    <string name="format_order">格式化指令</string>
+    <string name="cookies">Cookies</string>
+    <string name="format_id">格式 ID</string>
+    <string name="codec">编解码器</string>
+    <string name="material_you">Material You</string>
+    <string name="sponsorblock">SponsorBlock</string>
 </resources>
