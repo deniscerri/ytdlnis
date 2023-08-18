@@ -62,7 +62,7 @@
     <string name="resume">恢复</string>
     <string name="updating_download_data">更新下载项数据</string>
     <string name="socks5_proxy_summary">使用指定的 HTTP/HTTPS/SOCKS 代理</string>
-    <string name="preferred_format_id_summary">在下载卡中选择带有此ID的格式</string>
+    <string name="preferred_format_id_summary">在下载卡片中选择带有此 ID 的格式</string>
     <string name="misc">杂项</string>
     <string name="general">通用</string>
     <string name="swipe_gestures">滑动手势</string>
@@ -86,7 +86,7 @@
     <string name="processing">处理中</string>
     <string name="remove_deleted">移除已删除项</string>
     <string name="remove_duplicates">移除重复项</string>
-    <string name="shortcuts">捷径</string>
+    <string name="shortcuts">快捷方式</string>
     <string name="remove_results">清除结果</string>
     <string name="ytdl_update_hint">如果您在下载时遇到问题，这很有用</string>
     <string name="concurrent_fragments_summary">同时下载DASH/HLS原视频的片段数</string>
@@ -102,14 +102,14 @@
     <string name="history_is_empty">历史记录为空</string>
     <string name="link_copied_to_clipboard">链接已复制到剪贴板</string>
     <string name="api_key">使用 API 密钥</string>
-    <string name="api_key_summary">Youtube API 的视频推荐</string>
+    <string name="api_key_summary">从 Youtube API 获得视频推荐</string>
     <string name="update_app_summary">打开应用时通知新版本</string>
     <string name="url">URL</string>
     <string name="show_download_card">显示下载选项</string>
     <string name="exit_app">退出应用</string>
     <string name="warning">警告</string>
     <string name="sponsorblock_sponsors">赞助商</string>
-    <string name="running">运行中</string>
+    <string name="running">进行中</string>
     <string name="command">命令</string>
     <string name="import_from_clipboard">从剪贴板导入</string>
     <string name="export_from_clipboard">导出到剪贴板</string>
@@ -132,7 +132,7 @@
     <string name="file_name_template">文件名模板</string>
     <string name="you_are_going_to_delete_multiple_items">删除多项</string>
     <string name="delete_file_too">从设备中删除文件</string>
-    <string name="sponsorblock_outro">结束</string>
+    <string name="sponsorblock_outro">结尾</string>
     <string name="sponsorblock_reminders">订阅提醒</string>
     <string name="date_added">添加日期</string>
     <string name="container">格式</string>
@@ -169,7 +169,7 @@
     <string name="incognito_summary">下载时不添加到历史记录</string>
     <string name="delete_files_too">从设备中删除文件</string>
     <string name="request_permission_desc">该应用需要文件权限才能在设备上保存下载</string>
-    <string name="sponsorblock_intro">开场</string>
+    <string name="sponsorblock_intro">开头</string>
     <string name="select_sponsorblock_filtering">选择 SponsorBlock 过滤</string>
     <string name="new_template">新模板</string>
     <string name="adjust_audio">调整音频</string>
@@ -194,7 +194,7 @@
     <string name="copy_log">复制日志</string>
     <string name="create_shortcut">创建快捷方式</string>
     <string name="defaultValue">默认</string>
-    <string name="errored">出错了</string>
+    <string name="errored">已出错</string>
     <string name="logs">日志</string>
     <string name="select">选择</string>
     <string name="selected">已选</string>
@@ -210,7 +210,7 @@
     <string name="clear_cancelled">清除已取消项</string>
     <string name="clear_errored">清除错误项</string>
     <string name="split_by_chapters">按章节拆分</string>
-    <string name="preferred_download_type">预设下载类型</string>
+    <string name="preferred_download_type">首选下载类型</string>
     <string name="items_imported">已导入的</string>
     <string name="help_translate_summary">使用 Weblate 将此应用翻译成您的语言</string>
     <string name="file_size">文件大小</string>
@@ -250,7 +250,7 @@
     <string name="green">绿色</string>
     <string name="purple">紫色</string>
     <string name="yellow">黄色</string>
-    <string name="preferred_search_engine">预设搜索引擎</string>
+    <string name="preferred_search_engine">首选搜索引擎</string>
     <string name="monochrome">黑白</string>
     <string name="finished_download_notification_channel_name">完成下载</string>
     <string name="quick_download">快速下载</string>
@@ -266,7 +266,7 @@
     <string name="cut">剪辑</string>
     <string name="format_filtering_hint">所有项目必须属于同一类型才能使用此选项</string>
     <string name="backup_restore">备份和恢复</string>
-    <string name="preferred_home_screen">预设主屏幕</string>
+    <string name="preferred_home_screen">首选主屏幕</string>
     <string name="search_suggestions">搜索建议</string>
     <string name="undo">撤消</string>
     <string name="search_suggestions_summary">从谷歌获取搜索建议</string>
@@ -274,11 +274,15 @@
     <string name="extra_command">额外命令</string>
     <string name="write_description_summary">写入描述文件</string>
     <string name="use_cookies">使用 Cookies</string>
-    <string name="preferred_locale">地区偏好</string>
+    <string name="preferred_locale">首选区域</string>
     <string name="get_cookies">获取 Cookie</string>
     <string name="delete_all_cookies">删除所有 Cookie</string>
     <string name="confirm_delete_cookies_desc">永久删除所有cookie</string>
     <string name="downloaded">"已下载： "</string>
     <string name="finished_download_notification_channel_description">下载完成或错误时通知</string>
-    <string name="preferred_format_id">预设格式 ID</string>
+    <string name="preferred_format_id">首选格式 ID</string>
+    <string name="sponsorblock_nonmusic">非音乐和偏题部分</string>
+    <string name="sponsorblock_promos">自我推广</string>
+    <string name="sponsorblock_fillers">补充</string>
+    <string name="enable_mtime_summary">将 HTTP Last-Modified 标头设置为上次修改时间</string>
 </resources>
