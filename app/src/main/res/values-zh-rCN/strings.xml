@@ -25,7 +25,7 @@
     <string name="author">作者</string>
     <string name="download">下载</string>
     <string name="video_quality">视频质量</string>
-    <string name="embed_subtitles">嵌入字幕</string>
+    <string name="embed_subtitles">内嵌字幕</string>
     <string name="add_chapter">添加章节</string>
     <string name="download_all">全部下载</string>
     <string name="worst_quality">最差质量</string>
