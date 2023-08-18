@@ -83,7 +83,7 @@
     <string name="clear_saved">清除已保存文件</string>
     <string name="save_for_later">保存下载以供稍后使用吗？</string>
     <string name="aria2_summary">使用 aria2c 作为下载器替换默认的</string>
-    <string name="processing">处理中</string>
+    <string name="processing">处理</string>
     <string name="remove_deleted">移除已删除项</string>
     <string name="remove_duplicates">移除重复项</string>
     <string name="shortcuts">快捷方式</string>
@@ -254,7 +254,7 @@
     <string name="monochrome">黑白</string>
     <string name="finished_download_notification_channel_name">完成下载</string>
     <string name="quick_download">快速下载</string>
-    <string name="quick_download_summary">不要预先获取数据</string>
+    <string name="quick_download_summary">不预先获取数据</string>
     <string name="download_now">现在下载</string>
     <string name="keep_cache">保留缓存</string>
     <string name="keep_cache_summary">下载完成后不删除临时文件</string>
@@ -273,11 +273,11 @@
     <string name="write_description">保存描述</string>
     <string name="extra_command">额外命令</string>
     <string name="write_description_summary">写入描述文件</string>
-    <string name="use_cookies">使用 Cookie</string>
+    <string name="use_cookies">使用 Cookies</string>
     <string name="preferred_locale">首选区域</string>
-    <string name="get_cookies">获取 Cookie</string>
-    <string name="delete_all_cookies">删除所有 Cookie</string>
-    <string name="confirm_delete_cookies_desc">永久删除所有cookie</string>
+    <string name="get_cookies">获取 Cookies</string>
+    <string name="delete_all_cookies">删除所有 Cookies</string>
+    <string name="confirm_delete_cookies_desc">永久删除所有 cookies</string>
     <string name="downloaded">"已下载： "</string>
     <string name="finished_download_notification_channel_description">下载完成或错误时通知</string>
     <string name="preferred_format_id">首选格式 ID</string>
@@ -287,8 +287,8 @@
     <string name="enable_mtime_summary">将 HTTP Last-Modified 标头设置为上次修改时间</string>
     <string name="locale">区域</string>
     <string name="piped_instance">PIPED 实例</string>
-    <string name="piped_instance_summary">添加 PIPED API 服务器，用于 youtube 查询和格式化</string>
-    <string name="format_order">格式化指令</string>
+    <string name="piped_instance_summary">添加 PIPED API 服务器，用于 YouTube 查询和格式化</string>
+    <string name="format_order">格式排序</string>
     <string name="cookies">Cookies</string>
     <string name="format_id">格式 ID</string>
     <string name="codec">编解码器</string>
