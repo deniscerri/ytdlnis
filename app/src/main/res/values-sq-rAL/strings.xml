@@ -294,4 +294,8 @@
     <string name="use_cookies">Përdor Biskotat</string>
     <string name="embed_metadata">Vendos Metadatat</string>
     <string name="embed_metadata_summary">Vendosni të dhënat meta në skedarin e videos. Përfshin gjithashtu kapitujt/infojson nëse janë të pranishëm</string>
+    <string name="formats_updated">Formatet u përditësuan</string>
+    <string name="update_formats_background">Përditëso formatet në Prapaskenë</string>
+    <string name="auto_update_ytdlp">Përditëso yt-dlp Automatikisht</string>
+    <string name="use_sponsorblock">Përdor SponsorBlock</string>
 </resources>
