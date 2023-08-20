@@ -3,7 +3,6 @@ package com.deniscerri.ytdlnis.adapter
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.SharedPreferences
-import android.graphics.Color
 import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
@@ -11,10 +10,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.view.isVisible
+import androidx.paging.PagingDataAdapter
 import androidx.preference.PreferenceManager
-import androidx.recyclerview.widget.AsyncDifferConfig
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.DownloadItem
@@ -24,16 +23,18 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
 import com.squareup.picasso.Picasso
 
-class GenericDownloadAdapter(onItemClickListener: OnItemClickListener, activity: Activity) : ListAdapter<DownloadItem?, GenericDownloadAdapter.ViewHolder>(AsyncDifferConfig.Builder(DIFF_CALLBACK).build()) {
+class GenericDownloadAdapter(onItemClickListener: OnItemClickListener, activity: Activity) : PagingDataAdapter<DownloadItem, GenericDownloadAdapter.ViewHolder>(DIFF_CALLBACK) {
     private val onItemClickListener: OnItemClickListener
     private val activity: Activity
-    private val checkedItems: ArrayList<Long>
+    val checkedItems: ArrayList<Long>
+    var inverted: Boolean
     private val sharedPreferences: SharedPreferences
 
     init {
         checkedItems = ArrayList()
         this.onItemClickListener = onItemClickListener
         this.activity = activity
+        this.inverted = false
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity)
     }
 
@@ -53,13 +54,16 @@ class GenericDownloadAdapter(onItemClickListener: OnItemClickListener, activity:
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)
         val card = holder.cardView
+        card.isVisible = item != null
+        if (item == null) return
+        card.tag = item.id.toString()
 
         val uiHandler = Handler(Looper.getMainLooper())
         val thumbnail = card.findViewById<ImageView>(R.id.downloads_image_view)
 
         // THUMBNAIL ----------------------------------
         if (!sharedPreferences.getStringSet("hide_thumbnails", emptySet())!!.contains("queue")){
-            val imageURL = item!!.thumb
+            val imageURL = item.thumb
             if (imageURL.isNotEmpty()) {
                 uiHandler.post { Picasso.get().load(imageURL).into(thumbnail) }
             } else {
@@ -127,7 +131,7 @@ class GenericDownloadAdapter(onItemClickListener: OnItemClickListener, activity:
         actionButton.setOnClickListener {
             onItemClickListener.onActionButtonClick(item.id)
         }
-        if (checkedItems.contains(item.id)) {
+        if ((checkedItems.contains(item.id) && !inverted) || (!checkedItems.contains(item.id) && inverted)) {
             card.isChecked = true
             card.strokeWidth = 5
         } else {
@@ -135,67 +139,69 @@ class GenericDownloadAdapter(onItemClickListener: OnItemClickListener, activity:
             card.strokeWidth = 0
         }
         card.setOnClickListener {
-            if (checkedItems.size > 0) {
-                checkCard(card, item.id)
+            if (checkedItems.size > 0 || inverted) {
+                checkCard(card, item.id, position)
             } else {
                 onItemClickListener.onCardClick(item.id)
             }
         }
 
         card.setOnLongClickListener {
-            checkCard(card, item.id)
+            checkCard(card, item.id, position)
             true
         }
 
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun clearCheckeditems() {
-        for (i in 0 until itemCount){
-            val item = getItem(i)
-            if (checkedItems.find { it == item?.id } != null){
-                checkedItems.remove(item?.id)
-                notifyItemChanged(i)
-            }
-        }
-
+    fun clearCheckedItems() {
+        inverted = false
         checkedItems.clear()
-    }
-
-    @SuppressLint("NotifyDataSetChanged")
-    fun checkAll(items: List<DownloadItem?>?){
-        checkedItems.clear()
-        checkedItems.addAll(items!!.map { it!!.id })
         notifyDataSetChanged()
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun invertSelected(items: List<DownloadItem?>?){
-        val invertedList = mutableListOf<Long>()
-        items?.forEach {
-            if (!checkedItems.contains(it!!.id)) invertedList.add(it.id)
-        }
+    fun checkAll() {
         checkedItems.clear()
-        checkedItems.addAll(invertedList)
+        inverted = true
         notifyDataSetChanged()
     }
 
-    private fun checkCard(card: MaterialCardView, itemID: Long) {
+    @SuppressLint("NotifyDataSetChanged")
+    fun invertSelected() {
+        inverted = !inverted
+        notifyDataSetChanged()
+    }
+
+    fun getSelectedObjectsCount(totalSize: Int) : Int{
+        return if (inverted){
+            totalSize - checkedItems.size
+        }else{
+            checkedItems.size
+        }
+    }
+
+
+
+    private fun checkCard(card: MaterialCardView, itemID: Long, position: Int) {
         if (card.isChecked) {
             card.strokeWidth = 0
-            checkedItems.remove(itemID)
+            if (inverted) checkedItems.add(itemID)
+            else checkedItems.remove(itemID)
         } else {
             card.strokeWidth = 5
-            checkedItems.add(itemID)
+            if (inverted) checkedItems.remove(itemID)
+            else checkedItems.add(itemID)
         }
+
         card.isChecked = !card.isChecked
-        onItemClickListener.onCardSelect(itemID, card.isChecked)
+        onItemClickListener.onCardSelect(card.isChecked, position)
     }
 
     interface OnItemClickListener {
         fun onActionButtonClick(itemID: Long)
         fun onCardClick(itemID: Long)
-        fun onCardSelect(itemID: Long, isChecked: Boolean)
+        fun onCardSelect(isChecked: Boolean, position: Int)
     }
 
     companion object {

@@ -5,6 +5,7 @@
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:colorBackgroundCacheHint">@null</item>
         <item name="android:windowContentOverlay">@null</item>
+        <item name="preferenceTheme">@style/PreferenceTheme</item>
     </style>
 
     <style name="Divider">
@@ -59,4 +60,9 @@
     <style name="FullScreenDialogTheme" parent="MaterialAlertDialog.Material3">
         <item name="android:windowIsFloating">false</item>
     </style>
+
+    <style name="PreferenceTheme" parent="PreferenceThemeOverlay">
+        <item name="singleLineTitle">false</item>
+    </style>
+
 </resources>

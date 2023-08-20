@@ -448,14 +448,14 @@ class InfoUtil(private val context: Context) {
         try {
             val request = YoutubeDLRequest(url)
             request.addOption("--print", "%(formats)s")
+            request.addOption("--print", "%(duration)s")
             request.addOption("--skip-download")
             request.addOption("-R", "1")
             request.addOption("--socket-timeout", "5")
 
             if (sharedPreferences.getBoolean("use_cookies", false)){
-                val cookiesFile = File(context.cacheDir, "cookies.txt")
-                if (cookiesFile.exists()) {
-                    request.addOption("--cookies", cookiesFile.absolutePath)
+                FileUtil.getCookieFile(context){
+                    request.addOption("--cookies", it)
                 }
             }
 
@@ -476,10 +476,10 @@ class InfoUtil(private val context: Context) {
 
             return parseYTDLFormats(jsonArray)
         } catch (e: Exception) {
+            e.printStackTrace()
             Looper.prepare().run {
                 Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
             }
-            e.printStackTrace()
         }
         return emptyList()
     }
@@ -507,9 +507,8 @@ class InfoUtil(private val context: Context) {
 
 
                 if (sharedPreferences.getBoolean("use_cookies", false)){
-                    val cookiesFile = File(context.cacheDir, "cookies.txt")
-                    if (cookiesFile.exists()){
-                        request.addOption("--cookies", cookiesFile.absolutePath)
+                    FileUtil.getCookieFile(context){
+                        request.addOption("--cookies", it)
                     }
                 }
 
@@ -569,9 +568,8 @@ class InfoUtil(private val context: Context) {
             request.addOption("--socket-timeout", "5")
 
             if (sharedPreferences.getBoolean("use_cookies", false)){
-                val cookiesFile = File(context.cacheDir, "cookies.txt")
-                if (cookiesFile.exists()){
-                    request.addOption("--cookies", cookiesFile.absolutePath)
+                FileUtil.getCookieFile(context){
+                    request.addOption("--cookies", it)
                 }
             }
 
@@ -611,7 +609,13 @@ class InfoUtil(private val context: Context) {
                         duration = formatIntegerDuration(jsonObject.getInt("duration"), Locale.US)
                     }
                 }
-                val url = jsonObject.getString("webpage_url")
+
+                val url = if (jsonObject.has("url")){
+                    jsonObject.getString("url")
+                }else{
+                    jsonObject.getString("webpage_url")
+                }
+
                 var thumb: String? = ""
                 if (jsonObject.has("thumbnail")) {
                     thumb = jsonObject.getString("thumbnail")
@@ -722,9 +726,8 @@ class InfoUtil(private val context: Context) {
             request.addOption("--socket-timeout", "5")
 
             if (sharedPreferences.getBoolean("use_cookies", false)){
-                val cookiesFile = File(context.cacheDir, "cookies.txt")
-                if (cookiesFile.exists()){
-                    request.addOption("--cookies", cookiesFile.absolutePath)
+                FileUtil.getCookieFile(context){
+                    request.addOption("--cookies", it)
                 }
             }
 
@@ -885,9 +888,8 @@ class InfoUtil(private val context: Context) {
                 request.addOption("--socket-timeout", "5")
 
                 if (sharedPreferences.getBoolean("use_cookies", false)){
-                    val cookiesFile = File(context.cacheDir, "cookies.txt")
-                    if (cookiesFile.exists()){
-                        request.addOption("--cookies", cookiesFile.absolutePath)
+                    FileUtil.getCookieFile(context){
+                        request.addOption("--cookies", it)
                     }
                 }
 
@@ -927,7 +929,7 @@ class InfoUtil(private val context: Context) {
     }
 
     fun buildYoutubeDLRequest(downloadItem: DownloadItem) : YoutubeDLRequest{
-        val cacheDir = File(context.cacheDir.absolutePath + "/downloads/")
+        val cacheDir = FileUtil.getCachePath()
         val tempFileDir = File(cacheDir, downloadItem.id.toString())
         tempFileDir.delete()
         tempFileDir.mkdirs()
@@ -972,25 +974,28 @@ class InfoUtil(private val context: Context) {
                 }
             }
 
-            if (sponsorBlockFilters.isNotEmpty()) {
-                val filters = java.lang.String.join(",", sponsorBlockFilters.filter { it.isNotBlank() })
-                if (filters.isNotBlank()) {
-                    request.addOption("--sponsorblock-remove", filters)
-                    if (sharedPreferences.getBoolean("force_keyframes", false)){
-                        request.addOption("--force-keyframes-at-cuts")
+
+            if (sharedPreferences.getBoolean("use_sponsorblock", true)){
+                if (sponsorBlockFilters.isNotEmpty()) {
+                    val filters = java.lang.String.join(",", sponsorBlockFilters.filter { it.isNotBlank() })
+                    if (filters.isNotBlank()) {
+                        request.addOption("--sponsorblock-remove", filters)
+                        if (sharedPreferences.getBoolean("force_keyframes", false)){
+                            request.addOption("--force-keyframes-at-cuts")
+                        }
                     }
                 }
             }
+
 
             if(downloadItem.title.isNotBlank()){
                 request.addCommands(listOf("--replace-in-metadata","title",".*.",downloadItem.title.take(200)))
             }
             if (downloadItem.author.isNotBlank()){
                 request.addCommands(listOf("--replace-in-metadata","uploader",".*.",downloadItem.author.take(25)))
+                downloadItem.customFileNameTemplate = downloadItem.customFileNameTemplate.replace("%(uploader)s", downloadItem.author.take(25))
             }
             request.addCommands(listOf("--replace-in-metadata","uploader"," - Topic$",""))
-
-            downloadItem.customFileNameTemplate = downloadItem.customFileNameTemplate.replace("%(uploader)s", "%(uploader|${downloadItem.author})s")
 
             if (downloadItem.downloadSections.isNotBlank()){
                 downloadItem.downloadSections.split(";").forEach {
@@ -1004,7 +1009,7 @@ class InfoUtil(private val context: Context) {
                         request.addOption("--force-keyframes-at-cuts")
                     }
                 }
-                downloadItem.customFileNameTemplate += " %(section_title)s %(autonumber)s"
+                downloadItem.customFileNameTemplate += " %(section_title|)s %(autonumber)s"
                 request.addOption("--output-na-placeholder", " ")
             }
 
@@ -1013,7 +1018,7 @@ class InfoUtil(private val context: Context) {
             }
 
             if (downloadItem.extraCommands.isNotBlank()){
-                val conf = File(context.cacheDir.absolutePath + "/downloads/configExtraCommands${System.currentTimeMillis()}.txt")
+                val conf = File(tempFileDir.absolutePath + "/${System.currentTimeMillis()}.txt")
                 conf.createNewFile()
                 conf.writeText(downloadItem.extraCommands)
                 request.addOption(
@@ -1032,9 +1037,8 @@ class InfoUtil(private val context: Context) {
         }
 
         if (sharedPreferences.getBoolean("use_cookies", false)){
-            val cookiesFile = File(context.cacheDir, "cookies.txt")
-            if (cookiesFile.exists()){
-                request.addOption("--cookies", cookiesFile.absolutePath)
+            FileUtil.getCookieFile(context){
+                request.addOption("--cookies", it)
             }
         }
 
@@ -1093,7 +1097,7 @@ class InfoUtil(private val context: Context) {
                         if (! request.hasOption("--convert-thumbnails")) request.addOption("--convert-thumbnails", "jpg")
                         if (sharedPreferences.getBoolean("crop_thumbnail", true)){
                             try {
-                                val config = File(context.cacheDir.absolutePath + "/downloads/${downloadItem.id}/config" + downloadItem.title + "##" + downloadItem.format.format_id + ".txt")
+                                val config = File(tempFileDir.absolutePath + "/config" + downloadItem.title + "##" + downloadItem.format.format_id + ".txt")
                                 val configData = "--ppa \"ffmpeg: -c:v mjpeg -vf crop=\\\"'if(gt(ih,iw),iw,ih)':'if(gt(iw,ih),ih,iw)'\\\"\""
                                 config.writeText(configData)
                                 request.addOption("--ppa", "ThumbnailsConvertor:-qmin 1 -q:v 1")
@@ -1118,7 +1122,9 @@ class InfoUtil(private val context: Context) {
                 }
 
                 if (downloadItem.videoPreferences.addChapters) {
-                    request.addOption("--sponsorblock-mark", "all")
+                    if (sharedPreferences.getBoolean("use_sponsorblock", true)){
+                        request.addOption("--sponsorblock-mark", "all")
+                    }
                     request.addOption("--embed-chapters")
                 }
                 if (downloadItem.videoPreferences.embedSubs) {
@@ -1146,10 +1152,18 @@ class InfoUtil(private val context: Context) {
                 }
                 Log.e(DownloadWorker.TAG, formatArgument)
                 request.addOption("-f", formatArgument)
-                val outputFormat = downloadItem.container
-                if(outputFormat.isNotEmpty() && outputFormat != "Default" && outputFormat != context.getString(R.string.defaultValue) && supportedContainers.contains(outputFormat)){
-                    request.addOption("--merge-output-format", outputFormat.lowercase())
-                    if (outputFormat != "webm") {
+
+                if (downloadItem.format.container.equals("mpeg_4", true)) downloadItem.format.container = "mp4"
+                val outputContainer = downloadItem.container
+                if(
+                    outputContainer.isNotEmpty() &&
+                    outputContainer != "Default" &&
+                    outputContainer != context.getString(R.string.defaultValue) &&
+                    supportedContainers.contains(outputContainer) &&
+                    !outputContainer.equals(downloadItem.format.container, true)
+                ){
+                    request.addOption("--merge-output-format", outputContainer.lowercase())
+                    if (outputContainer != "webm") {
                         val embedThumb = sharedPreferences.getBoolean("embed_thumbnail", false)
                         if (embedThumb) {
                             request.addOption("--embed-thumbnail")
@@ -1188,7 +1202,7 @@ class InfoUtil(private val context: Context) {
             DownloadViewModel.Type.command -> {
                 request.addOption(
                     "--config-locations",
-                    File(context.cacheDir.absolutePath + "/downloads/config${System.currentTimeMillis()}.txt").apply {
+                    File(FileUtil.getCachePath() + "/config[${downloadItem.id}].txt").apply {
                         writeText(downloadItem.format.format_note)
                     }.absolutePath
                 )

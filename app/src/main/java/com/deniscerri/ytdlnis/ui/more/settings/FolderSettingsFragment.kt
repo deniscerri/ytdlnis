@@ -113,14 +113,14 @@ class FolderSettingsFragment : BaseSettingsFragment() {
         audioFilenameTemplate?.title = "${getString(R.string.file_name_template)} [${getString(R.string.audio)}]"
         audioFilenameTemplate?.dialogTitle = "${getString(R.string.file_name_template)} [${getString(R.string.audio)}]"
 
-        var cacheSize = File(requireContext().cacheDir.absolutePath + "/downloads").walkBottomUp().fold(0L) { acc, file -> acc + file.length() }
+        var cacheSize = File(FileUtil.getCachePath()).walkBottomUp().fold(0L) { acc, file -> acc + file.length() }
         clearCache!!.summary = "(${FileUtil.convertFileSize(cacheSize)}) ${resources.getString(R.string.clear_temporary_files_summary)}"
         clearCache!!.onPreferenceClickListener =
             Preference.OnPreferenceClickListener {
                 if (activeDownloadCount == 0){
-                    File(requireContext().cacheDir.absolutePath + "/downloads").deleteRecursively()
+                    File(FileUtil.getCachePath()).deleteRecursively()
                     Snackbar.make(requireView(), getString(R.string.cache_cleared), Snackbar.LENGTH_SHORT).show()
-                    cacheSize = File(requireContext().cacheDir.absolutePath + "/downloads").walkBottomUp().fold(0L) { acc, file -> acc + file.length() }
+                    cacheSize = File(FileUtil.getCachePath()).walkBottomUp().fold(0L) { acc, file -> acc + file.length() }
                     clearCache!!.summary = "(${FileUtil.convertFileSize(cacheSize)}) ${resources.getString(R.string.clear_temporary_files_summary)}"
                 }else{
                     Snackbar.make(requireView(), getString(R.string.downloads_running_try_later), Snackbar.LENGTH_SHORT).show()

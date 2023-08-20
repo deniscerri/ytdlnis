@@ -105,7 +105,10 @@ class DownloadQueueMainFragment : Fragment(){
         initMenu()
 
         if (arguments?.getString("tab") != null){
-            tabLayout.selectTab(tabLayout.getTabAt(3))
+            tabLayout.getTabAt(3)!!.select()
+            viewPager2.postDelayed( {
+                viewPager2.setCurrentItem(3, false)
+            }, 200)
         }
     }
 

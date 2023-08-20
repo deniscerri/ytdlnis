@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.squareup.picasso.Picasso
+import org.w3c.dom.Text
 import java.util.*
 
 
@@ -70,17 +71,9 @@ class PlaylistAdapter(onItemClickListener: OnItemClickListener, activity: Activi
             uiHandler.post { Picasso.get().load(R.color.black).into(thumbnail) }
         }
 
-        // TITLE  ----------------------------------
-        val itemTitle = card.findViewById<TextView>(R.id.title)
-        var title = item!!.title
-        if (title.length > 100) {
-            title = title.substring(0, 40) + "..."
-        }
-        itemTitle.text = title
-
-
-        val duration = card.findViewById<TextView>(R.id.duration)
-        duration.text = item.duration
+        card.findViewById<TextView>(R.id.title).text = item!!.title
+        card.findViewById<TextView>(R.id.author).text = item.author
+        card.findViewById<TextView>(R.id.duration).text = item.duration
 
         // CHECKBOX ----------------------------------
         val check = card.findViewById<CheckBox>(R.id.checkBox)

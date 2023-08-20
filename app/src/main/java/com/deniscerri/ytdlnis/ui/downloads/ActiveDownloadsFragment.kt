@@ -10,9 +10,11 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.map
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.adapter.ActiveDownloadAdapter
@@ -39,7 +41,6 @@ class ActiveDownloadsFragment : Fragment(), ActiveDownloadAdapter.OnItemClickLis
     private lateinit var activeDownloads : ActiveDownloadAdapter
     lateinit var downloadItem: DownloadItem
     private lateinit var notificationUtil: NotificationUtil
-    private lateinit var list: List<DownloadItem>
     private lateinit var pauseResume: MaterialButton
     private lateinit var workManager: WorkManager
 
@@ -53,7 +54,6 @@ class ActiveDownloadsFragment : Fragment(), ActiveDownloadAdapter.OnItemClickLis
         activity = getActivity()
         notificationUtil = NotificationUtil(requireContext())
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
-        list = listOf()
         workManager = WorkManager.getInstance(requireContext())
         return fragmentView
     }
@@ -77,6 +77,7 @@ class ActiveDownloadsFragment : Fragment(), ActiveDownloadAdapter.OnItemClickLis
             if (pauseResume.text == requireContext().getString(R.string.pause)){
 
                 lifecycleScope.launch {
+                    pauseResume.isEnabled = false
                     val queued = withContext(Dispatchers.IO){
                         downloadViewModel.getQueued()
                     }
@@ -92,18 +93,28 @@ class ActiveDownloadsFragment : Fragment(), ActiveDownloadAdapter.OnItemClickLis
                         workManager.cancelAllWorkByTag(it.id.toString())
                     }
 
-                    list.forEach {
+                    val active = withContext(Dispatchers.IO){
+                        downloadViewModel.getActiveDownloads()
+                    }
+
+                    active.forEach {
                         cancelItem(it.id.toInt())
                         it.status = DownloadRepository.Status.Paused.toString()
                         downloadViewModel.updateDownload(it)
                     }
 
                     activeDownloads.notifyDataSetChanged()
-
+                    pauseResume.isEnabled = true
                 }
             }else{
                 lifecycleScope.launch {
-                    val toQueue = list.filter { it.status == DownloadRepository.Status.Paused.toString() }.toMutableList()
+                    pauseResume.isEnabled = false
+
+                    val active = withContext(Dispatchers.IO){
+                        downloadViewModel.getActiveDownloads()
+                    }
+
+                    val toQueue = active.filter { it.status == DownloadRepository.Status.Paused.toString() }.toMutableList()
                     toQueue.forEach {
                         it.status = DownloadRepository.Status.Active.toString()
                         downloadViewModel.updateDownload(it)
@@ -116,17 +127,40 @@ class ActiveDownloadsFragment : Fragment(), ActiveDownloadAdapter.OnItemClickLis
                     runBlocking {
                         downloadViewModel.queueDownloads(toQueue)
                     }
+                    pauseResume.isEnabled = true
                 }
             }
         }
 
+        WorkManager.getInstance(requireContext())
+            .getWorkInfosByTagLiveData("download")
+            .observe(viewLifecycleOwner){ list ->
+                list.forEach {work ->
+                    if (work == null) return@forEach
+                    val id = work.progress.getLong("id", 0L)
+                    if(id == 0L) return@forEach
+
+                    val progress = work.progress.getInt("progress", 0)
+                    val output = work.progress.getString("output")
+
+                    val progressBar = view.findViewWithTag<LinearProgressIndicator>("$id##progress")
+                    val outputText = view.findViewWithTag<TextView>("$id##output")
+
+                    requireActivity().runOnUiThread {
+                        try {
+                            progressBar?.setProgressCompat(progress, true)
+                            outputText?.text = output
+                        }catch (ignored: Exception) {}
+                    }
+                }
+            }
+
         downloadViewModel.activeDownloads.observe(viewLifecycleOwner) {
-            list = it
             activeDownloads.submitList(it)
 
             if (it.size > 1){
                 pauseResume.visibility = View.VISIBLE
-                if (list.all { l -> l.status == DownloadRepository.Status.Paused.toString() }){
+                if (it.all { l -> l.status == DownloadRepository.Status.Paused.toString() }){
                     pauseResume.text = requireContext().getString(R.string.resume)
                 }else{
                     pauseResume.text = requireContext().getString(R.string.pause)
@@ -135,37 +169,16 @@ class ActiveDownloadsFragment : Fragment(), ActiveDownloadAdapter.OnItemClickLis
                 activeDownloads.notifyDataSetChanged()
                 pauseResume.visibility = View.GONE
             }
-
-            it.forEach{item ->
-                WorkManager.getInstance(requireContext())
-                    .getWorkInfosForUniqueWorkLiveData(item.id.toString())
-                    .observe(viewLifecycleOwner){ list ->
-                        list.forEach {work ->
-                            if (work == null) return@observe
-                            val id = work.progress.getLong("id", 0L)
-                            if(id == 0L) return@observe
-
-                            val progress = work.progress.getInt("progress", 0)
-                            val output = work.progress.getString("output")
-
-                            val progressBar = view.findViewWithTag<LinearProgressIndicator>("$id##progress")
-                            val outputText = view.findViewWithTag<TextView>("$id##output")
-
-                            requireActivity().runOnUiThread {
-                                try {
-                                    progressBar?.setProgressCompat(progress, true)
-                                    outputText?.text = output
-                                }catch (ignored: Exception) {}
-                            }
-                        }
-                    }
-            }
         }
     }
 
     override fun onCancelClick(itemID: Long) {
         lifecycleScope.launch {
-            if (list.size == 1){
+            val count = withContext(Dispatchers.IO){
+                downloadViewModel.getActiveDownloads()
+            }.count()
+
+            if (count == 1){
                 val queue = withContext(Dispatchers.IO){
                     val list = downloadViewModel.getQueued().toMutableList()
                     list.map { it.status = DownloadRepository.Status.Queued.toString() }
@@ -183,41 +196,50 @@ class ActiveDownloadsFragment : Fragment(), ActiveDownloadAdapter.OnItemClickLis
     }
 
     override fun onPauseClick(itemID: Long, action: ActiveDownloadAdapter.ActiveDownloadAction, position: Int) {
-        val item = list.find { it.id == itemID } ?: return
-        when(action){
-            ActiveDownloadAdapter.ActiveDownloadAction.Pause -> {
-               lifecycleScope.launch {
-                   cancelItem(itemID.toInt())
-                   item.status = DownloadRepository.Status.Paused.toString()
-                   withContext(Dispatchers.IO){
-                       downloadViewModel.updateDownload(item)
-                   }
-                   activeDownloads.notifyItemChanged(position)
-               }
+        lifecycleScope.launch {
+            val item = withContext(Dispatchers.IO){
+                downloadViewModel.getItemByID(itemID)
             }
-            ActiveDownloadAdapter.ActiveDownloadAction.Resume -> {
-                lifecycleScope.launch {
-                    item.status = DownloadRepository.Status.Active.toString()
-                    withContext(Dispatchers.IO){
-                        downloadViewModel.updateDownload(item)
-                    }
-                    activeDownloads.notifyItemChanged(position)
 
-                    val queue = if (list.size > 1) listOf(item)
-                    else withContext(Dispatchers.IO){
-                        val list = downloadViewModel.getQueued().toMutableList()
-                        list.map { it.status = DownloadRepository.Status.Queued.toString() }
-                        list.add(0, item)
-                        list
+            when(action){
+                ActiveDownloadAdapter.ActiveDownloadAction.Pause -> {
+                    lifecycleScope.launch {
+                        cancelItem(itemID.toInt())
+                        item.status = DownloadRepository.Status.Paused.toString()
+                        withContext(Dispatchers.IO){
+                            downloadViewModel.updateDownload(item)
+                        }
+                        activeDownloads.notifyItemChanged(position)
                     }
+                }
+                ActiveDownloadAdapter.ActiveDownloadAction.Resume -> {
+                    lifecycleScope.launch {
+                        item.status = DownloadRepository.Status.Active.toString()
+                        withContext(Dispatchers.IO){
+                            downloadViewModel.updateDownload(item)
+                        }
+                        activeDownloads.notifyItemChanged(position)
 
-                    runBlocking {
-                        downloadViewModel.queueDownloads(queue)
+                        val count = withContext(Dispatchers.IO){
+                            downloadViewModel.getActiveDownloads()
+                        }.count()
+
+                        val queue = if (count > 1) listOf(item)
+                        else withContext(Dispatchers.IO){
+                            val list = downloadViewModel.getQueued().toMutableList()
+                            list.map { it.status = DownloadRepository.Status.Queued.toString() }
+                            list.add(0, item)
+                            list
+                        }
+
+                        runBlocking {
+                            downloadViewModel.queueDownloads(queue)
+                        }
                     }
                 }
             }
-        }
 
+        }
     }
 
     override fun onOutputClick(item: DownloadItem) {
@@ -238,17 +260,19 @@ class ActiveDownloadsFragment : Fragment(), ActiveDownloadAdapter.OnItemClickLis
     }
 
     private fun cancelDownload(itemID: Long){
-        cancelItem(itemID.toInt())
-        list.find { it.id == itemID }?.let {
-            it.status = DownloadRepository.Status.Cancelled.toString()
-            lifecycleScope.launch(Dispatchers.IO){
-                downloadViewModel.updateDownload(it)
+        lifecycleScope.launch {
+            cancelItem(itemID.toInt())
+            withContext(Dispatchers.IO){
+                downloadViewModel.getItemByID(itemID)
+            }.let {
+                it.status = DownloadRepository.Status.Cancelled.toString()
+                withContext(Dispatchers.IO){
+                    downloadViewModel.updateDownload(it)
+                }
             }
         }
-
     }
 
     override fun onClick(p0: View?) {
-        TODO("Not yet implemented")
     }
 }

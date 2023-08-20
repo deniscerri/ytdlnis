@@ -151,43 +151,43 @@ class DownloadCommandFragment(private val resultItem: ResultItem, private var cu
                     File(FileUtil.formatPath(downloadItem.downloadPath)).freeSpace
                 ))
 
-                val newTemplate : Chip = view.findViewById(R.id.newTemplate)
-                newTemplate.setOnClickListener {
-                    UiUtil.showCommandTemplateCreationOrUpdatingSheet(null, requireActivity(), viewLifecycleOwner, commandTemplateViewModel) {
-                        templates.add(it)
-                        chosenCommandView.editText!!.setText(it.content)
-                        downloadItem.format = Format(
-                            it.title,
-                            "",
-                            "",
-                            "",
-                            "",
-                            0,
-                            it.content
-                        )
-                        populateCommandTemplates(templates, autoCompleteTextView)
+                UiUtil.configureCommand(
+                    view,
+                    1,
+                    newTemplateClicked = {
+                        UiUtil.showCommandTemplateCreationOrUpdatingSheet(null, requireActivity(), viewLifecycleOwner, commandTemplateViewModel) {
+                            templates.add(it)
+                            chosenCommandView.editText!!.setText(it.content)
+                            downloadItem.format = Format(
+                                it.title,
+                                "",
+                                "",
+                                "",
+                                "",
+                                0,
+                                it.content
+                            )
+                            populateCommandTemplates(templates, autoCompleteTextView)
+                        }
+                    },
+                    editSelectedClicked = {
+                        var current = templates.find { it.title == autoCompleteTextView.text.toString() }
+                        if (current == null) current = CommandTemplate(0, "", chosenCommandView.editText!!.text.toString(), false)
+                        UiUtil.showCommandTemplateCreationOrUpdatingSheet(current, requireActivity(), viewLifecycleOwner, commandTemplateViewModel) {
+                            templates.add(it)
+                            chosenCommandView.editText!!.setText(it.content)
+                            downloadItem.format = Format(
+                                it.title,
+                                "",
+                                "",
+                                "",
+                                "",
+                                0,
+                                it.content
+                            )
+                        }
                     }
-                }
-
-                val editSelected : Chip = view.findViewById(R.id.editSelected)
-                editSelected.setOnClickListener {
-                    var current = templates.find { it.title == autoCompleteTextView.text.toString() }
-                    if (current == null) current = CommandTemplate(0, "", chosenCommandView.editText!!.text.toString(), false)
-                    UiUtil.showCommandTemplateCreationOrUpdatingSheet(current, requireActivity(), viewLifecycleOwner, commandTemplateViewModel) {
-                        templates.add(it)
-                        chosenCommandView.editText!!.setText(it.content)
-                        downloadItem.format = Format(
-                            it.title,
-                            "",
-                            "",
-                            "",
-                            "",
-                            0,
-                            it.content
-                        )
-                    }
-                }
-
+                )
             } catch (e: Exception) {
                 e.printStackTrace()
             }

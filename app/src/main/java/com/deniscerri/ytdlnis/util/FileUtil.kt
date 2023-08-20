@@ -10,6 +10,7 @@ import android.os.storage.StorageVolume
 import android.provider.DocumentsContract
 import android.util.Log
 import android.webkit.MimeTypeMap
+import androidx.core.content.FileProvider
 import androidx.core.net.toFile
 import androidx.core.net.toUri
 import androidx.documentfile.provider.DocumentFile
@@ -20,6 +21,7 @@ import com.anggrayudi.storage.file.copyFolderTo
 import com.anggrayudi.storage.file.getAbsolutePath
 import com.anggrayudi.storage.file.getBasePath
 import com.deniscerri.ytdlnis.App
+import com.deniscerri.ytdlnis.BuildConfig
 import com.deniscerri.ytdlnis.R
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -27,11 +29,13 @@ import okhttp3.internal.closeQuietly
 import java.io.File
 import java.net.URLDecoder
 import java.nio.charset.StandardCharsets
+import java.nio.file.CopyOption
 import java.nio.file.Files
 import java.nio.file.StandardCopyOption
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.util.*
+import kotlin.io.path.absolutePathString
 import kotlin.math.log10
 import kotlin.math.pow
 
@@ -87,7 +91,7 @@ object FileUtil {
                 if (it.isDirectory && it.absolutePath == originDir.absolutePath) return@forEach
                 var destFile: DocumentFile
                 try {
-                    if (it.name.matches("(^config.*.\\.txt\$)|(rList)|(part-Frag)".toRegex())){
+                    if (it.name.matches("(^config.*.\\.txt\$)|(rList)|(part-Frag)|(live_chat)".toRegex())){
                         it.delete()
                         return@forEach
                     }
@@ -182,8 +186,15 @@ object FileUtil {
                                     super.onFailed(errorCode)
                                 }
 
+                                override fun onConflict(
+                                    destinationFile: DocumentFile,
+                                    action: FileConflictAction
+                                ) {
+                                    action.confirmResolution(ConflictResolution.CREATE_NEW)
+                                }
+
                                 override fun onStart(file: Any, workerThread: Thread): Long {
-                                    return 1000 // update progress every 1 second
+                                    return 500 // update progress every 1 second
                                 }
 
                                 override fun onReport(report: Report) {
@@ -204,17 +215,37 @@ object FileUtil {
                     val files = it.listFiles()?.filter { fil -> !fil.isDirectory }?.toTypedArray() ?: arrayOf(it)
                     for (ff in files){
                         val newFile =  File(dir.absolutePath + "/${ff.absolutePath.removePrefix(originDir.absolutePath)}")
-                        newFile.mkdirs()
-                        if (Build.VERSION.SDK_INT >= 26 ) {
-                            Files.move(
-                                ff.toPath(),
-                                newFile.toPath(),
-                                StandardCopyOption.REPLACE_EXISTING
-                            )
-                        }else{
-                            ff.renameTo(newFile)
+                        runCatching {
+                            newFile.parentFile?.mkdirs()
                         }
-                        fileList.add(newFile.absolutePath)
+                        if (Build.VERSION.SDK_INT >= 26 ) {
+                            var newFileName = newFile.absolutePath
+                            var counter = 1
+                            while (Files.exists(File(newFileName).toPath())) {
+                                // If the file already exists in the destination directory, add a number to differentiate it
+                                newFileName = newFile.absolutePath.replace(newFile.nameWithoutExtension, newFile.nameWithoutExtension+" ($counter)")
+                                counter++
+                            }
+
+                            fileList.add(Files.move(
+                                ff.toPath(),
+                                File(newFileName).toPath(),
+                                StandardCopyOption.REPLACE_EXISTING
+                            ).absolutePathString())
+                            ff.delete()
+                            fileList.add(newFileName)
+                        }else{
+                            var newFileName = newFile.absolutePath
+                            var counter = 1
+                            while (File(newFileName).exists()) {
+                                // If the file already exists in the destination directory, add a number to differentiate it
+                                newFileName = newFile.absolutePath.replace(newFile.nameWithoutExtension, newFile.nameWithoutExtension+" ($counter)")
+                                counter++
+                            }
+
+                            ff.renameTo(File(newFileName))
+                            fileList.add(newFileName)
+                        }
                     }
                     return@forEach
                 }
@@ -238,17 +269,25 @@ object FileUtil {
         return listOf(context.getString(R.string.unfound_file))
     }
 
+    fun getCachePath() : String {
+        return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)?.absolutePath + File.separator + "YTDLnis/.CACHE"
+    }
 
     fun getDefaultAudioPath() : String{
-        return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).absolutePath + File.separator + "YTDLnis/Audio"
+        return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)?.absolutePath + File.separator + "YTDLnis/Audio"
     }
 
     fun getDefaultVideoPath() : String{
-        return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).absolutePath + File.separator + "YTDLnis/Video"
+        return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)?.absolutePath + File.separator + "YTDLnis/Video"
     }
 
     fun getDefaultCommandPath() : String {
-        return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).absolutePath + File.separator + "YTDLnis/Command"
+        return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)?.absolutePath + File.separator + "YTDLnis/Command"
+    }
+
+    fun getCookieFile(context : Context, path: (path: String) -> Unit){
+        val cookiesFile = File(context.cacheDir, "cookies.txt")
+        if (cookiesFile.exists()) path(cookiesFile.absolutePath)
     }
 
     fun convertFileSize(s: Long): String{

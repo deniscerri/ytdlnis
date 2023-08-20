@@ -1,0 +1,126 @@
+<LinearLayout android:layout_width="match_parent"
+    android:id="@+id/adjust"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingHorizontal="10dp"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <TextView
+        android:paddingTop="10dp"
+        android:layout_width="wrap_content"
+        android:paddingBottom="5dp"
+        android:textSize="15sp"
+        android:layout_height="wrap_content"
+        android:text="@string/adjust_audio" />
+
+    <HorizontalScrollView
+        android:scrollbars="none"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+
+        <com.google.android.material.chip.ChipGroup
+            android:layout_width="wrap_content"
+            app:chipSpacingVertical="0dp"
+            app:singleLine="true"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/embed_thumb"
+                style="@style/Widget.Material3.Chip.Filter.Elevated"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false"
+                android:text="@string/embed_thumb"/>
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/split_by_chapters"
+                style="@style/Widget.Material3.Chip.Filter.Elevated"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false"
+                android:text="@string/split_by_chapters"/>
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/cut"
+                style="@style/Widget.Material3.Chip.Assist.Elevated"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                app:chipIconVisible="true"
+                app:chipIcon="@drawable/ic_cut"
+                android:text="@string/cut"
+                android:minWidth="30dp"
+                app:cornerRadius="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+        </com.google.android.material.chip.ChipGroup>
+
+    </HorizontalScrollView>
+
+    <HorizontalScrollView
+        android:scrollbars="none"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+
+        <com.google.android.material.chip.ChipGroup
+            android:layout_width="wrap_content"
+            app:chipSpacingVertical="0dp"
+            app:singleLine="true"
+            android:layout_height="wrap_content">
+
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/sponsorblock_filters"
+                style="@style/Widget.Material3.Chip.Assist.Elevated"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/sponsorblock"
+                app:chipIconVisible="true"
+                app:chipIcon="@drawable/ic_money"
+                android:minWidth="30dp"
+                app:cornerRadius="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/filename_template"
+                style="@style/Widget.Material3.Chip.Assist.Elevated"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/file_name_template"
+                app:chipIconVisible="true"
+                app:chipIcon="@drawable/ic_edit"
+                android:minWidth="30dp"
+                app:cornerRadius="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+        </com.google.android.material.chip.ChipGroup>
+
+    </HorizontalScrollView>
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/extra_commands"
+        android:visibility="gone"
+        style="@style/Widget.Material3.Chip.Assist.Elevated"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/use_extra_commands"
+        app:chipIconVisible="true"
+        app:chipIcon="@drawable/ic_terminal"
+        android:minWidth="30dp"
+        app:cornerRadius="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</LinearLayout>

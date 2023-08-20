@@ -6,6 +6,7 @@ import android.app.Dialog
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.res.Configuration
 import android.graphics.Canvas
 import android.graphics.Color
 import android.os.Bundle
@@ -39,6 +40,7 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.adapter.ConfigureMultipleDownloadsAdapter
+import com.deniscerri.ytdlnis.database.models.CommandTemplate
 import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.models.Format
 import com.deniscerri.ytdlnis.database.repository.DownloadRepository
@@ -48,6 +50,7 @@ import com.deniscerri.ytdlnis.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdlnis.receiver.ShareActivity
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.UiUtil
+import com.deniscerri.ytdlnis.util.UiUtil.enableFastScroll
 import com.deniscerri.ytdlnis.work.UpdatePlaylistFormatsWorker
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -63,6 +66,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
+import java.lang.reflect.Type
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -98,8 +102,9 @@ class DownloadMultipleBottomSheetDialog(private var items: MutableList<DownloadI
             behavior = BottomSheetBehavior.from(view.parent as View)
             val displayMetrics = DisplayMetrics()
             requireActivity().windowManager.defaultDisplay.getMetrics(displayMetrics)
-            if(resources.getBoolean(R.bool.isTablet)){
+            if(resources.getBoolean(R.bool.isTablet) || resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE){
                 behavior.state = BottomSheetBehavior.STATE_EXPANDED
+                behavior.peekHeight = displayMetrics.heightPixels
             }
         }
 
@@ -112,8 +117,11 @@ class DownloadMultipleBottomSheetDialog(private var items: MutableList<DownloadI
         recyclerView = view.findViewById(R.id.downloadMultipleRecyclerview)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = listAdapter
-        val itemTouchHelper = ItemTouchHelper(simpleCallback)
-        itemTouchHelper.attachToRecyclerView(recyclerView)
+        recyclerView.enableFastScroll()
+        if(sharedPreferences.getBoolean("swipe_gestures", true)){
+            val itemTouchHelper = ItemTouchHelper(simpleCallback)
+            itemTouchHelper.attachToRecyclerView(recyclerView)
+        }
         listAdapter.submitList(items.toList())
 
         val scheduleBtn = view.findViewById<MaterialButton>(R.id.bottomsheet_schedule_button)
@@ -227,7 +235,9 @@ class DownloadMultipleBottomSheetDialog(private var items: MutableList<DownloadI
 
             }
         }
-
+        if (items[0].type == DownloadViewModel.Type.command){
+            bottomAppBar.menu[3].icon?.alpha = 30
+        }
         bottomAppBar.setOnMenuItemClickListener { m: MenuItem ->
             when (m.itemId) {
                 R.id.folder -> {
@@ -264,6 +274,7 @@ class DownloadMultipleBottomSheetDialog(private var items: MutableList<DownloadI
                             listAdapter.notifyDataSetChanged()
                             preferredDownloadType.setIcon(R.drawable.baseline_audio_file_24)
                             bottomAppBar.menu[1].icon?.alpha = 255
+                            bottomAppBar.menu[3].icon?.alpha = 255
                             bottomSheet.cancel()
                         }
 
@@ -273,6 +284,7 @@ class DownloadMultipleBottomSheetDialog(private var items: MutableList<DownloadI
                             listAdapter.notifyDataSetChanged()
                             preferredDownloadType.setIcon(R.drawable.baseline_video_file_24)
                             bottomAppBar.menu[1].icon?.alpha = 255
+                            bottomAppBar.menu[3].icon?.alpha = 255
                             bottomSheet.cancel()
                         }
 
@@ -285,6 +297,7 @@ class DownloadMultipleBottomSheetDialog(private var items: MutableList<DownloadI
                                 listAdapter.notifyDataSetChanged()
                                 preferredDownloadType.setIcon(R.drawable.baseline_insert_drive_file_24)
                                 bottomAppBar.menu[1].icon?.alpha = 255
+                                bottomAppBar.menu[3].icon?.alpha = 30
                                 bottomSheet.cancel()
                             }
                         }
@@ -298,52 +311,6 @@ class DownloadMultipleBottomSheetDialog(private var items: MutableList<DownloadI
                             ViewGroup.LayoutParams.MATCH_PARENT
                         )
                     }
-
-                }
-                R.id.filename_template -> {
-                    if (items.count { it.type == DownloadViewModel.Type.command } != 0){
-                        Toast.makeText(requireContext(), getString(R.string.format_filtering_hint_2), Toast.LENGTH_SHORT).show()
-                    }else{
-                        val builder = MaterialAlertDialogBuilder(requireContext())
-                        builder.setTitle(getString(R.string.file_name_template))
-                        val inputLayout = layoutInflater.inflate(R.layout.textinput, null)
-                        val editText = inputLayout.findViewById<EditText>(R.id.url_edittext)
-                        inputLayout.findViewById<TextInputLayout>(R.id.url_textinput).hint = getString(R.string.file_name_template)
-                        editText.setSelection(editText.text.length)
-                        builder.setView(inputLayout)
-                        builder.setPositiveButton(
-                            getString(R.string.ok)
-                        ) { dialog: DialogInterface?, which: Int ->
-
-                            lifecycleScope.launch {
-                                items.forEach {
-                                    it.customFileNameTemplate = editText.text.toString()
-                                }
-                                listAdapter.submitList(items.toList())
-                                listAdapter.notifyDataSetChanged()
-                            }
-
-                        }
-
-                        // handle the negative button of the alert dialog
-                        builder.setNegativeButton(
-                            getString(R.string.cancel)
-                        ) { dialog: DialogInterface?, which: Int -> }
-
-                        val filenameTemplateDialog = builder.create()
-                        editText.doOnTextChanged { text, start, before, count ->
-                            filenameTemplateDialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = editText.text.isNotEmpty()
-                        }
-                        filenameTemplateDialog.show()
-                        val imm = context?.getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager
-                        editText!!.postDelayed({
-                            editText.requestFocus()
-                            imm.showSoftInput(editText, 0)
-                        }, 300)
-                        filenameTemplateDialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = editText.text.isNotEmpty()
-                        filenameTemplateDialog.getButton(AlertDialog.BUTTON_NEUTRAL).gravity = Gravity.START
-                    }
-
 
                 }
                 R.id.format -> {
@@ -382,6 +349,136 @@ class DownloadMultipleBottomSheetDialog(private var items: MutableList<DownloadI
                         }
                     }
 
+                }
+                R.id.more -> {
+                    if (! items.all { it.type == items[0].type }) {
+                        Toast.makeText(
+                            requireContext(),
+                            getString(R.string.format_filtering_hint),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }else{
+                        val scale = resources.displayMetrics.density
+                        val padding = (40*scale*0.5f).toInt()
+
+                        when(items[0].type){
+                            DownloadViewModel.Type.audio -> {
+                                val bottomSheet = BottomSheetDialog(requireContext())
+                                bottomSheet.requestWindowFeature(Window.FEATURE_NO_TITLE)
+                                bottomSheet.setContentView(R.layout.adjust_audio)
+                                val sheetView = bottomSheet.findViewById<View>(android.R.id.content)!!
+                                sheetView.findViewById<View>(R.id.adjust).setPadding(padding,padding,padding,padding)
+
+                                UiUtil.configureAudio(
+                                    sheetView,
+                                    requireActivity(),
+                                    items,
+                                    embedThumbClicked = {enabled ->
+                                        items.forEach {
+                                            it.audioPreferences.embedThumb = enabled
+                                        }
+                                    },
+                                    splitByChaptersClicked = {enabled ->
+                                        items.forEach {
+                                            it.audioPreferences.splitByChapters = enabled
+                                        }
+                                    },
+                                    filenameTemplateSet = {template ->
+                                        items.forEach {
+                                            it.customFileNameTemplate = template
+                                        }
+                                        bottomSheet.dismiss()
+                                    },
+                                    sponsorBlockItemsSet = { values, checkedItems ->
+                                        items.forEach { it.audioPreferences.sponsorBlockFilters.clear() }
+                                        for (i in checkedItems.indices) {
+                                            if (checkedItems[i]) {
+                                                items.forEach { it.audioPreferences.sponsorBlockFilters.add(values[i]) }
+                                            }
+                                        }
+                                        bottomSheet.dismiss()
+                                    },
+                                    cutClicked = {},
+                                    extraCommandsClicked = {
+                                        val callback = object : ExtraCommandsListener {
+                                            override fun onChangeExtraCommand(c: String) {
+                                                items.forEach { it.extraCommands = c }
+                                                bottomSheet.dismiss()
+                                            }
+                                        }
+
+                                        val bottomSheetDialog = AddExtraCommandsDialog(null, callback)
+                                        bottomSheetDialog.show(parentFragmentManager, "extraCommands")
+                                    }
+                                )
+                                bottomSheet.show()
+                            }
+                            DownloadViewModel.Type.video -> {
+                                val bottomSheet = BottomSheetDialog(requireContext())
+                                bottomSheet.requestWindowFeature(Window.FEATURE_NO_TITLE)
+                                bottomSheet.setContentView(R.layout.adjust_video)
+                                val sheetView = bottomSheet.findViewById<View>(android.R.id.content)!!
+                                sheetView.findViewById<View>(R.id.adjust).setPadding(padding,padding,padding,padding)
+
+                                UiUtil.configureVideo(
+                                    sheetView,
+                                    requireActivity(),
+                                    items,
+                                    embedSubsClicked = {checked ->
+                                        items.forEach { it.videoPreferences.embedSubs = checked }
+                                    },
+                                    addChaptersClicked = {checked ->
+                                        items.forEach { it.videoPreferences.addChapters = checked }
+                                    },
+                                    splitByChaptersClicked = { checked ->
+                                        items.forEach { it.videoPreferences.splitByChapters = checked }
+                                    },
+                                    saveThumbnailClicked = {checked ->
+                                        items.forEach { it.SaveThumb = checked }
+                                    },
+                                    sponsorBlockItemsSet = { values, checkedItems ->
+                                        items.forEach { it.videoPreferences.sponsorBlockFilters.clear() }
+                                        for (i in checkedItems.indices) {
+                                            if (checkedItems[i]) {
+                                                items.forEach { it.videoPreferences.sponsorBlockFilters.add(values[i]) }
+                                            }
+                                        }
+                                        bottomSheet.dismiss()
+                                    },
+                                    cutClicked = {},
+                                    filenameTemplateSet = { checked ->
+                                        items.forEach { it.customFileNameTemplate = checked }
+                                    },
+                                    saveSubtitlesClicked = {checked ->
+                                        items.forEach { it.videoPreferences.writeSubs = checked }
+                                    },
+                                    subtitleLanguagesClicked = {
+                                        UiUtil.showSubtitleLanguagesDialog(requireActivity(), ""){ value ->
+                                            items.forEach { it.videoPreferences.subsLanguages = value }
+                                        }
+                                    },
+                                    removeAudioClicked = {checked ->
+                                        items.forEach { it.videoPreferences.removeAudio = checked }
+                                    },
+                                    extraCommandsClicked = {
+                                        val callback = object : ExtraCommandsListener {
+                                            override fun onChangeExtraCommand(c: String) {
+                                                items.forEach { it.extraCommands = c }
+                                                bottomSheet.dismiss()
+                                            }
+                                        }
+
+                                        val bottomSheetDialog = AddExtraCommandsDialog(null, callback)
+                                        bottomSheetDialog.show(parentFragmentManager, "extraCommands")
+                                    }
+                                )
+
+                                bottomSheet.show()
+                            }
+                            DownloadViewModel.Type.command -> {
+                            }
+                        }
+                    }
                 }
             }
             true
@@ -507,8 +604,12 @@ class DownloadMultipleBottomSheetDialog(private var items: MutableList<DownloadI
         items[i] = item
         if (! items.all { it.type == items[0].type }){
             bottomAppBar.menu[1].icon?.alpha = 30
+            bottomAppBar.menu[3].icon?.alpha = 30
         }else{
             bottomAppBar.menu[1].icon?.alpha = 255
+            if (items[0].type != DownloadViewModel.Type.command){
+                bottomAppBar.menu[3].icon?.alpha = 255
+            }
         }
 
         if (items.count { it.type == DownloadViewModel.Type.command } == 0){
@@ -581,7 +682,7 @@ class DownloadMultipleBottomSheetDialog(private var items: MutableList<DownloadI
                 super.onChildDraw(
                     c,
                     recyclerView,
-                    viewHolder!!,
+                    viewHolder,
                     dX,
                     dY,
                     actionState,

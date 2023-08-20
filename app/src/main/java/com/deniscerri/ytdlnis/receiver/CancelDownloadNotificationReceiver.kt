@@ -20,10 +20,8 @@ class CancelDownloadNotificationReceiver : BroadcastReceiver() {
         if (message != null) {
             runCatching {
                 val notificationUtil = NotificationUtil(c)
-                WorkManager.getInstance(c).cancelUniqueWork(id.toString())
-                notificationUtil.cancelDownloadNotification(id)
                 YoutubeDL.getInstance().destroyProcessById(id.toString())
-
+                notificationUtil.cancelDownloadNotification(id)
                 val dbManager = DBManager.getInstance(c)
                 CoroutineScope(Dispatchers.IO).launch{
                     runCatching {

@@ -69,50 +69,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:paddingVertical="10dp"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            >
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:paddingBottom="5dp"
-                android:textSize="15sp"
-                android:layout_height="wrap_content"
-                android:text="@string/adjust_templates" />
-
-
-            <com.google.android.material.chip.ChipGroup
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:selectionRequired="false"
-                app:singleLine="false"
-                app:chipSpacingVertical="0dp"
-                app:singleSelection="false">
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/newTemplate"
-                    style="@style/Widget.Material3.Chip.Assist"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/new_template"
-                    app:chipIcon="@drawable/ic_plus" />
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/editSelected"
-                    style="@style/Widget.Material3.Chip.Assist"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/edit_selected"
-                    app:chipIcon="@drawable/ic_edit" />
-
-            </com.google.android.material.chip.ChipGroup>
-
-
-        </LinearLayout>
+        <include layout="@layout/adjust_command" />
 
     </LinearLayout>
 

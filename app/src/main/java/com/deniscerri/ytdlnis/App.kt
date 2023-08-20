@@ -9,14 +9,11 @@ import androidx.work.Configuration
 import androidx.work.Constraints
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.NetworkType
-import androidx.work.PeriodicWorkRequest
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
-import androidx.work.WorkQuery
 import com.deniscerri.ytdlnis.util.NotificationUtil
 import com.deniscerri.ytdlnis.util.UpdateUtil
 import com.deniscerri.ytdlnis.work.UpdateYTDLWorker
-import com.google.android.gms.common.internal.Constants
 import com.yausername.aria2c.Aria2c
 import com.yausername.ffmpeg.FFmpeg
 import com.yausername.youtubedl_android.YoutubeDL
@@ -50,21 +47,27 @@ class App : Application() {
                     }
                 }
 
-                //init yt-dlp auto update with work request
-                val constraints = Constraints.Builder()
-                    .setRequiredNetworkType(NetworkType.UNMETERED)
-                    .setRequiresDeviceIdle(true)
-                    .build()
+                if (sharedPreferences.getBoolean("auto_update_ytdlp", true)){
+                    //init yt-dlp auto update with work request
+                    val constraints = Constraints.Builder()
+                        .setRequiredNetworkType(NetworkType.UNMETERED)
+                        .setRequiresDeviceIdle(true)
+                        .build()
 
-                val periodicWorkRequest = PeriodicWorkRequestBuilder<UpdateYTDLWorker>(1, TimeUnit.DAYS)
-                    .setConstraints(constraints)
-                    .build()
+                    val periodicWorkRequest = PeriodicWorkRequestBuilder<UpdateYTDLWorker>(1, TimeUnit.DAYS)
+                        .setConstraints(constraints)
+                        .build()
 
-                WorkManager.getInstance(this@App).enqueueUniquePeriodicWork(
-                    "ytdlp-Updater",
-                    ExistingPeriodicWorkPolicy.KEEP,
-                    periodicWorkRequest
-                )
+                    WorkManager.getInstance(this@App).enqueueUniquePeriodicWork(
+                        "ytdlp-Updater",
+                        ExistingPeriodicWorkPolicy.KEEP,
+                        periodicWorkRequest
+                    )
+                }else{
+                    WorkManager.getInstance(this@App).cancelUniqueWork("ytdlp-Updater")
+                }
+
+
 
             }catch (e: Exception){
                 Looper.prepare().runCatching {
@@ -73,14 +76,6 @@ class App : Application() {
                 e.printStackTrace()
             }
         }
-
-        WorkManager.initialize(
-            this@App,
-            Configuration.Builder()
-                .setExecutor(Executors.newFixedThreadPool(
-                    sharedPreferences.getInt("concurrent_downloads", 1)))
-                .build())
-
     }
     @Throws(YoutubeDLException::class)
     private fun initLibraries() {

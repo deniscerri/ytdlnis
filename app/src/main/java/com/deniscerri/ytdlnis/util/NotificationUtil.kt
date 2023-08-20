@@ -75,6 +75,25 @@ class NotificationUtil(var context: Context) {
         return downloadNotificationBuilder
     }
 
+    fun createDefaultWorkerNotification() : Notification {
+        val notificationBuilder = getBuilder(DOWNLOAD_SERVICE_CHANNEL_ID)
+
+        return notificationBuilder
+            .setContentTitle(context.getString(R.string.downloading))
+            .setOngoing(true)
+            .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .setLargeIcon(
+                BitmapFactory.decodeResource(
+                    context.resources,
+                    R.drawable.ic_launcher_foreground_large
+                )
+            )
+            .setPriority(NotificationCompat.PRIORITY_LOW)
+            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+            .setForegroundServiceBehavior(NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE)
+            .clearActions()
+            .build()
+    }
 
     fun createDownloadServiceNotification(
         pendingIntent: PendingIntent?,
@@ -188,6 +207,7 @@ class NotificationUtil(var context: Context) {
                     R.drawable.ic_launcher_foreground_large
                 )
             )
+            .setContentText("")
             .setPriority(NotificationCompat.PRIORITY_MAX)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .clearActions()
@@ -277,6 +297,11 @@ class NotificationUtil(var context: Context) {
         notificationManager.notify(DOWNLOAD_FINISHED_NOTIFICATION_ID, notificationBuilder.build())
     }
 
+
+    fun notify(id: Int, notification: Notification){
+        notificationManager.notify(id, notification)
+    }
+
     fun updateDownloadNotification(
         id: Int,
         desc: String,
@@ -344,6 +369,19 @@ class NotificationUtil(var context: Context) {
     fun createYTDLUpdateNotification() : Notification{
         val notificationBuilder = getBuilder(DOWNLOAD_MISC_CHANNEL_ID)
         notificationBuilder.setContentTitle("Updating YT-DLP...")
+            .setOngoing(true)
+            .setCategory(Notification.CATEGORY_EVENT)
+            .setSmallIcon(android.R.drawable.stat_sys_download)
+            .setLargeIcon(
+                BitmapFactory.decodeResource(
+                    context.resources,
+                    android.R.drawable.stat_sys_download
+                )
+            )
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+            .setForegroundServiceBehavior(NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE)
+            .clearActions()
         return notificationBuilder.build()
     }
 

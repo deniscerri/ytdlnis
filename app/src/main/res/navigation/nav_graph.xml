@@ -9,7 +9,11 @@
         android:id="@+id/homeFragment"
         android:name="com.deniscerri.ytdlnis.ui.HomeFragment"
         android:label="@string/app_name"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_resultCardDetailsDialog"
+            app:destination="@id/resultCardDetailsDialog" />
+    </fragment>
     <fragment
         android:id="@+id/historyFragment"
         android:name="com.deniscerri.ytdlnis.ui.downloads.HistoryFragment"
@@ -80,4 +84,8 @@
         android:id="@+id/downloadLogFragment"
         android:name="com.deniscerri.ytdlnis.ui.more.downloadLogs.DownloadLogFragment"
         android:label="DownloadLogFragment" />
+    <fragment
+        android:id="@+id/resultCardDetailsDialog"
+        android:name="com.deniscerri.ytdlnis.ui.downloadcard.ResultCardDetailsDialog"
+        android:label="ResultCardDetailsDialog" />
 </navigation>

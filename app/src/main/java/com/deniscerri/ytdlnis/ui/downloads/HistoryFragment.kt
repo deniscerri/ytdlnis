@@ -48,6 +48,7 @@ import com.deniscerri.ytdlnis.databinding.FragmentHistoryBinding
 import com.deniscerri.ytdlnis.ui.downloadcard.DownloadBottomSheetDialog
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.UiUtil
+import com.deniscerri.ytdlnis.util.UiUtil.enableFastScroll
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -127,6 +128,7 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
             )
         recyclerView = view.findViewById(R.id.recyclerviewhistorys)
         recyclerView?.adapter = historyAdapter
+        recyclerView?.enableFastScroll()
 
         val preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
         if (preferences.getBoolean("swipe_gestures", true)){

@@ -2,6 +2,7 @@ package com.deniscerri.ytdlnis.ui.more
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.webkit.CookieManager
 import android.webkit.WebView
 import android.webkit.WebViewClient
@@ -68,6 +69,7 @@ class WebViewActivity : BaseActivity() {
 
         generateBtn.setOnClickListener {
             cookiesViewModel.getCookiesFromDB().getOrNull()?.let {
+                Log.e("asas", it)
                 kotlin.runCatching {
                     lifecycleScope.launch {
                         withContext(Dispatchers.IO){

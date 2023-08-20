@@ -7,10 +7,12 @@ import android.util.Log
 import android.widget.Toast
 import androidx.navigation.NavDeepLinkBuilder
 import androidx.preference.PreferenceManager
-import androidx.work.Data
+import androidx.work.CoroutineWorker
 import androidx.work.ForegroundInfo
-import androidx.work.Worker
+import androidx.work.WorkInfo
+import androidx.work.WorkManager
 import androidx.work.WorkerParameters
+import androidx.work.await
 import androidx.work.workDataOf
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.DBManager
@@ -21,215 +23,236 @@ import com.deniscerri.ytdlnis.database.models.HistoryItem
 import com.deniscerri.ytdlnis.database.models.LogItem
 import com.deniscerri.ytdlnis.database.repository.DownloadRepository
 import com.deniscerri.ytdlnis.database.repository.LogRepository
+import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.InfoUtil
 import com.deniscerri.ytdlnis.util.NotificationUtil
 import com.yausername.youtubedl_android.YoutubeDL
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.transform
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import java.io.File
+import kotlin.random.Random
 
 
 class DownloadWorker(
     private val context: Context,
     workerParams: WorkerParameters
-) : Worker(context, workerParams) {
-    override fun doWork(): Result {
-        itemId = inputData.getLong("id", 0)
-        if (itemId == 0L || isStopped) return Result.success()
+) : CoroutineWorker(context, workerParams) {
+    override suspend fun doWork(): Result {
+        if (isStopped) return Result.success()
 
         val notificationUtil = NotificationUtil(context)
         val infoUtil = InfoUtil(context)
         val dbManager = DBManager.getInstance(context)
         val dao = dbManager.downloadDao
-        val repository = DownloadRepository(dao)
         val historyDao = dbManager.historyDao
         val resultDao = dbManager.resultDao
         val logRepo = LogRepository(dbManager.logDao)
         val handler = Handler(Looper.getMainLooper())
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+        val time = System.currentTimeMillis() + 6000
+        val queuedItems = dao.getQueuedDownloadsThatAreNotScheduledChunked(time)
+        val currentWork = WorkManager.getInstance(context).getWorkInfosByTag("download").await()
+        if (currentWork.count{it.state == WorkInfo.State.RUNNING} > 1) return Result.success()
 
-        val downloadItem: DownloadItem?
-        try {
-            downloadItem = repository.getItemByID(itemId)
-        }catch (e: Exception){
-            e.printStackTrace()
-            return Result.success()
-        }
-
-        if (downloadItem.status != DownloadRepository.Status.Queued.toString() && downloadItem.status != DownloadRepository.Status.Paused.toString()) return Result.success()
+        runningYTDLInstances.addAll(dao.getActiveDownloadsList().map { it.id })
 
         val pendingIntent = NavDeepLinkBuilder(context)
             .setGraph(R.navigation.nav_graph)
             .setDestination(R.id.downloadQueueMainFragment)
             .createPendingIntent()
 
-        val notification = notificationUtil.createDownloadServiceNotification(pendingIntent, downloadItem.title, downloadItem.id.toInt(), NotificationUtil.DOWNLOAD_SERVICE_CHANNEL_ID)
-        val foregroundInfo = ForegroundInfo(downloadItem.id.toInt(), notification)
+        var notification = notificationUtil.createDefaultWorkerNotification()
+        val foregroundInfo = ForegroundInfo(Random.nextInt(1000000000), notification)
         setForegroundAsync(foregroundInfo)
 
-        Log.e(TAG, downloadItem.toString())
-
-        runBlocking{
-            YoutubeDL.getInstance().destroyProcessById(itemId.toString())
-            repository.setDownloadStatus(downloadItem, DownloadRepository.Status.Active)
-        }
-        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
-
-        CoroutineScope(Dispatchers.IO).launch {
-            //update item if its incomplete
-            updateDownloadItem(downloadItem, infoUtil, dao, resultDao)
-        }
-
-        val request = infoUtil.buildYoutubeDLRequest(downloadItem)
-        val tempFileDir = File(context.cacheDir.absolutePath + "/downloads/" + downloadItem.id)
-        tempFileDir.delete()
-        tempFileDir.mkdirs()
-
-        val downloadLocation = downloadItem.downloadPath
-        val keepCache = sharedPreferences.getBoolean("keep_cache", false)
-
-        val logDownloads = sharedPreferences.getBoolean("log_downloads", false) && !sharedPreferences.getBoolean("incognito", false)
-
-        val logItem = LogItem(
-            0,
-            downloadItem.title.ifEmpty { downloadItem.url },
-            "Downloading:\n" +
-                    "Title: ${downloadItem.title}\n" +
-                    "URL: ${downloadItem.url}\n" +
-                    "Type: ${downloadItem.type}\n" +
-                    "Format: ${downloadItem.format}\n\n" +
-                    "Command: ${infoUtil.parseYTDLRequestString(request)} ${downloadItem.extraCommands}\n\n",
-            downloadItem.format,
-            downloadItem.type,
-            System.currentTimeMillis(),
-        )
-
-
-        if (logDownloads){
-            runBlocking {
-                logItem.id = logRepo.insert(logItem)
-                downloadItem.logID = logItem.id
-                dao.update(downloadItem)
-            }
-
-        }
-        runCatching {
-            YoutubeDL.getInstance().execute(request, downloadItem.id.toString()){ progress, _, line ->
-                setProgressAsync(workDataOf("progress" to progress.toInt(), "output" to line.chunked(5000).first().toString(), "id" to downloadItem.id))
-                val title: String = downloadItem.title
-                notificationUtil.updateDownloadNotification(
-                    downloadItem.id.toInt(),
-                    line, progress.toInt(), 0, title,
-                    NotificationUtil.DOWNLOAD_SERVICE_CHANNEL_ID
-                )
-                if (logDownloads){
+        queuedItems.collectLatest { items ->
+            val running = ArrayList(runningYTDLInstances)
+            if (items.isEmpty() && running.isEmpty()) WorkManager.getInstance(context).cancelWorkById(this@DownloadWorker.id)
+            val concurrentDownloads = sharedPreferences.getInt("concurrent_downloads", 1) - running.size
+            val eligibleDownloads = items.take(if (concurrentDownloads < 0) 0 else concurrentDownloads).filter {  it.id !in running }
+            eligibleDownloads.forEach {downloadItem ->
+                runningYTDLInstances.add(downloadItem.id)
+                CoroutineScope(Dispatchers.IO).launch {
+                    withContext(Dispatchers.Main){
+                        notification = notificationUtil.createDownloadServiceNotification(pendingIntent, downloadItem.title, downloadItem.id.toInt(), NotificationUtil.DOWNLOAD_SERVICE_CHANNEL_ID)
+                        notificationUtil.notify(downloadItem.id.toInt(), notification)
+                    }
+                    val request = infoUtil.buildYoutubeDLRequest(downloadItem)
+                    downloadItem.status = DownloadRepository.Status.Active.toString()
                     CoroutineScope(Dispatchers.IO).launch {
-                        logRepo.update(line, logItem.id)
-                    }
-                }
-            }
-        }.onSuccess {
-            val wasQuickDownloaded = updateDownloadItem(downloadItem, infoUtil, dao, resultDao)
-
-            runBlocking {
-                var finalPaths : List<String>?
-                //move file from internal to set download directory
-                setProgressAsync(workDataOf("progress" to 100, "output" to "Moving file to ${FileUtil.formatPath(downloadLocation)}", "id" to downloadItem.id))
-                try {
-                    finalPaths = withContext(Dispatchers.IO){
-                        FileUtil.moveFile(tempFileDir.absoluteFile,context, downloadLocation, keepCache){ p ->
-                            setProgressAsync(workDataOf("progress" to p, "output" to "Moving file to ${FileUtil.formatPath(downloadLocation)}", "id" to downloadItem.id))
-                        }
+                        //update item if its incomplete
+                        updateDownloadItem(downloadItem, infoUtil, dao, resultDao)
                     }
 
-                    if (finalPaths.isNotEmpty()){
-                        setProgressAsync(workDataOf("progress" to 100, "output" to "Moved file to $downloadLocation", "id" to downloadItem.id))
-                    }else{
-                        finalPaths = listOf(context.getString(R.string.unfound_file))
-                    }
-                }catch (e: Exception){
-                    finalPaths = listOf(context.getString(R.string.unfound_file))
-                    e.printStackTrace()
-                    handler.postDelayed({
-                        Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
-                    }, 1000)
-                }
+                    val cacheDir = FileUtil.getCachePath()
+                    val tempFileDir = File(cacheDir, downloadItem.id.toString())
+                    tempFileDir.delete()
+                    tempFileDir.mkdirs()
+
+                    val downloadLocation = downloadItem.downloadPath
+                    val keepCache = sharedPreferences.getBoolean("keep_cache", false)
+                    val logDownloads = sharedPreferences.getBoolean("log_downloads", false) && !sharedPreferences.getBoolean("incognito", false)
+
+                    val logItem = LogItem(
+                        0,
+                        downloadItem.title.ifEmpty { downloadItem.url },
+                        "Downloading:\n" +
+                                "Title: ${downloadItem.title}\n" +
+                                "URL: ${downloadItem.url}\n" +
+                                "Type: ${downloadItem.type}\n" +
+                                if (downloadItem.type != DownloadViewModel.Type.command){
+                                    "Format: ${downloadItem.format}\n\n"
+                                }
+                                else { "" } +
+                                "Command: ${infoUtil.parseYTDLRequestString(request)} ${downloadItem.extraCommands}\n\n",
+                        downloadItem.format,
+                        downloadItem.type,
+                        System.currentTimeMillis(),
+                    )
 
 
-                //put download in history
-                val incognito = sharedPreferences.getBoolean("incognito", false)
-                if (!incognito) {
-                    val unixtime = System.currentTimeMillis() / 1000
-                    val file = File(finalPaths?.first()!!)
-                    downloadItem.format.filesize = file.length()
-                    val historyItem = HistoryItem(0, downloadItem.url, downloadItem.title, downloadItem.author, downloadItem.duration, downloadItem.thumb, downloadItem.type, unixtime, finalPaths.first() , downloadItem.website, downloadItem.format, downloadItem.id)
-                    historyDao.insert(historyItem)
-                }
-
-                notificationUtil.cancelDownloadNotification(downloadItem.id.toInt())
-                notificationUtil.createDownloadFinished(
-                    downloadItem.title,  if (finalPaths?.first().equals(context.getString(R.string.unfound_file))) null else finalPaths,
-                    NotificationUtil.DOWNLOAD_FINISHED_CHANNEL_ID
-                )
-
-                if (wasQuickDownloaded){
-                    runCatching {
-                        setProgressAsync(workDataOf("progress" to 100, "output" to "Creating Result Items", "id" to downloadItem.id))
+                    if (logDownloads){
                         runBlocking {
-                            infoUtil.getFromYTDL(downloadItem.url).forEach { res ->
-                                if (res != null) {
-                                    resultDao.insert(res)
+                            logItem.id = logRepo.insert(logItem)
+                            downloadItem.logID = logItem.id
+                            dao.update(downloadItem)
+                        }
+
+                    }
+                    runCatching {
+                        YoutubeDL.getInstance().execute(request, downloadItem.id.toString()){ progress, _, line ->
+                            setProgressAsync(workDataOf("progress" to progress.toInt(), "output" to line.chunked(5000).first().toString(), "id" to downloadItem.id))
+                            val title: String = downloadItem.title
+                            notificationUtil.updateDownloadNotification(
+                                downloadItem.id.toInt(),
+                                line, progress.toInt(), 0, title,
+                                NotificationUtil.DOWNLOAD_SERVICE_CHANNEL_ID
+                            )
+                            if (logDownloads){
+                                CoroutineScope(Dispatchers.IO).launch {
+                                    logRepo.update(line, logItem.id)
                                 }
                             }
                         }
-                    }
-                }
+                    }.onSuccess {
+                        runningYTDLInstances.remove(downloadItem.id)
+                        val wasQuickDownloaded = updateDownloadItem(downloadItem, infoUtil, dao, resultDao)
+                        runBlocking {
+                            var finalPaths : List<String>?
+                            //move file from internal to set download directory
+                            setProgressAsync(workDataOf("progress" to 100, "output" to "Moving file to ${FileUtil.formatPath(downloadLocation)}", "id" to downloadItem.id))
+                            try {
+                                finalPaths = withContext(Dispatchers.IO){
+                                    FileUtil.moveFile(tempFileDir.absoluteFile,context, downloadLocation, keepCache){ p ->
+                                        setProgressAsync(workDataOf("progress" to p, "output" to "Moving file to ${FileUtil.formatPath(downloadLocation)}", "id" to downloadItem.id))
+                                    }
+                                }
 
-                dao.delete(downloadItem.id)
-            }
+                                if (finalPaths.isNotEmpty()){
+                                    setProgressAsync(workDataOf("progress" to 100, "output" to "Moved file to $downloadLocation", "id" to downloadItem.id))
+                                }else{
+                                    finalPaths = listOf(context.getString(R.string.unfound_file))
+                                }
+                            }catch (e: Exception){
+                                finalPaths = listOf(context.getString(R.string.unfound_file))
+                                e.printStackTrace()
+                                handler.postDelayed({
+                                    Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
+                                }, 1000)
+                            }
 
 
-        }.onFailure {
-            if (it is YoutubeDL.CanceledException) {
-                return Result.success(
-                    Data.Builder().putString("output", "Download has been cancelled!").build()
-                )
-            }else{
-                if (logDownloads){
-                    CoroutineScope(Dispatchers.IO).launch {
-                        if(it.message != null){
-                            logRepo.update(it.message!!, logItem.id)
+                            //put download in history
+                            val incognito = sharedPreferences.getBoolean("incognito", false)
+                            if (!incognito) {
+                                val unixtime = System.currentTimeMillis() / 1000
+                                val file = File(finalPaths?.first()!!)
+                                downloadItem.format.filesize = file.length()
+                                val historyItem = HistoryItem(0, downloadItem.url, downloadItem.title, downloadItem.author, downloadItem.duration, downloadItem.thumb, downloadItem.type, unixtime, finalPaths.first() , downloadItem.website, downloadItem.format, downloadItem.id)
+                                historyDao.insert(historyItem)
+                            }
+
+                            notificationUtil.cancelDownloadNotification(downloadItem.id.toInt())
+                            notificationUtil.createDownloadFinished(
+                                downloadItem.title,  if (finalPaths?.first().equals(context.getString(R.string.unfound_file))) null else finalPaths,
+                                NotificationUtil.DOWNLOAD_FINISHED_CHANNEL_ID
+                            )
+
+                            if (wasQuickDownloaded){
+                                runCatching {
+                                    setProgressAsync(workDataOf("progress" to 100, "output" to "Creating Result Items", "id" to downloadItem.id))
+                                    runBlocking {
+                                        infoUtil.getFromYTDL(downloadItem.url).forEach { res ->
+                                            if (res != null) {
+                                                resultDao.insert(res)
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
+                            dao.delete(downloadItem.id)
+
+                            if (logDownloads){
+                                logRepo.update(it.out, logItem.id)
+                            }
+
+                            if (items.size <= 1) WorkManager.getInstance(context).cancelWorkById(this@DownloadWorker.id)
                         }
+
+                    }.onFailure {
+                        runningYTDLInstances.remove(downloadItem.id)
+                        withContext(Dispatchers.Main){
+                            notificationUtil.cancelDownloadNotification(downloadItem.id.toInt())
+                        }
+                        if (it is YoutubeDL.CanceledException) {
+
+                        }else{
+                            if (logDownloads){
+                                if(it.message != null){
+                                    logRepo.update(it.message!!, logItem.id)
+                                }
+                            }
+
+                            tempFileDir.delete()
+                            handler.postDelayed({
+                                Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
+                            }, 1000)
+
+                            Log.e(TAG, context.getString(R.string.failed_download), it)
+                            notificationUtil.cancelDownloadNotification(downloadItem.id.toInt())
+
+                            downloadItem.status = DownloadRepository.Status.Error.toString()
+                            runBlocking {
+                                dao.update(downloadItem)
+                            }
+
+                            notificationUtil.createDownloadErrored(
+                                downloadItem.title, it.message,
+                                if (logDownloads) logItem.id else null,
+                                NotificationUtil.DOWNLOAD_FINISHED_CHANNEL_ID
+                            )
+
+                            setProgressAsync(workDataOf("progress" to 100, "output" to it.toString(), "id" to downloadItem.id))
+                        }
+                        if (items.size <= 1) WorkManager.getInstance(context).cancelWorkById(this@DownloadWorker.id)
                     }
                 }
-
-                tempFileDir.delete()
-                handler.postDelayed({
-                    Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
-                }, 1000)
-
-                Log.e(TAG, context.getString(R.string.failed_download), it)
-                notificationUtil.cancelDownloadNotification(downloadItem.id.toInt())
-
-                downloadItem.status = DownloadRepository.Status.Error.toString()
-                runBlocking {
-                    dao.update(downloadItem)
-                }
-
-                notificationUtil.createDownloadErrored(
-                    downloadItem.title, it.message,
-                    if (logDownloads) logItem.id else null,
-                    NotificationUtil.DOWNLOAD_FINISHED_CHANNEL_ID
-                )
-
-                return Result.success(
-                    Data.Builder().putString("output", it.toString()).build()
-                )
+            }
+            if (eligibleDownloads.isNotEmpty()){
+                eligibleDownloads.forEach { it.status = DownloadRepository.Status.Active.toString() }
+                dao.updateMultiple(eligibleDownloads)
             }
         }
+
+
         return Result.success()
     }
 
@@ -242,7 +265,7 @@ class DownloadWorker(
         var wasQuickDownloaded = false
         if (downloadItem.title.isEmpty() || downloadItem.author.isEmpty() || downloadItem.thumb.isEmpty()){
             runCatching {
-                if (isStopped) destroyYTDLProcess()
+                if (isStopped) YoutubeDL.getInstance().destroyProcessById(downloadItem.id.toString())
                 setProgressAsync(workDataOf("progress" to 0, "output" to context.getString(R.string.updating_download_data), "id" to downloadItem.id))
                 val info = infoUtil.getMissingInfo(downloadItem.url)
                 if (downloadItem.title.isEmpty()) downloadItem.title = info?.title.toString()
@@ -259,17 +282,10 @@ class DownloadWorker(
         return wasQuickDownloaded
     }
 
-    override fun onStopped() {
-        destroyYTDLProcess()
-        super.onStopped()
-    }
 
-    private fun destroyYTDLProcess(){
-        YoutubeDL.getInstance().destroyProcessById(itemId.toInt().toString())
-    }
 
     companion object {
-        var itemId: Long = 0
+        val runningYTDLInstances: MutableList<Long> = mutableListOf()
         const val TAG = "DownloadWorker"
     }
 

@@ -32,7 +32,7 @@ import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdlnis.ui.BaseActivity
 import com.deniscerri.ytdlnis.ui.downloadcard.DownloadBottomSheetDialog
-import com.deniscerri.ytdlnis.ui.downloadcard.SelectPlaylistItemsBottomSheetDialog
+import com.deniscerri.ytdlnis.ui.downloadcard.SelectPlaylistItemsDialog
 import com.deniscerri.ytdlnis.util.ThemeUtil
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -95,10 +95,9 @@ class ShareActivity : BaseActivity() {
         askPermissions()
 
         val action = intent.action
-        val type = intent.clipData
         Log.e("aa", intent.toString())
-        if (Intent.ACTION_SEND == action && type != null) {
-            if (intent.getStringExtra(Intent.EXTRA_TEXT) == null){
+        if (Intent.ACTION_SEND == action || Intent.ACTION_VIEW == action) {
+            if (intent.getStringExtra(Intent.EXTRA_TEXT) == null && Intent.ACTION_SEND == action){
                 intent.setClass(this, MainActivity::class.java)
                 startActivity(intent)
                 finishAffinity()
@@ -107,7 +106,7 @@ class ShareActivity : BaseActivity() {
 
             runCatching { supportFragmentManager.popBackStack() }
 
-            quickDownload = intent.getBooleanExtra("quick_download", sharedPreferences.getBoolean("quick_download", false))
+            quickDownload = intent.getBooleanExtra("quick_download", sharedPreferences.getBoolean("quick_download", false) || sharedPreferences.getString("preferred_download_type", "video") == "command")
 
             val loadingBottomSheet = BottomSheetDialog(this)
             loadingBottomSheet.requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -118,7 +117,11 @@ class ShareActivity : BaseActivity() {
                 this.finish()
             }
 
-            val inputQuery = intent.getStringExtra(Intent.EXTRA_TEXT)!!
+            val inputQuery = when(action){
+                Intent.ACTION_SEND -> intent.getStringExtra(Intent.EXTRA_TEXT)!!
+                else -> intent.dataString!!
+            }
+
             lifecycleScope.launch {
                 try {
                     val result = resultViewModel.getItemByURL(inputQuery)
@@ -166,7 +169,7 @@ class ShareActivity : BaseActivity() {
 
     private fun showSelectPlaylistItems(it: List<ResultItem?>){
         if (sharedPreferences.getBoolean("download_card", true)){
-            val bottomSheet = SelectPlaylistItemsBottomSheetDialog(it, DownloadViewModel.Type.valueOf(sharedPreferences.getString("preferred_download_type", "video")!!))
+            val bottomSheet = SelectPlaylistItemsDialog(it, DownloadViewModel.Type.valueOf(sharedPreferences.getString("preferred_download_type", "video")!!))
             bottomSheet.show(supportFragmentManager, "downloadPlaylistSheet")
         }else{
             lifecycleScope.launch(Dispatchers.IO){

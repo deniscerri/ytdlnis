@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import android.graphics.Color
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -106,14 +107,14 @@ class ActiveDownloadAdapter(onItemClickListener: OnItemClickListener, activity: 
         }
 
         val formatDetailsChip = card.findViewById<Chip>(R.id.format_note)
-        val formatDetailsText = StringBuilder(item.format.format_note.uppercase())
 
-        formatDetailsText.append(" \t •\t ${item.container.uppercase().ifEmpty { item.format.container.uppercase() }}")
+        val sideDetails = mutableListOf<String>()
+        sideDetails.add(item.format.format_note.uppercase())
+        sideDetails.add(item.container.uppercase().ifEmpty { item.format.container.uppercase() })
 
         val fileSize = FileUtil.convertFileSize(item.format.filesize)
-        if (fileSize != "?") formatDetailsText.append(" \t •\t $fileSize")
-
-        formatDetailsChip.text = formatDetailsText
+        if (fileSize != "?") sideDetails.add(fileSize)
+        formatDetailsChip.text = sideDetails.joinToString("  ·  ")
 
         //OUTPUT
         val output = card.findViewById<TextView>(R.id.output)

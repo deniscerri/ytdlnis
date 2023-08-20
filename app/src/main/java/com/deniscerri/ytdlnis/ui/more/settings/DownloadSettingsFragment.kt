@@ -31,28 +31,6 @@ class DownloadSettingsFragment : BaseSettingsFragment() {
             ignoreBatteryOptimization!!.isVisible = false
         }
 
-        concurrentDownloads = findPreference("concurrent_downloads")
-        concurrentDownloads!!.onPreferenceChangeListener =
-            Preference.OnPreferenceChangeListener { _: Preference?, _: Any ->
-                MaterialAlertDialogBuilder(requireContext())
-                    .setTitle(resources.getString(R.string.warning))
-                    .setMessage(resources.getString(R.string.workmanager_updated))
-                    .setNegativeButton(resources.getString(R.string.cancel)) { dialog, _ ->
-                        dialog.cancel()
-                    }
-                    .setPositiveButton(resources.getString(R.string.restart)) { _, _ ->
-                        val intent = Intent(context, MainActivity::class.java)
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                        requireContext().startActivity(intent)
-                        if (context is Activity) {
-                            (context as Activity).finish()
-                        }
-                        Runtime.getRuntime().exit(0)
-                    }
-                    .show()
-
-                true
-            }
         ignoreBatteryOptimization = findPreference("ignore_battery")
         ignoreBatteryOptimization!!.onPreferenceClickListener =
             Preference.OnPreferenceClickListener {

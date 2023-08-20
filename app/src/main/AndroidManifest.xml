@@ -57,6 +57,17 @@
 
                 <data android:mimeType="text/plain" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="http" />
+                <data android:scheme="https" />
+                <data android:mimeType="video/*" />
+                <data android:mimeType="audio/*" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".receiver.ShareFileActivity"
@@ -96,6 +107,8 @@
             android:name=".terminalShareAlias"
             android:targetActivity=".ui.more.TerminalActivity"
             android:enabled="false"
+            android:icon="@mipmap/terminal_icon"
+            android:roundIcon="@mipmap/terminal_icon_round"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
@@ -204,25 +217,13 @@
         </service>
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.deniscerri.ytdl.fileprovider"
+            android:authorities="${applicationId}.fileprovider"
             android:exported="false"
             android:enabled="true"
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths" />
-        </provider>
-        <provider
-            android:name="androidx.startup.InitializationProvider"
-            android:authorities="${applicationId}.androidx-startup"
-            android:exported="false"
-            tools:node="merge">
-
-            <!-- If you are using androidx.startup to initialize other components -->
-            <meta-data
-                android:name="androidx.work.WorkManagerInitializer"
-                android:value="androidx.startup"
-                tools:node="remove" />
         </provider>
     </application>
 

@@ -5,12 +5,13 @@
 
     <LinearLayout android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingBottom="20dp"
         android:orientation="vertical">
 
         <TextView
             android:layout_width="wrap_content"
             android:text="@string/format"
-            android:textSize="14sp"
+            android:textSize="17sp"
             android:layout_margin="20dp"
             android:layout_height="wrap_content"/>
 
@@ -22,22 +23,24 @@
             android:paddingHorizontal="10dp"
             android:weightSum="100"
             android:background="?android:attr/selectableItemBackground"
-            android:orientation="horizontal" >
+            android:orientation="vertical" >
 
             <TextView
-                android:layout_width="0dp"
-                android:layout_weight="50"
+                android:layout_width="match_parent"
+
                 android:text="@string/format_id"
-                android:textSize="18sp"
-                android:layout_margin="10dp"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginVertical="5dp"
                 android:layout_height="wrap_content"/>
 
             <TextView
                 android:id="@+id/format_id_value"
-                android:layout_width="0dp"
-                android:layout_weight="50"
+                android:layout_width="match_parent"
+
                 android:textSize="18sp"
-                android:layout_margin="10dp"
+                android:layout_marginHorizontal="10dp"
                 android:gravity="end"
                 android:layout_height="wrap_content"/>
 
@@ -51,25 +54,26 @@
             android:paddingHorizontal="10dp"
             android:weightSum="100"
             android:background="?android:attr/selectableItemBackground"
-            android:orientation="horizontal" >
+            android:orientation="vertical" >
 
             <TextView
-                android:layout_width="0dp"
-                android:layout_weight="50"
+                android:layout_width="match_parent"
+                android:textStyle="bold"
+                android:textSize="14sp"
+
                 android:text="@string/url"
-                android:textSize="18sp"
-                android:layout_margin="10dp"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginVertical="5dp"
                 android:layout_height="wrap_content"/>
 
             <TextView
                 android:id="@+id/format_url_value"
-                android:layout_width="0dp"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:layout_weight="50"
-                android:textSize="18sp"
-                android:layout_margin="10dp"
+                android:layout_width="match_parent"
                 android:gravity="end"
+                android:maxLines="2"
+                android:ellipsize="end"
+                android:textSize="18sp"
+                android:layout_marginHorizontal="10dp"
                 android:layout_height="wrap_content"/>
 
         </LinearLayout>
@@ -83,22 +87,23 @@
             android:weightSum="100"
             android:paddingHorizontal="10dp"
             android:background="?android:attr/selectableItemBackground"
-            android:orientation="horizontal" >
+            android:orientation="vertical" >
 
             <TextView
-                android:layout_width="0dp"
-                android:layout_weight="50"
-                android:textSize="18sp"
+                android:layout_width="match_parent"
+                android:textStyle="bold"
+                android:textSize="14sp"
+
                 android:text="@string/container"
-                android:layout_margin="10dp"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginVertical="5dp"
                 android:layout_height="wrap_content"/>
 
             <TextView
                 android:id="@+id/container_value"
-                android:layout_width="0dp"
-                android:layout_weight="50"
+                android:layout_width="match_parent"
                 android:textSize="18sp"
-                android:layout_margin="10dp"
+                android:layout_marginHorizontal="10dp"
                 android:gravity="end"
                 android:layout_height="wrap_content"/>
 
@@ -112,22 +117,22 @@
             android:weightSum="100"
             android:paddingHorizontal="10dp"
             android:background="?android:attr/selectableItemBackground"
-            android:orientation="horizontal" >
+            android:orientation="vertical" >
 
             <TextView
-                android:layout_width="0dp"
-                android:layout_weight="50"
-                android:textSize="18sp"
+                android:layout_width="match_parent"
+                android:textStyle="bold"
+                android:textSize="14sp"
                 android:text="@string/codec"
-                android:layout_margin="10dp"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginVertical="5dp"
                 android:layout_height="wrap_content"/>
 
             <TextView
                 android:id="@+id/codec_value"
-                android:layout_width="0dp"
-                android:layout_weight="50"
+                android:layout_width="match_parent"
                 android:textSize="18sp"
-                android:layout_margin="10dp"
+                android:layout_marginHorizontal="10dp"
                 android:gravity="end"
                 android:layout_height="wrap_content"/>
 
@@ -141,22 +146,22 @@
             android:weightSum="100"
             android:paddingHorizontal="10dp"
             android:background="?android:attr/selectableItemBackground"
-            android:orientation="horizontal" >
+            android:orientation="vertical" >
 
             <TextView
-                android:layout_width="0dp"
-                android:layout_weight="50"
+                android:layout_width="match_parent"
+                android:textStyle="bold"
+                android:textSize="14sp"
                 android:text="@string/file_size"
-                android:textSize="18sp"
-                android:layout_margin="10dp"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginVertical="5dp"
                 android:layout_height="wrap_content"/>
 
             <TextView
                 android:id="@+id/filesize_value"
-                android:layout_width="0dp"
-                android:layout_weight="50"
+                android:layout_width="match_parent"
                 android:textSize="18sp"
-                android:layout_margin="10dp"
+                android:layout_marginHorizontal="10dp"
                 android:gravity="end"
                 android:layout_height="wrap_content"/>
 
@@ -170,22 +175,22 @@
             android:weightSum="100"
             android:paddingHorizontal="10dp"
             android:background="?android:attr/selectableItemBackground"
-            android:orientation="horizontal" >
+            android:orientation="vertical" >
 
             <TextView
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
+                android:textStyle="bold"
+                android:textSize="14sp"
                 android:text="@string/quality"
-                android:layout_weight="50"
-                android:textSize="18sp"
-                android:layout_margin="10dp"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginVertical="5dp"
                 android:layout_height="wrap_content"/>
 
             <TextView
                 android:id="@+id/format_note_value"
-                android:layout_width="0dp"
-                android:layout_weight="50"
+                android:layout_width="match_parent"
                 android:textSize="18sp"
-                android:layout_margin="10dp"
+                android:layout_marginHorizontal="10dp"
                 android:gravity="end"
                 android:layout_height="wrap_content"/>
 
@@ -199,22 +204,22 @@
             android:weightSum="100"
             android:paddingHorizontal="10dp"
             android:background="?android:attr/selectableItemBackground"
-            android:orientation="horizontal" >
+            android:orientation="vertical" >
 
             <TextView
-                android:layout_width="0dp"
-                android:layout_weight="50"
+                android:layout_width="match_parent"
+                android:textStyle="bold"
+                android:textSize="14sp"
                 android:text="FPS"
-                android:textSize="18sp"
-                android:layout_margin="10dp"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginVertical="5dp"
                 android:layout_height="wrap_content"/>
 
             <TextView
                 android:id="@+id/fps_value"
-                android:layout_width="0dp"
-                android:layout_weight="50"
+                android:layout_width="match_parent"
                 android:textSize="18sp"
-                android:layout_margin="10dp"
+                android:layout_marginHorizontal="10dp"
                 android:gravity="end"
                 android:layout_height="wrap_content"/>
 
@@ -228,22 +233,22 @@
             android:weightSum="100"
             android:paddingHorizontal="10dp"
             android:background="?android:attr/selectableItemBackground"
-            android:orientation="horizontal" >
+            android:orientation="vertical" >
 
             <TextView
-                android:layout_width="0dp"
-                android:layout_weight="50"
+                android:layout_width="match_parent"
+                android:textStyle="bold"
+                android:textSize="14sp"
                 android:text="@string/audio_samplerate"
-                android:textSize="18sp"
-                android:layout_margin="10dp"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginVertical="5dp"
                 android:layout_height="wrap_content"/>
 
             <TextView
                 android:id="@+id/asr_value"
-                android:layout_width="0dp"
-                android:layout_weight="50"
+                android:layout_width="match_parent"
                 android:textSize="18sp"
-                android:layout_margin="10dp"
+                android:layout_marginHorizontal="10dp"
                 android:gravity="end"
                 android:layout_height="wrap_content"/>
 

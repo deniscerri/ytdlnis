@@ -12,7 +12,7 @@ interface SearchHistoryDao {
     fun getAllByKeyword(keyword: String) : List<SearchHistoryItem>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insert(new: SearchHistoryItem)
+    suspend fun insert(newItem: SearchHistoryItem)
 
     @Query("DELETE FROM searchHistory")
     suspend fun deleteAll()

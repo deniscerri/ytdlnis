@@ -1,19 +1,36 @@
 package com.deniscerri.ytdlnis.database.repository
 
-import androidx.lifecycle.LiveData
-import com.deniscerri.ytdlnis.database.Converters
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
 import com.deniscerri.ytdlnis.database.dao.DownloadDao
 import com.deniscerri.ytdlnis.database.models.DownloadItem
 import kotlinx.coroutines.flow.Flow
 
+
 class DownloadRepository(private val downloadDao: DownloadDao) {
-    val allDownloads : Flow<List<DownloadItem>> = downloadDao.getAllDownloads()
+    val allDownloads : Pager<Int, DownloadItem> = Pager(
+        config = PagingConfig(pageSize = 20, initialLoadSize = 20, prefetchDistance = 1),
+        pagingSourceFactory = {downloadDao.getAllDownloads()}
+    )
     val activeDownloads : Flow<List<DownloadItem>> = downloadDao.getActiveDownloads()
-    val activeDownloadsCount : Flow<Int> = downloadDao.getActiveDownloadsCount()
-    val queuedDownloads : Flow<List<DownloadItem>> = downloadDao.getQueuedDownloads()
-    val cancelledDownloads : Flow<List<DownloadItem>> = downloadDao.getCancelledDownloads()
-    val erroredDownloads : Flow<List<DownloadItem>> = downloadDao.getErroredDownloads()
-    val savedDownloads : Flow<List<DownloadItem>> = downloadDao.getSavedDownloads()
+    val queuedDownloads : Pager<Int, DownloadItem> = Pager(
+        config = PagingConfig(pageSize = 20, initialLoadSize = 20, prefetchDistance = 1),
+        pagingSourceFactory = {downloadDao.getQueuedDownloads()}
+    )
+    val cancelledDownloads : Pager<Int, DownloadItem> = Pager(
+        config = PagingConfig(pageSize = 20, initialLoadSize = 20, prefetchDistance = 1),
+        pagingSourceFactory = {downloadDao.getCancelledDownloads()}
+    )
+    val erroredDownloads : Pager<Int, DownloadItem> = Pager(
+        config = PagingConfig(pageSize = 20, initialLoadSize = 20, prefetchDistance = 1),
+        pagingSourceFactory = {downloadDao.getErroredDownloads()}
+    )
+    val savedDownloads : Pager<Int, DownloadItem> = Pager(
+        config = PagingConfig(pageSize = 20, initialLoadSize = 20, prefetchDistance = 1),
+        pagingSourceFactory = {downloadDao.getSavedDownloads()}
+    )
+
+    val activeDownloadsCount : Flow<Int> = downloadDao.getActiveDownloadsCountFlow()
 
     enum class Status {
         Active, Paused, Queued, QueuedPaused, Error, Cancelled, Saved
@@ -27,8 +44,8 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
         return downloadDao.insertAll(items)
     }
 
-    suspend fun delete(item: DownloadItem){
-        downloadDao.delete(item.id)
+    suspend fun delete(id: Long){
+        downloadDao.delete(id)
     }
 
     suspend fun update(item: DownloadItem){
@@ -61,6 +78,10 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
         return downloadDao.getCancelledDownloadsList()
     }
 
+    fun getPausedDownloads() : List<DownloadItem> {
+        return downloadDao.getPausedDownloadsList()
+    }
+
     fun getErroredDownloads() : List<DownloadItem> {
         return downloadDao.getErroredDownloadsList()
     }
@@ -81,20 +102,12 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
         downloadDao.cancelQueued()
     }
 
-    fun getLastDownloadId() : Long {
-        return downloadDao.getLastDownloadId()
+    fun pauseDownloads(){
+        downloadDao.pauseActiveAndQueued()
     }
 
-
-    fun checkIfReDownloadingErroredOrCancelled(item: DownloadItem) : Long {
-        val converters = Converters()
-        val format = converters.formatToString(item.format)
-        return try {
-            val i = downloadDao.getUnfinishedByURLAndFormat(item.url, format)
-            i.id
-        }catch (e: Exception){
-            0L
-        }
+    fun unPauseDownloads(){
+        downloadDao.unPauseActiveAndQueued()
     }
 
 }

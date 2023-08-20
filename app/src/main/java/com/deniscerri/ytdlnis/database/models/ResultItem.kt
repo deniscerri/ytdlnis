@@ -15,9 +15,9 @@ data class ResultItem(
     val thumb: String,
     val website: String,
     var playlistTitle: String,
-    var formats: ArrayList<Format>,
+    var formats: MutableList<Format>,
     @ColumnInfo(defaultValue = "")
     var urls: String,
-    var chapters: ArrayList<ChapterItem>?,
+    var chapters: MutableList<ChapterItem>?,
     var creationTime: Long = System.currentTimeMillis() / 1000,
 )

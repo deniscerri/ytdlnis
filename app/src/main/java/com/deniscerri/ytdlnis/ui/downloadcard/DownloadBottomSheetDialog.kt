@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.res.Configuration
 import android.os.Bundle
 import android.text.format.DateFormat
 import android.util.DisplayMetrics
@@ -73,8 +74,9 @@ class DownloadBottomSheetDialog(private val resultItem: ResultItem, private val 
             behavior = BottomSheetBehavior.from(view.parent as View)
             val displayMetrics = DisplayMetrics()
             requireActivity().windowManager.defaultDisplay.getMetrics(displayMetrics)
-            if(resources.getBoolean(R.bool.isTablet)){
+            if(resources.getBoolean(R.bool.isTablet) || resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE){
                 behavior.state = BottomSheetBehavior.STATE_EXPANDED
+                behavior.peekHeight = displayMetrics.heightPixels
             }
         }
 

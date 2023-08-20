@@ -23,12 +23,37 @@
             app:menu="@menu/select_playlist_menu"
             android:layout_gravity="bottom">
 
-            <TextView
-                android:id="@+id/selected"
-                android:layout_width="wrap_content"
-                android:textStyle="bold"
-                android:layout_marginHorizontal="30dp"
-                android:layout_height="wrap_content" />
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/from_textinput"
+                style="@style/Widget.Material3.TextInputLayout.FilledBox"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="40dp"
+                android:layout_marginEnd="10dp"
+                android:hint="@string/start">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/to_textinput"
+                style="@style/Widget.Material3.TextInputLayout.FilledBox"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:hint="@string/end"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/colon">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text" />
+
+            </com.google.android.material.textfield.TextInputLayout>
 
 
         </com.google.android.material.bottomappbar.BottomAppBar>
@@ -36,11 +61,9 @@
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/check_all"
             android:layout_width="wrap_content"
-            android:text="@string/select_all"
             app:icon="@drawable/ic_select_all"
             android:layout_height="wrap_content"
             app:layout_anchor="@id/bottomAppBar"/>
-
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
@@ -56,72 +79,42 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
-            android:orientation="horizontal"
-            android:paddingTop="20dp">
+            android:orientation="horizontal">
 
 
-            <TextView
-                android:id="@+id/bottom_sheet_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="@string/select"
-                android:textSize="20sp"
+            <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/appbar"
+                android:layout_width="match_parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <Button
-                android:id="@+id/bottomsheet_ok"
-                style="@style/Widget.Material3.Button.ElevatedButton.Icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:autoLink="all"
-                android:text="@string/ok"
-                app:icon="@drawable/ic_check"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_height="wrap_content"
+                app:elevation="0dp">
+
+                <com.google.android.material.appbar.MaterialToolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    app:menu="@menu/playlist_download_menu"
+                    android:layout_height="?attr/actionBarSize"
+                    android:paddingEnd="16dp"
+                    android:paddingStart="6dp"
+                    app:contentInsetStartWithNavigation="0dp"
+                    app:navigationIcon="@drawable/baseline_close_24" />
+
+            </com.google.android.material.appbar.AppBarLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:layout_marginHorizontal="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/bottomsheet_ok"
+                app:layout_constraintTop_toBottomOf="@+id/appbar"
                 app:layout_constraintVertical_bias="0.0">
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/from_textinput"
-                    style="@style/Widget.Material3.TextInputLayout.FilledBox"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="10dp"
-                    android:hint="@string/start">
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="number" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/to_textinput"
-                    style="@style/Widget.Material3.TextInputLayout.FilledBox"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/end"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/colon">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="text" />
-
-                </com.google.android.material.textfield.TextInputLayout>
 
             </LinearLayout>
 
@@ -136,11 +129,6 @@
             android:focusableInTouchMode="true"
             android:orientation="vertical"
             android:paddingBottom="80dp"
-            app:fastScrollEnabled="true"
-            app:fastScrollHorizontalThumbDrawable="@drawable/thumb_drawable"
-            app:fastScrollHorizontalTrackDrawable="@drawable/line_drawable"
-            app:fastScrollVerticalThumbDrawable="@drawable/thumb_drawable"
-            app:fastScrollVerticalTrackDrawable="@drawable/line_drawable"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
 

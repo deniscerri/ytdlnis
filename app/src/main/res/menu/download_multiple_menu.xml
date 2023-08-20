@@ -17,15 +17,16 @@
         app:showAsAction="always"/>
 
     <item
-        android:id="@+id/filename_template"
-        android:title="@string/file_name_template"
-        android:icon="@drawable/if_file_rename"
-        app:showAsAction="always"/>
-
-    <item
         android:id="@+id/folder"
         android:title="@string/directories"
         android:icon="@drawable/baseline_folder_24"
+        app:showAsAction="always"/>
+
+
+    <item
+        android:id="@+id/more"
+        android:title="@string/more"
+        android:icon="@drawable/ic_more"
         app:showAsAction="always"/>
 
 

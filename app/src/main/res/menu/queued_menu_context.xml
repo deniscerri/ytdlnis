@@ -10,10 +10,17 @@
         app:showAsAction="ifRoom" />
 
     <item
+        android:id="@+id/up"
+        android:icon="@drawable/ic_arrow_up"
+        app:showAsAction="ifRoom"
+        android:title="Move Up" />
+
+    <item
         android:id="@+id/download"
         android:title="@string/download"
         android:icon="@drawable/baseline_download_24"
         app:showAsAction="ifRoom" />
+
 
     <item
         android:id="@+id/select_all"

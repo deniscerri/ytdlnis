@@ -6,6 +6,8 @@ import android.content.*
 import android.content.Context.CLIPBOARD_SERVICE
 import android.content.res.ColorStateList
 import android.graphics.Color
+import android.graphics.drawable.ShapeDrawable
+import android.graphics.drawable.shapes.OvalShape
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -40,6 +42,8 @@ import com.deniscerri.ytdlnis.ui.downloadcard.DownloadMultipleBottomSheetDialog
 import com.deniscerri.ytdlnis.ui.downloadcard.ResultCardDetailsDialog
 import com.deniscerri.ytdlnis.util.InfoUtil
 import com.deniscerri.ytdlnis.util.ThemeUtil
+import com.deniscerri.ytdlnis.util.UiUtil.enableFastScroll
+import com.devbrackets.android.exomedia.core.video.mp.NativeVideoDelegate
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.MaterialToolbar
@@ -55,6 +59,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import me.zhanghai.android.fastscroll.FastScrollerBuilder
 import java.util.*
 
 
@@ -146,6 +151,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
         recyclerView = view.findViewById(R.id.recyclerViewHome)
         recyclerView?.layoutManager = GridLayoutManager(context, resources.getInteger(R.integer.grid_size))
         recyclerView?.adapter = homeAdapter
+        recyclerView?.enableFastScroll()
 
         resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]
         resultViewModel.items.observe(viewLifecycleOwner) {
@@ -251,12 +257,15 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
     override fun onResume() {
         super.onResume()
         if(arguments?.getString("url") == null){
-            resultViewModel.checkTrending()
+            if (resultViewModel.state == ResultViewModel.ResultsState.IDLE){
+                resultViewModel.checkTrending()
+            }else{
+                resultViewModel.loadingItems.postValue(true)
+            }
         }else{
-            arguments
             arguments?.remove("url")
-            arguments?.remove("showDownloadsWithUpdatedFormats")
         }
+        arguments?.remove("showDownloadsWithUpdatedFormats")
         if (searchView?.currentTransitionState == SearchView.TransitionState.SHOWN){
             lifecycleScope.launch {
                 updateSearchViewItems(searchView?.editText?.text, linkYouCopied)
@@ -533,7 +542,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
         resultViewModel.deleteAll()
         lifecycleScope.launch(Dispatchers.IO){
             Thread.sleep(300)
-            if(sharedPreferences!!.getBoolean("quick_download", false)){
+            if(sharedPreferences!!.getBoolean("quick_download", false) || sharedPreferences!!.getString("preferred_download_type", "video") == "command"){
                 if (queryList.size == 1 && queryList.first().matches("(https?://(?:www\\.|(?!www))[a-zA-Z\\d][a-zA-Z\\d-]+[a-zA-Z\\d]\\.\\S{2,}|www\\.[a-zA-Z\\d][a-zA-Z\\d-]+[a-zA-Z\\d]\\.\\S{2,}|https?://(?:www\\.|(?!www))[a-zA-Z\\d]+\\.\\S{2,}|www\\.[a-zA-Z\\d]+\\.\\S{2,})".toRegex())){
                     val resultItem = downloadViewModel.createEmptyResultItem(queryList.first())
                     if (sharedPreferences!!.getBoolean("download_card", true)) {

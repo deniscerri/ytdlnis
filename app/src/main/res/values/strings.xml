@@ -302,4 +302,6 @@
     <string name="embed_metadata_summary">Embed metadata to the video file. Also embeds chapters/infojson if present</string>
     <string name="formats_updated">Formats have been updated</string>
     <string name="update_formats_background">Update Formats in Background</string>
+    <string name="auto_update_ytdlp">Auto-Update yt-dlp</string>
+    <string name="use_sponsorblock">Use SponsorBlock</string>
 </resources>

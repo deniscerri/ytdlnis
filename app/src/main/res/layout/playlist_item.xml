@@ -13,7 +13,8 @@
     <FrameLayout
         android:id="@+id/download_card_view"
         android:layout_width="0dp"
-        android:padding="10dp"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="3dp"
         app:shapeAppearance="@style/ShapeAppearanceOverlay.Avatar"
         android:layout_height="wrap_content"
         app:cardPreventCornerOverlap="true"
@@ -32,7 +33,7 @@
                 android:clickable="false"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                app:layout_constraintHorizontal_weight="0.3"
+                app:layout_constraintHorizontal_weight="0.4"
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -81,16 +82,30 @@
                     android:maxLines="2"
                     android:paddingHorizontal="10dp"
                     android:scrollbars="none"
-                    android:shadowColor="@color/black"
                     android:shadowDx="4"
                     android:shadowDy="4"
                     android:shadowRadius="2"
-                    android:textColor="@color/white"
                     android:textSize="15sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
+                    />
+
+                <TextView
+                    android:id="@+id/author"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:paddingHorizontal="10dp"
+                    android:scrollbars="none"
+                    android:shadowDx="4"
+                    android:shadowDy="4"
+                    android:shadowRadius="2"
+                    android:textSize="13sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/title"
                     />
 
             </androidx.constraintlayout.widget.ConstraintLayout>

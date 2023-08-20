@@ -28,10 +28,13 @@ class ResultViewModel(application: Application) : AndroidViewModel(application) 
     val items : LiveData<List<ResultItem>>
     val loadingItems = MutableLiveData<Boolean>()
     private val sharedPreferences: SharedPreferences
+     var state: ResultsState = ResultsState.IDLE
+    enum class ResultsState {
+        PROCESSING, IDLE
+    }
 
     init {
         val dao = DBManager.getInstance(application).resultDao
-        val commandDao = DBManager.getInstance(application).commandTemplateDao
         repository = ResultRepository(dao, getApplication<Application>().applicationContext)
         searchHistoryRepository = SearchHistoryRepository(DBManager.getInstance(application).searchHistoryDao)
         items = repository.allResults.asLiveData()
@@ -61,6 +64,7 @@ class ResultViewModel(application: Application) : AndroidViewModel(application) 
         }
     }
     suspend fun parseQueries(inputQueries: List<String>){
+        state = ResultsState.PROCESSING
         if (inputQueries.size == 1){
             parseQuery(inputQueries[0], true)
         }else {
@@ -69,6 +73,7 @@ class ResultViewModel(application: Application) : AndroidViewModel(application) 
             inputQueries.forEach {
                 parseQuery(it, false)
             }
+            state = ResultsState.IDLE
             loadingItems.postValue(false)
         }
     }
@@ -97,7 +102,10 @@ class ResultViewModel(application: Application) : AndroidViewModel(application) 
             } catch (e: Exception) {
                 Log.e(tag, e.toString())
             }
-            if (resetResults) loadingItems.postValue(false)
+            if (resetResults) {
+                state = ResultsState.IDLE
+                loadingItems.postValue(false)
+            }
             res
         }
     }
@@ -107,7 +115,7 @@ class ResultViewModel(application: Application) : AndroidViewModel(application) 
         val m = p.matcher(inputQuery)
         if (m.find()) {
             type = "YT_Video"
-            if (inputQuery.contains("playlist?list=")) {
+            if (inputQuery.contains("playlist?list=") && !inputQuery.contains("music.youtu")) {
                 type = "YT_Playlist"
             }
         } else if (inputQuery.contains("http")) {

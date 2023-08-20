@@ -212,143 +212,34 @@ class DownloadAudioFragment(private var resultItem: ResultItem, private var curr
                         if (containers[index] == getString(R.string.defaultValue)) downloadItem.container = ""
                     }
 
-                val embedThumb = view.findViewById<Chip>(R.id.embed_thumb)
-                embedThumb!!.isChecked = downloadItem.audioPreferences.embedThumb
-                embedThumb.setOnClickListener {
-                    downloadItem.audioPreferences.embedThumb = embedThumb.isChecked
-                }
-
-                val splitByChapters = view.findViewById<Chip>(R.id.split_by_chapters)
-                if (downloadItem.downloadSections.isNotBlank()){
-                    splitByChapters.isEnabled = false
-                    splitByChapters.isChecked = false
-                }else{
-                    splitByChapters!!.isChecked = downloadItem.audioPreferences.splitByChapters
-                }
-
-                splitByChapters.setOnClickListener {
-                    downloadItem.audioPreferences.splitByChapters = splitByChapters.isChecked
-                }
-
-                val filenameTemplate = view.findViewById<Chip>(R.id.filename_template)
-                filenameTemplate.setOnClickListener {
-                    val builder = MaterialAlertDialogBuilder(requireContext())
-                    builder.setTitle(getString(R.string.file_name_template))
-                    val inputLayout = layoutInflater.inflate(R.layout.textinput, null)
-                    val editText = inputLayout.findViewById<EditText>(R.id.url_edittext)
-                    inputLayout.findViewById<TextInputLayout>(R.id.url_textinput).hint = getString(R.string.file_name_template)
-                    editText.setText(downloadItem.customFileNameTemplate)
-                    editText.setSelection(editText.text.length)
-                    builder.setView(inputLayout)
-                    builder.setPositiveButton(
-                        getString(R.string.ok)
-                    ) { dialog: DialogInterface?, which: Int ->
-                        downloadItem.customFileNameTemplate = editText.text.toString()
-                    }
-
-                    // handle the negative button of the alert dialog
-                    builder.setNegativeButton(
-                        getString(R.string.cancel)
-                    ) { dialog: DialogInterface?, which: Int -> }
-
-                    val dialog = builder.create()
-                    editText.doOnTextChanged { text, start, before, count ->
-                        dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = editText.text.isNotEmpty()
-                    }
-                    dialog.show()
-                    val imm = context?.getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager
-                    editText!!.postDelayed({
-                        editText.requestFocus()
-                        imm.showSoftInput(editText, 0)
-                    }, 300)
-                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = editText.text.isNotEmpty()
-                    dialog.getButton(AlertDialog.BUTTON_NEUTRAL).gravity = Gravity.START
-                }
-
-                val sponsorblock = view.findViewById<Chip>(R.id.sponsorblock_filters)
-                sponsorblock!!.setOnClickListener {
-                    val builder = MaterialAlertDialogBuilder(requireContext())
-                    builder.setTitle(getString(R.string.select_sponsorblock_filtering))
-                    val values = resources.getStringArray(R.array.sponsorblock_settings_values)
-                    val entries = resources.getStringArray(R.array.sponsorblock_settings_entries)
-                    val checkedItems : ArrayList<Boolean> = arrayListOf()
-                    values.forEach {
-                        if (downloadItem.audioPreferences.sponsorBlockFilters.contains(it)) {
-                            checkedItems.add(true)
-                        }else{
-                            checkedItems.add(false)
-                        }
-                    }
-
-                    builder.setMultiChoiceItems(
-                        entries,
-                        checkedItems.toBooleanArray()
-                    ) { _, which, isChecked ->
-                        checkedItems[which] = isChecked
-                    }
-
-                    builder.setPositiveButton(
-                        getString(R.string.ok)
-                    ) { _: DialogInterface?, _: Int ->
+                UiUtil.configureAudio(
+                    view,
+                    requireActivity(),
+                    listOf(downloadItem),
+                    embedThumbClicked = {
+                        downloadItem.audioPreferences.embedThumb = it
+                    },
+                    splitByChaptersClicked = {
+                        downloadItem.audioPreferences.splitByChapters = it
+                    },
+                    filenameTemplateSet = {
+                        downloadItem.customFileNameTemplate = it
+                    },
+                    sponsorBlockItemsSet = { values, checkedItems ->
                         downloadItem.audioPreferences.sponsorBlockFilters.clear()
                         for (i in 0 until checkedItems.size) {
                             if (checkedItems[i]) {
                                 downloadItem.audioPreferences.sponsorBlockFilters.add(values[i])
                             }
                         }
-                    }
-
-                    // handle the negative button of the alert dialog
-                    builder.setNegativeButton(
-                        getString(R.string.cancel)
-                    ) { _: DialogInterface?, _: Int -> }
-
-
-                    val dialog = builder.create()
-                    dialog.show()
-                }
-
-                val cut = view.findViewById<Chip>(R.id.cut)
-                if (downloadItem.duration.isNotEmpty()){
-                    cut.isEnabled = true
-                    if (downloadItem.downloadSections.isNotBlank()) cut.text = downloadItem.downloadSections
-                    val cutVideoListener = object : VideoCutListener {
-                        override fun onChangeCut(list: List<String>) {
-                            if (list.isEmpty()){
-                                downloadItem.downloadSections = ""
-                                cut.text = getString(R.string.cut)
-
-                                splitByChapters.isEnabled = true
-                                splitByChapters.isChecked = downloadItem.audioPreferences.splitByChapters
-                            }else{
-                                var value = ""
-                                list.forEach {
-                                    value += "$it;"
-                                }
-                                downloadItem.downloadSections = value
-                                cut.text = value.dropLast(1)
-
-                                splitByChapters.isEnabled = false
-                                splitByChapters.isChecked = false
-                            }
-                        }
-                    }
-                    cut.setOnClickListener {
+                    },
+                    cutClicked = {cutVideoListener ->
                         if (parentFragmentManager.findFragmentByTag("cutVideoSheet") == null){
                             val bottomSheet = CutVideoBottomSheetDialog(downloadItem, resultItem.urls, resultItem.chapters, cutVideoListener)
                             bottomSheet.show(parentFragmentManager, "cutVideoSheet")
                         }
-                    }
-
-                }else{
-                    cut.isEnabled = false
-                }
-
-
-                val extraCommands = view.findViewById<Chip>(R.id.extra_commands)
-                if (sharedPreferences.getBoolean("use_extra_commands", false)){
-                    extraCommands.visibility = View.VISIBLE
-                    extraCommands.setOnClickListener {
+                    },
+                    extraCommandsClicked = {
                         val callback = object : ExtraCommandsListener {
                             override fun onChangeExtraCommand(c: String) {
                                 downloadItem.extraCommands = c
@@ -358,9 +249,7 @@ class DownloadAudioFragment(private var resultItem: ResultItem, private var curr
                         val bottomSheetDialog = AddExtraCommandsDialog(downloadItem, callback)
                         bottomSheetDialog.show(parentFragmentManager, "extraCommands")
                     }
-                }else{
-                    extraCommands.visibility = View.GONE
-                }
+                )
             }catch (e : Exception){
                 e.printStackTrace()
             }

@@ -201,7 +201,7 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
         version = findPreference("version")
         val nativeLibraryDir = context?.applicationInfo?.nativeLibraryDir
 
-        version!!.summary = "${BuildConfig.VERSION_NAME} [${nativeLibraryDir?.split("/lib/")?.get(1)}] ${BuildConfig.BUILD_TYPE}"
+        version!!.summary = "${BuildConfig.VERSION_NAME} [${nativeLibraryDir?.split("/lib/")?.get(1)}]"
 
         version!!.onPreferenceClickListener =
             Preference.OnPreferenceClickListener {
@@ -314,6 +314,7 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
             }
             val arr = JsonArray()
             items.forEach {
+                it.useAsExtraCommand = false
                 arr.add(JsonParser().parse(Gson().toJson(it)).asJsonObject)
             }
             return arr

@@ -15,14 +15,16 @@ buildscript {
         // supports java 1.6
         commonsCompressVer = '1.12'
         youtubedlAndroidVer = "23b26d55f8"
-        workVer = "2.7.0"
+        workVer = "2.8.1"
         composeVer = '1.4.2'
         kotlinVer = "1.7.21"
-        coroutineVer = "1.6.4"
+        coroutineVer = '1.7.3'
         retrofitVer = "2.9.0"
         kodeinVer = "7.16.0"
         navVer = "2.6.0"
-        media3_version = "1.1.0"
+        media3_version = "1.1.1"
+        agp_version = '8.1.0'
+        agp_version1 = '7.4.2'
     }
     repositories {
         mavenCentral()
@@ -37,6 +39,7 @@ plugins {
     id 'org.jetbrains.kotlin.android' version '1.8.10' apply false
     id "org.jetbrains.kotlin.plugin.serialization" version "1.8.10" apply false
     id 'com.android.test' version '7.4.2' apply false
+    id 'com.google.devtools.ksp' version '1.8.10-1.0.9' apply false
 }
 
 

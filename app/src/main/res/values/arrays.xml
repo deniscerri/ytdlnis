@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string-array name="audio_containers">
         <item>@string/defaultValue</item>
         <item>mp3</item>
@@ -65,12 +65,14 @@
     <string-array name="format_ordering">
         <item>@string/file_size</item>
         <item>@string/container</item>
+        <item>@string/codec</item>
         <item>ID</item>
     </string-array>
 
     <string-array name="format_ordering_values">
         <item>filesize</item>
         <item>container</item>
+        <item>codec</item>
         <item>id</item>
     </string-array>
 
@@ -768,6 +770,24 @@
         <item>home</item>
         <item>downloads</item>
         <item>queue</item>
+    </string-array>
+
+    <string-array name="video_codec">
+        <item>@string/defaultValue</item>
+        <item tools:ignore="Typos">AV1</item>
+        <item>VP9</item>
+        <item tools:ignore="Typos">AVC</item>
+        <item>H265</item>
+        <item>H264</item>
+    </string-array>
+
+    <string-array name="video_codec_values">
+        <item></item>
+        <item>av0</item>
+        <item>vp</item>
+        <item>avc</item>
+        <item>hev</item>
+        <item>h264</item>
     </string-array>
 
 </resources>

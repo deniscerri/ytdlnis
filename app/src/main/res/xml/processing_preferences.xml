@@ -1,16 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <SwitchPreferenceCompat
+        android:widgetLayout="@layout/preferece_material_switch"
+        app:defaultValue="true"
+        app:icon="@drawable/ic_money"
+        app:key="use_sponsorblock"
+        app:title="@string/use_sponsorblock" />
+
     <MultiSelectListPreference
         app:defaultValue="@array/sponsorblock_settings_default"
         app:icon="@drawable/ic_money"
+        android:dependency="use_sponsorblock"
         app:dialogTitle="@string/select_sponsorblock_filtering"
         app:entries="@array/sponsorblock_settings_entries"
         app:entryValues="@array/sponsorblock_settings_values"
         app:key="sponsorblock_filters"
         app:summary="@string/select_sponsorblock_filtering"
         app:title="SponsorBlock" />
-
 
     <SwitchPreferenceCompat
         android:widgetLayout="@layout/preferece_material_switch"
@@ -131,6 +139,14 @@
         app:useSimpleSummaryProvider="true"
         app:title="@string/video_format" />
 
+    <ListPreference
+        android:defaultValue=""
+        android:entries="@array/video_codec"
+        android:entryValues="@array/video_codec_values"
+        android:icon="@drawable/ic_code"
+        app:key="video_codec"
+        app:title="@string/codec" />
+
     <SwitchPreferenceCompat
         android:widgetLayout="@layout/preferece_material_switch"
         app:defaultValue="false"
@@ -172,7 +188,7 @@
 
     <SwitchPreferenceCompat
         android:widgetLayout="@layout/preferece_material_switch"
-        app:defaultValue="false"
+        app:defaultValue="true"
         app:icon="@drawable/ic_terminal"
         app:key="use_extra_commands"
         android:summary="@string/use_extra_commands_summary"

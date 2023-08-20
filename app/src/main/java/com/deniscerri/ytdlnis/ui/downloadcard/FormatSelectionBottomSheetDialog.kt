@@ -51,7 +51,7 @@ class FormatSelectionBottomSheetDialog(private val items: List<DownloadItem?>, p
     private lateinit var view: View
 
     enum class FormatSorting {
-        filesize, container, id
+        filesize, container, codec, id
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -127,7 +127,7 @@ class FormatSelectionBottomSheetDialog(private val items: List<DownloadItem?>, p
         refreshBtn.setOnClickListener {
            lifecycleScope.launch {
                if (items.size > 10){
-                   continueInBackgroundSnackBar = Snackbar.make(view, R.string.update_formats_background, Snackbar.LENGTH_INDEFINITE)
+                   continueInBackgroundSnackBar = Snackbar.make(view, R.string.update_formats_background, Snackbar.LENGTH_LONG)
                    continueInBackgroundSnackBar.setAction(R.string.ok) {
                        listener.onContinueOnBackground(items)
                        this@FormatSelectionBottomSheetDialog.dismiss()
@@ -158,7 +158,7 @@ class FormatSelectionBottomSheetDialog(private val items: List<DownloadItem?>, p
 
                        formats = listOf(res)
 
-                   //playlist format filtering
+                   //list format filtering
                    }else{
                        var progress = "0/${items.size}"
                        formatCollection.clear()
@@ -168,8 +168,8 @@ class FormatSelectionBottomSheetDialog(private val items: List<DownloadItem?>, p
                                lifecycleScope.launch(Dispatchers.Main){
                                    progress = "${formatCollection.size}/${items.size}"
                                    refreshBtn.text = progress
+                                   formatCollection.add(it)
                                }
-                               formatCollection.add(it)
                            }
                        }
                        formats = formatCollection
@@ -242,6 +242,14 @@ class FormatSelectionBottomSheetDialog(private val items: List<DownloadItem?>, p
         val finalFormats: List<Format> = when(sortBy){
             FormatSorting.container -> chosenFormats.groupBy { it.container }.flatMap { it.value }
             FormatSorting.id -> chosenFormats.sortedBy { it.format_id }
+            FormatSorting.codec -> {
+                val codecOrder = resources.getStringArray(R.array.video_codec_values).toMutableList()
+                codecOrder.removeFirst()
+                chosenFormats.groupBy { format -> codecOrder.indexOfFirst { format.vcodec.startsWith(it) } }
+                    .flatMap {
+                        it.value.sortedBy { l -> l.filesize }
+                    }
+            }
             FormatSorting.filesize -> chosenFormats
         }
 

@@ -319,6 +319,16 @@
 
         </com.google.android.material.chip.ChipGroup>
 
+        <com.google.android.material.materialswitch.MaterialSwitch
+            android:id="@+id/force_keyframes"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:checked="true"
+            android:textStyle="bold"
+            android:textSize="15sp"
+            android:text="@string/force_keyframes"/>
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

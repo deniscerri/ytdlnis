@@ -37,7 +37,7 @@ import java.util.*
 import java.util.regex.Pattern
 
 
-class AddExtraCommandsDialog(private val item: DownloadItem, private val callback: ExtraCommandsListener) : BottomSheetDialogFragment() {
+class AddExtraCommandsDialog(private val item: DownloadItem?, private val callback: ExtraCommandsListener) : BottomSheetDialogFragment() {
     private lateinit var infoUtil: InfoUtil
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var commandTemplateViewModel: CommandTemplateViewModel
@@ -86,9 +86,14 @@ class AddExtraCommandsDialog(private val item: DownloadItem, private val callbac
         val text = view.findViewById<EditText>(R.id.command)
         val templates = view.findViewById<Button>(R.id.commands)
         val shortcuts = view.findViewById<Button>(R.id.shortcuts)
-        val currentCommand = infoUtil.parseYTDLRequestString(infoUtil.buildYoutubeDLRequest(item))
         val currentText =  view.findViewById<TextView>(R.id.currentText)
-        currentText?.text = currentCommand
+
+        if (item != null){
+            val currentCommand = infoUtil.parseYTDLRequestString(infoUtil.buildYoutubeDLRequest(item))
+            currentText?.text = currentCommand
+        }else{
+            view.findViewById<View>(R.id.current).visibility = View.GONE
+        }
 
 
         //init syntax highlighter
@@ -111,7 +116,10 @@ class AddExtraCommandsDialog(private val item: DownloadItem, private val callbac
         highlight.setSpan(currentText)
         currentText.addTextChangedListener(highlightWatcher)
 
-        text?.setText(item.extraCommands)
+        highlight.setSpan(text)
+        text.addTextChangedListener(highlightWatcher)
+
+        text?.setText(item?.extraCommands)
         val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         text!!.postDelayed({
             text.setSelection(text.length())

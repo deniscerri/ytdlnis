@@ -1,9 +1,14 @@
 package com.deniscerri.ytdlnis.database
 
 import android.content.Context
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.PagingSource
 import androidx.room.*
 import com.deniscerri.ytdlnis.database.dao.*
 import com.deniscerri.ytdlnis.database.models.*
+import kotlinx.coroutines.flow.Flow
 
 @TypeConverters(Converters::class)
 @Database(
