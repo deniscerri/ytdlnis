@@ -292,6 +292,6 @@
     <string name="write_description_summary">Запись файла описания</string>
     <string name="extra_command">Дополнительная команда</string>
     <string name="use_cookies">Использование файлов Cookie</string>
-    <string name="embed_metadata_summary">Встроить метаданные в видеофайл. Также встраивает главы/infojson, если они есть</string>
+    <string name="embed_metadata_summary">Вставьте метаданные в видеофайл. Также встраивает главы/infojson, если они есть</string>
     <string name="embed_metadata">Встроить метаданные</string>
 </resources>

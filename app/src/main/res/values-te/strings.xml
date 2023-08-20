@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="worst_quality">చెత్త క్వాలిటీ</string>
+    <string name="home">హోమ్</string>
+    <string name="update_ytdl">yt-dlp కొత్త వెర్షన్ install చేయండి</string>
+    <string name="about">సమాచారం</string>
+    <string name="Remove">తొలగించు</string>
+    <string name="confirm_delete_history">ధ్రువీకరించండి</string>
+    <string name="remove_all">అన్నిటినీ తొలగించండి</string>
+    <string name="best_quality">బెస్ట్ క్వాలిటీ</string>
+    <string name="search">వెతకండి</string>
+    <string name="remove_results">ఫలితాలను క్లియర్ చేయండి</string>
+    <string name="download_all">అన్నీ డౌన్లోడ్ చెయ్యండి</string>
+    <string name="settings">సెట్టింగ్స్</string>
+    <string name="directories">ఫోల్డర్స్</string>
+    <string name="music_directory">మ్యూజిక్ ఫోల్డర్</string>
+    <string name="updating">అప్డేట్ అవుతోంది</string>
+    <string name="video_directory">వీడియో ఫోల్డర్</string>
+    <string name="ytdl_update_hint">మీకు డౌన్లోడ్ లో ఇబ్బంది ఉంటే ఉపయోగకరం</string>
+    <string name="source_code">సోర్స్ కోడ్</string>
+    <string name="search_hint">వెతకండి లేదా URL ఇవ్వండి</string>
+    <string name="failed_download">ఫైల్ డౌన్లోడ్ చేయటంలో సమస్య.</string>
+    <string name="download_notification_channel_name">ఫైల్ డౌన్లోడ్స్</string>
+    <string name="no_results">ఫలితాలు లేవు</string>
+    <string name="more">మరిన్ని</string>
+    <string name="download_notification_channel_description">ఆడియో మరియు వీడియో ఫైల్స్ డౌన్లోడ్ యొక్క పురోగతి చూపే నోటిఫికేషన్</string>
+    <string name="update_app">Updates కొరకు చూడండి</string>
+    <string name="version">వెర్షన్</string>
+    <string name="you_are_in_latest_version">లేటెస్ట్ వెర్షన్ వాడుతున్నారు</string>
+    <string name="ytld_update_success">కొత్త వెర్షన్ install అయింది</string>
+    <string name="ytdl_already_updating">కొత్త వెర్షన్ install అవుతోంది</string>
+    <string name="ytdl_updating_started">కొత్త వెర్షన్ డౌన్లోడ్ అవుతోంది</string>
+    <string name="ok">సరే</string>
+    <string name="cancel">కాన్సిల్</string>
+    <string name="confirm_delete_history_desc">పూర్తి హిస్టరీని శాశ్వతంగా తొలగించు</string>
+    <string name="search_history_hint">హిస్టరీలో వెతకండి</string>
+</resources>

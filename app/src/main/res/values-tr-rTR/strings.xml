@@ -167,7 +167,7 @@
     <string name="selected">Seçildi</string>
     <string name="items_imported">İçe aktarılan Öğeler</string>
     <string name="help_translate_summary">Weblate ile bu uygulamayı kendi dilinize çevirin</string>
-    <string name="download_rescheduled_to">Tekrar planlananları şuraya indir:</string>
+    <string name="download_rescheduled_to">İndirme bu zamana planlandı:</string>
     <string name="clear_temporary_files">Geçici dosyaları temizle</string>
     <string name="file_size">Dosya boyutu</string>
     <string name="ytdl_version">yt-dlp Sürümü</string>
@@ -295,4 +295,6 @@
     <string name="write_description_summary">Açıklama dosyası yaz</string>
     <string name="extra_command">Ekstra Komut</string>
     <string name="use_cookies">Çerezleri Kullan</string>
+    <string name="embed_metadata">Meta Verileri Göm</string>
+    <string name="embed_metadata_summary">Meta verileri video dosyasına gömün. Varsa bölümleri/infojson\'u da yerleştirir</string>
 </resources>

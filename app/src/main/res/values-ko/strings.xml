@@ -61,7 +61,7 @@
     <string name="items_left">항목 남음</string>
     <string name="history_is_empty">기록이 비어 있습니다</string>
     <string name="api_key">API 키 사용</string>
-    <string name="api_key_summary">유튜브에서 더 빠른 결과</string>
+    <string name="api_key_summary">유튜브 API로 더 빠른 결과 동영상 추천</string>
     <string name="downloads">다운로드</string>
     <string name="remove_deleted">삭제된 항목 제거</string>
     <string name="remove_duplicates">중복 제거</string>
@@ -272,4 +272,26 @@
     <string name="custom_audio_quality">사용자 지정 오디오 품질 사용</string>
     <string name="piped_instance">파이프 인스턴스</string>
     <string name="piped_instance_summary">앱이 유튜브 쿼리 및 형식에 사용할 수 있는 PIPED API 서버 설정</string>
+    <string name="orange">오렌지색</string>
+    <string name="save_for_later">나중에 다운로드를 저장하시겠습니까\?</string>
+    <string name="retries">재시도</string>
+    <string name="use_extra_commands_summary">오디오 / 비디오 다운로드의 경우 GUI 구성과 함께 추가 명령을 추가</string>
+    <string name="subtitle_format">자막 형식
+\n</string>
+    <string name="hide_thumbnails">썸네일 숨기기</string>
+    <string name="saved">저장됨</string>
+    <string name="clear_saved">저장된 내역 지우기</string>
+    <string name="show_terminal">공유 메뉴에 터미널 표시</string>
+    <string name="write_description">설명 저장</string>
+    <string name="write_description_summary">설명 파일 쓰기</string>
+    <string name="extra_command">추가 명령</string>
+    <string name="use_cookies">쿠키 사용</string>
+    <string name="fragment_retries">조각 재시도</string>
+    <string name="format_order">형식 순서</string>
+    <string name="embed_metadata">메타데이터 포함</string>
+    <string name="embed_metadata_summary">비디오 파일에 메타데이터를 포함합니다. 또한 챕터/infojson이 있는 경우 포함합니다.</string>
+    <string name="force_keyframes">자를때 키프레임 강제 적용</string>
+    <string name="force_keyframes_summary">처리속도는 느리지만 더 정확하게 자름</string>
+    <string name="current">현재 명령</string>
+    <string name="use_extra_commands">추가 명령 추가</string>
 </resources>
