@@ -26,7 +26,7 @@
     <string name="ytdl_already_updating">Memasang versi yang baru</string>
     <string name="ytdl_updating_started">Mengunduh versi yang baru</string>
     <string name="Remove">Bersihkan</string>
-    <string name="ok">OK</string>
+    <string name="ok">Oke</string>
     <string name="cancel">Batalkan</string>
     <string name="more">Selengkapnya</string>
     <string name="update_app">Periksa pemutakhiran</string>
@@ -278,7 +278,7 @@
     <string name="force_keyframes">Paksakan Keyframe saat Pemotongan</string>
     <string name="force_keyframes_summary">Proses yang lebih lambat, tetapi pemotongannya lebih akurat</string>
     <string name="show_terminal">Perlihatkan Terminal di Menu Berbagi</string>
-    <string name="subtitle_format">Subtitel Format
+    <string name="subtitle_format">Format Takarir (Subtitle)
 \n</string>
     <string name="hide_thumbnails">Sembunyikan Keluku (Thumbnail)</string>
     <string name="clear_saved">Kosongkan yang Disimpan</string>
@@ -287,11 +287,11 @@
     <string name="use_extra_commands">Tambahkan Perintah Ekstra</string>
     <string name="use_extra_commands_summary">Bagi pengunduhan Audio / Video. Menambahkan perintah ekstra beserta konfigurasi GUI</string>
     <string name="current">Perintah Saat Ini</string>
-    <string name="orange">Jingga</string>
+    <string name="orange">Oranye</string>
     <string name="write_description">Simpan Deskripsi</string>
     <string name="write_description_summary">Menulis berkas deskripsi</string>
     <string name="extra_command">Perintah Ekstra</string>
     <string name="use_cookies">Gunakan Kuki</string>
-    <string name="embed_metadata_summary">Sematkan metadata ke file video. Juga sematkan bab/infojson jika ada</string>
-    <string name="embed_metadata">Sematkan Metadata</string>
+    <string name="embed_metadata_summary">Menanamkan metadata ke berkas video. Juga menanamkan babak-babak/infojson jika ada</string>
+    <string name="embed_metadata">Tanamkan Metadata</string>
 </resources>
