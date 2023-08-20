@@ -110,7 +110,7 @@
     <string name="command_templates">Modelos de Comando</string>
     <string name="format">Formato</string>
     <string name="select_format">Selecionar Formato</string>
-    <string name="please_wait">Por favor, aguarde</string>
+    <string name="please_wait">Por favor, aguarde…</string>
     <string name="remove_search_history">Remover histórico de buscas</string>
     <string name="enable_mtime">Habilitar mtime</string>
     <string name="update_formats">Atualizar Formatos</string>
