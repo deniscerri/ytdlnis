@@ -294,4 +294,8 @@
     <string name="use_cookies">Gunakan Kuki</string>
     <string name="embed_metadata_summary">Menanamkan metadata ke berkas video. Juga menanamkan babak-babak/infojson jika ada</string>
     <string name="embed_metadata">Tanamkan Metadata</string>
+    <string name="update_formats_background">Mutakhirkan Format di Latar Belakang</string>
+    <string name="formats_updated">Format telah dimutakhirkan</string>
+    <string name="use_sponsorblock">Gunakan SponsorBlock</string>
+    <string name="auto_update_ytdlp">Mutakhirkan yt-dlp Secara Otomatis</string>
 </resources>
