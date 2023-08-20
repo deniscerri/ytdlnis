@@ -294,4 +294,8 @@
     <string name="use_cookies">Məlumat Bazası İstifadə Et</string>
     <string name="embed_metadata">Üst məlumat yerləşdir</string>
     <string name="embed_metadata_summary">Video fayla üst məlumat yerləşdir. Həmçinin, əgər varsa, bölmələr/infojsonlar yerləşdirir</string>
+    <string name="formats_updated">Formatlar yeniləndi</string>
+    <string name="update_formats_background">Arxa Planda Formatları Yenilə</string>
+    <string name="auto_update_ytdlp">Yt-dlp-ni Avtomatik Yenilə</string>
+    <string name="use_sponsorblock">SponsorBlock istifadə et</string>
 </resources>
