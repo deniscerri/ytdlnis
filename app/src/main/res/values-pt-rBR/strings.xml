@@ -6,7 +6,7 @@
     <string name="settings">Configurações</string>
     <string name="home">Início</string>
     <string name="directories">Pastas</string>
-    <string name="updating">Atualização</string>
+    <string name="updating">Atualizações</string>
     <string name="ytdl_update_hint">Útil se você tiver problemas ao baixar</string>
     <string name="remove_results">Remover resultados</string>
     <string name="download_all">Baixar todos</string>
@@ -75,7 +75,7 @@
     <string name="more">Mais</string>
     <string name="processing">Processamento</string>
     <string name="embed_thumb">Adicionar miniatura</string>
-    <string name="you_are_going_to_delete">Excluindo</string>
+    <string name="you_are_going_to_delete">Excluir</string>
     <string name="link_copied_to_clipboard">Link copiado para a área de transferência</string>
     <string name="delete_files_too">Excluir arquivos do dispositivo</string>
     <string name="embed_thumb_summary">Usar miniatura como capa de áudio</string>
@@ -107,7 +107,7 @@
     <string name="update_ytdl_nightly">Versão beta do yt-dlp</string>
     <string name="file_name_template">Modelo de nome do arquivo</string>
     <string name="language">Idioma</string>
-    <string name="command_templates">Modelos de Comando</string>
+    <string name="command_templates">Modelos de comando</string>
     <string name="format">Formato</string>
     <string name="select_format">Selecionar formato</string>
     <string name="please_wait">Por favor, aguarde…</string>
@@ -140,7 +140,7 @@
     <string name="preferred_download_type">Tipo de download preferido</string>
     <string name="confirm_delete_logs_desc">Excluir toda a lista de registros permanentemente.</string>
     <string name="select">Selecionar</string>
-    <string name="selected">Selecionado</string>
+    <string name="selected">selecionado(s)</string>
     <string name="all_items_selected">Todos os itens selecionados</string>
     <string name="access_all_directories">Permitir acesso a todos os diretórios</string>
     <string name="access_all_directories_summary">Permitir que o aplicativo faça downloads em diretórios restritos por padrão</string>
@@ -201,7 +201,7 @@
     <string name="select_all">Selecionar todos</string>
     <string name="red">Vermelho</string>
     <string name="material_you">Material You</string>
-    <string name="pure_theme_summary">Tema Preto/Branco Puro</string>
+    <string name="pure_theme_summary">Tema preto/branco puro</string>
     <string name="downloaded">"Baixado: "</string>
     <string name="monochrome">Monocromático</string>
     <string name="yellow">Amarelo</string>
@@ -224,7 +224,7 @@
     <string name="appearance">Aparência</string>
     <string name="backup_created_successfully">Backup salvo na pasta de downloads</string>
     <string name="search_history">Histórico de busca</string>
-    <string name="select_backup_categories">Selecione as categorias de backup</string>
+    <string name="select_backup_categories">Selecionar categorias de backup</string>
     <string name="restore_complete">Restauração do aplicativo concluída. Os seguintes itens foram restaurados:</string>
     <string name="couldnt_parse_file">Não foi possível analisar o arquivo</string>
     <string name="backup_restore">Backup e Restauração</string>
