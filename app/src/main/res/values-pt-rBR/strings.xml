@@ -193,8 +193,8 @@
     <string name="invert_selected">Inverter seleção</string>
     <string name="download_over_metered_networks_summary">Downloads usando qualquer tipo de rede. Caso contrário, espera por uma rede ilimitada</string>
     <string name="download_over_metered_networks">Download através de redes limitadas</string>
-    <string name="confirm_delete_cookies_desc">Excluir todos os Cookies permanentemente</string>
-    <string name="delete_all_cookies">Excluir todos os Cookies</string>
+    <string name="confirm_delete_cookies_desc">Excluir todos os cookies permanentemente</string>
+    <string name="delete_all_cookies">Excluir todos os cookies</string>
     <string name="get_cookies">Obter Cookies</string>
     <string name="new_cookie">Novo Cookie</string>
     <string name="share">Compartilhar</string>
