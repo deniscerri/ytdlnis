@@ -234,8 +234,8 @@
     <string name="share">Partilhar</string>
     <string name="new_cookie">Novo Cookie</string>
     <string name="get_cookies">Obter Cookies</string>
-    <string name="delete_all_cookies">Eliminar todos os Cookies</string>
-    <string name="confirm_delete_cookies_desc">Eliminar todos os Cookies, de forma permanente</string>
+    <string name="delete_all_cookies">Eliminar todos os cookies</string>
+    <string name="confirm_delete_cookies_desc">Eliminar todos os cookies, de forma permanente</string>
     <string name="download_over_metered_networks">Descarregar em redes com contador</string>
     <string name="download_over_metered_networks_summary">Descarrega utilizando qualquer tipo de rede. Caso contrário, espera por uma rede não medida</string>
     <string name="metered_network_download_start_info">A transferência será iniciada assim que estiver ligado a uma rede sem contador</string>
