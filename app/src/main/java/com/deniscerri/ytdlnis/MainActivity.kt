@@ -120,14 +120,14 @@ class MainActivity : BaseActivity() {
 
         sharedPreferences =  PreferenceManager.getDefaultSharedPreferences(this)
 
-//        val graph = navController.navInflater.inflate(R.navigation.nav_graph)
-//        graph.setStartDestination(R.id.homeFragment)
-//        when(sharedPreferences.getString("start_destination", "")) {
-//            "History" -> graph.setStartDestination(R.id.historyFragment)
-//            "More" -> if (navigationView is NavigationBarView) graph.setStartDestination(R.id.moreFragment)
-//        }
-//
-//        navController.graph = graph
+        val graph = navController.navInflater.inflate(R.navigation.nav_graph)
+        graph.setStartDestination(R.id.homeFragment)
+        when(sharedPreferences.getString("start_destination", "")) {
+            "History" -> graph.setStartDestination(R.id.historyFragment)
+            "More" -> if (navigationView is NavigationBarView) graph.setStartDestination(R.id.moreFragment)
+        }
+
+        navController.graph = graph
 
         if (navigationView is NavigationBarView){
             (navigationView as NavigationBarView).setupWithNavController(navController)

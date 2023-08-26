@@ -77,6 +77,7 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
     private var audioContainer: String?
     private var videoContainer: String?
     private var videoCodec: String?
+    private val dao: DownloadDao
 
     enum class Type {
         audio, video, command
@@ -84,7 +85,7 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
 
     init {
         dbManager =  DBManager.getInstance(application)
-        val dao = dbManager.downloadDao
+        dao = dbManager.downloadDao
         repository = DownloadRepository(dao)
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(application)
         commandTemplateDao = DBManager.getInstance(application).commandTemplateDao
@@ -157,13 +158,13 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
             )
         }else{
             Format(
-                audioFormatIDPreference.first(),
+                audioFormatIDPreference.first().split("+").first(),
                 audioContainer!!,
                 "",
                 "",
                 "",
                 0,
-                audioFormatIDPreference.first()
+                audioFormatIDPreference.first().split("+").first()
             )
         }
 
@@ -220,8 +221,24 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
 
         val audioPreferences = AudioPreferences(embedThumb, false, ArrayList(sponsorblock!!))
 
-        val hasPreferredAudioFormats = resultItem.formats.filter { audioFormatIDPreference.contains(it.format_id) }
-        val videoPreferences = VideoPreferences(embedSubs, addChapters, false, ArrayList(sponsorblock), saveSubs, audioFormatIDs = if (hasPreferredAudioFormats.isEmpty()) arrayListOf() else arrayListOf(hasPreferredAudioFormats.map { it.format_id }.first()))
+        val preferredAudioFormats = arrayListOf<String>()
+        for (f in resultItem.formats.sortedBy { it.format_id }){
+            val fId = audioFormatIDPreference.sorted().find { it.contains(f.format_id) }
+            if (fId != null) {
+                if (fId.split("+").all { resultItem.formats.map { f-> f.format_id }.contains(it) }){
+                    preferredAudioFormats.addAll(fId.split("+"))
+                    break
+                }
+            }
+        }
+
+        val videoPreferences = VideoPreferences(
+            embedSubs,
+            addChapters, false,
+            ArrayList(sponsorblock),
+            saveSubs,
+            audioFormatIDs = preferredAudioFormats
+        )
 
         return DownloadItem(0,
             resultItem.url,
@@ -368,10 +385,8 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
                 return cloneFormat (
                     try {
                         try{
-                            formats.filter { it.format_note.contains("audio", ignoreCase = true)}.first {
-                                audioFormatIDPreference.contains(it.format_id) ||
-                                it.container == audioContainer
-                            }
+                            formats.filter { it.format_note.contains("audio", ignoreCase = true)}.sortedBy { it.format_id }
+                                .firstOrNull { audioFormatIDPreference.indexOfFirst { a -> a.contains(it.format_id) } >= 0 || it.container == audioContainer} ?: throw Exception()
                         }catch (e: Exception){
                             formats.last { it.format_note.contains("audio", ignoreCase = true) }
                         }
@@ -384,14 +399,14 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
             Type.video -> {
                 return cloneFormat(
                     try {
-                        val theFormats = formats.filter { !it.format_note.contains("audio", true) }.ifEmpty { defaultVideoFormats }
+                        val theFormats = formats.filter { !it.format_note.contains("audio", true) }.sortedBy { it.format_id }.ifEmpty { defaultVideoFormats }
                         when (videoQualityPreference) {
                             "worst" -> {
                                 theFormats.first()
                             }
                             else /*best*/ -> {
                                 val requirements: MutableList<(Format) -> Boolean> = mutableListOf()
-                                requirements.add { it: Format -> formatIDPreference.contains(it.format_id) }
+                                requirements.add { it: Format -> formatIDPreference.sorted().contains(it.format_id) }
                                 requirements.add { it: Format -> if (videoContainer == "mp4") it.container.equals("mpeg_4", true) else it.container.equals(videoContainer, true)}
                                 requirements.add { it: Format -> it.format_note.contains(videoQualityPreference.substring(0, videoQualityPreference.length - 1)) }
                                 requirements.add { it: Format -> it.vcodec.startsWith(videoCodec!!, true) }
@@ -505,6 +520,10 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
         return repository.getErroredDownloads()
     }
 
+    fun getSaved() : List<DownloadItem> {
+        return dao.getSavedDownloadsList()
+    }
+
     private fun cloneFormat(item: Format) : Format {
         val string = Gson().toJson(item, Format::class.java)
         return Gson().fromJson(string, Format::class.java)
@@ -567,9 +586,7 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
             }
         }
 
-        if (queuedItems.isNotEmpty()){
-            startDownloadWorker(queuedItems)
-        }
+        startDownloadWorker(queuedItems)
     }
 
     private suspend fun startDownloadWorker(queuedItems: List<DownloadItem>) {

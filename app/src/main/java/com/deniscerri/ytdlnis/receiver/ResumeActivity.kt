@@ -63,7 +63,7 @@ class ResumeActivity : BaseActivity() {
     }
 
     private fun handleIntents(intent: Intent) {
-        val id = intent.getIntExtra("workID", 0)
+        val id = intent.getIntExtra("itemID", 0)
         if (id != 0) {
             try {
                 val loadingBottomSheet = BottomSheetDialog(this)
@@ -71,13 +71,12 @@ class ResumeActivity : BaseActivity() {
                 loadingBottomSheet.setContentView(R.layout.please_wait_bottom_sheet)
 
                 loadingBottomSheet.setOnShowListener {
-                    NotificationUtil(this).cancelDownloadNotification(NotificationUtil.DOWNLOAD_RESUME_NOTIFICATION_ID)
+                    NotificationUtil(this).cancelDownloadNotification(NotificationUtil.DOWNLOAD_RESUME_NOTIFICATION_ID + id)
                     lifecycleScope.launch {
                         val downloadViewModel = ViewModelProvider(this@ResumeActivity)[DownloadViewModel::class.java]
                         withContext(Dispatchers.IO){
-                            val downloadItem = downloadViewModel.getItemByID(id.toLong())
-                            downloadViewModel.queueDownloads(listOf(downloadItem))
-                        finishAffinity()
+                            downloadViewModel.reQueueDownloadItems(listOf(id.toLong()))
+                            finishAffinity()
                         }
                     }
 

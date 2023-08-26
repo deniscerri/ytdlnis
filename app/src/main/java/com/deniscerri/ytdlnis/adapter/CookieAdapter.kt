@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.CookieItem
+import com.google.android.material.card.MaterialCardView
 
 class CookieAdapter(onItemClickListener: OnItemClickListener, activity: Activity) : ListAdapter<CookieItem?, CookieAdapter.ViewHolder>(AsyncDifferConfig.Builder(DIFF_CALLBACK).build()) {
     private val onItemClickListener: OnItemClickListener
@@ -23,10 +24,10 @@ class CookieAdapter(onItemClickListener: OnItemClickListener, activity: Activity
     }
 
     class ViewHolder(itemView: View, onItemClickListener: OnItemClickListener?) : RecyclerView.ViewHolder(itemView) {
-        val item: ConstraintLayout
+        val item: MaterialCardView
 
         init {
-            item = itemView.findViewById(R.id.command_template_item_constraint)
+            item = itemView.findViewById(R.id.command_card)
         }
     }
 

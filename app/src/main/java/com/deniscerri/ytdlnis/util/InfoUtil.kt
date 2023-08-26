@@ -13,7 +13,6 @@ import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.models.Format
 import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
-import com.deniscerri.ytdlnis.work.DownloadWorker
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.yausername.youtubedl_android.YoutubeDL
@@ -546,6 +545,7 @@ class InfoUtil(private val context: Context) {
 
     fun getFromYTDL(query: String): ArrayList<ResultItem?> {
         items = ArrayList()
+        val webpage_urls = mutableListOf<String>()
         val searchEngine = sharedPreferences.getString("search_engine", "ytsearch")
         try {
             val request : YoutubeDLRequest
@@ -610,12 +610,6 @@ class InfoUtil(private val context: Context) {
                     }
                 }
 
-                val url = if (jsonObject.has("url")){
-                    jsonObject.getString("url")
-                }else{
-                    jsonObject.getString("webpage_url")
-                }
-
                 var thumb: String? = ""
                 if (jsonObject.has("thumbnail")) {
                     thumb = jsonObject.getString("thumbnail")
@@ -652,6 +646,12 @@ class InfoUtil(private val context: Context) {
                     urls = urlList.joinToString("\n")
                 }
 
+                val url = if (jsonObject.has("url")){
+                    jsonObject.getString("url")
+                }else{
+                    jsonObject.getString("webpage_url")
+                }
+
                 items.add(ResultItem(0,
                         url,
                         title,
@@ -665,6 +665,10 @@ class InfoUtil(private val context: Context) {
                         chapters
                     )
                 )
+                webpage_urls.add(jsonObject.getString("webpage_url"))
+            }
+            if (items.size == 1){
+                items[0]?.url = webpage_urls.first()
             }
         } catch (e: Exception) {
             Looper.prepare().run {
@@ -929,7 +933,7 @@ class InfoUtil(private val context: Context) {
     }
 
     fun buildYoutubeDLRequest(downloadItem: DownloadItem) : YoutubeDLRequest{
-        val cacheDir = FileUtil.getCachePath()
+        val cacheDir = FileUtil.getCachePath(context)
         val tempFileDir = File(cacheDir, downloadItem.id.toString())
         tempFileDir.delete()
         tempFileDir.mkdirs()
@@ -1009,7 +1013,10 @@ class InfoUtil(private val context: Context) {
                         request.addOption("--force-keyframes-at-cuts")
                     }
                 }
-                downloadItem.customFileNameTemplate += " %(section_title|)s %(autonumber)s"
+                downloadItem.customFileNameTemplate += " %(section_title|)s "
+                if (downloadItem.downloadSections.split(";").size > 1){
+                    downloadItem.customFileNameTemplate += "%(autonumber)s"
+                }
                 request.addOption("--output-na-placeholder", " ")
             }
 
@@ -1018,7 +1025,7 @@ class InfoUtil(private val context: Context) {
             }
 
             if (downloadItem.extraCommands.isNotBlank()){
-                val conf = File(tempFileDir.absolutePath + "/${System.currentTimeMillis()}.txt")
+                val conf = File(FileUtil.getCachePath(context) + "/${System.currentTimeMillis()}.txt")
                 conf.createNewFile()
                 conf.writeText(downloadItem.extraCommands)
                 request.addOption(
@@ -1097,7 +1104,7 @@ class InfoUtil(private val context: Context) {
                         if (! request.hasOption("--convert-thumbnails")) request.addOption("--convert-thumbnails", "jpg")
                         if (sharedPreferences.getBoolean("crop_thumbnail", true)){
                             try {
-                                val config = File(tempFileDir.absolutePath + "/config" + downloadItem.title + "##" + downloadItem.format.format_id + ".txt")
+                                val config = File(context.cacheDir.absolutePath + "/config" + downloadItem.title + "##" + downloadItem.format.format_id + ".txt")
                                 val configData = "--ppa \"ffmpeg: -c:v mjpeg -vf crop=\\\"'if(gt(ih,iw),iw,ih)':'if(gt(iw,ih),ih,iw)'\\\"\""
                                 config.writeText(configData)
                                 request.addOption("--ppa", "ThumbnailsConvertor:-qmin 1 -q:v 1")
@@ -1129,39 +1136,18 @@ class InfoUtil(private val context: Context) {
                 }
                 if (downloadItem.videoPreferences.embedSubs) {
                     request.addOption("--embed-subs")
-                    request.addOption("--sub-langs", downloadItem.videoPreferences.subsLanguages)
+                    request.addOption("--sub-langs", downloadItem.videoPreferences.subsLanguages.ifEmpty { "en.*,.*-orig" })
                 }
-                val defaultFormats = context.resources.getStringArray(R.array.video_formats)
 
-                if (downloadItem.videoPreferences.audioFormatIDs.isNotEmpty()) request.addOption("--audio-multistreams")
-
-                var videoFormatID = downloadItem.format.format_id
-                Log.e(DownloadWorker.TAG, videoFormatID)
-                var formatArgument = if (downloadItem.videoPreferences.removeAudio) "bestvideo" else "bestvideo+bestaudio/best"
-                if (videoFormatID.isNotEmpty()) {
-                    if (videoFormatID == context.resources.getString(R.string.best_quality) || videoFormatID == "best") videoFormatID = "bestvideo"
-                    else if (videoFormatID == context.resources.getString(R.string.worst_quality) || videoFormatID == "worst") videoFormatID = "worst"
-                    else if (defaultFormats.contains(videoFormatID)) videoFormatID = "bestvideo[height<="+videoFormatID.substring(0, videoFormatID.length -1)+"]"
-
-                    formatArgument = if (downloadItem.videoPreferences.audioFormatIDs.isNotEmpty() && ! downloadItem.videoPreferences.removeAudio){
-                        val audioIds = downloadItem.videoPreferences.audioFormatIDs.joinToString("+")
-                        "$videoFormatID+$audioIds/$videoFormatID/best"
-                    }else{
-                        "$videoFormatID+bestaudio/$videoFormatID/best"
-                    }
-                }
-                Log.e(DownloadWorker.TAG, formatArgument)
-                request.addOption("-f", formatArgument)
-
-                if (downloadItem.format.container.equals("mpeg_4", true)) downloadItem.format.container = "mp4"
+                var cont = ""
                 val outputContainer = downloadItem.container
                 if(
                     outputContainer.isNotEmpty() &&
                     outputContainer != "Default" &&
                     outputContainer != context.getString(R.string.defaultValue) &&
-                    supportedContainers.contains(outputContainer) &&
-                    !outputContainer.equals(downloadItem.format.container, true)
+                    supportedContainers.contains(outputContainer)
                 ){
+                    cont = outputContainer
                     request.addOption("--merge-output-format", outputContainer.lowercase())
                     if (outputContainer != "webm") {
                         val embedThumb = sharedPreferences.getBoolean("embed_thumbnail", false)
@@ -1171,6 +1157,103 @@ class InfoUtil(private val context: Context) {
                     }
                 }
 
+                //format logic
+
+                val defaultFormats = context.resources.getStringArray(R.array.video_formats)
+                var usingGenericFormat = false
+
+                var videof = downloadItem.format.format_id
+                if (videof == context.resources.getString(R.string.best_quality) || videof == "best") {
+                    videof = "bestvideo"
+                    usingGenericFormat = true
+                }else if (videof == context.resources.getString(R.string.worst_quality) || videof == "worst") {
+                    videof = "worst"
+                }else if (defaultFormats.contains(videof)) {
+                    videof = "bestvideo[height<="+videof.substring(0, videof.length -1)+"]"
+                }
+
+                val preferredFormatIDs = sharedPreferences.getString("format_id", "").toString()
+                    .split(",")
+                    .filter { it.isNotEmpty() }
+                    .ifEmpty { listOf(videof) }
+
+                var audiof = "bestaudio"
+                if (downloadItem.videoPreferences.audioFormatIDs.isNotEmpty()){
+                    audiof = downloadItem.videoPreferences.audioFormatIDs.joinToString("+")
+                }
+                if (downloadItem.videoPreferences.removeAudio) audiof = ""
+
+                val preferredAudioFormatIDs = sharedPreferences.getString("format_id_audio", "")
+                    .toString()
+                    .split(",")
+                    .filter { it.isNotEmpty() }
+                    .ifEmpty { listOf(audiof) }
+
+                val preferredVideoFormats = if (usingGenericFormat) preferredFormatIDs else listOf(videof)
+                val preferredAudioFormats = if (usingGenericFormat && downloadItem.videoPreferences.audioFormatIDs.isEmpty()) {
+                    preferredAudioFormatIDs
+                } else listOf(audiof)
+
+                if (preferredAudioFormats.any{it.contains("+")}){
+                    request.addOption("--audio-multistreams")
+                }
+
+                val preferredCodec = sharedPreferences.getString("video_codec", "")
+                val extPref = if (cont.isNotBlank()) "[ext=$cont]" else ""
+                val vCodecPref = if (preferredCodec!!.isNotBlank()) "[vcodec^=$preferredCodec]" else ""
+
+                val f = StringBuilder()
+
+                //build format with extension and vcodec
+                preferredVideoFormats.forEach { v ->
+                    preferredAudioFormats.forEach { a ->
+                        val aa = if (a.isNotBlank()) "+$a" else ""
+                        f.append("$v$extPref$vCodecPref$aa/")
+                    }
+                }
+
+                //build format with vcodec
+                if (extPref.isNotBlank()){
+                    preferredVideoFormats.forEach { v ->
+                        preferredAudioFormats.forEach { a ->
+                            val aa = if (a.isNotBlank()) "+$a" else ""
+                            f.append("$videof$vCodecPref$aa/")
+                        }
+                    }
+                }
+
+                if (vCodecPref.isNotBlank()){
+                    preferredVideoFormats.forEach { v ->
+                        //build format with vcodec
+                        preferredAudioFormats.forEach {a ->
+                            val aa = if (a.isNotBlank()) "+$a" else ""
+                            f.append("$v$aa/")
+                        }
+                    }
+                }
+
+                //build format with best audio
+                preferredVideoFormats.forEach { v ->
+                    if(!f.contains("$v+bestaudio/")){
+                        f.append("$v+bestaudio/")
+                    }
+                }
+
+
+                //build formats with standalone video
+                preferredVideoFormats.forEach { v ->
+                    if(!f.contains("/$v/")){
+                        f.append("$v/")
+                    }
+                }
+
+                if(!f.endsWith("best/")){
+                    //last fallback
+                    f.append("best")
+                }
+
+                request.addOption("-f", f.toString().replace("/$".toRegex(), ""))
+
                 if (downloadItem.videoPreferences.writeSubs){
                     val subFormat = sharedPreferences.getString("sub_format", "srt")
 
@@ -1179,7 +1262,7 @@ class InfoUtil(private val context: Context) {
                     request.addOption("--sub-format", "${subFormat}/best")
                     request.addOption("--convert-subtitles", "srt")
                     if (!downloadItem.videoPreferences.embedSubs) {
-                        request.addOption("--sub-langs", downloadItem.videoPreferences.subsLanguages)
+                        request.addOption("--sub-langs", downloadItem.videoPreferences.subsLanguages.ifEmpty { "en.*,.*-orig" })
                     }
                 }
 
@@ -1202,7 +1285,7 @@ class InfoUtil(private val context: Context) {
             DownloadViewModel.Type.command -> {
                 request.addOption(
                     "--config-locations",
-                    File(FileUtil.getCachePath() + "/config[${downloadItem.id}].txt").apply {
+                    File(context.cacheDir.absolutePath + "/config[${downloadItem.id}].txt").apply {
                         writeText(downloadItem.format.format_note)
                     }.absolutePath
                 )

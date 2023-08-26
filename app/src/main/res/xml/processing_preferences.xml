@@ -56,7 +56,7 @@
         android:icon="@drawable/baseline_subject_24"
         app:key="subs_lang"
         app:useSimpleSummaryProvider="true"
-        app:defaultValue="all"
+        app:defaultValue="en.*,.*-orig"
         app:title="@string/subtitle_languages" />
 
 

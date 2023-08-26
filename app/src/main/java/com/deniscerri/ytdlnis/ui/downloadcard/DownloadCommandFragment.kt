@@ -28,7 +28,9 @@ import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.databinding.FragmentHomeBinding
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.UiUtil
-import com.google.android.material.chip.Chip
+import com.deniscerri.ytdlnis.util.UiUtil.enableTextHighlight
+import com.deniscerri.ytdlnis.util.UiUtil.populateCommandCard
+import com.google.android.material.card.MaterialCardView
 import com.google.android.material.textfield.TextInputLayout
 import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
@@ -61,6 +63,7 @@ class DownloadCommandFragment(private val resultItem: ResultItem, private var cu
     }
 
 
+    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         lifecycleScope.launch {
@@ -79,7 +82,8 @@ class DownloadCommandFragment(private val resultItem: ResultItem, private var cu
                 }
 
                 val chosenCommandView = view.findViewById<TextInputLayout>(R.id.content)
-                chosenCommandView.editText!!.setText(downloadItem.format.format_note)
+                chosenCommandView.editText?.setText(downloadItem.format.format_note)
+                chosenCommandView.editText?.enableTextHighlight()
                 chosenCommandView.endIconDrawable = AppCompatResources.getDrawable(requireContext(), R.drawable.ic_delete_all)
                 chosenCommandView.editText!!.addTextChangedListener(object : TextWatcher {
                     override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
@@ -113,24 +117,28 @@ class DownloadCommandFragment(private val resultItem: ResultItem, private var cu
                 }
                 chosenCommandView.editText!!.enableScrollText()
 
-                val commandTemplates = view.findViewById<TextInputLayout>(R.id.template)
-                val autoCompleteTextView =
-                    requireView().findViewById<AutoCompleteTextView>(R.id.template_textview)
-                populateCommandTemplates(templates, autoCompleteTextView)
+                val commandTemplateCard = view.findViewById<MaterialCardView>(R.id.command_card)
+                populateCommandCard(commandTemplateCard, templates.first())
 
-                (commandTemplates!!.editText as AutoCompleteTextView?)!!.onItemClickListener =
-                    AdapterView.OnItemClickListener { _: AdapterView<*>?, _: View?, index: Int, _: Long ->
-                        chosenCommandView.editText!!.setText(templates[index].content)
-                        downloadItem.format = Format(
-                            templates[index].title,
-                            "",
-                            "",
-                            "",
-                            "",
-                            0,
-                            templates[index].content
-                        )
+                commandTemplateCard.setOnClickListener {
+                    lifecycleScope.launch {
+                        UiUtil.showCommandTemplates(requireActivity(), commandTemplateViewModel){
+                            chosenCommandView.editText!!.setText(it.content)
+                            populateCommandCard(commandTemplateCard, it)
+                            downloadItem.format = Format(
+                                it.title,
+                                "",
+                                "",
+                                "",
+                                "",
+                                0,
+                                it.content
+                            )
+                        }
                     }
+
+
+                }
 
                 saveDir = view.findViewById(R.id.outputPath)
                 saveDir.editText!!.setText(
@@ -151,9 +159,14 @@ class DownloadCommandFragment(private val resultItem: ResultItem, private var cu
                     File(FileUtil.formatPath(downloadItem.downloadPath)).freeSpace
                 ))
 
+                val shortcutCount = withContext(Dispatchers.IO){
+                    commandTemplateViewModel.getTotalShortcutNumber()
+                }
+
                 UiUtil.configureCommand(
                     view,
                     1,
+                    shortcutCount,
                     newTemplateClicked = {
                         UiUtil.showCommandTemplateCreationOrUpdatingSheet(null, requireActivity(), viewLifecycleOwner, commandTemplateViewModel) {
                             templates.add(it)
@@ -167,16 +180,24 @@ class DownloadCommandFragment(private val resultItem: ResultItem, private var cu
                                 0,
                                 it.content
                             )
-                            populateCommandTemplates(templates, autoCompleteTextView)
+                            populateCommandCard(commandTemplateCard, it)
                         }
                     },
-                    editSelectedClicked = {
-                        var current = templates.find { it.title == autoCompleteTextView.text.toString() }
-                        if (current == null) current = CommandTemplate(0, "", chosenCommandView.editText!!.text.toString(), false)
+                    editSelectedClicked =
+                    {
+                        var current = templates.find { it.id == commandTemplateCard.findViewById<android.widget.TextView>(
+                            R.id.id).toString().toLong() }
+                        if (current == null) current =
+                            CommandTemplate(
+                                0,
+                                "",
+                                chosenCommandView.editText!!.text.toString(),
+                                false
+                            )
                         UiUtil.showCommandTemplateCreationOrUpdatingSheet(current, requireActivity(), viewLifecycleOwner, commandTemplateViewModel) {
                             templates.add(it)
                             chosenCommandView.editText!!.setText(it.content)
-                            downloadItem.format = Format(
+                            downloadItem.format = com.deniscerri.ytdlnis.database.models.Format(
                                 it.title,
                                 "",
                                 "",
@@ -186,29 +207,22 @@ class DownloadCommandFragment(private val resultItem: ResultItem, private var cu
                                 it.content
                             )
                         }
+                    },
+                    shortcutClicked = {
+                        UiUtil.showShortcuts(requireActivity(), commandTemplateViewModel) { sh ->
+                            chosenCommandView.editText!!.setText("${chosenCommandView.editText!!.text} $sh")
+                            downloadItem.format.format_note += " $sh"
+                        }
                     }
                 )
+
+
             } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
     }
 
-    private fun populateCommandTemplates(templates: List<CommandTemplate>, autoCompleteTextView: AutoCompleteTextView?){
-        val templateTitles = templates.map {it.title}
-
-
-        autoCompleteTextView?.setAdapter(
-            ArrayAdapter(
-                requireContext(),
-                android.R.layout.simple_dropdown_item_1line,
-                templateTitles
-            )
-        )
-        if (templateTitles.isNotEmpty()) {
-            autoCompleteTextView!!.setText(downloadItem.format.format_id, false)
-        }
-    }
 
     private var commandPathResultLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()

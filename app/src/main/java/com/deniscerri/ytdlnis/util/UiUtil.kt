@@ -7,6 +7,7 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.graphics.Color
 import android.graphics.drawable.ShapeDrawable
 import android.graphics.drawable.shapes.OvalShape
 import android.net.Uri
@@ -30,7 +31,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.core.view.isVisible
@@ -62,13 +62,18 @@ import com.google.android.material.materialswitch.MaterialSwitch
 import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
+import com.neo.highlight.core.Highlight
+import com.neo.highlight.util.listener.HighlightTextWatcher
+import com.neo.highlight.util.scheme.ColorScheme
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import me.zhanghai.android.fastscroll.FastScrollerBuilder
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
+import java.util.regex.Pattern
 
 object UiUtil {
     @SuppressLint("SetTextI18n")
@@ -85,7 +90,7 @@ object UiUtil {
         if (audioFormats.isNullOrEmpty()){
             formatCard.findViewById<TextView>(R.id.format_note).text = formatNote.uppercase()
         }else{
-            val title = "${formatNote.uppercase()} + [${audioFormats.joinToString("/") { it.format_note }}]"
+            val title = "${formatNote.uppercase()} + [${audioFormats.joinToString("/") { "(${it.format_id}) ${it.format_note}" }}]"
             formatCard.findViewById<TextView>(R.id.format_note).text = title
         }
         formatCard.findViewById<TextView>(R.id.format_id).text = "id: ${chosenFormat.format_id}"
@@ -107,6 +112,12 @@ object UiUtil {
         if (!audioFormats.isNullOrEmpty()) filesize += audioFormats.sumOf { it.filesize }
         formatCard.findViewById<TextView>(R.id.file_size).text = FileUtil.convertFileSize(filesize)
 
+    }
+
+    fun populateCommandCard(card: MaterialCardView, item: CommandTemplate){
+        card.findViewById<TextView>(R.id.title).text = item.title
+        card.findViewById<TextView>(R.id.content).text = item.content
+        card.findViewById<TextView>(R.id.id).text = item.id.toString()
     }
 
      fun showCommandTemplateCreationOrUpdatingSheet(item: CommandTemplate?, context: Activity, lifeCycle: LifecycleOwner, commandTemplateViewModel: CommandTemplateViewModel, newTemplate: (newTemplate: CommandTemplate) -> Unit){
@@ -658,7 +669,7 @@ object UiUtil {
 
         linearLayout!!.removeAllViews()
         list.forEach {template ->
-            val item = activity.layoutInflater.inflate(R.layout.command_template_item, linearLayout, false) as ConstraintLayout
+            val item = activity.layoutInflater.inflate(R.layout.command_template_item, linearLayout, false) as MaterialCardView
             item.findViewById<TextView>(R.id.title).text = template.title
             item.findViewById<TextView>(R.id.content).text = template.content
             item.setOnClickListener {
@@ -719,8 +730,12 @@ object UiUtil {
         extraCommandsClicked: () -> Unit
     ){
         val embedSubs = view.findViewById<Chip>(R.id.embed_subtitles)
+        val saveSubtitles = view.findViewById<Chip>(R.id.save_subtitles)
+        val subtitleLanguages = view.findViewById<Chip>(R.id.subtitle_languages)
+
         embedSubs!!.isChecked = items.all { it.videoPreferences.embedSubs }
         embedSubs.setOnClickListener {
+            subtitleLanguages.isEnabled = embedSubs.isChecked || saveSubtitles.isChecked
             embedSubsClicked(embedSubs.isChecked)
         }
 
@@ -878,8 +893,6 @@ object UiUtil {
             dialog.getButton(AlertDialog.BUTTON_NEUTRAL).gravity = Gravity.START
         }
 
-        val saveSubtitles = view.findViewById<Chip>(R.id.save_subtitles)
-        val subtitleLanguages = view.findViewById<Chip>(R.id.subtitle_languages)
 
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 
@@ -890,11 +903,11 @@ object UiUtil {
         }
 
         saveSubtitles.setOnCheckedChangeListener { _, _ ->
-            if (saveSubtitles.isChecked) subtitleLanguages.visibility = View.VISIBLE
-            else subtitleLanguages.visibility = View.GONE
+            subtitleLanguages.isEnabled = embedSubs.isChecked || saveSubtitles.isChecked
             saveSubtitlesClicked(saveSubtitles.isChecked)
         }
 
+        subtitleLanguages.isEnabled = embedSubs.isChecked || saveSubtitles.isChecked
         subtitleLanguages.setOnClickListener {
             subtitleLanguagesClicked()
         }
@@ -1074,8 +1087,10 @@ object UiUtil {
     fun configureCommand(
         view: View,
         size: Int,
+        shortcutCount: Int,
         newTemplateClicked: () -> Unit,
         editSelectedClicked: () -> Unit,
+        shortcutClicked: suspend () -> Unit,
     ){
         val newTemplate : Chip = view.findViewById(R.id.newTemplate)
         newTemplate.setOnClickListener {
@@ -1086,6 +1101,14 @@ object UiUtil {
         editSelected.isEnabled = size == 1
         editSelected.setOnClickListener {
             editSelectedClicked()
+        }
+
+        val shortcuts = view.findViewById<View>(R.id.shortcut)
+        shortcuts.isEnabled = shortcutCount > 0
+        shortcuts.setOnClickListener {
+            runBlocking {
+                shortcutClicked()
+            }
         }
     }
 
@@ -1115,6 +1138,31 @@ object UiUtil {
         FastScrollerBuilder(this)
             .setTrackDrawable(drawable)
             .build()
+    }
+
+    private var textHighLightSchemes = listOf(
+        ColorScheme(Pattern.compile("([\"'])(?:\\\\1|.)*?\\1"), Color.parseColor("#FC8500")),
+        ColorScheme(Pattern.compile("yt-dlp"), Color.parseColor("#00FF00")),
+        ColorScheme(Pattern.compile("(https?://(?:www\\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|www\\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|https?://(?:www\\.|(?!www))[a-zA-Z0-9]+\\.[^\\s]{2,}|www\\.[a-zA-Z0-9]+\\.[^\\s]{2,})"), Color.parseColor("#b5942f")),
+        ColorScheme(Pattern.compile("\\d+(\\.\\d)?%"), Color.parseColor("#43a564"))
+    )
+
+    fun View.enableTextHighlight(){
+        if (this is EditText || this is TextView){
+            //init syntax highlighter
+            val highlight = Highlight()
+            val highlightWatcher = HighlightTextWatcher()
+
+            highlight.addScheme(
+                *textHighLightSchemes.map { it }.toTypedArray()
+            )
+            highlightWatcher.addScheme(
+                *textHighLightSchemes.map { it }.toTypedArray()
+            )
+
+            highlight.setSpan(this as TextView)
+            this.addTextChangedListener(highlightWatcher)
+        }
     }
 
 

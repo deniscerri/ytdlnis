@@ -23,6 +23,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.children
 import androidx.core.view.forEach
+import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -427,11 +428,11 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
 
     @SuppressLint("InflateParams")
     private suspend fun updateSearchViewItems(it: Editable?, linkYouCopied: View?){
+        searchSuggestionsLinearLayout!!.visibility = GONE
+        searchHistoryLinearLayout!!.visibility = GONE
         searchSuggestionsLinearLayout!!.removeAllViews()
         searchHistoryLinearLayout!!.removeAllViews()
 
-        searchSuggestionsLinearLayout!!.visibility = GONE
-        searchHistoryLinearLayout!!.visibility = GONE
         linkYouCopied!!.visibility = GONE
 
         if (searchView!!.editText.text.isEmpty()){

@@ -7,17 +7,19 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.deniscerri.ytdlnis.database.DBManager
 import com.deniscerri.ytdlnis.database.models.LogItem
+import com.deniscerri.ytdlnis.database.repository.DownloadRepository
 import com.deniscerri.ytdlnis.database.repository.LogRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class LogViewModel(private val application: Application) : AndroidViewModel(application) {
     private val repository: LogRepository
+    private val downloadRepository: DownloadRepository
     val items: LiveData<List<LogItem>>
 
     init {
-        val dao = DBManager.getInstance(application).logDao
-        repository = LogRepository(dao)
+        repository = LogRepository(DBManager.getInstance(application).logDao)
+        downloadRepository = DownloadRepository(DBManager.getInstance(application).downloadDao)
         items = repository.items.asLiveData()
     }
 
@@ -36,10 +38,12 @@ class LogViewModel(private val application: Application) : AndroidViewModel(appl
 
     fun delete(item: LogItem) = viewModelScope.launch(Dispatchers.IO) {
         repository.delete(item)
+        downloadRepository.removeLogID(item.id)
     }
 
     fun deleteAll() = viewModelScope.launch(Dispatchers.IO) {
         repository.deleteAll()
+        downloadRepository.removeAllLogID()
     }
 
     fun update(newLine: String, id: Long) = viewModelScope.launch(Dispatchers.IO) {

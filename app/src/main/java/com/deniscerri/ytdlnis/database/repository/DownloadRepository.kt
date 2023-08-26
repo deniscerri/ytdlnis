@@ -63,7 +63,7 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
     }
 
     fun getActiveDownloads() : List<DownloadItem> {
-        return downloadDao.getActiveDownloadsList()
+        return downloadDao.getActiveAndPausedDownloadsList()
     }
 
     fun getActiveAndQueuedDownloads() : List<DownloadItem> {
@@ -108,6 +108,14 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
 
     fun unPauseDownloads(){
         downloadDao.unPauseActiveAndQueued()
+    }
+
+    fun removeLogID(logID: Long){
+        downloadDao.removeLogID(logID)
+    }
+
+    fun removeAllLogID(){
+        downloadDao.removeAllLogID()
     }
 
 }

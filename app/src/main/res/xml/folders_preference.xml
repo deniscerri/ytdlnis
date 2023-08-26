@@ -49,7 +49,6 @@
     <Preference
         app:icon="@drawable/baseline_drive_file_move_24"
         app:key="move_cache"
-        app:isPreferenceVisible="false"
         android:summary="@string/move_temporary_files_summary"
         app:title="@string/move_temporary_files" />
 

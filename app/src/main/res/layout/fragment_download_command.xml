@@ -7,11 +7,11 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="10dp"
         android:orientation="vertical">
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/content"
+            android:layout_marginHorizontal="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="10dp"
@@ -22,32 +22,26 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
-                android:maxLines="10"
+                android:maxLines="99999"
                 android:inputType="textMultiLine"
                 android:layout_height="wrap_content"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/template"
-            style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
-            android:layout_width="match_parent"
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingBottom="10dp"
-            android:hint="@string/command_templates">
+            android:paddingHorizontal="10dp"
+            android:paddingTop="10dp"
+            android:text="@string/command" />
 
-            <AutoCompleteTextView
-                android:id="@+id/template_textview"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="none"
-                />
-
-        </com.google.android.material.textfield.TextInputLayout>
+        <include layout="@layout/command_template_item" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/outputPath"
             android:layout_width="match_parent"
+            android:layout_marginTop="10dp"
+            android:paddingHorizontal="10dp"
             android:layout_height="wrap_content"
             android:hint="@string/save_dir"
             style="@style/Widget.Material3.TextInputLayout.FilledBox">
@@ -62,7 +56,7 @@
 
         <TextView
             android:id="@+id/freespace"
-            android:paddingHorizontal="10dp"
+            android:paddingHorizontal="20dp"
             android:paddingVertical="5dp"
             android:textSize="13sp"
             android:textColor="@android:color/tab_indicator_text"

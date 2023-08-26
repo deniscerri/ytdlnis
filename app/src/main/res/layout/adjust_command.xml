@@ -1,11 +1,10 @@
-<LinearLayout
-    android:id="@+id/adjust"
+<LinearLayout android:id="@+id/adjust"
     android:layout_width="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:paddingVertical="10dp"
     android:layout_height="wrap_content"
+    android:paddingHorizontal="10dp"
     android:orientation="vertical"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <TextView
         android:layout_width="wrap_content"
@@ -41,5 +40,12 @@
 
     </com.google.android.material.chip.ChipGroup>
 
+    <com.google.android.material.chip.Chip
+        android:id="@+id/shortcut"
+        style="@style/Widget.Material3.Chip.Assist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/shortcuts"
+        app:chipIcon="@drawable/ic_shortcut" />
 
 </LinearLayout>

@@ -6,7 +6,7 @@ data class VideoPreferences (
     var splitByChapters: Boolean = false,
     var sponsorBlockFilters: ArrayList<String> = arrayListOf(),
     var writeSubs: Boolean = false,
-    var subsLanguages: String = "all",
+    var subsLanguages: String = "en.*,.*-orig",
     var audioFormatIDs : ArrayList<String> = arrayListOf(),
     var removeAudio: Boolean = false
 )

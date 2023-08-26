@@ -3,6 +3,7 @@ package com.deniscerri.ytdlnis.receiver
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import androidx.work.WorkManager
 import com.deniscerri.ytdlnis.database.DBManager
 import com.deniscerri.ytdlnis.database.repository.DownloadRepository
@@ -15,10 +16,10 @@ import kotlinx.coroutines.runBlocking
 
 class CancelDownloadNotificationReceiver : BroadcastReceiver() {
     override fun onReceive(c: Context, intent: Intent) {
-        val message = intent.getStringExtra("cancel")
-        val id = intent.getIntExtra("workID", 0)
-        if (message != null) {
+        val id = intent.getIntExtra("itemID", 0)
+        if (id > 0) {
             runCatching {
+                Log.e("aa", id.toString())
                 val notificationUtil = NotificationUtil(c)
                 YoutubeDL.getInstance().destroyProcessById(id.toString())
                 notificationUtil.cancelDownloadNotification(id)

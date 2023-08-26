@@ -31,8 +31,6 @@ import com.yausername.youtubedl_android.YoutubeDL
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.transform
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
@@ -61,29 +59,34 @@ class DownloadWorker(
         val currentWork = WorkManager.getInstance(context).getWorkInfosByTag("download").await()
         if (currentWork.count{it.state == WorkInfo.State.RUNNING} > 1) return Result.success()
 
-        runningYTDLInstances.addAll(dao.getActiveDownloadsList().map { it.id })
-
         val pendingIntent = NavDeepLinkBuilder(context)
             .setGraph(R.navigation.nav_graph)
             .setDestination(R.id.downloadQueueMainFragment)
             .createPendingIntent()
 
-        var notification = notificationUtil.createDefaultWorkerNotification()
-        val foregroundInfo = ForegroundInfo(Random.nextInt(1000000000), notification)
+        val workNotif = notificationUtil.createDefaultWorkerNotification()
+        val foregroundInfo = ForegroundInfo(Random.nextInt(1000000000), workNotif)
         setForegroundAsync(foregroundInfo)
 
         queuedItems.collectLatest { items ->
+            runningYTDLInstances.clear()
+            dao.getActiveDownloadsList().forEach {
+                runningYTDLInstances.add(it.id)
+            }
+
             val running = ArrayList(runningYTDLInstances)
             if (items.isEmpty() && running.isEmpty()) WorkManager.getInstance(context).cancelWorkById(this@DownloadWorker.id)
+
             val concurrentDownloads = sharedPreferences.getInt("concurrent_downloads", 1) - running.size
             val eligibleDownloads = items.take(if (concurrentDownloads < 0) 0 else concurrentDownloads).filter {  it.id !in running }
-            eligibleDownloads.forEach {downloadItem ->
+
+            eligibleDownloads.forEach{downloadItem ->
                 runningYTDLInstances.add(downloadItem.id)
+                val notification = notificationUtil.createDownloadServiceNotification(pendingIntent, downloadItem.title, downloadItem.id.toInt())
+                notificationUtil.notify(downloadItem.id.toInt(), notification)
+
+
                 CoroutineScope(Dispatchers.IO).launch {
-                    withContext(Dispatchers.Main){
-                        notification = notificationUtil.createDownloadServiceNotification(pendingIntent, downloadItem.title, downloadItem.id.toInt(), NotificationUtil.DOWNLOAD_SERVICE_CHANNEL_ID)
-                        notificationUtil.notify(downloadItem.id.toInt(), notification)
-                    }
                     val request = infoUtil.buildYoutubeDLRequest(downloadItem)
                     downloadItem.status = DownloadRepository.Status.Active.toString()
                     CoroutineScope(Dispatchers.IO).launch {
@@ -91,7 +94,7 @@ class DownloadWorker(
                         updateDownloadItem(downloadItem, infoUtil, dao, resultDao)
                     }
 
-                    val cacheDir = FileUtil.getCachePath()
+                    val cacheDir = FileUtil.getCachePath(context)
                     val tempFileDir = File(cacheDir, downloadItem.id.toString())
                     tempFileDir.delete()
                     tempFileDir.mkdirs()
@@ -126,6 +129,7 @@ class DownloadWorker(
                         }
 
                     }
+
                     runCatching {
                         YoutubeDL.getInstance().execute(request, downloadItem.id.toString()){ progress, _, line ->
                             setProgressAsync(workDataOf("progress" to progress.toInt(), "output" to line.chunked(5000).first().toString(), "id" to downloadItem.id))
@@ -143,6 +147,8 @@ class DownloadWorker(
                         }
                     }.onSuccess {
                         runningYTDLInstances.remove(downloadItem.id)
+                        FileUtil.deleteConfigFiles(request)
+
                         val wasQuickDownloaded = updateDownloadItem(downloadItem, infoUtil, dao, resultDao)
                         runBlocking {
                             var finalPaths : List<String>?
@@ -209,6 +215,8 @@ class DownloadWorker(
 
                     }.onFailure {
                         runningYTDLInstances.remove(downloadItem.id)
+                        FileUtil.deleteConfigFiles(request)
+
                         withContext(Dispatchers.Main){
                             notificationUtil.cancelDownloadNotification(downloadItem.id.toInt())
                         }
@@ -246,6 +254,7 @@ class DownloadWorker(
                     }
                 }
             }
+
             if (eligibleDownloads.isNotEmpty()){
                 eligibleDownloads.forEach { it.status = DownloadRepository.Status.Active.toString() }
                 dao.updateMultiple(eligibleDownloads)

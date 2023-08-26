@@ -22,6 +22,13 @@ interface LogDao {
     @Query("DELETE FROM logs WHERE id=:itemId")
     suspend fun delete(itemId: Long)
 
+    @Transaction
+    suspend fun deleteItems(list: List<LogItem>){
+        list.forEach{
+            delete(it.id)
+        }
+    }
+
     @Update(onConflict = OnConflictStrategy.REPLACE)
     suspend fun update(item: LogItem)
 

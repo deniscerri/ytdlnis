@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.CommandTemplate
+import com.google.android.material.card.MaterialCardView
 
 class TemplatesAdapter(onItemClickListener: OnItemClickListener, activity: Activity) : ListAdapter<CommandTemplate?, TemplatesAdapter.ViewHolder>(AsyncDifferConfig.Builder(DIFF_CALLBACK).build()) {
     private val onItemClickListener: OnItemClickListener
@@ -24,10 +25,10 @@ class TemplatesAdapter(onItemClickListener: OnItemClickListener, activity: Activ
     }
 
     class ViewHolder(itemView: View, onItemClickListener: OnItemClickListener?) : RecyclerView.ViewHolder(itemView) {
-        val item: ConstraintLayout
+        val item: MaterialCardView
 
         init {
-            item = itemView.findViewById(R.id.command_template_item_constraint)
+            item = itemView.findViewById(R.id.command_card)
         }
     }
 

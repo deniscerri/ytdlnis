@@ -54,7 +54,6 @@ class GenericDownloadAdapter(onItemClickListener: OnItemClickListener, activity:
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)
         val card = holder.cardView
-        card.isVisible = item != null
         if (item == null) return
         card.tag = item.id.toString()
 

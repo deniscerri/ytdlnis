@@ -4,7 +4,6 @@ import androidx.paging.PagingSource
 import androidx.room.*
 import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.models.Format
-import com.deniscerri.ytdlnis.database.repository.DownloadRepository
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -23,6 +22,9 @@ interface DownloadDao {
     fun getDownloadsCountByStatus(status : List<String>) : Flow<Int>
 
     @Query("SELECT * FROM downloads WHERE status='Active' or status='Paused'")
+    fun getActiveAndPausedDownloadsList() : List<DownloadItem>
+
+    @Query("SELECT * FROM downloads WHERE status='Active'")
     fun getActiveDownloadsList() : List<DownloadItem>
 
     @Query("SELECT * FROM downloads WHERE status='Active' or status='Queued' or status='QueuedPaused'  or status='Paused'")
@@ -63,6 +65,9 @@ interface DownloadDao {
 
     @Query("SELECT * FROM downloads WHERE status='Saved' ORDER BY id DESC")
     fun getSavedDownloads() : PagingSource<Int, DownloadItem>
+
+    @Query("SELECT * FROM downloads WHERE status='Saved' ORDER BY id DESC")
+    fun getSavedDownloadsList() : List<DownloadItem>
 
     @Query("SELECT * FROM downloads WHERE id=:id LIMIT 1")
     fun getDownloadById(id: Long) : DownloadItem
@@ -118,6 +123,12 @@ interface DownloadDao {
 
     @Upsert
     suspend fun update(item: DownloadItem)
+
+    @Query("UPDATE downloads SET logID=null")
+    fun removeAllLogID()
+
+    @Query("UPDATE downloads SET logID=null WHERE logID=:logID")
+    fun removeLogID(logID: Long)
 
     @Upsert
     fun updateMultiple(items :List<DownloadItem>)

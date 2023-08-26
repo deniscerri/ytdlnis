@@ -5,13 +5,9 @@ import android.media.MediaScannerConnection
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
-import android.os.storage.StorageManager
-import android.os.storage.StorageVolume
 import android.provider.DocumentsContract
 import android.util.Log
 import android.webkit.MimeTypeMap
-import androidx.core.content.FileProvider
-import androidx.core.net.toFile
 import androidx.core.net.toUri
 import androidx.documentfile.provider.DocumentFile
 import com.anggrayudi.storage.callback.FileCallback
@@ -19,17 +15,15 @@ import com.anggrayudi.storage.callback.FolderCallback
 import com.anggrayudi.storage.file.copyFileTo
 import com.anggrayudi.storage.file.copyFolderTo
 import com.anggrayudi.storage.file.getAbsolutePath
-import com.anggrayudi.storage.file.getBasePath
 import com.deniscerri.ytdlnis.App
-import com.deniscerri.ytdlnis.BuildConfig
 import com.deniscerri.ytdlnis.R
+import com.yausername.youtubedl_android.YoutubeDLRequest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.internal.closeQuietly
 import java.io.File
 import java.net.URLDecoder
 import java.nio.charset.StandardCharsets
-import java.nio.file.CopyOption
 import java.nio.file.Files
 import java.nio.file.StandardCopyOption
 import java.text.DecimalFormat
@@ -91,8 +85,7 @@ object FileUtil {
                 if (it.isDirectory && it.absolutePath == originDir.absolutePath) return@forEach
                 var destFile: DocumentFile
                 try {
-                    if (it.name.matches("(^config.*.\\.txt\$)|(rList)|(part-Frag)|(live_chat)".toRegex())){
-                        it.delete()
+                    if (it.name.matches("(^config.*.\\.txt\$)|(rList)|(.*.part-Frag)|(.*.live_chat)".toRegex())){
                         return@forEach
                     }
 
@@ -269,8 +262,17 @@ object FileUtil {
         return listOf(context.getString(R.string.unfound_file))
     }
 
-    fun getCachePath() : String {
-        return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)?.absolutePath + File.separator + "YTDLnis/.CACHE"
+    fun getCachePath(context: Context) : String {
+        return context.cacheDir.absolutePath + "/downloads/"
+    }
+
+    fun deleteConfigFiles(request: YoutubeDLRequest) {
+        request.getArguments("--config")?.forEach {
+            if (it != null) File(it).delete()
+        }
+        request.getArguments("--config-locations")?.forEach {
+            if (it != null) File(it).delete()
+        }
     }
 
     fun getDefaultAudioPath() : String{

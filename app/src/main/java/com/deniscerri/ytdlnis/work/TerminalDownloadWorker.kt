@@ -51,7 +51,7 @@ class TerminalDownloadWorker(
 
         val intent = Intent(context, TerminalActivity::class.java)
         val pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE)
-        val notification = notificationUtil.createDownloadServiceNotification(pendingIntent, command.take(65), itemId, NotificationUtil.DOWNLOAD_SERVICE_CHANNEL_ID)
+        val notification = notificationUtil.createDownloadServiceNotification(pendingIntent, command.take(65), itemId)
         val foregroundInfo = ForegroundInfo(itemId, notification)
         setForegroundAsync(foregroundInfo)
         
@@ -65,7 +65,7 @@ class TerminalDownloadWorker(
 
         request.addOption(
             "--config-locations",
-            File(context.cacheDir.absolutePath + "/config${System.currentTimeMillis()}.txt").apply {
+            File(context.cacheDir.absolutePath + "/config-TERMINAL[${System.currentTimeMillis()}].txt").apply {
                 writeText(command)
             }.absolutePath
         )
