@@ -294,4 +294,8 @@
     <string name="use_cookies">استخدام ملفات تعريف الارتباط</string>
     <string name="embed_metadata">تضمين البيانات الوصفية</string>
     <string name="embed_metadata_summary">دمج البيانات الوصفية داخل ملف الفيديو. يمكن أن يشمل ذلك، فهرس الفصول/التفاصيل الإضافية</string>
+    <string name="formats_updated">تم تحديث التنسيقات</string>
+    <string name="update_formats_background">تحديث التنسيقات في الخلفية</string>
+    <string name="use_sponsorblock">إستخدام SponsorBlock</string>
+    <string name="auto_update_ytdlp">التحديث التلقائي yt-dlp</string>
 </resources>

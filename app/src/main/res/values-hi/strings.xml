@@ -294,4 +294,8 @@
     <string name="write_description_summary">विवरण फ़ाइल लिखें</string>
     <string name="extra_command">अतिरिक्त आदेश</string>
     <string name="use_cookies">कुकीज़ का प्रयोग करें</string>
+    <string name="update_formats_background">पृष्ठभूमि में फ़ॉर्मेट अपडेट करें</string>
+    <string name="formats_updated">फ़ॉर्मेट अपडेट कर दिए गए हैं</string>
+    <string name="auto_update_ytdlp">yt-dlp को ऑटो-अपडेट करें</string>
+    <string name="use_sponsorblock">स्पॉन्सरब्लॉक का उपयोग करें</string>
 </resources>
