@@ -294,4 +294,8 @@
     <string name="embed_metadata_summary">ਵੀਡੀਓ ਫਾਈਲ ਵਿੱਚ ਮੈਟਾਡੇਟਾ ਏਮਬੇਡ ਕਰੋ। ਜੇਕਰ ਮੌਜੂਦ ਹੋਵੇ ਤਾਂ ਚੈਪਟਰਾਂ/ਜਾਣਕਾਰੀ ਨੂੰ ਵੀ ਸ਼ਾਮਿਲ ਕਰਦਾ ਹੈ</string>
     <string name="write_description_summary">ਵੇਰਵਾ ਫਾਇਲ ਲਿਖੋ</string>
     <string name="write_description">ਵੇਰਵਾ ਸੰਭਾਲੋ</string>
+    <string name="formats_updated">ਫਾਰਮੈਟ ਅੱਪਡੇਟ ਕੀਤੇ ਗਏ ਹਨ</string>
+    <string name="update_formats_background">ਬੈਕਗ੍ਰਾਊਂਡ ਵਿੱਚ ਫਾਰਮੈਟ ਅੱਪਡੇਟ ਕਰੋ</string>
+    <string name="auto_update_ytdlp">yt-dlp ਆਟੋ-ਅੱਪਡੇਟ ਕਰੋ</string>
+    <string name="use_sponsorblock">ਸਪਾਂਸਰਬਲਾਕ ਦੀ ਵਰਤੋਂ ਕਰੋ</string>
 </resources>

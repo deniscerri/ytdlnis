@@ -294,4 +294,8 @@
     <string name="embed_metadata_summary">Inserta los metadatos en el archivo de vídeo. También inserta capítulos/infojson si están presentes</string>
     <string name="write_description_summary">Escribe una descripción para el archivo</string>
     <string name="write_description">Guardar la descripción</string>
+    <string name="use_sponsorblock">Utilizar SponsorBlock</string>
+    <string name="formats_updated">Formatos actualizados</string>
+    <string name="update_formats_background">Actualizar los formatos en segundo plano</string>
+    <string name="auto_update_ytdlp">Actualización automática para yt-dlp</string>
 </resources>

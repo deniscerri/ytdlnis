@@ -297,4 +297,8 @@
     <string name="use_cookies">Çerezleri Kullan</string>
     <string name="embed_metadata">Meta Verileri Göm</string>
     <string name="embed_metadata_summary">Meta verileri video dosyasına gömün. Varsa bölümleri/infojson\'u da yerleştirir</string>
+    <string name="formats_updated">Biçimler güncellendi</string>
+    <string name="update_formats_background">Biçimleri Arka Planda Güncelle</string>
+    <string name="auto_update_ytdlp">Yt-dlp\'i Otomatik Güncelle</string>
+    <string name="use_sponsorblock">SponsorBlock Kullan</string>
 </resources>
