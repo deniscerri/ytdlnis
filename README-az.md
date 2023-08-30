@@ -28,7 +28,7 @@
 
 ## 💡 Xüsusiyyətlər:
 
-- [1000-dən çox veb-saytdan]("https://github.com/yt-dlp/yt-dlp/blob/master/supportedsites.md")səs/video faylları yüklə
+- [1000-dən çox veb-saytdan]("https://github.com/yt-dlp/yt-dlp/blob/master/supportedsites.md") səs/video faylları yüklə
 - mahnı siyahıların emal et
 	- normal yükləmə elementindəki kimi hər pleylist elementin ayrıca redaktə edin.
 	- bütün elementlər üçün ümumi format seçin və/yaxud onları video kimi endirəndə çoxlu səs formatı seçin
