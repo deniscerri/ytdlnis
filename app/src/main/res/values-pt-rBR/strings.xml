@@ -6,7 +6,7 @@
     <string name="settings">Configurações</string>
     <string name="home">Início</string>
     <string name="directories">Pastas</string>
-    <string name="updating">Atualizações</string>
+    <string name="updating">Atualização</string>
     <string name="ytdl_update_hint">Útil se você tiver problemas ao baixar</string>
     <string name="remove_results">Remover resultados</string>
     <string name="download_all">Baixar todos</string>
@@ -276,7 +276,7 @@
     <string name="sponsorblock_outro">Cartões Finais/Créditos</string>
     <string name="sponsorblock">SponsorBlock</string>
     <string name="force_keyframes">Forçar quadros-chave nos cortes</string>
-    <string name="force_keyframes_summary">Processo mais lento, cortes mais precisos</string>
+    <string name="force_keyframes_summary">Processo mais lento, mas cortes mais precisos</string>
     <string name="subtitle_format">Formato da legenda
 \n</string>
     <string name="hide_thumbnails">Ocultar miniaturas</string>
