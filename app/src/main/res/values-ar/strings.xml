@@ -98,7 +98,7 @@
     <string name="error_restarting_download">حدث خطأ أثناء محاولة استئناف التحميل</string>
     <string name="update_template">تحرير القالب</string>
     <string name="create">إنشاء</string>
-    <string name="update">تحديث</string>
+    <string name="update">تم</string>
     <string name="preferred_download_type">نوع التحميل المفضل</string>
     <string name="file_size">حجم الملف</string>
     <string name="clear_temporary_files">النقر لمسح الملفات المؤقتة</string>
