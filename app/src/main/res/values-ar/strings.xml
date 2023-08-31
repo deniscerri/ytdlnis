@@ -14,7 +14,7 @@
     <string name="update_ytdl">تثبيت أحدث إصدار من yt-dlp</string>
     <string name="source_code">رمز المصدر</string>
     <string name="search_hint">بحث أو إدخال رابط</string>
-    <string name="failed_download">لم يتم تحميل الملف</string>
+    <string name="failed_download">لم نستطع تحميل الملف</string>
     <string name="download_notification_channel_description">إشعار يُظهر مستوى التقدم في تحميل ملفات الصوت والفيديو</string>
     <string name="download_notification_channel_name">تحميلات الملفات</string>
     <string name="ok">حسنًا</string>
@@ -59,9 +59,9 @@
     <string name="sponsorblock_promos">الترويج الذاتي</string>
     <string name="sponsorblock_previews">المعاينات</string>
     <string name="new_template">قالب جديد</string>
-    <string name="adjust_templates">الضبط</string>
+    <string name="adjust_templates">ضبط القوالب</string>
     <string name="edit_selected">تحرير القالب المختار</string>
-    <string name="adjust_video">الضبط</string>
+    <string name="adjust_video">ضبط الفيديو</string>
     <string name="concurrent_downloads">التحميلات المتزامنة</string>
     <string name="concurrent_downloads_summary">عدد التحميلات الممكن إجراؤها في نفس الوقت</string>
     <string name="defaultValue">افتراضي</string>
@@ -69,7 +69,7 @@
     <string name="logs">السجلات</string>
     <string name="date_added">تاريخ الإضافة</string>
     <string name="update_ytdl_nightly">استخدام الإصدار الليلي من yt-dlp</string>
-    <string name="adjust_audio">الضبط</string>
+    <string name="adjust_audio">ضبط الصوت</string>
     <string name="file_name_template">تنسيق العنوان</string>
     <string name="language">اللغة</string>
     <string name="command_templates">قوالب الأوامر</string>
@@ -97,8 +97,8 @@
     <string name="create_shortcut">إنشاء اختصار</string>
     <string name="error_restarting_download">حدث خطأ أثناء محاولة استئناف التحميل</string>
     <string name="update_template">تحرير القالب</string>
-    <string name="create">تم</string>
-    <string name="update">تم</string>
+    <string name="create">إنشاء</string>
+    <string name="update">تحديث</string>
     <string name="preferred_download_type">نوع التحميل المفضل</string>
     <string name="file_size">حجم الملف</string>
     <string name="clear_temporary_files">النقر لمسح الملفات المؤقتة</string>
@@ -141,7 +141,7 @@
     <string name="download_card_summary">إعدادات لكيفية تحميل العناصر</string>
     <string name="Open_File">فتح</string>
     <string name="delete_files_too">الحذف من وحدة التخزين أيضًا</string>
-    <string name="delete_file_too">الحذف من وحدة التخزين أيضًا</string>
+    <string name="delete_file_too">الحذف من وحدة التخزين</string>
     <string name="you_are_going_to_delete_multiple_items">سيتم إزالة العناصر المحددة/المدرجة</string>
     <string name="sponsorblock_sponsors">الرعاة</string>
     <string name="sponsorblock_intro">المقدمة</string>
