@@ -35,6 +35,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
+import androidx.documentfile.provider.DocumentFile
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LifecycleOwner
 import androidx.preference.PreferenceManager
@@ -117,7 +118,7 @@ object UiUtil {
     fun populateCommandCard(card: MaterialCardView, item: CommandTemplate){
         card.findViewById<TextView>(R.id.title).text = item.title
         card.findViewById<TextView>(R.id.content).text = item.content
-        card.findViewById<TextView>(R.id.id).text = item.id.toString()
+        card.tag = item.id
     }
 
      fun showCommandTemplateCreationOrUpdatingSheet(item: CommandTemplate?, context: Activity, lifeCycle: LifecycleOwner, commandTemplateViewModel: CommandTemplateViewModel, newTemplate: (newTemplate: CommandTemplate) -> Unit){
@@ -279,51 +280,62 @@ object UiUtil {
     }
 
 
-    fun openFileIntent(fragmentContext: Context, downloadPath: String) {
-        val file = File(downloadPath)
-        val uri = FileProvider.getUriForFile(
-            fragmentContext,
-            fragmentContext.packageName + ".fileprovider",
-            file
-        )
-        val mime = MimeTypeMap.getSingleton().getMimeTypeFromExtension(file.extension)
-        val i = Intent(Intent.ACTION_VIEW)
-        i.setDataAndType(uri, mime)
-        i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-        try {
-            fragmentContext.startActivity(i)
-        }catch (e: Exception){
-            i.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-            fragmentContext.startActivity(i)
+    fun openFileIntent(context: Context, downloadPath: String) {
+        val uri = downloadPath.runCatching {
+            DocumentFile.fromSingleUri(context, Uri.parse(downloadPath)).run{
+                if (this?.exists() == true){
+                    this.uri
+                }else if (File(this@runCatching).exists()){
+                    FileProvider.getUriForFile(context, context.packageName + ".fileprovider",
+                        File(this@runCatching))
+                }else null
+            }
+        }.getOrNull()
+
+        if (uri == null){
+            Toast.makeText(context, "Error opening file!", Toast.LENGTH_SHORT).show()
+        }else{
+            Intent().apply {
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                action = Intent.ACTION_VIEW
+                data = uri
+            }.run{
+                context.startActivity(this)
+            }
         }
     }
 
-    fun shareFileIntent(fragmentContext: Context, paths: List<String>){
+    fun shareFileIntent(context: Context, paths: List<String>){
         val uris : ArrayList<Uri> = arrayListOf()
-        paths.forEach {
-            val file = File(it)
-            if (! file.exists()) return@forEach
-            val uri = FileProvider.getUriForFile(
-                fragmentContext,
-                fragmentContext.packageName + ".fileprovider",
-                file
-            )
-            uris.add(uri)
+        paths.runCatching {
+            this.forEach {path ->
+                val uri = DocumentFile.fromSingleUri(context, Uri.parse(path)).run{
+                    if (this?.exists() == true){
+                        this.uri
+                    }else if (File(path).exists()){
+                        FileProvider.getUriForFile(context, context.packageName + ".fileprovider",
+                            File(path))
+                    }else null
+                }
+                if (uri != null) uris.add(uri)
+            }
+
         }
 
-
-        val shareIntent: Intent = Intent().apply {
-            action = Intent.ACTION_SEND_MULTIPLE
-            putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris)
-            type = "*/*"
-            putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
-        }
-        try {
-            fragmentContext.startActivity(Intent.createChooser(shareIntent, fragmentContext.getString(R.string.share)))
-        }catch (e: Exception){
-            val intent = Intent.createChooser(shareIntent, fragmentContext.getString(R.string.share))
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-            fragmentContext.startActivity(intent)
+        if (uris.isEmpty()){
+            Toast.makeText(context, "Error sharing files!", Toast.LENGTH_SHORT).show()
+        }else{
+            Intent().apply {
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                action = Intent.ACTION_SEND_MULTIPLE
+                putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris)
+                type = if (uris.size == 1) uris[0].let { context.contentResolver.getType(it) } ?: "media/*" else "*/*"
+                putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+            }.run{
+                context.startActivity(Intent.createChooser(this, context.getString(R.string.share)))
+            }
         }
     }
 
@@ -359,6 +371,24 @@ object UiUtil {
 
         }
         datePicker.show(fragmentManager, "datepicker")
+    }
+
+    fun showTimePicker(fragmentManager: FragmentManager , onSubmit : (chosenTime: Calendar) -> Unit ){
+        val currentDate = Calendar.getInstance()
+        val date = Calendar.getInstance()
+
+        val timepicker = MaterialTimePicker.Builder()
+            .setTimeFormat(TimeFormat.CLOCK_24H)
+            .setHour(currentDate.get(Calendar.HOUR_OF_DAY))
+            .setMinute(currentDate.get(Calendar.MINUTE))
+            .build()
+
+        timepicker.addOnPositiveButtonClickListener{
+            date[Calendar.HOUR_OF_DAY] = timepicker.hour
+            date[Calendar.MINUTE] = timepicker.minute
+            onSubmit(date)
+        }
+        timepicker.show(fragmentManager, "timepicker")
     }
 
     fun showDownloadItemDetailsCard(

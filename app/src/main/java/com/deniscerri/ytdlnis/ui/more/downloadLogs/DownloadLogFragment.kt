@@ -25,9 +25,11 @@ import com.neo.highlight.util.listener.HighlightTextWatcher
 import com.neo.highlight.util.scheme.ColorScheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import java.util.regex.Pattern
+import kotlin.math.log
 
 
 class DownloadLogFragment : Fragment() {
@@ -78,7 +80,7 @@ class DownloadLogFragment : Fragment() {
 
 
         logViewModel = ViewModelProvider(this)[LogViewModel::class.java]
-        logViewModel.items.map { it.find { log -> log.id == id } }.observe(viewLifecycleOwner) { logItem ->
+        logViewModel.getLogFlowByID(id!!).observe(viewLifecycleOwner){logItem ->
             mainActivity.runOnUiThread{
                 content.text = logItem?.content
                 content.scrollTo(0, content.height)
@@ -86,9 +88,8 @@ class DownloadLogFragment : Fragment() {
             }
         }
 
-
         CoroutineScope(Dispatchers.IO).launch {
-            val logItem = logViewModel.getItemById(id!!)
+            val logItem = logViewModel.getItemById(id)
             topAppBar.title = logItem.title
         }
 

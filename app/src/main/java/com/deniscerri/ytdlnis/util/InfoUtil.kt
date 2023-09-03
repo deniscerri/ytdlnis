@@ -133,13 +133,14 @@ class InfoUtil(private val context: Context) {
 
     @Throws(JSONException::class)
     fun getYoutubeVideo(url: String): List<ResultItem?> {
+        val theURL = url.replace("\\?list.*".toRegex(), "")
         return try {
-            val id = getIDFromYoutubeURL(url)
+            val id = getIDFromYoutubeURL(theURL)
             val res = genericRequest("$pipedURL/streams/$id")
-            if (res.length() == 0) getFromYTDL(url) else listOf(createVideoFromPipedJSON(res, url))
+            if (res.length() == 0) getFromYTDL(theURL) else listOf(createVideoFromPipedJSON(res, theURL))
         }catch (e: Exception){
-            val v = getFromYTDL(url)
-            v.forEach { it!!.url = url }
+            val v = getFromYTDL(theURL)
+            v.forEach { it!!.url = theURL }
             v
         }
     }
@@ -519,8 +520,11 @@ class InfoUtil(private val context: Context) {
 
                 YoutubeDL.getInstance().execute(request){ progress, _, line ->
                     try{
-                        val listOfStrings = JSONArray(line)
-                        progress(parseYTDLFormats(listOfStrings))
+                        if (line.isNotBlank()){
+                            val listOfStrings = JSONArray(line)
+                            progress(parseYTDLFormats(listOfStrings))
+                        }
+
                     }catch (e: Exception){
                         progress(emptyList())
                     }
@@ -932,15 +936,37 @@ class InfoUtil(private val context: Context) {
         }
     }
 
-    fun buildYoutubeDLRequest(downloadItem: DownloadItem) : YoutubeDLRequest{
-        val cacheDir = FileUtil.getCachePath(context)
-        val tempFileDir = File(cacheDir, downloadItem.id.toString())
-        tempFileDir.delete()
-        tempFileDir.mkdirs()
+    fun getFilePaths(request: YoutubeDLRequest) : List<String>{
+        return try{
+            request.addOption("--print", "filename")
+            val res = YoutubeDL.getInstance().execute(request)
+            val results: Array<String?> = try {
+                val lineSeparator = System.getProperty("line.separator")
+                res.out.split(lineSeparator!!).toTypedArray()
+            } catch (e: Exception) {
+                arrayOf(res.out)
+            }
+            results.filter { !it.isNullOrBlank() }.map { it!!.substring(0, it.lastIndexOf(".")) }.map { it.substring(it.lastIndexOf("/") + 1, it.length) }
+        }catch (e: Exception){
+            listOf()
+        }
+    }
 
+    fun buildYoutubeDLRequest(downloadItem: DownloadItem) : YoutubeDLRequest{
         val url = downloadItem.url
         val request = YoutubeDLRequest(url)
         val type = downloadItem.type
+
+        val downDir : File
+        if (!sharedPreferences.getBoolean("cache_downloads", true) && File(FileUtil.formatPath(downloadItem.downloadPath)).canWrite()){
+            downDir = File(FileUtil.formatPath(downloadItem.downloadPath))
+        }else{
+            val cacheDir = FileUtil.getCachePath(context)
+            downDir = File(cacheDir, downloadItem.id.toString())
+            downDir.delete()
+            downDir.mkdirs()
+        }
+
 
         val aria2 = sharedPreferences.getBoolean("aria2", false)
         if (aria2) {
@@ -1078,7 +1104,7 @@ class InfoUtil(private val context: Context) {
                     }
                 }
 
-                request.addOption("-P", tempFileDir.absolutePath)
+                request.addOption("-P", downDir.absolutePath)
 
                 if (downloadItem.audioPreferences.splitByChapters && downloadItem.downloadSections.isBlank()){
                     request.addOption("--split-chapters")
@@ -1270,7 +1296,7 @@ class InfoUtil(private val context: Context) {
                     request.addOption("--ppa", "ffmpeg:-an")
                 }
 
-                request.addOption("-P", tempFileDir.absolutePath)
+                request.addOption("-P", downDir.absolutePath)
 
                 if (downloadItem.videoPreferences.splitByChapters  && downloadItem.downloadSections.isBlank()){
                     request.addOption("--split-chapters")
@@ -1283,13 +1309,13 @@ class InfoUtil(private val context: Context) {
 
             }
             DownloadViewModel.Type.command -> {
+                request.addOption("-P", downDir.absolutePath)
                 request.addOption(
                     "--config-locations",
                     File(context.cacheDir.absolutePath + "/config[${downloadItem.id}].txt").apply {
                         writeText(downloadItem.format.format_note)
                     }.absolutePath
                 )
-                request.addOption("-P", tempFileDir.absolutePath)
 
             }
         }

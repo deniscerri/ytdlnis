@@ -735,6 +735,7 @@
         <item>@string/in_queue</item>
         <item>@string/cancelled</item>
         <item>@string/errored</item>
+        <item>@string/saved</item>
         <item>@string/cookies</item>
         <item>@string/command_templates</item>
         <item>@string/shortcuts</item>
@@ -747,6 +748,7 @@
         <item>queued</item>
         <item>cancelled</item>
         <item>errored</item>
+        <item>saved</item>
         <item>cookies</item>
         <item>templates</item>
         <item>shortcuts</item>

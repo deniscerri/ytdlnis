@@ -1,11 +1,15 @@
 package com.deniscerri.ytdlnis.ui.more.settings
 
 import android.content.ComponentName
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build.VERSION
 import android.os.Build.VERSION_CODES
 import android.os.Bundle
+import android.os.PowerManager
+import android.provider.Settings
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.LocaleListCompat
@@ -124,6 +128,23 @@ class GeneralSettingsFragment : BaseSettingsFragment() {
                         PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
                         PackageManager.DONT_KILL_APP)
                 }
+                true
+            }
+
+        var ignoreBatteryOptimization = findPreference<Preference>("ignore_battery")
+        val packageName: String = requireContext().packageName
+        val pm = requireContext().applicationContext.getSystemService(Context.POWER_SERVICE) as PowerManager
+        if (pm.isIgnoringBatteryOptimizations(packageName)) {
+            ignoreBatteryOptimization!!.isVisible = false
+        }
+
+        ignoreBatteryOptimization = findPreference("ignore_battery")
+        ignoreBatteryOptimization!!.onPreferenceClickListener =
+            Preference.OnPreferenceClickListener {
+                val intent = Intent()
+                intent.action = Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS
+                intent.data = Uri.parse("package:" + requireContext().packageName)
+                startActivity(intent)
                 true
             }
     }

@@ -23,7 +23,7 @@
 
     <SwitchPreferenceCompat
         android:widgetLayout="@layout/preferece_material_switch"
-        android:defaultValue="false"
+        android:defaultValue="true"
         app:icon="@drawable/ic_nightly"
         app:key="nightly_ytdl"
         android:title="@string/update_ytdl_nightly"

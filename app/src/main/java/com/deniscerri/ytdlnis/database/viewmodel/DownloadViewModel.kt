@@ -38,14 +38,19 @@ import com.deniscerri.ytdlnis.database.models.VideoPreferences
 import com.deniscerri.ytdlnis.database.repository.DownloadRepository
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.InfoUtil
+import com.deniscerri.ytdlnis.work.AlarmScheduler
 import com.deniscerri.ytdlnis.work.DownloadWorker
 import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import java.io.File
+import java.text.SimpleDateFormat
+import java.util.Calendar
 import java.util.Locale
 import java.util.concurrent.TimeUnit
 
@@ -554,9 +559,16 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
 
     suspend fun queueDownloads(items: List<DownloadItem>) = CoroutineScope(Dispatchers.IO).launch {
         val context = App.instance
+        val alarmScheduler = AlarmScheduler(context)
         val activeAndQueuedDownloads = repository.getActiveAndQueuedDownloads()
         val queuedItems = mutableListOf<DownloadItem>()
         var exists = false
+
+        //if scheduler is on
+        val useScheduler = sharedPreferences.getBoolean("use_scheduler", false)
+        if (useScheduler && !alarmScheduler.isDuringTheScheduledTime()){
+            alarmScheduler.schedule()
+        }
 
         items.forEach {
             if (it.status != DownloadRepository.Status.Paused.toString()) it.status = DownloadRepository.Status.Queued.toString()
@@ -586,7 +598,23 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
             }
         }
 
-        startDownloadWorker(queuedItems)
+        if (!useScheduler || alarmScheduler.isDuringTheScheduledTime() || items.any { it.downloadStartTime > 0L } ){
+            startDownloadWorker(queuedItems)
+
+            if(!useScheduler){
+                queuedItems.filter { it.downloadStartTime != 0L && (it.title.isEmpty() || it.author.isEmpty() || it.thumb.isEmpty()) }.forEach {
+                    try{
+                        updateDownloadItem(it, infoUtil, dbManager.downloadDao, dbManager.resultDao)
+                    }catch (ignored: Exception){}
+                }
+            }else{
+                queuedItems.filter { it.title.isEmpty() || it.author.isEmpty() || it.thumb.isEmpty() }.forEach {
+                    try{
+                        updateDownloadItem(it, infoUtil, dbManager.downloadDao, dbManager.resultDao)
+                    }catch (ignored: Exception){}
+                }
+            }
+        }
     }
 
     private suspend fun startDownloadWorker(queuedItems: List<DownloadItem>) {
@@ -598,12 +626,12 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
         if (currentWork.size == 0 || currentWork.none{ it.state == WorkInfo.State.RUNNING } || (queuedItems.isNotEmpty() && queuedItems[0].downloadStartTime != 0L)){
 
             val currentTime = System.currentTimeMillis()
-            var delay = 1000L
+            var delay = 0L
             if (queuedItems.isNotEmpty()){
                 delay = if (queuedItems[0].downloadStartTime != 0L){
                     queuedItems[0].downloadStartTime.minus(currentTime)
                 } else 0
-                if (delay <= 0L) delay = 1000L
+                if (delay <= 60000L) delay = 0L
             }
 
 
@@ -634,12 +662,6 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
             Looper.prepare().run {
                 Toast.makeText(context, context.getString(R.string.metered_network_download_start_info), Toast.LENGTH_LONG).show()
             }
-        }
-
-        queuedItems.filter { it.downloadStartTime != 0L && (it.title.isEmpty() || it.author.isEmpty() || it.thumb.isEmpty()) }?.forEach {
-            try{
-                updateDownloadItem(it, infoUtil, dbManager.downloadDao, dbManager.resultDao)
-            }catch (ignored: Exception){}
         }
     }
 

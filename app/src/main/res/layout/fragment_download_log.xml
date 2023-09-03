@@ -37,11 +37,9 @@
             android:paddingBottom="150dp"
             >
 
-            <LinearLayout
+            <HorizontalScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:focusableInTouchMode="true"
-                android:orientation="vertical">
+                android:layout_height="wrap_content">
 
                 <TextView
                     android:id="@+id/content"
@@ -49,11 +47,12 @@
                     android:fontFamily="monospace"
                     android:textSize="15sp"
                     android:gravity="bottom"
-                    android:layout_width="match_parent"
+                    android:scrollbars="vertical|horizontal"
+                    android:layout_width="wrap_content"
                     android:textIsSelectable="true"
                     android:layout_height="wrap_content" />
 
-            </LinearLayout>
+            </HorizontalScrollView>
 
         </ScrollView>
 

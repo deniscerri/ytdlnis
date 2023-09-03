@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
+import androidx.work.WorkQuery
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.adapter.ActiveDownloadAdapter
 import com.deniscerri.ytdlnis.database.models.DownloadItem
@@ -131,7 +132,7 @@ class ActiveDownloadsFragment : Fragment(), ActiveDownloadAdapter.OnItemClickLis
         }
 
         WorkManager.getInstance(requireContext())
-            .getWorkInfosByTagLiveData("download")
+            .getWorkInfosLiveData(WorkQuery.fromStates(WorkInfo.State.RUNNING))
             .observe(viewLifecycleOwner){ list ->
                 list.forEach {work ->
                     if (work == null) return@forEach

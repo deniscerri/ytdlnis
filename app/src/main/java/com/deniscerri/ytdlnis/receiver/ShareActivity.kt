@@ -114,6 +114,7 @@ class ShareActivity : BaseActivity() {
             loadingBottomSheet.show()
             val cancel = loadingBottomSheet.findViewById<TextView>(R.id.cancel)
             cancel!!.setOnClickListener {
+                resultViewModel.deleteAll()
                 this.finish()
             }
 

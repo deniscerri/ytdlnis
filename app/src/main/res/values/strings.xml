@@ -2,7 +2,6 @@
 <resources>
     <string name="worst_quality">Worst Quality</string>
     <string name="best_quality">Best Quality</string>
-    <string name="app_name" translatable="false">YTDLnis</string>
     <string name="search">Search</string>
     <string name="remove_all">Remove All</string>
     <string name="remove_results">Clear Results</string>
@@ -304,4 +303,8 @@
     <string name="update_formats_background">Update Formats in Background</string>
     <string name="auto_update_ytdlp">Auto-Update yt-dlp</string>
     <string name="use_sponsorblock">Use SponsorBlock</string>
+    <string name="cache_first">Cache Downloads First</string>
+    <string name="cache_first_summary">Download in the internal storage then transfer afterwards. Use this when you can\'t write directly to storage</string>
+    <string name="scheduling">Scheduling</string>
+    <string name="use_scheduler">Download On Schedule</string>
 </resources>

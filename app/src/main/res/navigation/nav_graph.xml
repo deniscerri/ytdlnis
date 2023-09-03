@@ -2,9 +2,24 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:label="@string/more"
+    android:id="@+id/main_nav"
     app:startDestination="@id/homeFragment">
 
+    <action
+        android:id="@+id/action_mainSettingsFragment_to_folderSettingsFragment"
+        app:destination="@id/settingsNav" />
+    <action
+        android:id="@+id/action_mainSettingsFragment_to_updateSettingsFragment"
+        app:destination="@id/settingsNav" />
+    <action
+        android:id="@+id/action_mainSettingsFragment_to_processingSettingsFragment"
+        app:destination="@id/settingsNav" />
+    <action
+        android:id="@+id/action_mainSettingsFragment_to_appearanceSettingsFragment"
+        app:destination="@id/settingsNav" />
+    <action
+        android:id="@+id/action_mainSettingsFragment_to_downloadSettingsFragment"
+        app:destination="@id/settingsNav" />
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.deniscerri.ytdlnis.ui.HomeFragment"
@@ -46,17 +61,15 @@
         <action
             android:id="@+id/action_moreFragment_to_downloadLogListFragment2"
             app:destination="@id/downloadLogListFragment" />
+        <action
+            android:id="@+id/action_moreFragment_to_settingsNav"
+            app:destination="@id/settingsNav" />
     </fragment>
     <activity
         android:id="@+id/terminalActivity"
         android:name="com.deniscerri.ytdlnis.ui.more.TerminalActivity"
         android:label="activity_terminal"
         tools:layout="@layout/activity_terminal" />
-    <activity
-        android:id="@+id/activitySettings"
-        android:name="com.deniscerri.ytdlnis.ui.more.settings.SettingsActivity"
-        android:label="activity_settings"
-        tools:layout="@layout/activity_settings" />
     <fragment
         android:id="@+id/cookiesFragment"
         android:name="com.deniscerri.ytdlnis.ui.more.CookiesFragment"
@@ -88,4 +101,52 @@
         android:id="@+id/resultCardDetailsDialog"
         android:name="com.deniscerri.ytdlnis.ui.downloadcard.ResultCardDetailsDialog"
         android:label="ResultCardDetailsDialog" />
+    <navigation android:id="@+id/settingsNav"
+        app:startDestination="@id/settingsFrame">
+        <fragment
+            android:id="@+id/settingsFrame"
+            android:name="com.deniscerri.ytdlnis.ui.more.settings.SettingsFragmentFrame"
+            android:label="settings_frame"
+            tools:layout="@layout/fragment_settings" />
+        <fragment
+            android:id="@+id/folderSettingsFragment"
+            android:name="com.deniscerri.ytdlnis.ui.more.settings.FolderSettingsFragment"
+            android:label="FolderSettingsFragment" />
+        <fragment
+            android:id="@+id/processingSettingsFragment"
+            android:name="com.deniscerri.ytdlnis.ui.more.settings.ProcessingSettingsFragment"
+            android:label="ProcessingSettingsFragment" />
+        <fragment
+            android:id="@+id/downloadSettingsFragment"
+            android:name="com.deniscerri.ytdlnis.ui.more.settings.DownloadSettingsFragment"
+            android:label="DownloadSettingsFragment" />
+        <fragment
+            android:id="@+id/updateSettingsFragment"
+            android:name="com.deniscerri.ytdlnis.ui.more.settings.UpdateSettingsFragment"
+            android:label="UpdateSettingsFragment" />
+        <fragment
+            android:id="@+id/mainSettingsFragment"
+            android:name="com.deniscerri.ytdlnis.ui.more.settings.MainSettingsFragment"
+            android:label="MainSettingsFragment">
+            <action
+                android:id="@+id/action_mainSettingsFragment_to_appearanceSettingsFragment"
+                app:destination="@id/appearanceSettingsFragment" />
+            <action
+                android:id="@+id/action_mainSettingsFragment_to_folderSettingsFragment"
+                app:destination="@id/folderSettingsFragment" />
+            <action
+                android:id="@+id/action_mainSettingsFragment_to_downloadSettingsFragment"
+                app:destination="@id/downloadSettingsFragment" />
+            <action
+                android:id="@+id/action_mainSettingsFragment_to_processingSettingsFragment"
+                app:destination="@id/processingSettingsFragment" />
+            <action
+                android:id="@+id/action_mainSettingsFragment_to_updateSettingsFragment"
+                app:destination="@id/updateSettingsFragment" />
+        </fragment>
+        <fragment
+            android:id="@+id/appearanceSettingsFragment"
+            android:name="com.deniscerri.ytdlnis.ui.more.settings.GeneralSettingsFragment"
+            android:label="AppearanceSettingsFragment" />
+    </navigation>
 </navigation>

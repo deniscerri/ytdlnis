@@ -29,6 +29,7 @@ class FolderSettingsFragment : BaseSettingsFragment() {
     private var videoPath: Preference? = null
     private var commandPath: Preference? = null
     private var accessAllFiles : Preference? = null
+    private var cacheDownloads : Preference? = null
     private var audioFilenameTemplate : EditTextPreference? = null
     private var videoFilenameTemplate : EditTextPreference? = null
     private var clearCache: Preference? = null
@@ -46,6 +47,7 @@ class FolderSettingsFragment : BaseSettingsFragment() {
         videoPath = findPreference("video_path")
         commandPath = findPreference("command_path")
         accessAllFiles = findPreference("access_all_files")
+        cacheDownloads = findPreference("cache_downloads")
         videoFilenameTemplate = findPreference("file_name_template")
         audioFilenameTemplate = findPreference("file_name_template_audio")
         clearCache = findPreference("clear_cache")
@@ -64,6 +66,10 @@ class FolderSettingsFragment : BaseSettingsFragment() {
         if((VERSION.SDK_INT >= 30 && Environment.isExternalStorageManager()) ||
             VERSION.SDK_INT < 30) {
             accessAllFiles!!.isVisible = false
+            cacheDownloads!!.isEnabled = true
+        }else{
+            editor.putBoolean("cache_downloads", false).apply()
+            cacheDownloads!!.isEnabled = false
         }
 
         editor.apply()

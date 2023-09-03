@@ -23,6 +23,25 @@
         android:summary="@string/access_all_directories_summary"
         app:title="@string/access_all_directories" />
 
+    <SwitchPreferenceCompat
+        android:widgetLayout="@layout/preferece_material_switch"
+        app:defaultValue="true"
+        app:icon="@drawable/if_file_rename"
+        android:enabled="false"
+        app:key="cache_downloads"
+        app:summary="@string/cache_first_summary"
+        app:title="@string/cache_first" />
+
+
+    <SwitchPreferenceCompat
+        android:widgetLayout="@layout/preferece_material_switch"
+        app:defaultValue="false"
+        android:icon="@drawable/baseline_save_24"
+        android:key="keep_cache"
+        app:summary="@string/keep_cache_summary"
+        app:title="@string/keep_cache" />
+
+
 
     <EditTextPreference
         android:icon="@drawable/ic_textformat"
@@ -57,13 +76,5 @@
         app:key="clear_cache"
         android:summary="@string/clear_temporary_files_summary"
         app:title="@string/clear_temporary_files" />
-
-    <SwitchPreferenceCompat
-        android:widgetLayout="@layout/preferece_material_switch"
-        app:defaultValue="false"
-        android:icon="@drawable/baseline_save_24"
-        android:key="keep_cache"
-        app:summary="@string/keep_cache_summary"
-        app:title="@string/keep_cache" />
 
 </PreferenceScreen>

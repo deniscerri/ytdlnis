@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name" translatable="false">YTDLnis</string>
     <string name="search">Arama</string>
     <string name="remove_all">Hepsini Kaldır</string>
     <string name="remove_results">Sonuçları Temizle</string>

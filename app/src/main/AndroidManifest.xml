@@ -15,16 +15,20 @@
     <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"
+        android:maxSdkVersion="32"/>
+    <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
+
 
     <application
         android:name=".App"
         android:allowBackup="false"
-        android:configChanges="layoutDirection|locale"
+        android:configChanges="orientation|screenSize|smallestScreenSize|screenLayout|locale"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:enableOnBackInvokedCallback="true"
         android:extractNativeLibs="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
+        android:label="${appName}"
         android:localeConfig="@xml/locales_config"
         android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
@@ -38,14 +42,14 @@
 
         <activity
             android:name=".MainActivity"
-            android:configChanges="smallestScreenSize|layoutDirection|locale|orientation|screenSize"
+            android:configChanges="orientation|screenSize|smallestScreenSize|screenLayout|locale"
             android:exported="true"
             android:windowSoftInputMode="adjustPan">
 
         </activity>
         <activity
             android:name=".receiver.ShareActivity"
-            android:configChanges="smallestScreenSize|layoutDirection|locale|orientation|screenSize"
+            android:configChanges="orientation|screenSize|smallestScreenSize|screenLayout|locale"
             android:excludeFromRecents="true"
             android:exported="true"
             android:launchMode="singleInstance"
@@ -71,7 +75,7 @@
         </activity>
         <activity
             android:name=".receiver.ShareFileActivity"
-            android:configChanges="smallestScreenSize|layoutDirection|locale|orientation|screenSize"
+            android:configChanges="orientation|screenSize|smallestScreenSize|screenLayout|locale"
             android:excludeFromRecents="true"
             android:exported="true"
             android:launchMode="singleInstance"
@@ -92,7 +96,7 @@
         </activity>
         <activity
             android:name=".ui.more.TerminalActivity"
-            android:configChanges="smallestScreenSize|layoutDirection|locale|orientation|screenSize"
+            android:configChanges="orientation|screenSize|smallestScreenSize|screenLayout|locale"
             android:exported="true"
             android:label="@string/terminal"
             android:parentActivityName=".MainActivity">
@@ -122,7 +126,7 @@
             android:enabled="true"
             android:icon="@mipmap/ic_launcher"
             android:roundIcon="@mipmap/ic_launcher_round"
-            android:configChanges="smallestScreenSize|layoutDirection|locale|orientation|screenSize"
+            android:configChanges="orientation|screenSize|smallestScreenSize|screenLayout|locale"
             android:targetActivity=".MainActivity"
             android:windowSoftInputMode="adjustPan"
             android:exported="true">
@@ -144,7 +148,7 @@
             android:exported="true"
             android:icon="@mipmap/ic_launcher_dark"
             android:roundIcon="@mipmap/ic_launcher_round_dark"
-            android:configChanges="smallestScreenSize|layoutDirection|locale|orientation|screenSize"
+            android:configChanges="orientation|screenSize|smallestScreenSize|screenLayout|locale"
             android:targetActivity=".MainActivity"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
@@ -164,7 +168,7 @@
             android:exported="true"
             android:icon="@mipmap/ic_launcher_light"
             android:roundIcon="@mipmap/ic_launcher_round_light"
-            android:configChanges="smallestScreenSize|layoutDirection|locale|orientation|screenSize"
+            android:configChanges="orientation|screenSize|smallestScreenSize|screenLayout|locale"
             android:targetActivity=".MainActivity"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
@@ -180,7 +184,7 @@
 
         <activity
             android:name=".ui.more.WebViewActivity"
-            android:configChanges="smallestScreenSize|layoutDirection|locale|orientation|screenSize"
+            android:configChanges="orientation|screenSize|smallestScreenSize|screenLayout|locale"
             android:exported="true"
             android:parentActivityName=".MainActivity"
             android:windowSoftInputMode="adjustResize">
@@ -193,10 +197,12 @@
 
         <receiver android:name=".receiver.CancelDownloadNotificationReceiver" />
         <receiver android:name=".receiver.PauseDownloadNotificationReceiver" />
+        <receiver android:name=".receiver.AlarmStartReceiver" />
+        <receiver android:name=".receiver.AlarmStopReceiver" />
 
         <activity
             android:name=".receiver.ResumeActivity"
-            android:configChanges="smallestScreenSize|layoutDirection|locale|orientation|screenSize"
+            android:configChanges="orientation|screenSize|smallestScreenSize|screenLayout|locale"
             android:excludeFromRecents="true"
             android:exported="true"
             android:launchMode="singleInstance"

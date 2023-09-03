@@ -1,12 +1,11 @@
 package com.deniscerri.ytdlnis.ui.more.settings
 
-import android.os.Bundle
-import android.view.View
+import android.content.DialogInterface
 import android.view.inputmethod.InputMethodManager
-import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.EditTextPreference
 import androidx.preference.ListPreference
+import androidx.preference.MultiSelectListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.deniscerri.ytdlnis.R
@@ -42,6 +41,24 @@ abstract class BaseSettingsFragment : PreferenceFragmentCompat() {
                             preference.value = newValue
                         }
                         dialog.dismiss()
+                    }
+                    .setNegativeButton(R.string.cancel, null)
+                    .show()
+            }
+            is MultiSelectListPreference -> {
+                val selectedItems = preference.entryValues.map {
+                    preference.values.contains(it)
+                }.toBooleanArray()
+                MaterialAlertDialogBuilder(requireContext())
+                    .setTitle(preference.title)
+                    .setMultiChoiceItems(preference.entries, selectedItems) { _, _, _ ->
+                        val newValues = preference.entryValues
+                            .filterIndexed { index, _ -> selectedItems[index] }
+                            .map { it.toString() }
+                            .toMutableSet()
+                        if (preference.callChangeListener(newValues)) {
+                            preference.values = newValues
+                        }
                     }
                     .setNegativeButton(R.string.cancel, null)
                     .show()

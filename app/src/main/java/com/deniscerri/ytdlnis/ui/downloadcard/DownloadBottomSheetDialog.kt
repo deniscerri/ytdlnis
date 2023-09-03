@@ -38,6 +38,7 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.tabs.TabLayout
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.MutableSharedFlow
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -80,7 +81,6 @@ class DownloadBottomSheetDialog(private val resultItem: ResultItem, private val 
             }
         }
 
-
         tabLayout = view.findViewById(R.id.download_tablayout)
         viewPager2 = view.findViewById(R.id.download_viewpager)
 
@@ -88,6 +88,7 @@ class DownloadBottomSheetDialog(private val resultItem: ResultItem, private val 
             isNestedScrollingEnabled = false
             overScrollMode = View.OVER_SCROLL_NEVER
         }
+
         downloadAudioFragment = DownloadAudioFragment(resultItem, downloadItem)
         downloadVideoFragment = DownloadVideoFragment(resultItem, downloadItem)
         val fragments = mutableListOf(downloadAudioFragment, downloadVideoFragment)

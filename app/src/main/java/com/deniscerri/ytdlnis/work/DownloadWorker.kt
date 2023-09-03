@@ -35,6 +35,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import java.io.File
+import java.util.Calendar
 import kotlin.random.Random
 
 
@@ -53,6 +54,7 @@ class DownloadWorker(
         val resultDao = dbManager.resultDao
         val logRepo = LogRepository(dbManager.logDao)
         val handler = Handler(Looper.getMainLooper())
+        val alarmScheduler = AlarmScheduler(context)
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
         val time = System.currentTimeMillis() + 6000
         val queuedItems = dao.getQueuedDownloadsThatAreNotScheduledChunked(time)
@@ -75,8 +77,14 @@ class DownloadWorker(
             }
 
             val running = ArrayList(runningYTDLInstances)
+            val useScheduler = sharedPreferences.getBoolean("use_scheduler", false)
             if (items.isEmpty() && running.isEmpty()) WorkManager.getInstance(context).cancelWorkById(this@DownloadWorker.id)
 
+            if (useScheduler){
+                if (items.none{it.downloadStartTime > 0L} && running.isEmpty() && !alarmScheduler.isDuringTheScheduledTime()) {
+                    WorkManager.getInstance(context).cancelWorkById(this@DownloadWorker.id)
+                }
+            }
             val concurrentDownloads = sharedPreferences.getInt("concurrent_downloads", 1) - running.size
             val eligibleDownloads = items.take(if (concurrentDownloads < 0) 0 else concurrentDownloads).filter {  it.id !in running }
 
@@ -114,7 +122,7 @@ class DownloadWorker(
                                     "Format: ${downloadItem.format}\n\n"
                                 }
                                 else { "" } +
-                                "Command: ${infoUtil.parseYTDLRequestString(request)} ${downloadItem.extraCommands}\n\n",
+                                "Command:\n ${infoUtil.parseYTDLRequestString(request)} ${downloadItem.extraCommands}\n\n",
                         downloadItem.format,
                         downloadItem.type,
                         System.currentTimeMillis(),
@@ -147,33 +155,47 @@ class DownloadWorker(
                         }
                     }.onSuccess {
                         runningYTDLInstances.remove(downloadItem.id)
-                        FileUtil.deleteConfigFiles(request)
-
                         val wasQuickDownloaded = updateDownloadItem(downloadItem, infoUtil, dao, resultDao)
                         runBlocking {
                             var finalPaths : List<String>?
-                            //move file from internal to set download directory
-                            setProgressAsync(workDataOf("progress" to 100, "output" to "Moving file to ${FileUtil.formatPath(downloadLocation)}", "id" to downloadItem.id))
-                            try {
-                                finalPaths = withContext(Dispatchers.IO){
-                                    FileUtil.moveFile(tempFileDir.absoluteFile,context, downloadLocation, keepCache){ p ->
-                                        setProgressAsync(workDataOf("progress" to p, "output" to "Moving file to ${FileUtil.formatPath(downloadLocation)}", "id" to downloadItem.id))
-                                    }
-                                }
 
-                                if (finalPaths.isNotEmpty()){
-                                    setProgressAsync(workDataOf("progress" to 100, "output" to "Moved file to $downloadLocation", "id" to downloadItem.id))
-                                }else{
+                            //if there was no cache used
+                            if (!sharedPreferences.getBoolean("cache_downloads", true) && File(FileUtil.formatPath(downloadItem.downloadPath)).canWrite()){
+                                setProgressAsync(workDataOf("progress" to 100, "output" to "Scanning Files", "id" to downloadItem.id))
+                                val p = infoUtil.getFilePaths(request)
+                                finalPaths = File(FileUtil.formatPath(downloadLocation))
+                                        .walkTopDown()
+                                        .filter { it.isFile && p.contains(it.nameWithoutExtension) }
+                                        .sortedByDescending { it.length() }
+                                        .map { it.absolutePath }
+                                        .toList()
+
+                                FileUtil.scanMedia(finalPaths, context)
+                            }else{
+                                //move file from internal to set download directory
+                                setProgressAsync(workDataOf("progress" to 100, "output" to "Moving file to ${FileUtil.formatPath(downloadLocation)}", "id" to downloadItem.id))
+                                try {
+                                    finalPaths = withContext(Dispatchers.IO){
+                                        FileUtil.moveFile(tempFileDir.absoluteFile,context, downloadLocation, keepCache){ p ->
+                                            setProgressAsync(workDataOf("progress" to p, "output" to "Moving file to ${FileUtil.formatPath(downloadLocation)}", "id" to downloadItem.id))
+                                        }
+                                    }
+
+                                    if (finalPaths.isNotEmpty()){
+                                        setProgressAsync(workDataOf("progress" to 100, "output" to "Moved file to $downloadLocation", "id" to downloadItem.id))
+                                    }else{
+                                        finalPaths = listOf(context.getString(R.string.unfound_file))
+                                    }
+                                }catch (e: Exception){
                                     finalPaths = listOf(context.getString(R.string.unfound_file))
+                                    e.printStackTrace()
+                                    handler.postDelayed({
+                                        Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
+                                    }, 1000)
                                 }
-                            }catch (e: Exception){
-                                finalPaths = listOf(context.getString(R.string.unfound_file))
-                                e.printStackTrace()
-                                handler.postDelayed({
-                                    Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
-                                }, 1000)
                             }
 
+                            FileUtil.deleteConfigFiles(request)
 
                             //put download in history
                             val incognito = sharedPreferences.getBoolean("incognito", false)

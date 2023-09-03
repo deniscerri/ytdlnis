@@ -9,6 +9,7 @@ import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.os.FileObserver
+import android.os.PersistableBundle
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
@@ -76,7 +77,7 @@ class TerminalActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_terminal)
 
-        downloadID = System.currentTimeMillis().toInt() % 100000
+        downloadID = savedInstanceState?.getInt("downloadID") ?: (System.currentTimeMillis().toInt() % 100000)
         downloadFile = File(cacheDir.absolutePath + "/$downloadID.txt")
         if (! downloadFile.exists()) downloadFile.createNewFile()
         imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
@@ -233,6 +234,22 @@ class TerminalActivity : BaseActivity() {
 
         input?.enableTextHighlight()
         output?.enableTextHighlight()
+
+        input?.setText(savedInstanceState?.getString("input") ?: "yt-dlp ")
+        input!!.requestFocus()
+        input!!.setSelection(input!!.text.length)
+        output?.text = savedInstanceState?.getString("output") ?: ""
+        if (savedInstanceState?.getBoolean("run") == true){
+            showCancelFab()
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString("input", input?.text.toString())
+        outState.putString("output", output?.text.toString())
+        outState.putBoolean("run", fab!!.text == getString(R.string.run_command))
+        outState.putInt("downloadID", downloadID)
     }
 
     private fun initMenu() {

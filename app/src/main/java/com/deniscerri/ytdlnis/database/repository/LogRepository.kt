@@ -12,6 +12,10 @@ class LogRepository(private val logDao: LogDao) {
         return logDao.getAllLogs()
     }
 
+    fun getLogFlowByID(id: Long) : Flow<LogItem> {
+        return logDao.getLogFlowByID(id)
+    }
+
 
     suspend fun insert(item: LogItem) : Long{
         return logDao.insert(item)

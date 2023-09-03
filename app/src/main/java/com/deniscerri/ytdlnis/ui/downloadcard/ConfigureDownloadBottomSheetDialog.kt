@@ -28,7 +28,9 @@ import com.deniscerri.ytdlnis.util.UiUtil
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.tabs.TabLayout
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -78,7 +80,10 @@ class ConfigureDownloadBottomSheetDialog(private val resultItem: ResultItem, pri
             overScrollMode = View.OVER_SCROLL_NEVER
         }
 
-        val fragments = mutableListOf(DownloadAudioFragment(resultItem, downloadItem), DownloadVideoFragment(resultItem, downloadItem))
+        val fragments = mutableListOf(
+            DownloadAudioFragment(resultItem, downloadItem),
+            DownloadVideoFragment(resultItem, downloadItem)
+        )
         var commandTemplateNr = 0
         lifecycleScope.launch{
             withContext(Dispatchers.IO){

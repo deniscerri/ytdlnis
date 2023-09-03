@@ -116,5 +116,11 @@
             android:icon="@drawable/baseline_share_24"
             android:key="show_terminal"
             app:title="@string/show_terminal" />
+
+
+        <Preference
+            app:icon="@drawable/ic_battery"
+            app:key="ignore_battery"
+            app:title="@string/ignore_battery_optimization" />
     </PreferenceCategory>
 </PreferenceScreen>

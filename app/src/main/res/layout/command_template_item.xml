@@ -20,13 +20,6 @@
         android:padding="15dp">
 
         <TextView
-            android:layout_width="0dp"
-            android:visibility="gone"
-            android:id="@+id/id"
-            android:layout_height="0dp"
-            tools:ignore="MissingConstraints" />
-
-        <TextView
             android:id="@+id/title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

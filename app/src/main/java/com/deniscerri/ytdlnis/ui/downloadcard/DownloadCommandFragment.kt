@@ -7,6 +7,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -185,8 +186,7 @@ class DownloadCommandFragment(private val resultItem: ResultItem, private var cu
                     },
                     editSelectedClicked =
                     {
-                        var current = templates.find { it.id == commandTemplateCard.findViewById<android.widget.TextView>(
-                            R.id.id).toString().toLong() }
+                        var current = templates.find { it.id == commandTemplateCard.tag }
                         if (current == null) current =
                             CommandTemplate(
                                 0,
@@ -197,7 +197,8 @@ class DownloadCommandFragment(private val resultItem: ResultItem, private var cu
                         UiUtil.showCommandTemplateCreationOrUpdatingSheet(current, requireActivity(), viewLifecycleOwner, commandTemplateViewModel) {
                             templates.add(it)
                             chosenCommandView.editText!!.setText(it.content)
-                            downloadItem.format = com.deniscerri.ytdlnis.database.models.Format(
+                            populateCommandCard(commandTemplateCard, it)
+                            downloadItem.format = Format(
                                 it.title,
                                 "",
                                 "",

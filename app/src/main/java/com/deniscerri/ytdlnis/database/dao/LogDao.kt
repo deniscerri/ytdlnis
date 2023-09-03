@@ -7,11 +7,14 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface LogDao {
-    @Query("SELECT * FROM logs ORDER BY id DESC")
+    @Query("SELECT id, title, downloadType, format, downloadTime, '' as content FROM logs ORDER BY id DESC")
     fun getAllLogs() : List<LogItem>
 
-    @Query("SELECT * FROM logs ORDER BY id DESC")
+    @Query("SELECT id, title, downloadType, format, downloadTime, '' as content FROM logs ORDER BY id DESC")
     fun getAllLogsFlow() : Flow<List<LogItem>>
+
+    @Query("SELECT * FROM logs WHERE id=:id LIMIT 1")
+    fun getLogFlowByID(id: Long) : Flow<LogItem>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(item: LogItem) : Long

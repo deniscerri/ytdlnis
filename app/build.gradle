@@ -10,7 +10,7 @@ def properties = new Properties()
 def versionMajor = 1
 def versionMinor = 6
 def versionPatch = 5
-def versionBuild = 2 // bump for dogfood builds, public betas, etc.
+def versionBuild = 4 // bump for dogfood builds, public betas, etc.
 def versionExt = ""
 
 if (versionBuild > 0){
@@ -63,6 +63,7 @@ android {
         release {
             minifyEnabled true
             shrinkResources true
+            manifestPlaceholders = [appName: RELEASE_NAME]
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             debuggable false
             signingConfig signingConfigs.debug
@@ -71,6 +72,7 @@ android {
         beta {
             minifyEnabled true
             shrinkResources true
+            manifestPlaceholders = [appName: BETA_NAME]
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             debuggable false
             signingConfig signingConfigs.debug
@@ -80,6 +82,7 @@ android {
 
         debug {
             minifyEnabled false
+            manifestPlaceholders = [appName: RELEASE_NAME]
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             debuggable true
             signingConfig signingConfigs.debug
@@ -87,6 +90,7 @@ android {
 
         benchmark {
             initWith release
+            manifestPlaceholders = [appName: RELEASE_NAME]
             proguardFiles 'baseline-profiles-rules.pro'
             debuggable false
             matchingFallbacks ['release']

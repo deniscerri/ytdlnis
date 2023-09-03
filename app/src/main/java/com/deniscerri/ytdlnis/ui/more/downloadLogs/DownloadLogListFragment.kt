@@ -26,12 +26,15 @@ import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.adapter.DownloadLogsAdapter
 import com.deniscerri.ytdlnis.database.models.LogItem
 import com.deniscerri.ytdlnis.database.viewmodel.LogViewModel
+import com.deniscerri.ytdlnis.util.UiUtil.enableFastScroll
+import com.deniscerri.ytdlnis.util.UiUtil.forceFastScrollMode
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 class DownloadLogListFragment : Fragment(), DownloadLogsAdapter.OnItemClickListener {
@@ -69,6 +72,8 @@ class DownloadLogListFragment : Fragment(), DownloadLogsAdapter.OnItemClickListe
             )
         recyclerView = view.findViewById(R.id.logs_recyclerview)
         recyclerView.layoutManager = LinearLayoutManager(context)
+        recyclerView.enableFastScroll()
+        recyclerView.forceFastScrollMode()
         recyclerView.adapter = downloadLogAdapter
         val preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
         if (preferences.getBoolean("swipe_gestures", true)){
@@ -230,14 +235,18 @@ class DownloadLogListFragment : Fragment(), DownloadLogsAdapter.OnItemClickListe
                 val position = viewHolder.bindingAdapterPosition
                 when (direction) {
                     ItemTouchHelper.LEFT -> {
-                        val deletedItem = items[position]
-                        logViewModel.delete(deletedItem)
-                        Snackbar.make(recyclerView, getString(R.string.you_are_going_to_delete) + ": " + deletedItem.title, Snackbar.LENGTH_LONG)
-                            .setAction(getString(R.string.undo)) {
-                                lifecycleScope.launch(Dispatchers.IO){
-                                    logViewModel.insert(deletedItem)
-                                }
-                            }.show()
+                        lifecycleScope.launch {
+                            val deletedItem = withContext(Dispatchers.IO){
+                                logViewModel.getItemById(items[position].id)
+                            }
+                            logViewModel.delete(deletedItem)
+                            Snackbar.make(recyclerView, getString(R.string.you_are_going_to_delete) + ": " + deletedItem.title, Snackbar.LENGTH_LONG)
+                                .setAction(getString(R.string.undo)) {
+                                    lifecycleScope.launch(Dispatchers.IO){
+                                        logViewModel.insert(deletedItem)
+                                    }
+                                }.show()
+                        }
                     }
 
                 }
