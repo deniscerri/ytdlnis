@@ -87,7 +87,7 @@
 
 ## 💬 Contato
 
-Junte-se ao nosso canal no [Telegram](https://t.me/ytdlnis) ou no [Discord](https://discord.gg/WW3KYWxAPm) para discussão, anúncios e lançamentos!
+Junte-se ao nosso [Canal no Telegram](https://t.me/ytdlnis) ou no [Discord](https://discord.gg/WW3KYWxAPm) para discussão, anúncios e lançamentos!
 
 ## 🔑 Conecte-se com ReVanced
 
