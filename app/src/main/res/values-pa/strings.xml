@@ -298,4 +298,8 @@
     <string name="update_formats_background">ਬੈਕਗ੍ਰਾਊਂਡ ਵਿੱਚ ਫਾਰਮੈਟ ਅੱਪਡੇਟ ਕਰੋ</string>
     <string name="auto_update_ytdlp">yt-dlp ਆਟੋ-ਅੱਪਡੇਟ ਕਰੋ</string>
     <string name="use_sponsorblock">ਸਪਾਂਸਰਬਲਾਕ ਦੀ ਵਰਤੋਂ ਕਰੋ</string>
+    <string name="scheduling">ਸ਼ਡਿਊਲ ਕਰਨਾ</string>
+    <string name="use_scheduler">ਸ਼ਡਿਊਲ \'ਤੇ ਡਾਊਨਲੋਡ ਕਰੋ</string>
+    <string name="cache_first">ਡਾਊਨਲੋਡਸ ਨੂੰ ਪਹਿਲਾਂ ਕੈਸ਼ ਵਿੱਚ ਭਰੋ</string>
+    <string name="cache_first_summary">ਅੰਦਰੂਨੀ ਸਟੋਰੇਜ ਵਿੱਚ ਡਾਊਨਲੋਡ ਕਰੋ ਅਤੇ ਬਾਅਦ ਵਿੱਚ ਟ੍ਰਾਂਸਫਰ ਕਰੋ। ਇਸਦੀ ਵਰਤੋਂ ਉਦੋਂ ਕਰੋ ਜਦੋਂ ਤੁਸੀਂ ਸਟੋਰੇਜ \'ਤੇ ਸਿੱਧਾ ਨਹੀਂ ਭਰ ਸਕਦੇ</string>
 </resources>
