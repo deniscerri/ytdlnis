@@ -46,7 +46,7 @@
     <string name="api_key">Usar chave de API</string>
     <string name="api_key_summary">Recomendações de vídeo da API do YouTube</string>
     <string name="remove_duplicates">Remover downloads duplicados</string>
-    <string name="sort_by">Ordenar</string>
+    <string name="sort_by">Ordenar por</string>
     <string name="incognito_summary">Baixar sem adicionar no histórico</string>
     <string name="download">Baixar</string>
     <string name="video_quality">Qualidade do vídeo</string>
@@ -107,7 +107,7 @@
     <string name="update_ytdl_nightly">Versão beta do yt-dlp</string>
     <string name="file_name_template">Modelo de nome do arquivo</string>
     <string name="language">Idioma</string>
-    <string name="command_templates">Modelos de comando</string>
+    <string name="command_templates">Modelos de Comando</string>
     <string name="format">Formato</string>
     <string name="select_format">Selecionar formato</string>
     <string name="please_wait">Por favor, aguarde…</string>
@@ -189,7 +189,7 @@
     <string name="video_recommendations">Recomendações de vídeo</string>
     <string name="format_source">Origem dos formatos</string>
     <string name="subtitle_languages">Idiomas das legendas</string>
-    <string name="save_subs_desc">Salve arquivo de legenda na pasta de downloads</string>
+    <string name="save_subs_desc">Salve o arquivo de legenda na pasta de downloads</string>
     <string name="invert_selected">Inverter seleção</string>
     <string name="download_over_metered_networks_summary">Downloads usando qualquer tipo de rede. Caso contrário, espera por uma rede ilimitada</string>
     <string name="download_over_metered_networks">Download através de redes limitadas</string>
@@ -216,7 +216,7 @@
     <string name="keep_cache">Manter em Cache</string>
     <string name="updating_download_data">Atualizando os dados do item de download</string>
     <string name="pause">Pausar</string>
-    <string name="preferred_locale">Local Preferido</string>
+    <string name="preferred_locale">Local preferido</string>
     <string name="resume">Continuar</string>
     <string name="network_error">Erro de Rede</string>
     <string name="restore">Restaurar</string>
@@ -298,4 +298,8 @@
     <string name="use_sponsorblock">Usar SponsorBlock</string>
     <string name="formats_updated">Os formatos foram atualizados</string>
     <string name="update_formats_background">Atualizar formatos em segundo plano</string>
+    <string name="cache_first">Downloads em cache primeiro</string>
+    <string name="cache_first_summary">Faça o download no armazenamento interno e depois transfira. Use isto quando você não puder gravar diretamente no armazenamento</string>
+    <string name="scheduling">Agendamento</string>
+    <string name="use_scheduler">Baixar downloads agendado</string>
 </resources>
