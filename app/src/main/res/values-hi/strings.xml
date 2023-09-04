@@ -4,15 +4,15 @@
     <string name="best_quality">सबसे उच्च गुणवत्ता</string>
     <string name="search">खोजें</string>
     <string name="remove_all">सभी को हटाएं</string>
-    <string name="remove_results">नतीजे हटाएं</string>
+    <string name="remove_results">नतीजों को हटाएं</string>
     <string name="download_all">सभी को डाउनलोड करें</string>
     <string name="settings">सेटिंग्स</string>
-    <string name="home">घर</string>
+    <string name="home">होम</string>
     <string name="directories">फोल्डर</string>
     <string name="music_directory">संगीत फ़ोल्डर</string>
     <string name="video_directory">चलचित्र फोल्डर</string>
-    <string name="updating">अद्यतन</string>
-    <string name="ytdl_update_hint">उपयोगी जब आप को डाउनलोडिंग करने में समस्या हो</string>
+    <string name="updating">अपडेट हो रहा है</string>
+    <string name="ytdl_update_hint">अगर आपको डाउनलोडिंग मैं समस्या है तो यह उपयोगी हो सकता है</string>
     <string name="update_ytdl">Yt-dlp का नया संस्करण स्थापित करें</string>
     <string name="about">के बारे में</string>
     <string name="download_notification_channel_name">फ़ाइल डाउनलोड</string>
@@ -298,4 +298,8 @@
     <string name="formats_updated">फ़ॉर्मेट अपडेट कर दिए गए हैं</string>
     <string name="auto_update_ytdlp">yt-dlp को ऑटो-अपडेट करें</string>
     <string name="use_sponsorblock">स्पॉन्सरब्लॉक का उपयोग करें</string>
+    <string name="scheduling">निर्धारण</string>
+    <string name="use_scheduler">अनुसूची के अनुसार डाउनलोड करें</string>
+    <string name="cache_first">पहले कैच डाउनलोड करे</string>
+    <string name="cache_first_summary">पहले फोन की स्टोरेज मैं डाउनलोड किया जाएगा उसके बाद आपकी दर्ज की गई लोकेशन में , इसका उपयोग तब करे जब आपको सीधा इंटरनल स्टोरेज मैं स्थापित करने में परेशानी आ रही हो</string>
 </resources>
