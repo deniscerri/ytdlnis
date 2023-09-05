@@ -1,0 +1,42 @@
+added saved downloads in the settings backup
+made icon bigger in downloading notification
+fixed notification cancel and pausing not working
+fixed app respecting preferred home screen for downloads and more
+removed 000001 in the end of the file if the user has made only one cut
+removed log id from downloads if the user deleted the log
+fixed app crashing when it was listing logs with large texts
+fixed case: if the user had multiple preferred audio formats the app would choose the last one and not the first
+added ability to combine preferred audio formats by writing like 140+251,250. If the download item finds both first audio formats it will merge them together, otherwise get one of them that is available
+fixed app file transfer not working. (had to revert to hidden cache folder as downloads folder wasnt good for some phones)
+fixed app saving as mkv even though mp4 is set as container
+added shortcuts button to the commands tab so you can drop shortcuts to the current command.
+added syntax highlighting in commands tab textbox
+fixed tiktok videos not saving properly
+fixed open file intent
+added hindi language
+added croatian language
+added norwegian language
+added tamil language
+added telugu language
+added thai language
+added readme in azerbajani
+added security.md
+added ability to show preferred audio / video format ids as a generic format in the format list if the item has no formats available
+fixed multi select dialog in the settings not having the same material color as the rest of the system
+fixed navbar being black and not the same color as main activity in the settings activity
+added license to the app info
+added security to the app info
+fixed app not converting subtitle formats
+fixed app retaining terminal state when going to landscape
+made log text stretch horizontally like terminal
+more small stuff
+Added ability to combine all possible combinations of preferred video formats, audio formats, codex and container.
+The app will consider all preferred video ids. For each of them it will consider preferred vcodec and extension. At the same time for each of those elements it will consider all preferred audio commands and/or audio merge. If the format is a generic quality like 1080p or 720p it will also consider that in the long format query. Also the app will add all combos of video + audio only. And all combos of all video + best audio. All video ids alone and best as final fallback. If the user chooses a proper format, the app will not be this descriptive. Preferred video id and audio id combos will only apply on a quick download or best quality generic download
+Added Download Scheduling
+When on the app will only download depending on the time period you have set
+If you turn off scheduling, the app will check for leftover downloads waiting and will immediately start them
+If you manually set a time to download, it will ignore the scheduling period. This period only applies to normal downloads that have no set download time
+The setting is in the downloading section
+Added ability to not use internal storage caching if you have all files access
+This is useful if you are downloading livestreams and u dont have to move files from cache in the settings anymore
+If u are having write permission errors, turn caching back on so the app will use transferring instead

@@ -70,6 +70,26 @@
         </Preference>
 
         <Preference
+            app:icon="@drawable/baseline_security_24"
+            app:key="security"
+            app:summary="🔐 YTDLnis - Privacy Policy"
+            app:title="SECURITY">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="https://github.com/deniscerri/ytdlnis/blob/main/SECURITY.md" />
+        </Preference>
+
+        <Preference
+            app:icon="@drawable/baseline_draw_24"
+            app:key="license"
+            app:summary="GNU General Public License v3.0"
+            app:title="LICENSE">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="https://github.com/deniscerri/ytdlnis/blob/main/LICENSE" />
+        </Preference>
+
+        <Preference
             app:icon="@drawable/ic_code"
             app:key="rreth"
             app:summary="https://github.com/deniscerri/ytdlnis"

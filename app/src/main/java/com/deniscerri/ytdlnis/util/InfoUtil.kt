@@ -1286,7 +1286,7 @@ class InfoUtil(private val context: Context) {
                     request.addOption("--write-subs")
                     request.addOption("--write-auto-subs")
                     request.addOption("--sub-format", "${subFormat}/best")
-                    request.addOption("--convert-subtitles", "srt")
+                    request.addOption("--convert-subtitles", subFormat ?: "srt")
                     if (!downloadItem.videoPreferences.embedSubs) {
                         request.addOption("--sub-langs", downloadItem.videoPreferences.subsLanguages.ifEmpty { "en.*,.*-orig" })
                     }

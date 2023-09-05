@@ -10,6 +10,8 @@
     <locale android:name="es"/>
     <locale android:name="fa-IR"/>
     <locale android:name="fr"/>
+    <locale android:name="hi"/>
+    <locale android:name="hr"/>
     <locale android:name="in"/>
     <locale android:name="it"/>
     <locale android:name="ja"/>
@@ -17,6 +19,7 @@
     <locale android:name="lv"/>
     <locale android:name="ms"/>
     <locale android:name="nb-NO"/>
+    <locale android:name="nn"/>
     <locale android:name="pa"/>
     <locale android:name="pl"/>
     <locale android:name="pt"/>
@@ -24,6 +27,9 @@
     <locale android:name="ru"/>
     <locale android:name="ro-RO"/>
     <locale android:name="sq-AL"/>
+    <locale android:name="ta"/>
+    <locale android:name="te"/>
+    <locale android:name="th"/>
     <locale android:name="tr-TR"/>
     <locale android:name="ta-IN"/>
     <locale android:name="uk"/>

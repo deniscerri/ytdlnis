@@ -1,0 +1,27 @@
+App can now be used as share method in Facebook Mod
+extracommand preference will be ignored in backups
+if you have command as preferred download type, it wont fetch info first even if you are not in quick download mode
+if you are in landscape the card doesnt show fully, fixed
+cookies import not working, fixed
+landscape video player in home screen fits better now
+fixed monochome icon being gone
+added yt-dlp auto update option in the settings
+fixed bilibili videos not working in normal mode
+added codec preference h264, h265, av1, avc, vp9
+fixed app not enabling ok button in the cut screen if you change the TO text box only
+added force keyframes at cuts switch in the cut screen
+Added 3 dots in multiple download card. It will have the configure chips in a separate card. Each will have a callback that will update all items in multiple download
+fixed start end textboxes showing truncanted text in playlist select card
+add ability to start a download now and put the rest of the queue behind it
+Scrollbar handle shrinked depending on size. Made it same size
+Fixed Tapping the notification of the errored download leading to the running tab instead of errored
+Set different icon for terminal in share menu
+ignored extra command preference in backups of command templates
+made preference titles be multiline if they are too long
+fixed cookies import not working from external sources other than the app
+fixed app using continue button for a split second when there are no paused downloads
+added state in home screen so that it wont populate trending videos while its searching for an item
+implemented batch downloads in a single worker to avoid bogging down the system with many work requests
+fixed instagram status that have multiple videos just using the first video
+fixed bilibili not working in normal mode
+fixed app overwriting files instead of adding (1) in the filename instead

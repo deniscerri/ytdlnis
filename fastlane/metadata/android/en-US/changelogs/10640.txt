@@ -1,0 +1,69 @@
+Notice
+Its suggested you backup your settings and history in case the app crashes on update, because this is a huge update.
+
+
+Added Preferred Audio Format ID
+fixed korean bad strings
+fixed please wait card not showing up
+fixed audio format using mp4 containers
+added portugese language
+added punjabi language
+added greek language
+fixed container not updating in multi select card
+fixed swipe to delete bug in the queued section
+added download now option when u highlight only scheduled items in the context menu
+tapping on the errored notification will send you to errored tab, if you have logs disabled. If logs on it will send u to the log
+added preferred format ordering. By ID, FILESIZE, CONTAINER. Formats grouped by container will also be sorted by filesize
+fixed app not showing formats when u try to modify a current download item and its a different type (audio formats not showing if its a video type and vice versa)
+fixed app showing generic formats in cases where the format length was the same as that of generic formats (silly mistake)
+made the app store static strings for 'best' and 'worst' so that there isnt any confusion when u try to change the language and the stored downloads will have the other language's string
+added collected filesize on top of the download queue
+potentially fixed app not crashing when going to queued screen? idk
+fixed app not moving files when its a fresh install and u havent tried to change the download path.
+added download retries options [--retries and --fragment-retries]
+made the download logs not freeze the app
+download logs will work on quick downloaded items that were later updated
+added app arch and build type in the about section
+added "force-keyframes-at-cuts" preference
+Added download type in logs
+fix video not showing in cut screen. This depends on the streaming url
+fixed xhamster not showing results
+long press download button to save it for later and not schedule it. Also works when u try to queue multiple items
+change app icon background based on theme
+fixed bug when trying to redownload a history item and wanting to use a different type
+made the scheduled item auto-update after its queued so the app doesnt have to update when it begins downloading
+some fixes with output templates
+fixed container and vcodec being saved with translated strings and not constants
+added download thumbnail functionality. Click the result card in the middle and use the video player. Also observe running and queued downloads for that item
+added feature to disable thumbnails on certain screens. U can choose of course
+added feature to convert subs to different formats
+added youtube music search provider
+made app name have a color depending on the theme
+fixed format card not showing a translated string on best and worst strings
+added ability to hide the terminal from the share menu
+fixed app killing active downloads when removing a queued item
+fixed filename template not showing uploader on odysee
+added orange theme (its like yellow but slightly darker)
+fixed cookies not getting saved on older droids
+fixed app making new folder instead of merging when moving files
+added ability to put multiple preferred format ids separated by commas for both audio and video
+added support for piped links and treat them like youtube links
+fixed bug where if an item has no formats and you update audio formats and then go to video tab it will not show the video formats too
+made from and to textboxes wider in the cut video screen depending on the timestamp length
+added search engines in the search view
+removed filename template override if the user leaves it empty. Now it follows the yt-dlp default
+fixed app crashing sometimes when its tablet
+added drag handle to scrolling content
+added pause functionality [This is somewhat wonky because the YT-DLP python process doesnt finish quick enough. So dont spam pause resume]
+made video player faster to load for youtube videos
+Added option to turn off usage of cookies
+some fixes with the cut screen
+Added ability to save command templates as extra commands by default on every downloadcard/AddExtraCommandsDialog
+fixed app not saving the proper youtube link and having to refetch data unnecessarily
+fixed app scrolling in the tablayout in the download queue screen while you are dragging the vertical scrollbar
+fixed app not destroying active downloads when you terminate the app
+added rewind button in the cut section
+fixed play button appearing in cut section when the video is playing
+removed "Downloading" word in the preferences screen. Its Downloads now
+Added embed metadata preference. Turning it off will remove any embedding metadata and parsing metadata commands
+other small stuff
