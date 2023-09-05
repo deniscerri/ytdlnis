@@ -299,7 +299,7 @@
     <string name="auto_update_ytdlp">Përditëso yt-dlp Automatikisht</string>
     <string name="use_sponsorblock">Përdor SponsorBlock</string>
     <string name="cache_first">Përdor Memorien Kashe për sharkimet në fillim</string>
-    <string name="cache_first_summary">Shkarkoni në memorien e brendshme dhe më pas transferohet. Përdoreni këtë kur nuk mund të shkarkosh drejtpërdrejt në memorie</string>
+    <string name="cache_first_summary">Skedarët shkarkohen në memorien e brendshme dhe më pas transferohet tek direktoria e zgjedhur. Përdoreni këtë kur nuk mund të shkarkosh drejtpërdrejt në direktori</string>
     <string name="scheduling">Planifikimi</string>
     <string name="use_scheduler">Shkarko sipas Planifikimit</string>
 </resources>
