@@ -276,7 +276,7 @@
 \n</string>
     <string name="hide_thumbnails">إخفاء الصور المصغرة من الشاشة المحددة</string>
     <string name="saved">المحتفَظة</string>
-    <string name="clear_saved">تنظيف المحفوظة</string>
+    <string name="clear_saved">تنظيف المحتفَظة</string>
     <string name="save_for_later">احتفاظ، لتحميله فيما بعد؟</string>
     <string name="format_order">تسلسل التنسيقات وفقًا للقسم المختار</string>
     <string name="retries">عدد محاولات إعادة التحميل العام</string>
@@ -296,6 +296,10 @@
     <string name="embed_metadata_summary">دمج البيانات الوصفية داخل ملف الفيديو. يمكن أن يشمل ذلك، فهرس الفصول/التفاصيل الإضافية</string>
     <string name="formats_updated">تم تحديث التنسيقات</string>
     <string name="update_formats_background">تحديث التنسيقات في الخلفية</string>
-    <string name="use_sponsorblock">إستخدام SponsorBlock</string>
-    <string name="auto_update_ytdlp">التحديث التلقائي yt-dlp</string>
+    <string name="use_sponsorblock">استخدام حاجب شرائح الإعلانات</string>
+    <string name="auto_update_ytdlp">تحديث تلقائي لـ yt-dlp</string>
+    <string name="cache_first_summary">تحميل الملفات المؤقتة على وحدة التخزين الداخلي أولًا، ثم يتم نقلها الى مسارها النهائي، يُستخدم هذا الإجراء عند تعذر الكتابة على وحدة التخزين مباشرةً</string>
+    <string name="cache_first">الأولوية لتحميل الملفات المؤقتة</string>
+    <string name="scheduling">الجدولة</string>
+    <string name="use_scheduler">التحميل في الفترة المحددة</string>
 </resources>

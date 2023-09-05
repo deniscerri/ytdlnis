@@ -304,7 +304,7 @@
     <string name="auto_update_ytdlp">Auto-Update yt-dlp</string>
     <string name="use_sponsorblock">Use SponsorBlock</string>
     <string name="cache_first">Cache Downloads First</string>
-    <string name="cache_first_summary">Download in the internal storage then transfer afterwards. Use this when you can\'t write directly to storage</string>
+    <string name="cache_first_summary">Cache files download to internal storage, then move to your chosen directory. Use this when you can\'t write directly to storage</string>
     <string name="scheduling">Scheduling</string>
     <string name="use_scheduler">Download On Schedule</string>
 </resources>

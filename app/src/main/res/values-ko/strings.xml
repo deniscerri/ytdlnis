@@ -294,4 +294,12 @@
     <string name="force_keyframes_summary">처리속도는 느리지만 더 정확하게 자름</string>
     <string name="current">현재 명령</string>
     <string name="use_extra_commands">추가 명령 추가</string>
+    <string name="cache_first">캐시 다운로드 우선</string>
+    <string name="use_scheduler">스케쥴에 따라 다운로드</string>
+    <string name="cache_first_summary">캐시 파일을 내부 저장소에 다운로드한 다음 선택한 폴더로 이동합니다. 저장소에 직접 쓸 수 없을 때 사용하세요</string>
+    <string name="scheduling">스케쥴링</string>
+    <string name="formats_updated">형식이 업데이트 되었습니다</string>
+    <string name="update_formats_background">백그라운드에서 형식을 업데이트</string>
+    <string name="auto_update_ytdlp">yt-dlp 자동 업데이트</string>
+    <string name="use_sponsorblock">스폰서블럭 사용</string>
 </resources>

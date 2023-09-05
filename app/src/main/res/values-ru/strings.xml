@@ -298,4 +298,8 @@
     <string name="update_formats_background">Обновлять форматы в фоновом режиме</string>
     <string name="formats_updated">Форматы обновлены</string>
     <string name="use_sponsorblock">Использование SponsorBlock</string>
+    <string name="scheduling">Планирование</string>
+    <string name="use_scheduler">Загрузить по расписанию</string>
+    <string name="cache_first">Сначала кэшировать загрузки</string>
+    <string name="cache_first_summary">Кэш-файлы загружаются во внутреннюю память, а затем переносятся в выбранную вами папку. Используется, когда нет возможности записывать файлы непосредственно в память</string>
 </resources>

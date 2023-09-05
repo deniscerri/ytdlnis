@@ -298,4 +298,8 @@
     <string name="use_sponsorblock">Використання SponsorBlock</string>
     <string name="update_formats_background">Оновити формати у фоновому режимі</string>
     <string name="formats_updated">Оновлені формати</string>
+    <string name="scheduling">Планування</string>
+    <string name="cache_first_summary">Файли кешу завантажуються у внутрішню пам\'ять, а потім переносяться в обрану вами папку. Використовується, коли немає можливості записувати файл безпосередньо в пам\'ять</string>
+    <string name="cache_first">Спочатку завантажується кеш</string>
+    <string name="use_scheduler">Завантажити за розкладом</string>
 </resources>

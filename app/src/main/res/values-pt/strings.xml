@@ -298,4 +298,8 @@
     <string name="auto_update_ytdlp">Atualização automática do yt-dlp</string>
     <string name="formats_updated">Os formatos foram atualizados</string>
     <string name="use_sponsorblock">Utilizar SponsorBlock</string>
+    <string name="cache_first">Transferências em cache primeiro</string>
+    <string name="scheduling">Programação</string>
+    <string name="cache_first_summary">Os ficheiros de cache são descarregados para o armazenamento interno e, em seguida, movidos para o diretório escolhido. Utilize esta opção quando não puder escrever diretamente para o armazenamento</string>
+    <string name="use_scheduler">Descarregar a agenda</string>
 </resources>
