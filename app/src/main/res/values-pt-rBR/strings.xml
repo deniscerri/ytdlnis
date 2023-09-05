@@ -299,7 +299,7 @@
     <string name="formats_updated">Os formatos foram atualizados</string>
     <string name="update_formats_background">Atualizar formatos em segundo plano</string>
     <string name="cache_first">Downloads em cache primeiro</string>
-    <string name="cache_first_summary">Faça o download no armazenamento interno e depois transfira. Use isto quando você não puder gravar diretamente no armazenamento</string>
+    <string name="cache_first_summary">Os arquivos de cache são baixados para o armazenamento interno e depois movidos para o diretório escolhido. Use isto quando você não puder gravar diretamente no armazenamento</string>
     <string name="scheduling">Agendamento</string>
     <string name="use_scheduler">Baixar downloads agendado</string>
 </resources>
