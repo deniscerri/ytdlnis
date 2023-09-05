@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="remove_results">Kosongkan Hasil</string>
-    <string name="updating">Memperbarui</string>
+    <string name="updating">Pemutakhiran</string>
     <string name="you_are_in_latest_version">Versi yang terkini sedang digunakan</string>
     <string name="confirm_delete_history_desc">Hapus seluruh riwayat, secara permanen</string>
-    <string name="confirm_delete_history">Konfirmasi</string>
+    <string name="confirm_delete_history">Konfirmasikan</string>
     <string name="search_history_hint">Telusuri dari Riwayat</string>
     <string name="no_results">Tidak Ada Hasil</string>
     <string name="remove_all">Bersihkan Semua</string>
     <string name="download_all">Unduh Semua</string>
-    <string name="settings">Pengaturan</string>
+    <string name="settings">Setelan</string>
     <string name="search">Telusuri</string>
-    <string name="failed_download">Tidak dapat mengunduh file.</string>
-    <string name="download_notification_channel_name">Berkas Unduhan</string>
-    <string name="download_notification_channel_description">Pemberitahuan yang menunjukkan proses pengunduhan berkas audio dan video</string>
+    <string name="failed_download">Tidak bisa mengunduh berkas.</string>
+    <string name="download_notification_channel_name">Unduhan Berkas</string>
+    <string name="download_notification_channel_description">Notifikasi yang memperlihatkan kemajuan pengunduhan berkas audio dan video</string>
     <string name="home">Beranda</string>
     <string name="directories">Folder</string>
     <string name="music_directory">Folder Musik</string>
@@ -21,15 +21,15 @@
     <string name="video_directory">Folder Video</string>
     <string name="update_ytdl">Pasang yt-dlp versi yang baru</string>
     <string name="source_code">Kode Sumber</string>
-    <string name="search_hint">Cari atau gunakan tautan URL</string>
+    <string name="search_hint">Telusuri atau Sisipkan URL</string>
     <string name="ytld_update_success">Versi yang baru terpasang</string>
     <string name="ytdl_already_updating">Memasang versi yang baru</string>
     <string name="ytdl_updating_started">Mengunduh versi yang baru</string>
-    <string name="Remove">Hapus</string>
+    <string name="Remove">Bersihkan</string>
     <string name="ok">Oke</string>
-    <string name="cancel">Batal</string>
+    <string name="cancel">Batalkan</string>
     <string name="more">Selengkapnya</string>
-    <string name="update_app">Periksa pembaruan</string>
+    <string name="update_app">Periksa pemutakhiran</string>
     <string name="version">Versi</string>
     <string name="downloading_update">Mengunduh versi yang baru</string>
     <string name="command_directory">Folder Perintah Kustom</string>
@@ -84,7 +84,7 @@
     <string name="api_key">Gunakan Kunci API</string>
     <string name="ytdl_version">Versi yt-dlp</string>
     <string name="Open_File">Buka Berkas</string>
-    <string name="you_are_going_to_delete_multiple_items">Menghapus beberapa item</string>
+    <string name="you_are_going_to_delete_multiple_items">Menghapus beberapa butir</string>
     <string name="delete_file_too">Hapus berkas dari perangkat</string>
     <string name="delete_files_too">Hapus berkas-berkas dari perangkat</string>
     <string name="run_command">Jalankan Perintah</string>
@@ -298,4 +298,8 @@
     <string name="formats_updated">Format telah dimutakhirkan</string>
     <string name="use_sponsorblock">Gunakan SponsorBlock</string>
     <string name="auto_update_ytdlp">Mutakhirkan yt-dlp Secara Otomatis</string>
+    <string name="cache_first">Singgahkan (Cache) Unduhan Dahulu</string>
+    <string name="scheduling">Penjadwalan</string>
+    <string name="use_scheduler">Unduh Sesuai Jadwal</string>
+    <string name="cache_first_summary">Singgahkan (cache) berkas unduhan ke penyimpanan internal, kemudian pindahkan ke direktori pilihanmu. Gunakan ini apabila kamu tidak menulis berkasnya langsung ke penyimpanan</string>
 </resources>
