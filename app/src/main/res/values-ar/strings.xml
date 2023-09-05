@@ -298,4 +298,8 @@
     <string name="update_formats_background">تحديث التنسيقات في الخلفية</string>
     <string name="use_sponsorblock">استخدام حاجب شرائح الإعلانات</string>
     <string name="auto_update_ytdlp">تحديث تلقائي لـ yt-dlp</string>
+    <string name="cache_first_summary">تحميل الملفات المؤقتة على وحدة التخزين الداخلي أولًا، ثم يتم نقلها الى مسارها النهائي، يُستخدم هذا الإجراء عند تعذر الكتابة على وحدة التخزين مباشرةً</string>
+    <string name="cache_first">الأولوية لتحميل الملفات المؤقتة</string>
+    <string name="scheduling">الجدولة</string>
+    <string name="use_scheduler">التحميل في الفترة المحددة</string>
 </resources>
