@@ -26,7 +26,7 @@
     <string name="downloading_update">Загрузка новой версии</string>
     <string name="audio">Аудио</string>
     <string name="video">Видео</string>
-    <string name="concurrent_fragments_summary">Количество фрагментов видео DASH/HLS для одновременной загрузки</string>
+    <string name="concurrent_fragments_summary">Количество фрагментов DASH/HLS в видео для одновременной загрузки</string>
     <string name="downloading">Загрузка</string>
     <string name="limit_rate">Ограничение скорости загрузки</string>
     <string name="processing">Обработка</string>
@@ -160,7 +160,7 @@
     <string name="enable_mtime">Включить mtime</string>
     <string name="enable_mtime_summary">Установить в заголовке HTTP Last-Modified время последнего изменения</string>
     <string name="error_restarting_download">Ошибка при возобновлении загрузки</string>
-    <string name="preferred_download_type_summary">Вкладка по умолчанию, которую будет открывать карточка загрузки</string>
+    <string name="preferred_download_type_summary">Основная вкладка при открытии карточки загрузки</string>
     <string name="all_items_selected">Все выбранные элементы</string>
     <string name="clear_temporary_files_summary">Удалить кэш отменённых / прерванных загрузок</string>
     <string name="cache_cleared">Кэш удален</string>
@@ -193,7 +193,7 @@
     <string name="update_formats_summary">Автоматически искать недостающие форматы при нажатии на карточку формата</string>
     <string name="ignore_battery_optimization">Игнорировать оптимизацию батареи</string>
     <string name="container">Контейнер</string>
-    <string name="download_over_metered_networks_summary">Загрузка с использованием любой сети. В противном случае ожидание безлимитной сети</string>
+    <string name="download_over_metered_networks_summary">Загрузка с любого типа сети. В противном случае ожидать безлимитную сеть</string>
     <string name="invert_selected">Инвертировать выбранное</string>
     <string name="shortcuts_desc">Используйте часто применяемые команды для создания шаблонов</string>
     <string name="restore">Восстановить</string>
@@ -209,7 +209,7 @@
     <string name="finished_download_notification_channel_name">Завершенные загрузки</string>
     <string name="quick_download">Быстрая загрузка</string>
     <string name="preferred_format_id">Предпочитаемый формат ID</string>
-    <string name="download_now">Скачать сейчас</string>
+    <string name="download_now">Загрузить сейчас</string>
     <string name="resume">Продолжить</string>
     <string name="video_recommendations_summary">Получайте рекомендации YouTube на главном экране с помощью PIPED API</string>
     <string name="copied_to_clipboard">Скопировано в буфер обмена</string>
@@ -251,7 +251,7 @@
     <string name="preferred_home_screen">Предпочитаемый главный экран</string>
     <string name="undo">Отменить</string>
     <string name="format_id">Формат ID</string>
-    <string name="codec">Кодек</string>
+    <string name="codec">Видеокодек</string>
     <string name="audio_samplerate">Частота дискретизации аудио</string>
     <string name="yellow">Желтый</string>
     <string name="monochrome">Монохромный</string>
@@ -259,7 +259,7 @@
     <string name="search_suggestions_summary">Получайте предложения от Google во время поиска</string>
     <string name="preferred_format_id_summary">Выберите формат с этим ID в карточке загрузки</string>
     <string name="locale">Регион</string>
-    <string name="crop_thumb_summary">Обрезать миниатюру в квадрат для аудиозагрузок</string>
+    <string name="crop_thumb_summary">Обрезать миниатюру в квадрат для загрузок аудио</string>
     <string name="audio_only_item">Этот элемент содержит только аудио форматы</string>
     <string name="misc">Разное</string>
     <string name="swipe_gestures">Жесты смахивания</string>
