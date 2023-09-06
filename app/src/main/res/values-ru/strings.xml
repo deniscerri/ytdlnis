@@ -83,7 +83,7 @@
     <string name="history_is_empty">История пуста</string>
     <string name="update_app_summary">Сообщать о новой версии при открытии приложения</string>
     <string name="configure_download">Настроить загрузку</string>
-    <string name="incognito_summary">Загрузка без добавления в историю</string>
+    <string name="incognito_summary">Загрузки без добавления их в историю</string>
     <string name="video_quality">Качество видео</string>
     <string name="author">Автор</string>
     <string name="download">Загрузить</string>
