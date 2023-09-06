@@ -35,8 +35,8 @@
     <string name="add_chapters">Главы в видео</string>
     <string name="add_chapters_summary">Отметить сегменты YouTube / SponsorBlock как главы для видео</string>
     <string name="save_thumb">Сохранить обложку видео</string>
-    <string name="audio_format">Аудиоформат</string>
-    <string name="video_format">Видеоформат</string>
+    <string name="audio_format">Формат аудио</string>
+    <string name="video_format">Формат видео</string>
     <string name="audio_quality">Качество аудио</string>
     <string name="audio_quality_summary">0 (лучшее) 10 (худшее)</string>
     <string name="cancel_download">Отменить загрузку</string>
@@ -46,7 +46,7 @@
     <string name="url">URL</string>
     <string name="link_copied_to_clipboard">Ссылка скопирована</string>
     <string name="api_key">Использовать ключ API</string>
-    <string name="api_key_summary">Видеорекомендации от Youtube API</string>
+    <string name="api_key_summary">Рекомендации видео от Youtube API</string>
     <string name="downloads">Загрузки</string>
     <string name="command_download_notification_channel_name">Команда загружает</string>
     <string name="remove_deleted">Убрать удаленные</string>
@@ -63,14 +63,14 @@
     <string name="sponsorblock_previews">Превью</string>
     <string name="sponsorblock_reminders">Напоминания о подписке</string>
     <string name="select_sponsorblock_filtering">Выберите фильтрацию SponsorBlock</string>
-    <string name="sponsorblock_fillers">Офтопик</string>
+    <string name="sponsorblock_fillers">Фильтры</string>
     <string name="sponsorblock_nonmusic">Немузыкальные части клипов</string>
     <string name="settings">Настройки</string>
     <string name="video_directory">Папка с видео</string>
     <string name="download_all">Загрузить все</string>
     <string name="directories">Папки</string>
-    <string name="updating">Обновления</string>
-    <string name="ytdl_update_hint">Полезно в случае проблем с загрузкой</string>
+    <string name="updating">Обновление</string>
+    <string name="ytdl_update_hint">Полезно при проблемах с загрузкой</string>
     <string name="confirm_delete_history_desc">Удалить всю историю навсегда</string>
     <string name="ytdl_already_updating">Установка новой версии</string>
     <string name="command_directory">Папка кастомных команд</string>
@@ -138,7 +138,7 @@
     <string name="concurrent_downloads">Параллельные загрузки</string>
     <string name="concurrent_downloads_summary">Количество одновременных загрузок</string>
     <string name="defaultValue">По умолчанию</string>
-    <string name="save_dir">Сохранить в папке</string>
+    <string name="save_dir">Сохранить путь к папке</string>
     <string name="new_template">Новый шаблон</string>
     <string name="adjust_templates">Настройка шаблонов</string>
     <string name="edit_selected">Редактировать выбранное</string>
