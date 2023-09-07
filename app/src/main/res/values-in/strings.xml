@@ -297,5 +297,5 @@
     <string name="cache_first">Singgahkan (Cache) Unduhan Dahulu</string>
     <string name="scheduling">Penjadwalan</string>
     <string name="use_scheduler">Unduh Sesuai Jadwal</string>
-    <string name="cache_first_summary">Singgahkan (cache) berkas unduhan ke penyimpanan internal, kemudian pindahkan ke direktori pilihanmu. Gunakan ini apabila kamu tidak menulis berkasnya langsung ke penyimpanan</string>
+    <string name="cache_first_summary">Singgahkan (cache) berkas unduhan ke penyimpanan internal, kemudian pindahkan ke direktori pilihanmu. Gunakan ini apabila kamu tidak bisa menulis berkasnya langsung ke penyimpanan</string>
 </resources>

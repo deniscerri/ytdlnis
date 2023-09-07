@@ -14,7 +14,7 @@ def versionBuild = 1 // bump for dogfood builds, public betas, etc.
 def versionExt = ""
 
 if (versionBuild > 0){
-    versionExt = ".${versionBuild}"
+    versionExt = ".${versionBuild}-beta"
 }
 
 android {

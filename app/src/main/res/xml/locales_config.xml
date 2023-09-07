@@ -4,6 +4,7 @@
     <locale android:name="ar"/>
     <locale android:name="az"/>
     <locale android:name="bn"/>
+    <locale android:name="bn-IN"/>
     <locale android:name="bs"/>
     <locale android:name="de"/>
     <locale android:name="el"/>
@@ -15,6 +16,7 @@
     <locale android:name="in"/>
     <locale android:name="it"/>
     <locale android:name="ja"/>
+    <locale android:name="jv"/>
     <locale android:name="ko"/>
     <locale android:name="lv"/>
     <locale android:name="ms"/>

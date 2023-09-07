@@ -297,5 +297,5 @@
     <string name="scheduling">ਸ਼ਡਿਊਲ ਕਰਨਾ</string>
     <string name="use_scheduler">ਸ਼ਡਿਊਲ \'ਤੇ ਡਾਊਨਲੋਡ ਕਰੋ</string>
     <string name="cache_first">ਡਾਊਨਲੋਡਸ ਨੂੰ ਪਹਿਲਾਂ ਕੈਸ਼ ਵਿੱਚ ਭਰੋ</string>
-    <string name="cache_first_summary">ਅੰਦਰੂਨੀ ਸਟੋਰੇਜ ਵਿੱਚ ਡਾਊਨਲੋਡ ਕਰੋ ਅਤੇ ਬਾਅਦ ਵਿੱਚ ਟ੍ਰਾਂਸਫਰ ਕਰੋ। ਇਸਦੀ ਵਰਤੋਂ ਉਦੋਂ ਕਰੋ ਜਦੋਂ ਤੁਸੀਂ ਸਟੋਰੇਜ \'ਤੇ ਸਿੱਧਾ ਨਹੀਂ ਭਰ ਸਕਦੇ</string>
+    <string name="cache_first_summary">ਕੈਸ਼ ਫਾਈਲਾਂ ਅੰਦਰੂਨੀ ਸਟੋਰੇਜ ਵਿੱਚ ਡਾਊਨਲੋਡ ਹੋ ਕੇ ਫੇਰ ਤੁਹਾਡੀ ਚੁਣੀ ਥਾਂ ਤੇ ਟ੍ਰਾਂਸਫਰ ਹੁੰਦੀਆ ਹਨ। ਇਸਦੀ ਵਰਤੋਂ ਉਦੋਂ ਕਰੋ ਜਦੋਂ ਤੁਸੀਂ ਸਟੋਰੇਜ \'ਤੇ ਸਿੱਧਾ ਡਾਊਨਲੋਡ ਨਹੀਂ ਸਕਦੇ</string>
 </resources>

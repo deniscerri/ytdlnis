@@ -6,18 +6,23 @@ import android.graphics.Color
 import android.os.Bundle
 import android.os.FileObserver
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.HorizontalScrollView
+import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.map
 import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.LogItem
 import com.deniscerri.ytdlnis.database.viewmodel.LogViewModel
 import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.neo.highlight.core.Highlight
@@ -63,12 +68,14 @@ class DownloadLogFragment : Fragment() {
         content.setTextIsSelectable(true)
         contentScrollView = view.findViewById(R.id.content_scrollview)
 
+        val bottomAppBar = view.findViewById<BottomAppBar>(R.id.bottomAppBar)
+
         copyLog = view.findViewById(R.id.copy_log)
         copyLog.setOnClickListener {
             val clipboard: ClipboardManager =
                 mainActivity.getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
             clipboard.setText(content.text)
-            Snackbar.make(content, getString(R.string.copied_to_clipboard), Snackbar.LENGTH_LONG).show()
+            Snackbar.make(bottomAppBar, getString(R.string.copied_to_clipboard), Snackbar.LENGTH_LONG).show()
         }
 
         val id = arguments?.getLong("logID")
@@ -112,6 +119,34 @@ class DownloadLogFragment : Fragment() {
         )
         highlight.setSpan(content)
         content.addTextChangedListener(highlightWatcher)
+        content.setHorizontallyScrolling(false)
+
+        bottomAppBar?.setOnMenuItemClickListener { m: MenuItem ->
+            when(m.itemId){
+                R.id.wrap -> {
+                    var scrollView = view.findViewById<HorizontalScrollView>(R.id.horizontalscroll_output)
+                    if(scrollView != null){
+                        val parent = (scrollView.parent as ViewGroup)
+                        scrollView.removeAllViews()
+                        parent.removeView(scrollView)
+                        parent.addView(content, 0)
+                    }else{
+                        val parent = content.parent as ViewGroup
+                        parent.removeView(content)
+                        scrollView = HorizontalScrollView(requireContext())
+                        scrollView.layoutParams = LinearLayout.LayoutParams(
+                            ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.MATCH_PARENT
+                        )
+                        scrollView.addView(content)
+                        scrollView.id = R.id.horizontalscroll_output
+                        parent.addView(scrollView, 0)
+                    }
+                    content.setHorizontallyScrolling(!content.canScrollHorizontally(1))
+                }
+            }
+            true
+        }
     }
 
     companion object {

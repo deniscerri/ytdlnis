@@ -294,4 +294,8 @@
     <string name="update_formats_background">Arxa Planda Formatları Yenilə</string>
     <string name="auto_update_ytdlp">Yt-dlp-ni Avtomatik Yenilə</string>
     <string name="use_sponsorblock">SponsorBlock istifadə et</string>
+    <string name="scheduling">Planlaşdırma</string>
+    <string name="cache_first_summary">Qalıq faylların daxili yaddaşa yüklə, sonra seçdiyiniz qovluğa köçürün. Birbaşa yaddaşa yaza bilmədiyinizdə bunu istifadə edin</string>
+    <string name="cache_first">Əvvəlcə Qalığı Yükləyir</string>
+    <string name="use_scheduler">Plan Üzrə Yükləmə</string>
 </resources>

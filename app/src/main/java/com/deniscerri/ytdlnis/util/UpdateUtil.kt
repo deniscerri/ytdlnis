@@ -58,7 +58,7 @@ class UpdateUtil(var context: Context) {
 
             if (
                 (useBeta && v == null) ||
-                BuildConfig.VERSION_NAME == v!!.tag_name.removePrefix("v")
+                BuildConfig.VERSION_NAME == v!!.tag_name.removePrefix("v").removeSuffix("-beta")
                 ){
                 result(context.getString(R.string.you_are_in_latest_version))
                 return

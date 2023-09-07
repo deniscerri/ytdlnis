@@ -5,7 +5,6 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.os.FileObserver
@@ -14,9 +13,10 @@ import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.view.Window
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import android.widget.HorizontalScrollView
+import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
@@ -40,20 +40,12 @@ import com.deniscerri.ytdlnis.util.UiUtil.enableTextHighlight
 import com.deniscerri.ytdlnis.work.TerminalDownloadWorker
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomappbar.BottomAppBar
-import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.chip.Chip
-import com.google.android.material.chip.ChipGroup
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-import com.neo.highlight.core.Highlight
-import com.neo.highlight.core.Scheme
-import com.neo.highlight.util.listener.HighlightTextWatcher
-import com.neo.highlight.util.scheme.ColorScheme
 import com.yausername.youtubedl_android.YoutubeDL
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
-import java.util.regex.Pattern
 import kotlin.properties.Delegates
 
 
@@ -146,12 +138,14 @@ class TerminalActivity : BaseActivity() {
                     intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION)
                     commandPathResultLauncher.launch(intent)
                 }
+
             }
             true
         }
 
         output = findViewById(R.id.custom_command_output)
         output!!.setTextIsSelectable(true)
+        output!!.setHorizontallyScrolling(true)
         input = findViewById(R.id.command_edittext)
         input!!.requestFocus()
         fab = findViewById(R.id.command_fab)
@@ -235,10 +229,10 @@ class TerminalActivity : BaseActivity() {
         input?.enableTextHighlight()
         output?.enableTextHighlight()
 
-        input?.setText(savedInstanceState?.getString("input") ?: "yt-dlp ")
+        input?.setText(savedInstanceState?.getString("input") ?: input?.text)
         input!!.requestFocus()
         input!!.setSelection(input!!.text.length)
-        output?.text = savedInstanceState?.getString("output") ?: ""
+        output?.text = savedInstanceState?.getString("output") ?: output?.text
         if (savedInstanceState?.getBoolean("run") == true){
             showCancelFab()
         }
@@ -254,11 +248,33 @@ class TerminalActivity : BaseActivity() {
 
     private fun initMenu() {
         topAppBar?.setOnMenuItemClickListener { m: MenuItem ->
-            val itemId = m.itemId
-            if (itemId == R.id.export_clipboard) {
-                lifecycleScope.launch(Dispatchers.IO){
-                    val clipboard: ClipboardManager = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
-                    clipboard.setText(output?.text)
+            when(m.itemId){
+                R.id.wrap -> {
+                    var scrollView = findViewById<HorizontalScrollView>(R.id.horizontalscroll_output)
+                    if(scrollView != null){
+                        val parent = (scrollView.parent as ViewGroup)
+                        scrollView.removeAllViews()
+                        parent.removeView(scrollView)
+                        parent.addView(output, 0)
+                    }else{
+                        val parent = output?.parent as ViewGroup
+                        parent.removeView(output)
+                        scrollView = HorizontalScrollView(this)
+                        scrollView.layoutParams = LinearLayout.LayoutParams(
+                            ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.MATCH_PARENT
+                        )
+                        scrollView.addView(output)
+                        scrollView.id = R.id.horizontalscroll_output
+                        parent.addView(scrollView, 0)
+                    }
+                    output?.setHorizontallyScrolling(output?.canScrollHorizontally(1) != true)
+                }
+                R.id.export_clipboard -> {
+                    lifecycleScope.launch(Dispatchers.IO){
+                        val clipboard: ClipboardManager = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+                        clipboard.setText(output?.text)
+                    }
                 }
             }
             true
