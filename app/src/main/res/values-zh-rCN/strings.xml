@@ -139,7 +139,6 @@
     <string name="error_restarting_download">重新下载时出错</string>
     <string name="update_template">更新模板</string>
     <string name="update">更新</string>
-    <string name="workmanager_updated">您需要重新启动应用，并且没有正在进行的下载才能使此首选项生效！</string>
     <string name="clear_temporary_files">清除临时文件</string>
     <string name="download_rescheduled_to">下载已重新添加到：</string>
     <string name="restrict_filenames">限制文件名</string>
@@ -153,7 +152,6 @@
     <string name="backup_created_successfully">备份文件保存在下载文件夹中</string>
     <string name="appearance">外观</string>
     <string name="pause">暂停</string>
-    <string name="format_filtering_hint_2">所有项目都必须是音频或视频才能使用此选项</string>
     <string name="configure_download">调整下载</string>
     <string name="show_terminal">在分享菜单中显示终端</string>
     <string name="socks5_proxy">Socks5 代理网址</string>
@@ -285,7 +283,6 @@
     <string name="sponsorblock_promos">自我推广</string>
     <string name="sponsorblock_fillers">补充</string>
     <string name="enable_mtime_summary">将 HTTP Last-Modified 标头设置为最近修改时间</string>
-    <string name="locale">区域</string>
     <string name="piped_instance">PIPED 实例</string>
     <string name="piped_instance_summary">添加 PIPED API 服务器，用于 YouTube 查询和格式化</string>
     <string name="format_order">格式排序</string>
@@ -294,7 +291,6 @@
     <string name="codec">编解码器</string>
     <string name="material_you">Material You</string>
     <string name="sponsorblock">SponsorBlock</string>
-    <string name="formats_updated">格式已更新</string>
     <string name="update_formats_background">在后台更新格式</string>
     <string name="auto_update_ytdlp">自动更新 yt-dlp</string>
     <string name="use_sponsorblock">使用 SponsorBlock</string>

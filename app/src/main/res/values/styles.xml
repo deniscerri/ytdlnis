@@ -40,11 +40,6 @@
         <item name="cornerSizeBottomRight">12dp</item>
     </style>
 
-    <style name="ShapeAppearanceOverlay.Chip.Middle" parent="ShapeAppearance.MaterialComponents.SmallComponent">
-        <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">0dp</item>
-    </style>
-
     <style name="Preference.SwitchPreferenceCompat.Material3" parent="@style/Preference.SwitchPreferenceCompat.Material">
         <item name="widgetLayout">@layout/preferece_material_switch</item>
     </style>

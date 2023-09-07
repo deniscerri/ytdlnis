@@ -53,7 +53,6 @@
     <string name="create_shortcut">Buat Pintasan</string>
     <string name="preferred_download_type_summary">Tab yang kartu unduhan akan buka secara asali</string>
     <string name="access_all_directories_summary">Mengizinkan aplikasi untuk mengunduh di direktori yang secara asali dibatasi</string>
-    <string name="workmanager_updated">Kamu perlu memulai ulang aplikasi dan sedang tidak memiliki unduhan aktif supaya preferensi ini terasa pengaruhnya!</string>
     <string name="clear_temporary_files">Kosongkan berkas sementara</string>
     <string name="downloads_running_try_later">Pekerja unduhan sedang berjalan. Cobalah lagi nanti</string>
     <string name="video_format">Format Video</string>
@@ -258,7 +257,6 @@
     <string name="search_suggestions">Saran Penelusuran</string>
     <string name="search_suggestions_summary">Dapatkan saran penelusuran dari Google</string>
     <string name="preferred_format_id_summary">Pilih format yang ada di kartu unduhan yang ber-ID ini</string>
-    <string name="locale">Wilayah</string>
     <string name="audio_only_item">Butir ini hanya berisi format audio</string>
     <string name="swipe_gestures_summary">Usap butir untuk melakukan tindakan-tindakan tertentu</string>
     <string name="crop_thumb">Potong Gambar Keluku (Thumbnail)</string>
@@ -266,7 +264,6 @@
     <string name="swipe_gestures">Gestur Usap</string>
     <string name="general">Umum</string>
     <string name="misc">Aneka Ragam</string>
-    <string name="format_filtering_hint_2">Semua butir harus berupa audio atau video untuk bisa menggunakan opsi ini</string>
     <string name="move_temporary_files_summary">Transfer berkas singgahan ke folder unduhan</string>
     <string name="move_temporary_files">Pindahkan Berkas Sementara</string>
     <string name="piped_instance">Instansi Piped</string>
@@ -295,7 +292,6 @@
     <string name="embed_metadata_summary">Menanamkan metadata ke berkas video. Juga menanamkan babak-babak/infojson jika ada</string>
     <string name="embed_metadata">Tanamkan Metadata</string>
     <string name="update_formats_background">Mutakhirkan Format di Latar Belakang</string>
-    <string name="formats_updated">Format telah dimutakhirkan</string>
     <string name="use_sponsorblock">Gunakan SponsorBlock</string>
     <string name="auto_update_ytdlp">Mutakhirkan yt-dlp Secara Otomatis</string>
     <string name="cache_first">Singgahkan (Cache) Unduhan Dahulu</string>

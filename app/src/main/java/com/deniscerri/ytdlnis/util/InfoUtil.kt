@@ -1258,18 +1258,19 @@ class InfoUtil(private val context: Context) {
                     }
                 }
 
-                //build format with best audio
-                preferredVideoFormats.forEach { v ->
-                    if(!f.contains("$v+bestaudio/")){
-                        f.append("$v+bestaudio/")
+                if (!downloadItem.videoPreferences.removeAudio){
+                    //build format with best audio
+                    preferredVideoFormats.forEach { v ->
+                        if(!f.contains("$v+bestaudio/")){
+                            f.append("$v+bestaudio/")
+                        }
                     }
-                }
 
-
-                //build formats with standalone video
-                preferredVideoFormats.forEach { v ->
-                    if(!f.contains("/$v/")){
-                        f.append("$v/")
+                    //build formats with standalone video
+                    preferredVideoFormats.forEach { v ->
+                        if(!f.contains("/$v/")){
+                            f.append("$v/")
+                        }
                     }
                 }
 

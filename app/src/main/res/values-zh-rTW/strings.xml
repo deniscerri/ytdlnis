@@ -141,7 +141,6 @@
     <string name="crop_thumb">裁剪縮圖</string>
     <string name="move_temporary_files">移動暫存檔案</string>
     <string name="move_temporary_files_summary">將快取檔案轉移至下載資料夾</string>
-    <string name="format_filtering_hint_2">所有項目必須為音訊或影片才能使用此選項</string>
     <string name="piped_instance_summary">撰寫 PIPED API 伺服器，應用程式可用於 YouTube 查詢和格式</string>
     <string name="fragment_retries">片段重試次數</string>
     <string name="format_order">格式順序</string>
@@ -232,7 +231,6 @@
     <string name="video_recommendations_summary">在主畫面從 PIPED API 取得推薦的 YouTube 影片</string>
     <string name="help_translate_summary">使用 Weblate 將此應用程式翻譯為您的語言</string>
     <string name="file_size">檔案大小</string>
-    <string name="workmanager_updated">您需要重新啟動此應用程式並且沒有進行中的下載，以便此偏好設定生效！</string>
     <string name="restart">重新啟動</string>
     <string name="clear_temporary_files_summary">從崩潰/錯誤/取消的下載中刪除快取檔案</string>
     <string name="download_rescheduled_to">下載已重新安排至：</string>
@@ -272,7 +270,6 @@
     <string name="search_suggestions">搜尋建議</string>
     <string name="swipe_gestures">滑動手勢</string>
     <string name="preferred_format_id_summary">使用此 ID 在下載卡片中選擇格式</string>
-    <string name="locale">地區</string>
     <string name="crop_thumb_summary">將縮圖裁剪成正方形，適用於音訊下載</string>
     <string name="retries">重試次數</string>
     <string name="use_extra_commands">新增額外指令</string>
@@ -294,7 +291,6 @@
     <string name="embed_metadata">嵌入元資料</string>
     <string name="embed_metadata_summary">將元資料嵌入影片檔案，若有的話，也會嵌入章節 /infojson</string>
     <string name="use_sponsorblock">使用 SponsorBlock</string>
-    <string name="formats_updated">格式已更新</string>
     <string name="update_formats_background">背景更新格式</string>
     <string name="auto_update_ytdlp">自動更新 yt-dlp</string>
 </resources>

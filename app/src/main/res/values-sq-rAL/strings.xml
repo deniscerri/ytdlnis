@@ -161,7 +161,6 @@
     <string name="items_imported">Elementë të importuar</string>
     <string name="help_translate">Ndihmo në përkthim</string>
     <string name="help_translate_summary">Përkthe këtë aplikacion në gjuhën tuaj duke përdorur Weblate</string>
-    <string name="workmanager_updated">Duhet të rinisni aplikacionin dhe të mos keni shkarkime aktive që kjo preferencë të hyjë në fuqi!</string>
     <string name="restart">Rinis</string>
     <string name="file_size">Madhësia e skedarit</string>
     <string name="clear_temporary_files">Pastro skedarët e perkohshëm</string>
@@ -261,7 +260,6 @@
     <string name="preferred_format_id_summary">Zgjidhni formatin me këtë ID në kartën e shkarkimit</string>
     <string name="misc">Të Tjera</string>
     <string name="audio_only_item">Ky artikull përmban vetëm formate audio</string>
-    <string name="locale">Lokal</string>
     <string name="general">Të Përgjithshme</string>
     <string name="swipe_gestures">Gjestet e rrëshqitjes</string>
     <string name="swipe_gestures_summary">Rrëshqitni artikujt për veprime të caktuara</string>
@@ -269,7 +267,6 @@
     <string name="crop_thumb_summary">Preje thumbnailin në formë katrore për shkarkimet audio</string>
     <string name="move_temporary_files">Zhvendos skedarët e përkohshëm</string>
     <string name="move_temporary_files_summary">Transfero skedarët e përkohshëm në dosjen e shkarkimeve</string>
-    <string name="format_filtering_hint_2">Të gjithë artikujt duhet të jenë audio ose video për të përdorur këtë opsion</string>
     <string name="custom_audio_quality">Përdor cilësinë e personalizuar të audios</string>
     <string name="piped_instance">Instanca e PIPED</string>
     <string name="piped_instance_summary">Shkruani një Server API PIPED, aplikacioni mund të përdorë për kërkimet dhe formatet në youtube</string>
@@ -294,7 +291,6 @@
     <string name="use_cookies">Përdor Biskotat</string>
     <string name="embed_metadata">Vendos Metadatat</string>
     <string name="embed_metadata_summary">Vendosni të dhënat meta në skedarin e videos. Përfshin gjithashtu kapitujt/infojson nëse janë të pranishëm</string>
-    <string name="formats_updated">Formatet u përditësuan</string>
     <string name="update_formats_background">Përditëso formatet në Prapaskenë</string>
     <string name="auto_update_ytdlp">Përditëso yt-dlp Automatikisht</string>
     <string name="use_sponsorblock">Përdor SponsorBlock</string>

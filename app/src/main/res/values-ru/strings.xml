@@ -146,7 +146,6 @@
     <string name="command">Команда</string>
     <string name="date_added">Дата добавления</string>
     <string name="help_translate">Помочь с переводом</string>
-    <string name="workmanager_updated">Вам нужно перезапустить приложение и не иметь активных загрузок, чтобы эта настройка вступила в силу!</string>
     <string name="template">Шаблон</string>
     <string name="logs">Логи</string>
     <string name="command_templates">Шаблоны команд</string>
@@ -258,7 +257,6 @@
     <string name="search_suggestions">Предложения по поиску</string>
     <string name="search_suggestions_summary">Получайте поисковые подсказки от Google</string>
     <string name="preferred_format_id_summary">Выберите формат с этим ID в карточке загрузки</string>
-    <string name="locale">Регион</string>
     <string name="crop_thumb_summary">Обрежьте миниатюру в квадрат для загрузки аудио</string>
     <string name="audio_only_item">Этот элемент содержит только аудио форматы</string>
     <string name="misc">Разное</string>
@@ -268,7 +266,6 @@
     <string name="general">Общие</string>
     <string name="move_temporary_files">Переместить временные файлы</string>
     <string name="move_temporary_files_summary">Перенесите кешированные файлы в папку загрузок</string>
-    <string name="format_filtering_hint_2">Все элементы должны быть либо аудио, либо видео, чтобы использовать эту опцию</string>
     <string name="custom_audio_quality">Выбор качества аудио</string>
     <string name="piped_instance">Piped сервер</string>
     <string name="piped_instance_summary">Напишите сервер PIPED API, который приложение может использовать для запросов и форматов YouTube</string>
@@ -296,7 +293,6 @@
     <string name="embed_metadata">Встроить метаданные</string>
     <string name="auto_update_ytdlp">Автообновление yt-dlp</string>
     <string name="update_formats_background">Обновлять форматы в фоновом режиме</string>
-    <string name="formats_updated">Форматы обновлены</string>
     <string name="use_sponsorblock">Использование SponsorBlock</string>
     <string name="scheduling">Планирование</string>
     <string name="use_scheduler">Загрузить по расписанию</string>

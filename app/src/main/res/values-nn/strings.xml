@@ -100,7 +100,6 @@
     <string name="items_imported">Ting førte inn</string>
     <string name="help_translate">Omset</string>
     <string name="help_translate_summary">Omset denne appen til tunga di med Weblate</string>
-    <string name="workmanager_updated">Du må starte appen på nytt og ikke ha noen aktive nedlastinger for at denne preferansen skal tre i kraft!</string>
     <string name="restart">Byrj om</string>
     <string name="file_size">Filstorleik</string>
     <string name="clear_temporary_files">Tøm mellombelse filer</string>
@@ -266,7 +265,5 @@
     <string name="downloaded">"Henta: "</string>
     <string name="access_all_directories_summary">La appen hente til avgrensa mapper som ellers er utilgjengelege</string>
     <string name="preferred_locale">Foretrukket lokalitet</string>
-    <string name="format_filtering_hint_2">Alle elementer må enten være lyd eller video for å bruke dette alternativet</string>
     <string name="updating_download_data">Oppdaterer nedlastningselementdata</string>
-    <string name="locale">Lokalt</string>
 </resources>

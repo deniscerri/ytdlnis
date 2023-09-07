@@ -105,7 +105,6 @@
     <string name="items_imported">가져온 항목</string>
     <string name="help_translate">번역 지원</string>
     <string name="access_all_directories_summary">기본적으로 제한된 디렉토리에서 앱 다운로드 허용</string>
-    <string name="workmanager_updated">이 기본 설정을 적용하려면 앱을 다시 시작하고 활성 다운로드가 없어야 합니다!</string>
     <string name="download_rescheduled_to">다운로드 일정 변경:</string>
     <string name="clear_temporary_files_summary">다운로드시 충돌/오류/취소로 인해 생성된 캐시 파일을 삭제</string>
     <string name="cache_cleared">임시 파일 삭제됨</string>
@@ -153,7 +152,6 @@
     <string name="swipe_gestures_summary">특정 작업에 대한 항목 스 와이프</string>
     <string name="crop_thumb_summary">오디오 다운로드를 위해 축소판을 사각형으로 자릅니다</string>
     <string name="update_app_summary">앱이 시작할때 앱의 새 버전을 알립니다</string>
-    <string name="locale">국가</string>
     <string name="run_command">실행 명령</string>
     <string name="command_download_notification_channel_description">yt-dlp 명령을 사용한 다운로드 진행률을 보여주는 알림</string>
     <string name="sponsorblock_fillers">필터</string>
@@ -268,7 +266,6 @@
     <string name="downloads_running_try_later">다운로드 작업자가 실행 중입니다. 나중에 다시 시도하세요</string>
     <string name="move_temporary_files">임시 파일 이동</string>
     <string name="move_temporary_files_summary">캐시된 파일을 다운로드 폴더로 전송</string>
-    <string name="format_filtering_hint_2">이 옵션을 사용하려면 모든 항목이 오디오 또는 비디오여야 합니다</string>
     <string name="custom_audio_quality">사용자 지정 오디오 품질 사용</string>
     <string name="piped_instance">파이프 인스턴스</string>
     <string name="piped_instance_summary">앱이 유튜브 쿼리 및 형식에 사용할 수 있는 PIPED API 서버 설정</string>
@@ -298,7 +295,6 @@
     <string name="use_scheduler">스케쥴에 따라 다운로드</string>
     <string name="cache_first_summary">캐시 파일을 내부 저장소에 다운로드한 다음 선택한 폴더로 이동합니다. 저장소에 직접 쓸 수 없을 때 사용하세요</string>
     <string name="scheduling">스케쥴링</string>
-    <string name="formats_updated">형식이 업데이트 되었습니다</string>
     <string name="update_formats_background">백그라운드에서 형식을 업데이트</string>
     <string name="auto_update_ytdlp">yt-dlp 자동 업데이트</string>
     <string name="use_sponsorblock">스폰서블럭 사용</string>

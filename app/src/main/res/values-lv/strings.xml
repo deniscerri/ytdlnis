@@ -173,7 +173,6 @@
     <string name="selected">Atlasīts</string>
     <string name="all_items_selected">Visi vienumi atlasīti</string>
     <string name="clear_errored">Notīrīt Kļūdainos</string>
-    <string name="workmanager_updated">Jums nepieciešams restartēt lietotni, un nav jābūt aktīvām lejupielādēm, lai šī preference stātos spēkā!</string>
     <string name="kill_app">Pārtraukt Lietotnes Darbību</string>
     <string name="confirm_terminate">Aptur visas lejupielādes un piespiedu kārtā aizver lietotni</string>
     <string name="dont_ask_again">Nejautāt vēlreiz</string>
@@ -242,7 +241,6 @@
     <string name="blue">Zils</string>
     <string name="incognito">Inkognito</string>
     <string name="yellow">Dzeltens</string>
-    <string name="locale">Lokalizācija</string>
     <string name="quick_download">Ātrā Lejupielāde</string>
     <string name="Theme">Tēma</string>
     <string name="preferred_search_engine_summary">Meklētājprogramma, ko izmantot meklēšanai lietotnē</string>
@@ -268,7 +266,6 @@
     <string name="finished_download_notification_channel_description">Paziņojums par pabeigtām vai kļūdainām lejupielādēm</string>
     <string name="move_temporary_files">Pārvietot Pagaidu Failus</string>
     <string name="move_temporary_files_summary">Kešatmiņā esošo failu pārvietošana uz lejupielādes mapi</string>
-    <string name="format_filtering_hint_2">Lai izmantotu šo opciju, visiem vienumiem ir jābūt audio vai video</string>
     <string name="piped_instance">Piped Instance</string>
     <string name="piped_instance_summary">Izmanto PIPED API Serveri, ko lietotne var izmantot YouTube vaicājumiem un formātiem</string>
     <string name="custom_audio_quality">Izmantot Pielāgotu Audio Kvalitāti</string>

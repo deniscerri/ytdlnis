@@ -133,7 +133,6 @@
     <string name="items_imported">Importowane elementy</string>
     <string name="clear_cancelled">Wyczyść anulowane</string>
     <string name="help_translate">Pomóż w tłumaczeniu</string>
-    <string name="workmanager_updated">Aby to ustawienie zaczęło obowiązywać, musisz ponownie uruchomić aplikację i nie mieć żadnych aktywnych pobrań!</string>
     <string name="cache_cleared">Wyczyszczono pliki tymczasowe</string>
     <string name="kill_app">Zakończ działanie aplikacji</string>
     <string name="suggested">Sugerowane</string>
@@ -232,9 +231,7 @@
     <string name="appearance">Wygląd</string>
     <string name="purple">Fioletowy</string>
     <string name="keep_cache">Zachowaj pamięć podręczną</string>
-    <string name="locale">Region</string>
     <string name="audio_only_item">Ten element zawiera tylko formaty audio</string>
-    <string name="format_filtering_hint_2">Aby można było użyć tej opcji, wszystkie elementy muszą być audio lub wideo</string>
     <string name="subtitle_languages">Języki napisów</string>
     <string name="save_subs_desc">Zapisz plik z napisami</string>
     <string name="custom_audio_quality">Użyj niestandardowej jakości dźwięku</string>

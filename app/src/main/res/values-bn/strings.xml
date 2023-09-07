@@ -116,7 +116,6 @@
     <string name="access_all_directories_summary">ডিফল্টরূপে সীমাবদ্ধ ডিরেক্টরিগুলিতে অ্যাপটিকে ডাউনলোড করতে দিন</string>
     <string name="split_by_chapters">অধ্যায় দ্বারা বিভক্ত করুন</string>
     <string name="help_translate_summary">Weblate ব্যবহার করে আপনার ভাষায় এই অ্যাপটি অনুবাদ করুন</string>
-    <string name="workmanager_updated">এই পছন্দটি কার্যকর করার জন্য আপনাকে অ্যাপটি পুনরায় চালু করতে হবে এবং কোনও সক্রিয় ডাউনলোড নেই!</string>
     <string name="restart">আবার শুরু করুন</string>
     <string name="clear_temporary_files_summary">ক্র্যাশ/ত্রুটি/বাতিল করা ডাউনলোড থেকে ক্যাশে ফাইল মুছুন</string>
     <string name="link_you_copied">আপনার কপি করা লিঙ্ক</string>
@@ -243,7 +242,6 @@
     <string name="appearance">চেহারা</string>
     <string name="restore_complete">অ্যাপ পুনরুদ্ধার সম্পূর্ণ হয়েছে। নিম্নলিখিত আইটেমগুলি পুনরুদ্ধার করা হয়েছে:</string>
     <string name="general">সাধারণ</string>
-    <string name="format_filtering_hint_2">এই অপশনটি ব্যবহার করার জন্য সমস্ত আইটেম অবশ্যই অডিও বা ভিডিও হতে হবে</string>
     <string name="updating_download_data">ডাউনলোড আইটেম ডাটা আপডেট হচ্ছে</string>
     <string name="keep_cache">ক্যাশে রাখুন</string>
     <string name="search_history">অনুসন্ধান ইতিহাস</string>
@@ -272,7 +270,6 @@
     <string name="select_backup_categories">ব্যাকআপ ক্যাটাগরি নির্বাচন করুন</string>
     <string name="subtitle_format">সাবটাইটেল ফরম্যাট
 \n</string>
-    <string name="locale">স্থান</string>
     <string name="audio_only_item">এই আইটেমটি শুধুমাত্র অডিও ফরম্যাট ধারণ করে</string>
     <string name="pause">বিরতি দিন</string>
     <string name="show_terminal">শেয়ার মেনুতে টার্মিনাল দেখান</string>

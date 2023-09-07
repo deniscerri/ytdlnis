@@ -42,14 +42,14 @@
 
         <activity
             android:name=".MainActivity"
-            android:configChanges="orientation|screenSize|smallestScreenSize|screenLayout|locale"
+            android:configChanges="smallestScreenSize|layoutDirection|locale|orientation|screenSize"
             android:exported="true"
             android:windowSoftInputMode="adjustPan">
 
         </activity>
         <activity
             android:name=".receiver.ShareActivity"
-            android:configChanges="orientation|screenSize|smallestScreenSize|screenLayout|locale"
+            android:configChanges="smallestScreenSize|layoutDirection|locale|orientation|screenSize"
             android:excludeFromRecents="true"
             android:exported="true"
             android:launchMode="singleInstance"
@@ -75,7 +75,7 @@
         </activity>
         <activity
             android:name=".receiver.ShareFileActivity"
-            android:configChanges="orientation|screenSize|smallestScreenSize|screenLayout|locale"
+            android:configChanges="smallestScreenSize|layoutDirection|locale|orientation|screenSize"
             android:excludeFromRecents="true"
             android:exported="true"
             android:launchMode="singleInstance"
@@ -96,7 +96,7 @@
         </activity>
         <activity
             android:name=".ui.more.TerminalActivity"
-            android:configChanges="orientation|screenSize|smallestScreenSize|screenLayout|locale"
+            android:configChanges="smallestScreenSize|layoutDirection|locale|orientation|screenSize"
             android:exported="true"
             android:label="@string/terminal"
             android:parentActivityName=".MainActivity">
@@ -126,7 +126,7 @@
             android:enabled="true"
             android:icon="@mipmap/ic_launcher"
             android:roundIcon="@mipmap/ic_launcher_round"
-            android:configChanges="orientation|screenSize|smallestScreenSize|screenLayout|locale"
+            android:configChanges="smallestScreenSize|layoutDirection|locale|orientation|screenSize"
             android:targetActivity=".MainActivity"
             android:windowSoftInputMode="adjustPan"
             android:exported="true">
@@ -148,7 +148,7 @@
             android:exported="true"
             android:icon="@mipmap/ic_launcher_dark"
             android:roundIcon="@mipmap/ic_launcher_round_dark"
-            android:configChanges="orientation|screenSize|smallestScreenSize|screenLayout|locale"
+            android:configChanges="smallestScreenSize|layoutDirection|locale|orientation|screenSize"
             android:targetActivity=".MainActivity"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
@@ -168,7 +168,7 @@
             android:exported="true"
             android:icon="@mipmap/ic_launcher_light"
             android:roundIcon="@mipmap/ic_launcher_round_light"
-            android:configChanges="orientation|screenSize|smallestScreenSize|screenLayout|locale"
+            android:configChanges="smallestScreenSize|layoutDirection|locale|orientation|screenSize"
             android:targetActivity=".MainActivity"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
@@ -184,7 +184,7 @@
 
         <activity
             android:name=".ui.more.WebViewActivity"
-            android:configChanges="orientation|screenSize|smallestScreenSize|screenLayout|locale"
+            android:configChanges="smallestScreenSize|layoutDirection|locale|orientation|screenSize"
             android:exported="true"
             android:parentActivityName=".MainActivity"
             android:windowSoftInputMode="adjustResize">
@@ -202,7 +202,7 @@
 
         <activity
             android:name=".receiver.ResumeActivity"
-            android:configChanges="orientation|screenSize|smallestScreenSize|screenLayout|locale"
+            android:configChanges="smallestScreenSize|layoutDirection|locale|orientation|screenSize"
             android:excludeFromRecents="true"
             android:exported="true"
             android:launchMode="singleInstance"

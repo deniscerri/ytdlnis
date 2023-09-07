@@ -157,7 +157,6 @@
     <string name="preferred_download_type_summary">التبويب الذي ستُفتح عليه بطاقة التحميل</string>
     <string name="help_translate">المساعدة في الترجمة</string>
     <string name="help_translate_summary">المساعدة في توطين/تحسين الترجمة على Weblate</string>
-    <string name="workmanager_updated">يتطلب تنفيذ هذا الإعداد، إعادة تشغيل التطبيق بدون تحميلات نشطة!</string>
     <string name="restart">إعادة التشغيل</string>
     <string name="confirm_delete_logs_desc">إزالة السجلات بالكامل.</string>
     <string name="select">اختيار</string>
@@ -253,7 +252,6 @@
     <string name="restore_complete">اكتملت عملية الاستعادة، تمت استعادة العناصر التالية:</string>
     <string name="backup_created_successfully">تم حفظ ملف النسخ الاحتياطي في مجلد \"Download\"</string>
     <string name="select_backup_categories">اختيار فئات النسخ الاحتياطي</string>
-    <string name="locale">الموقع</string>
     <string name="audio_only_item">يحتوي هذا العنصر على تنسيقات الصوت فقط</string>
     <string name="socks5_proxy_summary">استخدام وكيل HTTP/HTTPS/SOCKS المحدد</string>
     <string name="socks5_proxy">رابط الوكيل Socks5</string>
@@ -268,7 +266,6 @@
     <string name="swipe_gestures_summary">سحب العناصر يمينًا/يسارًا لـ التحميل/الإزالة</string>
     <string name="crop_thumb">قص الصورة المصغرة</string>
     <string name="crop_thumb_summary">قص الصورة المصغرة على شكل مربع للتحميلات الصوتية</string>
-    <string name="format_filtering_hint_2">يجب أن تكون جميع العناصر إما صوتية أو فيديو لاستخدام هذا الخيار</string>
     <string name="custom_audio_quality">استخدام جودة صوت مخصصة</string>
     <string name="piped_instance">مثيل Piped</string>
     <string name="piped_instance_summary">إدخال خادم PIPED API، يمكن للتطبيق استخدامه لاستعلامات وتنسيقات يوتيوب</string>
@@ -294,7 +291,6 @@
     <string name="use_cookies">استخدام ملفات تعريف الارتباط</string>
     <string name="embed_metadata">تضمين البيانات الوصفية</string>
     <string name="embed_metadata_summary">دمج البيانات الوصفية داخل ملف الفيديو. يمكن أن يشمل ذلك، فهرس الفصول/التفاصيل الإضافية</string>
-    <string name="formats_updated">تم تحديث التنسيقات</string>
     <string name="update_formats_background">تحديث التنسيقات في الخلفية</string>
     <string name="use_sponsorblock">استخدام حاجب شرائح الإعلانات</string>
     <string name="auto_update_ytdlp">تحديث تلقائي لـ yt-dlp</string>

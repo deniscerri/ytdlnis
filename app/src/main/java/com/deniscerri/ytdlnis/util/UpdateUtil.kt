@@ -13,13 +13,15 @@ import android.widget.Toast
 import androidx.preference.PreferenceManager
 import com.deniscerri.ytdlnis.BuildConfig
 import com.deniscerri.ytdlnis.R
+import com.deniscerri.ytdlnis.database.models.GithubRelease
+import com.deniscerri.ytdlnis.database.models.GithubReleaseAsset
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.yausername.youtubedl_android.YoutubeDL
 import com.yausername.youtubedl_android.YoutubeDL.UpdateStatus
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import org.json.JSONException
-import org.json.JSONObject
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.net.HttpURLConnection
@@ -27,6 +29,7 @@ import java.net.URL
 
 class UpdateUtil(var context: Context) {
     private val tag = "UpdateUtil"
+    private val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
     private val downloadManager: DownloadManager = context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
 
     fun updateApp(result: (result: String) -> Unit) {
@@ -38,32 +41,61 @@ class UpdateUtil(var context: Context) {
                     Toast.LENGTH_LONG
                 ).show()
             }
-            val res = checkForAppUpdate()
-            val version: String
-            val body: String?
-            try {
-                version = res.getString("tag_name")
-                body = res.getString("body")
-            } catch (e: JSONException) {
+            val res = getGithubReleases()
+
+            if (res.isEmpty()){
                 result(context.getString(R.string.network_error))
                 return
             }
-            val versionNameInt = version.split("v")[1].replace(".","").toInt()
-            val currentVersionNameInt = BuildConfig.VERSION_CODE.toString().replace("0", "").substring(0, versionNameInt.toString().length).toInt()
-            if (currentVersionNameInt >= versionNameInt) {
+
+            val useBeta = sharedPreferences.getBoolean("update_beta", false)
+            val v: GithubRelease? = runCatching {
+                res.firstOrNull {
+                    if (useBeta) it.tag_name.contains("beta", true)
+                    else !it.tag_name.contains("beta", true)
+                }
+            }.getOrNull()
+
+            if (
+                (useBeta && v == null) ||
+                BuildConfig.VERSION_NAME == v!!.tag_name.removePrefix("v")
+                ){
                 result(context.getString(R.string.you_are_in_latest_version))
                 return
             }
+
             Handler(Looper.getMainLooper()).post {
                 val updateDialog = MaterialAlertDialogBuilder(context)
-                    .setTitle(version)
-                    .setMessage(body)
+                    .setTitle(v.tag_name)
+                    .setMessage(v.body)
                     .setIcon(R.drawable.ic_update_app)
                     .setNegativeButton("Cancel") { _: DialogInterface?, _: Int -> }
                     .setPositiveButton("Update") { _: DialogInterface?, _: Int ->
-                        startAppUpdate(
-                            res
-                        )
+                        runCatching {
+                            val releaseVersion = v.assets.firstOrNull { it.name.contains(Build.SUPPORTED_ABIS[0]) }
+                            if (releaseVersion == null){
+                                Toast.makeText(context, R.string.couldnt_find_apk, Toast.LENGTH_SHORT).show()
+                                return@runCatching
+                            }
+
+
+                            val uri = Uri.parse(releaseVersion.browser_download_url)
+                            Environment
+                                .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+                                .mkdirs()
+                            downloadManager.enqueue(
+                                DownloadManager.Request(uri)
+                                    .setAllowedNetworkTypes(
+                                        DownloadManager.Request.NETWORK_WIFI or
+                                                DownloadManager.Request.NETWORK_MOBILE
+                                    )
+                                    .setAllowedOverRoaming(true)
+                                    .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+                                    .setTitle(context.getString(R.string.downloading_update))
+                                    .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, releaseVersion.name)
+                            )
+                        }
+
                     }
                 updateDialog.show()
             }
@@ -75,13 +107,10 @@ class UpdateUtil(var context: Context) {
         }
     }
 
-    private fun checkForAppUpdate(): JSONObject {
-        val url = "https://api.github.com/repos/deniscerri/ytdlnis/releases/latest"
-        val reader: BufferedReader
-        var line: String?
-        val responseContent = StringBuilder()
+    private fun getGithubReleases(): List<GithubRelease> {
+        val url = "https://api.github.com/repos/deniscerri/ytdlnis/releases"
         val conn: HttpURLConnection
-        var json = JSONObject()
+        var json = listOf<GithubRelease>()
         try {
             val req = URL(url)
             conn = req.openConnection() as HttpURLConnection
@@ -89,57 +118,14 @@ class UpdateUtil(var context: Context) {
             conn.connectTimeout = 10000
             conn.readTimeout = 5000
             if (conn.responseCode < 300) {
-                reader = BufferedReader(InputStreamReader(conn.inputStream))
-                while (reader.readLine().also { line = it } != null) {
-                    responseContent.append(line)
-                }
-                reader.close()
-                json = JSONObject(responseContent.toString())
-                if (json.has("error")) {
-                    throw Exception()
-                }
+                val myType = object : TypeToken<List<GithubRelease>>() {}.type
+                json = Gson().fromJson(InputStreamReader(conn.inputStream), myType)
             }
             conn.disconnect()
         } catch (e: Exception) {
             Log.e(tag, e.toString())
         }
         return json
-    }
-
-    private fun startAppUpdate(updateInfo: JSONObject) {
-        try {
-            val versions = updateInfo.getJSONArray("assets")
-            var url = ""
-            var appName = ""
-            for (i in 0 until versions.length()) {
-                val tmp = versions.getJSONObject(i)
-                if (tmp.getString("name").contains(Build.SUPPORTED_ABIS[0])) {
-                    url = tmp.getString("browser_download_url")
-                    appName = tmp.getString("name")
-                    break
-                }
-            }
-            if (url.isEmpty()) {
-                Toast.makeText(context, R.string.couldnt_find_apk, Toast.LENGTH_SHORT).show()
-                return
-            }
-            val uri = Uri.parse(url)
-            Environment
-                .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
-                .mkdirs()
-            downloadManager.enqueue(
-                DownloadManager.Request(uri)
-                    .setAllowedNetworkTypes(
-                        DownloadManager.Request.NETWORK_WIFI or
-                                DownloadManager.Request.NETWORK_MOBILE
-                    )
-                    .setAllowedOverRoaming(true)
-                    .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-                    .setTitle(context.getString(R.string.downloading_update))
-                    .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, appName)
-            )
-        } catch (ignored: Exception) {
-        }
     }
 
     suspend fun updateYoutubeDL() : UpdateStatus? =

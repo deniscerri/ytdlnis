@@ -151,7 +151,6 @@
     <string name="file_size">Tamaño del archivo</string>
     <string name="clear_temporary_files">Borrar los archivos temporales</string>
     <string name="clear_temporary_files_summary">Elimina los archivos en caché de descargas bloqueadas, canceladas o anuladas</string>
-    <string name="workmanager_updated">¡Debe reiniciar la aplicación y no tener descargas activas para que esta preferencia surta efecto!</string>
     <string name="restart">Reiniciar</string>
     <string name="download_rescheduled_to">Descarga aplazada a:</string>
     <string name="ytdl_version">Versión de yt-dlp</string>
@@ -258,7 +257,6 @@
     <string name="search_suggestions">Sugerencias de búsqueda</string>
     <string name="search_suggestions_summary">Obtener sugerencias de búsqueda de Google</string>
     <string name="preferred_format_id_summary">Seleccione el formato con este ID en la tarjeta de descarga</string>
-    <string name="locale">Lugar</string>
     <string name="audio_only_item">Este elemento solo contiene formatos de audio</string>
     <string name="general">General</string>
     <string name="misc">Varios</string>
@@ -268,7 +266,6 @@
     <string name="crop_thumb_summary">Recorte la miniatura en un cuadrado para descargas de audio</string>
     <string name="move_temporary_files">Mover archivos temporales</string>
     <string name="move_temporary_files_summary">Transferir archivos almacenados en caché a la carpeta de descargas</string>
-    <string name="format_filtering_hint_2">Todos los elementos deben ser de audio o video para usar esta opción</string>
     <string name="custom_audio_quality">Calidad de audio personalizada</string>
     <string name="piped_instance">Instancia para Piped</string>
     <string name="piped_instance_summary">Escribe un servidor para la API PIPED, la aplicación puede usarse para consultas y formatos de YouTube</string>
@@ -295,7 +292,6 @@
     <string name="write_description_summary">Escribe una descripción para el archivo</string>
     <string name="write_description">Guardar la descripción</string>
     <string name="use_sponsorblock">Utilizar SponsorBlock</string>
-    <string name="formats_updated">Formatos actualizados</string>
     <string name="update_formats_background">Actualizar los formatos en segundo plano</string>
     <string name="auto_update_ytdlp">Actualización automática para yt-dlp</string>
 </resources>

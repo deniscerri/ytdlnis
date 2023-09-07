@@ -112,7 +112,6 @@
     <string name="clear_errored">त्रुटिपूर्ण को साफ़ करें</string>
     <string name="split_by_chapters">अध्यायों द्वारा विभाजित</string>
     <string name="items_imported">आयातित वस्तुएँ</string>
-    <string name="workmanager_updated">इस वरीयता के प्रभावी होने के लिए आपको ऐप को पुनरारंभ करना होगा और कोई सक्रिय डाउनलोड नहीं करना होगा!</string>
     <string name="clear_temporary_files_summary">क्रैश/त्रुटि/रद्द किए गए डाउनलोड से कैश की गई फ़ाइलें हटाएं</string>
     <string name="cache_cleared">अस्थायी फ़ाइलें साफ़ की गईं</string>
     <string name="ytdl_version">वाईटी-डीएलपी संस्करण</string>
@@ -170,9 +169,7 @@
     <string name="red">लाल</string>
     <string name="end">अंत</string>
     <string name="format_source">प्रारूप स्रोत</string>
-    <string name="locale">स्थानीय</string>
     <string name="audio_only_item">इस आइटम में केवल ऑडियो प्रारूप हैं</string>
-    <string name="format_filtering_hint_2">इस विकल्प का उपयोग करने के लिए सभी आइटम या तो ऑडियो या वीडियो होने चाहिए</string>
     <string name="sponsorblock">प्रायोजक ब्लॉक</string>
     <string name="configure_download">डाउनलोड समायोजित करें</string>
     <string name="embed_thumb_summary">थंबनेल को कवर आर्ट के रूप में उपयोग करें</string>
@@ -295,7 +292,6 @@
     <string name="extra_command">अतिरिक्त आदेश</string>
     <string name="use_cookies">कुकीज़ का प्रयोग करें</string>
     <string name="update_formats_background">पृष्ठभूमि में फ़ॉर्मेट अपडेट करें</string>
-    <string name="formats_updated">फ़ॉर्मेट अपडेट कर दिए गए हैं</string>
     <string name="auto_update_ytdlp">yt-dlp को ऑटो-अपडेट करें</string>
     <string name="use_sponsorblock">स्पॉन्सरब्लॉक का उपयोग करें</string>
     <string name="scheduling">निर्धारण</string>

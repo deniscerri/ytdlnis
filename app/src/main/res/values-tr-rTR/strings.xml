@@ -109,7 +109,6 @@
     <string name="terminal">Terminal</string>
     <string name="enable_mtime">Aktivasyon d.saat</string>
     <string name="enable_mtime_summary">HTTP son değiştirilme başlığını son değiştirilme zamanı olarak ayarla</string>
-    <string name="workmanager_updated">Bu seçeneğin uygulanabilmesi için devam eden indirmeniz olmaması ve uygulamayı yeniden başlatmanız gerekiyor!</string>
     <string name="restart">Yeniden başlat</string>
     <string name="clear_temporary_files_summary">Çöken/hatalı/iptal edilen indirmelerden önbelleğe alınmış dosyaları sil</string>
     <string name="downloads_running_try_later">İndirme çalışanı çalışıyor. Daha sonra tekrar deneyin</string>
@@ -248,9 +247,7 @@
     <string name="restore">Geri yükle</string>
     <string name="sponsorblock">SponsorBlock By İrfan</string>
     <string name="network_error">Ağ Hatası</string>
-    <string name="locale">yerel ayar</string>
     <string name="audio_only_item">Bu öğe yalnızca ses biçimlerini içerir</string>
-    <string name="format_filtering_hint_2">Bu seçeneği kullanmak için tüm öğeler ses veya video olmalıdır</string>
     <string name="piped_instance">Borulu Örnek</string>
     <string name="socks5_proxy_summary">Belirtilen HTTP/HTTPS/SOCKS proxy\'sini kullanın</string>
     <string name="restore_complete">Uygulama Geri Yükleme Tamamlandı. Aşağıdaki öğeler geri yüklendi:</string>
@@ -296,7 +293,6 @@
     <string name="use_cookies">Çerezleri Kullan</string>
     <string name="embed_metadata">Meta Verileri Göm</string>
     <string name="embed_metadata_summary">Meta verileri video dosyasına gömün. Varsa bölümleri/infojson\'u da yerleştirir</string>
-    <string name="formats_updated">Biçimler güncellendi</string>
     <string name="update_formats_background">Biçimleri Arka Planda Güncelle</string>
     <string name="auto_update_ytdlp">Yt-dlp\'i Otomatik Güncelle</string>
     <string name="use_sponsorblock">SponsorBlock Kullan</string>

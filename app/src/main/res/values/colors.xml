@@ -300,10 +300,6 @@
     <color name="orange_md_theme_light_inverseOnSurface">#F9EFE7</color>
     <color name="orange_md_theme_light_inverseSurface">#352F2A</color>
     <color name="orange_md_theme_light_inversePrimary">#FFB95C</color>
-    <color name="orange_md_theme_light_shadow">#000000</color>
-    <color name="orange_md_theme_light_surfaceTint">#855400</color>
-    <color name="orange_md_theme_light_outlineVariant">#D4C4B5</color>
-    <color name="orange_md_theme_light_scrim">#000000</color>
     <color name="orange_md_theme_dark_primary">#FFB95C</color>
     <color name="orange_md_theme_dark_onPrimary">#462A00</color>
     <color name="orange_md_theme_dark_primaryContainer">#653E00</color>
@@ -330,10 +326,6 @@
     <color name="orange_md_theme_dark_inverseOnSurface">#1F1B16</color>
     <color name="orange_md_theme_dark_inverseSurface">#EBE1D9</color>
     <color name="orange_md_theme_dark_inversePrimary">#855400</color>
-    <color name="orange_md_theme_dark_shadow">#000000</color>
-    <color name="orange_md_theme_dark_surfaceTint">#FFB95C</color>
-    <color name="orange_md_theme_dark_outlineVariant">#504539</color>
-    <color name="orange_md_theme_dark_scrim">#000000</color>
 
     // Colors without comments seem to be not used
     <color name="monochrome_theme_light_primary">#616161</color>

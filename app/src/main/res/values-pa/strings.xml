@@ -46,7 +46,6 @@
     <string name="custom_audio_quality">ਕਸਟਮ ਆਡੀਓ ਗੁਣਵੱਤਾ ਦੀ ਵਰਤੋਂ ਕਰੋ</string>
     <string name="piped_instance">Piped ਇੰਸਟੈਂਸ</string>
     <string name="move_temporary_files">ਅਸਥਾਈ ਫਾਈਲਾਂ ਨੂੰ ਮੂਵ ਕਰੋ</string>
-    <string name="format_filtering_hint_2">ਇਸ ਵਿਕਲਪ ਦੀ ਵਰਤੋਂ ਕਰਨ ਲਈ ਸਾਰੀਆਂ ਆਈਟਮਾਂ ਆਡੀਓ ਜਾਂ ਵੀਡੀਓ ਹੋਣੀਆਂ ਚਾਹੀਦੀਆਂ ਹਨ</string>
     <string name="move_temporary_files_summary">ਕੈਸ਼ ਕੀਤੀਆਂ ਫਾਈਲਾਂ ਨੂੰ ਡਾਊਨਲੋਡ ਫੋਲਡਰ ਵਿੱਚ ਟ੍ਰਾਂਸਫਰ ਕਰੋ</string>
     <string name="music_directory">ਸੰਗੀਤ ਫੋਲਡਰ</string>
     <string name="video_directory">ਵੀਡੀਓ ਫੋਲਡਰ</string>
@@ -214,7 +213,6 @@
     <string name="general">ਜਨਰਲ</string>
     <string name="swipe_gestures">ਸਵਾਈਪ ਸੰਕੇਤ</string>
     <string name="swipe_gestures_summary">ਕੁਝ ਖਾਸ ਕਾਰਵਾਈਆਂ ਲਈ ਆਈਟਮਾਂ ਨੂੰ ਸਵਾਈਪ ਕਰੋ</string>
-    <string name="locale">ਸਥਾਨ</string>
     <string name="audio_only_item">ਇਸ ਆਈਟਮ ਵਿੱਚ ਸਿਰਫ਼ ਆਡੀਓ ਫਾਰਮੈਟ ਸ਼ਾਮਿਲ ਹਨ</string>
     <string name="show_download_card">ਡਾਊਨਲੋਡ ਕਰਨ ਲਈ ਵਿਕਲਪ ਵਿਖਾਓ</string>
     <string name="warning">ਚੇਤਾਵਨੀ</string>
@@ -256,7 +254,6 @@
     <string name="update_template">ਟੈਮਪਲੇਟ ਅੱਪਡੇਟ ਕਰੋ</string>
     <string name="access_all_directories_summary">ਐਪ ਨੂੰ ਡਾਇਰੈਕਟਰੀਆਂ \'ਤੇ ਡਾਊਨਲੋਡ ਕਰਨ ਦਿਓ ਜੋ ਡਿਫ਼ਾਲਟ ਤੌਰ \'ਤੇ ਪ੍ਰਤਿਬੰਧਿਤ ਹਨ</string>
     <string name="help_translate_summary">Weblate ਦੀ ਵਰਤੋਂ ਕਰਕੇ ਇਸ ਐਪ ਦਾ ਆਪਣੀ ਭਾਸ਼ਾ ਵਿੱਚ ਅਨੁਵਾਦ ਕਰੋ</string>
-    <string name="workmanager_updated">ਇਸ ਤਰਜੀਹ ਨੂੰ ਲਾਗੂ ਕਰਨ ਲਈ ਤੁਹਾਨੂੰ ਐਪ ਨੂੰ ਰੀਸਟਾਰਟ ਕਰਨ ਦੀ ਲੋੜ ਹੈ ਅਤੇ ਕੋਈ ਡਾਊਨਲੋਡ ਕਿਰਿਆਸ਼ੀਲ ਨਹੀਂ ਹੋਣਾ ਚਾਹੀਦਾ!</string>
     <string name="green">ਹਰਾ</string>
     <string name="clear_temporary_files_summary">ਕ੍ਰੈਸ਼/ਗਲਤੀ/ਰੱਦ ਕੀਤੇ ਡਾਉਨਲੋਡਸ ਤੋਂ ਕੈਸ਼ ਕੀਤੀਆਂ ਫਾਈਲਾਂ ਨੂੰ ਮਿਟਾਓ</string>
     <string name="confirm_terminate">ਸਾਰੇ ਡਾਊਨਲੋਡਾਂ ਨੂੰ ਰੋਕਦਾ ਹੈ ਅਤੇ ਐਪ ਨੂੰ ਜ਼ਬਰੀ ਬੰਦ ਕਰ ਦਿੰਦਾ ਹੈ</string>
@@ -294,7 +291,6 @@
     <string name="embed_metadata_summary">ਵੀਡੀਓ ਫਾਈਲ ਵਿੱਚ ਮੈਟਾਡੇਟਾ ਏਮਬੇਡ ਕਰੋ। ਜੇਕਰ ਮੌਜੂਦ ਹੋਵੇ ਤਾਂ ਚੈਪਟਰਾਂ/ਜਾਣਕਾਰੀ ਨੂੰ ਵੀ ਸ਼ਾਮਿਲ ਕਰਦਾ ਹੈ</string>
     <string name="write_description_summary">ਵੇਰਵਾ ਫਾਇਲ ਲਿਖੋ</string>
     <string name="write_description">ਵੇਰਵਾ ਸੰਭਾਲੋ</string>
-    <string name="formats_updated">ਫਾਰਮੈਟ ਅੱਪਡੇਟ ਕੀਤੇ ਗਏ ਹਨ</string>
     <string name="update_formats_background">ਬੈਕਗ੍ਰਾਊਂਡ ਵਿੱਚ ਫਾਰਮੈਟ ਅੱਪਡੇਟ ਕਰੋ</string>
     <string name="auto_update_ytdlp">yt-dlp ਆਟੋ-ਅੱਪਡੇਟ ਕਰੋ</string>
     <string name="use_sponsorblock">ਸਪਾਂਸਰਬਲਾਕ ਦੀ ਵਰਤੋਂ ਕਰੋ</string>

@@ -156,7 +156,6 @@
     <string name="selected">Ausgewählt</string>
     <string name="help_translate">Beim Übersetzen helfen</string>
     <string name="help_translate_summary">Übersetze die App mit Weblate in Ihre Sprache</string>
-    <string name="workmanager_updated">Damit diese Einstellung wirksam wird, müssen Sie die App neu starten und dürfen keine aktiven Downloads haben!</string>
     <string name="downloads_running_try_later">Der Download-Worker läuft. Später erneut versuchen</string>
     <string name="link_you_copied">Kopierter Link</string>
     <string name="restrict_filenames">Dateinamen einschränken</string>
@@ -247,9 +246,7 @@
     <string name="updating_download_data">Aktualisieren der Daten von heruntergeladenen Elemente</string>
     <string name="appearance">Aussehen</string>
     <string name="incognito">Inkognito</string>
-    <string name="locale">Gebietsschema</string>
     <string name="audio_only_item">Dieses Element enthält nur Audioformate</string>
-    <string name="format_filtering_hint_2">Alle Elemente müssen entweder Audio oder Video sein, um diese Option zu nutzen</string>
     <string name="sponsorblock">SponsorBlock</string>
     <string name="preferred_format_id">Bevorzugte Format-ID</string>
     <string name="custom_audio_quality">Benutzerdefinierte Audioqualität verwenden</string>

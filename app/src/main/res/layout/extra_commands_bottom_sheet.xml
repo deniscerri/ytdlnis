@@ -24,7 +24,6 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <LinearLayout
-                android:id="@+id/linear"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
@@ -63,7 +62,6 @@
                         android:padding="10dp">
 
                         <TextView
-                            android:id="@+id/currentTitle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/current"
@@ -91,7 +89,6 @@
         </ScrollView>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputLayout"
             style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

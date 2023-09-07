@@ -135,7 +135,6 @@
     <string name="swipe_gestures_summary">Scorri gli elementi per determinate azioni</string>
     <string name="crop_thumb">Ritaglia miniatura</string>
     <string name="crop_thumb_summary">Ritaglia la miniatura in un quadrato per i download audio</string>
-    <string name="format_filtering_hint_2">Tutti gli elementi devono essere audio o video per utilizzare questa opzione</string>
     <string name="piped_instance">Instanza Piped</string>
     <string name="custom_audio_quality">Usa qualità audio personalizzata</string>
     <string name="use_extra_commands">Aggiungi comandi extra</string>
@@ -175,7 +174,6 @@
     <string name="adjust_templates">Modifica template</string>
     <string name="adjust_video">Regola il video</string>
     <string name="freespace">Spazio libero</string>
-    <string name="workmanager_updated">Devi riavviare l\'app e non avere download attivi affinché questa impostazione abbia effetto!</string>
     <string name="downloads_running_try_later">Il download worker è in esecuzione. Riprovare più tardi</string>
     <string name="ytdl_version">Versione di yt-dlp</string>
     <string name="restrict_filenames">Limita i nomi dei file</string>
@@ -235,7 +233,6 @@
     <string name="saved">Salvato</string>
     <string name="clear_saved">Pulisci salvati</string>
     <string name="save_for_later">Salvare il download per dopo\?</string>
-    <string name="locale">Lingua</string>
     <string name="audio_only_item">Questo elemento contiene solo formati audio</string>
     <string name="error_updating_formats">Errore durante l\'aggiornamento dei formati!</string>
     <string name="defaultValue">Predefinito</string>

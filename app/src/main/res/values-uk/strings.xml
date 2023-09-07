@@ -162,7 +162,6 @@
     <string name="clear_temporary_files_summary">Видалення кешованих файлів зі збійних/помилкових/скасованих завантажень</string>
     <string name="clear_cancelled">Очистити скасоване</string>
     <string name="split_by_chapters">Розподіл за розділами</string>
-    <string name="workmanager_updated">Щоб це налаштування набуло чинності, вам потрібно перезапустити застосунок і не мати активних завантажень!</string>
     <string name="restart">Перезавантажити</string>
     <string name="cache_cleared">Очищено тимчасові файли</string>
     <string name="downloads_running_try_later">Завантажувач працює. Спробуйте ще раз пізніше</string>
@@ -264,11 +263,9 @@
     <string name="swipe_gestures_summary">Увімкнути жести для певних дій</string>
     <string name="crop_thumb">Обрізати мініатюру</string>
     <string name="crop_thumb_summary">Обріжте ескіз у квадрат для завантаження аудіо</string>
-    <string name="locale">Локаль</string>
     <string name="audio_only_item">Цей елемент містить лише аудіоформати</string>
     <string name="move_temporary_files_summary">Перенесіть кешовані файли в папку завантажень</string>
     <string name="move_temporary_files">Перемістити тимчасові файли</string>
-    <string name="format_filtering_hint_2">Щоб скористатися цією опцією, усі елементи мають бути аудіо чи відео</string>
     <string name="custom_audio_quality">Вибір якості аудіо</string>
     <string name="piped_instance">Piped сервер</string>
     <string name="piped_instance_summary">Напишіть сервер Piped API, який програма може використовувати для запитів і форматів YouTube</string>
@@ -297,7 +294,6 @@
     <string name="auto_update_ytdlp">Автооновлення yt-dlp</string>
     <string name="use_sponsorblock">Використання SponsorBlock</string>
     <string name="update_formats_background">Оновити формати у фоновому режимі</string>
-    <string name="formats_updated">Оновлені формати</string>
     <string name="scheduling">Планування</string>
     <string name="cache_first_summary">Файли кешу завантажуються у внутрішню пам\'ять, а потім переносяться в обрану вами папку. Використовується, коли немає можливості записувати файл безпосередньо в пам\'ять</string>
     <string name="cache_first">Спочатку завантажується кеш</string>

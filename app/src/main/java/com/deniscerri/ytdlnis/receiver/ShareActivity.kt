@@ -13,6 +13,7 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
+import android.util.Patterns
 import android.view.Window
 import android.view.WindowManager
 import android.widget.TextView
@@ -118,9 +119,15 @@ class ShareActivity : BaseActivity() {
                 this.finish()
             }
 
-            val inputQuery = when(action){
+            val intentData = when(action){
                 Intent.ACTION_SEND -> intent.getStringExtra(Intent.EXTRA_TEXT)!!
                 else -> intent.dataString!!
+            }
+            val matcher = Patterns.WEB_URL.matcher(intentData)
+            val inputQuery = if (matcher.find()){
+               matcher.group()
+            }else{
+                intentData
             }
 
             lifecycleScope.launch {
@@ -130,7 +137,7 @@ class ShareActivity : BaseActivity() {
                     showDownloadSheet(result)
                 }catch (e: Exception){
                     resultViewModel.deleteAll()
-                    if (quickDownload && inputQuery.matches("(https?://(?:www\\.|(?!www))[a-zA-Z\\d][a-zA-Z\\d-]+[a-zA-Z\\d]\\.\\S{2,}|www\\.[a-zA-Z\\d][a-zA-Z\\d-]+[a-zA-Z\\d]\\.\\S{2,}|https?://(?:www\\.|(?!www))[a-zA-Z\\d]+\\.\\S{2,}|www\\.[a-zA-Z\\d]+\\.\\S{2,})".toRegex())){
+                    if (quickDownload && matcher.matches()){
                         val result = downloadViewModel.createEmptyResultItem(inputQuery)
                         loadingBottomSheet.dismiss()
                         showDownloadSheet(result)

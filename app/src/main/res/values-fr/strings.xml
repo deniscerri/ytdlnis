@@ -121,7 +121,6 @@
     <string name="split_by_chapters">Diviser par chapitres</string>
     <string name="items_imported">Eléments importés</string>
     <string name="help_translate">Aider à traduire</string>
-    <string name="workmanager_updated">Vous devez redémarrer l\'application et n\'avoir aucun téléchargement en cours pour que cette préférence prenne effet !</string>
     <string name="restart">Redémarrer</string>
     <string name="download_rescheduled_to">Téléchargement reporté à :</string>
     <string name="file_size">Taille du fichier</string>

@@ -104,7 +104,6 @@
     <string name="enable_mtime_summary">HTTP Son Dəyişdirilən başlığın son dəyişdirilən vaxt kimi tənzimlə</string>
     <string name="edit">Redaktə et</string>
     <string name="import_from_clipboard">Buferdən idxal et</string>
-    <string name="workmanager_updated">Bu seçimə təsir etmək üçün aktiv yükləmələriniz yoxdur və tətbiqi yenidən başlatmalısınız!</string>
     <string name="select">Seç</string>
     <string name="all_items_selected">Bütün elementlər seçildi</string>
     <string name="save_dir">Kataloqda saxla</string>
@@ -264,11 +263,9 @@
     <string name="swipe_gestures_summary">Bəzi fəaliyyətlər üçün elementləri sürüşdür</string>
     <string name="crop_thumb">Miniatürü Kəs</string>
     <string name="crop_thumb_summary">Səs yükləmələr üçün miniatürü kvadrat şəklində kəs</string>
-    <string name="locale">Yer</string>
     <string name="audio_only_item">Bu element yalnız səs formatları ehtiva edir</string>
     <string name="move_temporary_files">Müvəqqəti Faylları Köçür</string>
     <string name="move_temporary_files_summary">Toplanan faylları yükləmələr qovluğuna köçür</string>
-    <string name="format_filtering_hint_2">Bu seçimi işlətmək üçün bütün elementlər səs və ya video olmalıdır</string>
     <string name="piped_instance">Piped İnstansiya</string>
     <string name="piped_instance_summary">PIPED API Server yazın, tətbiq YouTube sorğuları və formatları üçün işlədə bilər</string>
     <string name="custom_audio_quality">Fərdi Səs Keyfiyyəti İşlət</string>
@@ -294,7 +291,6 @@
     <string name="use_cookies">Məlumat Bazası İstifadə Et</string>
     <string name="embed_metadata">Üst məlumat yerləşdir</string>
     <string name="embed_metadata_summary">Video fayla üst məlumat yerləşdir. Həmçinin, əgər varsa, bölmələr/infojsonlar yerləşdirir</string>
-    <string name="formats_updated">Formatlar yeniləndi</string>
     <string name="update_formats_background">Arxa Planda Formatları Yenilə</string>
     <string name="auto_update_ytdlp">Yt-dlp-ni Avtomatik Yenilə</string>
     <string name="use_sponsorblock">SponsorBlock istifadə et</string>

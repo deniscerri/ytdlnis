@@ -145,7 +145,6 @@
     <string name="clear_errored">Limpar erros</string>
     <string name="split_by_chapters">Dividido por capítulos</string>
     <string name="help_translate">Ajudar a traduzir</string>
-    <string name="workmanager_updated">É necessário reiniciar a aplicação e não ter transferências activas para que esta preferência tenha efeito!</string>
     <string name="download_rescheduled_to">Transferência reagendada para:</string>
     <string name="clear_temporary_files">Limpar ficheiros temporários</string>
     <string name="Theme">Tema</string>
@@ -265,10 +264,8 @@
     <string name="swipe_gestures_summary">Deslizar itens para determinadas acções</string>
     <string name="crop_thumb">Cortar miniatura</string>
     <string name="crop_thumb_summary">Cortar a miniatura num quadrado para transferências de áudio</string>
-    <string name="locale">Localidade</string>
     <string name="audio_only_item">Este item contém apenas formatos de áudio</string>
     <string name="move_temporary_files">Mover ficheiros temporários</string>
-    <string name="format_filtering_hint_2">Para utilizar esta opção, todos os itens têm de ser áudio ou vídeo</string>
     <string name="piped_instance">Instância do servidor Piped</string>
     <string name="piped_instance_summary">Escreva um servidor API PIPED, o aplicativo pode usar para consultas e formatos do YouTube</string>
     <string name="custom_audio_quality">Utilizar qualidade de áudio personalizada</string>
@@ -296,7 +293,6 @@
     <string name="embed_metadata_summary">Incorpore metadados ao ficheiro de vídeo. Também incorpore capítulos/infojson se estiverem presentes</string>
     <string name="update_formats_background">Atualizar formatos em segundo plano</string>
     <string name="auto_update_ytdlp">Atualização automática do yt-dlp</string>
-    <string name="formats_updated">Os formatos foram atualizados</string>
     <string name="use_sponsorblock">Utilizar SponsorBlock</string>
     <string name="cache_first">Transferências em cache primeiro</string>
     <string name="scheduling">Programação</string>

@@ -76,7 +76,6 @@
     <string name="download_card_summary">การตั้งค่าสำหรับวิธีการดาวน์โหลดรายการ</string>
     <string name="crop_thumb_summary">ครอบตัดภาพขนาดย่อเป็นสี่เหลี่ยมสำหรับการดาวน์โหลดไฟล์เสียง</string>
     <string name="use_extra_commands_summary">"สำหรับการดาวน์โหลดเสียง / วิดีโอ  เพิ่มคำสั่งพิเศษพร้อมกับการกำหนดค่า GUI"</string>
-    <string name="format_filtering_hint_2">รายการทั้งหมดต้องเป็นเสียงหรือวิดีโอ เพื่อใช้ตัวเลือกนี้</string>
     <string name="move_temporary_files_summary">ถ่ายโอนไฟล์แคชไปยังโฟลเดอร์ดาวน์โหลด</string>
     <string name="move_temporary_files">ย้ายไฟล์ชั่วคราว</string>
     <string name="crop_thumb">ครอบตัดภาพขนาดย่อ</string>

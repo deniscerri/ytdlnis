@@ -39,9 +39,6 @@
     <string name="downloading_update">Downloading new version</string>
     <string name="audio">Audio</string>
     <string name="video">Video</string>
-    <string name="music_path" translatable="false">content://com.android.externalstorage.documents/tree/primary%3ADownload%2FYTDLnis%2FAudio</string>
-    <string name="video_path" translatable="false">content://com.android.externalstorage.documents/tree/primary%3ADownload%2FYTDLnis%2FVideo</string>
-    <string name="command_path" translatable="false">content://com.android.externalstorage.documents/tree/primary%3ADownload%2FYTDLnis%2FCommand</string>
     <string name="concurrent_fragments_summary">Number of fragments of a DASH/HLS native video to download concurrently</string>
     <string name="concurrent_fragments">Concurrent Fragments</string>
     <string name="downloading">Downloading</string>
@@ -167,7 +164,6 @@
     <string name="items_imported">Items Imported</string>
     <string name="help_translate">Help Translate</string>
     <string name="help_translate_summary">Translate this app on your language using Weblate</string>
-    <string name="workmanager_updated">You need to restart the app and have no active downloads for this preference to take effect!</string>
     <string name="restart">Restart</string>
     <string name="download_rescheduled_to">Download rescheduled to:</string>
     <string name="file_size">File size</string>
@@ -271,11 +267,9 @@
     <string name="swipe_gestures_summary">Swipe items for certain actions</string>
     <string name="crop_thumb">Crop Thumbnail</string>
     <string name="crop_thumb_summary">Crop the thumbnail into a square for audio downloads</string>
-    <string name="locale">Locale</string>
     <string name="audio_only_item">This item only contains audio formats</string>
     <string name="move_temporary_files">Move Temporary Files</string>
     <string name="move_temporary_files_summary">Transfer cached files to the downloads folder</string>
-    <string name="format_filtering_hint_2">All items must either be audio or video to use this option</string>
     <string name="piped_instance">Piped Instance</string>
     <string name="piped_instance_summary">Write a PIPED API Server, the app can use for YouTube queries and formats</string>
     <string name="custom_audio_quality">Use Custom Audio Quality</string>
@@ -299,7 +293,6 @@
     <string name="use_cookies">Use Cookies</string>
     <string name="embed_metadata">Embed Metadata</string>
     <string name="embed_metadata_summary">Embed metadata to the video file. Also embeds chapters/infojson if present</string>
-    <string name="formats_updated">Formats have been updated</string>
     <string name="update_formats_background">Update Formats in Background</string>
     <string name="auto_update_ytdlp">Auto-Update yt-dlp</string>
     <string name="use_sponsorblock">Use SponsorBlock</string>
@@ -307,4 +300,6 @@
     <string name="cache_first_summary">Cache files download to internal storage, then move to your chosen directory. Use this when you can\'t write directly to storage</string>
     <string name="scheduling">Scheduling</string>
     <string name="use_scheduler">Download On Schedule</string>
+    <string name="update_app_beta">Beta Releases</string>
+    <string name="update_app_beta_summary">Enroll in the beta program. It may contain bugs.</string>
 </resources>

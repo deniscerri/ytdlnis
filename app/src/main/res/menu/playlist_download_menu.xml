@@ -4,6 +4,5 @@
     android:theme="@style/BaseTheme">
 
     <item android:title="@string/download"
-        app:showAsAction="always"
-        android:id="@+id/downloadPlaylist"/>
+        app:showAsAction="always" />
 </menu>

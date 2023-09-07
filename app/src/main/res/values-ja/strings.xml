@@ -128,7 +128,6 @@
     <string name="preferred_download_type">優先されるダウンロードタイプ</string>
     <string name="selected">選択済み</string>
     <string name="redownload">再ダウンロード</string>
-    <string name="workmanager_updated">この設定を有効化するには、「アクティブなダウンロードがない事」と「アプリの再起動」が必要です!</string>
     <string name="select">選択</string>
     <string name="confirm_delete_logs_desc">ログリスト全体を永久に削除します。</string>
     <string name="running">実行中</string>
@@ -251,9 +250,7 @@
     <string name="search_suggestions_summary">Google から検索候補を取得します</string>
     <string name="preferred_format_id_summary">ダウンロードカードでこの ID を持つフォーマットを選択します</string>
     <string name="backup_created_successfully">バックアップファイルをダウンロードフォルダに保存しました</string>
-    <string name="locale">ロケール</string>
     <string name="audio_only_item">このアイテムはオーディオフォーマットのみが含まれています</string>
-    <string name="format_filtering_hint_2">このオプションを使用するには、すべてのアイテムが音声または動画のいずれかである必要があります</string>
     <string name="sponsorblock">SponsorBlock</string>
     <string name="custom_audio_quality">カスタムオーディオ品質を使用</string>
     <string name="piped_instance">パイプされたインスタンス</string>

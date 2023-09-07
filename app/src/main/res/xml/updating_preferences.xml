@@ -69,4 +69,12 @@
         app:summary="@string/update_app_summary"
         app:title="@string/update_app" />
 
+    <SwitchPreferenceCompat
+        android:widgetLayout="@layout/preferece_material_switch"
+        app:defaultValue="false"
+        android:icon="@drawable/ic_update_app"
+        android:key="update_beta"
+        app:summary="@string/update_app_beta_summary"
+        app:title="@string/update_app_beta" />
+
 </PreferenceScreen>

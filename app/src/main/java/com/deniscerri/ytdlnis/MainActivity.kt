@@ -48,6 +48,7 @@ import com.google.android.material.elevation.SurfaceColors
 import com.google.android.material.navigation.NavigationBarView
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.navigationrail.NavigationRailView
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -361,7 +362,7 @@ class MainActivity : BaseActivity() {
     private fun checkUpdate() {
         if (preferences.getBoolean("update_app", false)) {
             val updateUtil = UpdateUtil(this)
-            lifecycleScope.launch(Dispatchers.IO){
+            CoroutineScope(Dispatchers.IO).launch{
                 updateUtil.updateApp{}
             }
         }

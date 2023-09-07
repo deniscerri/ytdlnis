@@ -93,7 +93,6 @@
     <string name="you_are_going_to_delete_multiple_items">Șterge elemente multiple</string>
     <string name="adjust_templates">Setări Șablon</string>
     <string name="access_all_directories_summary">Permite aplicației să descarce in foldere implicit restricționate</string>
-    <string name="workmanager_updated">Necesită repornirea aplicației fără a avea descărcări active pentru ca preferințele să aibă efect!</string>
     <string name="download_rescheduled_to">Descărcare replanificată la:</string>
     <string name="downloads_running_try_later">Descărcarea are loc. Încearcă mai târziu</string>
     <string name="link_you_copied">Link-ul pe care l-ai copiat</string>
@@ -277,11 +276,9 @@
     <string name="hide_thumbnails">Ascunde decupaje</string>
     <string name="force_keyframes_summary">Proces încetinit, dar mult mai acurateț</string>
     <string name="save_for_later">Salvezi Descărcarea pe mai târziu\?</string>
-    <string name="locale">Local</string>
     <string name="audio_only_item">Acest articol conține doar formate audio</string>
     <string name="pause">Pauză</string>
     <string name="show_terminal">Afișează Terminal în meniul Împărtășește</string>
-    <string name="format_filtering_hint_2">Toate articolele trebuiesc sa fie audio sau video pentru a utiliza această opțiune</string>
     <string name="sponsorblock">Blochează sponsor</string>
     <string name="configure_download">Ajustează Descărcările</string>
     <string name="write_description">Adaugă o descriere in momentul Salvării</string>

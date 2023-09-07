@@ -81,7 +81,6 @@
                 android:orientation="vertical">
 
                 <LinearLayout
-                    android:id="@+id/video_linear_layout_main"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
@@ -101,7 +100,6 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/audio_linear_layout_main"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">

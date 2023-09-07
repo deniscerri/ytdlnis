@@ -159,9 +159,7 @@
     <string name="selected">Επιλεγμένο</string>
     <string name="clear_cancelled">Αφαίρεση Ακυρωμένων</string>
     <string name="search_suggestions">Προτάσεις Αναζήτησης</string>
-    <string name="locale">Τοπικές Ρυθμίσεις</string>
     <string name="restrict_filenames_summary">Περιόρισε τα ονόματα αρχείων μόνο σε χαρακτήρες ASCII και απόφυγε το \"&amp;\" και τα κενά διαστήματα στα ονόματα αρχείων</string>
-    <string name="workmanager_updated">Πρέπει να επανεκκινήσετε την εφαρμογή και να μην έχετε ενεργές λήψεις για να τεθεί σε ισχύ αυτή η προτίμηση!</string>
     <string name="restart">Επανεκκίνηση</string>
     <string name="download_rescheduled_to">Η λήψη επαναπρογραμματίστηκε σε:</string>
     <string name="file_size">Μέγεθος αρχείου</string>
@@ -267,7 +265,6 @@
     <string name="socks5_proxy_summary">Χρησιμοποίησε τον καθορισμένο διακομιστή μεσολάβησης HTTP/HTTPS/SOCKS</string>
     <string name="preferred_format_id_summary">Επίλεξε τη μορφή με αυτό το αναγνωριστικό στην κάρτα λήψης</string>
     <string name="crop_thumb">Περικοπή Μικρογραφίας</string>
-    <string name="format_filtering_hint_2">Όλα τα στοιχεία πρέπει να είναι ήχος ή βίντεο για να χρησιμοποιήσετε αυτή την επιλογή</string>
     <string name="piped_instance">Παρουσία Piped</string>
     <string name="custom_audio_quality">Χρήση Προσαρμοσμένης Ποιότητας Ήχου</string>
     <string name="piped_instance_summary">Γράψε έναν διακομιστή API PIPED που η εφαρμογή μπορεί να χρησιμοποιήσει για ερωτήματα και μορφές YouTube</string>
