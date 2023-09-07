@@ -8,7 +8,7 @@
     <string name="directories">Pastas</string>
     <string name="updating">Atualização</string>
     <string name="ytdl_update_hint">Útil se você tiver problemas ao baixar</string>
-    <string name="remove_results">Remover resultados</string>
+    <string name="remove_results">Limpar resultados</string>
     <string name="download_all">Baixar todos</string>
     <string name="video_directory">Pasta de vídeos</string>
     <string name="about">Sobre</string>
@@ -87,7 +87,7 @@
     <string name="cancel_download">Cancelar download</string>
     <string name="update_app_summary">Verifica se há atualizações ao iniciar o aplicativo</string>
     <string name="configure_download">Ajustar download</string>
-    <string name="save_thumb_summary">Salvar miniatura na pasta de download</string>
+    <string name="save_thumb_summary">Salve a miniatura na pasta de download</string>
     <string name="audio_format">Formato de áudio</string>
     <string name="url">URL</string>
     <string name="title">Título</string>
@@ -111,7 +111,7 @@
     <string name="format">Formato</string>
     <string name="select_format">Selecionar formato</string>
     <string name="please_wait">Por favor, aguarde…</string>
-    <string name="remove_search_history">Remover histórico de buscas</string>
+    <string name="remove_search_history">Limpar histórico de pesquisa</string>
     <string name="enable_mtime">Habilitar mtime</string>
     <string name="update_formats">Atualizar formatos</string>
     <string name="log_downloads">Registro de downloads</string>
@@ -145,8 +145,8 @@
     <string name="access_all_directories">Permitir acesso a todos os diretórios</string>
     <string name="access_all_directories_summary">Permitir que o aplicativo faça downloads em diretórios restritos por padrão</string>
     <string name="in_queue">Aguardando</string>
-    <string name="clear_cancelled">Remover downloads cancelados</string>
-    <string name="clear_errored">Remover downloads com falhas</string>
+    <string name="clear_cancelled">Limpar downloads cancelados</string>
+    <string name="clear_errored">Limpar downloads com falhas</string>
     <string name="split_by_chapters">Dividir por capítulos</string>
     <string name="items_imported">Itens importados</string>
     <string name="help_translate">Ajude a traduzir</string>
@@ -154,7 +154,7 @@
     <string name="workmanager_updated">Você precisa reiniciar o aplicativo e não ter downloads ativos para que essa preferência entre em vigor!</string>
     <string name="restart">Reiniciar</string>
     <string name="file_size">Tamanho do arquivo</string>
-    <string name="clear_temporary_files">Remover arquivos temporários</string>
+    <string name="clear_temporary_files">Limpar arquivos temporários</string>
     <string name="import_from_clipboard">Importar da área de transferência</string>
     <string name="export_from_clipboard">Exportar para a área de transferência</string>
     <string name="terminal">Terminal</string>
@@ -189,9 +189,9 @@
     <string name="video_recommendations">Recomendações de vídeo</string>
     <string name="format_source">Origem dos formatos</string>
     <string name="subtitle_languages">Idiomas das legendas</string>
-    <string name="save_subs_desc">Salve o arquivo de legenda na pasta de downloads</string>
+    <string name="save_subs_desc">Salve o arquivo de legenda na pasta de download</string>
     <string name="invert_selected">Inverter seleção</string>
-    <string name="download_over_metered_networks_summary">Downloads usando qualquer tipo de rede. Caso contrário, espera por uma rede ilimitada</string>
+    <string name="download_over_metered_networks_summary">Faça o download usando qualquer tipo de rede. Caso contrário, espera por uma rede ilimitada</string>
     <string name="download_over_metered_networks">Download através de redes limitadas</string>
     <string name="confirm_delete_cookies_desc">Excluir todos os cookies permanentemente</string>
     <string name="delete_all_cookies">Excluir todos os cookies</string>
@@ -236,14 +236,14 @@
     <string name="backup">Backup</string>
     <string name="finished_download_notification_channel_name">Downloads concluídos</string>
     <string name="metered_network_download_start_info">O download começará assim que você estiver conectado a uma rede ilimitada</string>
-    <string name="keep_cache_summary">Não remover arquivos temporários após concluir o download</string>
+    <string name="keep_cache_summary">Não exclua arquivos temporários após concluir o download</string>
     <string name="link_you_copied">Link que você copiou</string>
-    <string name="clear_temporary_files_summary">Remove arquivos em cache de downloads com falhas/erros/cancelados</string>
+    <string name="clear_temporary_files_summary">Exclua arquivos em cache de downloads com falhas/erros/cancelados</string>
     <string name="preferred_format_id">ID do formato preferido</string>
     <string name="redownload">Baixar novamente</string>
     <string name="cookies">Cookies</string>
     <string name="update_formats_summary">Pesquise automaticamente formatos ausentes ao clicar no cartão de formato</string>
-    <string name="start">Começar</string>
+    <string name="start">Início</string>
     <string name="ytdl_version">Versão do yt-dlp</string>
     <string name="end">Fim</string>
     <string name="kill_app">Encerrar Aplicativo</string>
@@ -281,7 +281,7 @@
 \n</string>
     <string name="hide_thumbnails">Ocultar miniaturas</string>
     <string name="saved">Salvou</string>
-    <string name="clear_saved">Remover downloads salvos</string>
+    <string name="clear_saved">Limpar downloads salvos</string>
     <string name="save_for_later">Salvar download para mais tarde\?</string>
     <string name="use_extra_commands">Adicionar comandos extras</string>
     <string name="use_extra_commands_summary">Para downloads de áudio/vídeo. Adicione comandos extras junto com a configuração da GUI</string>
@@ -291,7 +291,7 @@
     <string name="extra_command">Comando extra</string>
     <string name="write_description">Salvar descrição</string>
     <string name="use_cookies">Usar Cookies</string>
-    <string name="write_description_summary">Salve o arquivo de descrição na pasta de downloads</string>
+    <string name="write_description_summary">Salve o arquivo de descrição na pasta de download</string>
     <string name="embed_metadata">Incorporar metadados</string>
     <string name="embed_metadata_summary">Incorpore metadados ao arquivo de vídeo. Também incorpore capítulos/infojson se presente</string>
     <string name="auto_update_ytdlp">Atualização automática do yt-dlp</string>
@@ -301,5 +301,5 @@
     <string name="cache_first">Downloads em cache primeiro</string>
     <string name="cache_first_summary">Os arquivos de cache são baixados para o armazenamento interno e depois movidos para o diretório escolhido. Use isto quando você não puder gravar diretamente no armazenamento</string>
     <string name="scheduling">Agendamento</string>
-    <string name="use_scheduler">Baixar downloads agendado</string>
+    <string name="use_scheduler">Baixe no horário agendado</string>
 </resources>

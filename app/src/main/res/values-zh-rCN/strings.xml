@@ -144,7 +144,7 @@
     <string name="download_rescheduled_to">下载已重新添加到：</string>
     <string name="restrict_filenames">限制文件名</string>
     <string name="dont_ask_again">不再询问</string>
-    <string name="end">结尾</string>
+    <string name="end">结束</string>
     <string name="start">开始</string>
     <string name="audio_samplerate">音频采样率</string>
     <string name="blue">蓝色</string>
@@ -298,4 +298,8 @@
     <string name="update_formats_background">在后台更新格式</string>
     <string name="auto_update_ytdlp">自动更新 yt-dlp</string>
     <string name="use_sponsorblock">使用 SponsorBlock</string>
+    <string name="scheduling">定时任务</string>
+    <string name="cache_first_summary">先将缓存文件下载到内部存储，然后移动到您选择的目录。当您无法直接写入存储时使用此选项</string>
+    <string name="cache_first">先缓存下载</string>
+    <string name="use_scheduler">按计划下载</string>
 </resources>
