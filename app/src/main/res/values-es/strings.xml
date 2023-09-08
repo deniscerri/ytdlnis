@@ -294,4 +294,10 @@
     <string name="use_sponsorblock">Utilizar SponsorBlock</string>
     <string name="update_formats_background">Actualizar los formatos en segundo plano</string>
     <string name="auto_update_ytdlp">Actualización automática para yt-dlp</string>
+    <string name="update_app_beta_summary">Inscríbete en el programa beta. Puede contener errores.</string>
+    <string name="update_app_beta">Versiones beta</string>
+    <string name="scheduling">Planificación</string>
+    <string name="cache_first_summary">Los archivos de la caché se descargan en el almacenamiento interno y, a continuación, se mueven al directorio elegido. Utilízalo cuando no puedas escribir directamente en el almacenamiento</string>
+    <string name="cache_first">Primero las descargas en la caché</string>
+    <string name="use_scheduler">Descargar según lo programado</string>
 </resources>
