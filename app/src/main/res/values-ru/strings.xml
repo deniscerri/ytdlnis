@@ -298,4 +298,6 @@
     <string name="use_scheduler">Загрузить по расписанию</string>
     <string name="cache_first">Сначала кэшировать загрузки</string>
     <string name="cache_first_summary">Кэш загружается во внутреннюю память и переносится в выбранную вами папку. Используйте при невозможности записывать файлы в память</string>
+    <string name="update_app_beta_summary">Зарегистририроватся в бета-программе. Может содержать ошибки.</string>
+    <string name="update_app_beta">Бета релизы</string>
 </resources>
