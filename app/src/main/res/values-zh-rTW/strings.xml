@@ -293,4 +293,10 @@
     <string name="use_sponsorblock">使用 SponsorBlock</string>
     <string name="update_formats_background">背景更新格式</string>
     <string name="auto_update_ytdlp">自動更新 yt-dlp</string>
+    <string name="update_app_beta_summary">參加測試計畫。可能包含錯誤。</string>
+    <string name="update_app_beta">測試版本</string>
+    <string name="scheduling">排程</string>
+    <string name="cache_first_summary">儲存快取檔案至內部儲存空間，然後移至您選擇的資料夾。當您無法直接寫入儲存空間時，請使用此功能</string>
+    <string name="cache_first">首選快取下載</string>
+    <string name="use_scheduler">按照排程下載</string>
 </resources>
