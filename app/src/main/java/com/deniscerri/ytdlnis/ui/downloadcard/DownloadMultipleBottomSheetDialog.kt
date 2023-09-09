@@ -79,6 +79,7 @@ class DownloadMultipleBottomSheetDialog(private var items: MutableList<DownloadI
     private lateinit var recyclerView: RecyclerView
     private lateinit var behavior: BottomSheetBehavior<View>
     private lateinit var bottomAppBar: BottomAppBar
+    private lateinit var filesize : TextView
     private lateinit var sharedPreferences: SharedPreferences
 
 
@@ -126,6 +127,7 @@ class DownloadMultipleBottomSheetDialog(private var items: MutableList<DownloadI
 
         val scheduleBtn = view.findViewById<MaterialButton>(R.id.bottomsheet_schedule_button)
         val download = view.findViewById<Button>(R.id.bottomsheet_download_button)
+        filesize = view.findViewById<TextView>(R.id.filesize)
 
 
         scheduleBtn.setOnClickListener{
@@ -184,6 +186,8 @@ class DownloadMultipleBottomSheetDialog(private var items: MutableList<DownloadI
             DownloadViewModel.Type.command -> {
                 preferredDownloadType.setIcon(R.drawable.baseline_insert_drive_file_24)
             }
+
+            else -> {}
         }
 
         val formatListener = object : OnFormatClickListener {
@@ -204,6 +208,7 @@ class DownloadMultipleBottomSheetDialog(private var items: MutableList<DownloadI
                 }
                 listAdapter.submitList(items.toList())
                 listAdapter.notifyDataSetChanged()
+                updateFileSize(items.map { it.format.filesize })
             }
 
 
@@ -272,6 +277,7 @@ class DownloadMultipleBottomSheetDialog(private var items: MutableList<DownloadI
                             items = downloadViewModel.switchDownloadType(items, DownloadViewModel.Type.audio).toMutableList()
                             listAdapter.submitList(items.toList())
                             listAdapter.notifyDataSetChanged()
+                            updateFileSize(items.map { it.format.filesize })
                             preferredDownloadType.setIcon(R.drawable.baseline_audio_file_24)
                             bottomAppBar.menu[1].icon?.alpha = 255
                             bottomAppBar.menu[3].icon?.alpha = 255
@@ -282,6 +288,7 @@ class DownloadMultipleBottomSheetDialog(private var items: MutableList<DownloadI
                             items = downloadViewModel.switchDownloadType(items, DownloadViewModel.Type.video).toMutableList()
                             listAdapter.submitList(items.toList())
                             listAdapter.notifyDataSetChanged()
+                            updateFileSize(items.map { it.format.filesize })
                             preferredDownloadType.setIcon(R.drawable.baseline_video_file_24)
                             bottomAppBar.menu[1].icon?.alpha = 255
                             bottomAppBar.menu[3].icon?.alpha = 255
@@ -295,6 +302,7 @@ class DownloadMultipleBottomSheetDialog(private var items: MutableList<DownloadI
                                 }
                                 listAdapter.submitList(items.toList())
                                 listAdapter.notifyDataSetChanged()
+                                updateFileSize(items.map { it.format.filesize })
                                 preferredDownloadType.setIcon(R.drawable.baseline_insert_drive_file_24)
                                 bottomAppBar.menu[1].icon?.alpha = 255
                                 bottomAppBar.menu[3].icon?.alpha = 30
@@ -477,6 +485,8 @@ class DownloadMultipleBottomSheetDialog(private var items: MutableList<DownloadI
                             }
                             DownloadViewModel.Type.command -> {
                             }
+
+                            else -> {}
                         }
                     }
                 }
@@ -484,6 +494,15 @@ class DownloadMultipleBottomSheetDialog(private var items: MutableList<DownloadI
             true
         }
 
+    }
+
+    private fun updateFileSize(items: List<Long>){
+        if (items.all { it > 0L }){
+            filesize.visibility = View.VISIBLE
+            filesize.text = "${getString(R.string.file_size)}: ~ ${FileUtil.convertFileSize(items.sum())}"
+        }else{
+            filesize.visibility = View.GONE
+        }
     }
 
     private var pathResultLauncher = registerForActivityResult(

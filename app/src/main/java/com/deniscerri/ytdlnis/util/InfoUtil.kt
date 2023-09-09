@@ -118,7 +118,7 @@ class InfoUtil(private val context: Context) {
             for (i in 0 until dataArray.length()){
                 val obj = dataArray.getJSONObject(i)
                 val itm = createVideoFromPipedJSON(obj, "https://youtube.com" + obj.getString("url"))
-                itm?.playlistTitle = "YTDLnis"
+                itm?.playlistTitle = res.getString("name") + "[${i+1}]"
                 items.add(itm)
             }
             if (nextpage == "null") nextpage = ""
@@ -382,7 +382,6 @@ class InfoUtil(private val context: Context) {
             if (v == null || v.thumb.isEmpty()) {
                 continue
             }
-            v.playlistTitle = context.getString(R.string.trendingPlaylist)
             items.add(v)
         }
         return items
@@ -398,7 +397,6 @@ class InfoUtil(private val context: Context) {
                 element.put("uploader", element.getString("uploaderName"))
                 val v = createVideoFromPipedJSON(element, "https://youtube.com" + element.getString("url"))
                 if (v == null || v.thumb.isEmpty()) continue
-                v.playlistTitle = context.getString(R.string.trendingPlaylist)
                 items.add(v)
             }
         } catch (e: Exception) {
@@ -627,6 +625,11 @@ class InfoUtil(private val context: Context) {
                 var playlistTitle: String? = ""
                 if (jsonObject.has("playlist_title")) playlistTitle = jsonObject.getString("playlist_title")
                 if(playlistTitle.equals(query)) playlistTitle = ""
+
+                if (playlistTitle?.isNotBlank() == true){
+                    playlistTitle += "[${jsonObject.getString("playlist_index")}]"
+                }
+
                 val formatsInJSON = if (jsonObject.has("formats") && jsonObject.get("formats") is JSONArray) jsonObject.getJSONArray("formats") else null
                 val formats : ArrayList<Format> = parseYTDLFormats(formatsInJSON)
 
@@ -967,6 +970,19 @@ class InfoUtil(private val context: Context) {
             downDir.mkdirs()
         }
 
+        if (downloadItem.playlistTitle.isNotBlank()){
+            request.addOption("--parse-metadata","${downloadItem.playlistTitle.split("[")[0]}:%(playlist)s")
+            runCatching {
+                request.addOption("--parse-metadata",
+                    downloadItem.playlistTitle
+                        .substring(
+                            downloadItem.playlistTitle.indexOf("[") + 1,
+                            downloadItem.playlistTitle.indexOf("]"),
+                        ) + ":%(playlist_index)s"
+                )
+            }
+        }
+
 
         val aria2 = sharedPreferences.getBoolean("aria2", false)
         if (aria2) {
@@ -1017,15 +1033,13 @@ class InfoUtil(private val context: Context) {
                 }
             }
 
-
             if(downloadItem.title.isNotBlank()){
-                request.addCommands(listOf("--replace-in-metadata","title",".*.",downloadItem.title.take(200)))
+                request.addOption("--parse-metadata", downloadItem.title.take(200) + ":%(title)s")
             }
             if (downloadItem.author.isNotBlank()){
-                request.addCommands(listOf("--replace-in-metadata","uploader",".*.",downloadItem.author.take(25)))
-                downloadItem.customFileNameTemplate = downloadItem.customFileNameTemplate.replace("%(uploader)s", downloadItem.author.take(25))
+                request.addOption("--parse-metadata", downloadItem.author.take(25) + ":%(artist)s")
             }
-            request.addCommands(listOf("--replace-in-metadata","uploader"," - Topic$",""))
+            request.addCommands(listOf("--replace-in-metadata","artist"," - Topic$",""))
 
             if (downloadItem.downloadSections.isNotBlank()){
                 downloadItem.downloadSections.split(";").forEach {
@@ -1319,6 +1333,8 @@ class InfoUtil(private val context: Context) {
                 )
 
             }
+
+            else -> {}
         }
 
         return request
@@ -1333,7 +1349,15 @@ class InfoUtil(private val context: Context) {
             }
         }
 
-        return java.lang.String.join(" ", arr).replace("\"\"", "\" \"")
+        var final = java.lang.String.join(" ", arr).replace("\"\"", "\" \"")
+        val ppas = "--config(-locations)? \"(.*?)\"".toRegex().findAll(final)
+        ppas.forEach {
+            val path = "\"(.*?)\"".toRegex().find(it.value)?.value?.replace("\"", "")
+            final = final.replace(it.value, "")
+            final += " ${File(path ?: "").readText()}"
+        }
+
+        return final
     }
 
     private val pipedURL = sharedPreferences.getString("piped_instance", defaultPipedURL)?.ifEmpty { defaultPipedURL }?.removeSuffix("/")

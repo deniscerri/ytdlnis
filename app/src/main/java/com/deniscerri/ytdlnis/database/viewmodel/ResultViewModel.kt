@@ -3,6 +3,7 @@ package com.deniscerri.ytdlnis.database.viewmodel
 import android.app.Application
 import android.content.SharedPreferences
 import android.util.Log
+import android.util.Patterns
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -111,14 +112,14 @@ class ResultViewModel(application: Application) : AndroidViewModel(application) 
     }
     private fun getQueryType(inputQuery: String) : String {
         var type = "Search"
-        val p = Pattern.compile("(^(https?)://(www.)?(music.)?youtu(.be)?)|(^(https?)://(www.)?piped.video)")
+        val p = Pattern.compile("(^(https?)://(www.)?youtu(.be)?)|(^(https?)://(www.)?piped.video)")
         val m = p.matcher(inputQuery)
         if (m.find()) {
             type = "YT_Video"
-            if (inputQuery.contains("playlist?list=") && !inputQuery.contains("music.youtu")) {
+            if (inputQuery.contains("playlist?list=")) {
                 type = "YT_Playlist"
             }
-        } else if (inputQuery.contains("http")) {
+        } else if (Patterns.WEB_URL.matcher(inputQuery).matches()) {
             type = "Default"
         }
         return type

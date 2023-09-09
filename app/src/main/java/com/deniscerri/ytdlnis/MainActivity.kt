@@ -18,6 +18,7 @@ import android.view.View
 import android.view.WindowInsets
 import android.widget.CheckBox
 import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
@@ -39,7 +40,9 @@ import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdlnis.ui.BaseActivity
 import com.deniscerri.ytdlnis.ui.HomeFragment
+import com.deniscerri.ytdlnis.ui.downloadcard.DownloadBottomSheetDialog
 import com.deniscerri.ytdlnis.ui.more.settings.SettingsActivity
+import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.ThemeUtil
 import com.deniscerri.ytdlnis.util.UpdateUtil
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -54,8 +57,10 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import java.io.BufferedReader
+import java.io.File
 import java.io.InputStreamReader
 import java.io.Reader
+import java.net.URI
 import java.nio.charset.Charset
 import java.nio.charset.StandardCharsets
 import kotlin.system.exitProcess
@@ -332,26 +337,38 @@ class MainActivity : BaseActivity() {
                 }else{
                     intent.getParcelableExtra(Intent.EXTRA_STREAM)
                 }
-                val `is` = contentResolver.openInputStream(uri!!)
-                val textBuilder = StringBuilder()
-                val reader: Reader = BufferedReader(
-                    InputStreamReader(
-                        `is`, Charset.forName(
-                            StandardCharsets.UTF_8.name()
+
+                if (preferences.getString("preferred_download_type", "video") == "command"){
+                    val f = File(FileUtil.formatPath(uri?.path ?: ""))
+                    if (!f.exists()){
+                        Toast.makeText(context, "Couldn't read file", Toast.LENGTH_LONG).show()
+                        return
+                    }
+                    val item = downloadViewModel.createEmptyResultItem(f.absolutePath)
+                    val bottomSheet = DownloadBottomSheetDialog(item, DownloadViewModel.Type.command, null, true)
+                    bottomSheet.show(supportFragmentManager, "downloadSingleSheet")
+                }else{
+                    val `is` = contentResolver.openInputStream(uri!!)
+                    val textBuilder = StringBuilder()
+                    val reader: Reader = BufferedReader(
+                        InputStreamReader(
+                            `is`, Charset.forName(
+                                StandardCharsets.UTF_8.name()
+                            )
                         )
                     )
-                )
-                var c: Int
-                while (reader.read().also { c = it } != -1) {
-                    textBuilder.append(c.toChar())
+                    var c: Int
+                    while (reader.read().also { c = it } != -1) {
+                        textBuilder.append(c.toChar())
+                    }
+                    val bundle = Bundle()
+                    bundle.putString("url", textBuilder.toString())
+                    navController.popBackStack(R.id.homeFragment, true)
+                    navController.navigate(
+                        R.id.homeFragment,
+                        bundle
+                    )
                 }
-                val bundle = Bundle()
-                bundle.putString("url", textBuilder.toString())
-                navController.popBackStack(R.id.homeFragment, true)
-                navController.navigate(
-                    R.id.homeFragment,
-                    bundle
-                )
             } catch (e: Exception) {
                 e.printStackTrace()
             }

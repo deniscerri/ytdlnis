@@ -16,7 +16,6 @@
     <string name="audio_format">অডিও ফরম্যাট</string>
     <string name="title">শিরোনাম</string>
     <string name="adjust_audio">অডিও সামঞ্জস্য করুন</string>
-    <string name="workmanager_updated">এই পছন্দটি কার্যকর করার জন্য আপনাকে অ্যাপটি পুনরায় চালু করতে হবে এবং কোনও সক্রিয় ডাউনলোড নেই!</string>
     <string name="dont_ask_again">আবার জিজ্ঞাসা করবেন না</string>
     <string name="music_directory">মিউজিক ফোল্ডার</string>
     <string name="warning">সতর্কতা</string>

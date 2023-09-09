@@ -1,24 +1,24 @@
 package com.deniscerri.ytdlnis.util
 
+import android.content.ContentResolver
 import android.content.Context
+import android.database.Cursor
 import android.media.MediaScannerConnection
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.provider.DocumentsContract
+import android.provider.MediaStore
 import android.util.Log
 import android.webkit.MimeTypeMap
 import androidx.core.net.toUri
 import androidx.documentfile.provider.DocumentFile
 import com.anggrayudi.storage.callback.FileCallback
 import com.anggrayudi.storage.callback.FolderCallback
-import com.anggrayudi.storage.file.copyFileTo
 import com.anggrayudi.storage.file.copyFolderTo
 import com.anggrayudi.storage.file.getAbsolutePath
 import com.anggrayudi.storage.file.moveFileTo
-import com.anggrayudi.storage.file.moveTo
 import com.deniscerri.ytdlnis.App
-import com.deniscerri.ytdlnis.R
 import com.yausername.youtubedl_android.YoutubeDLRequest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -56,6 +56,8 @@ object FileUtil {
         var dataValue = path
         if (dataValue.startsWith("/storage/")) return dataValue
         dataValue = dataValue.replace("content://com.android.externalstorage.documents/tree/", "")
+        dataValue = dataValue.replace("^/document/".toRegex(), "")
+        dataValue = dataValue.replace("^primary:".toRegex(), "primary/")
         dataValue = dataValue.replace("%3A".toRegex(), "/")
         try {
             dataValue = URLDecoder.decode(dataValue, StandardCharsets.UTF_8.name())

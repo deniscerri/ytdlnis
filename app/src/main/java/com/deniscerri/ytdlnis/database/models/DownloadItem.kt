@@ -9,7 +9,7 @@ import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 data class DownloadItem(
     @PrimaryKey(autoGenerate = true)
     var id: Long,
-    val url: String,
+    var url: String,
     var title: String,
     var author: String,
     var thumb: String,

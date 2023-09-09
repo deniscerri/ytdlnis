@@ -35,7 +35,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import java.io.File
-import java.util.Calendar
 import kotlin.random.Random
 
 
@@ -231,8 +230,6 @@ class DownloadWorker(
                             if (logDownloads){
                                 logRepo.update(it.out, logItem.id)
                             }
-
-                            if (items.size <= 1) WorkManager.getInstance(context).cancelWorkById(this@DownloadWorker.id)
                         }
 
                     }.onFailure {

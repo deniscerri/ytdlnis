@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.Typeface
 import android.graphics.drawable.ShapeDrawable
 import android.graphics.drawable.shapes.OvalShape
 import android.net.Uri
@@ -22,7 +23,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.view.inputmethod.InputMethodManager
-import android.webkit.MimeTypeMap
 import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
@@ -40,6 +40,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LifecycleOwner
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.RecyclerView
+import com.deniscerri.ytdlnis.App
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.CommandTemplate
 import com.deniscerri.ytdlnis.database.models.DownloadItem
@@ -75,6 +76,7 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 import java.util.regex.Pattern
+
 
 object UiUtil {
     @SuppressLint("SetTextI18n")
@@ -118,6 +120,7 @@ object UiUtil {
     fun populateCommandCard(card: MaterialCardView, item: CommandTemplate){
         card.findViewById<TextView>(R.id.title).text = item.title
         card.findViewById<TextView>(R.id.content).text = item.content
+        card.alpha = 1f
         card.tag = item.id
     }
 
@@ -812,7 +815,7 @@ object UiUtil {
             val entries = context.resources.getStringArray(R.array.sponsorblock_settings_entries)
             val checkedItems : ArrayList<Boolean> = arrayListOf()
             values.forEach {
-                if (items[0].videoPreferences.sponsorBlockFilters.contains(it) && items.size == 1) {
+                if (items.all{ i -> i.videoPreferences.sponsorBlockFilters.contains(it)}) {
                     checkedItems.add(true)
                 }else{
                     checkedItems.add(false)
@@ -1034,7 +1037,7 @@ object UiUtil {
             val entries = context.resources.getStringArray(R.array.sponsorblock_settings_entries)
             val checkedItems : ArrayList<Boolean> = arrayListOf()
             values.forEach {
-                if (items[0].audioPreferences.sponsorBlockFilters.contains(it) && items.size == 1) {
+                if (items.all{ i -> i.audioPreferences.sponsorBlockFilters.contains(it)}) {
                     checkedItems.add(true)
                 }else{
                     checkedItems.add(false)

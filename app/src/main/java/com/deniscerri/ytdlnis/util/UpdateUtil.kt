@@ -49,17 +49,15 @@ class UpdateUtil(var context: Context) {
             }
 
             val useBeta = sharedPreferences.getBoolean("update_beta", false)
-            val v: GithubRelease? = runCatching {
-                res.firstOrNull {
-                    if (useBeta) it.tag_name.contains("beta", true)
-                    else !it.tag_name.contains("beta", true)
-                }
-            }.getOrNull()
+            var v: GithubRelease?
+            if (useBeta){
+                v = res.firstOrNull { it.tag_name.contains("beta", true) && res.indexOf(it) == 0 }
+                if (v == null) v = res.first()
+            }else{
+                v = res.first { !it.tag_name.contains("beta", true) }
+            }
 
-            if (
-                (useBeta && v == null) ||
-                BuildConfig.VERSION_NAME == v!!.tag_name.removePrefix("v").removeSuffix("-beta")
-                ){
+            if (BuildConfig.VERSION_NAME == v.tag_name.removePrefix("v")){
                 result(context.getString(R.string.you_are_in_latest_version))
                 return
             }

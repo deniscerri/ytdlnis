@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -32,6 +33,7 @@ import com.deniscerri.ytdlnis.util.UiUtil
 import com.deniscerri.ytdlnis.util.UiUtil.enableTextHighlight
 import com.deniscerri.ytdlnis.util.UiUtil.populateCommandCard
 import com.google.android.material.card.MaterialCardView
+import com.google.android.material.chip.Chip
 import com.google.android.material.textfield.TextInputLayout
 import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
@@ -77,6 +79,11 @@ class DownloadCommandFragment(private val resultItem: ResultItem, private var cu
                 }
             }
 
+            if (!Patterns.WEB_URL.matcher(downloadItem.url).matches()){
+                downloadItem.format = downloadViewModel.generateCommandFormat(CommandTemplate(0,"txt", "-a \"${downloadItem.url}\"", false))
+                downloadItem.url = ""
+            }
+
             try {
                 val templates : MutableList<CommandTemplate> = withContext(Dispatchers.IO){
                     commandTemplateViewModel.getAll().toMutableList()
@@ -90,6 +97,7 @@ class DownloadCommandFragment(private val resultItem: ResultItem, private var cu
                     override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
                     override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
                     override fun afterTextChanged(p0: Editable?) {
+                        view.findViewById<MaterialCardView>(R.id.command_card).alpha = 0.3f
                         if (p0!!.isNotEmpty()){
                             chosenCommandView.endIconDrawable = AppCompatResources.getDrawable(requireContext(), R.drawable.ic_delete_all)
                         }else{
@@ -119,26 +127,34 @@ class DownloadCommandFragment(private val resultItem: ResultItem, private var cu
                 chosenCommandView.editText!!.enableScrollText()
 
                 val commandTemplateCard = view.findViewById<MaterialCardView>(R.id.command_card)
-                populateCommandCard(commandTemplateCard, templates.first())
-
-                commandTemplateCard.setOnClickListener {
-                    lifecycleScope.launch {
-                        UiUtil.showCommandTemplates(requireActivity(), commandTemplateViewModel){
-                            chosenCommandView.editText!!.setText(it.content)
-                            populateCommandCard(commandTemplateCard, it)
-                            downloadItem.format = Format(
-                                it.title,
-                                "",
-                                "",
-                                "",
-                                "",
-                                0,
-                                it.content
-                            )
+                runCatching {
+                    populateCommandCard(commandTemplateCard, templates.first())
+                    commandTemplateCard.setOnClickListener {
+                        lifecycleScope.launch {
+                            UiUtil.showCommandTemplates(requireActivity(), commandTemplateViewModel){
+                                chosenCommandView.editText!!.setText(it.content)
+                                populateCommandCard(commandTemplateCard, it)
+                                downloadItem.format = Format(
+                                    it.title,
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    0,
+                                    it.content
+                                )
+                            }
                         }
+
+
                     }
-
-
+                    if (downloadItem.url.isEmpty()){
+                        view.findViewById<MaterialCardView>(R.id.command_card).alpha = 0.3f
+                    }
+                }.onFailure {
+                    commandTemplateCard.visibility = View.GONE
+                    view.findViewById<Chip>(R.id.editSelected).isEnabled = false
+                    view.findViewById<TextView>(R.id.command_txt).visibility = View.GONE
                 }
 
                 saveDir = view.findViewById(R.id.outputPath)
@@ -166,7 +182,7 @@ class DownloadCommandFragment(private val resultItem: ResultItem, private var cu
 
                 UiUtil.configureCommand(
                     view,
-                    1,
+                    if (downloadItem.url.isEmpty()) 0 else 1,
                     shortcutCount,
                     newTemplateClicked = {
                         UiUtil.showCommandTemplateCreationOrUpdatingSheet(null, requireActivity(), viewLifecycleOwner, commandTemplateViewModel) {
@@ -181,6 +197,9 @@ class DownloadCommandFragment(private val resultItem: ResultItem, private var cu
                                 0,
                                 it.content
                             )
+                            commandTemplateCard.visibility = View.VISIBLE
+                            view.findViewById<TextView>(R.id.command_txt).visibility = View.VISIBLE
+                            view.findViewById<Chip>(R.id.editSelected).isEnabled = true
                             populateCommandCard(commandTemplateCard, it)
                         }
                     },

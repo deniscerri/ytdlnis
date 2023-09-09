@@ -104,6 +104,7 @@ class ActiveDownloadAdapter(onItemClickListener: OnItemClickListener, activity: 
             DownloadViewModel.Type.audio -> type.setIconResource(R.drawable.ic_music)
             DownloadViewModel.Type.video -> type.setIconResource(R.drawable.ic_video)
             DownloadViewModel.Type.command -> type.setIconResource(R.drawable.ic_terminal)
+            else -> {}
         }
 
         val formatDetailsChip = card.findViewById<Chip>(R.id.format_note)

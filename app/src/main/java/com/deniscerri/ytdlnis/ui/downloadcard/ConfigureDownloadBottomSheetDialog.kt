@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
@@ -64,7 +65,6 @@ class ConfigureDownloadBottomSheetDialog(private val resultItem: ResultItem, pri
         super.setupDialog(dialog, style)
         val view = LayoutInflater.from(context).inflate(R.layout.configure_download_bottom_sheet, null)
         dialog.setContentView(view)
-
         dialog.setOnShowListener {
             behavior = BottomSheetBehavior.from(view.parent as View)
             val displayMetrics = DisplayMetrics()
@@ -80,7 +80,7 @@ class ConfigureDownloadBottomSheetDialog(private val resultItem: ResultItem, pri
             overScrollMode = View.OVER_SCROLL_NEVER
         }
 
-        val fragments = mutableListOf(
+        val fragments = mutableListOf<Fragment>(
             DownloadAudioFragment(resultItem, downloadItem),
             DownloadVideoFragment(resultItem, downloadItem)
         )
@@ -161,6 +161,9 @@ class ConfigureDownloadBottomSheetDialog(private val resultItem: ResultItem, pri
         viewPager2.registerOnPageChangeCallback(object: ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 tabLayout.selectTab(tabLayout.getTabAt(position))
+                runCatching {
+                    updateTitleAuthorWhenSwitching()
+                }
             }
         })
 
@@ -168,22 +171,7 @@ class ConfigureDownloadBottomSheetDialog(private val resultItem: ResultItem, pri
 
         val ok = view.findViewById<Button>(R.id.bottom_sheet_ok)
         ok!!.setOnClickListener {
-
-            val item : DownloadItem = when(tabLayout.selectedTabPosition){
-                0 -> {
-                    val f = fragmentManager.findFragmentByTag("f0") as DownloadAudioFragment
-                    f.downloadItem
-                }
-                1 -> {
-                    val f = fragmentManager.findFragmentByTag("f1") as DownloadVideoFragment
-                    f.downloadItem
-                }
-                else -> {
-                    val f = fragmentManager.findFragmentByTag("f2") as DownloadCommandFragment
-                    f.downloadItem
-                }
-            }
-            Log.e("aa", item.toString())
+            val item = getDownloadItem()
             onDownloadItemUpdateListener.onDownloadItemUpdate(resultItem.id, item)
             dismiss()
         }
@@ -198,6 +186,47 @@ class ConfigureDownloadBottomSheetDialog(private val resultItem: ResultItem, pri
             true
         }
 
+    }
+
+    private fun getDownloadItem(selectedTabPosition: Int = tabLayout.selectedTabPosition) : DownloadItem{
+        return when(selectedTabPosition){
+            0 -> {
+                val f = fragmentManager?.findFragmentByTag("f0") as DownloadAudioFragment
+                f.downloadItem
+            }
+            1 -> {
+                val f = fragmentManager?.findFragmentByTag("f1") as DownloadVideoFragment
+                f.downloadItem
+            }
+            else -> {
+                val f = fragmentManager?.findFragmentByTag("f2") as DownloadCommandFragment
+                f.downloadItem
+            }
+        }
+    }
+
+
+    private fun updateTitleAuthorWhenSwitching(){
+        val prevDownloadItem = getDownloadItem(
+            if (viewPager2.currentItem == 1) 0 else 1
+        )
+
+        resultItem.title = prevDownloadItem.title
+        resultItem.author = prevDownloadItem.author
+        downloadItem.title = prevDownloadItem.title
+        downloadItem.author = prevDownloadItem.author
+
+        when(viewPager2.currentItem){
+            0 -> {
+                val f = fragmentManager?.findFragmentByTag("f0") as DownloadAudioFragment
+                f.updateTitleAuthor(prevDownloadItem.title, prevDownloadItem.author)
+            }
+            1 -> {
+                val f = fragmentManager?.findFragmentByTag("f1") as DownloadVideoFragment
+                f.updateTitleAuthor(prevDownloadItem.title, prevDownloadItem.author)
+            }
+            else -> {}
+        }
     }
 
 
@@ -216,16 +245,6 @@ class ConfigureDownloadBottomSheetDialog(private val resultItem: ResultItem, pri
         cleanUp()
     }
 
-//    private fun returnPreviousState(){
-//        CoroutineScope(Dispatchers.IO).launch {
-//            val result =  resultViewModel.getItemByURL(currentItem.url)
-//            result.title = currentItem.title
-//            result.author = currentItem.author
-//            Log.e("TAG, ", currentItem.toString())
-//            resultViewModel.update(result)
-//            downloadViewModel.updateDownload(currentItem)
-//        }
-//    }
 
     private fun cleanUp(){
         kotlin.runCatching {

@@ -37,20 +37,19 @@ import kotlinx.coroutines.withContext
 import java.io.File
 
 
-class DownloadAudioFragment(private var resultItem: ResultItem, private var currentDownloadItem: DownloadItem?) : Fragment() {
+class DownloadAudioFragment(private var resultItem: ResultItem, private var currentDownloadItem: DownloadItem?) : Fragment(), TitleAuthorSync {
     private var _binding : FragmentHomeBinding? = null
     private var fragmentView: View? = null
     private var activity: Activity? = null
     private lateinit var downloadViewModel : DownloadViewModel
     private lateinit var resultViewModel : ResultViewModel
-
-    private lateinit var title : TextInputLayout
-    private lateinit var author : TextInputLayout
     private lateinit var saveDir : TextInputLayout
     private lateinit var freeSpace : TextView
     private lateinit var infoUtil: InfoUtil
 
     lateinit var downloadItem : DownloadItem
+    lateinit var title : TextInputLayout
+    lateinit var author : TextInputLayout
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -236,6 +235,13 @@ class DownloadAudioFragment(private var resultItem: ResultItem, private var curr
                 e.printStackTrace()
             }
         }
+    }
+
+    override fun updateTitleAuthor(t: String, a: String){
+        downloadItem.title = t
+        downloadItem.author = a
+        title.editText?.setText(t)
+        author.editText?.setText(a)
     }
 
     private var audioPathResultLauncher = registerForActivityResult(

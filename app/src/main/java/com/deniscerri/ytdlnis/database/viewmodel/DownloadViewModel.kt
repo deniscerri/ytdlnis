@@ -85,8 +85,14 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
     private val dao: DownloadDao
 
     enum class Type {
-        audio, video, command
+        auto, audio, video, command
     }
+
+    private val urlsForAudioType = listOf(
+        "music",
+        "audio",
+        "soundcloud"
+    )
 
     init {
         dbManager =  DBManager.getInstance(application)
@@ -194,6 +200,13 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
         return repository.getItemByID(id)
     }
 
+    private fun getSuitableDownloadType(url: String): Type{
+        if (urlsForAudioType.any { url.contains(it) }){
+            return Type.audio
+        }
+        return Type.video
+    }
+
     fun createDownloadItemFromResult(resultItem: ResultItem, givenType: Type) : DownloadItem {
         val embedSubs = sharedPreferences.getBoolean("embed_subtitles", false)
         val saveSubs = sharedPreferences.getBoolean("write_subtitles", false)
@@ -202,6 +215,9 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
         val embedThumb = sharedPreferences.getBoolean("embed_thumbnail", false)
 
         var type = givenType
+        if (type == Type.auto){
+            type = getSuitableDownloadType(resultItem.url)
+        }
         if(type == Type.command && commandTemplateDao.getTotalNumber() == 0) type = Type.video
 
         val customFileNameTemplate = when(type) {
@@ -320,6 +336,7 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
             Type.audio -> sharedPreferences.getString("music_path", FileUtil.getDefaultAudioPath())!!
             Type.video -> sharedPreferences.getString("video_path", FileUtil.getDefaultVideoPath())!!
             Type.command -> sharedPreferences.getString("command_path", FileUtil.getDefaultCommandPath())!!
+            else -> ""
         }
 
         list.forEach {
@@ -329,6 +346,7 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
                 Type.audio -> sharedPreferences.getString("music_path", FileUtil.getDefaultAudioPath())
                 Type.video -> sharedPreferences.getString("video_path", FileUtil.getDefaultVideoPath())
                 Type.command -> sharedPreferences.getString("command_path", FileUtil.getDefaultCommandPath())
+                else -> ""
             }
             if (it.downloadPath == currentDownloadPath) it.downloadPath = updatedDownloadPath
 
@@ -359,6 +377,7 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
             Type.audio -> FileUtil.getDefaultAudioPath()
             Type.video -> FileUtil.getDefaultVideoPath()
             Type.command -> FileUtil.getDefaultCommandPath()
+            else -> ""
         }
 
         val sponsorblock = sharedPreferences.getStringSet("sponsorblock_filters", emptySet())
@@ -404,7 +423,7 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
             Type.video -> {
                 return cloneFormat(
                     try {
-                        val theFormats = formats.filter { !it.format_note.contains("audio", true) }.sortedBy { it.format_id }.ifEmpty { defaultVideoFormats }
+                        val theFormats = formats.filter { !it.format_note.contains("audio", true) }.sortedBy { it.format_id }.ifEmpty { defaultVideoFormats }.sortedByDescending { it.filesize }
                         when (videoQualityPreference) {
                             "worst" -> {
                                 theFormats.first()
@@ -416,7 +435,7 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
                                 requirements.add { it: Format -> it.format_note.contains(videoQualityPreference.substring(0, videoQualityPreference.length - 1)) }
                                 requirements.add { it: Format -> it.vcodec.startsWith(videoCodec!!, true) }
 
-                                theFormats.reversed().maxByOrNull { f -> requirements.count{ req -> req(f)} } ?: throw Exception()
+                                theFormats.maxByOrNull { f -> requirements.count{ req -> req(f)} } ?: throw Exception()
                             }
                         }
                     }catch (e: Exception){
@@ -468,8 +487,9 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
 
     fun turnResultItemsToDownloadItems(items: List<ResultItem?>) : List<DownloadItem> {
         val list : MutableList<DownloadItem> = mutableListOf()
-        val preferredType = sharedPreferences.getString("preferred_download_type", "video")
+        var preferredType = sharedPreferences.getString("preferred_download_type", "video")
         items.forEach {
+            if (preferredType == Type.auto.toString()) preferredType = getSuitableDownloadType(it!!.url).toString()
             list.add(createDownloadItemFromResult(it!!, Type.valueOf(preferredType!!)))
         }
         return list

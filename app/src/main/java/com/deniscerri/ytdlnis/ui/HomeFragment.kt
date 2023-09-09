@@ -159,7 +159,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
             homeAdapter!!.submitList(it)
             resultsList = it
             if(resultViewModel.repository.itemCount.value > 1 || resultViewModel.repository.itemCount.value == -1){
-                if (it.size > 1 && it[0].playlistTitle.isNotEmpty() && it[0].playlistTitle != getString(R.string.trendingPlaylist) && !loadingItems){
+                if (it.size > 1 && it[0].playlistTitle.isNotEmpty() && !loadingItems){
                     downloadAllFabCoordinator!!.visibility = VISIBLE
                 }else{
                     downloadAllFabCoordinator!!.visibility = GONE
@@ -187,7 +187,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
                 recyclerView?.setPadding(0,0,0,100)
                 shimmerCards!!.stopShimmer()
                 shimmerCards!!.visibility = GONE
-                if (resultsList!!.size > 1 && resultsList!![0]!!.playlistTitle.isNotEmpty() && resultsList!![0]!!.playlistTitle != getString(R.string.trendingPlaylist)){
+                if (resultsList!!.size > 1 && resultsList!![0]!!.playlistTitle.isNotEmpty()){
                     downloadAllFabCoordinator!!.visibility = VISIBLE
                 }else{
                     downloadAllFabCoordinator!!.visibility = GONE

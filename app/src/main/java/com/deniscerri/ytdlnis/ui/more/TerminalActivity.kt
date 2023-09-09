@@ -5,6 +5,7 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.FileObserver
@@ -297,7 +298,17 @@ class TerminalActivity : BaseActivity() {
         Log.e(TAG, "$action $type")
         if (action == Intent.ACTION_SEND && type != null) {
             Log.e(TAG, action)
-            val txt = "yt-dlp " + intent.getStringExtra(Intent.EXTRA_TEXT)
+            val text = if (intent.getStringExtra(Intent.EXTRA_TEXT) == null){
+                val uri = if (Build.VERSION.SDK_INT >= 33){
+                    intent.getParcelableExtra(Intent.EXTRA_STREAM, Uri::class.java)
+                }else{
+                    intent.getParcelableExtra(Intent.EXTRA_STREAM)
+                }
+                "-a \"${FileUtil.formatPath(uri?.path ?: "")}\""
+            }else{
+                intent.getStringExtra(Intent.EXTRA_TEXT)
+            }
+            val txt = "yt-dlp $text"
             input!!.setText(txt)
         }
     }

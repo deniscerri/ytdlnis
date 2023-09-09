@@ -144,12 +144,14 @@
 
 
     <string-array name="download_types">
+        <item>@string/auto</item>
         <item>@string/audio</item>
         <item>@string/video</item>
         <item>@string/command</item>
     </string-array>
 
     <string-array name="download_types_values">
+        <item>auto</item>
         <item>audio</item>
         <item>video</item>
         <item>command</item>
@@ -800,4 +802,5 @@
         <item>h264</item>
     </string-array>
 
+    <string name="auto">Auto</string>
 </resources>

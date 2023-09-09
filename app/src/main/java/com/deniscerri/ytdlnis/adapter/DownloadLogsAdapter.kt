@@ -66,6 +66,7 @@ class DownloadLogsAdapter(onItemClickListener: OnItemClickListener, activity: Ac
             DownloadViewModel.Type.audio -> downloadTypeIcon.setIconResource(R.drawable.ic_music)
             DownloadViewModel.Type.video -> downloadTypeIcon.setIconResource(R.drawable.ic_video)
             DownloadViewModel.Type.command -> downloadTypeIcon.setIconResource(R.drawable.ic_terminal)
+            else -> {}
         }
 
         val formatNote = card.findViewById<TextView>(R.id.format_note)
