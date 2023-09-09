@@ -64,7 +64,7 @@
     <string name="sponsorblock_reminders">Напоминания о подписке</string>
     <string name="select_sponsorblock_filtering">Выберите фильтрацию SponsorBlock</string>
     <string name="sponsorblock_fillers">Фильтры</string>
-    <string name="sponsorblock_nonmusic">Немузыкальные части клипов</string>
+    <string name="sponsorblock_nonmusic">Немузыкальные и оффтоп фрагменты</string>
     <string name="settings">Настройки</string>
     <string name="video_directory">Папка с видео</string>
     <string name="download_all">Загрузить все</string>
@@ -161,7 +161,7 @@
     <string name="error_restarting_download">Ошибка при возобновлении загрузки</string>
     <string name="preferred_download_type_summary">Основная вкладка при открытии карточки загрузки</string>
     <string name="all_items_selected">Все выбранные элементы</string>
-    <string name="clear_temporary_files_summary">Удалить кэш отменённых / прерванных загрузок</string>
+    <string name="clear_temporary_files_summary">Удалить кэш сбойных / ошибочных / отмененных загрузок</string>
     <string name="cache_cleared">Кэш удален</string>
     <string name="downloads_running_try_later">Загрузчик работает. Попробуйте позже</string>
     <string name="freespace">Свободное место</string>
@@ -219,7 +219,7 @@
     <string name="system">Системная</string>
     <string name="updating_download_data">Обновление данных загружаемого контента</string>
     <string name="backup">Резервировать</string>
-    <string name="pure_theme_summary">Тема AMOLED</string>
+    <string name="pure_theme_summary">Чистые черная и белая темы</string>
     <string name="accents">Акценты</string>
     <string name="network_error">Ошибка сети</string>
     <string name="select_backup_categories">Выберите категории резервного копирования</string>
@@ -242,7 +242,7 @@
     <string name="preferred_locale">Предпочитаемый регион</string>
     <string name="video_recommendations">Рекомендации видео</string>
     <string name="couldnt_parse_file">Не удалось разобрать файл</string>
-    <string name="keep_cache_summary">Не удалять временные файлы после завершения загрузки</string>
+    <string name="keep_cache_summary">Не удалять кэш после завершения загрузки</string>
     <string name="backup_created_successfully">Файл резервной копии, сохраненный в папке загрузок</string>
     <string name="material_you">Material You</string>
     <string name="finished_download_notification_channel_description">Уведомление о завершенных или ошибочных загрузках</string>
@@ -264,8 +264,8 @@
     <string name="swipe_gestures_summary">Включить жесты для определенных действий</string>
     <string name="crop_thumb">Обрезать миниатюру</string>
     <string name="general">Общие</string>
-    <string name="move_temporary_files">Переместить временные файлы</string>
-    <string name="move_temporary_files_summary">Перенесите кешированные файлы в папку загрузок</string>
+    <string name="move_temporary_files">Переместить кэш</string>
+    <string name="move_temporary_files_summary">Переместить кэш в папку загрузок</string>
     <string name="custom_audio_quality">Выбор качества аудио</string>
     <string name="piped_instance">Piped сервер</string>
     <string name="piped_instance_summary">Напишите сервер PIPED API, который будет использоваться для запросов и форматов YouTube</string>
@@ -298,6 +298,6 @@
     <string name="use_scheduler">Загрузить по расписанию</string>
     <string name="cache_first">Сначала кэшировать загрузки</string>
     <string name="cache_first_summary">Кэш загружается во внутреннюю память и переносится в выбранную вами папку. Используйте при невозможности записывать файлы в память</string>
-    <string name="update_app_beta_summary">Зарегистририроватся в бета-программе. Может содержать ошибки.</string>
+    <string name="update_app_beta_summary">Зарегистрироваться в бета-программе. Может содержать ошибки.</string>
     <string name="update_app_beta">Бета релизы</string>
 </resources>
