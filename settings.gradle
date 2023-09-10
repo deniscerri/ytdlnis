@@ -21,4 +21,3 @@ dependencyResolutionManagement {
 rootProject.name = "YTDLnis"
 
 include ':common', ':app', ':library', ':ffmpeg'
-include ':benchmark'

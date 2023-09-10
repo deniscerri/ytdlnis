@@ -3,6 +3,12 @@
 	YTDLnis
 </h1>
 
+<div align="center">
+	<a href="https://github.com/JunkFood02/Seal/blob/main/README.md">English</a>
+	&nbsp;&nbsp;| &nbsp;&nbsp;
+	Português
+</div>
+
 <h3 align="center">
 	YTDLnis é um aplicativo de download de vídeo/áudio gratuito e de código aberto usando yt-dlp para Android 6.0 e superior.
 </h3>

@@ -24,6 +24,8 @@
 -keep class com.google.gson.** { *; }
 -keep class com.deniscerri.ytdlnis.database.models.AudioPreferences
 -keep class com.deniscerri.ytdlnis.database.models.VideoPreferences
+-keep class com.deniscerri.ytdlnis.database.models.GithubRelease
+-keep class com.deniscerri.ytdlnis.database.models.GithubReleaseAsset
 -keepclassmembers,allowobfuscation class * {
     @com.google.gson.annotations.SerializedName <fields>;
 }

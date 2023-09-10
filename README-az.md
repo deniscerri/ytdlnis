@@ -3,6 +3,12 @@
 	YTDLnis
 </h1>
 
+<div align="center">
+	<a href="https://github.com/JunkFood02/Seal/blob/main/README.md">English</a>
+	&nbsp;&nbsp;| &nbsp;&nbsp;
+	Azərbaycanca
+</div>
+
 <h3 align="center">
 	YTDLnis Android 6.0 və yuxarı üçün yt-dlp istifadə edən pulsuz və açıq mənbəli video/səs yükləyicidir.
 </h3>

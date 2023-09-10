@@ -69,7 +69,7 @@ class DownloadWorker(
         val foregroundInfo = ForegroundInfo(Random.nextInt(1000000000), workNotif)
         setForegroundAsync(foregroundInfo)
 
-        queuedItems.collectLatest { items ->
+        queuedItems.collect { items ->
             runningYTDLInstances.clear()
             dao.getActiveDownloadsList().forEach {
                 runningYTDLInstances.add(it.id)
@@ -88,7 +88,6 @@ class DownloadWorker(
             val eligibleDownloads = items.take(if (concurrentDownloads < 0) 0 else concurrentDownloads).filter {  it.id !in running }
 
             eligibleDownloads.forEach{downloadItem ->
-                runningYTDLInstances.add(downloadItem.id)
                 val notification = notificationUtil.createDownloadServiceNotification(pendingIntent, downloadItem.title, downloadItem.id.toInt())
                 notificationUtil.notify(downloadItem.id.toInt(), notification)
 
@@ -153,7 +152,6 @@ class DownloadWorker(
                             }
                         }
                     }.onSuccess {
-                        runningYTDLInstances.remove(downloadItem.id)
                         val wasQuickDownloaded = updateDownloadItem(downloadItem, infoUtil, dao, resultDao)
                         runBlocking {
                             var finalPaths : List<String>?
@@ -233,7 +231,6 @@ class DownloadWorker(
                         }
 
                     }.onFailure {
-                        runningYTDLInstances.remove(downloadItem.id)
                         FileUtil.deleteConfigFiles(request)
 
                         withContext(Dispatchers.Main){

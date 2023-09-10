@@ -2,9 +2,12 @@ package com.deniscerri.ytdlnis.database.repository
 
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
+import com.deniscerri.ytdlnis.App
 import com.deniscerri.ytdlnis.database.dao.DownloadDao
 import com.deniscerri.ytdlnis.database.models.DownloadItem
+import com.deniscerri.ytdlnis.util.FileUtil
 import kotlinx.coroutines.flow.Flow
+import java.io.File
 
 
 class DownloadRepository(private val downloadDao: DownloadDao) {
@@ -45,7 +48,16 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
     }
 
     suspend fun delete(id: Long){
+        val item = getItemByID(id)
         downloadDao.delete(id)
+        deleteCache(listOf(item))
+    }
+
+    private fun deleteCache(items: List<DownloadItem>) {
+        val cacheDir = FileUtil.getCachePath(App.instance)
+        items.forEach {
+           File(cacheDir, it.id.toString()).deleteRecursively()
+        }
     }
 
     suspend fun update(item: DownloadItem){
@@ -87,11 +99,15 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
     }
 
     suspend fun deleteCancelled(){
+        val cancelled = getCancelledDownloads()
         downloadDao.deleteCancelled()
+        deleteCache(cancelled)
     }
 
     suspend fun deleteErrored(){
+        val errored = getErroredDownloads()
         downloadDao.deleteErrored()
+        deleteCache(errored)
     }
 
     suspend fun deleteSaved(){

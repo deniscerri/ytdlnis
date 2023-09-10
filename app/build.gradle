@@ -10,7 +10,7 @@ def properties = new Properties()
 def versionMajor = 1
 def versionMinor = 6
 def versionPatch = 6
-def versionBuild = 1 // bump for dogfood builds, public betas, etc.
+def versionBuild = 2 // bump for dogfood builds, public betas, etc.
 def versionExt = ""
 
 if (versionBuild > 0){
@@ -63,43 +63,19 @@ android {
         release {
             minifyEnabled true
             shrinkResources true
-            manifestPlaceholders = [appName: RELEASE_NAME]
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             debuggable false
             signingConfig signingConfigs.debug
-        }
-
-        beta {
-            minifyEnabled true
-            shrinkResources true
-            manifestPlaceholders = [appName: BETA_NAME]
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            debuggable false
-            signingConfig signingConfigs.debug
-            versionNameSuffix '-beta'
         }
 
         debug {
             minifyEnabled false
-            manifestPlaceholders = [appName: RELEASE_NAME]
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             debuggable true
             signingConfig signingConfigs.debug
         }
-
-        benchmark {
-            initWith release
-            manifestPlaceholders = [appName: RELEASE_NAME]
-            proguardFiles 'baseline-profiles-rules.pro'
-            debuggable false
-            matchingFallbacks ['release']
-            signingConfig signingConfigs.debug
-        }
     }
 
-    lintOptions{
-        disable 'MissingTranslation'
-    }
 
     android.applicationVariants.configureEach { variant ->
         variant.outputs.each { output ->
@@ -157,7 +133,6 @@ dependencies {
     implementation "androidx.navigation:navigation-ui-ktx:$navVer"
     implementation 'androidx.core:core-ktx:1.10.1'
     implementation 'androidx.test.ext:junit-ktx:1.1.5'
-    implementation 'androidx.benchmark:benchmark-macro:1.1.1'
     testImplementation "junit:junit:$junitVer"
     androidTestImplementation "junit:junit:$junitVer"
     androidTestImplementation "androidx.test.ext:junit:$androidJunitVer"
