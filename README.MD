@@ -6,9 +6,9 @@
 <div align="center">
 	English
 	&nbsp;&nbsp;| &nbsp;&nbsp;
-	<a href="https://github.com/JunkFood02/Seal/blob/main/README-az.md">Azərbaycanca</a>
+	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-az.md">Azərbaycanca</a>
 	&nbsp;&nbsp;| &nbsp;&nbsp;
-	<a href="https://github.com/JunkFood02/Seal/blob/main/README-pt.md">Português</a>
+	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-pt.md">Português</a>
 </div>
 
 <h3 align="center">
