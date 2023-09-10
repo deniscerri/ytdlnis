@@ -298,4 +298,6 @@
     <string name="cache_first_summary">Файли кешу завантажуються у внутрішню пам\'ять, а потім переносяться в обрану вами папку. Використовується, коли немає можливості записувати файл безпосередньо в пам\'ять</string>
     <string name="cache_first">Спочатку завантажується кеш</string>
     <string name="use_scheduler">Завантажити за розкладом</string>
+    <string name="update_app_beta_summary">Записатися в бета-програму. Може містити помилки.</string>
+    <string name="update_app_beta">Бета релізи</string>
 </resources>

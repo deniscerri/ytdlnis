@@ -298,4 +298,6 @@
     <string name="cache_first_summary">先将缓存文件下载到内部存储，然后移动到您选择的目录。当您无法直接写入存储时使用此选项</string>
     <string name="cache_first">先缓存下载</string>
     <string name="use_scheduler">按计划下载</string>
+    <string name="update_app_beta_summary">加入测试版计划。可能会遇到bugs。</string>
+    <string name="update_app_beta">测试版本</string>
 </resources>

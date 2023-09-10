@@ -298,4 +298,6 @@
     <string name="cache_first_summary">Qalıq faylların daxili yaddaşa yüklə, sonra seçdiyiniz qovluğa köçürün. Birbaşa yaddaşa yaza bilmədiyinizdə bunu istifadə edin</string>
     <string name="cache_first">Əvvəlcə Qalığı Yükləyir</string>
     <string name="use_scheduler">Plan Üzrə Yükləmə</string>
+    <string name="update_app_beta_summary">Sınaq proqramında qeydiyyatdan keçin. Daxilində səhvlər ola bilər.</string>
+    <string name="update_app_beta">Beta Buraxılışlar</string>
 </resources>

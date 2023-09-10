@@ -242,7 +242,7 @@
     <string name="redownload">Baixar novamente</string>
     <string name="cookies">Cookies</string>
     <string name="update_formats_summary">Pesquise automaticamente formatos ausentes ao clicar no cartão de formato</string>
-    <string name="start">Início</string>
+    <string name="start">Começo</string>
     <string name="ytdl_version">Versão do yt-dlp</string>
     <string name="end">Fim</string>
     <string name="kill_app">Encerrar Aplicativo</string>
@@ -298,4 +298,6 @@
     <string name="cache_first_summary">Os arquivos de cache são baixados para o armazenamento interno e depois movidos para o diretório escolhido. Use isto quando você não puder gravar diretamente no armazenamento</string>
     <string name="scheduling">Agendamento</string>
     <string name="use_scheduler">Baixe no horário agendado</string>
+    <string name="update_app_beta_summary">Inscreva-se no programa beta. Pode conter bugs.</string>
+    <string name="update_app_beta">Versões Beta</string>
 </resources>

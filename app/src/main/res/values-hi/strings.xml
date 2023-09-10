@@ -298,4 +298,6 @@
     <string name="use_scheduler">अनुसूची के अनुसार डाउनलोड करें</string>
     <string name="cache_first">पहले कैच डाउनलोड करे</string>
     <string name="cache_first_summary">कैश फाइल्स फोन की स्टोरेज में डाउनलोड हो कर उसके बाद आपकी दर्ज की गई लोकेशन में ट्रांसफर होती हैं। इसका उपयोग तब करें जब आपको सीधा इंटरनल स्टोरेज मैं स्थापित करने में परेशानी आ रही हो</string>
+    <string name="update_app_beta_summary">बीटा प्रोग्राम में नामांकन करें। इसमें बग हो सकते हैं।</string>
+    <string name="update_app_beta">बीटा रिलीज़</string>
 </resources>
