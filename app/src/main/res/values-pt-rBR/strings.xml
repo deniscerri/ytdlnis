@@ -104,7 +104,7 @@
     <string name="adjust_templates">Ajustar modelos</string>
     <string name="concurrent_downloads">Downloads simultâneos</string>
     <string name="logs">Registros</string>
-    <string name="update_ytdl_nightly">Versão beta do yt-dlp</string>
+    <string name="update_ytdl_nightly">Versão Beta do yt-dlp</string>
     <string name="file_name_template">Modelo de nome do arquivo</string>
     <string name="language">Idioma</string>
     <string name="command_templates">Modelos de Comando</string>
@@ -298,6 +298,6 @@
     <string name="cache_first_summary">Os arquivos de cache são baixados para o armazenamento interno e depois movidos para o diretório escolhido. Use isto quando você não puder gravar diretamente no armazenamento</string>
     <string name="scheduling">Agendamento</string>
     <string name="use_scheduler">Baixe no horário agendado</string>
-    <string name="update_app_beta_summary">Inscreva-se no programa beta. Pode conter bugs.</string>
+    <string name="update_app_beta_summary">Inscreva-se no programa Beta. Pode conter bugs.</string>
     <string name="update_app_beta">Versões Beta</string>
 </resources>
