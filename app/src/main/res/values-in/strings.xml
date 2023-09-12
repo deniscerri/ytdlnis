@@ -298,4 +298,6 @@
     <string name="scheduling">Penjadwalan</string>
     <string name="use_scheduler">Unduh Sesuai Jadwal</string>
     <string name="cache_first_summary">Singgahkan (cache) berkas unduhan ke penyimpanan internal, kemudian pindahkan ke direktori pilihanmu. Gunakan ini apabila kamu tidak bisa menulis berkasnya langsung ke penyimpanan</string>
+    <string name="update_app_beta_summary">Mendaftarlah dalam program beta. Ini mungkin mengandung bug.</string>
+    <string name="update_app_beta">Rilis Beta</string>
 </resources>
