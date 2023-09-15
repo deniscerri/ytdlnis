@@ -195,4 +195,25 @@
     <string name="cache_cleared">Fichiers temporaires supprimés</string>
     <string name="freespace">Espace libre</string>
     <string name="downloads_running_try_later">Le téléchargement est en cours d\'exécution. Réessayer plus tard</string>
+    <string name="copied_to_clipboard">Copié Dans le Presse-Papiers</string>
+    <string name="video_recommendations_summary">Activer les vidéos YouTube recommandées sur l\'écran d\'accueil depuis l\'API PIPED</string>
+    <string name="codec">Codec</string>
+    <string name="high_contrast">Contraste Élevé</string>
+    <string name="save_subs">Enregistrer les sous-titres</string>
+    <string name="light">Clair</string>
+    <string name="save_subs_desc">Écrire un fichier de sous-titres</string>
+    <string name="preferred_search_engine_summary">Le moteur de recherche à utiliser pour les recherches dans l\'application</string>
+    <string name="format_id">ID du format</string>
+    <string name="subtitle_languages">Langues des sous-titres</string>
+    <string name="undo">Revenir en arrière</string>
+    <string name="audio_samplerate">Fréquence d\'Échantillonnage Audio</string>
+    <string name="dark">Sombre</string>
+    <string name="Theme">Thème</string>
+    <string name="video_recommendations">Recommendations de vidéos</string>
+    <string name="accents">Accents</string>
+    <string name="quality">Qualité</string>
+    <string name="preferred_home_screen">Écran d\'accueil par défaut</string>
+    <string name="system">Système</string>
+    <string name="format_filtering_hint">Tout les éléments doivent être du même type pour utiliser cette option</string>
+    <string name="preferred_search_engine">Moteur de recherche par défaut</string>
 </resources>
