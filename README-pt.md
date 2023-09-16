@@ -4,13 +4,13 @@
 </h1>
 
 <div align="center">
-	<a href="https://github.com/JunkFood02/Seal/blob/main/README.md">English</a>
+	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README.MD">English</a>
 	&nbsp;&nbsp;| &nbsp;&nbsp;
 	Português
 </div>
 
 <h3 align="center">
-	YTDLnis é um aplicativo de download de vídeo/áudio gratuito e de código aberto usando yt-dlp para Android 6.0 e superior.
+	YTDLnis é um aplicativo para baixar vídeos/áudios gratuito e de código aberto usando yt-dlp para Android 6.0 e superior.
 </h3>
 
 <div align="center">
@@ -34,9 +34,9 @@
 
 ## 💡 Recursos:
 
-- faça download de arquivos de áudio/vídeo de mais de <a href="https://github.com/yt-dlp/yt-dlp/blob/master/supportedsites.md">1.000 sites</a>
-- processar listas de reprodução
-	- edite cada item da lista de reprodução separadamente, como em um item de download normal.
+- Mais de <a href="https://github.com/yt-dlp/yt-dlp/blob/master/supportedsites.md">1.000 sites suportados</a>
+- baixe Playlists
+	- edite cada item da playlist em um item de download normal.
 	- selecione um formato comum para todos os itens e/ou selecione vários formatos de áudio caso você esteja baixando-os como um vídeo
 	- selecione um caminho de download para todos os itens
 	- selecione um modelo de nome de arquivo para todos os itens
@@ -47,16 +47,16 @@
 - use comandos e modelos personalizados ou use o modo yt-dlp completo com um terminal integrado
 	- você pode fazer backup e restaurar modelos para poder compartilhar com seus amigos
 - Suporte para COOKIES. Faça login com suas contas e baixe vídeos privados/indisponíveis, desbloqueie formatos premium, etc.
-- cortar vídeos com base em registros de data e hora e capítulos de vídeo (esse recurso do yt-dlp é experimental no projeto original)
+- cortar vídeos com base em registros de data e hora e capítulos de vídeo (esse recurso do yt-dlp é experimental)
 	- você pode fazer cortes ilimitados
-- remover elementos do patrocinador do item
+- remover patrocinadores do vídeo (SponsorBlock)
 	- incorpore-os como capítulos em seu vídeo
 - incorporar legendas/metadados/capítulos etc
 - modificar metadados como título e autor
 - dividir o item em arquivos separados dependendo de seus capítulos
 - selecione diferentes formatos de download
-- cartão inferior direito do menu de compartilhamento, não há necessidade de abrir o aplicativo
-	- você pode criar um arquivo txt e preenchê-lo com links/listas de reprodução/consultas de pesquisa separados por uma nova linha e o aplicativo irá processá-los
+- use o botão de compartilhar para baixar, sem necessidade de abrir o aplicativo
+	- você pode criar um arquivo txt e preenchê-lo com links/listas de reprodução/consultas de pesquisa separados por uma nova linha e o aplicativo irá baixar eles
 - pesquise ou insira um link no aplicativo
 	- você pode empilhar pesquisas para poder processá-las ao mesmo tempo
 - registrar downloads em caso de problemas

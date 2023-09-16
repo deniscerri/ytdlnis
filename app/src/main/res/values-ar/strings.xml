@@ -298,4 +298,6 @@
     <string name="cache_first">الأولوية لتحميل الملفات المؤقتة</string>
     <string name="scheduling">الجدولة</string>
     <string name="use_scheduler">التحميل في الفترة المحددة</string>
+    <string name="update_app_beta_summary">الحصول على تحديثات الإصدارات التجريبية. قد تحتوي على أخطاء.</string>
+    <string name="update_app_beta">الإصدارات التجريبية</string>
 </resources>

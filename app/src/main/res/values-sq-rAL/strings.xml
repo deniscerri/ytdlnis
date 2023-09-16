@@ -298,4 +298,6 @@
     <string name="cache_first_summary">Skedarët shkarkohen në memorien e brendshme dhe më pas transferohet tek direktoria e zgjedhur. Përdoreni këtë kur nuk mund të shkarkosh drejtpërdrejt në direktori</string>
     <string name="scheduling">Planifikimi</string>
     <string name="use_scheduler">Shkarko sipas Planifikimit</string>
+    <string name="update_app_beta_summary">Bashkohu programit beta. Mund të ketë probleme.</string>
+    <string name="update_app_beta">Publikimet Beta</string>
 </resources>

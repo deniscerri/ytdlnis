@@ -4,7 +4,7 @@
     <string name="failed_download">Não foi possível descarregar o ficheiro.</string>
     <string name="ytdl_updating_started">A descarregar nova versão</string>
     <string name="video">Vídeo</string>
-    <string name="download_notification_channel_name">Transferências de ficheiros</string>
+    <string name="download_notification_channel_name">Ficheiros descarregados</string>
     <string name="download_notification_channel_description">Notificação que mostra o progresso da transferência de ficheiros de áudio e vídeo</string>
     <string name="search_history_hint">Pesquisar no histórico</string>
     <string name="ytdl_already_updating">A instalar nova versão</string>
@@ -27,7 +27,7 @@
     <string name="music_directory">Pasta de música</string>
     <string name="video_directory">Pasta de vídeo</string>
     <string name="updating">Atualizações</string>
-    <string name="ytdl_update_hint">Útil se ocorrerem erros ao descarregar</string>
+    <string name="ytdl_update_hint">Útil se tiver problemas ao descarregar</string>
     <string name="update_ytdl">Instalar a nova versão do yt-dlp</string>
     <string name="about">Acerca</string>
     <string name="source_code">Código fonte</string>
@@ -60,7 +60,7 @@
     <string name="audio">Áudio</string>
     <string name="save_thumb">Guardar miniatura</string>
     <string name="save_thumb_summary">Guardar a miniatura na pasta de transferência</string>
-    <string name="cancel_download">Cancelar transferência</string>
+    <string name="cancel_download">Cancelar descarga</string>
     <string name="run_command">Executar comando</string>
     <string name="command_download_notification_channel_name">Comando de transferências</string>
     <string name="command_download_notification_channel_description">Notificação que mostra o progresso do descarregamento usando um comando yt-dlp</string>
@@ -100,7 +100,7 @@
     <string name="errored">Erro</string>
     <string name="copy_log">Copiar registo</string>
     <string name="create">Criar</string>
-    <string name="preferred_download_type">Tipo de descarga preferida</string>
+    <string name="preferred_download_type">Tipo de descarga preferido</string>
     <string name="in_queue">Em fila</string>
     <string name="clear_cancelled">Limpar cancelado</string>
     <string name="file_size">Tamanho do ficheiro</string>
@@ -127,8 +127,8 @@
     <string name="remove_search_history">Limpar histórico de pesquisas</string>
     <string name="update_formats">Atualizar formatos</string>
     <string name="log_downloads">Registos de transferências</string>
-    <string name="log_downloads_summary">Criar um ficheiro de registo para cada transferência</string>
-    <string name="download_queue">Fila de transferências</string>
+    <string name="log_downloads_summary">Criar um ficheiro de registo para cada descarga</string>
+    <string name="download_queue">Fila de descarga</string>
     <string name="running">Em execução</string>
     <string name="command">Comando</string>
     <string name="import_from_clipboard">Importar da área de transferência</string>
@@ -182,7 +182,7 @@
     <string name="search_suggestions_summary">Obter sugestões de pesquisa do Google</string>
     <string name="misc">Diversos</string>
     <string name="general">Geral</string>
-    <string name="concurrent_downloads_summary">Número de transferências executados ao mesmo tempo</string>
+    <string name="concurrent_downloads_summary">Número de descarregamentos executados ao mesmo tempo</string>
     <string name="concurrent_downloads">Transferências simultâneas</string>
     <string name="template">Modelo</string>
     <string name="select_sponsorblock_filtering">Selecionar filtros de Anúncios</string>
@@ -253,14 +253,14 @@
     <string name="format_id">ID do formato</string>
     <string name="audio_samplerate">Taxa de amostragem de áudio</string>
     <string name="codec">Codec</string>
-    <string name="updating_download_data">A atualizar os dados do item de descarga</string>
+    <string name="updating_download_data">A atualizar os dados do item da descarga</string>
     <string name="couldnt_parse_file">Não foi possível analisar o ficheiro</string>
     <string name="restore_complete">Restauro da aplicação concluído. Os seguintes itens foram restaurados:</string>
     <string name="select_backup_categories">Selecionar categorias de backup</string>
     <string name="backup_created_successfully">Backup guardado na pasta de transferências</string>
     <string name="socks5_proxy_summary">Utilizar o proxy HTTP/HTTPS/SOCKS especificado</string>
     <string name="socks5_proxy">URL do proxy Socks5</string>
-    <string name="preferred_format_id_summary">Selecionar o formato com este ID no cartão de descarga</string>
+    <string name="preferred_format_id_summary">Selecionar o formato com este ID no cartão de descarregamento</string>
     <string name="swipe_gestures_summary">Deslizar itens para determinadas acções</string>
     <string name="crop_thumb">Cortar miniatura</string>
     <string name="crop_thumb_summary">Cortar a miniatura num quadrado para transferências de áudio</string>
@@ -282,7 +282,7 @@
 \n</string>
     <string name="hide_thumbnails">Ocultar miniaturas</string>
     <string name="force_keyframes_summary">Processo mais lento, mas cortes mais precisos</string>
-    <string name="save_for_later">Guardar a transferência para mais tarde\?</string>
+    <string name="save_for_later">Guardar a descarga para mais tarde\?</string>
     <string name="force_keyframes">Forçar quadros-chave em cortes</string>
     <string name="show_terminal">Mostrar o Terminal no menu Partilhar</string>
     <string name="write_description">Guardar descrição</string>
