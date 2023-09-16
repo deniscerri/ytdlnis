@@ -788,9 +788,8 @@
         <item>@string/defaultValue</item>
         <item tools:ignore="Typos">AV1</item>
         <item>VP9</item>
-        <item tools:ignore="Typos">AVC</item>
-        <item>H265</item>
-        <item>H264</item>
+        <item tools:ignore="Typos">AVC (H264)</item>
+        <item>HEVC (H265)</item>
     </string-array>
 
     <string-array name="video_codec_values">
@@ -799,8 +798,5 @@
         <item>vp</item>
         <item>avc</item>
         <item>hev</item>
-        <item>h264</item>
     </string-array>
-
-    <string name="auto">Auto</string>
 </resources>

@@ -17,13 +17,14 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.DownloadItem
+import com.deniscerri.ytdlnis.database.models.DownloadItemSimple
 import com.deniscerri.ytdlnis.database.repository.DownloadRepository
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
 import com.squareup.picasso.Picasso
 
-class GenericDownloadAdapter(onItemClickListener: OnItemClickListener, activity: Activity) : PagingDataAdapter<DownloadItem, GenericDownloadAdapter.ViewHolder>(DIFF_CALLBACK) {
+class GenericDownloadAdapter(onItemClickListener: OnItemClickListener, activity: Activity) : PagingDataAdapter<DownloadItemSimple, GenericDownloadAdapter.ViewHolder>(DIFF_CALLBACK) {
     private val onItemClickListener: OnItemClickListener
     private val activity: Activity
     val checkedItems: ArrayList<Long>
@@ -73,7 +74,7 @@ class GenericDownloadAdapter(onItemClickListener: OnItemClickListener, activity:
         }
 
         val duration = card.findViewById<TextView>(R.id.duration)
-        duration.text = item!!.duration
+        duration.text = item.duration
 
         // TITLE  ----------------------------------
         val itemTitle = card.findViewById<TextView>(R.id.title)
@@ -204,13 +205,13 @@ class GenericDownloadAdapter(onItemClickListener: OnItemClickListener, activity:
     }
 
     companion object {
-        private val DIFF_CALLBACK: DiffUtil.ItemCallback<DownloadItem> = object : DiffUtil.ItemCallback<DownloadItem>() {
-            override fun areItemsTheSame(oldItem: DownloadItem, newItem: DownloadItem): Boolean {
+        private val DIFF_CALLBACK: DiffUtil.ItemCallback<DownloadItemSimple> = object : DiffUtil.ItemCallback<DownloadItemSimple>() {
+            override fun areItemsTheSame(oldItem: DownloadItemSimple, newItem: DownloadItemSimple): Boolean {
                 val ranged = arrayListOf(oldItem.id, newItem.id)
                 return ranged[0] == ranged[1]
             }
 
-            override fun areContentsTheSame(oldItem: DownloadItem, newItem: DownloadItem): Boolean {
+            override fun areContentsTheSame(oldItem: DownloadItemSimple, newItem: DownloadItemSimple): Boolean {
                 return oldItem.id == newItem.id && oldItem.title == newItem.title && oldItem.author == newItem.author && oldItem.thumb == newItem.thumb
             }
         }

@@ -116,11 +116,7 @@ class DownloadWorker(
                                 "Title: ${downloadItem.title}\n" +
                                 "URL: ${downloadItem.url}\n" +
                                 "Type: ${downloadItem.type}\n" +
-                                if (downloadItem.type != DownloadViewModel.Type.command){
-                                    "Format: ${downloadItem.format}\n\n"
-                                }
-                                else { "" } +
-                                "Command:\n ${infoUtil.parseYTDLRequestString(request)} ${downloadItem.extraCommands}\n\n",
+                                "Command:\n ${infoUtil.parseYTDLRequestString(request)}\n\n",
                         downloadItem.format,
                         downloadItem.type,
                         System.currentTimeMillis(),

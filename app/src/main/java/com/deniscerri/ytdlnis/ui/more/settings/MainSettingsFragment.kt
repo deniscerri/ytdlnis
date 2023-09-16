@@ -245,7 +245,7 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
             }
             val arr = JsonArray()
             historyItems.forEach {
-                arr.add(JsonParser().parse(Gson().toJson(it)).asJsonObject)
+                arr.add(JsonParser.parseString(Gson().toJson(it)).asJsonObject)
             }
             return arr
         }
@@ -259,7 +259,7 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
             }
             val arr = JsonArray()
             items.forEach {
-                arr.add(JsonParser().parse(Gson().toJson(it)).asJsonObject)
+                arr.add(JsonParser.parseString(Gson().toJson(it)).asJsonObject)
             }
             return arr
         }
@@ -273,7 +273,7 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
             }
             val arr = JsonArray()
             items.forEach {
-                arr.add(JsonParser().parse(Gson().toJson(it)).asJsonObject)
+                arr.add(JsonParser.parseString(Gson().toJson(it)).asJsonObject)
             }
             return arr
         }
@@ -287,7 +287,7 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
             }
             val arr = JsonArray()
             items.forEach {
-                arr.add(JsonParser().parse(Gson().toJson(it)).asJsonObject)
+                arr.add(JsonParser.parseString(Gson().toJson(it)).asJsonObject)
             }
             return arr
         }
@@ -301,7 +301,7 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
             }
             val arr = JsonArray()
             items.forEach {
-                arr.add(JsonParser().parse(Gson().toJson(it)).asJsonObject)
+                arr.add(JsonParser.parseString(Gson().toJson(it)).asJsonObject)
             }
             return arr
         }
@@ -315,7 +315,7 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
             }
             val arr = JsonArray()
             items.forEach {
-                arr.add(JsonParser().parse(Gson().toJson(it)).asJsonObject)
+                arr.add(JsonParser.parseString(Gson().toJson(it)).asJsonObject)
             }
             return arr
         }
@@ -330,7 +330,7 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
             val arr = JsonArray()
             items.forEach {
                 it.useAsExtraCommand = false
-                arr.add(JsonParser().parse(Gson().toJson(it)).asJsonObject)
+                arr.add(JsonParser.parseString(Gson().toJson(it)).asJsonObject)
             }
             return arr
         }
@@ -344,7 +344,7 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
             }
             val arr = JsonArray()
             items.forEach {
-                arr.add(JsonParser().parse(Gson().toJson(it)).asJsonObject)
+                arr.add(JsonParser.parseString(Gson().toJson(it)).asJsonObject)
             }
             return arr
         }
@@ -358,7 +358,7 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
             }
             val arr = JsonArray()
             historyItems.forEach {
-                arr.add(JsonParser().parse(Gson().toJson(it)).asJsonObject)
+                arr.add(JsonParser.parseString(Gson().toJson(it)).asJsonObject)
             }
             return arr
         }
@@ -380,7 +380,6 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
             lifecycleScope.launch {
                 val preferences =
                     PreferenceManager.getDefaultSharedPreferences(requireContext())
-                val editor = preferences.edit()
 
                 runCatching {
                     val ip = requireContext().contentResolver.openInputStream(result.data!!.data!!)

@@ -127,8 +127,10 @@ class AddExtraCommandsDialog(private val item: DownloadItem?, private val callba
                 Toast.makeText(context, getString(R.string.add_template_first), Toast.LENGTH_SHORT).show()
             }else{
                 lifecycleScope.launch {
-                    UiUtil.showCommandTemplates(requireActivity(), commandTemplateViewModel){ template ->
-                        text.text.insert(text.selectionStart, "${template.content} ")
+                    UiUtil.showCommandTemplates(requireActivity(), commandTemplateViewModel){ templates ->
+                        templates.forEach {
+                            text.text.insert(text.selectionStart, "${it.content} ")
+                        }
                         text.postDelayed({
                             text.requestFocus()
                             imm.showSoftInput(text, 0)

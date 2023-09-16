@@ -260,8 +260,8 @@ class QueuedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLi
                                 YoutubeDL.getInstance().destroyProcessById(id.toInt().toString())
                                 WorkManager.getInstance(requireContext()).cancelAllWorkByTag(id.toInt().toString())
                                 notificationUtil.cancelDownloadNotification(id.toInt())
-                                downloadViewModel.deleteDownload(id)
                             }
+                            downloadViewModel.deleteAllWithID(selectedObjects)
                             actionMode?.finish()
                         }
 

@@ -164,7 +164,7 @@ class ShareActivity : BaseActivity() {
 
     private fun showDownloadSheet(it: ResultItem){
         if (sharedPreferences.getBoolean("download_card", true)){
-            val bottomSheet = DownloadBottomSheetDialog(it, DownloadViewModel.Type.valueOf(sharedPreferences.getString("preferred_download_type", "video")!!), null, quickDownload)
+            val bottomSheet = DownloadBottomSheetDialog(it,downloadViewModel.getDownloadType(DownloadViewModel.Type.valueOf(sharedPreferences.getString("preferred_download_type", "video")!!), it.url), null, quickDownload)
             bottomSheet.show(supportFragmentManager, "downloadSingleSheet")
         }else{
             lifecycleScope.launch(Dispatchers.IO){

@@ -31,6 +31,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.core.view.isVisible
@@ -543,14 +544,14 @@ object UiUtil {
         bottomSheet.requestWindowFeature(Window.FEATURE_NO_TITLE)
         bottomSheet.setContentView(R.layout.format_details_sheet)
 
-        val formatIdParent = bottomSheet.findViewById<LinearLayout>(R.id.format_id_parent)
-        val formatURLParent = bottomSheet.findViewById<LinearLayout>(R.id.format_url_parent)
-        val containerParent = bottomSheet.findViewById<LinearLayout>(R.id.container_parent)
-        val codecParent = bottomSheet.findViewById<LinearLayout>(R.id.codec_parent)
-        val filesizeParent = bottomSheet.findViewById<LinearLayout>(R.id.filesize_parent)
-        val formatnoteParent = bottomSheet.findViewById<LinearLayout>(R.id.format_note_parent)
-        val fpsParent = bottomSheet.findViewById<LinearLayout>(R.id.fps_parent)
-        val asrParent = bottomSheet.findViewById<LinearLayout>(R.id.asr_parent)
+        val formatIdParent = bottomSheet.findViewById<ConstraintLayout>(R.id.format_id_parent)
+        val formatURLParent = bottomSheet.findViewById<ConstraintLayout>(R.id.format_url_parent)
+        val containerParent = bottomSheet.findViewById<ConstraintLayout>(R.id.container_parent)
+        val codecParent = bottomSheet.findViewById<ConstraintLayout>(R.id.codec_parent)
+        val filesizeParent = bottomSheet.findViewById<ConstraintLayout>(R.id.filesize_parent)
+        val formatnoteParent = bottomSheet.findViewById<ConstraintLayout>(R.id.format_note_parent)
+        val fpsParent = bottomSheet.findViewById<ConstraintLayout>(R.id.fps_parent)
+        val asrParent = bottomSheet.findViewById<ConstraintLayout>(R.id.asr_parent)
 
         if (format.format_id.isBlank()) formatIdParent?.visibility = View.GONE
         else {
@@ -690,7 +691,7 @@ object UiUtil {
     }
 
 
-    suspend fun showCommandTemplates(activity: Activity, commandTemplateViewModel: CommandTemplateViewModel, itemSelected: (itemSelected: CommandTemplate) -> Unit) {
+    suspend fun showCommandTemplates(activity: Activity, commandTemplateViewModel: CommandTemplateViewModel, itemSelected: (itemSelected: List<CommandTemplate>) -> Unit) {
         val bottomSheet = BottomSheetDialog(activity)
         bottomSheet.requestWindowFeature(Window.FEATURE_NO_TITLE)
         bottomSheet.setContentView(R.layout.command_template_list)
@@ -701,15 +702,31 @@ object UiUtil {
         }
 
         linearLayout!!.removeAllViews()
+        val selectedItems = mutableListOf<CommandTemplate>()
+        val ok = bottomSheet.findViewById<MaterialButton>(R.id.command_ok)
+        ok?.isEnabled = list.size == 1
+
         list.forEach {template ->
             val item = activity.layoutInflater.inflate(R.layout.command_template_item, linearLayout, false) as MaterialCardView
             item.findViewById<TextView>(R.id.title).text = template.title
             item.findViewById<TextView>(R.id.content).text = template.content
             item.setOnClickListener {
-                itemSelected(template)
-                bottomSheet.cancel()
+                if (selectedItems.contains(template)){
+                    selectedItems.remove(template)
+                    (it as MaterialCardView).isChecked = false
+                }else{
+                    selectedItems.add(template)
+                    (it as MaterialCardView).isChecked = true
+                }
+
+                ok?.isEnabled = selectedItems.isNotEmpty()
             }
             linearLayout.addView(item)
+        }
+
+        ok?.setOnClickListener {
+            itemSelected(selectedItems.ifEmpty { listOf(list.first()) })
+            bottomSheet.cancel()
         }
 
         bottomSheet.show()
@@ -913,9 +930,6 @@ object UiUtil {
             ) { _: DialogInterface?, _: Int -> }
 
             val dialog = builder.create()
-            editText.doOnTextChanged { _, _, _, _ ->
-                dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = editText.text.isNotEmpty()
-            }
             dialog.show()
             val imm = context.getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager
             editText!!.postDelayed({
@@ -1016,9 +1030,6 @@ object UiUtil {
             ) { _: DialogInterface?, _: Int -> }
 
             val dialog = builder.create()
-            editText.doOnTextChanged { _, _, _, _ ->
-                dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = editText.text.isNotEmpty()
-            }
             dialog.show()
             val imm = context.getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager
             editText!!.postDelayed({

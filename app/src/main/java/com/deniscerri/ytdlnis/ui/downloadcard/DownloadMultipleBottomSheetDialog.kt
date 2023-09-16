@@ -12,6 +12,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.text.format.DateFormat
 import android.util.DisplayMetrics
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.MenuItem
@@ -328,7 +329,16 @@ class DownloadMultipleBottomSheetDialog(private var items: MutableList<DownloadI
                         if (items.first().type == DownloadViewModel.Type.command){
                             lifecycleScope.launch {
                                 UiUtil.showCommandTemplates(requireActivity(), commandTemplateViewModel) {
-                                    val format = downloadViewModel.generateCommandFormat(it)
+                                    val format  = Format(
+                                        it.first().title,
+                                        "",
+                                        "",
+                                        "",
+                                        "",
+                                        0,
+                                        it.joinToString(" ") { c -> c.content }
+                                    )
+
                                     items.forEach { f ->
                                         f.format = format
                                     }

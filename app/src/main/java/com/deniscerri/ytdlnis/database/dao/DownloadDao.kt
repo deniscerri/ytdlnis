@@ -3,6 +3,7 @@ package com.deniscerri.ytdlnis.database.dao
 import androidx.paging.PagingSource
 import androidx.room.*
 import com.deniscerri.ytdlnis.database.models.DownloadItem
+import com.deniscerri.ytdlnis.database.models.DownloadItemSimple
 import com.deniscerri.ytdlnis.database.models.Format
 import kotlinx.coroutines.flow.Flow
 
@@ -34,7 +35,7 @@ interface DownloadDao {
     fun getActiveAndQueuedDownloads() : Flow<List<DownloadItem>>
 
     @Query("SELECT * FROM downloads WHERE status='Queued' or status='QueuedPaused' ORDER BY downloadStartTime, id")
-    fun getQueuedDownloads() : PagingSource<Int, DownloadItem>
+    fun getQueuedDownloads() : PagingSource<Int, DownloadItemSimple>
 
     @Query("SELECT format FROM downloads WHERE status='Queued' or status='QueuedPaused'")
     fun getSelectedFormatFromQueued() : List<Format>
@@ -49,7 +50,7 @@ interface DownloadDao {
     fun getQueuedDownloadsList() : List<DownloadItem>
 
     @Query("SELECT * FROM downloads WHERE status='Cancelled' ORDER BY id DESC")
-    fun getCancelledDownloads() : PagingSource<Int, DownloadItem>
+    fun getCancelledDownloads() : PagingSource<Int, DownloadItemSimple>
 
     @Query("SELECT * FROM downloads WHERE status='Cancelled' ORDER BY id DESC")
     fun getCancelledDownloadsList() : List<DownloadItem>
@@ -58,13 +59,13 @@ interface DownloadDao {
     fun getPausedDownloadsList() : List<DownloadItem>
 
     @Query("SELECT * FROM downloads WHERE status='Error' ORDER BY id DESC")
-    fun getErroredDownloads() : PagingSource<Int, DownloadItem>
+    fun getErroredDownloads() : PagingSource<Int, DownloadItemSimple>
 
     @Query("SELECT * FROM downloads WHERE status='Error' ORDER BY id DESC")
     fun getErroredDownloadsList() : List<DownloadItem>
 
     @Query("SELECT * FROM downloads WHERE status='Saved' ORDER BY id DESC")
-    fun getSavedDownloads() : PagingSource<Int, DownloadItem>
+    fun getSavedDownloads() : PagingSource<Int, DownloadItemSimple>
 
     @Query("SELECT * FROM downloads WHERE status='Saved' ORDER BY id DESC")
     fun getSavedDownloadsList() : List<DownloadItem>
@@ -114,6 +115,9 @@ interface DownloadDao {
 
     @Query("DELETE FROM downloads WHERE status='Saved'")
     suspend fun deleteSaved()
+
+    @Query("DELETE FROM downloads WHERE id in (:list)")
+    suspend fun deleteAllWithIDs(list: List<Long>)
 
     @Query("UPDATE downloads SET status='Cancelled' WHERE status='Queued' or status='QueuedPaused'")
     suspend fun cancelQueued()

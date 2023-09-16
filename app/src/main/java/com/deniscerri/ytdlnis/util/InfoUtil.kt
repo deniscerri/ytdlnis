@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import android.os.Looper
 import android.text.Html
 import android.util.Log
+import android.util.Patterns
 import android.widget.Toast
 import androidx.preference.PreferenceManager
 import com.deniscerri.ytdlnis.R
@@ -547,7 +548,6 @@ class InfoUtil(private val context: Context) {
 
     fun getFromYTDL(query: String): ArrayList<ResultItem?> {
         items = ArrayList()
-        val webpage_urls = mutableListOf<String>()
         val searchEngine = sharedPreferences.getString("search_engine", "ytsearch")
         try {
             val request : YoutubeDLRequest
@@ -656,7 +656,11 @@ class InfoUtil(private val context: Context) {
                 val url = if (jsonObject.has("url")){
                     jsonObject.getString("url")
                 }else{
-                    jsonObject.getString("webpage_url")
+                    if (Patterns.WEB_URL.matcher(query).matches()){
+                        query
+                    }else{
+                        jsonObject.getString("webpage_url")
+                    }
                 }
 
                 items.add(ResultItem(0,
@@ -672,10 +676,6 @@ class InfoUtil(private val context: Context) {
                         chapters
                     )
                 )
-                webpage_urls.add(jsonObject.getString("webpage_url"))
-            }
-            if (items.size == 1){
-                items[0]?.url = webpage_urls.first()
             }
         } catch (e: Exception) {
             Looper.prepare().run {
@@ -970,20 +970,6 @@ class InfoUtil(private val context: Context) {
             downDir.mkdirs()
         }
 
-        if (downloadItem.playlistTitle.isNotBlank()){
-            request.addOption("--parse-metadata","${downloadItem.playlistTitle.split("[")[0]}:%(playlist)s")
-            runCatching {
-                request.addOption("--parse-metadata",
-                    downloadItem.playlistTitle
-                        .substring(
-                            downloadItem.playlistTitle.indexOf("[") + 1,
-                            downloadItem.playlistTitle.indexOf("]"),
-                        ) + ":%(playlist_index)s"
-                )
-            }
-        }
-
-
         val aria2 = sharedPreferences.getBoolean("aria2", false)
         if (aria2) {
             request.addOption("--downloader", "libaria2c.so")
@@ -1001,6 +987,7 @@ class InfoUtil(private val context: Context) {
 
         val limitRate = sharedPreferences.getString("limit_rate", "")
         if (limitRate != "") request.addOption("-r", limitRate!!)
+        request.addOption("--trim-filenames", 120)
         if(downloadItem.type != DownloadViewModel.Type.command){
             if (downloadItem.SaveThumb) {
                 request.addOption("--write-thumbnail")
@@ -1034,12 +1021,12 @@ class InfoUtil(private val context: Context) {
             }
 
             if(downloadItem.title.isNotBlank()){
-                request.addOption("--parse-metadata", downloadItem.title.take(200) + ":%(title)s")
+                request.addCommands(listOf("--replace-in-metadata", "title", ".+", downloadItem.title))
             }
             if (downloadItem.author.isNotBlank()){
-                request.addOption("--parse-metadata", downloadItem.author.take(25) + ":%(artist)s")
+                request.addCommands(listOf("--replace-in-metadata", "uploader", ".+", downloadItem.author))
+                request.addCommands(listOf("--replace-in-metadata","uploader"," - Topic$",""))
             }
-            request.addCommands(listOf("--replace-in-metadata","artist"," - Topic$",""))
 
             if (downloadItem.downloadSections.isNotBlank()){
                 downloadItem.downloadSections.split(";").forEach {
@@ -1077,6 +1064,21 @@ class InfoUtil(private val context: Context) {
             if (sharedPreferences.getBoolean("write_description", false)){
                 request.addOption("--write-description")
             }
+
+            if (downloadItem.playlistTitle.isNotBlank()){
+                request.addOption("--parse-metadata","${downloadItem.playlistTitle.split("[")[0]}:%(playlist)s")
+                runCatching {
+                    request.addOption("--parse-metadata",
+                        downloadItem.playlistTitle
+                            .substring(
+                                downloadItem.playlistTitle.indexOf("[") + 1,
+                                downloadItem.playlistTitle.indexOf("]"),
+                            ) + ":%(playlist_index)s"
+                    )
+                }
+            }
+
+
         }
 
         if (sharedPreferences.getBoolean("restrict_filenames", true)) {
@@ -1144,7 +1146,7 @@ class InfoUtil(private val context: Context) {
                         if (! request.hasOption("--convert-thumbnails")) request.addOption("--convert-thumbnails", "jpg")
                         if (sharedPreferences.getBoolean("crop_thumbnail", true)){
                             try {
-                                val config = File(context.cacheDir.absolutePath + "/config" + downloadItem.title + "##" + downloadItem.format.format_id + ".txt")
+                                val config = File(context.cacheDir.absolutePath + "/config" + downloadItem.id + "##ffmpegCrop.txt")
                                 val configData = "--ppa \"ffmpeg: -c:v mjpeg -vf crop=\\\"'if(gt(ih,iw),iw,ih)':'if(gt(iw,ih),ih,iw)'\\\"\""
                                 config.writeText(configData)
                                 request.addOption("--ppa", "ThumbnailsConvertor:-qmin 1 -q:v 1")
@@ -1156,7 +1158,7 @@ class InfoUtil(private val context: Context) {
                     }
 
                     if (downloadItem.customFileNameTemplate.isNotBlank()){
-                        request.addOption("-o", "${downloadItem.customFileNameTemplate}.%(ext)s")
+                        request.addOption("-o", "${downloadItem.customFileNameTemplate.removeSuffix(".%(ext)s")}.%(ext)s")
                     }
                 }
 
@@ -1318,7 +1320,7 @@ class InfoUtil(private val context: Context) {
                     request.addOption("-o", "chapter:%(section_title)s.%(ext)s")
                 }else{
                     if (downloadItem.customFileNameTemplate.isNotBlank()){
-                        request.addOption("-o", "${downloadItem.customFileNameTemplate}.%(ext)s")
+                        request.addOption("-o", "${downloadItem.customFileNameTemplate.removeSuffix(".%(ext)s")}.%(ext)s")
                     }
                 }
 
@@ -1351,10 +1353,16 @@ class InfoUtil(private val context: Context) {
 
         var final = java.lang.String.join(" ", arr).replace("\"\"", "\" \"")
         val ppas = "--config(-locations)? \"(.*?)\"".toRegex().findAll(final)
-        ppas.forEach {
-            val path = "\"(.*?)\"".toRegex().find(it.value)?.value?.replace("\"", "")
-            final = final.replace(it.value, "")
-            final += " ${File(path ?: "").readText()}"
+        ppas.forEach {res ->
+            val path = "\"(.*?)\"".toRegex().find(res.value)?.value?.replace("\"", "")
+            val newVal = runCatching {
+                File(path ?: "").readText()
+            }.onFailure {
+                res.value
+            }.getOrDefault("")
+
+            final = final.replace(res.value, newVal)
+
         }
 
         return final

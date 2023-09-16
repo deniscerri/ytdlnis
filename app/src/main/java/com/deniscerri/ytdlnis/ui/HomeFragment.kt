@@ -23,6 +23,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.children
 import androidx.core.view.forEach
+import androidx.core.view.forEachIndexed
 import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
@@ -283,7 +284,6 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
         val providersChipGroup = searchView!!.findViewById<ChipGroup>(R.id.providers)
         val providers = resources.getStringArray(R.array.search_engines)
         val providersValues = resources.getStringArray(R.array.search_engines_values).toMutableList()
-        val currentProvider = sharedPreferences?.getString("search_engine", "ytsearch")
 
         for(i in providersValues.indices){
             val provider = providers[i]
@@ -291,8 +291,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
             val tmp = layoutinflater!!.inflate(R.layout.filter_chip, providersChipGroup, false) as Chip
             tmp.text = provider
             tmp.id = i
-
-            if (currentProvider == providerValue) tmp.isChecked = true
+            tmp.tag = providersValues[i]
 
             tmp.setOnClickListener {
                 val editor = sharedPreferences?.edit()
@@ -308,6 +307,15 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
         infoUtil = InfoUtil(requireContext())
         searchView!!.addTransitionListener { _, _, newState ->
             if (newState == SearchView.TransitionState.SHOWN) {
+                val currentProvider = sharedPreferences?.getString("search_engine", "ytsearch")
+                providersChipGroup.children.forEach {
+                    val tmp = providersChipGroup.findViewById<Chip>(it.id)
+                    if (tmp.tag == currentProvider) {
+                        tmp.isChecked = true
+                        return@forEach
+                    }
+                }
+
                 try{
                     val clipboard =
                         requireContext().getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
@@ -596,7 +604,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
     }
 
     private fun showSingleDownloadSheet(resultItem : ResultItem, type: DownloadViewModel.Type, quickDownload: Boolean){
-        val bottomSheet = DownloadBottomSheetDialog(resultItem, type, null, quickDownload)
+        val bottomSheet = DownloadBottomSheetDialog(resultItem, downloadViewModel.getDownloadType(type, resultItem.url), null, quickDownload)
         bottomSheet.show(parentFragmentManager, "downloadSingleSheet")
     }
 

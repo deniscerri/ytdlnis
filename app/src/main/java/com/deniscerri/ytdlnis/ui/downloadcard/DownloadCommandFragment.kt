@@ -132,16 +132,19 @@ class DownloadCommandFragment(private val resultItem: ResultItem, private var cu
                     commandTemplateCard.setOnClickListener {
                         lifecycleScope.launch {
                             UiUtil.showCommandTemplates(requireActivity(), commandTemplateViewModel){
-                                chosenCommandView.editText!!.setText(it.content)
-                                populateCommandCard(commandTemplateCard, it)
+                                chosenCommandView.editText!!.text.clear()
+                                it.forEach { c ->
+                                    chosenCommandView.editText!!.text.insert(chosenCommandView.editText!!.selectionStart, "${c.content} ")
+                                }
+                                populateCommandCard(commandTemplateCard, it.first())
                                 downloadItem.format = Format(
-                                    it.title,
+                                    it.first().title,
                                     "",
                                     "",
                                     "",
                                     "",
                                     0,
-                                    it.content
+                                    it.map { c -> c.content }.joinToString { " " }
                                 )
                             }
                         }

@@ -5,6 +5,7 @@ import androidx.paging.PagingConfig
 import com.deniscerri.ytdlnis.App
 import com.deniscerri.ytdlnis.database.dao.DownloadDao
 import com.deniscerri.ytdlnis.database.models.DownloadItem
+import com.deniscerri.ytdlnis.database.models.DownloadItemSimple
 import com.deniscerri.ytdlnis.util.FileUtil
 import kotlinx.coroutines.flow.Flow
 import java.io.File
@@ -16,19 +17,19 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
         pagingSourceFactory = {downloadDao.getAllDownloads()}
     )
     val activeDownloads : Flow<List<DownloadItem>> = downloadDao.getActiveDownloads()
-    val queuedDownloads : Pager<Int, DownloadItem> = Pager(
+    val queuedDownloads : Pager<Int, DownloadItemSimple> = Pager(
         config = PagingConfig(pageSize = 20, initialLoadSize = 20, prefetchDistance = 1),
         pagingSourceFactory = {downloadDao.getQueuedDownloads()}
     )
-    val cancelledDownloads : Pager<Int, DownloadItem> = Pager(
+    val cancelledDownloads : Pager<Int, DownloadItemSimple> = Pager(
         config = PagingConfig(pageSize = 20, initialLoadSize = 20, prefetchDistance = 1),
         pagingSourceFactory = {downloadDao.getCancelledDownloads()}
     )
-    val erroredDownloads : Pager<Int, DownloadItem> = Pager(
+    val erroredDownloads : Pager<Int, DownloadItemSimple> = Pager(
         config = PagingConfig(pageSize = 20, initialLoadSize = 20, prefetchDistance = 1),
         pagingSourceFactory = {downloadDao.getErroredDownloads()}
     )
-    val savedDownloads : Pager<Int, DownloadItem> = Pager(
+    val savedDownloads : Pager<Int, DownloadItemSimple> = Pager(
         config = PagingConfig(pageSize = 20, initialLoadSize = 20, prefetchDistance = 1),
         pagingSourceFactory = {downloadDao.getSavedDownloads()}
     )
@@ -112,6 +113,11 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
 
     suspend fun deleteSaved(){
         downloadDao.deleteSaved()
+    }
+
+    suspend fun deleteAllWithIDs(ids: List<Long>){
+        downloadDao.deleteAllWithIDs(ids)
+
     }
 
     suspend fun cancelQueued(){

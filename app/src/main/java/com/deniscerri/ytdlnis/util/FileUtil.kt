@@ -290,7 +290,7 @@ object FileUtil {
     }
 
     fun convertFileSize(s: Long): String{
-        if (s <= 0) return "?"
+        if (s <= 1) return "?"
         val units = arrayOf("B", "kB", "MB", "GB", "TB")
         val digitGroups = (log10(s.toDouble()) / log10(1024.0)).toInt()
         val symbols = DecimalFormatSymbols(Locale.US)

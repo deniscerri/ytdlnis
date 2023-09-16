@@ -222,9 +222,7 @@ class SavedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLis
                             adapter.checkedItems.toList()
                         }
                         adapter.clearCheckedItems()
-                        withContext(Dispatchers.IO) {
-                            downloadViewModel.reQueueDownloadItems(selectedObjects)
-                        }
+                        downloadViewModel.deleteAllWithID(selectedObjects)
                         actionMode?.finish()
 
                     }

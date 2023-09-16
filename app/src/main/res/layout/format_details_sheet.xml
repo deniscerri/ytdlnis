@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView  xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -15,37 +16,41 @@
             android:layout_margin="20dp"
             android:layout_height="wrap_content"/>
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/format_id_parent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:paddingHorizontal="10dp"
-            android:weightSum="100"
             android:background="?android:attr/selectableItemBackground"
             android:orientation="horizontal" >
 
             <TextView
-                android:layout_width="0dp"
-                android:layout_weight="30"
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
                 android:maxLines="2"
                 android:text="@string/format_id"
                 android:textSize="14sp"
-                android:layout_margin="10dp"
-                android:layout_height="wrap_content"/>
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/format_id_value"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/format_id_value"
-                android:layout_width="0dp"
-                android:layout_weight="70"
-                android:textSize="14sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:gravity="end"
-                android:layout_height="wrap_content"/>
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/format_url_parent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -56,29 +61,35 @@
             android:orientation="horizontal" >
 
             <TextView
-                android:layout_width="0dp"
-                android:layout_weight="30"
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
                 android:maxLines="2"
                 android:text="@string/url"
+                app:layout_constraintHorizontal_bias="0.0"
                 android:textSize="14sp"
-                android:layout_margin="10dp"
-                android:layout_height="wrap_content"/>
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/format_url_value"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/format_url_value"
-                android:layout_width="0dp"
-                android:maxLines="3"
-                android:ellipsize="end"
-                android:layout_weight="70"
-                android:textSize="14sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_margin="10dp"
+                android:ellipsize="end"
                 android:gravity="end"
-                android:layout_height="wrap_content"/>
+                android:maxLines="3"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/container_parent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -89,26 +100,32 @@
             android:orientation="horizontal" >
 
             <TextView
-                android:layout_width="0dp"
-                android:layout_weight="30"
-                android:maxLines="2"
-                android:textSize="14sp"
-                android:text="@string/container"
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                app:layout_constraintHorizontal_bias="0.0"
+                android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:layout_height="wrap_content"/>
+                android:maxLines="2"
+                android:text="@string/container"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/container_value"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/container_value"
-                android:layout_width="0dp"
-                android:layout_weight="70"
-                android:textSize="14sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:gravity="end"
-                android:layout_height="wrap_content"/>
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/codec_parent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -119,25 +136,31 @@
             android:orientation="horizontal" >
 
             <TextView
-                android:layout_width="0dp"
-                android:layout_weight="30"
-                android:textSize="14sp"
-                android:text="@string/codec"
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:layout_height="wrap_content"/>
+                android:text="@string/codec"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintEnd_toStartOf="@+id/codec_value"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/codec_value"
-                android:layout_width="0dp"
-                android:layout_weight="70"
-                android:textSize="14sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:gravity="end"
-                android:layout_height="wrap_content"/>
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/filesize_parent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -148,25 +171,31 @@
             android:orientation="horizontal" >
 
             <TextView
-                android:layout_width="0dp"
-                android:layout_weight="30"
+                android:id="@+id/textView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
                 android:text="@string/file_size"
                 android:textSize="14sp"
-                android:layout_margin="10dp"
-                android:layout_height="wrap_content"/>
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintEnd_toStartOf="@+id/filesize_value"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/filesize_value"
-                android:layout_width="0dp"
-                android:layout_weight="70"
-                android:textSize="14sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:gravity="end"
-                android:layout_height="wrap_content"/>
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/format_note_parent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -177,25 +206,30 @@
             android:orientation="horizontal" >
 
             <TextView
-                android:layout_width="0dp"
-                android:text="@string/quality"
-                android:layout_weight="30"
-                android:textSize="14sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:layout_height="wrap_content"/>
+                android:text="@string/quality"
+                app:layout_constraintHorizontal_bias="0.0"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/format_note_value"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/format_note_value"
-                android:layout_width="0dp"
-                android:layout_weight="70"
-                android:textSize="14sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:gravity="end"
-                android:layout_height="wrap_content"/>
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/fps_parent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -206,25 +240,31 @@
             android:orientation="horizontal" >
 
             <TextView
-                android:layout_width="0dp"
-                android:layout_weight="30"
+                android:id="@+id/textView6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
                 android:text="FPS"
                 android:textSize="14sp"
-                android:layout_margin="10dp"
-                android:layout_height="wrap_content"/>
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/fps_value"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/fps_value"
-                android:layout_width="0dp"
-                android:layout_weight="70"
-                android:textSize="14sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:gravity="end"
-                android:layout_height="wrap_content"/>
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/asr_parent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -235,23 +275,29 @@
             android:orientation="horizontal" >
 
             <TextView
-                android:layout_width="0dp"
-                android:layout_weight="30"
+                android:id="@+id/textView7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                app:layout_constraintHorizontal_bias="0.0"
                 android:text="@string/audio_samplerate"
                 android:textSize="14sp"
-                android:layout_margin="10dp"
-                android:layout_height="wrap_content"/>
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/asr_value"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/asr_value"
-                android:layout_width="0dp"
-                android:layout_weight="70"
-                android:textSize="14sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:gravity="end"
-                android:layout_height="wrap_content"/>
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
 
 

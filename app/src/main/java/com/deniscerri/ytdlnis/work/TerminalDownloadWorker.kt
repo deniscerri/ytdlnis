@@ -100,7 +100,13 @@ class TerminalDownloadWorker(
             }
 
             YoutubeDL.getInstance().execute(request, itemId.toString()){ progress, _, line ->
-                setProgressAsync(workDataOf("progress" to progress.toInt(), "output" to line.chunked(5000).first().toString(), "id" to itemId, "log" to logDownloads))
+                runBlocking {
+                    line.chunked(10000).forEach {
+                        setProgress(workDataOf("progress" to progress.toInt(), "output" to it, "id" to itemId, "log" to logDownloads))
+                        Thread.sleep(100)
+                    }
+                }
+
                 val title: String = command.take(65)
                 notificationUtil.updateDownloadNotification(
                     itemId,
@@ -128,32 +134,46 @@ class TerminalDownloadWorker(
                 }
             }
 
-            outputFile.appendText("${it.out}\n")
-            if (logDownloads){
-                CoroutineScope(Dispatchers.IO).launch {
-                    logRepo.update(it.out, logItem.id)
+            return runBlocking {
+                it.out.chunked(10000).forEach {
+                    setProgress(workDataOf("progress" to 100, "output" to it, "id" to itemId, "log" to logDownloads))
+                    Thread.sleep(100)
                 }
-            }
-            notificationUtil.cancelDownloadNotification(itemId)
 
+                if (logDownloads){
+                    CoroutineScope(Dispatchers.IO).launch {
+                        logRepo.update(it.out, logItem.id)
+                    }
+                }
+                notificationUtil.cancelDownloadNotification(itemId)
+                return@runBlocking Result.success()
+            }
         }.onFailure {
             if (it is YoutubeDL.CanceledException) {
                 return Result.failure()
             }
-            outputFile.appendText("\n${it.message}\n")
-            if (logDownloads){
-                CoroutineScope(Dispatchers.IO).launch {
-                    if (it.message != null){
-                        logRepo.update(it.message!!, logItem.id)
+
+            return runBlocking {
+                it.message?.chunked(10000)?.forEach {
+                    setProgress(workDataOf("progress" to 100, "output" to it, "id" to itemId, "log" to logDownloads))
+                    Thread.sleep(100)
+                }
+
+                if (logDownloads){
+                    CoroutineScope(Dispatchers.IO).launch {
+                        if (it.message != null){
+                            logRepo.update(it.message!!, logItem.id)
+                        }
                     }
                 }
+                File(FileUtil.getDefaultCommandPath() + "/" + itemId).deleteRecursively()
+                Log.e(TAG, context.getString(R.string.failed_download), it)
+                notificationUtil.cancelDownloadNotification(itemId)
+
+                return@runBlocking Result.failure()
             }
-            File(FileUtil.getDefaultCommandPath() + "/" + itemId).deleteRecursively()
 
-            Log.e(TAG, context.getString(R.string.failed_download), it)
-            notificationUtil.cancelDownloadNotification(itemId)
 
-            return Result.failure()
         }
 
         return Result.success()

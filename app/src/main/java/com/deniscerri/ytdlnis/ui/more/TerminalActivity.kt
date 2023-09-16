@@ -1,5 +1,6 @@
 package com.deniscerri.ytdlnis.ui.more
 
+import android.app.ActionBar.LayoutParams
 import android.app.Activity
 import android.content.ClipboardManager
 import android.content.Context
@@ -8,8 +9,8 @@ import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.os.FileObserver
 import android.os.PersistableBundle
+import android.util.DisplayMetrics
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
@@ -22,7 +23,6 @@ import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.view.forEach
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceManager
@@ -62,8 +62,8 @@ class TerminalActivity : BaseActivity() {
     private lateinit var sharedPreferences: SharedPreferences
     private var downloadID by Delegates.notNull<Int>()
     private lateinit var downloadFile : File
-    private lateinit var observer: FileObserver
     private lateinit var imm : InputMethodManager
+    private lateinit var metrics: DisplayMetrics
     var context: Context? = null
 
     public override fun onCreate(savedInstanceState: Bundle?) {
@@ -82,6 +82,8 @@ class TerminalActivity : BaseActivity() {
 
         commandTemplateViewModel = ViewModelProvider(this)[CommandTemplateViewModel::class.java]
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+        metrics = DisplayMetrics()
+        windowManager.defaultDisplay.getMetrics(metrics)
 
 
         bottomAppBar = findViewById(R.id.bottomAppBar)
@@ -113,8 +115,10 @@ class TerminalActivity : BaseActivity() {
                         Toast.makeText(context, getString(R.string.add_template_first), Toast.LENGTH_SHORT).show()
                     }else{
                         lifecycleScope.launch {
-                            UiUtil.showCommandTemplates(this@TerminalActivity, commandTemplateViewModel){ template ->
-                                input!!.text.insert(input!!.selectionStart, template.content + " ")
+                            UiUtil.showCommandTemplates(this@TerminalActivity, commandTemplateViewModel){ templates ->
+                                templates.forEach {c ->
+                                    input!!.text.insert(input!!.selectionStart, c.content + " ")
+                                }
                                 input!!.postDelayed({
                                     input!!.requestFocus()
                                     imm.showSoftInput(input!!, 0)
@@ -146,7 +150,7 @@ class TerminalActivity : BaseActivity() {
 
         output = findViewById(R.id.custom_command_output)
         output!!.setTextIsSelectable(true)
-        output!!.setHorizontallyScrolling(true)
+        output!!.layoutParams!!.width = LayoutParams.WRAP_CONTENT
         input = findViewById(R.id.command_edittext)
         input!!.requestFocus()
         fab = findViewById(R.id.command_fab)
@@ -167,38 +171,6 @@ class TerminalActivity : BaseActivity() {
         }
         notificationUtil = NotificationUtil(this)
         handleIntent(intent)
-
-        if(Build.VERSION.SDK_INT < 29){
-            observer = object : FileObserver(downloadFile.absolutePath, MODIFY) {
-                override fun onEvent(event: Int, p: String?) {
-                    runOnUiThread{
-                        try {
-                            val newText = downloadFile.readText()
-                            if (newText.isBlank()) return@runOnUiThread
-                            output!!.append(newText)
-                            output!!.scrollTo(0, output!!.height)
-                            scrollView!!.fullScroll(View.FOCUS_DOWN)
-                        }catch (ignored: Exception) {}
-                    }
-                }
-            }
-            observer.startWatching()
-        }else{
-            observer = object : FileObserver(downloadFile, MODIFY) {
-                override fun onEvent(event: Int, p: String?) {
-                    runOnUiThread{
-                        try {
-                            val newText = downloadFile.readText()
-                            if (newText.isBlank()) return@runOnUiThread
-                            output!!.append(newText)
-                            output!!.scrollTo(0, output!!.height)
-                            scrollView!!.fullScroll(View.FOCUS_DOWN)
-                        }catch (ignored: Exception) {}
-                    }
-                }
-            }
-            observer.startWatching()
-        }
 
         WorkManager.getInstance(this)
             .getWorkInfosForUniqueWorkLiveData(downloadID.toString())
@@ -269,7 +241,6 @@ class TerminalActivity : BaseActivity() {
                         scrollView.id = R.id.horizontalscroll_output
                         parent.addView(scrollView, 0)
                     }
-                    output?.setHorizontallyScrolling(output?.canScrollHorizontally(1) != true)
                 }
                 R.id.export_clipboard -> {
                     lifecycleScope.launch(Dispatchers.IO){
@@ -317,12 +288,10 @@ class TerminalActivity : BaseActivity() {
     private fun hideCancelFab() {
         fab!!.text = getString(R.string.run_command)
         fab!!.setIconResource(R.drawable.ic_baseline_keyboard_arrow_right_24)
-        topAppBar!!.menu.forEach { it.isEnabled = true }
     }
     private fun showCancelFab() {
         fab!!.text = getString(R.string.cancel_download)
         fab!!.setIconResource(R.drawable.ic_cancel)
-        topAppBar!!.menu.forEach { it.isEnabled = false }
     }
 
     private var commandPathResultLauncher = registerForActivityResult(

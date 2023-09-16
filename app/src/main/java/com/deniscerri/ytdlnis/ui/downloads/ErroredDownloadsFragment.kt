@@ -208,9 +208,7 @@ class ErroredDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickL
                                 adapter.checkedItems.toList()
                             }
                             adapter.clearCheckedItems()
-                            for (id in selectedObjects){
-                                downloadViewModel.deleteDownload(id)
-                            }
+                            downloadViewModel.deleteAllWithID(selectedObjects)
                             actionMode?.finish()
                         }
                     }

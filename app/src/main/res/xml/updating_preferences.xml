@@ -57,7 +57,7 @@
 
     <EditTextPreference
         app:key="piped_instance"
-        app:defaultValue="https://api.piped.projectsegfau.lt"
+        app:defaultValue=""
         android:summary="@string/piped_instance_summary"
         app:title="@string/piped_instance" />
 

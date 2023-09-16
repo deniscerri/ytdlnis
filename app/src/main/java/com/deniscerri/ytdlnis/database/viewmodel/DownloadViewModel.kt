@@ -8,6 +8,7 @@ import android.content.res.Resources
 import android.net.ConnectivityManager
 import android.os.Looper
 import android.util.DisplayMetrics
+import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
@@ -31,6 +32,7 @@ import com.deniscerri.ytdlnis.database.dao.ResultDao
 import com.deniscerri.ytdlnis.database.models.AudioPreferences
 import com.deniscerri.ytdlnis.database.models.CommandTemplate
 import com.deniscerri.ytdlnis.database.models.DownloadItem
+import com.deniscerri.ytdlnis.database.models.DownloadItemSimple
 import com.deniscerri.ytdlnis.database.models.Format
 import com.deniscerri.ytdlnis.database.models.HistoryItem
 import com.deniscerri.ytdlnis.database.models.ResultItem
@@ -62,12 +64,12 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
     private val commandTemplateDao: CommandTemplateDao
     private val infoUtil : InfoUtil
     val allDownloads : Flow<PagingData<DownloadItem>>
-    val queuedDownloads : Flow<PagingData<DownloadItem>>
+    val queuedDownloads : Flow<PagingData<DownloadItemSimple>>
     val activeDownloads : LiveData<List<DownloadItem>>
     val activeDownloadsCount : LiveData<Int>
-    val cancelledDownloads : Flow<PagingData<DownloadItem>>
-    val erroredDownloads : Flow<PagingData<DownloadItem>>
-    val savedDownloads : Flow<PagingData<DownloadItem>>
+    val cancelledDownloads : Flow<PagingData<DownloadItemSimple>>
+    val erroredDownloads : Flow<PagingData<DownloadItemSimple>>
+    val savedDownloads : Flow<PagingData<DownloadItemSimple>>
 
     private var bestVideoFormat : Format
     private var bestAudioFormat : Format
@@ -125,35 +127,8 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
         resources = Resources(application.assets, metrics, confTmp)
 
 
-        val videoFormatValues = resources.getStringArray(R.array.video_formats_values)
         videoContainer = sharedPreferences.getString("video_format",  "Default")
-
-        defaultVideoFormats = mutableListOf()
-        videoFormatValues.forEach {
-            val tmp = Format(
-                it,
-                videoContainer!!,
-                "",
-                "",
-                "",
-                0,
-                it
-            )
-            defaultVideoFormats.add(tmp)
-        }
-        formatIDPreference.reversed().forEach {
-            val tmp = Format(
-                it,
-                videoContainer!!,
-                "",
-                "",
-                "",
-                0,
-                it
-            )
-            defaultVideoFormats.add(tmp)
-        }
-
+        defaultVideoFormats = getGenericVideoFormats()
         bestVideoFormat = defaultVideoFormats.last()
 
         audioContainer = sharedPreferences.getString("audio_format", "mp3")
@@ -200,11 +175,17 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
         return repository.getItemByID(id)
     }
 
-    private fun getSuitableDownloadType(url: String): Type{
-        if (urlsForAudioType.any { url.contains(it) }){
-            return Type.audio
+    fun getDownloadType(t: Type, url: String) : Type {
+        return when(t){
+            Type.auto -> {
+                if (urlsForAudioType.any { url.contains(it) }){
+                    Type.audio
+                }else{
+                    Type.video
+                }
+            }
+            else -> t
         }
-        return Type.video
     }
 
     fun createDownloadItemFromResult(resultItem: ResultItem, givenType: Type) : DownloadItem {
@@ -214,10 +195,7 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
         val saveThumb = sharedPreferences.getBoolean("write_thumbnail", false)
         val embedThumb = sharedPreferences.getBoolean("embed_thumbnail", false)
 
-        var type = givenType
-        if (type == Type.auto){
-            type = getSuitableDownloadType(resultItem.url)
-        }
+        var type = getDownloadType(givenType, resultItem.url)
         if(type == Type.command && commandTemplateDao.getTotalNumber() == 0) type = Type.video
 
         val customFileNameTemplate = when(type) {
@@ -466,8 +444,8 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
         val audioFormats = resources.getStringArray(R.array.audio_formats)
         val formats = mutableListOf<Format>()
         val containerPreference = sharedPreferences.getString("audio_format", "")
-        audioFormatIDPreference.forEach { formats.add(Format(it, containerPreference!!,"","", "",0, it)) }
         audioFormats.forEach { formats.add(Format(it, containerPreference!!,"","", "",0, it)) }
+        audioFormatIDPreference.forEach { formats.add(Format(it, containerPreference!!,"","", "",1, it)) }
         return formats
     }
 
@@ -475,8 +453,8 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
         val videoFormats = resources.getStringArray(R.array.video_formats_values)
         val formats = mutableListOf<Format>()
         val containerPreference = sharedPreferences.getString("video_format", "")
-        formatIDPreference.forEach { formats.add(Format(it, containerPreference!!,"Default","", "",0, it)) }
         videoFormats.forEach { formats.add(Format(it, containerPreference!!,"Default","", "",0, it)) }
+        formatIDPreference.forEach { formats.add(Format(it, containerPreference!!,"Default","", "",1, it)) }
         return formats
     }
 
@@ -489,8 +467,8 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
         val list : MutableList<DownloadItem> = mutableListOf()
         var preferredType = sharedPreferences.getString("preferred_download_type", "video")
         items.forEach {
-            if (preferredType == Type.auto.toString()) preferredType = getSuitableDownloadType(it!!.url).toString()
-            list.add(createDownloadItemFromResult(it!!, Type.valueOf(preferredType!!)))
+            preferredType = getDownloadType(Type.valueOf(preferredType!!), it!!.url).toString()
+            list.add(createDownloadItemFromResult(it, Type.valueOf(preferredType!!)))
         }
         return list
     }
@@ -523,6 +501,11 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
 
     fun deleteSaved() = viewModelScope.launch(Dispatchers.IO) {
         repository.deleteSaved()
+    }
+
+    fun deleteAllWithID(ids: List<Long>) = viewModelScope.launch(Dispatchers.IO){
+        Log.e("Aa", ids.size.toString())
+        repository.deleteAllWithIDs(ids)
     }
 
     fun cancelQueued() = viewModelScope.launch(Dispatchers.IO) {
