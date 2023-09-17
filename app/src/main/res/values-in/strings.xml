@@ -300,4 +300,5 @@
     <string name="cache_first_summary">Singgahkan (cache) berkas unduhan ke penyimpanan internal, kemudian pindahkan ke direktori pilihanmu. Gunakan ini apabila kamu tidak bisa menulis berkasnya langsung ke penyimpanan</string>
     <string name="update_app_beta_summary">Masuk ke keanggotaan program beta. Versi ini mungkin mengandung kutu (bug).</string>
     <string name="update_app_beta">Rilis Beta</string>
+    <string name="auto">Otomatis</string>
 </resources>
