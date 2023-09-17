@@ -47,7 +47,7 @@
 
             <TextView
                 android:id="@+id/format_note"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 app:layout_constraintHorizontal_bias="0.0"

@@ -32,12 +32,15 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         instance = this
-        createNotificationChannels()
-        val sharedPreferences =  PreferenceManager.getDefaultSharedPreferences(this)
+
+        val sharedPreferences =  PreferenceManager.getDefaultSharedPreferences(this@App)
         setDefaultValues()
+
         applicationScope = CoroutineScope(SupervisorJob())
         applicationScope.launch((Dispatchers.IO)) {
             try {
+                createNotificationChannels()
+
                 initLibraries()
                 val appVer = sharedPreferences.getString("version", "")!!
                 if(appVer.isEmpty() || appVer != BuildConfig.VERSION_NAME){

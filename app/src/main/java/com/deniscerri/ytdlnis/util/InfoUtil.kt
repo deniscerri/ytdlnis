@@ -653,7 +653,7 @@ class InfoUtil(private val context: Context) {
                     urls = urlList.joinToString("\n")
                 }
 
-                val url = if (jsonObject.has("url")){
+                val url = if (jsonObject.has("url") && results.size > 1){
                     jsonObject.getString("url")
                 }else{
                     if (Patterns.WEB_URL.matcher(query).matches()){
@@ -1201,7 +1201,7 @@ class InfoUtil(private val context: Context) {
 
                 //format logic
 
-                val defaultFormats = context.resources.getStringArray(R.array.video_formats)
+                val defaultFormats = context.resources.getStringArray(R.array.video_formats_values)
                 var usingGenericFormat = false
 
                 var videof = downloadItem.format.format_id
@@ -1211,7 +1211,7 @@ class InfoUtil(private val context: Context) {
                 }else if (videof == context.resources.getString(R.string.worst_quality) || videof == "worst") {
                     videof = "worst"
                 }else if (defaultFormats.contains(videof)) {
-                    videof = "bestvideo[height<="+videof.substring(0, videof.length -1)+"]"
+                    videof = "bestvideo[height<="+videof.split("_")[0].dropLast(1)+"]"
                 }
 
                 val preferredFormatIDs = sharedPreferences.getString("format_id", "").toString()

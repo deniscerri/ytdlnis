@@ -173,10 +173,9 @@ class NotificationUtil(var context: Context) {
     }
 
     fun createDownloadFinished(title: String?,
-        filepath: List<String>?,
-        channel: String
+        filepath: List<String>?
     ) {
-        val notificationBuilder = getBuilder(channel)
+        val notificationBuilder = getBuilder(DOWNLOAD_FINISHED_CHANNEL_ID)
 
         notificationBuilder
             .setContentTitle("${context.getString(R.string.downloaded)} $title")

@@ -10,6 +10,7 @@
         <item name="android:windowLightNavigationBar" tools:ignore="NewApi">true</item>
         <item name="switchPreferenceCompatStyle">@style/Preference.SwitchPreferenceCompat.Material3</item>
         <item name="snackbarStyle">@style/snackBarStyle</item>
+        <item name="preferenceTheme">@style/PreferenceTheme</item>
     </style>
 
     <style name="Theme.Red" parent="BaseTheme">

@@ -1,0 +1,30 @@
+Beta Releases will be on Github from now on, unless there is a small thing you will find quick builds on telegram
+Fixed Terminal not showing shared link
+Changed Terminal share logo color
+Aded javanese language
+Added bengali india language
+Fixed app adding bestaudio in format even if remove audio is set
+Made app fetch only link parts from sources like pinterest that also include text in front
+Added ability to switch to the beta channel for updating. You can also downgrade to the latest release version
+Fixed app not restarting when changing language
+Added word wrap toggles for logs and terminal
+Added Auto Preferred Download Type. It will open as Audio if the site is known to post audio files and video for the rest
+Added collected file size in multi download card
+Fixed app not selecting best format
+Fixed update in beta channel not working
+Fixed Youtube Music Playlist not loading
+Fixed Sponsorblock not showing as checked in multiple download card #271
+Added playlist title and playlist index metadata in playlist items so u can use them in filename templates #272 #270
+Added -a path.txt if you share a text file to the app and the preferred download type is command or terminal
+Fixed app cancelling workmanager earlier than expected
+Added title and author sync between audio and video tabs #241
+Fix format details fps in arabic being rtl
+Removed h264 from codec
+Fixed Search engine not getting updated in home when changing in settings fragment.
+Added language preference in android 13 and up
+Added multiple selection for command templates
+Fix issue when app crashes when creating config files for items with weird titles
+Fix auto preferred download type not working correctly in yt music
+Add multiline titles of preferences
+Fix format item and details sheet on RTL languages
+Fix app conflicting format id with a generic format id

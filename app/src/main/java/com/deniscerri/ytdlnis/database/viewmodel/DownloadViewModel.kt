@@ -453,7 +453,7 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
         val videoFormats = resources.getStringArray(R.array.video_formats_values)
         val formats = mutableListOf<Format>()
         val containerPreference = sharedPreferences.getString("video_format", "")
-        videoFormats.forEach { formats.add(Format(it, containerPreference!!,"Default","", "",0, it)) }
+        videoFormats.forEach { formats.add(Format(it, containerPreference!!,"Default","", "",0, it.split("_")[0])) }
         formatIDPreference.forEach { formats.add(Format(it, containerPreference!!,"Default","", "",1, it)) }
         return formats
     }

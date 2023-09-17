@@ -202,8 +202,7 @@ class DownloadWorker(
 
                             notificationUtil.cancelDownloadNotification(downloadItem.id.toInt())
                             notificationUtil.createDownloadFinished(
-                                downloadItem.title,  if (finalPaths?.first().equals(context.getString(R.string.unfound_file))) null else finalPaths,
-                                NotificationUtil.DOWNLOAD_FINISHED_CHANNEL_ID
+                                downloadItem.title,  if (finalPaths?.first().equals(context.getString(R.string.unfound_file))) null else finalPaths
                             )
 
                             if (wasQuickDownloaded){

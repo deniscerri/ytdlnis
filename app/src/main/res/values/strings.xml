@@ -281,7 +281,7 @@
     <string name="use_extra_commands">Add Extra Commands</string>
     <string name="use_extra_commands_summary">For Audio / Video downloads. Add extra commands along with the GUI configuration</string>
     <string name="current">Current Command</string>
-    <string name="subtitle_format">Subtitle Format\n</string>
+    <string name="subtitle_format">Subtitle Format</string>
     <string name="hide_thumbnails">Hide Thumbnails</string>
     <string name="show_terminal">Show Terminal in Share Menu</string>
     <string name="saved">Saved</string>
