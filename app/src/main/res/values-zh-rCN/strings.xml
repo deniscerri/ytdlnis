@@ -76,8 +76,7 @@
     <string name="use_extra_commands_summary">用于音频/视频下载。添加额外的命令以及 GUI 配置</string>
     <string name="use_extra_commands">添加额外命令</string>
     <string name="current">当前命令</string>
-    <string name="subtitle_format">字幕格式
-\n</string>
+    <string name="subtitle_format">字幕格式</string>
     <string name="hide_thumbnails">隐藏缩略图</string>
     <string name="saved">已保存</string>
     <string name="clear_saved">清除已保存项</string>
