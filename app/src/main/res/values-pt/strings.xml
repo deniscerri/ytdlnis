@@ -300,4 +300,5 @@
     <string name="use_scheduler">Descarregar no horário agendado</string>
     <string name="update_app_beta_summary">Inscreva-se no programa beta. Pode conter erros.</string>
     <string name="update_app_beta">Lançamentos Beta</string>
+    <string name="auto">Automático</string>
 </resources>
