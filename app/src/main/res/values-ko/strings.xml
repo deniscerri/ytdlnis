@@ -300,4 +300,5 @@
     <string name="use_sponsorblock">스폰서블럭 사용</string>
     <string name="update_app_beta_summary">베타 릴리즈에는 버그가 있을수 있습니다.</string>
     <string name="update_app_beta">베타 릴리즈</string>
+    <string name="auto">자동</string>
 </resources>
