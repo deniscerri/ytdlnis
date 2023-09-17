@@ -274,8 +274,7 @@
     <string name="sponsorblock">SponsorBlock</string>
     <string name="force_keyframes">Forçar quadros-chave nos cortes</string>
     <string name="force_keyframes_summary">Processo mais lento, mas cortes mais precisos</string>
-    <string name="subtitle_format">Formato da legenda
-\n</string>
+    <string name="subtitle_format">Formato da legenda</string>
     <string name="hide_thumbnails">Ocultar miniaturas</string>
     <string name="saved">Salvou</string>
     <string name="clear_saved">Limpar downloads salvos</string>
