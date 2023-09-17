@@ -33,7 +33,7 @@
     <string name="version">Versi</string>
     <string name="downloading_update">Mengunduh versi yang baru</string>
     <string name="command_directory">Folder Perintah Kustom</string>
-    <string name="downloading">Pengunduhan</string>
+    <string name="downloading">Mengunduh</string>
     <string name="video">Video</string>
     <string name="couldnt_find_apk">Tidak bisa menemukan APK yang cocok.</string>
     <string name="audio">Audio</string>
@@ -163,7 +163,7 @@
     <string name="restart">Mulai Ulang</string>
     <string name="download_rescheduled_to">Unduhan dijadwalkan ulang menjadi:</string>
     <string name="file_size">Ukuran berkas</string>
-    <string name="clear_temporary_files_summary">Hapus berkas singgahan dari unduhan yang mogok/galat/dibatalkan</string>
+    <string name="clear_temporary_files_summary">Hapus berkas singgahan (cache) dari unduhan yang mogok/galat/dibatalkan</string>
     <string name="cache_cleared">Berkas sementara dikosongkan</string>
     <string name="freespace">Ruang kosong penyimpanan</string>
     <string name="command_download_notification_channel_description">Notifikasi yang memperlihatkan kemajuan pengunduhan yang menggunakan perintah yt-dlp</string>
@@ -238,7 +238,7 @@
     <string name="updating_download_data">Memutakhirkan Data Butir Unduhan</string>
     <string name="preferred_locale">Preferensi Wilayah</string>
     <string name="resume">Lanjutkan</string>
-    <string name="keep_cache">Simpan Berkas Singgahan</string>
+    <string name="keep_cache">Simpan Berkas Singgahan (Cache)</string>
     <string name="incognito">Penyamaran</string>
     <string name="sponsorblock">SponsorBlock</string>
     <string name="couldnt_parse_file">Tidak bisa mengurai berkas</string>
@@ -264,7 +264,7 @@
     <string name="swipe_gestures">Gestur Usap</string>
     <string name="general">Umum</string>
     <string name="misc">Aneka Ragam</string>
-    <string name="move_temporary_files_summary">Transfer berkas singgahan ke folder unduhan</string>
+    <string name="move_temporary_files_summary">Transfer berkas singgahan (cache) ke folder unduhan</string>
     <string name="move_temporary_files">Pindahkan Berkas Sementara</string>
     <string name="piped_instance">Instansi Piped</string>
     <string name="custom_audio_quality">Gunakan Kualitas Audio Kustom</string>
@@ -298,6 +298,7 @@
     <string name="scheduling">Penjadwalan</string>
     <string name="use_scheduler">Unduh Sesuai Jadwal</string>
     <string name="cache_first_summary">Singgahkan (cache) berkas unduhan ke penyimpanan internal, kemudian pindahkan ke direktori pilihanmu. Gunakan ini apabila kamu tidak bisa menulis berkasnya langsung ke penyimpanan</string>
-    <string name="update_app_beta_summary">Mendaftarlah dalam program beta. Ini mungkin mengandung bug.</string>
+    <string name="update_app_beta_summary">Masuk ke keanggotaan program beta. Versi ini mungkin mengandung kutu (bug).</string>
     <string name="update_app_beta">Rilis Beta</string>
+    <string name="auto">Otomatis</string>
 </resources>
