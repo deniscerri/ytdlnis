@@ -45,7 +45,7 @@
     <string name="history_is_empty">O histórico está vazio</string>
     <string name="api_key">Usar chave de API</string>
     <string name="api_key_summary">Recomendações de vídeo da API do YouTube</string>
-    <string name="remove_duplicates">Remover downloads duplicados</string>
+    <string name="remove_duplicates">Remover duplicados</string>
     <string name="sort_by">Ordenar por</string>
     <string name="incognito_summary">Baixar sem adicionar no histórico</string>
     <string name="download">Baixar</string>
@@ -80,7 +80,7 @@
     <string name="delete_files_too">Excluir arquivos do dispositivo</string>
     <string name="embed_thumb_summary">Usar miniatura como capa de áudio</string>
     <string name="add_chapters">Capítulos em vídeos</string>
-    <string name="remove_deleted">Remover downloads excluídos</string>
+    <string name="remove_deleted">Remover excluídos</string>
     <string name="author">Autor</string>
     <string name="run_command">Executar comando</string>
     <string name="audio_quality_summary">0 (melhor) 10 (pior)</string>
