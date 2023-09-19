@@ -299,4 +299,5 @@
     <string name="use_scheduler">按计划下载</string>
     <string name="update_app_beta_summary">加入测试版计划。可能会遇到bugs。</string>
     <string name="update_app_beta">测试版本</string>
+    <string name="auto">自动</string>
 </resources>
