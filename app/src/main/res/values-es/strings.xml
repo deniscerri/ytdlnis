@@ -277,8 +277,7 @@
     <string name="use_extra_commands">Añadir comandos adicionales</string>
     <string name="current">Comando actual</string>
     <string name="use_extra_commands_summary">Para descargas de audio y vídeo. Añadir comandos adicionales junto con la configuración de la interfaz gráfica del usuario</string>
-    <string name="subtitle_format">Formato de los subtítulos
-\n</string>
+    <string name="subtitle_format">Formato de los subtítulos</string>
     <string name="hide_thumbnails">Ocultar las miniaturas</string>
     <string name="saved">Guardado</string>
     <string name="show_terminal">Mostrar el terminal en el menú Compartir</string>
@@ -300,4 +299,5 @@
     <string name="cache_first_summary">Los archivos de la caché se descargan en el almacenamiento interno y, a continuación, se mueven al directorio elegido. Utilízalo cuando no puedas escribir directamente en el almacenamiento</string>
     <string name="cache_first">Primero las descargas en la caché</string>
     <string name="use_scheduler">Descargar según lo programado</string>
+    <string name="auto">Automático</string>
 </resources>
