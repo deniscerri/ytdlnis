@@ -278,8 +278,7 @@
     <string name="saved">Guardado</string>
     <string name="clear_saved">Limpar guardado</string>
     <string name="use_extra_commands_summary">Para transferências de áudio/vídeo. Adicionar comandos extra juntamente com a configuração GUI</string>
-    <string name="subtitle_format">Formato da legenda
-\n</string>
+    <string name="subtitle_format">Formato da legenda</string>
     <string name="hide_thumbnails">Ocultar miniaturas</string>
     <string name="force_keyframes_summary">Processo mais lento, mas cortes mais precisos</string>
     <string name="save_for_later">Guardar a descarga para mais tarde\?</string>

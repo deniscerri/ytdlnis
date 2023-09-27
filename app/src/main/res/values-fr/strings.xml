@@ -216,4 +216,5 @@
     <string name="system">Système</string>
     <string name="format_filtering_hint">Tout les éléments doivent être du même type pour utiliser cette option</string>
     <string name="preferred_search_engine">Moteur de recherche par défaut</string>
+    <string name="format_source">Formats de la Source</string>
 </resources>
