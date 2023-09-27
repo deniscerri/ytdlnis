@@ -76,6 +76,9 @@ android {
         }
     }
 
+    lintOptions{
+        disable 'MissingTranslation'
+    }
 
     android.applicationVariants.configureEach { variant ->
         variant.outputs.each { output ->

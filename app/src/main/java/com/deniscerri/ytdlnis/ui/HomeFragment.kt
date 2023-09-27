@@ -435,7 +435,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
     }
 
     @SuppressLint("InflateParams")
-    private suspend fun updateSearchViewItems(it: Editable?, linkYouCopied: View?){
+    private suspend fun updateSearchViewItems(searchQuery: Editable?, linkYouCopied: View?){
         searchSuggestionsLinearLayout!!.visibility = GONE
         searchHistoryLinearLayout!!.visibility = GONE
         searchSuggestionsLinearLayout!!.removeAllViews()
@@ -449,16 +449,15 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
             searchView!!.editText.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_plus, 0)
         }
         val suggestions = withContext(Dispatchers.IO){
-            if (it!!.isEmpty()) {
-                resultViewModel.getSearchHistory().map { it.query }
-            }else if (sharedPreferences!!.getBoolean("search_suggestions", false)){
-                infoUtil!!.getSearchSuggestions(it.toString())
+            resultViewModel.getSearchHistory().map { it.query }.filter { it.contains(searchQuery!!) } +
+            if (sharedPreferences!!.getBoolean("search_suggestions", false)){
+                infoUtil!!.getSearchSuggestions(searchQuery.toString())
             }else{
                 emptyList()
             }
         }
 
-        if (it!!.isEmpty()){
+        if (searchQuery!!.isEmpty()){
             for (i in suggestions.indices) {
                 val v = LayoutInflater.from(fragmentContext)
                     .inflate(R.layout.search_suggestion_item, null)

@@ -1,8 +1,11 @@
 package com.deniscerri.ytdlnis.work
 
 import android.content.Context
+import android.content.res.Configuration
+import android.content.res.Resources
 import android.os.Handler
 import android.os.Looper
+import android.util.DisplayMetrics
 import android.util.Log
 import android.widget.Toast
 import androidx.navigation.NavDeepLinkBuilder
@@ -35,6 +38,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import java.io.File
+import java.util.Locale
 import kotlin.random.Random
 
 
@@ -59,6 +63,12 @@ class DownloadWorker(
         val queuedItems = dao.getQueuedDownloadsThatAreNotScheduledChunked(time)
         val currentWork = WorkManager.getInstance(context).getWorkInfosByTag("download").await()
         if (currentWork.count{it.state == WorkInfo.State.RUNNING} > 1) return Result.success()
+
+        val confTmp = Configuration(context.resources.configuration)
+        val currLang = sharedPreferences.getString("app_language", "en")!!.split("-")
+        confTmp.setLocale(if (currLang.size == 1) Locale(currLang[0]) else Locale(currLang[0], currLang[1]))
+        val metrics = DisplayMetrics()
+        val resources = Resources(context.assets, metrics, confTmp)
 
         val pendingIntent = NavDeepLinkBuilder(context)
             .setGraph(R.navigation.nav_graph)
@@ -162,8 +172,10 @@ class DownloadWorker(
                                         .sortedByDescending { it.length() }
                                         .map { it.absolutePath }
                                         .toList()
-
                                 FileUtil.scanMedia(finalPaths, context)
+                                if (finalPaths.isEmpty()){
+                                    finalPaths = listOf(context.getString(R.string.unfound_file))
+                                }
                             }else{
                                 //move file from internal to set download directory
                                 setProgressAsync(workDataOf("progress" to 100, "output" to "Moving file to ${FileUtil.formatPath(downloadLocation)}", "id" to downloadItem.id))

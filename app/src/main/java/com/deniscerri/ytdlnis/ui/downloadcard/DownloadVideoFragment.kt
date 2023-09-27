@@ -25,7 +25,6 @@ import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel.Type
 import com.deniscerri.ytdlnis.database.viewmodel.ResultViewModel
-import com.deniscerri.ytdlnis.databinding.FragmentHomeBinding
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.InfoUtil
 import com.deniscerri.ytdlnis.util.UiUtil
@@ -39,7 +38,6 @@ import java.io.File
 
 
 class DownloadVideoFragment(private val resultItem: ResultItem, private var currentDownloadItem: DownloadItem?) : Fragment(), TitleAuthorSync {
-    private var _binding : FragmentHomeBinding? = null
     private var fragmentView: View? = null
     private var activity: Activity? = null
     private lateinit var downloadViewModel : DownloadViewModel
@@ -50,6 +48,7 @@ class DownloadVideoFragment(private val resultItem: ResultItem, private var curr
     private lateinit var saveDir : TextInputLayout
     private lateinit var freeSpace : TextView
     private lateinit var infoUtil: InfoUtil
+    private lateinit var genericVideoFormats: MutableList<Format>
 
     lateinit var downloadItem: DownloadItem
 
@@ -58,12 +57,12 @@ class DownloadVideoFragment(private val resultItem: ResultItem, private var curr
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
         fragmentView = inflater.inflate(R.layout.fragment_download_video, container, false)
         activity = getActivity()
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
         resultViewModel = ViewModelProvider(this@DownloadVideoFragment)[ResultViewModel::class.java]
         infoUtil = InfoUtil(requireContext())
+        genericVideoFormats = infoUtil.getGenericVideoFormats(requireContext().resources)
         return fragmentView
     }
 
@@ -136,7 +135,7 @@ class DownloadVideoFragment(private val resultItem: ResultItem, private var curr
                                 downloadItem.allFormats.filter { it.vcodec.isNotEmpty() }
                                     .maxByOrNull { it.filesize }!!
                         }.onFailure {
-                            downloadItem.format = downloadViewModel.getGenericVideoFormats().last()
+                            downloadItem.format = genericVideoFormats.last()
                         }
                     }
                 }
@@ -149,7 +148,7 @@ class DownloadVideoFragment(private val resultItem: ResultItem, private var curr
                 var containerPreference = sharedPreferences.getString("video_format", "Default")
                 if (containerPreference == "Default") containerPreference = getString(R.string.defaultValue)
 
-                if (formats.isEmpty()) formats = downloadViewModel.getGenericVideoFormats()
+                if (formats.isEmpty()) formats = genericVideoFormats
 
                 val formatCard = view.findViewById<MaterialCardView>(R.id.format_card_constraintLayout)
 
@@ -158,22 +157,24 @@ class DownloadVideoFragment(private val resultItem: ResultItem, private var curr
                 val listener = object : OnFormatClickListener {
                     override fun onFormatClick(allFormats: List<List<Format>>, item: List<FormatTuple>) {
                         downloadItem.format = item.first().format
-                        item.first().audioFormats?.map { it.format_id }
-                            ?.let { downloadItem.videoPreferences.audioFormatIDs.addAll(it) }
+                        item.first().audioFormats?.map { it.format_id }?.let {
+                            downloadItem.videoPreferences.audioFormatIDs.clear()
+                            downloadItem.videoPreferences.audioFormatIDs.addAll(it)
+                        }
                         lifecycleScope.launch {
                             withContext(Dispatchers.IO){
-                                resultItem.formats.removeAll(formats.toSet())
-                                resultItem.formats.addAll(allFormats.first())
+                                resultItem.formats.removeAll(formats)
+                                resultItem.formats.addAll(allFormats.first().filter { !genericVideoFormats.contains(it) })
                                 resultViewModel.update(resultItem)
                             }
                         }
-                        formats = allFormats.first().toMutableList()
+                        formats = allFormats.first().filter { !genericVideoFormats.contains(it) }.toMutableList()
                         UiUtil.populateFormatCard(requireContext(), formatCard, item.first().format, item.first().audioFormats)
                     }
                 }
                 formatCard.setOnClickListener{
                     if (parentFragmentManager.findFragmentByTag("formatSheet") == null){
-                        val bottomSheet = FormatSelectionBottomSheetDialog(listOf(downloadItem), listOf(formats), listener)
+                        val bottomSheet = FormatSelectionBottomSheetDialog(listOf(downloadItem), listOf(formats.ifEmpty { genericVideoFormats }), listener)
                         bottomSheet.show(parentFragmentManager, "formatSheet")
                     }
                 }

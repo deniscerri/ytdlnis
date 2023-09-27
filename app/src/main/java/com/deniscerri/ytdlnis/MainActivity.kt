@@ -198,6 +198,12 @@ class MainActivity : BaseActivity() {
                 }
                 true
             }
+            //settings button
+            (navigationView as NavigationView).menu.getItem(8).setOnMenuItemClickListener {
+                val intent = Intent(context, SettingsActivity::class.java)
+                startActivity(intent)
+                true
+            }
 
             (navigationView as NavigationView).getHeaderView(0).findViewById<TextView>(R.id.title).text = ThemeUtil.getStyledAppName(this)
         }

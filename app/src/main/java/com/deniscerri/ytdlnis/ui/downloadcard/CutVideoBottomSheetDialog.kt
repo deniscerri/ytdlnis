@@ -335,7 +335,6 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val urls
                 if ((event!!.action == KeyEvent.ACTION_DOWN) &&
                     (keyCode == KeyEvent.KEYCODE_ENTER)) {
 
-                    val values = rangeSlider.values
                     var endTimestamp = (rangeSlider.valueTo.toInt() * timeSeconds) / 100
 
                     toTextInput.editText!!.clearFocus()
@@ -361,7 +360,7 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val urls
                     rangeSlider.setValues(startValue, endValue)
                     okBtn.isEnabled = startValue != 0F || endValue != 100F
                     try {
-                        player.seekTo(startSeconds.toLong() * 1000)
+                        player.seekTo((seconds.toLong() - 4L) * 1000)
                         player.play()
                     }catch (ignored: Exception) {}
 

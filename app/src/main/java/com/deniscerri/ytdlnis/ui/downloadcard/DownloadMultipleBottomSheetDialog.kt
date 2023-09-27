@@ -50,6 +50,7 @@ import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdlnis.receiver.ShareActivity
 import com.deniscerri.ytdlnis.util.FileUtil
+import com.deniscerri.ytdlnis.util.InfoUtil
 import com.deniscerri.ytdlnis.util.UiUtil
 import com.deniscerri.ytdlnis.util.UiUtil.enableFastScroll
 import com.deniscerri.ytdlnis.work.UpdatePlaylistFormatsWorker
@@ -78,6 +79,7 @@ class DownloadMultipleBottomSheetDialog(private var items: MutableList<DownloadI
     private lateinit var resultViewModel: ResultViewModel
     private lateinit var listAdapter : ConfigureMultipleDownloadsAdapter
     private lateinit var recyclerView: RecyclerView
+    private lateinit var infoUtil: InfoUtil
     private lateinit var behavior: BottomSheetBehavior<View>
     private lateinit var bottomAppBar: BottomAppBar
     private lateinit var filesize : TextView
@@ -90,6 +92,7 @@ class DownloadMultipleBottomSheetDialog(private var items: MutableList<DownloadI
         resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]
         commandTemplateViewModel = ViewModelProvider(this)[CommandTemplateViewModel::class.java]
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
+        infoUtil = InfoUtil(requireContext())
     }
 
     @SuppressLint("RestrictedApi", "NotifyDataSetChanged")
@@ -357,8 +360,8 @@ class DownloadMultipleBottomSheetDialog(private var items: MutableList<DownloadI
                                     items.map { it.allFormats }
                                 }else{
                                     when(items.first().type){
-                                        DownloadViewModel.Type.audio -> listOf<List<Format>>(downloadViewModel.getGenericAudioFormats())
-                                        else -> listOf<List<Format>>(downloadViewModel.getGenericVideoFormats())
+                                        DownloadViewModel.Type.audio -> listOf<List<Format>>(infoUtil.getGenericAudioFormats(requireContext().resources))
+                                        else -> listOf<List<Format>>(infoUtil.getGenericVideoFormats(requireContext().resources))
                                     }
                                 }
                                 val bottomSheet = FormatSelectionBottomSheetDialog(items, formats, formatListener)

@@ -5,8 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
-import android.os.Build.VERSION
-import android.os.Build.VERSION_CODES
 import android.os.Bundle
 import android.os.PowerManager
 import android.provider.Settings
@@ -29,7 +27,6 @@ class GeneralSettingsFragment : BaseSettingsFragment() {
     override val title: Int = R.string.general
 
     private var language: ListPreference? = null
-    private var language13: Preference? = null
     private var theme: ListPreference? = null
     private var accent: ListPreference? = null
     private var highContrast: SwitchPreferenceCompat? = null
@@ -51,45 +48,28 @@ class GeneralSettingsFragment : BaseSettingsFragment() {
         }
 
         language = findPreference("app_language")
-        language13 = findPreference("app_language_13")
         theme = findPreference("ytdlnis_theme")
         accent = findPreference("theme_accent")
         highContrast = findPreference("high_contrast")
         locale = findPreference("locale")
         showTerminalShareIcon = findPreference("show_terminal")
 
-        if(VERSION.SDK_INT < VERSION_CODES.TIRAMISU){
-            val values = resources.getStringArray(R.array.language_values)
-            val entries = mutableListOf<String>()
-            values.forEach {
-                entries.add(Locale(it).getDisplayName(Locale(it)))
-            }
-            language!!.entries = entries.toTypedArray()
+        val values = resources.getStringArray(R.array.language_values)
+        val entries = mutableListOf<String>()
+        values.forEach {
+            entries.add(Locale(it).getDisplayName(Locale(it)))
+        }
+        language!!.entries = entries.toTypedArray()
 
-            if(language!!.value == null) language!!.value = Locale.getDefault().language
-            language!!.summary = Locale(language!!.value).getDisplayLanguage(Locale(language!!.value))
+        if(language!!.value == null) language!!.value = Locale.getDefault().language
+        language!!.summary = Locale(language!!.value).getDisplayLanguage(Locale(language!!.value))
 
-            language!!.onPreferenceChangeListener =
-                Preference.OnPreferenceChangeListener { _: Preference?, newValue: Any ->
-                    language!!.summary = Locale(newValue.toString()).getDisplayLanguage(Locale(newValue.toString()))
-                    AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(newValue.toString()))
-                    true
-                }
-
-            language13?.isVisible = false
-        }else{
-            language?.isVisible = false
-            language13?.isVisible = true
-            language13?.summary = Locale.getDefault().displayLanguage
-
-            language13!!.setOnPreferenceClickListener {
-                val intent = Intent(Settings.ACTION_APP_LOCALE_SETTINGS)
-                intent.data = Uri.fromParts("package", requireActivity().packageName, null)
-                requireActivity().startActivity(intent)
-                requireActivity().finishAffinity()
+        language!!.onPreferenceChangeListener =
+            Preference.OnPreferenceChangeListener { _: Preference?, newValue: Any ->
+                language!!.summary = Locale(newValue.toString()).getDisplayLanguage(Locale(newValue.toString()))
+                AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(newValue.toString()))
                 true
             }
-        }
 
 
         theme!!.summary = theme!!.entry

@@ -42,7 +42,6 @@ import kotlinx.coroutines.withContext
 import java.io.File
 
 class DownloadCommandFragment(private val resultItem: ResultItem, private var currentDownloadItem: DownloadItem?) : Fragment() {
-    private var _binding : FragmentHomeBinding? = null
     private var fragmentView: View? = null
     private var activity: Activity? = null
     private lateinit var downloadViewModel : DownloadViewModel
@@ -57,7 +56,6 @@ class DownloadCommandFragment(private val resultItem: ResultItem, private var cu
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
         fragmentView = inflater.inflate(R.layout.fragment_download_command, container, false)
         activity = getActivity()
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]

@@ -11,13 +11,6 @@
             app:summary="en"
             app:title="@string/language" />
 
-        <Preference
-            android:icon="@drawable/baseline_translate_24"
-            app:key="app_language_13"
-            app:summary="en"
-            app:title="@string/language" />
-
-
         <ListPreference
             android:entries="@array/themes"
             android:entryValues="@array/themes_values"

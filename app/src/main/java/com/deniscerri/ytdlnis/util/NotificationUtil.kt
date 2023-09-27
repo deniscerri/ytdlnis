@@ -34,11 +34,18 @@ class NotificationUtil(var context: Context) {
                 NotificationManager::class.java
             )
 
-            //gui downloads
-            var name: CharSequence = context.getString(R.string.download_notification_channel_name)
-            var description = context.getString(R.string.download_notification_channel_description)
+            //downloading worker notification
+            var name: CharSequence = context.getString(R.string.downloading)
+            var description = "WorkManager Default Notification"
             val importance = NotificationManager.IMPORTANCE_LOW
-            var channel = NotificationChannel(DOWNLOAD_SERVICE_CHANNEL_ID, name, importance)
+            var channel = NotificationChannel(DOWNLOAD_WORKER_CHANNEL_ID, name, importance)
+            channel.description = description
+            notificationManager.createNotificationChannel(channel)
+
+            //gui downloads
+            name = context.getString(R.string.download_notification_channel_name)
+            description = context.getString(R.string.download_notification_channel_description)
+            channel = NotificationChannel(DOWNLOAD_SERVICE_CHANNEL_ID, name, importance)
             channel.description = description
             notificationManager.createNotificationChannel(channel)
 
@@ -77,7 +84,7 @@ class NotificationUtil(var context: Context) {
     }
 
     fun createDefaultWorkerNotification() : Notification {
-        val notificationBuilder = getBuilder(DOWNLOAD_SERVICE_CHANNEL_ID)
+        val notificationBuilder = getBuilder(DOWNLOAD_WORKER_CHANNEL_ID)
 
         return notificationBuilder
             .setContentTitle(context.getString(R.string.downloading))
@@ -480,6 +487,7 @@ class NotificationUtil(var context: Context) {
         const val FORMAT_UPDATING_FINISHED_NOTIFICATION_ID = 7
         const val DOWNLOAD_MISC_CHANNEL_ID = "4"
         const val DOWNLOAD_MISC_NOTIFICATION_ID = 4
+        const val DOWNLOAD_WORKER_CHANNEL_ID = "5"
         private const val PROGRESS_MAX = 100
         private const val PROGRESS_CURR = 0
     }

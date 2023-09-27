@@ -38,7 +38,6 @@ import java.io.File
 
 
 class DownloadAudioFragment(private var resultItem: ResultItem, private var currentDownloadItem: DownloadItem?) : Fragment(), TitleAuthorSync {
-    private var _binding : FragmentHomeBinding? = null
     private var fragmentView: View? = null
     private var activity: Activity? = null
     private lateinit var downloadViewModel : DownloadViewModel
@@ -46,6 +45,7 @@ class DownloadAudioFragment(private var resultItem: ResultItem, private var curr
     private lateinit var saveDir : TextInputLayout
     private lateinit var freeSpace : TextView
     private lateinit var infoUtil: InfoUtil
+    private lateinit var genericAudioFormats: MutableList<Format>
 
     lateinit var downloadItem : DownloadItem
     lateinit var title : TextInputLayout
@@ -55,12 +55,12 @@ class DownloadAudioFragment(private var resultItem: ResultItem, private var curr
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
         fragmentView = inflater.inflate(R.layout.fragment_download_audio, container, false)
         activity = getActivity()
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
         resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]
         infoUtil = InfoUtil(requireContext())
+        genericAudioFormats = infoUtil.getGenericAudioFormats(requireContext().resources)
         return fragmentView
     }
 
@@ -129,7 +129,7 @@ class DownloadAudioFragment(private var resultItem: ResultItem, private var curr
                                 downloadItem.allFormats.filter { it.format_note.contains("audio", ignoreCase = true) }
                                     .maxByOrNull { it.filesize }!!
                         }.onFailure {
-                            downloadItem.format = downloadViewModel.getGenericAudioFormats().last()
+                            downloadItem.format = genericAudioFormats.last()
                         }
                     }
                 }
@@ -142,7 +142,7 @@ class DownloadAudioFragment(private var resultItem: ResultItem, private var curr
                 val containerAutoCompleteTextView =
                     view.findViewById<AutoCompleteTextView>(R.id.container_textview)
 
-                if (formats.isEmpty()) formats = downloadViewModel.getGenericAudioFormats()
+                if (formats.isEmpty()) formats = genericAudioFormats
 
                 val formatCard = view.findViewById<MaterialCardView>(R.id.format_card_constraintLayout)
                 val chosenFormat = downloadItem.format
@@ -154,16 +154,17 @@ class DownloadAudioFragment(private var resultItem: ResultItem, private var curr
                         lifecycleScope.launch {
                             withContext(Dispatchers.IO){
                                 resultItem.formats.removeAll(formats.toSet())
-                                resultItem.formats.addAll(allFormats.first())
+                                resultItem.formats.addAll(allFormats.first().filter { !genericAudioFormats.contains(it) })
                                 resultViewModel.update(resultItem)
                             }
                         }
-                        formats = allFormats.first().toMutableList()
+                        formats = allFormats.first().filter { !genericAudioFormats.contains(it) }.toMutableList()
+                        formats.removeAll(genericAudioFormats)
                     }
                 }
                 formatCard.setOnClickListener{
                     if (parentFragmentManager.findFragmentByTag("formatSheet") == null){
-                        val bottomSheet = FormatSelectionBottomSheetDialog(listOf(downloadItem), listOf(formats), listener)
+                        val bottomSheet = FormatSelectionBottomSheetDialog(listOf(downloadItem), listOf(formats.ifEmpty { genericAudioFormats }), listener)
                         bottomSheet.show(parentFragmentManager, "formatSheet")
                     }
                 }

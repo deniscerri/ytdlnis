@@ -276,7 +276,7 @@ class FormatSelectionBottomSheetDialog(private val items: List<DownloadItem?>, p
             }
         }
 
-        for (i in finalFormats.lastIndex downTo 0){
+        for (i in 0.. finalFormats.lastIndex){
             val format = finalFormats[i]
             val formatItem = LayoutInflater.from(context).inflate(R.layout.format_item, null)
             formatItem.tag = "${format.format_id}${format.format_note}"

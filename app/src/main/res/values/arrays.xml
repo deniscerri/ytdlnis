@@ -48,7 +48,7 @@
 
     <string-array name="video_formats_values">
         <item>worst</item>
-        <item>360p</item>
+        <item>360p_ytdlnisgeneric</item>
         <item>480p_ytdlnisgeneric</item>
         <item>720p_ytdlnisgeneric</item>
         <item>1080p_ytdlnisgeneric</item>
@@ -766,6 +766,15 @@
     </array>
 
     <string-array name="sub_formats">
+        <item>@string/defaultValue</item>
+        <item>srt</item>
+        <item>ass</item>
+        <item>lrc</item>
+        <item>vtt</item>
+    </string-array>
+
+    <string-array name="sub_formats_values">
+        <item></item>
         <item>srt</item>
         <item>ass</item>
         <item>lrc</item>
@@ -794,9 +803,9 @@
 
     <string-array name="video_codec_values">
         <item></item>
-        <item>av0</item>
-        <item>vp</item>
-        <item>avc</item>
-        <item>hev</item>
+        <item>av[01]</item>
+        <item>vp[09]</item>
+        <item>avc|h264</item>
+        <item>hev|h265</item>
     </string-array>
 </resources>

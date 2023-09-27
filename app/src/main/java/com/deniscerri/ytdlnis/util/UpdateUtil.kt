@@ -57,16 +57,13 @@ class UpdateUtil(var context: Context) {
                 v = res.first { !it.tag_name.contains("beta", true) }
             }
 
-            val current = BuildConfig.VERSION_NAME.replace("-beta", "").replace(".", "").toInt()
-            val incoming = v.tag_name.removePrefix("v").replace("-beta", "").replace(".", "").toInt()
+            val current = BuildConfig.VERSION_NAME.replace("-beta", "").replace(".", "").padEnd(10,'0').toInt()
+            val incoming = v.tag_name.removePrefix("v").replace("-beta", "").replace(".", "").padEnd(10,'0').toInt()
 
-            Log.e("aa", current.toString())
-            Log.e("aa", incoming.toString())
 
             var isInLatest = true
-            if ((BuildConfig.VERSION_NAME.contains("beta", true) && !useBeta) ||
-                (!BuildConfig.VERSION_NAME.contains("beta", true) && useBeta) ||
-                current < incoming ){
+            if ((current < incoming) ||
+                (current > incoming && BuildConfig.VERSION_NAME.contains("beta", true) && !useBeta)){
                 isInLatest = false
             }
 
