@@ -32,14 +32,14 @@
     <string name="download_notification_channel_name">Henta filer</string>
     <string name="you_are_in_latest_version">Nyttar den nyaste utgåva</string>
     <string name="ytld_update_success">La inn den nyaste utgåva</string>
-    <string name="ytdl_updating_started">Hentar den nyaste utgåva …</string>
+    <string name="ytdl_updating_started">Hentar den nyaste utgåva</string>
     <string name="confirm_delete_history_desc">Slett heile historikken for godt</string>
     <string name="confirm_delete_history">Stadfest</string>
     <string name="no_results">Ingen svar</string>
     <string name="more">Meir</string>
     <string name="search_history_hint">Søk ifrå historikken</string>
     <string name="version">Utgåve</string>
-    <string name="downloading_update">Hentar den nyaste utgåva …</string>
+    <string name="downloading_update">Hentar den nyaste utgåva</string>
     <string name="limit_rate">Avgrens hentesnøggleiken</string>
     <string name="aria2_summary">Hent med aria2c i staden for den innebygde hentaren</string>
     <string name="concurrent_fragments">Samstundes bitar</string>
@@ -55,7 +55,7 @@
     <string name="url">Nettadresse</string>
     <string name="link_copied_to_clipboard">Lenkja kopiert til utklippstavla</string>
     <string name="api_key">Nytt ein API-lykel</string>
-    <string name="api_key_summary">Gjev snøggare svar ifrå YouTube</string>
+    <string name="api_key_summary">Videoråd ifrå API-en til YouTube</string>
     <string name="update_app_summary">Sei ifrå om nye utgåver av appen når han vert opna</string>
     <string name="remove_duplicates">Ta bort like ting</string>
     <string name="sort_by">Skil</string>
@@ -130,7 +130,7 @@
     <string name="backup">Tryggleikskopier</string>
     <string name="restore">Gjenopprett</string>
     <string name="incognito">Privat</string>
-    <string name="sponsorblock">Sponsor Block</string>
+    <string name="sponsorblock">SponsorBlock</string>
     <string name="select_backup_categories">Vel tryggleikskopieringsslag</string>
     <string name="backup_created_successfully">Gøymde tryggleikskopifila i hentingsmappa</string>
     <string name="backup_restore">Tryggleikskopier og gjenopprett</string>
@@ -153,7 +153,7 @@
     <string name="updating">Oppdaterer</string>
     <string name="update_ytdl">Legg inn ei ny utgåve av yt-dlp</string>
     <string name="failed_download">Greidde ikkje å hente fila.</string>
-    <string name="ytdl_already_updating">Legg inn den nyaste utgåva …</string>
+    <string name="ytdl_already_updating">Legg inn den nyaste utgåva</string>
     <string name="cancel">Avbryt</string>
     <string name="ok">Greitt</string>
     <string name="processing">Handsamar</string>
@@ -248,7 +248,7 @@
     <string name="high_contrast">Skarp bakgrunnslet</string>
     <string name="video_recommendations">Videoråd</string>
     <string name="format_source">Formatkjelde</string>
-    <string name="video_recommendations_summary">Vis rådde YouTube-videoar ifrå Invidious på heimeskjermen</string>
+    <string name="video_recommendations_summary">Vis rådde YouTube-videoar ifrå API-en til PIPED på heimeskjermen</string>
     <string name="preferred_search_engine">Søkjemotor</string>
     <string name="preferred_search_engine_summary">Søkjemotoren å nytte til søk i appen</string>
     <string name="undo">Angre</string>
@@ -266,4 +266,6 @@
     <string name="access_all_directories_summary">La appen hente til avgrensa mapper som ellers er utilgjengelege</string>
     <string name="preferred_locale">Foretrukket lokalitet</string>
     <string name="updating_download_data">Oppdaterer nedlastningselementdata</string>
+    <string name="retries">Gjentakingar</string>
+    <string name="orange">Oransje</string>
 </resources>

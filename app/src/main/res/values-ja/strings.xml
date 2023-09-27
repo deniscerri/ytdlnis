@@ -34,7 +34,7 @@
     <string name="processing">処理</string>
     <string name="embed_subs_summary">ビデオに字幕を追加する</string>
     <string name="embed_thumb">サムネイルのカバーアート</string>
-    <string name="embed_thumb_summary">サムネイルをカバーアートに設定します</string>
+    <string name="embed_thumb_summary">サムネイルをカバーアートとして使用する</string>
     <string name="add_chapters">動画内のチャプター</string>
     <string name="save_thumb_summary">サムネイルをダウンロードフォルダに保存します</string>
     <string name="audio_format">音声のフォーマット</string>
@@ -228,7 +228,7 @@
     <string name="accents">アクセント</string>
     <string name="high_contrast">高コントラスト</string>
     <string name="pure_theme_summary">ピュアブラック / ホワイトテーマ</string>
-    <string name="material_you">Material You</string>
+    <string name="material_you">マテリアル・ユー</string>
     <string name="yellow">イエロー</string>
     <string name="monochrome">モノクロ</string>
     <string name="downloaded">"ダウンロード済み: "</string>
@@ -251,7 +251,7 @@
     <string name="preferred_format_id_summary">ダウンロードカードでこの ID を持つフォーマットを選択します</string>
     <string name="backup_created_successfully">バックアップファイルをダウンロードフォルダに保存しました</string>
     <string name="audio_only_item">このアイテムはオーディオフォーマットのみが含まれています</string>
-    <string name="sponsorblock">SponsorBlock</string>
+    <string name="sponsorblock">スポンサーブロック</string>
     <string name="custom_audio_quality">カスタムオーディオ品質を使用</string>
     <string name="piped_instance">パイプされたインスタンス</string>
     <string name="piped_instance_summary">YouTube のクエリやフォーマットに使用可能な Piped API サーバーを作成します</string>
@@ -275,8 +275,7 @@
     <string name="force_keyframes">切り取り時にキーフレームを強制する</string>
     <string name="force_keyframes_summary">処理は遅くなりますが、高精度な切り取りができます</string>
     <string name="orange">オレンジ</string>
-    <string name="subtitle_format">字幕のフォーマット
-\n</string>
+    <string name="subtitle_format">字幕のフォーマット</string>
     <string name="hide_thumbnails">サムネイルを非表示</string>
     <string name="saved">保存しました</string>
     <string name="clear_saved">保存をクリアしました</string>
@@ -291,4 +290,14 @@
     <string name="use_extra_commands">エクストラコマンドを追加</string>
     <string name="use_extra_commands_summary">オーディオと動画のダウンロード用。GUIにエクストラコマンドを追加します</string>
     <string name="current">現在のコマンド</string>
+    <string name="update_app_beta_summary">ベータ プログラムに登録します。バグが含まれている可能性があります。</string>
+    <string name="update_app_beta">ベータ版リリース</string>
+    <string name="scheduling">スケジュール設定</string>
+    <string name="update_formats_background">バックグラウンドでフォーマットを更新</string>
+    <string name="cache_first_summary">キャッシュファイルは内部ストレージにダウンロードされ、その後選択したディレクトリに移動します。これはストレージに直接書き込めない場合に使用します</string>
+    <string name="cache_first">アプリのキャッシュを最初にダウンロード</string>
+    <string name="use_sponsorblock">SponsorBlockを使用する</string>
+    <string name="use_scheduler">スケジュールに従ってダウンロード</string>
+    <string name="auto">自動</string>
+    <string name="auto_update_ytdlp">yt-dlp の自動更新</string>
 </resources>

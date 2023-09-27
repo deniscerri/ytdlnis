@@ -70,7 +70,7 @@
     <string name="date_added">تاريخ الإضافة</string>
     <string name="update_ytdl_nightly">استخدام الإصدار الليلي من yt-dlp</string>
     <string name="adjust_audio">الضبط</string>
-    <string name="file_name_template">تنسيق العنوان</string>
+    <string name="file_name_template">قالب العنوان</string>
     <string name="language">اللغة</string>
     <string name="command_templates">قوالب الأوامر</string>
     <string name="terminal">سطر الأوامر</string>
@@ -255,7 +255,7 @@
     <string name="audio_only_item">يحتوي هذا العنصر على تنسيقات الصوت فقط</string>
     <string name="socks5_proxy_summary">استخدام وكيل HTTP/HTTPS/SOCKS المحدد</string>
     <string name="socks5_proxy">رابط الوكيل Socks5</string>
-    <string name="move_temporary_files">نقل الملفات المؤقتة</string>
+    <string name="move_temporary_files">النقر لنقل الملفات المؤقتة</string>
     <string name="move_temporary_files_summary">نقل ملفات الكاش إلى مجلد \"Download\"</string>
     <string name="search_suggestions">اقتراحات البحث</string>
     <string name="search_suggestions_summary">الحصول على اقتراحات بحث من جوجل</string>
@@ -269,8 +269,7 @@
     <string name="custom_audio_quality">استخدام جودة صوت مخصصة</string>
     <string name="piped_instance">مثيل Piped</string>
     <string name="piped_instance_summary">إدخال خادم PIPED API، يمكن للتطبيق استخدامه لاستعلامات وتنسيقات يوتيوب</string>
-    <string name="subtitle_format">صيغة الترجمة
-\n</string>
+    <string name="subtitle_format">صيغة الترجمة</string>
     <string name="hide_thumbnails">إخفاء الصور المصغرة من الشاشة المحددة</string>
     <string name="saved">المحتفَظة</string>
     <string name="clear_saved">تنظيف المحتفَظة</string>
@@ -297,7 +296,8 @@
     <string name="cache_first_summary">تحميل الملفات المؤقتة على وحدة التخزين الداخلي أولًا، ثم يتم نقلها الى مسارها النهائي، يُستخدم هذا الإجراء عند تعذر الكتابة على وحدة التخزين مباشرةً</string>
     <string name="cache_first">الأولوية لتحميل الملفات المؤقتة</string>
     <string name="scheduling">الجدولة</string>
-    <string name="use_scheduler">التحميل في الفترة المحددة</string>
-    <string name="update_app_beta_summary">الحصول على تحديثات الإصدارات التجريبية. قد تحتوي على أخطاء.</string>
+    <string name="use_scheduler">التحميل في فترة محددة</string>
+    <string name="update_app_beta_summary">الاقتصار على إشعارات تحديثات الإصدارات التجريبية، قد تحتوي على أخطاء.</string>
     <string name="update_app_beta">الإصدارات التجريبية</string>
+    <string name="auto">تلقائي</string>
 </resources>

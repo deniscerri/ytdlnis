@@ -273,8 +273,7 @@
     <string name="save_for_later">나중에 다운로드를 저장하시겠습니까\?</string>
     <string name="retries">재시도</string>
     <string name="use_extra_commands_summary">오디오 / 비디오 다운로드의 경우 GUI 구성과 함께 추가 명령을 추가</string>
-    <string name="subtitle_format">자막 형식
-\n</string>
+    <string name="subtitle_format">자막 형식</string>
     <string name="hide_thumbnails">썸네일 숨기기</string>
     <string name="saved">저장됨</string>
     <string name="clear_saved">저장된 내역 지우기</string>

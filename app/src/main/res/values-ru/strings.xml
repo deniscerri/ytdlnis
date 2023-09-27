@@ -277,8 +277,7 @@
     <string name="use_extra_commands_summary">Добавьте свои дополнительные команды перед загрузкой аудио/видео</string>
     <string name="use_extra_commands">Дополнительные команды</string>
     <string name="current">Текущая команда</string>
-    <string name="subtitle_format">Формат субтитров
-\n</string>
+    <string name="subtitle_format">Формат субтитров</string>
     <string name="hide_thumbnails">Скрыть миниатюры</string>
     <string name="saved">Сохранено</string>
     <string name="clear_saved">Очистить сохраненное</string>

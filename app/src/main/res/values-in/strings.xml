@@ -275,8 +275,7 @@
     <string name="force_keyframes">Paksakan Keyframe saat Pemotongan</string>
     <string name="force_keyframes_summary">Proses yang lebih lambat, tetapi pemotongannya lebih akurat</string>
     <string name="show_terminal">Perlihatkan Terminal di Menu Berbagi</string>
-    <string name="subtitle_format">Format Takarir (Subtitle)
-\n</string>
+    <string name="subtitle_format">Format Takarir (Subtitle)</string>
     <string name="hide_thumbnails">Sembunyikan Keluku (Thumbnail)</string>
     <string name="clear_saved">Kosongkan yang Disimpan</string>
     <string name="saved">Disimpan</string>
