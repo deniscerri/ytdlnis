@@ -157,7 +157,7 @@
     <string name="retries">任务重试次数</string>
     <string name="move_temporary_files">移动临时文件</string>
     <string name="move_temporary_files_summary">将缓存文件移动到下载文件夹</string>
-    <string name="embed_metadata_summary">将元数据嵌入到视频文件中。如果存在章节/json文件，也一并嵌入</string>
+    <string name="embed_metadata_summary">嵌入并解析元数据到音频文件。</string>
     <string name="embed_metadata">嵌入元数据</string>
     <string name="force_keyframes">强制剪辑关键帧</string>
     <string name="ytdl_already_updating">安装新版本中</string>
