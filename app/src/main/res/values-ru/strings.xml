@@ -288,7 +288,7 @@
     <string name="write_description_summary">Запись файла описания</string>
     <string name="extra_command">Дополнительная команда</string>
     <string name="use_cookies">Использование Cookies</string>
-    <string name="embed_metadata_summary">Вставьте метаданные в видеофайл. Также встраивает главы/infojson, если они есть</string>
+    <string name="embed_metadata_summary">Встраивание и анализ метаданных в аудиофайл</string>
     <string name="embed_metadata">Встроить метаданные</string>
     <string name="auto_update_ytdlp">Автообновление yt-dlp</string>
     <string name="update_formats_background">Обновлять форматы в фоновом режиме</string>
