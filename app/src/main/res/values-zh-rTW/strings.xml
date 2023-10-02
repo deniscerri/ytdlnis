@@ -289,7 +289,7 @@
     <string name="extra_command">額外指令</string>
     <string name="use_cookies">使用 Cookies</string>
     <string name="embed_metadata">嵌入元資料</string>
-    <string name="embed_metadata_summary">將元資料嵌入影片檔案，若有的話，也會嵌入章節 /infojson</string>
+    <string name="embed_metadata_summary">在音訊檔案中嵌入並解析元數據</string>
     <string name="use_sponsorblock">使用 SponsorBlock</string>
     <string name="update_formats_background">背景更新格式</string>
     <string name="auto_update_ytdlp">自動更新 yt-dlp</string>
