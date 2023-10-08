@@ -281,7 +281,7 @@
     <string name="preferred_format_id">ID định dạng ưa thích</string>
     <string name="couldnt_parse_file">Không thể phân tích cú pháp tệp</string>
     <string name="current">Lệnh hiện tại</string>
-    <string name="embed_metadata_summary">Nhúng Metadata vào tệp video. Đồng thời nhúng các chương/infojson nếu có</string>
+    <string name="embed_metadata_summary">Nhúng và phân tích Metadata vào tệp âm thanh</string>
     <string name="use_cookies">Sử dụng Cookies</string>
     <string name="use_extra_commands">Thêm Extra Commands</string>
     <string name="clear_saved">Xóa Đã lưu</string>
