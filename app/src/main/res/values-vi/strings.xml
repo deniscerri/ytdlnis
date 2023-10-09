@@ -19,7 +19,7 @@
     <string name="you_are_in_latest_version">Sử dụng phiên bản mới nhất</string>
     <string name="ytld_update_success">Phiên bản mới được cài đặt</string>
     <string name="ytdl_already_updating">Đang cài đặt phiên bản mới</string>
-    <string name="ytdl_updating_started">Đang tải xuống phiên bản mới</string>
+    <string name="ytdl_updating_started">Đang tải phiên bản mới</string>
     <string name="Remove">Loại bỏ</string>
     <string name="ok">Xong</string>
     <string name="confirm_delete_history_desc">Xóa toàn bộ lịch sử, vĩnh viễn</string>
@@ -75,7 +75,7 @@
     <string name="select_sponsorblock_filtering">Chọn bộ lọc chặn nhà tài trợ</string>
     <string name="remove_downloading">Hủy tải xuống</string>
     <string name="incognito_summary">Tải xuống mà không cần thêm vào lịch sử</string>
-    <string name="configure_download">Điều chỉnh tải xuống</string>
+    <string name="configure_download">Cấu hình tải xuống</string>
     <string name="title">Tiêu đề</string>
     <string name="author">Tác giả</string>
     <string name="video_quality">Chất lượng video</string>
@@ -100,7 +100,7 @@
     <string name="worst_quality">Chất lượng thấp nhất</string>
     <string name="best_quality">Chất lượng tốt nhất</string>
     <string name="about">Về chúng tôi</string>
-    <string name="adjust_templates">Điều chỉnh bản mẫu</string>
+    <string name="adjust_templates">Điều chỉnh mẫu</string>
     <string name="edit_selected">Chỉnh sửa đã chọn</string>
     <string name="adjust_video">Điều chỉnh video</string>
     <string name="concurrent_downloads">Tải xuống đồng thời</string>
@@ -216,7 +216,7 @@
     <string name="preferred_locale">Ngôn ngữ ưa thích</string>
     <string name="high_contrast">Tương phản cao</string>
     <string name="quick_download_summary">Không tìm nạp dữ liệu trước</string>
-    <string name="misc">Misc</string>
+    <string name="misc">Khác</string>
     <string name="piped_instance">Phiên bản Piped</string>
     <string name="update_formats_background">Cập nhật định dạng trong nền</string>
     <string name="search_suggestions_summary">Nhận gợi ý tìm kiếm từ Google</string>
@@ -288,12 +288,12 @@
     <string name="saved">Đã lưu</string>
     <string name="format_order">Thứ tự các định dạng</string>
     <string name="socks5_proxy">Dùng Socks5 Proxy URL</string>
-    <string name="embed_metadata">Nhúng Metadata</string>
+    <string name="embed_metadata">Nhúng siêu dữ liệu</string>
     <string name="show_terminal">Hiển thị Terminal trong Menu chia sẻ</string>
     <string name="write_description">Lưu mô tả</string>
     <string name="use_extra_commands_summary">Để tải xuống âm thanh/video. Thêm các lệnh bổ sung cùng với cấu hình GUI</string>
     <string name="save_for_later">Lưu Download cho lần sau\?</string>
-    <string name="write_description_summary">Tạo file cho phần mô tả</string>
+    <string name="write_description_summary">Viết tệp mô tả</string>
     <string name="hide_thumbnails">Ẩn Thumbnails</string>
     <string name="auto">Tự động</string>
     <string name="extra_command">Lệnh bổ sung</string>
