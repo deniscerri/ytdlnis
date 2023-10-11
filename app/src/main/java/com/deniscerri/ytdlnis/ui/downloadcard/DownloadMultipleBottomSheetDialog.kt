@@ -12,23 +12,16 @@ import android.graphics.Color
 import android.os.Bundle
 import android.text.format.DateFormat
 import android.util.DisplayMetrics
-import android.util.Log
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
-import android.view.inputmethod.InputMethodManager
 import android.widget.Button
-import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.get
-import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceManager
@@ -41,7 +34,6 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.adapter.ConfigureMultipleDownloadsAdapter
-import com.deniscerri.ytdlnis.database.models.CommandTemplate
 import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.models.Format
 import com.deniscerri.ytdlnis.database.repository.DownloadRepository
@@ -62,13 +54,11 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.color.MaterialColors
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.textfield.TextInputLayout
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
-import java.lang.reflect.Type
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -628,7 +618,6 @@ class DownloadMultipleBottomSheetDialog(private var items: MutableList<DownloadI
     }
 
     override fun onClick(p0: View?) {
-        TODO("Not yet implemented")
     }
 
     override fun onDownloadItemUpdate(resultItemID: Long, item: DownloadItem) {

@@ -127,7 +127,11 @@ class CancelledDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClic
                     }
                 },
                 longClickDownloadButton = {
-                    val sheet = DownloadBottomSheetDialog(downloadViewModel.createResultItemFromDownload(it), it.type, it, false)
+                    val sheet = DownloadBottomSheetDialog(
+                        currentDownloadItem = it,
+                        result = downloadViewModel.createResultItemFromDownload(it),
+                        type = it.type
+                    )
                     sheet.show(parentFragmentManager, "downloadSingleSheet")
                 },
                 scheduleButtonClick = {}

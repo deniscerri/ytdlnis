@@ -41,7 +41,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
 
-class DownloadCommandFragment(private val resultItem: ResultItem, private var currentDownloadItem: DownloadItem?) : Fragment() {
+class DownloadCommandFragment(private val resultItem: ResultItem? = null, private var currentDownloadItem: DownloadItem? = null, private var url: String = "") : Fragment() {
     private var fragmentView: View? = null
     private var activity: Activity? = null
     private lateinit var downloadViewModel : DownloadViewModel
@@ -73,7 +73,7 @@ class DownloadCommandFragment(private val resultItem: ResultItem, private var cu
                     val string = Gson().toJson(currentDownloadItem, DownloadItem::class.java)
                     Gson().fromJson(string, DownloadItem::class.java)
                 }else{
-                    downloadViewModel.createDownloadItemFromResult(resultItem, DownloadViewModel.Type.command)
+                    downloadViewModel.createDownloadItemFromResult(resultItem, url, DownloadViewModel.Type.command)
                 }
             }
 
@@ -122,7 +122,6 @@ class DownloadCommandFragment(private val resultItem: ResultItem, private var cu
                         chosenCommandView.editText!!.setText("")
                     }
                 }
-                chosenCommandView.editText!!.enableScrollText()
 
                 val commandTemplateCard = view.findViewById<MaterialCardView>(R.id.command_card)
                 runCatching {
@@ -230,10 +229,19 @@ class DownloadCommandFragment(private val resultItem: ResultItem, private var cu
                         }
                     },
                     shortcutClicked = {
-                        UiUtil.showShortcuts(requireActivity(), commandTemplateViewModel) { sh ->
-                            chosenCommandView.editText!!.setText("${chosenCommandView.editText!!.text} $sh")
-                            downloadItem.format.format_note += " $sh"
-                        }
+                        UiUtil.showShortcuts(requireActivity(), commandTemplateViewModel,
+                            itemSelected = {
+                                chosenCommandView.editText!!.setText("${chosenCommandView.editText!!.text} $it")
+                                downloadItem.format.format_note = chosenCommandView.editText!!.text.toString()
+                            },
+                            itemRemoved = {removed ->
+                                chosenCommandView.editText!!.setText(chosenCommandView.editText!!.text.replace("(${
+                                    Regex.escape(
+                                        removed
+                                    )
+                                })(?!.*\\1)".toRegex(), "").trimEnd())
+                                downloadItem.format.format_note = chosenCommandView.editText!!.text.toString().trimEnd()
+                            })
                     }
                 )
 
@@ -262,25 +270,6 @@ class DownloadCommandFragment(private val resultItem: ResultItem, private var cu
             freeSpace.text = String.format(getString(R.string.freespace) + ": " + FileUtil.convertFileSize(
                 File(FileUtil.formatPath(downloadItem.downloadPath)).freeSpace
             ))
-        }
-    }
-
-    @SuppressLint("ClickableViewAccessibility")
-    fun EditText.enableScrollText()
-    {
-        overScrollMode = View.OVER_SCROLL_ALWAYS
-        scrollBarStyle = View.SCROLLBARS_INSIDE_INSET
-        isVerticalScrollBarEnabled = true
-        setOnTouchListener { view, event ->
-            if (view is EditText) {
-                if(!view.text.isNullOrEmpty()) {
-                    view.parent.requestDisallowInterceptTouchEvent(true)
-                    when (event.action and MotionEvent.ACTION_MASK) {
-                        MotionEvent.ACTION_UP -> view.parent.requestDisallowInterceptTouchEvent(false)
-                    }
-                }
-            }
-            false
         }
     }
 }

@@ -808,4 +808,17 @@
         <item>avc|h264</item>
         <item>hev|h265</item>
     </string-array>
+
+
+    <string-array name="audio_codec">
+        <item>@string/defaultValue</item>
+        <item>M4A</item>
+        <item>OPUS</item>
+    </string-array>
+
+    <string-array name="audio_codec_values">
+        <item></item>
+        <item>m4a|mp4a|aac</item>
+        <item>opus</item>
+    </string-array>
 </resources>

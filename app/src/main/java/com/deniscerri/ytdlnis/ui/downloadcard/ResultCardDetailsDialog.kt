@@ -20,6 +20,7 @@ import android.view.ViewGroup
 import android.view.Window
 import android.widget.*
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.map
@@ -87,7 +88,7 @@ class ResultCardDetailsDialog(private val item: ResultItem) : BottomSheetDialogF
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        infoUtil = InfoUtil(requireActivity().applicationContext)
+        infoUtil = InfoUtil(requireActivity())
         notificationUtil = NotificationUtil(requireActivity().applicationContext)
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
         resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]
@@ -229,15 +230,14 @@ class ResultCardDetailsDialog(private val item: ResultItem) : BottomSheetDialogF
 
         downloadThumb.setOnClickListener {
             downloadManager.enqueue(
-                DownloadManager.Request(Uri.parse(item.thumb))
+                DownloadManager.Request(item.thumb.toUri())
                     .setAllowedNetworkTypes(
                         DownloadManager.Request.NETWORK_WIFI or
                                 DownloadManager.Request.NETWORK_MOBILE
                     )
                     .setAllowedOverRoaming(true)
                     .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-                    .setTitle(requireContext().getString(R.string.app_name))
-                    .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "YTDLnis"))
+                    .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "YTDLnis/" + item.title + ".jpg"))
         }
 
         title.text = item.title
@@ -293,12 +293,14 @@ class ResultCardDetailsDialog(private val item: ResultItem) : BottomSheetDialogF
     private fun onButtonClick(type: DownloadViewModel.Type){
         this.dismiss()
         if (sharedPreferences.getBoolean("download_card", true)) {
-            val bottomSheet = DownloadBottomSheetDialog(item, type, null, false)
+            val bottomSheet = DownloadBottomSheetDialog(item, type)
             bottomSheet.show(parentFragmentManager, "downloadSingleSheet")
         } else {
             lifecycleScope.launch{
                 val downloadItem = withContext(Dispatchers.IO){
-                    downloadViewModel.createDownloadItemFromResult(item, type)
+                    downloadViewModel.createDownloadItemFromResult(
+                        result = item,
+                        givenType = type)
                 }
                 downloadViewModel.queueDownloads(listOf(downloadItem))
             }

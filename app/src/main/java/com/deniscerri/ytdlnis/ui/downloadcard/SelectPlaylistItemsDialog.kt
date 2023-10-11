@@ -164,13 +164,14 @@ class SelectPlaylistItemsDialog(private val items: List<ResultItem?>, private va
                 val checkedResultItems = items.filter { item -> checkedItems.contains(item!!.url) }
                 if (checkedResultItems.size == 1){
                     val resultItem = resultViewModel.getItemByURL(checkedResultItems[0]!!.url)
-                    val bottomSheet = DownloadBottomSheetDialog(resultItem, type, null, false)
+                    val bottomSheet = DownloadBottomSheetDialog(resultItem, type)
                     bottomSheet.show(parentFragmentManager, "downloadSingleSheet")
                 }else{
                     val downloadItems = mutableListOf<DownloadItem>()
                     checkedResultItems.forEach { c ->
                         c!!.id = 0
-                        val i = downloadViewModel.createDownloadItemFromResult(c,type)
+                        val i = downloadViewModel.createDownloadItemFromResult(
+                            result = c, givenType = type)
                         if (type == DownloadViewModel.Type.command){
                             i.format = downloadViewModel.getLatestCommandTemplateAsFormat()
                         }
@@ -207,7 +208,7 @@ class SelectPlaylistItemsDialog(private val items: List<ResultItem?>, private va
         }
 
         toolbar.setNavigationOnClickListener {
-            requireActivity().finishAffinity()
+            dismiss()
         }
     }
 
@@ -224,9 +225,9 @@ class SelectPlaylistItemsDialog(private val items: List<ResultItem?>, private va
     private fun cleanup(){
         kotlin.runCatching {
             parentFragmentManager.beginTransaction().remove(parentFragmentManager.findFragmentByTag("downloadPlaylistSheet")!!).commit()
-            if (parentFragmentManager.fragments.size == 1){
-                (activity as ShareActivity).finish()
-            }
+        }
+        if (activity is ShareActivity){
+            (activity as ShareActivity).finishAffinity()
         }
     }
 

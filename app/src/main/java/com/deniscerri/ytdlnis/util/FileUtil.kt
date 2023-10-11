@@ -1,7 +1,9 @@
 package com.deniscerri.ytdlnis.util
 
+import android.app.Activity
 import android.content.ContentResolver
 import android.content.Context
+import android.content.Intent
 import android.database.Cursor
 import android.media.MediaScannerConnection
 import android.net.Uri
@@ -10,15 +12,21 @@ import android.os.Environment
 import android.provider.DocumentsContract
 import android.provider.MediaStore
 import android.util.Log
+import android.view.View
 import android.webkit.MimeTypeMap
+import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.net.toUri
 import androidx.documentfile.provider.DocumentFile
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import com.anggrayudi.storage.callback.FileCallback
 import com.anggrayudi.storage.callback.FolderCallback
 import com.anggrayudi.storage.file.copyFolderTo
 import com.anggrayudi.storage.file.getAbsolutePath
 import com.anggrayudi.storage.file.moveFileTo
 import com.deniscerri.ytdlnis.App
+import com.deniscerri.ytdlnis.R
 import com.yausername.youtubedl_android.YoutubeDLRequest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -250,7 +258,11 @@ object FileUtil {
     fun scanMedia(files: List<String>, context: Context) : List<String> {
         try {
             val paths = files.sortedByDescending { File(it).length() }
-            runCatching {MediaScannerConnection.scanFile(context, paths.toTypedArray(), null, null) }
+            runCatching {
+                paths.forEach {
+                    MediaScannerConnection.scanFile(context, arrayOf(it), null, null)
+                }
+            }
             return paths
         }catch (e: Exception){
             e.printStackTrace()
@@ -295,5 +307,21 @@ object FileUtil {
         val digitGroups = (log10(s.toDouble()) / log10(1024.0)).toInt()
         val symbols = DecimalFormatSymbols(Locale.US)
         return "${DecimalFormat("#,##0.#", symbols).format(s / 1024.0.pow(digitGroups.toDouble()))} ${units[digitGroups]}"
+    }
+
+    fun getURIFromResult(f: Fragment, a: FragmentActivity?, callback: (data: String) -> Unit) = f.registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            result.data?.data?.let {
+                a?.contentResolver?.takePersistableUriPermission(
+                    it,
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION or
+                            Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+                )
+            }
+
+            callback(result.data?.data.toString())
+        }
     }
 }

@@ -11,9 +11,13 @@ import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
+import com.deniscerri.ytdlnis.database.DBManager
+import com.deniscerri.ytdlnis.database.repository.DownloadRepository
+import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.util.NotificationUtil
 import com.deniscerri.ytdlnis.util.UpdateUtil
 import com.deniscerri.ytdlnis.work.UpdateYTDLWorker
+import com.google.android.material.snackbar.Snackbar
 import com.yausername.aria2c.Aria2c
 import com.yausername.ffmpeg.FFmpeg
 import com.yausername.youtubedl_android.YoutubeDL
@@ -44,34 +48,10 @@ class App : Application() {
                 initLibraries()
                 val appVer = sharedPreferences.getString("version", "")!!
                 if(appVer.isEmpty() || appVer != BuildConfig.VERSION_NAME){
-                    UpdateUtil(this@App).updateYoutubeDL()
                     sharedPreferences.edit(commit = true){
                         putString("version", BuildConfig.VERSION_NAME)
                     }
                 }
-
-                if (sharedPreferences.getBoolean("auto_update_ytdlp", true)){
-                    //init yt-dlp auto update with work request
-                    val constraints = Constraints.Builder()
-                        .setRequiredNetworkType(NetworkType.UNMETERED)
-                        .setRequiresDeviceIdle(true)
-                        .build()
-
-                    val periodicWorkRequest = PeriodicWorkRequestBuilder<UpdateYTDLWorker>(1, TimeUnit.DAYS)
-                        .setConstraints(constraints)
-                        .build()
-
-                    WorkManager.getInstance(this@App).enqueueUniquePeriodicWork(
-                        "ytdlp-Updater",
-                        ExistingPeriodicWorkPolicy.KEEP,
-                        periodicWorkRequest
-                    )
-                }else{
-                    WorkManager.getInstance(this@App).cancelUniqueWork("ytdlp-Updater")
-                }
-
-
-
             }catch (e: Exception){
                 Looper.prepare().runCatching {
                     Toast.makeText(this@App, e.message, Toast.LENGTH_SHORT).show()

@@ -80,6 +80,14 @@ class ActiveDownloadsFragment : Fragment(), ActiveDownloadAdapter.OnItemClickLis
                     workManager.cancelAllWorkByTag("download")
                     pauseResume.isEnabled = false
 
+                    // pause queued
+                    withContext(Dispatchers.IO){
+                        downloadViewModel.getQueued()
+                    }.forEach {
+                        it.status = DownloadRepository.Status.QueuedPaused.toString()
+                        downloadViewModel.updateDownload(it)
+                    }
+
                     // pause active
                     withContext(Dispatchers.IO){
                         downloadViewModel.getActiveDownloads()
@@ -89,13 +97,7 @@ class ActiveDownloadsFragment : Fragment(), ActiveDownloadAdapter.OnItemClickLis
                         downloadViewModel.updateDownload(it)
                     }
 
-                    // pause queued
-                    withContext(Dispatchers.IO){
-                        downloadViewModel.getQueued()
-                    }.forEach {
-                        it.status = DownloadRepository.Status.QueuedPaused.toString()
-                        downloadViewModel.updateDownload(it)
-                    }
+
 
                     activeDownloads.notifyDataSetChanged()
                     pauseResume.isEnabled = true

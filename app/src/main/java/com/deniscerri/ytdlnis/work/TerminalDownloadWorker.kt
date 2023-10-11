@@ -10,7 +10,6 @@ import android.widget.Toast
 import androidx.preference.PreferenceManager
 import androidx.work.CoroutineWorker
 import androidx.work.ForegroundInfo
-import androidx.work.Worker
 import androidx.work.WorkerParameters
 import androidx.work.workDataOf
 import com.deniscerri.ytdlnis.R
@@ -19,12 +18,13 @@ import com.deniscerri.ytdlnis.database.models.Format
 import com.deniscerri.ytdlnis.database.models.LogItem
 import com.deniscerri.ytdlnis.database.repository.LogRepository
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
-import com.deniscerri.ytdlnis.ui.more.TerminalActivity
+import com.deniscerri.ytdlnis.ui.more.terminal.TerminalActivity
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.InfoUtil
 import com.deniscerri.ytdlnis.util.NotificationUtil
 import com.yausername.youtubedl_android.YoutubeDL
 import com.yausername.youtubedl_android.YoutubeDLRequest
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -39,6 +39,7 @@ class TerminalDownloadWorker(
     override suspend fun doWork(): Result {
         itemId = inputData.getInt("id", 0)
         val command = inputData.getString("command")
+        val dao = DBManager.getInstance(context).terminalDao
         if (itemId == 0) return Result.failure()
         if (command!!.isEmpty()) return Result.failure()
 
@@ -59,10 +60,6 @@ class TerminalDownloadWorker(
         val sharedPreferences =  PreferenceManager.getDefaultSharedPreferences(context)
 
         val downloadLocation = sharedPreferences.getString("command_path", FileUtil.getDefaultCommandPath())
-
-        val outputFile = File(context.cacheDir.absolutePath + "/$itemId.txt")
-        if (! outputFile.exists()) outputFile.createNewFile()
-
         request.addOption(
             "--config-locations",
             File(context.cacheDir.absolutePath + "/config-TERMINAL[${System.currentTimeMillis()}].txt").apply {
@@ -135,9 +132,9 @@ class TerminalDownloadWorker(
             }
 
             return runBlocking {
-                it.out.chunked(10000).forEach {
+                it.out.split("\n").forEach {
                     setProgress(workDataOf("progress" to 100, "output" to it, "id" to itemId, "log" to logDownloads))
-                    Thread.sleep(100)
+                    Thread.sleep(50)
                 }
 
                 if (logDownloads){
@@ -146,13 +143,10 @@ class TerminalDownloadWorker(
                     }
                 }
                 notificationUtil.cancelDownloadNotification(itemId)
+                dao.delete(itemId.toLong())
                 return@runBlocking Result.success()
             }
         }.onFailure {
-            if (it is YoutubeDL.CanceledException) {
-                return Result.failure()
-            }
-
             return runBlocking {
                 it.message?.chunked(10000)?.forEach {
                     setProgress(workDataOf("progress" to 100, "output" to it, "id" to itemId, "log" to logDownloads))
@@ -169,7 +163,7 @@ class TerminalDownloadWorker(
                 File(FileUtil.getDefaultCommandPath() + "/" + itemId).deleteRecursively()
                 Log.e(TAG, context.getString(R.string.failed_download), it)
                 notificationUtil.cancelDownloadNotification(itemId)
-
+                dao.delete(itemId.toLong())
                 return@runBlocking Result.failure()
             }
 

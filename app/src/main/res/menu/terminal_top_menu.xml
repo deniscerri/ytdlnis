@@ -3,6 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item android:title=""
+        android:icon="@drawable/ic_plus"
+        app:showAsAction="always"
+        android:id="@+id/add"/>
+
+    <item android:title=""
         android:icon="@drawable/baseline_wrap_text_24"
         app:showAsAction="always"
         android:id="@+id/wrap"/>

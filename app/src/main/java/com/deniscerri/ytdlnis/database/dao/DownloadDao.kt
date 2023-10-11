@@ -20,7 +20,10 @@ interface DownloadDao {
     fun getActiveDownloadsCountFlow() : Flow<Int>
 
     @Query("SELECT COUNT(*) FROM downloads WHERE status in (:status)")
-    fun getDownloadsCountByStatus(status : List<String>) : Flow<Int>
+    fun getDownloadsCountByStatusFlow(status : List<String>) : Flow<Int>
+
+    @Query("SELECT COUNT(*) FROM downloads WHERE status in (:status)")
+    fun getDownloadsCountByStatus(status : List<String>) : Int
 
     @Query("SELECT * FROM downloads WHERE status='Active' or status='Paused'")
     fun getActiveAndPausedDownloadsList() : List<DownloadItem>

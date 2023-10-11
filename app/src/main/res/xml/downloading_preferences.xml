@@ -54,14 +54,12 @@
             app:title="@string/preferred_download_type" />
 
         <SeekBarPreference
-            app:dependency="aria2"
             android:defaultValue="3"
             android:icon="@drawable/ic_lines"
             android:max="25"
             app:key="concurrent_fragments"
             app:min="1"
             app:showSeekBarValue="true"
-            android:dependency="aria2"
             app:summary="@string/concurrent_fragments_summary"
             app:title="@string/concurrent_fragments" />
 

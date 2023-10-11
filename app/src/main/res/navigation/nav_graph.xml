@@ -66,9 +66,9 @@
     </fragment>
     <activity
         android:id="@+id/terminalActivity"
-        android:name="com.deniscerri.ytdlnis.ui.more.TerminalActivity"
+        android:name="com.deniscerri.ytdlnis.ui.more.terminal.TerminalActivity"
         android:label="activity_terminal"
-        tools:layout="@layout/activity_terminal" />
+        tools:layout="@layout/fragment_terminal" />
     <fragment
         android:id="@+id/cookiesFragment"
         android:name="com.deniscerri.ytdlnis.ui.more.CookiesFragment"

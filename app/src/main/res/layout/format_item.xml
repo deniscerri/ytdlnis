@@ -49,82 +49,120 @@
                 android:id="@+id/format_note"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                app:layout_constraintHorizontal_bias="0.0"
-                android:maxLines="2"
+                android:paddingStart="10dp"
                 android:ellipsize="end"
+                android:gravity="start"
+                android:maxLines="2"
                 android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
 
-            <LinearLayout
-                android:id="@+id/linearLayout"
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:layout_marginStart="10dp"
-                android:orientation="horizontal"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/format_id"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/format_note"
-                app:layout_constraintVertical_bias="1.0">
+                app:layout_constraintTop_toBottomOf="@id/format_note">
 
-
-                <TextView
-                    android:id="@+id/codec"
-                    style="@style/Widget.Material3.FloatingActionButton.Large.Secondary"
+                <HorizontalScrollView
                     android:layout_width="wrap_content"
+                    android:layout_marginEnd="10dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="5dp"
-                    android:background="@drawable/rounded_corner"
-                    android:backgroundTint="?attr/colorSecondary"
-                    android:clickable="false"
-                    android:ellipsize="end"
-                    android:gravity="center"
-                    android:maxLength="17"
-                    android:minWidth="30dp"
-                    android:paddingHorizontal="5dp"
-                    android:textStyle="bold"
-                    app:cornerRadius="10dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:layout_marginStart="10dp"
+                    android:scrollbars="none">
 
-                <TextView
-                    android:id="@+id/file_size"
-                    style="@style/Widget.Material3.FloatingActionButton.Large.Tertiary"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="5dp"
-                    android:background="@drawable/rounded_corner"
-                    android:backgroundTint="?attr/colorSecondary"
-                    android:clickable="false"
-                    android:gravity="center"
-                    android:minWidth="30dp"
-                    android:paddingHorizontal="5dp"
-                    android:textStyle="bold"
-                    app:cornerRadius="10dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    <LinearLayout
+                        android:id="@+id/linearLayout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:orientation="horizontal">
 
-            </LinearLayout>
+                        <TextView
+                            android:id="@+id/audio_formats"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="5dp"
+                            android:background="@drawable/rounded_corner"
+                            android:backgroundTint="?attr/colorPrimaryContainer"
+                            android:clickable="false"
+                            android:ellipsize="end"
+                            android:gravity="center"
+                            android:minWidth="30dp"
+                            android:paddingHorizontal="5dp"
+                            android:textColor="@color/white"
+                            android:textStyle="bold"
+                            app:cornerRadius="10dp"
+                            app:drawableStartCompat="@drawable/ic_music"
+                            app:drawableTint="@color/white"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+
+                        <TextView
+                            android:id="@+id/codec"
+                            style="@style/Widget.Material3.FloatingActionButton.Large.Secondary"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="5dp"
+                            android:background="@drawable/rounded_corner"
+                            android:backgroundTint="?attr/colorSecondary"
+                            android:clickable="false"
+                            android:ellipsize="end"
+                            android:gravity="center"
+                            android:maxLength="17"
+                            android:minWidth="30dp"
+                            android:paddingHorizontal="5dp"
+                            android:textStyle="bold"
+                            app:cornerRadius="10dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/file_size"
+                            style="@style/Widget.Material3.FloatingActionButton.Large.Tertiary"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="5dp"
+                            android:background="@drawable/rounded_corner"
+                            android:backgroundTint="?attr/colorSecondary"
+                            android:clickable="false"
+                            android:gravity="center"
+                            android:minWidth="30dp"
+                            android:paddingHorizontal="5dp"
+                            android:textStyle="bold"
+                            app:cornerRadius="10dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                    </LinearLayout>
+
+                </HorizontalScrollView>
+
+            </RelativeLayout>
 
             <TextView
                 android:id="@+id/format_id"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginBottom="3dp"
                 android:clickable="false"
                 android:gravity="bottom|end"
                 android:maxLength="10"
-                android:minWidth="30dp"
                 app:cornerRadius="10dp"
+                app:layout_constraintVertical_bias="1.0"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toEndOf="@+id/linearLayout"
                 app:layout_constraintTop_toBottomOf="@+id/format_note" />
 
 

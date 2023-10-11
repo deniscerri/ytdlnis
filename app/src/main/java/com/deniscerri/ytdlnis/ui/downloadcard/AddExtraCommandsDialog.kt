@@ -77,6 +77,7 @@ class AddExtraCommandsDialog(private val item: DownloadItem?, private val callba
 
     }
 
+    @SuppressLint("SetTextI18n")
     @androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -143,9 +144,14 @@ class AddExtraCommandsDialog(private val item: DownloadItem?, private val callba
         shortcuts.setOnClickListener {
             lifecycleScope.launch {
                 if (shortcutCount > 0){
-                    UiUtil.showShortcuts(requireActivity(), commandTemplateViewModel) {sh ->
-                        text.text.insert(text.selectionStart, " $sh ")
-                    }
+                    UiUtil.showShortcuts(requireActivity(), commandTemplateViewModel,
+                        itemSelected = {sh ->
+                            text.setText("${text.text} $sh")
+                        },
+                        itemRemoved = {removed ->
+                            text.setText(text.text.replace("(${Regex.escape(removed)})(?!.*\\1)".toRegex(), ""))
+                            text.setSelection(text.text.length)
+                        })
                 }
             }
         }

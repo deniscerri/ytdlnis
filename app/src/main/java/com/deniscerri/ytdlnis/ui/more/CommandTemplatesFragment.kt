@@ -133,7 +133,6 @@ class CommandTemplatesFragment : Fragment(), TemplatesAdapter.OnItemClickListene
     }
 
     override fun onSelected(commandTemplate: CommandTemplate) {
-        TODO("Not yet implemented")
     }
 
     override fun onDelete(commandTemplate: CommandTemplate) {

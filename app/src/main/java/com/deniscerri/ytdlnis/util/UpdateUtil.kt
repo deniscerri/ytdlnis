@@ -77,8 +77,8 @@ class UpdateUtil(var context: Context) {
                     .setTitle(v.tag_name)
                     .setMessage(v.body)
                     .setIcon(R.drawable.ic_update_app)
-                    .setNegativeButton("Cancel") { _: DialogInterface?, _: Int -> }
-                    .setPositiveButton("Update") { _: DialogInterface?, _: Int ->
+                    .setNegativeButton(context.resources.getString(R.string.cancel)) { _: DialogInterface?, _: Int -> }
+                    .setPositiveButton(context.resources.getString(R.string.update)) { _: DialogInterface?, _: Int ->
                         runCatching {
                             val releaseVersion = v.assets.firstOrNull { it.name.contains(Build.SUPPORTED_ABIS[0]) }
                             if (releaseVersion == null){

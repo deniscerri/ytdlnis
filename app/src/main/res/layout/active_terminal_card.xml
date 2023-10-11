@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_marginHorizontal="10dp"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="H,2:1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/active_download_card_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clickable="true"
+            android:focusable="true"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="10dp"
+            app:cardMaxElevation="12dp"
+            android:checkable="true"
+            app:strokeWidth="0dp"
+            app:cardPreventCornerOverlap="true"
+            android:layout_margin="10dp">
+
+                <com.google.android.material.progressindicator.LinearProgressIndicator
+                    android:id="@+id/progress"
+                    android:layout_width="match_parent"
+                    app:trackColor="#000"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="bottom"
+                    android:alpha="0.3"
+                    android:scaleY="200"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="0dp"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:paddingStart="10dp"
+                    android:paddingTop="10dp"
+                    android:paddingEnd="10dp"
+                    android:shadowColor="#000"
+                    android:fontFamily="monospace"
+                    android:shadowDx="4"
+                    android:shadowDy="4"
+                    android:shadowRadius="2"
+                    android:textColor="#FFF"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toStartOf="@+id/active_download_stop"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/active_download_stop"
+                    style="?attr/materialIconButtonFilledStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    app:backgroundTint="?attr/colorSurface"
+                    app:cornerRadius="15dp"
+                    app:icon="@drawable/baseline_close_24"
+                    app:iconSize="30dp"
+                    app:iconTint="?android:textColorPrimary"
+                    app:layout_constraintVertical_bias="0.0"
+                    app:layout_constraintBottom_toTopOf="@+id/output"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.constraintlayout.widget.Barrier
+                    android:id="@+id/barrier"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:barrierDirection="bottom"
+                    app:constraint_referenced_ids="title,active_download_stop" />
+
+                <TextView
+                    android:id="@+id/output"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:ellipsize="end"
+                    android:focusable="true"
+                    android:fontFamily="monospace"
+                    android:maxLines="5"
+                    android:padding="10dp"
+                    android:shadowColor="#000"
+                    android:shadowDx="4"
+                    android:shadowDy="4"
+                    android:shadowRadius="2"
+                    android:textColor="#FFF"
+                    android:textSize="11sp"
+                    android:gravity="bottom"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/barrier" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+    </RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

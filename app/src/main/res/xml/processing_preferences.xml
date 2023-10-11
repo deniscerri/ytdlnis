@@ -20,6 +20,15 @@
         app:summary="@string/select_sponsorblock_filtering"
         app:title="SponsorBlock" />
 
+    <EditTextPreference
+        android:dependency="use_sponsorblock"
+        app:icon="@drawable/ic_money"
+        app:key="sponsorblock_url"
+        app:useSimpleSummaryProvider="true"
+        app:defaultValue=""
+        app:title="@string/sponsorblock_api_url" />
+
+
     <SwitchPreferenceCompat
         android:widgetLayout="@layout/preferece_material_switch"
         app:defaultValue="false"
@@ -145,7 +154,15 @@
         android:entryValues="@array/video_codec_values"
         android:icon="@drawable/ic_code"
         app:key="video_codec"
-        app:title="@string/codec" />
+        app:title="@string/preferred_video_codec" />
+
+    <ListPreference
+        android:defaultValue=""
+        android:entries="@array/audio_codec"
+        android:entryValues="@array/audio_codec_values"
+        android:icon="@drawable/ic_code"
+        app:key="audio_codec"
+        app:title="@string/preferred_audio_codec" />
 
     <SwitchPreferenceCompat
         android:widgetLayout="@layout/preferece_material_switch"

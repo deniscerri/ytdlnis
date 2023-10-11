@@ -187,7 +187,6 @@ class CookiesFragment : Fragment(), CookieAdapter.OnItemClickListener {
     }
 
     override fun onSelected(cookie: CookieItem) {
-        TODO("Not yet implemented")
     }
 
     override fun onDelete(cookie: CookieItem) {

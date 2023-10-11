@@ -91,11 +91,14 @@ object UiUtil {
         if (container == "Default") container = context.getString(R.string.defaultValue)
 
         formatCard.findViewById<TextView>(R.id.container).text = container.uppercase()
-        if (audioFormats.isNullOrEmpty()){
-            formatCard.findViewById<TextView>(R.id.format_note).text = formatNote.uppercase()
+        formatCard.findViewById<TextView>(R.id.format_note).text = formatNote.uppercase()
+
+        val audioFormatsTextView = formatCard.findViewById<TextView>(R.id.audio_formats)
+        if (!audioFormats.isNullOrEmpty()) {
+            audioFormatsTextView.text = audioFormats.joinToString("+") { it.format_id }
+            audioFormatsTextView.visibility = View.VISIBLE
         }else{
-            val title = "${formatNote.uppercase()} + [${audioFormats.joinToString("/") { "(${it.format_id}) ${it.format_note}" }}]"
-            formatCard.findViewById<TextView>(R.id.format_note).text = title
+            audioFormatsTextView.visibility = View.GONE
         }
         formatCard.findViewById<TextView>(R.id.format_id).text = "id: ${chosenFormat.format_id}"
         val codec =
@@ -729,14 +732,18 @@ object UiUtil {
             bottomSheet.cancel()
         }
 
+        bottomSheet.setOnShowListener {
+            val behavior = bottomSheet.behavior
+            val displayMetrics = DisplayMetrics()
+            activity.windowManager.defaultDisplay.getMetrics(displayMetrics)
+            behavior.peekHeight = displayMetrics.heightPixels / 2
+        }
+
         bottomSheet.show()
-        bottomSheet.window!!.setLayout(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.MATCH_PARENT
-        )
+
     }
 
-    suspend fun showShortcuts(activity: Activity, commandTemplateViewModel: CommandTemplateViewModel, itemSelected: (itemSelected: String) -> Unit){
+    suspend fun showShortcuts(activity: Activity, commandTemplateViewModel: CommandTemplateViewModel, itemSelected: (itemSelected: String) -> Unit, itemRemoved: (itemRemoved: String) -> Unit){
         val bottomSheet = BottomSheetDialog(activity)
         bottomSheet.requestWindowFeature(Window.FEATURE_NO_TITLE)
         bottomSheet.setContentView(R.layout.template_shortcuts_list)
@@ -751,16 +758,24 @@ object UiUtil {
             val chip = activity.layoutInflater.inflate(R.layout.suggestion_chip, chipGroup, false) as Chip
             chip.text = shortcut.content
             chip.setOnClickListener {
-                itemSelected(shortcut.content)
+                if (chip.isChecked){
+                    itemSelected(shortcut.content)
+                }else{
+                    itemRemoved(shortcut.content)
+                }
             }
             chipGroup.addView(chip)
         }
 
+        bottomSheet.setOnShowListener {
+            val behavior = bottomSheet.behavior
+            val displayMetrics = DisplayMetrics()
+            activity.windowManager.defaultDisplay.getMetrics(displayMetrics)
+            behavior.peekHeight = displayMetrics.heightPixels / 3
+        }
+
         bottomSheet.show()
-        bottomSheet.window!!.setLayout(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.MATCH_PARENT
-        )
+
     }
 
     fun configureVideo(
@@ -913,7 +928,7 @@ object UiUtil {
             val inputLayout = context.layoutInflater.inflate(R.layout.textinput, null)
             val editText = inputLayout.findViewById<EditText>(R.id.url_edittext)
             inputLayout.findViewById<TextInputLayout>(R.id.url_textinput).hint = context.getString(R.string.file_name_template)
-            if (items.size == 1){
+            if (items.size == 1 || items.all { it.customFileNameTemplate == items[0].customFileNameTemplate }){
                 editText.setText(items[0].customFileNameTemplate)
             }
             editText.setSelection(editText.text.length)
@@ -936,7 +951,6 @@ object UiUtil {
                 editText.requestFocus()
                 imm.showSoftInput(editText, 0)
             }, 300)
-            dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = editText.text.isNotEmpty()
             dialog.getButton(AlertDialog.BUTTON_NEUTRAL).gravity = Gravity.START
         }
 
@@ -1013,7 +1027,7 @@ object UiUtil {
             val inputLayout = context.layoutInflater.inflate(R.layout.textinput, null)
             val editText = inputLayout.findViewById<EditText>(R.id.url_edittext)
             inputLayout.findViewById<TextInputLayout>(R.id.url_textinput).hint = context.getString(R.string.file_name_template)
-            if (items.size == 1){
+            if (items.size == 1 || items.all { it.customFileNameTemplate == items[0].customFileNameTemplate }){
                 editText.setText(items[0].customFileNameTemplate)
             }
             editText.setSelection(editText.text.length)
@@ -1036,7 +1050,6 @@ object UiUtil {
                 editText.requestFocus()
                 imm.showSoftInput(editText, 0)
             }, 300)
-            dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = editText.text.isNotEmpty()
             dialog.getButton(AlertDialog.BUTTON_NEUTRAL).gravity = Gravity.START
         }
 

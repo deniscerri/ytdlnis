@@ -64,18 +64,20 @@ class ResultViewModel(application: Application) : AndroidViewModel(application) 
             deleteAll()
         }
     }
-    suspend fun parseQueries(inputQueries: List<String>){
+    suspend fun parseQueries(inputQueries: List<String>) : MutableList<ResultItem?>{
         state = ResultsState.PROCESSING
-        if (inputQueries.size == 1){
+        return if (inputQueries.size == 1){
             parseQuery(inputQueries[0], true)
         }else {
             repository.itemCount.value = inputQueries.size
             loadingItems.postValue(true)
+            val items = mutableListOf<ResultItem?>()
             inputQueries.forEach {
-                parseQuery(it, false)
+                items.addAll(parseQuery(it, false))
             }
             state = ResultsState.IDLE
             loadingItems.postValue(false)
+            items
         }
     }
 

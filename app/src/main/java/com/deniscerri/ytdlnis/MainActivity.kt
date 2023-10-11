@@ -34,6 +34,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.preference.PreferenceManager
+import com.deniscerri.ytdlnis.database.DBManager
 import com.deniscerri.ytdlnis.database.repository.DownloadRepository
 import com.deniscerri.ytdlnis.database.viewmodel.CookieViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
@@ -51,9 +52,12 @@ import com.google.android.material.elevation.SurfaceColors
 import com.google.android.material.navigation.NavigationBarView
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.navigationrail.NavigationRailView
+import com.google.android.material.snackbar.Snackbar
+import com.yausername.youtubedl_android.YoutubeDL
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import java.io.BufferedReader
@@ -233,6 +237,19 @@ class MainActivity : BaseActivity() {
             "Queue" -> navController.navigate(R.id.downloadQueueMainFragment)
         }
 
+        if (sharedPreferences.getBoolean("auto_update_ytdlp", false)){
+            CoroutineScope(SupervisorJob()).launch(Dispatchers.IO) {
+                if(DBManager.getInstance(this@MainActivity).downloadDao.getDownloadsCountByStatus(listOf("Active", "Queued")) == 0){
+                    if (UpdateUtil(this@MainActivity).updateYoutubeDL() == YoutubeDL.UpdateStatus.DONE) {
+                        val version = YoutubeDL.getInstance().version(context)
+                        Snackbar.make(findViewById(android.R.id.content),
+                            this@MainActivity.getString(R.string.ytld_update_success) + " [${version}]",
+                            Snackbar.LENGTH_LONG).show()
+                    }
+                }
+
+            }
+        }
     }
 
     override fun onSaveInstanceState(savedInstanceState: Bundle) {
@@ -350,8 +367,7 @@ class MainActivity : BaseActivity() {
                         Toast.makeText(context, "Couldn't read file", Toast.LENGTH_LONG).show()
                         return
                     }
-                    val item = downloadViewModel.createEmptyResultItem(f.absolutePath)
-                    val bottomSheet = DownloadBottomSheetDialog(item, DownloadViewModel.Type.command, null, true)
+                    val bottomSheet = DownloadBottomSheetDialog(type = DownloadViewModel.Type.command, result = downloadViewModel.createEmptyResultItem(f.absolutePath))
                     bottomSheet.show(supportFragmentManager, "downloadSingleSheet")
                 }else{
                     val `is` = contentResolver.openInputStream(uri!!)

@@ -33,36 +33,28 @@ class ResultRepository(private val resultDao: ResultDao, private val context: Co
 
     suspend fun search(inputQuery: String, resetResults: Boolean) : ArrayList<ResultItem?>{
         val infoUtil = InfoUtil(context)
-        try{
-            if (resetResults) deleteAll()
-            val res = infoUtil.search(inputQuery)
-            itemCount.value = res.size
-            res.forEach {
-                resultDao.insert(it!!)
-            }
-            return res
-        }catch (ignored: Exception){}
-        return arrayListOf()
+        if (resetResults) deleteAll()
+        val res = infoUtil.search(inputQuery)
+        itemCount.value = res.size
+        res.forEach {
+            resultDao.insert(it!!)
+        }
+        return res
     }
 
     suspend fun getOne(inputQuery: String, resetResults: Boolean) : ArrayList<ResultItem?>{
         val infoUtil = InfoUtil(context)
-        try {
-            val v = infoUtil.getYoutubeVideo(inputQuery)
-            if (resetResults) {
-                deleteAll()
-                itemCount.value = v.size
-            }else{
-                v.forEach { it?.playlistTitle = "ytdlnis-Search" }
-            }
-            v.forEach {
-                resultDao.insert(it!!)
-            }
-            return ArrayList(v)
-        } catch (e: Exception) {
-            Log.e(tag, e.toString())
+        val v = infoUtil.getYoutubeVideo(inputQuery)
+        if (resetResults) {
+            deleteAll()
+            itemCount.value = v.size
+        }else{
+            v.forEach { it?.playlistTitle = "ytdlnis-Search" }
         }
-        return arrayListOf()
+        v.forEach {
+            resultDao.insert(it!!)
+        }
+        return ArrayList(v)
     }
 
     suspend fun getPlaylist(inputQuery: String, resetResults: Boolean) : ArrayList<ResultItem?>{

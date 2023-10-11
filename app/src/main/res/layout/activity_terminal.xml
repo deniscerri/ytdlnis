@@ -1,121 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.deniscerri.ytdlnis.ui.more.TerminalActivity">
+    android:fitsSystemWindows="true"
+    tools:context=".ui.more.terminal.TerminalActivity">
 
     <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:liftOnScroll="true"
         android:background="@android:color/transparent"
-        android:fitsSystemWindows="true">
+        android:fitsSystemWindows="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:liftOnScroll="true">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/custom_command_toolbar"
-            android:elevation="0dp"
-            app:title="@string/terminal"
-            app:menu="@menu/terminal_top_menu"
             android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:elevation="0dp"
+            app:menu="@menu/terminal_top_menu"
             app:navigationIcon="@drawable/ic_back"
-            android:layout_height="match_parent"/>
+            app:title="@string/terminal" />
 
 
     </com.google.android.material.appbar.AppBarLayout>
 
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/frame_layout"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:defaultNavHost="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/appbar"
+        app:navGraph="@navigation/terminal_graph" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
-        android:layout_height="match_parent">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toTopOf="@+id/coordinatorLayout"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <ScrollView
-                android:id="@+id/custom_command_scrollview"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="10dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:focusableInTouchMode="true"
-                    android:orientation="vertical">
-
-                    <HorizontalScrollView
-                        android:id="@+id/horizontalscroll_output"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-                        <TextView
-                            android:id="@+id/custom_command_output"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="monospace"
-                            android:gravity="bottom"
-                            android:textSize="15sp"
-                            android:scrollbars="horizontal|vertical"
-                            android:scrollHorizontally="true"
-                            android:textIsSelectable="true" />
-
-                    </HorizontalScrollView>
-
-                    <EditText
-                        android:id="@+id/command_edittext"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@android:color/transparent"
-                        android:fontFamily="monospace"
-                        android:gravity="start"
-                        android:inputType="textMultiLine|textNoSuggestions"
-                        android:maxLines="100"
-                        android:text="yt-dlp "
-                        android:textSize="15sp" />
-
-                </LinearLayout>
-
-            </ScrollView>
-        </LinearLayout>
-
-
-        <androidx.coordinatorlayout.widget.CoordinatorLayout
-            android:id="@+id/coordinatorLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
-
-            <com.google.android.material.bottomappbar.BottomAppBar
-                android:id="@+id/bottomAppBar"
-                style="@style/Widget.Material3.BottomAppBar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                app:menu="@menu/terminal_menu" />
-
-            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-                android:id="@+id/command_fab"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/run_command"
-                app:icon="@drawable/ic_baseline_keyboard_arrow_right_24"
-                app:layout_anchor="@id/bottomAppBar" />
-
-        </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
-
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

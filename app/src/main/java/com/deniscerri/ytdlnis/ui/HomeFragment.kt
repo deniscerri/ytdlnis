@@ -6,8 +6,6 @@ import android.content.*
 import android.content.Context.CLIPBOARD_SERVICE
 import android.content.res.ColorStateList
 import android.graphics.Color
-import android.graphics.drawable.ShapeDrawable
-import android.graphics.drawable.shapes.OvalShape
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -23,8 +21,6 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.children
 import androidx.core.view.forEach
-import androidx.core.view.forEachIndexed
-import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -45,7 +41,6 @@ import com.deniscerri.ytdlnis.ui.downloadcard.ResultCardDetailsDialog
 import com.deniscerri.ytdlnis.util.InfoUtil
 import com.deniscerri.ytdlnis.util.ThemeUtil
 import com.deniscerri.ytdlnis.util.UiUtil.enableFastScroll
-import com.devbrackets.android.exomedia.core.video.mp.NativeVideoDelegate
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.MaterialToolbar
@@ -61,7 +56,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import me.zhanghai.android.fastscroll.FastScrollerBuilder
 import java.util.*
 
 
@@ -168,7 +162,10 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
             }else if (resultViewModel.repository.itemCount.value == 1){
                 if (sharedPreferences!!.getBoolean("download_card", true)){
                     if(it.size == 1 && quickLaunchSheet && parentFragmentManager.findFragmentByTag("downloadSingleSheet") == null){
-                        showSingleDownloadSheet(it[0], DownloadViewModel.Type.valueOf(sharedPreferences!!.getString("preferred_download_type", "video")!!), false)
+                        showSingleDownloadSheet(
+                            it[0],
+                            DownloadViewModel.Type.valueOf(sharedPreferences!!.getString("preferred_download_type", "video")!!)
+                        )
                     }
                 }
             }else{
@@ -212,7 +209,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
         if (arguments?.getString("url") != null){
             val url = requireArguments().getString("url")
             if (inputQueries == null) inputQueries = mutableListOf()
-            searchBar?.text = url
+            searchBar?.setText(url)
             val argList = url!!.split("\n").toMutableList()
             argList.removeAll(listOf("", null))
             inputQueries!!.addAll(argList)
@@ -242,18 +239,6 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
             }
         }
 
-        if (arguments?.getBoolean("showDownloadsWithUpdatedFormats") == true){
-            CoroutineScope(Dispatchers.IO).launch {
-                val ids = arguments?.getLongArray("downloadIds")
-                val items = mutableListOf<DownloadItem>()
-                ids?.forEach {
-                    items.add(downloadViewModel.getItemByID(it))
-                }
-                val bottomSheet = DownloadMultipleBottomSheetDialog(items.toMutableList())
-                bottomSheet.show(parentFragmentManager, "downloadMultipleSheet")
-            }
-        }
-
     }
 
     override fun onResume() {
@@ -267,7 +252,20 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
         }else{
             arguments?.remove("url")
         }
-        arguments?.remove("showDownloadsWithUpdatedFormats")
+
+        if (arguments?.getBoolean("showDownloadsWithUpdatedFormats") == true){
+            arguments?.remove("showDownloadsWithUpdatedFormats")
+            CoroutineScope(Dispatchers.IO).launch {
+                val ids = arguments?.getLongArray("downloadIds")
+                val items = mutableListOf<DownloadItem>()
+                ids?.forEach {
+                    items.add(downloadViewModel.getItemByID(it))
+                }
+                val bottomSheet = DownloadMultipleBottomSheetDialog(items.toMutableList())
+                bottomSheet.show(parentFragmentManager, "downloadMultipleSheet")
+            }
+        }
+
         if (searchView?.currentTransitionState == SearchView.TransitionState.SHOWN){
             lifecycleScope.launch {
                 updateSearchViewItems(searchView?.editText?.text, linkYouCopied)
@@ -412,7 +410,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
                 R.id.delete_results -> {
                     resultViewModel.getTrending()
                     selectedObjects = ArrayList()
-                    searchBar!!.text = ""
+                    searchBar!!.setText("")
                     downloadAllFabCoordinator!!.visibility = GONE
                     downloadFabs!!.visibility = GONE
                 }
@@ -538,7 +536,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
 
         if (queryList.isEmpty()) return
         if (queryList.size == 1){
-            searchBar!!.text = searchView.text
+            searchBar!!.setText(searchView.text)
         }
 
         searchView.hide()
@@ -552,13 +550,18 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
             Thread.sleep(300)
             if(sharedPreferences!!.getBoolean("quick_download", false) || sharedPreferences!!.getString("preferred_download_type", "video") == "command"){
                 if (queryList.size == 1 && queryList.first().matches("(https?://(?:www\\.|(?!www))[a-zA-Z\\d][a-zA-Z\\d-]+[a-zA-Z\\d]\\.\\S{2,}|www\\.[a-zA-Z\\d][a-zA-Z\\d-]+[a-zA-Z\\d]\\.\\S{2,}|https?://(?:www\\.|(?!www))[a-zA-Z\\d]+\\.\\S{2,}|www\\.[a-zA-Z\\d]+\\.\\S{2,})".toRegex())){
-                    val resultItem = downloadViewModel.createEmptyResultItem(queryList.first())
                     if (sharedPreferences!!.getBoolean("download_card", true)) {
-                        showSingleDownloadSheet(resultItem, DownloadViewModel.Type.valueOf(sharedPreferences!!.getString("preferred_download_type", "video")!!), true)
+                        showSingleDownloadSheet(
+                            resultItem = downloadViewModel.createEmptyResultItem(queryList.first()),
+                            type = DownloadViewModel.Type.valueOf(sharedPreferences!!.getString("preferred_download_type", "video")!!)
+                        )
                     } else {
                         lifecycleScope.launch{
                             val downloadItem = withContext(Dispatchers.IO){
-                                downloadViewModel.createDownloadItemFromResult(resultItem, DownloadViewModel.Type.valueOf(sharedPreferences!!.getString("preferred_download_type", "video")!!))
+                                downloadViewModel.createDownloadItemFromResult(
+                                    result = downloadViewModel.createEmptyResultItem(queryList.first()),
+                                    givenType = DownloadViewModel.Type.valueOf(sharedPreferences!!.getString("preferred_download_type", "video")!!)
+                                )
                             }
                             downloadViewModel.queueDownloads(listOf(downloadItem))
                         }
@@ -585,11 +588,13 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
         Log.e(TAG, resultsList!![0].toString() + " " + videoURL)
         recyclerView!!.findViewWithTag<MaterialButton>("""${item?.url}##$type""")
         if (sharedPreferences!!.getBoolean("download_card", true)) {
-            showSingleDownloadSheet(item!!, type!!, false)
+            showSingleDownloadSheet(item!!, type!!)
         } else {
             lifecycleScope.launch{
                 val downloadItem = withContext(Dispatchers.IO){
-                    downloadViewModel.createDownloadItemFromResult(item!!, type!!)
+                    downloadViewModel.createDownloadItemFromResult(
+                        result = item!!,
+                        givenType = type!!)
                 }
                 downloadViewModel.queueDownloads(listOf(downloadItem))
             }
@@ -599,11 +604,14 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
     override fun onLongButtonClick(videoURL: String, type: DownloadViewModel.Type?) {
         Log.e(TAG, type.toString() + " " + videoURL)
         val item = resultsList!!.find { it?.url == videoURL }
-        showSingleDownloadSheet(item!!, type!!, false)
+        showSingleDownloadSheet(item!!, type!!)
     }
 
-    private fun showSingleDownloadSheet(resultItem : ResultItem, type: DownloadViewModel.Type, quickDownload: Boolean){
-        val bottomSheet = DownloadBottomSheetDialog(resultItem, downloadViewModel.getDownloadType(type, resultItem.url), null, quickDownload)
+    private fun showSingleDownloadSheet(
+        resultItem: ResultItem,
+        type: DownloadViewModel.Type
+    ){
+        val bottomSheet = DownloadBottomSheetDialog(resultItem, downloadViewModel.getDownloadType(type, resultItem.url))
         bottomSheet.show(parentFragmentManager, "downloadSingleSheet")
     }
 
@@ -696,7 +704,10 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
                 R.id.download -> {
                     lifecycleScope.launch {
                         if (sharedPreferences!!.getBoolean("download_card", true) && selectedObjects!!.size == 1) {
-                            showSingleDownloadSheet(selectedObjects!![0], DownloadViewModel.Type.valueOf(sharedPreferences!!.getString("preferred_download_type", "video")!!), false)
+                            showSingleDownloadSheet(
+                                selectedObjects!![0],
+                                DownloadViewModel.Type.valueOf(sharedPreferences!!.getString("preferred_download_type", "video")!!)
+                            )
                         }else{
                             val downloadList = withContext(Dispatchers.IO){
                                 downloadViewModel.turnResultItemsToDownloadItems(selectedObjects!!)
@@ -704,7 +715,10 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
 
                             if (sharedPreferences!!.getBoolean("download_card", true)) {
                                 if (selectedObjects!!.size == 1){
-                                    showSingleDownloadSheet(selectedObjects!![0], DownloadViewModel.Type.valueOf(sharedPreferences!!.getString("preferred_download_type", "video")!!), false)
+                                    showSingleDownloadSheet(
+                                        selectedObjects!![0],
+                                        DownloadViewModel.Type.valueOf(sharedPreferences!!.getString("preferred_download_type", "video")!!)
+                                    )
                                 }else{
                                     val bottomSheet = DownloadMultipleBottomSheetDialog(downloadList.toMutableList())
                                     bottomSheet.show(parentFragmentManager, "downloadMultipleSheet")

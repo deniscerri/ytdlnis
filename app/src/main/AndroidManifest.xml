@@ -93,7 +93,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.more.TerminalActivity"
+            android:name=".ui.more.terminal.TerminalActivity"
             android:configChanges="smallestScreenSize|layoutDirection|locale|orientation|screenSize"
             android:exported="true"
             android:label="@string/terminal"
@@ -107,7 +107,7 @@
 
         <activity-alias
             android:name=".terminalShareAlias"
-            android:targetActivity=".ui.more.TerminalActivity"
+            android:targetActivity=".ui.more.terminal.TerminalActivity"
             android:enabled="false"
             android:icon="@mipmap/terminal_icon"
             android:roundIcon="@mipmap/terminal_icon_round"
@@ -209,6 +209,16 @@
                 <action android:name="ytdlnis.ResumeActivity" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
+        </activity>
+
+
+        <activity
+            android:name=".ui.ErrorDialogActivity"
+            android:configChanges="smallestScreenSize|layoutDirection|locale|orientation|screenSize"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:launchMode="singleInstance"
+            android:theme="@style/Theme.BottomSheet">
         </activity>
 
         <service

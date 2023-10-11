@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView android:layout_width="match_parent"
+<androidx.core.widget.NestedScrollView xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:scrollbars="none"
     android:orientation="vertical"
     android:layout_height="wrap_content"
@@ -22,6 +23,29 @@
             android:orientation="horizontal"
             android:paddingTop="20dp">
 
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toStartOf="@+id/bottomsheet_schedule_button"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:id="@+id/shimmer_loading_title"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/bottom_sheet_loading_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxLines="2"
+                    android:singleLine="false"
+                    android:text="@string/loading"
+                    android:textSize="25sp" />
+
+            </com.facebook.shimmer.ShimmerFrameLayout>
+
 
             <TextView
                 android:id="@+id/bottom_sheet_title"
@@ -36,6 +60,27 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintEnd_toStartOf="@+id/bottomsheet_schedule_button"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/shimmer_loading_title"
+                android:id="@+id/shimmer_loading_subtitle"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxLines="2"
+                    android:singleLine="false"
+                    android:text="@string/please_wait"
+                    android:textSize="12sp" />
+
+            </com.facebook.shimmer.ShimmerFrameLayout>
 
             <TextView
                 android:id="@+id/bottom_sheet_subtitle"

@@ -8,6 +8,7 @@ import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
+import androidx.compose.runtime.invalidateGroupsWithKey
 import androidx.core.view.forEach
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
@@ -212,24 +213,7 @@ class FormatSelectionBottomSheetDialog(private val items: List<DownloadItem?>, p
                 selectedVideo =
                     chosenFormats.filter { it.vcodec.isNotBlank() && it.vcodec != "none" }.maxByOrNull { it.filesize }!!
             }
-
-            //simple video format selection
-            if (items.size == 1){
-                listener.onFormatClick(formats, listOf(FormatTuple(selectedVideo, selectedAudios)))
-            }else{
-                //playlist format selection
-                val selectedFormats = mutableListOf<Format>()
-                formatCollection.forEach {
-                    selectedFormats.add(it.first{ f -> f.format_id == selectedVideo.format_id})
-                }
-                if (selectedFormats.isEmpty()) {
-                    items.forEach { _ ->
-                        selectedFormats.add(selectedVideo)
-                    }
-                }
-                listener.onFormatClick(formats, selectedFormats.map { FormatTuple(it, selectedAudios) })
-            }
-
+            returnFormats()
             dismiss()
         }
 
@@ -237,9 +221,30 @@ class FormatSelectionBottomSheetDialog(private val items: List<DownloadItem?>, p
             refreshBtn.performClick()
         }
     }
+
+    private fun returnFormats(){
+        //simple video format selection
+        if (items.size == 1){
+            listener.onFormatClick(formats, listOf(FormatTuple(selectedVideo, selectedAudios)))
+        }else{
+            //playlist format selection
+            val selectedFormats = mutableListOf<Format>()
+            formatCollection.forEach {
+                selectedFormats.add(it.first{ f -> f.format_id == selectedVideo.format_id})
+            }
+            if (selectedFormats.isEmpty()) {
+                items.forEach { _ ->
+                    selectedFormats.add(selectedVideo)
+                }
+            }
+            listener.onFormatClick(formats, selectedFormats.map { FormatTuple(it, selectedAudios) })
+        }
+
+    }
+
     private fun addFormatsToView(){
         //sort
-        val finalFormats: List<Format> = when(sortBy){
+        var finalFormats: List<Format> = when(sortBy){
             FormatSorting.container -> chosenFormats.groupBy { it.container }.flatMap { it.value }
             FormatSorting.id -> chosenFormats.sortedBy { it.format_id }
             FormatSorting.codec -> {
@@ -276,6 +281,14 @@ class FormatSelectionBottomSheetDialog(private val items: List<DownloadItem?>, p
             }
         }
 
+        if (finalFormats.isEmpty()){
+            finalFormats = if (items.first()?.type == Type.audio){
+                infoUtil.getGenericAudioFormats(requireContext().resources)
+            }else{
+                infoUtil.getGenericVideoFormats(requireContext().resources)
+            }
+        }
+
         for (i in 0.. finalFormats.lastIndex){
             val format = finalFormats[i]
             val formatItem = LayoutInflater.from(context).inflate(R.layout.format_item, null)
@@ -287,7 +300,7 @@ class FormatSelectionBottomSheetDialog(private val items: List<DownloadItem?>, p
                     val clickedCard = (clickedformat as MaterialCardView)
                     if (format.vcodec.isNotBlank() && format.vcodec != "none") {
                         if (clickedCard.isChecked) {
-                            listener.onFormatClick(formats, listOf(FormatTuple(format, null)))
+                            returnFormats()
                             dismiss()
                         }
                         videoFormatList.forEach { (it as MaterialCardView).isChecked = false }

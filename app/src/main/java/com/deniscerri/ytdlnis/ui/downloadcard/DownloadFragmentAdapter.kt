@@ -4,21 +4,41 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.models.ResultItem
 
 class DownloadFragmentAdapter (
-    private val resultItem: ResultItem,
     fragmentManager : FragmentManager,
     lifecycle : Lifecycle,
-    private val fragments: List<Fragment>
+    private var result: ResultItem,
+    private var downloadItem: DownloadItem?
 ) : FragmentStateAdapter(fragmentManager, lifecycle) {
 
+    fun setResultItem(res: ResultItem){
+        result = res
+    }
+
+    fun setDownloadItem(dd: DownloadItem){
+        downloadItem = dd
+    }
+
+    fun setTitleAuthor(t: String, a: String){
+        result.title = t
+        result.author = a
+        downloadItem?.title = t
+        downloadItem?.author = a
+    }
+
     override fun getItemCount(): Int {
-        return fragments.size
+        return 3
     }
 
     override fun createFragment(position: Int): Fragment {
-        return fragments[position]
+        return when(position){
+            0 -> DownloadAudioFragment(result, downloadItem)
+            1 -> DownloadVideoFragment(result, downloadItem)
+            else -> DownloadCommandFragment(result, downloadItem)
+        }
     }
 
 }

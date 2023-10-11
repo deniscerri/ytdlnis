@@ -46,13 +46,9 @@ import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import java.io.File
-import java.text.SimpleDateFormat
-import java.util.Calendar
 import java.util.Locale
 import java.util.concurrent.TimeUnit
 
@@ -84,6 +80,7 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
     private var audioContainer: String?
     private var videoContainer: String?
     private var videoCodec: String?
+    private var audioCodec: String?
     private val dao: DownloadDao
 
     enum class Type {
@@ -155,6 +152,7 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
         }
 
         videoCodec = sharedPreferences.getString("video_codec", "")
+        audioCodec = sharedPreferences.getString("audio_codec", "")
     }
 
     fun deleteDownload(id: Long) = viewModelScope.launch(Dispatchers.IO) {
@@ -188,7 +186,9 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
         }
     }
 
-    fun createDownloadItemFromResult(resultItem: ResultItem, givenType: Type) : DownloadItem {
+    fun createDownloadItemFromResult(result: ResultItem?, url: String = "", givenType: Type) : DownloadItem {
+        val resultItem = result ?: createEmptyResultItem(url)
+
         val embedSubs = sharedPreferences.getBoolean("embed_subtitles", false)
         val saveSubs = sharedPreferences.getBoolean("write_subtitles", false)
         val addChapters = sharedPreferences.getBoolean("add_chapters", false)
@@ -386,12 +386,12 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
             Type.audio -> {
                 return cloneFormat (
                     try {
-                        try{
-                            formats.filter { it.format_note.contains("audio", ignoreCase = true)}
-                                .firstOrNull { audioFormatIDPreference.indexOfFirst { a -> a.contains(it.format_id) } >= 0 || it.container == audioContainer} ?: throw Exception()
-                        }catch (e: Exception){
-                            formats.first { it.format_note.contains("audio", ignoreCase = true) }
-                        }
+                        val theFormats = formats.filter { it.format_note.contains("audio", ignoreCase = true) }
+                        val requirements: MutableList<(Format) -> Boolean> = mutableListOf()
+                        requirements.add {it: Format -> audioFormatIDPreference.contains(it.format_id)}
+                        requirements.add {it: Format -> it.container == audioContainer }
+                        requirements.add {it: Format -> "^(${audioCodec}).+$".toRegex(RegexOption.IGNORE_CASE).matches(it.acodec)}
+                        theFormats.maxByOrNull { f -> requirements.count{req -> req(f)} } ?: throw Exception()
                     }catch (e: Exception){
                         bestAudioFormat
                     }
@@ -408,7 +408,7 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
                             }
                             else /*best*/ -> {
                                 val requirements: MutableList<(Format) -> Boolean> = mutableListOf()
-                                requirements.add { it: Format -> formatIDPreference.sorted().contains(it.format_id) }
+                                requirements.add { it: Format -> formatIDPreference.contains(it.format_id) }
                                 requirements.add { it: Format -> if (videoContainer == "mp4") it.container.equals("mpeg_4", true) else it.container.equals(videoContainer, true)}
                                 requirements.add { it: Format -> it.format_note.contains(videoQualityPreference.split("_")[0].dropLast(1)) }
                                 requirements.add { it: Format -> "^(${videoCodec}).+$".toRegex(RegexOption.IGNORE_CASE).matches(it.vcodec)}
@@ -451,7 +451,7 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
         var preferredType = sharedPreferences.getString("preferred_download_type", "video")
         items.forEach {
             preferredType = getDownloadType(Type.valueOf(preferredType!!), it!!.url).toString()
-            list.add(createDownloadItemFromResult(it, Type.valueOf(preferredType!!)))
+            list.add(createDownloadItemFromResult(result = it, givenType = Type.valueOf(preferredType!!)))
         }
         return list
     }
@@ -656,7 +656,7 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
     }
 
     fun getTotalSize(status: List<DownloadRepository.Status>) : LiveData<Int> {
-        return dbManager.downloadDao.getDownloadsCountByStatus(status.map { it.toString() }).asLiveData()
+        return dbManager.downloadDao.getDownloadsCountByStatusFlow(status.map { it.toString() }).asLiveData()
     }
 
     fun checkAllQueuedItemsAreScheduledAfterNow(items: List<Long>, inverted: Boolean, currentStartTime: Long) : Boolean {

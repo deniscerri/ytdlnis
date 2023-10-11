@@ -1,17 +1,17 @@
-package com.deniscerri.ytdlnis.ui.more
+package com.deniscerri.ytdlnis.ui.more.terminal
 
 import android.app.ActionBar.LayoutParams
 import android.app.Activity
 import android.content.ClipboardManager
-import android.content.Context
+import android.content.Context.CLIPBOARD_SERVICE
+import android.content.Context.INPUT_METHOD_SERVICE
 import android.content.Intent
 import android.content.SharedPreferences
-import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.util.DisplayMetrics
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
@@ -23,22 +23,27 @@ import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.forEach
+import androidx.core.view.get
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceManager
-import androidx.work.Data
-import androidx.work.ExistingWorkPolicy
-import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
+import androidx.work.workDataOf
 import com.deniscerri.ytdlnis.R
+import com.deniscerri.ytdlnis.database.models.TerminalItem
 import com.deniscerri.ytdlnis.database.viewmodel.CommandTemplateViewModel
-import com.deniscerri.ytdlnis.ui.BaseActivity
+import com.deniscerri.ytdlnis.database.viewmodel.TerminalViewModel
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.NotificationUtil
 import com.deniscerri.ytdlnis.util.UiUtil
 import com.deniscerri.ytdlnis.util.UiUtil.enableTextHighlight
-import com.deniscerri.ytdlnis.work.TerminalDownloadWorker
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
@@ -46,13 +51,13 @@ import com.yausername.youtubedl_android.YoutubeDL
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.io.File
 import kotlin.properties.Delegates
 
 
-class TerminalActivity : BaseActivity() {
+class TerminalFragment : Fragment() {
     private var topAppBar: MaterialToolbar? = null
     private lateinit var notificationUtil: NotificationUtil
+    private lateinit var terminalViewModel: TerminalViewModel
     private var output: TextView? = null
     private var input: EditText? = null
     private var fab: ExtendedFloatingActionButton? = null
@@ -60,35 +65,68 @@ class TerminalActivity : BaseActivity() {
     private lateinit var bottomAppBar: BottomAppBar
     private lateinit var commandTemplateViewModel: CommandTemplateViewModel
     private lateinit var sharedPreferences: SharedPreferences
-    private var downloadID by Delegates.notNull<Int>()
-    private lateinit var downloadFile : File
+    private var downloadID by Delegates.notNull<Long>()
     private lateinit var imm : InputMethodManager
     private lateinit var metrics: DisplayMetrics
-    var context: Context? = null
 
-    public override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_terminal)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        terminalViewModel = ViewModelProvider(this)[TerminalViewModel::class.java]
+        downloadID = 0
+        return inflater.inflate(R.layout.fragment_terminal, container, false)
+    }
 
-        downloadID = savedInstanceState?.getInt("downloadID") ?: (System.currentTimeMillis().toInt() % 100000)
-        downloadFile = File(cacheDir.absolutePath + "/$downloadID.txt")
-        if (! downloadFile.exists()) downloadFile.createNewFile()
-        imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
 
-        context = baseContext
-        scrollView = findViewById(R.id.custom_command_scrollview)
-        topAppBar = findViewById(R.id.custom_command_toolbar)
-        topAppBar!!.setNavigationOnClickListener { onBackPressedDispatcher.onBackPressed() }
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString("input", input?.text.toString())
+        outState.putString("output", output?.text.toString())
+        outState.putBoolean("run", fab!!.text == getString(R.string.run_command))
+        outState.putLong("downloadID", downloadID)
+    }
+
+    override fun onResume() {
+        arguments?.remove("id")
+        arguments?.remove("share")
+        super.onResume()
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        var bundle = savedInstanceState
+        imm = requireActivity().getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        scrollView = view.findViewById(R.id.custom_command_scrollview)
+        topAppBar = requireActivity().findViewById(R.id.custom_command_toolbar)
+        topAppBar!!.setNavigationOnClickListener { requireActivity().finish() }
+
+        input = view.findViewById(R.id.command_edittext)
+
+        if (arguments?.getLong("id") != null){
+            downloadID = requireArguments().getLong("id")
+            if(downloadID != 0L){
+                input!!.visibility = View.GONE
+            }
+        }
+
+        if (arguments?.containsKey("share") == true){
+            if (bundle == null){
+                bundle = Bundle()
+            }
+            bundle.putString("input", arguments?.getString("share"))
+        }
 
         commandTemplateViewModel = ViewModelProvider(this)[CommandTemplateViewModel::class.java]
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
         metrics = DisplayMetrics()
-        windowManager.defaultDisplay.getMetrics(metrics)
+        requireActivity().windowManager.defaultDisplay.getMetrics(metrics)
 
 
-        bottomAppBar = findViewById(R.id.bottomAppBar)
+        bottomAppBar = view.findViewById(R.id.bottomAppBar)
         var templateCount = 0
         var shortcutCount = 0
+
         lifecycleScope.launch {
             templateCount = withContext(Dispatchers.IO){
                 commandTemplateViewModel.getTotalNumber()
@@ -112,10 +150,10 @@ class TerminalActivity : BaseActivity() {
             when(it.itemId){
                 R.id.command_templates -> {
                     if (templateCount == 0){
-                        Toast.makeText(context, getString(R.string.add_template_first), Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), getString(R.string.add_template_first), Toast.LENGTH_SHORT).show()
                     }else{
                         lifecycleScope.launch {
-                            UiUtil.showCommandTemplates(this@TerminalActivity, commandTemplateViewModel){ templates ->
+                            UiUtil.showCommandTemplates(requireActivity(), commandTemplateViewModel){ templates ->
                                 templates.forEach {c ->
                                     input!!.text.insert(input!!.selectionStart, c.content + " ")
                                 }
@@ -130,9 +168,14 @@ class TerminalActivity : BaseActivity() {
                 R.id.shortcuts -> {
                     lifecycleScope.launch {
                         if (shortcutCount > 0){
-                            UiUtil.showShortcuts(this@TerminalActivity, commandTemplateViewModel){sh ->
-                                input!!.text.insert(input!!.selectionStart, "$sh ")
-                            }
+                            UiUtil.showShortcuts(requireActivity(), commandTemplateViewModel,
+                                itemSelected = {sh ->
+                                    input!!.setText("${input!!.text} $sh")
+                                },
+                                itemRemoved = {removed ->
+                                    input!!.setText(input!!.text.replace("(${Regex.escape(removed)})(?!.*\\1)".toRegex(), "").trimEnd())
+                                    input!!.setSelection(input!!.text.length)
+                                })
                         }
                     }
                 }
@@ -148,82 +191,55 @@ class TerminalActivity : BaseActivity() {
             true
         }
 
-        output = findViewById(R.id.custom_command_output)
+        output = view.findViewById(R.id.custom_command_output)
         output!!.setTextIsSelectable(true)
         output!!.layoutParams!!.width = LayoutParams.WRAP_CONTENT
-        input = findViewById(R.id.command_edittext)
         input!!.requestFocus()
-        fab = findViewById(R.id.command_fab)
+        fab = view.findViewById(R.id.command_fab)
         fab!!.setOnClickListener {
             if (fab!!.text == getString(R.string.run_command)){
                 input!!.visibility = View.GONE
                 output!!.text = "${output!!.text}\n~ $ ${input!!.text}\n"
                 showCancelFab()
                 imm.hideSoftInputFromWindow(input?.windowToken, 0)
-                startDownload(
-                    input!!.text.toString()
-                )
+                lifecycleScope.launch {
+                    val command = input!!.text.toString().replace("yt-dlp", "")
+                    downloadID = withContext(Dispatchers.IO){
+                        terminalViewModel.insert(TerminalItem(command = command))
+                    }
+                    terminalViewModel.startTerminalDownloadWorker(TerminalItem(downloadID, command))
+                    runWorkerListener()
+                }
             }else {
-                cancelDownload()
+                terminalViewModel.cancelTerminalDownload(downloadID)
                 input!!.visibility = View.VISIBLE
                 hideCancelFab()
             }
         }
-        notificationUtil = NotificationUtil(this)
-        handleIntent(intent)
-
-        WorkManager.getInstance(this)
-            .getWorkInfosForUniqueWorkLiveData(downloadID.toString())
-            .observe(this){ list ->
-                list.forEach {work ->
-                    if (work.state == WorkInfo.State.SUCCEEDED || work.state == WorkInfo.State.FAILED || work.state == WorkInfo.State.CANCELLED) {
-                        input!!.setText("yt-dlp ")
-                        input!!.visibility = View.VISIBLE
-                        input!!.requestFocus()
-                        input!!.setSelection(input!!.text.length)
-                        hideCancelFab()
-                        downloadFile.writeText("")
-                    }
-                    val outputData = work.progress.getString("output")
-                    if (!outputData.isNullOrBlank()){
-                        runOnUiThread{
-                            try {
-                                output!!.append("\n$outputData")
-                                output!!.scrollTo(0, output!!.height)
-                                scrollView!!.fullScroll(View.FOCUS_DOWN)
-                            }catch (ignored: Exception) {}
-                        }
-                    }
-
-                }
-            }
+        notificationUtil = NotificationUtil(requireContext())
         initMenu()
 
         input?.enableTextHighlight()
         output?.enableTextHighlight()
 
-        input?.setText(savedInstanceState?.getString("input") ?: input?.text)
+        input?.append(bundle?.getString("input") ?: "")
         input!!.requestFocus()
         input!!.setSelection(input!!.text.length)
-        output?.text = savedInstanceState?.getString("output") ?: output?.text
-        if (savedInstanceState?.getBoolean("run") == true){
+        output?.text = bundle?.getString("output") ?: output?.text
+        if (bundle?.getBoolean("run") == true){
             showCancelFab()
         }
-    }
-
-    override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
-        super.onSaveInstanceState(outState)
-        outState.putString("input", input?.text.toString())
-        outState.putString("output", output?.text.toString())
-        outState.putBoolean("run", fab!!.text == getString(R.string.run_command))
-        outState.putInt("downloadID", downloadID)
+        runWorkerListener()
     }
 
     private fun initMenu() {
+        topAppBar?.menu?.get(0)?.isVisible = false
+        topAppBar?.menu?.get(1)?.isVisible = true
+        topAppBar?.menu?.get(2)?.isVisible = true
         topAppBar?.setOnMenuItemClickListener { m: MenuItem ->
             when(m.itemId){
                 R.id.wrap -> {
-                    var scrollView = findViewById<HorizontalScrollView>(R.id.horizontalscroll_output)
+                    var scrollView = requireView().findViewById<HorizontalScrollView>(R.id.horizontalscroll_output)
                     if(scrollView != null){
                         val parent = (scrollView.parent as ViewGroup)
                         scrollView.removeAllViews()
@@ -232,7 +248,7 @@ class TerminalActivity : BaseActivity() {
                     }else{
                         val parent = output?.parent as ViewGroup
                         parent.removeView(output)
-                        scrollView = HorizontalScrollView(this)
+                        scrollView = HorizontalScrollView(requireContext())
                         scrollView.layoutParams = LinearLayout.LayoutParams(
                             ViewGroup.LayoutParams.MATCH_PARENT,
                             ViewGroup.LayoutParams.MATCH_PARENT
@@ -244,7 +260,7 @@ class TerminalActivity : BaseActivity() {
                 }
                 R.id.export_clipboard -> {
                     lifecycleScope.launch(Dispatchers.IO){
-                        val clipboard: ClipboardManager = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+                        val clipboard: ClipboardManager = requireActivity().getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
                         clipboard.setText(output?.text)
                     }
                 }
@@ -252,39 +268,6 @@ class TerminalActivity : BaseActivity() {
             true
         }
     }
-
-    override fun onDestroy() {
-        downloadFile.delete()
-        super.onDestroy()
-    }
-
-    override fun onNewIntent(intent: Intent) {
-        super.onNewIntent(intent)
-        handleIntent(intent)
-    }
-
-    private fun handleIntent(intent: Intent) {
-        val action = intent.action
-        val type = intent.type
-        Log.e(TAG, "$action $type")
-        if (action == Intent.ACTION_SEND && type != null) {
-            Log.e(TAG, action)
-            val text = if (intent.getStringExtra(Intent.EXTRA_TEXT) == null){
-                val uri = if (Build.VERSION.SDK_INT >= 33){
-                    intent.getParcelableExtra(Intent.EXTRA_STREAM, Uri::class.java)
-                }else{
-                    intent.getParcelableExtra(Intent.EXTRA_STREAM)
-                }
-                "-a \"${FileUtil.formatPath(uri?.path ?: "")}\""
-            }else{
-                intent.getStringExtra(Intent.EXTRA_TEXT)
-            }
-            val txt = "yt-dlp $text"
-            input!!.setText(txt)
-        }
-    }
-
-
     private fun hideCancelFab() {
         fab!!.text = getString(R.string.run_command)
         fab!!.setIconResource(R.drawable.ic_baseline_keyboard_arrow_right_24)
@@ -299,7 +282,7 @@ class TerminalActivity : BaseActivity() {
     ) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             result.data?.data?.let {
-                contentResolver?.takePersistableUriPermission(
+                requireActivity().contentResolver?.takePersistableUriPermission(
                     it,
                     Intent.FLAG_GRANT_READ_URI_PERMISSION or
                             Intent.FLAG_GRANT_WRITE_URI_PERMISSION
@@ -309,34 +292,43 @@ class TerminalActivity : BaseActivity() {
         }
     }
 
-    private fun startDownload(command: String?) {
-        val cmd = if (command!!.contains("yt-dlp")) command.replace("yt-dlp", "")
-        else command
+    private fun runWorkerListener(){
 
-        val workRequest = OneTimeWorkRequestBuilder<TerminalDownloadWorker>()
-            .setInputData(
-                Data.Builder()
-                    .putInt("id", downloadID)
-                    .putString("command", cmd)
-                    .build()
-            )
-            .addTag("terminal")
-            .build()
+        WorkManager.getInstance(requireContext())
+            .getWorkInfosByTagLiveData(downloadID.toString())
+            .observe(viewLifecycleOwner){ list ->
+                list.forEach {work ->
+                    if (listOf(WorkInfo.State.SUCCEEDED, WorkInfo.State.FAILED, WorkInfo.State.CANCELLED).contains(work.state)) {
+                        requireActivity().runOnUiThread {
+                            kotlin.runCatching {
+                                input!!.setText("yt-dlp ")
+                                input!!.visibility = View.VISIBLE
+                                input!!.requestFocus()
+                                input!!.setSelection(input!!.text.length)
+                                hideCancelFab()
+                            }
+                        }
+                        return@forEach
+                    }
+                    val outputData = work.progress.getString("output")
+                    if (!outputData.isNullOrBlank()){
+                        val pieces = output!!.text.split("\n").toMutableList()
+                        val lastLine = pieces.last()
+                        requireActivity().runOnUiThread{
+                            kotlin.runCatching {
+                                showCancelFab()
+                                if (listOf(lastLine, outputData).all { it.contains("[download]") }){
+                                    output!!.text = pieces.dropLast(1).joinToString("\n")
+                                }
+                                output!!.append("\n$outputData")
+                                output!!.scrollTo(0, output!!.height)
+                                scrollView!!.fullScroll(View.FOCUS_DOWN)
+                            }
+                        }
+                    }
 
-        WorkManager.getInstance(this).beginUniqueWork(
-            downloadID.toString(),
-            ExistingWorkPolicy.KEEP,
-            workRequest
-        ).enqueue()
+                }
+            }
     }
 
-    private fun cancelDownload() {
-        YoutubeDL.getInstance().destroyProcessById(downloadID.toString())
-        WorkManager.getInstance(this).cancelAllWorkByTag(downloadID.toString())
-        notificationUtil.cancelDownloadNotification(downloadID)
-    }
-
-    companion object {
-        private const val TAG = "CustomCommandActivity"
-    }
 }

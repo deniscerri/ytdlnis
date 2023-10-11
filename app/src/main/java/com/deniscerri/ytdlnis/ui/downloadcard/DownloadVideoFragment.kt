@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +14,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.TextView
-import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -37,7 +38,7 @@ import kotlinx.coroutines.withContext
 import java.io.File
 
 
-class DownloadVideoFragment(private val resultItem: ResultItem, private var currentDownloadItem: DownloadItem?) : Fragment(), TitleAuthorSync {
+class DownloadVideoFragment(private var resultItem: ResultItem? = null, private var currentDownloadItem: DownloadItem? = null, private var url: String = "") : Fragment(), GUISync {
     private var fragmentView: View? = null
     private var activity: Activity? = null
     private lateinit var downloadViewModel : DownloadViewModel
@@ -76,14 +77,16 @@ class DownloadVideoFragment(private val resultItem: ResultItem, private var curr
                     val string = Gson().toJson(currentDownloadItem, DownloadItem::class.java)
                     Gson().fromJson(string, DownloadItem::class.java)
                 }else{
-                    downloadViewModel.createDownloadItemFromResult(resultItem, Type.video)
+                    downloadViewModel.createDownloadItemFromResult(resultItem, url, Type.video)
                 }
             }
 
             val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
             try {
                 title = view.findViewById(R.id.title_textinput)
-                title.editText!!.setText(downloadItem.title)
+                if (title.editText?.text?.isEmpty() == true){
+                    title.editText!!.setText(downloadItem.title)
+                }
                 title.editText!!.addTextChangedListener(object : TextWatcher {
                     override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
                     override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
@@ -93,7 +96,9 @@ class DownloadVideoFragment(private val resultItem: ResultItem, private var curr
                 })
 
                 author = view.findViewById(R.id.author_textinput)
-                author.editText!!.setText(downloadItem.author)
+                if (author.editText?.text?.isEmpty() == true){
+                    author.editText!!.setText(downloadItem.author)
+                }
                 author.editText!!.addTextChangedListener(object : TextWatcher {
                     override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
                     override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
@@ -101,6 +106,18 @@ class DownloadVideoFragment(private val resultItem: ResultItem, private var curr
                         downloadItem.author = p0.toString()
                     }
                 })
+
+                if (savedInstanceState?.containsKey("updated") == true){
+                    if (!listOf(resultItem?.title, downloadItem.title).contains(title.editText?.text.toString())){
+                        title.endIconDrawable = AppCompatResources.getDrawable(requireContext(), R.drawable.ic_refresh)
+                        downloadItem.title = title.editText?.text.toString()
+                    }
+
+                    if (!listOf(resultItem?.author, downloadItem.author).contains(author.editText?.text.toString())){
+                        author.endIconDrawable = AppCompatResources.getDrawable(requireContext(), R.drawable.ic_refresh)
+                        downloadItem.author = author.editText?.text.toString()
+                    }
+                }
 
                 saveDir = view.findViewById(R.id.outputPath)
                 saveDir.editText!!.setText(
@@ -113,7 +130,16 @@ class DownloadVideoFragment(private val resultItem: ResultItem, private var curr
                     intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
                     intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                     intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION)
-                    videoPathResultLauncher.launch(intent)
+                    val callback = FileUtil.getURIFromResult(this@DownloadVideoFragment, requireActivity()){ result ->
+                        downloadItem.downloadPath = result
+                        saveDir.editText?.setText(FileUtil.formatPath(result), TextView.BufferType.EDITABLE)
+
+                        val free = FileUtil.convertFileSize(
+                            File(FileUtil.formatPath(downloadItem.downloadPath)).freeSpace)
+                        freeSpace.text = String.format( getString(R.string.freespace) + ": " + free)
+                        if (free == "?") freeSpace.visibility = View.GONE
+                    }
+                    callback.launch(intent)
                 }
 
                 freeSpace = view.findViewById(R.id.freespace)
@@ -125,7 +151,7 @@ class DownloadVideoFragment(private val resultItem: ResultItem, private var curr
 
                 var formats = mutableListOf<Format>()
                 if (currentDownloadItem == null) {
-                    formats.addAll(resultItem.formats)
+                    formats.addAll(resultItem?.formats ?: listOf())
                 }else{
                     //if its updating a present downloaditem and its the wrong category
                     if (currentDownloadItem!!.type != Type.video){
@@ -163,9 +189,11 @@ class DownloadVideoFragment(private val resultItem: ResultItem, private var curr
                         }
                         lifecycleScope.launch {
                             withContext(Dispatchers.IO){
-                                resultItem.formats.removeAll(formats)
-                                resultItem.formats.addAll(allFormats.first().filter { !genericVideoFormats.contains(it) })
-                                resultViewModel.update(resultItem)
+                                resultItem?.formats?.removeAll(formats)
+                                resultItem?.formats?.addAll(allFormats.first().filter { !genericVideoFormats.contains(it) })
+                                if (resultItem != null){
+                                    resultViewModel.update(resultItem!!)
+                                }
                             }
                         }
                         formats = allFormats.first().filter { !genericVideoFormats.contains(it) }.toMutableList()
@@ -232,7 +260,7 @@ class DownloadVideoFragment(private val resultItem: ResultItem, private var curr
                     },
                     cutClicked = { cutVideoListener ->
                         if (parentFragmentManager.findFragmentByTag("cutVideoSheet") == null){
-                            val bottomSheet = CutVideoBottomSheetDialog(downloadItem, resultItem.urls, resultItem.chapters, cutVideoListener)
+                            val bottomSheet = CutVideoBottomSheetDialog(downloadItem, resultItem?.urls ?: "", resultItem?.chapters ?: listOf(), cutVideoListener)
                             bottomSheet.show(parentFragmentManager, "cutVideoSheet")
                         }
                     },
@@ -271,28 +299,17 @@ class DownloadVideoFragment(private val resultItem: ResultItem, private var curr
         downloadItem.title = t
         downloadItem.author = a
         title.editText?.setText(t)
+        title.endIconDrawable = null
         author.editText?.setText(a)
+        title.endIconDrawable = null
     }
 
-    private var videoPathResultLauncher = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()
-    ) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            result.data?.data?.let {
-                activity?.contentResolver?.takePersistableUriPermission(
-                    it,
-                    Intent.FLAG_GRANT_READ_URI_PERMISSION or
-                            Intent.FLAG_GRANT_WRITE_URI_PERMISSION
-                )
-            }
-            downloadItem.downloadPath = result.data?.data.toString()
-            saveDir.editText?.setText(FileUtil.formatPath(result.data?.data.toString()), TextView.BufferType.EDITABLE)
-
-            val free = FileUtil.convertFileSize(
-                File(FileUtil.formatPath(downloadItem.downloadPath)).freeSpace)
-            freeSpace.text = String.format( getString(R.string.freespace) + ": " + free)
-            if (free == "?") freeSpace.visibility = View.GONE
-        }
+    override fun updateUI(res: ResultItem?) {
+        resultItem = res
+        val state = Bundle()
+        state.putBoolean("updated", true)
+        onViewCreated(requireView(),savedInstanceState = state)
     }
+
 
 }

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@id/terminalDownloadsListFragment">
+    <fragment
+        android:id="@+id/terminalDownloadsListFragment"
+        android:name="com.deniscerri.ytdlnis.ui.more.terminal.TerminalDownloadsListFragment"
+        tools:layout="@layout/fragment_terminal_downloadList"
+        android:label="TerminalDownloadsListFragment" >
+        <action
+            android:id="@+id/action_terminalDownloadsListFragment_to_terminalFragment2"
+            app:destination="@id/terminalFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/terminalFragment"
+        android:name="com.deniscerri.ytdlnis.ui.more.terminal.TerminalFragment"
+        tools:layout="@layout/fragment_terminal"
+        android:label="TerminalFragment" >
+        <action
+            android:id="@+id/action_terminalFragment2_to_terminalDownloadsListFragment"
+            app:destination="@id/terminalDownloadsListFragment" />
+    </fragment>
+</navigation>

@@ -1,25 +1,49 @@
 package com.deniscerri.ytdlnis.util
 
+import android.app.Activity
+import android.app.DownloadManager
+import android.content.ClipboardManager
 import android.content.Context
+import android.content.DialogInterface
+import android.content.Intent
 import android.content.SharedPreferences
 import android.content.res.Resources
+import android.net.Uri
+import android.os.Build
+import android.os.Bundle
+import android.os.Environment
 import android.os.Looper
 import android.text.Html
 import android.util.Log
 import android.util.Patterns
+import android.util.TypedValue
+import android.view.WindowManager
 import android.widget.Toast
+import androidx.navigation.findNavController
 import androidx.preference.AndroidResources
 import androidx.preference.PreferenceManager
+import com.deniscerri.ytdlnis.App
+import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
+import com.deniscerri.ytdlnis.database.DBManager
 import com.deniscerri.ytdlnis.database.models.ChapterItem
 import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.models.Format
+import com.deniscerri.ytdlnis.database.models.LogItem
 import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
+import com.deniscerri.ytdlnis.ui.ErrorDialogActivity
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.yausername.youtubedl_android.YoutubeDL
 import com.yausername.youtubedl_android.YoutubeDLRequest
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -48,20 +72,14 @@ class InfoUtil(private val context: Context) {
 
 
     fun search(query: String): ArrayList<ResultItem?> {
-        return when(sharedPreferences.getString("search_engine", "ytsearch")){
-            "ytsearch" -> try{
-                searchFromPiped(query)
-            }catch (e: Exception){
-                getFromYTDL(query)
+        return runCatching {
+            when(sharedPreferences.getString("search_engine", "ytsearch")){
+                "ytsearch" -> searchFromPiped(query)
+                "ytsearchmusic" -> searchFromPipedMusic(query)
+                else -> throw Exception()
             }
-
-            "ytsearchmusic" -> try{
-                searchFromPipedMusic(query)
-            }catch (e: Exception){
-                getFromYTDL(query)
-            }
-
-            else -> getFromYTDL(query)
+        }.getOrElse {
+            getFromYTDL(query)
         }
     }
 
@@ -576,11 +594,9 @@ class InfoUtil(private val context: Context) {
                 }
             }
 
-
-
             val proxy = sharedPreferences.getString("proxy", "")
             if (proxy!!.isNotBlank()){
-               request.addOption("--proxy", proxy)
+                request.addOption("--proxy", proxy)
             }
 
             val youtubeDLResponse = YoutubeDL.getInstance().execute(request)
@@ -622,7 +638,7 @@ class InfoUtil(private val context: Context) {
                         thumb = thumbs.getJSONObject(thumbs.length() - 1).getString("url")
                     }
                 }
-                val website = if (jsonObject.has("ie_key")) jsonObject.getString("ie_key") else jsonObject.getString("extractor")
+                val website = jsonObject.getString(listOf("ie_key", "extractor_key", "extractor").first { jsonObject.has(it) })
                 var playlistTitle: String? = ""
                 if (jsonObject.has("playlist_title")) playlistTitle = jsonObject.getString("playlist_title")
                 if(playlistTitle.equals(query)) playlistTitle = ""
@@ -673,15 +689,17 @@ class InfoUtil(private val context: Context) {
                         website,
                         playlistTitle!!,
                         formats,
-                    urls,
+                        urls,
                         chapters
                     )
                 )
             }
         } catch (e: Exception) {
-            Looper.prepare().run {
-                Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
-            }
+            val intent = Intent(context, ErrorDialogActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            intent.putExtra("title", context.resources.getString(R.string.no_results))
+            intent.putExtra("message", e.message)
+            context.startActivity(intent)
             e.printStackTrace()
         }
         return items
@@ -975,21 +993,25 @@ class InfoUtil(private val context: Context) {
         if (aria2) {
             request.addOption("--downloader", "libaria2c.so")
             request.addOption("--external-downloader-args", "aria2c:\"--summary-interval=1\"")
-        } else {
-            val concurrentFragments = sharedPreferences.getInt("concurrent_fragments", 1)
-            if (concurrentFragments > 1) request.addOption("-N", concurrentFragments)
         }
+
+        val concurrentFragments = sharedPreferences.getInt("concurrent_fragments", 1)
+        if (concurrentFragments > 1) request.addOption("-N", concurrentFragments)
 
         val retries = sharedPreferences.getString("--retries", "")!!
         val fragmentRetries = sharedPreferences.getString("--fragment_retries", "")!!
 
-        if(retries.isNotEmpty()) request.addOption("retries", retries)
-        if(fragmentRetries.isNotEmpty()) request.addOption("fragment-retries", fragmentRetries)
+        if(retries.isNotEmpty()) request.addOption("--retries", retries)
+        if(fragmentRetries.isNotEmpty()) request.addOption("--fragment-retries", fragmentRetries)
 
-        val limitRate = sharedPreferences.getString("limit_rate", "")
-        if (limitRate != "") request.addOption("-r", limitRate!!)
+        val limitRate = sharedPreferences.getString("limit_rate", "")!!
+        if (limitRate.isNotBlank()) request.addOption("-r", limitRate)
+
+        val sponsorblockURL = sharedPreferences.getString("sponsorblock_url", "")!!
+        if (sponsorblockURL.isNotBlank()) request.addOption("--sponsorblock-api", sponsorblockURL)
+
         if(downloadItem.type != DownloadViewModel.Type.command){
-            request.addOption("--trim-filenames", 120)
+            request.addOption("--trim-filenames",  downDir.absolutePath.length + 120)
 
             if (downloadItem.SaveThumb) {
                 request.addOption("--write-thumbnail")
@@ -1175,10 +1197,7 @@ class InfoUtil(private val context: Context) {
                     }
                     request.addOption("--embed-chapters")
                 }
-                if (downloadItem.videoPreferences.embedSubs) {
-                    request.addOption("--embed-subs")
-                    request.addOption("--sub-langs", downloadItem.videoPreferences.subsLanguages.ifEmpty { "en.*,.*-orig" })
-                }
+
 
                 var cont = ""
                 val outputContainer = downloadItem.container
@@ -1302,14 +1321,19 @@ class InfoUtil(private val context: Context) {
                     val subFormat = sharedPreferences.getString("sub_format", "srt")
 
                     request.addOption("--write-subs")
-                    request.addOption("--write-auto-subs")
                     if(subFormat!!.isNotBlank()){
                         request.addOption("--sub-format", "${subFormat}/best")
                         request.addOption("--convert-subtitles", subFormat ?: "srt")
                     }
-                    if (!downloadItem.videoPreferences.embedSubs) {
-                        request.addOption("--sub-langs", downloadItem.videoPreferences.subsLanguages.ifEmpty { "en.*,.*-orig" })
-                    }
+                }
+
+                if (downloadItem.videoPreferences.embedSubs) {
+                    request.addOption("--embed-subs")
+                }
+
+                if (downloadItem.videoPreferences.embedSubs || downloadItem.videoPreferences.writeSubs){
+                    request.addOption("--sub-langs", downloadItem.videoPreferences.subsLanguages.ifEmpty { "en.*,.*-orig" })
+                    request.addOption("--write-auto-subs")
                 }
 
                 if (downloadItem.videoPreferences.removeAudio){

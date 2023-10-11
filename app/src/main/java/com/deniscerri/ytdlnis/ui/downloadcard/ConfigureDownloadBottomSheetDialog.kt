@@ -5,7 +5,6 @@ import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Bundle
 import android.util.DisplayMetrics
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,19 +23,16 @@ import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel.Type
 import com.deniscerri.ytdlnis.database.viewmodel.ResultViewModel
-import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.UiUtil
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.tabs.TabLayout
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-
-class ConfigureDownloadBottomSheetDialog(private val resultItem: ResultItem, private val downloadItem: DownloadItem, private val listener: OnDownloadItemUpdateListener) : BottomSheetDialogFragment() {
+//TODO MAKE CONFIGURE LIKE NORMAL SHEET
+class ConfigureDownloadBottomSheetDialog(private var result: ResultItem, private val currentDownloadItem: DownloadItem, private val listener: OnDownloadItemUpdateListener) : BottomSheetDialogFragment() {
     private lateinit var tabLayout: TabLayout
     private lateinit var viewPager2: ViewPager2
     private lateinit var fragmentAdapter : DownloadFragmentAdapter
@@ -80,17 +76,12 @@ class ConfigureDownloadBottomSheetDialog(private val resultItem: ResultItem, pri
             overScrollMode = View.OVER_SCROLL_NEVER
         }
 
-        val fragments = mutableListOf<Fragment>(
-            DownloadAudioFragment(resultItem, downloadItem),
-            DownloadVideoFragment(resultItem, downloadItem)
-        )
+
         var commandTemplateNr = 0
         lifecycleScope.launch{
             withContext(Dispatchers.IO){
                 commandTemplateNr = commandTemplateDao.getTotalNumber()
-                if(commandTemplateNr > 0){
-                    fragments.add(DownloadCommandFragment(resultItem, downloadItem))
-                }else{
+                if(commandTemplateNr <= 0){
                     (tabLayout.getChildAt(0) as? ViewGroup)?.getChildAt(2)?.isClickable = true
                     (tabLayout.getChildAt(0) as? ViewGroup)?.getChildAt(2)?.alpha = 0.3f
                 }
@@ -98,7 +89,7 @@ class ConfigureDownloadBottomSheetDialog(private val resultItem: ResultItem, pri
         }
 
         //check if the item has formats and its audio-only
-        val isAudioOnly = resultItem.formats.isNotEmpty() && resultItem.formats.none { !it.format_note.contains("audio") }
+        val isAudioOnly = result.formats.isNotEmpty() && result.formats.none { !it.format_note.contains("audio") }
         if (isAudioOnly){
             (tabLayout.getChildAt(0) as? ViewGroup)?.getChildAt(1)?.isClickable = true
             (tabLayout.getChildAt(0) as? ViewGroup)?.getChildAt(1)?.alpha = 0.3f
@@ -107,15 +98,15 @@ class ConfigureDownloadBottomSheetDialog(private val resultItem: ResultItem, pri
 
         val fragmentManager = parentFragmentManager
         fragmentAdapter = DownloadFragmentAdapter(
-            resultItem,
             fragmentManager,
             lifecycle,
-            fragments
+            result,
+            currentDownloadItem
         )
         viewPager2.adapter = fragmentAdapter
         viewPager2.isSaveFromParentEnabled = false
 
-        when(downloadItem.type) {
+        when(currentDownloadItem.type) {
             Type.audio -> {
                 tabLayout.selectTab(tabLayout.getTabAt(0))
                 viewPager2.setCurrentItem(0, false)
@@ -172,17 +163,17 @@ class ConfigureDownloadBottomSheetDialog(private val resultItem: ResultItem, pri
         val ok = view.findViewById<Button>(R.id.bottom_sheet_ok)
         ok!!.setOnClickListener {
             val item = getDownloadItem()
-            onDownloadItemUpdateListener.onDownloadItemUpdate(resultItem.id, item)
+            onDownloadItemUpdateListener.onDownloadItemUpdate(result.id, item)
             dismiss()
         }
 
         val link = view.findViewById<Button>(R.id.bottom_sheet_link)
-        link.text = resultItem.url
+        link.text = result.url
         link.setOnClickListener{
-            UiUtil.openLinkIntent(requireContext(), resultItem.url, null)
+            UiUtil.openLinkIntent(requireContext(), result.url, null)
         }
         link.setOnLongClickListener{
-            UiUtil.copyLinkToClipBoard(requireContext(), resultItem.url, null)
+            UiUtil.copyLinkToClipBoard(requireContext(), result.url, null)
             true
         }
 
@@ -211,10 +202,10 @@ class ConfigureDownloadBottomSheetDialog(private val resultItem: ResultItem, pri
             if (viewPager2.currentItem == 1) 0 else 1
         )
 
-        resultItem.title = prevDownloadItem.title
-        resultItem.author = prevDownloadItem.author
-        downloadItem.title = prevDownloadItem.title
-        downloadItem.author = prevDownloadItem.author
+        result.title = prevDownloadItem.title
+        result.author = prevDownloadItem.author
+        currentDownloadItem.title = prevDownloadItem.title
+        currentDownloadItem.author = prevDownloadItem.author
 
         when(viewPager2.currentItem){
             0 -> {

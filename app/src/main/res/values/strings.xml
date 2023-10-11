@@ -233,7 +233,7 @@
     <string name="finished_download_notification_channel_name">Finished Downloads</string>
     <string name="finished_download_notification_channel_description">Notification for finished or faulty downloads</string>
     <string name="quick_download">Quick Download</string>
-    <string name="quick_download_summary">Don\'t fetch data beforehand</string>
+    <string name="quick_download_summary">Don\'t fetch data in the download card</string>
     <string name="remove_audio">Remove Audio</string>
     <string name="preferred_format_id">Preferred Format ID</string>
     <string name="download_now">Download Now</string>
@@ -303,4 +303,8 @@
     <string name="update_app_beta">Beta Releases</string>
     <string name="update_app_beta_summary">Enroll in the beta program. It may contain bugs.</string>
     <string name="auto">Auto</string>
+    <string name="preferred_video_codec">Preferred Video Codec</string>
+    <string name="preferred_audio_codec">Preferred Audio Codec</string>
+    <string name="loading">Loading</string>
+    <string name="sponsorblock_api_url">Sponsorblock API URL</string>
 </resources>
