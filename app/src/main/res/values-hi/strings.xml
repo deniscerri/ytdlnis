@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="worst_quality">सबसे खराब गुणवत्ता</string>
-    <string name="best_quality">सबसे उच्च गुणवत्ता</string>
+    <string name="worst_quality">न्यूनतम गुणवत्ता</string>
+    <string name="best_quality">उत्तम गुणवत्ता</string>
     <string name="search">खोजें</string>
     <string name="remove_all">सभी को हटाएं</string>
     <string name="remove_results">नतीजों को हटाएं</string>
@@ -56,7 +56,7 @@
     <string name="you_are_going_to_delete_multiple_items">एक से ज़्यादा आइटम मिटाए जा रहे है</string>
     <string name="new_template">नया टेम्पलेट</string>
     <string name="help_translate_summary">वेबलेट का उपयोग करके इस ऐप का अपनी भाषा में अनुवाद करें</string>
-    <string name="save_dir">डायरेक्टरी में सेव करें</string>
+    <string name="save_dir">सहेजने के लिए डायरेक्टरी</string>
     <string name="add_chapters_summary">वीडियो के अध्यायों के रूप में YouTube / SponsorBlock खंडों को चिह्नित करें</string>
     <string name="save_thumb">थंबनेल सहेजें</string>
     <string name="save_thumb_summary">थंबनेल को डाउनलोड फोल्डर में सेव करें</string>
@@ -286,7 +286,7 @@
     <string name="fragment_retries">खंड पुनर्प्रयास</string>
     <string name="write_description">विवरण सहेजें</string>
     <string name="embed_metadata">मेटाडेटा एम्बेड करें</string>
-    <string name="embed_metadata_summary">वीडियो फ़ाइल में मेटाडेटा एम्बेड करें। यदि मौजूद हो तो अध्याय/जानकारी भी एम्बेड करता है</string>
+    <string name="embed_metadata_summary">ऑडियो फ़ाइल में मेटाडेटा एम्बेड और पार्स करें</string>
     <string name="write_description_summary">विवरण फ़ाइल लिखें</string>
     <string name="extra_command">अतिरिक्त कमांड</string>
     <string name="use_cookies">कुकीज़ का उपयोग करें</string>
