@@ -292,7 +292,7 @@
     <string name="extra_command">Extra Command</string>
     <string name="use_cookies">Use Cookies</string>
     <string name="embed_metadata">Embed Metadata</string>
-    <string name="embed_metadata_summary">Embed and parse metadata to the audio file.</string>
+    <string name="embed_metadata_summary">Embed and parse metadata to the audio file</string>
     <string name="update_formats_background">Update Formats in Background</string>
     <string name="auto_update_ytdlp">Auto-Update yt-dlp</string>
     <string name="use_sponsorblock">Use SponsorBlock</string>

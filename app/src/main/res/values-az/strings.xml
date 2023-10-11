@@ -275,8 +275,7 @@
     <string name="force_keyframes">Kəsiklərdə əsas kadrları məcbur et</string>
     <string name="force_keyframes_summary">Daha yavaş emal, lakin daha dəqiq kəsiklər</string>
     <string name="save_for_later">Yükləmə Sonraya Saxlanılsın\?</string>
-    <string name="subtitle_format">Titr Formatı
-\n</string>
+    <string name="subtitle_format">Titr Formatı</string>
     <string name="hide_thumbnails">Miniatürləri Gizlət</string>
     <string name="show_terminal">Paylaş Menyusunda Sıxac Göstər</string>
     <string name="saved">Saxlanıldı</string>
@@ -290,7 +289,7 @@
     <string name="extra_command">Əlavə Əmr</string>
     <string name="use_cookies">Məlumat Bazası İstifadə Et</string>
     <string name="embed_metadata">Üst məlumat yerləşdir</string>
-    <string name="embed_metadata_summary">Video fayla üst məlumat yerləşdir. Həmçinin, əgər varsa, bölmələr/infojsonlar yerləşdirir</string>
+    <string name="embed_metadata_summary">Səs faylına üst məlumat yerləşdir və təhlil et.</string>
     <string name="update_formats_background">Arxa Planda Formatları Yenilə</string>
     <string name="auto_update_ytdlp">Yt-dlp-ni Avtomatik Yenilə</string>
     <string name="use_sponsorblock">SponsorBlock istifadə et</string>
@@ -299,5 +298,6 @@
     <string name="cache_first">Əvvəlcə Qalığı Yükləyir</string>
     <string name="use_scheduler">Plan Üzrə Yükləmə</string>
     <string name="update_app_beta_summary">Sınaq proqramında qeydiyyatdan keçin. Daxilində səhvlər ola bilər.</string>
-    <string name="update_app_beta">Beta Buraxılışlar</string>
+    <string name="update_app_beta">Sınaq Buraxılışlar</string>
+    <string name="auto">Avtomatik</string>
 </resources>

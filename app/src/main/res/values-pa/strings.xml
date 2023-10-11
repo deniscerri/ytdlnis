@@ -50,7 +50,7 @@
     <string name="video_directory">ਵੀਡੀਓ ਫੋਲਡਰ</string>
     <string name="updating">ਅੱਪਡੇਟ ਕਰ ਰਿਹਾ</string>
     <string name="ytdl_update_hint">ਜੇਕਰ ਤੁਹਾਨੂੰ ਡਾਉਨਲੋਡ ਕਰਨ ਵਿੱਚ ਸਮੱਸਿਆਵਾਂ ਹਨ ਤਾਂ ਉਪਯੋਗੀ</string>
-    <string name="about">ਜਾਣ-ਪਛਾਣ</string>
+    <string name="about">ਐਪ ਦੇ ਬਾਰੇ</string>
     <string name="update_ytdl">yt-dlp ਦਾ ਨਵਾਂ ਸੰਸਕਰਣ ਸਥਾਪਿਤ ਕਰੋ</string>
     <string name="source_code">ਸ੍ਰੋਤ ਕੋਡ</string>
     <string name="search_hint">URL ਖੋਜੋ ਜਾਂ ਸੰਮਿਲਿਤ ਕਰੋ</string>
@@ -84,7 +84,7 @@
     <string name="api_key_summary">Youtube API ਤੋਂ ਵੀਡੀਓ ਸਿਫ਼ਾਰਿਸ਼ਾਂ</string>
     <string name="remove_deleted">ਡਿਲੀਟ ਕੀਤੇ ਹਟਾਓ</string>
     <string name="remove_duplicates">ਡੁਪਲੀਕੇਟ ਹਟਾਓ</string>
-    <string name="remove_downloading">ਡਾਊਨਲੋਡ ਰੱਦ ਕਰੋ</string>
+    <string name="remove_downloading">ਡਾਊਨਲੋਡਜ਼ ਰੱਦ ਕਰੋ</string>
     <string name="worst_quality">ਨਿਊਨਤਮ ਕੁਆਲਿਟੀ</string>
     <string name="best_quality">ਉੱਤਮ ਕੁਆਲਿਟੀ</string>
     <string name="search">ਖੋਜ ਕਰੋ</string>
@@ -101,7 +101,7 @@
     <string name="sponsorblock_sponsors">ਸਪਾਂਸਰ</string>
     <string name="sponsorblock_fillers">ਭਰਨ ਵਾਲੇ</string>
     <string name="select_sponsorblock_filtering">ਸਪਾਂਸਰਬਲਾਕ ਫਿਲਟਰਿੰਗ ਚੁਣੋ</string>
-    <string name="save_dir">Save dir</string>
+    <string name="save_dir">ਸਾਂਭਣ ਲਈ ਡਾਇਰੈਕਟਰੀ</string>
     <string name="new_template">ਨਵਾਂ ਟੈਮਪਲੇਟ</string>
     <string name="adjust_templates">ਟੈਂਪਲੇਟਾਂ ਨੂੰ ਵਿਵਸਥਿਤ ਕਰੋ</string>
     <string name="edit_selected">ਚੁਣੇ ਨੂੰ ਸੰਪਾਦਿਤ ਕਰੋ</string>
@@ -287,7 +287,7 @@
     <string name="extra_command">ਵਾਧੂ ਕਮਾਂਡ</string>
     <string name="use_cookies">ਕੂਕੀਜ਼ ਵਰਤੋ</string>
     <string name="embed_metadata">ਮੈਟਾਡਾਟਾ ਏਮਬੇਡ ਕਰੋ</string>
-    <string name="embed_metadata_summary">ਵੀਡੀਓ ਫਾਈਲ ਵਿੱਚ ਮੈਟਾਡੇਟਾ ਏਮਬੇਡ ਕਰੋ। ਜੇਕਰ ਮੌਜੂਦ ਹੋਵੇ ਤਾਂ ਚੈਪਟਰਾਂ/ਜਾਣਕਾਰੀ ਨੂੰ ਵੀ ਸ਼ਾਮਿਲ ਕਰਦਾ ਹੈ</string>
+    <string name="embed_metadata_summary">ਆਡੀਓ ਫ਼ਾਈਲ ਵਿੱਚ ਮੈਟਾਡੇਟਾ ਨੂੰ ਏਮਬੇਡ ਅਤੇ ਪਾਰਸ ਕਰੋ</string>
     <string name="write_description_summary">ਵੇਰਵਾ ਫਾਇਲ ਲਿਖੋ</string>
     <string name="write_description">ਵੇਰਵਾ ਸੰਭਾਲੋ</string>
     <string name="update_formats_background">ਬੈਕਗ੍ਰਾਊਂਡ ਵਿੱਚ ਫਾਰਮੈਟ ਅੱਪਡੇਟ ਕਰੋ</string>

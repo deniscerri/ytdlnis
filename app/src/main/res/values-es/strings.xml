@@ -287,7 +287,7 @@
     <string name="extra_command">Comando adicional</string>
     <string name="use_cookies">Uso de cookies</string>
     <string name="embed_metadata">Insertar los metadatos</string>
-    <string name="embed_metadata_summary">Inserta los metadatos en el archivo de vídeo. También inserta capítulos/infojson si están presentes</string>
+    <string name="embed_metadata_summary">Incrustar y analizar los metadatos en el archivo de audio</string>
     <string name="write_description_summary">Escribe una descripción para el archivo</string>
     <string name="write_description">Guardar la descripción</string>
     <string name="use_sponsorblock">Utilizar SponsorBlock</string>
