@@ -161,7 +161,7 @@
     <string name="finished_download_notification_channel_name">Transferências concluídas</string>
     <string name="finished_download_notification_channel_description">Notificação de transferência concluídas ou defeituosas</string>
     <string name="quick_download">Descarga rápida</string>
-    <string name="quick_download_summary">Não busque dados antecipadamente</string>
+    <string name="quick_download_summary">Não obter dados no cartão de download</string>
     <string name="remove_audio">Remover áudio</string>
     <string name="preferred_format_id">ID do formato preferido</string>
     <string name="download_now">Descarregar agora</string>
@@ -300,4 +300,8 @@
     <string name="update_app_beta_summary">Inscreva-se no programa beta. Pode conter erros.</string>
     <string name="update_app_beta">Lançamentos Beta</string>
     <string name="auto">Automático</string>
+    <string name="preferred_audio_codec">Codec de áudio preferido</string>
+    <string name="preferred_video_codec">Codec de vídeo preferido</string>
+    <string name="sponsorblock_api_url">URL da API Sponsorblock</string>
+    <string name="loading">A carregar</string>
 </resources>
