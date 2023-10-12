@@ -285,7 +285,7 @@
     <string name="fragment_retries">조각 재시도</string>
     <string name="format_order">형식 순서</string>
     <string name="embed_metadata">메타데이터 포함</string>
-    <string name="embed_metadata_summary">비디오 파일에 메타데이터를 포함합니다. 또한 챕터/infojson이 있는 경우 포함합니다.</string>
+    <string name="embed_metadata_summary">비디오 파일에 메타데이터를 포함하고 구문 분석합니다. 또한, 오디오 파일이 있는 경우 챕터의 infojson도 포함합니다.</string>
     <string name="force_keyframes">자를때 키프레임 강제 적용</string>
     <string name="force_keyframes_summary">처리속도는 느리지만 더 정확하게 자름</string>
     <string name="current">현재 명령</string>
