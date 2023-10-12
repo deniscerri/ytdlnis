@@ -219,7 +219,7 @@
     <string name="download_now">Descargar ahora</string>
     <string name="download_already_exists">Ya existe la descarga</string>
     <string name="quick_download">Descargas rápidas</string>
-    <string name="quick_download_summary">No recibir información antes de descargar</string>
+    <string name="quick_download_summary">No recuperar los datos en la tarjeta de la descarga</string>
     <string name="system">Sistema</string>
     <string name="accents">Acentos</string>
     <string name="high_contrast">Contraste alto</string>
@@ -300,4 +300,8 @@
     <string name="cache_first">Primero las descargas en la caché</string>
     <string name="use_scheduler">Descargar según lo programado</string>
     <string name="auto">Automático</string>
+    <string name="preferred_audio_codec">Códec de audio preferido</string>
+    <string name="preferred_video_codec">Códec de vídeo preferido</string>
+    <string name="sponsorblock_api_url">Dirección URL de la API de Sponsorblock</string>
+    <string name="loading">Cargando</string>
 </resources>
