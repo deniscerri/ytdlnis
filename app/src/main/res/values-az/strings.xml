@@ -229,7 +229,7 @@
     <string name="finished_download_notification_channel_name">Bitmiş Yükləmələr</string>
     <string name="finished_download_notification_channel_description">Bitmiş və ya nasaz yükləmələr üçün bildiriş</string>
     <string name="quick_download">Sürətli Yükləmə</string>
-    <string name="quick_download_summary">Əvvəlcədən məlumat əldə etmə</string>
+    <string name="quick_download_summary">Yükləmə kartında məlumat əldə etmə</string>
     <string name="remove_audio">Səsi Sil</string>
     <string name="download_now">İndi Yüklə</string>
     <string name="preferred_format_id">Üstünlük Verilən Format ID</string>
@@ -300,4 +300,8 @@
     <string name="update_app_beta_summary">Sınaq proqramında qeydiyyatdan keçin. Daxilində səhvlər ola bilər.</string>
     <string name="update_app_beta">Sınaq Buraxılışlar</string>
     <string name="auto">Avtomatik</string>
+    <string name="preferred_audio_codec">Üstünlük Verilən Səs Kodlayıcı</string>
+    <string name="preferred_video_codec">Üstünlük Verilən Video Kodlayıcı</string>
+    <string name="sponsorblock_api_url">SponsorBlock API URL</string>
+    <string name="loading">Yüklənir</string>
 </resources>
