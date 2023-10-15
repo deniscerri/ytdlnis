@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="remove_all">सर्वम् अपसारय</string>
+    <string name="remove_results">स्फुटा परिणामानि</string>
+    <string name="search">अन्वेषण</string>
+    <string name="worst_quality">न्यूनतम गुणवत्ता</string>
+    <string name="best_quality">सर्वोत्तम गुणवत्ता</string>
+</resources>

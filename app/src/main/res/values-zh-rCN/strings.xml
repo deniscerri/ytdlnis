@@ -251,7 +251,7 @@
     <string name="monochrome">黑白</string>
     <string name="finished_download_notification_channel_name">完成下载</string>
     <string name="quick_download">快速下载</string>
-    <string name="quick_download_summary">不预先获取数据</string>
+    <string name="quick_download_summary">不获取下载卡片中的数据</string>
     <string name="download_now">现在下载</string>
     <string name="keep_cache">保留缓存</string>
     <string name="keep_cache_summary">下载完成后不删除临时文件</string>
@@ -300,4 +300,8 @@
     <string name="update_app_beta_summary">加入测试版计划。可能会遇到bugs。</string>
     <string name="update_app_beta">测试版本</string>
     <string name="auto">自动</string>
+    <string name="preferred_audio_codec">首选音频编解码器</string>
+    <string name="preferred_video_codec">首选视频编解码器</string>
+    <string name="sponsorblock_api_url">Sponsorblock API URL</string>
+    <string name="loading">加载中</string>
 </resources>
