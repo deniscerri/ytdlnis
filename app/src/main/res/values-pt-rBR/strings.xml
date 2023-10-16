@@ -206,7 +206,7 @@
     <string name="yellow">Amarelo</string>
     <string name="purple">Roxo</string>
     <string name="green">Verde</string>
-    <string name="quick_download_summary">Não busque dados antecipadamente</string>
+    <string name="quick_download_summary">Não busque dados no cartão de download</string>
     <string name="quick_download">Download rápido</string>
     <string name="finished_download_notification_channel_description">Notificação para downloads concluídos ou com falhas</string>
     <string name="remove_audio">Remover áudio</string>
@@ -300,4 +300,8 @@
     <string name="update_app_beta_summary">Inscreva-se no programa Beta. Pode conter bugs.</string>
     <string name="update_app_beta">Versões Beta</string>
     <string name="auto">Automático</string>
+    <string name="preferred_audio_codec">Codec de áudio preferido</string>
+    <string name="preferred_video_codec">Codec de vídeo preferido</string>
+    <string name="sponsorblock_api_url">URL da API Sponsorblock</string>
+    <string name="loading">Carregando</string>
 </resources>

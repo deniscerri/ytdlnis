@@ -15,7 +15,7 @@
     <string name="source_code">Kaynak Kodu</string>
     <string name="search_hint">Ara veya URL Ekle</string>
     <string name="failed_download"> Dosya indirilemedi.</string>
-    <string name="download_notification_channel_name">Dosya İndirme</string>
+    <string name="download_notification_channel_name">Dosya İndirmeleri</string>
     <string name="download_notification_channel_description">Ses ve video dosyaların indirilmesindeki ilerlemeyi gösteren bildirim</string>
     <string name="you_are_in_latest_version">Son sürümü kullanıyorsun</string>
     <string name="ytld_update_success">Yeni sürüm yüklendi</string>
@@ -48,7 +48,7 @@
     <string name="embed_thumb">Kapak Resmi</string>
     <string name="embed_thumb_summary">Küçük resmi kapak resmi olarak kullan</string>
     <string name="add_chapters">Video Bölümleri</string>
-    <string name="add_chapters_summary">YouTube / SponsorBlock segmentlerini video için bölümler olarak işaretle</string>
+    <string name="add_chapters_summary">YouTube / Sponsor Engelleyici segmentlerini video için bölümler olarak işaretle</string>
     <string name="save_thumb">Küçük Resmi Kaydet</string>
     <string name="save_thumb_summary">Küçük resmi indirme klasörüne kaydet</string>
     <string name="audio_format">Ses Formatı</string>
@@ -60,13 +60,13 @@
     <string name="command_download_notification_channel_name">Komut İndirmeleri</string>
     <string name="command_download_notification_channel_description">Yt-dlp komutu kullanarak indirme işlemi ilerleyişini gösteren bildirim</string>
     <string name="items_left">öge(ler) kaldı</string>
-    <string name="history_is_empty">Geçmiş yok</string>
+    <string name="history_is_empty">Geçmiş boş</string>
     <string name="you_are_going_to_delete">Siliniyor</string>
     <string name="url">URL</string>
     <string name="link_copied_to_clipboard">Panoya kopyalanan bağlantı</string>
     <string name="api_key">API Anahtarı Kullan</string>
     <string name="api_key_summary">Youtube API\'sinden Video Önerileri</string>
-    <string name="update_app_summary">Yeni sürüm varsa bildir</string>
+    <string name="update_app_summary">Uygulama açıldığında yeni sürümlerini duyurun</string>
     <string name="downloads">İndirilenler</string>
     <string name="remove_deleted">Silinenleri Kaldır</string>
     <string name="remove_duplicates">Kopyaları Kaldır</string>
@@ -214,7 +214,7 @@
     <string name="purple">Mor</string>
     <string name="yellow">Sarı</string>
     <string name="quick_download">Hızlı İndirme</string>
-    <string name="quick_download_summary">Verileri önceden getirme</string>
+    <string name="quick_download_summary">İndirme kartındaki verileri getirme</string>
     <string name="codec">Kodek</string>
     <string name="audio_samplerate">Ses Örnek Hızı</string>
     <string name="Theme">Tema</string>
@@ -292,7 +292,7 @@
     <string name="extra_command">Ekstra Komut</string>
     <string name="use_cookies">Çerezleri Kullan</string>
     <string name="embed_metadata">Meta Verileri Göm</string>
-    <string name="embed_metadata_summary">Meta verileri video dosyasına gömün. Varsa bölümleri/infojson\'u da yerleştirir</string>
+    <string name="embed_metadata_summary">Meta verileri ses dosyasına gömün ve ayrıştırın</string>
     <string name="update_formats_background">Formatları Arka Planda Güncelle</string>
     <string name="auto_update_ytdlp">Yt-dlp\'i Otomatik Güncelle</string>
     <string name="use_sponsorblock">Sponsor Engelleyici Kullan</string>
@@ -303,4 +303,8 @@
     <string name="cache_first">Önce Önbellek İndirmeleri</string>
     <string name="use_scheduler">Planlanan Zamanda İndir</string>
     <string name="auto">Otomatik</string>
+    <string name="preferred_audio_codec">Tercih Edilen Ses Kodek Bileşeni</string>
+    <string name="preferred_video_codec">Tercih Edilen Video Kodek Bileşeni</string>
+    <string name="sponsorblock_api_url">Sponsor Engelleyici API URL\'si</string>
+    <string name="loading">Yükleniyor</string>
 </resources>

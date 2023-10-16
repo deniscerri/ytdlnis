@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="music_directory">Hudební složka</string>
+    <string name="update_ytdl">Nainstalovat novou verzi yt-dlp</string>
+    <string name="directories">Složky</string>
+    <string name="search_hint">Hledat nebo vložit odkaz</string>
+    <string name="source_code">Zdrojový kód</string>
+    <string name="remove_all">Odstranit vše</string>
+    <string name="video_directory">Video složka</string>
+    <string name="about">Informace</string>
+    <string name="download_all">Stáhnout vše</string>
+    <string name="updating">Aktualizuji</string>
+    <string name="home">Domů</string>
+    <string name="remove_results">Odstranit výsledky</string>
+    <string name="failed_download">Soubor se nepodařilo stáhnout.</string>
+    <string name="search">Hledat</string>
+    <string name="settings">Nastavení</string>
+    <string name="worst_quality">Nejhorší kvalita</string>
+    <string name="ytdl_update_hint">Užitečné při problémech se stahováním</string>
+    <string name="best_quality">Nejlepší kvalita</string>
+</resources>
