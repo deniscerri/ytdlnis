@@ -258,7 +258,7 @@
     <string name="confirm_terminate">ਸਾਰੇ ਡਾਊਨਲੋਡਾਂ ਨੂੰ ਰੋਕਦਾ ਹੈ ਅਤੇ ਐਪ ਨੂੰ ਜ਼ਬਰੀ ਬੰਦ ਕਰ ਦਿੰਦਾ ਹੈ</string>
     <string name="ignore_battery_optimization">ਬੈਟਰੀ ਓਪਟੀਮਾਈਜੇਸ਼ਨ ਨੂੰ ਅਣਡਿੱਠ ਕਰੋ</string>
     <string name="quick_download">ਤੁਰੰਤ ਡਾਊਨਲੋਡ</string>
-    <string name="quick_download_summary">ਪਹਿਲਾਂ ਤੋਂ ਡਾਟਾ ਪ੍ਰਾਪਤ ਨਾ ਕਰੋ</string>
+    <string name="quick_download_summary">ਡਾਉਨਲੋਡ ਕਾਰਡ ਵਿੱਚ ਡੇਟਾ ਪ੍ਰਾਪਤ ਨਾ ਕਰੋ</string>
     <string name="resume">ਮੁੜ ਸ਼ੁਰੂ ਕਰੋ</string>
     <string name="updating_download_data">ਡਾਊਨਲੋਡ ਆਈਟਮ ਡਾਟਾ ਅੱਪਡੇਟ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ</string>
     <string name="keep_cache">ਕੈਸ਼ ਰੱਖੋ</string>
@@ -300,4 +300,8 @@
     <string name="update_app_beta_summary">ਬੀਟਾ ਪ੍ਰੋਗਰਾਮ ਵਿੱਚ ਨਾਮ ਦਰਜ ਕਰੋ। ਇਸ ਵਿੱਚ ਬੱਗ ਹੋ ਸਕਦੇ ਹਨ।</string>
     <string name="update_app_beta">ਬੀਟਾ ਰਿਲੀਜ਼ਾਂ</string>
     <string name="auto">ਆਟੋ</string>
+    <string name="preferred_audio_codec">ਤਰਜੀਹੀ ਆਡੀਓ ਕੋਡੇਕ</string>
+    <string name="preferred_video_codec">ਤਰਜੀਹੀ ਵੀਡੀਓ ਕੋਡੇਕ</string>
+    <string name="sponsorblock_api_url">ਸਪਾਂਸਰਬਲਾਕ API URL</string>
+    <string name="loading">ਲੋਡ ਹੋ ਰਿਹਾ ਹੈ</string>
 </resources>
