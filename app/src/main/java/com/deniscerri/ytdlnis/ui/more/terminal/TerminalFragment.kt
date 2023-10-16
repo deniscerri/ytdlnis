@@ -48,9 +48,12 @@ import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.yausername.youtubedl_android.YoutubeDL
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.lang.StringBuilder
 import kotlin.properties.Delegates
 
 
@@ -102,11 +105,13 @@ class TerminalFragment : Fragment() {
         topAppBar!!.setNavigationOnClickListener { requireActivity().finish() }
 
         input = view.findViewById(R.id.command_edittext)
+        fab = view.findViewById(R.id.command_fab)
 
         if (arguments?.getLong("id") != null){
             downloadID = requireArguments().getLong("id")
             if(downloadID != 0L){
                 input!!.visibility = View.GONE
+                showCancelFab()
             }
         }
 
@@ -145,6 +150,7 @@ class TerminalFragment : Fragment() {
             }else{
                 bottomAppBar.menu.getItem(1).icon?.alpha = 255
             }
+
         }
         bottomAppBar.setOnMenuItemClickListener {
             when(it.itemId){
@@ -195,7 +201,6 @@ class TerminalFragment : Fragment() {
         output!!.setTextIsSelectable(true)
         output!!.layoutParams!!.width = LayoutParams.WRAP_CONTENT
         input!!.requestFocus()
-        fab = view.findViewById(R.id.command_fab)
         fab!!.setOnClickListener {
             if (fab!!.text == getString(R.string.run_command)){
                 input!!.visibility = View.GONE
@@ -205,7 +210,7 @@ class TerminalFragment : Fragment() {
                 lifecycleScope.launch {
                     val command = input!!.text.toString().replace("yt-dlp", "")
                     downloadID = withContext(Dispatchers.IO){
-                        terminalViewModel.insert(TerminalItem(command = command))
+                        terminalViewModel.insert(TerminalItem(command = command, log = output!!.text.toString()))
                     }
                     terminalViewModel.startTerminalDownloadWorker(TerminalItem(downloadID, command))
                     runWorkerListener()
@@ -293,6 +298,22 @@ class TerminalFragment : Fragment() {
     }
 
     private fun runWorkerListener(){
+        CoroutineScope(Dispatchers.IO).launch {
+            terminalViewModel.getTerminal(downloadID).collectLatest {
+                kotlin.runCatching {
+                    requireActivity().runOnUiThread{
+                        if (it != null){
+                            if (!it.log.isNullOrBlank()) {
+                                output?.text = it.log
+                            }
+                            output?.scrollTo(0, output!!.height)
+                            scrollView?.fullScroll(View.FOCUS_DOWN)
+                        }
+                    }
+                }
+
+            }
+        }
 
         WorkManager.getInstance(requireContext())
             .getWorkInfosByTagLiveData(downloadID.toString())
@@ -310,25 +331,9 @@ class TerminalFragment : Fragment() {
                         }
                         return@forEach
                     }
-                    val outputData = work.progress.getString("output")
-                    if (!outputData.isNullOrBlank()){
-                        val pieces = output!!.text.split("\n").toMutableList()
-                        val lastLine = pieces.last()
-                        requireActivity().runOnUiThread{
-                            kotlin.runCatching {
-                                showCancelFab()
-                                if (listOf(lastLine, outputData).all { it.contains("[download]") }){
-                                    output!!.text = pieces.dropLast(1).joinToString("\n")
-                                }
-                                output!!.append("\n$outputData")
-                                output!!.scrollTo(0, output!!.height)
-                                scrollView!!.fullScroll(View.FOCUS_DOWN)
-                            }
-                        }
-                    }
-
                 }
             }
+
     }
 
 }

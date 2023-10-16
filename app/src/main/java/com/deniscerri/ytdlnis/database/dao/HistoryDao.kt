@@ -35,6 +35,9 @@ interface HistoryDao {
     @Query("SELECT * FROM history WHERE id=:id LIMIT 1")
     suspend fun getHistoryItem(id: Int) : HistoryItem
 
+    @Query("SELECT * FROM history WHERE url=:url")
+    fun getAllHistoryByURL(url: String) : List<HistoryItem>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(item: HistoryItem)
 

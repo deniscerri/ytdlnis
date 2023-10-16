@@ -1,12 +1,15 @@
 package com.deniscerri.ytdlnis.ui.downloadcard
 
 import android.annotation.SuppressLint
+import android.app.ActivityManager
 import android.app.Dialog
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.os.Bundle
+import android.os.Looper
 import android.text.format.DateFormat
 import android.util.DisplayMetrics
 import android.util.Patterns
@@ -16,6 +19,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.core.content.edit
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -158,6 +162,11 @@ class DownloadBottomSheetDialog(private var result: ResultItem, private val type
             }
         }
 
+        sharedPreferences.edit(commit = true) {
+            putString("last_used_download_type",
+                type.toString())
+        }
+
 
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
@@ -184,6 +193,10 @@ class DownloadBottomSheetDialog(private var result: ResultItem, private val type
             override fun onPageSelected(position: Int) {
                 tabLayout.selectTab(tabLayout.getTabAt(position))
                 runCatching {
+                    sharedPreferences.edit(commit = true) {
+                        putString("last_used_download_type",
+                            listOf(Type.audio, Type.video, Type.command)[position].toString())
+                    }
                     updateTitleAuthorWhenSwitching()
                 }
             }
@@ -326,13 +339,18 @@ class DownloadBottomSheetDialog(private var result: ResultItem, private val type
 
             if (result.url.isBlank()){
                 withContext(Dispatchers.Main){dismiss()}
+                return@launch
             }
 
-            val result = resultViewModel.parseQueries(listOf(result.url))
+            val result = resultViewModel.parseQuery(result.url, true)
             if (result.isEmpty()){
                 withContext(Dispatchers.Main){
+                    Looper.prepare().run {
+                        Toast.makeText(requireContext(), "No Results Found!", Toast.LENGTH_SHORT).show()
+                    }
                     dismiss()
                 }
+                return@launch
             }
 
             if (result.size == 1 && result[0] != null){

@@ -108,65 +108,56 @@ class ShareActivity : BaseActivity() {
             runCatching { supportFragmentManager.popBackStack() }
 
             quickDownload = intent.getBooleanExtra("quick_download", sharedPreferences.getBoolean("quick_download", false) || sharedPreferences.getString("preferred_download_type", "video") == "command")
-            val intentData = when(action){
+            val url = when(action){
                 Intent.ACTION_SEND -> intent.getStringExtra(Intent.EXTRA_TEXT)!!
                 else -> intent.dataString!!
             }
-            val matcher = Patterns.WEB_URL.matcher(intentData)
+            val matcher = Patterns.WEB_URL.matcher(url)
             val inputQuery = if (matcher.find()){
                matcher.group()
             }else{
-                intentData
+                url
             }
 
-            lifecycleScope.launch {
-                try {
-                    val result = withContext(Dispatchers.IO){
-                        resultViewModel.getItemByURL(inputQuery)
-                    }
-                    if (result == null) throw Exception()
-                    showDownloadSheet(result)
-                }catch (e: Exception){
-                    resultViewModel.deleteAll()
-                    showDownloadSheet(downloadViewModel.createEmptyResultItem(inputQuery))
-                    if (matcher.matches()){
+            val type = intent.getStringExtra("TYPE")
+            val background = intent.getBooleanExtra("BACKGROUND", false)
+            val command = intent.getStringExtra("COMMAND") ?: ""
 
-                    }else{
-                        val res = withContext(Dispatchers.IO){
-                            resultViewModel.parseQuery(inputQuery, true)
-                        }
-                        if (res.isEmpty()) {
-                            Toast.makeText(this@ShareActivity, "No Results Found!", Toast.LENGTH_SHORT).show()
-                            exit()
+            lifecycleScope.launch {
+                var result = withContext(Dispatchers.IO){
+                    resultViewModel.getItemByURL(inputQuery)
+                }
+                if (result == null) {
+                    resultViewModel.deleteAll()
+                    result = downloadViewModel.createEmptyResultItem(inputQuery)
+                }
+                val downloadType = DownloadViewModel.Type.valueOf(type ?: downloadViewModel.getDownloadType(url = result.url).toString())
+                if (sharedPreferences.getBoolean("download_card", true) && !background){
+                    val bottomSheet = DownloadBottomSheetDialog(
+                        result = result,
+                        type = downloadType)
+                    bottomSheet.show(supportFragmentManager, "downloadSingleSheet")
+                }else{
+                    lifecycleScope.launch(Dispatchers.IO){
+                        val downloadItem = downloadViewModel.createDownloadItemFromResult(
+                            result = result,
+                            givenType = downloadType)
+
+                        if (downloadType == DownloadViewModel.Type.command && command.isNotBlank()){
+                            downloadItem.format.format_note = command
                         }else{
-                            if (res.size == 1){
-                                showDownloadSheet(res[0]!!)
-                            }else{
-                                showSelectPlaylistItems(res.toList())
-                            }
+                            downloadItem.extraCommands = downloadItem.extraCommands + " $command"
                         }
+                        downloadViewModel.queueDownloads(listOf(downloadItem))
                     }
+                    this@ShareActivity.finish()
                 }
             }
         }
     }
 
     private fun showDownloadSheet(it: ResultItem){
-        val downloadType = downloadViewModel.getDownloadType(DownloadViewModel.Type.valueOf(sharedPreferences.getString("preferred_download_type", "video")!!), it.url)
-        if (sharedPreferences.getBoolean("download_card", true)){
-            val bottomSheet = DownloadBottomSheetDialog(
-                result = it,
-                type = downloadType)
-            bottomSheet.show(supportFragmentManager, "downloadSingleSheet")
-        }else{
-            lifecycleScope.launch(Dispatchers.IO){
-                val downloadItem = downloadViewModel.createDownloadItemFromResult(
-                    result = it,
-                    givenType = downloadType)
-                downloadViewModel.queueDownloads(listOf(downloadItem))
-            }
-            this.finish()
-        }
+
     }
 
     private fun showSelectPlaylistItems(it: List<ResultItem?>){

@@ -72,6 +72,12 @@ class TerminalDownloadWorker(
             if (cookiesFile.exists()){
                 request.addOption("--cookies", cookiesFile.absolutePath)
             }
+
+            val useHeader = sharedPreferences.getBoolean("use_header", false)
+            val header = sharedPreferences.getString("useragent_header", "")
+            if (useHeader && !header.isNullOrBlank()){
+                request.addOption("--add-header","User-Agent:${header}")
+            }
         }
 
         request.addOption("-P", FileUtil.getDefaultCommandPath() + "/" + itemId)
@@ -83,7 +89,7 @@ class TerminalDownloadWorker(
             "Terminal Download",
             "Downloading:\n" +
                     "Terminal Download\n" +
-                    "Command: ${infoUtil.parseYTDLRequestString(request)}\n\n",
+                    "Command: ${command}\n\n",
             Format(),
             DownloadViewModel.Type.command,
             System.currentTimeMillis(),
@@ -110,10 +116,9 @@ class TerminalDownloadWorker(
                     line, progress.toInt(), 0, title,
                     NotificationUtil.DOWNLOAD_SERVICE_CHANNEL_ID
                 )
-                if (logDownloads){
-                    CoroutineScope(Dispatchers.IO).launch {
-                        logRepo.update(line, logItem.id)
-                    }
+                CoroutineScope(Dispatchers.IO).launch {
+                    if (logDownloads) logRepo.update(line, logItem.id)
+                    dao.updateLog(line, itemId.toLong())
                 }
             }
         }.onSuccess {
@@ -132,39 +137,30 @@ class TerminalDownloadWorker(
             }
 
             return runBlocking {
-                it.out.split("\n").forEach {
-                    setProgress(workDataOf("progress" to 100, "output" to it, "id" to itemId, "log" to logDownloads))
-                    Thread.sleep(50)
-                }
-
-                if (logDownloads){
-                    CoroutineScope(Dispatchers.IO).launch {
-                        logRepo.update(it.out, logItem.id)
-                    }
+                CoroutineScope(Dispatchers.IO).launch {
+                    if (logDownloads) logRepo.update(it.out, logItem.id)
+                    dao.updateLog(it.out, itemId.toLong())
+                    Thread.sleep(1000)
+                    dao.delete(itemId.toLong())
                 }
                 notificationUtil.cancelDownloadNotification(itemId)
-                dao.delete(itemId.toLong())
-                return@runBlocking Result.success()
+
+                Result.success()
             }
         }.onFailure {
             return runBlocking {
-                it.message?.chunked(10000)?.forEach {
-                    setProgress(workDataOf("progress" to 100, "output" to it, "id" to itemId, "log" to logDownloads))
-                    Thread.sleep(100)
-                }
-
-                if (logDownloads){
-                    CoroutineScope(Dispatchers.IO).launch {
-                        if (it.message != null){
-                            logRepo.update(it.message!!, logItem.id)
-                        }
+                CoroutineScope(Dispatchers.IO).launch {
+                    if (it.message != null){
+                        if (logDownloads) logRepo.update(it.message!!, logItem.id)
+                        dao.updateLog(it.message!!, itemId.toLong())
+                        Thread.sleep(1000)
+                        dao.delete(itemId.toLong())
                     }
                 }
+                notificationUtil.cancelDownloadNotification(itemId)
                 File(FileUtil.getDefaultCommandPath() + "/" + itemId).deleteRecursively()
                 Log.e(TAG, context.getString(R.string.failed_download), it)
-                notificationUtil.cancelDownloadNotification(itemId)
-                dao.delete(itemId.toLong())
-                return@runBlocking Result.failure()
+                Result.failure()
             }
 
 

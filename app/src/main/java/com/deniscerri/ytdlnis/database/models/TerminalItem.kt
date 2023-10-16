@@ -9,5 +9,7 @@ import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 data class TerminalItem(
     @PrimaryKey(autoGenerate = true)
     var id: Long = 0,
-    var command: String
+    var command: String,
+    @ColumnInfo(defaultValue = "")
+    var log: String? = "",
 )

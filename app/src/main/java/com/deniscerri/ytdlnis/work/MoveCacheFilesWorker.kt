@@ -15,6 +15,7 @@ import androidx.work.ForegroundInfo
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import androidx.work.workDataOf
+import com.deniscerri.ytdlnis.App
 import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.DBManager
@@ -43,7 +44,7 @@ class MoveCacheFilesWorker(
     workerParams: WorkerParameters
 ) : Worker(context, workerParams) {
     override fun doWork(): Result {
-        val notificationUtil = NotificationUtil(context)
+        val notificationUtil = NotificationUtil(App.instance)
         val id = System.currentTimeMillis().toInt()
 
         val downloadFolders = File(context.cacheDir.absolutePath + "/downloads")

@@ -34,6 +34,9 @@ interface DownloadDao {
     @Query("SELECT * FROM downloads WHERE status='Active' or status='Queued' or status='QueuedPaused'  or status='Paused'")
     fun getActiveAndQueuedDownloadsList() : List<DownloadItem>
 
+    @Query("SELECT id FROM downloads WHERE status='Active' or status='Queued' or status='QueuedPaused'  or status='Paused'")
+    fun getActiveAndQueuedDownloadIDs() : List<Long>
+
     @Query("SELECT * FROM downloads WHERE status='Active' or status='Queued' or status='QueuedPaused'  or status='Paused'")
     fun getActiveAndQueuedDownloads() : Flow<List<DownloadItem>>
 
@@ -122,8 +125,8 @@ interface DownloadDao {
     @Query("DELETE FROM downloads WHERE id in (:list)")
     suspend fun deleteAllWithIDs(list: List<Long>)
 
-    @Query("UPDATE downloads SET status='Cancelled' WHERE status='Queued' or status='QueuedPaused'")
-    suspend fun cancelQueued()
+    @Query("UPDATE downloads SET status='Cancelled' WHERE status='Queued' or status='QueuedPaused' or status='Active' or status='Paused'")
+    suspend fun cancelActiveQueued()
 
     @Query("DELETE FROM downloads WHERE status='Processing' AND id=:id")
     suspend fun deleteSingleProcessing(id: Long)

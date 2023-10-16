@@ -17,6 +17,7 @@ import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import androidx.work.await
 import androidx.work.workDataOf
+import com.deniscerri.ytdlnis.App
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.DBManager
 import com.deniscerri.ytdlnis.database.dao.DownloadDao
@@ -49,7 +50,7 @@ class DownloadWorker(
     override suspend fun doWork(): Result {
         if (isStopped) return Result.success()
 
-        val notificationUtil = NotificationUtil(context)
+        val notificationUtil = NotificationUtil(App.instance)
         val infoUtil = InfoUtil(context)
         val dbManager = DBManager.getInstance(context)
         val dao = dbManager.downloadDao
@@ -119,6 +120,8 @@ class DownloadWorker(
                     val keepCache = sharedPreferences.getBoolean("keep_cache", false)
                     val logDownloads = sharedPreferences.getBoolean("log_downloads", false) && !sharedPreferences.getBoolean("incognito", false)
 
+
+                    val commandString = infoUtil.parseYTDLRequestString(request)
                     val logItem = LogItem(
                         0,
                         downloadItem.title.ifEmpty { downloadItem.url },
@@ -126,7 +129,7 @@ class DownloadWorker(
                                 "Title: ${downloadItem.title}\n" +
                                 "URL: ${downloadItem.url}\n" +
                                 "Type: ${downloadItem.type}\n" +
-                                "Command:\n ${infoUtil.parseYTDLRequestString(request)}\n\n",
+                                "Command:\n ${commandString}\n\n",
                         downloadItem.format,
                         downloadItem.type,
                         System.currentTimeMillis(),
@@ -141,6 +144,8 @@ class DownloadWorker(
                         }
 
                     }
+
+                    val noCache = !sharedPreferences.getBoolean("cache_downloads", true) && File(FileUtil.formatPath(downloadItem.downloadPath)).canWrite()
 
                     runCatching {
                         YoutubeDL.getInstance().execute(request, downloadItem.id.toString()){ progress, _, line ->
@@ -162,16 +167,18 @@ class DownloadWorker(
                         runBlocking {
                             var finalPaths : List<String>?
 
-                            //if there was no cache used
-                            if (!sharedPreferences.getBoolean("cache_downloads", true) && File(FileUtil.formatPath(downloadItem.downloadPath)).canWrite()){
+                            if (noCache){
                                 setProgressAsync(workDataOf("progress" to 100, "output" to "Scanning Files", "id" to downloadItem.id))
-                                val p = infoUtil.getFilePaths(request)
+                                val p = it.out.split("\r")
+                                    .filter { it.startsWith("'/storage") }
+                                    .map { it.removePrefix("'") }
+                                    .map { it.removeSuffix("'\n") }
                                 finalPaths = File(FileUtil.formatPath(downloadLocation))
-                                        .walkTopDown()
-                                        .filter { it.isFile && p.contains(it.nameWithoutExtension) }
-                                        .sortedByDescending { it.length() }
-                                        .map { it.absolutePath }
-                                        .toList()
+                                    .walkTopDown()
+                                    .filter { it.isFile && p.any { f -> f.contains(it.nameWithoutExtension) }}
+                                    .sortedByDescending { it.length() }
+                                    .map { it.absolutePath }
+                                    .toList()
                                 FileUtil.scanMedia(finalPaths, context)
                                 if (finalPaths.isEmpty()){
                                     finalPaths = listOf(context.getString(R.string.unfound_file))
@@ -208,7 +215,7 @@ class DownloadWorker(
                                 val unixtime = System.currentTimeMillis() / 1000
                                 val file = File(finalPaths?.first()!!)
                                 downloadItem.format.filesize = file.length()
-                                val historyItem = HistoryItem(0, downloadItem.url, downloadItem.title, downloadItem.author, downloadItem.duration, downloadItem.thumb, downloadItem.type, unixtime, finalPaths.first() , downloadItem.website, downloadItem.format, downloadItem.id)
+                                val historyItem = HistoryItem(0, downloadItem.url, downloadItem.title, downloadItem.author, downloadItem.duration, downloadItem.thumb, downloadItem.type, unixtime, finalPaths.first() , downloadItem.website, downloadItem.format, downloadItem.id, commandString)
                                 historyDao.insert(historyItem)
                             }
 

@@ -3,6 +3,7 @@ package com.deniscerri.ytdlnis.ui.downloadcard
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.DialogInterface
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.LayoutInflater
@@ -10,9 +11,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
+import androidx.core.content.edit
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.deniscerri.ytdlnis.R
@@ -41,6 +44,7 @@ class ConfigureDownloadBottomSheetDialog(private var result: ResultItem, private
     private lateinit var commandTemplateDao: CommandTemplateDao
     private lateinit var behavior: BottomSheetBehavior<View>
     private lateinit var onDownloadItemUpdateListener: OnDownloadItemUpdateListener
+    private lateinit var sharedPreferences : SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,6 +52,7 @@ class ConfigureDownloadBottomSheetDialog(private var result: ResultItem, private
         resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]
         commandTemplateDao = DBManager.getInstance(requireContext()).commandTemplateDao
         onDownloadItemUpdateListener = listener
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -153,6 +158,10 @@ class ConfigureDownloadBottomSheetDialog(private var result: ResultItem, private
             override fun onPageSelected(position: Int) {
                 tabLayout.selectTab(tabLayout.getTabAt(position))
                 runCatching {
+                    sharedPreferences.edit(commit = true) {
+                        putString("last_used_download_type",
+                            listOf(Type.audio, Type.video, Type.command)[position].toString())
+                    }
                     updateTitleAuthorWhenSwitching()
                 }
             }

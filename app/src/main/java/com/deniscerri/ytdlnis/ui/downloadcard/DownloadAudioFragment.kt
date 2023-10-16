@@ -12,6 +12,8 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.TextView
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.isEmpty
 import androidx.fragment.app.Fragment
@@ -140,17 +142,7 @@ class DownloadAudioFragment(private var resultItem: ResultItem? = null, private 
                     intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                     intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION)
 
-                    val callback = FileUtil.getURIFromResult(this@DownloadAudioFragment, requireActivity()){result ->
-                        downloadItem.downloadPath = result
-                        //downloadViewModel.updateDownload(downloadItem)
-                        saveDir.editText?.setText(FileUtil.formatPath(result), TextView.BufferType.EDITABLE)
-
-                        val free = FileUtil.convertFileSize(
-                            File(FileUtil.formatPath(downloadItem.downloadPath)).freeSpace)
-                        freeSpace.text = String.format( getString(R.string.freespace) + ": " + free)
-                        if (free == "?") freeSpace.visibility = View.GONE
-                    }
-                    callback.launch(intent)
+                    pathResultLauncher.launch(intent)
                 }
                 freeSpace = view.findViewById(R.id.freespace)
                 val free = FileUtil.convertFileSize(
@@ -295,5 +287,29 @@ class DownloadAudioFragment(private var resultItem: ResultItem? = null, private 
         val state = Bundle()
         state.putBoolean("updated", true)
         onViewCreated(requireView(),savedInstanceState = state)
+    }
+
+    private var pathResultLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            result.data?.data?.let {
+                activity?.contentResolver?.takePersistableUriPermission(
+                    it,
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION or
+                            Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+                )
+            }
+
+            downloadItem.downloadPath = result.data?.data.toString()
+            //downloadViewModel.updateDownload(downloadItem)
+            saveDir.editText?.setText(FileUtil.formatPath(result.data?.data.toString()), TextView.BufferType.EDITABLE)
+
+            val free = FileUtil.convertFileSize(
+                File(FileUtil.formatPath(downloadItem.downloadPath)).freeSpace)
+            freeSpace.text = String.format( getString(R.string.freespace) + ": " + free)
+            if (free == "?") freeSpace.visibility = View.GONE
+
+        }
     }
 }

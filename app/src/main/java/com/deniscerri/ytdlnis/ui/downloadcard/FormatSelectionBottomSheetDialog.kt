@@ -130,7 +130,7 @@ class FormatSelectionBottomSheetDialog(private val items: List<DownloadItem?>, p
                if (items.size > 10){
                    continueInBackgroundSnackBar = Snackbar.make(view, R.string.update_formats_background, Snackbar.LENGTH_LONG)
                    continueInBackgroundSnackBar.setAction(R.string.ok) {
-                       listener.onContinueOnBackground(items)
+                       listener.onContinueOnBackground()
                        this@FormatSelectionBottomSheetDialog.dismiss()
                    }
                    continueInBackgroundSnackBar.show()
@@ -369,7 +369,7 @@ class FormatSelectionBottomSheetDialog(private val items: List<DownloadItem?>, p
 
 interface OnFormatClickListener{
     fun onFormatClick(allFormats: List<List<Format>>, item: List<FormatTuple>)
-    fun onContinueOnBackground(items : List<DownloadItem?>) {}
+    fun onContinueOnBackground() {}
 }
 
 class FormatTuple internal constructor(

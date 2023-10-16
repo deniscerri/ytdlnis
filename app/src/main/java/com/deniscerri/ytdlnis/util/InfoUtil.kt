@@ -1,49 +1,26 @@
 package com.deniscerri.ytdlnis.util
 
-import android.app.Activity
-import android.app.DownloadManager
-import android.content.ClipboardManager
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.res.Resources
-import android.net.Uri
-import android.os.Build
-import android.os.Bundle
-import android.os.Environment
 import android.os.Looper
 import android.text.Html
 import android.util.Log
 import android.util.Patterns
-import android.util.TypedValue
-import android.view.WindowManager
 import android.widget.Toast
-import androidx.navigation.findNavController
-import androidx.preference.AndroidResources
 import androidx.preference.PreferenceManager
-import com.deniscerri.ytdlnis.App
-import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
-import com.deniscerri.ytdlnis.database.DBManager
 import com.deniscerri.ytdlnis.database.models.ChapterItem
 import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.models.Format
-import com.deniscerri.ytdlnis.database.models.LogItem
 import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.ui.ErrorDialogActivity
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.yausername.youtubedl_android.YoutubeDL
 import com.yausername.youtubedl_android.YoutubeDLRequest
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -475,12 +452,20 @@ class InfoUtil(private val context: Context) {
                 FileUtil.getCookieFile(context){
                     request.addOption("--cookies", it)
                 }
+
+                val useHeader = sharedPreferences.getBoolean("use_header", false)
+                val header = sharedPreferences.getString("useragent_header", "")
+                if (useHeader && !header.isNullOrBlank()){
+                    request.addOption("--add-header","User-Agent:${header}")
+                }
             }
 
             val proxy = sharedPreferences.getString("proxy", "")
             if (proxy!!.isNotBlank()) {
                 request.addOption("--proxy", proxy)
             }
+
+
 
             val res = YoutubeDL.getInstance().execute(request)
             val results: Array<String?> = try {
@@ -528,6 +513,12 @@ class InfoUtil(private val context: Context) {
                     FileUtil.getCookieFile(context){
                         request.addOption("--cookies", it)
                     }
+
+                    val useHeader = sharedPreferences.getBoolean("use_header", false)
+                    val header = sharedPreferences.getString("useragent_header", "")
+                    if (useHeader && !header.isNullOrBlank()){
+                        request.addOption("--add-header","User-Agent:${header}")
+                    }
                 }
 
 
@@ -535,6 +526,8 @@ class InfoUtil(private val context: Context) {
                 if (proxy!!.isNotBlank()){
                     request.addOption("--proxy", proxy)
                 }
+
+
 
                 YoutubeDL.getInstance().execute(request){ progress, _, line ->
                     try{
@@ -592,12 +585,20 @@ class InfoUtil(private val context: Context) {
                 FileUtil.getCookieFile(context){
                     request.addOption("--cookies", it)
                 }
+
+                val useHeader = sharedPreferences.getBoolean("use_header", false)
+                val header = sharedPreferences.getString("useragent_header", "")
+                if (useHeader && !header.isNullOrBlank()){
+                    request.addOption("--add-header","User-Agent:${header}")
+                }
             }
 
             val proxy = sharedPreferences.getString("proxy", "")
             if (proxy!!.isNotBlank()){
                 request.addOption("--proxy", proxy)
             }
+
+
 
             val youtubeDLResponse = YoutubeDL.getInstance().execute(request)
             val results: List<String?> = try {
@@ -759,6 +760,12 @@ class InfoUtil(private val context: Context) {
                 FileUtil.getCookieFile(context){
                     request.addOption("--cookies", it)
                 }
+
+                val useHeader = sharedPreferences.getBoolean("use_header", false)
+                val header = sharedPreferences.getString("useragent_header", "")
+                if (useHeader && !header.isNullOrBlank()){
+                    request.addOption("--add-header","User-Agent:${header}")
+                }
             }
 
 
@@ -767,6 +774,8 @@ class InfoUtil(private val context: Context) {
             if (proxy!!.isNotBlank()){
                 request.addOption("--proxy", proxy)
             }
+
+
 
             val youtubeDLResponse = YoutubeDL.getInstance().execute(request)
             val jsonObject = JSONObject(youtubeDLResponse.out)
@@ -921,6 +930,12 @@ class InfoUtil(private val context: Context) {
                     FileUtil.getCookieFile(context){
                         request.addOption("--cookies", it)
                     }
+
+                    val useHeader = sharedPreferences.getBoolean("use_header", false)
+                    val header = sharedPreferences.getString("useragent_header", "")
+                    if (useHeader && !header.isNullOrBlank()){
+                        request.addOption("--add-header","User-Agent:${header}")
+                    }
                 }
 
 
@@ -929,6 +944,8 @@ class InfoUtil(private val context: Context) {
                 if (proxy!!.isNotBlank()){
                     request.addOption("--proxy", proxy)
                 }
+
+
 
                 val youtubeDLResponse = YoutubeDL.getInstance().execute(request)
                 val results: Array<String?> = try {
@@ -958,22 +975,6 @@ class InfoUtil(private val context: Context) {
         }
     }
 
-    fun getFilePaths(request: YoutubeDLRequest) : List<String>{
-        return try{
-            request.addOption("--print", "filename")
-            val res = YoutubeDL.getInstance().execute(request)
-            val results: Array<String?> = try {
-                val lineSeparator = System.getProperty("line.separator")
-                res.out.split(lineSeparator!!).toTypedArray()
-            } catch (e: Exception) {
-                arrayOf(res.out)
-            }
-            results.filter { !it.isNullOrBlank() }.map { it!!.substring(0, it.lastIndexOf(".")) }.map { it.substring(it.lastIndexOf("/") + 1, it.length) }
-        }catch (e: Exception){
-            listOf()
-        }
-    }
-
     fun buildYoutubeDLRequest(downloadItem: DownloadItem) : YoutubeDLRequest{
         val url = downloadItem.url
         val request = YoutubeDLRequest(url)
@@ -982,6 +983,9 @@ class InfoUtil(private val context: Context) {
         val downDir : File
         if (!sharedPreferences.getBoolean("cache_downloads", true) && File(FileUtil.formatPath(downloadItem.downloadPath)).canWrite()){
             downDir = File(FileUtil.formatPath(downloadItem.downloadPath))
+            request.addOption("--print", "after_video:'%(filename)s'")
+            request.addOption("--progress")
+            request.addOption("-v")
         }else{
             val cacheDir = FileUtil.getCachePath(context)
             downDir = File(cacheDir, downloadItem.id.toString())
@@ -1009,6 +1013,27 @@ class InfoUtil(private val context: Context) {
 
         val sponsorblockURL = sharedPreferences.getString("sponsorblock_url", "")!!
         if (sponsorblockURL.isNotBlank()) request.addOption("--sponsorblock-api", sponsorblockURL)
+
+        if (sharedPreferences.getBoolean("restrict_filenames", true)) request.addOption("--restrict-filenames")
+        if (sharedPreferences.getBoolean("use_cookies", false)){
+            FileUtil.getCookieFile(context){
+                request.addOption("--cookies", it)
+            }
+        }
+
+        val proxy = sharedPreferences.getString("proxy", "")
+        if (proxy!!.isNotBlank()){
+            request.addOption("--proxy", proxy)
+        }
+
+        val keepCache = sharedPreferences.getBoolean("keep_cache", false)
+        if(keepCache){
+            request.addOption("--part")
+            request.addOption("--keep-fragments")
+        }
+
+        val preferredAudioCodec = sharedPreferences.getString("audio_codec", "")!!
+        val aCodecPref = "ba[acodec~='^($preferredAudioCodec)']"
 
         if(downloadItem.type != DownloadViewModel.Type.command){
             request.addOption("--trim-filenames",  downDir.absolutePath.length + 120)
@@ -1106,34 +1131,19 @@ class InfoUtil(private val context: Context) {
             downloadItem.customFileNameTemplate = downloadItem.customFileNameTemplate.replace("%(uploader)s", "%(uploader,channel)s")
         }
 
-        if (sharedPreferences.getBoolean("restrict_filenames", true)) {
-            request.addOption("--restrict-filenames")
-        }
-
-        if (sharedPreferences.getBoolean("use_cookies", false)){
-            FileUtil.getCookieFile(context){
-                request.addOption("--cookies", it)
-            }
-        }
-
-        val proxy = sharedPreferences.getString("proxy", "")
-        if (proxy!!.isNotBlank()){
-            request.addOption("--proxy", proxy)
-        }
-
-        val keepCache = sharedPreferences.getBoolean("keep_cache", false)
-        if(keepCache){
-            request.addOption("--part")
-            request.addOption("--keep-fragments")
-        }
-
         when(type){
             DownloadViewModel.Type.audio -> {
                 val supportedContainers = context.resources.getStringArray(R.array.audio_containers)
 
                 var audioQualityId : String = downloadItem.format.format_id
-                if (audioQualityId.isBlank() || audioQualityId == "0" || audioQualityId == context.getString(R.string.best_quality) || audioQualityId == "best") audioQualityId = ""
-                else if (audioQualityId == context.getString(R.string.worst_quality) || audioQualityId == "worst") audioQualityId = "worstaudio"
+                if (audioQualityId.isBlank() || listOf("0", context.getString(R.string.best_quality), "best", "").contains(audioQualityId)){
+                    audioQualityId = ""
+                    if (preferredAudioCodec.isNotBlank()){
+                        audioQualityId = "${aCodecPref}/bestaudio"
+                    }
+                }else if (listOf(context.getString(R.string.worst_quality), "worst").contains(audioQualityId)){
+                    audioQualityId = "worstaudio"
+                }
 
                 val ext = downloadItem.container
                 if (audioQualityId.isNotBlank()) request.addOption("-f", audioQualityId)
@@ -1230,6 +1240,9 @@ class InfoUtil(private val context: Context) {
                 val f = StringBuilder()
 
                 if(!usingGenericFormat){
+                    if (preferredAudioCodec.isNotBlank()){
+                        f.append("$videof+$aCodecPref/")
+                    }
                     val aa = if (audiof.isNotBlank()) "+$audiof" else ""
                     f.append("$videof$aa/$videof/best")
 
@@ -1257,7 +1270,12 @@ class InfoUtil(private val context: Context) {
                         .toString()
                         .split(",")
                         .filter { it.isNotEmpty() }
-                        .ifEmpty { listOf(audiof) }
+                        .ifEmpty {
+                            val list = mutableListOf<String>()
+                            if (preferredAudioCodec.isNotBlank()) list.add("ba[acodec~='^($preferredAudioCodec)']")
+                            list.add(audiof)
+                            list
+                        }
 
                     val preferredAudioFormats = if (downloadItem.videoPreferences.audioFormatIDs.isEmpty()) {
                         preferredAudioFormatIDs

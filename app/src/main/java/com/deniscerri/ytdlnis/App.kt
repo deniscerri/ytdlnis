@@ -5,19 +5,7 @@ import android.os.Looper
 import android.widget.Toast
 import androidx.core.content.edit
 import androidx.preference.PreferenceManager
-import androidx.work.Configuration
-import androidx.work.Constraints
-import androidx.work.ExistingPeriodicWorkPolicy
-import androidx.work.NetworkType
-import androidx.work.PeriodicWorkRequestBuilder
-import androidx.work.WorkManager
-import com.deniscerri.ytdlnis.database.DBManager
-import com.deniscerri.ytdlnis.database.repository.DownloadRepository
-import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.util.NotificationUtil
-import com.deniscerri.ytdlnis.util.UpdateUtil
-import com.deniscerri.ytdlnis.work.UpdateYTDLWorker
-import com.google.android.material.snackbar.Snackbar
 import com.yausername.aria2c.Aria2c
 import com.yausername.ffmpeg.FFmpeg
 import com.yausername.youtubedl_android.YoutubeDL
@@ -27,8 +15,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import java.util.*
-import java.util.concurrent.Executors
-import java.util.concurrent.TimeUnit
 
 
 class App : Application() {

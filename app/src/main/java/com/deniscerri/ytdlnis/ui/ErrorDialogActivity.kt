@@ -51,7 +51,9 @@ open class ErrorDialogActivity : BaseActivity() {
             }.setOnDismissListener {
                 this.finish()
             }
-        errDialog.show()
+        this.runOnUiThread {
+            errDialog.show()
+        }
         super.onCreate(savedInstanceState)
     }
 }

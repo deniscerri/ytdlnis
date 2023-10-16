@@ -23,7 +23,7 @@ import kotlinx.coroutines.flow.Flow
         LogItem::class,
         TerminalItem::class
    ],
-    version = 10,
+    version = 11,
     autoMigrations = [
         AutoMigration (from = 1, to = 2),
         AutoMigration (from = 2, to = 3),
@@ -33,7 +33,8 @@ import kotlinx.coroutines.flow.Flow
         AutoMigration (from = 6, to = 7),
         AutoMigration (from = 7, to = 8),
         AutoMigration (from = 8, to = 9),
-        AutoMigration (from = 9, to = 10)
+        AutoMigration (from = 9, to = 10),
+        AutoMigration (from = 10, to = 11)
     ]
 )
 abstract class DBManager : RoomDatabase(){

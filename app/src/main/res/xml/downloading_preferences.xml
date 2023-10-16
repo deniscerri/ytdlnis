@@ -53,6 +53,19 @@
             app:summary="@string/preferred_download_type_summary"
             app:title="@string/preferred_download_type" />
 
+        <SwitchPreferenceCompat
+            android:widgetLayout="@layout/preferece_material_switch"
+            app:defaultValue="false"
+            android:icon="@drawable/ic_download_type"
+            android:key="remember_download_type"
+            app:summary="@string/remember_download_type_summary"
+            app:title="@string/remember_download_type" />
+
+        <Preference
+            android:defaultValue="video"
+            android:key="last_used_download_type"
+            app:isPreferenceVisible="false" />
+
         <SeekBarPreference
             android:defaultValue="3"
             android:icon="@drawable/ic_lines"
@@ -129,6 +142,16 @@
             android:key="schedule_end"
             />
     </PreferenceCategory>
+
+    <Preference
+        app:defaultValue=""
+        android:key="use_header"
+        app:isPreferenceVisible="false" />
+
+    <Preference
+        app:defaultValue=""
+        android:key="useragent_header"
+        app:isPreferenceVisible="false" />
 
 
 </PreferenceScreen>

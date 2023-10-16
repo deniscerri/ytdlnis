@@ -706,7 +706,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
                         if (sharedPreferences!!.getBoolean("download_card", true) && selectedObjects!!.size == 1) {
                             showSingleDownloadSheet(
                                 selectedObjects!![0],
-                                DownloadViewModel.Type.valueOf(sharedPreferences!!.getString("preferred_download_type", "video")!!)
+                                downloadViewModel.getDownloadType(url = selectedObjects!![0].url)
                             )
                         }else{
                             val downloadList = withContext(Dispatchers.IO){
@@ -714,15 +714,8 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
                             }
 
                             if (sharedPreferences!!.getBoolean("download_card", true)) {
-                                if (selectedObjects!!.size == 1){
-                                    showSingleDownloadSheet(
-                                        selectedObjects!![0],
-                                        DownloadViewModel.Type.valueOf(sharedPreferences!!.getString("preferred_download_type", "video")!!)
-                                    )
-                                }else{
-                                    val bottomSheet = DownloadMultipleBottomSheetDialog(downloadList.toMutableList())
-                                    bottomSheet.show(parentFragmentManager, "downloadMultipleSheet")
-                                }
+                                val bottomSheet = DownloadMultipleBottomSheetDialog(downloadList.toMutableList())
+                                bottomSheet.show(parentFragmentManager, "downloadMultipleSheet")
                             } else {
                                 downloadViewModel.queueDownloads(downloadList)
                             }

@@ -16,12 +16,9 @@ import kotlinx.coroutines.runBlocking
 
 class CancelWorkReceiver : BroadcastReceiver() {
     override fun onReceive(c: Context, intent: Intent) {
-        val id = intent.getStringExtra("workID")
-        if (!id.isNullOrBlank()) {
-            runCatching {
-                WorkManager.getInstance(c).cancelAllWorkByTag(id)
-            }
-
+        val id = intent.getStringExtra("workTag")
+        if (!id.isNullOrBlank()){
+            WorkManager.getInstance(c).cancelAllWorkByTag(id)
         }
     }
 }

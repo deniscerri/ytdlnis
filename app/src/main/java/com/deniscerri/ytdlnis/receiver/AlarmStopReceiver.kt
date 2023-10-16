@@ -27,7 +27,6 @@ class AlarmStopReceiver : BroadcastReceiver() {
 
         CoroutineScope(Dispatchers.IO).launch {
             runCatching {
-                Log.e("assa", "assssssssssssssssssssssssssssss")
                 val active = dbManager.downloadDao.getActiveDownloadsList()
 
                 val startingTime = preferences.getString("schedule_start", "00:00")!!

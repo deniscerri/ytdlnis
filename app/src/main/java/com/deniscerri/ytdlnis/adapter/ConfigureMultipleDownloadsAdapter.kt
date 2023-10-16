@@ -58,8 +58,8 @@ class ConfigureMultipleDownloadsAdapter(onItemClickListener: OnItemClickListener
 
         // THUMBNAIL ----------------------------------
         if (!sharedPreferences.getStringSet("hide_thumbnails", emptySet())!!.contains("home")){
-            val imageURL = item!!.thumb
-            if (imageURL.isNotEmpty()) {
+            val imageURL = item?.thumb
+            if (!imageURL.isNullOrBlank()) {
                 uiHandler.post { Picasso.get().load(imageURL).into(thumbnail) }
             } else {
                 uiHandler.post { Picasso.get().load(R.color.black).into(thumbnail) }

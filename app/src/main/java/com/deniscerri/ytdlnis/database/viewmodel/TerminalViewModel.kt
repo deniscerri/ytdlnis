@@ -71,6 +71,10 @@ class TerminalViewModel(private val application: Application) : AndroidViewModel
         return dao.getActiveTerminalDownloadsFlow()
     }
 
+    fun getTerminal(id: Long) : Flow<TerminalItem> {
+        return dao.getActiveTerminalFlow(id)
+    }
+
     suspend fun insert(item: TerminalItem) : Long {
         return dao.insert(item)
     }

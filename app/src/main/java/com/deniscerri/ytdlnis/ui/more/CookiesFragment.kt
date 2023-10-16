@@ -106,7 +106,15 @@ class CookiesFragment : Fragment(), CookieAdapter.OnItemClickListener {
         newCookie.isEnabled = useCookiesPref
     }
 
+    private fun initChips() {
+        val new = view?.findViewById<Chip>(R.id.newCookie)
+        new?.setOnClickListener {
+            showDialog("")
+        }
+    }
+
     private fun initMenu() {
+        topAppBar.menu.getItem(1).isChecked = preferences.getBoolean("use_header", false)
         topAppBar.setOnMenuItemClickListener { m: MenuItem ->
             when (m.itemId) {
                 R.id.delete_cookies -> {
@@ -131,15 +139,12 @@ class CookiesFragment : Fragment(), CookieAdapter.OnItemClickListener {
                     cookiesViewModel.exportToClipboard()
                     Snackbar.make(recyclerView, getString(R.string.copied_to_clipboard), Snackbar.LENGTH_LONG).show()
                 }
+                R.id.use_header -> {
+                    m.isChecked = !m.isChecked
+                    preferences.edit().putBoolean("use_header", m.isChecked).apply()
+                }
             }
             true
-        }
-    }
-
-    private fun initChips() {
-        val new = view?.findViewById<Chip>(R.id.newCookie)
-        new?.setOnClickListener {
-            showDialog("")
         }
     }
 

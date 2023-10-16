@@ -2,6 +2,7 @@ package com.deniscerri.ytdlnis.database.viewmodel
 
 import android.app.Application
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.content.res.Resources
@@ -28,6 +29,7 @@ import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.DBManager
 import com.deniscerri.ytdlnis.database.dao.CommandTemplateDao
 import com.deniscerri.ytdlnis.database.dao.DownloadDao
+import com.deniscerri.ytdlnis.database.dao.HistoryDao
 import com.deniscerri.ytdlnis.database.dao.ResultDao
 import com.deniscerri.ytdlnis.database.models.AudioPreferences
 import com.deniscerri.ytdlnis.database.models.CommandTemplate
@@ -38,6 +40,7 @@ import com.deniscerri.ytdlnis.database.models.HistoryItem
 import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.deniscerri.ytdlnis.database.models.VideoPreferences
 import com.deniscerri.ytdlnis.database.repository.DownloadRepository
+import com.deniscerri.ytdlnis.ui.ErrorDialogActivity
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.InfoUtil
 import com.deniscerri.ytdlnis.work.AlarmScheduler
@@ -82,6 +85,7 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
     private var videoCodec: String?
     private var audioCodec: String?
     private val dao: DownloadDao
+    private val historyDao: HistoryDao
 
     enum class Type {
         auto, audio, video, command
@@ -96,6 +100,7 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
     init {
         dbManager =  DBManager.getInstance(application)
         dao = dbManager.downloadDao
+        historyDao = dbManager.historyDao
         repository = DownloadRepository(dao)
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(application)
         commandTemplateDao = DBManager.getInstance(application).commandTemplateDao
@@ -173,8 +178,20 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
         return repository.getItemByID(id)
     }
 
-    fun getDownloadType(t: Type, url: String) : Type {
-        return when(t){
+    fun getDownloadType(t: Type? = null, url: String) : Type {
+        var type = t
+
+        if (type == null){
+            val preferredDownloadType = sharedPreferences.getString("preferred_download_type", Type.auto.toString())
+            type = if (sharedPreferences.getBoolean("remember_download_type", false)){
+                Type.valueOf(sharedPreferences.getString("last_used_download_type",
+                    preferredDownloadType)!!)
+            }else{
+                Type.valueOf(preferredDownloadType!!)
+            }
+        }
+
+        return when(type){
             Type.auto -> {
                 if (urlsForAudioType.any { url.contains(it) }){
                     Type.audio
@@ -182,7 +199,8 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
                     Type.video
                 }
             }
-            else -> t
+
+            else -> type
         }
     }
 
@@ -448,10 +466,11 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
 
     fun turnResultItemsToDownloadItems(items: List<ResultItem?>) : List<DownloadItem> {
         val list : MutableList<DownloadItem> = mutableListOf()
-        var preferredType = sharedPreferences.getString("preferred_download_type", "video")
         items.forEach {
-            preferredType = getDownloadType(Type.valueOf(preferredType!!), it!!.url).toString()
-            list.add(createDownloadItemFromResult(result = it, givenType = Type.valueOf(preferredType!!)))
+            val preferredType = getDownloadType(url = it!!.url).toString()
+            list.add(createDownloadItemFromResult(result = it, givenType = Type.valueOf(
+                preferredType
+            )))
         }
         return list
     }
@@ -487,12 +506,11 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
     }
 
     fun deleteAllWithID(ids: List<Long>) = viewModelScope.launch(Dispatchers.IO){
-        Log.e("Aa", ids.size.toString())
         repository.deleteAllWithIDs(ids)
     }
 
-    fun cancelQueued() = viewModelScope.launch(Dispatchers.IO) {
-        repository.cancelQueued()
+    fun cancelActiveQueued() = viewModelScope.launch(Dispatchers.IO) {
+        repository.cancelActiveQueued()
     }
 
     fun getQueued() : List<DownloadItem> {
@@ -528,6 +546,10 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
         return repository.getActiveAndQueuedDownloads()
     }
 
+    fun getActiveAndQueuedDownloadIDs() : List<Long>{
+        return repository.getActiveAndQueuedDownloadIDs()
+    }
+
     suspend fun resetScheduleTimeForItemsAndStartDownload(items: List<Long>) = CoroutineScope(Dispatchers.IO).launch {
         dbManager.downloadDao.resetScheduleTimeForItems(items)
         startDownloadWorker(emptyList())
@@ -548,7 +570,7 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
         val alarmScheduler = AlarmScheduler(context)
         val activeAndQueuedDownloads = repository.getActiveAndQueuedDownloads()
         val queuedItems = mutableListOf<DownloadItem>()
-        var exists = false
+        val existing = mutableListOf<DownloadItem>()
 
         //if scheduler is on
         val useScheduler = sharedPreferences.getBoolean("use_scheduler", false)
@@ -556,8 +578,11 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
             alarmScheduler.schedule()
         }
 
+
         items.forEach {
             if (it.status != DownloadRepository.Status.Paused.toString()) it.status = DownloadRepository.Status.Queued.toString()
+            val currentCommand = infoUtil.buildYoutubeDLRequest(it)
+            val parsedCurrentCommand = infoUtil.parseYTDLRequestString(currentCommand)
             if (activeAndQueuedDownloads.firstOrNull{d ->
                     d.id = 0
                     d.logID = null
@@ -565,23 +590,33 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
                     d.status = DownloadRepository.Status.Queued.toString()
                     d.toString() == it.toString()
             } != null) {
-                exists = true
+                existing.add(it)
             }else{
-                if (it.id == 0L){
-                    val id = runBlocking {repository.insert(it)}
-                    it.id = id
-                }else if (it.status == DownloadRepository.Status.Queued.toString()){
-                    repository.update(it)
-                }
+                //check if downloaded and file exists
+                val history = historyDao.getAllHistoryByURL(it.url).filter { item -> FileUtil.exists(item.downloadPath) }
+                if (history.any { h -> h.command.replace("-P \"(.*?)\"".toRegex(), "") == parsedCurrentCommand.replace("-P \"(.*?)\"".toRegex(), "") }){
+                    existing.add(it)
+                }else{
+                    if (it.id == 0L){
+                        val id = runBlocking {repository.insert(it)}
+                        it.id = id
+                    }else if (it.status == DownloadRepository.Status.Queued.toString()){
+                        repository.update(it)
+                    }
 
-                queuedItems.add(it)
+                    queuedItems.add(it)
+                }
             }
         }
 
-        if (exists){
-            Looper.prepare().run {
-                Toast.makeText(context, context.getString(R.string.download_already_exists), Toast.LENGTH_LONG).show()
-            }
+        if (existing.isNotEmpty()){
+            val intent = Intent(context, ErrorDialogActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            intent.putExtra("title", context.resources.getString(R.string.download_already_exists))
+            intent.putExtra("message",
+                "${existing.size}/${items.size}\n" +
+                existing.mapIndexed { index, downloadItem -> "${index+1}. ${downloadItem.title}" }.joinToString("\n"))
+            context.startActivity(intent)
         }
 
         if (!useScheduler || alarmScheduler.isDuringTheScheduledTime() || items.any { it.downloadStartTime > 0L } ){

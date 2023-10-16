@@ -1,14 +1,13 @@
 package com.deniscerri.ytdlnis.ui.more.settings
 
-import android.app.PendingIntent
 import android.content.Intent
 import android.os.Bundle
+import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceManager
 import androidx.preference.SwitchPreferenceCompat
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.receiver.AlarmStartReceiver
-import com.deniscerri.ytdlnis.receiver.AlarmStopReceiver
 import com.deniscerri.ytdlnis.util.UiUtil
 import com.deniscerri.ytdlnis.work.AlarmScheduler
 import java.util.Calendar
@@ -20,6 +19,14 @@ class DownloadSettingsFragment : BaseSettingsFragment() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.downloading_preferences, rootKey)
         val preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
+
+        val rememberDownloadType = findPreference<SwitchPreferenceCompat>("remember_download_type")
+        val downloadType = findPreference<ListPreference>("preferred_download_type")
+        downloadType?.isEnabled = rememberDownloadType?.isChecked == false
+        rememberDownloadType?.setOnPreferenceClickListener {
+            downloadType?.isEnabled = !rememberDownloadType.isChecked
+            true
+        }
 
         val useScheduler = findPreference<SwitchPreferenceCompat>("use_scheduler")
         val scheduleStart = findPreference<Preference>("schedule_start")

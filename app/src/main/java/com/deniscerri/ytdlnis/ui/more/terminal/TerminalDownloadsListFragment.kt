@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.HorizontalScrollView
 import android.widget.LinearLayout
+import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.activity.addCallback
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -39,6 +40,7 @@ import kotlinx.coroutines.launch
 
 class TerminalDownloadsListFragment : Fragment(), TerminalDownloadsAdapter.OnItemClickListener {
     private var topAppBar: MaterialToolbar? = null
+    private lateinit var noResults: RelativeLayout
     private lateinit var terminalViewModel: TerminalViewModel
 
     override fun onCreateView(
@@ -52,6 +54,7 @@ class TerminalDownloadsListFragment : Fragment(), TerminalDownloadsAdapter.OnIte
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         lifecycleScope.launch {
+            noResults = view.findViewById(R.id.no_results)
             val recycler = view.findViewById<RecyclerView>(R.id.terminal_recycler)
             val adapter = TerminalDownloadsAdapter(this@TerminalDownloadsListFragment, requireActivity())
             recycler.adapter = adapter
@@ -73,9 +76,7 @@ class TerminalDownloadsListFragment : Fragment(), TerminalDownloadsAdapter.OnIte
 
             terminalViewModel.getTerminals().collectLatest {
                 adapter.submitList(it)
-                if (it.isEmpty()){
-                    findNavController().navigate(R.id.terminalFragment)
-                }
+                noResults.visibility = if (it.isEmpty()) View.VISIBLE else View.GONE
             }
         }
 

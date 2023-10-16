@@ -307,4 +307,7 @@
     <string name="preferred_audio_codec">Preferred Audio Codec</string>
     <string name="loading">Loading</string>
     <string name="sponsorblock_api_url">Sponsorblock API URL</string>
+    <string name="remember_download_type">Remember Download Type</string>
+    <string name="remember_download_type_summary">Select the last opened download type for the current item</string>
+    <string name="user_agent_header">User-Agent header</string>
 </resources>

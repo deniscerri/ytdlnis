@@ -160,14 +160,12 @@ class DownloadQueueMainFragment : Fragment(){
         lifecycleScope.launch {
             val notificationUtil = NotificationUtil(requireContext())
             val activeAndQueued = withContext(Dispatchers.IO){
-                downloadViewModel.getActiveAndQueuedDownloads()
+                downloadViewModel.getActiveAndQueuedDownloadIDs()
             }
-            activeAndQueued.forEach {
-                it.status = DownloadRepository.Status.Cancelled.toString()
-                downloadViewModel.updateDownload(it)
-                val id = it.id.toInt()
+            downloadViewModel.cancelActiveQueued()
+            activeAndQueued.forEach { id ->
                 YoutubeDL.getInstance().destroyProcessById(id.toString())
-                notificationUtil.cancelDownloadNotification(id)
+                notificationUtil.cancelDownloadNotification(id.toInt())
             }
         }
     }

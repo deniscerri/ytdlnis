@@ -55,7 +55,9 @@ import com.google.android.material.color.MaterialColors
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
@@ -132,7 +134,10 @@ class DownloadMultipleBottomSheetDialog(private var items: MutableList<DownloadI
                     item.downloadStartTime = it.timeInMillis
                 }
                 runBlocking {
-                    downloadViewModel.queueDownloads(items)
+                    val chunks = items.chunked(10)
+                    for (c in chunks) {
+                        downloadViewModel.queueDownloads(c)
+                    }
                     val first = items.first()
                     val date = SimpleDateFormat(DateFormat.getBestDateTimePattern(Locale.getDefault(), "ddMMMyyyy - HHmm"), Locale.getDefault()).format(first.downloadStartTime)
                     Toast.makeText(context, getString(R.string.download_rescheduled_to) + " " + date, Toast.LENGTH_LONG).show()
@@ -145,7 +150,11 @@ class DownloadMultipleBottomSheetDialog(private var items: MutableList<DownloadI
             scheduleBtn.isEnabled = false
             download.isEnabled = false
             runBlocking {
-                downloadViewModel.queueDownloads(items)
+                val chunks = items.chunked(10)
+                for (c in chunks) {
+                   downloadViewModel.queueDownloads(c)
+                }
+
             }
             dismiss()
         }
@@ -206,13 +215,13 @@ class DownloadMultipleBottomSheetDialog(private var items: MutableList<DownloadI
             }
 
 
-            override fun onContinueOnBackground(items: List<DownloadItem?>) {
+            override fun onContinueOnBackground() {
                 requireActivity().lifecycleScope.launch {
                     val ids = mutableListOf<Long>()
                     runBlocking {
-                        items.map { it!!.status = DownloadRepository.Status.Saved.toString() }
+                        items.map { it.status = DownloadRepository.Status.Saved.toString() }
                         items.forEach {
-                            ids.add(downloadViewModel.repository.insert(it!!))
+                            ids.add(downloadViewModel.repository.insert(it))
                         }
                     }
                     val id = System.currentTimeMillis().toInt()

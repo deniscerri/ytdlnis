@@ -18,4 +18,7 @@
 
     </androidx.recyclerview.widget.RecyclerView>
 
+    <include layout="@layout/history_no_results"
+        android:visibility="gone" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

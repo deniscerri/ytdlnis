@@ -89,7 +89,6 @@ class ResultCardDetailsDialog(private val item: ResultItem) : BottomSheetDialogF
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         infoUtil = InfoUtil(requireActivity())
-        notificationUtil = NotificationUtil(requireActivity().applicationContext)
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
         resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]
         downloadManager = requireContext().getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager

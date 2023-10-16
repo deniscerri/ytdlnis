@@ -43,14 +43,16 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <RelativeLayout
+        android:id="@+id/rl"
         android:layout_width="match_parent"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
         android:layout_height="match_parent">
 
-        <WebView
-            android:id="@+id/webview"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+        <androidx.compose.ui.platform.ComposeView
+            android:id="@+id/webview_compose"
+            tools:composableName="com.deniscerri.ytdlnis.ui.more.WebViewActivity.WebViewView"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"/>
 
     </RelativeLayout>
 

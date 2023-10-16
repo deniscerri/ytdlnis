@@ -1,12 +1,12 @@
 {
   "formatVersion": 1,
   "database": {
-    "version": 10,
-    "identityHash": "0647c4b527efea884e1dc26157cd4189",
+    "version": 11,
+    "identityHash": "09798517d2b7ce96999c879bcd381c7f",
     "entities": [
       {
         "tableName": "results",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `url` TEXT NOT NULL, `title` TEXT NOT NULL, `author` TEXT NOT NULL, `duration` TEXT NOT NULL, `thumb` TEXT NOT NULL DEFAULT '', `website` TEXT NOT NULL, `playlistTitle` TEXT NOT NULL, `formats` TEXT NOT NULL, `urls` TEXT NOT NULL DEFAULT '', `chapters` TEXT, `creationTime` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `url` TEXT NOT NULL, `title` TEXT NOT NULL, `author` TEXT NOT NULL, `duration` TEXT NOT NULL, `thumb` TEXT NOT NULL, `website` TEXT NOT NULL, `playlistTitle` TEXT NOT NULL, `formats` TEXT NOT NULL, `urls` TEXT NOT NULL DEFAULT '', `chapters` TEXT, `creationTime` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -42,8 +42,7 @@
             "fieldPath": "thumb",
             "columnName": "thumb",
             "affinity": "TEXT",
-            "notNull": true,
-            "defaultValue": "''"
+            "notNull": true
           },
           {
             "fieldPath": "website",
@@ -518,7 +517,7 @@
       },
       {
         "tableName": "terminalDownloads",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `command` TEXT NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `command` TEXT NOT NULL, `log` TEXT DEFAULT '')",
         "fields": [
           {
             "fieldPath": "id",
@@ -531,6 +530,13 @@
             "columnName": "command",
             "affinity": "TEXT",
             "notNull": true
+          },
+          {
+            "fieldPath": "log",
+            "columnName": "log",
+            "affinity": "TEXT",
+            "notNull": false,
+            "defaultValue": "''"
           }
         ],
         "primaryKey": {
@@ -546,7 +552,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '0647c4b527efea884e1dc26157cd4189')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '09798517d2b7ce96999c879bcd381c7f')"
     ]
   }
 }

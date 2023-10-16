@@ -309,19 +309,4 @@ object FileUtil {
         return "${DecimalFormat("#,##0.#", symbols).format(s / 1024.0.pow(digitGroups.toDouble()))} ${units[digitGroups]}"
     }
 
-    fun getURIFromResult(f: Fragment, a: FragmentActivity?, callback: (data: String) -> Unit) = f.registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()
-    ) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            result.data?.data?.let {
-                a?.contentResolver?.takePersistableUriPermission(
-                    it,
-                    Intent.FLAG_GRANT_READ_URI_PERMISSION or
-                            Intent.FLAG_GRANT_WRITE_URI_PERMISSION
-                )
-            }
-
-            callback(result.data?.data.toString())
-        }
-    }
 }
