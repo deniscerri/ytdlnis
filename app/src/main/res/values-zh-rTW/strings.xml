@@ -116,7 +116,7 @@
     <string name="finished_download_notification_channel_name">完成的下載</string>
     <string name="finished_download_notification_channel_description">已完成或錯誤的下載通知</string>
     <string name="quick_download">快速下載</string>
-    <string name="quick_download_summary">不預先取得資料</string>
+    <string name="quick_download_summary">請勿在下載區塊中取得資料</string>
     <string name="remove_audio">移除音訊</string>
     <string name="preferred_format_id">首選格式 ID</string>
     <string name="download_now">立即下載</string>
@@ -300,4 +300,8 @@
     <string name="cache_first">首選快取下載</string>
     <string name="use_scheduler">按照排程下載</string>
     <string name="auto">自動</string>
+    <string name="preferred_audio_codec">首選音訊編碼格式</string>
+    <string name="preferred_video_codec">首選影片編碼格式</string>
+    <string name="sponsorblock_api_url">Sponsorblock API 網址</string>
+    <string name="loading">正在載入</string>
 </resources>
