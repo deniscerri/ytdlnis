@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="updating">更新</string>
+    <string name="updating">更新中</string>
     <string name="remove_all">すべて削除</string>
     <string name="remove_results">結果をクリア</string>
     <string name="settings">設定</string>
@@ -24,7 +24,7 @@
     <string name="version">バージョン</string>
     <string name="command_directory">カスタムコマンドのフォルダ</string>
     <string name="couldnt_find_apk">適切なAPKがありませんでした。</string>
-    <string name="downloading_update">新しいバージョンをダウンロードする</string>
+    <string name="downloading_update">新しいバージョンのダウンロード</string>
     <string name="video">動画</string>
     <string name="concurrent_fragments_summary">DASH/HLS ネイティブ動画の同時分割ダウンロード数</string>
     <string name="concurrent_fragments">分割ダウンロード</string>
@@ -37,7 +37,7 @@
     <string name="embed_thumb_summary">サムネイルをカバーアートとして使用する</string>
     <string name="add_chapters">動画内のチャプター</string>
     <string name="save_thumb_summary">サムネイルをダウンロードフォルダに保存します</string>
-    <string name="audio_format">音声のフォーマット</string>
+    <string name="audio_format">オーディオのフォーマット</string>
     <string name="video_format">動画のフォーマット</string>
     <string name="audio_quality_summary">0 (高音質) 10 (低音質)</string>
     <string name="command_download_notification_channel_name">コマンドダウンロード</string>
@@ -58,11 +58,11 @@
     <string name="author">作者</string>
     <string name="download">ダウンロード</string>
     <string name="video_quality">動画の品質</string>
-    <string name="embed_subtitles">字幕を埋め込む</string>
+    <string name="embed_subtitles">字幕の埋め込み</string>
     <string name="add_chapter">チャプターを追加</string>
     <string name="show_download_card">ダウンロードのオプションを表示</string>
     <string name="download_card_summary">アイテムのダウンロード方法に関する設定です</string>
-    <string name="ytdl_updating_started">新しいバージョンをダウンロードする</string>
+    <string name="ytdl_updating_started">新しいバージョンのダウンロード</string>
     <string name="you_are_going_to_delete_multiple_items">複数のアイテムを削除します</string>
     <string name="delete_file_too">デバイスからファイルを削除</string>
     <string name="delete_files_too">デバイスからファイルを削除</string>
@@ -72,11 +72,11 @@
     <string name="download_all">すべてダウンロード</string>
     <string name="search_hint">検索または URL を入力してください</string>
     <string name="ytdl_update_hint">ダウンロードに問題が発生する場合に有効です</string>
-    <string name="download_notification_channel_description">音声ファイルや動画ファイルのダウンロードの進捗状況を通知で表示</string>
+    <string name="download_notification_channel_description">オーディオファイルや動画ファイルのダウンロードの進捗状況を通知で表示</string>
     <string name="Remove">削除</string>
-    <string name="audio">音声</string>
+    <string name="audio">オーディオ</string>
     <string name="aria2_summary">ダウンローダーとしてAria2cを使用します</string>
-    <string name="audio_quality">音声の品質</string>
+    <string name="audio_quality">オーディオの品質</string>
     <string name="cancel_download">ダウンロードをキャンセル</string>
     <string name="save_thumb">サムネイルを保存</string>
     <string name="add_chapters_summary">YouTube / SponsorBlock のセグメントを動画のチャプターとしてマークします</string>
@@ -126,7 +126,7 @@
     <string name="update_template">テンプレートをアップデート</string>
     <string name="create">作成</string>
     <string name="preferred_download_type">優先されるダウンロードタイプ</string>
-    <string name="selected">選択済み</string>
+    <string name="selected">個を選択</string>
     <string name="redownload">再ダウンロード</string>
     <string name="select">選択</string>
     <string name="confirm_delete_logs_desc">ログリスト全体を永久に削除します。</string>
@@ -234,8 +234,8 @@
     <string name="downloaded">"ダウンロード済み: "</string>
     <string name="finished_download_notification_channel_description">ダウンロードの完了後、不具合時の通知</string>
     <string name="quick_download">クイックダウンロード</string>
-    <string name="quick_download_summary">事前にデータを取得しません</string>
-    <string name="remove_audio">音声を削除</string>
+    <string name="quick_download_summary">ダウンロードカードでデータを取得しません</string>
+    <string name="remove_audio">オーディオを削除</string>
     <string name="download_already_exists">ダウンロードに既に存在します</string>
     <string name="pause">一時停止</string>
     <string name="resume">再開</string>
@@ -251,7 +251,7 @@
     <string name="preferred_format_id_summary">ダウンロードカードでこの ID を持つフォーマットを選択します</string>
     <string name="backup_created_successfully">バックアップファイルをダウンロードフォルダに保存しました</string>
     <string name="audio_only_item">このアイテムはオーディオフォーマットのみが含まれています</string>
-    <string name="sponsorblock">スポンサーブロック</string>
+    <string name="sponsorblock">SponsorBlock</string>
     <string name="custom_audio_quality">カスタムオーディオ品質を使用</string>
     <string name="piped_instance">パイプされたインスタンス</string>
     <string name="piped_instance_summary">YouTube のクエリやフォーマットに使用可能な Piped API サーバーを作成します</string>
@@ -268,7 +268,7 @@
     <string name="swipe_gestures">スワイプジェスチャー</string>
     <string name="swipe_gestures_summary">項目をスワイプで特定の操作をします</string>
     <string name="crop_thumb">サムネイルをクロップ</string>
-    <string name="crop_thumb_summary">音声のダウンロード用にサムネイルを正方形に切り抜きます</string>
+    <string name="crop_thumb_summary">オーディオのダウンロード用にサムネイルを正方形に切り抜きます</string>
     <string name="retries">再試行</string>
     <string name="format_order">フォーマット順</string>
     <string name="fragment_retries">分割ダウンロードの再試行</string>
@@ -277,7 +277,7 @@
     <string name="orange">オレンジ</string>
     <string name="subtitle_format">字幕のフォーマット</string>
     <string name="hide_thumbnails">サムネイルを非表示</string>
-    <string name="saved">保存しました</string>
+    <string name="saved">保存済み</string>
     <string name="clear_saved">保存をクリアしました</string>
     <string name="save_for_later">後でダウンロードを保存しますか\?</string>
     <string name="write_description">詳細を保存</string>
@@ -286,11 +286,11 @@
     <string name="embed_metadata">メタデータを埋め込み</string>
     <string name="show_terminal">共有メニューにターミナルを表示する</string>
     <string name="use_cookies">Cookieを使用する</string>
-    <string name="embed_metadata_summary">動画ファイルにメタデータを埋め込みます。チャプターやinfojsonが存在する場合は、それも埋め込みます</string>
+    <string name="embed_metadata_summary">オーディオファイルのメタデータの埋め込みと解析をします</string>
     <string name="use_extra_commands">エクストラコマンドを追加</string>
     <string name="use_extra_commands_summary">オーディオと動画のダウンロード用。GUIにエクストラコマンドを追加します</string>
     <string name="current">現在のコマンド</string>
-    <string name="update_app_beta_summary">ベータ プログラムに登録します。バグが含まれている可能性があります。</string>
+    <string name="update_app_beta_summary">ベータプログラムに登録します。これには重大なバグが含んでいる可能性があります。</string>
     <string name="update_app_beta">ベータ版リリース</string>
     <string name="scheduling">スケジュール設定</string>
     <string name="update_formats_background">バックグラウンドでフォーマットを更新</string>
@@ -300,4 +300,8 @@
     <string name="use_scheduler">スケジュールに従ってダウンロード</string>
     <string name="auto">自動</string>
     <string name="auto_update_ytdlp">yt-dlp の自動更新</string>
+    <string name="preferred_audio_codec">優先するオーディオコーデック</string>
+    <string name="preferred_video_codec">優先する動画コーデック</string>
+    <string name="sponsorblock_api_url">SponsorBlock API URL</string>
+    <string name="loading">読み込み中</string>
 </resources>
