@@ -304,4 +304,7 @@
     <string name="preferred_video_codec">首选视频编解码器</string>
     <string name="sponsorblock_api_url">Sponsorblock API 地址</string>
     <string name="loading">加载中</string>
+    <string name="user_agent_header">User-Agent 头</string>
+    <string name="remember_download_type">记住下载类型</string>
+    <string name="remember_download_type_summary">为当前项目选择上次打开的下载类型</string>
 </resources>
