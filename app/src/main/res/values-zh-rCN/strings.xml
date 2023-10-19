@@ -95,7 +95,7 @@
     <string name="ok">确定</string>
     <string name="embed_subs_summary">在视频中添加字幕</string>
     <string name="embed_thumb_summary">使用缩略图作为封面</string>
-    <string name="add_chapters_summary">将 YouTube/SponsorBlock 片段标记作为视频章节</string>
+    <string name="add_chapters_summary">将 YouTube/SponsorBlock 片段标记为视频章节</string>
     <string name="command_download_notification_channel_description">使用 yt-dlp 命令时下载进度的通知</string>
     <string name="items_left">剩余项</string>
     <string name="history_is_empty">历史记录为空</string>
