@@ -171,4 +171,25 @@
     <string name="loading">טוען</string>
     <string name="crop_thumb">חתוך תמונה ממוזערת</string>
     <string name="force_keyframes_summary">תהליך איטי יותר, אך חיתוכים יותר מדוייקים</string>
+    <string name="quick_download">הורדה מהירה</string>
+    <string name="preferred_locale">אזור מועדף</string>
+    <string name="pause">השהה</string>
+    <string name="material_you">Material You</string>
+    <string name="resume">המשך</string>
+    <string name="finished_download_notification_channel_description">התראה לסיום או שגיאת הורדות</string>
+    <string name="light">בהיר</string>
+    <string name="updating_download_data">מעדכן מידע הורדה</string>
+    <string name="orange">כתום</string>
+    <string name="green">ירוק</string>
+    <string name="yellow">צהוב</string>
+    <string name="download_already_exists">הורדה כבר קיימת</string>
+    <string name="dark">כהה</string>
+    <string name="red">אדום</string>
+    <string name="quality">איכות</string>
+    <string name="download_now">הורד עכשיו</string>
+    <string name="finished_download_notification_channel_name">הורדות שהסתיימו</string>
+    <string name="remove_audio">הסר אודיו</string>
+    <string name="system">מערכת</string>
+    <string name="purple">סגול</string>
+    <string name="blue">כחול</string>
 </resources>
