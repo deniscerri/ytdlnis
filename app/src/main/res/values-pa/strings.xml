@@ -304,4 +304,7 @@
     <string name="preferred_video_codec">ਤਰਜੀਹੀ ਵੀਡੀਓ ਕੋਡੇਕ</string>
     <string name="sponsorblock_api_url">ਸਪਾਂਸਰਬਲਾਕ API URL</string>
     <string name="loading">ਲੋਡ ਹੋ ਰਿਹਾ ਹੈ</string>
+    <string name="user_agent_header">ਯੂਜ਼ਰ-ਏਜੰਟ ਸਿਰਲੇਖ</string>
+    <string name="remember_download_type">ਡਾਊਨਲੋਡ ਕਿਸਮ ਨੂੰ ਯਾਦ ਰੱਖੋ</string>
+    <string name="remember_download_type_summary">ਮੌਜੂਦਾ ਆਈਟਮ ਲਈ ਆਖਰੀ ਵਾਰ ਖੋਲ੍ਹੀ ਗਈ ਡਾਊਨਲੋਡ ਕਿਸਮ ਚੁਣੋ</string>
 </resources>
