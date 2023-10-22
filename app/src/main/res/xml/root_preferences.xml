@@ -73,7 +73,7 @@
             app:icon="@drawable/baseline_security_24"
             app:key="security"
             app:summary="🔐 YTDLnis - Privacy Policy"
-            app:title="SECURITY">
+            app:title="@string/security">
             <intent
                 android:action="android.intent.action.VIEW"
                 android:data="https://github.com/deniscerri/ytdlnis/blob/main/SECURITY.md" />
@@ -83,7 +83,7 @@
             app:icon="@drawable/baseline_draw_24"
             app:key="license"
             app:summary="GNU General Public License v3.0"
-            app:title="LICENSE">
+            app:title="@string/license">
             <intent
                 android:action="android.intent.action.VIEW"
                 android:data="https://github.com/deniscerri/ytdlnis/blob/main/LICENSE" />

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.ClipboardManager
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -17,9 +18,11 @@ import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.preference.PreferenceManager
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.CommandTemplate
 import com.deniscerri.ytdlnis.database.models.DownloadItem
@@ -48,6 +51,8 @@ class DownloadCommandFragment(private val resultItem: ResultItem? = null, privat
     private lateinit var commandTemplateViewModel : CommandTemplateViewModel
     private lateinit var saveDir : TextInputLayout
     private lateinit var freeSpace : TextView
+    private lateinit var preferences: SharedPreferences
+    private lateinit var shownFields: List<String>
 
     lateinit var downloadItem: DownloadItem
 
@@ -60,6 +65,8 @@ class DownloadCommandFragment(private val resultItem: ResultItem? = null, privat
         activity = getActivity()
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
         commandTemplateViewModel = ViewModelProvider(this)[CommandTemplateViewModel::class.java]
+        preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
+        shownFields = preferences.getStringSet("modify_download_card", setOf())!!.toList()
         return fragmentView
     }
 
@@ -180,72 +187,76 @@ class DownloadCommandFragment(private val resultItem: ResultItem? = null, privat
                     commandTemplateViewModel.getTotalShortcutNumber()
                 }
 
-                UiUtil.configureCommand(
-                    view,
-                    if (downloadItem.url.isEmpty()) 0 else 1,
-                    shortcutCount,
-                    newTemplateClicked = {
-                        UiUtil.showCommandTemplateCreationOrUpdatingSheet(null, requireActivity(), viewLifecycleOwner, commandTemplateViewModel) {
-                            templates.add(it)
-                            chosenCommandView.editText!!.setText(it.content)
-                            downloadItem.format = Format(
-                                it.title,
-                                "",
-                                "",
-                                "",
-                                "",
-                                0,
-                                it.content
-                            )
-                            commandTemplateCard.visibility = View.VISIBLE
-                            view.findViewById<TextView>(R.id.command_txt).visibility = View.VISIBLE
-                            view.findViewById<Chip>(R.id.editSelected).isEnabled = true
-                            populateCommandCard(commandTemplateCard, it)
-                        }
-                    },
-                    editSelectedClicked =
-                    {
-                        var current = templates.find { it.id == commandTemplateCard.tag }
-                        if (current == null) current =
-                            CommandTemplate(
-                                0,
-                                "",
-                                chosenCommandView.editText!!.text.toString(),
-                                false
-                            )
-                        UiUtil.showCommandTemplateCreationOrUpdatingSheet(current, requireActivity(), viewLifecycleOwner, commandTemplateViewModel) {
-                            templates.add(it)
-                            chosenCommandView.editText!!.setText(it.content)
-                            populateCommandCard(commandTemplateCard, it)
-                            downloadItem.format = Format(
-                                it.title,
-                                "",
-                                "",
-                                "",
-                                "",
-                                0,
-                                it.content
-                            )
-                        }
-                    },
-                    shortcutClicked = {
-                        UiUtil.showShortcuts(requireActivity(), commandTemplateViewModel,
-                            itemSelected = {
-                                chosenCommandView.editText!!.setText("${chosenCommandView.editText!!.text} $it")
-                                downloadItem.format.format_note = chosenCommandView.editText!!.text.toString()
-                            },
-                            itemRemoved = {removed ->
-                                chosenCommandView.editText!!.setText(chosenCommandView.editText!!.text.replace("(${
-                                    Regex.escape(
-                                        removed
+
+                view.findViewById<LinearLayout>(R.id.adjust).apply {
+                    visibility = if (shownFields.contains("adjust_command")) View.VISIBLE else View.GONE
+                    if (isVisible){
+                        UiUtil.configureCommand(
+                            view,
+                            if (downloadItem.url.isEmpty()) 0 else 1,
+                            shortcutCount,
+                            newTemplateClicked = {
+                                UiUtil.showCommandTemplateCreationOrUpdatingSheet(null, requireActivity(), viewLifecycleOwner, commandTemplateViewModel) {
+                                    templates.add(it)
+                                    chosenCommandView.editText!!.setText(it.content)
+                                    downloadItem.format = Format(
+                                        it.title,
+                                        "",
+                                        "",
+                                        "",
+                                        "",
+                                        0,
+                                        it.content
                                     )
-                                })(?!.*\\1)".toRegex(), "").trimEnd())
-                                downloadItem.format.format_note = chosenCommandView.editText!!.text.toString().trimEnd()
-                            })
+                                    commandTemplateCard.visibility = View.VISIBLE
+                                    view.findViewById<TextView>(R.id.command_txt).visibility = View.VISIBLE
+                                    view.findViewById<Chip>(R.id.editSelected).isEnabled = true
+                                    populateCommandCard(commandTemplateCard, it)
+                                }
+                            },
+                            editSelectedClicked =
+                            {
+                                var current = templates.find { it.id == commandTemplateCard.tag }
+                                if (current == null) current =
+                                    CommandTemplate(
+                                        0,
+                                        "",
+                                        chosenCommandView.editText!!.text.toString(),
+                                        false
+                                    )
+                                UiUtil.showCommandTemplateCreationOrUpdatingSheet(current, requireActivity(), viewLifecycleOwner, commandTemplateViewModel) {
+                                    templates.add(it)
+                                    chosenCommandView.editText!!.setText(it.content)
+                                    populateCommandCard(commandTemplateCard, it)
+                                    downloadItem.format = Format(
+                                        it.title,
+                                        "",
+                                        "",
+                                        "",
+                                        "",
+                                        0,
+                                        it.content
+                                    )
+                                }
+                            },
+                            shortcutClicked = {
+                                UiUtil.showShortcuts(requireActivity(), commandTemplateViewModel,
+                                    itemSelected = {
+                                        chosenCommandView.editText!!.setText("${chosenCommandView.editText!!.text} $it")
+                                        downloadItem.format.format_note = chosenCommandView.editText!!.text.toString()
+                                    },
+                                    itemRemoved = {removed ->
+                                        chosenCommandView.editText!!.setText(chosenCommandView.editText!!.text.replace("(${
+                                            Regex.escape(
+                                                removed
+                                            )
+                                        })(?!.*\\1)".toRegex(), "").trimEnd())
+                                        downloadItem.format.format_note = chosenCommandView.editText!!.text.toString().trimEnd()
+                                    })
+                            }
+                        )
                     }
-                )
-
-
+                }
             } catch (e: Exception) {
                 e.printStackTrace()
             }

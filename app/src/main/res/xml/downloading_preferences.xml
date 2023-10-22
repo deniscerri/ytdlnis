@@ -37,6 +37,13 @@
             app:title="@string/download_over_metered_networks" />
 
 
+        <SwitchPreferenceCompat
+            android:widgetLayout="@layout/preferece_material_switch"
+            app:defaultValue="false"
+            android:icon="@drawable/baseline_cookie_24"
+            android:key="use_cookies"
+            app:title="@string/use_cookies" />
+
         <EditTextPreference
             android:icon="@drawable/baseline_network_locked_24"
             app:key="proxy"
@@ -111,10 +118,14 @@
 
         <EditTextPreference
             app:key="retries"
+            android:defaultValue=""
+            app:useSimpleSummaryProvider="true"
             app:title="@string/retries" />
 
         <EditTextPreference
             app:key="fragment_retries"
+            android:defaultValue=""
+            app:useSimpleSummaryProvider="true"
             app:title="@string/fragment_retries" />
     </PreferenceCategory>
 

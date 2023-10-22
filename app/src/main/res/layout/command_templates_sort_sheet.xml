@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout style="@style/Widget.Material3.BottomSheet"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:text="@string/sort_by"
+            android:textSize="12sp"
+            android:layout_margin="20dp"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/date"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackground"
+            android:paddingVertical="10dp"
+            android:paddingHorizontal="20dp"
+            android:drawablePadding="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:text="@string/date_added"
+            app:drawableStartCompat="@drawable/ic_arrow_up" />
+
+
+        <TextView
+            android:id="@+id/title"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackground"
+            android:paddingVertical="10dp"
+            android:paddingHorizontal="20dp"
+            android:drawablePadding="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:text="@string/title"
+            app:drawableStartCompat="@drawable/ic_arrow_up" />
+
+
+        <TextView
+            android:id="@+id/length"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackground"
+            android:paddingVertical="10dp"
+            android:paddingHorizontal="20dp"
+            android:drawablePadding="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:text="@string/length"
+            app:drawableStartCompat="@drawable/ic_arrow_up" />
+
+    </LinearLayout>
+
+
+</FrameLayout>

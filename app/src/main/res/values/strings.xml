@@ -30,6 +30,7 @@
     <string name="confirm_delete_history_desc">Delete the entire history, permanently</string>
     <string name="confirm_delete_history">Confirm</string>
     <string name="search_history_hint">Search from History</string>
+    <string name="search_command_hint">Search from Commands</string>
     <string name="no_results">No Results</string>
     <string name="more">More</string>
     <string name="update_app">Check for updates</string>
@@ -310,4 +311,11 @@
     <string name="remember_download_type">Remember Download Type</string>
     <string name="remember_download_type_summary">Select the last opened download type for the current item</string>
     <string name="user_agent_header">User-Agent header</string>
+    <string name="length">Length</string>
+    <string name="security">Security</string>
+    <string name="license">License</string>
+    <string name="download_already_exists_summary">Do you still want to  download?</string>
+    <string name="schedule">Schedule</string>
+    <string name="skip">Skip</string>
+    <string name="modify_download_card">Modify Download Card</string>
 </resources>

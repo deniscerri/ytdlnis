@@ -92,6 +92,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingHorizontal="20dp"
+                        android:paddingVertical="5dp"
                         android:text="@string/video" />
 
                     <LinearLayout
@@ -111,6 +112,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingHorizontal="20dp"
+                        android:paddingVertical="5dp"
                         android:text="@string/audio" />
 
                     <LinearLayout

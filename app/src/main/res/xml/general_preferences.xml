@@ -46,6 +46,15 @@
             app:key="hide_thumbnails"
             app:title="@string/hide_thumbnails" />
 
+        <MultiSelectListPreference
+            app:icon="@drawable/ic_card"
+            android:dialogTitle="@string/modify_download_card"
+            android:entries="@array/modify_download_card"
+            android:entryValues="@array/modify_download_card_values"
+            android:defaultValue="@array/modify_download_card_values"
+            app:key="modify_download_card"
+            app:title="@string/modify_download_card" />
+
 
     </PreferenceCategory>
 

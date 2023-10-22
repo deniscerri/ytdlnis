@@ -1,11 +1,8 @@
 package com.deniscerri.ytdlnis.ui.downloadcard
 
 import android.annotation.SuppressLint
-import android.app.ActivityManager
 import android.app.Dialog
-import android.content.Context
 import android.content.DialogInterface
-import android.content.Intent
 import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.os.Bundle
@@ -20,14 +17,12 @@ import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.core.content.edit
-import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
+import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.DBManager
 import com.deniscerri.ytdlnis.database.dao.CommandTemplateDao
@@ -45,9 +40,10 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.android.material.tabs.TabLayout
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.collectLatest
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -205,6 +201,11 @@ class DownloadBottomSheetDialog(private var result: ResultItem, private val type
         viewPager2.setPageTransformer(BackgroundToForegroundPageTransformer())
 
         val scheduleBtn = view.findViewById<MaterialButton>(R.id.bottomsheet_schedule_button)
+        scheduleBtn.visibility = if(sharedPreferences.getStringSet("modify_download_card", setOf())!!.contains("schedule")){
+            View.VISIBLE
+        }else{
+            View.GONE
+        }
         val download = view.findViewById<Button>(R.id.bottomsheet_download_button)
 
 
@@ -249,6 +250,11 @@ class DownloadBottomSheetDialog(private var result: ResultItem, private val type
         }
 
         val link = view.findViewById<Button>(R.id.bottom_sheet_link)
+        link.visibility = if(sharedPreferences.getStringSet("modify_download_card", setOf())!!.contains("url")){
+            View.VISIBLE
+        }else{
+            View.GONE
+        }
         val updateItem = view.findViewById<Button>(R.id.update_item)
         if (Patterns.WEB_URL.matcher(result.url).matches()){
             link.text = result.url
@@ -282,6 +288,23 @@ class DownloadBottomSheetDialog(private var result: ResultItem, private val type
         //update in the background if there is no data
         if(result.title.isEmpty() && currentDownloadItem == null && !sharedPreferences.getBoolean("quick_download", false)){
             initUpdateData(view)
+        }else {
+            val usingGenericFormatsOrEmpty = result.formats.isEmpty() || result.formats.any { it.format_note.contains("ytdlnisgeneric") }
+            if (usingGenericFormatsOrEmpty && sharedPreferences.getBoolean("update_formats", false)){
+                initUpdateFormats(result.url)
+            }
+        }
+
+        lifecycleScope.launch {
+            downloadViewModel.uiState.collectLatest { res ->
+                if (res.errorMessage != null) {
+                    UiUtil.handleDownloadsResponse(requireActivity() as MainActivity, res, downloadViewModel)
+                    downloadViewModel.uiState.value =  DownloadViewModel.DownloadsUiState(
+                        errorMessage = null,
+                        actions = null
+                    )
+                }
+            }
         }
     }
     private fun getDownloadItem(selectedTabPosition: Int = tabLayout.selectedTabPosition) : DownloadItem{
@@ -342,7 +365,7 @@ class DownloadBottomSheetDialog(private var result: ResultItem, private val type
                 return@launch
             }
 
-            val result = resultViewModel.parseQuery(result.url, true)
+            val result = resultViewModel.parseQueries(listOf(result.url))
             if (result.isEmpty()){
                 withContext(Dispatchers.Main){
                     Looper.prepare().run {
@@ -376,6 +399,12 @@ class DownloadBottomSheetDialog(private var result: ResultItem, private val type
                     shimmerLoadingSubtitle.stopShimmer()
                 }
 
+                val usingGenericFormatsOrEmpty = result[0]!!.formats.isEmpty() || result[0]!!.formats.any { it.format_note.contains("ytdlnisgeneric") }
+
+                if (usingGenericFormatsOrEmpty && sharedPreferences.getBoolean("update_formats", false)){
+                    initUpdateFormats(result[0]!!.url)
+                }
+
             }else{
                 //open multi download card instead
                 if (activity is ShareActivity){
@@ -394,6 +423,48 @@ class DownloadBottomSheetDialog(private var result: ResultItem, private val type
         }
     }
 
+    private fun initUpdateFormats(url: String){
+        CoroutineScope(SupervisorJob()).launch(Dispatchers.IO) {
+            withContext(Dispatchers.Main){
+                runCatching {
+                    val f1 = fragmentManager?.findFragmentByTag("f0") as DownloadAudioFragment
+                    f1.view?.findViewById<LinearProgressIndicator>(R.id.format_loading_progress)?.visibility = View.VISIBLE
+                }
+                runCatching {
+                    val f1 = fragmentManager?.findFragmentByTag("f1") as DownloadVideoFragment
+                    f1.view?.findViewById<LinearProgressIndicator>(R.id.format_loading_progress)?.visibility = View.VISIBLE
+                }
+            }
+
+            val formats = infoUtil.getFormats(url).toMutableList()
+
+            withContext(Dispatchers.Main){
+                runCatching {
+                    val f1 = fragmentManager?.findFragmentByTag("f0") as DownloadAudioFragment
+                    val resultItem = downloadViewModel.createResultItemFromDownload(f1.downloadItem)
+                    resultItem.formats = formats
+                    fragmentAdapter.setResultItem(resultItem)
+                    f1.updateUI(resultItem)
+                    f1.view?.findViewById<LinearProgressIndicator>(R.id.format_loading_progress)?.visibility = View.GONE
+                }
+                runCatching {
+                    val f1 = fragmentManager?.findFragmentByTag("f1") as DownloadVideoFragment
+                    val resultItem = downloadViewModel.createResultItemFromDownload(f1.downloadItem)
+                    resultItem.formats = formats
+                    fragmentAdapter.setResultItem(resultItem)
+                    f1.updateUI(resultItem)
+                    f1.view?.findViewById<LinearProgressIndicator>(R.id.format_loading_progress)?.visibility = View.GONE
+                }
+            }
+
+            if (formats.isNotEmpty()){
+                result.formats = formats
+                resultViewModel.update(result)
+            }
+
+        }
+    }
+
     override fun onCancel(dialog: DialogInterface) {
         super.onCancel(dialog)
         cleanUp()
@@ -407,7 +478,7 @@ class DownloadBottomSheetDialog(private var result: ResultItem, private val type
 
     private fun cleanUp(){
         kotlin.runCatching {
-            repeat(parentFragmentManager.findFragmentByTag("downloadSingleSheet")?.fragmentManager?.backStackEntryCount ?: 0){
+            repeat((parentFragmentManager.findFragmentByTag("downloadSingleSheet")?.fragmentManager?.backStackEntryCount?.minus(1))?: 0){
                 parentFragmentManager.findFragmentByTag("downloadSingleSheet")?.fragmentManager?.popBackStack()
             }
             parentFragmentManager.beginTransaction().remove(parentFragmentManager.findFragmentByTag("downloadSingleSheet")!!).commit()

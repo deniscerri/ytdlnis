@@ -10,7 +10,7 @@ import androidx.lifecycle.viewModelScope
 import com.deniscerri.ytdlnis.database.DBManager
 import com.deniscerri.ytdlnis.database.models.HistoryItem
 import com.deniscerri.ytdlnis.database.repository.HistoryRepository
-import com.deniscerri.ytdlnis.database.repository.HistoryRepository.HistorySort
+import com.deniscerri.ytdlnis.database.DBManager.SORTING
 import com.deniscerri.ytdlnis.database.repository.HistoryRepository.HistorySortType
 import com.deniscerri.ytdlnis.util.FileUtil
 import kotlinx.coroutines.Dispatchers
@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
 
 class HistoryViewModel(application: Application) : AndroidViewModel(application) {
     private val repository : HistoryRepository
-    val sortOrder = MutableLiveData(HistorySort.DESC)
+    val sortOrder = MutableLiveData(SORTING.DESC)
     val sortType = MutableLiveData(HistorySortType.DATE)
     val websiteFilter = MutableLiveData("")
     private val queryFilter = MutableLiveData("")
@@ -55,11 +55,11 @@ class HistoryViewModel(application: Application) : AndroidViewModel(application)
 
     fun setSorting(sort: HistorySortType){
         if (sortType.value != sort){
-            sortOrder.value = HistorySort.DESC
+            sortOrder.value = SORTING.DESC
         }else{
-            sortOrder.value = if (sortOrder.value == HistorySort.DESC) {
-                HistorySort.ASC
-            } else HistorySort.DESC
+            sortOrder.value = if (sortOrder.value == SORTING.DESC) {
+                SORTING.ASC
+            } else SORTING.DESC
         }
         sortType.value = sort
     }
@@ -76,7 +76,7 @@ class HistoryViewModel(application: Application) : AndroidViewModel(application)
         formatFilter.value = filter
     }
 
-    private fun filter(query : String, format : String, site : String, sortType: HistorySortType, sort: HistorySort) = viewModelScope.launch(Dispatchers.IO){
+    private fun filter(query : String, format : String, site : String, sortType: HistorySortType, sort: SORTING) = viewModelScope.launch(Dispatchers.IO){
         _items.postValue(repository.getFiltered(query, format, site, sortType, sort))
     }
 
@@ -89,10 +89,7 @@ class HistoryViewModel(application: Application) : AndroidViewModel(application)
     }
 
     fun delete(item: HistoryItem, deleteFile: Boolean) = viewModelScope.launch(Dispatchers.IO){
-        repository.delete(item)
-        if (deleteFile){
-            FileUtil.deleteFile(item.downloadPath)
-        }
+        repository.delete(item, deleteFile)
     }
 
     fun deleteAll() = viewModelScope.launch(Dispatchers.IO) {

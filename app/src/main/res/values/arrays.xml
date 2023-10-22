@@ -821,4 +821,111 @@
         <item>m4a|mp4a|aac</item>
         <item>opus</item>
     </string-array>
+
+    <string-array name="filename_templates">
+        <item>%(uploader)s___(string): Full name of the video uploader)</item>
+        <item>%(title)s___(string): Video title)</item>
+        <item>%(id)s___(string): Video identifier)</item>
+        <item>%(fulltitle)s___(string): Video title ignoring live timestamp and generic title)</item>
+        <item>%(ext)s___(string): Video filename extension)</item>
+        <item>%(alt_title)s___(string): A secondary title of the video)</item>
+        <item>%(description)s___(string): The description of the video)</item>
+        <item>%(display_id)s___(string): An alternative identifier for the video)</item>
+        <item>%(license)s___(string): License name the video is licensed under)</item>
+        <item>%(creator)s___(string): The creator of the video)</item>
+        <item>%(timestamp)s___(numeric): UNIX timestamp of the moment the video became available)</item>
+        <item>%(upload_date)s___(string): Video upload date in UTC (YYYYMMDD))</item>
+        <item>%(release_timestamp)s___(numeric): UNIX timestamp of the moment the video was released)</item>
+        <item>%(release_date)s___(string): The date (YYYYMMDD) when the video was released in UTC)</item>
+        <item>%(modified_timestamp)s___(numeric): UNIX timestamp of the moment the video was last modified)</item>
+        <item>%(modified_date)s___(string): The date (YYYYMMDD) when the video was last modified in UTC)</item>
+        <item>%(uploader_id)s___(string): Nickname or id of the video uploader)</item>
+        <item>%(channel)s___(string): Full name of the channel the video is uploaded on)</item>
+        <item>%(channel_id)s___(string): Id of the channel)</item>
+        <item>%(channel_follower_count)s___(numeric): Number of followers of the channel)</item>
+        <item>%(channel_is_verified)s___(boolean): Whether the channel is verified on the platform)</item>
+        <item>%(location)s___(string): Physical location where the video was filmed)</item>
+        <item>%(duration)s___(numeric): Length of the video in seconds)</item>
+        <item>%(duration_string)s___(string): Length of the video (HH:mm:ss))</item>
+        <item>%(view_count)s___(numeric): How many users have watched the video on the platform)</item>
+        <item>%(concurrent_view_count)s___(numeric): How many users are currently watching the video on the platform.)</item>
+        <item>%(like_count)s___(numeric): Number of positive ratings of the video)</item>
+        <item>%(dislike_count)s___(numeric): Number of negative ratings of the video)</item>
+        <item>%(repost_count)s___(numeric): Number of reposts of the video)</item>
+        <item>%(average_rating)s___(numeric): Average rating give by users, the scale used depends on the webpage)</item>
+        <item>%(comment_count)s___(numeric): Number of comments on the video (For some extractors, comments are only downloaded at the end, and so this field cannot be used))</item>
+        <item>%(age_limit)s___(numeric): Age restriction for the video (years))</item>
+        <item>%(live_status)s___(string): One of "not_live", "is_live", "is_upcoming", "was_live", "post_live" (was live, but VOD is not yet processed))</item>
+        <item>%(is_live)s___(boolean): Whether this video is a live stream or a fixed-length video)</item>
+        <item>%(was_live)s___(boolean): Whether this video was originally a live stream)</item>
+        <item>%(playable_in_embed)s___(string): Whether this video is allowed to play in embedded players on other sites)</item>
+        <item>%(availability)s___(string): Whether the video is "private", "premium_only", "subscriber_only", "needs_auth", "unlisted" or "public")</item>
+        <item>%(start_time)s___(numeric): Time in seconds where the reproduction should start, as specified in the URL)</item>
+        <item>%(end_time)s___(numeric): Time in seconds where the reproduction should end, as specified in the URL)</item>
+        <item>%(extractor)s___(string): Name of the extractor)</item>
+        <item>%(extractor_key)s___(string): Key name of the extractor)</item>
+        <item>%(epoch)s___(numeric): Unix epoch of when the information extraction was completed)</item>
+        <item>%(autonumber)s___(numeric): Number that will be increased with each download, starting at --autonumber-start, padded with leading zeros to 5 digits)</item>
+        <item>%(video_autonumber)s___(numeric): Number that will be increased with each video)</item>
+        <item>%(n_entries)s___(numeric): Total number of extracted items in the playlist)</item>
+        <item>%(playlist_id)s___(string): Identifier of the playlist that contains the video)</item>
+        <item>%(playlist_title)s___(string): Name of the playlist that contains the video)</item>
+        <item>%(playlist)s___(string): playlist_id or playlist_title)</item>
+        <item>%(playlist_count)s___(numeric): Total number of items in the playlist. May not be known if entire playlist is not extracted)</item>
+        <item>%(playlist_index)s___(numeric): Index of the video in the playlist padded with leading zeros according the final index)</item>
+        <item>%(playlist_autonumber)s___(numeric): Position of the video in the playlist download queue padded with leading zeros according to the total length of the playlist)</item>
+        <item>%(playlist_uploader)s___(string): Full name of the playlist uploader)</item>
+        <item>%(playlist_uploader_id)s___(string): Nickname or id of the playlist uploader)</item>
+        <item>%(webpage_url)s___(string): A URL to the video webpage which if given to yt-dlp should allow to get the same result again)</item>
+        <item>%(webpage_url_basename)s___(string): The basename of the webpage URL)</item>
+        <item>%(webpage_url_domain)s___(string): The domain of the webpage URL)</item>
+        <item>%(original_url)s___(string): The URL given by the user (or same as webpage_url for playlist entries))</item>
+        <item>%(chapter)s___(string): Name or title of the chapter the video belongs to)</item>
+        <item>%(chapter_number)s___(numeric): Number of the chapter the video belongs to)</item>
+        <item>%(chapter_id)s___(string): Id of the chapter the video belongs to)</item>
+        <item>%(series)s___(string): Title of the series or programme the video episode belongs to)</item>
+        <item>%(season)s___(string): Title of the season the video episode belongs to)</item>
+        <item>%(season_number)s___(numeric): Number of the season the video episode belongs to)</item>
+        <item>%(season_id)s___(string): Id of the season the video episode belongs to)</item>
+        <item>%(episode)s___(string): Title of the video episode)</item>
+        <item>%(episode_number)s___(numeric): Number of the video episode within a season)</item>
+        <item>%(episode_id)s___(string): Id of the video episode)</item>
+        <item>%(track)s___(string): Title of the track)</item>
+        <item>%(track_number)s___(numeric): Number of the track within an album or a disc)</item>
+        <item>%(track_id)s___(string): Id of the track)</item>
+        <item>%(artist)s___(string): Artist(s) of the track)</item>
+        <item>%(genre)s___(string): Genre(s) of the track)</item>
+        <item>%(album)s___(string): Title of the album the track belongs to)</item>
+        <item>%(album_type)s___(string): Type of the album)</item>
+        <item>%(album_artist)s___(string): List of all artists appeared on the album)</item>
+        <item>%(disc_number)s___(numeric): Number of the disc or other physical medium the track belongs to)</item>
+        <item>%(release_year)s___(numeric): Year (YYYY) when the album was released)</item>
+        <item>%(section_title)s___(string): Title of the chapter)</item>
+        <item>%(section_number)s___(numeric): Number of the chapter within the file)</item>
+        <item>%(section_start)s___(numeric): Start time of the chapter in seconds)</item>
+        <item>%(section_end)s___(numeric): End time of the chapter in seconds)</item>
+    </string-array>
+
+    <string-array name="modify_download_card">
+        <item>@string/schedule</item>
+        <item>@string/title</item>
+        <item>@string/author</item>
+        <item>@string/container</item>
+        <item>@string/adjust_audio</item>
+        <item>@string/adjust_video</item>
+        <item>@string/adjust_templates</item>
+        <item>@string/url</item>
+    </string-array>
+
+    <string-array name="modify_download_card_values">
+        <item>schedule</item>
+        <item>title</item>
+        <item>author</item>
+        <item>container</item>
+        <item>adjust_audio</item>
+        <item>adjust_video</item>
+        <item>adjust_templates</item>
+        <item>url</item>
+    </string-array>
+
 </resources>

@@ -3,6 +3,7 @@ package com.deniscerri.ytdlnis.ui.downloadcard
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -13,9 +14,11 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -44,7 +47,8 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
     private var activity: Activity? = null
     private lateinit var downloadViewModel : DownloadViewModel
     private lateinit var resultViewModel: ResultViewModel
-
+    private lateinit var preferences: SharedPreferences
+    private lateinit var shownFields: List<String>
     lateinit var title : TextInputLayout
     lateinit var author : TextInputLayout
     private lateinit var saveDir : TextInputLayout
@@ -53,6 +57,7 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
     private lateinit var genericVideoFormats: MutableList<Format>
 
     lateinit var downloadItem: DownloadItem
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -65,6 +70,8 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
         resultViewModel = ViewModelProvider(this@DownloadVideoFragment)[ResultViewModel::class.java]
         infoUtil = InfoUtil(requireContext())
         genericVideoFormats = infoUtil.getGenericVideoFormats(requireContext().resources)
+        preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
+        shownFields = preferences.getStringSet("modify_download_card", setOf())!!.toList()
         return fragmentView
     }
 
@@ -85,6 +92,7 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
             val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
             try {
                 title = view.findViewById(R.id.title_textinput)
+                title.visibility = if (shownFields.contains("title")) View.VISIBLE else View.GONE
                 if (title.editText?.text?.isEmpty() == true){
                     title.editText!!.setText(downloadItem.title)
                 }
@@ -97,6 +105,7 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
                 })
 
                 author = view.findViewById(R.id.author_textinput)
+                author.visibility = if (shownFields.contains("author")) View.VISIBLE else View.GONE
                 if (author.editText?.text?.isEmpty() == true){
                     author.editText!!.setText(downloadItem.author)
                 }
@@ -149,9 +158,12 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
                     if (currentDownloadItem!!.type != Type.video){
                         downloadItem.type = Type.video
                         runCatching {
-                            downloadItem.format =
-                                downloadItem.allFormats.filter { it.vcodec.isNotEmpty() }
-                                    .maxByOrNull { it.filesize }!!
+                            downloadItem.format = downloadViewModel.getFormat(downloadItem.allFormats, Type.video)
+                            if (downloadItem.videoPreferences.audioFormatIDs.isEmpty()){
+                                downloadItem.videoPreferences.audioFormatIDs.add(
+                                    downloadViewModel.getFormat(downloadItem.allFormats, Type.audio).format_id
+                                )
+                            }
                         }.onFailure {
                             downloadItem.format = genericVideoFormats.last()
                         }
@@ -161,6 +173,7 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
 
                 val containers = requireContext().resources.getStringArray(R.array.video_containers)
                 val container = view.findViewById<TextInputLayout>(R.id.downloadContainer)
+                container.visibility = if (shownFields.contains("container")) View.VISIBLE else View.GONE
                 val containerAutoCompleteTextView =
                     view.findViewById<AutoCompleteTextView>(R.id.container_textview)
                 var containerPreference = sharedPreferences.getString("video_format", "Default")
@@ -185,6 +198,10 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
                                 resultItem?.formats?.addAll(allFormats.first().filter { !genericVideoFormats.contains(it) })
                                 if (resultItem != null){
                                     resultViewModel.update(resultItem!!)
+                                    kotlin.runCatching {
+                                        val f1 = fragmentManager?.findFragmentByTag("f0") as DownloadAudioFragment
+                                        f1.updateUI(resultItem)
+                                    }
                                 }
                             }
                         }
@@ -226,61 +243,66 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
                     }
 
 
-                UiUtil.configureVideo(
-                    view,
-                    requireActivity(),
-                    listOf(downloadItem),
-                    embedSubsClicked = {
-                        downloadItem.videoPreferences.embedSubs = it
-                    },
-                    addChaptersClicked = {
-                        downloadItem.videoPreferences.addChapters = it
-                    },
-                    splitByChaptersClicked = {
-                        downloadItem.videoPreferences.splitByChapters = it
-                    },
-                    saveThumbnailClicked = {
-                        downloadItem.SaveThumb = it
-                    },
-                    sponsorBlockItemsSet = { values, checkedItems ->
-                        downloadItem.videoPreferences.sponsorBlockFilters.clear()
-                        for (i in checkedItems.indices) {
-                            if (checkedItems[i]) {
-                                downloadItem.videoPreferences.sponsorBlockFilters.add(values[i])
-                            }
-                        }
-                    },
-                    cutClicked = { cutVideoListener ->
-                        if (parentFragmentManager.findFragmentByTag("cutVideoSheet") == null){
-                            val bottomSheet = CutVideoBottomSheetDialog(downloadItem, resultItem?.urls ?: "", resultItem?.chapters ?: listOf(), cutVideoListener)
-                            bottomSheet.show(parentFragmentManager, "cutVideoSheet")
-                        }
-                    },
-                    filenameTemplateSet = {
-                        downloadItem.customFileNameTemplate = it
-                    },
-                    saveSubtitlesClicked = {
-                        downloadItem.videoPreferences.writeSubs = it
-                    },
-                    subtitleLanguagesClicked = {
-                        UiUtil.showSubtitleLanguagesDialog(requireActivity(), downloadItem.videoPreferences.subsLanguages){
-                            downloadItem.videoPreferences.subsLanguages = it
-                        }
-                    },
-                    removeAudioClicked = {
-                        downloadItem.videoPreferences.removeAudio = it
-                    },
-                    extraCommandsClicked = {
-                        val callback = object : ExtraCommandsListener {
-                            override fun onChangeExtraCommand(c: String) {
-                                downloadItem.extraCommands = c
-                            }
-                        }
+                view.findViewById<LinearLayout>(R.id.adjust).apply {
+                    visibility = if (shownFields.contains("adjust_video")) View.VISIBLE else View.GONE
+                    if (isVisible){
+                        UiUtil.configureVideo(
+                            view,
+                            requireActivity(),
+                            listOf(downloadItem),
+                            embedSubsClicked = {
+                                downloadItem.videoPreferences.embedSubs = it
+                            },
+                            addChaptersClicked = {
+                                downloadItem.videoPreferences.addChapters = it
+                            },
+                            splitByChaptersClicked = {
+                                downloadItem.videoPreferences.splitByChapters = it
+                            },
+                            saveThumbnailClicked = {
+                                downloadItem.SaveThumb = it
+                            },
+                            sponsorBlockItemsSet = { values, checkedItems ->
+                                downloadItem.videoPreferences.sponsorBlockFilters.clear()
+                                for (i in checkedItems.indices) {
+                                    if (checkedItems[i]) {
+                                        downloadItem.videoPreferences.sponsorBlockFilters.add(values[i])
+                                    }
+                                }
+                            },
+                            cutClicked = { cutVideoListener ->
+                                if (parentFragmentManager.findFragmentByTag("cutVideoSheet") == null){
+                                    val bottomSheet = CutVideoBottomSheetDialog(downloadItem, resultItem?.urls ?: "", resultItem?.chapters ?: listOf(), cutVideoListener)
+                                    bottomSheet.show(parentFragmentManager, "cutVideoSheet")
+                                }
+                            },
+                            filenameTemplateSet = {
+                                downloadItem.customFileNameTemplate = it
+                            },
+                            saveSubtitlesClicked = {
+                                downloadItem.videoPreferences.writeSubs = it
+                            },
+                            subtitleLanguagesClicked = {
+                                UiUtil.showSubtitleLanguagesDialog(requireActivity(), downloadItem.videoPreferences.subsLanguages){
+                                    downloadItem.videoPreferences.subsLanguages = it
+                                }
+                            },
+                            removeAudioClicked = {
+                                downloadItem.videoPreferences.removeAudio = it
+                            },
+                            extraCommandsClicked = {
+                                val callback = object : ExtraCommandsListener {
+                                    override fun onChangeExtraCommand(c: String) {
+                                        downloadItem.extraCommands = c
+                                    }
+                                }
 
-                        val bottomSheetDialog = AddExtraCommandsDialog(downloadItem, callback)
-                        bottomSheetDialog.show(parentFragmentManager, "extraCommands")
+                                val bottomSheetDialog = AddExtraCommandsDialog(downloadItem, callback)
+                                bottomSheetDialog.show(parentFragmentManager, "extraCommands")
+                            }
+                        )
                     }
-                )
+                }
             } catch (e: Exception) {
                 e.printStackTrace()
             }

@@ -4,11 +4,19 @@ import android.content.DialogInterface
 import android.graphics.Canvas
 import android.graphics.Color
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.text.InputType
+import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
 import android.widget.RelativeLayout
+import android.widget.TextView
+import androidx.appcompat.widget.SearchView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -21,9 +29,12 @@ import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.adapter.TemplatesAdapter
 import com.deniscerri.ytdlnis.database.models.CommandTemplate
 import com.deniscerri.ytdlnis.database.viewmodel.CommandTemplateViewModel
-import com.deniscerri.ytdlnis.util.FileUtil
+import com.deniscerri.ytdlnis.database.repository.CommandTemplateRepository.CommandTemplateSortType
+import com.deniscerri.ytdlnis.database.DBManager.SORTING
 import com.deniscerri.ytdlnis.util.UiUtil
+import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.chip.Chip
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
@@ -41,6 +52,7 @@ class CommandTemplatesFragment : Fragment(), TemplatesAdapter.OnItemClickListene
     private lateinit var templatesList: List<CommandTemplate>
     private lateinit var noResults: RelativeLayout
     private lateinit var mainActivity: MainActivity
+    private lateinit var sortChip: Chip
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -58,6 +70,7 @@ class CommandTemplatesFragment : Fragment(), TemplatesAdapter.OnItemClickListene
         topAppBar = view.findViewById(R.id.logs_toolbar)
         topAppBar.setNavigationOnClickListener { mainActivity.onBackPressedDispatcher.onBackPressed() }
         noResults = view.findViewById(R.id.no_results)
+        sortChip = view.findViewById(R.id.sortChip)
 
         templatesAdapter =
             TemplatesAdapter(
@@ -75,35 +88,90 @@ class CommandTemplatesFragment : Fragment(), TemplatesAdapter.OnItemClickListene
 
 
         commandTemplateViewModel = ViewModelProvider(this)[CommandTemplateViewModel::class.java]
-        commandTemplateViewModel.items.observe(viewLifecycleOwner) {
+        commandTemplateViewModel.allItems.observe(viewLifecycleOwner) {
             if (it.isEmpty()) noResults.visibility = View.VISIBLE
             else noResults.visibility = View.GONE
-            templatesList = it
-            templatesAdapter.submitList(it)
         }
+
+        commandTemplateViewModel.getFilteredList().observe(viewLifecycleOwner) {
+            templatesAdapter.submitList(it)
+            templatesList = it
+            scrollToTop()
+        }
+
+        commandTemplateViewModel.sortOrder.observe(viewLifecycleOwner){
+            if (it != null){
+                when(it){
+                    SORTING.ASC -> sortChip.chipIcon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_down)
+                    SORTING.DESC -> sortChip.chipIcon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_up)
+                }
+            }
+        }
+
+        commandTemplateViewModel.sortType.observe(viewLifecycleOwner){
+            if(it != null){
+                when(it){
+                    CommandTemplateSortType.DATE -> sortChip.text = getString(R.string.date_added)
+                    CommandTemplateSortType.TITLE -> sortChip.text = getString(R.string.title)
+                    CommandTemplateSortType.LENGTH -> sortChip.text = getString(R.string.length)
+                }
+            }
+        }
+
         initMenu()
         initChips()
     }
 
     private fun initMenu() {
-        topAppBar.setOnMenuItemClickListener { m: MenuItem ->
-            val itemId = m.itemId
-            if (itemId == R.id.export_clipboard) {
-                lifecycleScope.launch{
-                    withContext(Dispatchers.IO){
-                        commandTemplateViewModel.exportToClipboard()
-                    }
-                    Snackbar.make(recyclerView, getString(R.string.copied_to_clipboard), Snackbar.LENGTH_LONG).show()
+        val onActionExpandListener: MenuItem.OnActionExpandListener =
+            object : MenuItem.OnActionExpandListener {
+                override fun onMenuItemActionExpand(menuItem: MenuItem): Boolean {
+                    return true
                 }
-            }else if (itemId == R.id.import_clipboard){
-                lifecycleScope.launch{
-                    withContext(Dispatchers.IO){
-                        val count = commandTemplateViewModel.importFromClipboard()
-                        mainActivity.runOnUiThread{
-                            Snackbar.make(recyclerView, "${getString(R.string.items_imported)} (${count})", Snackbar.LENGTH_LONG).show()
-                        }
-                    }
 
+                override fun onMenuItemActionCollapse(menuItem: MenuItem): Boolean {
+                    return true
+                }
+            }
+        topAppBar.menu.findItem(R.id.search_command)
+            .setOnActionExpandListener(onActionExpandListener)
+        val searchView = topAppBar.menu.findItem(R.id.search_command).actionView as SearchView?
+        searchView!!.inputType = InputType.TYPE_CLASS_TEXT
+        searchView.queryHint = getString(R.string.search_command_hint)
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String): Boolean {
+                topAppBar.menu.findItem(R.id.search_command).collapseActionView()
+                commandTemplateViewModel.setQueryFilter(query)
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String): Boolean {
+                commandTemplateViewModel.setQueryFilter(newText)
+                return true
+            }
+        })
+        topAppBar.setOnClickListener { scrollToTop() }
+
+        topAppBar.setOnMenuItemClickListener { m: MenuItem ->
+            when(m.itemId){
+                R.id.export_clipboard -> {
+                    lifecycleScope.launch{
+                        withContext(Dispatchers.IO){
+                            commandTemplateViewModel.exportToClipboard()
+                        }
+                        Snackbar.make(recyclerView, getString(R.string.copied_to_clipboard), Snackbar.LENGTH_LONG).show()
+                    }
+                }
+                R.id.import_clipboard -> {
+                    lifecycleScope.launch{
+                        withContext(Dispatchers.IO){
+                            val count = commandTemplateViewModel.importFromClipboard()
+                            mainActivity.runOnUiThread{
+                                Snackbar.make(recyclerView, "${getString(R.string.items_imported)} (${count})", Snackbar.LENGTH_LONG).show()
+                            }
+                        }
+
+                    }
                 }
             }
             true
@@ -111,6 +179,45 @@ class CommandTemplatesFragment : Fragment(), TemplatesAdapter.OnItemClickListene
     }
 
     private fun initChips() {
+        val sorting = view?.findViewById<Chip>(R.id.sortChip)
+        sorting?.setOnClickListener {
+            val sortSheet = BottomSheetDialog(requireContext())
+            sortSheet.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            sortSheet.setContentView(R.layout.command_templates_sort_sheet)
+
+            val date = sortSheet.findViewById<TextView>(R.id.date)
+            val title = sortSheet.findViewById<TextView>(R.id.title)
+            val length = sortSheet.findViewById<TextView>(R.id.length)
+
+            val sortOptions = listOf(date!!, title!!, length!!)
+            sortOptions.forEach { it.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.empty,0,0,0) }
+            when(commandTemplateViewModel.sortType.value!!) {
+                CommandTemplateSortType.DATE -> changeSortIcon(date, commandTemplateViewModel.sortOrder.value!!)
+                CommandTemplateSortType.TITLE -> changeSortIcon(title, commandTemplateViewModel.sortOrder.value!!)
+                CommandTemplateSortType.LENGTH -> changeSortIcon(length, commandTemplateViewModel.sortOrder.value!!)
+            }
+
+            date.setOnClickListener {
+                sortOptions.forEach { it.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.empty,0,0,0) }
+                commandTemplateViewModel.setSorting(CommandTemplateSortType.DATE)
+                changeSortIcon(date, commandTemplateViewModel.sortOrder.value!!)
+            }
+            title.setOnClickListener {
+                sortOptions.forEach { it.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.empty,0,0,0) }
+                commandTemplateViewModel.setSorting(CommandTemplateSortType.TITLE)
+                changeSortIcon(title, commandTemplateViewModel.sortOrder.value!!)
+            }
+            length.setOnClickListener {
+                sortOptions.forEach { it.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.empty,0,0,0) }
+                commandTemplateViewModel.setSorting(CommandTemplateSortType.LENGTH)
+                changeSortIcon(length, commandTemplateViewModel.sortOrder.value!!)
+            }
+            val displayMetrics = DisplayMetrics()
+            requireActivity().windowManager.defaultDisplay.getMetrics(displayMetrics)
+            sortSheet.behavior.peekHeight = displayMetrics.heightPixels
+            sortSheet.show()
+        }
+
         val new = view?.findViewById<Chip>(R.id.newTemplate)
         new?.setOnClickListener {
             UiUtil.showCommandTemplateCreationOrUpdatingSheet(null,mainActivity, this, commandTemplateViewModel) {}
@@ -121,8 +228,25 @@ class CommandTemplatesFragment : Fragment(), TemplatesAdapter.OnItemClickListene
         }
     }
 
-    companion object {
-        private const val TAG = "DownloadLogActivity"
+    private fun changeSortIcon(item: TextView, order: SORTING){
+        when(order){
+            SORTING.DESC ->{
+                item.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_up, 0,0,0)
+            }
+            SORTING.ASC ->                 {
+                item.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_down, 0,0,0)
+            }
+        }
+    }
+
+    private fun scrollToTop() {
+        recyclerView.scrollToPosition(0)
+        Handler(Looper.getMainLooper()).post {
+            (topAppBar.parent as AppBarLayout).setExpanded(
+                true,
+                true
+            )
+        }
     }
 
     override fun onItemClick(commandTemplate: CommandTemplate, index: Int) {

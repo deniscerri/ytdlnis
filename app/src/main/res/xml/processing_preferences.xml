@@ -149,7 +149,7 @@
         app:title="@string/video_format" />
 
     <ListPreference
-        android:defaultValue=""
+        android:defaultValue="avc|h264"
         android:entries="@array/video_codec"
         android:entryValues="@array/video_codec_values"
         android:icon="@drawable/ic_code"
@@ -157,7 +157,7 @@
         app:title="@string/preferred_video_codec" />
 
     <ListPreference
-        android:defaultValue=""
+        android:defaultValue="m4a|mp4a|aac"
         android:entries="@array/audio_codec"
         android:entryValues="@array/audio_codec_values"
         android:icon="@drawable/ic_code"
@@ -210,10 +210,5 @@
         app:key="use_extra_commands"
         android:summary="@string/use_extra_commands_summary"
         app:title="@string/use_extra_commands" />
-
-    <Preference
-        app:isPreferenceVisible="false"
-        android:key="use_cookies"
-        android:defaultValue="false" />
 
 </PreferenceScreen>

@@ -62,15 +62,6 @@ class MoreFragment : Fragment() {
         terminateApp = view.findViewById(R.id.terminate)
         settings = view.findViewById(R.id.settings)
 
-        val navHostFragment = parentFragmentManager.findFragmentById(R.id.frame_layout)
-
-        if (mainSharedPreferences.getBoolean("log_downloads", false)) {
-            logs.visibility = View.VISIBLE
-        }else {
-            logs.visibility = View.GONE
-        }
-
-
         terminal.setOnClickListener {
             val intent = Intent(context, TerminalActivity::class.java)
             startActivity(intent)

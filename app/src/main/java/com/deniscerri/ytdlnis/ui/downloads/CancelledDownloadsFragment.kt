@@ -55,7 +55,7 @@ class CancelledDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClic
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        fragmentView = inflater.inflate(R.layout.fragment_generic_download_queue, container, false)
+        fragmentView = inflater.inflate(R.layout.generic_recyclerview, container, false)
         activity = getActivity()
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
         return fragmentView
@@ -100,7 +100,7 @@ class CancelledDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClic
                     downloadViewModel.getItemByID(itemID)
                 }
                 withContext(Dispatchers.IO){
-                    downloadViewModel.queueDownloads(listOf(item))
+                    downloadViewModel.queueDownloads(listOf(item), true)
                 }
             }.onFailure {
                 Toast.makeText(requireContext(), getString(R.string.error_restarting_download), Toast.LENGTH_LONG).show()
@@ -264,6 +264,7 @@ class CancelledDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClic
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val itemID = viewHolder.itemView.tag.toString().toLong()
+                val position = viewHolder.bindingAdapterPosition
                 when (direction) {
                     ItemTouchHelper.LEFT -> {
                         lifecycleScope.launch {
@@ -279,6 +280,7 @@ class CancelledDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClic
                     }
                     ItemTouchHelper.RIGHT -> {
                         onActionButtonClick(itemID)
+                        adapter.notifyItemChanged(position)
                     }
                 }
             }

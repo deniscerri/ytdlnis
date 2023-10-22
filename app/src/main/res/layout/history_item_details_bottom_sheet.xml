@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout style="@style/Widget.Material3.BottomSheet"
+<FrameLayout xmlns:tools="http://schemas.android.com/tools"
+    style="@style/Widget.Material3.BottomSheet"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
@@ -17,10 +18,11 @@
             android:padding="20dp">
 
             <LinearLayout
+                android:id="@+id/linearLayout2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintEnd_toStartOf="@+id/downloads_download_button_layout"
+                app:layout_constraintEnd_toStartOf="@+id/download_button_type"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -43,28 +45,19 @@
 
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/downloads_download_button_layout"
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/download_button_type"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:clickable="false"
+                android:elevation="0dp"
+                app:borderWidth="0dp"
+                app:cornerRadius="10dp"
+                app:elevation="0dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/downloads_download_button_type"
-                    style="@style/Widget.Material3.ExtendedFloatingActionButton.Icon.Secondary"
-                    android:layout_width="55dp"
-                    android:layout_height="55dp"
-                    android:layout_margin="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:clickable="false"
-                    android:elevation="0dp"
-                    app:borderWidth="0dp"
-                    app:cornerRadius="10dp"
-                    app:elevation="0dp" />
-
-            </LinearLayout>
+                app:layout_constraintTop_toTopOf="parent"
+                android:contentDescription="@string/share" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

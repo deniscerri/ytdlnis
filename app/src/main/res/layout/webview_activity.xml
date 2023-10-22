@@ -1,59 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/webview_appbarlayout"
-        app:liftOnScroll="true"
-        android:background="@android:color/transparent"
-        android:elevation="0dp"
-        app:elevation="0dp"
-        android:fitsSystemWindows="true"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/coordinatorLayout2"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/webviewToolbar"
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/webview_appbarlayout"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:layout_scrollFlags="scroll"
-            app:navigationIcon="?attr/homeAsUpIndicator"
-            >
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:elevation="0dp"
+            android:fitsSystemWindows="true"
+            app:elevation="0dp"
+            app:liftOnScroll="true">
 
-            <Button
-                android:id="@+id/generate"
-                android:layout_gravity="end"
-                style="@style/Widget.Material3.Button.ElevatedButton.Icon"
-                android:layout_width="wrap_content"
-                android:layout_marginHorizontal="10dp"
-                android:layout_height="wrap_content"
-                android:autoLink="all"
-                android:text="@string/ok"
-                app:icon="@drawable/ic_check"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:ignore="PrivateResource" />
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/webviewToolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:layout_scrollFlags="scroll"
+                app:navigationIcon="?attr/homeAsUpIndicator">
 
-        </com.google.android.material.appbar.MaterialToolbar>
+                <Button
+                    android:id="@+id/generate"
+                    style="@style/Widget.Material3.Button.ElevatedButton.Icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginHorizontal="10dp"
+                    android:autoLink="all"
+                    android:text="@string/ok"
+                    app:icon="@drawable/ic_check"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="PrivateResource" />
 
-    </com.google.android.material.appbar.AppBarLayout>
+            </com.google.android.material.appbar.MaterialToolbar>
 
-    <RelativeLayout
-        android:id="@+id/rl"
+        </com.google.android.material.appbar.AppBarLayout>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
+    <androidx.compose.ui.platform.ComposeView
+        android:id="@+id/webview_compose"
         android:layout_width="match_parent"
+        android:layout_height="0dp"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
-        android:layout_height="match_parent">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/coordinatorLayout2"
+        tools:composableName="com.deniscerri.ytdlnis.ui.more.WebViewActivity.WebViewView" />
 
-        <androidx.compose.ui.platform.ComposeView
-            android:id="@+id/webview_compose"
-            tools:composableName="com.deniscerri.ytdlnis.ui.more.WebViewActivity.WebViewView"
-            android:layout_height="match_parent"
-            android:layout_width="match_parent"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
 
-    </RelativeLayout>
-
-</androidx.coordinatorlayout.widget.CoordinatorLayout>

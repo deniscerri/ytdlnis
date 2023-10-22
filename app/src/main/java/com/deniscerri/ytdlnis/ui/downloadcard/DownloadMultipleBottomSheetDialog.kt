@@ -32,6 +32,7 @@ import androidx.work.Data
 import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
+import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.adapter.ConfigureMultipleDownloadsAdapter
 import com.deniscerri.ytdlnis.database.models.DownloadItem
@@ -55,9 +56,8 @@ import com.google.android.material.color.MaterialColors
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
@@ -504,6 +504,18 @@ class DownloadMultipleBottomSheetDialog(private var items: MutableList<DownloadI
                 }
             }
             true
+        }
+
+        lifecycleScope.launch {
+            downloadViewModel.uiState.collectLatest { res ->
+                if (res.errorMessage != null) {
+                    UiUtil.handleDownloadsResponse(requireActivity() as MainActivity, res, downloadViewModel)
+                    downloadViewModel.uiState.value =  DownloadViewModel.DownloadsUiState(
+                        errorMessage = null,
+                        actions = null
+                    )
+                }
+            }
         }
 
     }

@@ -1,8 +1,10 @@
 package com.deniscerri.ytdlnis.database.repository
 
 import androidx.lifecycle.LiveData
+import com.deniscerri.ytdlnis.database.DBManager
 import com.deniscerri.ytdlnis.database.dao.CommandTemplateDao
 import com.deniscerri.ytdlnis.database.models.CommandTemplate
+import com.deniscerri.ytdlnis.database.models.HistoryItem
 import com.deniscerri.ytdlnis.database.models.TemplateShortcut
 import kotlinx.coroutines.flow.Flow
 
@@ -10,8 +12,20 @@ class CommandTemplateRepository(private val commandDao: CommandTemplateDao) {
     val items : Flow<List<CommandTemplate>> = commandDao.getAllTemplatesFlow()
     val shortcuts : Flow<List<TemplateShortcut>> = commandDao.getAllShortcutsFlow()
 
+    enum class CommandTemplateSortType {
+        DATE, TITLE, LENGTH
+    }
+
     fun getAll() : List<CommandTemplate> {
         return commandDao.getAllTemplates()
+    }
+
+    fun getFiltered(query : String, sortType: CommandTemplateSortType, sort: DBManager.SORTING) : List<CommandTemplate> {
+        return when(sortType){
+            CommandTemplateSortType.DATE ->  commandDao.getCommandsSortedByID(query,  sort.toString())
+            CommandTemplateSortType.TITLE ->  commandDao.getCommandsSortedByTitle(query,  sort.toString())
+            CommandTemplateSortType.LENGTH ->  commandDao.getCommandsSortedByContentLength(query,  sort.toString())
+        }
     }
 
     fun getTotalNumber() : Int {

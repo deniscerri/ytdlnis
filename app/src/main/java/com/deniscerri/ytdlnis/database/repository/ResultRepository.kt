@@ -42,7 +42,7 @@ class ResultRepository(private val resultDao: ResultDao, private val context: Co
         return res
     }
 
-    suspend fun getOne(inputQuery: String, resetResults: Boolean) : ArrayList<ResultItem?>{
+    suspend fun getYoutubeVideo(inputQuery: String, resetResults: Boolean) : ArrayList<ResultItem?>{
         val infoUtil = InfoUtil(context)
         val v = infoUtil.getYoutubeVideo(inputQuery)
         if (resetResults) {
@@ -81,22 +81,17 @@ class ResultRepository(private val resultDao: ResultDao, private val context: Co
 
     suspend fun getDefault(inputQuery: String, resetResults: Boolean) : ArrayList<ResultItem?> {
         val infoUtil = InfoUtil(context)
-        try {
-            val items = infoUtil.getFromYTDL(inputQuery)
-            if (resetResults) {
-                deleteAll()
-                itemCount.value = items.size
-            }else{
-                items.forEach { it!!.playlistTitle = "ytdlnis-Search" }
-            }
-            items.forEach {
-                resultDao.insert(it!!)
-            }
-            return items
-        } catch (e: Exception) {
-            Log.e(tag, e.toString())
+        val items = infoUtil.getFromYTDL(inputQuery)
+        if (resetResults) {
+            deleteAll()
+            itemCount.value = items.size
+        }else{
+            items.forEach { it!!.playlistTitle = "ytdlnis-Search" }
         }
-        return arrayListOf()
+        items.forEach {
+            resultDao.insert(it!!)
+        }
+        return items
     }
 
     suspend fun delete(item: ResultItem){

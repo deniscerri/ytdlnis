@@ -47,6 +47,10 @@ abstract class DBManager : RoomDatabase(){
     abstract val logDao: LogDao
     abstract val terminalDao: TerminalDao
 
+    enum class SORTING{
+        DESC, ASC
+    }
+
     companion object {
         //prevents multiple instances of db getting created at the same time
         @Volatile

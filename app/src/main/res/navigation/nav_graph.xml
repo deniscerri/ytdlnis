@@ -100,13 +100,7 @@
         android:id="@+id/resultCardDetailsDialog"
         android:name="com.deniscerri.ytdlnis.ui.downloadcard.ResultCardDetailsDialog"
         android:label="ResultCardDetailsDialog" />
-    <navigation android:id="@+id/settingsNav"
-        app:startDestination="@id/settingsFrame">
-        <fragment
-            android:id="@+id/settingsFrame"
-            android:name="com.deniscerri.ytdlnis.ui.more.settings.SettingsFragmentFrame"
-            android:label="settings_frame"
-            tools:layout="@layout/fragment_settings" />
+    <navigation android:id="@+id/settingsNav">
         <fragment
             android:id="@+id/folderSettingsFragment"
             android:name="com.deniscerri.ytdlnis.ui.more.settings.FolderSettingsFragment"

@@ -55,7 +55,6 @@ class WebViewActivity : BaseActivity() {
         generateBtn = toolbar.findViewById(R.id.generate)
         webViewCompose = findViewById(R.id.webview_compose)
         cookieManager = CookieManager.getInstance()
-        cookieManager.removeAllCookies(null)
         preferences = PreferenceManager.getDefaultSharedPreferences(this)
 
         webViewClient = object : AccompanistWebViewClient() {
@@ -94,7 +93,6 @@ class WebViewActivity : BaseActivity() {
                     Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show()
                 }
             }
-            cookieManager.removeAllCookies(null)
             onBackPressedDispatcher.onBackPressed()
         }
 

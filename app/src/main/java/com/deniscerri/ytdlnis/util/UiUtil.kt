@@ -2,16 +2,18 @@ package com.deniscerri.ytdlnis.util
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.Dialog
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
-import android.graphics.Typeface
 import android.graphics.drawable.ShapeDrawable
 import android.graphics.drawable.shapes.OvalShape
 import android.net.Uri
+import android.os.Build
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.text.format.DateFormat
@@ -34,22 +36,32 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import androidx.core.view.allViews
+import androidx.core.view.children
+import androidx.core.view.get
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.documentfile.provider.DocumentFile
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.RecyclerView
-import com.deniscerri.ytdlnis.App
+import com.afollestad.materialdialogs.utils.MDUtil.getStringArray
+import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
+import com.deniscerri.ytdlnis.adapter.ConfigureMultipleDownloadsAdapter
 import com.deniscerri.ytdlnis.database.models.CommandTemplate
 import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.models.Format
+import com.deniscerri.ytdlnis.database.models.HistoryItem
 import com.deniscerri.ytdlnis.database.models.TemplateShortcut
 import com.deniscerri.ytdlnis.database.repository.DownloadRepository
 import com.deniscerri.ytdlnis.database.viewmodel.CommandTemplateViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
+import com.deniscerri.ytdlnis.database.viewmodel.ResultViewModel
+import com.deniscerri.ytdlnis.ui.downloadcard.ConfigureDownloadBottomSheetDialog
+import com.deniscerri.ytdlnis.ui.downloadcard.DownloadBottomSheetDialog
 import com.deniscerri.ytdlnis.ui.downloadcard.VideoCutListener
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -61,6 +73,7 @@ import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.materialswitch.MaterialSwitch
 import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.timepicker.MaterialTimePicker
@@ -68,7 +81,9 @@ import com.google.android.material.timepicker.TimeFormat
 import com.neo.highlight.core.Highlight
 import com.neo.highlight.util.listener.HighlightTextWatcher
 import com.neo.highlight.util.scheme.ColorScheme
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import me.zhanghai.android.fastscroll.FastScrollerBuilder
@@ -416,17 +431,17 @@ object UiUtil {
         author!!.text = item.author.ifEmpty { "`${context.getString(R.string.defaultValue)}`" }
 
         // BUTTON ----------------------------------
-        val btn = bottomSheet.findViewById<MaterialButton>(R.id.downloads_download_button_type)
+        val btn = bottomSheet.findViewById<FloatingActionButton>(R.id.download_button_type)
 
         when (item.type) {
             DownloadViewModel.Type.audio -> {
-                btn!!.icon = ContextCompat.getDrawable(context, R.drawable.ic_music)
+                btn?.setImageResource(R.drawable.ic_music)
             }
             DownloadViewModel.Type.video -> {
-                btn!!.icon = ContextCompat.getDrawable(context, R.drawable.ic_video)
+                btn?.setImageResource(R.drawable.ic_video)
             }
             else -> {
-                btn!!.icon = ContextCompat.getDrawable(context, R.drawable.ic_terminal)
+                btn?.setImageResource(R.drawable.ic_terminal)
             }
         }
 
@@ -542,6 +557,135 @@ object UiUtil {
         )
     }
 
+    fun showHistoryItemDetailsCard(
+        item: HistoryItem?,
+        context: Activity,
+        isPresent: Boolean,
+        redownloadItem: (HistoryItem) -> Unit,
+        redownloadShowDownloadCard: (HistoryItem) -> Unit,
+    ){
+        val bottomSheet = BottomSheetDialog(context)
+        bottomSheet.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        bottomSheet.setContentView(R.layout.history_item_details_bottom_sheet)
+        val title = bottomSheet.findViewById<TextView>(R.id.bottom_sheet_title)
+        title!!.text = item!!.title
+        val author = bottomSheet.findViewById<TextView>(R.id.bottom_sheet_author)
+        author!!.text = item.author
+
+        // BUTTON ----------------------------------
+        val btn = bottomSheet.findViewById<FloatingActionButton>(R.id.download_button_type)
+
+        if (item.type == DownloadViewModel.Type.audio) {
+            if (isPresent) {
+                btn?.setImageResource(R.drawable.ic_music_downloaded)
+            } else {
+                btn?.setImageResource(R.drawable.ic_music)
+            }
+        } else if (item.type == DownloadViewModel.Type.video) {
+            if (isPresent) {
+                btn?.setImageResource(R.drawable.ic_video_downloaded)
+            } else {
+                btn?.setImageResource(R.drawable.ic_video)
+            }
+        }else{
+            btn?.setImageResource(R.drawable.ic_terminal)
+        }
+
+        if (isPresent){
+            btn?.setOnClickListener {
+                shareFileIntent(context, listOf(item.downloadPath))
+            }
+        }
+
+        val time = bottomSheet.findViewById<TextView>(R.id.time)
+        val formatNote = bottomSheet.findViewById<TextView>(R.id.format_note)
+        val container = bottomSheet.findViewById<TextView>(R.id.container_chip)
+        val codec = bottomSheet.findViewById<TextView>(R.id.codec)
+        val fileSize = bottomSheet.findViewById<TextView>(R.id.file_size)
+
+        val calendar = Calendar.getInstance()
+        calendar.timeInMillis = item.time * 1000L
+        time!!.text = SimpleDateFormat(DateFormat.getBestDateTimePattern(Locale.getDefault(), "ddMMMyyyy - HHmm"), Locale.getDefault()).format(calendar.time)
+        time.isClickable = false
+
+        if (item.format.format_note == "?" || item.format.format_note == "") formatNote!!.visibility =
+            View.GONE
+        else formatNote!!.text = item.format.format_note
+
+        if (item.format.container != "") container!!.text = item.format.container.uppercase()
+        else container!!.visibility = View.GONE
+
+        val codecText =
+            if (item.format.encoding != "") {
+                item.format.encoding.uppercase()
+            }else if (item.format.vcodec != "none" && item.format.vcodec != ""){
+                item.format.vcodec.uppercase()
+            } else {
+                item.format.acodec.uppercase()
+            }
+        if (codecText == "" || codecText == "none"){
+            codec!!.visibility = View.GONE
+        }else{
+            codec!!.visibility = View.VISIBLE
+            codec.text = codecText
+        }
+
+        val file = File(item.downloadPath)
+        val fileSizeReadable = FileUtil.convertFileSize(if (file.exists()) file.length() else item.format.filesize)
+        if (fileSizeReadable == "?") fileSize!!.visibility = View.GONE
+        else fileSize!!.text = fileSizeReadable
+
+        val link = bottomSheet.findViewById<Button>(R.id.bottom_sheet_link)
+        val url = item.url
+        link!!.text = url
+        link.tag = item.id
+        link.setOnClickListener{
+            openLinkIntent(context, item.url, bottomSheet)
+        }
+        link.setOnLongClickListener{
+            copyLinkToClipBoard(context, item.url, bottomSheet)
+            true
+        }
+        val remove = bottomSheet.findViewById<Button>(R.id.bottomsheet_remove_button)
+        remove!!.tag = item.id
+        remove.setOnClickListener{
+            showRemoveHistoryItemDialog(item, context, delete = { item, deleteFile ->
+
+            })
+            bottomSheet.dismiss()
+        }
+        val openFile = bottomSheet.findViewById<Button>(R.id.bottomsheet_open_file_button)
+        openFile!!.tag = item.id
+        openFile.setOnClickListener{
+            openFileIntent(context, item.downloadPath)
+        }
+
+        val redownload = bottomSheet.findViewById<Button>(R.id.bottomsheet_redownload_button)
+        redownload!!.tag = item.id
+        redownload.setOnClickListener{
+            redownloadItem(item)
+            bottomSheet.cancel()
+        }
+
+        redownload.setOnLongClickListener {
+            redownloadShowDownloadCard(item)
+            bottomSheet.cancel()
+            true
+        }
+
+        if (!isPresent) openFile.visibility = View.GONE
+        else redownload.visibility = View.GONE
+
+        bottomSheet.show()
+        val displayMetrics = DisplayMetrics()
+        context.windowManager.defaultDisplay.getMetrics(displayMetrics)
+        bottomSheet.behavior.peekHeight = displayMetrics.heightPixels
+        bottomSheet.window!!.setLayout(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.MATCH_PARENT
+        )
+    }
+    
     fun showFormatDetails(format: Format, activity: Activity){
         val bottomSheet = BottomSheetDialog(activity)
         bottomSheet.requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -653,16 +797,16 @@ object UiUtil {
         builder.setView(inputLayout)
         builder.setPositiveButton(
             context.getString(R.string.ok)
-        ) { dialog: DialogInterface?, which: Int ->
+        ) { _: DialogInterface?, _: Int ->
             ok(editText.text.toString())
         }
 
         // handle the negative button of the alert dialog
         builder.setNegativeButton(
             context.getString(R.string.cancel)
-        ) { dialog: DialogInterface?, which: Int -> }
+        ) { _: DialogInterface?, _: Int -> }
 
-        builder.setNeutralButton("?")  { dialog: DialogInterface?, which: Int ->
+        builder.setNeutralButton("?")  { _: DialogInterface?, _: Int ->
             val browserIntent =
                 Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/yt-dlp/yt-dlp#subtitle-options"))
             context.startActivity(browserIntent)
@@ -670,7 +814,7 @@ object UiUtil {
 
 
         val dialog = builder.create()
-        editText.doOnTextChanged { text, start, before, count ->
+        editText.doOnTextChanged { _, _, _, _ ->
             dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = editText.text.isNotEmpty()
         }
         dialog.show()
@@ -923,35 +1067,14 @@ object UiUtil {
 
         val filenameTemplate = view.findViewById<Chip>(R.id.filename_template)
         filenameTemplate.setOnClickListener {
-            val builder = MaterialAlertDialogBuilder(context)
-            builder.setTitle(context.getString(R.string.file_name_template))
-            val inputLayout = context.layoutInflater.inflate(R.layout.textinput, null)
-            val editText = inputLayout.findViewById<EditText>(R.id.url_edittext)
-            inputLayout.findViewById<TextInputLayout>(R.id.url_textinput).hint = context.getString(R.string.file_name_template)
-            if (items.size == 1 || items.all { it.customFileNameTemplate == items[0].customFileNameTemplate }){
-                editText.setText(items[0].customFileNameTemplate)
+            val currentFilename = if (items.size == 1 || items.all { it.customFileNameTemplate == items[0].customFileNameTemplate }){
+                items[0].customFileNameTemplate
+            }else {
+                ""
             }
-            editText.setSelection(editText.text.length)
-            builder.setView(inputLayout)
-            builder.setPositiveButton(
-                context.getString(R.string.ok)
-            ) { _: DialogInterface?, _: Int ->
-                filenameTemplateSet(editText.text.toString())
+            showFilenameTemplateDialog(context, currentFilename) {
+                filenameTemplateSet(it)
             }
-
-            // handle the negative button of the alert dialog
-            builder.setNegativeButton(
-                context.getString(R.string.cancel)
-            ) { _: DialogInterface?, _: Int -> }
-
-            val dialog = builder.create()
-            dialog.show()
-            val imm = context.getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager
-            editText!!.postDelayed({
-                editText.requestFocus()
-                imm.showSoftInput(editText, 0)
-            }, 300)
-            dialog.getButton(AlertDialog.BUTTON_NEUTRAL).gravity = Gravity.START
         }
 
 
@@ -1022,35 +1145,14 @@ object UiUtil {
 
         val filenameTemplate = view.findViewById<Chip>(R.id.filename_template)
         filenameTemplate.setOnClickListener {
-            val builder = MaterialAlertDialogBuilder(context)
-            builder.setTitle(context.getString(R.string.file_name_template))
-            val inputLayout = context.layoutInflater.inflate(R.layout.textinput, null)
-            val editText = inputLayout.findViewById<EditText>(R.id.url_edittext)
-            inputLayout.findViewById<TextInputLayout>(R.id.url_textinput).hint = context.getString(R.string.file_name_template)
-            if (items.size == 1 || items.all { it.customFileNameTemplate == items[0].customFileNameTemplate }){
-                editText.setText(items[0].customFileNameTemplate)
+            val currentFilename = if (items.size == 1 || items.all { it.customFileNameTemplate == items[0].customFileNameTemplate }){
+                items[0].customFileNameTemplate
+            }else {
+                ""
             }
-            editText.setSelection(editText.text.length)
-            builder.setView(inputLayout)
-            builder.setPositiveButton(
-                context.getString(R.string.ok)
-            ) { _: DialogInterface?, _: Int ->
-                filenameTemplateSet(editText.text.toString())
+            showFilenameTemplateDialog(context, currentFilename) {
+                filenameTemplateSet(it)
             }
-
-            // handle the negative button of the alert dialog
-            builder.setNegativeButton(
-                context.getString(R.string.cancel)
-            ) { _: DialogInterface?, _: Int -> }
-
-            val dialog = builder.create()
-            dialog.show()
-            val imm = context.getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager
-            editText!!.postDelayed({
-                editText.requestFocus()
-                imm.showSoftInput(editText, 0)
-            }, 300)
-            dialog.getButton(AlertDialog.BUTTON_NEUTRAL).gravity = Gravity.START
         }
 
         val sponsorBlock = view.findViewById<Chip>(R.id.sponsorblock_filters)
@@ -1222,9 +1324,6 @@ object UiUtil {
         }
     }
 
-
-
-
     fun EditText.setTextAndRecalculateWidth(t : String){
         val scale = context.resources.displayMetrics.density
         this.setText(t)
@@ -1238,5 +1337,259 @@ object UiUtil {
             this.layoutParams.width = requiredWidth
         }
         this.requestLayout()
+    }
+
+    fun handleResultResponse(context: Activity, it: ResultViewModel.ResultsUiState){
+        val title = context.getString(it.errorMessage!!.first)
+        val message = it.errorMessage!!.second
+
+        val errDialog = MaterialAlertDialogBuilder(context)
+            .setTitle(title)
+            .setMessage(message)
+
+        for (a in it.actions!!){
+            when(a.second){
+                ResultViewModel.ResultAction.COPY_LOG -> {
+                    errDialog.setPositiveButton(a.first) { d:DialogInterface?, _:Int ->
+                        val clipboard: ClipboardManager = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                        clipboard.setText(message)
+                        d?.dismiss()
+                    }
+                }
+            }
+        }
+        errDialog.show()
+    }
+
+    @SuppressLint("SetTextI18n")
+    fun handleDownloadsResponse(context: MainActivity, it: DownloadViewModel.DownloadsUiState, downloadViewModel: DownloadViewModel){
+        val downloadAnywayAction = it.actions?.first { it.second == DownloadViewModel.DownloadsAction.DOWNLOAD_ANYWAY}
+        if (downloadAnywayAction != null){
+            if (downloadAnywayAction.third == null) return
+            val downloads =downloadAnywayAction.third!!.toMutableList()
+            val ids = downloadAnywayAction.third!!.map { it.id }
+            val titles = downloadAnywayAction.third!!.map { it.title }
+
+
+            val title = context.getString(it.errorMessage!!.first)
+            val message = context.getString(it.errorMessage!!.second)
+
+            val errDialog = MaterialAlertDialogBuilder(context)
+                .setTitle(title)
+                .setMessage(message)
+
+            var dialog: Dialog? = null
+
+            val linearLayout = context.layoutInflater.inflate(R.layout.already_exists_card, null) as LinearLayout
+            ids.forEachIndexed { index, id ->
+                val alreadyExistsItem = context.layoutInflater.inflate(R.layout.already_exists_item, null)
+                alreadyExistsItem.tag = id.toString()
+                val ttle = alreadyExistsItem.findViewById<Button>(R.id.already_exists_title)
+                ttle.text = "${index + 1}. ${titles[index]}"
+                CoroutineScope(Dispatchers.IO).launch {
+                    val editBtn = alreadyExistsItem.findViewById<Button>(R.id.already_exists_edit)
+                    var downloadItem: DownloadItem = downloadViewModel.getItemByID(id)
+                    val historyItem: HistoryItem? = downloadViewModel.getHistoryItemById(id)
+
+                    if (historyItem != null){
+                        val idx = downloads.indexOfFirst { it.id == historyItem.id }
+                        downloadItem = downloadViewModel.createDownloadItemFromHistory(historyItem)
+                        downloadItem.id = historyItem.id
+                        downloads[idx] = downloadItem
+                    }
+
+                    withContext(Dispatchers.Main){
+                        editBtn.visibility = View.VISIBLE
+                    }
+
+                    editBtn.setOnClickListener {
+                        val resultItem = downloadViewModel.createResultItemFromDownload(downloadItem)
+                        val onItemUpdated = object: ConfigureDownloadBottomSheetDialog.OnDownloadItemUpdateListener {
+                            override fun onDownloadItemUpdate(
+                                resultItemID: Long,
+                                item: DownloadItem
+                            ) {
+                                context.lifecycleScope.launch {
+                                    val idx = downloads.indexOfFirst { it.id == item.id }
+                                    downloads[idx] = item
+                                    withContext(Dispatchers.Main){
+                                        ttle.text = "${index + 1}. ${item.title}"
+                                    }
+                                }
+                            }
+                        }
+                        val bottomSheet = ConfigureDownloadBottomSheetDialog(resultItem, downloadItem, onItemUpdated)
+                        bottomSheet.show(context.supportFragmentManager, "configureDownloadSingleSheet")
+                    }
+
+                    if (historyItem != null){
+                        ttle.setOnClickListener {
+                            showHistoryItemDetailsCard(historyItem, context, isPresent = true,
+                                redownloadItem = { },
+                                redownloadShowDownloadCard = {
+                                    val sheet = DownloadBottomSheetDialog(
+                                        result = downloadViewModel.createResultItemFromHistory(it),
+                                        type = it.type
+                                    )
+                                    sheet.show(context.supportFragmentManager, "downloadSingleSheet")
+                                }
+                            )
+                        }
+                    }
+                }
+
+                ttle.setOnLongClickListener {
+                    showGenericDeleteDialog(context, ttle.text.toString(), accepted = {
+                        linearLayout.removeView(alreadyExistsItem)
+                        if (linearLayout.childCount == 0){
+                            dialog?.dismiss()
+                        }
+                    })
+                    true
+                }
+
+                linearLayout.addView(alreadyExistsItem)
+            }
+
+            errDialog.setView(linearLayout)
+
+            errDialog.setPositiveButton(downloadAnywayAction.first) { d:DialogInterface?, _:Int ->
+                CoroutineScope(Dispatchers.IO).launch {
+                    linearLayout.allViews.forEach {view ->
+                        val downloadItem = downloads.first { it.id == (view.tag as String).toLong()}
+                        downloadItem.id = 0
+                        downloadViewModel.queueDownloads(listOf(downloadItem), true)
+                    }
+                }
+                d?.dismiss()
+            }
+
+            errDialog.setNegativeButton(R.string.schedule) { d:DialogInterface?, _:Int ->
+                showDatePicker(context.supportFragmentManager) { calendar ->
+                    CoroutineScope(Dispatchers.IO).launch {
+                        val items = mutableListOf<DownloadItem>()
+                        linearLayout.children.forEach {view ->
+                            val downloadItem = downloads.first { it.id == (view.tag as String).toLong()}
+                            downloadItem.downloadStartTime = calendar.timeInMillis
+                            downloadItem.id = 0
+                            items.add(downloadItem)
+                        }
+
+                        runBlocking {
+                            val chunks = items.chunked(10)
+                            for (c in chunks) {
+                                downloadViewModel.queueDownloads(c, true)
+                            }
+                            val first = items.first()
+                            val date = SimpleDateFormat(DateFormat.getBestDateTimePattern(Locale.getDefault(), "ddMMMyyyy - HHmm"), Locale.getDefault()).format(first.downloadStartTime)
+                            withContext(Dispatchers.Main){
+                                Toast.makeText(context, context.getString(R.string.download_rescheduled_to) + " " + date, Toast.LENGTH_LONG).show()
+                            }
+                        }
+                        withContext(Dispatchers.Main){
+                            d?.dismiss()
+                        }
+                    }
+                }
+            }
+
+            dialog = errDialog.show()
+        }
+    }
+
+
+    fun showGenericDeleteDialog(context: Context, itemTitle: String, accepted: () -> Unit){
+        val deleteDialog = MaterialAlertDialogBuilder(context)
+        deleteDialog.setTitle(context.getString(R.string.you_are_going_to_delete) + " \"" + itemTitle + "\"!")
+        deleteDialog.setNegativeButton(context.getString(R.string.cancel)) { dialogInterface: DialogInterface, _: Int -> dialogInterface.cancel() }
+        deleteDialog.setPositiveButton(context.getString(R.string.ok)) { _: DialogInterface?, _: Int ->
+            accepted()
+        }
+        deleteDialog.show()
+    }
+
+    fun showRemoveHistoryItemDialog(item: HistoryItem, context: Activity, delete: (item: HistoryItem, deleteFile: Boolean) -> Unit){
+        val deleteFile = booleanArrayOf(false)
+        val deleteDialog = MaterialAlertDialogBuilder(context)
+        deleteDialog.setTitle(context.getString(R.string.you_are_going_to_delete) + " \"" + item.title + "\"!")
+        val path = item.downloadPath
+        val file = File(path)
+        if (file.exists() && path.isNotEmpty()) {
+            deleteDialog.setMultiChoiceItems(
+                arrayOf(context.getString(R.string.delete_file_too)),
+                booleanArrayOf(false)
+            ) { _: DialogInterface?, _: Int, b: Boolean -> deleteFile[0] = b }
+        }
+        deleteDialog.setNegativeButton(context.getString(R.string.cancel)) { dialogInterface: DialogInterface, _: Int -> dialogInterface.cancel() }
+        deleteDialog.setPositiveButton(context.getString(R.string.ok)) { _: DialogInterface?, _: Int ->
+            delete(item, deleteFile[0])
+        }
+        deleteDialog.show()
+    }
+
+    fun showFilenameTemplateDialog(context: Activity, currentFilename: String, dialogTitle: String = context.getString(R.string.file_name_template), filenameSelected: (f: String) -> Unit){
+        val builder = MaterialAlertDialogBuilder(context)
+        builder.setTitle(dialogTitle)
+        val view = context.layoutInflater.inflate(R.layout.filename_template_dialog, null)
+        val editText = view.findViewById<EditText>(R.id.filename_edittext)
+        view.findViewById<TextInputLayout>(R.id.filename).hint = context.getString(R.string.file_name_template)
+        editText.setText(currentFilename)
+        editText.setSelection(editText.text.length)
+        builder.setView(view)
+        builder.setPositiveButton(
+            context.getString(R.string.ok)
+        ) { _: DialogInterface?, _: Int ->
+            filenameSelected(editText.text.toString())
+        }
+
+        // handle the negative button of the alert dialog
+        builder.setNegativeButton(
+            context.getString(R.string.cancel)
+        ) { _: DialogInterface?, _: Int -> }
+
+        view.findViewById<View>(R.id.suggested).visibility = View.GONE
+
+        val dialog = builder.create()
+        dialog.show()
+        val imm = context.getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager
+        editText!!.postDelayed({
+            editText.requestFocus()
+            imm.showSoftInput(editText, 0)
+        }, 300)
+
+        //handle suggestion chips
+        CoroutineScope(Dispatchers.IO).launch {
+            val chipGroup = view.findViewById<ChipGroup>(R.id.filename_suggested_chipgroup)
+            val chips = mutableListOf<Chip>()
+            context.getStringArray(R.array.filename_templates).forEachIndexed { index, s ->
+                val tmp = context.layoutInflater.inflate(R.layout.filter_chip, chipGroup, false) as Chip
+                tmp.text = s.split("___")[0]
+                tmp.id = index
+                if (Build.VERSION.SDK_INT >= 26){
+                    tmp.tooltipText = s.split("___")[1]
+                }
+
+                tmp.setOnClickListener {
+                    val c = it as Chip
+                    if(!c.isChecked){
+                        editText.setText(editText.text.toString().replace(c.text.toString(), ""))
+                        editText.setSelection(editText.text.length)
+                    }else{
+                        editText.append(c.text)
+                    }
+                }
+
+                chips.add(tmp)
+            }
+            withContext(Dispatchers.Main){
+                view.findViewById<View>(R.id.suggested).visibility = View.VISIBLE
+                chips.forEach {
+                    it.isChecked = editText.text.contains(it.text)
+                    chipGroup!!.addView(it)
+                }
+            }
+        }
+
+        dialog.getButton(AlertDialog.BUTTON_NEUTRAL).gravity = Gravity.START
     }
 }

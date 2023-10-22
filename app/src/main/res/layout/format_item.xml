@@ -34,6 +34,22 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/format_loading_progress"
+            android:visibility="gone"
+            android:layout_width="0dp"
+            android:indeterminate="true"
+            app:trackColor="#000"
+            android:layout_gravity="bottom"
+            android:alpha="0.3"
+            android:scaleY="200"
+            app:layout_constraintTop_toTopOf="@id/container"
+            app:layout_constraintBottom_toBottomOf="@id/container"
+            app:layout_constraintStart_toStartOf="@id/container"
+            app:layout_constraintEnd_toEndOf="@id/container"
+            android:layout_height="wrap_content" />
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"

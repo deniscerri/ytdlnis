@@ -2,6 +2,7 @@ package com.deniscerri.ytdlnis.ui.downloadcard
 
 import android.app.Activity
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -11,11 +12,13 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.isEmpty
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -52,6 +55,8 @@ class DownloadAudioFragment(private var resultItem: ResultItem? = null, private 
     lateinit var downloadItem : DownloadItem
     lateinit var title : TextInputLayout
     lateinit var author : TextInputLayout
+    lateinit var preferences: SharedPreferences
+    lateinit var shownFields: List<String>
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -63,6 +68,8 @@ class DownloadAudioFragment(private var resultItem: ResultItem? = null, private 
         resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]
         infoUtil = InfoUtil(requireContext())
         genericAudioFormats = infoUtil.getGenericAudioFormats(requireContext().resources)
+        preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
+        shownFields = preferences.getStringSet("modify_download_card", setOf())!!.toList()
         return fragmentView
     }
 
@@ -82,6 +89,7 @@ class DownloadAudioFragment(private var resultItem: ResultItem? = null, private 
 
             try {
                 title = view.findViewById(R.id.title_textinput)
+                title.visibility = if (shownFields.contains("title")) View.VISIBLE else View.GONE
                 if (title.editText?.text?.isEmpty() == true){
                     title.editText!!.setText(downloadItem.title)
                 }
@@ -100,6 +108,7 @@ class DownloadAudioFragment(private var resultItem: ResultItem? = null, private 
                 }
 
                 author = view.findViewById(R.id.author_textinput)
+                author.visibility = if (shownFields.contains("author")) View.VISIBLE else View.GONE
                 if (author.editText?.text?.isEmpty() == true){
                     author.editText!!.setText(downloadItem.author)
                 }
@@ -158,9 +167,7 @@ class DownloadAudioFragment(private var resultItem: ResultItem? = null, private 
                     if (currentDownloadItem!!.type != Type.audio){
                         downloadItem.type = Type.audio
                         runCatching {
-                            downloadItem.format =
-                                downloadItem.allFormats.filter { it.format_note.contains("audio", ignoreCase = true) }
-                                    .maxByOrNull { it.filesize }!!
+                            downloadItem.format = downloadViewModel.getFormat(downloadItem.allFormats, Type.audio)
                         }.onFailure {
                             downloadItem.format = genericAudioFormats.last()
                         }
@@ -172,6 +179,7 @@ class DownloadAudioFragment(private var resultItem: ResultItem? = null, private 
                 var containerPreference = sharedPreferences.getString("audio_format", "Default")
                 if (containerPreference == "Default") containerPreference = getString(R.string.defaultValue)
                 val container = view.findViewById<TextInputLayout>(R.id.downloadContainer)
+                container.visibility = if (shownFields.contains("container")) View.VISIBLE else View.GONE
                 val containerAutoCompleteTextView =
                     view.findViewById<AutoCompleteTextView>(R.id.container_textview)
 
@@ -190,6 +198,10 @@ class DownloadAudioFragment(private var resultItem: ResultItem? = null, private 
                                 resultItem?.formats?.addAll(allFormats.first().filter { !genericAudioFormats.contains(it) })
                                 if (resultItem != null){
                                     resultViewModel.update(resultItem!!)
+                                    kotlin.runCatching {
+                                        val f1 = fragmentManager?.findFragmentByTag("f1") as DownloadVideoFragment
+                                        f1.updateUI(resultItem)
+                                    }
                                 }
                             }
                         }
@@ -229,44 +241,50 @@ class DownloadAudioFragment(private var resultItem: ResultItem? = null, private 
                         if (containers[index] == getString(R.string.defaultValue)) downloadItem.container = ""
                     }
 
-                UiUtil.configureAudio(
-                    view,
-                    requireActivity(),
-                    listOf(downloadItem),
-                    embedThumbClicked = {
-                        downloadItem.audioPreferences.embedThumb = it
-                    },
-                    splitByChaptersClicked = {
-                        downloadItem.audioPreferences.splitByChapters = it
-                    },
-                    filenameTemplateSet = {
-                        downloadItem.customFileNameTemplate = it
-                    },
-                    sponsorBlockItemsSet = { values, checkedItems ->
-                        downloadItem.audioPreferences.sponsorBlockFilters.clear()
-                        for (i in checkedItems.indices) {
-                            if (checkedItems[i]) {
-                                downloadItem.audioPreferences.sponsorBlockFilters.add(values[i])
-                            }
-                        }
-                    },
-                    cutClicked = {cutVideoListener ->
-                        if (parentFragmentManager.findFragmentByTag("cutVideoSheet") == null){
-                            val bottomSheet = CutVideoBottomSheetDialog(downloadItem, resultItem?.urls ?: "", resultItem?.chapters ?: listOf(), cutVideoListener)
-                            bottomSheet.show(parentFragmentManager, "cutVideoSheet")
-                        }
-                    },
-                    extraCommandsClicked = {
-                        val callback = object : ExtraCommandsListener {
-                            override fun onChangeExtraCommand(c: String) {
-                                downloadItem.extraCommands = c
-                            }
-                        }
 
-                        val bottomSheetDialog = AddExtraCommandsDialog(downloadItem, callback)
-                        bottomSheetDialog.show(parentFragmentManager, "extraCommands")
+                view.findViewById<LinearLayout>(R.id.adjust).apply {
+                    visibility = if (shownFields.contains("adjust_audio")) View.VISIBLE else View.GONE
+                    if (isVisible){
+                        UiUtil.configureAudio(
+                            view,
+                            requireActivity(),
+                            listOf(downloadItem),
+                            embedThumbClicked = {
+                                downloadItem.audioPreferences.embedThumb = it
+                            },
+                            splitByChaptersClicked = {
+                                downloadItem.audioPreferences.splitByChapters = it
+                            },
+                            filenameTemplateSet = {
+                                downloadItem.customFileNameTemplate = it
+                            },
+                            sponsorBlockItemsSet = { values, checkedItems ->
+                                downloadItem.audioPreferences.sponsorBlockFilters.clear()
+                                for (i in checkedItems.indices) {
+                                    if (checkedItems[i]) {
+                                        downloadItem.audioPreferences.sponsorBlockFilters.add(values[i])
+                                    }
+                                }
+                            },
+                            cutClicked = {cutVideoListener ->
+                                if (parentFragmentManager.findFragmentByTag("cutVideoSheet") == null){
+                                    val bottomSheet = CutVideoBottomSheetDialog(downloadItem, resultItem?.urls ?: "", resultItem?.chapters ?: listOf(), cutVideoListener)
+                                    bottomSheet.show(parentFragmentManager, "cutVideoSheet")
+                                }
+                            },
+                            extraCommandsClicked = {
+                                val callback = object : ExtraCommandsListener {
+                                    override fun onChangeExtraCommand(c: String) {
+                                        downloadItem.extraCommands = c
+                                    }
+                                }
+
+                                val bottomSheetDialog = AddExtraCommandsDialog(downloadItem, callback)
+                                bottomSheetDialog.show(parentFragmentManager, "extraCommands")
+                            }
+                        )
                     }
-                )
+                }
             }catch (e : Exception){
                 e.printStackTrace()
             }

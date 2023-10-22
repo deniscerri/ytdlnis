@@ -19,7 +19,6 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.view.Window
-import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
@@ -41,28 +40,22 @@ import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.adapter.HistoryAdapter
 import com.deniscerri.ytdlnis.database.models.HistoryItem
 import com.deniscerri.ytdlnis.database.repository.HistoryRepository
-import com.deniscerri.ytdlnis.database.repository.HistoryRepository.HistorySort
+import com.deniscerri.ytdlnis.database.DBManager.SORTING
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.HistoryViewModel
 import com.deniscerri.ytdlnis.databinding.FragmentHistoryBinding
 import com.deniscerri.ytdlnis.ui.downloadcard.DownloadBottomSheetDialog
-import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.UiUtil
 import com.deniscerri.ytdlnis.util.UiUtil.enableFastScroll
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.button.MaterialButton
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.color.MaterialColors
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
 import kotlinx.coroutines.runBlocking
-import java.io.File
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Locale
 
 /**
  * A fragment representing a list of Items.
@@ -163,8 +156,8 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
         historyViewModel.sortOrder.observe(viewLifecycleOwner){
             if (it != null){
                 when(it){
-                    HistorySort.ASC -> sortChip.chipIcon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_down)
-                    HistorySort.DESC -> sortChip.chipIcon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_up)
+                    SORTING.ASC -> sortChip.chipIcon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_down)
+                    SORTING.DESC -> sortChip.chipIcon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_up)
                 }
             }
         }
@@ -277,12 +270,12 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
         }
     }
 
-    private fun changeSortIcon(item: TextView, order: HistorySort){
+    private fun changeSortIcon(item: TextView, order: SORTING){
         when(order){
-            HistorySort.DESC ->{
+            SORTING.DESC ->{
                 item.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_up, 0,0,0)
             }
-            HistorySort.ASC ->                 {
+            SORTING.ASC ->                 {
                 item.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_down, 0,0,0)
             }
         }
@@ -405,146 +398,23 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
          requireView().findViewById<View>(R.id.website_divider).visibility = VISIBLE
     }
 
-
-    private fun removeItem(item: HistoryItem) {
-        if (bottomSheet != null) bottomSheet!!.hide()
-        val deleteFile = booleanArrayOf(false)
-        val deleteDialog = MaterialAlertDialogBuilder(fragmentContext!!)
-        deleteDialog.setTitle(getString(R.string.you_are_going_to_delete) + " \"" + item.title + "\"!")
-        val path = item.downloadPath
-        val file = File(path)
-        if (file.exists() && path.isNotEmpty()) {
-            deleteDialog.setMultiChoiceItems(
-                arrayOf(getString(R.string.delete_file_too)),
-                booleanArrayOf(false)
-            ) { _: DialogInterface?, _: Int, b: Boolean -> deleteFile[0] = b }
-        }
-        deleteDialog.setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, _: Int -> dialogInterface.cancel() }
-        deleteDialog.setPositiveButton(getString(R.string.ok)) { _: DialogInterface?, _: Int ->
-            historyViewModel.delete(item, deleteFile[0])
-        }
-        deleteDialog.show()
-    }
-
-
-
     override fun onCardClick(itemID: Long, isPresent: Boolean) {
-        bottomSheet = BottomSheetDialog(fragmentContext!!)
-        bottomSheet!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        bottomSheet!!.setContentView(R.layout.history_item_details_bottom_sheet)
         val item = findItem(itemID)
-        val title = bottomSheet!!.findViewById<TextView>(R.id.bottom_sheet_title)
-        title!!.text = item!!.title
-        val author = bottomSheet!!.findViewById<TextView>(R.id.bottom_sheet_author)
-        author!!.text = item.author
-
-        // BUTTON ----------------------------------
-        val btn = bottomSheet!!.findViewById<MaterialButton>(R.id.downloads_download_button_type)
-
-        if (item.type == DownloadViewModel.Type.audio) {
-            if (isPresent) btn!!.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_music_downloaded) else btn!!.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_music)
-        } else if (item.type == DownloadViewModel.Type.video) {
-            if (isPresent) btn!!.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_video_downloaded) else btn!!.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_video)
-        }else{
-            btn!!.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_terminal)
-        }
-
-        if (isPresent){
-            btn.setOnClickListener {
-                UiUtil!!.shareFileIntent(requireContext(), listOf(item.downloadPath))
+        UiUtil.showHistoryItemDetailsCard(item, requireActivity(), isPresent,
+            redownloadItem = {
+                val downloadItem = downloadViewModel.createDownloadItemFromHistory(it)
+                runBlocking{
+                    downloadViewModel.queueDownloads(listOf(downloadItem))
+                }
+                historyViewModel.delete(it, false)
             }
-        }
-
-        val time = bottomSheet!!.findViewById<TextView>(R.id.time)
-        val formatNote = bottomSheet!!.findViewById<TextView>(R.id.format_note)
-        val container = bottomSheet!!.findViewById<TextView>(R.id.container_chip)
-        val codec = bottomSheet!!.findViewById<TextView>(R.id.codec)
-        val fileSize = bottomSheet!!.findViewById<TextView>(R.id.file_size)
-
-        val calendar = Calendar.getInstance()
-        calendar.timeInMillis = item.time * 1000L
-        time!!.text = SimpleDateFormat(android.text.format.DateFormat.getBestDateTimePattern(Locale.getDefault(), "ddMMMyyyy - HHmm"), Locale.getDefault()).format(calendar.time)
-        time.isClickable = false
-
-        if (item.format.format_note == "?" || item.format.format_note == "") formatNote!!.visibility = GONE
-        else formatNote!!.text = item.format.format_note
-
-        if (item.format.container != "") container!!.text = item.format.container.uppercase()
-        else container!!.visibility = GONE
-
-        val codecText =
-            if (item.format.encoding != "") {
-                item.format.encoding.uppercase()
-            }else if (item.format.vcodec != "none" && item.format.vcodec != ""){
-                item.format.vcodec.uppercase()
-            } else {
-                item.format.acodec.uppercase()
-            }
-        if (codecText == "" || codecText == "none"){
-            codec!!.visibility = GONE
-        }else{
-            codec!!.visibility = VISIBLE
-            codec.text = codecText
-        }
-
-        val file = File(item.downloadPath)
-        val fileSizeReadable = FileUtil.convertFileSize(if (file.exists()) file.length() else item.format.filesize)
-        if (fileSizeReadable == "?") fileSize!!.visibility = GONE
-        else fileSize!!.text = fileSizeReadable
-
-        val link = bottomSheet!!.findViewById<Button>(R.id.bottom_sheet_link)
-        val url = item.url
-        link!!.text = url
-        link.tag = itemID
-        link.setOnClickListener{
-            UiUtil.openLinkIntent(requireContext(), item.url, bottomSheet)
-        }
-        link.setOnLongClickListener{
-            UiUtil.copyLinkToClipBoard(requireContext(), item.url, bottomSheet)
-            true
-        }
-        val remove = bottomSheet!!.findViewById<Button>(R.id.bottomsheet_remove_button)
-        remove!!.tag = itemID
-        remove.setOnClickListener{
-            removeItem(item)
-        }
-        val openFile = bottomSheet!!.findViewById<Button>(R.id.bottomsheet_open_file_button)
-        openFile!!.tag = itemID
-        openFile.setOnClickListener{
-            UiUtil.openFileIntent(requireContext(), item.downloadPath)
-        }
-
-        val redownload = bottomSheet!!.findViewById<Button>(R.id.bottomsheet_redownload_button)
-        redownload!!.tag = itemID
-        redownload.setOnClickListener{
-            val downloadItem = downloadViewModel.createDownloadItemFromHistory(item)
-            runBlocking{
-                downloadViewModel.queueDownloads(listOf(downloadItem))
-            }
-            historyViewModel.delete(item, false)
-            bottomSheet!!.cancel()
-        }
-
-        redownload.setOnLongClickListener {
-            bottomSheet!!.cancel()
+        ) {
             val sheet = DownloadBottomSheetDialog(
-                result = downloadViewModel.createResultItemFromHistory(item),
-                type = item.type)
+                result = downloadViewModel.createResultItemFromHistory(it),
+                type = it.type
+            )
             sheet.show(parentFragmentManager, "downloadSingleSheet")
-            true
         }
-
-        if (!isPresent) openFile.visibility = GONE
-        else redownload.visibility = GONE
-
-        bottomSheet!!.show()
-        val displayMetrics = DisplayMetrics()
-        requireActivity().windowManager.defaultDisplay.getMetrics(displayMetrics)
-        bottomSheet!!.behavior.peekHeight = displayMetrics.heightPixels
-        bottomSheet!!.window!!.setLayout(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.MATCH_PARENT
-        )
     }
 
     override fun onCardSelect(itemID: Long, isChecked: Boolean) {
@@ -666,7 +536,10 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
                     ItemTouchHelper.LEFT -> {
                         val deletedItem = historyList!![position]
                         historyAdapter!!.notifyItemChanged(position)
-                        removeItem(deletedItem!!)
+                        UiUtil.showRemoveHistoryItemDialog(deletedItem!!, requireActivity(),
+                            delete = { item, deleteFile ->
+                                historyViewModel.delete(item, deleteFile)
+                            })
                     }
                     ItemTouchHelper.RIGHT -> {
                         val item = historyList!![position]!!

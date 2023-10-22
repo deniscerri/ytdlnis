@@ -30,6 +30,7 @@ import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.ChapterItem
 import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.util.InfoUtil
+import com.deniscerri.ytdlnis.util.UiUtil
 import com.deniscerri.ytdlnis.util.UiUtil.setTextAndRecalculateWidth
 import com.deniscerri.ytdlnis.util.VideoPlayerUtil
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -496,10 +497,7 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val urls
         }
 
         chip.setOnLongClickListener {
-            val deleteDialog = MaterialAlertDialogBuilder(requireContext())
-            deleteDialog.setTitle(getString(R.string.you_are_going_to_delete) + " \"" + chip.text + "\"!")
-            deleteDialog.setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, _: Int -> dialogInterface.cancel() }
-            deleteDialog.setPositiveButton(getString(R.string.ok)) { _: DialogInterface?, _: Int ->
+            UiUtil.showGenericDeleteDialog(requireContext(), chip.text.toString(), accepted = {
                 player.seekTo(0)
                 player.pause()
                 chipGroup.removeView(chip)
@@ -509,8 +507,7 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val urls
                     player.stop()
                     dismiss()
                 }
-            }
-            deleteDialog.show()
+            })
             true
         }
 

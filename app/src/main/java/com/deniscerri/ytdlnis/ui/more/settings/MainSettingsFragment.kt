@@ -8,6 +8,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.util.LayoutDirection
+import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.edit
@@ -171,7 +172,7 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
                             Environment.getExternalStoragePublicDirectory(
                                 Environment.DIRECTORY_DOWNLOADS), "YTDLnis_${BuildConfig.VERSION_NAME}_${currentTime.get(
                                 Calendar.YEAR)}-${currentTime.get(Calendar.MONTH) + 1}-${currentTime.get(
-                                Calendar.DAY_OF_MONTH)}.json")
+                                Calendar.DAY_OF_MONTH)} [${currentTime.get(Calendar.MILLISECOND)}.json")
                         saveFile.delete()
                         saveFile.createNewFile()
                         saveFile.writeText(Gson().toJson(json))
@@ -223,15 +224,14 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
     private fun backupSettings(preferences: SharedPreferences) : JsonArray {
         runCatching {
             val prefs = preferences.all
+            prefs.remove("app_language")
             val arr = JsonArray()
             prefs.forEach {
-                if (it.key != "app_language"){
-                    val obj = JsonObject()
-                    obj.addProperty("key", it.key)
-                    obj.addProperty("value", it.value.toString())
-                    obj.addProperty("type", it.value!!::class.simpleName)
-                    arr.add(obj)
-                }
+                val obj = JsonObject()
+                obj.addProperty("key", it.key)
+                obj.addProperty("value", it.value.toString())
+                obj.addProperty("type", it.value!!::class.simpleName)
+                arr.add(obj)
             }
             return arr
         }
@@ -398,27 +398,26 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
                         PreferenceManager.getDefaultSharedPreferences(requireContext()).edit(commit = true){
                             clear()
                             val prefs = json.getAsJsonArray("settings")
-                            val preferencesKeys = preferences.all.map { it.key }
                             prefs.forEach {
                                 val key : String = it.asJsonObject.get("key").toString().replace("\"", "")
-                                if (preferencesKeys.contains(key)){
-                                    when(it.asJsonObject.get("type").toString().replace("\"", "")){
-                                        "String" -> {
-                                            val value = it.asJsonObject.get("value").toString().replace("\"", "")
-                                            putString(key, value)
-                                        }
-                                        "Boolean" -> {
-                                            val value = it.asJsonObject.get("value").toString().replace("\"", "").toBoolean()
-                                            putBoolean(key, value)
-                                        }
-                                        "Int" -> {
-                                            val value = it.asJsonObject.get("value").toString().replace("\"", "").toInt()
-                                            putInt(key, value)
-                                        }
-                                        "HashSet" -> {
-                                            val value = it.asJsonObject.get("value").toString().replace("(\")|(\\[)|(])|([ \\t])".toRegex(), "").split(",")
-                                            putStringSet(key, value.toHashSet())
-                                        }
+                                when(it.asJsonObject.get("type").toString().replace("\"", "")){
+                                    "String" -> {
+                                        val value = it.asJsonObject.get("value").toString().replace("\"", "")
+                                        putString(key, value)
+                                    }
+                                    "Boolean" -> {
+                                        val value = it.asJsonObject.get("value").toString().replace("\"", "").toBoolean()
+                                        Log.e("REST", value.toString())
+                                        Log.e("REST", key)
+                                        putBoolean(key, value)
+                                    }
+                                    "Int" -> {
+                                        val value = it.asJsonObject.get("value").toString().replace("\"", "").toInt()
+                                        putInt(key, value)
+                                    }
+                                    "HashSet" -> {
+                                        val value = it.asJsonObject.get("value").toString().replace("(\")|(\\[)|(])|([ \\t])".toRegex(), "").split(",")
+                                        putStringSet(key, value.toHashSet())
                                     }
                                 }
                             }

@@ -56,7 +56,7 @@ class ErroredDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickL
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        fragmentView = inflater.inflate(R.layout.fragment_generic_download_queue, container, false)
+        fragmentView = inflater.inflate(R.layout.generic_recyclerview, container, false)
         activity = getActivity()
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
         return fragmentView
@@ -269,10 +269,15 @@ class ErroredDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickL
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val itemID = viewHolder.itemView.tag.toString().toLong()
+                val position = viewHolder.bindingAdapterPosition
                 when (direction) {
                     ItemTouchHelper.RIGHT -> {
-                        runBlocking{
-                            downloadViewModel.reQueueDownloadItems(listOf(itemID))
+                        lifecycleScope.launch {
+                            val item = withContext(Dispatchers.IO){
+                                downloadViewModel.getItemByID(itemID)
+                            }
+                            downloadViewModel.queueDownloads(listOf(item), true)
+                            adapter.notifyItemChanged(position)
                         }
                     }
                     ItemTouchHelper.LEFT -> {

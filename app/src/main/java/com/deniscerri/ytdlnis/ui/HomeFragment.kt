@@ -40,6 +40,7 @@ import com.deniscerri.ytdlnis.ui.downloadcard.DownloadMultipleBottomSheetDialog
 import com.deniscerri.ytdlnis.ui.downloadcard.ResultCardDetailsDialog
 import com.deniscerri.ytdlnis.util.InfoUtil
 import com.deniscerri.ytdlnis.util.ThemeUtil
+import com.deniscerri.ytdlnis.util.UiUtil
 import com.deniscerri.ytdlnis.util.UiUtil.enableFastScroll
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.material.appbar.AppBarLayout
@@ -54,6 +55,8 @@ import com.google.android.material.search.SearchBar
 import com.google.android.material.search.SearchView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.*
@@ -105,6 +108,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
         activity = getActivity()
         mainActivity = activity as MainActivity?
         quickLaunchSheet = false
+        infoUtil = InfoUtil(requireContext())
         return fragmentView
     }
 
@@ -136,6 +140,9 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
         searchSuggestionsLinearLayout = view.findViewById(R.id.search_suggestions_linear_layout)
         searchHistory = view.findViewById(R.id.search_history_scroll_view)
         searchHistoryLinearLayout = view.findViewById(R.id.search_history_linear_layout)
+        homeFabs = view.findViewById(R.id.home_fabs)
+        downloadFabs = homeFabs!!.findViewById(R.id.download_selected_coordinator)
+        downloadAllFabCoordinator = homeFabs!!.findViewById(R.id.download_all_coordinator)
 
         runCatching { materialToolbar!!.title = ThemeUtil.getStyledAppName(requireContext()) }
 
@@ -174,30 +181,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
             quickLaunchSheet = true
         }
 
-
-        resultViewModel.loadingItems.observe(viewLifecycleOwner){
-            loadingItems = it
-            if (it){
-                recyclerView?.setPadding(0,0,0,0)
-                shimmerCards!!.startShimmer()
-                shimmerCards!!.visibility = VISIBLE
-            }else{
-                recyclerView?.setPadding(0,0,0,100)
-                shimmerCards!!.stopShimmer()
-                shimmerCards!!.visibility = GONE
-                if (resultsList!!.size > 1 && resultsList!![0]!!.playlistTitle.isNotEmpty()){
-                    downloadAllFabCoordinator!!.visibility = VISIBLE
-                }else{
-                    downloadAllFabCoordinator!!.visibility = GONE
-                }
-            }
-        }
-
         initMenu()
-
-        homeFabs = view.findViewById(R.id.home_fabs)
-        downloadFabs = homeFabs!!.findViewById(R.id.download_selected_coordinator)
-        downloadAllFabCoordinator = homeFabs!!.findViewById(R.id.download_all_coordinator)
         val downloadSelectedFab = downloadFabs!!.findViewById<ExtendedFloatingActionButton>(R.id.download_selected_fab)
         downloadSelectedFab.tag = "downloadSelected"
         downloadSelectedFab.setOnClickListener(this)
@@ -239,15 +223,40 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
             }
         }
 
+        lifecycleScope.launch {
+            launch{
+                resultViewModel.uiState.collectLatest { res ->
+                    if (res.errorMessage != null){
+                        kotlin.runCatching { UiUtil.handleResultResponse(requireActivity(), res) }
+                        resultViewModel.uiState.update {it.copy(errorMessage  = null, actions  = null) }
+                    }
+
+                    loadingItems = res.processing
+                    if (res.processing){
+                        recyclerView?.setPadding(0,0,0,0)
+                        shimmerCards!!.startShimmer()
+                        shimmerCards!!.visibility = VISIBLE
+                    }else{
+                        recyclerView?.setPadding(0,0,0,100)
+                        shimmerCards!!.stopShimmer()
+                        shimmerCards!!.visibility = GONE
+                        if (resultsList!!.size > 1 && resultsList!![0]!!.playlistTitle.isNotEmpty()){
+                            downloadAllFabCoordinator!!.visibility = VISIBLE
+                        }else{
+                            downloadAllFabCoordinator!!.visibility = GONE
+                        }
+                    }
+                }
+            }
+        }
+
     }
 
     override fun onResume() {
         super.onResume()
         if(arguments?.getString("url") == null){
-            if (resultViewModel.state == ResultViewModel.ResultsState.IDLE){
+            if (!resultViewModel.uiState.value.processing){
                 resultViewModel.checkTrending()
-            }else{
-                resultViewModel.loadingItems.postValue(true)
             }
         }else{
             arguments?.remove("url")
@@ -302,7 +311,6 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
         }
 
 
-        infoUtil = InfoUtil(requireContext())
         searchView!!.addTransitionListener { _, _, newState ->
             if (newState == SearchView.TransitionState.SHOWN) {
                 val currentProvider = sharedPreferences?.getString("search_engine", "ytsearch")

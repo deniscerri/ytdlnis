@@ -1,5 +1,6 @@
 package com.deniscerri.ytdlnis.ui.more.settings
 
+import android.app.Activity
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
@@ -8,6 +9,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.PowerManager
 import android.provider.Settings
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.LocaleListCompat
@@ -32,6 +34,7 @@ class GeneralSettingsFragment : BaseSettingsFragment() {
     private var highContrast: SwitchPreferenceCompat? = null
     private var locale: ListPreference? = null
     private var showTerminalShareIcon: SwitchPreferenceCompat? = null
+    private var ignoreBatteryOptimization: Preference? = null
 
     private var updateUtil: UpdateUtil? = null
     private var activeDownloadCount = 0
@@ -127,7 +130,7 @@ class GeneralSettingsFragment : BaseSettingsFragment() {
                 true
             }
 
-        var ignoreBatteryOptimization = findPreference<Preference>("ignore_battery")
+        ignoreBatteryOptimization = findPreference<Preference>("ignore_battery")
         val packageName: String = requireContext().packageName
         val pm = requireContext().applicationContext.getSystemService(Context.POWER_SERVICE) as PowerManager
         if (pm.isIgnoringBatteryOptimizations(packageName)) {
@@ -140,8 +143,16 @@ class GeneralSettingsFragment : BaseSettingsFragment() {
                 val intent = Intent()
                 intent.action = Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS
                 intent.data = Uri.parse("package:" + requireContext().packageName)
-                startActivity(intent)
+                ignoreBatteryLauncher.launch(intent)
                 true
             }
+    }
+
+    private var ignoreBatteryLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            ignoreBatteryOptimization?.isVisible = false
+        }
     }
 }

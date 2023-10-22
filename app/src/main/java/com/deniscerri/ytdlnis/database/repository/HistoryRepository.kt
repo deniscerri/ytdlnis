@@ -1,23 +1,20 @@
 package com.deniscerri.ytdlnis.database.repository
 
-import androidx.lifecycle.LiveData
 import com.deniscerri.ytdlnis.database.dao.HistoryDao
 import com.deniscerri.ytdlnis.database.models.HistoryItem
 import com.deniscerri.ytdlnis.util.FileUtil
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
+import com.deniscerri.ytdlnis.database.DBManager.SORTING
 
 class HistoryRepository(private val historyDao: HistoryDao) {
     val items : Flow<List<HistoryItem>> = historyDao.getAllHistory()
-    enum class HistorySort{
-        DESC, ASC
-    }
 
     enum class HistorySortType {
         DATE, TITLE, AUTHOR, FILESIZE
     }
 
-    suspend fun getItem(id: Int) : HistoryItem {
+    fun getItem(id: Long) : HistoryItem {
         return historyDao.getHistoryItem(id)
     }
 
@@ -25,7 +22,11 @@ class HistoryRepository(private val historyDao: HistoryDao) {
         return historyDao.getAllHistoryList()
     }
 
-    fun getFiltered(query : String, format : String, site : String, sortType: HistorySortType, sort: HistorySort) : List<HistoryItem> {
+    fun getAllByURL(url: String) : List<HistoryItem> {
+        return historyDao.getAllHistoryByURL(url)
+    }
+
+    fun getFiltered(query : String, format : String, site : String, sortType: HistorySortType, sort: SORTING) : List<HistoryItem> {
         return when(sortType){
             HistorySortType.DATE ->  historyDao.getHistorySortedByID(query, format, site, sort.toString())
             HistorySortType.TITLE ->  historyDao.getHistorySortedByTitle(query, format, site, sort.toString())
@@ -33,8 +34,8 @@ class HistoryRepository(private val historyDao: HistoryDao) {
             HistorySortType.FILESIZE ->  {
                 val items = historyDao.getHistorySortedByID(query, format, site, sort.toString())
                 when(sort){
-                    HistorySort.DESC -> items.sortedByDescending { it.format.filesize }
-                    HistorySort.ASC -> items.sortedBy { it.format.filesize }
+                    SORTING.DESC -> items.sortedByDescending { it.format.filesize }
+                    SORTING.ASC -> items.sortedBy { it.format.filesize }
                 }
             }
         }
@@ -44,8 +45,11 @@ class HistoryRepository(private val historyDao: HistoryDao) {
         historyDao.insert(item)
     }
 
-    suspend fun delete(item: HistoryItem){
+    suspend fun delete(item: HistoryItem, deleteFile: Boolean){
         historyDao.delete(item.id)
+        if (deleteFile){
+            FileUtil.deleteFile(item.downloadPath)
+        }
     }
 
     suspend fun deleteAll(){

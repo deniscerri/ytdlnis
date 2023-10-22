@@ -41,6 +41,7 @@ class UpdateUtil(var context: Context) {
                     Toast.LENGTH_LONG
                 ).show()
             }
+            val skippedVersions = sharedPreferences.getString("skip_updates", "")?.split(",")?.distinct()?.toMutableList() ?: mutableListOf()
             val res = getGithubReleases()
 
             if (res.isEmpty()){
@@ -67,6 +68,8 @@ class UpdateUtil(var context: Context) {
                 isInLatest = false
             }
 
+            if (skippedVersions.contains(v.tag_name)) isInLatest = true
+
             if (isInLatest){
                 result(context.getString(R.string.you_are_in_latest_version))
                 return
@@ -77,6 +80,11 @@ class UpdateUtil(var context: Context) {
                     .setTitle(v.tag_name)
                     .setMessage(v.body)
                     .setIcon(R.drawable.ic_update_app)
+                    .setNeutralButton(R.string.skip){ d: DialogInterface?, _:Int ->
+                        skippedVersions.add(v.tag_name)
+                        sharedPreferences.edit().putString("skip_updates", skippedVersions.joinToString(",")).apply()
+                        d?.dismiss()
+                    }
                     .setNegativeButton(context.resources.getString(R.string.cancel)) { _: DialogInterface?, _: Int -> }
                     .setPositiveButton(context.resources.getString(R.string.update)) { _: DialogInterface?, _: Int ->
                         runCatching {

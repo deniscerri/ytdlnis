@@ -69,6 +69,11 @@
         app:summary="@string/update_app_summary"
         app:title="@string/update_app" />
 
+    <EditTextPreference
+        app:isPreferenceVisible="false"
+        app:key="skip_updates"
+        app:defaultValue="" />
+
     <SwitchPreferenceCompat
         android:widgetLayout="@layout/preferece_material_switch"
         app:defaultValue="false"

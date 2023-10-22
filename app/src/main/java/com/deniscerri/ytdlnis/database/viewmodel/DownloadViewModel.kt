@@ -2,17 +2,17 @@ package com.deniscerri.ytdlnis.database.viewmodel
 
 import android.app.Application
 import android.content.Context
-import android.content.Intent
 import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.content.res.Resources
 import android.net.ConnectivityManager
+import android.os.Bundle
 import android.os.Looper
 import android.util.DisplayMetrics
-import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
@@ -40,7 +40,7 @@ import com.deniscerri.ytdlnis.database.models.HistoryItem
 import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.deniscerri.ytdlnis.database.models.VideoPreferences
 import com.deniscerri.ytdlnis.database.repository.DownloadRepository
-import com.deniscerri.ytdlnis.ui.ErrorDialogActivity
+import com.deniscerri.ytdlnis.database.repository.HistoryRepository
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.InfoUtil
 import com.deniscerri.ytdlnis.work.AlarmScheduler
@@ -49,8 +49,11 @@ import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import java.io.File
 import java.util.Locale
 import java.util.concurrent.TimeUnit
@@ -85,7 +88,22 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
     private var videoCodec: String?
     private var audioCodec: String?
     private val dao: DownloadDao
-    private val historyDao: HistoryDao
+    private val historyRepository: HistoryRepository
+
+    data class DownloadsUiState(
+        var errorMessage: Pair<Int, Int>?,
+        //action title, type, data
+        var actions: MutableList<Triple<Int, DownloadsAction, List<DownloadItem>?>>?
+    )
+
+    enum class DownloadsAction {
+       DOWNLOAD_ANYWAY
+    }
+
+    val uiState: MutableStateFlow<DownloadsUiState> = MutableStateFlow(DownloadsUiState(
+        errorMessage = null,
+        actions = null
+    ))
 
     enum class Type {
         auto, audio, video, command
@@ -100,8 +118,8 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
     init {
         dbManager =  DBManager.getInstance(application)
         dao = dbManager.downloadDao
-        historyDao = dbManager.historyDao
         repository = DownloadRepository(dao)
+        historyRepository = HistoryRepository(dbManager.historyDao)
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(application)
         commandTemplateDao = DBManager.getInstance(application).commandTemplateDao
         infoUtil = InfoUtil(application)
@@ -178,6 +196,10 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
         return repository.getItemByID(id)
     }
 
+    fun getHistoryItemById(id: Long) : HistoryItem? {
+        return historyRepository.getItem(id)
+    }
+
     fun getDownloadType(t: Type? = null, url: String) : Type {
         var type = t
 
@@ -247,6 +269,10 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
                     break
                 }
             }
+        }
+
+        if (preferredAudioFormats.isEmpty()){
+            preferredAudioFormats.add(getFormat(resultItem.formats, Type.audio).format_id)
         }
 
         val videoPreferences = VideoPreferences(
@@ -565,10 +591,12 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
         startDownloadWorker(emptyList())
     }
 
-    suspend fun queueDownloads(items: List<DownloadItem>) = CoroutineScope(Dispatchers.IO).launch {
+    suspend fun queueDownloads(items: List<DownloadItem>, ignoreDuplicate : Boolean = false) {
         val context = App.instance
         val alarmScheduler = AlarmScheduler(context)
-        val activeAndQueuedDownloads = repository.getActiveAndQueuedDownloads()
+        val activeAndQueuedDownloads = withContext(Dispatchers.IO){
+            repository.getActiveAndQueuedDownloads()
+        }
         val queuedItems = mutableListOf<DownloadItem>()
         val existing = mutableListOf<DownloadItem>()
 
@@ -578,30 +606,43 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
             alarmScheduler.schedule()
         }
 
-
         items.forEach {
             if (it.status != DownloadRepository.Status.Paused.toString()) it.status = DownloadRepository.Status.Queued.toString()
             val currentCommand = infoUtil.buildYoutubeDLRequest(it)
             val parsedCurrentCommand = infoUtil.parseYTDLRequestString(currentCommand)
-            if (activeAndQueuedDownloads.firstOrNull{d ->
-                    d.id = 0
-                    d.logID = null
-                    d.customFileNameTemplate = it.customFileNameTemplate
-                    d.status = DownloadRepository.Status.Queued.toString()
-                    d.toString() == it.toString()
-            } != null) {
+            val existingDownload = activeAndQueuedDownloads.firstOrNull{d ->
+                d.id = 0
+                d.logID = null
+                d.customFileNameTemplate = it.customFileNameTemplate
+                d.status = DownloadRepository.Status.Queued.toString()
+                d.toString() == it.toString()
+            }
+            if (existingDownload != null && !ignoreDuplicate) {
+                it.id = existingDownload.id
                 existing.add(it)
             }else{
                 //check if downloaded and file exists
-                val history = historyDao.getAllHistoryByURL(it.url).filter { item -> FileUtil.exists(item.downloadPath) }
-                if (history.any { h -> h.command.replace("-P \"(.*?)\"".toRegex(), "") == parsedCurrentCommand.replace("-P \"(.*?)\"".toRegex(), "") }){
+                val history = withContext(Dispatchers.IO){
+                    historyRepository.getAllByURL(it.url).filter { item -> FileUtil.exists(item.downloadPath) }
+                }
+
+                val existingHistory = history.firstOrNull {
+                        h -> h.command.replace("(-P \"(.*?)\")|(--trim-filenames \"(.*?)\")".toRegex(), "") == parsedCurrentCommand.replace("(-P \"(.*?)\")|(--trim-filenames \"(.*?)\")".toRegex(), "")
+                }
+
+                if (existingHistory != null && !ignoreDuplicate){
+                    it.id = existingHistory.id
                     existing.add(it)
                 }else{
                     if (it.id == 0L){
-                        val id = runBlocking {repository.insert(it)}
+                        val id = withContext(Dispatchers.IO){
+                            repository.insert(it)
+                        }
                         it.id = id
                     }else if (it.status == DownloadRepository.Status.Queued.toString()){
-                        repository.update(it)
+                        withContext(Dispatchers.IO){
+                            repository.update(it)
+                        }
                     }
 
                     queuedItems.add(it)
@@ -610,13 +651,13 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
         }
 
         if (existing.isNotEmpty()){
-            val intent = Intent(context, ErrorDialogActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-            intent.putExtra("title", context.resources.getString(R.string.download_already_exists))
-            intent.putExtra("message",
-                "${existing.size}/${items.size}\n" +
-                existing.mapIndexed { index, downloadItem -> "${index+1}. ${downloadItem.title}" }.joinToString("\n"))
-            context.startActivity(intent)
+            uiState.update { u -> u.copy(
+                    errorMessage = Pair(R.string.download_already_exists, R.string.download_already_exists_summary),
+                    actions = mutableListOf(
+                        Triple(R.string.download, DownloadsAction.DOWNLOAD_ANYWAY, existing),
+                    )
+                )
+            }
         }
 
         if (!useScheduler || alarmScheduler.isDuringTheScheduledTime() || items.any { it.downloadStartTime > 0L } ){
@@ -664,10 +705,8 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
                 .setConstraints(workConstraints.build())
                 .setInitialDelay(delay, TimeUnit.MILLISECONDS)
 
-            if (delay > 1000L){
-                queuedItems.forEach {
-                    workRequest.addTag(it.id.toString())
-                }
+            queuedItems.forEach {
+                workRequest.addTag(it.id.toString())
             }
 
             workManager.enqueueUniqueWork(

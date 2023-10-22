@@ -136,13 +136,10 @@ class DownloadWorker(
                     )
 
 
-                    if (logDownloads){
-                        runBlocking {
-                            logItem.id = logRepo.insert(logItem)
-                            downloadItem.logID = logItem.id
-                            dao.update(downloadItem)
-                        }
-
+                    runBlocking {
+                        logItem.id = logRepo.insert(logItem)
+                        downloadItem.logID = logItem.id
+                        dao.update(downloadItem)
                     }
 
                     val noCache = !sharedPreferences.getBoolean("cache_downloads", true) && File(FileUtil.formatPath(downloadItem.downloadPath)).canWrite()
@@ -156,10 +153,8 @@ class DownloadWorker(
                                 line, progress.toInt(), 0, title,
                                 NotificationUtil.DOWNLOAD_SERVICE_CHANNEL_ID
                             )
-                            if (logDownloads){
-                                CoroutineScope(Dispatchers.IO).launch {
-                                    logRepo.update(line, logItem.id)
-                                }
+                            CoroutineScope(Dispatchers.IO).launch {
+                                logRepo.update(line, logItem.id)
                             }
                         }
                     }.onSuccess {
@@ -169,7 +164,7 @@ class DownloadWorker(
 
                             if (noCache){
                                 setProgressAsync(workDataOf("progress" to 100, "output" to "Scanning Files", "id" to downloadItem.id))
-                                val p = it.out.split("\r")
+                                val p = it.out.split("\n")
                                     .filter { it.startsWith("'/storage") }
                                     .map { it.removePrefix("'") }
                                     .map { it.removeSuffix("'\n") }
@@ -241,6 +236,8 @@ class DownloadWorker(
 
                             if (logDownloads){
                                 logRepo.update(it.out, logItem.id)
+                            }else{
+                                logRepo.delete(logItem)
                             }
                         }
 

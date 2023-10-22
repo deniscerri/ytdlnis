@@ -17,6 +17,7 @@ import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.util.FileUtil
+import com.deniscerri.ytdlnis.util.UiUtil
 import com.deniscerri.ytdlnis.work.MoveCacheFilesWorker
 import com.google.android.material.snackbar.Snackbar
 import java.io.File
@@ -30,8 +31,8 @@ class FolderSettingsFragment : BaseSettingsFragment() {
     private var commandPath: Preference? = null
     private var accessAllFiles : Preference? = null
     private var cacheDownloads : Preference? = null
-    private var audioFilenameTemplate : EditTextPreference? = null
-    private var videoFilenameTemplate : EditTextPreference? = null
+    private var audioFilenameTemplate : Preference? = null
+    private var videoFilenameTemplate : Preference? = null
     private var clearCache: Preference? = null
     private var moveCache: Preference? = null
 
@@ -68,7 +69,7 @@ class FolderSettingsFragment : BaseSettingsFragment() {
             accessAllFiles!!.isVisible = false
             cacheDownloads!!.isEnabled = true
         }else{
-            editor.putBoolean("cache_downloads", false).apply()
+            editor.putBoolean("cache_downloads", true).apply()
             cacheDownloads!!.isEnabled = false
         }
 
@@ -109,15 +110,30 @@ class FolderSettingsFragment : BaseSettingsFragment() {
                 val intent = Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
                 val uri = Uri.parse("package:" + requireContext().packageName)
                 intent.data = uri
-                startActivity(intent)
+                accessAllFilesLauncher.launch(intent)
                 true
             }
 
         videoFilenameTemplate?.title = "${getString(R.string.file_name_template)} [${getString(R.string.video)}]"
-        videoFilenameTemplate?.dialogTitle = "${getString(R.string.file_name_template)} [${getString(R.string.video)}]"
-
+        videoFilenameTemplate?.summary = preferences.getString("file_name_template", "%(uploader)s - %(title)s")
         audioFilenameTemplate?.title = "${getString(R.string.file_name_template)} [${getString(R.string.audio)}]"
-        audioFilenameTemplate?.dialogTitle = "${getString(R.string.file_name_template)} [${getString(R.string.audio)}]"
+        audioFilenameTemplate?.summary = preferences.getString("file_name_template_audio", "%(uploader)s - %(title)s")
+
+        videoFilenameTemplate?.setOnPreferenceClickListener {
+            UiUtil.showFilenameTemplateDialog(requireActivity(), videoFilenameTemplate?.summary.toString() ?: "", "${getString(R.string.file_name_template)} [${getString(R.string.video)}]") {
+                editor.putString("file_name_template", it).apply()
+                videoFilenameTemplate?.summary = it
+            }
+            false
+        }
+
+        audioFilenameTemplate?.setOnPreferenceClickListener {
+            UiUtil.showFilenameTemplateDialog(requireActivity(), audioFilenameTemplate?.summary.toString() ?: "", "${getString(R.string.file_name_template)} [${getString(R.string.audio)}]") {
+                editor.putString("file_name_template_audio", it).apply()
+                audioFilenameTemplate?.summary = it
+            }
+            false
+        }
 
         var cacheSize = File(FileUtil.getCachePath(requireContext())).walkBottomUp().fold(0L) { acc, file -> acc + file.length() }
         clearCache!!.summary = "(${FileUtil.convertFileSize(cacheSize)}) ${resources.getString(R.string.clear_temporary_files_summary)}"
@@ -204,6 +220,15 @@ class FolderSettingsFragment : BaseSettingsFragment() {
                 )
             }
             changePath(commandPath, result.data, COMMAND_PATH_CODE)
+        }
+    }
+
+    private var accessAllFilesLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            accessAllFiles?.isVisible = false
+            cacheDownloads?.isEnabled = true
         }
     }
 

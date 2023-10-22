@@ -1,7 +1,6 @@
 package com.deniscerri.ytdlnis.util
 
 import android.content.Context
-import android.content.Intent
 import android.content.SharedPreferences
 import android.content.res.Resources
 import android.os.Looper
@@ -16,7 +15,6 @@ import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.models.Format
 import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
-import com.deniscerri.ytdlnis.ui.ErrorDialogActivity
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.yausername.youtubedl_android.YoutubeDL
@@ -387,17 +385,13 @@ class InfoUtil(private val context: Context) {
         val items = arrayListOf<ResultItem?>()
         val url = "$pipedURL/trending?region=$countryCODE"
         val res = genericArrayRequest(url)
-        try {
-            for (i in 0 until res.length()) {
-                val element = res.getJSONObject(i)
-                if (element.getInt("duration") < 0) continue
-                element.put("uploader", element.getString("uploaderName"))
-                val v = createVideoFromPipedJSON(element, "https://youtube.com" + element.getString("url"))
-                if (v == null || v.thumb.isEmpty()) continue
-                items.add(v)
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
+        for (i in 0 until res.length()) {
+            val element = res.getJSONObject(i)
+            if (element.getInt("duration") < 0) continue
+            element.put("uploader", element.getString("uploaderName"))
+            val v = createVideoFromPipedJSON(element, "https://youtube.com" + element.getString("url"))
+            if (v == null || v.thumb.isEmpty()) continue
+            items.add(v)
         }
         return items
     }
@@ -440,51 +434,43 @@ class InfoUtil(private val context: Context) {
     }
 
     private fun getFormatsFromYTDL(url: String) : List<Format> {
-        try {
-            val request = YoutubeDLRequest(url)
-            request.addOption("--print", "%(formats)s")
-            request.addOption("--print", "%(duration)s")
-            request.addOption("--skip-download")
-            request.addOption("-R", "1")
-            request.addOption("--socket-timeout", "5")
+        val request = YoutubeDLRequest(url)
+        request.addOption("--print", "%(formats)s")
+        request.addOption("--print", "%(duration)s")
+        request.addOption("--skip-download")
+        request.addOption("-R", "1")
+        request.addOption("--socket-timeout", "5")
 
-            if (sharedPreferences.getBoolean("use_cookies", false)){
-                FileUtil.getCookieFile(context){
-                    request.addOption("--cookies", it)
-                }
-
-                val useHeader = sharedPreferences.getBoolean("use_header", false)
-                val header = sharedPreferences.getString("useragent_header", "")
-                if (useHeader && !header.isNullOrBlank()){
-                    request.addOption("--add-header","User-Agent:${header}")
-                }
+        if (sharedPreferences.getBoolean("use_cookies", false)){
+            FileUtil.getCookieFile(context){
+                request.addOption("--cookies", it)
             }
 
-            val proxy = sharedPreferences.getString("proxy", "")
-            if (proxy!!.isNotBlank()) {
-                request.addOption("--proxy", proxy)
-            }
-
-
-
-            val res = YoutubeDL.getInstance().execute(request)
-            val results: Array<String?> = try {
-                val lineSeparator = System.getProperty("line.separator")
-                res.out.split(lineSeparator!!).toTypedArray()
-            } catch (e: Exception) {
-                arrayOf(res.out)
-            }
-            val json = results[0]
-            val jsonArray = JSONArray(json)
-
-            return parseYTDLFormats(jsonArray)
-        } catch (e: Exception) {
-            e.printStackTrace()
-            Looper.prepare().run {
-                Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
+            val useHeader = sharedPreferences.getBoolean("use_header", false)
+            val header = sharedPreferences.getString("useragent_header", "")
+            if (useHeader && !header.isNullOrBlank()){
+                request.addOption("--add-header","User-Agent:${header}")
             }
         }
-        return emptyList()
+
+        val proxy = sharedPreferences.getString("proxy", "")
+        if (proxy!!.isNotBlank()) {
+            request.addOption("--proxy", proxy)
+        }
+
+
+
+        val res = YoutubeDL.getInstance().execute(request)
+        val results: Array<String?> = try {
+            val lineSeparator = System.getProperty("line.separator")
+            res.out.split(lineSeparator!!).toTypedArray()
+        } catch (e: Exception) {
+            arrayOf(res.out)
+        }
+        val json = results[0]
+        val jsonArray = JSONArray(json)
+
+        return parseYTDLFormats(jsonArray)
     }
 
     fun getFormatsMultiple(urls: List<String>, progress: (progress: List<Format>) -> Unit){
@@ -561,147 +547,139 @@ class InfoUtil(private val context: Context) {
     fun getFromYTDL(query: String): ArrayList<ResultItem?> {
         val items = arrayListOf<ResultItem?>()
         val searchEngine = sharedPreferences.getString("search_engine", "ytsearch")
-        try {
-            val request : YoutubeDLRequest
-            if (query.contains("http")){
-                request = YoutubeDLRequest(query)
+
+        val request : YoutubeDLRequest
+        if (query.contains("http")){
+            request = YoutubeDLRequest(query)
+        }else{
+            request = YoutubeDLRequest(emptyList())
+            if (searchEngine == "ytsearchmusic"){
+                request.addOption("--default-search", "https://music.youtube.com/search?q=")
+                request.addOption("ytsearch25:\"${query}\"")
             }else{
-                request = YoutubeDLRequest(emptyList())
-                if (searchEngine == "ytsearchmusic"){
-                    request.addOption("--default-search", "https://music.youtube.com/search?q=")
-                    request.addOption("ytsearch25:\"${query}\"")
-                }else{
-                    request.addOption("${searchEngine}25:\"${query}\"")
-                }
+                request.addOption("${searchEngine}25:\"${query}\"")
+            }
+        }
+
+        request.addOption("--flat-playlist")
+        request.addOption("-j")
+        request.addOption("--skip-download")
+        request.addOption("-R", "1")
+        request.addOption("--socket-timeout", "5")
+
+        if (sharedPreferences.getBoolean("use_cookies", false)){
+            FileUtil.getCookieFile(context){
+                request.addOption("--cookies", it)
             }
 
-            request.addOption("--flat-playlist")
-            request.addOption("-j")
-            request.addOption("--skip-download")
-            request.addOption("-R", "1")
-            request.addOption("--socket-timeout", "5")
-
-            if (sharedPreferences.getBoolean("use_cookies", false)){
-                FileUtil.getCookieFile(context){
-                    request.addOption("--cookies", it)
-                }
-
-                val useHeader = sharedPreferences.getBoolean("use_header", false)
-                val header = sharedPreferences.getString("useragent_header", "")
-                if (useHeader && !header.isNullOrBlank()){
-                    request.addOption("--add-header","User-Agent:${header}")
-                }
+            val useHeader = sharedPreferences.getBoolean("use_header", false)
+            val header = sharedPreferences.getString("useragent_header", "")
+            if (useHeader && !header.isNullOrBlank()){
+                request.addOption("--add-header","User-Agent:${header}")
             }
+        }
 
-            val proxy = sharedPreferences.getString("proxy", "")
-            if (proxy!!.isNotBlank()){
-                request.addOption("--proxy", proxy)
-            }
+        val proxy = sharedPreferences.getString("proxy", "")
+        if (proxy!!.isNotBlank()){
+            request.addOption("--proxy", proxy)
+        }
 
 
 
-            val youtubeDLResponse = YoutubeDL.getInstance().execute(request)
-            val results: List<String?> = try {
-                val lineSeparator = System.getProperty("line.separator")
-                youtubeDLResponse.out.split(lineSeparator!!)
-            } catch (e: Exception) {
-                listOf(youtubeDLResponse.out)
-            }.filter { it.isNotBlank() }
-            for (result in results) {
-                if (result.isNullOrBlank()) continue
-                val jsonObject = JSONObject(result)
-                val title = if (jsonObject.has("title")) {
-                    if (jsonObject.getString("title") == "[Private video]") continue
-                    jsonObject.getString("title")
-                } else {
-                    jsonObject.getString("webpage_url_basename")
-                }
-                var author: String = if (jsonObject.has("uploader")) jsonObject.getString("uploader") else ""
-                if (author.isEmpty() || author == "null"){
-                    author = if (jsonObject.has("channel")) jsonObject.getString("channel") else ""
-                    if (author.isEmpty() || author == "null"){
-                        author = if (jsonObject.has("playlist_uploader")) jsonObject.getString("playlist_uploader") else ""
-                    }
-                }
-                var duration = ""
-                runCatching {
-                    if (jsonObject.has("duration")) {
-                        duration = formatIntegerDuration(jsonObject.getInt("duration"), Locale.US)
-                    }
-                }
-
-                var thumb: String? = ""
-                if (jsonObject.has("thumbnail")) {
-                    thumb = jsonObject.getString("thumbnail")
-                } else if (jsonObject.has("thumbnails")) {
-                    val thumbs = jsonObject.getJSONArray("thumbnails")
-                    if (thumbs.length() > 0){
-                        thumb = thumbs.getJSONObject(thumbs.length() - 1).getString("url")
-                    }
-                }
-                val website = jsonObject.getString(listOf("ie_key", "extractor_key", "extractor").first { jsonObject.has(it) })
-                var playlistTitle: String? = ""
-                if (jsonObject.has("playlist_title")) playlistTitle = jsonObject.getString("playlist_title")
-                if(playlistTitle.equals(query)) playlistTitle = ""
-
-                if (playlistTitle?.isNotBlank() == true){
-                    playlistTitle += "[${jsonObject.getString("playlist_index")}]"
-                }
-
-                val formatsInJSON = if (jsonObject.has("formats") && jsonObject.get("formats") is JSONArray) jsonObject.getJSONArray("formats") else null
-                val formats : ArrayList<Format> = parseYTDLFormats(formatsInJSON)
-
-                val chaptersInJSON = if (jsonObject.has("chapters") && jsonObject.get("chapters") is JSONArray) jsonObject.getJSONArray("chapters") else null
-                val listType: Type = object : TypeToken<List<ChapterItem>>() {}.type
-                var chapters : ArrayList<ChapterItem> = arrayListOf()
-
-                if (chaptersInJSON != null){
-                    chapters = Gson().fromJson(chaptersInJSON.toString(), listType)
-                }
-
-                var urls = "";
-                if(jsonObject.has("requested_formats")) {
-                    val requestedFormats = jsonObject.getJSONArray("requested_formats")
-                    val urlList = mutableListOf<String>()
-                    val length = requestedFormats.length()-1
-                    for (i in length downTo 0) {
-                        urlList.add(requestedFormats.getJSONObject(i).getString("url"))
-                    }
-
-                    urls = urlList.joinToString("\n")
-                }
-
-                val url = if (jsonObject.has("url") && results.size > 1){
-                    jsonObject.getString("url")
-                }else{
-                    if (Patterns.WEB_URL.matcher(query).matches()){
-                        query
-                    }else{
-                        jsonObject.getString("webpage_url")
-                    }
-                }
-
-                items.add(ResultItem(0,
-                        url,
-                        title,
-                        author,
-                        duration,
-                        thumb!!,
-                        website,
-                        playlistTitle!!,
-                        formats,
-                        urls,
-                        chapters
-                    )
-                )
-            }
+        val youtubeDLResponse = YoutubeDL.getInstance().execute(request)
+        val results: List<String?> = try {
+            val lineSeparator = System.getProperty("line.separator")
+            youtubeDLResponse.out.split(lineSeparator!!)
         } catch (e: Exception) {
-            val intent = Intent(context, ErrorDialogActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-            intent.putExtra("title", context.resources.getString(R.string.no_results))
-            intent.putExtra("message", e.message)
-            context.startActivity(intent)
-            e.printStackTrace()
+            listOf(youtubeDLResponse.out)
+        }.filter { it.isNotBlank() }
+        for (result in results) {
+            if (result.isNullOrBlank()) continue
+            val jsonObject = JSONObject(result)
+            val title = if (jsonObject.has("title")) {
+                if (jsonObject.getString("title") == "[Private video]") continue
+                jsonObject.getString("title")
+            } else {
+                jsonObject.getString("webpage_url_basename")
+            }
+            var author: String = if (jsonObject.has("uploader")) jsonObject.getString("uploader") else ""
+            if (author.isEmpty() || author == "null"){
+                author = if (jsonObject.has("channel")) jsonObject.getString("channel") else ""
+                if (author.isEmpty() || author == "null"){
+                    author = if (jsonObject.has("playlist_uploader")) jsonObject.getString("playlist_uploader") else ""
+                }
+            }
+            var duration = ""
+            runCatching {
+                if (jsonObject.has("duration")) {
+                    duration = formatIntegerDuration(jsonObject.getInt("duration"), Locale.US)
+                }
+            }
+
+            var thumb: String? = ""
+            if (jsonObject.has("thumbnail")) {
+                thumb = jsonObject.getString("thumbnail")
+            } else if (jsonObject.has("thumbnails")) {
+                val thumbs = jsonObject.getJSONArray("thumbnails")
+                if (thumbs.length() > 0){
+                    thumb = thumbs.getJSONObject(thumbs.length() - 1).getString("url")
+                }
+            }
+            val website = jsonObject.getString(listOf("ie_key", "extractor_key", "extractor").first { jsonObject.has(it) })
+            var playlistTitle: String? = ""
+            if (jsonObject.has("playlist_title")) playlistTitle = jsonObject.getString("playlist_title")
+            if(playlistTitle.equals(query)) playlistTitle = ""
+
+            if (playlistTitle?.isNotBlank() == true){
+                playlistTitle += "[${jsonObject.getString("playlist_index")}]"
+            }
+
+            val formatsInJSON = if (jsonObject.has("formats") && jsonObject.get("formats") is JSONArray) jsonObject.getJSONArray("formats") else null
+            val formats : ArrayList<Format> = parseYTDLFormats(formatsInJSON)
+
+            val chaptersInJSON = if (jsonObject.has("chapters") && jsonObject.get("chapters") is JSONArray) jsonObject.getJSONArray("chapters") else null
+            val listType: Type = object : TypeToken<List<ChapterItem>>() {}.type
+            var chapters : ArrayList<ChapterItem> = arrayListOf()
+
+            if (chaptersInJSON != null){
+                chapters = Gson().fromJson(chaptersInJSON.toString(), listType)
+            }
+
+            var urls = "";
+            if(jsonObject.has("requested_formats")) {
+                val requestedFormats = jsonObject.getJSONArray("requested_formats")
+                val urlList = mutableListOf<String>()
+                val length = requestedFormats.length()-1
+                for (i in length downTo 0) {
+                    urlList.add(requestedFormats.getJSONObject(i).getString("url"))
+                }
+
+                urls = urlList.joinToString("\n")
+            }
+
+            val url = if (jsonObject.has("url") && results.size > 1){
+                jsonObject.getString("url")
+            }else{
+                if (Patterns.WEB_URL.matcher(query).matches()){
+                    query
+                }else{
+                    jsonObject.getString("webpage_url")
+                }
+            }
+
+            items.add(ResultItem(0,
+                url,
+                title,
+                author,
+                duration,
+                thumb!!,
+                website,
+                playlistTitle!!,
+                formats,
+                urls,
+                chapters
+            )
+            )
         }
         return items
     }
@@ -748,89 +726,81 @@ class InfoUtil(private val context: Context) {
     }
 
     fun getMissingInfo(url: String): ResultItem? {
-        try {
-            val request = YoutubeDLRequest(url)
-            request.addOption("--flat-playlist")
-            request.addOption("-J")
-            request.addOption("--skip-download")
-            request.addOption("-R", "1")
-            request.addOption("--socket-timeout", "5")
+        val request = YoutubeDLRequest(url)
+        request.addOption("--flat-playlist")
+        request.addOption("-J")
+        request.addOption("--skip-download")
+        request.addOption("-R", "1")
+        request.addOption("--socket-timeout", "5")
 
-            if (sharedPreferences.getBoolean("use_cookies", false)){
-                FileUtil.getCookieFile(context){
-                    request.addOption("--cookies", it)
-                }
-
-                val useHeader = sharedPreferences.getBoolean("use_header", false)
-                val header = sharedPreferences.getString("useragent_header", "")
-                if (useHeader && !header.isNullOrBlank()){
-                    request.addOption("--add-header","User-Agent:${header}")
-                }
+        if (sharedPreferences.getBoolean("use_cookies", false)){
+            FileUtil.getCookieFile(context){
+                request.addOption("--cookies", it)
             }
 
-
-
-            val proxy = sharedPreferences.getString("proxy", "")
-            if (proxy!!.isNotBlank()){
-                request.addOption("--proxy", proxy)
+            val useHeader = sharedPreferences.getBoolean("use_header", false)
+            val header = sharedPreferences.getString("useragent_header", "")
+            if (useHeader && !header.isNullOrBlank()){
+                request.addOption("--add-header","User-Agent:${header}")
             }
-
-
-
-            val youtubeDLResponse = YoutubeDL.getInstance().execute(request)
-            val jsonObject = JSONObject(youtubeDLResponse.out)
-
-            var author: String = if (jsonObject.has("uploader")) jsonObject.getString("uploader") else ""
-            if (author.isEmpty() || author == "null"){
-                author = if (jsonObject.has("channel")) jsonObject.getString("channel") else ""
-                if (author.isEmpty() || author == "null"){
-                    author = if (jsonObject.has("playlist_uploader")) jsonObject.getString("playlist_uploader") else ""
-                }
-            }
-
-            var duration = ""
-            runCatching {
-                if (jsonObject.has("duration")) {
-                    duration = formatIntegerDuration(jsonObject.getInt("duration"), Locale.US)
-                }
-            }
-
-            var thumb: String? = ""
-            if (jsonObject.has("thumbnail")) {
-                thumb = jsonObject.getString("thumbnail")
-            } else if (jsonObject.has("thumbnails")) {
-                val thumbs = jsonObject.getJSONArray("thumbnails")
-                if (thumbs.length() > 0){
-                    thumb = thumbs.getJSONObject(thumbs.length() - 1).getString("url")
-                }
-            }
-
-            val isPlaylist = jsonObject.has("playlist_count")
-            return ResultItem(
-                0,
-                url,
-                if (isPlaylist){
-                    "[${jsonObject.getInt("playlist_count")} Items] ${jsonObject.getString("title")}"
-                }else{
-                    jsonObject.getString("title")
-                },
-                author,
-                duration,
-                thumb!!,
-                jsonObject.getString("extractor"),
-                if (isPlaylist) jsonObject.getString("title") else "",
-                arrayListOf(),
-                "",
-                arrayListOf(),
-                System.currentTimeMillis()
-            )
-        } catch (e: Exception) {
-            Looper.prepare().run {
-                Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
-            }
-            e.printStackTrace()
         }
-        return null
+
+
+
+        val proxy = sharedPreferences.getString("proxy", "")
+        if (proxy!!.isNotBlank()){
+            request.addOption("--proxy", proxy)
+        }
+
+
+
+        val youtubeDLResponse = YoutubeDL.getInstance().execute(request)
+        val jsonObject = JSONObject(youtubeDLResponse.out)
+
+        var author: String = if (jsonObject.has("uploader")) jsonObject.getString("uploader") else ""
+        if (author.isEmpty() || author == "null"){
+            author = if (jsonObject.has("channel")) jsonObject.getString("channel") else ""
+            if (author.isEmpty() || author == "null"){
+                author = if (jsonObject.has("playlist_uploader")) jsonObject.getString("playlist_uploader") else ""
+            }
+        }
+
+        var duration = ""
+        runCatching {
+            if (jsonObject.has("duration")) {
+                duration = formatIntegerDuration(jsonObject.getInt("duration"), Locale.US)
+            }
+        }
+
+        var thumb: String? = ""
+        if (jsonObject.has("thumbnail")) {
+            thumb = jsonObject.getString("thumbnail")
+        } else if (jsonObject.has("thumbnails")) {
+            val thumbs = jsonObject.getJSONArray("thumbnails")
+            if (thumbs.length() > 0){
+                thumb = thumbs.getJSONObject(thumbs.length() - 1).getString("url")
+            }
+        }
+
+        val isPlaylist = jsonObject.has("playlist_count")
+        return ResultItem(
+            0,
+            url,
+            if (isPlaylist){
+                ""
+            }else{
+                jsonObject.getString("title")
+            },
+            author,
+            duration,
+            thumb!!,
+            jsonObject.getString("extractor"),
+            if (isPlaylist) jsonObject.getString("title") else "",
+            arrayListOf(),
+            "",
+            arrayListOf(),
+            System.currentTimeMillis()
+        )
     }
 
 
@@ -983,9 +953,9 @@ class InfoUtil(private val context: Context) {
         val downDir : File
         if (!sharedPreferences.getBoolean("cache_downloads", true) && File(FileUtil.formatPath(downloadItem.downloadPath)).canWrite()){
             downDir = File(FileUtil.formatPath(downloadItem.downloadPath))
+            request.addOption("--no-quiet")
+            request.addOption("-no-simulate")
             request.addOption("--print", "after_video:'%(filename)s'")
-            request.addOption("--progress")
-            request.addOption("-v")
         }else{
             val cacheDir = FileUtil.getCachePath(context)
             downDir = File(cacheDir, downloadItem.id.toString())
