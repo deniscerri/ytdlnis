@@ -304,4 +304,7 @@
     <string name="preferred_video_codec">الترميز المفضل للفيديو</string>
     <string name="sponsorblock_api_url">رابط الـ API لحاجب شرائح الإعلانات</string>
     <string name="loading">تتم التعبئة</string>
+    <string name="user_agent_header">رأس وكيل المستخدم</string>
+    <string name="remember_download_type">تذكر نوع التحميل</string>
+    <string name="remember_download_type_summary">تعيين نوع التحميل اللاحق بناءً على آخر نوع تحميل تم الوصول اليه</string>
 </resources>
