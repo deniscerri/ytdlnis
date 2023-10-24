@@ -193,7 +193,7 @@
     <string name="high_contrast">हाई कॉन्ट्रास्ट</string>
     <string name="finished_download_notification_channel_description">समाप्त या दोषपूर्ण डाउनलोड के लिए अधिसूचना</string>
     <string name="quick_download">त्वरित डाउनलोड</string>
-    <string name="quick_download_summary">पहले से डेटा न लाएं</string>
+    <string name="quick_download_summary">डाउनलोड कार्ड में डेटा न लाएं</string>
     <string name="cancel_download">डाउनलोड रद्द करें</string>
     <string name="command_download_notification_channel_name">कमांड डाउनलोड</string>
     <string name="command_download_notification_channel_description">yt-dlp कमांड का उपयोग करके डाउनलोडिंग की प्रगति दिखाने वाली अधिसूचना</string>
@@ -300,4 +300,11 @@
     <string name="update_app_beta_summary">बीटा प्रोग्राम में नामांकन करें। इसमें बग हो सकते हैं।</string>
     <string name="update_app_beta">बीटा रिलीज़</string>
     <string name="auto">ऑटो</string>
+    <string name="preferred_audio_codec">तरजीही ऑडियो कोडेक</string>
+    <string name="preferred_video_codec">तरजीही वीडियो कोडेक</string>
+    <string name="sponsorblock_api_url">स्पॉन्सरब्लॉक API URL</string>
+    <string name="loading">लोड हो रहा है</string>
+    <string name="user_agent_header">उपयोगकर्ता-एजेंट शीर्षलेख</string>
+    <string name="remember_download_type">डाउनलोड टाइप याद रखें</string>
+    <string name="remember_download_type_summary">वर्तमान आइटम के लिए अंतिम बार खोला गया डाउनलोड टाईप चुनें</string>
 </resources>

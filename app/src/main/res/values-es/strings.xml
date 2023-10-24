@@ -304,4 +304,7 @@
     <string name="preferred_video_codec">Códec de vídeo preferido</string>
     <string name="sponsorblock_api_url">Dirección URL de la API de Sponsorblock</string>
     <string name="loading">Cargando</string>
+    <string name="user_agent_header">Encabezado de User-Agent</string>
+    <string name="remember_download_type">Recordar el tipo de la descarga</string>
+    <string name="remember_download_type_summary">Selecciona el último tipo de la descarga abierto para el elemento actual</string>
 </resources>

@@ -27,7 +27,7 @@
     <string name="version">نسخه</string>
     <string name="command_directory">پوشه فرمان سفارشی</string>
     <string name="couldnt_find_apk">APK مناسب پیدا نشد.</string>
-    <string name="downloading_update">در حال دانلود نسخه جدید…</string>
+    <string name="downloading_update">در حال دانلود نسخه جدید</string>
     <string name="audio">صدا</string>
     <string name="video">ویدیو</string>
     <string name="concurrent_fragments">قطعات همزمان</string>
@@ -89,4 +89,17 @@
     <string name="concurrent_downloads">دانلودهای همزمان</string>
     <string name="defaultValue">پیش فرض</string>
     <string name="container">ظرف</string>
+    <string name="new_cookie">کوکی جدید</string>
+    <string name="cookies">کوکی‌ها</string>
+    <string name="end">پایان</string>
+    <string name="orange">نارنجی</string>
+    <string name="green">سبز</string>
+    <string name="yellow">زرد</string>
+    <string name="red">قرمز</string>
+    <string name="confirm_terminate">تمام دانلودها را لغو می‌کند و برنامه را به اجبار می‌بندد</string>
+    <string name="share">اشتراک گذاری</string>
+    <string name="ignore_battery_optimization">بهینه سازی باتری را نادیده بگیر</string>
+    <string name="purple">بنفش</string>
+    <string name="blue">آبی</string>
+    <string name="preferred_search_engine">موتور جستجوی ترجیحی</string>
 </resources>

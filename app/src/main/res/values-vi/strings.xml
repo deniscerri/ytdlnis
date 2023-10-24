@@ -215,7 +215,7 @@
     <string name="quick_download">Tải xuống nhanh</string>
     <string name="preferred_locale">Ngôn ngữ ưa thích</string>
     <string name="high_contrast">Tương phản cao</string>
-    <string name="quick_download_summary">Không tìm nạp dữ liệu trước</string>
+    <string name="quick_download_summary">Không lấy dữ liệu trong thẻ tải xuống</string>
     <string name="misc">Khác</string>
     <string name="piped_instance">Phiên bản Piped</string>
     <string name="update_formats_background">Cập nhật định dạng trong nền</string>
@@ -300,4 +300,8 @@
     <string name="subtitle_format">Định dạng phụ đề</string>
     <string name="force_keyframes">Buộc khung hình chính khi Cắt</string>
     <string name="force_keyframes_summary">Quá trình chậm hơn, nhưng cắt chính xác hơn</string>
+    <string name="preferred_audio_codec">Bộ giải mã âm thanh ưa thích</string>
+    <string name="preferred_video_codec">Bộ giải mã băng hình ưa thích</string>
+    <string name="sponsorblock_api_url">URL API chặn nhà tài trợ</string>
+    <string name="loading">Đang tải</string>
 </resources>

@@ -302,6 +302,9 @@
     <string name="auto">Automático</string>
     <string name="preferred_audio_codec">Codec de áudio preferido</string>
     <string name="preferred_video_codec">Codec de vídeo preferido</string>
-    <string name="sponsorblock_api_url">URL da API Sponsorblock</string>
+    <string name="sponsorblock_api_url">URL da API SponsorBlock</string>
     <string name="loading">A carregar</string>
+    <string name="user_agent_header">Cabeçalho User-Agent</string>
+    <string name="remember_download_type">Lembrar o tipo de transferência</string>
+    <string name="remember_download_type_summary">Selecionar o último tipo de download aberto para o item atual</string>
 </resources>
