@@ -304,4 +304,15 @@
     <string name="preferred_video_codec">Bộ giải mã băng hình ưa thích</string>
     <string name="sponsorblock_api_url">URL API chặn nhà tài trợ</string>
     <string name="loading">Đang tải</string>
+    <string name="schedule">Lịch trình</string>
+    <string name="user_agent_header">Tiêu đề tác nhân người dùng</string>
+    <string name="search_command_hint">Tìm kiếm từ lệnh</string>
+    <string name="skip">Bỏ qua</string>
+    <string name="license">Giấy phép</string>
+    <string name="download_already_exists_summary">Bạn vẫn muốn tải xuống\?</string>
+    <string name="modify_download_card">Sửa đổi thẻ tải xuống</string>
+    <string name="security">Bảo vệ</string>
+    <string name="remember_download_type">Ghi nhớ loại tải xuống</string>
+    <string name="remember_download_type_summary">Chọn loại tải xuống được mở lần cuối cho mục hiện tại</string>
+    <string name="length">Độ dài</string>
 </resources>
