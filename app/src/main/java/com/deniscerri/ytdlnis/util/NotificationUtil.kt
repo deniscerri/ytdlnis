@@ -11,15 +11,16 @@ import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.content.res.Resources
 import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.DisplayMetrics
 import androidx.core.app.NotificationCompat
 import androidx.core.content.FileProvider
+import androidx.documentfile.provider.DocumentFile
 import androidx.navigation.NavDeepLinkBuilder
 import androidx.preference.PreferenceManager
 import com.deniscerri.ytdlnis.R
-import com.deniscerri.ytdlnis.App.Companion.instance
 import com.deniscerri.ytdlnis.receiver.CancelDownloadNotificationReceiver
 import com.deniscerri.ytdlnis.receiver.CancelWorkReceiver
 import com.deniscerri.ytdlnis.receiver.PauseDownloadNotificationReceiver
@@ -195,7 +196,8 @@ class NotificationUtil(var context: Context) {
         notificationManager.notify(DOWNLOAD_UPDATING_NOTIFICATION_ID, notificationBuilder.build())
     }
 
-    fun createDownloadFinished(title: String?,
+    fun createDownloadFinished(
+        title: String?,
         filepath: List<String>?
     ) {
         val notificationBuilder = getBuilder(DOWNLOAD_FINISHED_CHANNEL_ID)
@@ -215,23 +217,35 @@ class NotificationUtil(var context: Context) {
             .clearActions()
         if (filepath != null){
             try{
-                val file = File(filepath.first())
-                val uri = FileProvider.getUriForFile(
-                    context,
-                    "com.deniscerri.ytdl.fileprovider",
-                    file
-                )
+                val uri = filepath.first().runCatching {
+                    DocumentFile.fromSingleUri(context, Uri.parse(filepath.first())).run{
+                        if (this?.exists() == true){
+                            this.uri
+                        }else if (File(this@runCatching).exists()){
+                            FileProvider.getUriForFile(context, context.packageName + ".fileprovider",
+                                File(this@runCatching))
+                        }else null
+                    }
+                }.getOrNull()
 
-                //open intent
-                val intent = Intent()
-                intent.action = Intent.ACTION_VIEW
-                intent.setDataAndType(uri, "*/*")
-                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                val openFileIntent = Intent()
+
+                if (uri != null){
+                    openFileIntent.apply {
+                        addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        action = Intent.ACTION_VIEW
+                        data = uri
+                    }
+                }
+
                 val openNotificationPendingIntent: PendingIntent = TaskStackBuilder.create(context).run {
-                    addNextIntentWithParentStack(intent)
+                    addNextIntentWithParentStack(openFileIntent)
                     getPendingIntent(0,
                         PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
                 }
+
+
 
                 //share intent
                 val shareIntent = Intent(context, ShareFileActivity::class.java)

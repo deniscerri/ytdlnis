@@ -31,22 +31,14 @@
 
             <HorizontalScrollView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:scrollbars="none">
 
                 <LinearLayout
                     android:id="@+id/history_selection_chips"
                     android:layout_width="wrap_content"
+                    android:orientation="horizontal"
                     android:layout_height="wrap_content">
-
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/sortChip"
-                        style="@style/Widget.Material3.Chip.Assist"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/sort_by"
-                        app:chipIcon="@drawable/ic_down" />
-
-                    <View style="@style/Divider.Vertical"/>
 
                     <com.google.android.material.chip.ChipGroup
                         android:layout_width="match_parent"
@@ -69,8 +61,18 @@
                             android:layout_height="wrap_content"
                             android:text="@string/shortcuts"
                             app:chipIcon="@drawable/ic_shortcut" />
-
                     </com.google.android.material.chip.ChipGroup>
+
+                    <View style="@style/Divider.Vertical"/>
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/sortChip"
+                        style="@style/Widget.Material3.Chip.Assist"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/sort_by"
+                        app:chipIcon="@drawable/ic_down" />
+
 
                 </LinearLayout>
 
@@ -92,7 +94,7 @@
     </androidx.recyclerview.widget.RecyclerView>
 
 
-    <include layout="@layout/history_no_results"
+    <include layout="@layout/no_results"
         android:visibility="gone" />
 
 

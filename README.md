@@ -10,7 +10,7 @@
 	&nbsp;&nbsp;| &nbsp;&nbsp;
 	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-az.md">Azərbaycanca</a>
 	&nbsp;&nbsp;| &nbsp;&nbsp;
-	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-id.MD">Indonesia</a>
+	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-id.md">Indonesia</a>
 	&nbsp;&nbsp;| &nbsp;&nbsp;
 	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-pt.md">Português</a>
 </div>
@@ -34,7 +34,7 @@
 [![community](https://img.shields.io/badge/Telegram-Updates-red?style=flat-square&logo=telegram)](https://t.me/ytdlnisupdates)
 
 
-
+### The links above are the only trusted sources of YTDLnis. Everything else is not related to me.
 
 </div>
 

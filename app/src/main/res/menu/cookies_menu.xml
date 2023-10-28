@@ -21,4 +21,9 @@
         android:id="@+id/export_clipboard"
         android:title="@string/export_from_clipboard"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/export_file"
+        android:title="@string/export_file"
+        app:showAsAction="never" />
 </menu>

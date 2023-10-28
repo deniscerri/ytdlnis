@@ -1,37 +1,51 @@
 package com.deniscerri.ytdlnis.util
 
+import android.annotation.SuppressLint
 import android.app.DownloadManager
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.DialogInterface
+import android.content.Intent
+import android.content.IntentFilter
 import android.net.Uri
 import android.os.Build
+import android.os.Bundle
 import android.os.Environment
 import android.os.Handler
 import android.os.Looper
+import android.text.method.LinkMovementMethod
 import android.util.Log
+import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat.startActivity
 import androidx.preference.PreferenceManager
 import com.deniscerri.ytdlnis.BuildConfig
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.GithubRelease
-import com.deniscerri.ytdlnis.database.models.GithubReleaseAsset
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.yausername.youtubedl_android.YoutubeDL
 import com.yausername.youtubedl_android.YoutubeDL.UpdateStatus
+import io.noties.markwon.AbstractMarkwonPlugin
+import io.noties.markwon.Markwon
+import io.noties.markwon.MarkwonConfiguration
+import io.noties.markwon.MarkwonSpansFactory
+import io.noties.markwon.core.MarkwonTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import java.io.BufferedReader
+import java.io.File
 import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
+
 
 class UpdateUtil(var context: Context) {
     private val tag = "UpdateUtil"
     private val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
     private val downloadManager: DownloadManager = context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
 
+    @SuppressLint("UnspecifiedRegisterReceiverFlag")
     fun updateApp(result: (result: String) -> Unit) {
         try {
             if (updatingApp) {
@@ -99,7 +113,7 @@ class UpdateUtil(var context: Context) {
                             Environment
                                 .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
                                 .mkdirs()
-                            downloadManager.enqueue(
+                            val downloadID = downloadManager.enqueue(
                                 DownloadManager.Request(uri)
                                     .setAllowedNetworkTypes(
                                         DownloadManager.Request.NETWORK_WIFI or
@@ -110,10 +124,34 @@ class UpdateUtil(var context: Context) {
                                     .setTitle(context.getString(R.string.downloading_update))
                                     .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, releaseVersion.name)
                             )
+
+                            val onDownloadComplete: BroadcastReceiver =
+                                object : BroadcastReceiver() {
+                                    override fun onReceive(context: Context?, intent: Intent) {
+                                        context?.unregisterReceiver(this)
+                                        UiUtil.openFileIntent(context!!,
+                                            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)?.absolutePath +
+                                                    File.separator + releaseVersion.name)
+                                    }
+                                }
+
+                            context.registerReceiver(onDownloadComplete, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
                         }
 
                     }
-                updateDialog.show()
+                val view = updateDialog.show()
+                val textView = view.findViewById<TextView>(android.R.id.message)
+                textView!!.movementMethod = LinkMovementMethod.getInstance()
+                val mw = Markwon.builder(context).usePlugin(object: AbstractMarkwonPlugin() {
+
+                    override fun configureConfiguration(builder: MarkwonConfiguration.Builder) {
+                        builder.linkResolver { view, link ->
+                            val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
+                            startActivity(context, browserIntent, Bundle())
+                        }
+                    }
+                }).build()
+                mw.setMarkdown(textView, v.body)
             }
             return
         }catch (e: Exception){

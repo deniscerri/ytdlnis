@@ -1,7 +1,6 @@
 package com.deniscerri.ytdlnis.database.repository
 
 import android.content.Context
-import android.util.Log
 import com.deniscerri.ytdlnis.database.dao.ResultDao
 import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.deniscerri.ytdlnis.util.InfoUtil

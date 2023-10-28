@@ -1,4 +1,4 @@
-package com.deniscerri.ytdlnis.adapter
+package com.deniscerri.ytdlnis.ui.adapter
 
 import android.app.Activity
 import android.content.SharedPreferences
@@ -9,9 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.preference.Preference
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.AsyncDifferConfig
 import androidx.recyclerview.widget.DiffUtil
@@ -25,7 +23,9 @@ import com.google.android.material.card.MaterialCardView
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.squareup.picasso.Picasso
 
-class HomeAdapter(onItemClickListener: OnItemClickListener, activity: Activity) : ListAdapter<ResultItem?, HomeAdapter.ViewHolder>(AsyncDifferConfig.Builder(DIFF_CALLBACK).build()) {
+class HomeAdapter(onItemClickListener: OnItemClickListener, activity: Activity) : ListAdapter<ResultItem?, HomeAdapter.ViewHolder>(AsyncDifferConfig.Builder(
+    DIFF_CALLBACK
+).build()) {
     private val checkedVideos: ArrayList<String>
     private val onItemClickListener: OnItemClickListener
     private val activity: Activity

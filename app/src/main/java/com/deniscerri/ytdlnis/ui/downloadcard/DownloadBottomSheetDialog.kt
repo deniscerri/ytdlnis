@@ -22,6 +22,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
+import com.afollestad.materialdialogs.utils.MDUtil.getStringArray
 import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.DBManager
@@ -31,6 +32,7 @@ import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.deniscerri.ytdlnis.database.repository.DownloadRepository
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel.Type
+import com.deniscerri.ytdlnis.database.viewmodel.HistoryViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdlnis.receiver.ShareActivity
 import com.deniscerri.ytdlnis.util.InfoUtil
@@ -44,6 +46,7 @@ import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.android.material.tabs.TabLayout
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.update
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -53,16 +56,19 @@ class DownloadBottomSheetDialog(private var result: ResultItem, private val type
     private lateinit var viewPager2: ViewPager2
     private lateinit var fragmentAdapter : DownloadFragmentAdapter
     private lateinit var downloadViewModel: DownloadViewModel
+    private lateinit var historyViewModel: HistoryViewModel
     private lateinit var resultViewModel: ResultViewModel
     private lateinit var behavior: BottomSheetBehavior<View>
     private lateinit var commandTemplateDao : CommandTemplateDao
     private lateinit var infoUtil: InfoUtil
     private lateinit var sharedPreferences : SharedPreferences
+    private lateinit var updateItem : Button
     private lateinit var view: View
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
+        historyViewModel = ViewModelProvider(this)[HistoryViewModel::class.java]
         resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]
         commandTemplateDao = DBManager.getInstance(requireContext()).commandTemplateDao
         infoUtil = InfoUtil(requireContext())
@@ -87,6 +93,7 @@ class DownloadBottomSheetDialog(private var result: ResultItem, private val type
 
         tabLayout = view.findViewById(R.id.download_tablayout)
         viewPager2 = view.findViewById(R.id.download_viewpager)
+        updateItem = view.findViewById(R.id.update_item)
 
         (viewPager2.getChildAt(0) as? RecyclerView)?.apply {
             isNestedScrollingEnabled = false
@@ -121,8 +128,12 @@ class DownloadBottomSheetDialog(private var result: ResultItem, private val type
 
             (tabLayout.getChildAt(0) as? ViewGroup)?.getChildAt(1)?.isClickable = false
             (tabLayout.getChildAt(0) as? ViewGroup)?.getChildAt(1)?.alpha = 0.3f
+
+            updateItem.visibility = View.GONE
         }
 
+        //remove outdated player url of 1hr so it can refetch it in the cut player
+        if (result.creationTime > System.currentTimeMillis() - 3600000) result.urls = ""
 
         val fragmentManager = parentFragmentManager
         fragmentAdapter = DownloadFragmentAdapter(
@@ -200,8 +211,10 @@ class DownloadBottomSheetDialog(private var result: ResultItem, private val type
 
         viewPager2.setPageTransformer(BackgroundToForegroundPageTransformer())
 
+        val shownFields = sharedPreferences.getStringSet("modify_download_card", setOf())!!.toList().ifEmpty { requireContext().getStringArray(R.array.modify_download_card_values).toList() }
+
         val scheduleBtn = view.findViewById<MaterialButton>(R.id.bottomsheet_schedule_button)
-        scheduleBtn.visibility = if(sharedPreferences.getStringSet("modify_download_card", setOf())!!.contains("schedule")){
+        scheduleBtn.visibility = if(shownFields.contains("schedule")){
             View.VISIBLE
         }else{
             View.GONE
@@ -250,19 +263,19 @@ class DownloadBottomSheetDialog(private var result: ResultItem, private val type
         }
 
         val link = view.findViewById<Button>(R.id.bottom_sheet_link)
-        link.visibility = if(sharedPreferences.getStringSet("modify_download_card", setOf())!!.contains("url")){
+        link.visibility = if(shownFields.contains("url")){
             View.VISIBLE
         }else{
             View.GONE
         }
-        val updateItem = view.findViewById<Button>(R.id.update_item)
+
         if (Patterns.WEB_URL.matcher(result.url).matches()){
             link.text = result.url
             link.setOnClickListener{
-                UiUtil.openLinkIntent(requireContext(), result.url, null)
+                UiUtil.openLinkIntent(requireContext(), result.url)
             }
             link.setOnLongClickListener{
-                UiUtil.copyLinkToClipBoard(requireContext(), result.url, null)
+                UiUtil.copyLinkToClipBoard(requireContext(), result.url)
                 true
             }
 
@@ -281,12 +294,12 @@ class DownloadBottomSheetDialog(private var result: ResultItem, private val type
 
         }else{
             link.visibility = View.GONE
-            updateItem.visibility = View.GONE
+            (updateItem.parent as LinearLayout).visibility = View.GONE
         }
 
 
         //update in the background if there is no data
-        if(result.title.isEmpty() && currentDownloadItem == null && !sharedPreferences.getBoolean("quick_download", false)){
+        if(result.title.isEmpty() && currentDownloadItem == null && !sharedPreferences.getBoolean("quick_download", false) && type != Type.command){
             initUpdateData(view)
         }else {
             val usingGenericFormatsOrEmpty = result.formats.isEmpty() || result.formats.any { it.format_note.contains("ytdlnisgeneric") }
@@ -295,14 +308,25 @@ class DownloadBottomSheetDialog(private var result: ResultItem, private val type
             }
         }
 
-        lifecycleScope.launch {
+        CoroutineScope(Dispatchers.IO).launch{
             downloadViewModel.uiState.collectLatest { res ->
                 if (res.errorMessage != null) {
-                    UiUtil.handleDownloadsResponse(requireActivity() as MainActivity, res, downloadViewModel)
+                    UiUtil.handleDownloadsResponse(requireActivity() as MainActivity, res, downloadViewModel, historyViewModel)
                     downloadViewModel.uiState.value =  DownloadViewModel.DownloadsUiState(
                         errorMessage = null,
                         actions = null
                     )
+                }
+            }
+        }
+
+        lifecycleScope.launch {
+            resultViewModel.uiState.collectLatest { res ->
+                if (res.errorMessage != null){
+                    kotlin.runCatching { UiUtil.handleResultResponse(requireActivity(), res, closed = {
+                        dismiss()
+                    }) }
+                    resultViewModel.uiState.update {it.copy(errorMessage  = null, actions  = null) }
                 }
             }
         }
@@ -344,12 +368,12 @@ class DownloadBottomSheetDialog(private var result: ResultItem, private val type
     }
 
     private fun initUpdateData(v: View){
-        CoroutineScope(SupervisorJob()).launch(Dispatchers.IO){
-            val shimmerLoading = v.findViewById<ShimmerFrameLayout>(R.id.shimmer_loading_title)
-            val title = v.findViewById<View>(R.id.bottom_sheet_title)
+        val shimmerLoading = v.findViewById<ShimmerFrameLayout>(R.id.shimmer_loading_title)
+        val title = v.findViewById<View>(R.id.bottom_sheet_title)
+        val shimmerLoadingSubtitle = v.findViewById<ShimmerFrameLayout>(R.id.shimmer_loading_subtitle)
+        val subtitle = v.findViewById<View>(R.id.bottom_sheet_subtitle)
 
-            val shimmerLoadingSubtitle = v.findViewById<ShimmerFrameLayout>(R.id.shimmer_loading_subtitle)
-            val subtitle = v.findViewById<View>(R.id.bottom_sheet_subtitle)
+        val updateJob = CoroutineScope(SupervisorJob()).launch(Dispatchers.IO){
             withContext(Dispatchers.Main){
                 title.visibility = View.GONE
                 subtitle.visibility = View.GONE
@@ -367,12 +391,6 @@ class DownloadBottomSheetDialog(private var result: ResultItem, private val type
 
             val result = resultViewModel.parseQueries(listOf(result.url))
             if (result.isEmpty()){
-                withContext(Dispatchers.Main){
-                    Looper.prepare().run {
-                        Toast.makeText(requireContext(), "No Results Found!", Toast.LENGTH_SHORT).show()
-                    }
-                    dismiss()
-                }
                 return@launch
             }
 
@@ -421,6 +439,21 @@ class DownloadBottomSheetDialog(private var result: ResultItem, private val type
                 }
             }
         }
+        shimmerLoading.setOnClickListener {
+            updateJob.cancel()
+        }
+        updateJob.invokeOnCompletion {
+            requireActivity().runOnUiThread {
+                title.visibility = View.VISIBLE
+                subtitle.visibility = View.VISIBLE
+                shimmerLoading.visibility = View.GONE
+                shimmerLoadingSubtitle.visibility = View.GONE
+                shimmerLoading.stopShimmer()
+                shimmerLoadingSubtitle.stopShimmer()
+                (updateItem.parent as LinearLayout).visibility = View.VISIBLE
+            }
+        }
+        updateJob.start()
     }
 
     private fun initUpdateFormats(url: String){
@@ -436,7 +469,11 @@ class DownloadBottomSheetDialog(private var result: ResultItem, private val type
                 }
             }
 
-            val formats = infoUtil.getFormats(url).toMutableList()
+            val formats = runCatching {
+                infoUtil.getFormats(url).toMutableList()
+            }.getOrElse {
+                mutableListOf()
+            }
 
             withContext(Dispatchers.Main){
                 runCatching {

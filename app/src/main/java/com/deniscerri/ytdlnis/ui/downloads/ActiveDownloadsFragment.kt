@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
+import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -17,7 +18,7 @@ import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import androidx.work.WorkQuery
 import com.deniscerri.ytdlnis.R
-import com.deniscerri.ytdlnis.adapter.ActiveDownloadAdapter
+import com.deniscerri.ytdlnis.ui.adapter.ActiveDownloadAdapter
 import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.repository.DownloadRepository
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
@@ -41,6 +42,7 @@ class ActiveDownloadsFragment : Fragment(), ActiveDownloadAdapter.OnItemClickLis
     lateinit var downloadItem: DownloadItem
     private lateinit var notificationUtil: NotificationUtil
     private lateinit var pauseResume: MaterialButton
+    private lateinit var noResults: RelativeLayout
     private lateinit var workManager: WorkManager
 
 
@@ -71,6 +73,7 @@ class ActiveDownloadsFragment : Fragment(), ActiveDownloadAdapter.OnItemClickLis
         activeRecyclerView.adapter = activeDownloads
         activeRecyclerView.layoutManager = GridLayoutManager(context, resources.getInteger(R.integer.grid_size))
         pauseResume = view.findViewById(R.id.pause_resume)
+        noResults = view.findViewById(R.id.no_results)
 
         pauseResume.setOnClickListener {
             if (pauseResume.text == requireContext().getString(R.string.pause)){
@@ -168,6 +171,7 @@ class ActiveDownloadsFragment : Fragment(), ActiveDownloadAdapter.OnItemClickLis
                 activeDownloads.notifyDataSetChanged()
                 pauseResume.visibility = View.GONE
             }
+            noResults.visibility = if (it.isEmpty()) View.VISIBLE else View.GONE
         }
     }
 

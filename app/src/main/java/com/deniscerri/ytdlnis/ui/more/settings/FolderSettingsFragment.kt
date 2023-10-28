@@ -2,6 +2,7 @@ package com.deniscerri.ytdlnis.ui.more.settings
 
 import android.app.Activity
 import android.content.Intent
+import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Build.VERSION
 import android.os.Bundle
@@ -35,14 +36,16 @@ class FolderSettingsFragment : BaseSettingsFragment() {
     private var videoFilenameTemplate : Preference? = null
     private var clearCache: Preference? = null
     private var moveCache: Preference? = null
+    private lateinit var preferences: SharedPreferences
+    private lateinit var editor: SharedPreferences.Editor
 
     private var activeDownloadCount = 0
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.folders_preference, rootKey)
 
-        val preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
-        val editor = preferences.edit()
+        preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
+        editor = preferences.edit()
 
         musicPath = findPreference("music_path")
         videoPath = findPreference("video_path")
@@ -110,7 +113,7 @@ class FolderSettingsFragment : BaseSettingsFragment() {
                 val intent = Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
                 val uri = Uri.parse("package:" + requireContext().packageName)
                 intent.data = uri
-                accessAllFilesLauncher.launch(intent)
+                startActivity(intent)
                 true
             }
 
@@ -180,6 +183,18 @@ class FolderSettingsFragment : BaseSettingsFragment() {
 
     }
 
+    override fun onResume() {
+        if((VERSION.SDK_INT >= 30 && Environment.isExternalStorageManager()) ||
+            VERSION.SDK_INT < 30) {
+            accessAllFiles!!.isVisible = false
+            cacheDownloads!!.isEnabled = true
+        }else{
+            editor.putBoolean("cache_downloads", true).apply()
+            cacheDownloads!!.isEnabled = false
+        }
+        super.onResume()
+    }
+
     private var musicPathResultLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
@@ -220,15 +235,6 @@ class FolderSettingsFragment : BaseSettingsFragment() {
                 )
             }
             changePath(commandPath, result.data, COMMAND_PATH_CODE)
-        }
-    }
-
-    private var accessAllFilesLauncher = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()
-    ) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            accessAllFiles?.isVisible = false
-            cacheDownloads?.isEnabled = true
         }
     }
 

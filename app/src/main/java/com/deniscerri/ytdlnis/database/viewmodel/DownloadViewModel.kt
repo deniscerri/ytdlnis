@@ -6,13 +6,11 @@ import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.content.res.Resources
 import android.net.ConnectivityManager
-import android.os.Bundle
 import android.os.Looper
 import android.util.DisplayMetrics
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
@@ -29,7 +27,6 @@ import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.DBManager
 import com.deniscerri.ytdlnis.database.dao.CommandTemplateDao
 import com.deniscerri.ytdlnis.database.dao.DownloadDao
-import com.deniscerri.ytdlnis.database.dao.HistoryDao
 import com.deniscerri.ytdlnis.database.dao.ResultDao
 import com.deniscerri.ytdlnis.database.models.AudioPreferences
 import com.deniscerri.ytdlnis.database.models.CommandTemplate
@@ -272,7 +269,10 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
         }
 
         if (preferredAudioFormats.isEmpty()){
-            preferredAudioFormats.add(getFormat(resultItem.formats, Type.audio).format_id)
+            val audioF = getFormat(resultItem.formats, Type.audio)
+            if (!infoUtil.getGenericAudioFormats(resources).contains(audioF)){
+                preferredAudioFormats.add(audioF.format_id)
+            }
         }
 
         val videoPreferences = VideoPreferences(
@@ -465,7 +465,12 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
                 )
             }
             else -> {
-                val c = commandTemplateDao.getFirst()
+                val lastUsedCommandTemplate = sharedPreferences.getString("lastCommandTemplateUsed", "")!!
+                val c = if (lastUsedCommandTemplate.isBlank()){
+                    commandTemplateDao.getFirst() ?: CommandTemplate(0,"","", false)
+                }else{
+                    commandTemplateDao.getTemplateByContent(lastUsedCommandTemplate) ?: CommandTemplate(0, "", lastUsedCommandTemplate, false)
+                }
                 return generateCommandFormat(c)
             }
         }
@@ -474,7 +479,7 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
     fun generateCommandFormat(c: CommandTemplate) : Format {
         return Format(
             c.title,
-            "",
+            c.id.toString(),
             "",
             "",
             "",
@@ -486,7 +491,7 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
 
 
     fun getLatestCommandTemplateAsFormat() : Format {
-        val t = commandTemplateDao.getFirst()
+        val t = commandTemplateDao.getFirst()!!
         return Format(t.title, "", "", "", "", 0, t.content)
     }
 
@@ -591,7 +596,7 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
         startDownloadWorker(emptyList())
     }
 
-    suspend fun queueDownloads(items: List<DownloadItem>, ignoreDuplicate : Boolean = false) {
+    suspend fun queueDownloads(items: List<DownloadItem>, ignoreDuplicate : Boolean = false) = CoroutineScope(Dispatchers.IO).launch  {
         val context = App.instance
         val alarmScheduler = AlarmScheduler(context)
         val activeAndQueuedDownloads = withContext(Dispatchers.IO){

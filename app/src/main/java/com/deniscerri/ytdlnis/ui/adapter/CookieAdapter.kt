@@ -1,11 +1,10 @@
-package com.deniscerri.ytdlnis.adapter
+package com.deniscerri.ytdlnis.ui.adapter
 
 import android.app.Activity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.AsyncDifferConfig
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -14,7 +13,9 @@ import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.CookieItem
 import com.google.android.material.card.MaterialCardView
 
-class CookieAdapter(onItemClickListener: OnItemClickListener, activity: Activity) : ListAdapter<CookieItem?, CookieAdapter.ViewHolder>(AsyncDifferConfig.Builder(DIFF_CALLBACK).build()) {
+class CookieAdapter(onItemClickListener: OnItemClickListener, activity: Activity) : ListAdapter<CookieItem?, CookieAdapter.ViewHolder>(AsyncDifferConfig.Builder(
+    DIFF_CALLBACK
+).build()) {
     private val onItemClickListener: OnItemClickListener
     private val activity: Activity
 

@@ -1,20 +1,12 @@
 package com.deniscerri.ytdlnis.ui.more.terminal
 
-import android.annotation.SuppressLint
-import android.content.ClipboardManager
-import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.HorizontalScrollView
-import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
-import androidx.activity.addCallback
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.forEach
 import androidx.core.view.get
 import androidx.fragment.app.Fragment
@@ -23,17 +15,14 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.work.WorkInfo
 import androidx.work.WorkManager
-import androidx.work.WorkQuery
 import com.deniscerri.ytdlnis.R
-import com.deniscerri.ytdlnis.adapter.TerminalDownloadsAdapter
+import com.deniscerri.ytdlnis.ui.adapter.TerminalDownloadsAdapter
 import com.deniscerri.ytdlnis.database.models.TerminalItem
 import com.deniscerri.ytdlnis.database.viewmodel.TerminalViewModel
 import com.deniscerri.ytdlnis.util.UiUtil.enableFastScroll
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.progressindicator.LinearProgressIndicator
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 

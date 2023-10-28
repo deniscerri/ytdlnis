@@ -21,7 +21,6 @@
                 android:paddingHorizontal="10dp"
                 android:paddingBottom="10dp"
                 android:hint="@string/title"
-                app:endIconMode="custom"
                 style="@style/Widget.Material3.TextInputLayout.FilledBox">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -44,7 +43,6 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="40"
                     android:hint="@string/author"
-                    app:endIconMode="custom"
                     style="@style/Widget.Material3.TextInputLayout.FilledBox">
 
                     <com.google.android.material.textfield.TextInputEditText

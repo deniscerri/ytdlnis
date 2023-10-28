@@ -23,7 +23,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
-import com.deniscerri.ytdlnis.adapter.DownloadLogsAdapter
+import com.deniscerri.ytdlnis.ui.adapter.DownloadLogsAdapter
 import com.deniscerri.ytdlnis.database.models.LogItem
 import com.deniscerri.ytdlnis.database.viewmodel.LogViewModel
 import com.deniscerri.ytdlnis.util.UiUtil.enableFastScroll

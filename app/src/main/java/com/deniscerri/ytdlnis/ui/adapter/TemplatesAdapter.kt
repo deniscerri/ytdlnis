@@ -1,23 +1,26 @@
-package com.deniscerri.ytdlnis.adapter
+package com.deniscerri.ytdlnis.ui.adapter
 
+import android.annotation.SuppressLint
 import android.app.Activity
-import android.opengl.Visibility
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.AsyncDifferConfig
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.CommandTemplate
+import com.deniscerri.ytdlnis.database.models.LogItem
 import com.google.android.material.card.MaterialCardView
 
-class TemplatesAdapter(onItemClickListener: OnItemClickListener, activity: Activity) : ListAdapter<CommandTemplate?, TemplatesAdapter.ViewHolder>(AsyncDifferConfig.Builder(DIFF_CALLBACK).build()) {
+class TemplatesAdapter(onItemClickListener: OnItemClickListener, activity: Activity) : ListAdapter<CommandTemplate?, TemplatesAdapter.ViewHolder>(AsyncDifferConfig.Builder(
+    DIFF_CALLBACK
+).build()) {
     private val onItemClickListener: OnItemClickListener
     private val activity: Activity
+    private val checkedItems: ArrayList<Long> = ArrayList()
 
     init {
         this.onItemClickListener = onItemClickListener
@@ -52,19 +55,74 @@ class TemplatesAdapter(onItemClickListener: OnItemClickListener, activity: Activ
         if (item!!.useAsExtraCommand) useInExtraCommands.visibility = View.VISIBLE
         else useInExtraCommands.visibility = View.GONE
 
+        if (checkedItems.contains(item.id)) {
+            card.isChecked = true
+            card.strokeWidth = 5
+        } else {
+            card.isChecked = false
+            card.strokeWidth = 0
+        }
         card.setOnClickListener {
-            onItemClickListener.onItemClick(item, position)
+            if (checkedItems.size > 0) {
+                checkCard(card, item.id)
+            } else {
+                onItemClickListener.onItemClick(item, position)
+            }
         }
 
         card.setOnLongClickListener {
-            onItemClickListener.onDelete(item); true
+            checkCard(card, item.id)
+            true
         }
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun clearCheckeditems() {
+        for (i in 0 until itemCount){
+            val item = getItem(i)
+            if (checkedItems.find { it == item?.id } != null){
+                checkedItems.remove(item?.id)
+                notifyItemChanged(i)
+            }
+        }
+
+        checkedItems.clear()
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun checkAll(items: List<CommandTemplate?>?){
+        checkedItems.clear()
+        checkedItems.addAll(items!!.map { it!!.id })
+        notifyDataSetChanged()
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun invertSelected(items: List<CommandTemplate?>?){
+        val invertedList = mutableListOf<Long>()
+        items?.forEach {
+            if (!checkedItems.contains(it!!.id)) invertedList.add(it.id)
+        }
+        checkedItems.clear()
+        checkedItems.addAll(invertedList)
+        notifyDataSetChanged()
+    }
+
+    private fun checkCard(card: MaterialCardView, itemID: Long) {
+        if (card.isChecked) {
+            card.strokeWidth = 0
+            checkedItems.remove(itemID)
+        } else {
+            card.strokeWidth = 5
+            checkedItems.add(itemID)
+        }
+        card.isChecked = !card.isChecked
+        onItemClickListener.onCardSelect(itemID, card.isChecked)
     }
 
     interface OnItemClickListener {
         fun onItemClick(commandTemplate: CommandTemplate, index: Int)
         fun onSelected(commandTemplate: CommandTemplate)
-        fun onDelete(commandTemplate: CommandTemplate)
+        fun onCardSelect(itemID: Long, isChecked: Boolean)
     }
 
     companion object {

@@ -1,7 +1,6 @@
 package com.deniscerri.ytdlnis.database.dao
 
 import androidx.room.*
-import com.deniscerri.ytdlnis.database.models.CookieItem
 import com.deniscerri.ytdlnis.database.models.LogItem
 import kotlinx.coroutines.flow.Flow
 

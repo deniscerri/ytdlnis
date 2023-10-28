@@ -8,10 +8,8 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.util.Patterns
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
@@ -23,6 +21,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceManager
+import com.afollestad.materialdialogs.utils.MDUtil.getStringArray
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.CommandTemplate
 import com.deniscerri.ytdlnis.database.models.DownloadItem
@@ -30,7 +29,6 @@ import com.deniscerri.ytdlnis.database.models.Format
 import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.deniscerri.ytdlnis.database.viewmodel.CommandTemplateViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
-import com.deniscerri.ytdlnis.databinding.FragmentHomeBinding
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.UiUtil
 import com.deniscerri.ytdlnis.util.UiUtil.enableTextHighlight
@@ -39,7 +37,9 @@ import com.google.android.material.card.MaterialCardView
 import com.google.android.material.chip.Chip
 import com.google.android.material.textfield.TextInputLayout
 import com.google.gson.Gson
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
@@ -66,7 +66,7 @@ class DownloadCommandFragment(private val resultItem: ResultItem? = null, privat
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
         commandTemplateViewModel = ViewModelProvider(this)[CommandTemplateViewModel::class.java]
         preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
-        shownFields = preferences.getStringSet("modify_download_card", setOf())!!.toList()
+        shownFields = preferences.getStringSet("modify_download_card", setOf())!!.toList().ifEmpty { requireContext().getStringArray(R.array.modify_download_card_values).toList() }
         return fragmentView
     }
 
@@ -83,6 +83,8 @@ class DownloadCommandFragment(private val resultItem: ResultItem? = null, privat
                     downloadViewModel.createDownloadItemFromResult(resultItem, url, DownloadViewModel.Type.command)
                 }
             }
+
+            preferences.edit().putString("lastCommandTemplateUsed", downloadItem.format.format_note).apply()
 
             if (!Patterns.WEB_URL.matcher(downloadItem.url).matches()){
                 downloadItem.format = downloadViewModel.generateCommandFormat(CommandTemplate(0,"txt", "-a \"${downloadItem.url}\"", false))
@@ -117,6 +119,7 @@ class DownloadCommandFragment(private val resultItem: ResultItem? = null, privat
                             0,
                             p0.toString()
                         )
+                        preferences.edit().putString("lastCommandTemplateUsed", p0.toString()).apply()
                     }
                 })
 
@@ -132,7 +135,6 @@ class DownloadCommandFragment(private val resultItem: ResultItem? = null, privat
 
                 val commandTemplateCard = view.findViewById<MaterialCardView>(R.id.command_card)
                 runCatching {
-                    populateCommandCard(commandTemplateCard, templates.first())
                     commandTemplateCard.setOnClickListener {
                         lifecycleScope.launch {
                             UiUtil.showCommandTemplates(requireActivity(), commandTemplateViewModel){
@@ -141,6 +143,7 @@ class DownloadCommandFragment(private val resultItem: ResultItem? = null, privat
                                     chosenCommandView.editText!!.text.insert(chosenCommandView.editText!!.selectionStart, "${c.content} ")
                                 }
                                 populateCommandCard(commandTemplateCard, it.first())
+
                                 downloadItem.format = Format(
                                     it.first().title,
                                     "",
@@ -148,15 +151,20 @@ class DownloadCommandFragment(private val resultItem: ResultItem? = null, privat
                                     "",
                                     "",
                                     0,
-                                    it.map { c -> c.content }.joinToString { " " }
+                                    it.joinToString(" ") { c -> c.content }
                                 )
+                                preferences.edit().putString("lastCommandTemplateUsed", downloadItem.format.format_note).apply()
                             }
                         }
 
 
                     }
-                    if (downloadItem.url.isEmpty()){
-                        view.findViewById<MaterialCardView>(R.id.command_card).alpha = 0.3f
+                    val existingTemplate = withContext(Dispatchers.IO){
+                        templates.firstOrNull { it.content.replace("^ +|\n| +$".toRegex(), " ") == downloadItem.format.format_note.trim() }
+                    }
+                    populateCommandCard(commandTemplateCard,existingTemplate ?: templates.first())
+                    if (downloadItem.url.isEmpty() || existingTemplate == null){
+                        commandTemplateCard.alpha = 0.3f
                     }
                 }.onFailure {
                     commandTemplateCard.visibility = View.GONE
@@ -189,7 +197,7 @@ class DownloadCommandFragment(private val resultItem: ResultItem? = null, privat
 
 
                 view.findViewById<LinearLayout>(R.id.adjust).apply {
-                    visibility = if (shownFields.contains("adjust_command")) View.VISIBLE else View.GONE
+                    visibility = if (shownFields.contains("adjust_templates")) View.VISIBLE else View.GONE
                     if (isVisible){
                         UiUtil.configureCommand(
                             view,
@@ -208,6 +216,7 @@ class DownloadCommandFragment(private val resultItem: ResultItem? = null, privat
                                         0,
                                         it.content
                                     )
+                                    preferences.edit().putString("lastCommandTemplateUsed", it.content).apply()
                                     commandTemplateCard.visibility = View.VISIBLE
                                     view.findViewById<TextView>(R.id.command_txt).visibility = View.VISIBLE
                                     view.findViewById<Chip>(R.id.editSelected).isEnabled = true
@@ -237,6 +246,7 @@ class DownloadCommandFragment(private val resultItem: ResultItem? = null, privat
                                         0,
                                         it.content
                                     )
+                                    preferences.edit().putString("lastCommandTemplateUsed", it.content).apply()
                                 }
                             },
                             shortcutClicked = {
@@ -244,6 +254,7 @@ class DownloadCommandFragment(private val resultItem: ResultItem? = null, privat
                                     itemSelected = {
                                         chosenCommandView.editText!!.setText("${chosenCommandView.editText!!.text} $it")
                                         downloadItem.format.format_note = chosenCommandView.editText!!.text.toString()
+                                        preferences.edit().putString("lastCommandTemplateUsed",  downloadItem.format.format_note).apply()
                                     },
                                     itemRemoved = {removed ->
                                         chosenCommandView.editText!!.setText(chosenCommandView.editText!!.text.replace("(${
@@ -252,6 +263,8 @@ class DownloadCommandFragment(private val resultItem: ResultItem? = null, privat
                                             )
                                         })(?!.*\\1)".toRegex(), "").trimEnd())
                                         downloadItem.format.format_note = chosenCommandView.editText!!.text.toString().trimEnd()
+                                        preferences.edit().putString("lastCommandTemplateUsed",
+                                            chosenCommandView.editText!!.text.toString().trimEnd()).apply()
                                     })
                             }
                         )

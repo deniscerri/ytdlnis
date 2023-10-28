@@ -12,10 +12,8 @@ import androidx.lifecycle.viewModelScope
 import com.deniscerri.ytdlnis.database.DBManager
 import com.deniscerri.ytdlnis.database.models.CommandTemplate
 import com.deniscerri.ytdlnis.database.models.CommandTemplateExport
-import com.deniscerri.ytdlnis.database.models.HistoryItem
 import com.deniscerri.ytdlnis.database.models.TemplateShortcut
 import com.deniscerri.ytdlnis.database.repository.CommandTemplateRepository
-import com.deniscerri.ytdlnis.database.repository.HistoryRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -28,8 +26,9 @@ class CommandTemplateViewModel(private val application: Application) : AndroidVi
     val sortOrder = MutableLiveData(DBManager.SORTING.DESC)
     val sortType = MutableLiveData(CommandTemplateRepository.CommandTemplateSortType.DATE)
     private val queryFilter = MutableLiveData("")
-    private var _items = MediatorLiveData<List<CommandTemplate>>()
+
     val allItems: LiveData<List<CommandTemplate>>
+    private var _items = MediatorLiveData<List<CommandTemplate>>()
 
     val shortcuts : LiveData<List<TemplateShortcut>>
     private val jsonFormat = Json { prettyPrint = true }

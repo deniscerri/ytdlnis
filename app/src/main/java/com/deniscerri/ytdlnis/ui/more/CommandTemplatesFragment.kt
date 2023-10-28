@@ -1,5 +1,7 @@
 package com.deniscerri.ytdlnis.ui.more
 
+import android.content.ClipboardManager
+import android.content.Context
 import android.content.DialogInterface
 import android.graphics.Canvas
 import android.graphics.Color
@@ -9,12 +11,15 @@ import android.os.Looper
 import android.text.InputType
 import android.util.DisplayMetrics
 import android.view.LayoutInflater
+import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.RelativeLayout
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.view.ActionMode
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -26,11 +31,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
-import com.deniscerri.ytdlnis.adapter.TemplatesAdapter
+import com.deniscerri.ytdlnis.ui.adapter.TemplatesAdapter
 import com.deniscerri.ytdlnis.database.models.CommandTemplate
 import com.deniscerri.ytdlnis.database.viewmodel.CommandTemplateViewModel
 import com.deniscerri.ytdlnis.database.repository.CommandTemplateRepository.CommandTemplateSortType
 import com.deniscerri.ytdlnis.database.DBManager.SORTING
+import com.deniscerri.ytdlnis.database.models.CommandTemplateExport
+import com.deniscerri.ytdlnis.database.models.LogItem
 import com.deniscerri.ytdlnis.util.UiUtil
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.MaterialToolbar
@@ -42,6 +49,8 @@ import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
 
 class CommandTemplatesFragment : Fragment(), TemplatesAdapter.OnItemClickListener {
@@ -53,6 +62,9 @@ class CommandTemplatesFragment : Fragment(), TemplatesAdapter.OnItemClickListene
     private lateinit var noResults: RelativeLayout
     private lateinit var mainActivity: MainActivity
     private lateinit var sortChip: Chip
+    private var selectedObjects: ArrayList<CommandTemplate>? = null
+    private var actionMode : ActionMode? = null
+    private val jsonFormat = Json { prettyPrint = true }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -60,6 +72,7 @@ class CommandTemplatesFragment : Fragment(), TemplatesAdapter.OnItemClickListene
         savedInstanceState: Bundle?
     ): View? {
         mainActivity = activity as MainActivity
+        selectedObjects = arrayListOf()
         return inflater.inflate(R.layout.fragment_command_templates, container, false)
     }
 
@@ -87,7 +100,7 @@ class CommandTemplatesFragment : Fragment(), TemplatesAdapter.OnItemClickListene
         }
 
 
-        commandTemplateViewModel = ViewModelProvider(this)[CommandTemplateViewModel::class.java]
+        commandTemplateViewModel = ViewModelProvider(requireActivity())[CommandTemplateViewModel::class.java]
         commandTemplateViewModel.allItems.observe(viewLifecycleOwner) {
             if (it.isEmpty()) noResults.visibility = View.VISIBLE
             else noResults.visibility = View.GONE
@@ -259,14 +272,109 @@ class CommandTemplatesFragment : Fragment(), TemplatesAdapter.OnItemClickListene
     override fun onSelected(commandTemplate: CommandTemplate) {
     }
 
-    override fun onDelete(commandTemplate: CommandTemplate) {
-        val deleteDialog = MaterialAlertDialogBuilder(requireContext())
-        deleteDialog.setTitle(getString(R.string.you_are_going_to_delete) + " \"" + commandTemplate.title + "\"!")
-        deleteDialog.setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, _: Int -> dialogInterface.cancel() }
-        deleteDialog.setPositiveButton(getString(R.string.ok)) { _: DialogInterface?, _: Int ->
-            commandTemplateViewModel.delete(commandTemplate)
+    override fun onCardSelect(itemID: Long, isChecked: Boolean) {
+        val item = templatesList.find { it.id == itemID }
+        if (isChecked) {
+            selectedObjects!!.add(item!!)
+            if (actionMode == null){
+                actionMode = (activity as AppCompatActivity?)!!.startSupportActionMode(contextualActionBar)
+
+            }else{
+                actionMode!!.title = "${selectedObjects!!.size} ${getString(R.string.selected)}"
+            }
         }
-        deleteDialog.show()
+        else {
+            selectedObjects!!.remove(item)
+            actionMode?.title = "${selectedObjects!!.size} ${getString(R.string.selected)}"
+            if (selectedObjects!!.isEmpty()){
+                actionMode?.finish()
+            }
+        }
+    }
+
+    private val contextualActionBar = object : ActionMode.Callback {
+        override fun onCreateActionMode(mode: ActionMode?, menu: Menu?): Boolean {
+            mode!!.menuInflater.inflate(R.menu.templates_menu_context, menu)
+            mode.title = "${selectedObjects!!.size} ${getString(R.string.selected)}"
+            return true
+        }
+
+        override fun onPrepareActionMode(
+            mode: ActionMode?,
+            menu: Menu?
+        ): Boolean {
+            return false
+        }
+
+        override fun onActionItemClicked(
+            mode: ActionMode?,
+            item: MenuItem?
+        ): Boolean {
+            return when (item!!.itemId) {
+                R.id.delete_results -> {
+                    val deleteDialog = MaterialAlertDialogBuilder(requireContext())
+                    deleteDialog.setTitle(getString(R.string.you_are_going_to_delete_multiple_items))
+                    deleteDialog.setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, _: Int -> dialogInterface.cancel() }
+                    deleteDialog.setPositiveButton(getString(R.string.ok)) { _: DialogInterface?, _: Int ->
+                        for (obj in selectedObjects!!){
+                            commandTemplateViewModel.delete(obj)
+                        }
+                        clearCheckedItems()
+                        actionMode?.finish()
+                    }
+                    deleteDialog.show()
+                    true
+                }
+                R.id.select_all -> {
+                    templatesAdapter.checkAll(templatesList)
+                    selectedObjects?.clear()
+                    templatesList.forEach { selectedObjects?.add(it) }
+                    mode?.title = getString(R.string.all_items_selected)
+                    true
+                }
+                R.id.invert_selected -> {
+                    templatesAdapter.invertSelected(templatesList)
+                    val invertedList = arrayListOf<CommandTemplate>()
+                    templatesList.forEach {
+                        if (!selectedObjects?.contains(it)!!) invertedList.add(it)
+                    }
+                    selectedObjects?.clear()
+                    selectedObjects?.addAll(invertedList)
+                    actionMode!!.title = "${selectedObjects!!.size} ${getString(R.string.selected)}"
+                    if (invertedList.isEmpty()) actionMode?.finish()
+                    true
+                }
+                R.id.export_clipboard -> {
+                    lifecycleScope.launch{
+                        val output = jsonFormat.encodeToString(
+                            CommandTemplateExport(
+                                templates = selectedObjects!!.toList(),
+                                shortcuts = listOf()
+                            )
+                        )
+
+                        val clipboard: ClipboardManager =
+                            requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                        clipboard.setText(output)
+                        Snackbar.make(recyclerView, getString(R.string.copied_to_clipboard), Snackbar.LENGTH_LONG).show()
+                        clearCheckedItems()
+                        actionMode?.finish()
+                    }
+                    true
+                }
+                else -> false
+            }
+        }
+
+        override fun onDestroyActionMode(mode: ActionMode?) {
+            actionMode = null
+            clearCheckedItems()
+        }
+    }
+
+    private fun clearCheckedItems(){
+        templatesAdapter.clearCheckeditems()
+        selectedObjects?.clear()
     }
 
     private var simpleCallback: ItemTouchHelper.SimpleCallback =
@@ -282,7 +390,9 @@ class CommandTemplatesFragment : Fragment(), TemplatesAdapter.OnItemClickListene
                     ItemTouchHelper.LEFT -> {
                         val deletedItem = templatesList[position]
                         templatesAdapter.notifyItemChanged(position)
-                        onDelete(deletedItem)
+                        UiUtil.showGenericDeleteDialog(requireContext(), deletedItem.title){
+                            commandTemplateViewModel.delete(deletedItem)
+                        }
                     }
 
                 }

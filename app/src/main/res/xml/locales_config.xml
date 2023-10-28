@@ -28,6 +28,7 @@
     <locale android:name="pt-BR" />
     <locale android:name="ru"/>
     <locale android:name="ro-RO"/>
+    <locale android:name="sk"/>
     <locale android:name="sq-AL"/>
     <locale android:name="ta"/>
     <locale android:name="te"/>

@@ -182,7 +182,7 @@
     <string name="dont_ask_again">Don\'t ask again</string>
     <string name="end">End</string>
     <string name="start">Start</string>
-    <string name="update_formats_summary">Automatically search for missing formats when clicking the format card</string>
+    <string name="update_formats_summary">Fetch the formats as soon as the download card appears</string>
     <string name="ignore_battery_optimization">Ignore Battery Optimization</string>
     <string name="cut">Cut</string>
     <string name="new_cut">New Cut</string>
@@ -243,7 +243,7 @@
     <string name="pause">Pause</string>
     <string name="resume">Resume</string>
     <string name="updating_download_data">Updating Download Item Data</string>
-    <string name="keep_cache">Keep Cache</string>
+    <string name="keep_cache">Keep Fragments</string>
     <string name="keep_cache_summary">Don\'t delete temporary files after the download is finished</string>
     <string name="backup">Backup</string>
     <string name="restore">Restore</string>
@@ -318,4 +318,5 @@
     <string name="schedule">Schedule</string>
     <string name="skip">Skip</string>
     <string name="modify_download_card">Modify Download Card</string>
+    <string name="export_file">Export File</string>
 </resources>

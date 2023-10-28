@@ -1,4 +1,4 @@
-package com.deniscerri.ytdlnis.adapter
+package com.deniscerri.ytdlnis.ui.adapter
 
 import android.app.Activity
 import android.content.SharedPreferences
@@ -24,7 +24,9 @@ import com.google.android.material.button.MaterialButton
 import com.squareup.picasso.Picasso
 import java.util.Locale
 
-class ConfigureMultipleDownloadsAdapter(onItemClickListener: OnItemClickListener, activity: Activity) : ListAdapter<DownloadItem?, ConfigureMultipleDownloadsAdapter.ViewHolder>(AsyncDifferConfig.Builder(DIFF_CALLBACK).build()) {
+class ConfigureMultipleDownloadsAdapter(onItemClickListener: OnItemClickListener, activity: Activity) : ListAdapter<DownloadItem?, ConfigureMultipleDownloadsAdapter.ViewHolder>(AsyncDifferConfig.Builder(
+    DIFF_CALLBACK
+).build()) {
     private val onItemClickListener: OnItemClickListener
     private val activity: Activity
     private val sharedPreferences : SharedPreferences
@@ -35,7 +37,7 @@ class ConfigureMultipleDownloadsAdapter(onItemClickListener: OnItemClickListener
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity)
     }
 
-    class ViewHolder(itemView: View, onItemClickListener: OnItemClickListener?) : RecyclerView.ViewHolder(itemView) {
+    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val cardView: FrameLayout
 
         init {
@@ -46,7 +48,7 @@ class ConfigureMultipleDownloadsAdapter(onItemClickListener: OnItemClickListener
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val cardView = LayoutInflater.from(parent.context)
             .inflate(R.layout.download_card, parent, false)
-        return ViewHolder(cardView, onItemClickListener)
+        return ViewHolder(cardView)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -136,11 +138,16 @@ class ConfigureMultipleDownloadsAdapter(onItemClickListener: OnItemClickListener
         card.setOnClickListener {
             onItemClickListener.onCardClick(item.url)
         }
+
+        card.setOnLongClickListener {
+            onItemClickListener.onDelete(item.url); true
+        }
     }
 
     interface OnItemClickListener {
         fun onButtonClick(itemURL: String)
         fun onCardClick(itemURL: String)
+        fun onDelete(itemURL: String)
     }
 
     companion object {

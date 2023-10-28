@@ -7,7 +7,6 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,6 +22,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceManager
+import com.afollestad.materialdialogs.utils.MDUtil.getStringArray
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.models.Format
@@ -35,6 +35,9 @@ import com.deniscerri.ytdlnis.util.InfoUtil
 import com.deniscerri.ytdlnis.util.UiUtil
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.textfield.TextInputLayout
+import com.google.android.material.textfield.TextInputLayout.END_ICON_CUSTOM
+import com.google.android.material.textfield.TextInputLayout.END_ICON_NONE
+import com.google.android.material.textfield.TextInputLayout.EndIconMode
 import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -71,7 +74,7 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
         infoUtil = InfoUtil(requireContext())
         genericVideoFormats = infoUtil.getGenericVideoFormats(requireContext().resources)
         preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
-        shownFields = preferences.getStringSet("modify_download_card", setOf())!!.toList()
+        shownFields = preferences.getStringSet("modify_download_card", setOf())!!.toList().ifEmpty { requireContext().getStringArray(R.array.modify_download_card_values).toList() }
         return fragmentView
     }
 
@@ -95,6 +98,7 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
                 title.visibility = if (shownFields.contains("title")) View.VISIBLE else View.GONE
                 if (title.editText?.text?.isEmpty() == true){
                     title.editText!!.setText(downloadItem.title)
+                    title.endIconMode = END_ICON_NONE
                 }
                 title.editText!!.addTextChangedListener(object : TextWatcher {
                     override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
@@ -108,6 +112,7 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
                 author.visibility = if (shownFields.contains("author")) View.VISIBLE else View.GONE
                 if (author.editText?.text?.isEmpty() == true){
                     author.editText!!.setText(downloadItem.author)
+                    author.endIconMode = END_ICON_NONE
                 }
                 author.editText!!.addTextChangedListener(object : TextWatcher {
                     override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
@@ -119,14 +124,30 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
 
                 if (savedInstanceState?.containsKey("updated") == true){
                     if (!listOf(resultItem?.title, downloadItem.title).contains(title.editText?.text.toString())){
+                        title.endIconMode = END_ICON_CUSTOM
                         title.endIconDrawable = AppCompatResources.getDrawable(requireContext(), R.drawable.ic_refresh)
                         downloadItem.title = title.editText?.text.toString()
                     }
 
                     if (!listOf(resultItem?.author, downloadItem.author).contains(author.editText?.text.toString())){
+                        author.endIconMode = END_ICON_CUSTOM
                         author.endIconDrawable = AppCompatResources.getDrawable(requireContext(), R.drawable.ic_refresh)
                         downloadItem.author = author.editText?.text.toString()
                     }
+                }
+
+                title.setEndIconOnClickListener {
+                    if (resultItem != null){
+                        title.editText?.setText(resultItem?.title)
+                    }
+                    title.endIconMode = END_ICON_NONE
+                }
+
+                author.setEndIconOnClickListener {
+                    if (resultItem != null){
+                        author.editText?.setText(resultItem?.author)
+                    }
+                    author.endIconMode = END_ICON_NONE
                 }
 
                 saveDir = view.findViewById(R.id.outputPath)
@@ -282,10 +303,8 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
                             saveSubtitlesClicked = {
                                 downloadItem.videoPreferences.writeSubs = it
                             },
-                            subtitleLanguagesClicked = {
-                                UiUtil.showSubtitleLanguagesDialog(requireActivity(), downloadItem.videoPreferences.subsLanguages){
-                                    downloadItem.videoPreferences.subsLanguages = it
-                                }
+                            subtitleLanguagesSet = {
+                                downloadItem.videoPreferences.subsLanguages = it
                             },
                             removeAudioClicked = {
                                 downloadItem.videoPreferences.removeAudio = it
@@ -313,9 +332,9 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
         downloadItem.title = t
         downloadItem.author = a
         title.editText?.setText(t)
-        title.endIconDrawable = null
+        title.endIconMode = END_ICON_NONE
         author.editText?.setText(a)
-        title.endIconDrawable = null
+        title.endIconMode = END_ICON_NONE
     }
 
     override fun updateUI(res: ResultItem?) {

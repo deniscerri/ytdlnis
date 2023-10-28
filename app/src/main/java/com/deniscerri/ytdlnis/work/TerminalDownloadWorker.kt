@@ -24,7 +24,6 @@ import com.deniscerri.ytdlnis.util.InfoUtil
 import com.deniscerri.ytdlnis.util.NotificationUtil
 import com.yausername.youtubedl_android.YoutubeDL
 import com.yausername.youtubedl_android.YoutubeDLRequest
-import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -45,10 +44,8 @@ class TerminalDownloadWorker(
 
         val dbManager = DBManager.getInstance(context)
         val logRepo = LogRepository(dbManager.logDao)
-
         val notificationUtil = NotificationUtil(context)
         val handler = Handler(Looper.getMainLooper())
-        val infoUtil = InfoUtil(context)
 
         val intent = Intent(context, TerminalActivity::class.java)
         val pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE)
@@ -95,7 +92,7 @@ class TerminalDownloadWorker(
             System.currentTimeMillis(),
         )
 
-        runCatching {
+        kotlin.runCatching {
             if (logDownloads){
                 runBlocking {
                     logItem.id = logRepo.insert(logItem)
@@ -137,12 +134,10 @@ class TerminalDownloadWorker(
             }
 
             return runBlocking {
-                CoroutineScope(Dispatchers.IO).launch {
-                    if (logDownloads) logRepo.update(it.out, logItem.id)
-                    dao.updateLog(it.out, itemId.toLong())
-                    Thread.sleep(1000)
-                    dao.delete(itemId.toLong())
-                }
+                if (logDownloads) logRepo.update(it.out, logItem.id)
+                dao.updateLog(it.out, itemId.toLong())
+                Thread.sleep(1000)
+                dao.delete(itemId.toLong())
                 notificationUtil.cancelDownloadNotification(itemId)
 
                 Result.success()

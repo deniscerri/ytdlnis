@@ -3,7 +3,6 @@ package com.deniscerri.ytdlnis.receiver
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import androidx.preference.PreferenceManager
 import com.deniscerri.ytdlnis.database.DBManager
 import com.deniscerri.ytdlnis.database.repository.DownloadRepository
@@ -13,9 +12,7 @@ import com.yausername.youtubedl_android.YoutubeDL
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
 import java.util.Calendar
-import java.util.Locale
 
 class AlarmStopReceiver : BroadcastReceiver() {
     override fun onReceive(p0: Context?, p1: Intent?) {

@@ -1,4 +1,4 @@
-package com.deniscerri.ytdlnis.adapter
+package com.deniscerri.ytdlnis.ui.adapter
 
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -21,11 +21,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.squareup.picasso.Picasso
-import org.w3c.dom.Text
 import java.util.*
 
 
-class PlaylistAdapter(onItemClickListener: OnItemClickListener, activity: Activity) : ListAdapter<ResultItem?, PlaylistAdapter.ViewHolder>(AsyncDifferConfig.Builder(DIFF_CALLBACK).build()) {
+class PlaylistAdapter(onItemClickListener: OnItemClickListener, activity: Activity) : ListAdapter<ResultItem?, PlaylistAdapter.ViewHolder>(AsyncDifferConfig.Builder(
+    DIFF_CALLBACK
+).build()) {
     private val checkedItems: ArrayList<String>
     private val onItemClickListener: OnItemClickListener
     private val activity: Activity

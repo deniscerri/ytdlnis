@@ -43,7 +43,7 @@
 
         <activity
             android:name=".MainActivity"
-            android:configChanges="smallestScreenSize|layoutDirection|locale|orientation|screenSize"
+            android:configChanges="locale"
             android:exported="true"
             android:windowSoftInputMode="adjustPan">
 
@@ -53,7 +53,6 @@
             android:configChanges="smallestScreenSize|layoutDirection|locale|orientation|screenSize"
             android:excludeFromRecents="true"
             android:exported="true"
-            android:launchMode="singleInstance"
             android:theme="@style/Theme.BottomSheet">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
@@ -125,7 +124,7 @@
             android:enabled="true"
             android:icon="@mipmap/ic_launcher"
             android:roundIcon="@mipmap/ic_launcher_round"
-            android:configChanges="smallestScreenSize|layoutDirection|locale|orientation|screenSize"
+            android:configChanges="locale"
             android:targetActivity=".MainActivity"
             android:windowSoftInputMode="adjustPan"
             android:exported="true">
@@ -147,7 +146,7 @@
             android:exported="true"
             android:icon="@mipmap/ic_launcher_dark"
             android:roundIcon="@mipmap/ic_launcher_round_dark"
-            android:configChanges="smallestScreenSize|layoutDirection|locale|orientation|screenSize"
+            android:configChanges="locale"
             android:targetActivity=".MainActivity"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
@@ -167,7 +166,7 @@
             android:exported="true"
             android:icon="@mipmap/ic_launcher_light"
             android:roundIcon="@mipmap/ic_launcher_round_light"
-            android:configChanges="smallestScreenSize|layoutDirection|locale|orientation|screenSize"
+            android:configChanges="locale"
             android:targetActivity=".MainActivity"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
@@ -183,7 +182,7 @@
 
         <activity
             android:name=".ui.more.WebViewActivity"
-            android:configChanges="smallestScreenSize|layoutDirection|locale|orientation|screenSize"
+            android:configChanges="locale"
             android:exported="true"
             android:parentActivityName=".MainActivity"
             android:windowSoftInputMode="adjustResize">

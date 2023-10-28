@@ -9,6 +9,7 @@ import android.util.Log
 import android.util.Patterns
 import android.widget.Toast
 import androidx.preference.PreferenceManager
+import com.afollestad.materialdialogs.utils.MDUtil.getStringArray
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.ChapterItem
 import com.deniscerri.ytdlnis.database.models.DownloadItem
@@ -553,12 +554,19 @@ class InfoUtil(private val context: Context) {
             request = YoutubeDLRequest(query)
         }else{
             request = YoutubeDLRequest(emptyList())
-            if (searchEngine == "ytsearchmusic"){
-                request.addOption("--default-search", "https://music.youtube.com/search?q=")
-                request.addOption("ytsearch25:\"${query}\"")
-            }else{
-                request.addOption("${searchEngine}25:\"${query}\"")
+            when (searchEngine){
+                "ytsearchmusic" -> {
+                    request.addOption("--default-search", "https://music.youtube.com/search?q=")
+                    request.addOption("ytsearch25:\"${query}\"")
+                }
+                else -> {
+                    request.addOption("${searchEngine}25:\"${query}\"")
+                }
             }
+        }
+        val lang = sharedPreferences.getString("app_language", "en")
+        if (searchEngine == "ytsearch" && context.getStringArray(R.array.subtitle_langs).contains(lang)){
+            request.addOption("--extractor-args", "youtube:lang=$lang")
         }
 
         request.addOption("--flat-playlist")
@@ -954,8 +962,8 @@ class InfoUtil(private val context: Context) {
         if (!sharedPreferences.getBoolean("cache_downloads", true) && File(FileUtil.formatPath(downloadItem.downloadPath)).canWrite()){
             downDir = File(FileUtil.formatPath(downloadItem.downloadPath))
             request.addOption("--no-quiet")
-            request.addOption("-no-simulate")
-            request.addOption("--print", "after_video:'%(filename)s'")
+            request.addOption("--no-simulate")
+            request.addOption("--print", "after_move:'%(filepath,_filename)s'")
         }else{
             val cacheDir = FileUtil.getCachePath(context)
             downDir = File(cacheDir, downloadItem.id.toString())
@@ -1072,7 +1080,9 @@ class InfoUtil(private val context: Context) {
             }
 
             if (downloadItem.extraCommands.isNotBlank()){
-                val conf = File(FileUtil.getCachePath(context) + "/${System.currentTimeMillis()}.txt")
+                val cache = File(FileUtil.getCachePath(context))
+                cache.mkdirs()
+                val conf = File(cache.absolutePath + "/${System.currentTimeMillis()}.txt")
                 conf.createNewFile()
                 conf.writeText(downloadItem.extraCommands)
                 request.addOption(
@@ -1135,7 +1145,7 @@ class InfoUtil(private val context: Context) {
                     if (sharedPreferences.getBoolean("embed_metadata", true)){
                         request.addOption("--embed-metadata")
 
-                        request.addOption("--parse-metadata", "%(release_year,upload_date)s:%(meta_date)s")
+                        request.addOption("--parse-metadata", "%(release_year,release_date>%Y,upload_date>%Y)s:%(meta_date)s")
 
                         if (downloadItem.playlistTitle.isNotEmpty()) {
                             request.addOption("--parse-metadata", "%(album,playlist,title)s:%(meta_album)s")

@@ -1,11 +1,10 @@
-package com.deniscerri.ytdlnis.adapter
+package com.deniscerri.ytdlnis.ui.adapter
 
 import android.app.Activity
 import android.content.SharedPreferences
 import android.graphics.Color
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,18 +19,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.repository.DownloadRepository
-import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
-import com.google.android.material.chip.Chip
 import com.google.android.material.progressindicator.LinearProgressIndicator
-import com.google.android.material.shape.CornerFamily
-import com.google.android.material.shape.ShapeAppearanceModel
 import com.squareup.picasso.Picasso
 import java.lang.StringBuilder
 
-class ActiveDownloadAdapter(onItemClickListener: OnItemClickListener, activity: Activity) : ListAdapter<DownloadItem?, ActiveDownloadAdapter.ViewHolder>(AsyncDifferConfig.Builder(DIFF_CALLBACK).build()) {
+class ActiveDownloadMinifiedAdapter(onItemClickListener: OnItemClickListener, activity: Activity) : ListAdapter<DownloadItem?, ActiveDownloadMinifiedAdapter.ViewHolder>(AsyncDifferConfig.Builder(
+    DIFF_CALLBACK
+).build()) {
     private val onItemClickListener: OnItemClickListener
     private val activity: Activity
     private val sharedPreferences: SharedPreferences
@@ -52,20 +49,19 @@ class ActiveDownloadAdapter(onItemClickListener: OnItemClickListener, activity: 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val cardView = LayoutInflater.from(parent.context)
-                .inflate(R.layout.active_download_card, parent, false)
+                .inflate(R.layout.active_download_card_minified, parent, false)
         return ViewHolder(cardView, onItemClickListener)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)
         val card = holder.cardView
-        card.tag = "${item!!.id}##card"
         val uiHandler = Handler(Looper.getMainLooper())
         val thumbnail = card.findViewById<ImageView>(R.id.image_view)
 
         // THUMBNAIL ----------------------------------
         if (!sharedPreferences.getStringSet("hide_thumbnails", emptySet())!!.contains("queue")){
-            val imageURL = item.thumb
+            val imageURL = item!!.thumb
             if (imageURL.isNotEmpty()) {
                 uiHandler.post { Picasso.get().load(imageURL).into(thumbnail) }
             } else {
@@ -78,7 +74,7 @@ class ActiveDownloadAdapter(onItemClickListener: OnItemClickListener, activity: 
 
         // PROGRESS BAR ----------------------------------------------------
         val progressBar = card.findViewById<LinearProgressIndicator>(R.id.progress)
-        progressBar.tag = "${item.id}##progress"
+        progressBar.tag = "${item!!.id}##progress"
         progressBar.progress = 0
         progressBar.isIndeterminate = true
 
@@ -90,41 +86,26 @@ class ActiveDownloadAdapter(onItemClickListener: OnItemClickListener, activity: 
         }
         itemTitle.text = title.ifEmpty { item.url }
 
-        // Author ----------------------------------
-        val author = card.findViewById<TextView>(R.id.author)
-        var info = item.author
-        if (item.duration.isNotEmpty()) {
-            if (item.author.isNotEmpty()) info += " • "
-            info += item.duration
+
+        val formatDetailsChip = card.findViewById<TextView>(R.id.format_note)
+        val formatDetailsText = StringBuilder(item.format.format_note.uppercase())
+
+        val codecText =
+            if (item.format.encoding != "") {
+                item.format.encoding.uppercase()
+            }else if (item.format.vcodec != "none" && item.format.vcodec != ""){
+                item.format.vcodec.uppercase()
+            } else {
+                item.format.acodec.uppercase()
+            }
+        if (codecText != "" && codecText != "none"){
+            formatDetailsText.append(" \t •\t $codecText")
         }
-        author.text = info
-
-        val type = card.findViewById<MaterialButton>(R.id.download_type)
-        when(item.type){
-            DownloadViewModel.Type.audio -> type.setIconResource(R.drawable.ic_music)
-            DownloadViewModel.Type.video -> type.setIconResource(R.drawable.ic_video)
-            DownloadViewModel.Type.command -> type.setIconResource(R.drawable.ic_terminal)
-            else -> {}
-        }
-
-        val formatDetailsChip = card.findViewById<Chip>(R.id.format_note)
-
-        val sideDetails = mutableListOf<String>()
-        sideDetails.add(item.format.format_note.uppercase())
-        sideDetails.add(item.container.uppercase().ifEmpty { item.format.container.uppercase() })
 
         val fileSize = FileUtil.convertFileSize(item.format.filesize)
-        if (fileSize != "?") sideDetails.add(fileSize)
-        formatDetailsChip.text = sideDetails.joinToString("  ·  ")
+        if (fileSize != "?") formatDetailsText.append(" \t •\t $fileSize")
 
-        //OUTPUT
-        val output = card.findViewById<TextView>(R.id.output)
-        output.tag = "${item.id}##output"
-
-        output.setOnClickListener {
-            onItemClickListener.onOutputClick(item)
-        }
-
+        formatDetailsChip.text = formatDetailsText
 
         // PAUSE BUTTON ----------------------------------
         val pauseButton = card.findViewById<MaterialButton>(R.id.active_download_pause)
@@ -138,35 +119,43 @@ class ActiveDownloadAdapter(onItemClickListener: OnItemClickListener, activity: 
         if (item.status == DownloadRepository.Status.Paused.toString()){
             progressBar.isIndeterminate = false
             pauseButton.icon = ContextCompat.getDrawable(activity, R.drawable.exomedia_ic_play_arrow_white)
-            pauseButton.tag = ActiveDownloadAction.Resume
+            pauseButton.tag = ActiveDownloadAdapter.ActiveDownloadAction.Resume
             cancelButton.visibility = View.VISIBLE
         }else{
             progressBar.isIndeterminate = true
             pauseButton.icon = ContextCompat.getDrawable(activity, R.drawable.exomedia_ic_pause_white)
             cancelButton.visibility = View.GONE
-            pauseButton.tag = ActiveDownloadAction.Pause
+            pauseButton.tag = ActiveDownloadAdapter.ActiveDownloadAction.Pause
         }
 
         pauseButton.setOnClickListener {
-            if (pauseButton.tag == ActiveDownloadAction.Pause){
-                onItemClickListener.onPauseClick(item.id, ActiveDownloadAction.Pause, position)
-
+            if (pauseButton.tag == ActiveDownloadAdapter.ActiveDownloadAction.Pause){
+                onItemClickListener.onPauseClick(item.id,
+                    ActiveDownloadAdapter.ActiveDownloadAction.Pause, position)
+                pauseButton.icon = ContextCompat.getDrawable(activity, R.drawable.exomedia_ic_play_arrow_white)
+                if (progressBar.progress == 0) progressBar.isIndeterminate = false
+                cancelButton.visibility = View.VISIBLE
+                pauseButton.tag = ActiveDownloadAdapter.ActiveDownloadAction.Resume
             }else{
-                onItemClickListener.onPauseClick(item.id, ActiveDownloadAction.Resume, position)
-
+                onItemClickListener.onPauseClick(item.id,
+                    ActiveDownloadAdapter.ActiveDownloadAction.Resume, position)
+                pauseButton.icon = ContextCompat.getDrawable(activity, R.drawable.exomedia_ic_pause_white)
+                progressBar.isIndeterminate = true
+                cancelButton.visibility = View.GONE
+                pauseButton.tag = ActiveDownloadAdapter.ActiveDownloadAction.Pause
             }
         }
 
+        card.setOnClickListener {
+            onItemClickListener.onCardClick()
+        }
     }
     interface OnItemClickListener {
         fun onCancelClick(itemID: Long)
-        fun onPauseClick(itemID: Long, action: ActiveDownloadAction, position: Int)
-        fun onOutputClick(item: DownloadItem)
+        fun onPauseClick(itemID: Long, action: ActiveDownloadAdapter.ActiveDownloadAction, position: Int)
+        fun onCardClick()
     }
 
-    enum class ActiveDownloadAction {
-        Resume, Pause
-    }
 
     companion object {
         private val DIFF_CALLBACK: DiffUtil.ItemCallback<DownloadItem> = object : DiffUtil.ItemCallback<DownloadItem>() {

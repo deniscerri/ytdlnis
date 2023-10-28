@@ -1,4 +1,4 @@
-package com.deniscerri.ytdlnis.adapter
+package com.deniscerri.ytdlnis.ui.adapter
 
 import android.app.Activity
 import android.content.SharedPreferences
@@ -17,7 +17,9 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.progressindicator.LinearProgressIndicator
 
-class TerminalDownloadsAdapter(onItemClickListener: OnItemClickListener, activity: Activity) : ListAdapter<TerminalItem?, TerminalDownloadsAdapter.ViewHolder>(AsyncDifferConfig.Builder(DIFF_CALLBACK).build()) {
+class TerminalDownloadsAdapter(onItemClickListener: OnItemClickListener, activity: Activity) : ListAdapter<TerminalItem?, TerminalDownloadsAdapter.ViewHolder>(AsyncDifferConfig.Builder(
+    DIFF_CALLBACK
+).build()) {
     private val onItemClickListener: OnItemClickListener
     private val activity: Activity
     private val sharedPreferences: SharedPreferences

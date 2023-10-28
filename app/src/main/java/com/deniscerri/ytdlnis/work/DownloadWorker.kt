@@ -27,14 +27,12 @@ import com.deniscerri.ytdlnis.database.models.HistoryItem
 import com.deniscerri.ytdlnis.database.models.LogItem
 import com.deniscerri.ytdlnis.database.repository.DownloadRepository
 import com.deniscerri.ytdlnis.database.repository.LogRepository
-import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.InfoUtil
 import com.deniscerri.ytdlnis.util.NotificationUtil
 import com.yausername.youtubedl_android.YoutubeDL
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
@@ -122,6 +120,7 @@ class DownloadWorker(
 
 
                     val commandString = infoUtil.parseYTDLRequestString(request)
+                    val logString = StringBuilder("\n ${commandString}\n\n")
                     val logItem = LogItem(
                         0,
                         downloadItem.title.ifEmpty { downloadItem.url },
@@ -129,7 +128,7 @@ class DownloadWorker(
                                 "Title: ${downloadItem.title}\n" +
                                 "URL: ${downloadItem.url}\n" +
                                 "Type: ${downloadItem.type}\n" +
-                                "Command:\n ${commandString}\n\n",
+                                "Command: $logString",
                         downloadItem.format,
                         downloadItem.type,
                         System.currentTimeMillis(),
@@ -137,7 +136,7 @@ class DownloadWorker(
 
 
                     runBlocking {
-                        logItem.id = logRepo.insert(logItem)
+                        if (logDownloads) logItem.id = logRepo.insert(logItem)
                         downloadItem.logID = logItem.id
                         dao.update(downloadItem)
                     }
@@ -154,7 +153,10 @@ class DownloadWorker(
                                 NotificationUtil.DOWNLOAD_SERVICE_CHANNEL_ID
                             )
                             CoroutineScope(Dispatchers.IO).launch {
-                                logRepo.update(line, logItem.id)
+                                if (logDownloads) {
+                                    logRepo.update(line, logItem.id)
+                                    logString.append("$line\n")
+                                }
                             }
                         }
                     }.onSuccess {
@@ -164,16 +166,18 @@ class DownloadWorker(
 
                             if (noCache){
                                 setProgressAsync(workDataOf("progress" to 100, "output" to "Scanning Files", "id" to downloadItem.id))
-                                val p = it.out.split("\n")
+                                finalPaths = it.out.split("\n")
                                     .filter { it.startsWith("'/storage") }
                                     .map { it.removePrefix("'") }
-                                    .map { it.removeSuffix("'\n") }
-                                finalPaths = File(FileUtil.formatPath(downloadLocation))
-                                    .walkTopDown()
-                                    .filter { it.isFile && p.any { f -> f.contains(it.nameWithoutExtension) }}
-                                    .sortedByDescending { it.length() }
-                                    .map { it.absolutePath }
+                                    .map { it.removeSuffix("\n") }
+                                    .map { it.removeSuffix("'") }
                                     .toList()
+//                                finalPaths = File(FileUtil.formatPath(downloadLocation))
+//                                    .walkTopDown()
+//                                    .filter { it.isFile && p.any { f -> f.contains(it.nameWithoutExtension) }}
+//                                    .sortedByDescending { it.length() }
+//                                    .map { it.absolutePath }
+//                                    .toList()
                                 FileUtil.scanMedia(finalPaths, context)
                                 if (finalPaths.isEmpty()){
                                     finalPaths = listOf(context.getString(R.string.unfound_file))
@@ -236,8 +240,6 @@ class DownloadWorker(
 
                             if (logDownloads){
                                 logRepo.update(it.out, logItem.id)
-                            }else{
-                                logRepo.delete(logItem)
                             }
                         }
 
@@ -250,9 +252,13 @@ class DownloadWorker(
                         if (it is YoutubeDL.CanceledException) {
 
                         }else{
-                            if (logDownloads){
-                                if(it.message != null){
+                            if(it.message != null){
+                                if (logDownloads){
                                     logRepo.update(it.message!!, logItem.id)
+                                }else{
+                                    logString.append("${it.message}\n")
+                                    logItem.content = logString.toString()
+                                    logRepo.insert(logItem)
                                 }
                             }
 

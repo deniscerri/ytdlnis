@@ -8,7 +8,6 @@ import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
-import androidx.compose.runtime.invalidateGroupsWithKey
 import androidx.core.view.forEach
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
@@ -27,7 +26,6 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import okhttp3.internal.format
 import java.util.*
 
 
@@ -217,9 +215,9 @@ class FormatSelectionBottomSheetDialog(private val items: List<DownloadItem?>, p
             dismiss()
         }
 
-        if (sharedPreferences.getBoolean("update_formats", false) && refreshBtn.isVisible && items.size == 1){
-            refreshBtn.performClick()
-        }
+//        if (sharedPreferences.getBoolean("update_formats", false) && refreshBtn.isVisible && items.size == 1){
+//            refreshBtn.performClick()
+//        }
     }
 
     private fun returnFormats(){

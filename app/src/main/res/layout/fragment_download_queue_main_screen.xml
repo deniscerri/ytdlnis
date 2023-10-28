@@ -21,7 +21,6 @@
             app:navigationIcon="@drawable/ic_back"
             android:layout_height="match_parent"/>
 
-
     </com.google.android.material.appbar.AppBarLayout>
 
     <LinearLayout
@@ -36,7 +35,8 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:backgroundTint="@android:color/transparent"
-            app:tabGravity="fill"
+            app:tabGravity="start"
+            app:tabMinWidth="0dp"
             app:tabMode="scrollable" />
 
         <androidx.viewpager2.widget.ViewPager2
@@ -44,7 +44,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </LinearLayout>
-    <include layout="@layout/history_no_results"
+
+    <include layout="@layout/no_results"
         android:visibility="gone" />
 
 

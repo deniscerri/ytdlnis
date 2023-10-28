@@ -11,6 +11,7 @@ import android.os.Handler
 import android.os.Looper
 import android.text.Editable
 import android.util.Log
+import android.util.Patterns
 import android.view.*
 import android.view.View.*
 import android.widget.*
@@ -30,7 +31,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
-import com.deniscerri.ytdlnis.adapter.HomeAdapter
+import com.deniscerri.ytdlnis.ui.adapter.HomeAdapter
 import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
@@ -227,7 +228,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
             launch{
                 resultViewModel.uiState.collectLatest { res ->
                     if (res.errorMessage != null){
-                        kotlin.runCatching { UiUtil.handleResultResponse(requireActivity(), res) }
+                        kotlin.runCatching { UiUtil.handleResultResponse(requireActivity(), res, closed ={}) }
                         resultViewModel.uiState.update {it.copy(errorMessage  = null, actions  = null) }
                     }
 
@@ -557,7 +558,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
         lifecycleScope.launch(Dispatchers.IO){
             Thread.sleep(300)
             if(sharedPreferences!!.getBoolean("quick_download", false) || sharedPreferences!!.getString("preferred_download_type", "video") == "command"){
-                if (queryList.size == 1 && queryList.first().matches("(https?://(?:www\\.|(?!www))[a-zA-Z\\d][a-zA-Z\\d-]+[a-zA-Z\\d]\\.\\S{2,}|www\\.[a-zA-Z\\d][a-zA-Z\\d-]+[a-zA-Z\\d]\\.\\S{2,}|https?://(?:www\\.|(?!www))[a-zA-Z\\d]+\\.\\S{2,}|www\\.[a-zA-Z\\d]+\\.\\S{2,})".toRegex())){
+                if (queryList.size == 1 && Patterns.WEB_URL.matcher(queryList.first()).matches()){
                     if (sharedPreferences!!.getBoolean("download_card", true)) {
                         showSingleDownloadSheet(
                             resultItem = downloadViewModel.createEmptyResultItem(queryList.first()),

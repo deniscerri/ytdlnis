@@ -131,6 +131,7 @@
         <item>pt-BR</item>
         <item>ru</item>
         <item>ro</item>
+        <item>sk</item>
         <item>sq</item>
         <item>ta</item>
         <item>te</item>
@@ -186,7 +187,6 @@
         <item>Netverse</item>
         <item>All Clips of a trovo.live channel</item>
         <item>All VODs of a trovo.live channel</item>
-        <item>web.archive.org saved youtube videos</item>
     </array>
 
     <array name="search_engines_values">
@@ -203,7 +203,6 @@
         <item>netsearch</item>
         <item>trovoclip</item>
         <item>trovovod</item>
-        <item>ytarchive</item>
     </array>
 
     <array name="start_destination">
@@ -926,6 +925,94 @@
         <item>adjust_video</item>
         <item>adjust_templates</item>
         <item>url</item>
+    </string-array>
+
+    <string-array name="subtitle_langs">
+        <item>all</item>,
+        <item>live_chat</item>,
+        <item>af</item>,
+        <item>az</item>,
+        <item>id</item>,
+        <item>ms</item>,
+        <item>bs</item>,
+        <item>ca</item>,
+        <item>cs</item>,
+        <item>da</item>,
+        <item>de</item>,
+        <item>et</item>,
+        <item>en-IN</item>,
+        <item>en-GB</item>,
+        <item>en</item>,
+        <item>es</item>,
+        <item>es-419</item>,
+        <item>es-US</item>,
+        <item>eu</item>,
+        <item>fil</item>,
+        <item>fr</item>,
+        <item>fr-CA</item>,
+        <item>gl</item>,
+        <item>hr</item>,
+        <item>zu</item>,
+        <item>is</item>,
+        <item>it</item>,
+        <item>sw</item>,
+        <item>lv</item>,
+        <item>lt</item>,
+        <item>hu</item>,
+        <item>nl</item>,
+        <item>no</item>,
+        <item>uz</item>,
+        <item>pl</item>,
+        <item>pt-PT</item>,
+        <item>pt</item>,
+        <item>ro</item>,
+        <item>sq</item>,
+        <item>sk</item>,
+        <item>sl</item>,
+        <item>sr-Latn</item>,
+        <item>fi</item>,
+        <item>sv</item>,
+        <item>vi</item>,
+        <item>tr</item>,
+        <item>be</item>,
+        <item>bg</item>,
+        <item>ky</item>,
+        <item>kk</item>,
+        <item>mk</item>,
+        <item>mn</item>,
+        <item>ru</item>,
+        <item>sr</item>,
+        <item>uk</item>,
+        <item>el</item>,
+        <item>hy</item>,
+        <item>iw</item>,
+        <item>ur</item>,
+        <item>ar</item>,
+        <item>fa</item>,
+        <item>ne</item>,
+        <item>mr</item>,
+        <item>hi</item>,
+        <item>as</item>,
+        <item>bn</item>,
+        <item>pa</item>,
+        <item>gu</item>,
+        <item>or</item>,
+        <item>ta</item>,
+        <item>te</item>,
+        <item>kn</item>,
+        <item>ml</item>,
+        <item>si</item>,
+        <item>th</item>,
+        <item>lo</item>,
+        <item>my</item>,
+        <item>ka</item>,
+        <item>am</item>,
+        <item>km</item>,
+        <item>zh-CN</item>,
+        <item>zh-TW</item>,
+        <item>zh-HK</item>,
+        <item>ja</item>,
+        <item>ko</item>
     </string-array>
 
 </resources>

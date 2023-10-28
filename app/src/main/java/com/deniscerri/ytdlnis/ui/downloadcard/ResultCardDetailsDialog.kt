@@ -37,9 +37,9 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.work.WorkManager
 import com.deniscerri.ytdlnis.R
-import com.deniscerri.ytdlnis.adapter.ActiveDownloadAdapter
-import com.deniscerri.ytdlnis.adapter.ActiveDownloadMinifiedAdapter
-import com.deniscerri.ytdlnis.adapter.GenericDownloadAdapter
+import com.deniscerri.ytdlnis.ui.adapter.ActiveDownloadAdapter
+import com.deniscerri.ytdlnis.ui.adapter.ActiveDownloadMinifiedAdapter
+import com.deniscerri.ytdlnis.ui.adapter.GenericDownloadAdapter
 import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.deniscerri.ytdlnis.database.repository.DownloadRepository
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
@@ -136,6 +136,9 @@ class ResultCardDetailsDialog(private val item: ResultItem) : BottomSheetDialogF
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        //remove outdated player url of 1hr so it can refetch it in the player
+        if (item.creationTime > System.currentTimeMillis() - 3600000) item.urls = ""
+
         activeAdapter = ActiveDownloadMinifiedAdapter(this,requireActivity())
         queuedAdapter = GenericDownloadAdapter(this,requireActivity())
 
@@ -220,10 +223,10 @@ class ResultCardDetailsDialog(private val item: ResultItem) : BottomSheetDialogF
 
         bottomSheetLink.text = item.url
         bottomSheetLink.setOnClickListener{
-            UiUtil.openLinkIntent(requireContext(), item.url, null)
+            UiUtil.openLinkIntent(requireContext(), item.url)
         }
         bottomSheetLink.setOnLongClickListener{
-            UiUtil.copyLinkToClipBoard(requireContext(), item.url, null)
+            UiUtil.copyLinkToClipBoard(requireContext(), item.url)
             true
         }
 
@@ -505,10 +508,12 @@ class ResultCardDetailsDialog(private val item: ResultItem) : BottomSheetDialogF
             link!!.text = url
             link.tag = itemID
             link.setOnClickListener{
-                UiUtil.openLinkIntent(requireContext(), item.url, bottomSheet)
+                bottomSheet.dismiss()
+                UiUtil.openLinkIntent(requireContext(), item.url)
             }
             link.setOnLongClickListener{
-                UiUtil.copyLinkToClipBoard(requireContext(), item.url, bottomSheet)
+                bottomSheet.dismiss()
+                UiUtil.copyLinkToClipBoard(requireContext(), item.url)
                 true
             }
             val remove = bottomSheet.findViewById<Button>(R.id.bottomsheet_remove_button)

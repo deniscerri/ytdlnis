@@ -10,6 +10,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
@@ -21,7 +22,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdlnis.R
-import com.deniscerri.ytdlnis.adapter.GenericDownloadAdapter
+import com.deniscerri.ytdlnis.ui.adapter.GenericDownloadAdapter
 import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.repository.DownloadRepository
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
@@ -47,6 +48,7 @@ class CancelledDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClic
     private lateinit var downloadViewModel : DownloadViewModel
     private lateinit var cancelledRecyclerView : RecyclerView
     private lateinit var adapter : GenericDownloadAdapter
+    private lateinit var noResults : RelativeLayout
     private var actionMode : ActionMode? = null
     private var totalSize = 0
 
@@ -55,7 +57,7 @@ class CancelledDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClic
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        fragmentView = inflater.inflate(R.layout.generic_recyclerview, container, false)
+        fragmentView = inflater.inflate(R.layout.generic_list, container, false)
         activity = getActivity()
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
         return fragmentView
@@ -70,6 +72,7 @@ class CancelledDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClic
                 requireActivity()
             )
 
+        noResults = view.findViewById(R.id.no_results)
         cancelledRecyclerView = view.findViewById(R.id.download_recyclerview)
         cancelledRecyclerView.forceFastScrollMode()
         cancelledRecyclerView.adapter = adapter
@@ -90,6 +93,7 @@ class CancelledDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClic
 
         downloadViewModel.getTotalSize(listOf(DownloadRepository.Status.Cancelled)).observe(viewLifecycleOwner){
             totalSize = it
+            noResults.visibility = if (it == 0) View.VISIBLE else View.GONE
         }
     }
 

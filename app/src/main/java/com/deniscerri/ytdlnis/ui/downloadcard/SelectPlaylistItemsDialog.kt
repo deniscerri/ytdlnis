@@ -1,18 +1,14 @@
 package com.deniscerri.ytdlnis.ui.downloadcard
 
-import android.annotation.SuppressLint
 import android.app.ActionBar.LayoutParams
 import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Bundle
-import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
-import android.widget.Button
-import android.widget.TextView
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
@@ -20,7 +16,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdlnis.R
-import com.deniscerri.ytdlnis.adapter.PlaylistAdapter
+import com.deniscerri.ytdlnis.ui.adapter.PlaylistAdapter
 import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
@@ -30,14 +26,10 @@ import com.deniscerri.ytdlnis.util.UiUtil.enableFastScroll
 import com.deniscerri.ytdlnis.util.UiUtil.setTextAndRecalculateWidth
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomappbar.BottomAppBar
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.util.*
 
 class SelectPlaylistItemsDialog(private val items: List<ResultItem?>, private val type: DownloadViewModel.Type) : DialogFragment(), PlaylistAdapter.OnItemClickListener {
     private lateinit var downloadViewModel: DownloadViewModel

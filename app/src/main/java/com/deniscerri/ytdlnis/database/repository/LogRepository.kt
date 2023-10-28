@@ -1,7 +1,6 @@
 package com.deniscerri.ytdlnis.database.repository
 
 import com.deniscerri.ytdlnis.database.dao.LogDao
-import com.deniscerri.ytdlnis.database.models.CookieItem
 import com.deniscerri.ytdlnis.database.models.LogItem
 import kotlinx.coroutines.flow.Flow
 
@@ -14,6 +13,10 @@ class LogRepository(private val logDao: LogDao) {
 
     fun getLogFlowByID(id: Long) : Flow<LogItem> {
         return logDao.getLogFlowByID(id)
+    }
+
+    fun getLogByID(id: Long) : LogItem? {
+        return logDao.getByID(id)
     }
 
 
@@ -31,13 +34,17 @@ class LogRepository(private val logDao: LogDao) {
     }
 
     fun getItem(id: Long) : LogItem{
-        return logDao.getByID(id);
+        return logDao.getByID(id)
     }
 
-    suspend fun update(newLine: String, id: Long){
-        val item = getItem(id)
-        item.content += "${newLine}\n"
-        logDao.update(item)
+    suspend fun update(line: String, id: Long){
+        runCatching {
+            val item = getItem(id)
+            val log = item.content
+            //clean duplicate progress + add newline
+            //item.content = log.replace("(?s:.*\\n)?\\K\\[download\\]( *?)(\\d)(.*?)\\n(?!.*\\[download\\]( *?)(\\d)(.*?)\\n)".toRegex()).replac { it.contains("[download") }.joinToString("\n") +  "\n${line}"
+            logDao.update(item)
+        }
     }
 
 }

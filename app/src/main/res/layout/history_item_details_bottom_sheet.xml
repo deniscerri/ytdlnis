@@ -96,6 +96,7 @@
                     android:layout_height="wrap_content"
                     android:clickable="false"
                     android:minWidth="30dp"
+                    app:chipIcon="@drawable/ic_format"
                     app:cornerRadius="10dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -121,6 +122,7 @@
                     android:clickable="false"
                     android:minWidth="30dp"
                     app:cornerRadius="10dp"
+                    app:chipIcon="@drawable/ic_code"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />

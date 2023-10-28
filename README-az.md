@@ -4,7 +4,7 @@
 </h1>
 
 <div align="center">
-	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README.MD">English</a>
+	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README.md">English</a>
 	&nbsp;&nbsp;| &nbsp;&nbsp;
 	Azərbaycanca
 </div>

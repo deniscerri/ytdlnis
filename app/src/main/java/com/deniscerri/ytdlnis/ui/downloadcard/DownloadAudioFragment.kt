@@ -14,15 +14,14 @@ import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.content.res.AppCompatResources
-import androidx.core.view.isEmpty
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceManager
+import com.afollestad.materialdialogs.utils.MDUtil.getStringArray
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.models.Format
@@ -35,6 +34,7 @@ import com.deniscerri.ytdlnis.util.InfoUtil
 import com.deniscerri.ytdlnis.util.UiUtil
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.textfield.TextInputLayout
+import com.google.android.material.textfield.TextInputLayout.END_ICON_NONE
 import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -69,7 +69,7 @@ class DownloadAudioFragment(private var resultItem: ResultItem? = null, private 
         infoUtil = InfoUtil(requireContext())
         genericAudioFormats = infoUtil.getGenericAudioFormats(requireContext().resources)
         preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
-        shownFields = preferences.getStringSet("modify_download_card", setOf())!!.toList()
+        shownFields = preferences.getStringSet("modify_download_card", setOf())!!.toList().ifEmpty { requireContext().getStringArray(R.array.modify_download_card_values).toList() }
         return fragmentView
     }
 
@@ -92,6 +92,7 @@ class DownloadAudioFragment(private var resultItem: ResultItem? = null, private 
                 title.visibility = if (shownFields.contains("title")) View.VISIBLE else View.GONE
                 if (title.editText?.text?.isEmpty() == true){
                     title.editText!!.setText(downloadItem.title)
+                    title.endIconMode = END_ICON_NONE
                 }
                 title.editText!!.addTextChangedListener(object : TextWatcher {
                     override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
@@ -100,17 +101,12 @@ class DownloadAudioFragment(private var resultItem: ResultItem? = null, private 
                         downloadItem.title = p0.toString()
                     }
                 })
-                title.setEndIconOnClickListener {
-                    if (resultItem != null){
-                        title.editText?.setText(resultItem?.title)
-                    }
-                    title.endIconDrawable = null
-                }
 
                 author = view.findViewById(R.id.author_textinput)
                 author.visibility = if (shownFields.contains("author")) View.VISIBLE else View.GONE
                 if (author.editText?.text?.isEmpty() == true){
                     author.editText!!.setText(downloadItem.author)
+                    author.endIconMode = END_ICON_NONE
                 }
                 author.editText!!.addTextChangedListener(object : TextWatcher {
                     override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
@@ -119,23 +115,33 @@ class DownloadAudioFragment(private var resultItem: ResultItem? = null, private 
                         downloadItem.author = p0.toString()
                     }
                 })
-                author.setEndIconOnClickListener {
-                    if (resultItem != null){
-                        author.editText?.setText(resultItem?.author)
-                    }
-                    author.endIconDrawable = null
-                }
 
                 if (savedInstanceState?.containsKey("updated") == true){
                     if (!listOf(resultItem?.title, downloadItem.title).contains(title.editText?.text.toString())){
+                        title.endIconMode = TextInputLayout.END_ICON_CUSTOM
                         title.endIconDrawable = AppCompatResources.getDrawable(requireContext(), R.drawable.ic_refresh)
                         downloadItem.title = title.editText?.text.toString()
                     }
 
                     if (!listOf(resultItem?.author, downloadItem.author).contains(author.editText?.text.toString())){
+                        author.endIconMode = TextInputLayout.END_ICON_CUSTOM
                         author.endIconDrawable = AppCompatResources.getDrawable(requireContext(), R.drawable.ic_refresh)
                         downloadItem.author = author.editText?.text.toString()
                     }
+                }
+
+                title.setEndIconOnClickListener {
+                    if (resultItem != null){
+                        title.editText?.setText(resultItem?.title)
+                    }
+                    title.endIconMode = END_ICON_NONE
+                }
+
+                author.setEndIconOnClickListener {
+                    if (resultItem != null){
+                        author.editText?.setText(resultItem?.author)
+                    }
+                    author.endIconMode = END_ICON_NONE
                 }
 
 
@@ -295,9 +301,9 @@ class DownloadAudioFragment(private var resultItem: ResultItem? = null, private 
         downloadItem.title = t
         downloadItem.author = a
         title.editText?.setText(t)
-        title.endIconDrawable = null
+        title.endIconMode = END_ICON_NONE
         author.editText?.setText(a)
-        title.endIconDrawable = null
+        author.endIconMode = END_ICON_NONE
     }
 
     override fun updateUI(res: ResultItem?){

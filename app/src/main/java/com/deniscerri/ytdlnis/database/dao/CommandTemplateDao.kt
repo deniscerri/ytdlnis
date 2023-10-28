@@ -2,7 +2,6 @@ package com.deniscerri.ytdlnis.database.dao
 
 import androidx.room.*
 import com.deniscerri.ytdlnis.database.models.CommandTemplate
-import com.deniscerri.ytdlnis.database.models.HistoryItem
 import com.deniscerri.ytdlnis.database.models.TemplateShortcut
 import kotlinx.coroutines.flow.Flow
 
@@ -48,10 +47,13 @@ interface CommandTemplateDao {
     fun getTotalShortcutNumber() : Int
 
     @Query("SELECT * FROM commandTemplates WHERE id=:id LIMIT 1")
-    fun getTemplate(id: Long) : CommandTemplate
+    fun getTemplate(id: Long) : CommandTemplate?
+
+    @Query("SELECT * FROM commandTemplates WHERE content=:content LIMIT 1")
+    fun getTemplateByContent(content: String) : CommandTemplate?
 
     @Query("SELECT * FROM commandTemplates ORDER BY id DESC LIMIT 1")
-    fun getFirst() : CommandTemplate
+    fun getFirst() : CommandTemplate?
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(item: CommandTemplate)

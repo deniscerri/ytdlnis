@@ -1,4 +1,4 @@
-package com.deniscerri.ytdlnis.adapter
+package com.deniscerri.ytdlnis.ui.adapter
 
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -24,13 +24,16 @@ import com.deniscerri.ytdlnis.database.models.HistoryItem
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.squareup.picasso.Picasso
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 
 
-class HistoryAdapter(onItemClickListener: OnItemClickListener, activity: Activity) : ListAdapter<HistoryItem?, HistoryAdapter.ViewHolder>(AsyncDifferConfig.Builder(DIFF_CALLBACK).build()) {
+class HistoryAdapter(onItemClickListener: OnItemClickListener, activity: Activity) : ListAdapter<HistoryItem?, HistoryAdapter.ViewHolder>(AsyncDifferConfig.Builder(
+    DIFF_CALLBACK
+).build()) {
     private val checkedItems: ArrayList<Long>
     private val onItemClickListener: OnItemClickListener
     private val activity: Activity
@@ -105,7 +108,7 @@ class HistoryAdapter(onItemClickListener: OnItemClickListener, activity: Activit
         datetime.text = SimpleDateFormat(android.text.format.DateFormat.getBestDateTimePattern(Locale.getDefault(), "ddMMMyyyy - HHmm"), Locale.getDefault()).format(item.time * 1000L)
 
         // BUTTON ----------------------------------
-        val btn = card.findViewById<MaterialButton>(R.id.downloads_download_button_type)
+        val btn = card.findViewById<FloatingActionButton>(R.id.downloads_download_button_type)
         var filePresent = true
 
         //IS IN THE FILE SYSTEM?
@@ -121,11 +124,11 @@ class HistoryAdapter(onItemClickListener: OnItemClickListener, activity: Activit
             thumbnail.alpha = 0.7f
         }
         if (item.type == DownloadViewModel.Type.audio) {
-            if (filePresent) btn.icon = ContextCompat.getDrawable(activity, R.drawable.ic_music_downloaded) else btn.icon = ContextCompat.getDrawable(activity, R.drawable.ic_music)
+            if (filePresent) btn.setImageResource(R.drawable.ic_music_downloaded) else btn.setImageResource(R.drawable.ic_music)
         } else if (item.type == DownloadViewModel.Type.video) {
-            if (filePresent) btn.icon = ContextCompat.getDrawable(activity, R.drawable.ic_video_downloaded) else btn.icon = ContextCompat.getDrawable(activity, R.drawable.ic_video)
+            if (filePresent) btn.setImageResource(R.drawable.ic_video_downloaded) else btn.setImageResource(R.drawable.ic_video)
         }else{
-            btn.icon = ContextCompat.getDrawable(activity, R.drawable.ic_terminal)
+            btn.setImageResource(R.drawable.ic_terminal)
         }
         if (btn.hasOnClickListeners()) btn.setOnClickListener(null)
         btn.isClickable = filePresent

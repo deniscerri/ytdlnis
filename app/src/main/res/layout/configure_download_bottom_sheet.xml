@@ -62,6 +62,7 @@
             android:layout_margin="10dp"
             android:backgroundTint="@android:color/transparent"
             app:tabGravity="fill"
+            app:tabMinWidth="0dp"
             app:tabMode="scrollable">
 
             <com.google.android.material.tabs.TabItem

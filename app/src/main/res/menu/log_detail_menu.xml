@@ -9,5 +9,12 @@
         android:icon="@drawable/baseline_wrap_text_24"
         app:showAsAction="always" />
 
+    <item
+        android:id="@+id/scroll_down"
+        android:title=""
+        android:visible="false"
+        android:icon="@drawable/ic_down"
+        app:showAsAction="ifRoom" />
+
 </menu>
 

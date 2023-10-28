@@ -8,9 +8,8 @@ import android.content.Context.INPUT_METHOD_SERVICE
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.os.PersistableBundle
+import android.text.method.ScrollingMovementMethod
 import android.util.DisplayMetrics
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -23,19 +22,14 @@ import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.view.forEach
 import androidx.core.view.get
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceManager
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
-import androidx.work.workDataOf
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.TerminalItem
 import com.deniscerri.ytdlnis.database.viewmodel.CommandTemplateViewModel
@@ -47,13 +41,12 @@ import com.deniscerri.ytdlnis.util.UiUtil.enableTextHighlight
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-import com.yausername.youtubedl_android.YoutubeDL
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.lang.StringBuilder
+import java.util.concurrent.Executor
 import kotlin.properties.Delegates
 
 
@@ -87,7 +80,7 @@ class TerminalFragment : Fragment() {
         super.onSaveInstanceState(outState)
         outState.putString("input", input?.text.toString())
         outState.putString("output", output?.text.toString())
-        outState.putBoolean("run", fab!!.text == getString(R.string.run_command))
+        outState.putBoolean("run", fab!!.text == requireActivity().getString(R.string.run_command))
         outState.putLong("downloadID", downloadID)
     }
 
@@ -103,6 +96,7 @@ class TerminalFragment : Fragment() {
         scrollView = view.findViewById(R.id.custom_command_scrollview)
         topAppBar = requireActivity().findViewById(R.id.custom_command_toolbar)
         topAppBar!!.setNavigationOnClickListener { requireActivity().finish() }
+        topAppBar!!.setOnClickListener { scrollView?.scrollTo(0,0) }
 
         input = view.findViewById(R.id.command_edittext)
         fab = view.findViewById(R.id.command_fab)
@@ -156,7 +150,7 @@ class TerminalFragment : Fragment() {
             when(it.itemId){
                 R.id.command_templates -> {
                     if (templateCount == 0){
-                        Toast.makeText(requireContext(), getString(R.string.add_template_first), Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), requireActivity().getString(R.string.add_template_first), Toast.LENGTH_SHORT).show()
                     }else{
                         lifecycleScope.launch {
                             UiUtil.showCommandTemplates(requireActivity(), commandTemplateViewModel){ templates ->
@@ -198,11 +192,12 @@ class TerminalFragment : Fragment() {
         }
 
         output = view.findViewById(R.id.custom_command_output)
+        output!!.movementMethod = ScrollingMovementMethod()
         output!!.setTextIsSelectable(true)
         output!!.layoutParams!!.width = LayoutParams.WRAP_CONTENT
         input!!.requestFocus()
         fab!!.setOnClickListener {
-            if (fab!!.text == getString(R.string.run_command)){
+            if (fab!!.text == requireActivity().getString(R.string.run_command)){
                 input!!.visibility = View.GONE
                 output!!.text = "${output!!.text}\n~ $ ${input!!.text}\n"
                 showCancelFab()
@@ -213,6 +208,8 @@ class TerminalFragment : Fragment() {
                         terminalViewModel.insert(TerminalItem(command = command, log = output!!.text.toString()))
                     }
                     terminalViewModel.startTerminalDownloadWorker(TerminalItem(downloadID, command))
+                    input!!.visibility = View.GONE
+                    showCancelFab()
                     runWorkerListener()
                 }
             }else {
@@ -274,12 +271,16 @@ class TerminalFragment : Fragment() {
         }
     }
     private fun hideCancelFab() {
-        fab!!.text = getString(R.string.run_command)
-        fab!!.setIconResource(R.drawable.ic_baseline_keyboard_arrow_right_24)
+        kotlin.runCatching {
+            fab!!.text = getString(R.string.run_command)
+            fab!!.setIconResource(R.drawable.ic_baseline_keyboard_arrow_right_24)
+        }
     }
     private fun showCancelFab() {
-        fab!!.text = getString(R.string.cancel_download)
-        fab!!.setIconResource(R.drawable.ic_cancel)
+        kotlin.runCatching {
+            fab!!.text = getString(R.string.cancel_download)
+            fab!!.setIconResource(R.drawable.ic_cancel)
+        }
     }
 
     private var commandPathResultLauncher = registerForActivityResult(
@@ -307,7 +308,11 @@ class TerminalFragment : Fragment() {
                                 output?.text = it.log
                             }
                             output?.scrollTo(0, output!!.height)
-                            scrollView?.fullScroll(View.FOCUS_DOWN)
+                            if (!scrollView!!.canScrollVertically(1) && !scrollView!!.canScrollHorizontally(-1)){
+                                scrollView?.fullScroll(View.FOCUS_DOWN)
+                            }
+                            input!!.visibility = View.GONE
+                            showCancelFab()
                         }
                     }
                 }
@@ -316,24 +321,34 @@ class TerminalFragment : Fragment() {
         }
 
         WorkManager.getInstance(requireContext())
-            .getWorkInfosByTagLiveData(downloadID.toString())
-            .observe(viewLifecycleOwner){ list ->
-                list.forEach {work ->
-                    if (listOf(WorkInfo.State.SUCCEEDED, WorkInfo.State.FAILED, WorkInfo.State.CANCELLED).contains(work.state)) {
-                        requireActivity().runOnUiThread {
-                            kotlin.runCatching {
-                                input!!.setText("yt-dlp ")
-                                input!!.visibility = View.VISIBLE
-                                input!!.requestFocus()
-                                input!!.setSelection(input!!.text.length)
-                                hideCancelFab()
-                            }
+            .getWorkInfosForUniqueWorkLiveData(downloadID.toString())
+            .removeObserver(workerObserver)
+
+        WorkManager.getInstance(requireContext())
+            .getWorkInfosForUniqueWorkLiveData(downloadID.toString())
+            .observe(viewLifecycleOwner, workerObserver)
+    }
+
+    private val workerObserver = object: Observer<MutableList<WorkInfo>> {
+        override fun onChanged(value: MutableList<WorkInfo>) {
+            value.forEach { work ->
+                if (listOf(WorkInfo.State.SUCCEEDED, WorkInfo.State.FAILED, WorkInfo.State.CANCELLED).contains(work.state)) {
+                    requireActivity().runOnUiThread {
+                        kotlin.runCatching {
+                            input!!.setText("yt-dlp ")
+                            input!!.visibility = View.VISIBLE
+                            input!!.requestFocus()
+                            input!!.setSelection(input!!.text.length)
+                            hideCancelFab()
                         }
-                        return@forEach
                     }
+                    return@forEach
                 }
             }
+        }
 
     }
+
+
 
 }

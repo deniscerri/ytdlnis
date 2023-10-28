@@ -34,12 +34,13 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
-import com.deniscerri.ytdlnis.adapter.ConfigureMultipleDownloadsAdapter
+import com.deniscerri.ytdlnis.ui.adapter.ConfigureMultipleDownloadsAdapter
 import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.models.Format
 import com.deniscerri.ytdlnis.database.repository.DownloadRepository
 import com.deniscerri.ytdlnis.database.viewmodel.CommandTemplateViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
+import com.deniscerri.ytdlnis.database.viewmodel.HistoryViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdlnis.receiver.ShareActivity
 import com.deniscerri.ytdlnis.util.FileUtil
@@ -67,6 +68,7 @@ import java.util.Locale
 class DownloadMultipleBottomSheetDialog(private var items: MutableList<DownloadItem>) : BottomSheetDialogFragment(), ConfigureMultipleDownloadsAdapter.OnItemClickListener, View.OnClickListener,
     ConfigureDownloadBottomSheetDialog.OnDownloadItemUpdateListener {
     private lateinit var downloadViewModel: DownloadViewModel
+    private lateinit var historyViewModel: HistoryViewModel
     private lateinit var commandTemplateViewModel: CommandTemplateViewModel
     private lateinit var resultViewModel: ResultViewModel
     private lateinit var listAdapter : ConfigureMultipleDownloadsAdapter
@@ -81,6 +83,7 @@ class DownloadMultipleBottomSheetDialog(private var items: MutableList<DownloadI
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         downloadViewModel = ViewModelProvider(requireActivity())[DownloadViewModel::class.java]
+        historyViewModel = ViewModelProvider(requireActivity())[HistoryViewModel::class.java]
         resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]
         commandTemplateViewModel = ViewModelProvider(this)[CommandTemplateViewModel::class.java]
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
@@ -472,10 +475,8 @@ class DownloadMultipleBottomSheetDialog(private var items: MutableList<DownloadI
                                     saveSubtitlesClicked = {checked ->
                                         items.forEach { it.videoPreferences.writeSubs = checked }
                                     },
-                                    subtitleLanguagesClicked = {
-                                        UiUtil.showSubtitleLanguagesDialog(requireActivity(), ""){ value ->
-                                            items.forEach { it.videoPreferences.subsLanguages = value }
-                                        }
+                                    subtitleLanguagesSet = {value ->
+                                        items.forEach { it.videoPreferences.subsLanguages = value }
                                     },
                                     removeAudioClicked = {checked ->
                                         items.forEach { it.videoPreferences.removeAudio = checked }
@@ -509,7 +510,7 @@ class DownloadMultipleBottomSheetDialog(private var items: MutableList<DownloadI
         lifecycleScope.launch {
             downloadViewModel.uiState.collectLatest { res ->
                 if (res.errorMessage != null) {
-                    UiUtil.handleDownloadsResponse(requireActivity() as MainActivity, res, downloadViewModel)
+                    UiUtil.handleDownloadsResponse(requireActivity() as MainActivity, res, downloadViewModel, historyViewModel)
                     downloadViewModel.uiState.value =  DownloadViewModel.DownloadsUiState(
                         errorMessage = null,
                         actions = null
@@ -634,6 +635,24 @@ class DownloadMultipleBottomSheetDialog(private var items: MutableList<DownloadI
             if (parentFragmentManager.findFragmentByTag("configureDownloadSingleSheet") == null){
                 val bottomSheet = ConfigureDownloadBottomSheetDialog(resultItem, downloadItem!!, this@DownloadMultipleBottomSheetDialog)
                 bottomSheet.show(parentFragmentManager, "configureDownloadSingleSheet")
+            }
+        }
+    }
+
+    override fun onDelete(itemURL: String) {
+        val deletedItem = items.find { it.url == itemURL } ?: return
+        val position = items.indexOf(deletedItem)
+        UiUtil.showGenericDeleteDialog(requireContext(), deletedItem.title){
+            items.remove(deletedItem)
+            listAdapter.submitList(items.toList())
+            if (items.isNotEmpty()){
+                Snackbar.make(recyclerView, getString(R.string.you_are_going_to_delete) + ": " + deletedItem.title, Snackbar.LENGTH_LONG)
+                    .setAction(getString(R.string.undo)) {
+                        items.add(position, deletedItem)
+                        listAdapter.submitList(items.toList())
+                    }.show()
+            }else{
+                dismiss()
             }
         }
     }

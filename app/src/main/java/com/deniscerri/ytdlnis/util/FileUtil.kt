@@ -1,32 +1,21 @@
 package com.deniscerri.ytdlnis.util
 
-import android.app.Activity
-import android.content.ContentResolver
 import android.content.Context
-import android.content.Intent
-import android.database.Cursor
 import android.media.MediaScannerConnection
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.provider.DocumentsContract
-import android.provider.MediaStore
 import android.util.Log
-import android.view.View
 import android.webkit.MimeTypeMap
-import android.widget.TextView
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.net.toUri
 import androidx.documentfile.provider.DocumentFile
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import com.anggrayudi.storage.callback.FileCallback
 import com.anggrayudi.storage.callback.FolderCallback
 import com.anggrayudi.storage.file.copyFolderTo
 import com.anggrayudi.storage.file.getAbsolutePath
 import com.anggrayudi.storage.file.moveFileTo
 import com.deniscerri.ytdlnis.App
-import com.deniscerri.ytdlnis.R
 import com.yausername.youtubedl_android.YoutubeDLRequest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -64,6 +53,7 @@ object FileUtil {
         var dataValue = path
         if (dataValue.startsWith("/storage/")) return dataValue
         dataValue = dataValue.replace("content://com.android.externalstorage.documents/tree/", "")
+        dataValue = dataValue.replace("raw:/storage/", "")
         dataValue = dataValue.replace("^/document/".toRegex(), "")
         dataValue = dataValue.replace("^primary:".toRegex(), "primary/")
         dataValue = dataValue.replace("%3A".toRegex(), "/")
@@ -294,6 +284,10 @@ object FileUtil {
 
     fun getDefaultCommandPath() : String {
         return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)?.absolutePath + File.separator + "YTDLnis/Command"
+    }
+
+    fun getDefaultTerminalPath() : String {
+        return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)?.absolutePath + File.separator + "YTDLnis/TERMINAL_CACHE"
     }
 
     fun getCookieFile(context : Context, path: (path: String) -> Unit){

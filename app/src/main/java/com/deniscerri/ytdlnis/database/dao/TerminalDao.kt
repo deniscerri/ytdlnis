@@ -1,10 +1,6 @@
 package com.deniscerri.ytdlnis.database.dao
 
-import androidx.paging.PagingSource
 import androidx.room.*
-import com.deniscerri.ytdlnis.database.models.DownloadItem
-import com.deniscerri.ytdlnis.database.models.DownloadItemSimple
-import com.deniscerri.ytdlnis.database.models.Format
 import com.deniscerri.ytdlnis.database.models.TerminalItem
 import kotlinx.coroutines.flow.Flow
 
@@ -34,11 +30,12 @@ interface TerminalDao {
         val log = t.log ?: ""
         val lines = log.split("\n")
         //clean dublicate progress + add newline
-        val l = if (listOf(line, lines.last()).all { it.contains("[download")}){
-            lines.dropLast(1).joinToString("\n")
-        }else{
-            log
-        } +  "\n${line}"
+        var newLine = line
+        if (newLine.contains("[download")){
+            newLine = "[download]" + line.split("[download]").last()
+        }
+
+        val l = lines.dropLastWhile { it.contains("[download") }.joinToString("\n") +  "\n${newLine}"
 
         updateTerminalLog(l, id)
     }

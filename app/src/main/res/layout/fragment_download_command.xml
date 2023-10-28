@@ -34,7 +34,7 @@
             android:layout_height="wrap_content"
             android:paddingHorizontal="10dp"
             android:paddingTop="10dp"
-            android:text="@string/command" />
+            android:text="@string/command_templates" />
 
         <include layout="@layout/command_template_item" />
 

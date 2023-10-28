@@ -1,7 +1,6 @@
 package com.deniscerri.ytdlnis.database.viewmodel
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.asLiveData
@@ -11,7 +10,6 @@ import com.deniscerri.ytdlnis.database.models.LogItem
 import com.deniscerri.ytdlnis.database.repository.DownloadRepository
 import com.deniscerri.ytdlnis.database.repository.LogRepository
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 class LogViewModel(private val application: Application) : AndroidViewModel(application) {

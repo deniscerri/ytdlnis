@@ -43,7 +43,7 @@ class SettingsActivity : BaseActivity() {
             }
         }
 
-        navController.navigate(R.id.mainSettingsFragment)
+        if (savedInstanceState == null) navController.navigate(R.id.mainSettingsFragment)
     }
 
     fun changeTopAppbarTitle(text: String) {

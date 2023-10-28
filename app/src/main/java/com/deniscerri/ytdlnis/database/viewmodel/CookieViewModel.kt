@@ -6,6 +6,7 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteDatabase.OPEN_READONLY
+import android.os.Environment
 import android.util.Log
 import android.webkit.CookieManager
 import androidx.lifecycle.AndroidViewModel
@@ -17,6 +18,7 @@ import com.deniscerri.ytdlnis.database.DBManager
 import com.deniscerri.ytdlnis.database.models.CookieItem
 import com.deniscerri.ytdlnis.database.repository.CookieRepository
 import com.deniscerri.ytdlnis.ui.more.WebViewActivity
+import com.deniscerri.ytdlnis.util.FileUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.File
@@ -166,6 +168,20 @@ class CookieViewModel(private val application: Application) : AndroidViewModel(a
             }
         }catch (e: Exception){
             e.printStackTrace()
+        }
+    }
+
+    fun exportToFile(exported: (File?) -> Unit) {
+        try{
+            val cookieFile = File(application.cacheDir, "cookies.txt")
+            if (!cookieFile.exists()) updateCookiesFile()
+
+            val downloads = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).absolutePath + File.separator + "YTDLnis_Cookies.txt")
+            val file = cookieFile.copyTo(downloads, true)
+            exported(file)
+        }catch (e: Exception){
+            e.printStackTrace()
+            exported(null)
         }
     }
 

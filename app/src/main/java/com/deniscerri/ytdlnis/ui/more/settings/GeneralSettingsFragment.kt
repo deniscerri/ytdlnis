@@ -12,6 +12,7 @@ import android.provider.Settings
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.app.ActivityCompat
 import androidx.core.os.LocaleListCompat
 import androidx.preference.ListPreference
 import androidx.preference.Preference
@@ -130,29 +131,24 @@ class GeneralSettingsFragment : BaseSettingsFragment() {
                 true
             }
 
-        ignoreBatteryOptimization = findPreference<Preference>("ignore_battery")
-        val packageName: String = requireContext().packageName
-        val pm = requireContext().applicationContext.getSystemService(Context.POWER_SERVICE) as PowerManager
-        if (pm.isIgnoringBatteryOptimizations(packageName)) {
-            ignoreBatteryOptimization!!.isVisible = false
-        }
-
         ignoreBatteryOptimization = findPreference("ignore_battery")
         ignoreBatteryOptimization!!.onPreferenceClickListener =
             Preference.OnPreferenceClickListener {
                 val intent = Intent()
                 intent.action = Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS
                 intent.data = Uri.parse("package:" + requireContext().packageName)
-                ignoreBatteryLauncher.launch(intent)
+                startActivity(intent)
                 true
             }
     }
 
-    private var ignoreBatteryLauncher = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()
-    ) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            ignoreBatteryOptimization?.isVisible = false
+    override fun onResume() {
+        val packageName: String = requireContext().packageName
+        val pm = requireContext().applicationContext.getSystemService(Context.POWER_SERVICE) as PowerManager
+        if (pm.isIgnoringBatteryOptimizations(packageName)) {
+            ignoreBatteryOptimization!!.isVisible = false
         }
+        super.onResume()
     }
+
 }

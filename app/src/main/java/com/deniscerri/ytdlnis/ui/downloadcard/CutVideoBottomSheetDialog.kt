@@ -3,7 +3,6 @@ package com.deniscerri.ytdlnis.ui.downloadcard
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.DialogInterface
-import android.content.SharedPreferences
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.net.Uri

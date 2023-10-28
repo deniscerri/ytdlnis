@@ -1,10 +1,8 @@
 package com.deniscerri.ytdlnis.database.repository
 
-import androidx.lifecycle.LiveData
 import com.deniscerri.ytdlnis.database.DBManager
 import com.deniscerri.ytdlnis.database.dao.CommandTemplateDao
 import com.deniscerri.ytdlnis.database.models.CommandTemplate
-import com.deniscerri.ytdlnis.database.models.HistoryItem
 import com.deniscerri.ytdlnis.database.models.TemplateShortcut
 import kotlinx.coroutines.flow.Flow
 
@@ -37,7 +35,7 @@ class CommandTemplateRepository(private val commandDao: CommandTemplateDao) {
     }
 
     fun getItem(id: Long) : CommandTemplate {
-        return commandDao.getTemplate(id)
+        return commandDao.getTemplate(id)!!
     }
 
     suspend fun insert(item: CommandTemplate){

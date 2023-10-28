@@ -12,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemClickListener
+import android.widget.RelativeLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
 import androidx.fragment.app.Fragment
@@ -23,7 +24,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdlnis.R
-import com.deniscerri.ytdlnis.adapter.GenericDownloadAdapter
+import com.deniscerri.ytdlnis.ui.adapter.GenericDownloadAdapter
 import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.repository.DownloadRepository
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
@@ -48,6 +49,7 @@ class ErroredDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickL
     private var activity: Activity? = null
     private lateinit var downloadViewModel : DownloadViewModel
     private lateinit var erroredRecyclerView : RecyclerView
+    private lateinit var noResults : RelativeLayout
     private lateinit var adapter : GenericDownloadAdapter
     private var actionMode : ActionMode? = null
     private var totalSize: Int = 0
@@ -56,7 +58,7 @@ class ErroredDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickL
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        fragmentView = inflater.inflate(R.layout.generic_recyclerview, container, false)
+        fragmentView = inflater.inflate(R.layout.generic_list, container, false)
         activity = getActivity()
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
         return fragmentView
@@ -71,6 +73,7 @@ class ErroredDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickL
                 requireActivity()
             )
 
+        noResults = view.findViewById(R.id.no_results)
         erroredRecyclerView = view.findViewById(R.id.download_recyclerview)
         erroredRecyclerView.forceFastScrollMode()
         erroredRecyclerView.adapter = adapter
@@ -90,6 +93,7 @@ class ErroredDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickL
 
         downloadViewModel.getTotalSize(listOf(DownloadRepository.Status.Error)).observe(viewLifecycleOwner){
             totalSize = it
+            noResults.visibility = if (it == 0) View.VISIBLE else View.GONE
         }
     }
 

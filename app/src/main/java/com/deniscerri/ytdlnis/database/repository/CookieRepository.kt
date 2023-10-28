@@ -1,6 +1,5 @@
 package com.deniscerri.ytdlnis.database.repository
 
-import androidx.lifecycle.LiveData
 import com.deniscerri.ytdlnis.database.dao.CookieDao
 import com.deniscerri.ytdlnis.database.models.CookieItem
 import kotlinx.coroutines.flow.Flow

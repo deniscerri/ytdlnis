@@ -37,7 +37,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
-import com.deniscerri.ytdlnis.adapter.HistoryAdapter
+import com.deniscerri.ytdlnis.ui.adapter.HistoryAdapter
 import com.deniscerri.ytdlnis.database.models.HistoryItem
 import com.deniscerri.ytdlnis.database.repository.HistoryRepository
 import com.deniscerri.ytdlnis.database.DBManager.SORTING
@@ -72,7 +72,6 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
     private var topAppBar: MaterialToolbar? = null
     private var recyclerView: RecyclerView? = null
     private var historyAdapter: HistoryAdapter? = null
-    private var bottomSheet: BottomSheetDialog? = null
     private var sortSheet: BottomSheetDialog? = null
     private var uiHandler: Handler? = null
     private var noResults: RelativeLayout? = null
@@ -401,20 +400,24 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
     override fun onCardClick(itemID: Long, isPresent: Boolean) {
         val item = findItem(itemID)
         UiUtil.showHistoryItemDetailsCard(item, requireActivity(), isPresent,
+            removeItem = { it, deleteFile ->
+                historyViewModel.delete(it, deleteFile)
+            },
             redownloadItem = {
                 val downloadItem = downloadViewModel.createDownloadItemFromHistory(it)
                 runBlocking{
                     downloadViewModel.queueDownloads(listOf(downloadItem))
                 }
                 historyViewModel.delete(it, false)
+            },
+            redownloadShowDownloadCard = {
+                val sheet = DownloadBottomSheetDialog(
+                    result = downloadViewModel.createResultItemFromHistory(it),
+                    type = it.type
+                )
+                sheet.show(parentFragmentManager, "downloadSingleSheet")
             }
-        ) {
-            val sheet = DownloadBottomSheetDialog(
-                result = downloadViewModel.createResultItemFromHistory(it),
-                type = it.type
-            )
-            sheet.show(parentFragmentManager, "downloadSingleSheet")
-        }
+        )
     }
 
     override fun onCardSelect(itemID: Long, isChecked: Boolean) {

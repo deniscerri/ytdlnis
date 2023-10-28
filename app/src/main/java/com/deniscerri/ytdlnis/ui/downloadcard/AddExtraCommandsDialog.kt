@@ -4,11 +4,8 @@ import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
-import android.content.Intent
 import android.content.SharedPreferences
-import android.graphics.Color
 import android.os.Bundle
-import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,17 +22,12 @@ import com.deniscerri.ytdlnis.database.viewmodel.CommandTemplateViewModel
 import com.deniscerri.ytdlnis.util.InfoUtil
 import com.deniscerri.ytdlnis.util.UiUtil
 import com.deniscerri.ytdlnis.util.UiUtil.enableTextHighlight
-import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.neo.highlight.core.Highlight
-import com.neo.highlight.util.listener.HighlightTextWatcher
-import com.neo.highlight.util.scheme.ColorScheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.*
-import java.util.regex.Pattern
 
 
 class AddExtraCommandsDialog(private val item: DownloadItem?, private val callback: ExtraCommandsListener) : BottomSheetDialogFragment() {

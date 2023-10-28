@@ -133,7 +133,7 @@
             android:orientation="vertical"
             android:layout_height="wrap_content">
 
-            <include layout="@layout/history_no_results"
+            <include layout="@layout/no_results"
                 android:visibility="gone" />
 
             <TextView

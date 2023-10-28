@@ -48,7 +48,6 @@ class MoreFragment : Fragment() {
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
         return inflater.inflate(R.layout.fragment_more, container, false)
     }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 

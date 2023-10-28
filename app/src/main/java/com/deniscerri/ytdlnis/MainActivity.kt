@@ -45,11 +45,9 @@ import com.deniscerri.ytdlnis.ui.downloadcard.DownloadBottomSheetDialog
 import com.deniscerri.ytdlnis.ui.more.settings.SettingsActivity
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.ThemeUtil
-import com.deniscerri.ytdlnis.util.UiUtil
 import com.deniscerri.ytdlnis.util.UpdateUtil
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.elevation.SurfaceColors
 import com.google.android.material.navigation.NavigationBarView
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.navigationrail.NavigationRailView
@@ -65,7 +63,6 @@ import java.io.BufferedReader
 import java.io.File
 import java.io.InputStreamReader
 import java.io.Reader
-import java.net.URI
 import java.nio.charset.Charset
 import java.nio.charset.StandardCharsets
 import kotlin.system.exitProcess
@@ -81,7 +78,6 @@ class MainActivity : BaseActivity() {
     private lateinit var navigationView: View
     private lateinit var navHostFragment : NavHostFragment
     private lateinit var navController : NavController
-    private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -93,9 +89,7 @@ class MainActivity : BaseActivity() {
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
         preferences = PreferenceManager.getDefaultSharedPreferences(context)
 
-        if (preferences.getBoolean("incognito", false)){
-            resultViewModel.deleteAll()
-        }
+        if (preferences.getBoolean("incognito", false)) resultViewModel.deleteAll()
 
         askPermissions()
         checkUpdate()
@@ -120,16 +114,16 @@ class MainActivity : BaseActivity() {
             }
         }
 
-        sharedPreferences =  PreferenceManager.getDefaultSharedPreferences(this)
+        if (savedInstanceState == null){
+            val graph = navController.navInflater.inflate(R.navigation.nav_graph)
+            graph.setStartDestination(R.id.homeFragment)
+            when(preferences.getString("start_destination", "")) {
+                "History" -> graph.setStartDestination(R.id.historyFragment)
+                "More" -> if (navigationView is NavigationBarView) graph.setStartDestination(R.id.moreFragment)
+            }
 
-        val graph = navController.navInflater.inflate(R.navigation.nav_graph)
-        graph.setStartDestination(R.id.homeFragment)
-        when(sharedPreferences.getString("start_destination", "")) {
-            "History" -> graph.setStartDestination(R.id.historyFragment)
-            "More" -> if (navigationView is NavigationBarView) graph.setStartDestination(R.id.moreFragment)
+            navController.graph = graph
         }
-
-        navController.graph = graph
 
         if (navigationView is NavigationBarView){
             (navigationView as NavigationBarView).setupWithNavController(navController)
@@ -164,7 +158,7 @@ class MainActivity : BaseActivity() {
             (navigationView as NavigationView).setupWithNavController(navController)
             //terminate button
             (navigationView as NavigationView).menu.getItem(7).setOnMenuItemClickListener {
-                if (sharedPreferences.getBoolean("ask_terminate_app", true)){
+                if (preferences.getBoolean("ask_terminate_app", true)){
                     var doNotShowAgain = false
                     val terminateDialog = MaterialAlertDialogBuilder(this)
                     terminateDialog.setTitle(getString(R.string.confirm_delete_history))
@@ -188,7 +182,7 @@ class MainActivity : BaseActivity() {
                             runBlocking {
                                 job.join()
                                 if (doNotShowAgain){
-                                    sharedPreferences.edit().putBoolean("ask_terminate_app", false).apply()
+                                    preferences.edit().putBoolean("ask_terminate_app", false).apply()
                                 }
                                 finishAndRemoveTask()
                                 finishAffinity()
@@ -212,9 +206,6 @@ class MainActivity : BaseActivity() {
 
             (navigationView as NavigationView).getHeaderView(0).findViewById<TextView>(R.id.title).text = ThemeUtil.getStyledAppName(this)
         }
-        cookieViewModel.updateCookiesFile()
-        val intent = intent
-        handleIntents(intent)
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             if (navigationView is NavigationBarView){
@@ -233,12 +224,15 @@ class MainActivity : BaseActivity() {
             }
         }
 
-
-        when(sharedPreferences.getString("start_destination", "")) {
-            "Queue" -> navController.navigate(R.id.downloadQueueMainFragment)
+        when(preferences.getString("start_destination", "")) {
+            "Queue" -> if (savedInstanceState == null) navController.navigate(R.id.downloadQueueMainFragment)
         }
 
-        if (sharedPreferences.getBoolean("auto_update_ytdlp", false)){
+        cookieViewModel.updateCookiesFile()
+        val intent = intent
+        handleIntents(intent)
+
+        if (preferences.getBoolean("auto_update_ytdlp", false)){
             CoroutineScope(SupervisorJob()).launch(Dispatchers.IO) {
                 if(DBManager.getInstance(this@MainActivity).downloadDao.getDownloadsCountByStatus(listOf("Active", "Queued")) == 0){
                     if (UpdateUtil(this@MainActivity).updateYoutubeDL() == YoutubeDL.UpdateStatus.DONE) {
@@ -251,8 +245,8 @@ class MainActivity : BaseActivity() {
 
             }
         }
-    }
 
+    }
     override fun onSaveInstanceState(savedInstanceState: Bundle) {
         super.onSaveInstanceState(savedInstanceState)
         savedInstanceState.putBundle("nav_state", navController.saveState())
@@ -488,10 +482,6 @@ class MainActivity : BaseActivity() {
             exitProcess(0)
         }
         dialog.show()
-    }
-    override fun onConfigurationChanged(newConfig: Configuration) {
-        startActivity(Intent(this, MainActivity::class.java))
-        super.onConfigurationChanged(newConfig)
     }
 
     companion object {

@@ -12,7 +12,6 @@ import com.deniscerri.ytdlnis.database.models.HistoryItem
 import com.deniscerri.ytdlnis.database.repository.HistoryRepository
 import com.deniscerri.ytdlnis.database.DBManager.SORTING
 import com.deniscerri.ytdlnis.database.repository.HistoryRepository.HistorySortType
-import com.deniscerri.ytdlnis.util.FileUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -23,6 +22,7 @@ class HistoryViewModel(application: Application) : AndroidViewModel(application)
     val websiteFilter = MutableLiveData("")
     private val queryFilter = MutableLiveData("")
     private val formatFilter = MutableLiveData("")
+
     val allItems : LiveData<List<HistoryItem>>
     private var _items = MediatorLiveData<List<HistoryItem>>()
 

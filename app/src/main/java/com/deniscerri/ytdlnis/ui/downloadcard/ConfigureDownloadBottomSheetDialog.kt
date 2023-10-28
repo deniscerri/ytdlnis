@@ -12,7 +12,6 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
 import androidx.core.content.edit
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceManager
@@ -179,10 +178,10 @@ class ConfigureDownloadBottomSheetDialog(private var result: ResultItem, private
         val link = view.findViewById<Button>(R.id.bottom_sheet_link)
         link.text = result.url
         link.setOnClickListener{
-            UiUtil.openLinkIntent(requireContext(), result.url, null)
+            UiUtil.openLinkIntent(requireContext(), result.url)
         }
         link.setOnLongClickListener{
-            UiUtil.copyLinkToClipBoard(requireContext(), result.url, null)
+            UiUtil.copyLinkToClipBoard(requireContext(), result.url)
             true
         }
 

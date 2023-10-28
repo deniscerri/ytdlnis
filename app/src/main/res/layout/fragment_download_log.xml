@@ -52,7 +52,7 @@
 
     </LinearLayout>
 
-    <include layout="@layout/history_no_results"
+    <include layout="@layout/no_results"
         android:visibility="gone" />
 
     <com.google.android.material.bottomappbar.BottomAppBar

@@ -15,7 +15,6 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.RelativeLayout
 import androidx.appcompat.app.AlertDialog
-import androidx.core.view.children
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -26,10 +25,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
-import com.deniscerri.ytdlnis.adapter.CookieAdapter
+import com.deniscerri.ytdlnis.ui.adapter.CookieAdapter
 import com.deniscerri.ytdlnis.database.models.CookieItem
 import com.deniscerri.ytdlnis.database.viewmodel.CookieViewModel
-import com.deniscerri.ytdlnis.util.UiUtil.enableFastScroll
+import com.deniscerri.ytdlnis.util.UiUtil
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.chip.Chip
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -130,6 +129,10 @@ class CookiesFragment : Fragment(), CookieAdapter.OnItemClickListener {
                     }
                     deleteDialog.show()
                 }
+                R.id.use_header -> {
+                    m.isChecked = !m.isChecked
+                    preferences.edit().putBoolean("use_header", m.isChecked).apply()
+                }
                 R.id.import_clipboard -> {
                     lifecycleScope.launch(Dispatchers.IO){
                         cookiesViewModel.importFromClipboard()
@@ -139,9 +142,18 @@ class CookiesFragment : Fragment(), CookieAdapter.OnItemClickListener {
                     cookiesViewModel.exportToClipboard()
                     Snackbar.make(recyclerView, getString(R.string.copied_to_clipboard), Snackbar.LENGTH_LONG).show()
                 }
-                R.id.use_header -> {
-                    m.isChecked = !m.isChecked
-                    preferences.edit().putBoolean("use_header", m.isChecked).apply()
+                R.id.export_file -> {
+                    cookiesViewModel.exportToFile {f ->
+                        if (f == null){
+                            Snackbar.make(recyclerView, getString(R.string.couldnt_parse_file), Snackbar.LENGTH_LONG).show()
+                        }else{
+                            val snack = Snackbar.make(recyclerView, getString(R.string.backup_created_successfully), Snackbar.LENGTH_LONG)
+                            snack.setAction(R.string.share) {
+                                UiUtil.shareFileIntent(requireContext(), listOf(f.absolutePath))
+                            }
+                            snack.show()
+                        }
+                    }
                 }
             }
             true

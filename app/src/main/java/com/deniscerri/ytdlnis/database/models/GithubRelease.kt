@@ -3,6 +3,8 @@ package com.deniscerri.ytdlnis.database.models
 import com.google.gson.annotations.SerializedName
 
 data class GithubRelease(
+    @SerializedName(value = "html_url")
+    val html_url: String,
     @SerializedName(value = "tag_name")
     var tag_name: String,
     @SerializedName(value = "body")

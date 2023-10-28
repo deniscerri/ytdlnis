@@ -31,7 +31,7 @@
 
     <SwitchPreferenceCompat
         android:widgetLayout="@layout/preferece_material_switch"
-        app:defaultValue="false"
+        app:defaultValue="true"
         android:icon="@drawable/ic_format"
         android:key="update_formats"
         app:summary="@string/update_formats_summary"

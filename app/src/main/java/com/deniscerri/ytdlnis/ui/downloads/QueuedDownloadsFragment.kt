@@ -11,6 +11,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -24,7 +25,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.work.WorkManager
 import com.deniscerri.ytdlnis.R
-import com.deniscerri.ytdlnis.adapter.GenericDownloadAdapter
+import com.deniscerri.ytdlnis.ui.adapter.GenericDownloadAdapter
 import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.repository.DownloadRepository
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
@@ -53,6 +54,7 @@ class QueuedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLi
     private lateinit var downloadViewModel : DownloadViewModel
     private lateinit var queuedRecyclerView : RecyclerView
     private lateinit var adapter : GenericDownloadAdapter
+    private lateinit var noResults : RelativeLayout
     private lateinit var notificationUtil: NotificationUtil
     private lateinit var fileSize: TextView
     private var totalSize: Int = 0
@@ -80,6 +82,7 @@ class QueuedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLi
                 requireActivity()
             )
 
+        noResults = view.findViewById(R.id.no_results)
         queuedRecyclerView = view.findViewById(R.id.download_recyclerview)
         queuedRecyclerView.forceFastScrollMode()
         queuedRecyclerView.adapter = adapter
@@ -120,6 +123,7 @@ class QueuedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLi
 
         downloadViewModel.getTotalSize(listOf(DownloadRepository.Status.Queued, DownloadRepository.Status.QueuedPaused)).observe(viewLifecycleOwner){
             totalSize = it
+            noResults.visibility = if (it == 0) View.VISIBLE else View.GONE
         }
     }
 
