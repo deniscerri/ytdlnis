@@ -59,9 +59,9 @@
     <string name="sponsorblock_promos">الترويج الذاتي</string>
     <string name="sponsorblock_previews">المعاينات</string>
     <string name="new_template">قالب جديد</string>
-    <string name="adjust_templates">الضبط</string>
+    <string name="adjust_templates">ضبط القوالب</string>
     <string name="edit_selected">تحرير القالب المختار</string>
-    <string name="adjust_video">الضبط</string>
+    <string name="adjust_video">ضبط ملف الفيديو</string>
     <string name="concurrent_downloads">التحميلات المتزامنة</string>
     <string name="concurrent_downloads_summary">عدد التحميلات الممكن إجراؤها في نفس الوقت</string>
     <string name="defaultValue">افتراضي</string>
@@ -69,7 +69,7 @@
     <string name="logs">السجلات</string>
     <string name="date_added">تاريخ الإضافة</string>
     <string name="update_ytdl_nightly">استخدام الإصدار الليلي من yt-dlp</string>
-    <string name="adjust_audio">الضبط</string>
+    <string name="adjust_audio">ضبط ملف الصوت</string>
     <string name="file_name_template">قالب العنوان</string>
     <string name="language">اللغة</string>
     <string name="command_templates">قوالب الأوامر</string>
@@ -139,7 +139,7 @@
     <string name="add_chapter">تعيين الفصول</string>
     <string name="show_download_card">إظهار بطاقة التحميل</string>
     <string name="download_card_summary">إعدادات لكيفية تحميل العناصر</string>
-    <string name="Open_File">فتح</string>
+    <string name="Open_File">فتح الملف</string>
     <string name="delete_files_too">الحذف من وحدة التخزين أيضًا</string>
     <string name="delete_file_too">الحذف من وحدة التخزين أيضًا</string>
     <string name="you_are_going_to_delete_multiple_items">سيتم إزالة العناصر المحددة/المدرجة</string>
@@ -156,7 +156,7 @@
     <string name="save_dir">الحفظ في المسار:</string>
     <string name="preferred_download_type_summary">التبويب الذي ستُفتح عليه بطاقة التحميل</string>
     <string name="help_translate">المساعدة في الترجمة</string>
-    <string name="help_translate_summary">المساعدة في توطين/تحسين الترجمة على Weblate</string>
+    <string name="help_translate_summary">المساعدة بِاقتراح ترجمات محسنة على Weblate</string>
     <string name="restart">إعادة التشغيل</string>
     <string name="confirm_delete_logs_desc">إزالة السجلات بالكامل.</string>
     <string name="select">اختيار</string>
@@ -165,7 +165,7 @@
     <string name="access_all_directories">السماح بالوصول إلى كل المجلدات</string>
     <string name="access_all_directories_summary">السماح بتنزيل التطبيق على المجلدات المقيدة إفتراضيًا</string>
     <string name="redownload">إعادة التحميل</string>
-    <string name="in_queue">المنتظرة</string>
+    <string name="in_queue">الموَقتة</string>
     <string name="clear_cancelled">تنظيف الملغاة</string>
     <string name="clear_errored">تنظيف المتعطلة</string>
     <string name="split_by_chapters">تفريق الفصول</string>
@@ -175,7 +175,7 @@
     <string name="ytdl_version">إصدار الـ yt-dlp</string>
     <string name="update_formats_summary">البحث التلقائي عن التنسيقات المفقودة عند فتح بطاقة التنسيقات</string>
     <string name="ignore_battery_optimization">تجاهل تحسين البطارية</string>
-    <string name="log_downloads_summary">إنشاء ملف سجل لكل تحميل</string>
+    <string name="log_downloads_summary">إنشاء ملف سجل للتحميل المكتمل</string>
     <string name="shortcuts_desc">طريقة وصول أسرع للأوامر كثيرة الاستخدام</string>
     <string name="restrict_filenames_summary">حصر العنوان بأحرف الـ ASCII فقط، وإزالة \"&amp;\" والمسافات</string>
     <string name="add_chapters_summary">تعليم أجزاء مقطع اليوتيوب و/أو حاجب شرائح الإعلانات كفصول للفيديو</string>
@@ -307,4 +307,12 @@
     <string name="user_agent_header">رأس وكيل المستخدم</string>
     <string name="remember_download_type">تذكر نوع التحميل</string>
     <string name="remember_download_type_summary">تعيين نوع التحميل اللاحق بناءً على آخر نوع تحميل تم الوصول اليه</string>
+    <string name="schedule">توقيت</string>
+    <string name="search_command_hint">بحث في قوالب الأوامر</string>
+    <string name="skip">تخطي</string>
+    <string name="license">الترخيص</string>
+    <string name="download_already_exists_summary">المضي بالتحميل على أي حال؟</string>
+    <string name="modify_download_card">تحرير بطاقة التحميل</string>
+    <string name="security">سياسة الخصوصية والأمان</string>
+    <string name="length">الطول</string>
 </resources>

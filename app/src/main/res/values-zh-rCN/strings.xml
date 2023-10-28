@@ -307,4 +307,12 @@
     <string name="user_agent_header">User-Agent 头</string>
     <string name="remember_download_type">记住下载类型</string>
     <string name="remember_download_type_summary">为当前项目选择上次打开的下载类型</string>
+    <string name="schedule">安排时间</string>
+    <string name="search_command_hint">搜索命令行模板</string>
+    <string name="skip">跳过</string>
+    <string name="license">许可证</string>
+    <string name="download_already_exists_summary">你仍要下载吗？</string>
+    <string name="modify_download_card">修改下载卡片</string>
+    <string name="security">安全性</string>
+    <string name="length">长度</string>
 </resources>

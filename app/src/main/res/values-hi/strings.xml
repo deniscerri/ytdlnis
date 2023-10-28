@@ -307,4 +307,12 @@
     <string name="user_agent_header">उपयोगकर्ता-एजेंट शीर्षलेख</string>
     <string name="remember_download_type">डाउनलोड टाइप याद रखें</string>
     <string name="remember_download_type_summary">वर्तमान आइटम के लिए अंतिम बार खोला गया डाउनलोड टाईप चुनें</string>
+    <string name="schedule">शडिऊल</string>
+    <string name="search_command_hint">कमांड में से खोजें</string>
+    <string name="skip">छोड़ें</string>
+    <string name="license">लाइसेंस</string>
+    <string name="download_already_exists_summary">क्या आप अब भी डाउनलोड करना चाहते हैं\?</string>
+    <string name="modify_download_card">डाउनलोड कार्ड संशोधित करें</string>
+    <string name="security">सुरक्षा</string>
+    <string name="length">लंबाई</string>
 </resources>

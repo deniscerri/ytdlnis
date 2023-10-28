@@ -35,7 +35,7 @@
     <string name="you_are_going_to_delete">מוחק</string>
     <string name="request_permission_desc">יישום זה מצריך הרשאת גישה לקבצים על מנת לשמור הורדות במכשיר</string>
     <string name="version">גירסה</string>
-    <string name="you_are_going_to_delete_multiple_items">למחוק פריטים מרובים \?</string>
+    <string name="you_are_going_to_delete_multiple_items">מוחק פריטים מרובים</string>
     <string name="ok">כן</string>
     <string name="update_app_summary">הודיע על גירסה חדשה כשהיישום נפתח</string>
     <string name="url">קישור</string>
@@ -50,7 +50,7 @@
     <string name="download_all">הורד הכל</string>
     <string name="date_added">תאריך נוסף</string>
     <string name="Remove">הסר</string>
-    <string name="confirm_delete_history_desc">למחוק את כל ההיסטוריה לצמיתות \?</string>
+    <string name="confirm_delete_history_desc">למחוק את כל ההיסטוריה, לצמיתות</string>
     <string name="more">עוד</string>
     <string name="history_is_empty">ההיסטוריה ריקה</string>
     <string name="updating">מעדכן</string>
@@ -174,7 +174,7 @@
     <string name="quick_download">הורדה מהירה</string>
     <string name="preferred_locale">אזור מועדף</string>
     <string name="pause">השהה</string>
-    <string name="material_you">Material You</string>
+    <string name="material_you">מטריאל יו</string>
     <string name="resume">המשך</string>
     <string name="finished_download_notification_channel_description">התראה לסיום או שגיאת הורדות</string>
     <string name="light">בהיר</string>
@@ -307,4 +307,12 @@
     <string name="preferred_format_id">מזהה פורמט מועדף</string>
     <string name="preferred_search_engine">מנוע חיפוש מועדף</string>
     <string name="couldnt_parse_file">לא ניתן לנתח את הקובץ</string>
+    <string name="schedule">תזמון</string>
+    <string name="search_command_hint">חפש מתוך פקודות</string>
+    <string name="skip">דילוג</string>
+    <string name="license">רישיון</string>
+    <string name="download_already_exists_summary">האם תרצה להמשיך להוריד\?</string>
+    <string name="modify_download_card">התאמת כרטיס הורדה</string>
+    <string name="security">אבטחה</string>
+    <string name="length">אורך</string>
 </resources>

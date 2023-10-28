@@ -250,7 +250,7 @@
     <string name="format_filtering_hint">所有項目必須是相同類型才能使用此選項</string>
     <string name="light">亮色</string>
     <string name="pure_theme_summary">純黑/白主題</string>
-    <string name="accents">腔調</string>
+    <string name="accents">強調色</string>
     <string name="monochrome">單色</string>
     <string name="red">紅色</string>
     <string name="incognito">隱身模式</string>
@@ -307,4 +307,12 @@
     <string name="user_agent_header">用戶代理</string>
     <string name="remember_download_type">記憶下載類別</string>
     <string name="remember_download_type_summary">使用上次的下載類型</string>
+    <string name="schedule">排程設定</string>
+    <string name="search_command_hint">指令搜尋</string>
+    <string name="skip">略過此項</string>
+    <string name="license">使用授權</string>
+    <string name="download_already_exists_summary">是否繼續進行下載？</string>
+    <string name="modify_download_card">編輯下載資訊卡片</string>
+    <string name="security">安全設定</string>
+    <string name="length">影片／音訊長度</string>
 </resources>

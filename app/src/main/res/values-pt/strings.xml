@@ -307,4 +307,12 @@
     <string name="user_agent_header">Cabeçalho User-Agent</string>
     <string name="remember_download_type">Lembrar o tipo de transferência</string>
     <string name="remember_download_type_summary">Selecionar o último tipo de download aberto para o item atual</string>
+    <string name="schedule">Agendar</string>
+    <string name="search_command_hint">Pesquisar a partir de comandos</string>
+    <string name="skip">Saltar</string>
+    <string name="license">Licença</string>
+    <string name="download_already_exists_summary">Ainda queres descarregar\?</string>
+    <string name="modify_download_card">Modificar o cartão de descarregamento</string>
+    <string name="security">Segurança</string>
+    <string name="length">Comprimento</string>
 </resources>
