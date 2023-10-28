@@ -304,4 +304,15 @@
     <string name="preferred_video_codec">Códec de vídeo preferido</string>
     <string name="sponsorblock_api_url">Dirección URL de la API de Sponsorblock</string>
     <string name="loading">Cargando</string>
+    <string name="user_agent_header">Encabezado de User-Agent</string>
+    <string name="remember_download_type">Recordar el tipo de la descarga</string>
+    <string name="remember_download_type_summary">Selecciona el último tipo de la descarga abierto para el elemento actual</string>
+    <string name="schedule">Horario</string>
+    <string name="search_command_hint">Búsqueda a partir de comandos</string>
+    <string name="skip">Omitir</string>
+    <string name="license">Licencia</string>
+    <string name="download_already_exists_summary">¿Todavía quieres descargar\?</string>
+    <string name="modify_download_card">Modificar la tarjeta de descarga</string>
+    <string name="security">Seguridad</string>
+    <string name="length">Longitud</string>
 </resources>

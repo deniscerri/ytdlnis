@@ -230,7 +230,7 @@
     <string name="finished_download_notification_channel_name">Shkarkimet e Përfunduara</string>
     <string name="finished_download_notification_channel_description">Njoftimet për shkarkimet e mbaruar ose me probleme</string>
     <string name="quick_download">Shkarkim i Shpejtë</string>
-    <string name="quick_download_summary">Mos merr informacion përpara shkarkimit</string>
+    <string name="quick_download_summary">Mos merr informacion te karta e shkarkimit</string>
     <string name="preferred_format_id">ID e Formatit të Preferuar</string>
     <string name="download_already_exists">Sharkimi ekziston tashmë</string>
     <string name="remove_audio">Hiq Audion</string>
@@ -289,7 +289,7 @@
     <string name="extra_command">Komanda Shtesë</string>
     <string name="use_cookies">Përdor Biskotat</string>
     <string name="embed_metadata">Vendos Metadatat</string>
-    <string name="embed_metadata_summary">Vendosni të dhënat meta në skedarin e videos. Përfshin gjithashtu kapitujt/infojson nëse janë të pranishëm</string>
+    <string name="embed_metadata_summary">Vendosni të dhënat meta në skedarin e audios</string>
     <string name="update_formats_background">Përditëso formatet në Prapaskenë</string>
     <string name="auto_update_ytdlp">Përditëso yt-dlp Automatikisht</string>
     <string name="use_sponsorblock">Përdor SponsorBlock</string>
@@ -300,4 +300,19 @@
     <string name="update_app_beta_summary">Bashkohu programit beta. Mund të ketë probleme.</string>
     <string name="update_app_beta">Publikimet Beta</string>
     <string name="auto">Automatike</string>
+    <string name="preferred_audio_codec">Kodeku i Preferuar i Audios</string>
+    <string name="preferred_video_codec">Kodeku i Preferuar i Videos</string>
+    <string name="sponsorblock_api_url">URL e Sponsorblock API</string>
+    <string name="loading">Duke Ngarkuar</string>
+    <string name="user_agent_header">Headeri i User-Agent</string>
+    <string name="search_command_hint">Kërko nga Komandat</string>
+    <string name="remember_download_type">Mbaj mend Llojin e Shkarkimit</string>
+    <string name="remember_download_type_summary">Zgjidh llojin e fundit të shkarkimit për shkarkimin aktual</string>
+    <string name="length">Gjatësia</string>
+    <string name="schedule">Orar</string>
+    <string name="skip">Injoro</string>
+    <string name="license">Liçensa</string>
+    <string name="download_already_exists_summary">Do sërisht ta shkarkosh\?</string>
+    <string name="modify_download_card">Modifiko Kartën e Shkarkimit</string>
+    <string name="security">Siguria</string>
 </resources>

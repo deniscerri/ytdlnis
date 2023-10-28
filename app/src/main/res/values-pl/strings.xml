@@ -283,4 +283,25 @@
     <string name="save_for_later">Zachować pobieranie na później\?</string>
     <string name="subtitle_format">Format napisów</string>
     <string name="orange">Pomarańczowy</string>
+    <string name="embed_metadata_summary">Osadzaj i analizuj metadane w pliku audio</string>
+    <string name="preferred_audio_codec">Preferowany kodek audio</string>
+    <string name="use_cookies">Użyj ciasteczek (Cookies)</string>
+    <string name="update_app_beta_summary">Zarejestruj się w programie beta. (Mogą wystąpić błędy).</string>
+    <string name="update_app_beta">Wydania testowe(BETA)</string>
+    <string name="scheduling">Planowanie</string>
+    <string name="update_formats_background">Aktualizuj formaty w tle</string>
+    <string name="embed_metadata">Osadź metadane</string>
+    <string name="show_terminal">Pokaż terminal w menu udostępniania</string>
+    <string name="write_description">Zapisz opis</string>
+    <string name="cache_first_summary">Pliki pamięci podręcznej są pobierane do pamięci wewnętrznej, a następnie przenoszone do wybranego katalogu. Użyj tej opcji, jeśli nie możesz pisać bezpośrednio do pamięci</string>
+    <string name="write_description_summary">Zapisz plik z opisem</string>
+    <string name="cache_first">Najpierw buforuj pobieranie</string>
+    <string name="use_sponsorblock">Użyj SponsorBlocka</string>
+    <string name="preferred_video_codec">Preferowany kodek wideo</string>
+    <string name="use_scheduler">Pobierz zgodnie z harmonogramem</string>
+    <string name="sponsorblock_api_url">Adres URL do API SponsorBlocka</string>
+    <string name="auto">Automatycznie</string>
+    <string name="extra_command">Dodatkowe polecenie</string>
+    <string name="auto_update_ytdlp">Automatyczna aktualizacja yt-dlp</string>
+    <string name="loading">Ładowanie</string>
 </resources>

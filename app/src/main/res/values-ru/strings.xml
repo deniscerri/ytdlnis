@@ -304,4 +304,15 @@
     <string name="preferred_video_codec">Предпочитаемый видеокодек</string>
     <string name="sponsorblock_api_url">Sponsorblock API URL</string>
     <string name="loading">Загрузка</string>
+    <string name="schedule">Расписание</string>
+    <string name="user_agent_header">Заголовок User-Agent</string>
+    <string name="search_command_hint">Поиск по командам</string>
+    <string name="skip">Пропустить</string>
+    <string name="license">Лицензия</string>
+    <string name="download_already_exists_summary">Вы все еще хотите скачать\?</string>
+    <string name="modify_download_card">Изменить карту загрузки</string>
+    <string name="security">Безопасность</string>
+    <string name="remember_download_type">Запомнить тип загрузки</string>
+    <string name="remember_download_type_summary">Выберите последний открытый тип загрузки для текущего элемента</string>
+    <string name="length">Длина</string>
 </resources>

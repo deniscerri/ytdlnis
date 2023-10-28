@@ -283,7 +283,7 @@
     <string name="use_extra_commands_summary">Para downloads de áudio/vídeo. Adicione comandos extras junto com a configuração da GUI</string>
     <string name="current">Comando atual</string>
     <string name="orange">Laranja</string>
-    <string name="show_terminal">Mostrar o Terminal no menu de compartilhamento</string>
+    <string name="show_terminal">Mostrar Terminal no Menu Compartilhar</string>
     <string name="extra_command">Comando extra</string>
     <string name="write_description">Salvar descrição</string>
     <string name="use_cookies">Usar Cookies</string>
@@ -302,6 +302,17 @@
     <string name="auto">Automático</string>
     <string name="preferred_audio_codec">Codec de áudio preferido</string>
     <string name="preferred_video_codec">Codec de vídeo preferido</string>
-    <string name="sponsorblock_api_url">URL da API Sponsorblock</string>
+    <string name="sponsorblock_api_url">URL da API SponsorBlock</string>
     <string name="loading">Carregando</string>
+    <string name="user_agent_header">Cabeçalho User-Agent</string>
+    <string name="remember_download_type">Lembrar do tipo de download</string>
+    <string name="remember_download_type_summary">Selecione o último tipo de download aberto para o item atual</string>
+    <string name="schedule">Agendar</string>
+    <string name="search_command_hint">Pesquisar a partir dos comandos</string>
+    <string name="skip">Pular</string>
+    <string name="license">Licença</string>
+    <string name="download_already_exists_summary">Você ainda quer fazer o download\?</string>
+    <string name="modify_download_card">Modificar cartão de download</string>
+    <string name="security">Segurança</string>
+    <string name="length">Comprimento</string>
 </resources>
