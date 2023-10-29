@@ -108,9 +108,9 @@ class TerminalDownloadWorker(
                 }
 
                 val title: String = command.take(65)
-                notificationUtil.updateDownloadNotification(
+                notificationUtil.updateTerminalDownloadNotification(
                     itemId,
-                    line, progress.toInt(), 0, title,
+                    line, progress.toInt(), title,
                     NotificationUtil.DOWNLOAD_SERVICE_CHANNEL_ID
                 )
                 CoroutineScope(Dispatchers.IO).launch {

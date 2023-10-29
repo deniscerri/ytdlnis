@@ -1095,20 +1095,20 @@ class InfoUtil(private val context: Context) {
                 request.addOption("--write-description")
             }
 
-            if (downloadItem.playlistTitle.isNotBlank()){
-                request.addOption("--parse-metadata","${downloadItem.playlistTitle.split("[")[0]}:%(playlist)s")
-                runCatching {
-                    request.addOption("--parse-metadata",
-                        downloadItem.playlistTitle
-                            .substring(
-                                downloadItem.playlistTitle.indexOf("[") + 1,
-                                downloadItem.playlistTitle.indexOf("]"),
-                            ) + ":%(playlist_index)s"
-                    )
-                }
-            }
-
             downloadItem.customFileNameTemplate = downloadItem.customFileNameTemplate.replace("%(uploader)s", "%(uploader,channel)s")
+        }
+
+        if (downloadItem.playlistTitle.isNotBlank()){
+            request.addOption("--parse-metadata","${downloadItem.playlistTitle.split("[")[0]}:%(playlist)s")
+            runCatching {
+                request.addOption("--parse-metadata",
+                    downloadItem.playlistTitle
+                        .substring(
+                            downloadItem.playlistTitle.indexOf("[") + 1,
+                            downloadItem.playlistTitle.indexOf("]"),
+                        ) + ":%(playlist_index)s"
+                )
+            }
         }
 
         when(type){

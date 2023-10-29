@@ -204,11 +204,14 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val urls
                 val currentTime = infoUtil.formatIntegerDuration(p, Locale.US)
                 durationText.text = "$currentTime / ${item.duration}"
                 val startTimestamp = convertStringToTimestamp(fromTextInput.editText!!.text.toString())
-                val endTimestamp = convertStringToTimestamp(toTextInput.editText!!.text.toString())
-                if (p >= endTimestamp){
-                    player.prepare()
-                    player.seekTo((startTimestamp * 1000).toLong())
+                if (toTextInput.editText!!.text.isNotBlank()){
+                    val endTimestamp = convertStringToTimestamp(toTextInput.editText!!.text.toString())
+                    if (p >= endTimestamp){
+                        player.prepare()
+                        player.seekTo((startTimestamp * 1000).toLong())
+                    }
                 }
+
             }
         }
 

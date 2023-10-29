@@ -157,6 +157,9 @@ class SelectPlaylistItemsDialog(private val items: List<ResultItem?>, private va
                 if (checkedResultItems.size == 1){
                     val resultItem = resultViewModel.getItemByURL(checkedResultItems[0]!!.url)
                     val bottomSheet = DownloadBottomSheetDialog(resultItem, type)
+                    parentFragmentManager.addFragmentOnAttachListener { fragmentManager, fragment ->
+                        dismiss()
+                    }
                     bottomSheet.show(parentFragmentManager, "downloadSingleSheet")
                 }else{
                     val downloadItems = mutableListOf<DownloadItem>()
@@ -171,6 +174,9 @@ class SelectPlaylistItemsDialog(private val items: List<ResultItem?>, private va
                     }
 
                     val bottomSheet = DownloadMultipleBottomSheetDialog(downloadItems)
+                    parentFragmentManager.addFragmentOnAttachListener { fragmentManager, fragment ->
+                        dismiss()
+                    }
                     bottomSheet.show(parentFragmentManager, "downloadMultipleSheet")
                 }
 
@@ -216,10 +222,10 @@ class SelectPlaylistItemsDialog(private val items: List<ResultItem?>, private va
 
     private fun cleanup(){
         kotlin.runCatching {
-            parentFragmentManager.beginTransaction().remove(parentFragmentManager.findFragmentByTag("downloadPlaylistSheet")!!).commit()
-        }
-        if (activity is ShareActivity){
-            (activity as ShareActivity).finishAffinity()
+            val movedToMultipleOrSingleSheet = parentFragmentManager.fragments.map { it.tag }.contains("downloadMultipleSheet") || parentFragmentManager.fragments.map { it.tag }.contains("downloadSingleSheet")
+            if (activity is ShareActivity && !movedToMultipleOrSingleSheet){
+                (activity as ShareActivity).finish()
+            }
         }
     }
 

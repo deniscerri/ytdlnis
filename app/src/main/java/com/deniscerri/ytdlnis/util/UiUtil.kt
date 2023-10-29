@@ -39,11 +39,9 @@ import androidx.core.view.isVisible
 import androidx.documentfile.provider.DocumentFile
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.RecyclerView
 import com.afollestad.materialdialogs.utils.MDUtil.getStringArray
-import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.CommandTemplate
 import com.deniscerri.ytdlnis.database.models.DownloadItem
@@ -1341,7 +1339,7 @@ object UiUtil {
 
     private var textHighLightSchemes = listOf(
         ColorScheme(Pattern.compile("([\"'])(?:\\\\1|.)*?\\1"), Color.parseColor("#FC8500")),
-        ColorScheme(Pattern.compile("yt-dlp"), Color.parseColor("#FF0000")),
+        ColorScheme(Pattern.compile("yt-dlp"), Color.parseColor("#77eb09")),
         ColorScheme(Pattern.compile("(https?://(?:www\\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|www\\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|https?://(?:www\\.|(?!www))[a-zA-Z0-9]+\\.[^\\s]{2,}|www\\.[a-zA-Z0-9]+\\.[^\\s]{2,})"), Color.parseColor("#b5942f")),
         ColorScheme(Pattern.compile("\\d+(\\.\\d)?%"), Color.parseColor("#43a564"))
     )
@@ -1407,7 +1405,7 @@ object UiUtil {
     }
 
     @SuppressLint("SetTextI18n")
-    fun handleDownloadsResponse(context: MainActivity, it: DownloadViewModel.DownloadsUiState, downloadViewModel: DownloadViewModel, historyViewModel: HistoryViewModel){
+    fun handleDownloadsResponse(context: Activity, lifecycleScope: CoroutineScope, supportFragmentManager: FragmentManager, it: DownloadViewModel.DownloadsUiState, downloadViewModel: DownloadViewModel, historyViewModel: HistoryViewModel){
         val downloadAnywayAction = it.actions?.first { it.second == DownloadViewModel.DownloadsAction.DOWNLOAD_ANYWAY}
         if (downloadAnywayAction != null){
             if (downloadAnywayAction.third == null) return
@@ -1454,7 +1452,7 @@ object UiUtil {
                                 resultItemID: Long,
                                 item: DownloadItem
                             ) {
-                                context.lifecycleScope.launch {
+                                lifecycleScope.launch {
                                     val idx = downloads.indexOfFirst { it.id == item.id }
                                     downloads[idx] = item
                                     withContext(Dispatchers.Main){
@@ -1464,7 +1462,7 @@ object UiUtil {
                             }
                         }
                         val bottomSheet = ConfigureDownloadBottomSheetDialog(resultItem, downloadItem, onItemUpdated)
-                        bottomSheet.show(context.supportFragmentManager, "configureDownloadSingleSheet")
+                        bottomSheet.show(supportFragmentManager, "configureDownloadSingleSheet")
                     }
 
                     if (historyItem != null){
@@ -1507,7 +1505,7 @@ object UiUtil {
             }
 
             errDialog.setNegativeButton(R.string.schedule) { d:DialogInterface?, _:Int ->
-                showDatePicker(context.supportFragmentManager) { calendar ->
+                showDatePicker(supportFragmentManager) { calendar ->
                     CoroutineScope(Dispatchers.IO).launch {
                         val items = mutableListOf<DownloadItem>()
                         linearLayout.children.forEach {view ->

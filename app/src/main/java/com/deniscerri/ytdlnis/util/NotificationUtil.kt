@@ -363,6 +363,38 @@ class NotificationUtil(var context: Context) {
             e.printStackTrace()
         }
     }
+    fun updateTerminalDownloadNotification(
+        id: Int,
+        desc: String,
+        progress: Int,
+        title: String?,
+        channel : String
+    ) {
+
+        val notificationBuilder = getBuilder(channel)
+        var contentText = ""
+        contentText += desc.replace("\\[.*?\\] ".toRegex(), "")
+
+        val cancelIntent = Intent(context, CancelDownloadNotificationReceiver::class.java)
+        cancelIntent.putExtra("itemID", id)
+        val cancelNotificationPendingIntent = PendingIntent.getBroadcast(
+            context,
+            id,
+            cancelIntent,
+            PendingIntent.FLAG_IMMUTABLE
+        )
+
+        try {
+            notificationBuilder.setProgress(100, progress, false)
+                .setContentTitle(title)
+                .setStyle(NotificationCompat.BigTextStyle().bigText(contentText))
+                .clearActions()
+                .addAction(0, resources.getString(R.string.cancel), cancelNotificationPendingIntent)
+            notificationManager.notify(id, notificationBuilder.build())
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
 
     fun cancelDownloadNotification(id: Int) {
         notificationManager.cancel(id)

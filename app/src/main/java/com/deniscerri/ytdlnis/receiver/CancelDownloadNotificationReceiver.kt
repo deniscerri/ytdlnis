@@ -17,7 +17,6 @@ class CancelDownloadNotificationReceiver : BroadcastReceiver() {
         val id = intent.getIntExtra("itemID", 0)
         if (id > 0) {
             runCatching {
-                Log.e("aa", id.toString())
                 val notificationUtil = NotificationUtil(c)
                 YoutubeDL.getInstance().destroyProcessById(id.toString())
                 notificationUtil.cancelDownloadNotification(id)
@@ -27,6 +26,9 @@ class CancelDownloadNotificationReceiver : BroadcastReceiver() {
                         val item = dbManager.downloadDao.getDownloadById(id.toLong())
                         item.status = DownloadRepository.Status.Cancelled.toString()
                         dbManager.downloadDao.update(item)
+                    }
+                    runCatching {
+                        dbManager.terminalDao.delete(id.toLong())
                     }
                 }
             }

@@ -303,7 +303,7 @@ class DownloadBottomSheetDialog(private var result: ResultItem, private val type
             initUpdateData(view)
         }else {
             val usingGenericFormatsOrEmpty = result.formats.isEmpty() || result.formats.any { it.format_note.contains("ytdlnisgeneric") }
-            if (usingGenericFormatsOrEmpty && sharedPreferences.getBoolean("update_formats", false)){
+            if (usingGenericFormatsOrEmpty && sharedPreferences.getBoolean("update_formats", false) && !sharedPreferences.getBoolean("quick_download", false)){
                 initUpdateFormats(result.url)
             }
         }
@@ -311,7 +311,17 @@ class DownloadBottomSheetDialog(private var result: ResultItem, private val type
         CoroutineScope(Dispatchers.IO).launch{
             downloadViewModel.uiState.collectLatest { res ->
                 if (res.errorMessage != null) {
-                    UiUtil.handleDownloadsResponse(requireActivity() as MainActivity, res, downloadViewModel, historyViewModel)
+                    withContext(Dispatchers.Main){
+                        kotlin.runCatching {
+                            UiUtil.handleDownloadsResponse(
+                                requireActivity(),
+                                requireActivity().lifecycleScope,
+                                requireActivity().supportFragmentManager,
+                                res,
+                                downloadViewModel,
+                                historyViewModel)
+                        }
+                    }
                     downloadViewModel.uiState.value =  DownloadViewModel.DownloadsUiState(
                         errorMessage = null,
                         actions = null
@@ -432,7 +442,7 @@ class DownloadBottomSheetDialog(private var result: ResultItem, private val type
                         parentFragmentManager.addFragmentOnAttachListener { fragmentManager, fragment ->
                             dismiss()
                         }
-                        playlistSelect.show(parentFragmentManager, "downloadMultipleSheet")
+                        playlistSelect.show(parentFragmentManager, "downloadPlaylistSheet")
                     }
                 }else{
                     dismiss()
@@ -441,6 +451,7 @@ class DownloadBottomSheetDialog(private var result: ResultItem, private val type
         }
         shimmerLoading.setOnClickListener {
             updateJob.cancel()
+            (updateItem.parent as LinearLayout).visibility = View.VISIBLE
         }
         updateJob.invokeOnCompletion {
             requireActivity().runOnUiThread {
@@ -450,7 +461,6 @@ class DownloadBottomSheetDialog(private var result: ResultItem, private val type
                 shimmerLoadingSubtitle.visibility = View.GONE
                 shimmerLoading.stopShimmer()
                 shimmerLoadingSubtitle.stopShimmer()
-                (updateItem.parent as LinearLayout).visibility = View.VISIBLE
             }
         }
         updateJob.start()
@@ -515,11 +525,7 @@ class DownloadBottomSheetDialog(private var result: ResultItem, private val type
 
     private fun cleanUp(){
         kotlin.runCatching {
-            repeat((parentFragmentManager.findFragmentByTag("downloadSingleSheet")?.fragmentManager?.backStackEntryCount?.minus(1))?: 0){
-                parentFragmentManager.findFragmentByTag("downloadSingleSheet")?.fragmentManager?.popBackStack()
-            }
-            parentFragmentManager.beginTransaction().remove(parentFragmentManager.findFragmentByTag("downloadSingleSheet")!!).commit()
-            if (activity is ShareActivity && !parentFragmentManager.fragments.map { it.tag }.contains("downloadMultipleSheet")){
+            if (activity is ShareActivity && !parentFragmentManager.fragments.map { it.tag }.contains("downloadPlaylistSheet")){
                 (activity as ShareActivity).finish()
             }
         }

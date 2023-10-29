@@ -25,6 +25,7 @@ buildscript {
         media3_version = "1.1.1"
         agp_version = '8.1.0'
         agp_version1 = '7.4.2'
+        roomVer = '2.5.2'
     }
     repositories {
         mavenCentral()

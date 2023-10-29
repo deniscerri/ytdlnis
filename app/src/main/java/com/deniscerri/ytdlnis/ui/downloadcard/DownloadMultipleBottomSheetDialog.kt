@@ -57,6 +57,7 @@ import com.google.android.material.color.MaterialColors
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -507,10 +508,20 @@ class DownloadMultipleBottomSheetDialog(private var items: MutableList<DownloadI
             true
         }
 
-        lifecycleScope.launch {
+        CoroutineScope(Dispatchers.IO).launch{
             downloadViewModel.uiState.collectLatest { res ->
                 if (res.errorMessage != null) {
-                    UiUtil.handleDownloadsResponse(requireActivity() as MainActivity, res, downloadViewModel, historyViewModel)
+                    withContext(Dispatchers.Main){
+                        kotlin.runCatching {
+                            UiUtil.handleDownloadsResponse(
+                                requireActivity(),
+                                requireActivity().lifecycleScope,
+                                requireActivity().supportFragmentManager,
+                                res,
+                                downloadViewModel,
+                                historyViewModel)
+                        }
+                    }
                     downloadViewModel.uiState.value =  DownloadViewModel.DownloadsUiState(
                         errorMessage = null,
                         actions = null
@@ -560,8 +571,7 @@ class DownloadMultipleBottomSheetDialog(private var items: MutableList<DownloadI
 
     private fun cleanup(){
         kotlin.runCatching {
-            parentFragmentManager.beginTransaction().remove(parentFragmentManager.findFragmentByTag("downloadMultipleSheet")!!).commit()
-            if (parentFragmentManager.fragments.size == 1){
+            if (activity is ShareActivity){
                 (activity as ShareActivity).finish()
             }
         }

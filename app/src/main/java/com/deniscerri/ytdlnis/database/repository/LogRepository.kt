@@ -3,6 +3,8 @@ package com.deniscerri.ytdlnis.database.repository
 import com.deniscerri.ytdlnis.database.dao.LogDao
 import com.deniscerri.ytdlnis.database.models.LogItem
 import kotlinx.coroutines.flow.Flow
+import java.util.regex.MatchResult
+import java.util.regex.Pattern
 
 class LogRepository(private val logDao: LogDao) {
     val items : Flow<List<LogItem>> = logDao.getAllLogsFlow()
@@ -42,7 +44,22 @@ class LogRepository(private val logDao: LogDao) {
             val item = getItem(id)
             val log = item.content
             //clean duplicate progress + add newline
-            //item.content = log.replace("(?s:.*\\n)?\\K\\[download\\]( *?)(\\d)(.*?)\\n(?!.*\\[download\\]( *?)(\\d)(.*?)\\n)".toRegex()).replac { it.contains("[download") }.joinToString("\n") +  "\n${line}"
+            val lines = log.split("\n").toMutableList()
+            run loop@ {
+                for(i in lines.size - 1 downTo 0){
+                    val l = lines[i]
+                    if(l.contains("\\[download]( *?)(\\d)(.*?)".toRegex())){
+                        lines[i] = ""
+                        return@loop
+                    }
+                }
+            }
+            val l = if (line.contains("[download]")) {
+                "[download]" + line.split("[download]").last()
+            }else {
+                line
+            }
+            item.content = lines.filter { it.isNotBlank() }.joinToString("\n") + "\n${l}"
             logDao.update(item)
         }
     }

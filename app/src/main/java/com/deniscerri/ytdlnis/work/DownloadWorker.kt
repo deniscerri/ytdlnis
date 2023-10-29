@@ -75,7 +75,8 @@ class DownloadWorker(
             .createPendingIntent()
 
         val workNotif = notificationUtil.createDefaultWorkerNotification()
-        val foregroundInfo = ForegroundInfo(Random.nextInt(1000000000), workNotif)
+        val workNotifID = Random.nextInt(900000000, 1000000000)
+        val foregroundInfo = ForegroundInfo(workNotifID, workNotif)
         setForegroundAsync(foregroundInfo)
 
         queuedItems.collect { items ->
@@ -100,8 +101,8 @@ class DownloadWorker(
                 val notification = notificationUtil.createDownloadServiceNotification(pendingIntent, downloadItem.title, downloadItem.id.toInt())
                 notificationUtil.notify(downloadItem.id.toInt(), notification)
 
-
                 CoroutineScope(Dispatchers.IO).launch {
+
                     val request = infoUtil.buildYoutubeDLRequest(downloadItem)
                     downloadItem.status = DownloadRepository.Status.Active.toString()
                     CoroutineScope(Dispatchers.IO).launch {
