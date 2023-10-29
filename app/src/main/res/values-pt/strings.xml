@@ -169,7 +169,7 @@
     <string name="preferred_locale">Local preferido</string>
     <string name="pause">Pausa</string>
     <string name="resume">Retomar</string>
-    <string name="keep_cache">Manter cache</string>
+    <string name="keep_cache">Manter fragmentos</string>
     <string name="backup">Backup</string>
     <string name="restore">Restaurar</string>
     <string name="network_error">Erro de rede</string>
@@ -223,7 +223,7 @@
     <string name="dont_ask_again">Não pergunte novamente</string>
     <string name="downloads_running_try_later">O assistente de download está em execução. Tente mais tarde</string>
     <string name="start">Começar</string>
-    <string name="update_formats_summary">Pesquise automaticamente formatos ausentes ao clicar no cartão de formato</string>
+    <string name="update_formats_summary">Obter os formatos logo que o cartão de descarregamento apareça</string>
     <string name="ignore_battery_optimization">Ignorar a otimização da bateria</string>
     <string name="cut">Cortar</string>
     <string name="new_cut">Novo corte</string>
@@ -315,4 +315,5 @@
     <string name="modify_download_card">Modificar o cartão de descarregamento</string>
     <string name="security">Segurança</string>
     <string name="length">Comprimento</string>
+    <string name="export_file">Exportar ficheiro</string>
 </resources>
