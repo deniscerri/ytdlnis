@@ -61,7 +61,7 @@
     <string name="items_left">항목 남음</string>
     <string name="history_is_empty">기록이 비어 있습니다</string>
     <string name="api_key">API 키 사용</string>
-    <string name="api_key_summary">유튜브 API로 더 빠른 결과 동영상 추천</string>
+    <string name="api_key_summary">유튜브 API의 추천 동영상</string>
     <string name="downloads">다운로드</string>
     <string name="remove_deleted">삭제된 항목 제거</string>
     <string name="remove_duplicates">중복 제거</string>
@@ -227,7 +227,7 @@
     <string name="metered_network_download_start_info">제한이 없는 네트워크에 연결되면 다운로드가 시작됩니다</string>
     <string name="video_recommendations">동영상 추천</string>
     <string name="preferred_home_screen">선호하는 홈 화면</string>
-    <string name="video_recommendations_summary">Invidious에서 추천하는 유튜브 동영상을 받으세요</string>
+    <string name="video_recommendations_summary">PIPED API의 홈에서 추천하는 유튜브 동영상 보기</string>
     <string name="preferred_search_engine">선호하는 검색 엔진</string>
     <string name="preferred_search_engine_summary">앱의 검색창에서 사용할 검색 엔진</string>
     <string name="dark">다크</string>
@@ -269,7 +269,7 @@
     <string name="custom_audio_quality">사용자 지정 오디오 품질 사용</string>
     <string name="piped_instance">파이프 인스턴스</string>
     <string name="piped_instance_summary">앱이 유튜브 쿼리 및 형식에 사용할 수 있는 PIPED API 서버 설정</string>
-    <string name="orange">오렌지색</string>
+    <string name="orange">주황색</string>
     <string name="save_for_later">나중에 다운로드를 저장하시겠습니까\?</string>
     <string name="retries">재시도</string>
     <string name="use_extra_commands_summary">오디오 / 비디오 다운로드의 경우 GUI 구성과 함께 추가 명령을 추가</string>
@@ -285,7 +285,7 @@
     <string name="fragment_retries">조각 재시도</string>
     <string name="format_order">형식 순서</string>
     <string name="embed_metadata">메타데이터 포함</string>
-    <string name="embed_metadata_summary">비디오 파일에 메타데이터를 포함하고 구문 분석합니다. 또한, 오디오 파일이 있는 경우 챕터의 infojson도 포함합니다.</string>
+    <string name="embed_metadata_summary">오디오 파일에 메타데이터를 포함하고 구문 분석합니다.</string>
     <string name="force_keyframes">자를때 키프레임 강제 적용</string>
     <string name="force_keyframes_summary">처리속도는 느리지만 더 정확하게 자름</string>
     <string name="current">현재 명령</string>
@@ -304,4 +304,16 @@
     <string name="preferred_video_codec">기본 비디오 코덱</string>
     <string name="sponsorblock_api_url">스폰서블록 API URL</string>
     <string name="loading">로드 중</string>
+    <string name="export_file">파일 내보내기</string>
+    <string name="schedule">스케쥴</string>
+    <string name="user_agent_header">사용자 에이전트 헤더</string>
+    <string name="search_command_hint">명령어로 검색</string>
+    <string name="skip">건너뜀</string>
+    <string name="license">라이선스</string>
+    <string name="download_already_exists_summary">아직도 다운로드하시겠습니까\?</string>
+    <string name="modify_download_card">다운로드 카드 수정</string>
+    <string name="security">보안</string>
+    <string name="remember_download_type">다운로드 유형 기억</string>
+    <string name="remember_download_type_summary">현재 항목에 대해 마지막으로 열었던 다운로드 유형을 선택하세요</string>
+    <string name="length">길이</string>
 </resources>
