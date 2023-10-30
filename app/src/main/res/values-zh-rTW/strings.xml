@@ -125,7 +125,7 @@
     <string name="pause">暫停</string>
     <string name="resume">繼續</string>
     <string name="updating_download_data">正在更新下載項目資料</string>
-    <string name="keep_cache">保留快取</string>
+    <string name="keep_cache">保留影音片段</string>
     <string name="backup">備份</string>
     <string name="sponsorblock">SponsorBlock</string>
     <string name="couldnt_parse_file">無法解析檔案</string>
@@ -237,7 +237,7 @@
     <string name="freespace">可用空間</string>
     <string name="restrict_filenames_summary">限制檔名只使用 ASCII 字元，避免在檔名中使用 \"&amp;\" 和空格</string>
     <string name="cut">剪下</string>
-    <string name="update_formats_summary">點擊格式卡片時自動搜尋缺少的格式</string>
+    <string name="update_formats_summary">當下載卡片顯示時，立刻獲取可用的格式</string>
     <string name="download_over_metered_networks_summary">使用任何網路類型進行下載。否則等待非計量網路</string>
     <string name="confirm_terminate">停止所有下載並強制關閉應用程式</string>
     <string name="start">開始</string>
@@ -315,4 +315,5 @@
     <string name="modify_download_card">編輯下載資訊卡片</string>
     <string name="security">安全設定</string>
     <string name="length">影片／音訊長度</string>
+    <string name="export_file">輸出檔案至指定位置</string>
 </resources>
