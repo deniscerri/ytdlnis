@@ -224,7 +224,7 @@
     <string name="new_cookie">新 Cookie</string>
     <string name="downloads_running_try_later">下载器正在运行。稍后再试</string>
     <string name="freespace">可用空间</string>
-    <string name="update_formats_summary">单击格式卡片时自动搜索缺少的格式</string>
+    <string name="update_formats_summary">下载卡片一出现就获取格式</string>
     <string name="add_template_first">您至少需要创建一个命令模板！</string>
     <string name="download_over_metered_networks_summary">使用任何网络类型下载。否则等待不按流量计费的网络</string>
     <string name="suggested">建议</string>
@@ -253,7 +253,7 @@
     <string name="quick_download">快速下载</string>
     <string name="quick_download_summary">不获取下载卡片中的数据</string>
     <string name="download_now">现在下载</string>
-    <string name="keep_cache">保留缓存</string>
+    <string name="keep_cache">保留分段</string>
     <string name="keep_cache_summary">下载完成后不删除临时文件</string>
     <string name="backup">备份</string>
     <string name="restore_complete">应用还原完成。以下项目已恢复：</string>
@@ -315,4 +315,5 @@
     <string name="modify_download_card">修改下载卡片</string>
     <string name="security">安全性</string>
     <string name="length">长度</string>
+    <string name="export_file">导出文件</string>
 </resources>
