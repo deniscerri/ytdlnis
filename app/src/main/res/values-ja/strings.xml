@@ -304,4 +304,5 @@
     <string name="preferred_video_codec">優先する動画コーデック</string>
     <string name="sponsorblock_api_url">SponsorBlock API URL</string>
     <string name="loading">読み込み中</string>
+    <string name="search_command_hint">コマンドから探す</string>
 </resources>
