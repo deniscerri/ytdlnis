@@ -178,7 +178,7 @@
     <string name="dont_ask_again">No vuelvas a preguntar</string>
     <string name="end">Fin</string>
     <string name="start">Inicio</string>
-    <string name="update_formats_summary">Busca automáticamente los formatos que faltan al hacer clic en la tarjeta de formato</string>
+    <string name="update_formats_summary">Obtenga los formatos en cuanto aparezca la tarjeta de descarga</string>
     <string name="ignore_battery_optimization">Ignorar la optimización de la batería</string>
     <string name="cut">Cortar</string>
     <string name="suggested">Sugerido</string>
@@ -238,7 +238,7 @@
     <string name="pause">Pausa</string>
     <string name="resume">Resumen</string>
     <string name="updating_download_data">Actualizando los datos de los elementos de la descarga</string>
-    <string name="keep_cache">Conservar la caché</string>
+    <string name="keep_cache">Conservar los fragmentos</string>
     <string name="keep_cache_summary">No eliminar los archivos temporales una vez finalizada la descarga</string>
     <string name="backup">Copia de seguridad</string>
     <string name="restore">Restaurar</string>
@@ -315,4 +315,5 @@
     <string name="modify_download_card">Modificar la tarjeta de descarga</string>
     <string name="security">Seguridad</string>
     <string name="length">Longitud</string>
+    <string name="export_file">Exportar el archivo</string>
 </resources>
