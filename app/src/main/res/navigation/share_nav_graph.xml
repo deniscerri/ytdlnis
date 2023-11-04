@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:startDestination="@id/downloadBottomSheetDialog">
+    <dialog
+        android:id="@+id/downloadBottomSheetDialog"
+        android:name="com.deniscerri.ytdlnis.ui.downloadcard.DownloadBottomSheetDialog"
+        android:label="DownloadBottomSheetDialog" >
+        <action
+            android:id="@+id/action_downloadBottomSheetDialog_to_selectPlaylistItemsDialog"
+            app:destination="@id/selectPlaylistItemsDialog" />
+    </dialog>
+    <dialog
+        android:name="com.deniscerri.ytdlnis.ui.downloadcard.SelectPlaylistItemsDialog"
+        android:label="SelectPlaylistItemsDialog">
+        <action
+            android:id="@+id/action_selectPlaylistItemsDialog_to_downloadMultipleBottomSheetDialog"
+            app:destination="@id/downloadMultipleBottomSheetDialog" />
+    </dialog>
+    <dialog
+        android:id="@+id/downloadMultipleBottomSheetDialog"
+        android:name="com.deniscerri.ytdlnis.ui.downloadcard.DownloadMultipleBottomSheetDialog"
+        android:label="DownloadMultipleBottomSheetDialog" />
+</navigation>
