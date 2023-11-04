@@ -178,7 +178,7 @@
     <string name="start">Старт</string>
     <string name="confirm_terminate">Зупиняє всі завантаження та примусово закриває застосунок</string>
     <string name="dont_ask_again">Більше не питай</string>
-    <string name="update_formats_summary">Автоматичний пошук відсутніх форматів при натисканні на картку формату</string>
+    <string name="update_formats_summary">Отримати формати, щойно з’явиться картка завантаження</string>
     <string name="ignore_battery_optimization">Ігнорувати оптимізацію батареї</string>
     <string name="cut">Вирізати</string>
     <string name="new_cut">Новий виріз</string>
@@ -238,7 +238,7 @@
     <string name="pause">Пауза</string>
     <string name="resume">Продовжити</string>
     <string name="updating_download_data">Оновлення даних завантажуваного елемента</string>
-    <string name="keep_cache">Зберегти кеш</string>
+    <string name="keep_cache">Зберегти фрагменти</string>
     <string name="keep_cache_summary">Не видаляйте тимчасові файли після завершення завантаження</string>
     <string name="backup">Резервне копіювання</string>
     <string name="restore">Відновлення</string>
@@ -315,4 +315,5 @@
     <string name="remember_download_type">Запам\'ятати тип завантаження</string>
     <string name="remember_download_type_summary">Виберіть останній відкритий тип завантаження для поточного елемента</string>
     <string name="length">Довжина</string>
+    <string name="export_file">Експортувати файл</string>
 </resources>
