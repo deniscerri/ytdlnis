@@ -212,7 +212,7 @@
     <string name="remove_audio">Remover áudio</string>
     <string name="download_now">Baixar agora</string>
     <string name="download_already_exists">O download já existe</string>
-    <string name="keep_cache">Manter em Cache</string>
+    <string name="keep_cache">Manter fragmentos</string>
     <string name="updating_download_data">Atualizando os dados do item de download</string>
     <string name="pause">Pausar</string>
     <string name="preferred_locale">Local preferido</string>
@@ -241,7 +241,7 @@
     <string name="preferred_format_id">ID do formato preferido</string>
     <string name="redownload">Baixar novamente</string>
     <string name="cookies">Cookies</string>
-    <string name="update_formats_summary">Pesquise automaticamente formatos ausentes ao clicar no cartão de formato</string>
+    <string name="update_formats_summary">Obtenha os formatos assim que o cartão de download for exibido</string>
     <string name="start">Começo</string>
     <string name="ytdl_version">Versão do yt-dlp</string>
     <string name="end">Fim</string>
@@ -315,4 +315,5 @@
     <string name="modify_download_card">Modificar cartão de download</string>
     <string name="security">Segurança</string>
     <string name="length">Comprimento</string>
+    <string name="export_file">Exportar arquivo</string>
 </resources>
