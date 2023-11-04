@@ -8,14 +8,27 @@
         android:label="DownloadBottomSheetDialog" >
         <action
             android:id="@+id/action_downloadBottomSheetDialog_to_selectPlaylistItemsDialog"
-            app:destination="@id/selectPlaylistItemsDialog" />
+            app:destination="@id/selectPlaylistItemsDialog"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/downloadBottomSheetDialog"
+            app:popUpToInclusive="true" />
     </dialog>
     <dialog
+        android:id="@+id/selectPlaylistItemsDialog"
         android:name="com.deniscerri.ytdlnis.ui.downloadcard.SelectPlaylistItemsDialog"
         android:label="SelectPlaylistItemsDialog">
         <action
             android:id="@+id/action_selectPlaylistItemsDialog_to_downloadMultipleBottomSheetDialog"
-            app:destination="@id/downloadMultipleBottomSheetDialog" />
+            app:destination="@id/downloadMultipleBottomSheetDialog"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/selectPlaylistItemsDialog"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_selectPlaylistItemsDialog_to_downloadBottomSheetDialog"
+            app:destination="@id/downloadBottomSheetDialog"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/selectPlaylistItemsDialog"
+            app:popUpToInclusive="true" />
     </dialog>
     <dialog
         android:id="@+id/downloadMultipleBottomSheetDialog"

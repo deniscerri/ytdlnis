@@ -309,7 +309,7 @@
     <string name="remember_download_type_summary">使用上次的下載類型</string>
     <string name="schedule">排程設定</string>
     <string name="search_command_hint">指令搜尋</string>
-    <string name="skip">略過此項</string>
+    <string name="ignore">略過此項</string>
     <string name="license">使用授權</string>
     <string name="download_already_exists_summary">是否繼續進行下載？</string>
     <string name="modify_download_card">編輯下載資訊卡片</string>

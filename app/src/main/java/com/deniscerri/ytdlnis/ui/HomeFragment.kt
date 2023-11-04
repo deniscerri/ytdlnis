@@ -20,12 +20,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.os.bundleOf
 import androidx.core.view.children
 import androidx.core.view.forEach
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -158,28 +160,30 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
         recyclerView?.enableFastScroll()
 
         resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]
-        resultViewModel.items.observe(viewLifecycleOwner) {
-            homeAdapter!!.submitList(it)
-            resultsList = it
-            if(resultViewModel.repository.itemCount.value > 1 || resultViewModel.repository.itemCount.value == -1){
-                if (it.size > 1 && it[0].playlistTitle.isNotEmpty() && !loadingItems){
-                    downloadAllFabCoordinator!!.visibility = VISIBLE
+        resultViewModel.items.observe(requireActivity()) {
+            kotlin.runCatching {
+                homeAdapter!!.submitList(it)
+                resultsList = it
+                if(resultViewModel.repository.itemCount.value > 1 || resultViewModel.repository.itemCount.value == -1){
+                    if (it.size > 1 && it[0].playlistTitle.isNotEmpty() && !loadingItems){
+                        downloadAllFabCoordinator!!.visibility = VISIBLE
+                    }else{
+                        downloadAllFabCoordinator!!.visibility = GONE
+                    }
+                }else if (resultViewModel.repository.itemCount.value == 1){
+                    if (sharedPreferences!!.getBoolean("download_card", true)){
+                        if(it.size == 1 && quickLaunchSheet && parentFragmentManager.findFragmentByTag("downloadSingleSheet") == null){
+                            showSingleDownloadSheet(
+                                it[0],
+                                DownloadViewModel.Type.valueOf(sharedPreferences!!.getString("preferred_download_type", "video")!!)
+                            )
+                        }
+                    }
                 }else{
                     downloadAllFabCoordinator!!.visibility = GONE
                 }
-            }else if (resultViewModel.repository.itemCount.value == 1){
-                if (sharedPreferences!!.getBoolean("download_card", true)){
-                    if(it.size == 1 && quickLaunchSheet && parentFragmentManager.findFragmentByTag("downloadSingleSheet") == null){
-                        showSingleDownloadSheet(
-                            it[0],
-                            DownloadViewModel.Type.valueOf(sharedPreferences!!.getString("preferred_download_type", "video")!!)
-                        )
-                    }
-                }
-            }else{
-                downloadAllFabCoordinator!!.visibility = GONE
+                quickLaunchSheet = true
             }
-            quickLaunchSheet = true
         }
 
         initMenu()
@@ -271,8 +275,9 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
                 ids?.forEach {
                     items.add(downloadViewModel.getItemByID(it))
                 }
-                val bottomSheet = DownloadMultipleBottomSheetDialog(items.toMutableList())
-                bottomSheet.show(parentFragmentManager, "downloadMultipleSheet")
+                findNavController().navigate(R.id.downloadMultipleBottomSheetDialog2, bundleOf(
+                    Pair("downloads", items)
+                ))
             }
         }
 
@@ -560,20 +565,18 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
             if(sharedPreferences!!.getBoolean("quick_download", false) || sharedPreferences!!.getString("preferred_download_type", "video") == "command"){
                 if (queryList.size == 1 && Patterns.WEB_URL.matcher(queryList.first()).matches()){
                     if (sharedPreferences!!.getBoolean("download_card", true)) {
-                        showSingleDownloadSheet(
-                            resultItem = downloadViewModel.createEmptyResultItem(queryList.first()),
-                            type = DownloadViewModel.Type.valueOf(sharedPreferences!!.getString("preferred_download_type", "video")!!)
-                        )
-                    } else {
-                        lifecycleScope.launch{
-                            val downloadItem = withContext(Dispatchers.IO){
-                                downloadViewModel.createDownloadItemFromResult(
-                                    result = downloadViewModel.createEmptyResultItem(queryList.first()),
-                                    givenType = DownloadViewModel.Type.valueOf(sharedPreferences!!.getString("preferred_download_type", "video")!!)
-                                )
-                            }
-                            downloadViewModel.queueDownloads(listOf(downloadItem))
+                        withContext(Dispatchers.Main){
+                            showSingleDownloadSheet(
+                                resultItem = downloadViewModel.createEmptyResultItem(queryList.first()),
+                                type = DownloadViewModel.Type.valueOf(sharedPreferences!!.getString("preferred_download_type", "video")!!)
+                            )
                         }
+                    } else {
+                        val downloadItem = downloadViewModel.createDownloadItemFromResult(
+                            result = downloadViewModel.createEmptyResultItem(queryList.first()),
+                            givenType = DownloadViewModel.Type.valueOf(sharedPreferences!!.getString("preferred_download_type", "video")!!)
+                        )
+                        downloadViewModel.queueDownloads(listOf(downloadItem))
                     }
 
                 }else{
@@ -620,8 +623,13 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
         resultItem: ResultItem,
         type: DownloadViewModel.Type
     ){
-        val bottomSheet = DownloadBottomSheetDialog(resultItem, downloadViewModel.getDownloadType(type, resultItem.url))
-        bottomSheet.show(parentFragmentManager, "downloadSingleSheet")
+        if(findNavController().currentBackStack.value.firstOrNull {it.destination.id == R.id.downloadBottomSheetDialog} == null){
+            //show the fragment if its not in the backstack
+            val bundle = Bundle()
+            bundle.putParcelable("result", resultItem)
+            bundle.putSerializable("type", downloadViewModel.getDownloadType(type, resultItem.url))
+            findNavController().navigate(R.id.downloadBottomSheetDialog, bundle)
+        }
     }
 
     override fun onCardClick(videoURL: String, add: Boolean) {
@@ -646,8 +654,9 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
 
     override fun onCardDetailsClick(videoURL: String) {
         if (parentFragmentManager.findFragmentByTag("resultDetails") == null && resultsList != null && resultsList!!.isNotEmpty()){
-            val bottomSheet = ResultCardDetailsDialog(resultsList!!.first{it!!.url == videoURL}!!)
-            bottomSheet.show(parentFragmentManager, "cutVideoSheet")
+            val bundle = Bundle()
+            bundle.putParcelable("result", resultsList!!.first{it!!.url == videoURL}!!)
+            findNavController().navigate(R.id.resultCardDetailsDialog, bundle)
         }
     }
 
@@ -662,8 +671,9 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
                         downloadViewModel.turnResultItemsToDownloadItems(resultsList!!)
                     }
                     if (sharedPreferences!!.getBoolean("download_card", true)) {
-                        val bottomSheet = DownloadMultipleBottomSheetDialog(downloadList.toMutableList())
-                        bottomSheet.show(parentFragmentManager, "downloadMultipleSheet")
+                        findNavController().navigate(R.id.downloadMultipleBottomSheetDialog2, bundleOf(
+                            Pair("downloads", downloadList)
+                        ))
                     } else {
                         downloadViewModel.queueDownloads(downloadList)
                     }
@@ -723,8 +733,9 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
                             }
 
                             if (sharedPreferences!!.getBoolean("download_card", true)) {
-                                val bottomSheet = DownloadMultipleBottomSheetDialog(downloadList.toMutableList())
-                                bottomSheet.show(parentFragmentManager, "downloadMultipleSheet")
+                                findNavController().navigate(R.id.downloadMultipleBottomSheetDialog2, bundleOf(
+                                    Pair("downloads", downloadList)
+                                ))
                             } else {
                                 downloadViewModel.queueDownloads(downloadList)
                             }

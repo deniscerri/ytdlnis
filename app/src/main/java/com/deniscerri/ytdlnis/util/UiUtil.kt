@@ -611,7 +611,7 @@ object UiUtil {
 
         if (item.format.format_note == "?" || item.format.format_note == "") formatNote!!.visibility =
             View.GONE
-        else formatNote!!.text = item.format.format_note.uppercase()
+        else formatNote!!.text = item.format.format_note
 
         if (item.format.container != "") {
             container!!.text = if (file.exists()) file.extension.uppercase() else item.format.container.uppercase()

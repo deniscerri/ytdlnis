@@ -309,7 +309,7 @@
     <string name="remember_download_type_summary">تعيين نوع التحميل اللاحق بناءً على آخر نوع تحميل تم الوصول اليه</string>
     <string name="schedule">توقيت</string>
     <string name="search_command_hint">بحث في قوالب الأوامر</string>
-    <string name="skip">تخطي</string>
+    <string name="ignore">تخطي</string>
     <string name="license">الترخيص</string>
     <string name="download_already_exists_summary">المضي بالتحميل على أي حال؟</string>
     <string name="modify_download_card">تحرير بطاقة التحميل</string>

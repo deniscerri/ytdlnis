@@ -1,10 +1,13 @@
 package com.deniscerri.ytdlnis.database.models
 
+import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import kotlinx.parcelize.Parcelize
 
 @Entity(tableName = "results")
+@Parcelize
 data class ResultItem(
     @PrimaryKey(autoGenerate = true)
     var id: Long,
@@ -20,4 +23,4 @@ data class ResultItem(
     var urls: String,
     var chapters: MutableList<ChapterItem>?,
     var creationTime: Long = System.currentTimeMillis() / 1000,
-)
+) : Parcelable

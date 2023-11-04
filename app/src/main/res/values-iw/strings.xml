@@ -309,7 +309,7 @@
     <string name="couldnt_parse_file">לא ניתן לנתח את הקובץ</string>
     <string name="schedule">תזמון</string>
     <string name="search_command_hint">חפש מתוך פקודות</string>
-    <string name="skip">דילוג</string>
+    <string name="ignore">דילוג</string>
     <string name="license">רישיון</string>
     <string name="download_already_exists_summary">האם תרצה להמשיך להוריד\?</string>
     <string name="modify_download_card">התאמת כרטיס הורדה</string>

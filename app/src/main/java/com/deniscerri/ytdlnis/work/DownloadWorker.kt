@@ -259,7 +259,10 @@ class DownloadWorker(
                                 }else{
                                     logString.append("${it.message}\n")
                                     logItem.content = logString.toString()
-                                    logRepo.insert(logItem)
+                                    val logID = withContext(Dispatchers.IO){
+                                        logRepo.insert(logItem)
+                                    }
+                                    downloadItem.logID = logID
                                 }
                             }
 
@@ -277,8 +280,8 @@ class DownloadWorker(
                             }
 
                             notificationUtil.createDownloadErrored(
-                                downloadItem.title, it.message,
-                                if (logDownloads) logItem.id else null,
+                                downloadItem.title.ifEmpty { downloadItem.url }, it.message,
+                                downloadItem.logID,
                                 NotificationUtil.DOWNLOAD_FINISHED_CHANNEL_ID
                             )
 

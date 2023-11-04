@@ -307,7 +307,7 @@
     <string name="schedule">Розклад</string>
     <string name="user_agent_header">Заголовок User-Agent</string>
     <string name="search_command_hint">Пошук з команд</string>
-    <string name="skip">Пропустити</string>
+    <string name="ignore">Пропустити</string>
     <string name="license">Ліцензія</string>
     <string name="download_already_exists_summary">Ви все ще хочете завантажити\?</string>
     <string name="modify_download_card">Змінити картку завантаження</string>

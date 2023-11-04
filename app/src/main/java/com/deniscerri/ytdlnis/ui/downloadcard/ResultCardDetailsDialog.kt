@@ -10,6 +10,7 @@ import android.content.res.Configuration
 import android.graphics.Canvas
 import android.graphics.Color
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.text.format.DateFormat
@@ -70,7 +71,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-class ResultCardDetailsDialog(private val item: ResultItem) : BottomSheetDialogFragment(), GenericDownloadAdapter.OnItemClickListener, ActiveDownloadMinifiedAdapter.OnItemClickListener {
+class ResultCardDetailsDialog : BottomSheetDialogFragment(), GenericDownloadAdapter.OnItemClickListener, ActiveDownloadMinifiedAdapter.OnItemClickListener {
     private lateinit var infoUtil: InfoUtil
     private lateinit var notificationUtil: NotificationUtil
     private lateinit var videoView: PlayerView
@@ -85,6 +86,7 @@ class ResultCardDetailsDialog(private val item: ResultItem) : BottomSheetDialogF
 
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var dialogView : View
+    private lateinit var item: ResultItem
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -135,6 +137,19 @@ class ResultCardDetailsDialog(private val item: ResultItem) : BottomSheetDialogF
     @androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val i = if (Build.VERSION.SDK_INT >= 33){
+            arguments?.getParcelable("result", ResultItem::class.java)
+        }else{
+            arguments?.getParcelable<ResultItem>("result")
+        }
+
+        if (i == null) {
+            dismiss()
+            return
+        }
+
+        item = i
 
         //remove outdated player url of 1hr so it can refetch it in the player
         if (item.creationTime > System.currentTimeMillis() - 3600000) item.urls = ""
@@ -293,10 +308,12 @@ class ResultCardDetailsDialog(private val item: ResultItem) : BottomSheetDialogF
     }
 
     private fun onButtonClick(type: DownloadViewModel.Type){
-        this.dismiss()
         if (sharedPreferences.getBoolean("download_card", true)) {
-            val bottomSheet = DownloadBottomSheetDialog(item, type)
-            bottomSheet.show(parentFragmentManager, "downloadSingleSheet")
+            val bundle = Bundle()
+            bundle.putParcelable("result", item)
+            bundle.putSerializable("type", type)
+            findNavController().navigateUp()
+            findNavController().navigate(R.id.downloadBottomSheetDialog, bundle)
         } else {
             lifecycleScope.launch{
                 val downloadItem = withContext(Dispatchers.IO){
@@ -305,6 +322,7 @@ class ResultCardDetailsDialog(private val item: ResultItem) : BottomSheetDialogF
                         givenType = type)
                 }
                 downloadViewModel.queueDownloads(listOf(downloadItem))
+                findNavController().navigateUp()
             }
         }
     }
@@ -324,7 +342,6 @@ class ResultCardDetailsDialog(private val item: ResultItem) : BottomSheetDialogF
         kotlin.runCatching {
             videoView.player?.stop()
             videoView.player?.release()
-            parentFragmentManager.beginTransaction().remove(parentFragmentManager.findFragmentByTag("resultDetails")!!).commit()
         }
     }
 
@@ -582,7 +599,7 @@ class ResultCardDetailsDialog(private val item: ResultItem) : BottomSheetDialogF
                 ActiveDownloadAdapter.ActiveDownloadAction.Pause -> {
                     lifecycleScope.launch {
                         cancelItem(itemID.toInt())
-                        item.status = DownloadRepository.Status.Paused.toString()
+                        item.status = DownloadRepository.Status.ActivePaused.toString()
                         withContext(Dispatchers.IO){
                             downloadViewModel.updateDownload(item)
                         }
@@ -591,7 +608,7 @@ class ResultCardDetailsDialog(private val item: ResultItem) : BottomSheetDialogF
                 }
                 ActiveDownloadAdapter.ActiveDownloadAction.Resume -> {
                     lifecycleScope.launch {
-                        item.status = DownloadRepository.Status.Active.toString()
+                        item.status = DownloadRepository.Status.PausedReQueued.toString()
                         withContext(Dispatchers.IO){
                             downloadViewModel.updateDownload(item)
                         }

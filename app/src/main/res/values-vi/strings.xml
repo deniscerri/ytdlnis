@@ -307,7 +307,7 @@
     <string name="schedule">Lịch trình</string>
     <string name="user_agent_header">Tiêu đề tác nhân người dùng</string>
     <string name="search_command_hint">Tìm kiếm từ lệnh</string>
-    <string name="skip">Bỏ qua</string>
+    <string name="ignore">Bỏ qua</string>
     <string name="license">Giấy phép</string>
     <string name="download_already_exists_summary">Bạn vẫn muốn tải xuống\?</string>
     <string name="modify_download_card">Sửa đổi thẻ tải xuống</string>

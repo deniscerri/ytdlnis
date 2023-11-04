@@ -1,6 +1,7 @@
 package com.deniscerri.ytdlnis.receiver
 
 import android.Manifest
+import android.content.ComponentName
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -16,10 +17,16 @@ import android.util.Log
 import android.util.Patterns
 import android.view.WindowManager
 import androidx.core.app.ActivityCompat
+import androidx.core.content.IntentSanitizer
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavController
+import androidx.navigation.NavDestination
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceManager
 import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
@@ -34,6 +41,7 @@ import com.deniscerri.ytdlnis.ui.downloadcard.SelectPlaylistItemsDialog
 import com.deniscerri.ytdlnis.util.ThemeUtil
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlin.properties.Delegates
@@ -46,6 +54,7 @@ class ShareActivity : BaseActivity() {
     private lateinit var downloadViewModel: DownloadViewModel
     private lateinit var cookieViewModel: CookieViewModel
     private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var navController: NavController
     private var quickDownload by Delegates.notNull<Boolean>()
 
 
@@ -83,6 +92,28 @@ class ShareActivity : BaseActivity() {
         handleIntents(intent)
     }
 
+    override fun onResume() {
+        super.onResume()
+        navController.addOnDestinationChangedListener(object: NavController.OnDestinationChangedListener{
+            override fun onDestinationChanged(
+                controller: NavController,
+                destination: NavDestination,
+                arguments: Bundle?
+            ) {
+                if (navController.currentBackStack.value.isEmpty()) return
+                navController.removeOnDestinationChangedListener(this)
+                lifecycleScope.launch {
+                    navController.currentBackStack.collectLatest {
+                        if (it.isEmpty()){
+                            this@ShareActivity.finish()
+                        }
+                    }
+                }
+
+            }
+        })
+    }
+
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         handleIntents(intent)
@@ -90,6 +121,9 @@ class ShareActivity : BaseActivity() {
 
     private fun handleIntents(intent: Intent) {
         askPermissions()
+
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.frame_layout) as NavHostFragment
+        navController = navHostFragment.findNavController()
 
         val action = intent.action
         Log.e("aa", intent.toString())
@@ -129,10 +163,10 @@ class ShareActivity : BaseActivity() {
                 }
                 val downloadType = DownloadViewModel.Type.valueOf(type ?: downloadViewModel.getDownloadType(url = result.url).toString())
                 if (sharedPreferences.getBoolean("download_card", true) && !background){
-                    val bottomSheet = DownloadBottomSheetDialog(
-                        result = result,
-                        type = downloadType)
-                    bottomSheet.show(supportFragmentManager, "downloadSingleSheet")
+                    val bundle = Bundle()
+                    bundle.putParcelable("result", result)
+                    bundle.putSerializable("type", downloadType)
+                    navController.setGraph(R.navigation.share_nav_graph, bundle)
                 }else{
                     lifecycleScope.launch(Dispatchers.IO){
                         val downloadItem = downloadViewModel.createDownloadItemFromResult(
@@ -149,32 +183,6 @@ class ShareActivity : BaseActivity() {
                     this@ShareActivity.finish()
                 }
             }
-        }
-    }
-
-    private fun showDownloadSheet(it: ResultItem){
-
-    }
-
-    private fun showSelectPlaylistItems(it: List<ResultItem?>){
-        if (sharedPreferences.getBoolean("download_card", true)){
-            val bottomSheet = SelectPlaylistItemsDialog(it, DownloadViewModel.Type.valueOf(sharedPreferences.getString("preferred_download_type", "video")!!))
-            bottomSheet.show(supportFragmentManager, "downloadPlaylistSheet")
-        }else{
-            lifecycleScope.launch(Dispatchers.IO){
-                val downloadItems = mutableListOf<DownloadItem>()
-                lifecycleScope.launch(Dispatchers.IO){
-                    it.forEach { res ->
-                        val i = downloadViewModel.createDownloadItemFromResult(
-                            result = res!!,
-                            givenType = DownloadViewModel.Type.valueOf(sharedPreferences.getString("preferred_download_type", "video")!!))
-                        i.format = downloadViewModel.getLatestCommandTemplateAsFormat()
-                        downloadItems.add(i)
-                    }
-                    downloadViewModel.queueDownloads(downloadItems)
-                }
-            }
-            this.finish()
         }
     }
 

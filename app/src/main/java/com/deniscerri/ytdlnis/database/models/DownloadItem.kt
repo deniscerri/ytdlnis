@@ -1,11 +1,14 @@
 package com.deniscerri.ytdlnis.database.models
 
+import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
+import kotlinx.parcelize.Parcelize
 
 @Entity(tableName = "downloads")
+@Parcelize
 data class DownloadItem(
     @PrimaryKey(autoGenerate = true)
     var id: Long,
@@ -24,7 +27,7 @@ data class DownloadItem(
     var downloadPath: String,
     var website: String,
     val downloadSize: String,
-    val playlistTitle: String,
+    var playlistTitle: String,
     val audioPreferences : AudioPreferences,
     val videoPreferences: VideoPreferences,
     @ColumnInfo(defaultValue = "")
@@ -36,4 +39,4 @@ data class DownloadItem(
     @ColumnInfo(defaultValue = "0")
     var downloadStartTime: Long,
     var logID: Long?
-)
+) : Parcelable

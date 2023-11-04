@@ -25,7 +25,7 @@ class PauseDownloadNotificationReceiver : BroadcastReceiver() {
                 CoroutineScope(Dispatchers.IO).launch{
                     runCatching {
                         val item = dbManager.downloadDao.getDownloadById(id.toLong())
-                        item.status = DownloadRepository.Status.Paused.toString()
+                        item.status = DownloadRepository.Status.ActivePaused.toString()
                         dbManager.downloadDao.update(item)
                     }
                 }

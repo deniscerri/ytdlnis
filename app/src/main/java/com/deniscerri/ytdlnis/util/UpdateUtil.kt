@@ -30,8 +30,6 @@ import com.yausername.youtubedl_android.YoutubeDL.UpdateStatus
 import io.noties.markwon.AbstractMarkwonPlugin
 import io.noties.markwon.Markwon
 import io.noties.markwon.MarkwonConfiguration
-import io.noties.markwon.MarkwonSpansFactory
-import io.noties.markwon.core.MarkwonTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
@@ -94,7 +92,7 @@ class UpdateUtil(var context: Context) {
                     .setTitle(v.tag_name)
                     .setMessage(v.body)
                     .setIcon(R.drawable.ic_update_app)
-                    .setNeutralButton(R.string.skip){ d: DialogInterface?, _:Int ->
+                    .setNeutralButton(R.string.ignore){ d: DialogInterface?, _:Int ->
                         skippedVersions.add(v.tag_name)
                         sharedPreferences.edit().putString("skip_updates", skippedVersions.joinToString(",")).apply()
                         d?.dismiss()

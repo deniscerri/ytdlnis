@@ -3,16 +3,19 @@ package com.deniscerri.ytdlnis.ui.downloadcard
 import android.app.ActionBar.LayoutParams
 import android.app.Dialog
 import android.content.DialogInterface
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
+import androidx.core.os.bundleOf
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdlnis.R
@@ -30,8 +33,9 @@ import com.google.android.material.floatingactionbutton.ExtendedFloatingActionBu
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
-class SelectPlaylistItemsDialog(private val items: List<ResultItem?>, private val type: DownloadViewModel.Type) : DialogFragment(), PlaylistAdapter.OnItemClickListener {
+class SelectPlaylistItemsDialog : DialogFragment(), PlaylistAdapter.OnItemClickListener {
     private lateinit var downloadViewModel: DownloadViewModel
     private lateinit var resultViewModel: ResultViewModel
     private lateinit var listAdapter : PlaylistAdapter
@@ -40,6 +44,10 @@ class SelectPlaylistItemsDialog(private val items: List<ResultItem?>, private va
     private lateinit var toolbar: MaterialToolbar
     private lateinit var fromTextInput: TextInputLayout
     private lateinit var toTextInput: TextInputLayout
+
+
+    private lateinit var items: List<ResultItem?>
+    private lateinit var type: DownloadViewModel.Type
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,6 +72,21 @@ class SelectPlaylistItemsDialog(private val items: List<ResultItem?>, private va
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+        if (Build.VERSION.SDK_INT >= 33){
+            arguments?.getParcelableArrayList("results", ResultItem::class.java)
+        }else{
+            arguments?.getParcelableArrayList<ResultItem>("results")
+        }.apply {
+            if (this == null){
+                dismiss()
+                return
+            }else{
+                items = this
+            }
+        }
+        type = arguments?.getSerializable("type") as DownloadViewModel.Type
+
 
         dialog?.window?.setLayout(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
 
@@ -156,11 +179,12 @@ class SelectPlaylistItemsDialog(private val items: List<ResultItem?>, private va
                 val checkedResultItems = items.filter { item -> checkedItems.contains(item!!.url) }
                 if (checkedResultItems.size == 1){
                     val resultItem = resultViewModel.getItemByURL(checkedResultItems[0]!!.url)
-                    val bottomSheet = DownloadBottomSheetDialog(resultItem, type)
-                    parentFragmentManager.addFragmentOnAttachListener { fragmentManager, fragment ->
-                        dismiss()
+                    withContext(Dispatchers.Main){
+                        findNavController().navigate(R.id.action_selectPlaylistItemsDialog_to_downloadBottomSheetDialog, bundleOf(
+                            Pair("result", resultItem),
+                            Pair("type", downloadViewModel.getDownloadType(type, resultItem.url)),
+                        ))
                     }
-                    bottomSheet.show(parentFragmentManager, "downloadSingleSheet")
                 }else{
                     val downloadItems = mutableListOf<DownloadItem>()
                     checkedResultItems.forEach { c ->
@@ -173,11 +197,11 @@ class SelectPlaylistItemsDialog(private val items: List<ResultItem?>, private va
                         downloadItems.add(i)
                     }
 
-                    val bottomSheet = DownloadMultipleBottomSheetDialog(downloadItems)
-                    parentFragmentManager.addFragmentOnAttachListener { fragmentManager, fragment ->
-                        dismiss()
+                    withContext(Dispatchers.Main){
+                        findNavController().navigate(R.id.action_selectPlaylistItemsDialog_to_downloadMultipleBottomSheetDialog, bundleOf(
+                            Pair("downloads", downloadItems)
+                        ))
                     }
-                    bottomSheet.show(parentFragmentManager, "downloadMultipleSheet")
                 }
 
                 dismiss()
@@ -207,25 +231,6 @@ class SelectPlaylistItemsDialog(private val items: List<ResultItem?>, private va
 
         toolbar.setNavigationOnClickListener {
             dismiss()
-        }
-    }
-
-    override fun onCancel(dialog: DialogInterface) {
-        super.onCancel(dialog)
-        cleanup()
-    }
-
-    override fun onDismiss(dialog: DialogInterface) {
-        super.onDismiss(dialog)
-        cleanup()
-    }
-
-    private fun cleanup(){
-        kotlin.runCatching {
-            val movedToMultipleOrSingleSheet = parentFragmentManager.fragments.map { it.tag }.contains("downloadMultipleSheet") || parentFragmentManager.fragments.map { it.tag }.contains("downloadSingleSheet")
-            if (activity is ShareActivity && !movedToMultipleOrSingleSheet){
-                (activity as ShareActivity).finish()
-            }
         }
     }
 

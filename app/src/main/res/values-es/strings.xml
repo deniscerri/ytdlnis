@@ -309,7 +309,7 @@
     <string name="remember_download_type_summary">Selecciona el último tipo de la descarga abierto para el elemento actual</string>
     <string name="schedule">Horario</string>
     <string name="search_command_hint">Búsqueda a partir de comandos</string>
-    <string name="skip">Omitir</string>
+    <string name="ignore">Omitir</string>
     <string name="license">Licencia</string>
     <string name="download_already_exists_summary">¿Todavía quieres descargar\?</string>
     <string name="modify_download_card">Modificar la tarjeta de descarga</string>

@@ -45,6 +45,7 @@
             android:name=".MainActivity"
             android:configChanges="locale"
             android:exported="true"
+            android:launchMode="singleTask"
             android:windowSoftInputMode="adjustPan">
 
         </activity>
@@ -53,6 +54,7 @@
             android:configChanges="smallestScreenSize|layoutDirection|locale|orientation|screenSize"
             android:excludeFromRecents="true"
             android:exported="true"
+            android:launchMode="singleInstance"
             android:theme="@style/Theme.BottomSheet">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
@@ -125,6 +127,7 @@
             android:icon="@mipmap/ic_launcher"
             android:roundIcon="@mipmap/ic_launcher_round"
             android:configChanges="locale"
+            android:launchMode="singleTask"
             android:targetActivity=".MainActivity"
             android:windowSoftInputMode="adjustPan"
             android:exported="true">
@@ -147,6 +150,7 @@
             android:icon="@mipmap/ic_launcher_dark"
             android:roundIcon="@mipmap/ic_launcher_round_dark"
             android:configChanges="locale"
+            android:launchMode="singleTask"
             android:targetActivity=".MainActivity"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
@@ -167,6 +171,7 @@
             android:icon="@mipmap/ic_launcher_light"
             android:roundIcon="@mipmap/ic_launcher_round_light"
             android:configChanges="locale"
+            android:launchMode="singleTask"
             android:targetActivity=".MainActivity"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
@@ -184,6 +189,7 @@
             android:name=".ui.more.WebViewActivity"
             android:configChanges="locale"
             android:exported="true"
+            android:launchMode="singleTask"
             android:parentActivityName=".MainActivity"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>

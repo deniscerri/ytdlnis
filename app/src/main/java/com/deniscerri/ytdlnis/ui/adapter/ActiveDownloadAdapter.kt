@@ -133,25 +133,37 @@ class ActiveDownloadAdapter(onItemClickListener: OnItemClickListener, activity: 
         if (cancelButton.hasOnClickListeners()) cancelButton.setOnClickListener(null)
         cancelButton.setOnClickListener {onItemClickListener.onCancelClick(item.id)}
 
-        if (item.status == DownloadRepository.Status.Paused.toString()){
-            progressBar.isIndeterminate = false
-            pauseButton.icon = ContextCompat.getDrawable(activity, R.drawable.exomedia_ic_play_arrow_white)
-            pauseButton.tag = ActiveDownloadAction.Resume
-            cancelButton.visibility = View.VISIBLE
-        }else{
-            progressBar.isIndeterminate = true
-            pauseButton.icon = ContextCompat.getDrawable(activity, R.drawable.exomedia_ic_pause_white)
-            cancelButton.visibility = View.GONE
-            pauseButton.tag = ActiveDownloadAction.Pause
+
+        when(DownloadRepository.Status.valueOf(item.status)){
+            DownloadRepository.Status.Active -> {
+                progressBar.isIndeterminate = true
+                pauseButton.icon = ContextCompat.getDrawable(activity, R.drawable.exomedia_ic_pause_white)
+                cancelButton.visibility = View.GONE
+                pauseButton.isEnabled = true
+                pauseButton.tag = ActiveDownloadAction.Pause
+            }
+            DownloadRepository.Status.ActivePaused -> {
+                progressBar.isIndeterminate = false
+                pauseButton.icon = ContextCompat.getDrawable(activity, R.drawable.exomedia_ic_play_arrow_white)
+                pauseButton.tag = ActiveDownloadAction.Resume
+                pauseButton.isEnabled = true
+                cancelButton.visibility = View.VISIBLE
+            }
+            DownloadRepository.Status.PausedReQueued -> {
+                progressBar.isIndeterminate = true
+                pauseButton.icon = ContextCompat.getDrawable(activity, R.drawable.ic_refresh)
+                pauseButton.tag = null
+                pauseButton.isEnabled = false
+                cancelButton.visibility = View.GONE
+            }
+            else -> {}
         }
 
         pauseButton.setOnClickListener {
             if (pauseButton.tag == ActiveDownloadAction.Pause){
                 onItemClickListener.onPauseClick(item.id, ActiveDownloadAction.Pause, position)
-
             }else{
                 onItemClickListener.onPauseClick(item.id, ActiveDownloadAction.Resume, position)
-
             }
         }
 

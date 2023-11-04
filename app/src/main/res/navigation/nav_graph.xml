@@ -27,6 +27,12 @@
         <action
             android:id="@+id/action_homeFragment_to_resultCardDetailsDialog"
             app:destination="@id/resultCardDetailsDialog" />
+        <action
+            android:id="@+id/action_homeFragment_to_downloadBottomSheetDialog"
+            app:destination="@id/downloadBottomSheetDialog" />
+        <action
+            android:id="@+id/action_homeFragment_to_downloadMultipleBottomSheetDialog2"
+            app:destination="@id/downloadMultipleBottomSheetDialog2" />
     </fragment>
     <fragment
         android:id="@+id/historyFragment"
@@ -96,7 +102,7 @@
         android:id="@+id/downloadLogFragment"
         android:name="com.deniscerri.ytdlnis.ui.more.downloadLogs.DownloadLogFragment"
         android:label="DownloadLogFragment" />
-    <fragment
+    <dialog
         android:id="@+id/resultCardDetailsDialog"
         android:name="com.deniscerri.ytdlnis.ui.downloadcard.ResultCardDetailsDialog"
         android:label="ResultCardDetailsDialog" />
@@ -142,4 +148,12 @@
             android:name="com.deniscerri.ytdlnis.ui.more.settings.GeneralSettingsFragment"
             android:label="AppearanceSettingsFragment" />
     </navigation>
+    <dialog
+        android:id="@+id/downloadBottomSheetDialog"
+        android:name="com.deniscerri.ytdlnis.ui.downloadcard.DownloadBottomSheetDialog"
+        android:label="DownloadBottomSheetDialog" />
+    <dialog
+        android:id="@+id/downloadMultipleBottomSheetDialog2"
+        android:name="com.deniscerri.ytdlnis.ui.downloadcard.DownloadMultipleBottomSheetDialog"
+        android:label="DownloadMultipleBottomSheetDialog" />
 </navigation>

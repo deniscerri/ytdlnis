@@ -30,6 +30,7 @@ import androidx.fragment.app.FragmentContainerView
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
@@ -48,6 +49,7 @@ import com.deniscerri.ytdlnis.util.ThemeUtil
 import com.deniscerri.ytdlnis.util.UpdateUtil
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.elevation.SurfaceColors
 import com.google.android.material.navigation.NavigationBarView
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.navigationrail.NavigationRailView
@@ -82,6 +84,7 @@ class MainActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ThemeUtil.updateTheme(this)
+        window.navigationBarColor = SurfaceColors.SURFACE_2.getColor(this)
         setContentView(R.layout.activity_main)
         context = baseContext
         resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]
@@ -362,8 +365,10 @@ class MainActivity : BaseActivity() {
                         Toast.makeText(context, "Couldn't read file", Toast.LENGTH_LONG).show()
                         return
                     }
-                    val bottomSheet = DownloadBottomSheetDialog(type = DownloadViewModel.Type.command, result = downloadViewModel.createEmptyResultItem(f.absolutePath))
-                    bottomSheet.show(supportFragmentManager, "downloadSingleSheet")
+                    val bundle = Bundle()
+                    bundle.putParcelable("result", downloadViewModel.createEmptyResultItem(f.absolutePath))
+                    bundle.putSerializable("type", DownloadViewModel.Type.command)
+                    navController.navigate(R.id.downloadBottomSheetDialog, bundle)
                 }else{
                     val `is` = contentResolver.openInputStream(uri!!)
                     val textBuilder = StringBuilder()

@@ -57,6 +57,7 @@ class NotificationUtil(var context: Context) {
             val importance = NotificationManager.IMPORTANCE_LOW
             var channel = NotificationChannel(DOWNLOAD_WORKER_CHANNEL_ID, name, importance)
             channel.description = description
+            channel.setSound(null, null)
             notificationManager.createNotificationChannel(channel)
 
             //gui downloads

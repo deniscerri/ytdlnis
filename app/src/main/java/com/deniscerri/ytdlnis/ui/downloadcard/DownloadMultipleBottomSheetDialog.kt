@@ -9,6 +9,7 @@ import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.graphics.Canvas
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.text.format.DateFormat
 import android.util.DisplayMetrics
@@ -37,6 +38,7 @@ import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.ui.adapter.ConfigureMultipleDownloadsAdapter
 import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.models.Format
+import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.deniscerri.ytdlnis.database.repository.DownloadRepository
 import com.deniscerri.ytdlnis.database.viewmodel.CommandTemplateViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
@@ -66,7 +68,7 @@ import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class DownloadMultipleBottomSheetDialog(private var items: MutableList<DownloadItem>) : BottomSheetDialogFragment(), ConfigureMultipleDownloadsAdapter.OnItemClickListener, View.OnClickListener,
+class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), ConfigureMultipleDownloadsAdapter.OnItemClickListener, View.OnClickListener,
     ConfigureDownloadBottomSheetDialog.OnDownloadItemUpdateListener {
     private lateinit var downloadViewModel: DownloadViewModel
     private lateinit var historyViewModel: HistoryViewModel
@@ -79,6 +81,8 @@ class DownloadMultipleBottomSheetDialog(private var items: MutableList<DownloadI
     private lateinit var bottomAppBar: BottomAppBar
     private lateinit var filesize : TextView
     private lateinit var sharedPreferences: SharedPreferences
+
+    private lateinit var items: MutableList<DownloadItem>
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -96,6 +100,19 @@ class DownloadMultipleBottomSheetDialog(private var items: MutableList<DownloadI
         super.setupDialog(dialog, style)
         val view = LayoutInflater.from(context).inflate(R.layout.download_multiple_bottom_sheet, null)
         dialog.setContentView(view)
+
+        if (Build.VERSION.SDK_INT >= 33){
+            arguments?.getParcelableArrayList("downloads", DownloadItem::class.java)
+        }else{
+            arguments?.getParcelableArrayList<DownloadItem>("downloads")
+        }.apply {
+            if (this == null){
+                dismiss()
+                return
+            }else{
+                items = this
+            }
+        }
 
         if (items.isEmpty()) dismiss()
 
@@ -138,10 +155,7 @@ class DownloadMultipleBottomSheetDialog(private var items: MutableList<DownloadI
                     item.downloadStartTime = it.timeInMillis
                 }
                 runBlocking {
-                    val chunks = items.chunked(10)
-                    for (c in chunks) {
-                        downloadViewModel.queueDownloads(c)
-                    }
+                    downloadViewModel.queueDownloads(items)
                     val first = items.first()
                     val date = SimpleDateFormat(DateFormat.getBestDateTimePattern(Locale.getDefault(), "ddMMMyyyy - HHmm"), Locale.getDefault()).format(first.downloadStartTime)
                     Toast.makeText(context, getString(R.string.download_rescheduled_to) + " " + date, Toast.LENGTH_LONG).show()
@@ -154,11 +168,7 @@ class DownloadMultipleBottomSheetDialog(private var items: MutableList<DownloadI
             scheduleBtn.isEnabled = false
             download.isEnabled = false
             runBlocking {
-                val chunks = items.chunked(10)
-                for (c in chunks) {
-                   downloadViewModel.queueDownloads(c)
-                }
-
+                downloadViewModel.queueDownloads(items)
             }
             dismiss()
         }
@@ -556,24 +566,6 @@ class DownloadMultipleBottomSheetDialog(private var items: MutableList<DownloadI
                 it.downloadPath = result.data?.data.toString()
             }
             Toast.makeText(requireContext(), "Changed every item's download path to: ${FileUtil.formatPath(result.data!!.data.toString())}", Toast.LENGTH_LONG).show()
-        }
-    }
-
-    override fun onCancel(dialog: DialogInterface) {
-        super.onCancel(dialog)
-        cleanup()
-    }
-
-    override fun onDismiss(dialog: DialogInterface) {
-        super.onDismiss(dialog)
-        cleanup()
-    }
-
-    private fun cleanup(){
-        kotlin.runCatching {
-            if (activity is ShareActivity){
-                (activity as ShareActivity).finish()
-            }
         }
     }
 

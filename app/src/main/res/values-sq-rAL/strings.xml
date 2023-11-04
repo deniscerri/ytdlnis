@@ -310,7 +310,7 @@
     <string name="remember_download_type_summary">Zgjidh llojin e fundit të shkarkimit për shkarkimin aktual</string>
     <string name="length">Gjatësia</string>
     <string name="schedule">Orar</string>
-    <string name="skip">Injoro</string>
+    <string name="ignore">Injoro</string>
     <string name="license">Liçensa</string>
     <string name="download_already_exists_summary">Do sërisht ta shkarkosh\?</string>
     <string name="modify_download_card">Modifiko Kartën e Shkarkimit</string>

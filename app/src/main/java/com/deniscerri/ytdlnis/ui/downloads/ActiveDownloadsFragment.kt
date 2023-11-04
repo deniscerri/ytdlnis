@@ -94,7 +94,7 @@ class ActiveDownloadsFragment : Fragment(), ActiveDownloadAdapter.OnItemClickLis
                         downloadViewModel.getActiveDownloads()
                     }.forEach {
                         cancelItem(it.id.toInt())
-                        it.status = DownloadRepository.Status.Paused.toString()
+                        it.status = DownloadRepository.Status.ActivePaused.toString()
                         downloadViewModel.updateDownload(it)
                     }
 
@@ -111,7 +111,7 @@ class ActiveDownloadsFragment : Fragment(), ActiveDownloadAdapter.OnItemClickLis
                         downloadViewModel.getActiveDownloads()
                     }
 
-                    val toQueue = active.filter { it.status == DownloadRepository.Status.Paused.toString() }.toMutableList()
+                    val toQueue = active.filter { it.status == DownloadRepository.Status.ActivePaused.toString() }.toMutableList()
                     toQueue.forEach {
                         it.status = DownloadRepository.Status.Queued.toString()
                         downloadViewModel.updateDownload(it)
@@ -162,7 +162,7 @@ class ActiveDownloadsFragment : Fragment(), ActiveDownloadAdapter.OnItemClickLis
 
             if (it.size > 1){
                 pauseResume.visibility = View.VISIBLE
-                if (it.all { l -> l.status == DownloadRepository.Status.Paused.toString() }){
+                if (it.all { l -> l.status == DownloadRepository.Status.ActivePaused.toString() }){
                     pauseResume.text = requireContext().getString(R.string.resume)
                 }else{
                     pauseResume.text = requireContext().getString(R.string.pause)
@@ -208,7 +208,7 @@ class ActiveDownloadsFragment : Fragment(), ActiveDownloadAdapter.OnItemClickLis
                 ActiveDownloadAdapter.ActiveDownloadAction.Pause -> {
                     lifecycleScope.launch {
                         cancelItem(itemID.toInt())
-                        item.status = DownloadRepository.Status.Paused.toString()
+                        item.status = DownloadRepository.Status.ActivePaused.toString()
                         withContext(Dispatchers.IO){
                             downloadViewModel.updateDownload(item)
                         }
@@ -217,7 +217,7 @@ class ActiveDownloadsFragment : Fragment(), ActiveDownloadAdapter.OnItemClickLis
                 }
                 ActiveDownloadAdapter.ActiveDownloadAction.Resume -> {
                     lifecycleScope.launch {
-                        item.status = DownloadRepository.Status.Active.toString()
+                        item.status = DownloadRepository.Status.PausedReQueued.toString()
                         withContext(Dispatchers.IO){
                             downloadViewModel.updateDownload(item)
                         }

@@ -77,7 +77,15 @@ class TerminalDownloadWorker(
             }
         }
 
-        request.addOption("-P", FileUtil.getDefaultCommandPath() + "/" + itemId)
+        val commandPath = sharedPreferences.getString("command_path", FileUtil.getDefaultCommandPath())!!
+        val noCache = !sharedPreferences.getBoolean("cache_downloads", true) && File(FileUtil.formatPath(commandPath)).canWrite()
+
+        if (!noCache){
+            request.addOption("-P", FileUtil.getCachePath(context) + "/TERMINAL/" + itemId)
+        }else if (!request.hasOption("-P")){
+            request.addOption("-P", FileUtil.formatPath(commandPath))
+        }
+
 
         val logDownloads = sharedPreferences.getBoolean("log_downloads", false) && !sharedPreferences.getBoolean("incognito", false)
 
@@ -120,16 +128,18 @@ class TerminalDownloadWorker(
             }
         }.onSuccess {
             CoroutineScope(Dispatchers.IO).launch {
-                //move file from internal to set download directory
-                try {
-                    FileUtil.moveFile(File(FileUtil.getDefaultCommandPath() + "/" + itemId),context, downloadLocation!!, false){ p ->
-                        setProgressAsync(workDataOf("progress" to p))
+                if(!noCache){
+                    //move file from internal to set download directory
+                    try {
+                        FileUtil.moveFile(File(FileUtil.getCachePath(context) + "/TERMINAL/" + itemId),context, downloadLocation!!, false){ p ->
+                            setProgressAsync(workDataOf("progress" to p))
+                        }
+                    }catch (e: Exception){
+                        e.printStackTrace()
+                        handler.postDelayed({
+                            Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
+                        }, 1000)
                     }
-                }catch (e: Exception){
-                    e.printStackTrace()
-                    handler.postDelayed({
-                        Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
-                    }, 1000)
                 }
             }
 

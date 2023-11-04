@@ -309,7 +309,7 @@
     <string name="remember_download_type_summary">ਮੌਜੂਦਾ ਆਈਟਮ ਲਈ ਆਖਰੀ ਵਾਰ ਖੋਲ੍ਹੀ ਗਈ ਡਾਊਨਲੋਡ ਕਿਸਮ ਚੁਣੋ</string>
     <string name="schedule">ਸ਼ਡਿਊਲ</string>
     <string name="search_command_hint">ਕਮਾਂਡਾਂ ਤੋਂ ਖੋਜ ਕਰੋ</string>
-    <string name="skip">ਸਕਿੱਪ ਕਰੋ</string>
+    <string name="ignore">ਸਕਿੱਪ ਕਰੋ</string>
     <string name="license">ਲਾਈਸੈਂਸ</string>
     <string name="download_already_exists_summary">ਕੀ ਤੁਸੀਂ ਅਜੇ ਵੀ ਡਾਊਨਲੋਡ ਕਰਨਾ ਚਾਹੁੰਦੇ ਹੋ\?</string>
     <string name="modify_download_card">ਡਾਊਨਲੋਡ ਕਾਰਡ ਨੂੰ ਸੋਧੋ</string>

@@ -1,7 +1,10 @@
 package com.deniscerri.ytdlnis.database.models
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class Format(
     @SerializedName(value = "format_id", alternate = ["itag"])
     var format_id: String = "",
@@ -23,4 +26,4 @@ data class Format(
     var asr: String? = "",
     @SerializedName(value = "url")
     var url: String? = ""
-)
+) : Parcelable

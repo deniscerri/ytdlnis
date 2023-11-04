@@ -293,7 +293,7 @@
     <string name="extra_command">Extra Command</string>
     <string name="use_cookies">Use Cookies</string>
     <string name="embed_metadata">Embed Metadata</string>
-    <string name="embed_metadata_summary">Embed and parse metadata to the audio file</string>
+    <string name="embed_metadata_summary">Parse and embed metadata to the audio file</string>
     <string name="update_formats_background">Update Formats in Background</string>
     <string name="auto_update_ytdlp">Auto-Update yt-dlp</string>
     <string name="use_sponsorblock">Use SponsorBlock</string>
@@ -316,7 +316,7 @@
     <string name="license">License</string>
     <string name="download_already_exists_summary">Do you still want to  download?</string>
     <string name="schedule">Schedule</string>
-    <string name="skip">Skip</string>
+    <string name="ignore">Ignore</string>
     <string name="modify_download_card">Modify Download Card</string>
     <string name="export_file">Export File</string>
 </resources>

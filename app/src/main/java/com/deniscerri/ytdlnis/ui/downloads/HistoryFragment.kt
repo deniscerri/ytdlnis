@@ -27,6 +27,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.core.view.forEach
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -411,11 +412,10 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
                 historyViewModel.delete(it, false)
             },
             redownloadShowDownloadCard = {
-                val sheet = DownloadBottomSheetDialog(
-                    result = downloadViewModel.createResultItemFromHistory(it),
-                    type = it.type
-                )
-                sheet.show(parentFragmentManager, "downloadSingleSheet")
+                findNavController().navigate(R.id.downloadBottomSheetDialog, bundleOf(
+                    Pair("result", downloadViewModel.createResultItemFromHistory(it)),
+                    Pair("type", it.type),
+                ))
             }
         )
     }
@@ -547,10 +547,10 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
                     ItemTouchHelper.RIGHT -> {
                         val item = historyList!![position]!!
                         historyAdapter!!.notifyItemChanged(position)
-                        val sheet = DownloadBottomSheetDialog(type = item.type,
-                            result = downloadViewModel.createResultItemFromHistory(item)
-                        )
-                        sheet.show(parentFragmentManager, "downloadSingleSheet")
+                        findNavController().navigate(R.id.downloadBottomSheetDialog, bundleOf(
+                            Pair("result", downloadViewModel.createResultItemFromHistory(item)),
+                            Pair("type", item.type)
+                        ))
                     }
                 }
             }

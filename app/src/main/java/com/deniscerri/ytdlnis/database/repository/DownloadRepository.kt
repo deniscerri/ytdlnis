@@ -37,7 +37,7 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
     val activeDownloadsCount : Flow<Int> = downloadDao.getActiveDownloadsCountFlow()
 
     enum class Status {
-        Active, Paused, Queued, QueuedPaused, Error, Cancelled, Saved
+        Active, ActivePaused, PausedReQueued, Queued, QueuedPaused, Error, Cancelled, Saved
     }
 
     suspend fun insert(item: DownloadItem) : Long {

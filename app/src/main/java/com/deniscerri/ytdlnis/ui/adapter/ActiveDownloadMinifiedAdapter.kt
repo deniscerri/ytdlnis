@@ -116,7 +116,7 @@ class ActiveDownloadMinifiedAdapter(onItemClickListener: OnItemClickListener, ac
         if (cancelButton.hasOnClickListeners()) cancelButton.setOnClickListener(null)
         cancelButton.setOnClickListener {onItemClickListener.onCancelClick(item.id)}
 
-        if (item.status == DownloadRepository.Status.Paused.toString()){
+        if (item.status == DownloadRepository.Status.ActivePaused.toString()){
             progressBar.isIndeterminate = false
             pauseButton.icon = ContextCompat.getDrawable(activity, R.drawable.exomedia_ic_play_arrow_white)
             pauseButton.tag = ActiveDownloadAdapter.ActiveDownloadAction.Resume

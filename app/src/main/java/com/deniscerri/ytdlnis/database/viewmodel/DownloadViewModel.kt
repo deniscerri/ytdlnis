@@ -612,7 +612,7 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
         }
 
         items.forEach {
-            if (it.status != DownloadRepository.Status.Paused.toString()) it.status = DownloadRepository.Status.Queued.toString()
+            if (it.status != DownloadRepository.Status.ActivePaused.toString()) it.status = DownloadRepository.Status.Queued.toString()
             val currentCommand = infoUtil.buildYoutubeDLRequest(it)
             val parsedCurrentCommand = infoUtil.parseYTDLRequestString(currentCommand)
             val existingDownload = activeAndQueuedDownloads.firstOrNull{d ->
@@ -640,7 +640,7 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
                     existing.add(it)
                 }else{
                     if (it.id == 0L){
-                        val id = withContext(Dispatchers.IO){
+                        val id = runBlocking {
                             repository.insert(it)
                         }
                         it.id = id
@@ -662,6 +662,13 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
                         Triple(R.string.download, DownloadsAction.DOWNLOAD_ANYWAY, existing),
                     )
                 )
+            }
+        }
+
+        if (items.any { it.playlistTitle.isEmpty() }){
+            items.forEachIndexed { index, it -> it.playlistTitle = "Various[${index+1}]" }
+            withContext(Dispatchers.IO){
+                dao.updateMultiple(items)
             }
         }
 

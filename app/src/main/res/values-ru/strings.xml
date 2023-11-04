@@ -307,7 +307,7 @@
     <string name="schedule">Расписание</string>
     <string name="user_agent_header">Заголовок User-Agent</string>
     <string name="search_command_hint">Поиск по командам</string>
-    <string name="skip">Пропустить</string>
+    <string name="ignore">Пропустить</string>
     <string name="license">Лицензия</string>
     <string name="download_already_exists_summary">Вы все еще хотите скачать\?</string>
     <string name="modify_download_card">Изменить карту загрузки</string>

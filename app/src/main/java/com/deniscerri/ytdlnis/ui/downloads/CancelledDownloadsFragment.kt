@@ -14,9 +14,11 @@ import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -131,12 +133,12 @@ class CancelledDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClic
                     }
                 },
                 longClickDownloadButton = {
-                    val sheet = DownloadBottomSheetDialog(
-                        currentDownloadItem = it,
-                        result = downloadViewModel.createResultItemFromDownload(it),
-                        type = it.type
+                    findNavController().navigate(R.id.downloadBottomSheetDialog, bundleOf(
+                        Pair("downloadItem", it),
+                        Pair("result", downloadViewModel.createResultItemFromDownload(it)),
+                        Pair("type", it.type)
+                        )
                     )
-                    sheet.show(parentFragmentManager, "downloadSingleSheet")
                 },
                 scheduleButtonClick = {}
             )

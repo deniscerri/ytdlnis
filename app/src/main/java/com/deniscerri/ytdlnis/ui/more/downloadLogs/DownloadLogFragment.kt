@@ -69,7 +69,6 @@ class DownloadLogFragment : Fragment() {
         }
 
         content = view.findViewById(R.id.content)
-        content.movementMethod = ScrollingMovementMethod()
         content.setTextIsSelectable(true)
         contentScrollView = view.findViewById(R.id.content_scrollview)
         val bottomAppBar = view.findViewById<BottomAppBar>(R.id.bottomAppBar)
@@ -89,7 +88,7 @@ class DownloadLogFragment : Fragment() {
         }
 
         val id = arguments?.getLong("logID")
-        if (id == null) {
+        if (id == null || id == 0L) {
             mainActivity.onBackPressedDispatcher.onBackPressed()
         }
 
@@ -155,19 +154,11 @@ class DownloadLogFragment : Fragment() {
             true
         }
 
-//        contentScrollView.setOnScrollChangeListener { view, sx, sy, osx, osy ->
-//            if (sy < osy){
-//                if (contentScrollView.canScrollVertically(1)){
-//                    shouldScroll = false
-//                    content.movementMethod = LinkMovementMethod.getInstance()
-//                    bottomAppBar?.menu?.get(1)?.isVisible = true
-//                }else{
-//                    shouldScroll = true
-//                    content.movementMethod = ScrollingMovementMethod()
-//                    bottomAppBar?.menu?.get(1)?.isVisible = false
-//                }
-//            }
-//        }
+        contentScrollView.setOnScrollChangeListener { view, sx, sy, osx, osy ->
+            if (sy < osy){
+                bottomAppBar?.menu?.get(1)?.isVisible = contentScrollView.canScrollVertically(1)
+            }
+        }
 
 
         logViewModel.getLogFlowByID(id!!).observe(viewLifecycleOwner){logItem ->
