@@ -189,7 +189,7 @@
     <string name="start">Старт</string>
     <string name="running">Загружаются</string>
     <string name="ytdl_version">Версия yt-dlp</string>
-    <string name="update_formats_summary">Автоматически искать недостающие форматы при нажатии на карточку формата</string>
+    <string name="update_formats_summary">Загрузите форматы, как только появится карточка загрузки</string>
     <string name="ignore_battery_optimization">Игнорировать оптимизацию батареи</string>
     <string name="container">Контейнер</string>
     <string name="download_over_metered_networks_summary">Загрузка с любого типа сети. В противном случае ожидать безлимитную сеть</string>
@@ -198,7 +198,7 @@
     <string name="restore">Восстановить</string>
     <string name="sponsorblock">SponsorBlock</string>
     <string name="quick_download_summary">Не получать данные заранее</string>
-    <string name="keep_cache">Сохранить кэш</string>
+    <string name="keep_cache">Хранить фрагменты</string>
     <string name="remove_audio">Удалить аудио</string>
     <string name="downloaded">"Скачано: "</string>
     <string name="red">Красный</string>
@@ -315,4 +315,5 @@
     <string name="remember_download_type">Запомнить тип загрузки</string>
     <string name="remember_download_type_summary">Выберите последний открытый тип загрузки для текущего элемента</string>
     <string name="length">Длина</string>
+    <string name="export_file">Экспортировать файл</string>
 </resources>
