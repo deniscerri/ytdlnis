@@ -195,7 +195,7 @@
     <string name="appearance">外観</string>
     <string name="couldnt_parse_file">ファイルを解析できませんでした</string>
     <string name="system">システム</string>
-    <string name="update_formats_summary">フォーマットのカードをタップで不足をしたフォーマットを自動的に検索をします</string>
+    <string name="update_formats_summary">ダウンロードカードの表示後、即座にフォーマットを取得します</string>
     <string name="ignore_battery_optimization">バッテリーの最適化を無視</string>
     <string name="new_cut">新規カット</string>
     <string name="add_template_first">少なくとも 1 個のコマンドテンプレートが作成されている必要があります!</string>
@@ -239,7 +239,7 @@
     <string name="download_already_exists">ダウンロードに既に存在します</string>
     <string name="pause">一時停止</string>
     <string name="resume">再開</string>
-    <string name="keep_cache">キャッシュを保持</string>
+    <string name="keep_cache">分割ダウンロードを保持</string>
     <string name="keep_cache_summary">ダウンロードの完了後に一時ファイルを削除しないようにします</string>
     <string name="backup">バックアップ</string>
     <string name="restore">復元</string>
@@ -305,4 +305,15 @@
     <string name="sponsorblock_api_url">SponsorBlock API URL</string>
     <string name="loading">読み込み中</string>
     <string name="search_command_hint">コマンドから探す</string>
+    <string name="export_file">ファイルのエクスポート</string>
+    <string name="schedule">スケジュール</string>
+    <string name="user_agent_header">User-Agent ヘッダー</string>
+    <string name="skip">スキップ</string>
+    <string name="license">ライセンス</string>
+    <string name="download_already_exists_summary">再度ダウンロードをしますか\?</string>
+    <string name="modify_download_card">ダウンロードカードの変更</string>
+    <string name="security">セキュリティ</string>
+    <string name="remember_download_type">ダウンロードの種類を記憶</string>
+    <string name="remember_download_type_summary">最後に開いたダウンロードタイプを選択します</string>
+    <string name="length">再生時間</string>
 </resources>
