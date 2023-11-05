@@ -289,7 +289,7 @@
     <string name="use_cookies">Usar Cookies</string>
     <string name="write_description_summary">Salve o arquivo de descrição na pasta de download</string>
     <string name="embed_metadata">Incorporar metadados</string>
-    <string name="embed_metadata_summary">Incorpore e analise metadados no arquivo de áudio</string>
+    <string name="embed_metadata_summary">Analisar e incorporar metadados no arquivo de áudio</string>
     <string name="auto_update_ytdlp">Atualização automática do yt-dlp</string>
     <string name="use_sponsorblock">Habilitar SponsorBlock</string>
     <string name="update_formats_background">Atualizar formatos em segundo plano</string>
