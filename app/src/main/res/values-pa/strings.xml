@@ -261,7 +261,7 @@
     <string name="quick_download_summary">ਡਾਉਨਲੋਡ ਕਾਰਡ ਵਿੱਚ ਡੇਟਾ ਪ੍ਰਾਪਤ ਨਾ ਕਰੋ</string>
     <string name="resume">ਮੁੜ ਸ਼ੁਰੂ ਕਰੋ</string>
     <string name="updating_download_data">ਡਾਊਨਲੋਡ ਆਈਟਮ ਡਾਟਾ ਅੱਪਡੇਟ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ</string>
-    <string name="keep_cache">ਕੈਸ਼ ਰੱਖੋ</string>
+    <string name="keep_cache">ਫਰੈਗਮੈਂਟਸ ਰੱਖੋ</string>
     <string name="keep_cache_summary">ਡਾਉਨਲੋਡ ਪੂਰਾ ਹੋਣ ਤੋਂ ਬਾਅਦ ਅਸਥਾਈ ਫਾਈਲਾਂ ਨੂੰ ਨਾ ਮਿਟਾਓ</string>
     <string name="backup">ਬੈਕਅੱਪ</string>
     <string name="network_error">ਨੈੱਟਵਰਕ ਤਰੁੱਟੀ</string>
@@ -280,14 +280,14 @@
     <string name="search_suggestions_summary">ਗੂਗਲ ਤੋਂ ਖੋਜ ਸੁਝਾਅ ਪ੍ਰਾਪਤ ਕਰੋ</string>
     <string name="preferred_format_id_summary">ਡਾਊਨਲੋਡ ਕਾਰਡ ਵਿੱਚ ਇਸ ID ਵਾਲਾ ਫਾਰਮੈਟ ਚੁਣੋ</string>
     <string name="misc">ਫੁਟਕਲ</string>
-    <string name="update_formats_summary">ਫਾਰਮੈਟ ਕਾਰਡ \'ਤੇ ਕਲਿੱਕ ਕਰਨ \'ਤੇ ਗੈਰ-ਮੌਜੂਦ ਫਾਰਮੈਟਾਂ ਦੀ ਸਵੈਚਲਿਤ ਤੌਰ \'ਤੇ ਖੋਜ ਕਰੋ</string>
+    <string name="update_formats_summary">ਜਿਵੇਂ ਹੀ ਡਾਉਨਲੋਡ ਕਾਰਡ ਦਿਖਾਈ ਦਿੰਦਾ ਹੈ ਫਾਰਮੈਟਾਂ ਨੂੰ ਪ੍ਰਾਪਤ ਕਰੋ</string>
     <string name="delete_all_cookies">ਸਾਰੀਆਂ ਕੂਕੀਜ਼ ਮਿਟਾਓ</string>
     <string name="crop_thumb">ਥੰਮਨੇਲ ਕਰੌਪ ਕਰੋ</string>
     <string name="crop_thumb_summary">ਆਡੀਓ ਡਾਊਨਲੋਡਾਂ ਲਈ ਥੰਮਨੇਲ ਨੂੰ ਵਰਗ ਵਿੱਚ ਕਰੌਪ ਕਰੋ</string>
     <string name="extra_command">ਵਾਧੂ ਕਮਾਂਡ</string>
     <string name="use_cookies">ਕੂਕੀਜ਼ ਵਰਤੋ</string>
     <string name="embed_metadata">ਮੈਟਾਡਾਟਾ ਏਮਬੇਡ ਕਰੋ</string>
-    <string name="embed_metadata_summary">ਆਡੀਓ ਫ਼ਾਈਲ ਵਿੱਚ ਮੈਟਾਡੇਟਾ ਨੂੰ ਏਮਬੇਡ ਅਤੇ ਪਾਰਸ ਕਰੋ</string>
+    <string name="embed_metadata_summary">ਆਡੀਓ ਫ਼ਾਈਲ ਵਿੱਚ ਮੈਟਾਡੇਟਾ ਨੂੰ ਪਾਰਸ ਅਤੇ ਏਮਬੇਡ ਕਰੋ</string>
     <string name="write_description_summary">ਵੇਰਵਾ ਫਾਇਲ ਲਿਖੋ</string>
     <string name="write_description">ਵੇਰਵਾ ਸੰਭਾਲੋ</string>
     <string name="update_formats_background">ਬੈਕਗ੍ਰਾਊਂਡ ਵਿੱਚ ਫਾਰਮੈਟ ਅੱਪਡੇਟ ਕਰੋ</string>
@@ -315,4 +315,5 @@
     <string name="modify_download_card">ਡਾਊਨਲੋਡ ਕਾਰਡ ਨੂੰ ਸੋਧੋ</string>
     <string name="security">ਸੁਰੱਖਿਆ</string>
     <string name="length">ਲੰਬਾਈ</string>
+    <string name="export_file">ਫ਼ਾਈਲ ਐਕਸਪੋਰਟ ਕਰੋ</string>
 </resources>
