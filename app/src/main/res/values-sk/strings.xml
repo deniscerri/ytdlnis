@@ -198,4 +198,7 @@
     <string name="preferred_format_id">Preferovaný Formát ID</string>
     <string name="preferred_search_engine">Preferovaný Vyhľadávač</string>
     <string name="couldnt_parse_file">Nepodarilo sa analyzovať súbor</string>
+    <string name="items_left">zostávajúce položky</string>
+    <string name="video_directory">Video Priečinok</string>
+    <string name="command_directory">Priečinok Vlastných Príkazov</string>
 </resources>
