@@ -308,7 +308,7 @@
     <string name="schedule">스케쥴</string>
     <string name="user_agent_header">사용자 에이전트 헤더</string>
     <string name="search_command_hint">명령어로 검색</string>
-    <string name="skip">건너뜀</string>
+    <string name="ignore">건너뜀</string>
     <string name="license">라이선스</string>
     <string name="download_already_exists_summary">아직도 다운로드하시겠습니까\?</string>
     <string name="modify_download_card">다운로드 카드 수정</string>

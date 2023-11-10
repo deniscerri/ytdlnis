@@ -116,6 +116,7 @@
         <item>fr</item>
         <item>hi</item>
         <item>hr</item>
+        <item>hu</item>
         <item>in</item>
         <item>it</item>
         <item>ja</item>
@@ -132,6 +133,7 @@
         <item>ru</item>
         <item>ro</item>
         <item>sk</item>
+        <item>sr</item>
         <item>sq</item>
         <item>ta</item>
         <item>te</item>
@@ -826,9 +828,9 @@
         <item>%(title)s___(string): Video title)</item>
         <item>%(id)s___(string): Video identifier)</item>
         <item>%(fulltitle)s___(string): Video title ignoring live timestamp and generic title)</item>
-        <item>%(ext)s___(string): Video filename extension)</item>
+<!--        <item>%(ext)s___(string): Video filename extension)</item>-->
         <item>%(alt_title)s___(string): A secondary title of the video)</item>
-        <item>%(description)s___(string): The description of the video)</item>
+<!--        <item>%(description)s___(string): The description of the video)</item>-->
         <item>%(display_id)s___(string): An alternative identifier for the video)</item>
         <item>%(license)s___(string): License name the video is licensed under)</item>
         <item>%(creator)s___(string): The creator of the video)</item>
@@ -841,7 +843,7 @@
         <item>%(uploader_id)s___(string): Nickname or id of the video uploader)</item>
         <item>%(channel)s___(string): Full name of the channel the video is uploaded on)</item>
         <item>%(channel_id)s___(string): Id of the channel)</item>
-        <item>%(channel_follower_count)s___(numeric): Number of followers of the channel)</item>
+<!--        <item>%(channel_follower_count)s___(numeric): Number of followers of the channel)</item>-->
         <item>%(channel_is_verified)s___(boolean): Whether the channel is verified on the platform)</item>
         <item>%(location)s___(string): Physical location where the video was filmed)</item>
         <item>%(duration)s___(numeric): Length of the video in seconds)</item>

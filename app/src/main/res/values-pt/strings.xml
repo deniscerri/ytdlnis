@@ -309,7 +309,7 @@
     <string name="remember_download_type_summary">Selecionar o último tipo de download aberto para o item atual</string>
     <string name="schedule">Agendar</string>
     <string name="search_command_hint">Pesquisar com comandos</string>
-    <string name="skip">Saltar</string>
+    <string name="ignore">Saltar</string>
     <string name="license">Licença</string>
     <string name="download_already_exists_summary">Ainda queres descarregar\?</string>
     <string name="modify_download_card">Modificar o cartão de descarregamento</string>

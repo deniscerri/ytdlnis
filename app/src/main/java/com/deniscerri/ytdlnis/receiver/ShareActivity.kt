@@ -1,7 +1,6 @@
 package com.deniscerri.ytdlnis.receiver
 
 import android.Manifest
-import android.content.ComponentName
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -17,30 +16,26 @@ import android.util.Log
 import android.util.Patterns
 import android.view.WindowManager
 import androidx.core.app.ActivityCompat
-import androidx.core.content.IntentSanitizer
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceManager
 import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
-import com.deniscerri.ytdlnis.database.models.DownloadItem
-import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.deniscerri.ytdlnis.database.viewmodel.CookieViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdlnis.ui.BaseActivity
-import com.deniscerri.ytdlnis.ui.downloadcard.DownloadBottomSheetDialog
-import com.deniscerri.ytdlnis.ui.downloadcard.SelectPlaylistItemsDialog
 import com.deniscerri.ytdlnis.util.ThemeUtil
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -91,29 +86,6 @@ class ShareActivity : BaseActivity() {
         val intent = intent
         handleIntents(intent)
     }
-
-    override fun onResume() {
-        super.onResume()
-        navController.addOnDestinationChangedListener(object: NavController.OnDestinationChangedListener{
-            override fun onDestinationChanged(
-                controller: NavController,
-                destination: NavDestination,
-                arguments: Bundle?
-            ) {
-                if (navController.currentBackStack.value.isEmpty()) return
-                navController.removeOnDestinationChangedListener(this)
-                lifecycleScope.launch {
-                    navController.currentBackStack.collectLatest {
-                        if (it.isEmpty()){
-                            this@ShareActivity.finish()
-                        }
-                    }
-                }
-
-            }
-        })
-    }
-
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         handleIntents(intent)
@@ -124,6 +96,22 @@ class ShareActivity : BaseActivity() {
 
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.frame_layout) as NavHostFragment
         navController = navHostFragment.findNavController()
+        navController.addOnDestinationChangedListener(object: NavController.OnDestinationChangedListener{
+            override fun onDestinationChanged(
+                controller: NavController,
+                destination: NavDestination,
+                arguments: Bundle?
+            ) {
+                navController.removeOnDestinationChangedListener(this)
+                CoroutineScope(SupervisorJob()).launch {
+                    navController.currentBackStack.collectLatest {
+                        if (it.isEmpty()){
+                            this@ShareActivity.finish()
+                        }
+                    }
+                }
+            }
+        })
 
         val action = intent.action
         Log.e("aa", intent.toString())

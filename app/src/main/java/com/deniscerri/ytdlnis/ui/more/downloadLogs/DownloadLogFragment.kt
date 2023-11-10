@@ -1,6 +1,7 @@
 package com.deniscerri.ytdlnis.ui.more.downloadLogs
 
 import android.annotation.SuppressLint
+import android.app.ActionBar
 import android.content.ClipboardManager
 import android.content.Context.CLIPBOARD_SERVICE
 import android.graphics.Color
@@ -26,6 +27,7 @@ import androidx.lifecycle.lifecycleScope
 import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.viewmodel.LogViewModel
+import com.deniscerri.ytdlnis.util.UiUtil.enableTextHighlight
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
@@ -70,6 +72,7 @@ class DownloadLogFragment : Fragment() {
 
         content = view.findViewById(R.id.content)
         content.setTextIsSelectable(true)
+        content.layoutParams!!.width = ActionBar.LayoutParams.WRAP_CONTENT
         contentScrollView = view.findViewById(R.id.content_scrollview)
         val bottomAppBar = view.findViewById<BottomAppBar>(R.id.bottomAppBar)
 
@@ -100,41 +103,29 @@ class DownloadLogFragment : Fragment() {
             topAppBar.title = logItem.title
         }
 
-        //init syntax highlighter
-        val highlight = Highlight()
-        val highlightWatcher = HighlightTextWatcher()
-
-        val schemes = listOf(
-            ColorScheme(Pattern.compile("([\"'])(?:\\\\1|.)*?\\1"), Color.parseColor("#FC8500")),
-            ColorScheme(Pattern.compile("yt-dlp"), Color.parseColor("#00FF00")),
-            ColorScheme(Pattern.compile("(https?://(?:www\\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|www\\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|https?://(?:www\\.|(?!www))[a-zA-Z0-9]+\\.[^\\s]{2,}|www\\.[a-zA-Z0-9]+\\.[^\\s]{2,})"), Color.parseColor("#b5942f")),
-            ColorScheme(Pattern.compile("\\d+(\\.\\d)?%"), Color.parseColor("#43a564"))
-        )
-
-        highlight.addScheme(
-            *schemes.map { it }.toTypedArray()
-        )
-        highlightWatcher.addScheme(
-            *schemes.map { it }.toTypedArray()
-        )
-        highlight.setSpan(content)
         content.isFocusable = true
-        content.addTextChangedListener(highlightWatcher)
-        content.setHorizontallyScrolling(false)
+        content.enableTextHighlight()
 
         bottomAppBar?.setOnMenuItemClickListener { m: MenuItem ->
             when(m.itemId){
                 R.id.wrap -> {
-                    var scrollView = view.findViewById<HorizontalScrollView>(R.id.horizontalscroll_output)
+                    var scrollView = requireView().findViewById<HorizontalScrollView>(R.id.horizontalscroll_output)
                     if(scrollView != null){
                         val parent = (scrollView.parent as ViewGroup)
                         scrollView.removeAllViews()
                         parent.removeView(scrollView)
                         parent.addView(content, 0)
+                        contentScrollView.setPadding(0,0,0,
+                            (requireContext().resources.displayMetrics.density * 150).toInt()
+                        )
                     }else{
                         val parent = content.parent as ViewGroup
                         parent.removeView(content)
                         scrollView = HorizontalScrollView(requireContext())
+                        scrollView.setPadding(0,0,0,
+                            (requireContext().resources.displayMetrics.density * 150).toInt()
+                        )
+                        contentScrollView.setPadding(0,0,0,0)
                         scrollView.layoutParams = LinearLayout.LayoutParams(
                             ViewGroup.LayoutParams.MATCH_PARENT,
                             ViewGroup.LayoutParams.MATCH_PARENT
@@ -143,7 +134,6 @@ class DownloadLogFragment : Fragment() {
                         scrollView.id = R.id.horizontalscroll_output
                         parent.addView(scrollView, 0)
                     }
-                    content.setHorizontallyScrolling(!content.canScrollHorizontally(1))
                 }
 
                 R.id.scroll_down -> {
@@ -162,10 +152,16 @@ class DownloadLogFragment : Fragment() {
 
 
         logViewModel.getLogFlowByID(id!!).observe(viewLifecycleOwner){logItem ->
-            lifecycleScope.launch {
-                content.text = logItem.content
-                content.scrollTo(content.scrollX, content.height)
-                contentScrollView.fullScroll(View.FOCUS_DOWN)
+            kotlin.runCatching {
+                requireActivity().runOnUiThread{
+                    if (logItem != null){
+                        if (logItem.content.isNotBlank()) {
+                            content.text = logItem.content
+                        }
+                        content.scrollTo(0, content.height)
+                        contentScrollView.fullScroll(View.FOCUS_DOWN)
+                    }
+                }
             }
         }
     }

@@ -112,10 +112,12 @@ class InfoUtil(private val context: Context) {
             val dataArray = res.getJSONArray("relatedStreams")
             var nextpage = res.getString("nextpage")
             for (i in 0 until dataArray.length()){
-                val obj = dataArray.getJSONObject(i)
-                val itm = createVideoFromPipedJSON(obj, "https://youtube.com" + obj.getString("url"))
-                itm?.playlistTitle = res.getString("name") + "[${i+1}]"
-                items.add(itm)
+                kotlin.runCatching {
+                    val obj = dataArray.getJSONObject(i)
+                    val itm = createVideoFromPipedJSON(obj, "https://youtube.com" + obj.getString("url"))
+                    itm?.playlistTitle = res.getString("name") + "[${i+1}]"
+                    items.add(itm)
+                }
             }
             if (nextpage == "null") nextpage = ""
             return PlaylistTuple(nextpage, items)
@@ -1398,19 +1400,21 @@ class InfoUtil(private val context: Context) {
         val audioFormats = resources.getStringArray(R.array.audio_formats)
         val formats = mutableListOf<Format>()
         val containerPreference = sharedPreferences.getString("audio_format", "")
-        audioFormats.reversed().forEach { formats.add(Format(it, containerPreference!!,"","", "",0, it)) }
-        audioFormatIDPreference.forEach { formats.add(Format(it, containerPreference!!,"","", "",1, it)) }
+        val acodecPreference = sharedPreferences.getString("audio_codec", "m4a|mp4a|aac")
+        audioFormats.reversed().forEach { formats.add(Format(it, containerPreference!!,"",acodecPreference!!, "",0, it)) }
+        audioFormatIDPreference.forEach { formats.add(Format(it, containerPreference!!,"",acodecPreference!!, "",1, it)) }
         return formats
     }
 
     fun getGenericVideoFormats(resources: Resources) : MutableList<Format>{
         val formatIDPreference = sharedPreferences.getString("format_id", "").toString().split(",").filter { it.isNotEmpty() }
-
         val videoFormats = resources.getStringArray(R.array.video_formats_values)
         val formats = mutableListOf<Format>()
         val containerPreference = sharedPreferences.getString("video_format", "")
-        videoFormats.reversed().forEach { formats.add(Format(it, containerPreference!!,"Default","", "",0, it.split("_")[0])) }
-        formatIDPreference.forEach { formats.add(Format(it, containerPreference!!,"Default","", "",1, it)) }
+        val acodecPreference = sharedPreferences.getString("audio_codec", "m4a|mp4a|aac")
+        val vcodecPreference = sharedPreferences.getString("video_codec", "avc|h264")!!.ifEmpty { resources.getString(R.string.defaultValue) }
+        videoFormats.reversed().forEach { formats.add(Format(it, containerPreference!!,vcodecPreference,acodecPreference!!, "",0, it.split("_")[0])) }
+        formatIDPreference.forEach { formats.add(Format(it, containerPreference!!,vcodecPreference,acodecPreference!!, "",1, it)) }
         return formats
     }
 

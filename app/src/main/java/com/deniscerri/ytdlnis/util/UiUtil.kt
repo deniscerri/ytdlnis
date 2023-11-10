@@ -102,7 +102,7 @@ object UiUtil {
 
         val audioFormatsTextView = formatCard.findViewById<TextView>(R.id.audio_formats)
         if (!audioFormats.isNullOrEmpty()) {
-            audioFormatsTextView.text = audioFormats.joinToString("+") { it.format_id }
+            audioFormatsTextView.text = "id: " + audioFormats.joinToString("+") { it.format_id }
             audioFormatsTextView.visibility = View.VISIBLE
         }else{
             audioFormatsTextView.visibility = View.GONE

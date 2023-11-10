@@ -81,7 +81,6 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
     private var historyList: List<HistoryItem?>? = null
     private var allhistoryList: List<HistoryItem?>? = null
     private var selectedObjects: ArrayList<HistoryItem>? = null
-    private var _binding : FragmentHistoryBinding? = null
     private var actionMode : ActionMode? = null
 
     private lateinit var sortChip: Chip
@@ -90,7 +89,6 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentHistoryBinding.inflate(inflater, container, false)
         fragmentView = inflater.inflate(R.layout.fragment_history, container, false)
         activity = getActivity()
         mainActivity = activity as MainActivity?

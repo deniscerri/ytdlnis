@@ -122,7 +122,9 @@
         android:visibility="gone" />
 
 
-    <include layout="@layout/history_item_details_bottom_sheet"
+    <include
+        android:id="@+id/no_results"
+        layout="@layout/history_item_details_bottom_sheet"
         android:visibility="gone" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

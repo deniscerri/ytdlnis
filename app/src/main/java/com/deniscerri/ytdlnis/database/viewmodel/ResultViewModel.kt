@@ -93,12 +93,15 @@ class ResultViewModel(application: Application) : AndroidViewModel(application) 
                         else -> res.addAll(repository.getDefault(inputQuery, resetResults))
                     }
                 } catch (e: Exception) {
-                    uiState.update {it.copy(
-                        processing = false,
-                        errorMessage = Pair(R.string.no_results, e.message.toString()),
-                        actions = mutableListOf(Pair(R.string.copy_log, ResultAction.COPY_LOG))
-                    )}
-                    Log.e(tag, e.toString())
+                    if (e !is kotlinx.coroutines.CancellationException){
+                        uiState.update {it.copy(
+                            processing = false,
+                            errorMessage = Pair(R.string.no_results, e.message.toString()),
+                            actions = mutableListOf(Pair(R.string.copy_log, ResultAction.COPY_LOG))
+                        )}
+                        Log.e(tag, e.toString())
+                    }
+
                 }
             }
             uiState.update {it.copy(processing = false)}

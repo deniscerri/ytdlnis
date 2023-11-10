@@ -23,34 +23,48 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <LinearLayout
+    <FrameLayout
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
         <ScrollView
             android:id="@+id/content_scrollview"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:clipToPadding="false"
-            android:paddingBottom="150dp"
             >
 
-            <TextView
-                android:id="@+id/content"
-                android:padding="10dp"
-                android:fontFamily="monospace"
-                android:textSize="15sp"
-                android:gravity="bottom"
-                android:scrollbars="none"
-                android:layout_width="wrap_content"
-                android:textIsSelectable="true"
-                android:layout_height="wrap_content" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusableInTouchMode="true"
+                android:orientation="vertical">
+
+                <HorizontalScrollView
+                    android:id="@+id/horizontalscroll_output"
+                    android:layout_width="match_parent"
+                    android:paddingBottom="150dp"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/content"
+                        android:padding="10dp"
+                        android:fontFamily="monospace"
+                        android:textSize="15sp"
+                        android:gravity="bottom"
+                        android:scrollbars="none"
+                        android:layout_width="wrap_content"
+                        android:textIsSelectable="true"
+                        android:layout_height="wrap_content" />
+
+                </HorizontalScrollView>
+
+            </LinearLayout>
 
         </ScrollView>
 
-    </LinearLayout>
+    </FrameLayout>
 
     <include layout="@layout/no_results"
         android:visibility="gone" />

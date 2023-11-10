@@ -192,7 +192,6 @@ class TerminalFragment : Fragment() {
         }
 
         output = view.findViewById(R.id.custom_command_output)
-        output!!.movementMethod = ScrollingMovementMethod()
         output!!.setTextIsSelectable(true)
         output!!.layoutParams!!.width = LayoutParams.WRAP_CONTENT
         input!!.requestFocus()
@@ -222,7 +221,6 @@ class TerminalFragment : Fragment() {
         initMenu()
 
         input?.enableTextHighlight()
-        output?.enableTextHighlight()
 
         input?.append(bundle?.getString("input") ?: "")
         input!!.requestFocus()
@@ -308,9 +306,7 @@ class TerminalFragment : Fragment() {
                                 output?.text = it.log
                             }
                             output?.scrollTo(0, output!!.height)
-                            if (!scrollView!!.canScrollVertically(1) && !scrollView!!.canScrollHorizontally(-1)){
-                                scrollView?.fullScroll(View.FOCUS_DOWN)
-                            }
+                            scrollView?.fullScroll(View.FOCUS_DOWN)
                             input!!.visibility = View.GONE
                             showCancelFab()
                         }

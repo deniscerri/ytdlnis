@@ -308,7 +308,7 @@
     <string name="schedule">Harmonogram</string>
     <string name="user_agent_header">Nagłówek User-Agent</string>
     <string name="search_command_hint">Szukaj z poleceń</string>
-    <string name="skip">Pomiń</string>
+    <string name="ignore">Pomiń</string>
     <string name="license">Licencja</string>
     <string name="download_already_exists_summary">Czy nadal chcesz pobrać\?</string>
     <string name="modify_download_card">Modyfikowanie karty pobierania</string>

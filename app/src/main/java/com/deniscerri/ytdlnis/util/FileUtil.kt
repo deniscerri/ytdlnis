@@ -87,7 +87,7 @@ object FileUtil {
                 if (it.isDirectory && it.absolutePath == originDir.absolutePath) return@forEach
                 var destFile: DocumentFile
                 try {
-                    if (it.name.matches("(^config.*.\\.txt\$)|(rList)|(.*.part-Frag)|(.*.live_chat)".toRegex())){
+                    if (it.name.matches("(^config.*.\\.txt\$)|(rList)|(.*.part-Frag.*)|(.*.live_chat)|(.*.ytdl)".toRegex())){
                         return@forEach
                     }
 
