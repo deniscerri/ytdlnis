@@ -4,19 +4,29 @@ import android.app.Application
 import android.content.SharedPreferences
 import android.util.Log
 import android.util.Patterns
+import android.view.View
+import androidx.compose.material3.formatWithSkeleton
+import androidx.core.os.bundleOf
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceManager
 import com.deniscerri.ytdlnis.App
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.DBManager
+import com.deniscerri.ytdlnis.database.models.Format
 import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.deniscerri.ytdlnis.database.models.SearchHistoryItem
 import com.deniscerri.ytdlnis.database.repository.ResultRepository
 import com.deniscerri.ytdlnis.database.repository.SearchHistoryRepository
+import com.deniscerri.ytdlnis.receiver.ShareActivity
+import com.deniscerri.ytdlnis.ui.downloadcard.DownloadAudioFragment
+import com.deniscerri.ytdlnis.ui.downloadcard.DownloadVideoFragment
+import com.deniscerri.ytdlnis.util.InfoUtil
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -28,6 +38,7 @@ class ResultViewModel(application: Application) : AndroidViewModel(application) 
     val repository : ResultRepository
     private val searchHistoryRepository : SearchHistoryRepository
     val items : LiveData<List<ResultItem>>
+    private val infoUtil: InfoUtil
     data class ResultsUiState(
         var processing: Boolean,
         var errorMessage: Pair<Int, String>?,
@@ -51,6 +62,7 @@ class ResultViewModel(application: Application) : AndroidViewModel(application) 
         searchHistoryRepository = SearchHistoryRepository(DBManager.getInstance(application).searchHistoryDao)
         items = repository.allResults.asLiveData()
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(application)
+        infoUtil = InfoUtil(application)
     }
 
     fun checkTrending() = viewModelScope.launch(Dispatchers.IO){
@@ -170,5 +182,63 @@ class ResultViewModel(application: Application) : AndroidViewModel(application) 
         selectedItems.forEach {
             repository.delete(it)
         }
+    }
+
+    val updatingData: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    var updateResultData: MutableStateFlow<List<ResultItem?>?> = MutableStateFlow(null)
+    private var updateResultDataJob : Job? = null
+
+    val updatingFormats: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    var updateFormatsResultData: MutableStateFlow<MutableList<Format>?> = MutableStateFlow(null)
+    private var updateFormatsResultDataJob: Job? = null
+
+    suspend fun updateItemData(res: ResultItem){
+        if (updateResultDataJob == null || updateResultDataJob?.isCancelled == true || updateResultDataJob?.isCompleted == true){
+            updateResultDataJob = viewModelScope.launch(Dispatchers.IO) {
+                kotlin.runCatching {
+                    updatingData.emit(true)
+                    val result = parseQueries(listOf(res.url))
+                    updatingData.emit(false)
+                    updateResultData.emit(result)
+                }.onFailure {
+                    updatingData.emit(false)
+                    updateResultData.emit(mutableListOf())
+                }
+            }
+        }
+
+        updateResultDataJob?.start()
+    }
+
+    suspend fun cancelUpdateItemData(){
+        updatingData.emit(false)
+        updateResultData.emit(null)
+        updateResultDataJob?.cancel()
+    }
+
+    suspend fun cancelUpdateFormatsItemData(){
+        updatingFormats.emit(false)
+        updateFormatsResultData.emit(null)
+        updateFormatsResultDataJob?.cancel()
+    }
+
+    suspend fun updateFormatItemData(result: ResultItem){
+        updateFormatsResultDataJob = viewModelScope.launch(Dispatchers.IO) {
+            kotlin.runCatching {
+                updatingFormats.emit(true)
+                val formats = infoUtil.getFormats(result.url)
+                updatingFormats.emit(false)
+                if (formats.isNotEmpty()){
+                    val res = getItemByURL(result.url)
+                    res.formats = formats.toMutableList()
+                    update(res)
+                }
+                updateFormatsResultData.emit(formats.toMutableList())
+            }.onFailure {
+                updatingFormats.emit(false)
+                updateFormatsResultData.emit(mutableListOf())
+            }
+        }
+        updateFormatsResultDataJob?.start()
     }
 }

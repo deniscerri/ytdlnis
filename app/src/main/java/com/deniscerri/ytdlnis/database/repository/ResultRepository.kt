@@ -25,9 +25,7 @@ class ResultRepository(private val resultDao: ResultDao, private val context: Co
         val infoUtil = InfoUtil(context)
         val items = infoUtil.getTrending()
         itemCount.value = items.size
-        for (i in items){
-            resultDao.insert(i!!)
-        }
+        resultDao.insertMultiple(items)
     }
 
     suspend fun search(inputQuery: String, resetResults: Boolean) : ArrayList<ResultItem?>{
@@ -35,9 +33,7 @@ class ResultRepository(private val resultDao: ResultDao, private val context: Co
         if (resetResults) deleteAll()
         val res = infoUtil.search(inputQuery)
         itemCount.value = res.size
-        res.forEach {
-            resultDao.insert(it!!)
-        }
+        resultDao.insertMultiple(res)
         return res
     }
 
@@ -50,9 +46,7 @@ class ResultRepository(private val resultDao: ResultDao, private val context: Co
         }else{
             v.forEach { it?.playlistTitle = "ytdlnis-Search" }
         }
-        v.forEach {
-            resultDao.insert(it!!)
-        }
+        resultDao.insertMultiple(v)
         return ArrayList(v)
     }
 
@@ -72,9 +66,7 @@ class ResultRepository(private val resultDao: ResultDao, private val context: Co
             nextPageToken = tmpToken
         } while (true)
         itemCount.value = items.size
-        items.forEach {
-            resultDao.insert(it!!)
-        }
+        resultDao.insertMultiple(items.toList())
         return items
     }
 
@@ -87,9 +79,7 @@ class ResultRepository(private val resultDao: ResultDao, private val context: Co
         }else{
             items.forEach { it!!.playlistTitle = "ytdlnis-Search" }
         }
-        items.forEach {
-            resultDao.insert(it!!)
-        }
+        resultDao.insertMultiple(items.toList())
         return items
     }
 

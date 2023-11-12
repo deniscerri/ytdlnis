@@ -48,7 +48,7 @@ import com.deniscerri.ytdlnis.receiver.ShareActivity
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.InfoUtil
 import com.deniscerri.ytdlnis.util.UiUtil
-import com.deniscerri.ytdlnis.util.UiUtil.enableFastScroll
+import com.deniscerri.ytdlnis.util.Extensions.enableFastScroll
 import com.deniscerri.ytdlnis.work.UpdatePlaylistFormatsWorker
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.bottomsheet.BottomSheetBehavior

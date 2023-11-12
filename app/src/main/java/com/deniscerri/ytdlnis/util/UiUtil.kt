@@ -25,6 +25,7 @@ import android.view.ViewGroup
 import android.view.Window
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
+import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -100,14 +101,24 @@ object UiUtil {
         formatCard.findViewById<TextView>(R.id.container).text = container.uppercase()
         formatCard.findViewById<TextView>(R.id.format_note).text = formatNote.uppercase()
 
-        val audioFormatsTextView = formatCard.findViewById<TextView>(R.id.audio_formats)
-        if (!audioFormats.isNullOrEmpty()) {
-            audioFormatsTextView.text = "id: " + audioFormats.joinToString("+") { it.format_id }
-            audioFormatsTextView.visibility = View.VISIBLE
-        }else{
-            audioFormatsTextView.visibility = View.GONE
+        formatCard.findViewById<TextView>(R.id.audio_formats).apply {
+            if (!audioFormats.isNullOrEmpty()){
+                text = "id: " + audioFormats.joinToString("+") { it.format_id }
+                visibility = View.VISIBLE
+            }else{
+                visibility = View.GONE
+            }
+            setOnClickListener {
+                formatCard.callOnClick()
+            }
         }
-        formatCard.findViewById<TextView>(R.id.format_id).text = "id: ${chosenFormat.format_id}"
+
+        formatCard.findViewById<TextView>(R.id.format_id).apply {
+            text = "id: ${chosenFormat.format_id}"
+            setOnClickListener {
+                formatCard.callOnClick()
+            }
+        }
         val codec =
             if (chosenFormat.encoding != "") {
                 chosenFormat.encoding.uppercase()
@@ -116,15 +127,28 @@ object UiUtil {
             } else {
                 chosenFormat.acodec.uppercase()
             }
-        if (codec == "" || codec == "none"){
-            formatCard.findViewById<TextView>(R.id.codec).visibility = View.GONE
-        }else{
-            formatCard.findViewById<TextView>(R.id.codec).visibility = View.VISIBLE
-            formatCard.findViewById<TextView>(R.id.codec).text = codec
+
+        formatCard.findViewById<TextView>(R.id.codec).apply {
+            if (codec == "" || codec == "none"){
+                visibility = View.GONE
+            }else{
+                visibility = View.VISIBLE
+                text = codec
+            }
+            setOnClickListener {
+                formatCard.callOnClick()
+            }
         }
+
+
         var filesize = chosenFormat.filesize
         if (!audioFormats.isNullOrEmpty()) filesize += audioFormats.sumOf { it.filesize }
-        formatCard.findViewById<TextView>(R.id.file_size).text = FileUtil.convertFileSize(filesize)
+        formatCard.findViewById<TextView>(R.id.file_size).apply {
+            text = FileUtil.convertFileSize(filesize)
+            setOnClickListener {
+                formatCard.callOnClick()
+            }
+        }
 
     }
 
@@ -144,6 +168,8 @@ object UiUtil {
         val title : TextInputLayout = bottomSheet.findViewById(R.id.title)!!
         val content : TextInputLayout = bottomSheet.findViewById(R.id.content)!!
         val extraCommandsSwitch : MaterialSwitch = bottomSheet.findViewById(R.id.extraCommandsSwitch)!!
+        val extraCommandsAudio : CheckBox = bottomSheet.findViewById(R.id.checkbox_audio)!!
+        val extraCommandsVideo : CheckBox = bottomSheet.findViewById(R.id.checkbox_video)!!
         val shortcutsChipGroup : ChipGroup = bottomSheet.findViewById(R.id.shortcutsChipGroup)!!
         val editShortcuts : Button = bottomSheet.findViewById(R.id.edit_shortcuts)!!
 
@@ -194,7 +220,33 @@ object UiUtil {
 
         if (item != null){
             extraCommandsSwitch.isChecked = item.useAsExtraCommand
+            if (item.useAsExtraCommand){
+                extraCommandsAudio.isVisible = true
+                extraCommandsAudio.isChecked = item.useAsExtraCommandAudio
+                extraCommandsVideo.isVisible = true
+                extraCommandsVideo.isChecked = item.useAsExtraCommandVideo
+            }else{
+                extraCommandsAudio.isVisible = false
+                extraCommandsAudio.isChecked = false
+                extraCommandsVideo.isVisible = false
+                extraCommandsVideo.isChecked = false
+            }
         }
+
+         extraCommandsSwitch.setOnCheckedChangeListener { compoundButton, b ->
+             extraCommandsAudio.isVisible = extraCommandsSwitch.isChecked
+             extraCommandsAudio.isChecked = true
+             extraCommandsVideo.isVisible = extraCommandsSwitch.isChecked
+             extraCommandsVideo.isChecked = true
+         }
+
+         extraCommandsAudio.setOnCheckedChangeListener { compoundButton, b ->
+             ok.isEnabled = extraCommandsAudio.isChecked || extraCommandsVideo.isChecked
+         }
+
+         extraCommandsVideo.setOnCheckedChangeListener { compoundButton, b ->
+             ok.isEnabled = extraCommandsAudio.isChecked || extraCommandsVideo.isChecked
+         }
 
         commandTemplateViewModel.shortcuts.observe(lifeCycle){
             shortcutsChipGroup.removeAllViews()
@@ -214,13 +266,15 @@ object UiUtil {
 
         ok.setOnClickListener {
             if (item == null){
-                val t = CommandTemplate(0, title.editText!!.text.toString(), content.editText!!.text.toString(), extraCommandsSwitch.isChecked)
+                val t = CommandTemplate(0, title.editText!!.text.toString(), content.editText!!.text.toString(), extraCommandsSwitch.isChecked, extraCommandsAudio.isChecked, extraCommandsVideo.isChecked)
                 commandTemplateViewModel.insert(t)
                 newTemplate(t)
             }else{
                 item.title = title.editText!!.text.toString()
                 item.content = content.editText!!.text.toString()
                 item.useAsExtraCommand = extraCommandsSwitch.isChecked
+                item.useAsExtraCommandAudio = extraCommandsAudio.isChecked
+                item.useAsExtraCommandVideo = extraCommandsVideo.isChecked
                 Log.e("aa", item.toString())
                 commandTemplateViewModel.update(item)
                 newTemplate(item)
@@ -1310,72 +1364,6 @@ object UiUtil {
     }
 
 
-
-    @SuppressLint("ClickableViewAccessibility")
-    fun RecyclerView.forceFastScrollMode()
-    {
-        overScrollMode = View.OVER_SCROLL_ALWAYS
-        scrollBarStyle = View.SCROLLBARS_INSIDE_INSET
-        isVerticalScrollBarEnabled = true
-        setOnTouchListener { view, event ->
-            if (event.x >= this.width - 30) {
-                view.parent.requestDisallowInterceptTouchEvent(true)
-                when (event.action and MotionEvent.ACTION_MASK) {
-                    MotionEvent.ACTION_UP -> view.parent.requestDisallowInterceptTouchEvent(false)
-                }
-            }
-            false
-        }
-    }
-
-    fun RecyclerView.enableFastScroll(){
-        val drawable = ShapeDrawable(OvalShape())
-        drawable.paint.color = context.getColor(android.R.color.transparent)
-
-        FastScrollerBuilder(this)
-            .setTrackDrawable(drawable)
-            .build()
-    }
-
-    private var textHighLightSchemes = listOf(
-        ColorScheme(Pattern.compile("([\"'])(?:\\\\1|.)*?\\1"), Color.parseColor("#FC8500")),
-        ColorScheme(Pattern.compile("yt-dlp"), Color.parseColor("#77eb09")),
-        ColorScheme(Pattern.compile("(https?://(?:www\\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|www\\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|https?://(?:www\\.|(?!www))[a-zA-Z0-9]+\\.[^\\s]{2,}|www\\.[a-zA-Z0-9]+\\.[^\\s]{2,})"), Color.parseColor("#b5942f")),
-        ColorScheme(Pattern.compile("\\d+(\\.\\d)?%"), Color.parseColor("#43a564"))
-    )
-
-    fun View.enableTextHighlight(){
-        if (this is EditText || this is TextView){
-            //init syntax highlighter
-            val highlight = Highlight()
-            val highlightWatcher = HighlightTextWatcher()
-
-            highlight.addScheme(
-                *textHighLightSchemes.map { it }.toTypedArray()
-            )
-            highlightWatcher.addScheme(
-                *textHighLightSchemes.map { it }.toTypedArray()
-            )
-
-            highlight.setSpan(this as TextView)
-            this.addTextChangedListener(highlightWatcher)
-        }
-    }
-
-    fun EditText.setTextAndRecalculateWidth(t : String){
-        val scale = context.resources.displayMetrics.density
-        this.setText(t)
-        val widthMeasureSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
-        val heightMeasureSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
-        this.measure(widthMeasureSpec, heightMeasureSpec)
-        val requiredWidth: Int = this.measuredWidth
-        if (t.length < 5){
-            this.layoutParams.width = (70 * scale + 0.5F).toInt()
-        }else{
-            this.layoutParams.width = requiredWidth
-        }
-        this.requestLayout()
-    }
 
     fun handleResultResponse(context: Activity, it: ResultViewModel.ResultsUiState, closed: () -> Unit){
         val title = context.getString(it.errorMessage!!.first)

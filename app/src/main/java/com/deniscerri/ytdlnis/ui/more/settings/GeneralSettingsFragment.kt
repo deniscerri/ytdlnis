@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.PowerManager
 import android.provider.Settings
@@ -66,11 +67,9 @@ class GeneralSettingsFragment : BaseSettingsFragment() {
         language!!.entries = entries.toTypedArray()
 
         if(language!!.value == null) language!!.value = Locale.getDefault().language
-        language!!.summary = Locale(language!!.value).getDisplayLanguage(Locale(language!!.value))
 
         language!!.onPreferenceChangeListener =
             Preference.OnPreferenceChangeListener { _: Preference?, newValue: Any ->
-                language!!.summary = Locale(newValue.toString()).getDisplayLanguage(Locale(newValue.toString()))
                 AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(newValue.toString()))
                 true
             }

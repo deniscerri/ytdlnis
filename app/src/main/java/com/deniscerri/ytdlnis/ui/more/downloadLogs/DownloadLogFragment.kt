@@ -27,7 +27,7 @@ import androidx.lifecycle.lifecycleScope
 import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.viewmodel.LogViewModel
-import com.deniscerri.ytdlnis.util.UiUtil.enableTextHighlight
+import com.deniscerri.ytdlnis.util.Extensions.enableTextHighlight
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton

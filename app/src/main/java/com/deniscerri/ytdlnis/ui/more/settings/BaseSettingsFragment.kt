@@ -51,7 +51,10 @@ abstract class BaseSettingsFragment : PreferenceFragmentCompat() {
                 }.toBooleanArray()
                 MaterialAlertDialogBuilder(requireContext())
                     .setTitle(preference.title)
-                    .setMultiChoiceItems(preference.entries, selectedItems) { _, _, _ ->
+                    .setMultiChoiceItems(preference.entries, selectedItems) { _, which, isChecked ->
+                        selectedItems[which] = isChecked
+                    }
+                    .setPositiveButton(R.string.ok) { _, _ ->
                         val newValues = preference.entryValues
                             .filterIndexed { index, _ -> selectedItems[index] }
                             .map { it.toString() }

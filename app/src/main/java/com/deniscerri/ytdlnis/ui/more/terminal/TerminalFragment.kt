@@ -37,7 +37,7 @@ import com.deniscerri.ytdlnis.database.viewmodel.TerminalViewModel
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.NotificationUtil
 import com.deniscerri.ytdlnis.util.UiUtil
-import com.deniscerri.ytdlnis.util.UiUtil.enableTextHighlight
+import com.deniscerri.ytdlnis.util.Extensions.enableTextHighlight
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton

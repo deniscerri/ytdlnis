@@ -62,6 +62,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.yausername.youtubedl_android.YoutubeDL
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
@@ -181,14 +182,17 @@ class ResultCardDetailsDialog : BottomSheetDialogFragment(), GenericDownloadAdap
         queuedRecycler.adapter = queuedAdapter
         queuedRecycler.layoutManager = GridLayoutManager(context, resources.getInteger(R.integer.grid_size))
 
-        downloadViewModel.activeDownloads.map { it.filter { d -> d.url == item.url } }.observe(viewLifecycleOwner) {
-            activeAdapter.submitList(it)
-            if (it.isEmpty()){
-                running.visibility = View.GONE
-                runningRecycler.visibility = View.GONE
-            }else{
-                running.visibility = View.VISIBLE
-                runningRecycler.visibility = View.VISIBLE
+        lifecycleScope.launch {
+            downloadViewModel.activeDownloads.map { it.filter { d -> d.url == item.url } }.collectLatest {
+                delay(500)
+                activeAdapter.submitList(it)
+                if (it.isEmpty()){
+                    running.visibility = View.GONE
+                    runningRecycler.visibility = View.GONE
+                }else{
+                    running.visibility = View.VISIBLE
+                    runningRecycler.visibility = View.VISIBLE
+                }
             }
         }
 
@@ -231,8 +235,10 @@ class ResultCardDetailsDialog : BottomSheetDialogFragment(), GenericDownloadAdap
             }
         }
 
-        downloadViewModel.activeDownloadsCount.observe(viewLifecycleOwner){
-            activeCount = it
+        lifecycleScope.launch {
+            downloadViewModel.activeDownloadsCount.collectLatest {
+                activeCount = it
+            }
         }
 
 

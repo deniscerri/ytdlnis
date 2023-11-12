@@ -59,6 +59,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import java.io.BufferedReader
@@ -146,14 +147,16 @@ class MainActivity : BaseActivity() {
             }
 
             val activeDownloadsBadge = (navigationView as NavigationBarView).getOrCreateBadge(R.id.historyFragment)
-            downloadViewModel.activeDownloadsCount.observe(this){
-                if (it == 0) {
-                    activeDownloadsBadge.isVisible = false
-                    activeDownloadsBadge.clearNumber()
-                }
-                else {
-                    activeDownloadsBadge.isVisible = true
-                    activeDownloadsBadge.number = it
+            lifecycleScope.launch {
+                downloadViewModel.activeDownloadsCount.collectLatest {
+                    if (it == 0) {
+                        activeDownloadsBadge.isVisible = false
+                        activeDownloadsBadge.clearNumber()
+                    }
+                    else {
+                        activeDownloadsBadge.isVisible = true
+                        activeDownloadsBadge.number = it
+                    }
                 }
             }
         }

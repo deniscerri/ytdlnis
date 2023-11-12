@@ -8,6 +8,7 @@ import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.models.DownloadItemSimple
 import com.deniscerri.ytdlnis.util.FileUtil
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import java.io.File
 
 
@@ -16,7 +17,7 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
         config = PagingConfig(pageSize = 20, initialLoadSize = 20, prefetchDistance = 1),
         pagingSourceFactory = {downloadDao.getAllDownloads()}
     )
-    val activeDownloads : Flow<List<DownloadItem>> = downloadDao.getActiveDownloads()
+    val activeDownloads : Flow<List<DownloadItem>> = downloadDao.getActiveDownloads().distinctUntilChanged()
     val queuedDownloads : Pager<Int, DownloadItemSimple> = Pager(
         config = PagingConfig(pageSize = 20, initialLoadSize = 20, prefetchDistance = 1),
         pagingSourceFactory = {downloadDao.getQueuedDownloads()}

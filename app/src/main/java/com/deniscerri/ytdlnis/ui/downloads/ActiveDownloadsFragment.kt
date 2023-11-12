@@ -23,11 +23,13 @@ import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.repository.DownloadRepository
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.util.NotificationUtil
-import com.deniscerri.ytdlnis.util.UiUtil.forceFastScrollMode
+import com.deniscerri.ytdlnis.util.Extensions.forceFastScrollMode
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.yausername.youtubedl_android.YoutubeDL
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
@@ -157,21 +159,30 @@ class ActiveDownloadsFragment : Fragment(), ActiveDownloadAdapter.OnItemClickLis
                 }
             }
 
-        downloadViewModel.activeDownloads.observe(viewLifecycleOwner) {
-            activeDownloads.submitList(it)
-
-            if (it.size > 1){
-                pauseResume.visibility = View.VISIBLE
-                if (it.all { l -> l.status == DownloadRepository.Status.ActivePaused.toString() }){
-                    pauseResume.text = requireContext().getString(R.string.resume)
-                }else{
-                    pauseResume.text = requireContext().getString(R.string.pause)
-                }
-            }else{
-                activeDownloads.notifyDataSetChanged()
-                pauseResume.visibility = View.GONE
+        lifecycleScope.launch {
+            downloadViewModel.activeDownloadsCount.collectLatest {
+                delay(200)
+                noResults.visibility = if (it == 0) View.VISIBLE else View.GONE
             }
-            noResults.visibility = if (it.isEmpty()) View.VISIBLE else View.GONE
+        }
+
+        lifecycleScope.launch {
+            downloadViewModel.activeDownloads.collectLatest {
+                delay(100)
+                activeDownloads.submitList(it)
+
+                if (it.size > 1){
+                    pauseResume.visibility = View.VISIBLE
+                    if (it.all { l -> l.status == DownloadRepository.Status.ActivePaused.toString() }){
+                        pauseResume.text = requireContext().getString(R.string.resume)
+                    }else{
+                        pauseResume.text = requireContext().getString(R.string.pause)
+                    }
+                }else{
+                    pauseResume.visibility = View.GONE
+                }
+            }
+
         }
     }
 
@@ -212,7 +223,6 @@ class ActiveDownloadsFragment : Fragment(), ActiveDownloadAdapter.OnItemClickLis
                         withContext(Dispatchers.IO){
                             downloadViewModel.updateDownload(item)
                         }
-                        activeDownloads.notifyItemChanged(position)
                     }
                 }
                 ActiveDownloadAdapter.ActiveDownloadAction.Resume -> {
@@ -221,7 +231,6 @@ class ActiveDownloadsFragment : Fragment(), ActiveDownloadAdapter.OnItemClickLis
                         withContext(Dispatchers.IO){
                             downloadViewModel.updateDownload(item)
                         }
-                        activeDownloads.notifyItemChanged(position)
 
                         runBlocking {
                             downloadViewModel.queueDownloads(listOf(item))

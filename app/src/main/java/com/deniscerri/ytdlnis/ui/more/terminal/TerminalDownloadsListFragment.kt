@@ -20,7 +20,7 @@ import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.ui.adapter.TerminalDownloadsAdapter
 import com.deniscerri.ytdlnis.database.models.TerminalItem
 import com.deniscerri.ytdlnis.database.viewmodel.TerminalViewModel
-import com.deniscerri.ytdlnis.util.UiUtil.enableFastScroll
+import com.deniscerri.ytdlnis.util.Extensions.enableFastScroll
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import kotlinx.coroutines.flow.collectLatest

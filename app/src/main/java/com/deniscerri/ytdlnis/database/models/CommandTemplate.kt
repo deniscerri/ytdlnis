@@ -13,5 +13,9 @@ data class CommandTemplate(
     var title: String,
     var content: String,
     @ColumnInfo(defaultValue = "0")
-    var useAsExtraCommand: Boolean
+    var useAsExtraCommand: Boolean,
+    @ColumnInfo(defaultValue = "1")
+    var useAsExtraCommandAudio: Boolean,
+    @ColumnInfo(defaultValue = "1")
+    var useAsExtraCommandVideo: Boolean
 )

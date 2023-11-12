@@ -24,6 +24,9 @@ interface ResultDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(item: ResultItem) : Long
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertMultiple(items: List<ResultItem?>) : List<Long>
+
     @Update(onConflict = OnConflictStrategy.REPLACE)
     suspend fun update(item: ResultItem)
 

@@ -46,6 +46,7 @@
                     </HorizontalScrollView>
 
                     <View
+                        android:id="@+id/chipGroupDivider"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         style="@style/Divider.Vertical"/>

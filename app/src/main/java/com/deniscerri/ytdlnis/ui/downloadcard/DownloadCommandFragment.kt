@@ -31,7 +31,7 @@ import com.deniscerri.ytdlnis.database.viewmodel.CommandTemplateViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.UiUtil
-import com.deniscerri.ytdlnis.util.UiUtil.enableTextHighlight
+import com.deniscerri.ytdlnis.util.Extensions.enableTextHighlight
 import com.deniscerri.ytdlnis.util.UiUtil.populateCommandCard
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.chip.Chip
@@ -87,7 +87,7 @@ class DownloadCommandFragment(private val resultItem: ResultItem? = null, privat
             preferences.edit().putString("lastCommandTemplateUsed", downloadItem.format.format_note).apply()
 
             if (!Patterns.WEB_URL.matcher(downloadItem.url).matches()){
-                downloadItem.format = downloadViewModel.generateCommandFormat(CommandTemplate(0,"txt", "-a \"${downloadItem.url}\"", false))
+                downloadItem.format = downloadViewModel.generateCommandFormat(CommandTemplate(0,"txt", "-a \"${downloadItem.url}\"", useAsExtraCommand = false, useAsExtraCommandAudio = false, useAsExtraCommandVideo = false))
                 downloadItem.url = ""
             }
 
@@ -231,7 +231,7 @@ class DownloadCommandFragment(private val resultItem: ResultItem? = null, privat
                                         0,
                                         "",
                                         chosenCommandView.editText!!.text.toString(),
-                                        false
+                                        useAsExtraCommand = false, useAsExtraCommandAudio = false, useAsExtraCommandVideo = false
                                     )
                                 UiUtil.showCommandTemplateCreationOrUpdatingSheet(current, requireActivity(), viewLifecycleOwner, commandTemplateViewModel) {
                                     templates.add(it)

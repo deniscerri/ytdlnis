@@ -1017,4 +1017,24 @@
         <item>ko</item>
     </string-array>
 
+    <array name="swipe_gestures">
+        <item>@string/downloads</item>
+        <item>@string/in_queue</item>
+        <item>@string/cancelled</item>
+        <item>@string/errored</item>
+        <item>@string/saved</item>
+        <item>@string/command_templates</item>
+        <item>@string/cookies</item>
+    </array>
+
+    <array name="swipe_gestures_values">
+        <item>history</item>
+        <item>queued</item>
+        <item>cancelled</item>
+        <item>errored</item>
+        <item>saved</item>
+        <item>templates</item>
+        <item>cookies</item>
+    </array>
+
 </resources>

@@ -64,8 +64,8 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
     private val infoUtil : InfoUtil
     val allDownloads : Flow<PagingData<DownloadItem>>
     val queuedDownloads : Flow<PagingData<DownloadItemSimple>>
-    val activeDownloads : LiveData<List<DownloadItem>>
-    val activeDownloadsCount : LiveData<Int>
+    val activeDownloads : Flow<List<DownloadItem>>
+    val activeDownloadsCount : Flow<Int>
     val cancelledDownloads : Flow<PagingData<DownloadItemSimple>>
     val erroredDownloads : Flow<PagingData<DownloadItemSimple>>
     val savedDownloads : Flow<PagingData<DownloadItemSimple>>
@@ -78,7 +78,8 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
     private val formatIDPreference: List<String>
     private val audioFormatIDPreference: List<String>
     private val resources : Resources
-    private var extraCommands: String = ""
+    private var extraCommandsForAudio: String = ""
+    private var extraCommandsForVideo: String = ""
 
     private var audioContainer: String?
     private var videoContainer: String?
@@ -123,14 +124,15 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
 
         allDownloads = repository.allDownloads.flow
         queuedDownloads = repository.queuedDownloads.flow
-        activeDownloads = repository.activeDownloads.asLiveData()
-        activeDownloadsCount = repository.activeDownloadsCount.asLiveData()
+        activeDownloads = repository.activeDownloads
+        activeDownloadsCount = repository.activeDownloadsCount
         savedDownloads = repository.savedDownloads.flow
         cancelledDownloads = repository.cancelledDownloads.flow
         erroredDownloads = repository.erroredDownloads.flow
         viewModelScope.launch(Dispatchers.IO){
             if (sharedPreferences.getBoolean("use_extra_commands", false)){
-                extraCommands = commandTemplateDao.getAllTemplatesAsExtraCommands().joinToString(" ")
+                extraCommandsForAudio = commandTemplateDao.getAllTemplatesAsExtraCommandsForAudio().joinToString(" ")
+                extraCommandsForVideo = commandTemplateDao.getAllTemplatesAsExtraCommandsForVideo().joinToString(" ")
             }
         }
 
@@ -283,6 +285,12 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
             audioFormatIDs = preferredAudioFormats
         )
 
+        val extraCommands = when(type){
+            Type.audio -> extraCommandsForAudio
+            Type.video -> extraCommandsForVideo
+            else -> ""
+        }
+
         return DownloadItem(0,
             resultItem.url,
             resultItem.title,
@@ -404,6 +412,12 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
 
         val sponsorblock = sharedPreferences.getStringSet("sponsorblock_filters", emptySet())
 
+        val extraCommands = when(historyItem.type){
+            Type.audio -> extraCommandsForAudio
+            Type.video -> extraCommandsForVideo
+            else -> ""
+        }
+
         val audioPreferences = AudioPreferences(embedThumb, false, ArrayList(sponsorblock!!))
         val videoPreferences = VideoPreferences(embedSubs, addChapters, false, ArrayList(sponsorblock), saveSubs)
         val downloadPath = File(historyItem.downloadPath)
@@ -467,9 +481,9 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
             else -> {
                 val lastUsedCommandTemplate = sharedPreferences.getString("lastCommandTemplateUsed", "")!!
                 val c = if (lastUsedCommandTemplate.isBlank()){
-                    commandTemplateDao.getFirst() ?: CommandTemplate(0,"","", false)
+                    commandTemplateDao.getFirst() ?: CommandTemplate(0,"","", useAsExtraCommand = false, useAsExtraCommandAudio = false, useAsExtraCommandVideo = false)
                 }else{
-                    commandTemplateDao.getTemplateByContent(lastUsedCommandTemplate) ?: CommandTemplate(0, "", lastUsedCommandTemplate, false)
+                    commandTemplateDao.getTemplateByContent(lastUsedCommandTemplate) ?: CommandTemplate(0, "", lastUsedCommandTemplate, useAsExtraCommand = false, useAsExtraCommandAudio = false, useAsExtraCommandVideo = false)
                 }
                 return generateCommandFormat(c)
             }

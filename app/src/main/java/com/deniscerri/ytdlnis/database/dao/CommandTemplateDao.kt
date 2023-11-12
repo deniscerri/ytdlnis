@@ -34,6 +34,12 @@ interface CommandTemplateDao {
     @Query("SELECT content FROM commandTemplates WHERE useAsExtraCommand is 1")
     fun getAllTemplatesAsExtraCommands() : List<String>
 
+    @Query("SELECT content FROM commandTemplates WHERE useAsExtraCommand is 1 AND useAsExtraCommandAudio = 1")
+    fun getAllTemplatesAsExtraCommandsForAudio() : List<String>
+
+    @Query("SELECT content FROM commandTemplates WHERE useAsExtraCommand is 1 AND useAsExtraCommandVideo = 1")
+    fun getAllTemplatesAsExtraCommandsForVideo() : List<String>
+
     @Query("SELECT * FROM templateShortcuts ORDER BY id DESC")
     fun getAllShortcutsFlow() : Flow<List<TemplateShortcut>>
 

@@ -89,6 +89,8 @@
                     android:layout_width="wrap_content"
                     android:layout_marginEnd="10dp"
                     android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:focusable="false"
                     android:layout_marginStart="10dp"
                     android:scrollbars="none">
 
@@ -115,6 +117,7 @@
                             android:textStyle="bold"
                             app:cornerRadius="10dp"
                             app:drawableStartCompat="@drawable/ic_music"
+                            android:textCursorDrawable="@string/audio_format"
                             app:drawableTint="@color/white"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"

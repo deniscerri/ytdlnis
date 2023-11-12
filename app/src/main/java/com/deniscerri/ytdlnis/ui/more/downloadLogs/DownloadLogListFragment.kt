@@ -26,8 +26,8 @@ import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.ui.adapter.DownloadLogsAdapter
 import com.deniscerri.ytdlnis.database.models.LogItem
 import com.deniscerri.ytdlnis.database.viewmodel.LogViewModel
-import com.deniscerri.ytdlnis.util.UiUtil.enableFastScroll
-import com.deniscerri.ytdlnis.util.UiUtil.forceFastScrollMode
+import com.deniscerri.ytdlnis.util.Extensions.enableFastScroll
+import com.deniscerri.ytdlnis.util.Extensions.forceFastScrollMode
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar

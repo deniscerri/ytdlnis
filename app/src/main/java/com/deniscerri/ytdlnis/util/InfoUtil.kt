@@ -638,7 +638,7 @@ class InfoUtil(private val context: Context) {
             val website = jsonObject.getString(listOf("ie_key", "extractor_key", "extractor").first { jsonObject.has(it) })
             var playlistTitle: String? = ""
             if (jsonObject.has("playlist_title")) playlistTitle = jsonObject.getString("playlist_title")
-            if(playlistTitle.equals(query)) playlistTitle = ""
+            if(playlistTitle?.removeSurrounding("\"").equals(query)) playlistTitle = ""
 
             if (playlistTitle?.isNotBlank() == true){
                 playlistTitle += "[${jsonObject.getString("playlist_index")}]"

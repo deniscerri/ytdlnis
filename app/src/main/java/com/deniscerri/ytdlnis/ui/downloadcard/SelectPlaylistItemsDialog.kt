@@ -25,8 +25,8 @@ import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdlnis.receiver.ShareActivity
-import com.deniscerri.ytdlnis.util.UiUtil.enableFastScroll
-import com.deniscerri.ytdlnis.util.UiUtil.setTextAndRecalculateWidth
+import com.deniscerri.ytdlnis.util.Extensions.enableFastScroll
+import com.deniscerri.ytdlnis.util.Extensions.setTextAndRecalculateWidth
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton

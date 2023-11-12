@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.compose.ui.util.fastJoinToString
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.AsyncDifferConfig
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -51,11 +53,18 @@ class TemplatesAdapter(onItemClickListener: OnItemClickListener, activity: Activ
         val content = card.findViewById<TextView>(R.id.content)
         content.text = item?.content
 
-        val useInExtraCommands = card.findViewById<TextView>(R.id.useInExtraCommands)
-        if (item!!.useAsExtraCommand) useInExtraCommands.visibility = View.VISIBLE
-        else useInExtraCommands.visibility = View.GONE
+        card.findViewById<TextView>(R.id.useInExtraCommands).apply {
+            isVisible = item!!.useAsExtraCommand
+            val extraAudio = if (item.useAsExtraCommandAudio) context.getString(R.string.audio) else null
+            val extraVideo = if (item.useAsExtraCommandVideo) context.getString(R.string.video) else null
+            val finalText = context.getString(R.string.extra_command) + " " + listOfNotNull(
+                extraAudio,
+                extraVideo
+            ).joinToString(" ", "[", "]", -1)
+            text = finalText
+        }
 
-        if (checkedItems.contains(item.id)) {
+        if (checkedItems.contains(item!!.id)) {
             card.isChecked = true
             card.strokeWidth = 5
         } else {
@@ -132,7 +141,11 @@ class TemplatesAdapter(onItemClickListener: OnItemClickListener, activity: Activ
             }
 
             override fun areContentsTheSame(oldItem: CommandTemplate, newItem: CommandTemplate): Boolean {
-                return oldItem.title == newItem.title && oldItem.content == newItem.content && oldItem.useAsExtraCommand == newItem.useAsExtraCommand
+                return oldItem.title == newItem.title &&
+                        oldItem.content == newItem.content &&
+                        oldItem.useAsExtraCommand == newItem.useAsExtraCommand &&
+                        oldItem.useAsExtraCommandAudio == newItem.useAsExtraCommandAudio &&
+                        oldItem.useAsExtraCommandVideo == newItem.useAsExtraCommandVideo
             }
         }
     }

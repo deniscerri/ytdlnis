@@ -74,7 +74,7 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
         infoUtil = InfoUtil(requireContext())
         genericVideoFormats = infoUtil.getGenericVideoFormats(requireContext().resources)
         preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
-        shownFields = preferences.getStringSet("modify_download_card", setOf())!!.toList().ifEmpty { requireContext().getStringArray(R.array.modify_download_card_values).toList() }
+        shownFields = preferences.getStringSet("modify_download_card", requireContext().getStringArray(R.array.modify_download_card_values).toSet())!!.toList()
         return fragmentView
     }
 

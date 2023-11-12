@@ -54,7 +54,6 @@
             android:ellipsize="end"
             android:text="@string/extra_command"
             android:gravity="center"
-            android:maxLength="17"
             android:maxLines="1"
             android:minWidth="30dp"
             android:paddingHorizontal="5dp"

@@ -6,9 +6,11 @@
         <ListPreference
             android:entries="@array/language_values"
             android:entryValues="@array/language_values"
+            android:defaultValue=""
             android:icon="@drawable/baseline_translate_24"
             app:key="app_language"
-            app:summary="en"
+            app:useSimpleSummaryProvider="true"
+            app:summary=""
             app:title="@string/language" />
 
         <ListPreference
@@ -110,18 +112,19 @@
             app:summary="@string/search_suggestions_summary"
             app:title="@string/search_suggestions" />
 
-        <SwitchPreferenceCompat
-            android:widgetLayout="@layout/preferece_material_switch"
-            app:defaultValue="true"
+        <MultiSelectListPreference
             android:icon="@drawable/baseline_swipe_24"
-            android:key="swipe_gestures"
+            android:key="swipe_gesture"
+            android:entries="@array/swipe_gestures"
+            android:entryValues="@array/swipe_gestures_values"
+            android:defaultValue="@array/swipe_gestures_values"
             app:summary="@string/swipe_gestures_summary"
             app:title="@string/swipe_gestures" />
 
         <SwitchPreferenceCompat
             android:widgetLayout="@layout/preferece_material_switch"
             app:defaultValue="false"
-            android:icon="@drawable/baseline_share_24"
+            android:icon="@drawable/baseline_share2_24"
             android:key="show_terminal"
             app:title="@string/show_terminal" />
 

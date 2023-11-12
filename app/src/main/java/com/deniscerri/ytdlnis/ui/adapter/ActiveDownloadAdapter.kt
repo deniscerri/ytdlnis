@@ -1,5 +1,6 @@
 package com.deniscerri.ytdlnis.ui.adapter
 
+import android.animation.ValueAnimator
 import android.app.Activity
 import android.content.SharedPreferences
 import android.graphics.Color
@@ -9,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceManager
@@ -20,12 +22,14 @@ import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.repository.DownloadRepository
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
+import com.deniscerri.ytdlnis.util.Extensions.dp
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.chip.Chip
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.squareup.picasso.Picasso
+
 
 class ActiveDownloadAdapter(onItemClickListener: OnItemClickListener, activity: Activity) : ListAdapter<DownloadItem?, ActiveDownloadAdapter.ViewHolder>(AsyncDifferConfig.Builder(
     DIFF_CALLBACK
@@ -137,16 +141,37 @@ class ActiveDownloadAdapter(onItemClickListener: OnItemClickListener, activity: 
         when(DownloadRepository.Status.valueOf(item.status)){
             DownloadRepository.Status.Active -> {
                 progressBar.isIndeterminate = true
-                pauseButton.icon = ContextCompat.getDrawable(activity, R.drawable.exomedia_ic_pause_white)
+
+                val fromRadius: Int = dp(activity.resources, 30f)
+                val toRadius: Int = dp(activity.resources, 15f)
+                val animator = ValueAnimator.ofInt(fromRadius, toRadius)
+                animator.setDuration(500)
+                    .addUpdateListener { animation ->
+                        val value = animation.animatedValue as Int
+                        pauseButton.cornerRadius = value
+                        pauseButton.icon = ContextCompat.getDrawable(activity, R.drawable.exomedia_ic_pause_white)
+                        pauseButton.isEnabled = true
+                        pauseButton.tag = ActiveDownloadAction.Pause
+                    }
+                animator.start()
+
                 cancelButton.visibility = View.GONE
-                pauseButton.isEnabled = true
-                pauseButton.tag = ActiveDownloadAction.Pause
             }
             DownloadRepository.Status.ActivePaused -> {
                 progressBar.isIndeterminate = false
-                pauseButton.icon = ContextCompat.getDrawable(activity, R.drawable.exomedia_ic_play_arrow_white)
-                pauseButton.tag = ActiveDownloadAction.Resume
-                pauseButton.isEnabled = true
+
+                val fromRadius: Int = dp(activity.resources, 15f)
+                val toRadius: Int = dp(activity.resources, 30f)
+                val animator = ValueAnimator.ofInt(fromRadius, toRadius)
+                animator.setDuration(500)
+                    .addUpdateListener { animation ->
+                        val value = animation.animatedValue as Int
+                        pauseButton.cornerRadius = value
+                        pauseButton.icon = ContextCompat.getDrawable(activity, R.drawable.exomedia_ic_play_arrow_white)
+                        pauseButton.tag = ActiveDownloadAction.Resume
+                        pauseButton.isEnabled = true
+                    }
+                animator.start()
                 cancelButton.visibility = View.VISIBLE
             }
             DownloadRepository.Status.PausedReQueued -> {

@@ -33,18 +33,15 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
-import com.deniscerri.ytdlnis.ui.adapter.HomeAdapter
 import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.ResultViewModel
-import com.deniscerri.ytdlnis.ui.downloadcard.DownloadBottomSheetDialog
-import com.deniscerri.ytdlnis.ui.downloadcard.DownloadMultipleBottomSheetDialog
-import com.deniscerri.ytdlnis.ui.downloadcard.ResultCardDetailsDialog
+import com.deniscerri.ytdlnis.ui.adapter.HomeAdapter
+import com.deniscerri.ytdlnis.util.Extensions.enableFastScroll
 import com.deniscerri.ytdlnis.util.InfoUtil
 import com.deniscerri.ytdlnis.util.ThemeUtil
 import com.deniscerri.ytdlnis.util.UiUtil
-import com.deniscerri.ytdlnis.util.UiUtil.enableFastScroll
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.MaterialToolbar
@@ -316,6 +313,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
             providersChipGroup!!.addView(tmp)
         }
 
+        val chipGroupDivider : View? = requireView().findViewById(R.id.chipGroupDivider)
 
         searchView!!.addTransitionListener { _, _, newState ->
             if (newState == SearchView.TransitionState.SHOWN) {
@@ -328,13 +326,19 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
                     }
                 }
 
+                if (Patterns.WEB_URL.matcher(searchBar!!.text.toString()).matches() && searchBar!!.text.isNotBlank()){
+                    providersChipGroup.visibility = GONE
+                    chipGroupDivider?.visibility = GONE
+                }else{
+                    providersChipGroup.visibility = VISIBLE
+                    chipGroupDivider?.visibility = VISIBLE
+                }
+
                 try{
                     val clipboard =
                         requireContext().getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
-                    val regex =
-                        "(https?://(?:www\\.|(?!www))[a-zA-Z\\d][a-zA-Z\\d-]+[a-zA-Z\\d]\\.\\S{2,}|www\\.[a-zA-Z\\d][a-zA-Z\\d-]+[a-zA-Z\\d]\\.\\S{2,}|https?://(?:www\\.|(?!www))[a-zA-Z\\d]+\\.\\S{2,}|www\\.[a-zA-Z\\d]+\\.\\S{2,})".toRegex()
                     val clip = clipboard.primaryClip!!.getItemAt(0).text
-                    if (regex.containsMatchIn(clip.toString())) {
+                    if (Patterns.WEB_URL.matcher(clip.toString()).matches()) {
                         linkYouCopied!!.visibility = VISIBLE
                         val textView = linkYouCopied!!.findViewById<TextView>(R.id.suggestion_text)
                         textView.text = getString(R.string.link_you_copied)
@@ -380,6 +384,13 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
             if (searchView!!.currentTransitionState != SearchView.TransitionState.SHOWN) return@doAfterTextChanged
             lifecycleScope.launch {
                 updateSearchViewItems(it, linkYouCopied)
+            }
+            if (Patterns.WEB_URL.matcher(it.toString()).matches()){
+                providersChipGroup.visibility = GONE
+                chipGroupDivider?.visibility = GONE
+            }else{
+                providersChipGroup.visibility = VISIBLE
+                chipGroupDivider?.visibility = VISIBLE
             }
         }
 
