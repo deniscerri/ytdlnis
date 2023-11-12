@@ -46,13 +46,6 @@ class UpdateUtil(var context: Context) {
     @SuppressLint("UnspecifiedRegisterReceiverFlag")
     fun updateApp(result: (result: String) -> Unit) {
         try {
-            if (updatingApp) {
-                Toast.makeText(
-                    context,
-                    context.getString(R.string.ytdl_already_updating),
-                    Toast.LENGTH_LONG
-                ).show()
-            }
             val skippedVersions = sharedPreferences.getString("skip_updates", "")?.split(",")?.distinct()?.toMutableList() ?: mutableListOf()
             val res = getGithubReleases()
 

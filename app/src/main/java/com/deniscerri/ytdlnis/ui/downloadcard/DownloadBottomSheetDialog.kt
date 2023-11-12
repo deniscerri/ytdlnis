@@ -413,6 +413,13 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
                     shimmerLoadingSubtitle.visibility = View.VISIBLE
                     shimmerLoading.startShimmer()
                     shimmerLoadingSubtitle.startShimmer()
+                }else{
+                    title.visibility = View.VISIBLE
+                    subtitle.visibility = View.VISIBLE
+                    shimmerLoading.visibility = View.GONE
+                    shimmerLoadingSubtitle.visibility = View.GONE
+                    shimmerLoading.stopShimmer()
+                    shimmerLoadingSubtitle.stopShimmer()
                 }
             }
         }
@@ -427,6 +434,15 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
                     runCatching {
                         val f1 = fragmentManager.findFragmentByTag("f1") as DownloadVideoFragment
                         f1.view?.findViewById<LinearProgressIndicator>(R.id.format_loading_progress)?.visibility = View.VISIBLE
+                    }
+                }else{
+                    runCatching {
+                        val f1 = fragmentManager.findFragmentByTag("f0") as DownloadAudioFragment
+                        f1.view?.findViewById<LinearProgressIndicator>(R.id.format_loading_progress)?.visibility = View.GONE
+                    }
+                    runCatching {
+                        val f1 = fragmentManager.findFragmentByTag("f1") as DownloadVideoFragment
+                        f1.view?.findViewById<LinearProgressIndicator>(R.id.format_loading_progress)?.visibility = View.GONE
                     }
                 }
             }
