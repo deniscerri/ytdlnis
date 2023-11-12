@@ -12,6 +12,9 @@
 <h3 align="center">
 	YTDLnis é um aplicativo gratuito e de código aberto para baixar vídeos/áudios usando yt-dlp disponível para o Android 6.0 e superior.
 </h3>
+<h4 align="center">
+	[Criado por Denis Çerri. Atualmente sendo mantido por zaednasr]
+</h4>
 
 <div align="center">
 
@@ -28,7 +31,7 @@
 [![community](https://img.shields.io/badge/Telegram-Updates-red?style=flat-square&logo=telegram)](https://t.me/ytdlnisupdates)
 
 
-
+### Os links acima são as únicas fontes confiáveis do YTDLnis. Todo o resto não está relacionado a mim.
 
 </div>
 
