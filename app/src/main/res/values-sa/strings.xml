@@ -5,4 +5,6 @@
     <string name="search">अन्वेषण</string>
     <string name="worst_quality">न्यूनतम गुणवत्ता</string>
     <string name="best_quality">सर्वोत्तम गुणवत्ता</string>
+    <string name="download_all">सर्वाणि डाउनलोड् कुर्वन्तु</string>
+    <string name="settings">नियन्त्रण</string>
 </resources>

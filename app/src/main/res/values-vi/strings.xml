@@ -9,7 +9,7 @@
     <string name="settings">Cài đặt</string>
     <string name="home">Trang chủ</string>
     <string name="directories">Thư mục</string>
-    <string name="video_directory">Thư mục Băng hình</string>
+    <string name="video_directory">Thư mục băng hình</string>
     <string name="updating">Đang cập nhật</string>
     <string name="ytdl_update_hint">Hữu ích nếu bạn gặp sự cố khi tải xuống</string>
     <string name="source_code">Mã nguồn</string>
@@ -38,7 +38,7 @@
     <string name="embed_subs_summary">Thêm phụ đề vào cuộn băng</string>
     <string name="embed_thumb">Bìa hình thu nhỏ</string>
     <string name="embed_thumb_summary">Sử dụng hình thu nhỏ làm ảnh bìa</string>
-    <string name="add_chapters">Các chương trong cuộn băng</string>
+    <string name="add_chapters">Các chương trong các cuộn băng</string>
     <string name="add_chapters_summary">Đánh dấu các phân đoạn YouTube / SponsorBlock làm chương cho cuộn băng</string>
     <string name="video_format">Định dạng cuộn băng</string>
     <string name="audio_quality">Chất lượng âm thanh</string>
@@ -95,7 +95,7 @@
     <string name="save_thumb">Lưu hình thu nhỏ</string>
     <string name="save_thumb_summary">Lưu hình thu nhỏ trong thư mục tải xuống</string>
     <string name="audio_format">Định dạng âm thanh</string>
-    <string name="download">Tải xuống</string>
+    <string name="download">Tải về</string>
     <string name="download_card_summary">Cài đặt cách tải xuống các mục</string>
     <string name="worst_quality">Chất lượng thấp nhất</string>
     <string name="best_quality">Chất lượng tốt nhất</string>
@@ -122,7 +122,7 @@
     <string name="template">Bản mẫu</string>
     <string name="logs">Nhật kí</string>
     <string name="date_added">Ngày thêm</string>
-    <string name="update_ytdl_nightly">Phiên bản hàng đêm của yt-dlp</string>
+    <string name="update_ytdl_nightly">Phiên bản thử nghiệm của yt-dlp</string>
     <string name="adjust_audio">Điều chỉnh âm thanh</string>
     <string name="file_name_template">Mẫu tên tệp</string>
     <string name="language">Ngôn ngữ</string>
@@ -196,7 +196,7 @@
     <string name="metered_network_download_start_info">Tải xuống sẽ bắt đầu sau khi bạn được kết nối với mạng không đo lưu lượng</string>
     <string name="invert_selected">Đảo ngược đã chọn</string>
     <string name="format_source">Nguồn định dạng</string>
-    <string name="video_recommendations">Đề xuất cuộn băng</string>
+    <string name="video_recommendations">Đề xuất băng hình</string>
     <string name="video_recommendations_summary">Nhận các cuộn băng YouTube được đề xuất trên màn hình chính từ API PIPED</string>
     <string name="preferred_search_engine_summary">Công cụ tìm kiếm để sử dụng cho tìm kiếm trong ứng dụng</string>
     <string name="save_subs">Lưu phụ đề</string>
@@ -263,9 +263,9 @@
     <string name="Theme">Chủ đề</string>
     <string name="keep_cache">Giữ lại các mảnh</string>
     <string name="sponsorblock">Chặn Nhà tài trợ</string>
-    <string name="accents">Màu nhấn</string>
+    <string name="accents">Màu chủ đạo</string>
     <string name="swipe_gestures">Cử chỉ vuốt</string>
-    <string name="auto_update_ytdlp">Tự động-Cập nhật yt-dlp</string>
+    <string name="auto_update_ytdlp">Tự động cập nhật yt-dlp</string>
     <string name="quality">Chất lượng</string>
     <string name="download_now">Tải ngay</string>
     <string name="finished_download_notification_channel_name">Đã hoàn tất tải xuống</string>
@@ -281,7 +281,7 @@
     <string name="preferred_format_id">ID Định dạng Ưu tiên</string>
     <string name="couldnt_parse_file">Không thể phân tích cú pháp tệp</string>
     <string name="current">Lệnh hiện tại</string>
-    <string name="embed_metadata_summary">Nhúng và phân tích Metadata vào tệp âm thanh</string>
+    <string name="embed_metadata_summary">Phân tích và nhúng siêu dữ liệu vào tệp âm thanh</string>
     <string name="use_cookies">Sử dụng Cookie</string>
     <string name="use_extra_commands">Thêm các lệnh bổ sung</string>
     <string name="clear_saved">Dọn dẹp Đã lưu</string>
@@ -289,7 +289,7 @@
     <string name="format_order">Thứ tự các định dạng</string>
     <string name="socks5_proxy">Dùng Socks5 Proxy URL</string>
     <string name="embed_metadata">Nhúng siêu dữ liệu</string>
-    <string name="show_terminal">Hiển thị Dùng lệnh trong danh sách chia sẻ</string>
+    <string name="show_terminal">Hiển thị Terminal trong menu chia sẻ</string>
     <string name="write_description">Lưu mô tả</string>
     <string name="use_extra_commands_summary">Đối với tải xuống Âm thanh / Băng hình. Thêm các lệnh bổ sung cùng với giao diện cấu hình</string>
     <string name="save_for_later">Lưu Download cho lần sau\?</string>
@@ -301,7 +301,7 @@
     <string name="force_keyframes">Buộc khung hình chính khi Cắt</string>
     <string name="force_keyframes_summary">Quá trình chậm hơn, nhưng cắt chính xác hơn</string>
     <string name="preferred_audio_codec">Bộ giải mã âm thanh ưa thích</string>
-    <string name="preferred_video_codec">Bộ giải mã Băng hình Ưa thích</string>
+    <string name="preferred_video_codec">Bộ giải mã băng hình ưu tiên</string>
     <string name="sponsorblock_api_url">URL API chặn nhà tài trợ</string>
     <string name="loading">Đang tải</string>
     <string name="schedule">Lịch trình</string>

@@ -289,7 +289,7 @@
     <string name="use_cookies">Utilizar Cookies</string>
     <string name="extra_command">Comando extra</string>
     <string name="embed_metadata">Incorporar metadados</string>
-    <string name="embed_metadata_summary">Incorporar e analisar metadados no ficheiro de áudio</string>
+    <string name="embed_metadata_summary">Analisar e incorporar metadados no ficheiro de áudio</string>
     <string name="update_formats_background">Atualizar formatos em segundo plano</string>
     <string name="auto_update_ytdlp">Atualização automática do yt-dlp</string>
     <string name="use_sponsorblock">Utilizar SponsorBlock</string>
@@ -316,4 +316,5 @@
     <string name="security">Segurança</string>
     <string name="length">Comprimento</string>
     <string name="export_file">Exportar ficheiro</string>
+    <string name="ignore">Ignorar</string>
 </resources>

@@ -120,7 +120,7 @@
     <string name="kill_app">ऐप समाप्त करें</string>
     <string name="dont_ask_again">दोबारा मत पूछो</string>
     <string name="start">शुरू</string>
-    <string name="update_formats_summary">प्रारूप कार्ड पर क्लिक करने पर छूटे हुए स्वरूपों को स्वचालित रूप से खोजें</string>
+    <string name="update_formats_summary">डाउनलोड कार्ड प्रकट होते ही फार्मेट प्राप्त करें</string>
     <string name="ignore_battery_optimization">बैटरी अनुकूलन पर ध्यान न दें</string>
     <string name="cut">काटना</string>
     <string name="new_cut">नया कट</string>
@@ -154,7 +154,7 @@
     <string name="preferred_locale">पसंदीदा लोकेल</string>
     <string name="pause">रोको</string>
     <string name="resume">चालू करो</string>
-    <string name="keep_cache">कैचे रखें</string>
+    <string name="keep_cache">फ्रैगमैंट रखें</string>
     <string name="keep_cache_summary">डाउनलोड समाप्त होने के बाद अस्थायी फ़ाइलें न हटाएं</string>
     <string name="backup">बैकअप</string>
     <string name="network_error">नेटवर्क त्रुटि</string>
@@ -286,7 +286,7 @@
     <string name="fragment_retries">खंड पुनर्प्रयास</string>
     <string name="write_description">विवरण सहेजें</string>
     <string name="embed_metadata">मेटाडेटा एम्बेड करें</string>
-    <string name="embed_metadata_summary">ऑडियो फ़ाइल में मेटाडेटा एम्बेड और पार्स करें</string>
+    <string name="embed_metadata_summary">ऑडियो फ़ाइल में मेटाडेटा पार्स और एम्बेड करें</string>
     <string name="write_description_summary">विवरण फ़ाइल लिखें</string>
     <string name="extra_command">अतिरिक्त कमांड</string>
     <string name="use_cookies">कुकीज़ का उपयोग करें</string>
@@ -315,4 +315,5 @@
     <string name="modify_download_card">डाउनलोड कार्ड संशोधित करें</string>
     <string name="security">सुरक्षा</string>
     <string name="length">लंबाई</string>
+    <string name="export_file">फ़ाइल निर्यात करें</string>
 </resources>

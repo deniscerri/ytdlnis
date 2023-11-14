@@ -179,7 +179,7 @@
     <string name="start">Fillimi</string>
     <string name="dont_ask_again">Mos pyet më</string>
     <string name="ignore_battery_optimization">Injoro Optimizimet e Baterisë</string>
-    <string name="update_formats_summary">Kërko automatikishit për formatet e munugara kur klikon kartën e formatit</string>
+    <string name="update_formats_summary">Kërko automatikishit për formatet e munugara sapo hapet karta</string>
     <string name="cut">Prit</string>
     <string name="new_cut">Prerje e Re</string>
     <string name="suggested">Sygjerime</string>
@@ -237,7 +237,7 @@
     <string name="download_now">Shkarko Tani</string>
     <string name="preferred_locale">Vendi i Preferuar</string>
     <string name="resume">Vazhdo</string>
-    <string name="keep_cache">Mbaj Memoriken Kashe</string>
+    <string name="keep_cache">Mbaj Fragmentet</string>
     <string name="keep_cache_summary">Mos fshi skedarët e përkohshëm pasi shkarkimi ka mbaruar</string>
     <string name="restore">Rikthe</string>
     <string name="pause">Pauzë</string>
@@ -315,4 +315,5 @@
     <string name="download_already_exists_summary">Do sërisht ta shkarkosh\?</string>
     <string name="modify_download_card">Modifiko Kartën e Shkarkimit</string>
     <string name="security">Siguria</string>
+    <string name="export_file">Eksporto Skedarin</string>
 </resources>
