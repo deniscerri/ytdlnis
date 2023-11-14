@@ -178,13 +178,6 @@ class UpdateUtil(var context: Context) {
             val sharedPreferences =
                  PreferenceManager.getDefaultSharedPreferences(context)
             if (updatingYTDL) {
-                withContext(Dispatchers.Main){
-                    Toast.makeText(
-                        context,
-                        context.getString(R.string.ytdl_already_updating),
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
                 UpdateStatus.ALREADY_UP_TO_DATE
             }
             updatingYTDL = true

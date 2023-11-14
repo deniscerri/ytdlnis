@@ -48,10 +48,7 @@
         android:name="com.deniscerri.ytdlnis.ui.more.MoreFragment"
         android:label="More"
         tools:layout="@layout/fragment_more" >
-        <action
-            android:id="@+id/action_moreFragment_to_terminalActivity"
-            app:destination="@id/terminalActivity" />
-        <action
+       <action
             android:id="@+id/action_moreFragment_to_settingsActivity2"
             app:destination="@id/activitySettings" />
         <action
@@ -69,6 +66,9 @@
         <action
             android:id="@+id/action_moreFragment_to_settingsNav"
             app:destination="@id/settingsNav" />
+        <action
+            android:id="@+id/action_moreFragment_to_terminalActivity"
+            app:destination="@id/terminalActivity" />
     </fragment>
     <activity
         android:id="@+id/terminalActivity"
@@ -89,7 +89,11 @@
         android:id="@+id/downloadQueueMainFragment"
         android:name="com.deniscerri.ytdlnis.ui.downloads.DownloadQueueMainFragment"
         tools:layout="@layout/fragment_download_queue_main_screen"
-        android:label="DownloadQueueMainFragment" />
+        android:label="DownloadQueueMainFragment" >
+        <action
+            android:id="@+id/action_downloadQueueMainFragment_to_downloadLogFragment"
+            app:destination="@id/downloadLogFragment" />
+    </fragment>
     <fragment
         android:id="@+id/downloadLogListFragment"
         android:name="com.deniscerri.ytdlnis.ui.more.downloadLogs.DownloadLogListFragment"

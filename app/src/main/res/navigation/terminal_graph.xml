@@ -6,7 +6,7 @@
     <fragment
         android:id="@+id/terminalDownloadsListFragment"
         android:name="com.deniscerri.ytdlnis.ui.more.terminal.TerminalDownloadsListFragment"
-        tools:layout="@layout/fragment_terminal_downloadList"
+        tools:layout="@layout/fragment_terminal_download_list"
         android:label="TerminalDownloadsListFragment" >
         <action
             android:id="@+id/action_terminalDownloadsListFragment_to_terminalFragment2"

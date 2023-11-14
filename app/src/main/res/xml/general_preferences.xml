@@ -4,7 +4,7 @@
 
     <PreferenceCategory android:title="@string/appearance">
         <ListPreference
-            android:entries="@array/language_values"
+            android:entries="@array/language_entries"
             android:entryValues="@array/language_values"
             android:defaultValue=""
             android:icon="@drawable/baseline_translate_24"

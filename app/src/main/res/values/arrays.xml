@@ -102,6 +102,50 @@
         <item>music_offtopic</item>
     </string-array>
 
+
+    <string-array name="language_entries">
+        <item>English</item>
+        <item>العربية</item>
+        <item>Azərbaycanca</item>
+        <item>বাংলা</item>
+        <item>বাংলা (India)</item>
+        <item>Босански</item>
+        <item>Deutsch</item>
+        <item>Ἑλληνική</item>
+        <item>Español</item>
+        <item>فارسی</item>
+        <item>Français</item>
+        <item>हिन्दी</item>
+        <item>Hrvatski</item>
+        <item>Magyar</item>
+        <item>Bahasa Indonesia</item>
+        <item>Italiano</item>
+        <item>日本語</item>
+        <item>ꦧꦱꦗꦮ</item>
+        <item>조선말</item>
+        <item>latviešu</item>
+        <item>بهاس ملايو</item>
+        <item>Norsk Bokmål</item>
+        <item>Norsk Nynorsk</item>
+        <item>पंजाबी</item>
+        <item>polski</item>
+        <item>Português</item>
+        <item>Português Brazil</item>
+        <item>Русский</item>
+        <item>Română</item>
+        <item>Slovenčina</item>
+        <item>Српски</item>
+        <item>Shqip</item>
+        <item>தமிழ்</item>
+        <item>తెలుగు</item>
+        <item>ภาษาไทย</item>
+        <item>Türkçe</item>
+        <item>தமிழ்</item>
+        <item>Українська</item>
+        <item>Tiếng Việt Nam</item>
+        <item>中文</item>
+    </string-array>
+
     <string-array name="language_values">
         <item>en</item>
         <item>ar</item>

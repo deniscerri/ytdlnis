@@ -54,15 +54,16 @@ class ActiveDownloadsFragment : Fragment(), ActiveDownloadAdapter.OnItemClickLis
         savedInstanceState: Bundle?
     ): View? {
         fragmentView = inflater.inflate(R.layout.fragment_active, container, false)
-        activity = getActivity()
-        notificationUtil = NotificationUtil(requireContext())
-        downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
-        workManager = WorkManager.getInstance(requireContext())
         return fragmentView
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        activity = getActivity()
+        notificationUtil = NotificationUtil(requireContext())
+        downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
+        workManager = WorkManager.getInstance(requireContext())
 
         activeDownloads =
             ActiveDownloadAdapter(
@@ -250,7 +251,7 @@ class ActiveDownloadsFragment : Fragment(), ActiveDownloadAdapter.OnItemClickLis
     }
 
     override fun onOutputClick(item: DownloadItem) {
-        if (item.logID != null) {
+        if (item.logID != null && item.logID != 0L) {
             val bundle = Bundle()
             bundle.putLong("logID", item.logID!!)
             findNavController().navigate(

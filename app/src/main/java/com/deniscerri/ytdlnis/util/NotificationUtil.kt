@@ -35,15 +35,7 @@ class NotificationUtil(var context: Context) {
     private val commandDownloadNotificationBuilder: NotificationCompat.Builder = NotificationCompat.Builder(context, COMMAND_DOWNLOAD_SERVICE_CHANNEL_ID)
     private val finishedDownloadNotificationBuilder: NotificationCompat.Builder = NotificationCompat.Builder(context, DOWNLOAD_FINISHED_CHANNEL_ID)
     private val notificationManager: NotificationManager = context.getSystemService(NotificationManager::class.java)
-    private val resources: Resources
-    private var sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
-
-    init {
-        val confTmp = Configuration(context.resources.configuration)
-        confTmp.setLocale(Locale(sharedPreferences.getString("app_language", "en")!!))
-        val metrics = DisplayMetrics()
-        resources = Resources(context.assets, metrics, confTmp)
-    }
+    private val resources: Resources = context.resources
 
     fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -199,16 +191,17 @@ class NotificationUtil(var context: Context) {
 
     fun createDownloadFinished(
         title: String?,
-        filepath: List<String>?
+        filepath: List<String>?,
+        res: Resources
     ) {
         val notificationBuilder = getBuilder(DOWNLOAD_FINISHED_CHANNEL_ID)
 
         notificationBuilder
-            .setContentTitle("${resources.getString(R.string.downloaded)} $title")
+            .setContentTitle("${res.getString(R.string.downloaded)} $title")
             .setSmallIcon(R.drawable.ic_launcher_foreground_large)
             .setLargeIcon(
                 BitmapFactory.decodeResource(
-                    resources,
+                    res,
                     R.drawable.ic_launcher_foreground_large
                 )
             )
@@ -259,8 +252,8 @@ class NotificationUtil(var context: Context) {
                     PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE
                 )
 
-                notificationBuilder.addAction(0, resources.getString(R.string.Open_File), openNotificationPendingIntent)
-                notificationBuilder.addAction(0, resources.getString(R.string.share), shareNotificationPendingIntent)
+                notificationBuilder.addAction(0, res.getString(R.string.Open_File), openNotificationPendingIntent)
+                notificationBuilder.addAction(0, res.getString(R.string.share), shareNotificationPendingIntent)
             }catch (_: Exception){}
         }
         notificationManager.notify(DOWNLOAD_FINISHED_NOTIFICATION_ID, notificationBuilder.build())
@@ -269,9 +262,9 @@ class NotificationUtil(var context: Context) {
     fun createDownloadErrored(title: String?,
                                error: String?,
                                logID: Long?,
-                               channel: String
+                               res: Resources
     ) {
-        val notificationBuilder = getBuilder(channel)
+        val notificationBuilder = getBuilder(DOWNLOAD_FINISHED_CHANNEL_ID)
 
         val bundle = Bundle()
         if (logID != null){
@@ -294,12 +287,12 @@ class NotificationUtil(var context: Context) {
             .createPendingIntent()
 
         notificationBuilder
-            .setContentTitle("${resources.getString(R.string.failed_download)}: $title")
+            .setContentTitle("${res.getString(R.string.failed_download)}: $title")
             .setContentText(error)
             .setSmallIcon(R.drawable.ic_launcher_foreground_large)
             .setLargeIcon(
                 BitmapFactory.decodeResource(
-                    resources,
+                    res,
                     R.drawable.ic_launcher_foreground_large
                 )
             )
@@ -309,7 +302,7 @@ class NotificationUtil(var context: Context) {
             .clearActions()
         if (logID != null){
             notificationBuilder.setContentIntent(errorPendingIntent)
-            notificationBuilder.addAction(0, resources.getString(R.string.logs), errorPendingIntent)
+            notificationBuilder.addAction(0, res.getString(R.string.logs), errorPendingIntent)
         }
         notificationManager.notify(DOWNLOAD_FINISHED_NOTIFICATION_ID, notificationBuilder.build())
     }

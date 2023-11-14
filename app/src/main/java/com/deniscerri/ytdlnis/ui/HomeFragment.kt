@@ -27,6 +27,7 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavDestination
 import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.GridLayoutManager
@@ -634,7 +635,9 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
         resultItem: ResultItem,
         type: DownloadViewModel.Type
     ){
-        if(findNavController().currentBackStack.value.firstOrNull {it.destination.id == R.id.downloadBottomSheetDialog} == null){
+        if(findNavController().currentBackStack.value.firstOrNull {it.destination.id == R.id.downloadBottomSheetDialog} == null &&
+            findNavController().currentDestination?.id == R.id.homeFragment
+            ){
             //show the fragment if its not in the backstack
             val bundle = Bundle()
             bundle.putParcelable("result", resultItem)

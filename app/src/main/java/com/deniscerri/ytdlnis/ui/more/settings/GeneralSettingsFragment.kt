@@ -59,13 +59,6 @@ class GeneralSettingsFragment : BaseSettingsFragment() {
         locale = findPreference("locale")
         showTerminalShareIcon = findPreference("show_terminal")
 
-        val values = resources.getStringArray(R.array.language_values)
-        val entries = mutableListOf<String>()
-        values.forEach {
-            entries.add(Locale(it).getDisplayName(Locale(it)))
-        }
-        language!!.entries = entries.toTypedArray()
-
         if(language!!.value == null) language!!.value = Locale.getDefault().language
 
         language!!.onPreferenceChangeListener =

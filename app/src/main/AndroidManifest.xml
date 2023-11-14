@@ -96,13 +96,12 @@
         </activity>
         <activity
             android:name=".ui.more.terminal.TerminalActivity"
-            android:configChanges="smallestScreenSize|layoutDirection|locale|orientation|screenSize"
+            android:configChanges="smallestScreenSize|layoutDirection|orientation|screenSize"
             android:exported="true"
             android:label="@string/terminal"
             android:parentActivityName=".MainActivity">
             <intent-filter>
                 <action android:name="ytdlnis.TerminalActivity" />
-
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
@@ -110,6 +109,7 @@
         <activity-alias
             android:name=".terminalShareAlias"
             android:targetActivity=".ui.more.terminal.TerminalActivity"
+            android:configChanges="smallestScreenSize|layoutDirection|orientation|screenSize"
             android:enabled="false"
             android:icon="@mipmap/terminal_icon"
             android:roundIcon="@mipmap/terminal_icon_round"

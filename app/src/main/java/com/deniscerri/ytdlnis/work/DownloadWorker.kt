@@ -64,7 +64,7 @@ class DownloadWorker(
         if (currentWork.count{it.state == WorkInfo.State.RUNNING} > 1) return Result.success()
 
         val confTmp = Configuration(context.resources.configuration)
-        val currLang = sharedPreferences.getString("app_language", "en")!!.split("-")
+        val currLang = sharedPreferences.getString("app_language", "")!!.ifEmpty { Locale.getDefault().language }.split("-")
         confTmp.setLocale(if (currLang.size == 1) Locale(currLang[0]) else Locale(currLang[0], currLang[1]))
         val metrics = DisplayMetrics()
         val resources = Resources(context.assets, metrics, confTmp)
@@ -221,7 +221,7 @@ class DownloadWorker(
 
                             notificationUtil.cancelDownloadNotification(downloadItem.id.toInt())
                             notificationUtil.createDownloadFinished(
-                                downloadItem.title,  if (finalPaths?.first().equals(context.getString(R.string.unfound_file))) null else finalPaths
+                                downloadItem.title,  if (finalPaths?.first().equals(context.getString(R.string.unfound_file))) null else finalPaths, resources
                             )
 
                             if (wasQuickDownloaded){
@@ -282,7 +282,7 @@ class DownloadWorker(
                             notificationUtil.createDownloadErrored(
                                 downloadItem.title.ifEmpty { downloadItem.url }, it.message,
                                 downloadItem.logID,
-                                NotificationUtil.DOWNLOAD_FINISHED_CHANNEL_ID
+                                resources
                             )
 
                             setProgressAsync(workDataOf("progress" to 100, "output" to it.toString(), "id" to downloadItem.id))
