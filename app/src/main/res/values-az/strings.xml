@@ -178,7 +178,7 @@
     <string name="dont_ask_again">Təkrar soruşma</string>
     <string name="end">Bitir</string>
     <string name="start">Başla</string>
-    <string name="update_formats_summary">Format kartına klikləyəndə çatışmayan formatları avtomatik axtar</string>
+    <string name="update_formats_summary">Yükləmə kartı görünən kimi formatları əldə edin</string>
     <string name="ignore_battery_optimization">Batareya Optimallaşdırmasına Məhəl Qoyma</string>
     <string name="cut">Kəs</string>
     <string name="new_cut">Yeni Kəsik</string>
@@ -238,7 +238,7 @@
     <string name="pause">Dayandır</string>
     <string name="resume">Təkrar başlat</string>
     <string name="updating_download_data">Yükləmə Element Məlumatı Yenilənir</string>
-    <string name="keep_cache">Qalığı Saxla</string>
+    <string name="keep_cache">Fraqmentləri Saxla</string>
     <string name="keep_cache_summary">Yükləmə bitəndən sonra müvəqqəti fayllar silinmir</string>
     <string name="backup">Nüsxələ</string>
     <string name="restore">Bərpa et</string>
@@ -289,7 +289,7 @@
     <string name="extra_command">Əlavə Əmr</string>
     <string name="use_cookies">Məlumat Bazası İstifadə Et</string>
     <string name="embed_metadata">Üst məlumat yerləşdir</string>
-    <string name="embed_metadata_summary">Səs faylına üst məlumat yerləşdir və təhlil et.</string>
+    <string name="embed_metadata_summary">Səs faylına üst məlumatı təhlil et və yerləşdir</string>
     <string name="update_formats_background">Arxa Planda Formatları Yenilə</string>
     <string name="auto_update_ytdlp">Yt-dlp-ni Avtomatik Yenilə</string>
     <string name="use_sponsorblock">SponsorBlock istifadə et</string>
@@ -304,4 +304,16 @@
     <string name="preferred_video_codec">Üstünlük Verilən Video Kodlayıcı</string>
     <string name="sponsorblock_api_url">SponsorBlock API URL</string>
     <string name="loading">Yüklənir</string>
+    <string name="export_file">Faylı İxrac Et</string>
+    <string name="schedule">Plan</string>
+    <string name="user_agent_header">İstifadəçi-İdarəçi başlığı</string>
+    <string name="search_command_hint">Əmrlərdən Axtarış</string>
+    <string name="ignore">Məhəl qoyma</string>
+    <string name="license">Lisenziya</string>
+    <string name="download_already_exists_summary">Hələ də yükləmək istəyirsiniz?</string>
+    <string name="modify_download_card">Yükləmə Kartı Quruluşun Dəyiş</string>
+    <string name="security">Təhlükəsizlik</string>
+    <string name="remember_download_type">Yükləmə Növün Xatırla</string>
+    <string name="remember_download_type_summary">Cari element üçün son açılan yükləmə növün seç</string>
+    <string name="length">Uzunluq</string>
 </resources>
