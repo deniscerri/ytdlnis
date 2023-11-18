@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="updating">更新中</string>
+    <string name="updating">更新</string>
     <string name="remove_all">すべて削除</string>
     <string name="remove_results">結果をクリア</string>
     <string name="settings">設定</string>
@@ -23,7 +23,7 @@
     <string name="more">詳細</string>
     <string name="version">バージョン</string>
     <string name="command_directory">カスタムコマンドのフォルダ</string>
-    <string name="couldnt_find_apk">適切なAPKがありませんでした。</string>
+    <string name="couldnt_find_apk">適切な APK がありませんでした。</string>
     <string name="downloading_update">新しいバージョンのダウンロード</string>
     <string name="video">動画</string>
     <string name="concurrent_fragments_summary">DASH/HLS ネイティブ動画の同時分割ダウンロード数</string>
@@ -34,7 +34,7 @@
     <string name="processing">処理</string>
     <string name="embed_subs_summary">ビデオに字幕を追加する</string>
     <string name="embed_thumb">サムネイルのカバーアート</string>
-    <string name="embed_thumb_summary">サムネイルをカバーアートとして使用する</string>
+    <string name="embed_thumb_summary">サムネイルをカバーアートとして使用します</string>
     <string name="add_chapters">動画内のチャプター</string>
     <string name="save_thumb_summary">サムネイルをダウンロードフォルダに保存します</string>
     <string name="audio_format">オーディオのフォーマット</string>
@@ -67,21 +67,21 @@
     <string name="delete_file_too">デバイスからファイルを削除</string>
     <string name="delete_files_too">デバイスからファイルを削除</string>
     <string name="source_code">ソースコード</string>
-    <string name="update_app">アップデートを確認</string>
+    <string name="update_app">更新を確認</string>
     <string name="search">検索</string>
     <string name="download_all">すべてダウンロード</string>
-    <string name="search_hint">検索または URL を入力してください</string>
+    <string name="search_hint">検索または URL を入力</string>
     <string name="ytdl_update_hint">ダウンロードに問題が発生する場合に有効です</string>
     <string name="download_notification_channel_description">オーディオファイルや動画ファイルのダウンロードの進捗状況を通知で表示</string>
     <string name="Remove">削除</string>
     <string name="audio">オーディオ</string>
-    <string name="aria2_summary">ダウンローダーとしてAria2cを使用します</string>
+    <string name="aria2_summary">ダウンローダーとして Aria2c を使用します</string>
     <string name="audio_quality">オーディオの品質</string>
     <string name="cancel_download">ダウンロードをキャンセル</string>
     <string name="save_thumb">サムネイルを保存</string>
     <string name="add_chapters_summary">YouTube / SponsorBlock のセグメントを動画のチャプターとしてマークします</string>
     <string name="run_command">コマンドを実行</string>
-    <string name="api_key_summary">おすすめの動画をYouTube API経由で表示します</string>
+    <string name="api_key_summary">おすすめの動画を YouTube API 経由で表示します</string>
     <string name="remove_deleted">削除済みを削除</string>
     <string name="downloads">ダウンロード</string>
     <string name="Open_File">ファイルを開く</string>
@@ -122,8 +122,8 @@
     <string name="shortcuts">ショートカット</string>
     <string name="create_template">テンプレートを作成</string>
     <string name="shortcuts_desc">よく使用するコマンドでテンプレートを作成します</string>
-    <string name="update">アップデート</string>
-    <string name="update_template">テンプレートをアップデート</string>
+    <string name="update">更新</string>
+    <string name="update_template">テンプレートを更新</string>
     <string name="create">作成</string>
     <string name="preferred_download_type">優先されるダウンロードタイプ</string>
     <string name="selected">個を選択</string>
@@ -163,7 +163,7 @@
     <string name="file_size">ファイルサイズ</string>
     <string name="link_you_copied">リンクをコピーしました</string>
     <string name="restrict_filenames">ファイル名を制限する</string>
-    <string name="restrict_filenames_summary">ファイル名のASCII文字を制限し、\"&amp;\" やスペースを使用しないようにします</string>
+    <string name="restrict_filenames_summary">ファイル名の ASCII 文字を制限し、\"&amp;\" やスペースを使用しないようにします</string>
     <string name="clear_errored">エラーをクリア</string>
     <string name="split_by_chapters">チャプターごとに分割</string>
     <string name="log_downloads_summary">ダウンロードごとにログファイルを生成します</string>
@@ -214,7 +214,7 @@
     <string name="subtitle_languages">字幕の言語</string>
     <string name="format_source">フォーマットのソース</string>
     <string name="video_recommendations">おすすめの動画</string>
-    <string name="video_recommendations_summary">PIPED API経由でおすすめの動画を取得します</string>
+    <string name="video_recommendations_summary">Piped API 経由でおすすめの動画を取得します</string>
     <string name="preferred_search_engine">優先する検索エンジン</string>
     <string name="preferred_search_engine_summary">アプリ内検索に使用する検索エンジンを設定します</string>
     <string name="format_filtering_hint">このオプションを使用するには、すべてのアイテムが同じ種類である必要があります</string>
@@ -228,7 +228,7 @@
     <string name="accents">アクセント</string>
     <string name="high_contrast">高コントラスト</string>
     <string name="pure_theme_summary">ピュアブラック / ホワイトテーマ</string>
-    <string name="material_you">マテリアル・ユー</string>
+    <string name="material_you">Material You</string>
     <string name="yellow">イエロー</string>
     <string name="monochrome">モノクロ</string>
     <string name="downloaded">"ダウンロード済み: "</string>
@@ -244,7 +244,7 @@
     <string name="backup">バックアップ</string>
     <string name="restore">復元</string>
     <string name="restore_complete">アプリの復元が完了しました。以下の項目が復元されました:</string>
-    <string name="select_backup_categories">バックアップのカテゴリを選択</string>
+    <string name="select_backup_categories">バックアップのカテゴリーを選択</string>
     <string name="search_history">検索履歴</string>
     <string name="backup_restore">バックアップと復元</string>
     <string name="search_suggestions_summary">Google から検索候補を取得します</string>
@@ -272,8 +272,8 @@
     <string name="retries">再試行</string>
     <string name="format_order">フォーマット順</string>
     <string name="fragment_retries">分割ダウンロードの再試行</string>
-    <string name="force_keyframes">切り取り時にキーフレームを強制する</string>
-    <string name="force_keyframes_summary">処理は遅くなりますが、高精度な切り取りができます</string>
+    <string name="force_keyframes">切り抜き時にキーフレームを強制する</string>
+    <string name="force_keyframes_summary">処理は遅くなりますが、高精度な切り抜きができます</string>
     <string name="orange">オレンジ</string>
     <string name="subtitle_format">字幕のフォーマット</string>
     <string name="hide_thumbnails">サムネイルを非表示</string>
@@ -283,20 +283,20 @@
     <string name="write_description">詳細を保存</string>
     <string name="write_description_summary">詳細のファイルを書き込みます</string>
     <string name="extra_command">エクストラコマンド</string>
-    <string name="embed_metadata">メタデータを埋め込み</string>
+    <string name="embed_metadata">メタデータを埋め込む</string>
     <string name="show_terminal">共有メニューにターミナルを表示する</string>
-    <string name="use_cookies">Cookieを使用する</string>
-    <string name="embed_metadata_summary">オーディオファイルのメタデータの埋め込みと解析をします</string>
+    <string name="use_cookies">Cookie を使用する</string>
+    <string name="embed_metadata_summary">オーディオファイルの解析とメタデータを埋め込む</string>
     <string name="use_extra_commands">エクストラコマンドを追加</string>
-    <string name="use_extra_commands_summary">オーディオと動画のダウンロード用。GUIにエクストラコマンドを追加します</string>
+    <string name="use_extra_commands_summary">オーディオと動画のダウンロード用。 GUI にエクストラコマンドを追加します</string>
     <string name="current">現在のコマンド</string>
-    <string name="update_app_beta_summary">ベータプログラムに登録します。これには重大なバグが含んでいる可能性があります。</string>
+    <string name="update_app_beta_summary">ベータプログラムに登録します。これには重大なバグが含んでいる可能性があります</string>
     <string name="update_app_beta">ベータ版リリース</string>
     <string name="scheduling">スケジュール設定</string>
     <string name="update_formats_background">バックグラウンドでフォーマットを更新</string>
     <string name="cache_first_summary">キャッシュファイルは内部ストレージにダウンロードされ、その後選択したディレクトリに移動します。これはストレージに直接書き込めない場合に使用します</string>
     <string name="cache_first">アプリのキャッシュを最初にダウンロード</string>
-    <string name="use_sponsorblock">SponsorBlockを使用する</string>
+    <string name="use_sponsorblock">SponsorBlock を使用する</string>
     <string name="use_scheduler">スケジュールに従ってダウンロード</string>
     <string name="auto">自動</string>
     <string name="auto_update_ytdlp">yt-dlp の自動更新</string>
@@ -316,4 +316,5 @@
     <string name="remember_download_type">ダウンロードの種類を記憶</string>
     <string name="remember_download_type_summary">最後に開いたダウンロードタイプを選択します</string>
     <string name="length">再生時間</string>
+    <string name="ignore">無視</string>
 </resources>
