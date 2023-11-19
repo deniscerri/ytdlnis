@@ -1081,4 +1081,17 @@
         <item>cookies</item>
     </array>
 
+    <array name="ytdlp_source">
+        <item>@string/defaultValue</item>
+        <item>@string/update_ytdl_nightly</item>
+        <item>@string/update_ytdl_master</item>
+    </array>
+
+
+    <array name="ytdlp_source_values">
+        <item>stable</item>
+        <item>nightly</item>
+        <item>master</item>
+    </array>
+
 </resources>

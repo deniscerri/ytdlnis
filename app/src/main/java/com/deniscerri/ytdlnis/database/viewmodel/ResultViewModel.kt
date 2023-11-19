@@ -29,6 +29,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.regex.Pattern
@@ -195,50 +196,58 @@ class ResultViewModel(application: Application) : AndroidViewModel(application) 
     suspend fun updateItemData(res: ResultItem){
         if (updateResultDataJob == null || updateResultDataJob?.isCancelled == true || updateResultDataJob?.isCompleted == true){
             updateResultDataJob = viewModelScope.launch(Dispatchers.IO) {
-                kotlin.runCatching {
-                    updatingData.emit(true)
-                    val result = parseQueries(listOf(res.url))
-                    updatingData.emit(false)
-                    updateResultData.emit(result)
-                }.onFailure {
+                updatingData.emit(true)
+                val result = parseQueries(listOf(res.url))
+                updatingData.emit(false)
+                updateResultData.emit(result)
+            }
+        }
+
+        updateResultDataJob?.start()
+        updateResultDataJob?.invokeOnCompletion {
+            if (it != null){
+                viewModelScope.launch(Dispatchers.IO) {
                     updatingData.emit(false)
                     updateResultData.emit(mutableListOf())
                 }
             }
         }
-
-        updateResultDataJob?.start()
     }
 
     suspend fun cancelUpdateItemData(){
+        updateResultDataJob?.cancel()
         updatingData.emit(false)
         updateResultData.emit(null)
-        updateResultDataJob?.cancel()
     }
 
     suspend fun cancelUpdateFormatsItemData(){
+        updateFormatsResultDataJob?.cancel()
         updatingFormats.emit(false)
         updateFormatsResultData.emit(null)
-        updateFormatsResultDataJob?.cancel()
     }
 
     suspend fun updateFormatItemData(result: ResultItem){
-        updateFormatsResultDataJob = viewModelScope.launch(Dispatchers.IO) {
-            kotlin.runCatching {
+        if (updateFormatsResultDataJob == null || updateFormatsResultDataJob?.isCancelled == true || updateFormatsResultDataJob?.isCompleted == true) {
+            updateFormatsResultDataJob = viewModelScope.launch(Dispatchers.IO) {
                 updatingFormats.emit(true)
                 val formats = infoUtil.getFormats(result.url)
                 updatingFormats.emit(false)
-                if (formats.isNotEmpty()){
+                if (formats.isNotEmpty() && isActive) {
                     val res = getItemByURL(result.url)
                     res.formats = formats.toMutableList()
                     update(res)
                 }
                 updateFormatsResultData.emit(formats.toMutableList())
-            }.onFailure {
-                updatingFormats.emit(false)
-                updateFormatsResultData.emit(mutableListOf())
+            }
+            updateFormatsResultDataJob?.start()
+            updateFormatsResultDataJob?.invokeOnCompletion {
+                if (it != null){
+                    viewModelScope.launch(Dispatchers.IO) {
+                        updatingFormats.emit(false)
+                        updateFormatsResultData.emit(mutableListOf())
+                    }
+                }
             }
         }
-        updateFormatsResultDataJob?.start()
     }
 }

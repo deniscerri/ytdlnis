@@ -33,10 +33,13 @@ import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.InfoUtil
 import com.deniscerri.ytdlnis.util.UiUtil
 import com.google.android.material.card.MaterialCardView
+import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.textfield.TextInputLayout.END_ICON_NONE
 import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
@@ -257,6 +260,9 @@ class DownloadAudioFragment(private var resultItem: ResultItem? = null, private 
                             listOf(downloadItem),
                             embedThumbClicked = {
                                 downloadItem.audioPreferences.embedThumb = it
+                            },
+                            cropThumbClicked = {
+                                downloadItem.audioPreferences.cropThumb = it
                             },
                             splitByChaptersClicked = {
                                 downloadItem.audioPreferences.splitByChapters = it

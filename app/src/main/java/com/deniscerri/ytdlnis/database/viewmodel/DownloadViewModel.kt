@@ -233,6 +233,7 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
         val addChapters = sharedPreferences.getBoolean("add_chapters", false)
         val saveThumb = sharedPreferences.getBoolean("write_thumbnail", false)
         val embedThumb = sharedPreferences.getBoolean("embed_thumbnail", false)
+        val cropThumb = sharedPreferences.getBoolean("crop_thumbnail", false)
 
         var type = getDownloadType(givenType, resultItem.url)
         if(type == Type.command && commandTemplateDao.getTotalNumber() == 0) type = Type.video
@@ -257,7 +258,7 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
 
         val sponsorblock = sharedPreferences.getStringSet("sponsorblock_filters", emptySet())
 
-        val audioPreferences = AudioPreferences(embedThumb, false, ArrayList(sponsorblock!!))
+        val audioPreferences = AudioPreferences(embedThumb, cropThumb,false, ArrayList(sponsorblock!!))
 
         val preferredAudioFormats = arrayListOf<String>()
         for (f in resultItem.formats.sortedBy { it.format_id }){
@@ -391,6 +392,8 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
         val addChapters = sharedPreferences.getBoolean("add_chapters", false)
         val saveThumb = sharedPreferences.getBoolean("write_thumbnail", false)
         val embedThumb = sharedPreferences.getBoolean("embed_thumbnail", false)
+        val cropThumb = sharedPreferences.getBoolean("crop_thumbnail", false)
+
         val customFileNameTemplate = when(historyItem.type) {
             Type.audio -> sharedPreferences.getString("file_name_template_audio", "%(uploader)s - %(title)s")
             Type.video -> sharedPreferences.getString("file_name_template", "%(uploader)s - %(title)s")
@@ -418,7 +421,7 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
             else -> ""
         }
 
-        val audioPreferences = AudioPreferences(embedThumb, false, ArrayList(sponsorblock!!))
+        val audioPreferences = AudioPreferences(embedThumb, cropThumb,false, ArrayList(sponsorblock!!))
         val videoPreferences = VideoPreferences(embedSubs, addChapters, false, ArrayList(sponsorblock), saveSubs)
         val downloadPath = File(historyItem.downloadPath)
         val path = if (downloadPath.exists()) downloadPath.parent else defaultPath
@@ -625,6 +628,10 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
             alarmScheduler.schedule()
         }
 
+        if (items.any { it.playlistTitle.isEmpty() } && items.size > 1){
+            items.forEachIndexed { index, it -> it.playlistTitle = "Various[${index+1}]" }
+        }
+
         items.forEach {
             if (it.status != DownloadRepository.Status.ActivePaused.toString()) it.status = DownloadRepository.Status.Queued.toString()
             val currentCommand = infoUtil.buildYoutubeDLRequest(it)
@@ -679,14 +686,7 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
             }
         }
 
-        if (items.any { it.playlistTitle.isEmpty() }){
-            items.forEachIndexed { index, it -> it.playlistTitle = "Various[${index+1}]" }
-            withContext(Dispatchers.IO){
-                dao.updateMultiple(items)
-            }
-        }
-
-        if (!useScheduler || alarmScheduler.isDuringTheScheduledTime() || items.any { it.downloadStartTime > 0L } ){
+        if (!useScheduler || alarmScheduler.isDuringTheScheduledTime() || queuedItems.any { it.downloadStartTime > 0L } ){
             startDownloadWorker(queuedItems)
 
             if(!useScheduler){

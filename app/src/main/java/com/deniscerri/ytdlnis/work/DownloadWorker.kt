@@ -102,6 +102,7 @@ class DownloadWorker(
                 notificationUtil.notify(downloadItem.id.toInt(), notification)
 
                 CoroutineScope(Dispatchers.IO).launch {
+                    val noCache = !sharedPreferences.getBoolean("cache_downloads", true) && File(FileUtil.formatPath(downloadItem.downloadPath)).canWrite()
 
                     val request = infoUtil.buildYoutubeDLRequest(downloadItem)
                     downloadItem.status = DownloadRepository.Status.Active.toString()
@@ -141,8 +142,6 @@ class DownloadWorker(
                         downloadItem.logID = logItem.id
                         dao.update(downloadItem)
                     }
-
-                    val noCache = !sharedPreferences.getBoolean("cache_downloads", true) && File(FileUtil.formatPath(downloadItem.downloadPath)).canWrite()
 
                     runCatching {
                         YoutubeDL.getInstance().execute(request, downloadItem.id.toString()){ progress, _, line ->
@@ -212,11 +211,17 @@ class DownloadWorker(
                             //put download in history
                             val incognito = sharedPreferences.getBoolean("incognito", false)
                             if (!incognito) {
-                                val unixtime = System.currentTimeMillis() / 1000
-                                val file = File(finalPaths?.first()!!)
-                                downloadItem.format.filesize = file.length()
-                                val historyItem = HistoryItem(0, downloadItem.url, downloadItem.title, downloadItem.author, downloadItem.duration, downloadItem.thumb, downloadItem.type, unixtime, finalPaths.first() , downloadItem.website, downloadItem.format, downloadItem.id, commandString)
-                                historyDao.insert(historyItem)
+                                if (request.hasOption("--download-archive") && finalPaths == listOf(context.getString(R.string.unfound_file))) {
+                                    Looper.prepare().run {
+                                        Toast.makeText(context, resources.getString(R.string.download_already_exists), Toast.LENGTH_LONG).show()
+                                    }
+                                }else{
+                                    val unixTime = System.currentTimeMillis() / 1000
+                                    val file = File(finalPaths?.first()!!)
+                                    downloadItem.format.filesize = file.length()
+                                    val historyItem = HistoryItem(0, downloadItem.url, downloadItem.title, downloadItem.author, downloadItem.duration, downloadItem.thumb, downloadItem.type, unixTime, finalPaths.first() , downloadItem.website, downloadItem.format, downloadItem.id, commandString)
+                                    historyDao.insert(historyItem)
+                                }
                             }
 
                             notificationUtil.cancelDownloadNotification(downloadItem.id.toInt())

@@ -36,6 +36,7 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.FileProvider
 import androidx.core.view.children
+import androidx.core.view.isNotEmpty
 import androidx.core.view.isVisible
 import androidx.documentfile.provider.DocumentFile
 import androidx.fragment.app.FragmentManager
@@ -189,8 +190,13 @@ object UiUtil {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun afterTextChanged(p0: Editable?) {
-                ok.isEnabled =
-                    !(title.editText!!.text.isEmpty() || content.editText!!.text.isEmpty())
+                ok.isEnabled = title.editText!!.text.isNotEmpty() &&
+                        content.editText!!.text.isNotEmpty() &&
+                        if (extraCommandsSwitch.isChecked){
+                            ((extraCommandsAudio.isChecked || extraCommandsVideo.isChecked))
+                        }else{
+                            true
+                        }
             }
         })
 
@@ -198,8 +204,14 @@ object UiUtil {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun afterTextChanged(p0: Editable?) {
-                ok.isEnabled =
-                    (title.editText!!.text.isNotEmpty() && content.editText!!.text.isNotEmpty())
+                ok.isEnabled = title.editText!!.text.isNotEmpty() &&
+                                content.editText!!.text.isNotEmpty() &&
+                                if (extraCommandsSwitch.isChecked){
+                                    ((extraCommandsAudio.isChecked || extraCommandsVideo.isChecked))
+                                }else{
+                                    true
+                                }
+
                 if (content.editText!!.text.isNotEmpty()){
                     content.endIconDrawable = AppCompatResources.getDrawable(context, R.drawable.ic_delete_all)
                 }else{
@@ -241,11 +253,11 @@ object UiUtil {
          }
 
          extraCommandsAudio.setOnCheckedChangeListener { compoundButton, b ->
-             ok.isEnabled = extraCommandsAudio.isChecked || extraCommandsVideo.isChecked
+             ok.isEnabled = (extraCommandsAudio.isChecked || extraCommandsVideo.isChecked) && title.editText!!.text.isNotEmpty() && content.editText!!.text.isNotEmpty()
          }
 
          extraCommandsVideo.setOnCheckedChangeListener { compoundButton, b ->
-             ok.isEnabled = extraCommandsAudio.isChecked || extraCommandsVideo.isChecked
+             ok.isEnabled = (extraCommandsAudio.isChecked || extraCommandsVideo.isChecked) && title.editText!!.text.isNotEmpty() && content.editText!!.text.isNotEmpty()
          }
 
         commandTemplateViewModel.shortcuts.observe(lifeCycle){
@@ -1210,6 +1222,7 @@ object UiUtil {
         context: Activity,
         items: List<DownloadItem>,
         embedThumbClicked: (Boolean) -> Unit,
+        cropThumbClicked: (Boolean) -> Unit,
         splitByChaptersClicked: (Boolean) -> Unit,
         filenameTemplateSet: (String) -> Unit,
         sponsorBlockItemsSet: (Array<String>, List<Boolean>) -> Unit,
@@ -1218,9 +1231,18 @@ object UiUtil {
 
     ){
         val embedThumb = view.findViewById<Chip>(R.id.embed_thumb)
+        val cropThumb = view.findViewById<Chip>(R.id.crop_thumb)
+
         embedThumb!!.isChecked = items.all { it.audioPreferences.embedThumb }
+        cropThumb.isVisible = embedThumb.isChecked
         embedThumb.setOnClickListener {
             embedThumbClicked(embedThumb.isChecked)
+            cropThumb.isVisible = embedThumb.isChecked
+        }
+
+        cropThumb!!.isChecked = items.all { it.audioPreferences.cropThumb == true }
+        cropThumb.setOnClickListener {
+            cropThumbClicked(cropThumb.isChecked)
         }
 
         val splitByChapters = view.findViewById<Chip>(R.id.split_by_chapters)

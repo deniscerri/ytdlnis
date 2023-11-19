@@ -437,47 +437,51 @@ class InfoUtil(private val context: Context) {
     }
 
     private fun getFormatsFromYTDL(url: String) : List<Format> {
-        val request = YoutubeDLRequest(url)
-        request.addOption("--print", "%(formats)s")
-        request.addOption("--print", "%(duration)s")
-        request.addOption("--skip-download")
-        request.addOption("-R", "1")
-        request.addOption("--socket-timeout", "5")
+        try {
+            val request = YoutubeDLRequest(url)
+            request.addOption("--print", "%(formats)s")
+            request.addOption("--print", "%(duration)s")
+            request.addOption("--skip-download")
+            request.addOption("-R", "1")
+            request.addOption("--compat-options", "manifest-filesize-approx")
+            request.addOption("--socket-timeout", "5")
 
-        if (sharedPreferences.getBoolean("use_cookies", false)){
-            FileUtil.getCookieFile(context){
-                request.addOption("--cookies", it)
+            if (sharedPreferences.getBoolean("use_cookies", false)){
+                FileUtil.getCookieFile(context){
+                    request.addOption("--cookies", it)
+                }
+
+                val useHeader = sharedPreferences.getBoolean("use_header", false)
+                val header = sharedPreferences.getString("useragent_header", "")
+                if (useHeader && !header.isNullOrBlank()){
+                    request.addOption("--add-header","User-Agent:${header}")
+                }
             }
 
-            val useHeader = sharedPreferences.getBoolean("use_header", false)
-            val header = sharedPreferences.getString("useragent_header", "")
-            if (useHeader && !header.isNullOrBlank()){
-                request.addOption("--add-header","User-Agent:${header}")
+            val proxy = sharedPreferences.getString("proxy", "")
+            if (proxy!!.isNotBlank()) {
+                request.addOption("--proxy", proxy)
             }
+
+
+
+            val res = YoutubeDL.getInstance().execute(request)
+            val results: Array<String?> = try {
+                val lineSeparator = System.getProperty("line.separator")
+                res.out.split(lineSeparator!!).toTypedArray()
+            } catch (e: Exception) {
+                arrayOf(res.out)
+            }
+            val json = results[0]
+            val jsonArray = JSONArray(json)
+
+            return parseYTDLFormats(jsonArray)
+        }catch (e: Exception){
+            return listOf()
         }
-
-        val proxy = sharedPreferences.getString("proxy", "")
-        if (proxy!!.isNotBlank()) {
-            request.addOption("--proxy", proxy)
-        }
-
-
-
-        val res = YoutubeDL.getInstance().execute(request)
-        val results: Array<String?> = try {
-            val lineSeparator = System.getProperty("line.separator")
-            res.out.split(lineSeparator!!).toTypedArray()
-        } catch (e: Exception) {
-            arrayOf(res.out)
-        }
-        val json = results[0]
-        val jsonArray = JSONArray(json)
-
-        return parseYTDLFormats(jsonArray)
     }
 
     fun getFormatsMultiple(urls: List<String>, progress: (progress: List<Format>) -> Unit){
-        
         val urlsFile = File(context.cacheDir, "urls.txt")
         urlsFile.delete()
         urlsFile.createNewFile()
@@ -575,6 +579,7 @@ class InfoUtil(private val context: Context) {
         request.addOption("-j")
         request.addOption("--skip-download")
         request.addOption("-R", "1")
+        request.addOption("--compat-options", "manifest-filesize-approx")
         request.addOption("--socket-timeout", "5")
 
         if (sharedPreferences.getBoolean("use_cookies", false)){
@@ -1016,7 +1021,7 @@ class InfoUtil(private val context: Context) {
         val aCodecPref = "ba[acodec~='^($preferredAudioCodec)']"
 
         if(downloadItem.type != DownloadViewModel.Type.command){
-            request.addOption("--trim-filenames",  downDir.absolutePath.length + 120)
+            request.addOption("--trim-filenames",  downDir.absolutePath.length + 117)
 
             if (downloadItem.SaveThumb) {
                 request.addOption("--write-thumbnail")
@@ -1161,7 +1166,8 @@ class InfoUtil(private val context: Context) {
                     if (downloadItem.audioPreferences.embedThumb) {
                         request.addOption("--embed-thumbnail")
                         if (! request.hasOption("--convert-thumbnails")) request.addOption("--convert-thumbnails", "jpg")
-                        if (sharedPreferences.getBoolean("crop_thumbnail", true)){
+                        val cropThumb = downloadItem.audioPreferences.cropThumb ?: sharedPreferences.getBoolean("crop_thumbnail", true)
+                        if (cropThumb){
                             try {
                                 val config = File(context.cacheDir.absolutePath + "/config" + downloadItem.id + "##ffmpegCrop.txt")
                                 val configData = "--ppa \"ffmpeg: -c:v mjpeg -vf crop=\\\"'if(gt(ih,iw),iw,ih)':'if(gt(iw,ih),ih,iw)'\\\"\""
@@ -1222,11 +1228,14 @@ class InfoUtil(private val context: Context) {
                 val f = StringBuilder()
 
                 if(!usingGenericFormat){
-                    if (preferredAudioCodec.isNotBlank()){
-                        f.append("$videof+$aCodecPref/")
+                    if (audiof.isBlank()){
+                        f.append("$videof/bv/best")
+                    }else{
+                        f.append("$videof+$audiof/")
+                        if (preferredAudioCodec.isNotBlank())
+                            f.append("$videof+$aCodecPref/")
+                        f.append("$videof/best")
                     }
-                    val aa = if (audiof.isNotBlank()) "+$audiof" else ""
-                    f.append("$videof$aa/$videof/best")
 
                     if (audiof.contains("+")){
                         request.addOption("--audio-multistreams")

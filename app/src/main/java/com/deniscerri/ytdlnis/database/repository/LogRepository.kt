@@ -41,25 +41,17 @@ class LogRepository(private val logDao: LogDao) {
 
     suspend fun update(line: String, id: Long){
         runCatching {
-            val item = getItem(id)
-            val log = item.content
-            //clean duplicate progress + add newline
-            val lines = log.split("\n").toMutableList()
-            run loop@ {
-                for(i in lines.size - 1 downTo 0){
-                    val l = lines[i]
-                    if(l.contains("\\[download]( *?)(\\d)(.*?)".toRegex())){
-                        lines[i] = ""
-                        return@loop
-                    }
-                }
+            val item = getItem(id) ?: return
+            val log = item.content ?: ""
+            val lines = log.split("\n")
+            //clean dublicate progress + add newline
+            var newLine = line
+            if (newLine.contains("[download")){
+                newLine = "[download]" + line.split("[download]").last()
             }
-            val l = if (line.contains("[download]")) {
-                "[download]" + line.split("[download]").last()
-            }else {
-                line
-            }
-            item.content = lines.filter { it.isNotBlank() }.joinToString("\n") + "\n${l}"
+
+            val l = lines.dropLastWhile { it.contains("[download") }.joinToString("\n") +  "\n${newLine}"
+            item.content = l
             logDao.update(item)
         }
     }

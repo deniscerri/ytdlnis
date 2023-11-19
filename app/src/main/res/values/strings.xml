@@ -232,7 +232,9 @@
     <string name="monochrome">Monochrome</string>
     <string name="downloaded">"Downloaded: "</string>
     <string name="finished_download_notification_channel_name">Finished Downloads</string>
-    <string name="finished_download_notification_channel_description">Notification for finished or faulty downloads</string>
+    <string name="finished_download_notification_channel_description">Notification for finished downloads</string>
+    <string name="errored_downloads">Errored Downloads</string>
+    <string name="errored_download_notification_channel_description">Notification for faulty downloads</string>
     <string name="quick_download">Quick Download</string>
     <string name="quick_download_summary">Don\'t fetch data in the download card</string>
     <string name="remove_audio">Remove Audio</string>
@@ -319,4 +321,6 @@
     <string name="ignore">Ignore</string>
     <string name="modify_download_card">Modify Download Card</string>
     <string name="export_file">Export File</string>
+    <string name="ytdl_source">yt-dlp Source</string>
+    <string name="update_ytdl_master">Master Version of yt-dlp</string>
 </resources>

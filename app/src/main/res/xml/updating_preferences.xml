@@ -21,13 +21,15 @@
         app:key="ytdl-version"
         app:title="@string/ytdl_version"/>
 
-    <SwitchPreferenceCompat
-        android:widgetLayout="@layout/preferece_material_switch"
-        android:defaultValue="true"
-        app:icon="@drawable/ic_nightly"
-        app:key="nightly_ytdl"
-        android:title="@string/update_ytdl_nightly"
-        />
+    <ListPreference
+        android:defaultValue="nightly"
+        android:entries="@array/ytdlp_source"
+        android:entryValues="@array/ytdlp_source_values"
+        android:icon="@drawable/baseline_source_24"
+        app:key="ytdlp_source"
+        app:useSimpleSummaryProvider="true"
+        app:title="@string/ytdl_source" />
+
 
     <SwitchPreferenceCompat
         android:widgetLayout="@layout/preferece_material_switch"

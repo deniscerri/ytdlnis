@@ -182,11 +182,15 @@ class UpdateUtil(var context: Context) {
             }
             updatingYTDL = true
 
+            val channelMap = mapOf(
+                "stable" to YoutubeDL.UpdateChannel._STABLE,
+                "nightly" to YoutubeDL.UpdateChannel._NIGHTLY,
+                "master" to YoutubeDL.UpdateChannel._MASTER,
+            )
+            val channel = sharedPreferences.getString("ytdlp_source", "nightly")
 
             try {
-                YoutubeDL.getInstance().updateYoutubeDL(
-                    context, if (sharedPreferences.getBoolean("nightly_ytdl", false) ) YoutubeDL.UpdateChannel._NIGHTLY else YoutubeDL.UpdateChannel._STABLE
-                ).apply {
+                YoutubeDL.getInstance().updateYoutubeDL(context, channelMap[channel] ?: YoutubeDL.UpdateChannel._NIGHTLY).apply {
                     updatingYTDL = false
                 }
             }catch (e: Exception){

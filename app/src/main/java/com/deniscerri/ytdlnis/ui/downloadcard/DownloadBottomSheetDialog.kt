@@ -50,6 +50,7 @@ import com.google.android.material.tabs.TabLayout
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -90,6 +91,33 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
         commandTemplateDao = DBManager.getInstance(requireContext()).commandTemplateDao
         infoUtil = InfoUtil(requireContext())
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
+
+        val res: ResultItem?
+        val dwl: DownloadItem?
+
+        if (Build.VERSION.SDK_INT >= 33){
+            res = arguments?.getParcelable("result", ResultItem::class.java)
+            dwl = arguments?.getParcelable("downloadItem", DownloadItem::class.java)
+        }else{
+            res = arguments?.getParcelable<ResultItem>("result")
+            dwl = arguments?.getParcelable<DownloadItem>("downloadItem")
+        }
+        type = arguments?.getSerializable("type") as Type
+
+        if (res == null){
+            dismiss()
+            return
+        }
+        result = res
+        currentDownloadItem = dwl
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        val downloadItem = getDownloadItem()
+        arguments?.putParcelable("result", result)
+        arguments?.putParcelable("downloadItem", downloadItem)
+        arguments?.putSerializable("type", downloadItem.type)
     }
 
     @SuppressLint("RestrictedApi", "InflateParams")
@@ -97,26 +125,6 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
         super.setupDialog(dialog, style)
         view = LayoutInflater.from(context).inflate(R.layout.download_bottom_sheet, null)
         dialog.setContentView(view)
-
-        if (Build.VERSION.SDK_INT >= 33){
-            arguments?.getParcelable("result", ResultItem::class.java)
-        }else{
-            arguments?.getParcelable<ResultItem>("result")
-        }.apply {
-            if (this == null){
-                dismiss()
-                return
-            }else{
-                result = this
-            }
-        }
-
-        type = arguments?.getSerializable("type") as Type
-        currentDownloadItem = if (Build.VERSION.SDK_INT >= 33){
-            arguments?.getParcelable("downloadItem", DownloadItem::class.java)
-        }else{
-            arguments?.getParcelable<DownloadItem>("downloadItem")
-        }
 
         dialog.setOnShowListener {
             behavior = BottomSheetBehavior.from(view.parent as View)
@@ -297,16 +305,18 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
         }
         download!!.setOnClickListener {
             lifecycleScope.launch {
-                resultViewModel.cancelUpdateItemData()
-                resultViewModel.cancelUpdateFormatsItemData()
+                withContext(Dispatchers.IO){
+                    resultViewModel.cancelUpdateItemData()
+                    resultViewModel.cancelUpdateFormatsItemData()
+                }
+                scheduleBtn.isEnabled = false
+                download.isEnabled = false
+                val item: DownloadItem = getDownloadItem()
+                runBlocking {
+                    downloadViewModel.queueDownloads(listOf(item))
+                }
+                dismiss()
             }
-            scheduleBtn.isEnabled = false
-            download.isEnabled = false
-            val item: DownloadItem = getDownloadItem()
-            runBlocking {
-                downloadViewModel.queueDownloads(listOf(item))
-            }
-            dismiss()
         }
 
         download.setOnLongClickListener {
@@ -371,7 +381,7 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
             }
         }
 
-        CoroutineScope(Dispatchers.IO).launch{
+        lifecycleScope.launch{
             downloadViewModel.uiState.collectLatest { res ->
                 if (res.errorMessage != null) {
                     withContext(Dispatchers.Main){
@@ -427,6 +437,7 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
         lifecycleScope.launch {
             resultViewModel.updatingFormats.collectLatest {
                 if (it){
+                    delay(500)
                     runCatching {
                         val f1 = fragmentManager.findFragmentByTag("f0") as DownloadAudioFragment
                         f1.view?.findViewById<LinearProgressIndicator>(R.id.format_loading_progress)?.visibility = View.VISIBLE
@@ -526,6 +537,11 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
                 }
             }
         }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
     }
 
     private fun getDownloadItem(selectedTabPosition: Int = tabLayout.selectedTabPosition) : DownloadItem{

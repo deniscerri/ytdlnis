@@ -31,6 +31,7 @@ import androidx.core.os.bundleOf
 import androidx.core.view.forEach
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.GridLayoutManager
@@ -57,7 +58,11 @@ import com.google.android.material.chip.ChipGroup
 import com.google.android.material.color.MaterialColors
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 
 /**
  * A fragment representing a list of Items.
@@ -172,8 +177,32 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
                 }
             }
         }
-
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
+
+
+        lifecycleScope.launch{
+            downloadViewModel.uiState.collectLatest { res ->
+                if (res.errorMessage != null) {
+                    withContext(Dispatchers.Main){
+                        kotlin.runCatching {
+                            UiUtil.handleDownloadsResponse(
+                                requireActivity(),
+                                requireActivity().lifecycleScope,
+                                requireActivity().supportFragmentManager,
+                                res,
+                                downloadViewModel,
+                                historyViewModel)
+                        }
+                    }
+                    downloadViewModel.uiState.value =  DownloadViewModel.DownloadsUiState(
+                        errorMessage = null,
+                        actions = null
+                    )
+                }
+            }
+        }
+
+
         initMenu()
         initChips()
     }

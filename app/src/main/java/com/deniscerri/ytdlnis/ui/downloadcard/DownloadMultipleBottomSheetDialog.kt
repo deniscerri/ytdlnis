@@ -412,6 +412,11 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                                             it.audioPreferences.embedThumb = enabled
                                         }
                                     },
+                                    cropThumbClicked = {enabled ->
+                                        items.forEach {
+                                            it.audioPreferences.cropThumb = enabled
+                                        }
+                                    },
                                     splitByChaptersClicked = {enabled ->
                                         items.forEach {
                                             it.audioPreferences.splitByChapters = enabled

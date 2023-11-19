@@ -133,6 +133,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginEnd="20dp"
+                                android:visibility="gone"
                                 android:checked="true"
                                 android:text="@string/audio" />
 
@@ -141,6 +142,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:checked="true"
+                                android:visibility="gone"
                                 android:text="@string/video" />
 
                         </LinearLayout>

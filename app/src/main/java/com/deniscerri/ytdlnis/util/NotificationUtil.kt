@@ -75,6 +75,14 @@ class NotificationUtil(var context: Context) {
             channel.description = description
             notificationManager.createNotificationChannel(channel)
 
+            //finished or errored downloads
+            name = resources.getString(R.string.errored_downloads)
+            description =
+                resources.getString(R.string.errored_download_notification_channel_description)
+            channel = NotificationChannel(DOWNLOAD_ERRORED_CHANNEL_ID, name, NotificationManager.IMPORTANCE_HIGH)
+            channel.description = description
+            notificationManager.createNotificationChannel(channel)
+
             //misc
             name = resources.getString(R.string.misc)
             description = ""
@@ -264,7 +272,7 @@ class NotificationUtil(var context: Context) {
                                logID: Long?,
                                res: Resources
     ) {
-        val notificationBuilder = getBuilder(DOWNLOAD_FINISHED_CHANNEL_ID)
+        val notificationBuilder = getBuilder(DOWNLOAD_ERRORED_CHANNEL_ID)
 
         val bundle = Bundle()
         if (logID != null){
@@ -304,7 +312,7 @@ class NotificationUtil(var context: Context) {
             notificationBuilder.setContentIntent(errorPendingIntent)
             notificationBuilder.addAction(0, res.getString(R.string.logs), errorPendingIntent)
         }
-        notificationManager.notify(DOWNLOAD_FINISHED_NOTIFICATION_ID, notificationBuilder.build())
+        notificationManager.notify(DOWNLOAD_ERRORED_NOTIFICATION_ID, notificationBuilder.build())
     }
 
 
@@ -540,14 +548,16 @@ class NotificationUtil(var context: Context) {
         const val DOWNLOAD_SERVICE_CHANNEL_ID = "1"
         const val COMMAND_DOWNLOAD_SERVICE_CHANNEL_ID = "2"
         const val DOWNLOAD_FINISHED_CHANNEL_ID = "3"
+        const val DOWNLOAD_WORKER_CHANNEL_ID = "5"
+        const val DOWNLOAD_MISC_CHANNEL_ID = "4"
+        const val DOWNLOAD_ERRORED_CHANNEL_ID = "6"
+
         const val DOWNLOAD_FINISHED_NOTIFICATION_ID = 3
         const val DOWNLOAD_RESUME_NOTIFICATION_ID = 40000
         const val DOWNLOAD_UPDATING_NOTIFICATION_ID = 5
-        const val FORMAT_UPDATING_NOTIFICATION_ID = 6
         const val FORMAT_UPDATING_FINISHED_NOTIFICATION_ID = 7
-        const val DOWNLOAD_MISC_CHANNEL_ID = "4"
-        const val DOWNLOAD_MISC_NOTIFICATION_ID = 4
-        const val DOWNLOAD_WORKER_CHANNEL_ID = "5"
+        const val DOWNLOAD_ERRORED_NOTIFICATION_ID = 6
+
         private const val PROGRESS_MAX = 100
         private const val PROGRESS_CURR = 0
     }
