@@ -245,7 +245,7 @@
     <string name="keep_cache_summary">Не удалять кэш после завершения загрузки</string>
     <string name="backup_created_successfully">Файл резервной копии, сохраненный в папке загрузок</string>
     <string name="material_you">Material You</string>
-    <string name="finished_download_notification_channel_description">Уведомление о завершенных или ошибочных загрузках</string>
+    <string name="finished_download_notification_channel_description">Уведомление о завершении загрузки</string>
     <string name="incognito">Инкогнито</string>
     <string name="preferred_home_screen">Предпочитаемый главный экран</string>
     <string name="undo">Отменить</string>
@@ -316,4 +316,8 @@
     <string name="remember_download_type_summary">Выберите последний открытый тип загрузки для текущего элемента</string>
     <string name="length">Длина</string>
     <string name="export_file">Экспортировать файл</string>
+    <string name="update_ytdl_master">Основная версия yt-dlp</string>
+    <string name="errored_downloads">Ошибочные загрузки</string>
+    <string name="errored_download_notification_channel_description">Уведомление об ошибочных загрузках</string>
+    <string name="ytdl_source">Источник yt-dlp</string>
 </resources>
