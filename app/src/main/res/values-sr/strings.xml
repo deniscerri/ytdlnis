@@ -55,7 +55,7 @@
     <string name="download_over_metered_networks">Преузимање преко мобилних података</string>
     <string name="adjust_video">Прилагодите видео снимак</string>
     <string name="processing">Обрада</string>
-    <string name="clear_temporary_files_summary">Избришите кеширане фајлове из преузимања с грешком/отказаних преузимања</string>
+    <string name="clear_temporary_files_summary">Избришите кеширане фајлове из срушених/неисправних/отказаних преузимања</string>
     <string name="user_agent_header">User-Agent заглавље</string>
     <string name="saved">Сачувано</string>
     <string name="remove_deleted">Уклони избрисано</string>
@@ -113,7 +113,7 @@
     <string name="search_suggestions">Предлози за претрагу</string>
     <string name="embed_metadata">Угради метаподатке</string>
     <string name="resume">Настави</string>
-    <string name="finished_download_notification_channel_description">Обавештење о завршеним или неисправним преузимањима</string>
+    <string name="finished_download_notification_channel_description">Обавештење о завршеним преузимањима</string>
     <string name="add_template_first">Морате да имате направљен бар један командни шаблон!</string>
     <string name="show_terminal">Прикажи терминал у менију за дељење</string>
     <string name="select_format">Изаберите формат</string>
@@ -225,7 +225,7 @@
     <string name="adjust_templates">Прилагодите шаблоне</string>
     <string name="confirm_terminate">Зауставља сва преузимања и принудно затвара апликацију</string>
     <string name="general">Опште</string>
-    <string name="errored">С грешком</string>
+    <string name="errored">Неисправно</string>
     <string name="download_card_summary">Подешавања за преузимање предмета</string>
     <string name="preferred_format_id_summary">Изаберите формат са овим ID-ом на картици за преузимање</string>
     <string name="failed_download">Није могуће преузети фајл.</string>
@@ -257,7 +257,7 @@
     <string name="downloading_update">Преузимање нове верзије</string>
     <string name="auto_update_ytdlp">Аутоматски ажурирај yt-dlp</string>
     <string name="running">Покренуто</string>
-    <string name="clear_errored">Очисти грешке</string>
+    <string name="clear_errored">Очисти неисправно</string>
     <string name="subtitle_format">Формат титла</string>
     <string name="quality">Квалитет</string>
     <string name="settings">Подешавања</string>
@@ -316,4 +316,8 @@
     <string name="preferred_search_engine">Преферирани претраживач</string>
     <string name="couldnt_parse_file">Није могуће рашчланити фајл</string>
     <string name="embed_subs_summary">Додајте титлове у видео снимак</string>
+    <string name="update_ytdl_master">Главна верзија yt-dlp</string>
+    <string name="errored_downloads">Неисправна преузимања</string>
+    <string name="errored_download_notification_channel_description">Обавештење о неисправним преузимањима</string>
+    <string name="ytdl_source">Извор yt-dlp</string>
 </resources>

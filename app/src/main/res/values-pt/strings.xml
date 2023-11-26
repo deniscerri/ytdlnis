@@ -159,7 +159,7 @@
     <string name="yellow">Amarelo</string>
     <string name="downloaded">"Descarregado: "</string>
     <string name="finished_download_notification_channel_name">Transferências concluídas</string>
-    <string name="finished_download_notification_channel_description">Notificação de transferência concluídas ou defeituosas</string>
+    <string name="finished_download_notification_channel_description">Notificação para transferências concluídas</string>
     <string name="quick_download">Descarga rápida</string>
     <string name="quick_download_summary">Não obter dados no cartão de download</string>
     <string name="remove_audio">Remover áudio</string>
@@ -316,4 +316,8 @@
     <string name="length">Comprimento</string>
     <string name="export_file">Exportar ficheiro</string>
     <string name="ignore">Ignorar</string>
+    <string name="update_ytdl_master">Versão principal do yt-dlp</string>
+    <string name="errored_downloads">Transferências com erro</string>
+    <string name="errored_download_notification_channel_description">Notificação de descargas incorrectas</string>
+    <string name="ytdl_source">Fonte yt-dlp</string>
 </resources>

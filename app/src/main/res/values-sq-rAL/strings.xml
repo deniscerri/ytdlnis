@@ -22,8 +22,8 @@
     <string name="download_notification_channel_description">Njoftimi i cili tregon progresin e shkarkimeve te skedarëve audio dhe video</string>
     <string name="you_are_in_latest_version">Je ne versionin e fundit</string>
     <string name="ytld_update_success">Perditesimi u krye me sukses</string>
-    <string name="ytdl_already_updating">Duke u përditësuar</string>
-    <string name="ytdl_updating_started">Filloi Perditesimi</string>
+    <string name="ytdl_already_updating">Është duke u shkarkuar</string>
+    <string name="ytdl_updating_started">Po shkarkohet versioni i ri</string>
     <string name="Remove">Hiqe</string>
     <string name="ok">OK</string>
     <string name="cancel">Anullo</string>
@@ -36,7 +36,7 @@
     <string name="version">Versioni</string>
     <string name="command_directory">Direktoria e Komandës</string>
     <string name="couldnt_find_apk">Nuk u gjet një APK e vlefshme.</string>
-    <string name="downloading_update">Duke Përditësuar</string>
+    <string name="downloading_update">Po shkarkohet versioni i ri</string>
     <string name="audio">Audio</string>
     <string name="video">Video</string>
     <string name="concurrent_fragments_summary">Numri i fragmenteve të një videoje që duhen shkarkuar në të njëjtën kohë</string>
@@ -79,7 +79,7 @@
     <string name="url">URL</string>
     <string name="link_copied_to_clipboard">Linku u kopjua</string>
     <string name="api_key">Çelësi API i YouTube</string>
-    <string name="api_key_summary">Video Rekomandime nga API e YouTube</string>
+    <string name="api_key_summary">Rekomandime video nga Youtube API</string>
     <string name="update_app_summary">Njoftoni versionet e reja të aplikacionit kur të hapet</string>
     <string name="downloads">Shkarkimet</string>
     <string name="remove_deleted">Hiq të fshirat</string>
@@ -200,7 +200,7 @@
     <string name="subtitle_languages">Gjuhet e Titrave</string>
     <string name="format_source">Burimi i Formateve</string>
     <string name="video_recommendations">Rekomendimet e Videove</string>
-    <string name="video_recommendations_summary">Merr video Youtube te rekomanduara në faqen kryesore nga PIPED API</string>
+    <string name="video_recommendations_summary">Merr videot e rekomanduara të YouTube në ekranin bazë nga PIPED API</string>
     <string name="preferred_search_engine">Kërkuesi i Preferuar</string>
     <string name="preferred_search_engine_summary">Kërkuesi që do të përdoret për kërkimet në aplikacion</string>
     <string name="format_filtering_hint">Të gjithë elementet duhet të jenë të një i njëjti lloj për të përdorur këtë opsion</string>
@@ -228,7 +228,7 @@
     <string name="green">Jeshile</string>
     <string name="downloaded">"U shkarkua: "</string>
     <string name="finished_download_notification_channel_name">Shkarkimet e Përfunduara</string>
-    <string name="finished_download_notification_channel_description">Njoftimet për shkarkimet e mbaruar ose me probleme</string>
+    <string name="finished_download_notification_channel_description">Njoftimet për shkarkimet e mbaruar</string>
     <string name="quick_download">Shkarkim i Shpejtë</string>
     <string name="quick_download_summary">Mos merr informacion te karta e shkarkimit</string>
     <string name="preferred_format_id">ID e Formatit të Preferuar</string>
@@ -248,7 +248,7 @@
     <string name="couldnt_parse_file">Nuk mund të përkthej skedarin</string>
     <string name="network_error">Problem Interneti</string>
     <string name="incognito">Inkognito</string>
-    <string name="sponsorblock">SponsorBlok</string>
+    <string name="sponsorblock">SponsorBlloku</string>
     <string name="restore_complete">Restaurimi i Aplikacionit u kompletua. Objektet e mëposhtme u vendosën:</string>
     <string name="search_history">Historia e Kërkimit</string>
     <string name="appearance">Pamja</string>
@@ -274,15 +274,15 @@
     <string name="fragment_retries">Riprovimet e fragmentit</string>
     <string name="format_order">Renditja e formatit</string>
     <string name="hide_thumbnails">Fshehi Thumbnailet</string>
-    <string name="force_keyframes_summary">Proçes më i ngadaltë, por prerje më të sakta</string>
+    <string name="force_keyframes_summary">Prerje të sakta video. Më ngadalë</string>
     <string name="subtitle_format">Formati i titrave</string>
     <string name="show_terminal">Shfaq Terminalin në fletën e shpërndarjes</string>
     <string name="saved">Të ruajtura</string>
     <string name="clear_saved">Pastro të ruajturat</string>
     <string name="save_for_later">Ruaj Shkarkimin për më vonë\?</string>
     <string name="force_keyframes">Përforco frame-t gjatë Prerjeve</string>
-    <string name="use_extra_commands">Shto Komanda Ekstra</string>
-    <string name="use_extra_commands_summary">For Shkarkimet Audio / Video. Shto komanda ekstra bashkë me konfigurimin e ndërfaqes</string>
+    <string name="use_extra_commands">Shto komanda shtesë</string>
+    <string name="use_extra_commands_summary">Për shkarkime audio/video. Shtoni komanda shtesë së bashku me konfigurimin GUI</string>
     <string name="current">Komanda Aktuale</string>
     <string name="write_description">Ruaj Përshkrimin</string>
     <string name="write_description_summary">Shkruaj skedarin e përshkrimit</string>
@@ -316,4 +316,8 @@
     <string name="modify_download_card">Modifiko Kartën e Shkarkimit</string>
     <string name="security">Siguria</string>
     <string name="export_file">Eksporto Skedarin</string>
+    <string name="update_ytdl_master">Versioni Master i yt-dlp</string>
+    <string name="errored_downloads">Shkarkimet me Probleme</string>
+    <string name="errored_download_notification_channel_description">Njoftim për shkarkimet me probleme</string>
+    <string name="ytdl_source">Burimi i yt-dlp</string>
 </resources>

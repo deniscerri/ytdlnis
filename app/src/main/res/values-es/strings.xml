@@ -233,7 +233,7 @@
     <string name="monochrome">Monocromático</string>
     <string name="downloaded">"Descargado: "</string>
     <string name="finished_download_notification_channel_name">Descargas terminadas</string>
-    <string name="finished_download_notification_channel_description">Notificación de descargas finalizadas o defectuosas</string>
+    <string name="finished_download_notification_channel_description">Notificación de descargas finalizadas</string>
     <string name="preferred_locale">Ubicación preferida</string>
     <string name="pause">Pausa</string>
     <string name="resume">Resumen</string>
@@ -316,4 +316,8 @@
     <string name="security">Seguridad</string>
     <string name="length">Longitud</string>
     <string name="export_file">Exportar el archivo</string>
+    <string name="update_ytdl_master">Versión maestra de yt-dlp</string>
+    <string name="errored_downloads">Descargas erróneas</string>
+    <string name="errored_download_notification_channel_description">Notificación de descargas defectuosas</string>
+    <string name="ytdl_source">Fuente yt-dlp</string>
 </resources>

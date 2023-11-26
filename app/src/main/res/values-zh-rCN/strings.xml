@@ -276,7 +276,7 @@
     <string name="delete_all_cookies">删除所有 Cookies</string>
     <string name="confirm_delete_cookies_desc">永久删除所有 cookies</string>
     <string name="downloaded">"已下载： "</string>
-    <string name="finished_download_notification_channel_description">下载完成或错误时的通知</string>
+    <string name="finished_download_notification_channel_description">下载完成的通知</string>
     <string name="preferred_format_id">首选格式 ID</string>
     <string name="sponsorblock_nonmusic">非音乐和偏题部分</string>
     <string name="sponsorblock_promos">自我推广</string>
@@ -316,4 +316,8 @@
     <string name="security">安全性</string>
     <string name="length">长度</string>
     <string name="export_file">导出文件</string>
+    <string name="update_ytdl_master">yt-dlp 的 Master 版本</string>
+    <string name="errored_downloads">下载出错</string>
+    <string name="errored_download_notification_channel_description">下载出错的通知</string>
+    <string name="ytdl_source">yt-dlp 源</string>
 </resources>
