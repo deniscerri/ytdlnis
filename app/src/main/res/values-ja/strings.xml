@@ -103,7 +103,7 @@
     <string name="container">コンテナ</string>
     <string name="template">テンプレート</string>
     <string name="date_added">追加日</string>
-    <string name="update_ytdl_nightly">yt-dlp のナイトリー版</string>
+    <string name="update_ytdl_nightly">yt-dlp ナイトリー (ベータ) 版</string>
     <string name="adjust_audio">音声の調整</string>
     <string name="file_name_template">ファイル名のテンプレート</string>
     <string name="language">言語</string>
@@ -232,7 +232,7 @@
     <string name="yellow">イエロー</string>
     <string name="monochrome">モノクロ</string>
     <string name="downloaded">"ダウンロード完了: "</string>
-    <string name="finished_download_notification_channel_description">完了または失敗したダウンロードの通知</string>
+    <string name="finished_download_notification_channel_description">完了したダウンロードの通知</string>
     <string name="quick_download">クイックダウンロード</string>
     <string name="quick_download_summary">ダウンロードカードのデータを取得しない</string>
     <string name="remove_audio">オーディオを削除</string>
@@ -316,4 +316,8 @@
     <string name="remember_download_type_summary">最後に開いたダウンロードの種類を選択する</string>
     <string name="length">長さ</string>
     <string name="ignore">無視</string>
+    <string name="update_ytdl_master">yt-dlp 完全 (正式) 版</string>
+    <string name="errored_downloads">ダウンロードのエラー</string>
+    <string name="errored_download_notification_channel_description">失敗したダウンロードの通知</string>
+    <string name="ytdl_source">yt-dlp の取得元</string>
 </resources>
