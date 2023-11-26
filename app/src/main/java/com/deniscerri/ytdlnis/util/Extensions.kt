@@ -1,10 +1,14 @@
 package com.deniscerri.ytdlnis.util
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.drawable.ShapeDrawable
 import android.graphics.drawable.shapes.OvalShape
+import android.media.MediaMetadataRetriever
+import android.media.MediaMetadataRetriever.METADATA_KEY_DURATION
+import android.net.Uri
 import android.util.DisplayMetrics
 import android.view.MotionEvent
 import android.view.View
@@ -15,6 +19,7 @@ import com.neo.highlight.core.Highlight
 import com.neo.highlight.util.listener.HighlightTextWatcher
 import com.neo.highlight.util.scheme.ColorScheme
 import me.zhanghai.android.fastscroll.FastScrollerBuilder
+import java.io.File
 import java.util.regex.Pattern
 
 
@@ -90,5 +95,15 @@ object Extensions {
         FastScrollerBuilder(this)
             .setTrackDrawable(drawable)
             .build()
+    }
+
+    fun File.getMediaDuration(context: Context): Int {
+        if (!exists()) return 0
+        val retriever = MediaMetadataRetriever()
+        retriever.setDataSource(context, Uri.parse(absolutePath))
+        val duration = retriever.extractMetadata(METADATA_KEY_DURATION)
+        retriever.release()
+
+        return duration?.toIntOrNull()?.div(1000) ?: 0
     }
 }

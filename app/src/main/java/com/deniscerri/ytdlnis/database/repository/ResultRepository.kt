@@ -44,7 +44,7 @@ class ResultRepository(private val resultDao: ResultDao, private val context: Co
             deleteAll()
             itemCount.value = v.size
         }else{
-            v.forEach { it?.playlistTitle = "ytdlnis-Search" }
+            v.filter { it?.playlistTitle.isNullOrBlank() }.forEach { it?.playlistTitle = "ytdlnis-Search" }
         }
         resultDao.insertMultiple(v)
         return ArrayList(v)
@@ -77,7 +77,7 @@ class ResultRepository(private val resultDao: ResultDao, private val context: Co
             deleteAll()
             itemCount.value = items.size
         }else{
-            items.forEach { it!!.playlistTitle = "ytdlnis-Search" }
+            items.filter { it?.playlistTitle.isNullOrBlank() }.forEach { it!!.playlistTitle = "ytdlnis-Search" }
         }
         resultDao.insertMultiple(items.toList())
         return items
@@ -96,7 +96,7 @@ class ResultRepository(private val resultDao: ResultDao, private val context: Co
         resultDao.update(item)
     }
 
-    fun getItemByURL(url: String): ResultItem {
+    fun getItemByURL(url: String): ResultItem? {
         return resultDao.getResultByURL(url)
     }
 }

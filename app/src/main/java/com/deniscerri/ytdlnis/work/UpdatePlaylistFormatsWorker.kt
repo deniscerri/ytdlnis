@@ -38,7 +38,7 @@ class UpdatePlaylistFormatsWorker(
             ids.forEach {
                 if (!isStopped){
                     val d = dao.getDownloadById(it)
-                    val r = resDao.getResultByURL(d.url)
+                    val r = resDao.getResultByURL(d.url)!!
 
                     if (d.allFormats.isNotEmpty()){
                         count++

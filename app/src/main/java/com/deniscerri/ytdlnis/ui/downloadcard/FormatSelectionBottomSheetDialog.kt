@@ -24,6 +24,8 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.*
@@ -48,6 +50,7 @@ class FormatSelectionBottomSheetDialog(private val items: List<DownloadItem?>, p
 
     private lateinit var continueInBackgroundSnackBar : Snackbar
     private lateinit var view: View
+    private var updateFormatsJob: Job? = null
 
     enum class FormatSorting {
         filesize, container, codec, id
@@ -88,7 +91,7 @@ class FormatSelectionBottomSheetDialog(private val items: List<DownloadItem?>, p
         okBtn = view.findViewById(R.id.format_ok)
 
         shimmers.visibility = View.GONE
-        val hasGenericFormats = formats.first().isEmpty() || formats.last().any { it.format_id == "best" }
+        val hasGenericFormats = formats.first().isEmpty() || formats.last().any { it.format_id == "best" || it.format_id == "ba" }
         if (items.size > 1){
 
             if (!hasGenericFormats){
@@ -141,56 +144,77 @@ class FormatSelectionBottomSheetDialog(private val items: List<DownloadItem?>, p
                    formatListLinearLayout.visibility = View.GONE
                    shimmers.visibility = View.VISIBLE
                    shimmers.startShimmer()
+                   updateFormatsJob = launch(Dispatchers.IO) {
+                       //simple download
+                       if (items.size == 1) {
+                           val res = infoUtil.getFormats(items.first()!!.url)
+                           res.filter { it.format_note != "storyboard" }
+                           chosenFormats = if (items.first()?.type == Type.audio) {
+                               res.filter { it.format_note.contains("audio", ignoreCase = true) }
+                           } else {
+                               res
+                           }
+                           if (chosenFormats.isEmpty()) throw Exception()
 
-                   //simple download
-                   if (items.size == 1){
-                       val res = withContext(Dispatchers.IO){
-                           infoUtil.getFormats(items.first()!!.url)
-                       }
-                       res.filter { it.format_note != "storyboard" }
-                       chosenFormats = if(items.first()?.type == Type.audio){
-                           res.filter { it.format_note.contains("audio", ignoreCase = true) }
+                           formats = listOf(res)
+                           withContext(Dispatchers.Main){
+                               listener.onFormatsUpdated(formats)
+                           }
+                       //list format filtering
                        }else{
-                           res
-                       }
-                       if (chosenFormats.isEmpty()) throw Exception()
-
-                       formats = listOf(res)
-
-                   //list format filtering
-                   }else{
-                       var progress = "0/${items.size}"
-                       formatCollection.clear()
-                       refreshBtn.text = progress
-                       withContext(Dispatchers.IO){
+                           var progress = "0/${items.size}"
+                           formatCollection.clear()
+                           withContext(Dispatchers.Main) {
+                               refreshBtn.text = progress
+                           }
                            infoUtil.getFormatsMultiple(items.map { it!!.url }) {
-                               lifecycleScope.launch(Dispatchers.Main){
-                                   progress = "${formatCollection.size}/${items.size}"
-                                   refreshBtn.text = progress
-                                   formatCollection.add(it)
+                               if (isActive) {
+                                   lifecycleScope.launch(Dispatchers.Main) {
+                                       formatCollection.add(it)
+                                       progress = "${formatCollection.size}/${items.size}"
+                                       refreshBtn.text = progress
+                                   }
                                }
                            }
+                           formats = formatCollection
+                           withContext(Dispatchers.Main){
+                               listener.onFormatsUpdated(formats)
+                           }
+
+                           val flatFormatCollection = formatCollection.flatten()
+                           val commonFormats =
+                               flatFormatCollection.groupingBy { it.format_id }.eachCount()
+                                   .filter { it.value == items.size }
+                                   .mapValues { flatFormatCollection.first { f -> f.format_id == it.key } }
+                                   .map { it.value }
+                           chosenFormats = commonFormats.filter { it.filesize != 0L }
+                               .mapTo(mutableListOf()) { it.copy() }
+                           chosenFormats = when (items.first()?.type) {
+                               Type.audio -> chosenFormats.filter {
+                                   it.format_note.contains(
+                                       "audio",
+                                       ignoreCase = true
+                                   )
+                               }
+
+                               else -> chosenFormats
+                           }
+                           if (chosenFormats.isEmpty()) throw Exception()
+                           chosenFormats.forEach {
+                               it.filesize =
+                                   flatFormatCollection.filter { f -> f.format_id == it.format_id }
+                                       .sumOf { itt -> itt.filesize }
+                           }
                        }
-                       formats = formatCollection
-                       val flatFormatCollection = formatCollection.flatten()
-                       val commonFormats = flatFormatCollection.groupingBy { it.format_id }.eachCount().filter { it.value == items.size }.mapValues { flatFormatCollection.first { f -> f.format_id == it.key } }.map { it.value }
-                       chosenFormats = commonFormats.filter { it.filesize != 0L }.mapTo(mutableListOf()) {it.copy()}
-                       chosenFormats = when(items.first()?.type){
-                           Type.audio -> chosenFormats.filter { it.format_note.contains("audio", ignoreCase = true) }
-                           else -> chosenFormats
-                       }
-                       if (chosenFormats.isEmpty()) throw Exception()
-                       chosenFormats.forEach {
-                           it.filesize =
-                               flatFormatCollection.filter { f -> f.format_id == it.format_id }
-                                   .sumOf { itt -> itt.filesize }
+                       withContext(Dispatchers.Main){
+                           shimmers.visibility = View.GONE
+                           shimmers.stopShimmer()
+                           addFormatsToView()
+                           refreshBtn.visibility = View.GONE
+                           formatListLinearLayout.visibility = View.VISIBLE
                        }
                    }
-                   shimmers.visibility = View.GONE
-                   shimmers.stopShimmer()
-                   addFormatsToView()
-                   refreshBtn.visibility = View.GONE
-                   formatListLinearLayout.visibility = View.VISIBLE
+                   updateFormatsJob?.start()
                }catch (e: Exception){
                    runCatching {
                        refreshBtn.isEnabled = true
@@ -223,7 +247,7 @@ class FormatSelectionBottomSheetDialog(private val items: List<DownloadItem?>, p
     private fun returnFormats(){
         //simple video format selection
         if (items.size == 1){
-            listener.onFormatClick(formats, listOf(FormatTuple(selectedVideo, selectedAudios)))
+            listener.onFormatClick(listOf(FormatTuple(selectedVideo, selectedAudios)))
         }else{
             //playlist format selection
             val selectedFormats = mutableListOf<Format>()
@@ -235,7 +259,7 @@ class FormatSelectionBottomSheetDialog(private val items: List<DownloadItem?>, p
                     selectedFormats.add(selectedVideo)
                 }
             }
-            listener.onFormatClick(formats, selectedFormats.map { FormatTuple(it, selectedAudios) })
+            listener.onFormatClick(selectedFormats.map { FormatTuple(it, selectedAudios) })
         }
 
     }
@@ -317,7 +341,7 @@ class FormatSelectionBottomSheetDialog(private val items: List<DownloadItem?>, p
                     }
                 }else{
                     if (items.size == 1){
-                        listener.onFormatClick(formats, listOf(FormatTuple(format, null)))
+                        listener.onFormatClick(listOf(FormatTuple(format, null)))
                     }else{
                         val selectedFormats = mutableListOf<Format>()
                         formatCollection.forEach {
@@ -328,7 +352,7 @@ class FormatSelectionBottomSheetDialog(private val items: List<DownloadItem?>, p
                                 selectedFormats.add(format)
                             }
                         }
-                        listener.onFormatClick(formats, selectedFormats.map { FormatTuple(it, null) })
+                        listener.onFormatClick(selectedFormats.map { FormatTuple(it, null) })
                     }
                     dismiss()
                 }
@@ -360,14 +384,16 @@ class FormatSelectionBottomSheetDialog(private val items: List<DownloadItem?>, p
 
     private fun cleanUp(){
         kotlin.runCatching {
+            updateFormatsJob?.cancel()
             parentFragmentManager.beginTransaction().remove(parentFragmentManager.findFragmentByTag("formatSheet")!!).commit()
         }
     }
 }
 
 interface OnFormatClickListener{
-    fun onFormatClick(allFormats: List<List<Format>>, item: List<FormatTuple>)
+    fun onFormatClick(selectedFormats: List<FormatTuple>)
     fun onContinueOnBackground() {}
+    fun onFormatsUpdated(allFormats: List<List<Format>>)
 }
 
 class FormatTuple internal constructor(

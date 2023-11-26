@@ -19,6 +19,7 @@ import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.core.content.edit
 import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -440,20 +441,42 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
                     delay(500)
                     runCatching {
                         val f1 = fragmentManager.findFragmentByTag("f0") as DownloadAudioFragment
-                        f1.view?.findViewById<LinearProgressIndicator>(R.id.format_loading_progress)?.visibility = View.VISIBLE
+                        f1.view?.findViewById<LinearProgressIndicator>(R.id.format_loading_progress)?.apply {
+                            isVisible = true
+                            isClickable = true
+                            setOnClickListener {
+                                lifecycleScope.launch(Dispatchers.IO) {
+                                    resultViewModel.cancelUpdateFormatsItemData()
+                                }
+                            }
+                        }
                     }
                     runCatching {
                         val f1 = fragmentManager.findFragmentByTag("f1") as DownloadVideoFragment
-                        f1.view?.findViewById<LinearProgressIndicator>(R.id.format_loading_progress)?.visibility = View.VISIBLE
+                        f1.view?.findViewById<LinearProgressIndicator>(R.id.format_loading_progress)?.apply {
+                            isVisible = true
+                            isClickable = true
+                            setOnClickListener {
+                                lifecycleScope.launch(Dispatchers.IO) {
+                                    resultViewModel.cancelUpdateFormatsItemData()
+                                }
+                            }
+                        }
                     }
                 }else{
                     runCatching {
                         val f1 = fragmentManager.findFragmentByTag("f0") as DownloadAudioFragment
-                        f1.view?.findViewById<LinearProgressIndicator>(R.id.format_loading_progress)?.visibility = View.GONE
+                        f1.view?.findViewById<LinearProgressIndicator>(R.id.format_loading_progress)?.apply {
+                            isVisible = false
+                            isClickable = false
+                        }
                     }
                     runCatching {
                         val f1 = fragmentManager.findFragmentByTag("f1") as DownloadVideoFragment
-                        f1.view?.findViewById<LinearProgressIndicator>(R.id.format_loading_progress)?.visibility = View.GONE
+                        f1.view?.findViewById<LinearProgressIndicator>(R.id.format_loading_progress)?.apply {
+                            isVisible = false
+                            isClickable = false
+                        }
                     }
                 }
             }
@@ -569,12 +592,22 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
 
         when(viewPager2.currentItem){
             0 -> {
-                val f = fragmentManager?.findFragmentByTag("f0") as DownloadAudioFragment
-                f.updateTitleAuthor(prevDownloadItem.title, prevDownloadItem.author)
+                kotlin.runCatching {
+                    val f = fragmentManager?.findFragmentByTag("f0") as DownloadAudioFragment
+                    f.updateTitleAuthor(prevDownloadItem.title, prevDownloadItem.author)
+                }
             }
             1 -> {
-                val f = fragmentManager?.findFragmentByTag("f1") as DownloadVideoFragment
-                f.updateTitleAuthor(prevDownloadItem.title, prevDownloadItem.author)
+                kotlin.runCatching {
+                    val f = fragmentManager?.findFragmentByTag("f1") as DownloadVideoFragment
+                    f.updateTitleAuthor(prevDownloadItem.title, prevDownloadItem.author)
+                }
+            }
+            2 -> {
+                kotlin.runCatching {
+                    val f = fragmentManager?.findFragmentByTag("f2") as DownloadCommandFragment
+                    f.updateTitleAuthor(prevDownloadItem.title, prevDownloadItem.author)
+                }
             }
             else -> {}
         }

@@ -38,5 +38,9 @@ data class DownloadItem(
     var status: String,
     @ColumnInfo(defaultValue = "0")
     var downloadStartTime: Long,
-    var logID: Long?
+    var logID: Long?,
+    @ColumnInfo(defaultValue = "")
+    var playlistURL: String? = "",
+    @ColumnInfo(defaultValue = "")
+    var playlistIndex: Int? = null
 ) : Parcelable

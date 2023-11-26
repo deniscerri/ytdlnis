@@ -62,6 +62,11 @@
         <item>best</item>
     </string-array>
 
+    <string-array name="audio_formats_values">
+        <item>wa</item>
+        <item>ba</item>
+    </string-array>
+
     <string-array name="format_ordering">
         <item>@string/file_size</item>
         <item>@string/container</item>
@@ -222,33 +227,29 @@
     <array name="search_engines">
         <item>YouTube</item>
         <item>YouTube Music</item>
+        <item>Soundcloud</item>
+        <item>Bilibili</item>
         <item>Nico video</item>
         <item>PRX Series</item>
         <item>PRX Stories</item>
         <item>Rokfin</item>
         <item>Yahoo screen</item>
-        <item>Soundcloud</item>
         <item>Google Video</item>
-        <item>Bilibili</item>
         <item>Netverse</item>
-        <item>All Clips of a trovo.live channel</item>
-        <item>All VODs of a trovo.live channel</item>
     </array>
 
     <array name="search_engines_values">
         <item>ytsearch</item>
         <item>ytsearchmusic</item>
+        <item>scsearch</item>
+        <item>bilisearch</item>
         <item>nicosearch</item>
-        <item>PRX Series</item>
-        <item>PRX Stories</item>
+        <item>prxseries</item>
+        <item>prxstories</item>
         <item>rkfnsearch</item>
         <item>yvsearch</item>
-        <item>scsearch</item>
         <item>gvsearch</item>
-        <item>bilisearch</item>
         <item>netsearch</item>
-        <item>trovoclip</item>
-        <item>trovovod</item>
     </array>
 
     <array name="start_destination">

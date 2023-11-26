@@ -22,5 +22,9 @@ data class ResultItem(
     @ColumnInfo(defaultValue = "")
     var urls: String,
     var chapters: MutableList<ChapterItem>?,
+    @ColumnInfo(defaultValue = "")
+    var playlistURL: String? = "",
+    @ColumnInfo(defaultValue = "")
+    var playlistIndex: Int? = null,
     var creationTime: Long = System.currentTimeMillis() / 1000,
 ) : Parcelable

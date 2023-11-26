@@ -210,12 +210,17 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
                 val chosenFormat = downloadItem.format
                 UiUtil.populateFormatCard(requireContext(), formatCard, chosenFormat, downloadItem.allFormats.filter { downloadItem.videoPreferences.audioFormatIDs.contains(it.format_id) })
                 val listener = object : OnFormatClickListener {
-                    override fun onFormatClick(allFormats: List<List<Format>>, item: List<FormatTuple>) {
+                    override fun onFormatClick(item: List<FormatTuple>) {
                         downloadItem.format = item.first().format
                         item.first().audioFormats?.map { it.format_id }?.let {
                             downloadItem.videoPreferences.audioFormatIDs.clear()
                             downloadItem.videoPreferences.audioFormatIDs.addAll(it)
                         }
+                        UiUtil.populateFormatCard(requireContext(), formatCard, item.first().format, item.first().audioFormats)
+
+                    }
+
+                    override fun onFormatsUpdated(allFormats: List<List<Format>>) {
                         lifecycleScope.launch {
                             withContext(Dispatchers.IO){
                                 resultItem?.formats?.removeAll(formats)
@@ -230,8 +235,11 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
                             }
                         }
                         formats = allFormats.first().filter { !genericVideoFormats.contains(it) }.toMutableList()
-                        UiUtil.populateFormatCard(requireContext(), formatCard, item.first().format, item.first().audioFormats)
+                        val preferredFormat = downloadViewModel.getFormat(formats, Type.video)
+                        val preferredAudioFormats = downloadViewModel.getPreferredAudioFormats(formats)
+                        UiUtil.populateFormatCard(requireContext(), formatCard, preferredFormat, formats.filter { preferredAudioFormats.contains(it.format_id) })
                     }
+
                 }
                 formatCard.setOnClickListener{
                     if (parentFragmentManager.findFragmentByTag("formatSheet") == null){

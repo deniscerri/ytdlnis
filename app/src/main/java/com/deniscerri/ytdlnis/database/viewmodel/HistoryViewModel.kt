@@ -92,8 +92,8 @@ class HistoryViewModel(application: Application) : AndroidViewModel(application)
         repository.delete(item, deleteFile)
     }
 
-    fun deleteAll() = viewModelScope.launch(Dispatchers.IO) {
-        repository.deleteAll()
+    fun deleteAll(deleteFile: Boolean = false) = viewModelScope.launch(Dispatchers.IO) {
+        repository.deleteAll(deleteFile)
     }
 
     fun deleteDuplicates() = viewModelScope.launch(Dispatchers.IO) {

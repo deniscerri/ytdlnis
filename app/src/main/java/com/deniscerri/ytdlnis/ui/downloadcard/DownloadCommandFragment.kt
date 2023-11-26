@@ -44,7 +44,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
 
-class DownloadCommandFragment(private val resultItem: ResultItem? = null, private var currentDownloadItem: DownloadItem? = null, private var url: String = "") : Fragment() {
+class DownloadCommandFragment(private val resultItem: ResultItem? = null, private var currentDownloadItem: DownloadItem? = null, private var url: String = "") : Fragment(), GUISync {
     private var fragmentView: View? = null
     private var activity: Activity? = null
     private lateinit var downloadViewModel : DownloadViewModel
@@ -295,5 +295,13 @@ class DownloadCommandFragment(private val resultItem: ResultItem? = null, privat
                 File(FileUtil.formatPath(downloadItem.downloadPath)).freeSpace
             ))
         }
+    }
+
+    override fun updateTitleAuthor(t: String, a: String) {
+        downloadItem.title = t
+        downloadItem.author = a
+    }
+
+    override fun updateUI(res: ResultItem?) {
     }
 }

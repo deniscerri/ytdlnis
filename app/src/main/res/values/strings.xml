@@ -323,4 +323,6 @@
     <string name="export_file">Export File</string>
     <string name="ytdl_source">yt-dlp Source</string>
     <string name="update_ytdl_master">Master Version of yt-dlp</string>
+    <string name="buffer_size">Buffer Size</string>
+    <string name="buffer_size_summary">Size of download buffer, e.g. 1024 or 16K (default is 1024)</string>
 </resources>

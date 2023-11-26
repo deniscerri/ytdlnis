@@ -37,6 +37,6 @@ interface ResultDao {
     suspend fun delete(id: Long)
 
     @Query("SELECT * FROM results WHERE url=:url LIMIT 1")
-    fun getResultByURL(url: String) : ResultItem
+    fun getResultByURL(url: String) : ResultItem?
 
 }

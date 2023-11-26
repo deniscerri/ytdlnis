@@ -178,7 +178,7 @@ class SelectPlaylistItemsDialog : DialogFragment(), PlaylistAdapter.OnItemClickL
                 val checkedItems = listAdapter.getCheckedItems()
                 val checkedResultItems = items.filter { item -> checkedItems.contains(item!!.url) }
                 if (checkedResultItems.size == 1){
-                    val resultItem = resultViewModel.getItemByURL(checkedResultItems[0]!!.url)
+                    val resultItem = resultViewModel.getItemByURL(checkedResultItems[0]!!.url)!!
                     withContext(Dispatchers.Main){
                         findNavController().navigate(R.id.action_selectPlaylistItemsDialog_to_downloadBottomSheetDialog, bundleOf(
                             Pair("result", resultItem),

@@ -27,6 +27,7 @@ import com.deniscerri.ytdlnis.database.models.HistoryItem
 import com.deniscerri.ytdlnis.database.models.LogItem
 import com.deniscerri.ytdlnis.database.repository.DownloadRepository
 import com.deniscerri.ytdlnis.database.repository.LogRepository
+import com.deniscerri.ytdlnis.util.Extensions.getMediaDuration
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.InfoUtil
 import com.deniscerri.ytdlnis.util.NotificationUtil
@@ -217,10 +218,36 @@ class DownloadWorker(
                                     }
                                 }else{
                                     val unixTime = System.currentTimeMillis() / 1000
-                                    val file = File(finalPaths?.first()!!)
-                                    downloadItem.format.filesize = file.length()
-                                    val historyItem = HistoryItem(0, downloadItem.url, downloadItem.title, downloadItem.author, downloadItem.duration, downloadItem.thumb, downloadItem.type, unixTime, finalPaths.first() , downloadItem.website, downloadItem.format, downloadItem.id, commandString)
-                                    historyDao.insert(historyItem)
+                                    finalPaths?.forEachIndexed {idx, ff ->
+                                        val file = File(ff)
+                                        var index = ""
+                                        var duration = downloadItem.duration
+                                        if (idx > 0) {
+                                            index = "[${idx + 1}] "
+                                            downloadItem.author = file.nameWithoutExtension
+                                        }
+                                        val d = file.getMediaDuration(context)
+                                        if (d > 0) duration = infoUtil.formatIntegerDuration(d, Locale.US)
+
+                                        downloadItem.format.filesize = file.length()
+                                        downloadItem.format.container = file.extension
+                                        downloadItem.duration = duration
+                                        val historyItem = HistoryItem(0,
+                                            downloadItem.url,
+                                            index + downloadItem.title,
+                                            downloadItem.author,
+                                            downloadItem.duration,
+                                            downloadItem.thumb,
+                                            downloadItem.type,
+                                            unixTime,
+                                            ff,
+                                            downloadItem.website,
+                                            downloadItem.format,
+                                            downloadItem.id,
+                                            commandString)
+                                        historyDao.insert(historyItem)
+                                    }
+
                                 }
                             }
 

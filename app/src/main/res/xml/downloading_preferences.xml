@@ -99,6 +99,12 @@
             app:summary="@string/limit_rate_summary"
             app:title="@string/limit_rate" />
 
+        <EditTextPreference
+            android:icon="@drawable/baseline_settings_input_component_24"
+            app:key="buffer_size"
+            app:summary="@string/buffer_size_summary"
+            app:title="@string/buffer_size" />
+
         <SwitchPreferenceCompat
             android:widgetLayout="@layout/preferece_material_switch"
             app:defaultValue="false"

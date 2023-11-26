@@ -74,7 +74,7 @@ class HomeAdapter(onItemClickListener: OnItemClickListener, activity: Activity) 
 
         // TITLE  ----------------------------------
         val videoTitle = card.findViewById<TextView>(R.id.result_title)
-        var title = video!!.title
+        var title = video!!.title.ifBlank { video.url }
         if (title.length > 100) {
             title = title.substring(0, 40) + "..."
         }

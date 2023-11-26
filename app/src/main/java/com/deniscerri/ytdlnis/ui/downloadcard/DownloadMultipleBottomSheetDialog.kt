@@ -208,24 +208,43 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
         }
 
         val formatListener = object : OnFormatClickListener {
-            override fun onFormatClick(allFormats: List<List<Format>>, selectedFormats: List<FormatTuple>) {
-                val formatCollection = mutableListOf<List<Format>>()
-                allFormats.forEach {f ->
-                    formatCollection.add(f.mapTo(mutableListOf()) {it.copy()})
-                }
+            override fun onFormatClick(selectedFormats: List<FormatTuple>) {
                 items.forEachIndexed { index, i ->
-                    i.allFormats.clear()
-                    if (formatCollection.size == items.size && formatCollection[index].isNotEmpty()) {
-                        runCatching {
-                            i.allFormats.addAll(formatCollection[index])
-                        }
-                    }
                     i.format = selectedFormats[index].format
                     if (i.type == DownloadViewModel.Type.video) selectedFormats[index].audioFormats?.map { it.format_id }?.let { i.videoPreferences.audioFormatIDs.addAll(it) }
                 }
                 listAdapter.submitList(items.toList())
                 listAdapter.notifyDataSetChanged()
                 updateFileSize(items.map { it.format.filesize })
+            }
+
+
+            override fun onFormatsUpdated(allFormats: List<List<Format>>) {
+                lifecycleScope.launch(Dispatchers.IO){
+                    val formatCollection = mutableListOf<List<Format>>()
+                    allFormats.forEach {f ->
+                        formatCollection.add(f.mapTo(mutableListOf()) {it.copy()})
+                    }
+                    items.forEachIndexed { index, i ->
+                        i.allFormats.clear()
+                        if (formatCollection.size == items.size && formatCollection[index].isNotEmpty()) {
+                            runCatching {
+                                i.allFormats.addAll(formatCollection[index])
+                            }
+                        }
+                        i.format = downloadViewModel.getFormat(i.allFormats, i.type)
+                        kotlin.runCatching {
+                            val resultItem = resultViewModel.getItemByURL(i.url)!!
+                            resultItem.formats = formatCollection[index].toMutableList()
+                            resultViewModel.update(resultItem)
+                        }
+                    }
+                    withContext(Dispatchers.Main){
+                        listAdapter.submitList(items.toList())
+                        listAdapter.notifyDataSetChanged()
+                        updateFileSize(items.map { it.format.filesize })
+                    }
+                }
             }
 
 
@@ -637,7 +656,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
         lifecycleScope.launch{
             val downloadItem = items.find { it.url == itemURL }
             val resultItem = withContext(Dispatchers.IO){
-                resultViewModel.getItemByURL(downloadItem!!.url)
+                resultViewModel.getItemByURL(downloadItem!!.url)!!
             }
             if (parentFragmentManager.findFragmentByTag("configureDownloadSingleSheet") == null){
                 val bottomSheet = ConfigureDownloadBottomSheetDialog(resultItem, downloadItem!!, this@DownloadMultipleBottomSheetDialog)

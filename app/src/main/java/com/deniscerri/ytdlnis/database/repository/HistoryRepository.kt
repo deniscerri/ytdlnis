@@ -52,7 +52,12 @@ class HistoryRepository(private val historyDao: HistoryDao) {
         }
     }
 
-    suspend fun deleteAll(){
+    suspend fun deleteAll(deleteFile: Boolean = false){
+        if (deleteFile){
+            historyDao.getAllHistoryList().forEach { item ->
+                FileUtil.deleteFile(item.downloadPath)
+            }
+        }
         historyDao.deleteAll()
     }
 

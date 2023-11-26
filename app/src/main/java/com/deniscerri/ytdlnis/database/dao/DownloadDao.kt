@@ -40,6 +40,7 @@ interface DownloadDao {
     @Query("SELECT * FROM downloads WHERE status in('Active','Queued','QueuedPaused','ActivePaused','PausedReQueued')")
     fun getActiveAndQueuedDownloads() : Flow<List<DownloadItem>>
 
+    @RewriteQueriesToDropUnusedColumns
     @Query("SELECT * FROM downloads WHERE status in('Queued','QueuedPaused') ORDER BY downloadStartTime, id")
     fun getQueuedDownloads() : PagingSource<Int, DownloadItemSimple>
 
@@ -55,6 +56,7 @@ interface DownloadDao {
     @Query("SELECT * FROM downloads WHERE status in('Queued','QueuedPaused') ORDER BY downloadStartTime, id")
     fun getQueuedDownloadsList() : List<DownloadItem>
 
+    @RewriteQueriesToDropUnusedColumns
     @Query("SELECT * FROM downloads WHERE status='Cancelled' ORDER BY id DESC")
     fun getCancelledDownloads() : PagingSource<Int, DownloadItemSimple>
 
@@ -64,12 +66,14 @@ interface DownloadDao {
     @Query("SELECT * FROM downloads WHERE status LIKE '%Paused%'")
     fun getPausedDownloadsList() : List<DownloadItem>
 
+    @RewriteQueriesToDropUnusedColumns
     @Query("SELECT * FROM downloads WHERE status='Error' ORDER BY id DESC")
     fun getErroredDownloads() : PagingSource<Int, DownloadItemSimple>
 
     @Query("SELECT * FROM downloads WHERE status='Error' ORDER BY id DESC")
     fun getErroredDownloadsList() : List<DownloadItem>
 
+    @RewriteQueriesToDropUnusedColumns
     @Query("SELECT * FROM downloads WHERE status='Saved' ORDER BY id DESC")
     fun getSavedDownloads() : PagingSource<Int, DownloadItemSimple>
 

@@ -247,7 +247,7 @@ object FileUtil {
 
     fun scanMedia(files: List<String>, context: Context) : List<String> {
         try {
-            val paths = files.sortedByDescending { File(it).length() }
+            val paths = files.distinct().sortedByDescending { File(it).length() }
             runCatching {
                 paths.forEach {
                     MediaScannerConnection.scanFile(context, arrayOf(it), null, null)

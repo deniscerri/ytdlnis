@@ -20,6 +20,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.yausername.youtubedl_android.YoutubeDL
 import com.yausername.youtubedl_android.YoutubeDLRequest
+import kotlinx.coroutines.CancellationException
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -115,7 +116,9 @@ class InfoUtil(private val context: Context) {
                 kotlin.runCatching {
                     val obj = dataArray.getJSONObject(i)
                     val itm = createVideoFromPipedJSON(obj, "https://youtube.com" + obj.getString("url"))
-                    itm?.playlistTitle = res.getString("name") + "[${i+1}]"
+                    itm?.playlistTitle = res.getString("name")
+                    itm?.playlistURL = "https://www.youtube.com/playlist?list=$id"
+                    itm?.playlistIndex = (i+1)
                     items.add(itm)
                 }
             }
@@ -432,6 +435,7 @@ class InfoUtil(private val context: Context) {
                 getFormatsFromYTDL(url)
             }
         }catch (e: Exception){
+            if (e is CancellationException) throw e
             getFormatsFromYTDL(url)
         }
     }
@@ -607,7 +611,9 @@ class InfoUtil(private val context: Context) {
             youtubeDLResponse.out.split(lineSeparator!!)
         } catch (e: Exception) {
             listOf(youtubeDLResponse.out)
-        }.filter { it.isNotBlank() }
+        }.filter { it.isNotBlank() }.apply {
+            if (this.isEmpty()) throw Exception("Command Used: \n yt-dlp ${parseYTDLRequestString(request)}")
+        }
         for (result in results) {
             if (result.isNullOrBlank()) continue
             val jsonObject = JSONObject(result)
@@ -641,12 +647,17 @@ class InfoUtil(private val context: Context) {
                 }
             }
             val website = jsonObject.getString(listOf("ie_key", "extractor_key", "extractor").first { jsonObject.has(it) })
+
             var playlistTitle: String? = ""
+            var playlistURL: String? = ""
+            var playlistIndex: Int? = null
+
             if (jsonObject.has("playlist_title")) playlistTitle = jsonObject.getString("playlist_title")
             if(playlistTitle?.removeSurrounding("\"").equals(query)) playlistTitle = ""
 
             if (playlistTitle?.isNotBlank() == true){
-                playlistTitle += "[${jsonObject.getString("playlist_index")}]"
+                playlistURL = query
+                kotlin.runCatching { playlistIndex = jsonObject.getInt("playlist_index") }
             }
 
             val formatsInJSON = if (jsonObject.has("formats") && jsonObject.get("formats") is JSONArray) jsonObject.getJSONArray("formats") else null
@@ -692,7 +703,9 @@ class InfoUtil(private val context: Context) {
                 playlistTitle!!,
                 formats,
                 urls,
-                chapters
+                chapters,
+                playlistURL,
+                playlistIndex
             )
             )
         }
@@ -814,6 +827,8 @@ class InfoUtil(private val context: Context) {
             arrayListOf(),
             "",
             arrayListOf(),
+            "",
+            null,
             System.currentTimeMillis()
         )
     }
@@ -961,8 +976,15 @@ class InfoUtil(private val context: Context) {
     }
 
     fun buildYoutubeDLRequest(downloadItem: DownloadItem) : YoutubeDLRequest{
-        val url = downloadItem.url
-        val request = YoutubeDLRequest(url)
+        val request = if (downloadItem.playlistURL.isNullOrBlank() || downloadItem.playlistTitle.isBlank() || downloadItem.playlistIndex == null){
+            YoutubeDLRequest(downloadItem.url)
+        }else{
+            YoutubeDLRequest(downloadItem.playlistURL!!).apply {
+                addOption("--playlist-start", downloadItem.playlistIndex!!)
+                addOption("--playlist-end", downloadItem.playlistIndex!!)
+            }
+        }
+
         val type = downloadItem.type
 
         val downDir : File
@@ -996,6 +1018,12 @@ class InfoUtil(private val context: Context) {
         val limitRate = sharedPreferences.getString("limit_rate", "")!!
         if (limitRate.isNotBlank()) request.addOption("-r", limitRate)
 
+        val bufferSize = sharedPreferences.getString("buffer_size", "")!!
+        if (bufferSize.isNotBlank()){
+            request.addOption("--buffer-size", bufferSize)
+            request.addOption("--no-resize-buffer")
+        }
+
         val sponsorblockURL = sharedPreferences.getString("sponsorblock_url", "")!!
         if (sponsorblockURL.isNotBlank()) request.addOption("--sponsorblock-api", sponsorblockURL)
 
@@ -1019,6 +1047,8 @@ class InfoUtil(private val context: Context) {
 
         val preferredAudioCodec = sharedPreferences.getString("audio_codec", "")!!
         val aCodecPref = "ba[acodec~='^($preferredAudioCodec)']"
+        val embedMetadata = sharedPreferences.getBoolean("embed_metadata", true)
+        var filenameTemplate = downloadItem.customFileNameTemplate
 
         if(downloadItem.type != DownloadViewModel.Type.command){
             request.addOption("--trim-filenames",  downDir.absolutePath.length + 117)
@@ -1075,9 +1105,9 @@ class InfoUtil(private val context: Context) {
                         request.addOption("--force-keyframes-at-cuts")
                     }
                 }
-                downloadItem.customFileNameTemplate += " %(section_title|)s "
+                filenameTemplate += " %(section_title|)s "
                 if (downloadItem.downloadSections.split(";").size > 1){
-                    downloadItem.customFileNameTemplate += "%(autonumber)s"
+                    filenameTemplate += "%(autonumber)s"
                 }
                 request.addOption("--output-na-placeholder", " ")
             }
@@ -1102,18 +1132,14 @@ class InfoUtil(private val context: Context) {
                 request.addOption("--write-description")
             }
 
-            downloadItem.customFileNameTemplate = downloadItem.customFileNameTemplate.replace("%(uploader)s", "%(uploader,channel)s")
+            filenameTemplate = filenameTemplate.replace("%(uploader)s", "%(uploader,channel)s")
         }
 
         if (downloadItem.playlistTitle.isNotBlank()){
-            request.addOption("--parse-metadata","${downloadItem.playlistTitle.split("[")[0]}:%(playlist)s")
+            request.addOption("--parse-metadata","${downloadItem.playlistTitle}:%(playlist)s")
             runCatching {
                 request.addOption("--parse-metadata",
-                    downloadItem.playlistTitle
-                        .substring(
-                            downloadItem.playlistTitle.indexOf("[") + 1,
-                            downloadItem.playlistTitle.indexOf("]"),
-                        ) + ":%(playlist_index)s"
+                    downloadItem.playlistIndex.toString() + ":%(playlist_index)s"
                 )
             }
         }
@@ -1149,7 +1175,7 @@ class InfoUtil(private val context: Context) {
                     request.addOption("-o", "chapter:%(section_title)s.%(ext)s")
                 }else{
 
-                    if (sharedPreferences.getBoolean("embed_metadata", true)){
+                    if (embedMetadata){
                         request.addOption("--embed-metadata")
 
                         request.addOption("--parse-metadata", "%(release_year,release_date>%Y,upload_date>%Y)s:%(meta_date)s")
@@ -1180,8 +1206,8 @@ class InfoUtil(private val context: Context) {
                         }
                     }
 
-                    if (downloadItem.customFileNameTemplate.isNotBlank()){
-                        request.addOption("-o", "${downloadItem.customFileNameTemplate.removeSuffix(".%(ext)s")}.%(ext)s")
+                    if (filenameTemplate.isNotBlank()){
+                        request.addOption("-o", "${filenameTemplate.removeSuffix(".%(ext)s")}.%(ext)s")
                     }
                 }
 
@@ -1355,8 +1381,8 @@ class InfoUtil(private val context: Context) {
                     request.addOption("--split-chapters")
                     request.addOption("-o", "chapter:%(section_title)s.%(ext)s")
                 }else{
-                    if (downloadItem.customFileNameTemplate.isNotBlank()){
-                        request.addOption("-o", "${downloadItem.customFileNameTemplate.removeSuffix(".%(ext)s")}.%(ext)s")
+                    if (filenameTemplate.isNotBlank()){
+                        request.addOption("-o", "${filenameTemplate.removeSuffix(".%(ext)s")}.%(ext)s")
                     }
                 }
 
@@ -1407,10 +1433,12 @@ class InfoUtil(private val context: Context) {
     fun getGenericAudioFormats(resources: Resources) : MutableList<Format>{
         val audioFormatIDPreference = sharedPreferences.getString("format_id_audio", "").toString().split(",").filter { it.isNotEmpty() }
         val audioFormats = resources.getStringArray(R.array.audio_formats)
+        val audioFormatsValues = resources.getStringArray(R.array.audio_formats_values)
         val formats = mutableListOf<Format>()
         val containerPreference = sharedPreferences.getString("audio_format", "")
         val acodecPreference = sharedPreferences.getString("audio_codec", "m4a|mp4a|aac")
-        audioFormats.reversed().forEach { formats.add(Format(it, containerPreference!!,"",acodecPreference!!, "",0, it)) }
+        audioFormats.forEachIndexed { idx, it -> formats.add(Format(audioFormatsValues[idx], containerPreference!!,"",acodecPreference!!, "",0, it)) }
+        audioFormats.reverse()
         audioFormatIDPreference.forEach { formats.add(Format(it, containerPreference!!,"",acodecPreference!!, "",1, it)) }
         return formats
     }

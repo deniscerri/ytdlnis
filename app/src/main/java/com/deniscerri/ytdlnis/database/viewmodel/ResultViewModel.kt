@@ -151,7 +151,7 @@ class ResultViewModel(application: Application) : AndroidViewModel(application) 
         repository.update(item)
     }
 
-    fun getItemByURL(url: String) : ResultItem {
+    fun getItemByURL(url: String) : ResultItem? {
         return repository.getItemByURL(url)
     }
 
@@ -233,11 +233,12 @@ class ResultViewModel(application: Application) : AndroidViewModel(application) 
                 val formats = infoUtil.getFormats(result.url)
                 updatingFormats.emit(false)
                 if (formats.isNotEmpty() && isActive) {
-                    val res = getItemByURL(result.url)
-                    res.formats = formats.toMutableList()
-                    update(res)
+                    getItemByURL(result.url)?.apply {
+                        this.formats = formats.toMutableList()
+                        update(this)
+                    }
+                    updateFormatsResultData.emit(formats.toMutableList())
                 }
-                updateFormatsResultData.emit(formats.toMutableList())
             }
             updateFormatsResultDataJob?.start()
             updateFormatsResultDataJob?.invokeOnCompletion {

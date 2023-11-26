@@ -32,6 +32,7 @@ import java.util.Locale
 
 class NotificationUtil(var context: Context) {
     private val downloadNotificationBuilder: NotificationCompat.Builder = NotificationCompat.Builder(context, DOWNLOAD_SERVICE_CHANNEL_ID)
+    private val workerNotificationBuilder: NotificationCompat.Builder = NotificationCompat.Builder(context, DOWNLOAD_WORKER_CHANNEL_ID)
     private val commandDownloadNotificationBuilder: NotificationCompat.Builder = NotificationCompat.Builder(context, COMMAND_DOWNLOAD_SERVICE_CHANNEL_ID)
     private val finishedDownloadNotificationBuilder: NotificationCompat.Builder = NotificationCompat.Builder(context, DOWNLOAD_FINISHED_CHANNEL_ID)
     private val notificationManager: NotificationManager = context.getSystemService(NotificationManager::class.java)
@@ -97,6 +98,7 @@ class NotificationUtil(var context: Context) {
             DOWNLOAD_SERVICE_CHANNEL_ID -> { return downloadNotificationBuilder}
             COMMAND_DOWNLOAD_SERVICE_CHANNEL_ID -> { return commandDownloadNotificationBuilder }
             DOWNLOAD_FINISHED_CHANNEL_ID -> { return finishedDownloadNotificationBuilder }
+            DOWNLOAD_WORKER_CHANNEL_ID -> { return workerNotificationBuilder }
         }
         return downloadNotificationBuilder
     }

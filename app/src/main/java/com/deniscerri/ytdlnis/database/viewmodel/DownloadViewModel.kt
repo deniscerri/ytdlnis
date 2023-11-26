@@ -152,15 +152,7 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
 
         audioContainer = sharedPreferences.getString("audio_format", "mp3")
         bestAudioFormat = if (audioFormatIDPreference.isEmpty()){
-            Format(
-                "best",
-                audioContainer!!,
-                "",
-                "",
-                "",
-                0,
-                "best"
-            )
+            infoUtil.getGenericAudioFormats(resources).last()
         }else{
             Format(
                 audioFormatIDPreference.first().split("+").first(),
@@ -260,23 +252,8 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
 
         val audioPreferences = AudioPreferences(embedThumb, cropThumb,false, ArrayList(sponsorblock!!))
 
-        val preferredAudioFormats = arrayListOf<String>()
-        for (f in resultItem.formats.sortedBy { it.format_id }){
-            val fId = audioFormatIDPreference.sorted().find { it.contains(f.format_id) }
-            if (fId != null) {
-                if (fId.split("+").all { resultItem.formats.map { f-> f.format_id }.contains(it) }){
-                    preferredAudioFormats.addAll(fId.split("+"))
-                    break
-                }
-            }
-        }
 
-        if (preferredAudioFormats.isEmpty()){
-            val audioF = getFormat(resultItem.formats, Type.audio)
-            if (!infoUtil.getGenericAudioFormats(resources).contains(audioF)){
-                preferredAudioFormats.add(audioF.format_id)
-            }
-        }
+        val preferredAudioFormats = getPreferredAudioFormats(resultItem.formats)
 
         val videoPreferences = VideoPreferences(
             embedSubs,
@@ -303,7 +280,15 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
             container!!,
             "",
             resultItem.formats,
-            downloadPath!!, resultItem.website, "", resultItem.playlistTitle, audioPreferences, videoPreferences, extraCommands, customFileNameTemplate!!, saveThumb, DownloadRepository.Status.Queued.toString(), 0, null
+            downloadPath!!, resultItem.website,
+            "",
+            resultItem.playlistTitle,
+            audioPreferences,
+            videoPreferences,
+            extraCommands,
+            customFileNameTemplate!!,
+            saveThumb,
+            DownloadRepository.Status.Queued.toString(), 0, null, playlistURL = resultItem.playlistURL, playlistIndex = resultItem.playlistIndex
         )
 
     }
@@ -321,6 +306,8 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
             downloadItem.allFormats,
             "",
             arrayListOf(),
+            downloadItem.playlistURL,
+            downloadItem.playlistIndex,
             System.currentTimeMillis()
         )
 
@@ -339,6 +326,8 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
             arrayListOf(),
             "",
             arrayListOf(),
+            "",
+            null,
             System.currentTimeMillis()
         )
 
@@ -357,6 +346,8 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
             arrayListOf(),
             "",
             arrayListOf(),
+            "",
+            null,
             System.currentTimeMillis()
         )
 
@@ -491,6 +482,26 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
                 return generateCommandFormat(c)
             }
         }
+    }
+
+    fun getPreferredAudioFormats(formats: List<Format>) : ArrayList<String>{
+        val preferredAudioFormats = arrayListOf<String>()
+        for (f in formats.sortedBy { it.format_id }){
+            val fId = audioFormatIDPreference.sorted().find { it.contains(f.format_id) }
+            if (fId != null) {
+                if (fId.split("+").all { formats.map { f-> f.format_id }.contains(it) }){
+                    preferredAudioFormats.addAll(fId.split("+"))
+                    break
+                }
+            }
+        }
+        if (preferredAudioFormats.isEmpty()){
+            val audioF = getFormat(formats, Type.audio)
+            if (!infoUtil.getGenericAudioFormats(resources).contains(audioF)){
+                preferredAudioFormats.add(audioF.format_id)
+            }
+        }
+        return preferredAudioFormats
     }
 
     fun generateCommandFormat(c: CommandTemplate) : Format {

@@ -198,24 +198,27 @@ class DownloadAudioFragment(private var resultItem: ResultItem? = null, private 
                 val chosenFormat = downloadItem.format
                 UiUtil.populateFormatCard(requireContext(), formatCard, chosenFormat, null)
                 val listener = object : OnFormatClickListener {
-                    override fun onFormatClick(allFormats: List<List<Format>>, item: List<FormatTuple>) {
+                    override fun onFormatClick(item: List<FormatTuple>) {
                         downloadItem.format = item.first().format
                         UiUtil.populateFormatCard(requireContext(), formatCard, item.first().format, null)
-                        lifecycleScope.launch {
-                            withContext(Dispatchers.IO){
-                                resultItem?.formats?.removeAll(formats.toSet())
-                                resultItem?.formats?.addAll(allFormats.first().filter { !genericAudioFormats.contains(it) })
-                                if (resultItem != null){
-                                    resultViewModel.update(resultItem!!)
-                                    kotlin.runCatching {
-                                        val f1 = fragmentManager?.findFragmentByTag("f1") as DownloadVideoFragment
-                                        f1.updateUI(resultItem)
-                                    }
+                    }
+
+                    override fun onFormatsUpdated(allFormats: List<List<Format>>) {
+                        lifecycleScope.launch(Dispatchers.IO) {
+                            resultItem?.formats?.removeAll(formats.toSet())
+                            resultItem?.formats?.addAll(allFormats.first().filter { !genericAudioFormats.contains(it) })
+                            if (resultItem != null){
+                                resultViewModel.update(resultItem!!)
+                                kotlin.runCatching {
+                                    val f1 = fragmentManager?.findFragmentByTag("f1") as DownloadVideoFragment
+                                    f1.updateUI(resultItem)
                                 }
                             }
                         }
                         formats = allFormats.first().filter { !genericAudioFormats.contains(it) }.toMutableList()
                         formats.removeAll(genericAudioFormats)
+                        val preferredFormat = downloadViewModel.getFormat(formats, Type.audio)
+                        UiUtil.populateFormatCard(requireContext(), formatCard, preferredFormat, null)
                     }
                 }
                 formatCard.setOnClickListener{
