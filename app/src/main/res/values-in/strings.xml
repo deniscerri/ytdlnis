@@ -320,4 +320,6 @@
     <string name="remember_download_type">Ingat Jenis Unduhan</string>
     <string name="remember_download_type_summary">Pilih jenis unduhan yang terakhir kali dibuka untuk butir saat ini</string>
     <string name="length">Panjangnya</string>
+    <string name="buffer_size_summary">Ukuran buffer unduhan, mis. 1024 atau 16K (1024 secara asali)</string>
+    <string name="buffer_size">Ukuran Buffer</string>
 </resources>

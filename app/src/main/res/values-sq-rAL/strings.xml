@@ -320,4 +320,6 @@
     <string name="errored_downloads">Shkarkimet me Probleme</string>
     <string name="errored_download_notification_channel_description">Njoftim për shkarkimet me probleme</string>
     <string name="ytdl_source">Burimi i yt-dlp</string>
+    <string name="buffer_size_summary">Madhësia e bufferit të shkarkimit, p.sh 1024 ose 16k (fillimisht është 1024)</string>
+    <string name="buffer_size">Madhësia e Bufferit</string>
 </resources>
