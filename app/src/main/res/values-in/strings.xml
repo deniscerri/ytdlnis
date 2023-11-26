@@ -176,7 +176,7 @@
     <string name="kill_app">Hentikan Aplikasi</string>
     <string name="confirm_terminate">Menghentikan semua unduhan dan menutup paksa aplikasi</string>
     <string name="dont_ask_again">Jangan tanya lagi</string>
-    <string name="update_formats_summary">Secara otomatis menelusuri format yang hilang saat menge-klik kartu format</string>
+    <string name="update_formats_summary">Ambil format-formatnya segera setelah kartu unduhan muncul</string>
     <string name="ignore_battery_optimization">Abaikan Pengoptimalan Baterai</string>
     <string name="cut">Potong</string>
     <string name="new_cut">Potongan Baru</string>
@@ -225,10 +225,10 @@
     <string name="purple">Ungu</string>
     <string name="monochrome">Monokrom</string>
     <string name="red">Merah</string>
-    <string name="quick_download_summary">Jangan mengambil data sebelum pengunduhan</string>
+    <string name="quick_download_summary">Jangan mengambil data di kartu unduhan</string>
     <string name="downloaded">"Terunduh: "</string>
     <string name="finished_download_notification_channel_name">Unduhan yang Selesai</string>
-    <string name="finished_download_notification_channel_description">Notifikasi unduhan yang selesai atau cacat</string>
+    <string name="finished_download_notification_channel_description">Notifikasi unduhan yang selesai</string>
     <string name="quick_download">Unduhan Lekas</string>
     <string name="download_already_exists">Unduhan sudah ada</string>
     <string name="preferred_format_id">Preferensi ID Format</string>
@@ -238,7 +238,7 @@
     <string name="updating_download_data">Memutakhirkan Data Butir Unduhan</string>
     <string name="preferred_locale">Preferensi Wilayah</string>
     <string name="resume">Lanjutkan</string>
-    <string name="keep_cache">Simpan Berkas Singgahan (Cache)</string>
+    <string name="keep_cache">Simpan Fragmen</string>
     <string name="incognito">Penyamaran</string>
     <string name="sponsorblock">SponsorBlock</string>
     <string name="couldnt_parse_file">Tidak bisa mengurai berkas</string>
@@ -288,7 +288,7 @@
     <string name="write_description_summary">Menulis berkas deskripsi</string>
     <string name="extra_command">Perintah Ekstra</string>
     <string name="use_cookies">Gunakan Kuki</string>
-    <string name="embed_metadata_summary">Menanamkan metadata ke berkas video. Juga menanamkan babak-babak/infojson jika ada</string>
+    <string name="embed_metadata_summary">Menguraikan dan menanamkan metadata ke berkas audio</string>
     <string name="embed_metadata">Tanamkan Metadata</string>
     <string name="update_formats_background">Mutakhirkan Format di Latar Belakang</string>
     <string name="use_sponsorblock">Gunakan SponsorBlock</string>
@@ -300,4 +300,24 @@
     <string name="update_app_beta_summary">Masuk ke keanggotaan program beta. Versi ini mungkin mengandung kutu (bug).</string>
     <string name="update_app_beta">Rilis Beta</string>
     <string name="auto">Otomatis</string>
+    <string name="export_file">Ekspor Berkas</string>
+    <string name="preferred_audio_codec">Preferensi Kodek Audio</string>
+    <string name="schedule">Jadwal</string>
+    <string name="update_ytdl_master">yt-dlp Versi Master</string>
+    <string name="user_agent_header">Header Agen Pengguna</string>
+    <string name="search_command_hint">Telusuri dari Perintah</string>
+    <string name="ignore">Abaikan</string>
+    <string name="errored_downloads">Unduhan yang Galat</string>
+    <string name="license">Lisensi</string>
+    <string name="download_already_exists_summary">Apakah kamu tetap ingin mengunduh?</string>
+    <string name="preferred_video_codec">Preferensi Kodek Video</string>
+    <string name="sponsorblock_api_url">URL API SponsorBlock</string>
+    <string name="modify_download_card">Modifikasi Kartu Unduhan</string>
+    <string name="errored_download_notification_channel_description">Notifikasi unduhan yang cacat</string>
+    <string name="loading">Memuat</string>
+    <string name="security">Keamanan</string>
+    <string name="ytdl_source">Sumber yt-dlp</string>
+    <string name="remember_download_type">Ingat Jenis Unduhan</string>
+    <string name="remember_download_type_summary">Pilih jenis unduhan yang terakhir kali dibuka untuk butir saat ini</string>
+    <string name="length">Panjangnya</string>
 </resources>
