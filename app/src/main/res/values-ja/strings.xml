@@ -290,7 +290,7 @@
     <string name="use_extra_commands">エクストラコマンドを追加</string>
     <string name="use_extra_commands_summary">オーディオと動画のダウンロード用。 GUI にエクストラコマンドを追加します</string>
     <string name="current">現在のコマンド</string>
-    <string name="update_app_beta_summary">ベータプログラムに登録します。これには重大なバグが含んでいる可能性があります</string>
+    <string name="update_app_beta_summary">ベータプログラムに登録します。これには重大なバグが含んでいる可能性があります.</string>
     <string name="update_app_beta">ベータ版リリース</string>
     <string name="scheduling">スケジュール設定</string>
     <string name="update_formats_background">バックグラウンドでフォーマットを更新</string>
