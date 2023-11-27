@@ -24,7 +24,7 @@
     <string name="Remove">إزالة</string>
     <string name="confirm_delete_history_desc">الإزالة من سجل التحميلات تمامًا.</string>
     <string name="you_are_in_latest_version">لديك أحدث إصدار</string>
-    <string name="ytld_update_success">تم تثبيت أحدث إصدار</string>
+    <string name="ytld_update_success">تم تثبيت أحدث إصدار من yt-dlp</string>
     <string name="confirm_delete_history">تأكيد</string>
     <string name="search_history_hint">البحث في سجل التحميلات</string>
     <string name="no_results">لا توجد عناصر</string>
@@ -68,7 +68,7 @@
     <string name="template">قالب</string>
     <string name="logs">السجلات</string>
     <string name="date_added">تاريخ الإضافة</string>
-    <string name="update_ytdl_nightly">استخدام الإصدار الليلي من yt-dlp</string>
+    <string name="update_ytdl_nightly">الإصدار الليلي من yt-dlp</string>
     <string name="adjust_audio">ضبط ملف الصوت</string>
     <string name="file_name_template">قالب العنوان</string>
     <string name="language">اللغة</string>
@@ -98,7 +98,7 @@
     <string name="error_restarting_download">حدث خطأ أثناء محاولة استئناف التحميل</string>
     <string name="update_template">تحرير القالب</string>
     <string name="create">تم</string>
-    <string name="update">تحيين</string>
+    <string name="update">اكتمال</string>
     <string name="preferred_download_type">نوع التحميل المفضل</string>
     <string name="file_size">حجم الملف</string>
     <string name="clear_temporary_files">النقر لمسح الملفات المؤقتة</string>
@@ -173,7 +173,7 @@
     <string name="download_rescheduled_to">تمت جدولة التحميل الى:</string>
     <string name="downloads_running_try_later">أداة التحميل قيد التشغيل. حاول مرة اُخرى لاحقًا</string>
     <string name="ytdl_version">إصدار الـ yt-dlp</string>
-    <string name="update_formats_summary">البحث التلقائي عن التنسيقات المفقودة عند فتح بطاقة التنسيقات</string>
+    <string name="update_formats_summary">جلب التنسيقات بمجرد ظهور بطاقة التحميل</string>
     <string name="ignore_battery_optimization">تجاهل تحسين البطارية</string>
     <string name="log_downloads_summary">إنشاء ملف سجل للتحميل المكتمل</string>
     <string name="shortcuts_desc">طريقة وصول أسرع للأوامر كثيرة الاستخدام</string>
@@ -234,11 +234,11 @@
     <string name="monochrome">أحادي اللون</string>
     <string name="downloaded">"تم تحميل: "</string>
     <string name="finished_download_notification_channel_name">التحميلات المنتهية</string>
-    <string name="finished_download_notification_channel_description">إشعارٌ بإنتهاء/تعطل التحميلات</string>
+    <string name="finished_download_notification_channel_description">إشعارٌ بإنتهاء التحميلات</string>
     <string name="incognito">وضع الاستخدام المتخفي</string>
     <string name="network_error">خطأ في الشبكة</string>
     <string name="sponsorblock">حاجب شرائح الإعلانات</string>
-    <string name="keep_cache">الاحتفاظ بالملفات المؤقتة</string>
+    <string name="keep_cache">الإحتفاظ بالأجزاء</string>
     <string name="backup">عمل نسخة احتياطية</string>
     <string name="pause">إيقاف</string>
     <string name="resume">استئناف</string>
@@ -250,7 +250,7 @@
     <string name="couldnt_parse_file">تعذرَ تحليل الملف</string>
     <string name="restore">استعادة نسخة احتياطية</string>
     <string name="restore_complete">اكتملت عملية الاستعادة، تمت استعادة العناصر التالية:</string>
-    <string name="backup_created_successfully">تم حفظ ملف النسخ الاحتياطي في مجلد \"Download\"</string>
+    <string name="backup_created_successfully">تم حفظ ملف النسخة الاحتياطية في مجلد \"Download\"</string>
     <string name="select_backup_categories">اختيار فئات النسخ الاحتياطي</string>
     <string name="audio_only_item">يحتوي هذا العنصر على تنسيقات الصوت فقط</string>
     <string name="socks5_proxy_summary">استخدام وكيل HTTP/HTTPS/SOCKS المحدد</string>
@@ -289,7 +289,7 @@
     <string name="extra_command">أوامر إضافية</string>
     <string name="use_cookies">استخدام ملفات تعريف الارتباط</string>
     <string name="embed_metadata">تضمين البيانات الوصفية</string>
-    <string name="embed_metadata_summary">دمج وتحليل البيانات الوصفية داخل ملف الصوت</string>
+    <string name="embed_metadata_summary">تحليل البيانات الوصفية وتضمينها في الملف الصوتي</string>
     <string name="update_formats_background">تحديث التنسيقات في الخلفية</string>
     <string name="use_sponsorblock">استخدام حاجب شرائح الإعلانات</string>
     <string name="auto_update_ytdlp">تحديث تلقائي لـ yt-dlp</string>
@@ -315,4 +315,11 @@
     <string name="modify_download_card">تحرير بطاقة التحميل</string>
     <string name="security">سياسة الخصوصية والأمان</string>
     <string name="length">الطول</string>
+    <string name="export_file">تصدير ملف</string>
+    <string name="update_ytdl_master">الإصدار الرئيسي من yt-dlp</string>
+    <string name="errored_downloads">التحميلات المتعطلة</string>
+    <string name="errored_download_notification_channel_description">إشعارٌ بتعطل التحميلات</string>
+    <string name="buffer_size_summary">حجم الذاكرة المؤقتة للتحميل، على سبيل المثال، 1024 أو 16 كيلوبايت (الافتراضي هو 1024)</string>
+    <string name="ytdl_source">مصدر yt-dlp</string>
+    <string name="buffer_size">حجم الذاكرة المؤقتة</string>
 </resources>
