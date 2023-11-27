@@ -297,7 +297,7 @@
     <string name="use_scheduler">Загрузить по расписанию</string>
     <string name="cache_first">Сначала кэшировать загрузки</string>
     <string name="cache_first_summary">Кэш загружается во внутреннюю память и переносится в выбранную вами папку. Используйте при невозможности записывать файлы в память</string>
-    <string name="update_app_beta_summary">Зарегистрироваться в бета-программе. Может содержать ошибки.</string>
+    <string name="update_app_beta_summary">Зарегистрируйтесь в бета-программе. Он может содержать ошибки.</string>
     <string name="update_app_beta">Бета релизы</string>
     <string name="auto">Авто</string>
     <string name="preferred_audio_codec">Предпочитаемый аудиокодек</string>
@@ -320,4 +320,6 @@
     <string name="errored_downloads">Ошибочные загрузки</string>
     <string name="errored_download_notification_channel_description">Уведомление об ошибочных загрузках</string>
     <string name="ytdl_source">Источник yt-dlp</string>
+    <string name="buffer_size_summary">Размер буфера загрузки, например. 1024 или 16К (по умолчанию 1024)</string>
+    <string name="buffer_size">Размер буфера</string>
 </resources>

@@ -290,7 +290,7 @@
     <string name="use_extra_commands">エクストラコマンドを追加</string>
     <string name="use_extra_commands_summary">オーディオと動画のダウンロード用。 GUI にエクストラコマンドを追加します</string>
     <string name="current">現在のコマンド</string>
-    <string name="update_app_beta_summary">ベータプログラムに登録します。これには重大なバグが含んでいる可能性があります</string>
+    <string name="update_app_beta_summary">ベータプログラムに登録します。これには重大なバグが含んでいる可能性があります.</string>
     <string name="update_app_beta">ベータ版リリース</string>
     <string name="scheduling">スケジュール設定</string>
     <string name="update_formats_background">バックグラウンドでフォーマットを更新</string>
@@ -320,4 +320,6 @@
     <string name="errored_downloads">ダウンロードのエラー</string>
     <string name="errored_download_notification_channel_description">失敗したダウンロードの通知</string>
     <string name="ytdl_source">yt-dlp の取得元</string>
+    <string name="buffer_size_summary">ダウンロードで一時保存する量。例 1024 や 16K (初期値 1024)</string>
+    <string name="buffer_size">バッファの大きさ</string>
 </resources>
