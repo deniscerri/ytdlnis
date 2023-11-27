@@ -197,7 +197,7 @@
     <string name="blue">Niebieski</string>
     <string name="downloaded">"Pobrano: "</string>
     <string name="material_you">MaterialYou</string>
-    <string name="finished_download_notification_channel_description">Powiadomienie o zakończonym lub błędnym pobieraniu</string>
+    <string name="finished_download_notification_channel_description">Powiadomienie o zakończeniu pobierania</string>
     <string name="quick_download">Szybkie pobieranie</string>
     <string name="remove_audio">Usuń dźwięk</string>
     <string name="download_now">Pobierz teraz</string>
@@ -316,4 +316,10 @@
     <string name="remember_download_type">Zapamiętaj typ pobierania</string>
     <string name="remember_download_type_summary">Wybierz ostatnio otwarty typ pobierania dla bieżącego elementu</string>
     <string name="length">Długość</string>
+    <string name="update_ytdl_master">Główna wersja yt-dlp</string>
+    <string name="errored_downloads">Błędne pobieranie</string>
+    <string name="errored_download_notification_channel_description">Powiadomienie o błędnych plikach do pobrania</string>
+    <string name="buffer_size_summary">Rozmiar bufora pobierania, np. 1024 lub 16K (domyślnie jest to 1024)</string>
+    <string name="ytdl_source">Źródło yt-dlp</string>
+    <string name="buffer_size">Rozmiar bufora</string>
 </resources>
