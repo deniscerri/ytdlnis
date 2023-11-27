@@ -265,4 +265,5 @@
     <string name="exit_app">Exit App</string>
     <string name="incognito_summary">Stiahnuť bez pridania do histórie</string>
     <string name="crop_thumb">Orezať miniatúru</string>
+    <string name="errored_download_notification_channel_description">hlásenie chyby sťahovaní</string>
 </resources>

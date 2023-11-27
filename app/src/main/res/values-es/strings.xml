@@ -320,4 +320,6 @@
     <string name="errored_downloads">Descargas erróneas</string>
     <string name="errored_download_notification_channel_description">Notificación de descargas defectuosas</string>
     <string name="ytdl_source">Fuente yt-dlp</string>
+    <string name="buffer_size_summary">Tamaño del búfer de descarga, por ejemplo 1024 o 16K (por defecto es 1024)</string>
+    <string name="buffer_size">Tamaño del búfer</string>
 </resources>

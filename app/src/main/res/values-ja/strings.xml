@@ -179,7 +179,7 @@
     <string name="kill_app">アプリを強制終了</string>
     <string name="confirm_terminate">すべてのダウンロードを停止し、アプリを強制的に終了します</string>
     <string name="share">共有</string>
-    <string name="cookies">Cookie</string>
+    <string name="cookies">クッキー</string>
     <string name="blue">ブルー</string>
     <string name="red">レッド</string>
     <string name="green">グリーン</string>
@@ -201,10 +201,10 @@
     <string name="add_template_first">コマンドテンプレートを1つ以上作成してください!</string>
     <string name="suggested">提案</string>
     <string name="select_all">すべて選択</string>
-    <string name="new_cookie">新規 Cookie</string>
-    <string name="get_cookies">Cookie を取得</string>
-    <string name="delete_all_cookies">すべての Cookie を削除</string>
-    <string name="confirm_delete_cookies_desc">すべての Cookie を完全に削除します</string>
+    <string name="new_cookie">新しいクッキー</string>
+    <string name="get_cookies">クッキーを取得</string>
+    <string name="delete_all_cookies">すべてのクッキーを削除</string>
+    <string name="confirm_delete_cookies_desc">すべてのクッキーを完全に削除します</string>
     <string name="download_over_metered_networks">従量制課金接続でのダウンロード</string>
     <string name="download_over_metered_networks_summary">どんなネットワーク種別でもダウンロードします。無効なら従量制ではないネットワークへの接続を待ちます</string>
     <string name="metered_network_download_start_info">従量制ではないネットワークに接続するとダウンロードを開始</string>
@@ -285,7 +285,7 @@
     <string name="extra_command">エクストラコマンド</string>
     <string name="embed_metadata">メタデータを埋め込む</string>
     <string name="show_terminal">共有メニューにターミナルを表示する</string>
-    <string name="use_cookies">Cookie を使用する</string>
+    <string name="use_cookies">クッキーの使用</string>
     <string name="embed_metadata_summary">オーディオファイルの解析とメタデータを埋め込む</string>
     <string name="use_extra_commands">エクストラコマンドを追加</string>
     <string name="use_extra_commands_summary">オーディオと動画のダウンロード用。 GUI にエクストラコマンドを追加します</string>
@@ -309,7 +309,7 @@
     <string name="schedule">スケジュール</string>
     <string name="user_agent_header">User-Agent ヘッダー</string>
     <string name="license">ライセンス</string>
-    <string name="download_already_exists_summary">再度ダウンロードをしますか\?</string>
+    <string name="download_already_exists_summary">再ダウンロードしますか?</string>
     <string name="modify_download_card">ダウンロードカードの変更</string>
     <string name="security">セキュリティ</string>
     <string name="remember_download_type">ダウンロードの種類を記憶</string>
