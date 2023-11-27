@@ -320,4 +320,6 @@
     <string name="errored_downloads">Transferências com erro</string>
     <string name="errored_download_notification_channel_description">Notificação de descargas incorrectas</string>
     <string name="ytdl_source">Fonte yt-dlp</string>
+    <string name="buffer_size_summary">Tamanho do buffer para descargas (valor padrão é 1024 kb)</string>
+    <string name="buffer_size">Tamanho do buffer</string>
 </resources>
