@@ -25,5 +25,7 @@ data class Format(
     @SerializedName(value = "asr", alternate = ["audioSampleRate"])
     var asr: String? = "",
     @SerializedName(value = "url")
-    var url: String? = ""
+    var url: String? = "",
+    @SerializedName(value = "language", alternate = ["audioTrackLocale"])
+    val lang: String? = ""
 ) : Parcelable

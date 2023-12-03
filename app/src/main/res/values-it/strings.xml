@@ -34,7 +34,7 @@
     <string name="save_thumb">Salva miniatura</string>
     <string name="update_ytdl">Installa nuova versione di yt-dlp</string>
     <string name="search_hint">Cerca o inserisci URL</string>
-    <string name="failed_download">Impossibile scaricare il file.</string>
+    <string name="failed_download">Impossibile scaricare il file</string>
     <string name="download_notification_channel_description">Notifica che mostra l\'avanzamento del download di file audio e video</string>
     <string name="download_notification_channel_name">Download di file</string>
     <string name="you_are_in_latest_version">Stai utilizzando l\'ultima versione</string>
@@ -50,7 +50,7 @@
     <string name="more">Di più</string>
     <string name="update_app">Controlla gli aggiornamenti</string>
     <string name="command_directory">Cartella comandi personalizzata</string>
-    <string name="couldnt_find_apk">Impossibile trovare un APK adatto.</string>
+    <string name="couldnt_find_apk">Impossibile trovare un APK adatto</string>
     <string name="audio">Audio</string>
     <string name="video">Video</string>
     <string name="concurrent_fragments">Frammenti Concorrenti</string>

@@ -14,7 +14,7 @@
     <string name="update_ytdl">yt-dlp\'nin yeni sürümünü yükle</string>
     <string name="source_code">Kaynak Kodu</string>
     <string name="search_hint">Ara veya URL Ekle</string>
-    <string name="failed_download"> Dosya indirilemedi.</string>
+    <string name="failed_download">" Dosya indirilemedi"</string>
     <string name="download_notification_channel_name">Dosya İndirmeleri</string>
     <string name="download_notification_channel_description">Ses ve video dosyaların indirilmesindeki ilerlemeyi gösteren bildirim</string>
     <string name="you_are_in_latest_version">Son sürümü kullanıyorsun</string>
@@ -32,7 +32,7 @@
     <string name="update_app">Güncellemeleri kontrol et</string>
     <string name="version">Sürüm</string>
     <string name="command_directory">Özel Komut Klasörü</string>
-    <string name="couldnt_find_apk">Uygun APK bulunamadı.</string>
+    <string name="couldnt_find_apk">Uygun APK bulunamadı</string>
     <string name="downloading_update">Yeni sürüm indiriliyor</string>
     ile sınırla
     <string name="audio">Ses</string>

@@ -11,7 +11,7 @@
     <string name="audio_format">Audio formátum</string>
     <string name="adjust_audio">Adjust Audio</string>
     <string name="music_directory">Zene mappa</string>
-    <string name="couldnt_find_apk">Nem találhat megfelelő APK-t.</string>
+    <string name="couldnt_find_apk">Nem találhat megfelelő APK-t</string>
     <string name="ytdl_updating_started">Új verzió letöltése</string>
     <string name="new_template">Új sablon</string>
     <string name="update_ytdl_nightly">Az yt-dlp éjszakai verziója</string>
@@ -77,7 +77,7 @@
     <string name="download_notification_channel_name">Fájl letöltve</string>
     <string name="remove_results">Minden eredmény törlése</string>
     <string name="adjust_templates">Adjust sablonok</string>
-    <string name="failed_download">Nem lehet letölteni a fájlt.</string>
+    <string name="failed_download">Nem lehet letölteni a fájlt</string>
     <string name="edit_selected">Edit kiválasztott</string>
     <string name="sponsorblock_api_url">Sponsorblock API URL</string>
     <string name="update_app">Frissítés keresése</string>

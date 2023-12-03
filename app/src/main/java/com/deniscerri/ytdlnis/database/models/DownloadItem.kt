@@ -23,7 +23,7 @@ data class DownloadItem(
     var container: String,
     @ColumnInfo(defaultValue = "")
     var downloadSections: String,
-    val allFormats: MutableList<Format>,
+    var allFormats: MutableList<Format>,
     var downloadPath: String,
     var website: String,
     val downloadSize: String,

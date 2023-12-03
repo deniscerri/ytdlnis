@@ -14,7 +14,7 @@
     <string name="update_ytdl">yt-dlp yeni versiyasın quraşdır</string>
     <string name="source_code">Mənbə Kodu</string>
     <string name="search_hint">Axtar və ya URL Əlavə Et</string>
-    <string name="failed_download">Faylı yükləmək mümkün olmadı.</string>
+    <string name="failed_download">Faylı yükləmək mümkün olmadı</string>
     <string name="download_notification_channel_name">Fayl Yükləmələri</string>
     <string name="download_notification_channel_description">Səs və video faylların yüklənilmə irəliləyişin göstərən bildiriş</string>
     <string name="you_are_in_latest_version">Ən son versiya işlədilir</string>
@@ -32,7 +32,7 @@
     <string name="update_app">Yeniləmələr üçün yoxla</string>
     <string name="version">Versiya</string>
     <string name="command_directory">Şəxsi Əmr Qovluğu</string>
-    <string name="couldnt_find_apk">Uyğun APK tapılmadı.</string>
+    <string name="couldnt_find_apk">Uyğun APK tapılmadı</string>
     <string name="downloading_update">Yeni versiya yüklənilir</string>
     <string name="audio">Səs</string>
     <string name="video">Video</string>

@@ -33,7 +33,10 @@ class ResultRepository(private val resultDao: ResultDao, private val context: Co
         if (resetResults) deleteAll()
         val res = infoUtil.search(inputQuery)
         itemCount.value = res.size
-        resultDao.insertMultiple(res)
+        val ids = resultDao.insertMultiple(res)
+        ids.forEachIndexed { index, id ->
+            res[index]?.id = id
+        }
         return res
     }
 
@@ -46,7 +49,10 @@ class ResultRepository(private val resultDao: ResultDao, private val context: Co
         }else{
             v.filter { it?.playlistTitle.isNullOrBlank() }.forEach { it?.playlistTitle = "ytdlnis-Search" }
         }
-        resultDao.insertMultiple(v)
+        val ids = resultDao.insertMultiple(v)
+        ids.forEachIndexed { index, id ->
+            v[index]?.id = id
+        }
         return ArrayList(v)
     }
 
@@ -66,7 +72,10 @@ class ResultRepository(private val resultDao: ResultDao, private val context: Co
             nextPageToken = tmpToken
         } while (true)
         itemCount.value = items.size
-        resultDao.insertMultiple(items.toList())
+        val ids = resultDao.insertMultiple(items.toList())
+        ids.forEachIndexed { index, id ->
+            items[index]?.id = id
+        }
         return items
     }
 
@@ -79,7 +88,10 @@ class ResultRepository(private val resultDao: ResultDao, private val context: Co
         }else{
             items.filter { it?.playlistTitle.isNullOrBlank() }.forEach { it!!.playlistTitle = "ytdlnis-Search" }
         }
-        resultDao.insertMultiple(items.toList())
+        val ids = resultDao.insertMultiple(items.toList())
+        ids.forEachIndexed { index, id ->
+            items[index]?.id = id
+        }
         return items
     }
 

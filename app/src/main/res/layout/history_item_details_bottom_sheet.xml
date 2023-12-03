@@ -31,7 +31,8 @@
                     android:id="@+id/bottom_sheet_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/app_name"
+                    android:maxLines="3"
+                    android:ellipsize="end"
                     android:textColor="?attr/colorOnSurface"
                     android:textSize="25sp" />
 
@@ -40,7 +41,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingTop="5dp"
-                    android:text="@string/app_name"
+                    android:maxLines="2"
+                    android:ellipsize="end"
                     android:textSize="15sp" />
 
             </LinearLayout>
@@ -135,6 +137,20 @@
                     android:clickable="false"
                     android:minWidth="30dp"
                     app:cornerRadius="10dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/command"
+                    style="@style/Widget.Material3.FloatingActionButton.Large.Secondary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:minWidth="30dp"
+                    app:cornerRadius="10dp"
+                    android:text="@string/command"
+                    app:chipIcon="@drawable/ic_baseline_keyboard_arrow_right_24"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />

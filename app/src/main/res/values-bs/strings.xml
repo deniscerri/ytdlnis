@@ -5,7 +5,7 @@
     <string name="download_notification_channel_name">Preuzimanja fajlova</string>
     <string name="update_ytdl">Instaliraj novu verziju yt-dlp(a)</string>
     <string name="source_code">Izvorni kod</string>
-    <string name="failed_download">Ne može se preuzeti fajl.</string>
+    <string name="failed_download">Ne može se preuzeti fajl</string>
     <string name="search">Pretraga</string>
     <string name="remove_all">Ukloniti sve</string>
     <string name="remove_results">Obriši rezultate</string>

@@ -11,7 +11,7 @@
     <string name="download_all">Unduh Semua</string>
     <string name="settings">Setelan</string>
     <string name="search">Telusuri</string>
-    <string name="failed_download">Tidak bisa mengunduh berkas.</string>
+    <string name="failed_download">Tidak bisa mengunduh berkas</string>
     <string name="download_notification_channel_name">Unduhan Berkas</string>
     <string name="download_notification_channel_description">Notifikasi yang memperlihatkan kemajuan pengunduhan berkas audio dan video</string>
     <string name="home">Beranda</string>
@@ -35,7 +35,7 @@
     <string name="command_directory">Folder Perintah Kustom</string>
     <string name="downloading">Mengunduh</string>
     <string name="video">Video</string>
-    <string name="couldnt_find_apk">Tidak bisa menemukan APK yang cocok.</string>
+    <string name="couldnt_find_apk">Tidak bisa menemukan APK yang cocok</string>
     <string name="audio">Audio</string>
     <string name="concurrent_fragments_summary">Jumlah fragmen sebuah video DASH/HLS asal untuk diunduh secara berbarengan</string>
     <string name="limit_rate_summary">Laju unduhan maksimal (dalam satuan bita per detik), mis. 50K atau 4,2M</string>

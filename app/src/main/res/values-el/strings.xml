@@ -127,7 +127,7 @@
     <string name="about">Περί</string>
     <string name="source_code">Πηγαίος Κώδικας</string>
     <string name="search_hint">Αναζήτηση ή Εισαγωγή URL</string>
-    <string name="failed_download">Αδύνατη η λήψη του αρχείου.</string>
+    <string name="failed_download">Αδύνατη η λήψη του αρχείου</string>
     <string name="download_notification_channel_name">Λήψεις Αρχείων</string>
     <string name="download_notification_channel_description">Ειδοποίηση που δείχνει την πρόοδο της λήψης αρχείων ήχου και εικόνας</string>
     <string name="ytld_update_success">Νέα έκδοση εγκαταστάθηκε</string>
@@ -141,7 +141,7 @@
     <string name="more">Περισσότερα</string>
     <string name="update_app">Έλεγχος για ενημερώσεις</string>
     <string name="command_directory">Φάκελος Προσαρμοσμένων Εντολών</string>
-    <string name="couldnt_find_apk">Δεν ήταν δυνατή η εύρεση κατάλληλου APK.</string>
+    <string name="couldnt_find_apk">Δεν ήταν δυνατή η εύρεση κατάλληλου APK</string>
     <string name="downloading_update">Λήψη νέας έκδοσης…</string>
     <string name="audio">Ήχος</string>
     <string name="video">Βίντεο</string>

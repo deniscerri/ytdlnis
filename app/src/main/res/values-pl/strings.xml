@@ -33,7 +33,7 @@
     <string name="exit_app">Wyjdź z aplikacji</string>
     <string name="search">Szukaj</string>
     <string name="directories">Foldery</string>
-    <string name="failed_download">Nie można pobrać pliku.</string>
+    <string name="failed_download">Nie można pobrać pliku</string>
     <string name="ytdl_update_hint">Przydatne, jeśli masz problem z pobieraniem</string>
     <string name="download_notification_channel_description">Powiadomienie pokazujące postęp pobierania plików audio i wideo</string>
     <string name="you_are_in_latest_version">Korzystasz z najnowszej wersji</string>
@@ -59,7 +59,7 @@
     <string name="search_history_hint">Wyszukaj z historii przeglądania</string>
     <string name="version">Wersja</string>
     <string name="command_directory">Własny folder poleceń</string>
-    <string name="couldnt_find_apk">Nie można znaleźć odpowiedniego pliku APK.</string>
+    <string name="couldnt_find_apk">Nie można znaleźć odpowiedniego pliku APK</string>
     <string name="video">Wideo</string>
     <string name="audio">Audio</string>
     <string name="concurrent_fragments">Jednoczesne fragmenty</string>

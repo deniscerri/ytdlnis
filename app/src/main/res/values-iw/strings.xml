@@ -10,7 +10,7 @@
     <string name="title">כותרת</string>
     <string name="music_directory">תיקיית המוזיקה</string>
     <string name="warning">אזהרה</string>
-    <string name="couldnt_find_apk">לא מצליח למצוא יישום מתאים.</string>
+    <string name="couldnt_find_apk">לא מצליח למצוא יישום מתאים</string>
     <string name="ytdl_updating_started">מוריד גירסה חדשה</string>
     <string name="concurrent_downloads_summary">מספר הורדות בו זמנית</string>
     <string name="embed_subtitles">כתוביות מוטמעות</string>
@@ -60,7 +60,7 @@
     <string name="delete_files_too">מחק את הקבצים מהמכשיר</string>
     <string name="remove_results">הסר תוצאות חיפוש</string>
     <string name="download_card_summary">הגדרות איך להוריד פריטים</string>
-    <string name="failed_download">אין אפשרות להוריד את הקובץ.</string>
+    <string name="failed_download">אין אפשרות להוריד את הקובץ</string>
     <string name="edit_selected">ערוך נבחרים</string>
     <string name="update_app">חפש עדכונים</string>
     <string name="search">חיפוש</string>

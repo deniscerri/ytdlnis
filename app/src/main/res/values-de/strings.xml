@@ -27,7 +27,7 @@
     <string name="update_app">Nach Aktualisierungen suchen</string>
     <string name="version">Version</string>
     <string name="command_directory">Benutzerdefinierter Befehlsordner</string>
-    <string name="couldnt_find_apk">Es konnte keine passende APK gefunden werden.</string>
+    <string name="couldnt_find_apk">Es konnte keine passende APK gefunden werden</string>
     <string name="audio">Audio</string>
     <string name="video">Video</string>
     <string name="add_chapters_summary">Markiere YouTube-/SponsorBlock-Segmente als Kapitel für das Video</string>
@@ -61,7 +61,7 @@
     <string name="delete_files_too">Lösche die Dateien vom Gerät</string>
     <string name="search">Suchen</string>
     <string name="home">Startseite</string>
-    <string name="failed_download">Datei konnte nicht heruntergeladen werden.</string>
+    <string name="failed_download">Datei konnte nicht heruntergeladen werden</string>
     <string name="download_notification_channel_name">Datei-Downloads</string>
     <string name="you_are_in_latest_version">Du verwendest die neueste Version</string>
     <string name="downloading_update">Neuste Version wird heruntergeladen</string>

@@ -6,7 +6,7 @@
     <string name="audio_quality">Kvalita Zvuku</string>
     <string name="audio_format">Formát Zvuku</string>
     <string name="music_directory">Hudobný Priečinok</string>
-    <string name="couldnt_find_apk">Nepodarilo sa nájsť vhodné APK.</string>
+    <string name="couldnt_find_apk">Nepodarilo sa nájsť vhodné APK</string>
     <string name="ytdl_updating_started">Sťahuje sa nová verzia</string>
     <string name="command_download_notification_channel_description">Oznámenie zobrazujúce priebeh sťahovania pomocou yt-dlp príkazu</string>
     <string name="add_chapters">Kapitoly vo Videách</string>
@@ -45,7 +45,7 @@
     <string name="home">Domov</string>
     <string name="cancel">Zrušiť</string>
     <string name="remove_results">Vymazať Výsledky</string>
-    <string name="failed_download">Nepodarilo sa stiahnuť súbor.</string>
+    <string name="failed_download">Nepodarilo sa stiahnuť súbor</string>
     <string name="update_app">Skontrolovať aktualizácie</string>
     <string name="search">Hľadať</string>
     <string name="video">Video</string>

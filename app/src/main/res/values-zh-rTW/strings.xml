@@ -150,10 +150,10 @@
     <string name="search">搜尋</string>
     <string name="remove_results">清除結果</string>
     <string name="download_all">全部下載</string>
-    <string name="failed_download">無法下載檔案。</string>
+    <string name="failed_download">無法下載檔案</string>
     <string name="you_are_in_latest_version">使用最新版本</string>
     <string name="ytld_update_success">已安裝新版本</string>
-    <string name="couldnt_find_apk">找不到適合的 APK。</string>
+    <string name="couldnt_find_apk">找不到適合的 APK</string>
     <string name="update_app">檢查更新</string>
     <string name="more">更多</string>
     <string name="version">版本</string>

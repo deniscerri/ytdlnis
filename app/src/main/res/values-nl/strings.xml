@@ -10,7 +10,7 @@
     <string name="title">Titel</string>
     <string name="music_directory">Muziek Map</string>
     <string name="warning">Waarschuwing</string>
-    <string name="couldnt_find_apk">Kon geen geschikte APK vinden.</string>
+    <string name="couldnt_find_apk">Kon geen geschikte APK vinden</string>
     <string name="ytdl_updating_started">Nieuwe versie aan het downloaden</string>
     <string name="command_download_notification_channel_description">Melding die de voortgang laat zien van het downloaden met een yt-dlp commando</string>
     <string name="add_chapters">Hoofdstukken in Videos</string>
@@ -61,7 +61,7 @@
     <string name="download_notification_channel_name">Bestand Downloads</string>
     <string name="delete_files_too">Verwijder de bestanden van het apparaat</string>
     <string name="remove_results">Verwijder Resultaten</string>
-    <string name="failed_download">Kan bestand niet downloaden.</string>
+    <string name="failed_download">Kan bestand niet downloaden</string>
     <string name="update_app">Controleren op updates</string>
     <string name="search">Zoeken</string>
     <string name="video">Video</string>

@@ -14,7 +14,7 @@
     <string name="about">Sobre</string>
     <string name="source_code">Código fonte</string>
     <string name="search_hint">Digitar um URL ou pesquisar</string>
-    <string name="failed_download">Não foi possível baixar o arquivo.</string>
+    <string name="failed_download">Não foi possível baixar o arquivo</string>
     <string name="download_notification_channel_name">Arquivos baixados</string>
     <string name="you_are_in_latest_version">Você já possui a atualização mais recente</string>
     <string name="ytld_update_success">Nova versão instalada</string>
@@ -26,7 +26,7 @@
     <string name="search_history_hint">Pesquisar no histórico</string>
     <string name="no_results">Nenhum resultado</string>
     <string name="command_directory">Pasta de comando personalizado</string>
-    <string name="couldnt_find_apk">Não foi possível encontrar o apk adequado.</string>
+    <string name="couldnt_find_apk">Não foi possível encontrar o apk adequado</string>
     <string name="downloading_update">Baixando nova versão</string>
     <string name="audio">Áudio</string>
     <string name="video">Vídeo</string>

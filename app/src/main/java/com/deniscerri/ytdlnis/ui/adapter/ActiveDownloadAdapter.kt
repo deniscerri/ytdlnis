@@ -112,7 +112,7 @@ class ActiveDownloadAdapter(onItemClickListener: OnItemClickListener, activity: 
         val formatDetailsChip = card.findViewById<Chip>(R.id.format_note)
 
         val sideDetails = mutableListOf<String>()
-        sideDetails.add(item.format.format_note.uppercase())
+        sideDetails.add(item.format.format_note.uppercase().replace("\n", " "))
         sideDetails.add(item.container.uppercase().ifEmpty { item.format.container.uppercase() })
 
         val fileSize = FileUtil.convertFileSize(item.format.filesize)

@@ -14,7 +14,7 @@
     <string name="about">Par</string>
     <string name="source_code">Pirmkods</string>
     <string name="search_hint">Meklējiet vai Ievadiet URL</string>
-    <string name="failed_download">Nevar lejupielādēt failu.</string>
+    <string name="failed_download">Nevar lejupielādēt failu</string>
     <string name="download_notification_channel_name">Failu Lejupielādes</string>
     <string name="download_notification_channel_description">Paziņojums par audio un video failu lejupielādes gaitu</string>
     <string name="you_are_in_latest_version">Tiek izmantota jaunākā versija</string>
@@ -32,7 +32,7 @@
     <string name="update_app">Pārbaudīt atjauninājumus</string>
     <string name="version">Versija</string>
     <string name="command_directory">Pielāgotā Komandu Mape</string>
-    <string name="couldnt_find_apk">Nevarēja atrast piemērotu APK.</string>
+    <string name="couldnt_find_apk">Nevarēja atrast piemērotu APK</string>
     <string name="downloading_update">Lejupielādē jaunāko versiju…</string>
     <string name="audio">Audio</string>
     <string name="video">Video</string>

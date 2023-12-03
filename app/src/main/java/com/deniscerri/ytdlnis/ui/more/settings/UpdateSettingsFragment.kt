@@ -5,6 +5,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.preference.Preference
 import androidx.preference.PreferenceManager
 import com.deniscerri.ytdlnis.R
+import com.deniscerri.ytdlnis.util.UiUtil
 import com.deniscerri.ytdlnis.util.UpdateUtil
 import com.google.android.material.snackbar.Snackbar
 import com.yausername.youtubedl_android.YoutubeDL
@@ -62,6 +63,15 @@ class UpdateSettingsFragment : BaseSettingsFragment() {
                 }
                 true
             }
+
+        val pipedInstance = findPreference<Preference>("piped_instance")
+        pipedInstance?.setOnPreferenceClickListener {
+            UiUtil.showPipedInstancesDialog(requireActivity(), preferences.getString("piped_instance", "")!!){
+                editor.putString("piped_instance", it)
+                editor.apply()
+            }
+            true
+        }
 
     }
 

@@ -57,7 +57,7 @@
         app:useSimpleSummaryProvider="true"
         app:title="@string/format_order" />
 
-    <EditTextPreference
+    <Preference
         app:key="piped_instance"
         app:defaultValue=""
         android:summary="@string/piped_instance_summary"

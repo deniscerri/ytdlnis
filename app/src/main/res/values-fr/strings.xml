@@ -14,7 +14,7 @@
     <string name="ytdl_update_hint">Utile si vous rencontrez des problèmes de téléchargement</string>
     <string name="source_code">Code source</string>
     <string name="search_hint">Rechercher sur YouTube ou insérer un URL</string>
-    <string name="failed_download">Impossible de télécharger le fichier.</string>
+    <string name="failed_download">Impossible de télécharger le fichier</string>
     <string name="download_notification_channel_name">Téléchargements de fichiers</string>
     <string name="download_notification_channel_description">Notification indiquant la progression du téléchargement des fichiers audio et vidéo</string>
     <string name="you_are_in_latest_version">Utiliser la dernière version</string>
@@ -32,7 +32,7 @@
     <string name="update_app">Vérifier les mises à jour</string>
     <string name="version">Version</string>
     <string name="command_directory">Dossier pour la commande personnalisée</string>
-    <string name="couldnt_find_apk">Impossible de trouver un APK approprié.</string>
+    <string name="couldnt_find_apk">Impossible de trouver un APK approprié</string>
     <string name="downloading_update">Téléchargement de la nouvelle version…</string>
     <string name="audio">Audio</string>
     <string name="video">Vidéo</string>

@@ -17,7 +17,7 @@
     <string name="about">About</string>
     <string name="source_code">Source Code</string>
     <string name="search_hint">Search or Insert URL</string>
-    <string name="failed_download">Could not download file.</string>
+    <string name="failed_download">Could not download file</string>
     <string name="download_notification_channel_name">File Downloads</string>
     <string name="download_notification_channel_description">Notification showing the progress of downloading audio and video files</string>
     <string name="you_are_in_latest_version">Using the latest version</string>
@@ -36,7 +36,7 @@
     <string name="update_app">Check for updates</string>
     <string name="version">Version</string>
     <string name="command_directory">Custom Command Folder</string>
-    <string name="couldnt_find_apk">Could not find a suitable APK.</string>
+    <string name="couldnt_find_apk">Could not find a suitable APK</string>
     <string name="downloading_update">Downloading new version</string>
     <string name="audio">Audio</string>
     <string name="video">Video</string>
@@ -323,6 +323,8 @@
     <string name="export_file">Export File</string>
     <string name="ytdl_source">yt-dlp Source</string>
     <string name="update_ytdl_master">Master Version of yt-dlp</string>
+    <string name="update_ytdl_stable">Stable Version of yt-dlp</string>
     <string name="buffer_size">Buffer Size</string>
     <string name="buffer_size_summary">Size of download buffer, e.g. 1024 or 16K (default is 1024)</string>
+    <string name="preferred_audio_language">Preferred Audio Language</string>
 </resources>

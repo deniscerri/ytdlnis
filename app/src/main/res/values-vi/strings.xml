@@ -2,7 +2,7 @@
 <resources>
     <string name="update_ytdl">Cài đặt phiên bản mới của yt-dlp</string>
     <string name="search">Tìm kiếm</string>
-    <string name="couldnt_find_apk">Không thể tìm thấy APK phù hợp.</string>
+    <string name="couldnt_find_apk">Không thể tìm thấy APK phù hợp</string>
     <string name="remove_all">Loại bỏ tất cả</string>
     <string name="remove_results">Dọn dẹp Kết quả</string>
     <string name="download_all">Tải xuống tất cả</string>
@@ -14,7 +14,7 @@
     <string name="ytdl_update_hint">Hữu ích nếu bạn gặp sự cố khi tải xuống</string>
     <string name="source_code">Mã nguồn</string>
     <string name="search_hint">Tìm kiếm hoặc chèn URL</string>
-    <string name="failed_download">Không thể tải xuống tệp.</string>
+    <string name="failed_download">Không thể tải xuống tệp</string>
     <string name="download_notification_channel_name">Tệp tải xuống</string>
     <string name="you_are_in_latest_version">Sử dụng phiên bản mới nhất</string>
     <string name="ytld_update_success">Phiên bản mới được cài đặt</string>

@@ -16,7 +16,7 @@
     <string name="update_ytdl">Pasang versi baharu yt-dlp</string>
     <string name="source_code">Kod Sumber</string>
     <string name="search_hint">Cari atau Masukkan URL</string>
-    <string name="failed_download">Tidak boleh muat turun fail.</string>
+    <string name="failed_download">Tidak boleh muat turun fail</string>
     <string name="you_are_in_latest_version">Sedang menggunakan versi terbaru</string>
     <string name="download_notification_channel_description">Notifikasi yang menunjukkan tahap muat turun bagi fail audio dan video</string>
     <string name="ytld_update_success">Versi baharu telah dipasang</string>
@@ -31,7 +31,7 @@
     <string name="more">Lagi</string>
     <string name="update_app">Semak kewujudan kemas kini</string>
     <string name="version">Versi</string>
-    <string name="couldnt_find_apk">Tidak dapat mencari APK yang sesuai.</string>
+    <string name="couldnt_find_apk">Tidak dapat mencari APK yang sesuai</string>
     <string name="downloading_update">Memuat turun versi baharu...</string>
     <string name="audio">Audio</string>
     <string name="video">Video</string>

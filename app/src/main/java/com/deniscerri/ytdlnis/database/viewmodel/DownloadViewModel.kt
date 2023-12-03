@@ -441,6 +441,13 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
                         val theFormats = formats.filter { it.format_note.contains("audio", ignoreCase = true) }
                         val requirements: MutableList<(Format) -> Boolean> = mutableListOf()
                         requirements.add {it: Format -> audioFormatIDPreference.contains(it.format_id)}
+
+                        sharedPreferences.getString("audio_language", "")?.apply {
+                            if (this.isNotEmpty()){
+                                requirements.add { it: Format -> it.lang == this }
+                            }
+                        }
+
                         requirements.add {it: Format -> it.container == audioContainer }
                         requirements.add {it: Format -> "^(${audioCodec}).+$".toRegex(RegexOption.IGNORE_CASE).matches(it.acodec)}
                         theFormats.maxByOrNull { f -> requirements.count{req -> req(f)} } ?: throw Exception()

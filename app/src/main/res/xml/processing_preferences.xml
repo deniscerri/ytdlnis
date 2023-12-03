@@ -153,6 +153,7 @@
         android:entries="@array/video_codec"
         android:entryValues="@array/video_codec_values"
         android:icon="@drawable/ic_code"
+        app:useSimpleSummaryProvider="true"
         app:key="video_codec"
         app:title="@string/preferred_video_codec" />
 
@@ -161,8 +162,18 @@
         android:entries="@array/audio_codec"
         android:entryValues="@array/audio_codec_values"
         android:icon="@drawable/ic_code"
+        app:useSimpleSummaryProvider="true"
         app:key="audio_codec"
         app:title="@string/preferred_audio_codec" />
+
+    <ListPreference
+        app:icon="@drawable/ic_language"
+        app:dialogTitle="@string/preferred_audio_language"
+        app:entries="@array/language_names"
+        app:entryValues="@array/language_codes"
+        app:key="audio_language"
+        app:useSimpleSummaryProvider="true"
+        app:title="@string/preferred_audio_language" />
 
     <SwitchPreferenceCompat
         android:widgetLayout="@layout/preferece_material_switch"

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="search_hint">Pesquisar ou inserir URL</string>
-    <string name="failed_download">Não foi possível descarregar o ficheiro.</string>
+    <string name="failed_download">Não foi possível descarregar o ficheiro</string>
     <string name="ytdl_updating_started">A descarregar nova versão</string>
     <string name="video">Vídeo</string>
     <string name="download_notification_channel_name">Ficheiros descarregados</string>
@@ -55,7 +55,7 @@
     <string name="sort_by">Ordem</string>
     <string name="Open_File">Abrir ficheiro</string>
     <string name="download_all">Descarregar tudo</string>
-    <string name="couldnt_find_apk">Não foi possível encontrar um APK adequado.</string>
+    <string name="couldnt_find_apk">Não foi possível encontrar um APK adequado</string>
     <string name="downloading_update">A descarregar nova versão</string>
     <string name="audio">Áudio</string>
     <string name="save_thumb">Guardar miniatura</string>

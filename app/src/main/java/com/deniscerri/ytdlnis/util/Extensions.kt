@@ -98,12 +98,14 @@ object Extensions {
     }
 
     fun File.getMediaDuration(context: Context): Int {
-        if (!exists()) return 0
-        val retriever = MediaMetadataRetriever()
-        retriever.setDataSource(context, Uri.parse(absolutePath))
-        val duration = retriever.extractMetadata(METADATA_KEY_DURATION)
-        retriever.release()
+        return kotlin.runCatching {
+            if (!exists()) return 0
+            val retriever = MediaMetadataRetriever()
+            retriever.setDataSource(context, Uri.parse(absolutePath))
+            val duration = retriever.extractMetadata(METADATA_KEY_DURATION)
+            retriever.release()
 
-        return duration?.toIntOrNull()?.div(1000) ?: 0
+            duration?.toIntOrNull()?.div(1000) ?: 0
+        }.getOrElse { 0 }
     }
 }

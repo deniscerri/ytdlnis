@@ -91,9 +91,8 @@ class TerminalDownloadWorker(
 
         val logItem = LogItem(
             0,
-            "Terminal Download",
-            "Downloading:\n" +
-                    "Terminal Download\n" +
+            "Terminal Task",
+            "Terminal Task\n" +
                     "Command: ${command}\n\n",
             Format(),
             DownloadViewModel.Type.command,

@@ -20,6 +20,7 @@ import android.widget.Toast
 import androidx.core.content.edit
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
+import androidx.fragment.app.commit
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -46,7 +47,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.progressindicator.LinearProgressIndicator
-import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -417,65 +417,69 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
 
         lifecycleScope.launch {
             resultViewModel.updatingData.collectLatest {
-                if (it){
-                    title.visibility = View.GONE
-                    subtitle.visibility = View.GONE
-                    shimmerLoading.visibility = View.VISIBLE
-                    shimmerLoadingSubtitle.visibility = View.VISIBLE
-                    shimmerLoading.startShimmer()
-                    shimmerLoadingSubtitle.startShimmer()
-                }else{
-                    title.visibility = View.VISIBLE
-                    subtitle.visibility = View.VISIBLE
-                    shimmerLoading.visibility = View.GONE
-                    shimmerLoadingSubtitle.visibility = View.GONE
-                    shimmerLoading.stopShimmer()
-                    shimmerLoadingSubtitle.stopShimmer()
+                kotlin.runCatching {
+                    if (it){
+                        title.visibility = View.GONE
+                        subtitle.visibility = View.GONE
+                        shimmerLoading.visibility = View.VISIBLE
+                        shimmerLoadingSubtitle.visibility = View.VISIBLE
+                        shimmerLoading.startShimmer()
+                        shimmerLoadingSubtitle.startShimmer()
+                    }else{
+                        title.visibility = View.VISIBLE
+                        subtitle.visibility = View.VISIBLE
+                        shimmerLoading.visibility = View.GONE
+                        shimmerLoadingSubtitle.visibility = View.GONE
+                        shimmerLoading.stopShimmer()
+                        shimmerLoadingSubtitle.stopShimmer()
+                    }
                 }
             }
         }
 
         lifecycleScope.launch {
             resultViewModel.updatingFormats.collectLatest {
-                if (it){
-                    delay(500)
-                    runCatching {
-                        val f1 = fragmentManager.findFragmentByTag("f0") as DownloadAudioFragment
-                        f1.view?.findViewById<LinearProgressIndicator>(R.id.format_loading_progress)?.apply {
-                            isVisible = true
-                            isClickable = true
-                            setOnClickListener {
-                                lifecycleScope.launch(Dispatchers.IO) {
-                                    resultViewModel.cancelUpdateFormatsItemData()
+                kotlin.runCatching {
+                    if (it){
+                        delay(500)
+                        runCatching {
+                            val f1 = fragmentManager.findFragmentByTag("f0") as DownloadAudioFragment
+                            f1.view?.findViewById<LinearProgressIndicator>(R.id.format_loading_progress)?.apply {
+                                isVisible = true
+                                isClickable = true
+                                setOnClickListener {
+                                    lifecycleScope.launch(Dispatchers.IO) {
+                                        resultViewModel.cancelUpdateFormatsItemData()
+                                    }
                                 }
                             }
                         }
-                    }
-                    runCatching {
-                        val f1 = fragmentManager.findFragmentByTag("f1") as DownloadVideoFragment
-                        f1.view?.findViewById<LinearProgressIndicator>(R.id.format_loading_progress)?.apply {
-                            isVisible = true
-                            isClickable = true
-                            setOnClickListener {
-                                lifecycleScope.launch(Dispatchers.IO) {
-                                    resultViewModel.cancelUpdateFormatsItemData()
+                        runCatching {
+                            val f1 = fragmentManager.findFragmentByTag("f1") as DownloadVideoFragment
+                            f1.view?.findViewById<LinearProgressIndicator>(R.id.format_loading_progress)?.apply {
+                                isVisible = true
+                                isClickable = true
+                                setOnClickListener {
+                                    lifecycleScope.launch(Dispatchers.IO) {
+                                        resultViewModel.cancelUpdateFormatsItemData()
+                                    }
                                 }
                             }
                         }
-                    }
-                }else{
-                    runCatching {
-                        val f1 = fragmentManager.findFragmentByTag("f0") as DownloadAudioFragment
-                        f1.view?.findViewById<LinearProgressIndicator>(R.id.format_loading_progress)?.apply {
-                            isVisible = false
-                            isClickable = false
+                    }else{
+                        runCatching {
+                            val f1 = fragmentManager.findFragmentByTag("f0") as DownloadAudioFragment
+                            f1.view?.findViewById<LinearProgressIndicator>(R.id.format_loading_progress)?.apply {
+                                isVisible = false
+                                isClickable = false
+                            }
                         }
-                    }
-                    runCatching {
-                        val f1 = fragmentManager.findFragmentByTag("f1") as DownloadVideoFragment
-                        f1.view?.findViewById<LinearProgressIndicator>(R.id.format_loading_progress)?.apply {
-                            isVisible = false
-                            isClickable = false
+                        runCatching {
+                            val f1 = fragmentManager.findFragmentByTag("f1") as DownloadVideoFragment
+                            f1.view?.findViewById<LinearProgressIndicator>(R.id.format_loading_progress)?.apply {
+                                isVisible = false
+                                isClickable = false
+                            }
                         }
                     }
                 }
@@ -485,47 +489,50 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
         lifecycleScope.launch {
             resultViewModel.updateResultData.collectLatest { result ->
                 if (result == null) return@collectLatest
-                lifecycleScope.launch(Dispatchers.Main) {
-                    if (result.isNotEmpty()){
-                        if (result.size == 1 && result[0] != null){
-                            fragmentAdapter.setResultItem(result[0]!!)
-                            runCatching {
-                                val f = fragmentManager?.findFragmentByTag("f0") as DownloadAudioFragment
-                                f.updateUI(result[0])
-                            }
+                kotlin.runCatching {
+                    lifecycleScope.launch(Dispatchers.Main) {
+                        if (result.isNotEmpty()){
+                            if (result.size == 1 && result[0] != null){
+                                fragmentAdapter.setResultItem(result[0]!!)
+                                runCatching {
+                                    val f = fragmentManager?.findFragmentByTag("f0") as DownloadAudioFragment
+                                    f.updateUI(result[0])
+                                }
 
-                            runCatching {
-                                val f1 = fragmentManager?.findFragmentByTag("f1") as DownloadVideoFragment
-                                f1.updateUI(result[0])
-                            }
+                                runCatching {
+                                    val f1 = fragmentManager?.findFragmentByTag("f1") as DownloadVideoFragment
+                                    f1.updateUI(result[0])
+                                }
 
-                            title.visibility = View.VISIBLE
-                            subtitle.visibility = View.VISIBLE
-                            shimmerLoading.visibility = View.GONE
-                            shimmerLoadingSubtitle.visibility = View.GONE
-                            shimmerLoading.stopShimmer()
-                            shimmerLoadingSubtitle.stopShimmer()
+                                title.visibility = View.VISIBLE
+                                subtitle.visibility = View.VISIBLE
+                                shimmerLoading.visibility = View.GONE
+                                shimmerLoadingSubtitle.visibility = View.GONE
+                                shimmerLoading.stopShimmer()
+                                shimmerLoadingSubtitle.stopShimmer()
 
-                            val usingGenericFormatsOrEmpty = result[0]!!.formats.isEmpty() || result[0]!!.formats.any { it.format_note.contains("ytdlnisgeneric") }
-                            fragmentAdapter.setResultItem(result[0]!!)
-                            arguments?.putParcelable("result", result[0]!!)
-                            if (usingGenericFormatsOrEmpty && sharedPreferences.getBoolean("update_formats", false)){
-                                initUpdateFormats(result[0]!!)
-                            }
-                        }else{
-                            //open multi download card instead
-                            if (activity is ShareActivity){
-                                val preferredType = DownloadViewModel.Type.valueOf(sharedPreferences.getString("preferred_download_type", "video")!!)
-                                findNavController().navigate(R.id.action_downloadBottomSheetDialog_to_selectPlaylistItemsDialog, bundleOf(
-                                    Pair("results", result),
-                                    Pair("type", preferredType),
-                                ))
+                                val usingGenericFormatsOrEmpty = result[0]!!.formats.isEmpty() || result[0]!!.formats.any { it.format_note.contains("ytdlnisgeneric") }
+                                fragmentAdapter.setResultItem(result[0]!!)
+                                arguments?.putParcelable("result", result[0]!!)
+                                if (usingGenericFormatsOrEmpty && sharedPreferences.getBoolean("update_formats", false)){
+                                    initUpdateFormats(result[0]!!)
+                                }
                             }else{
-                                dismiss()
+                                //open multi download card instead
+                                if (activity is ShareActivity){
+                                    val preferredType = DownloadViewModel.Type.valueOf(sharedPreferences.getString("preferred_download_type", "video")!!)
+                                    findNavController().navigate(R.id.action_downloadBottomSheetDialog_to_selectPlaylistItemsDialog, bundleOf(
+                                        Pair("results", result),
+                                        Pair("type", preferredType),
+                                    ))
+                                }else{
+                                    dismiss()
+                                }
                             }
                         }
+                        resultViewModel.updateResultData.emit(null)
                     }
-                    resultViewModel.updateResultData.emit(null)
+
                 }
             }
         }
@@ -533,38 +540,35 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
         lifecycleScope.launch {
             resultViewModel.updateFormatsResultData.collectLatest { formats ->
                 if (formats == null) return@collectLatest
-                lifecycleScope.launch {
-                    withContext(Dispatchers.Main){
-                        runCatching {
-                            val f1 = fragmentManager.findFragmentByTag("f0") as DownloadAudioFragment
-                            val resultItem = downloadViewModel.createResultItemFromDownload(f1.downloadItem)
-                            resultItem.formats = formats
-                            fragmentAdapter.setResultItem(resultItem)
-                            f1.updateUI(resultItem)
-                            f1.view?.findViewById<LinearProgressIndicator>(R.id.format_loading_progress)?.visibility = View.GONE
+                kotlin.runCatching {
+                    lifecycleScope.launch {
+                        withContext(Dispatchers.Main){
+                            runCatching {
+                                val f1 = fragmentManager.findFragmentByTag("f0") as DownloadAudioFragment
+                                val resultItem = downloadViewModel.createResultItemFromDownload(f1.downloadItem)
+                                resultItem.formats = formats
+                                fragmentAdapter.setResultItem(resultItem)
+                                f1.updateUI(resultItem)
+                                f1.view?.findViewById<LinearProgressIndicator>(R.id.format_loading_progress)?.visibility = View.GONE
+                            }
+                            runCatching {
+                                val f1 = fragmentManager.findFragmentByTag("f1") as DownloadVideoFragment
+                                val resultItem = downloadViewModel.createResultItemFromDownload(f1.downloadItem)
+                                resultItem.formats = formats
+                                fragmentAdapter.setResultItem(resultItem)
+                                f1.updateUI(resultItem)
+                                f1.view?.findViewById<LinearProgressIndicator>(R.id.format_loading_progress)?.visibility = View.GONE
+                            }
                         }
-                        runCatching {
-                            val f1 = fragmentManager.findFragmentByTag("f1") as DownloadVideoFragment
-                            val resultItem = downloadViewModel.createResultItemFromDownload(f1.downloadItem)
-                            resultItem.formats = formats
-                            fragmentAdapter.setResultItem(resultItem)
-                            f1.updateUI(resultItem)
-                            f1.view?.findViewById<LinearProgressIndicator>(R.id.format_loading_progress)?.visibility = View.GONE
-                        }
-                    }
 
-                    if (formats.isNotEmpty()){
-                        result.formats = formats
+                        if (formats.isNotEmpty()){
+                            result.formats = formats
+                        }
+                        resultViewModel.updateFormatsResultData.emit(null)
                     }
-                    resultViewModel.updateFormatsResultData.emit(null)
                 }
             }
         }
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
     }
 
     private fun getDownloadItem(selectedTabPosition: Int = tabLayout.selectedTabPosition) : DownloadItem{
@@ -614,21 +618,25 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
     }
 
     private fun initUpdateData() {
-        if (result.url.isBlank()) {
-            dismiss()
-            return
-        }
-        if (resultViewModel.updatingData.value) return
+        kotlin.runCatching {
+            if (result.url.isBlank()) {
+                dismiss()
+                return
+            }
+            if (resultViewModel.updatingData.value) return
 
-        CoroutineScope(SupervisorJob()).launch(Dispatchers.IO) {
-            resultViewModel.updateItemData(result)
+            CoroutineScope(SupervisorJob()).launch(Dispatchers.IO) {
+                resultViewModel.updateItemData(result)
+            }
         }
     }
 
     private fun initUpdateFormats(res: ResultItem){
-        if (resultViewModel.updatingFormats.value) return
-        CoroutineScope(SupervisorJob()).launch(Dispatchers.IO) {
-            resultViewModel.updateFormatItemData(res)
+        kotlin.runCatching {
+            if (resultViewModel.updatingFormats.value) return
+            CoroutineScope(SupervisorJob()).launch(Dispatchers.IO) {
+                resultViewModel.updateFormatItemData(res)
+            }
         }
     }
 }

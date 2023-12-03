@@ -15,6 +15,7 @@ buildscript {
         // supports java 1.6
         commonsCompressVer = '1.12'
         youtubedlAndroidVer = "-SNAPSHOT"
+        youtubedlAndroidVerNoPyCrypto = "97bee6c0e8"
         workVer = "2.8.1"
         composeVer = '1.4.2'
         kotlinVer = "1.7.21"

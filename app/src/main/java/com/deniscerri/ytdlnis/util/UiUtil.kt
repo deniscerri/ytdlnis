@@ -8,9 +8,6 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
-import android.graphics.Color
-import android.graphics.drawable.ShapeDrawable
-import android.graphics.drawable.shapes.OvalShape
 import android.net.Uri
 import android.os.Build
 import android.text.Editable
@@ -19,7 +16,6 @@ import android.text.format.DateFormat
 import android.util.DisplayMetrics
 import android.util.Log
 import android.view.Gravity
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
@@ -36,13 +32,12 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.FileProvider
 import androidx.core.view.children
-import androidx.core.view.isNotEmpty
 import androidx.core.view.isVisible
+import androidx.core.widget.doOnTextChanged
 import androidx.documentfile.provider.DocumentFile
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LifecycleOwner
 import androidx.preference.PreferenceManager
-import androidx.recyclerview.widget.RecyclerView
 import com.afollestad.materialdialogs.utils.MDUtil.getStringArray
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.CommandTemplate
@@ -57,6 +52,7 @@ import com.deniscerri.ytdlnis.database.viewmodel.HistoryViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdlnis.ui.downloadcard.ConfigureDownloadBottomSheetDialog
 import com.deniscerri.ytdlnis.ui.downloadcard.VideoCutListener
+import com.deniscerri.ytdlnis.util.Extensions.enableTextHighlight
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
@@ -69,23 +65,19 @@ import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.materialswitch.MaterialSwitch
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
-import com.neo.highlight.core.Highlight
-import com.neo.highlight.util.listener.HighlightTextWatcher
-import com.neo.highlight.util.scheme.ColorScheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
-import me.zhanghai.android.fastscroll.FastScrollerBuilder
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
-import java.util.regex.Pattern
 
 
 object UiUtil {
@@ -481,10 +473,18 @@ object UiUtil {
         val bottomSheet = BottomSheetDialog(context)
         bottomSheet.requestWindowFeature(Window.FEATURE_NO_TITLE)
         bottomSheet.setContentView(R.layout.history_item_details_bottom_sheet)
-        val title = bottomSheet.findViewById<TextView>(R.id.bottom_sheet_title)
-        title!!.text = item.title.ifEmpty { "`${context.getString(R.string.defaultValue)}`" }
-        val author = bottomSheet.findViewById<TextView>(R.id.bottom_sheet_author)
-        author!!.text = item.author.ifEmpty { "`${context.getString(R.string.defaultValue)}`" }
+        bottomSheet.findViewById<TextView>(R.id.bottom_sheet_title)?.apply {
+            text = item.title.ifEmpty { "`${context.getString(R.string.defaultValue)}`" }
+            setOnClickListener{
+                showFullTextDialog(context, text.toString(), context.getString(R.string.title))
+            }
+        }
+        bottomSheet.findViewById<TextView>(R.id.bottom_sheet_author)?.apply {
+            text = item.author.ifEmpty { "`${context.getString(R.string.defaultValue)}`" }
+            setOnClickListener{
+                showFullTextDialog(context, text.toString(), context.getString(R.string.author))
+            }
+        }
 
         // BUTTON ----------------------------------
         val btn = bottomSheet.findViewById<FloatingActionButton>(R.id.download_button_type)
@@ -507,6 +507,7 @@ object UiUtil {
         val container = bottomSheet.findViewById<Chip>(R.id.container_chip)
         val codec = bottomSheet.findViewById<Chip>(R.id.codec)
         val fileSize = bottomSheet.findViewById<Chip>(R.id.file_size)
+        val command = bottomSheet.findViewById<Chip>(R.id.command)
 
         when(status){
             DownloadRepository.Status.Queued, DownloadRepository.Status.QueuedPaused -> {
@@ -527,9 +528,13 @@ object UiUtil {
             }
         }
 
-        if (item.format.format_note == "?" || item.format.format_note == "") formatNote!!.visibility =
-            View.GONE
-        else formatNote!!.text = item.format.format_note
+        if (item.type != DownloadViewModel.Type.command){
+            if (item.format.format_note == "?" || item.format.format_note == "") formatNote!!.visibility =
+                View.GONE
+            else formatNote!!.text = item.format.format_note
+        }else{
+            formatNote?.isVisible = false
+        }
 
         if (item.format.container != "") {
             container!!.text = item.format.container.uppercase()
@@ -556,6 +561,12 @@ object UiUtil {
         val fileSizeReadable = FileUtil.convertFileSize(item.format.filesize)
         if (fileSizeReadable == "?") fileSize!!.visibility = View.GONE
         else fileSize!!.text = fileSizeReadable
+
+        val infoUtil = InfoUtil(context)
+
+        command?.setOnClickListener {
+            showGeneratedCommand(context, infoUtil.parseYTDLRequestString(infoUtil.buildYoutubeDLRequest(item)))
+        }
 
         val link = bottomSheet.findViewById<Button>(R.id.bottom_sheet_link)
         val url = item.url
@@ -631,16 +642,25 @@ object UiUtil {
         val bottomSheet = BottomSheetDialog(context)
         bottomSheet.requestWindowFeature(Window.FEATURE_NO_TITLE)
         bottomSheet.setContentView(R.layout.history_item_details_bottom_sheet)
-        val title = bottomSheet.findViewById<TextView>(R.id.bottom_sheet_title)
-        title!!.text = item!!.title
-        val author = bottomSheet.findViewById<TextView>(R.id.bottom_sheet_author)
-        author!!.text = item.author
+
+        bottomSheet.findViewById<TextView>(R.id.bottom_sheet_title)?.apply {
+            text = item!!.title
+            setOnClickListener{
+                showFullTextDialog(context, text.toString(), context.getString(R.string.title))
+            }
+        }
+        bottomSheet.findViewById<TextView>(R.id.bottom_sheet_author)?.apply {
+            text = item!!.author
+            setOnClickListener{
+                showFullTextDialog(context, text.toString(), context.getString(R.string.author))
+            }
+        }
 
         // BUTTON ----------------------------------
         val btn = bottomSheet.findViewById<FloatingActionButton>(R.id.download_button_type)
 
         val typeImageResource: Int =
-        if (item.type == DownloadViewModel.Type.audio) {
+        if (item!!.type == DownloadViewModel.Type.audio) {
             if (isPresent) {
                 R.drawable.ic_music_downloaded
             } else {
@@ -668,6 +688,7 @@ object UiUtil {
         val container = bottomSheet.findViewById<Chip>(R.id.container_chip)
         val codec = bottomSheet.findViewById<TextView>(R.id.codec)
         val fileSize = bottomSheet.findViewById<TextView>(R.id.file_size)
+        val command = bottomSheet.findViewById<Chip>(R.id.command)
         val file = File(item.downloadPath)
 
         val calendar = Calendar.getInstance()
@@ -675,9 +696,13 @@ object UiUtil {
         time!!.text = SimpleDateFormat(DateFormat.getBestDateTimePattern(Locale.getDefault(), "ddMMMyyyy - HHmm"), Locale.getDefault()).format(calendar.time)
         time.isClickable = false
 
-        if (item.format.format_note == "?" || item.format.format_note == "") formatNote!!.visibility =
-            View.GONE
-        else formatNote!!.text = item.format.format_note
+        if (item.type != DownloadViewModel.Type.command){
+            if (item.format.format_note == "?" || item.format.format_note == "") formatNote!!.visibility =
+                View.GONE
+            else formatNote!!.text = item.format.format_note
+        }else{
+            formatNote?.isVisible = false
+        }
 
         if (item.format.container != "") {
             container!!.text = if (file.exists()) file.extension.uppercase() else item.format.container.uppercase()
@@ -704,6 +729,11 @@ object UiUtil {
         val fileSizeReadable = FileUtil.convertFileSize(if (file.exists()) file.length() else item.format.filesize)
         if (fileSizeReadable == "?") fileSize!!.visibility = View.GONE
         else fileSize!!.text = fileSizeReadable
+
+        command?.setOnClickListener {
+            showGeneratedCommand(context, item.command)
+        }
+
 
         val link = bottomSheet.findViewById<Button>(R.id.bottom_sheet_link)
         val url = item.url
@@ -770,29 +800,44 @@ object UiUtil {
         val fpsParent = bottomSheet.findViewById<ConstraintLayout>(R.id.fps_parent)
         val asrParent = bottomSheet.findViewById<ConstraintLayout>(R.id.asr_parent)
 
+
+        val clicker = View.OnClickListener {
+            copyToClipboard(((it as ConstraintLayout).getChildAt(1) as TextView).text.toString(), activity)
+        }
+
+        val longClicker = View.OnLongClickListener {
+            val txt = ((it as ConstraintLayout).getChildAt(1) as TextView).text.toString()
+            val snackbar = Snackbar.make(bottomSheet.findViewById(android.R.id.content)!!, txt, Snackbar.LENGTH_LONG)
+            snackbar.setAction(android.R.string.copy){
+                copyToClipboard(txt, activity)
+            }
+            val snackbarView: View = snackbar.view
+            val snackTextView = snackbarView.findViewById<View>(com.google.android.material.R.id.snackbar_text) as TextView
+            snackTextView.maxLines = 9999999
+            snackbar.show()
+            true
+        }
+
         if (format.format_id.isBlank()) formatIdParent?.visibility = View.GONE
         else {
             formatIdParent?.findViewById<TextView>(R.id.format_id_value)?.text = format.format_id
-            formatIdParent?.setOnClickListener {
-                copyToClipboard(format.format_id, activity)
-            }
+            formatIdParent?.setOnClickListener(clicker)
+            formatIdParent?.setOnLongClickListener(longClicker)
         }
 
         if (format.url.isNullOrBlank()) formatURLParent?.visibility = View.GONE
         else {
             formatURLParent?.findViewById<TextView>(R.id.format_url_value)?.text = format.url
-            formatURLParent?.setOnClickListener {
-                copyToClipboard(format.url!!, activity)
-            }
+            formatURLParent?.setOnClickListener(clicker)
+            formatURLParent?.setOnLongClickListener(longClicker)
         }
 
 
         if (format.container.isBlank()) containerParent?.visibility = View.GONE
         else {
             containerParent?.findViewById<TextView>(R.id.container_value)?.text = format.container
-            containerParent?.setOnClickListener {
-                copyToClipboard(format.container, activity)
-            }
+            containerParent?.setOnClickListener(clicker)
+            containerParent?.setOnLongClickListener(longClicker)
         }
 
         val codecField =
@@ -807,41 +852,36 @@ object UiUtil {
         if (codecField.isBlank()) codecParent?.visibility = View.GONE
         else {
             codecParent?.findViewById<TextView>(R.id.codec_value)?.text = codecField
-            codecParent?.setOnClickListener {
-                copyToClipboard(codecField, activity)
-            }
+            codecParent?.setOnClickListener(clicker)
+            codecParent?.setOnLongClickListener(longClicker)
         }
 
         if (format.filesize != 0L) filesizeParent?.visibility = View.GONE
         else {
             filesizeParent?.findViewById<TextView>(R.id.filesize_value)?.text = FileUtil.convertFileSize(format.filesize)
-            filesizeParent?.setOnClickListener {
-                copyToClipboard(FileUtil.convertFileSize(format.filesize), activity)
-            }
+            filesizeParent?.setOnClickListener(clicker)
+            filesizeParent?.setOnLongClickListener(longClicker)
         }
 
         if (format.format_note.isBlank()) formatnoteParent?.visibility = View.GONE
         else {
             formatnoteParent?.findViewById<TextView>(R.id.format_note_value)?.text = format.format_note
-            formatnoteParent?.setOnClickListener {
-                copyToClipboard(format.format_note, activity)
-            }
+            formatnoteParent?.setOnClickListener(clicker)
+            formatnoteParent?.setOnLongClickListener(longClicker)
         }
 
         if (format.fps.isNullOrBlank() || format.fps == "0") fpsParent?.visibility = View.GONE
         else {
             fpsParent?.findViewById<TextView>(R.id.fps_value)?.text = format.fps
-            fpsParent?.setOnClickListener {
-                copyToClipboard(format.fps!!, activity)
-            }
+            fpsParent?.setOnClickListener(clicker)
+            fpsParent?.setOnLongClickListener(longClicker)
         }
 
         if (format.asr.isNullOrBlank()) asrParent?.visibility = View.GONE
         else {
             asrParent?.findViewById<TextView>(R.id.asr_value)?.text = format.asr
-            asrParent?.setOnClickListener {
-                copyToClipboard(format.asr!!, activity)
-            }
+            asrParent?.setOnClickListener(clicker)
+            asrParent?.setOnLongClickListener(longClicker)
         }
 
 
@@ -1627,12 +1667,9 @@ object UiUtil {
 
                 tmp.setOnClickListener {
                     val c = it as Chip
-                    if(!c.isChecked){
-                        editText.setText(editText.text.toString().replace(c.text.toString(), ""))
-                        editText.setSelection(editText.text.length)
-                    }else{
-                        editText.append(c.text)
-                    }
+                    val selectionStart = editText.selectionStart
+                    editText.text.insert(selectionStart, c.text.toString())
+                    editText.setSelection(selectionStart + c.text.length)
                 }
 
                 chips.add(tmp)
@@ -1643,9 +1680,138 @@ object UiUtil {
                     it.isChecked = editText.text.contains(it.text)
                     chipGroup!!.addView(it)
                 }
+
+                editText.doOnTextChanged { text, start, before, count ->
+                    chips.forEach {
+                        it.isChecked = editText.text.contains(it.text)
+                    }
+                }
             }
         }
 
         dialog.getButton(AlertDialog.BUTTON_NEUTRAL).gravity = Gravity.START
+    }
+
+    fun showPipedInstancesDialog(context: Activity, currentInstance: String, instanceSelected: (f: String) -> Unit){
+        val builder = MaterialAlertDialogBuilder(context)
+        builder.setTitle(context.getString(R.string.piped_instance))
+        val view = context.layoutInflater.inflate(R.layout.filename_template_dialog, null)
+        val editText = view.findViewById<EditText>(R.id.filename_edittext)
+        view.findViewById<TextInputLayout>(R.id.filename).hint = context.getString(R.string.piped_instance)
+        editText.setText(currentInstance)
+        editText.setSelection(editText.text.length)
+        builder.setView(view)
+        builder.setPositiveButton(
+            context.getString(R.string.ok)
+        ) { _: DialogInterface?, _: Int ->
+            instanceSelected(editText.text.toString())
+        }
+
+        // handle the negative button of the alert dialog
+        builder.setNegativeButton(
+            context.getString(R.string.cancel)
+        ) { _: DialogInterface?, _: Int -> }
+
+        builder.setNeutralButton("?")  { _: DialogInterface?, _: Int ->
+            val browserIntent =
+                Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/TeamPiped/Piped/wiki/Instances"))
+            context.startActivity(browserIntent)
+        }
+
+        view.findViewById<View>(R.id.suggested).visibility = View.GONE
+
+        val dialog = builder.create()
+        dialog.show()
+        val imm = context.getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager
+        editText!!.postDelayed({
+            editText.requestFocus()
+            imm.showSoftInput(editText, 0)
+        }, 300)
+
+        //handle suggestion chips
+        CoroutineScope(Dispatchers.IO).launch {
+            val chipGroup = view.findViewById<ChipGroup>(R.id.filename_suggested_chipgroup)
+            val chips = mutableListOf<Chip>()
+            val instances = InfoUtil(context).getPipedInstances()
+            instances.forEach { s ->
+                val tmp = context.layoutInflater.inflate(R.layout.filter_chip, chipGroup, false) as Chip
+                tmp.text = s
+
+                tmp.setOnClickListener {
+                    val c = it as Chip
+                    c.toggle()
+                    editText.setText(c.text.toString())
+                    editText.setSelection(c.text.length)
+                }
+
+                chips.add(tmp)
+            }
+            withContext(Dispatchers.Main){
+                view.findViewById<View>(R.id.suggested).visibility = View.VISIBLE
+                chips.forEach {
+                    it.isChecked = editText.text.contains(it.text)
+                    chipGroup!!.addView(it)
+                }
+
+                editText.doOnTextChanged { text, start, before, count ->
+                    chips.forEach {
+                        it.isChecked = editText.text == it.text
+                    }
+                }
+            }
+        }
+
+        dialog.getButton(AlertDialog.BUTTON_NEUTRAL).gravity = Gravity.START
+    }
+
+    private fun showGeneratedCommand(context: Activity, command: String){
+        val builder = MaterialAlertDialogBuilder(context)
+        builder.setTitle(context.getString(R.string.command))
+        val view = context.layoutInflater.inflate(R.layout.command_dialog, null)
+        val text = view.findViewById<TextView>(R.id.commandText)
+        text.text = command
+        text.isLongClickable = true
+        text.setTextIsSelectable(true)
+        text.enableTextHighlight()
+
+        builder.setView(view)
+        builder.setPositiveButton(
+            context.getString(android.R.string.copy)
+        ) { _: DialogInterface?, _: Int ->
+            copyToClipboard(command, context)
+        }
+
+        // handle the negative button of the alert dialog
+        builder.setNegativeButton(
+            context.getString(R.string.cancel)
+        ) { _: DialogInterface?, _: Int -> }
+
+        val dialog = builder.create()
+        dialog.show()
+    }
+
+    private fun showFullTextDialog(context: Activity, txt: String, title: String){
+        val builder = MaterialAlertDialogBuilder(context)
+        builder.setTitle(title)
+        val view = context.layoutInflater.inflate(R.layout.command_dialog, null)
+        val text = view.findViewById<TextView>(R.id.commandText)
+        text.text = txt
+        text.isLongClickable = true
+        text.setTextIsSelectable(true)
+
+        builder.setView(view)
+        builder.setPositiveButton(
+            context.getString(android.R.string.copy)
+        ) { _: DialogInterface?, _: Int ->
+            copyToClipboard(txt, context)
+        }
+
+        // handle the negative button of the alert dialog
+        builder.setNegativeButton(
+            context.getString(R.string.cancel)
+        ) { _: DialogInterface?, _: Int -> }
+
+        val dialog = builder.create()
+        dialog.show()
     }
 }

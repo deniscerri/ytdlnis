@@ -202,7 +202,7 @@ class TerminalFragment : Fragment() {
                 showCancelFab()
                 imm.hideSoftInputFromWindow(input?.windowToken, 0)
                 lifecycleScope.launch {
-                    val command = input!!.text.toString().replace("yt-dlp", "")
+                    val command = input!!.text.toString().replaceFirst("yt-dlp", "")
                     downloadID = withContext(Dispatchers.IO){
                         terminalViewModel.insert(TerminalItem(command = command, log = output!!.text.toString()))
                     }

@@ -8,7 +8,7 @@
     <string name="source_code">Исходный код</string>
     <string name="search_hint">Найдите или вставьте URL-адрес</string>
     <string name="update_ytdl">Установить новую версию yt-dlp</string>
-    <string name="failed_download">Невозможно загрузить файл.</string>
+    <string name="failed_download">Невозможно загрузить файл</string>
     <string name="download_notification_channel_name">Загрузка файлов</string>
     <string name="you_are_in_latest_version">Используется последняя версия</string>
     <string name="ytld_update_success">Установлена новая версия</string>
@@ -22,7 +22,7 @@
     <string name="more">Больше</string>
     <string name="update_app">Проверить обновления</string>
     <string name="version">Версия</string>
-    <string name="couldnt_find_apk">Не удалось найти подходящий APK.</string>
+    <string name="couldnt_find_apk">Не удалось найти подходящий APK</string>
     <string name="downloading_update">Загрузка новой версии</string>
     <string name="audio">Аудио</string>
     <string name="video">Видео</string>

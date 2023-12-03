@@ -32,7 +32,7 @@
     <string name="version">الإصدار</string>
     <string name="update_app">التحقق من وجود تحديثات</string>
     <string name="command_directory">مجلد الأوامر المخصصة</string>
-    <string name="couldnt_find_apk">لم يتم العثور على APK صالح.</string>
+    <string name="couldnt_find_apk">لم يتم العثور على APK صالح</string>
     <string name="best_quality">أفضل جودة متاحة</string>
     <string name="downloading">التحميل</string>
     <string name="limit_rate">حد السرعة</string>

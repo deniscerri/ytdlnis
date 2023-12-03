@@ -35,6 +35,8 @@ class NotificationUtil(var context: Context) {
     private val workerNotificationBuilder: NotificationCompat.Builder = NotificationCompat.Builder(context, DOWNLOAD_WORKER_CHANNEL_ID)
     private val commandDownloadNotificationBuilder: NotificationCompat.Builder = NotificationCompat.Builder(context, COMMAND_DOWNLOAD_SERVICE_CHANNEL_ID)
     private val finishedDownloadNotificationBuilder: NotificationCompat.Builder = NotificationCompat.Builder(context, DOWNLOAD_FINISHED_CHANNEL_ID)
+    private val erroredDownloadNotificationBuilder: NotificationCompat.Builder = NotificationCompat.Builder(context, DOWNLOAD_ERRORED_CHANNEL_ID)
+
     private val notificationManager: NotificationManager = context.getSystemService(NotificationManager::class.java)
     private val resources: Resources = context.resources
 
@@ -68,7 +70,7 @@ class NotificationUtil(var context: Context) {
             channel.description = description
             notificationManager.createNotificationChannel(channel)
 
-            //finished or errored downloads
+            //finished downloads
             name = resources.getString(R.string.finished_download_notification_channel_name)
             description =
                 resources.getString(R.string.finished_download_notification_channel_description)
@@ -76,7 +78,7 @@ class NotificationUtil(var context: Context) {
             channel.description = description
             notificationManager.createNotificationChannel(channel)
 
-            //finished or errored downloads
+            //errored downloads
             name = resources.getString(R.string.errored_downloads)
             description =
                 resources.getString(R.string.errored_download_notification_channel_description)
@@ -99,6 +101,7 @@ class NotificationUtil(var context: Context) {
             COMMAND_DOWNLOAD_SERVICE_CHANNEL_ID -> { return commandDownloadNotificationBuilder }
             DOWNLOAD_FINISHED_CHANNEL_ID -> { return finishedDownloadNotificationBuilder }
             DOWNLOAD_WORKER_CHANNEL_ID -> { return workerNotificationBuilder }
+            DOWNLOAD_ERRORED_CHANNEL_ID -> { return erroredDownloadNotificationBuilder }
         }
         return downloadNotificationBuilder
     }
@@ -554,11 +557,11 @@ class NotificationUtil(var context: Context) {
         const val DOWNLOAD_MISC_CHANNEL_ID = "4"
         const val DOWNLOAD_ERRORED_CHANNEL_ID = "6"
 
-        const val DOWNLOAD_FINISHED_NOTIFICATION_ID = 3
-        const val DOWNLOAD_RESUME_NOTIFICATION_ID = 40000
-        const val DOWNLOAD_UPDATING_NOTIFICATION_ID = 5
-        const val FORMAT_UPDATING_FINISHED_NOTIFICATION_ID = 7
-        const val DOWNLOAD_ERRORED_NOTIFICATION_ID = 6
+        const val DOWNLOAD_FINISHED_NOTIFICATION_ID =           30000
+        const val DOWNLOAD_RESUME_NOTIFICATION_ID =             40000
+        const val DOWNLOAD_UPDATING_NOTIFICATION_ID =           50000
+        const val DOWNLOAD_ERRORED_NOTIFICATION_ID =            60000
+        const val FORMAT_UPDATING_FINISHED_NOTIFICATION_ID =    70000
 
         private const val PROGRESS_MAX = 100
         private const val PROGRESS_CURR = 0

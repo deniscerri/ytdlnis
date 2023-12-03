@@ -12,7 +12,7 @@
     <string name="about">Acerca de</string>
     <string name="source_code">Código Fuente</string>
     <string name="search_hint">Buscar o Insertar URL</string>
-    <string name="failed_download">No se pudo descargar el archivo.</string>
+    <string name="failed_download">No se pudo descargar el archivo</string>
     <string name="download_notification_channel_name">Descargas de Archivos</string>
     <string name="download_notification_channel_description">Notificación que muestra el progreso de las descargas de archivos de audio y video</string>
     <string name="you_are_in_latest_version">Estás usando la última versión</string>
@@ -28,7 +28,7 @@
     <string name="update_app">Buscar actualizaciones</string>
     <string name="version">Versión</string>
     <string name="command_directory">Directorio de Comandos Personalizados</string>
-    <string name="couldnt_find_apk">No se pudo encontrar un instalador APK correcto.</string>
+    <string name="couldnt_find_apk">No se pudo encontrar un instalador APK correcto</string>
     <string name="downloading_update">Descargando una nueva versión</string>
     <string name="audio">Audio</string>
     <string name="video">Video</string>

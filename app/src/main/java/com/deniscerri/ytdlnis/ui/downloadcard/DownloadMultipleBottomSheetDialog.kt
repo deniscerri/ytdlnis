@@ -470,6 +470,13 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                                     }
                                 )
                                 bottomSheet.show()
+                                val displayMetrics = DisplayMetrics()
+                                requireActivity().windowManager.defaultDisplay.getMetrics(displayMetrics)
+                                bottomSheet.behavior.peekHeight = displayMetrics.heightPixels
+                                bottomSheet.window!!.setLayout(
+                                    ViewGroup.LayoutParams.MATCH_PARENT,
+                                    ViewGroup.LayoutParams.MATCH_PARENT
+                                )
                             }
                             DownloadViewModel.Type.video -> {
                                 val bottomSheet = BottomSheetDialog(requireContext())
@@ -530,6 +537,13 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                                 )
 
                                 bottomSheet.show()
+                                val displayMetrics = DisplayMetrics()
+                                requireActivity().windowManager.defaultDisplay.getMetrics(displayMetrics)
+                                bottomSheet.behavior.peekHeight = displayMetrics.heightPixels
+                                bottomSheet.window!!.setLayout(
+                                    ViewGroup.LayoutParams.MATCH_PARENT,
+                                    ViewGroup.LayoutParams.MATCH_PARENT
+                                )
                             }
                             DownloadViewModel.Type.command -> {
                             }

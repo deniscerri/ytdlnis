@@ -22,7 +22,7 @@
     <string name="source_code">Вихідний код</string>
     <string name="update_ytdl">Встановити нову версію yt-dlp</string>
     <string name="about">Про застосунок</string>
-    <string name="failed_download">Не вдалося завантажити файл.</string>
+    <string name="failed_download">Не вдалося завантажити файл</string>
     <string name="download_notification_channel_name">Завантаження файлів</string>
     <string name="download_notification_channel_description">Сповіщення про хід завантаження аудіо- та відеофайлів</string>
     <string name="exit_app">Вийти зі застосунку</string>
@@ -44,7 +44,7 @@
     <string name="update_app">Перевірка наявності оновлення</string>
     <string name="limit_rate_summary">Максимальна швидкість завантаження (у байтах за секунду), наприклад, 50K або 4.2M</string>
     <string name="version">Версія</string>
-    <string name="couldnt_find_apk">Не вдалося знайти відповідний APK.</string>
+    <string name="couldnt_find_apk">Не вдалося знайти відповідний APK</string>
     <string name="limit_rate">Обмеження швидкості завантаження</string>
     <string name="downloading">Завантаження</string>
     <string name="downloading_update">Завантаження нової версії</string>

@@ -14,12 +14,14 @@ import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.media3.common.util.Log
 import androidx.preference.PreferenceManager
 import com.afollestad.materialdialogs.utils.MDUtil.getStringArray
 import com.deniscerri.ytdlnis.R
@@ -205,19 +207,21 @@ class DownloadAudioFragment(private var resultItem: ResultItem? = null, private 
 
                     override fun onFormatsUpdated(allFormats: List<List<Format>>) {
                         lifecycleScope.launch(Dispatchers.IO) {
-                            resultItem?.formats?.removeAll(formats.toSet())
-                            resultItem?.formats?.addAll(allFormats.first().filter { !genericAudioFormats.contains(it) })
-                            if (resultItem != null){
-                                resultViewModel.update(resultItem!!)
+                            resultItem?.apply {
+                                this.formats.removeAll(formats.toSet())
+                                this.formats.addAll(allFormats.first().filter { !genericAudioFormats.contains(it) })
+                                resultViewModel.update(this)
                                 kotlin.runCatching {
                                     val f1 = fragmentManager?.findFragmentByTag("f1") as DownloadVideoFragment
-                                    f1.updateUI(resultItem)
+                                    f1.updateUI(this)
                                 }
                             }
                         }
                         formats = allFormats.first().filter { !genericAudioFormats.contains(it) }.toMutableList()
                         formats.removeAll(genericAudioFormats)
                         val preferredFormat = downloadViewModel.getFormat(formats, Type.audio)
+                        downloadItem.format = preferredFormat
+                        downloadItem.allFormats = formats
                         UiUtil.populateFormatCard(requireContext(), formatCard, preferredFormat, null)
                     }
                 }

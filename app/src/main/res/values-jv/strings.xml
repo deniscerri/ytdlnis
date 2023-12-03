@@ -13,7 +13,7 @@
     <string name="dont_ask_again">Aja takon maneh</string>
     <string name="music_directory">Folder musik</string>
     <string name="warning">Pènget</string>
-    <string name="couldnt_find_apk">Ora bisa nemokake APK sing cocog.</string>
+    <string name="couldnt_find_apk">Ora bisa nemokake APK sing cocog</string>
     <string name="ytdl_updating_started">Download versi anyar</string>
     <string name="downloads_running_try_later">Ngundhuh buruh lagi mlaku. Coba maneh mengko</string>
     <string name="new_template">Cithakan anyar</string>
@@ -100,7 +100,7 @@
     <string name="confirm_terminate">Mungkasi kabeh undhuhan lan nutup aplikasi kanthi paksa</string>
     <string name="errored">Kesalahan</string>
     <string name="download_card_summary">Setelan carane ndownload item</string>
-    <string name="failed_download">Ora bisa ngundhuh file.</string>
+    <string name="failed_download">Ora bisa ngundhuh file</string>
     <string name="cancelled">dibatalake</string>
     <string name="edit_selected">Suntingan sing dipilih</string>
     <string name="log_downloads_summary">Nggawe file log kanggo saben download</string>

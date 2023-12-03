@@ -223,13 +223,13 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
                     override fun onFormatsUpdated(allFormats: List<List<Format>>) {
                         lifecycleScope.launch {
                             withContext(Dispatchers.IO){
-                                resultItem?.formats?.removeAll(formats)
-                                resultItem?.formats?.addAll(allFormats.first().filter { !genericVideoFormats.contains(it) })
-                                if (resultItem != null){
-                                    resultViewModel.update(resultItem!!)
+                                resultItem?.apply {
+                                    this.formats.removeAll(formats)
+                                    this.formats.addAll(allFormats.first().filter { !genericVideoFormats.contains(it) })
+                                    resultViewModel.update(this)
                                     kotlin.runCatching {
                                         val f1 = fragmentManager?.findFragmentByTag("f0") as DownloadAudioFragment
-                                        f1.updateUI(resultItem)
+                                        f1.updateUI(this)
                                     }
                                 }
                             }
@@ -237,6 +237,8 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
                         formats = allFormats.first().filter { !genericVideoFormats.contains(it) }.toMutableList()
                         val preferredFormat = downloadViewModel.getFormat(formats, Type.video)
                         val preferredAudioFormats = downloadViewModel.getPreferredAudioFormats(formats)
+                        downloadItem.format = preferredFormat
+                        downloadItem.allFormats = formats
                         UiUtil.populateFormatCard(requireContext(), formatCard, preferredFormat, formats.filter { preferredAudioFormats.contains(it.format_id) })
                     }
 

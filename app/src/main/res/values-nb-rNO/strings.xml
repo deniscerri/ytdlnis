@@ -5,7 +5,7 @@
     <string name="video_directory">Videomappe</string>
     <string name="ytdl_update_hint">Nyttig hvis du har nedlastingsproblemer</string>
     <string name="update_ytdl">Installer ny versjon av yt-dlp</string>
-    <string name="failed_download">Kunne ikke laste ned filen.</string>
+    <string name="failed_download">Kunne ikke laste ned filen</string>
     <string name="download_notification_channel_name">Filnedlastinger</string>
     <string name="ytld_update_success">Ny versjon installert</string>
     <string name="cancel">Avbryt</string>
@@ -14,7 +14,7 @@
     <string name="confirm_delete_history_desc">Slett hele historikken for godt.</string>
     <string name="update_app">Se etter nye versjoner av programmet</string>
     <string name="command_directory">Mappe for egendefinerte kommandoer</string>
-    <string name="couldnt_find_apk">Fant ingen passende APK.</string>
+    <string name="couldnt_find_apk">Fant ingen passende APK</string>
     <string name="downloading_update">Laster ned ny versjon …</string>
     <string name="aria2_summary">Bruk aria2c som nedlaster (istedenfor forvalget)</string>
     <string name="concurrent_fragments">Parallell nedlasting</string>

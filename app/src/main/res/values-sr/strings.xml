@@ -34,7 +34,7 @@
     <string name="dont_ask_again">Не питај поново</string>
     <string name="music_directory">Фолдер за аудио снимке</string>
     <string name="warning">Упозорење</string>
-    <string name="couldnt_find_apk">Није могуће пронаћи одговарајући APK.</string>
+    <string name="couldnt_find_apk">Није могуће пронаћи одговарајући APK</string>
     <string name="video_recommendations_summary">Добијте препоручене YouTube видео снимке на почетном екрану с PIPED API-ја</string>
     <string name="codec">Кодек</string>
     <string name="select_backup_categories">Изаберите категорије резервне копије</string>
@@ -228,7 +228,7 @@
     <string name="errored">Неисправно</string>
     <string name="download_card_summary">Подешавања за преузимање предмета</string>
     <string name="preferred_format_id_summary">Изаберите формат са овим ID-ом на картици за преузимање</string>
-    <string name="failed_download">Није могуће преузети фајл.</string>
+    <string name="failed_download">Није могуће преузети фајл</string>
     <string name="Theme">Тема</string>
     <string name="cancelled">Отказано</string>
     <string name="edit_selected">Измени изабрано</string>

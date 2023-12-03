@@ -152,7 +152,7 @@
     <string name="music_directory">Lydmappe</string>
     <string name="updating">Oppdaterer</string>
     <string name="update_ytdl">Legg inn ei ny utgåve av yt-dlp</string>
-    <string name="failed_download">Greidde ikkje å hente fila.</string>
+    <string name="failed_download">Greidde ikkje å hente fila</string>
     <string name="ytdl_already_updating">Legg inn den nyaste utgåva</string>
     <string name="cancel">Avbryt</string>
     <string name="ok">Greitt</string>
@@ -160,7 +160,7 @@
     <string name="command_directory">Mappe for eigne påbod</string>
     <string name="audio">Lyd</string>
     <string name="video">Video</string>
-    <string name="couldnt_find_apk">Fann ingen høvande APK.</string>
+    <string name="couldnt_find_apk">Fann ingen høvande APK</string>
     <string name="concurrent_fragments_summary">Mengd bitar av DASH/HLS-videoar å hente samstundes</string>
     <string name="downloading">Hentar</string>
     <string name="limit_rate_summary">Toppsnøggleiken til hentingar (i bytar i sekundet), t.d. 50K, eller 4.2M</string>

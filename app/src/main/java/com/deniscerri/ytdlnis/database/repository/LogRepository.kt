@@ -45,13 +45,15 @@ class LogRepository(private val logDao: LogDao) {
             val log = item.content ?: ""
             val lines = log.split("\n")
             //clean dublicate progress + add newline
-            var newLine = line
-            if (newLine.contains("[download")){
-                newLine = "[download]" + line.split("[download]").last()
-            }
+                var newLine = line
+                if (newLine.contains("[download")){
+                    newLine = "[download]" + line.split("[download]").last()
+                }
 
-            val l = lines.dropLastWhile { it.contains("[download") }.joinToString("\n") +  "\n${newLine}"
-            item.content = l
+                val l = lines.dropLastWhile { it.contains("[download") }.joinToString("\n") +  "\n${newLine}"
+                item.content = l
+
+            //item.content += "\n$line"
             logDao.update(item)
         }
     }

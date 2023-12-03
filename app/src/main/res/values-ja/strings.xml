@@ -9,7 +9,7 @@
     <string name="music_directory">音楽のフォルダ</string>
     <string name="video_directory">動画のフォルダ</string>
     <string name="update_ytdl">最新の yt-dlp をインストール</string>
-    <string name="failed_download">ファイルをダウンロードできませんでした。</string>
+    <string name="failed_download">ファイルをダウンロードできませんでした</string>
     <string name="download_notification_channel_name">ファイルのダウンロード</string>
     <string name="you_are_in_latest_version">最新版を使用中です</string>
     <string name="ytld_update_success">最新版をインストールしました</string>
@@ -23,7 +23,7 @@
     <string name="more">詳細</string>
     <string name="version">バージョン</string>
     <string name="command_directory">コマンド指定用のフォルダ</string>
-    <string name="couldnt_find_apk">適切な APK がありませんでした。</string>
+    <string name="couldnt_find_apk">適切な APK がありませんでした</string>
     <string name="downloading_update">新しいバージョンのダウンロード</string>
     <string name="video">動画</string>
     <string name="concurrent_fragments_summary">DASH/HLS ネイティブ動画の同時分割ダウンロード数</string>

@@ -855,6 +855,14 @@
         <item>hev|h265</item>
     </string-array>
 
+    <string-array name="video_codec_values_ytdlp">
+        <item></item>
+        <item>av01</item>
+        <item>vp9</item>
+        <item>h264</item>
+        <item>h265</item>
+    </string-array>
+
 
     <string-array name="audio_codec">
         <item>@string/defaultValue</item>
@@ -865,6 +873,12 @@
     <string-array name="audio_codec_values">
         <item></item>
         <item>m4a|mp4a|aac</item>
+        <item>opus</item>
+    </string-array>
+
+    <string-array name="audio_codec_values_ytdlp">
+        <item></item>
+        <item>aac</item>
         <item>opus</item>
     </string-array>
 
@@ -1083,7 +1097,7 @@
     </array>
 
     <array name="ytdlp_source">
-        <item>@string/defaultValue</item>
+        <item>@string/update_ytdl_stable</item>
         <item>@string/update_ytdl_nightly</item>
         <item>@string/update_ytdl_master</item>
     </array>
@@ -1094,5 +1108,227 @@
         <item>nightly</item>
         <item>master</item>
     </array>
+
+
+    <!--below is for preferred audio language, not related to app's language-->
+    <string-array name="language_codes">
+        <item>af</item> <!-- Afrikaans -->
+        <item>sq</item> <!-- Albanian -->
+        <item>am</item> <!-- Amharic -->
+        <item>ar</item> <!-- Arabic -->
+        <item>hy</item> <!-- Armenian -->
+        <item>az</item> <!-- Azerbaijani -->
+        <item>eu</item> <!-- Basque -->
+        <item>be</item> <!-- Belarusian -->
+        <item>bn</item> <!-- Bengali -->
+        <item>bs</item> <!-- Bosnian -->
+        <item>bg</item> <!-- Bulgarian -->
+        <item>ca</item> <!-- Catalan -->
+        <item>ceb</item> <!-- Cebuano -->
+        <item>ny</item> <!-- Chichewa -->
+        <item>zh</item> <!-- Chinese (Simplified) -->
+        <item>co</item> <!-- Corsican -->
+        <item>hr</item> <!-- Croatian -->
+        <item>cs</item> <!-- Czech -->
+        <item>da</item> <!-- Danish -->
+        <item>nl</item> <!-- Dutch -->
+        <item>en</item> <!-- English -->
+        <item>eo</item> <!-- Esperanto -->
+        <item>et</item> <!-- Estonian -->
+        <item>tl</item> <!-- Filipino -->
+        <item>fi</item> <!-- Finnish -->
+        <item>fr</item> <!-- French -->
+        <item>fy</item> <!-- Frisian -->
+        <item>gl</item> <!-- Galician -->
+        <item>ka</item> <!-- Georgian -->
+        <item>de</item> <!-- German -->
+        <item>el</item> <!-- Greek -->
+        <item>gu</item> <!-- Gujarati -->
+        <item>ht</item> <!-- Haitian Creole -->
+        <item>ha</item> <!-- Hausa -->
+        <item>haw</item> <!-- Hawaiian -->
+        <item>iw</item> <!-- Hebrew -->
+        <item>he</item> <!-- Hebrew (legacy) -->
+        <item>hi</item> <!-- Hindi -->
+        <item>hmn</item> <!-- Hmong -->
+        <item>hu</item> <!-- Hungarian -->
+        <item>is</item> <!-- Icelandic -->
+        <item>ig</item> <!-- Igbo -->
+        <item>id</item> <!-- Indonesian -->
+        <item>ga</item> <!-- Irish -->
+        <item>it</item> <!-- Italian -->
+        <item>ja</item> <!-- Japanese -->
+        <item>jw</item> <!-- Javanese -->
+        <item>kn</item> <!-- Kannada -->
+        <item>kk</item> <!-- Kazakh -->
+        <item>km</item> <!-- Khmer -->
+        <item>rw</item> <!-- Kinyarwanda -->
+        <item>ko</item> <!-- Korean -->
+        <item>ku</item> <!-- Kurdish (Kurmanji) -->
+        <item>ky</item> <!-- Kyrgyz -->
+        <item>lo</item> <!-- Lao -->
+        <item>la</item> <!-- Latin -->
+        <item>lv</item> <!-- Latvian -->
+        <item>lt</item> <!-- Lithuanian -->
+        <item>lb</item> <!-- Luxembourgish -->
+        <item>mk</item> <!-- Macedonian -->
+        <item>mg</item> <!-- Malagasy -->
+        <item>ms</item> <!-- Malay -->
+        <item>ml</item> <!-- Malayalam -->
+        <item>mt</item> <!-- Maltese -->
+        <item>mi</item> <!-- Maori -->
+        <item>mr</item> <!-- Marathi -->
+        <item>mn</item> <!-- Mongolian -->
+        <item>my</item> <!-- Burmese -->
+        <item>ne</item> <!-- Nepali -->
+        <item>no</item> <!-- Norwegian -->
+        <item>or</item> <!-- Oriya -->
+        <item>ps</item> <!-- Pashto -->
+        <item>fa</item> <!-- Persian -->
+        <item>pl</item> <!-- Polish -->
+        <item>pt</item> <!-- Portuguese -->
+        <item>pa</item> <!-- Punjabi -->
+        <item>ro</item> <!-- Romanian -->
+        <item>ru</item> <!-- Russian -->
+        <item>sm</item> <!-- Samoan -->
+        <item>gd</item> <!-- Scots Gaelic -->
+        <item>sr</item> <!-- Serbian -->
+        <item>st</item> <!-- Sesotho -->
+        <item>sn</item> <!-- Shona -->
+        <item>sd</item> <!-- Sindhi -->
+        <item>si</item> <!-- Sinhalese -->
+        <item>sk</item> <!-- Slovak -->
+        <item>sl</item> <!-- Slovenian -->
+        <item>so</item> <!-- Somali -->
+        <item>es</item> <!-- Spanish -->
+        <item>su</item> <!-- Sundanese -->
+        <item>sw</item> <!-- Swahili -->
+        <item>sv</item> <!-- Swedish -->
+        <item>tg</item> <!-- Tajik -->
+        <item>ta</item> <!-- Tamil -->
+        <item>te</item> <!-- Telugu -->
+        <item>th</item> <!-- Thai -->
+        <item>tr</item> <!-- Turkish -->
+        <item>uk</item> <!-- Ukrainian -->
+        <item>ur</item> <!-- Urdu -->
+        <item>ug</item> <!-- Uyghur -->
+        <item>uz</item> <!-- Uzbek -->
+        <item>vi</item> <!-- Vietnamese -->
+        <item>cy</item> <!-- Welsh -->
+        <item>xh</item> <!-- Xhosa -->
+        <item>yi</item> <!-- Yiddish -->
+        <item>yo</item> <!-- Yoruba -->
+        <item>zu</item> <!-- Zulu -->
+    </string-array>
+
+    <string-array name="language_names">
+        <item>Afrikaans</item>
+        <item>Albanian</item>
+        <item>Amharic</item>
+        <item>Arabic</item>
+        <item>Armenian</item>
+        <item>Azerbaijani</item>
+        <item>Basque</item>
+        <item>Belarusian</item>
+        <item>Bengali</item>
+        <item>Bosnian</item>
+        <item>Bulgarian</item>
+        <item>Catalan</item>
+        <item>Cebuano</item>
+        <item>Chichewa</item>
+        <item>Chinese (Simplified)</item>
+        <item>Corsican</item>
+        <item>Croatian</item>
+        <item>Czech</item>
+        <item>Danish</item>
+        <item>Dutch</item>
+        <item>English</item>
+        <item>Esperanto</item>
+        <item>Estonian</item>
+        <item>Filipino</item>
+        <item>Finnish</item>
+        <item>French</item>
+        <item>Frisian</item>
+        <item>Galician</item>
+        <item>Georgian</item>
+        <item>German</item>
+        <item>Greek</item>
+        <item>Gujarati</item>
+        <item>Haitian Creole</item>
+        <item>Hausa</item>
+        <item>Hawaiian</item>
+        <item>Hebrew</item>
+        <item>Hebrew (legacy)</item>
+        <item>Hindi</item>
+        <item>Hmong</item>
+        <item>Hungarian</item>
+        <item>Icelandic</item>
+        <item>Igbo</item>
+        <item>Indonesian</item>
+        <item>Irish</item>
+        <item>Italian</item>
+        <item>Japanese</item>
+        <item>Javanese</item>
+        <item>Kannada</item>
+        <item>Kazakh</item>
+        <item>Khmer</item>
+        <item>Kinyarwanda</item>
+        <item>Korean</item>
+        <item>Kurdish (Kurmanji)</item>
+        <item>Kyrgyz</item>
+        <item>Lao</item>
+        <item>Latin</item>
+        <item>Latvian</item>
+        <item>Lithuanian</item>
+        <item>Luxembourgish</item>
+        <item>Macedonian</item>
+        <item>Malagasy</item>
+        <item>Malay</item>
+        <item>Malayalam</item>
+        <item>Maltese</item>
+        <item>Maori</item>
+        <item>Marathi</item>
+        <item>Mongolian</item>
+        <item>Burmese</item>
+        <item>Nepali</item>
+        <item>Norwegian</item>
+        <item>Oriya</item>
+        <item>Pashto</item>
+        <item>Persian</item>
+        <item>Polish</item>
+        <item>Portuguese</item>
+        <item>Punjabi</item>
+        <item>Romanian</item>
+        <item>Russian</item>
+        <item>Samoan</item>
+        <item>Scots Gaelic</item>
+        <item>Serbian</item>
+        <item>Sesotho</item>
+        <item>Shona</item>
+        <item>Sindhi</item>
+        <item>Sinhalese</item>
+        <item>Slovak</item>
+        <item>Slovenian</item>
+        <item>Somali</item>
+        <item>Spanish</item>
+        <item>Sundanese</item>
+        <item>Swahili</item>
+        <item>Swedish</item>
+        <item>Tajik</item>
+        <item>Tamil</item>
+        <item>Telugu</item>
+        <item>Thai</item>
+        <item>Turkish</item>
+        <item>Ukrainian</item>
+        <item>Urdu</item>
+        <item>Uyghur</item>
+        <item>Uzbek</item>
+        <item>Vietnamese</item>
+        <item>Welsh</item>
+        <item>Xhosa</item>
+        <item>Yiddish</item>
+        <item>Yoruba</item>
+        <item>Zulu</item>
+    </string-array>
 
 </resources>

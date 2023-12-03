@@ -13,7 +13,7 @@
     <string name="update_ytdl">Instalează o nouă versiune de yt-dlp</string>
     <string name="source_code">Codul sursă</string>
     <string name="search_hint">Caută sau Introduce adresa URL</string>
-    <string name="failed_download">Nu s-a putut descărca fișierul.</string>
+    <string name="failed_download">Nu s-a putut descărca fișierul</string>
     <string name="download_notification_channel_name">Fișiere Descărcate</string>
     <string name="worst_quality">Cea mai scăzută calitate</string>
     <string name="search">Căutare</string>
@@ -35,7 +35,7 @@
     <string name="update_app">Verifică pentru actualizări</string>
     <string name="version">Versiune</string>
     <string name="command_directory">Dosar de comandă personalizat</string>
-    <string name="couldnt_find_apk">Nu s-a putut găsi un APK potrivit.</string>
+    <string name="couldnt_find_apk">Nu s-a putut găsi un APK potrivit</string>
     <string name="downloading_update">Se descarcă versiunea nouă</string>
     <string name="audio">Audio</string>
     <string name="video">Video</string>

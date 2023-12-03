@@ -10,6 +10,7 @@ import android.util.Patterns
 import android.widget.Toast
 import androidx.preference.PreferenceManager
 import com.afollestad.materialdialogs.utils.MDUtil.getStringArray
+import com.anggrayudi.storage.extension.count
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.ChapterItem
 import com.deniscerri.ytdlnis.database.models.DownloadItem
@@ -1045,13 +1046,11 @@ class InfoUtil(private val context: Context) {
             request.addOption("--keep-fragments")
         }
 
-        val preferredAudioCodec = sharedPreferences.getString("audio_codec", "")!!
-        val aCodecPref = "ba[acodec~='^($preferredAudioCodec)']"
         val embedMetadata = sharedPreferences.getBoolean("embed_metadata", true)
         var filenameTemplate = downloadItem.customFileNameTemplate
 
         if(downloadItem.type != DownloadViewModel.Type.command){
-            request.addOption("--trim-filenames",  downDir.absolutePath.length + 117)
+            request.addOption("--trim-filenames",  254 - downDir.absolutePath.length)
 
             if (downloadItem.SaveThumb) {
                 request.addOption("--write-thumbnail")
@@ -1144,31 +1143,52 @@ class InfoUtil(private val context: Context) {
             }
         }
 
+        val preferredAudioCodec = sharedPreferences.getString("audio_codec", "")!!
+        val aCodecPrefIndex = context.getStringArray(R.array.audio_codec_values).indexOf(preferredAudioCodec)
+        val aCodecPref = context.getStringArray(R.array.audio_codec_values_ytdlp)[aCodecPrefIndex]
+
         when(type){
             DownloadViewModel.Type.audio -> {
                 val supportedContainers = context.resources.getStringArray(R.array.audio_containers)
 
                 var audioQualityId : String = downloadItem.format.format_id
-                if (audioQualityId.isBlank() || listOf("0", context.getString(R.string.best_quality), "best", "").contains(audioQualityId)){
+                if (audioQualityId.isBlank() || listOf("0", context.getString(R.string.best_quality), "ba", "best", "").contains(audioQualityId)){
                     audioQualityId = ""
-                    if (preferredAudioCodec.isNotBlank()){
-                        audioQualityId = "${aCodecPref}/bestaudio"
-                    }
-                }else if (listOf(context.getString(R.string.worst_quality), "worst").contains(audioQualityId)){
+                }else if (listOf(context.getString(R.string.worst_quality), "wa", "worst").contains(audioQualityId)){
                     audioQualityId = "worstaudio"
                 }
 
+
                 val ext = downloadItem.container
-                if (audioQualityId.isNotBlank()) request.addOption("-f", audioQualityId)
+                if (audioQualityId.isNotBlank()) {
+                    if (audioQualityId.contains("-") && !downloadItem.format.lang.isNullOrBlank() && downloadItem.format.lang != "None"){
+                        audioQualityId = "ba[format_id~='^(${audioQualityId.split("-")[0]})'][language=${downloadItem.format.lang}]/ba/b"
+                    }
+                    request.addOption("-f", audioQualityId)
+                }else{
+                    //enters here if generic or quick downloaded with ba format
+                    val preferredLanguage = sharedPreferences.getString("audio_language","")!!
+                    if (preferredLanguage.isNotBlank()){
+                        request.addOption("-f", "ba[language=$preferredLanguage]/ba/b")
+                    }
+                }
                 request.addOption("-x")
+
+                val formatSorting = StringBuilder("hasaud")
+
+                if (aCodecPref.isNotBlank()){
+                    formatSorting.append(",acodec:$aCodecPref")
+                }
 
                 if(ext.isNotBlank()){
                     if(!ext.matches("(webm)|(Default)|(${context.getString(R.string.defaultValue)})".toRegex()) && supportedContainers.contains(ext)){
                         request.addOption("--audio-format", ext)
+                        formatSorting.append(",ext:$ext")
                     }
                 }
 
                 request.addOption("-P", downDir.absolutePath)
+                request.addOption("-S", formatSorting.toString())
 
                 if (downloadItem.audioPreferences.splitByChapters && downloadItem.downloadSections.isBlank()){
                     request.addOption("--split-chapters")
@@ -1242,111 +1262,99 @@ class InfoUtil(private val context: Context) {
                 }
 
                 //format logic
-                var videof = downloadItem.format.format_id
-                var audiof = "ba"
-                if (downloadItem.videoPreferences.audioFormatIDs.isNotEmpty()){
-                    audiof = downloadItem.videoPreferences.audioFormatIDs.joinToString("+")
-                }
-                if (downloadItem.videoPreferences.removeAudio) audiof = ""
+                var videoF = downloadItem.format.format_id
+                var audioF = downloadItem.videoPreferences.audioFormatIDs.joinToString("+").ifBlank { "ba" }
+                val preferredAudioLanguage = sharedPreferences.getString("audio_language", "")!!
+                if (downloadItem.videoPreferences.removeAudio) audioF = ""
 
-                val defaultFormats = context.resources.getStringArray(R.array.video_formats_values)
-                val usingGenericFormat = defaultFormats.contains(videof) || downloadItem.allFormats.isEmpty() || downloadItem.allFormats == getGenericVideoFormats(context.resources)
                 val f = StringBuilder()
 
-                if(!usingGenericFormat){
-                    if (audiof.isBlank()){
-                        f.append("$videof/bv/best")
-                    }else{
-                        f.append("$videof+$audiof/")
-                        if (preferredAudioCodec.isNotBlank())
-                            f.append("$videof+$aCodecPref/")
-                        f.append("$videof/best")
+                val defaultFormats = context.resources.getStringArray(R.array.video_formats_values)
+                val usingGenericFormat = defaultFormats.contains(videoF) || downloadItem.allFormats.isEmpty() || downloadItem.allFormats == getGenericVideoFormats(context.resources)
+                if (!usingGenericFormat){
+                    if (audioF.isNotBlank()) audioF = "+$audioF"
+                    f.append("$videoF$audioF/")
+                    if (preferredAudioCodec.isNotBlank()){
+                        f.append("$videoF+$aCodecPref/")
                     }
+                    f.append("$videoF/bv/b")
 
-                    if (audiof.contains("+")){
+                    if (audioF.count("+") > 1){
                         request.addOption("--audio-multistreams")
                     }
                 }else{
-                    if (videof == context.resources.getString(R.string.best_quality) || videof == "best") {
-                        videof = "bv"
-                    }else if (videof == context.resources.getString(R.string.worst_quality) || videof == "worst") {
-                        videof = "worst"
-                    }else if (defaultFormats.contains(videof)) {
-                        videof = "bv[height<="+videof.split("_")[0].dropLast(1)+"]"
+                    if (videoF == context.resources.getString(R.string.best_quality) || videoF == "best") {
+                        videoF = "bv"
+                    }else if (videoF == context.resources.getString(R.string.worst_quality) || videoF == "worst") {
+                        videoF = "worst"
+                    }else if (defaultFormats.contains(videoF)) {
+                        videoF = "bv[height<="+videoF.split("_")[0].dropLast(1)+"]"
                     }
 
                     val preferredFormatIDs = sharedPreferences.getString("format_id", "").toString()
                         .split(",")
                         .filter { it.isNotEmpty() }
-                        .ifEmpty { listOf(videof) }.toMutableList()
-                    if (!preferredFormatIDs.contains(videof)){
-                        preferredFormatIDs.add(0, videof)
+                        .ifEmpty { listOf(videoF) }.toMutableList()
+                    if (!preferredFormatIDs.contains(videoF)){
+                        preferredFormatIDs.add(0, videoF)
                     }
+                    // ^ [videoF, preferredID1, preferredID2...]
 
                     val preferredAudioFormatIDs = sharedPreferences.getString("format_id_audio", "")
                         .toString()
                         .split(",")
-                        .filter { it.isNotEmpty() }
+                        .filter { it.isNotBlank() }
                         .ifEmpty {
                             val list = mutableListOf<String>()
                             if (preferredAudioCodec.isNotBlank()) list.add("ba[acodec~='^($preferredAudioCodec)']")
-                            list.add(audiof)
+                            if (preferredAudioLanguage.isNotEmpty()) list.add("ba[language=$preferredAudioLanguage]")
+                            list.add(audioF)
                             list
-                        }
+                        }.apply {
 
-                    val preferredAudioFormats = if (downloadItem.videoPreferences.audioFormatIDs.isEmpty()) {
-                        preferredAudioFormatIDs
-                    } else listOf(audiof)
-
-                    if (preferredAudioFormats.any{it.contains("+")}){
+                        }.toMutableList()
+                    if (!preferredAudioFormatIDs.contains(audioF) && audioF != "ba"){
+                        preferredAudioFormatIDs.add(0, audioF)
+                    }
+                    // ^ [audioF, preferredAID1, preferredAID2, ....]
+                    if (preferredAudioFormatIDs.any{it.contains("+")}){
                         request.addOption("--audio-multistreams")
                     }
 
                     val preferredCodec = sharedPreferences.getString("video_codec", "")
-                    val extPref = if (cont.isNotBlank()) "[ext=$cont]" else ""
-                    val vCodecPref = if (preferredCodec!!.isNotBlank()) "[vcodec~='^($preferredCodec)']" else ""
-
-
+                    val vCodecPrefIndex = context.getStringArray(R.array.video_codec_values).indexOf(preferredCodec)
+                    val vCodecPref = context.getStringArray(R.array.video_codec_values_ytdlp)[vCodecPrefIndex]
                     preferredFormatIDs.forEach { v ->
-                        //build format with extension and vcodec
-                        preferredAudioFormats.forEach { a ->
+                        preferredAudioFormatIDs.forEach { a ->
                             val aa = if (a.isNotBlank()) "+$a" else ""
-                            f.append("$v$extPref$vCodecPref$aa/")
+                            f.append("$v$aa/")
                         }
-
-                        //build format with vcodec
-                        if (extPref.isNotBlank()){
-                            preferredAudioFormats.forEach { a ->
-                                val aa = if (a.isNotBlank()) "+$a" else ""
-                                f.append("$v$vCodecPref$aa/")
-                            }
-                        }
-
-                        //build format with audio
-                        if (vCodecPref.isNotBlank()){
-                            preferredAudioFormats.forEach {a ->
-                                val aa = if (a.isNotBlank()) "+$a" else ""
-                                f.append("$v$aa/")
-                            }
-                        }
-
+                        //build format with just videoformatid and audio if remove audio is not checked
                         if (!downloadItem.videoPreferences.removeAudio){
+                            //build format with audio with preferred language
+                            if (preferredAudioLanguage.isNotBlank()){
+                                val al = "$v+ba[language=$preferredAudioLanguage]/"
+                                if (!f.contains(al)) f.append(al)
+                            }
                             //build format with best audio
-                            if(!f.contains("$v+ba/")){
-                                f.append("$v+ba/")
-                            }
-
-                            //build formats with standalone video
-                            if(!f.contains("/$v/")){
-                                f.append("$v/")
-                            }
+                            if (!f.contains("$v+ba/")) f.append("$v+ba/")
+                            //build format with standalone video
+                            f.append("$v/")
                         }
                     }
 
-                    if(!f.endsWith("best/")){
+                    if(!f.endsWith("b/")){
                         //last fallback
-                        f.append("best")
+                        f.append("b")
                     }
+
+                    val formatSorting = StringBuilder("+hasaud")
+                    if (vCodecPref.isNotBlank()) formatSorting.append(",vcodec:$vCodecPref")
+                    if (aCodecPref.isNotBlank()) formatSorting.append(",acodec:$aCodecPref")
+                    if (cont.isNotBlank()) formatSorting.append(",ext:$cont")
+
+                    request.addOption("-S", formatSorting.toString())
+
                 }
 
 
@@ -1404,6 +1412,18 @@ class InfoUtil(private val context: Context) {
         return request
     }
 
+    fun getPipedInstances() : List<String> {
+        kotlin.runCatching {
+            val res = genericArrayRequest("https://piped-instances.kavin.rocks/")
+            val list = mutableListOf<String>()
+            for (i in 0 until res.length()) {
+                val element = res.getJSONObject(i)
+                list.add(element.getString("api_url"))
+            }
+            return list
+        }
+        return listOf()
+    }
 
     fun parseYTDLRequestString(request : YoutubeDLRequest) : String {
         val arr = request.buildCommand().toMutableList()

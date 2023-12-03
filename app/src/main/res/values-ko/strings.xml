@@ -38,14 +38,14 @@
     <string name="video_format">비디오 형식</string>
     <string name="about">개발자 정보</string>
     <string name="audio_format">오디오 형식</string>
-    <string name="failed_download">파일을 다운로드할 수 없습니다.</string>
+    <string name="failed_download">파일을 다운로드할 수 없습니다</string>
     <string name="download_notification_channel_name">파일 다운로드</string>
     <string name="ok">확인</string>
     <string name="confirm_delete_history">확인</string>
     <string name="search_history_hint">기록에서 검색</string>
     <string name="no_results">결과 없음</string>
     <string name="update_app">업데이트 확인</string>
-    <string name="couldnt_find_apk">적합한 APK를 찾을 수 없습니다.</string>
+    <string name="couldnt_find_apk">적합한 APK를 찾을 수 없습니다</string>
     <string name="audio">오디오</string>
     <string name="concurrent_fragments_summary">동시에 다운로드할 DASH/HLS 네이티브 비디오의 조각 수</string>
     <string name="version">버전</string>

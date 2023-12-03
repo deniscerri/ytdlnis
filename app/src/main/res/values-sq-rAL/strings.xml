@@ -17,7 +17,7 @@
     <string name="about">Rreth</string>
     <string name="source_code">Kodi</string>
     <string name="search_hint">Kërko ose Vendos URL</string>
-    <string name="failed_download">Dështim në shkarkim.</string>
+    <string name="failed_download">Dështim në shkarkim</string>
     <string name="download_notification_channel_name">Shkarkimet e Skedarëve</string>
     <string name="download_notification_channel_description">Njoftimi i cili tregon progresin e shkarkimeve te skedarëve audio dhe video</string>
     <string name="you_are_in_latest_version">Je ne versionin e fundit</string>
@@ -35,7 +35,7 @@
     <string name="update_app">Kontrollo për përditësime</string>
     <string name="version">Versioni</string>
     <string name="command_directory">Direktoria e Komandës</string>
-    <string name="couldnt_find_apk">Nuk u gjet një APK e vlefshme.</string>
+    <string name="couldnt_find_apk">Nuk u gjet një APK e vlefshme</string>
     <string name="downloading_update">Po shkarkohet versioni i ri</string>
     <string name="audio">Audio</string>
     <string name="video">Video</string>

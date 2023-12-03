@@ -12,7 +12,7 @@
     <string name="updating">Aktualizuji</string>
     <string name="home">Domů</string>
     <string name="remove_results">Odstranit výsledky</string>
-    <string name="failed_download">Soubor se nepodařilo stáhnout.</string>
+    <string name="failed_download">Soubor se nepodařilo stáhnout</string>
     <string name="search">Hledat</string>
     <string name="settings">Nastavení</string>
     <string name="worst_quality">Nejhorší kvalita</string>
@@ -24,7 +24,7 @@
     <string name="cancel_download">Zrušit stahování</string>
     <string name="audio_quality">Kvalita audia</string>
     <string name="audio_format">Audio formát</string>
-    <string name="couldnt_find_apk">Nepodařilo se najít vhodný APK soubor.</string>
+    <string name="couldnt_find_apk">Nepodařilo se najít vhodný APK soubor</string>
     <string name="ytdl_updating_started">Stahování nové verze</string>
     <string name="command_download_notification_channel_description">Upozornění ukazující stahování za pomoci yt-dlp příkazu</string>
     <string name="add_chapters">Kapitoly ve videích</string>
