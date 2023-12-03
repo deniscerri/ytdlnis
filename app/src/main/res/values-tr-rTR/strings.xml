@@ -9,7 +9,7 @@
     <string name="directories"> Klasörler</string>
     <string name="music_directory"> Müzik Klasörü</string>
     <string name="video_directory"> Video Klasörü</string>
-    <string name="updating">Güncelleniyor</string>
+    <string name="updating">Güncelleniyor...</string>
     <string name="ytdl_update_hint">İndirmede sorun yaşıyorsanız kullanışlıdır</string>
     <string name="update_ytdl">yt-dlp\'nin yeni sürümünü yükle</string>
     <string name="source_code">Kaynak Kodu</string>
@@ -39,7 +39,7 @@
     <string name="video">Video</string>
     <string name="concurrent_fragments_summary">Eşzamanlı indirilecek DASH/HLS yerel videonun parça sayısı</string>
     <string name="concurrent_fragments">Eşzamanlı Parçalar</string>
-    <string name="downloading">İndiriliyor</string>
+    <string name="downloading">İndiriliyor...</string>
     <string name="limit_rate">Maksimum Hız</string>
     <string name="limit_rate_summary">Maksimum indirme hızı (bayt/saniye), örneğin 50K veya 4,2M</string>
     <string name="aria2_summary">Varsayılan yerine indirici olarak aria2c kullan</string>
@@ -66,7 +66,7 @@
     <string name="link_copied_to_clipboard">Panoya kopyalanan bağlantı</string>
     <string name="api_key">API Anahtarı Kullan</string>
     <string name="api_key_summary">Youtube API\'sinden Video Önerileri</string>
-    <string name="update_app_summary">Uygulama açıldığında yeni sürümlerini duyurun</string>
+    <string name="update_app_summary">Uygulama açıldığında yeni sürümlerini göster</string>
     <string name="downloads">İndirilenler</string>
     <string name="remove_deleted">Silinenleri Kaldır</string>
     <string name="remove_duplicates">Kopyaları Kaldır</string>
@@ -102,7 +102,7 @@
     <string name="select_sponsorblock_filtering">Sponsor Engelleyici Filtrelenerini Seçin</string>
     <string name="about">Hakkında</string>
     <string name="new_template">Yeni şablon</string>
-    <string name="save_dir">Dizini kaydet</string>
+    <string name="save_dir">dizine kaydet</string>
     <string name="cache_cleared">Geçici dosyalar temizlendi</string>
     <string name="remove_search_history">Arama Geçmişini Temizle</string>
     <string name="container">Uzantı</string>
@@ -183,7 +183,7 @@
     <string name="start">Başlat</string>
     <string name="cut">Kes</string>
     <string name="new_cut">Yeni Kesim</string>
-    <string name="add_template_first">En az bir komut şablonu oluşturmuş olmanız gerekir!</string>
+    <string name="add_template_first">En az bir komut şablonu oluşturmalısınız!</string>
     <string name="suggested">Önerilen</string>
     <string name="select_all">Tümünü Seç</string>
     <string name="share">Paylaş</string>
@@ -200,10 +200,10 @@
     <string name="subtitle_languages">Altyazı dilleri</string>
     <string name="save_subs_desc">Altyazı dosyası yaz</string>
     <string name="update_formats_summary">Format kartına tıklandığında otomatik olarak eksik formatları ara</string>
-    <string name="ignore_battery_optimization">Pil Optimizasyonunu Yoksay</string>
+    <string name="ignore_battery_optimization">Batarya optimizasyonunu devre dışı bırak</string>
     <string name="format_source">Format Kaynağı</string>
     <string name="video_recommendations">Video Önerileri</string>
-    <string name="video_recommendations_summary">Ana ekrandaki önerilen YouTube videolarını PIPED API\'den getir</string>
+    <string name="video_recommendations_summary">PIPED API\'sinden önerilen YouTube videolarını ana ekranda alın</string>
     <string name="preferred_search_engine">Tercih Edilen Arama Motoru</string>
     <string name="preferred_search_engine_summary">Uygulama içi aramalar için kullanılacak arama motoru</string>
     <string name="format_filtering_hint">Bu seçeneği kullanabilmek için tüm öğeler aynı türde olmalıdır</string>
@@ -272,14 +272,14 @@
     <string name="crop_thumb_summary">Ses indirmeleri için küçük resmi bir kareye kırpın</string>
     <string name="piped_instance_summary">Uygulamanın youtube sorguları ve biçimleri için kullanabileceği bir PIPED API Sunucusu yazın</string>
     <string name="search_suggestions_summary">Google\'dan arama önerileri alın</string>
-    <string name="retries">Tekrarlamalar</string>
+    <string name="retries">yeniden denemeler</string>
     <string name="fragment_retries">Parça Tekrarları</string>
     <string name="format_order">Format Düzeni</string>
     <string name="force_keyframes_summary">Daha yavaş işlem ama daha tutarlı kesimler</string>
     <string name="force_keyframes">Kesmelerde Anahtar Kareleri Zorla</string>
     <string name="orange">Turuncu</string>
     <string name="use_extra_commands">Ekstra Komutlar Ekle</string>
-    <string name="use_extra_commands_summary">Ses / Video indirmeleri için. GUI yapılandırması ile birlikte ekstra komutlar ekleyin</string>
+    <string name="use_extra_commands_summary">Ses / Video indirmeleri için. GUI yapılandırmasıyla birlikte ekstra komutlar ekleyin</string>
     <string name="current">Geçerli Komut</string>
     <string name="save_for_later">Daha Sonra İndirmek için Kaydedilsin mi\?</string>
     <string name="subtitle_format">Altyazı Formatı</string>
@@ -292,7 +292,7 @@
     <string name="extra_command">Ekstra Komut</string>
     <string name="use_cookies">Çerezleri Kullan</string>
     <string name="embed_metadata">Meta Verileri Göm</string>
-    <string name="embed_metadata_summary">Meta verileri ses dosyasına gömün ve ayrıştırın</string>
+    <string name="embed_metadata_summary">Meta verileri ayrıştırın ve ses dosyasına gömün</string>
     <string name="update_formats_background">Formatları Arka Planda Güncelle</string>
     <string name="auto_update_ytdlp">Yt-dlp\'i Otomatik Güncelle</string>
     <string name="use_sponsorblock">Sponsor Engelleyici Kullan</string>
@@ -307,4 +307,22 @@
     <string name="preferred_video_codec">Tercih Edilen Video Kodek Bileşeni</string>
     <string name="sponsorblock_api_url">Sponsor Engelleyici API URL\'si</string>
     <string name="loading">Yükleniyor</string>
+    <string name="export_file">Dosyayı Dışa Aktar</string>
+    <string name="schedule">Zamanla</string>
+    <string name="update_ytdl_master">yt-dlp\'nin Ana Sürümü</string>
+    <string name="user_agent_header">Kullanıcı Aracı başlığı</string>
+    <string name="search_command_hint">Komutlardan Arama Yapma</string>
+    <string name="ignore">Görmezlikten gel</string>
+    <string name="errored_downloads">Hatalı İndirmeler</string>
+    <string name="license">Lisans</string>
+    <string name="download_already_exists_summary">Hala indirmek istiyor musun?</string>
+    <string name="modify_download_card">İndirme Kartını Değiştir</string>
+    <string name="errored_download_notification_channel_description">Hatalı İndirmeler İçin Bildirim</string>
+    <string name="security">Güvenlik</string>
+    <string name="buffer_size_summary">İndirme arabelleğinin boyutu, ör. 1024 veya 16K (varsayılan 1024\'tür)</string>
+    <string name="ytdl_source">yt-dlp Kaynağı</string>
+    <string name="remember_download_type">İndirme Türünü Hatırlayın</string>
+    <string name="buffer_size">Arabellek Boyutu</string>
+    <string name="remember_download_type_summary">Geçerli öğe için son açılan indirme türünü seçin</string>
+    <string name="length">Uzunluğu</string>
 </resources>

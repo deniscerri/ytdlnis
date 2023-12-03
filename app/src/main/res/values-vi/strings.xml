@@ -316,4 +316,6 @@
     <string name="remember_download_type_summary">Chọn loại tải xuống được mở lần cuối cho mục hiện tại</string>
     <string name="length">Độ dài</string>
     <string name="export_file">Xuất tệp</string>
+    <string name="update_ytdl_master">Phiên bản Master của yt-dlp</string>
+    <string name="ytdl_source">Mã nguồn yt-dlp</string>
 </resources>

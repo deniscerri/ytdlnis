@@ -25,7 +25,7 @@
     <string name="title">Наслов</string>
     <string name="use_cookies">Користи колачиће</string>
     <string name="use_extra_commands">Додај додатне команде</string>
-    <string name="adjust_audio">Прилагодите аудио снимак</string>
+    <string name="adjust_audio">Прилагођавање аудио снимка</string>
     <string name="update_app_beta_summary">Прикључите се бета програму. Може да садржи грешке.</string>
     <string name="copied_to_clipboard">Копирано у привремену меморију</string>
     <string name="update_app_beta">Бета издања</string>
@@ -53,7 +53,7 @@
     <string name="enable_mtime">Омогући mtime</string>
     <string name="api_key">Користи API кључ</string>
     <string name="download_over_metered_networks">Преузимање преко мобилних података</string>
-    <string name="adjust_video">Прилагодите видео снимак</string>
+    <string name="adjust_video">Прилагођавање видео снимка</string>
     <string name="processing">Обрада</string>
     <string name="clear_temporary_files_summary">Избришите кеширане фајлове из срушених/неисправних/отказаних преузимања</string>
     <string name="user_agent_header">User-Agent заглавље</string>
@@ -222,7 +222,7 @@
     <string name="error_restarting_download">Грешка при покушају рестартовања преузимања</string>
     <string name="help_translate_summary">Преведите ову апликацију на свој језик користећи Weblate</string>
     <string name="remove_search_history">Очисти историју претраге</string>
-    <string name="adjust_templates">Прилагодите шаблоне</string>
+    <string name="adjust_templates">Прилагођавање шаблона</string>
     <string name="confirm_terminate">Зауставља сва преузимања и принудно затвара апликацију</string>
     <string name="general">Опште</string>
     <string name="errored">Неисправно</string>
@@ -245,7 +245,7 @@
     <string name="file_size">Величина фајла</string>
     <string name="restrict_filenames_summary">Ограничите називе фајлова само на ASCII знакове и избегавајте „&amp;“ и размаке у називима фајлова</string>
     <string name="auto">Аутоматски</string>
-    <string name="configure_download">Прилагодите преузимање</string>
+    <string name="configure_download">Прилагођавање преузимања</string>
     <string name="shortcuts">Пречице</string>
     <string name="sponsorblock">SponsorBlock</string>
     <string name="video_recommendations">Препоруке видео снимака</string>
@@ -297,7 +297,7 @@
     <string name="format_filtering_hint">Сви предмети морају бити истог типа да бисте користили ову опцију</string>
     <string name="kill_app">Сруши апликацију</string>
     <string name="length">Дужина</string>
-    <string name="incognito_summary">Преузми без додавања у историју</string>
+    <string name="incognito_summary">Преузмите без додавања у историју</string>
     <string name="audio">Аудио</string>
     <string name="error_updating_formats">Грешка при ажурирању формата!</string>
     <string name="purple">Љубичаста</string>

@@ -253,8 +253,8 @@
     <string name="audio_only_item">このアイテムはオーディオフォーマットのみが含まれています</string>
     <string name="sponsorblock">SponsorBlock</string>
     <string name="custom_audio_quality">カスタムオーディオ品質を使用</string>
-    <string name="piped_instance">パイプされたインスタンス</string>
-    <string name="piped_instance_summary">YouTube のクエリやフォーマットに使用可能な Piped API サーバーを作成します</string>
+    <string name="piped_instance">Piped のインスタンス</string>
+    <string name="piped_instance_summary">YouTube からの動画やその形式の取得に使われる Piped API サーバーを指定</string>
     <string name="socks5_proxy_summary">指定した HTTP/HTTPS/SOCKS プロキシを使用します</string>
     <string name="socks5_proxy">Socks5 プロキシ URL</string>
     <string name="move_temporary_files">一時ファイルを移動</string>
