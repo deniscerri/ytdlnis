@@ -148,7 +148,7 @@
     <string name="ok">ОК</string>
     <string name="save_for_later">Сачувати преузимање за касније\?</string>
     <string name="update_app_summary">Обавештење о новим верзијама при отварању апликације</string>
-    <string name="url">URL</string>
+    <string name="url">URL адреса</string>
     <string name="access_all_directories">Дозволи приступ свим фолдерима</string>
     <string name="monochrome">Монохром</string>
     <string name="format_id">ID формата</string>
@@ -232,7 +232,7 @@
     <string name="Theme">Тема</string>
     <string name="cancelled">Отказано</string>
     <string name="edit_selected">Измени изабрано</string>
-    <string name="sponsorblock_api_url">SponsorBlock URL API-ја</string>
+    <string name="sponsorblock_api_url">SponsorBlock URL адреса API-ја</string>
     <string name="log_downloads_summary">Прављење фајла евиденције за свако преузимање</string>
     <string name="hide_thumbnails">Сакриј сличице</string>
     <string name="update_app">Провера за ажурирања</string>
