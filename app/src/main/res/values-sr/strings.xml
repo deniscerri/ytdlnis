@@ -322,4 +322,6 @@
     <string name="ytdl_source">Извор yt-dlp</string>
     <string name="buffer_size_summary">Величина бафера преузимања, нпр. 1024 или 16К (подразумевано је 1024)</string>
     <string name="buffer_size">Величина бафера</string>
+    <string name="preferred_audio_language">Преферирани језик аудио снимка</string>
+    <string name="update_ytdl_stable">Стабилна верзија yt-dlp</string>
 </resources>
