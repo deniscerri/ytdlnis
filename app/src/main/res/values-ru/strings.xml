@@ -322,4 +322,6 @@
     <string name="ytdl_source">Источник yt-dlp</string>
     <string name="buffer_size_summary">Размер буфера загрузки, например. 1024 или 16К (по умолчанию 1024)</string>
     <string name="buffer_size">Размер буфера</string>
+    <string name="preferred_audio_language">Предпочитаемый язык аудио</string>
+    <string name="update_ytdl_stable">Стабильная версия yt-dlp</string>
 </resources>

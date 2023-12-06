@@ -322,4 +322,6 @@
     <string name="buffer_size_summary">Rozmiar bufora pobierania, np. 1024 lub 16K (domyślnie jest to 1024)</string>
     <string name="ytdl_source">Źródło yt-dlp</string>
     <string name="buffer_size">Rozmiar bufora</string>
+    <string name="preferred_audio_language">Preferowany język dźwięku</string>
+    <string name="update_ytdl_stable">Stabilna wersja yt-dlp</string>
 </resources>

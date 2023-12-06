@@ -322,4 +322,6 @@
     <string name="ytdl_source">yt-dlp 源</string>
     <string name="buffer_size_summary">下载缓冲的大小，如 1024 或 16K (默认为 1024）</string>
     <string name="buffer_size">缓冲大小</string>
+    <string name="preferred_audio_language">首选音频语言</string>
+    <string name="update_ytdl_stable">yt-dlp 稳定版</string>
 </resources>

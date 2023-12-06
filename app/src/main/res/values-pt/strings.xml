@@ -187,7 +187,7 @@
     <string name="template">Modelo</string>
     <string name="select_sponsorblock_filtering">Selecionar filtros SponsorBlock</string>
     <string name="container">Recipiente</string>
-    <string name="ytdl_version">Versão yt-dlp</string>
+    <string name="ytdl_version">Versão de yt-dlp</string>
     <string name="save_dir">Diretório para os ficheiros</string>
     <string name="defaultValue">Padrão</string>
     <string name="logs">Registos</string>
@@ -316,10 +316,12 @@
     <string name="length">Comprimento</string>
     <string name="export_file">Exportar ficheiro</string>
     <string name="ignore">Ignorar</string>
-    <string name="update_ytdl_master">Versão principal do yt-dlp</string>
+    <string name="update_ytdl_master">Versão principal de yt-dlp</string>
     <string name="errored_downloads">Descargas com erro</string>
     <string name="errored_download_notification_channel_description">Notificação de descargas com erro</string>
     <string name="ytdl_source">Fonte yt-dlp</string>
     <string name="buffer_size_summary">Tamanho do buffer para descargas (valor padrão é 1024)</string>
     <string name="buffer_size">Tamanho do buffer</string>
+    <string name="preferred_audio_language">Idioma de áudio preferido</string>
+    <string name="update_ytdl_stable">Versão estável de yt-dlp</string>
 </resources>

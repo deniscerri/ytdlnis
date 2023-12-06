@@ -322,4 +322,6 @@
     <string name="ytdl_source">Burimi i yt-dlp</string>
     <string name="buffer_size_summary">Madhësia e bufferit të shkarkimit, p.sh 1024 ose 16k (fillimisht është 1024)</string>
     <string name="buffer_size">Madhësia e Bufferit</string>
+    <string name="preferred_audio_language">Gjuha e Preferuar e Audios</string>
+    <string name="update_ytdl_stable">Versioni Stabël i yt-dlp</string>
 </resources>
