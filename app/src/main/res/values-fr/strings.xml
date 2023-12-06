@@ -85,7 +85,7 @@
     <string name="you_are_going_to_delete_multiple_items">Suppression de plusieurs éléments</string>
     <string name="delete_file_too">Supprimer le fichier de l\'appareil</string>
     <string name="delete_files_too">Supprimer les fichiers de l\'appareil</string>
-    <string name="request_permission_desc">Cette application a besoin d\'autorisations de fichier pour enregistrer les téléchargements sur l\'appareil</string>
+    <string name="request_permission_desc">Cette application a besoin d\'accéder aux fichiers de l\'appareil pour sauvegarder les téléchargements</string>
     <string name="exit_app">Fermer l\'application</string>
     <string name="warning">Avertissement</string>
     <string name="sponsorblock_nonmusic">Parties non musicales et hors sujet</string>
