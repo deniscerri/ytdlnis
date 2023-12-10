@@ -12,7 +12,7 @@
     <string name="video_directory">ভিডিও ফোল্ডার</string>
     <string name="updating">আপডেট করা হচ্ছে</string>
     <string name="source_code">সোর্স কোড</string>
-    <string name="failed_download">ফাইল ডাউনলোড করা যায়নি।</string>
+    <string name="failed_download">ফাইল ডাউনলোড করা যায়নি</string>
     <string name="download_notification_channel_name">ফাইল ডাউনলোড</string>
     <string name="download_notification_channel_description">অডিও এবং ভিডিও ফাইল ডাউনলোডের অগ্রগতি দেখানোর বিজ্ঞপ্তি</string>
     <string name="you_are_in_latest_version">সর্বশেষ সংস্করণ ব্যবহার করছে</string>
@@ -23,7 +23,7 @@
     <string name="more">আরও</string>
     <string name="update_app">আপডেট এর জন্য অনুসন্ধান করুন</string>
     <string name="command_directory">কাস্টম কমান্ডের জন্য ফোল্ডার</string>
-    <string name="couldnt_find_apk">একটি উপযুক্ত APK খুঁজে পাওয়া যায়নি।</string>
+    <string name="couldnt_find_apk">একটি উপযুক্ত APK খুঁজে পাওয়া যায়নি</string>
     <string name="downloading_update">নতুন সংস্করণ ডাউনলোড করা হচ্ছে</string>
     <string name="audio">অডিও</string>
     <string name="video">ভিডিও</string>
@@ -183,7 +183,7 @@
     <string name="add_template_first">আপনার কমপক্ষে একটি কমান্ড টেমপ্লেট তৈরি করা দরকার!</string>
     <string name="suggested">প্রস্তাবিত</string>
     <string name="select_all">সব নির্বাচন করুন</string>
-    <string name="update_formats_summary">ফরম্যাট কার্ডে ক্লিক করার সময় স্বয়ংক্রিয়ভাবে অনুপস্থিত ফরম্যাটগুলির জন্য অনুসন্ধান করুন</string>
+    <string name="update_formats_summary">ডাউনলোড কার্ড প্রদর্শিত হওয়ার সাথে ফর্ম্যাটগুলি আনুন৷</string>
     <string name="ignore_battery_optimization">ব্যাটারি অপ্টিমাইজেশান উপেক্ষা করুন</string>
     <string name="share">শেয়ার করুন</string>
     <string name="cookies">কুকি</string>
@@ -229,7 +229,7 @@
     <string name="monochrome">কলোরড</string>
     <string name="downloaded">"ডাউনলোডেড: "</string>
     <string name="finished_download_notification_channel_name">সম্পন্ন ডাউনলোগুলি</string>
-    <string name="finished_download_notification_channel_description">সম্পন্ন বা ত্রুটিপূর্ণ ডাউনলোডের জন্য বিজ্ঞপ্তি</string>
+    <string name="finished_download_notification_channel_description">সমাপ্ত ডাউনলোডের জন্য বিজ্ঞপ্তি</string>
     <string name="remove_audio">অডিও সরান</string>
     <string name="preferred_format_id">পছন্দের ফরম্যাট আইডি</string>
     <string name="download_now">এখনই ডাউনলোড করুন</string>
@@ -291,4 +291,5 @@
     <string name="socks5_proxy_summary">নির্দিষ্ট HTTP/HTTPS/SOCKS প্রক্সি ব্যবহার করুন</string>
     <string name="misc">বিবিধ</string>
     <string name="use_extra_commands_summary">অডিও / ভিডিও ডাউনলোডের জন্য। জিউআই কনফিগারেশনের সাথে অতিরিক্ত কমান্ড যোগ করুন</string>
+    <string name="search_command_hint">কমান্ড থেকে অনুসন্ধান করুন</string>
 </resources>

@@ -325,4 +325,6 @@
     <string name="buffer_size">Arabellek Boyutu</string>
     <string name="remember_download_type_summary">Geçerli öğe için son açılan indirme türünü seçin</string>
     <string name="length">Uzunluğu</string>
+    <string name="preferred_audio_language">Tercih Edilen Ses Dili</string>
+    <string name="update_ytdl_stable">yt-dlp\'nin Kararlı Sürümü</string>
 </resources>

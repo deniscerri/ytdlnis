@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="music_directory">Lagayan ng Musika</string>
+    <string name="update_ytdl">I-install ang bagong bersyon ng yt-dlp</string>
+    <string name="directories">Lagayan</string>
+    <string name="remove_all">Tanggalin Lahat</string>
+    <string name="video_directory">Lagayan ng Bidyo</string>
+    <string name="download_all">Download Lahat</string>
+    <string name="home">Tahanan</string>
+    <string name="remove_results">Hawanin ang resulta</string>
+    <string name="search">Maghanap</string>
+    <string name="worst_quality">Mababang Kalidad</string>
+    <string name="ytdl_update_hint">Nakakatulong pag mayroon kang problema sa pagdo-download</string>
+    <string name="best_quality">Mataas na Kalidad</string>
+</resources>
