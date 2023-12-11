@@ -114,7 +114,7 @@
     <string name="material_you">Material You</string>
     <string name="blue">藍色</string>
     <string name="finished_download_notification_channel_name">完成的下載</string>
-    <string name="finished_download_notification_channel_description">已完成或錯誤的下載通知</string>
+    <string name="finished_download_notification_channel_description">已完成的下載通知</string>
     <string name="quick_download">快速下載</string>
     <string name="quick_download_summary">請勿在下載區塊中取得資料</string>
     <string name="remove_audio">移除音訊</string>
@@ -316,4 +316,12 @@
     <string name="security">安全設定</string>
     <string name="length">影片／音訊長度</string>
     <string name="export_file">輸出檔案至指定位置</string>
+    <string name="update_ytdl_master">yt-dlp 的主版本</string>
+    <string name="errored_downloads">下載錯誤</string>
+    <string name="preferred_audio_language">偏好的音訊語言</string>
+    <string name="errored_download_notification_channel_description">下載失敗的通知</string>
+    <string name="buffer_size_summary">下載緩衝區的大小，例如 1024 或 16K（預設為 1024）</string>
+    <string name="ytdl_source">yt-dlp 來源</string>
+    <string name="buffer_size">緩衝區大小</string>
+    <string name="update_ytdl_stable">yt-dlp 的穩定版本</string>
 </resources>
