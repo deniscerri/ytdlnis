@@ -31,9 +31,9 @@
     <string name="update_app">अद्यतन के लिए जाँच करें</string>
     <string name="version">संस्करण</string>
     <string name="command_directory">कस्टम कमांड फ़ोल्डर</string>
-    <string name="couldnt_find_apk">एक उपयुक्त APK नहीं मिला।</string>
+    <string name="couldnt_find_apk">एक उपयुक्त APK नहीं मिला</string>
     <string name="source_code">सोर्स कोड</string>
-    <string name="failed_download">फ़ाइल डाउनलोड नहीं हो सकी।</string>
+    <string name="failed_download">फ़ाइल डाउनलोड नहीं हो सकी</string>
     <string name="search_hint">URL खोजें या डालें</string>
     <string name="ytdl_updating_started">नए अपडेट का डाउनलोड शुरु</string>
     <string name="downloading_update">नया अपडेट डाउनलोड हो रहा है</string>
@@ -191,7 +191,7 @@
     <string name="system">प्रणाली</string>
     <string name="accents">रंग एक्सेंट</string>
     <string name="high_contrast">हाई कॉन्ट्रास्ट</string>
-    <string name="finished_download_notification_channel_description">समाप्त या दोषपूर्ण डाउनलोड के लिए अधिसूचना</string>
+    <string name="finished_download_notification_channel_description">पूर्ण डाउनलोड के लिए नोटीफिकेशन</string>
     <string name="quick_download">त्वरित डाउनलोड</string>
     <string name="quick_download_summary">डाउनलोड कार्ड में डेटा न लाएं</string>
     <string name="cancel_download">डाउनलोड रद्द करें</string>
@@ -316,4 +316,12 @@
     <string name="security">सुरक्षा</string>
     <string name="length">लंबाई</string>
     <string name="export_file">फ़ाइल निर्यात करें</string>
+    <string name="update_ytdl_master">Yt-dlp का मास्टर संस्करण</string>
+    <string name="errored_downloads">त्रुटियुक्त डाउनलोड</string>
+    <string name="preferred_audio_language">तरजीही ऑडियो भाषा</string>
+    <string name="errored_download_notification_channel_description">दोषपूर्ण डाउनलोड के लिए नोटीफिकेशन</string>
+    <string name="buffer_size_summary">डाउनलोड बफ़र का आकार, उदा. 1024 या 16K (डिफ़ॉल्ट 1024 है)</string>
+    <string name="ytdl_source">yt-dlp स्रोत</string>
+    <string name="buffer_size">बफ़र का आकार</string>
+    <string name="update_ytdl_stable">Yt-dlp का स्थिर संस्करण</string>
 </resources>

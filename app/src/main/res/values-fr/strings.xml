@@ -264,4 +264,27 @@
     <string name="purple">Violet</string>
     <string name="blue">Bleu</string>
     <string name="preferred_format_id">ID de format préféré</string>
+    <string name="socks5_proxy_summary">Utiliser le proxy HTTP/HTTPS/SOCKS spécifié</string>
+    <string name="select_backup_categories">Sélectionnez les catégories de sauvegarde</string>
+    <string name="preferred_locale">Dossier préféré</string>
+    <string name="misc">Divers</string>
+    <string name="search_suggestions_summary">Obtenir des suggestions de recherche de Google</string>
+    <string name="search_history">Historique de recherche</string>
+    <string name="socks5_proxy">URL proxy Socks5</string>
+    <string name="restore">Restaurer</string>
+    <string name="appearance">Apparence</string>
+    <string name="search_suggestions">Suggestions de recherche</string>
+    <string name="finished_download_notification_channel_description">Notifications pour les téléchargements finis</string>
+    <string name="network_error">Erreur réseau</string>
+    <string name="backup_restore">Sauvegarder et Restaurer</string>
+    <string name="incognito">Incognito</string>
+    <string name="backup">Sauvegarde</string>
+    <string name="backup_created_successfully">Fichier de sauvegarde enregistré dans le dossier des téléchargements</string>
+    <string name="downloaded">"Téléchargé : "</string>
+    <string name="general">Général</string>
+    <string name="preferred_format_id_summary">Sélectionnez le format avec cet ID dans la carte de téléchargement</string>
+    <string name="sponsorblock">SponsorBlock</string>
+    <string name="swipe_gestures">Gestes de balayage</string>
+    <string name="restore_complete">Restauration de l\'application terminée. Les éléments suivants ont été restaurés :</string>
+    <string name="couldnt_parse_file">Impossible d\'analyser le fichier</string>
 </resources>

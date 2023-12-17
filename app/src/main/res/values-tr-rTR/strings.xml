@@ -9,12 +9,12 @@
     <string name="directories"> Klasörler</string>
     <string name="music_directory"> Müzik Klasörü</string>
     <string name="video_directory"> Video Klasörü</string>
-    <string name="updating">Güncelleniyor...</string>
+    <string name="updating">Güncelleniyor</string>
     <string name="ytdl_update_hint">İndirmede sorun yaşıyorsanız kullanışlıdır</string>
     <string name="update_ytdl">yt-dlp\'nin yeni sürümünü yükle</string>
     <string name="source_code">Kaynak Kodu</string>
     <string name="search_hint">Ara veya URL Ekle</string>
-    <string name="failed_download">" Dosya indirilemedi"</string>
+    <string name="failed_download">Dosya indirilemedi</string>
     <string name="download_notification_channel_name">Dosya İndirmeleri</string>
     <string name="download_notification_channel_description">Ses ve video dosyaların indirilmesindeki ilerlemeyi gösteren bildirim</string>
     <string name="you_are_in_latest_version">Son sürümü kullanıyorsun</string>
@@ -39,7 +39,7 @@
     <string name="video">Video</string>
     <string name="concurrent_fragments_summary">Eşzamanlı indirilecek DASH/HLS yerel videonun parça sayısı</string>
     <string name="concurrent_fragments">Eşzamanlı Parçalar</string>
-    <string name="downloading">İndiriliyor...</string>
+    <string name="downloading">İndiriliyor</string>
     <string name="limit_rate">Maksimum Hız</string>
     <string name="limit_rate_summary">Maksimum indirme hızı (bayt/saniye), örneğin 50K veya 4,2M</string>
     <string name="aria2_summary">Varsayılan yerine indirici olarak aria2c kullan</string>
