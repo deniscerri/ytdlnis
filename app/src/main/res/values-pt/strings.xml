@@ -90,7 +90,7 @@
     <string name="edit_selected">Editar seleção</string>
     <string name="adjust_video">Ajustar vídeo</string>
     <string name="help_translate_summary">Traduza esta aplicação via Weblate</string>
-    <string name="please_wait">Aguarde…</string>
+    <string name="please_wait">Aguarde</string>
     <string name="error_updating_formats">Erro ao atualizar os formatos!</string>
     <string name="export_from_clipboard">Exportar para a área de transferência</string>
     <string name="shortcuts">Atalhos</string>
@@ -222,7 +222,7 @@
     <string name="confirm_terminate">Parar todas as descargas e sair da aplicação</string>
     <string name="dont_ask_again">Não perguntar novamente</string>
     <string name="downloads_running_try_later">O assistente de descargas está em execução. Tente mais tarde</string>
-    <string name="start">Início</string>
+    <string name="start">Começar</string>
     <string name="update_formats_summary">Obter formatos assim que o cartão de descarga apareçe</string>
     <string name="ignore_battery_optimization">Ignorar otimização de bateria</string>
     <string name="cut">Cortar</string>
