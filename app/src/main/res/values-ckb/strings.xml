@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ytdl_already_updating">دامەزراندنی وەشانی نوێ</string>
+    <string name="music_directory">فۆڵدەری مۆسیقا</string>
+    <string name="ytdl_updating_started">داگرتنی وەشانی نوێ</string>
+    <string name="search_history_hint">گەڕان لە مێژوو</string>
+    <string name="search_command_hint">گەڕان لە Commands</string>
+    <string name="download_notification_channel_description">ئاگادارکردنەوە پرۆسەیی دابەزاندنی فایلە دەنگی و ڤیدیۆییەکان پیشان دەدات</string>
+    <string name="update_ytdl">دانانی وەشانی نوێی yt-dlp</string>
+    <string name="directories">فۆڵدەرەکان</string>
+    <string name="confirm_delete_history">دڵنیاکردنەوە</string>
+    <string name="search_hint">بگەڕێ یان بەستەر دابنێ</string>
+    <string name="source_code">کۆدی سەرچاوە</string>
+    <string name="ok">باشە</string>
+    <string name="remove_all">لابردنی هەمووی</string>
+    <string name="video_directory">فۆڵدەری ڤیدیۆ</string>
+    <string name="about">دەربارە</string>
+    <string name="download_all">داگرتنی هەمووی</string>
+    <string name="Remove">لابردن</string>
+    <string name="confirm_delete_history_desc">تەواوی مێژووەکە بسڕەوە، بۆ هەمیشە</string>
+    <string name="updating">لەنوێکردنەوەدایە</string>
+    <string name="home">ماڵەوە</string>
+    <string name="cancel">هەڵوەشانەوە</string>
+    <string name="download_notification_channel_name">فایلە دامەزراوەکان</string>
+    <string name="remove_results">پاکردنەوەی ئەنجامەکان</string>
+    <string name="failed_download">نەتوانرا فایل دابەزێنرێت</string>
+    <string name="search">گەڕان</string>
+    <string name="settings">ڕێکخستنەکان</string>
+    <string name="worst_quality">خراپترین کوالێتی</string>
+    <string name="ytdl_update_hint">بەسوودە ئەگەر کێشەی دابەزاندنت هەبوو</string>
+    <string name="you_are_in_latest_version">بەکارهێنەری دوای وەشانی</string>
+    <string name="ytld_update_success">وەشانی نوێ دامەزرا</string>
+    <string name="best_quality">باشترین کوالێتی</string>
+</resources>

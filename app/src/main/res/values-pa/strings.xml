@@ -6,7 +6,7 @@
     <string name="no_results">ਕੋਈ ਨਤੀਜਾ ਨਹੀਂ</string>
     <string name="more">ਹੋਰ</string>
     <string name="update_app">ਅੱਪਡੇਟ ਲਈ ਚੈੱਕ ਕਰੋ</string>
-    <string name="couldnt_find_apk">ਇੱਕ ਢੁਕਵਾਂ APK ਨਹੀਂ ਲੱਭ ਸਕਿਆ।</string>
+    <string name="couldnt_find_apk">ਇੱਕ ਢੁਕਵਾਂ APK ਨਹੀਂ ਲੱਭ ਸਕਿਆ</string>
     <string name="audio">ਆਡੀਓ</string>
     <string name="downloading">ਡਾਊਨਲੋਡ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ</string>
     <string name="processing">ਕਾਰਵਾਈ</string>
@@ -54,7 +54,7 @@
     <string name="update_ytdl">yt-dlp ਦਾ ਨਵਾਂ ਸੰਸਕਰਣ ਸਥਾਪਿਤ ਕਰੋ</string>
     <string name="source_code">ਸ੍ਰੋਤ ਕੋਡ</string>
     <string name="search_hint">URL ਖੋਜੋ ਜਾਂ ਸੰਮਿਲਿਤ ਕਰੋ</string>
-    <string name="failed_download">ਫ਼ਾਈਲ ਡਾਊਨਲੋਡ ਨਹੀਂ ਕੀਤੀ ਜਾ ਸਕੀ।</string>
+    <string name="failed_download">ਫ਼ਾਈਲ ਡਾਊਨਲੋਡ ਨਹੀਂ ਕੀਤੀ ਜਾ ਸਕੀ</string>
     <string name="download_notification_channel_name">ਫਾਈਲ ਡਾਊਨਲੋਡ</string>
     <string name="ytdl_updating_started">ਨਵੇਂ ਅੱਪਡੇਟ ਦਾ ਡਾਊਨਲੋਡ ਸ਼ੁਰੂ</string>
     <string name="cancel">ਰੱਦ ਕਰੋ</string>
@@ -201,7 +201,7 @@
     <string name="orange">ਸੰਤਰੀ</string>
     <string name="monochrome">ਮੋਨੋਕ੍ਰੋਮ</string>
     <string name="finished_download_notification_channel_name">ਡਾਊਨਲੋਡ ਮੁਕੰਮਲ ਹੋਏ</string>
-    <string name="finished_download_notification_channel_description">ਮੁਕੰਮਲ ਜਾਂ ਨੁਕਸਦਾਰ ਡਾਊਨਲੋਡਾਂ ਲਈ ਸੂਚਨਾ</string>
+    <string name="finished_download_notification_channel_description">ਮੁਕੰਮਲ ਡਾਊਨਲੋਡਾਂ ਲਈ ਸੂਚਨਾ</string>
     <string name="remove_audio">ਆਡੀਓ ਹਟਾਓ</string>
     <string name="preferred_format_id">ਤਰਜੀਹੀ ਫਾਰਮੈਟ ID</string>
     <string name="download_now">ਹੁਣੇ ਡਾਊਨਲੋਡ ਕਰੋ</string>
@@ -316,4 +316,12 @@
     <string name="security">ਸੁਰੱਖਿਆ</string>
     <string name="length">ਲੰਬਾਈ</string>
     <string name="export_file">ਫ਼ਾਈਲ ਐਕਸਪੋਰਟ ਕਰੋ</string>
+    <string name="update_ytdl_master">yt-dlp ਦਾ ਮਾਸਟਰ ਸੰਸਕਰਣ</string>
+    <string name="errored_downloads">ਨੁਕਸ ਵਾਲੇ ਡਾਊਨਲੋਡ</string>
+    <string name="preferred_audio_language">ਤਰਜੀਹੀ ਆਡੀਓ ਭਾਸ਼ਾ</string>
+    <string name="errored_download_notification_channel_description">ਨੁਕਸਦਾਰ ਡਾਊਨਲੋਡਾਂ ਲਈ ਸੂਚਨਾ</string>
+    <string name="buffer_size_summary">ਡਾਊਨਲੋਡ ਬਫ਼ਰ ਦਾ ਆਕਾਰ, ਉਦਾਹਰਨ ਲਈ 1024 ਜਾਂ 16K (ਡਿਫ਼ਾਲਟ 1024 ਹੈ)</string>
+    <string name="ytdl_source">yt-dlp ਸਰੋਤ</string>
+    <string name="buffer_size">ਬਫ਼ਰ ਦਾ ਆਕਾਰ</string>
+    <string name="update_ytdl_stable">yt-dlp ਦਾ ਸਥਿਰ ਸੰਸਕਰਣ</string>
 </resources>

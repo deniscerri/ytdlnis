@@ -322,4 +322,6 @@
     <string name="ytdl_source">Джерело yt-dlp</string>
     <string name="buffer_size_summary">Розмір буфера завантаження, напр. 1024 або 16K (за замовчуванням 1024)</string>
     <string name="buffer_size">Розмір буфера</string>
+    <string name="preferred_audio_language">Бажана мова аудіо</string>
+    <string name="update_ytdl_stable">Стабільна версія yt-dlp</string>
 </resources>
