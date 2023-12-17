@@ -327,4 +327,7 @@
     <string name="buffer_size">Buffer Size</string>
     <string name="buffer_size_summary">Size of download buffer, e.g. 1024 or 16K (default is 1024)</string>
     <string name="preferred_audio_language">Preferred Audio Language</string>
+    <string name="changelog">Changelog</string>
+    <string name="source">Source</string>
+    <string name="app">App</string>
 </resources>

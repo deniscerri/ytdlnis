@@ -55,7 +55,7 @@ class UpdatePlaylistFormatsWorker(
 
                         runBlocking {
                             resDao.update(r)
-                            dao.delete(d.id)
+                            dao.update(d)
                         }
                     }
 

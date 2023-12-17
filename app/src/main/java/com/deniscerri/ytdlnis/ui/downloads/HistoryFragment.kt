@@ -26,6 +26,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
 import androidx.appcompat.widget.SearchView
+import androidx.compose.ui.text.capitalize
+import androidx.compose.ui.text.intl.Locale
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.forEach
@@ -410,7 +412,7 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
             val w = websites[i]
             if (w == "null" || w.isEmpty()) continue
             val tmp = layoutinflater!!.inflate(R.layout.filter_chip, websiteGroup, false) as Chip
-            tmp.text = w
+            tmp.text = w.replaceFirstChar { if (it.isLowerCase()) it.titlecase(java.util.Locale.getDefault()) else it.toString() }
             tmp.id = i
             tmp.setOnClickListener {
                 Log.e(TAG, tmp.isChecked.toString())

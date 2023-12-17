@@ -354,25 +354,35 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
     }
 
     fun switchDownloadType(list: List<DownloadItem>, type: Type) : List<DownloadItem>{
-        val updatedDownloadPath : String = when(type){
-            Type.audio -> sharedPreferences.getString("music_path", FileUtil.getDefaultAudioPath())!!
-            Type.video -> sharedPreferences.getString("video_path", FileUtil.getDefaultVideoPath())!!
-            Type.command -> sharedPreferences.getString("command_path", FileUtil.getDefaultCommandPath())!!
-            else -> ""
-        }
 
         list.forEach {
             val format = getFormat(it.allFormats, type)
             it.format = format
-            val currentDownloadPath = when(it.type){
-                Type.audio -> sharedPreferences.getString("music_path", FileUtil.getDefaultAudioPath())
-                Type.video -> sharedPreferences.getString("video_path", FileUtil.getDefaultVideoPath())
-                Type.command -> sharedPreferences.getString("command_path", FileUtil.getDefaultCommandPath())
-                else -> ""
-            }
-            if (it.downloadPath == currentDownloadPath) it.downloadPath = updatedDownloadPath
 
+            var updatedDownloadPath: String = ""
+            var container: String = ""
+
+            when(type){
+                Type.audio -> {
+                    updatedDownloadPath = sharedPreferences.getString("music_path", FileUtil.getDefaultAudioPath())!!
+                    container = sharedPreferences.getString("audio_format", "")!!
+                }
+                Type.video -> {
+                    updatedDownloadPath = sharedPreferences.getString("music_path", FileUtil.getDefaultAudioPath())!!
+                    container = sharedPreferences.getString("audio_format", "")!!
+                }
+                Type.command -> {
+                    updatedDownloadPath = sharedPreferences.getString("music_path", FileUtil.getDefaultAudioPath())!!
+                    container = ""
+                }
+                else -> {
+                    updatedDownloadPath = ""
+                }
+            }
+
+            it.downloadPath = updatedDownloadPath
             it.type = type
+            it.container = container
         }
         return list
     }
@@ -443,7 +453,7 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
                         requirements.add {it: Format -> audioFormatIDPreference.contains(it.format_id)}
 
                         sharedPreferences.getString("audio_language", "")?.apply {
-                            if (this.isNotEmpty()){
+                            if (this.isNotBlank()){
                                 requirements.add { it: Format -> it.lang == this }
                             }
                         }

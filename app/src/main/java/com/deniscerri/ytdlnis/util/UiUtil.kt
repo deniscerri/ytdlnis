@@ -896,7 +896,7 @@ object UiUtil {
         )
     }
 
-    private fun showSubtitleLanguagesDialog(context: Activity, currentValue: String, ok: (newValue: String) -> Unit){
+    fun showSubtitleLanguagesDialog(context: Activity, currentValue: String, ok: (newValue: String) -> Unit){
         val builder = MaterialAlertDialogBuilder(context)
         builder.setTitle(context.getString(R.string.subtitle_languages))
         val view = context.layoutInflater.inflate(R.layout.subtitle_dialog, null)
@@ -966,7 +966,7 @@ object UiUtil {
     }
 
 
-    private fun copyToClipboard(text: String, activity: Activity){
+    fun copyToClipboard(text: String, activity: Activity){
         val clipboard = activity.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         val clip = ClipData.newPlainText(text, text)
         clipboard.setPrimaryClip(clip)
@@ -1454,6 +1454,21 @@ object UiUtil {
         errDialog.show()
     }
 
+    fun showErrorDialog(context: Context, it: String){
+        val title = context.getString(R.string.errored)
+
+        val errDialog = MaterialAlertDialogBuilder(context)
+            .setTitle(title)
+            .setMessage(it)
+            .setPositiveButton(android.R.string.copy) { d:DialogInterface?, _:Int ->
+                val clipboard: ClipboardManager = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                clipboard.setText(it)
+                d?.dismiss()
+            }
+
+        errDialog.show()
+    }
+
     @SuppressLint("SetTextI18n")
     fun handleDownloadsResponse(context: Activity, lifecycleScope: CoroutineScope, supportFragmentManager: FragmentManager, it: DownloadViewModel.DownloadsUiState, downloadViewModel: DownloadViewModel, historyViewModel: HistoryViewModel){
         val downloadAnywayAction = it.actions?.first { it.second == DownloadViewModel.DownloadsAction.DOWNLOAD_ANYWAY}
@@ -1732,7 +1747,7 @@ object UiUtil {
         CoroutineScope(Dispatchers.IO).launch {
             val chipGroup = view.findViewById<ChipGroup>(R.id.filename_suggested_chipgroup)
             val chips = mutableListOf<Chip>()
-            val instances = InfoUtil(context).getPipedInstances()
+            val instances = InfoUtil(context).getPipedInstances().ifEmpty { return@launch }
             instances.forEach { s ->
                 val tmp = context.layoutInflater.inflate(R.layout.filter_chip, chipGroup, false) as Chip
                 tmp.text = s

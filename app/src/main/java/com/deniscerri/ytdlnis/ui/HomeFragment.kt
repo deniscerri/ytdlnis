@@ -275,10 +275,13 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
                 val items = mutableListOf<DownloadItem>()
                 ids?.forEach {
                     items.add(downloadViewModel.getItemByID(it))
+                    downloadViewModel.deleteDownload(it)
                 }
-                findNavController().navigate(R.id.downloadMultipleBottomSheetDialog2, bundleOf(
-                    Pair("downloads", items)
-                ))
+                withContext(Dispatchers.Main){
+                    findNavController().navigate(R.id.downloadMultipleBottomSheetDialog2, bundleOf(
+                        Pair("downloads", items)
+                    ))
+                }
             }
         }
 
@@ -449,96 +452,100 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
 
     @SuppressLint("InflateParams")
     private fun updateSearchViewItems(searchQuery: Editable?, linkYouCopied: View?) = lifecycleScope.launch(Dispatchers.Main) {
-        searchSuggestionsLinearLayout!!.visibility = GONE
-        searchHistoryLinearLayout!!.visibility = GONE
-        searchSuggestionsLinearLayout!!.post {
-            searchSuggestionsLinearLayout!!.removeAllViews()
-        }
-        searchHistoryLinearLayout!!.post {
-            searchHistoryLinearLayout!!.removeAllViews()
-        }
-
-        linkYouCopied!!.visibility = GONE
-
-        if (searchView!!.editText.text.isEmpty()){
-            searchView!!.editText.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, 0, 0)
-        }else{
-            searchView!!.editText.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_plus, 0)
-        }
-        val history = withContext(Dispatchers.IO){
-            resultViewModel.getSearchHistory().map { it.query }.filter { it.contains(searchQuery!!) }
-        }
-        val suggestions = if (sharedPreferences!!.getBoolean("search_suggestions", false)){
-            infoUtil!!.getSearchSuggestions(searchQuery.toString())
-        }else{
-            emptyList()
-        }
-
-        history.forEach { s ->
-            val v = LayoutInflater.from(fragmentContext).inflate(R.layout.search_suggestion_item, null)
-            val textView = v.findViewById<TextView>(R.id.suggestion_text)
-            textView.text = s
-            textView.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_restore, 0, 0, 0)
-            Handler(Looper.getMainLooper()).post {
-                searchHistoryLinearLayout!!.addView(
-                    v
-                )
+        lifecycleScope.launch {
+            searchSuggestionsLinearLayout!!.visibility = GONE
+            searchHistoryLinearLayout!!.visibility = GONE
+            searchSuggestionsLinearLayout!!.post {
+                searchSuggestionsLinearLayout!!.removeAllViews()
             }
-            textView.setOnClickListener {
-                searchView!!.setText(s)
-                initSearch(searchView!!)
+            searchHistoryLinearLayout!!.post {
+                searchHistoryLinearLayout!!.removeAllViews()
             }
-            textView.setOnLongClickListener {
-                val deleteDialog = MaterialAlertDialogBuilder(requireContext())
-                deleteDialog.setTitle(getString(R.string.you_are_going_to_delete) + " \"" + s + "\"!")
-                deleteDialog.setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, _: Int -> dialogInterface.cancel() }
-                deleteDialog.setPositiveButton(getString(R.string.ok)) { _: DialogInterface?, _: Int ->
-                    searchHistoryLinearLayout!!.removeView(v)
-                    resultViewModel.removeSearchQueryFromHistory(s)
+
+            linkYouCopied!!.visibility = GONE
+
+            if (searchView!!.editText.text.isEmpty()){
+                searchView!!.editText.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, 0, 0)
+            }else{
+                searchView!!.editText.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_plus, 0)
+            }
+            val history = withContext(Dispatchers.IO){
+                resultViewModel.getSearchHistory().map { it.query }.filter { it.contains(searchQuery!!) }
+            }
+            val suggestions = if (sharedPreferences!!.getBoolean("search_suggestions", false)){
+                withContext(Dispatchers.IO){
+                    infoUtil!!.getSearchSuggestions(searchQuery.toString())
                 }
-                deleteDialog.show()
-                true
+            }else{
+                emptyList()
             }
 
-            val mb = v.findViewById<ImageButton>(R.id.set_search_query_button)
-            mb.setOnClickListener {
-                searchView!!.editText.setText(s)
-                searchView!!.editText.setSelection(searchView!!.editText.length())
-            }
-        }
-        searchHistoryLinearLayout!!.isVisible = history.isNotEmpty()
-        if (linkYouCopied.findViewById<TextView>(R.id.suggestion_text).text.isNotEmpty()){
-            linkYouCopied.visibility = VISIBLE
-        }
+            history.forEach { s ->
+                val v = LayoutInflater.from(fragmentContext).inflate(R.layout.search_suggestion_item, null)
+                val textView = v.findViewById<TextView>(R.id.suggestion_text)
+                textView.text = s
+                textView.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_restore, 0, 0, 0)
+                Handler(Looper.getMainLooper()).post {
+                    searchHistoryLinearLayout!!.addView(
+                        v
+                    )
+                }
+                textView.setOnClickListener {
+                    searchView!!.setText(s)
+                    initSearch(searchView!!)
+                }
+                textView.setOnLongClickListener {
+                    val deleteDialog = MaterialAlertDialogBuilder(requireContext())
+                    deleteDialog.setTitle(getString(R.string.you_are_going_to_delete) + " \"" + s + "\"!")
+                    deleteDialog.setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, _: Int -> dialogInterface.cancel() }
+                    deleteDialog.setPositiveButton(getString(R.string.ok)) { _: DialogInterface?, _: Int ->
+                        searchHistoryLinearLayout!!.removeView(v)
+                        resultViewModel.removeSearchQueryFromHistory(s)
+                    }
+                    deleteDialog.show()
+                    true
+                }
 
-        suggestions.forEach { s ->
-            val v = LayoutInflater.from(fragmentContext)
-                .inflate(R.layout.search_suggestion_item, null)
-            val textView = v.findViewById<TextView>(R.id.suggestion_text)
-            textView.text = s
-            Handler(Looper.getMainLooper()).post {
-                searchSuggestionsLinearLayout!!.addView(
-                    v
-                )
+                val mb = v.findViewById<ImageButton>(R.id.set_search_query_button)
+                mb.setOnClickListener {
+                    searchView!!.editText.setText(s)
+                    searchView!!.editText.setSelection(searchView!!.editText.length())
+                }
             }
-            textView.setOnClickListener {
-                searchView!!.setText(s)
-                initSearch(searchView!!)
+            searchHistoryLinearLayout!!.isVisible = history.isNotEmpty()
+            if (linkYouCopied.findViewById<TextView>(R.id.suggestion_text).text.isNotEmpty()){
+                linkYouCopied.visibility = VISIBLE
             }
-            val mb = v.findViewById<ImageButton>(R.id.set_search_query_button)
-            mb.setOnClickListener {
-                searchView!!.editText.setText(s)
-                searchView!!.editText.setSelection(searchView!!.editText.length())
-            }
-        }
-        searchSuggestionsLinearLayout!!.isVisible = suggestions.isNotEmpty()
 
-        if (Patterns.WEB_URL.matcher(searchView!!.editText.text).matches()){
-            providersChipGroup?.visibility = GONE
-            chipGroupDivider?.visibility = GONE
-        }else{
-            providersChipGroup?.visibility = VISIBLE
-            chipGroupDivider?.visibility = VISIBLE
+            suggestions.forEach { s ->
+                val v = LayoutInflater.from(fragmentContext)
+                    .inflate(R.layout.search_suggestion_item, null)
+                val textView = v.findViewById<TextView>(R.id.suggestion_text)
+                textView.text = s
+                Handler(Looper.getMainLooper()).post {
+                    searchSuggestionsLinearLayout!!.addView(
+                        v
+                    )
+                }
+                textView.setOnClickListener {
+                    searchView!!.setText(s)
+                    initSearch(searchView!!)
+                }
+                val mb = v.findViewById<ImageButton>(R.id.set_search_query_button)
+                mb.setOnClickListener {
+                    searchView!!.editText.setText(s)
+                    searchView!!.editText.setSelection(searchView!!.editText.length())
+                }
+            }
+            searchSuggestionsLinearLayout!!.isVisible = suggestions.isNotEmpty()
+
+            if (Patterns.WEB_URL.matcher(searchView!!.editText.text).matches()){
+                providersChipGroup?.visibility = GONE
+                chipGroupDivider?.visibility = GONE
+            }else{
+                providersChipGroup?.visibility = VISIBLE
+                chipGroupDivider?.visibility = VISIBLE
+            }
         }
 
     }

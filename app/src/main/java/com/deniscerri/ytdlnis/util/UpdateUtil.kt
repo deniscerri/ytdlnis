@@ -1,6 +1,7 @@
 package com.deniscerri.ytdlnis.util
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.DownloadManager
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -13,8 +14,11 @@ import android.os.Bundle
 import android.os.Environment
 import android.os.Handler
 import android.os.Looper
+import android.text.format.DateFormat
 import android.text.method.LinkMovementMethod
 import android.util.Log
+import android.widget.LinearLayout
+import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat.startActivity
@@ -22,6 +26,10 @@ import androidx.preference.PreferenceManager
 import com.deniscerri.ytdlnis.BuildConfig
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.GithubRelease
+import com.deniscerri.ytdlnis.util.Extensions.enableFastScroll
+import com.google.android.material.card.MaterialCardView
+import com.google.android.material.chip.Chip
+import com.google.android.material.chip.ChipGroup
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -36,6 +44,8 @@ import java.io.File
 import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 
 class UpdateUtil(var context: Context) {
@@ -152,6 +162,75 @@ class UpdateUtil(var context: Context) {
         }
     }
 
+    fun showChangeLog(activity: Activity){
+        runCatching {
+            val scrollView = ScrollView(activity)
+
+            val linearLayout = LinearLayout(activity)
+            linearLayout.orientation = LinearLayout.VERTICAL
+
+            val layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT
+            )
+
+            layoutParams.setMargins(20, 20, 20, 0)
+            scrollView.layoutParams = layoutParams
+            scrollView.addView(linearLayout)
+
+            getGithubReleases().forEach {
+                (activity.layoutInflater.inflate(R.layout.changelog_item, null) as MaterialCardView).apply {
+                    this.layoutParams = layoutParams
+                    findViewById<TextView>(R.id.version).text = it.tag_name
+                    findViewById<TextView>(R.id.date).text =  SimpleDateFormat(
+                        DateFormat.getBestDateTimePattern(
+                            Locale.getDefault(), "ddMMMyyyy - HHmm"), Locale.getDefault()).format(it.published_at.time)
+
+                    val mdText = findViewById<TextView>(R.id.content)
+                    val mw = Markwon.builder(context).usePlugin(object: AbstractMarkwonPlugin() {
+                        override fun configureConfiguration(builder: MarkwonConfiguration.Builder) {
+                            builder.linkResolver { view, link ->
+                                val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
+                                startActivity(context, browserIntent, Bundle())
+                            }
+                        }
+                    }).build()
+                    mw.setMarkdown(mdText, it.body)
+
+
+                    val assetGroup = findViewById<ChipGroup>(R.id.assets)
+                    it.assets.forEachIndexed { idx, c ->
+                        val tmp = activity.layoutInflater.inflate(R.layout.suggestion_chip, assetGroup, false) as Chip
+                        tmp.text = c.name
+                        tmp.id = idx
+                        tmp.setOnClickListener {
+                            val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(c.browser_download_url))
+                            startActivity(context, browserIntent, Bundle())
+                        }
+                        assetGroup!!.addView(tmp)
+                    }
+
+                    linearLayout.addView(this)
+                }
+            }
+
+            val changeLogDialog = MaterialAlertDialogBuilder(context)
+                .setTitle(activity.getString(R.string.changelog))
+                .setView(scrollView)
+                .setIcon(R.drawable.ic_chapters)
+                .setNegativeButton(context.resources.getString(R.string.cancel)) { _: DialogInterface?, _: Int -> }
+            Handler(Looper.getMainLooper()).post {
+                changeLogDialog.show()
+            }
+
+        }.onFailure {
+            if (it.message != null){
+                Handler(Looper.getMainLooper()).post {
+                    UiUtil.showErrorDialog(context, it.message!!)
+                }
+            }
+        }
+    }
+
     private fun getGithubReleases(): List<GithubRelease> {
         val url = "https://api.github.com/repos/deniscerri/ytdlnis/releases"
         val conn: HttpURLConnection
@@ -188,15 +267,8 @@ class UpdateUtil(var context: Context) {
                 "master" to YoutubeDL.UpdateChannel._MASTER,
             )
             val channel = sharedPreferences.getString("ytdlp_source", "nightly")
-
-            try {
-                YoutubeDL.getInstance().updateYoutubeDL(context, channelMap[channel] ?: YoutubeDL.UpdateChannel._NIGHTLY).apply {
-                    updatingYTDL = false
-                }
-            }catch (e: Exception){
-                e.printStackTrace()
+            YoutubeDL.getInstance().updateYoutubeDL(context, channelMap[channel] ?: YoutubeDL.UpdateChannel._NIGHTLY).apply {
                 updatingYTDL = false
-                null
             }
     }
 

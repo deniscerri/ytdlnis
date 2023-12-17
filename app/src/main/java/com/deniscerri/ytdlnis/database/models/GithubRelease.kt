@@ -1,6 +1,7 @@
 package com.deniscerri.ytdlnis.database.models
 
 import com.google.gson.annotations.SerializedName
+import java.util.Date
 
 data class GithubRelease(
     @SerializedName(value = "html_url")
@@ -9,6 +10,8 @@ data class GithubRelease(
     var tag_name: String,
     @SerializedName(value = "body")
     var body: String,
+    @SerializedName(value = "published_at")
+    var published_at: Date,
     @SerializedName(value = "assets")
     var assets: List<GithubReleaseAsset>
 )

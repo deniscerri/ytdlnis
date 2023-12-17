@@ -16,6 +16,7 @@ import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.models.Format
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel.Type
+import com.deniscerri.ytdlnis.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdlnis.util.InfoUtil
 import com.deniscerri.ytdlnis.util.UiUtil
 import com.facebook.shimmer.ShimmerFrameLayout
@@ -147,19 +148,30 @@ class FormatSelectionBottomSheetDialog(private val items: List<DownloadItem?>, p
                    updateFormatsJob = launch(Dispatchers.IO) {
                        //simple download
                        if (items.size == 1) {
-                           val res = infoUtil.getFormats(items.first()!!.url)
-                           res.filter { it.format_note != "storyboard" }
-                           chosenFormats = if (items.first()?.type == Type.audio) {
-                               res.filter { it.format_note.contains("audio", ignoreCase = true) }
-                           } else {
-                               res
-                           }
-                           if (chosenFormats.isEmpty()) throw Exception()
+                           kotlin.runCatching {
+                               val res = infoUtil.getFormats(items.first()!!.url)
+                               res.filter { it.format_note != "storyboard" }
+                               chosenFormats = if (items.first()?.type == Type.audio) {
+                                   res.filter { it.format_note.contains("audio", ignoreCase = true) }
+                               } else {
+                                   res
+                               }
+                               if (chosenFormats.isEmpty()) throw Exception()
 
-                           formats = listOf(res)
-                           withContext(Dispatchers.Main){
-                               listener.onFormatsUpdated(formats)
+                               formats = listOf(res)
+                               withContext(Dispatchers.Main){
+                                   listener.onFormatsUpdated(formats)
+                               }
+                           }.onFailure { err ->
+                               withContext(Dispatchers.Main){
+                                   UiUtil.handleResultResponse(requireActivity(), ResultViewModel.ResultsUiState(
+                                       false,
+                                       Pair(R.string.no_results, err.message.toString()),
+                                       mutableListOf(Pair(R.string.copy_log, ResultViewModel.ResultAction.COPY_LOG))
+                                   ), closed = {})
+                               }
                            }
+
                        //list format filtering
                        }else{
                            var progress = "0/${items.size}"

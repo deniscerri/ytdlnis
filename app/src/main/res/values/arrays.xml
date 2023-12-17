@@ -1112,6 +1112,7 @@
 
     <!--below is for preferred audio language, not related to app's language-->
     <string-array name="language_codes">
+        <item></item>
         <item>af</item> <!-- Afrikaans -->
         <item>sq</item> <!-- Albanian -->
         <item>am</item> <!-- Amharic -->
@@ -1222,6 +1223,7 @@
     </string-array>
 
     <string-array name="language_names">
+        <item>@string/defaultValue</item>
         <item>Afrikaans</item>
         <item>Albanian</item>
         <item>Amharic</item>

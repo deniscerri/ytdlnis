@@ -339,10 +339,6 @@ class MainActivity : BaseActivity() {
             window.statusBarColor = getColor(android.R.color.transparent)
             incognitoHeader.visibility = View.GONE
         }
-        //check logs option to show in tablet navbar
-        if (navigationView is NavigationView){
-            (navigationView as NavigationView).menu.findItem(R.id.downloadLogListFragment).isVisible = preferences.getBoolean("log_downloads", false)
-        }
     }
 
     override fun onNewIntent(intent: Intent) {

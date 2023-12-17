@@ -9,6 +9,8 @@ import android.os.Bundle
 import android.os.Environment
 import android.util.LayoutDirection
 import android.util.Log
+import android.view.View
+import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.edit
@@ -36,10 +38,12 @@ import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.HistoryViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdlnis.util.FileUtil
+import com.deniscerri.ytdlnis.util.UiUtil
 import com.deniscerri.ytdlnis.util.UpdateUtil
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
@@ -66,7 +70,6 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
     private lateinit var cookieViewModel: CookieViewModel
     private lateinit var commandTemplateViewModel: CommandTemplateViewModel
 
-    private var version: Preference? = null
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.root_preferences, rootKey)
@@ -149,21 +152,40 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
                     getString(R.string.ok)
                 ) { _: DialogInterface?, _: Int ->
                     lifecycleScope.launch(Dispatchers.IO) {
+                        if (checkedItems.all { !it }){
+                            withContext(Dispatchers.Main){
+                                Snackbar.make(requireView(), R.string.select_backup_categories, Snackbar.LENGTH_SHORT).show()
+                            }
+                            return@launch
+                        }
                         val json = JsonObject()
                         json.addProperty("app", "YTDLnis_backup")
                         for (i in 0 until checkedItems.size) {
                             if (checkedItems[i]) {
-                                when(values[i]){
-                                    "settings" -> json.add("settings", backupSettings(preferences))
-                                    "downloads" -> json.add("downloads", backupHistory())
-                                    "queued" -> json.add("queued", backupQueuedDownloads() )
-                                    "cancelled" -> json.add("cancelled", backupCancelledDownloads() )
-                                    "errored" -> json.add("errored", backupErroredDownloads() )
-                                    "saved" -> json.add("saved", backupSavedDownloads() )
-                                    "cookies" -> json.add("cookies", backupCookies() )
-                                    "templates" -> json.add("templates", backupCommandTemplates() )
-                                    "shortcuts" -> json.add("shortcuts", backupShortcuts() )
-                                    "searchHistory" -> json.add("search_history", backupSearchHistory() )
+                                runCatching {
+                                    when(values[i]){
+                                        "settings" -> json.add("settings", backupSettings(preferences))
+                                        "downloads" -> json.add("downloads", backupHistory())
+                                        "queued" -> json.add("queued", backupQueuedDownloads() )
+                                        "cancelled" -> json.add("cancelled", backupCancelledDownloads() )
+                                        "errored" -> json.add("errored", backupErroredDownloads() )
+                                        "saved" -> json.add("saved", backupSavedDownloads() )
+                                        "cookies" -> json.add("cookies", backupCookies() )
+                                        "templates" -> json.add("templates", backupCommandTemplates() )
+                                        "shortcuts" -> json.add("shortcuts", backupShortcuts() )
+                                        "searchHistory" -> json.add("search_history", backupSearchHistory() )
+                                    }
+                                }.onFailure {err ->
+                                    withContext(Dispatchers.Main){
+                                        val snack = Snackbar.make(requireView(), err.message ?: requireContext().getString(R.string.errored), Snackbar.LENGTH_LONG)
+                                        val snackbarView: View = snack.view
+                                        val snackTextView = snackbarView.findViewById<View>(com.google.android.material.R.id.snackbar_text) as TextView
+                                        snackTextView.maxLines = 9999999
+                                        snack.setAction(android.R.string.copy){
+                                            UiUtil.copyToClipboard(err.message ?: requireContext().getString(R.string.errored), requireActivity())
+                                        }
+                                        snack.show()
+                                    }
                                 }
                             }
                         }
@@ -176,8 +198,12 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
                                 Calendar.DAY_OF_MONTH)} [${currentTime.get(Calendar.MILLISECOND)}.json")
                         saveFile.delete()
                         saveFile.createNewFile()
-                        saveFile.writeText(Gson().toJson(json))
-                        Snackbar.make(requireView(), getString(R.string.backup_created_successfully), Snackbar.LENGTH_LONG).show()
+                        saveFile.writeText(GsonBuilder().setPrettyPrinting().create().toJson(json))
+                        val s = Snackbar.make(requireView(), getString(R.string.backup_created_successfully), Snackbar.LENGTH_LONG)
+                        s.setAction(R.string.Open_File){
+                            UiUtil.openFileIntent(requireContext(), saveFile.absolutePath)
+                        }
+                        s.show()
                     }
                 }
 
@@ -201,25 +227,6 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
                 true
             }
 
-        version = findPreference("version")
-        val nativeLibraryDir = context?.applicationInfo?.nativeLibraryDir
-
-        version!!.summary = "${BuildConfig.VERSION_NAME} [${nativeLibraryDir?.split("/lib/")?.get(1)}]"
-
-        version!!.onPreferenceClickListener =
-            Preference.OnPreferenceClickListener {
-                lifecycleScope.launch{
-                    withContext(Dispatchers.IO){
-                        updateUtil!!.updateApp{ msg ->
-                            lifecycleScope.launch(Dispatchers.Main){
-                                Snackbar.make(requireView(), msg, Snackbar.LENGTH_LONG).show()
-                            }
-                        }
-                    }
-
-                }
-                true
-            }
     }
 
     private fun backupSettings(preferences: SharedPreferences) : JsonArray {

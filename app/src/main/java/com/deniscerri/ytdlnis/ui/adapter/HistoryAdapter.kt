@@ -128,7 +128,7 @@ class HistoryAdapter(onItemClickListener: OnItemClickListener, activity: Activit
         } else if (item.type == DownloadViewModel.Type.video) {
             if (filePresent) btn.setImageResource(R.drawable.ic_video_downloaded) else btn.setImageResource(R.drawable.ic_video)
         }else{
-            btn.setImageResource(R.drawable.ic_terminal)
+            if (filePresent) btn.setImageResource(R.drawable.ic_terminal) else btn.setImageResource(R.drawable.baseline_code_off_24)
         }
         if (btn.hasOnClickListeners()) btn.setOnClickListener(null)
         btn.isClickable = filePresent

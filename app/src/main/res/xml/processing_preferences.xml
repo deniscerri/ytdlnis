@@ -61,7 +61,7 @@
         app:summary="@string/save_subs_desc"
         app:title="@string/save_subs" />
 
-    <EditTextPreference
+    <Preference
         android:icon="@drawable/baseline_subject_24"
         app:key="subs_lang"
         app:useSimpleSummaryProvider="true"

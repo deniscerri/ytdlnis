@@ -253,9 +253,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                     val ids = mutableListOf<Long>()
                     runBlocking {
                         items.map { it.status = DownloadRepository.Status.Saved.toString() }
-                        items.forEach {
-                            ids.add(downloadViewModel.repository.insert(it))
-                        }
+                        ids.addAll(downloadViewModel.repository.insertAll(items))
                     }
                     val id = System.currentTimeMillis().toInt()
                     val workRequest = OneTimeWorkRequestBuilder<UpdatePlaylistFormatsWorker>()

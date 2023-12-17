@@ -64,7 +64,7 @@ class ResultRepository(private val resultDao: ResultDao, private val context: Co
         val infoUtil = InfoUtil(context)
         val items : ArrayList<ResultItem?> = arrayListOf()
         do {
-            val tmp = infoUtil.getPlaylist(query, nextPageToken)
+            val tmp = infoUtil.getPlaylist(query, nextPageToken, if (items.isNotEmpty()) items[0]?.playlistTitle ?: "" else "")
             items.addAll(tmp.videos)
             val tmpToken = tmp.nextPageToken
             if (tmpToken.isEmpty()) break

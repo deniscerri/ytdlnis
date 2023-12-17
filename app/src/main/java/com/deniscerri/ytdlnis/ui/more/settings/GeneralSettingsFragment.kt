@@ -1,19 +1,15 @@
 package com.deniscerri.ytdlnis.ui.more.settings
 
-import android.app.Activity
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.os.PowerManager
 import android.provider.Settings
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.app.ActivityCompat
 import androidx.core.os.LocaleListCompat
 import androidx.preference.ListPreference
 import androidx.preference.Preference
@@ -84,6 +80,8 @@ class GeneralSettingsFragment : BaseSettingsFragment() {
                 }
                 ThemeUtil.updateTheme(requireActivity() as AppCompatActivity)
                 val intent = Intent(requireContext(), MainActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 this.startActivity(intent)
                 requireActivity().finishAffinity()
                 true
@@ -93,6 +91,8 @@ class GeneralSettingsFragment : BaseSettingsFragment() {
             Preference.OnPreferenceChangeListener { _: Preference?, _: Any ->
                 ThemeUtil.updateTheme(requireActivity() as AppCompatActivity)
                 val intent = Intent(requireContext(), MainActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 this.startActivity(intent)
                 requireActivity().finishAffinity()
                 true
@@ -101,6 +101,8 @@ class GeneralSettingsFragment : BaseSettingsFragment() {
             Preference.OnPreferenceChangeListener { _: Preference?, _: Any ->
                 ThemeUtil.updateTheme(requireActivity() as AppCompatActivity)
                 val intent = Intent(requireContext(), MainActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 this.startActivity(intent)
                 requireActivity().finishAffinity()
 

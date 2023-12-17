@@ -100,10 +100,6 @@
                 android:data="https://github.com/deniscerri/ytdlnis" />
         </Preference>
 
-        <Preference
-            app:icon="@drawable/ic_info"
-            app:key="version"
-            app:title="@string/version"/>
 
     </PreferenceCategory>
 
