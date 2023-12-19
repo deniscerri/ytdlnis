@@ -8,7 +8,7 @@
     <string name="download_notification_channel_description">Notificação que mostra o progresso das descargas dos ficheiros</string>
     <string name="search_history_hint">Pesquisar no histórico</string>
     <string name="ytdl_already_updating">A instalar nova versão</string>
-    <string name="embed_thumb">Imagens de miniaturas</string>
+    <string name="embed_thumb">Imagens das miniaturas</string>
     <string name="ok">OK</string>
     <string name="you_are_in_latest_version">Está a utilizar a versão mais recente</string>
     <string name="confirm_delete_history_desc">Eliminar todo o histórico, de forma permanente</string>
@@ -36,7 +36,7 @@
     <string name="update_app">Procurar atualizações</string>
     <string name="embed_thumb_summary">Utilizar miniatura como imagem</string>
     <string name="ytld_update_success">Nova versão instalada</string>
-    <string name="embed_subs_summary">Adicionar legendas ao vídeo</string>
+    <string name="embed_subs_summary">Adicionar legendas aos vídeos</string>
     <string name="downloading">A descarregar</string>
     <string name="Remove">Remover</string>
     <string name="cancel">Cancelar</string>
@@ -47,7 +47,7 @@
     <string name="audio_quality">Qualidade de áudio</string>
     <string name="items_left">itens restantes</string>
     <string name="download">Descarregar</string>
-    <string name="api_key_summary">Recomendações de vídeo da API do YouTube</string>
+    <string name="api_key_summary">Recomendações de vídeos via API do YouTube</string>
     <string name="update_app_summary">Ao iniciar, anunciar novas versões da aplicação</string>
     <string name="remove_duplicates">Remover duplicadas</string>
     <string name="downloads">Descargas</string>
@@ -78,7 +78,7 @@
     <string name="embed_subtitles">Incluir legendas</string>
     <string name="add_chapter">Adicionar capítulos</string>
     <string name="show_download_card">Mostrar opções para descarregar</string>
-    <string name="download_card_summary">Definições sobre como descarregar itens</string>
+    <string name="download_card_summary">Definições para as descargas de vídeos</string>
     <string name="delete_file_too">Eliminar ficheiro do dispositivo</string>
     <string name="directories">Pastas</string>
     <string name="delete_files_too">Eliminar ficheiros do dispositivo</string>
@@ -193,13 +193,13 @@
     <string name="logs">Registos</string>
     <string name="cache_cleared">Ficheiros temporários eliminados</string>
     <string name="date_added">Data de adição</string>
-    <string name="end">Final</string>
+    <string name="end">Fim</string>
     <string name="restrict_filenames">Restringir nomes de ficheiros</string>
     <string name="link_you_copied">Ligação copiada</string>
     <string name="kill_app">Terminar aplicação</string>
     <string name="clear_temporary_files_summary">Eliminar ficheiros em cache das descargas com falhas, erros e canceladas</string>
     <string name="move_temporary_files_summary">Mover ficheiros em cache para a pasta de descargas</string>
-    <string name="video_recommendations_summary">Obter recomendações do YouTube ,no ecrã inicial, a partir da API PIPED</string>
+    <string name="video_recommendations_summary">Obter recomendações no ecrã inicial via API PIPED</string>
     <string name="add_chapters_summary">Marcar segmentos YouTube/SponsorBlock como capítulos do vídeo</string>
     <string name="you_are_going_to_delete_multiple_items">Eliminar vários itens</string>
     <string name="request_permission_desc">Esta aplicação necessita de permissões de acesso aos ficheiros para guardar itens</string>
@@ -222,7 +222,7 @@
     <string name="confirm_terminate">Parar todas as descargas e sair da aplicação</string>
     <string name="dont_ask_again">Não perguntar novamente</string>
     <string name="downloads_running_try_later">O assistente de descargas está em execução. Tente mais tarde</string>
-    <string name="start">Começar</string>
+    <string name="start">Início</string>
     <string name="update_formats_summary">Obter formatos assim que o cartão de descarga apareçe</string>
     <string name="ignore_battery_optimization">Ignorar otimização de bateria</string>
     <string name="cut">Cortar</string>
