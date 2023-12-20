@@ -63,4 +63,11 @@
     <string name="ytld_update_success">Nová verze nainstalována</string>
     <string name="no_results">Žádné výsledky</string>
     <string name="embed_subs_summary">Přidat titulky do videa</string>
+    <string name="api_key">Použít API klíč</string>
+    <string name="downloads">Stahování</string>
+    <string name="you_are_going_to_delete">Odstraňuje se</string>
+    <string name="update_app_summary">Oznámit novou verzi aplikace, když je otevřena</string>
+    <string name="url">URL adresa</string>
+    <string name="link_copied_to_clipboard">Link byl zkopírován do schránky</string>
+    <string name="api_key_summary">Doporučená videa z rozhraní Youtube API</string>
 </resources>
