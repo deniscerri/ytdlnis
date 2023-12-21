@@ -324,4 +324,7 @@
     <string name="buffer_size">Tamanho do buffer</string>
     <string name="preferred_audio_language">Idioma de áudio preferido</string>
     <string name="update_ytdl_stable">Versão estável de yt-dlp</string>
+    <string name="changelog">Registo de alterações</string>
+    <string name="app">Aplicação</string>
+    <string name="source">Fonte</string>
 </resources>
