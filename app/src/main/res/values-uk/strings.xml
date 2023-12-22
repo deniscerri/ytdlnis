@@ -324,4 +324,7 @@
     <string name="buffer_size">Розмір буфера</string>
     <string name="preferred_audio_language">Бажана мова аудіо</string>
     <string name="update_ytdl_stable">Стабільна версія yt-dlp</string>
+    <string name="changelog">Список змін</string>
+    <string name="app">Застосунок</string>
+    <string name="source">Джерело</string>
 </resources>
