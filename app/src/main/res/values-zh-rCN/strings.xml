@@ -324,4 +324,7 @@
     <string name="buffer_size">缓冲大小</string>
     <string name="preferred_audio_language">首选音频语言</string>
     <string name="update_ytdl_stable">yt-dlp 稳定版</string>
+    <string name="changelog">更新日志</string>
+    <string name="app">应用</string>
+    <string name="source">源</string>
 </resources>
