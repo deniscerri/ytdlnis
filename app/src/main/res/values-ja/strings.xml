@@ -324,4 +324,7 @@
     <string name="buffer_size">バッファの大きさ</string>
     <string name="preferred_audio_language">優先する音声用の言語</string>
     <string name="update_ytdl_stable">yt-dlp 安定版</string>
+    <string name="changelog">更新履歴</string>
+    <string name="app">アプリ</string>
+    <string name="source">取得元</string>
 </resources>
