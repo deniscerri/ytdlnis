@@ -324,4 +324,7 @@
     <string name="buffer_size">Величина бафера</string>
     <string name="preferred_audio_language">Преферирани језик аудио снимка</string>
     <string name="update_ytdl_stable">Стабилна верзија yt-dlp</string>
+    <string name="changelog">Евиденција измена</string>
+    <string name="app">Апликација</string>
+    <string name="source">Извор</string>
 </resources>
