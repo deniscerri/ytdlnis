@@ -118,6 +118,25 @@ The App's package name is "com.deniscerri.ytdl"
 <img src="https://hosted.weblate.org/widgets/ytdlnis/-/multi-auto.svg" alt="Translation status" />
 </a>
 
+## ✔️🤖 Connect with Tasker / Macrodroid etc
+
+You can use intents on apps like tasker or macrodroid to push commands to the app to run a download without user interaction
+Accepted variables:
+
+<b>TYPE</b> -> it can be: audio,video,command <br/>
+<b>BACKGROUND</b> -> it can be: true,false. If its true the app won't show the download card no matter what and run the download in the background <br/>
+<b>COMMAND</b> -> if your preferred type is audio/video or you set the TYPE variable as one of them, this will be appended to your Extra Commands string. If the type is command, the whole command you wrote here will be used for the download <br/>
+
+### Tasker Example of downloading an audio in the background
+1. Create Send Intent task
+2. Action: android.intent.action.SEND
+3. Cat: Default
+4. Mime Type: text/*
+5. Extra: android.intent.extra.TEXT:url (instead of url write the url of the video you want to download)
+6. Extra: TYPE:audio
+7. Extra: BACKGROUND:true
+
+
 ## 😇 Contributing
 
 If you would like to contribute. Please read the [Contributing](CONTRIBUTING.MD) section.
