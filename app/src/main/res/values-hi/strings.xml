@@ -324,4 +324,7 @@
     <string name="ytdl_source">yt-dlp स्रोत</string>
     <string name="buffer_size">बफ़र का आकार</string>
     <string name="update_ytdl_stable">Yt-dlp का स्थिर संस्करण</string>
+    <string name="changelog">चैंजलॉग</string>
+    <string name="app">ऐप</string>
+    <string name="source">स्रोत</string>
 </resources>

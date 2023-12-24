@@ -324,4 +324,7 @@
     <string name="ytdl_source">yt-dlp ਸਰੋਤ</string>
     <string name="buffer_size">ਬਫ਼ਰ ਦਾ ਆਕਾਰ</string>
     <string name="update_ytdl_stable">yt-dlp ਦਾ ਸਥਿਰ ਸੰਸਕਰਣ</string>
+    <string name="changelog">ਚੇਂਜਲੌਗ</string>
+    <string name="app">ਐਪ</string>
+    <string name="source">ਸ੍ਰੋਤ</string>
 </resources>
