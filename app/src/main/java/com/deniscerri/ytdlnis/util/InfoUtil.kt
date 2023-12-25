@@ -1112,9 +1112,9 @@ class InfoUtil(private val context: Context) {
                     }
                 }
                 filenameTemplate = if (filenameTemplate.isBlank()){
-                    "%(section_title& {}|)s%(title)s"
+                    "%(section_title&{} |)s%(title)s"
                 }else{
-                    "%(section_title& {}|)s$filenameTemplate"
+                    "%(section_title&{} |)s$filenameTemplate"
                 }
                 if (downloadItem.downloadSections.split(";").size > 1){
                     filenameTemplate = "%(autonumber)d. %(section_start>%H:%M:%S)s $filenameTemplate"
