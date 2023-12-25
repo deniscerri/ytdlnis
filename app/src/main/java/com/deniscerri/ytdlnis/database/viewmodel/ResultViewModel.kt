@@ -1,17 +1,15 @@
 package com.deniscerri.ytdlnis.database.viewmodel
 
+import android.app.ActivityManager
+import android.app.ActivityManager.RunningAppProcessInfo
 import android.app.Application
 import android.content.SharedPreferences
 import android.util.Log
 import android.util.Patterns
-import android.view.View
-import androidx.compose.material3.formatWithSkeleton
-import androidx.core.os.bundleOf
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceManager
 import com.deniscerri.ytdlnis.App
 import com.deniscerri.ytdlnis.R
@@ -21,10 +19,8 @@ import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.deniscerri.ytdlnis.database.models.SearchHistoryItem
 import com.deniscerri.ytdlnis.database.repository.ResultRepository
 import com.deniscerri.ytdlnis.database.repository.SearchHistoryRepository
-import com.deniscerri.ytdlnis.receiver.ShareActivity
-import com.deniscerri.ytdlnis.ui.downloadcard.DownloadAudioFragment
-import com.deniscerri.ytdlnis.ui.downloadcard.DownloadVideoFragment
 import com.deniscerri.ytdlnis.util.InfoUtil
+import com.deniscerri.ytdlnis.util.NotificationUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -34,12 +30,14 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.regex.Pattern
 
-class ResultViewModel(application: Application) : AndroidViewModel(application) {
+
+class ResultViewModel(private val application: Application) : AndroidViewModel(application) {
     private val tag: String = "ResultViewModel"
     val repository : ResultRepository
     private val searchHistoryRepository : SearchHistoryRepository
     val items : LiveData<List<ResultItem>>
     private val infoUtil: InfoUtil
+    private val notificationUtil: NotificationUtil
     data class ResultsUiState(
         var processing: Boolean,
         var errorMessage: Pair<Int, String>?,
@@ -64,6 +62,7 @@ class ResultViewModel(application: Application) : AndroidViewModel(application) 
         items = repository.allResults.asLiveData()
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(application)
         infoUtil = InfoUtil(application)
+        notificationUtil = NotificationUtil(application)
     }
 
     fun checkTrending() = viewModelScope.launch(Dispatchers.IO){
@@ -117,9 +116,21 @@ class ResultViewModel(application: Application) : AndroidViewModel(application) 
 
                 }
             }
+            if (!isForegrounded()){
+                notificationUtil.showQueriesFinished()
+            }
             uiState.update {it.copy(processing = false)}
             res
         }
+    }
+
+    private fun isForegrounded(): Boolean {
+        return kotlin.runCatching {
+            val appProcessInfo = RunningAppProcessInfo()
+            ActivityManager.getMyMemoryState(appProcessInfo)
+            appProcessInfo.importance == RunningAppProcessInfo.IMPORTANCE_FOREGROUND ||
+                    appProcessInfo.importance == RunningAppProcessInfo.IMPORTANCE_VISIBLE
+        }.getOrElse { true }
     }
 
     private fun getQueryType(inputQuery: String) : String {
@@ -201,14 +212,14 @@ class ResultViewModel(application: Application) : AndroidViewModel(application) 
                 updatingData.emit(false)
                 updateResultData.emit(result)
             }
-        }
 
-        updateResultDataJob?.start()
-        updateResultDataJob?.invokeOnCompletion {
-            if (it != null){
-                viewModelScope.launch(Dispatchers.IO) {
-                    updatingData.emit(false)
-                    updateResultData.emit(mutableListOf())
+            updateResultDataJob?.start()
+            updateResultDataJob?.invokeOnCompletion {
+                if (it != null){
+                    viewModelScope.launch(Dispatchers.IO) {
+                        updatingData.emit(false)
+                        updateResultData.emit(mutableListOf())
+                    }
                 }
             }
         }
@@ -230,15 +241,31 @@ class ResultViewModel(application: Application) : AndroidViewModel(application) 
         if (updateFormatsResultDataJob == null || updateFormatsResultDataJob?.isCancelled == true || updateFormatsResultDataJob?.isCompleted == true) {
             updateFormatsResultDataJob = viewModelScope.launch(Dispatchers.IO) {
                 updatingFormats.emit(true)
-                val formats = infoUtil.getFormats(result.url)
-                updatingFormats.emit(false)
-                if (formats.isNotEmpty() && isActive) {
-                    getItemByURL(result.url)?.apply {
-                        this.formats = formats.toMutableList()
-                        update(this)
+                val formats = kotlin.runCatching {
+                    infoUtil.getFormats(result.url)
+                }.onFailure { e ->
+                    if (e !is kotlinx.coroutines.CancellationException){
+                        uiState.update {it.copy(
+                            processing = false,
+                            errorMessage = Pair(R.string.no_results, e.message.toString()),
+                            actions = mutableListOf(Pair(R.string.copy_log, ResultAction.COPY_LOG))
+                        )}
+                        Log.e(tag, e.toString())
                     }
-                    updateFormatsResultData.emit(formats.toMutableList())
+                }.getOrNull()
+
+                updatingFormats.emit(false)
+
+                formats?.apply {
+                    if (formats.isNotEmpty() && isActive) {
+                        getItemByURL(result.url)?.apply {
+                            this.formats = formats.toMutableList()
+                            update(this)
+                        }
+                        updateFormatsResultData.emit(formats.toMutableList())
+                    }
                 }
+
             }
             updateFormatsResultDataJob?.start()
             updateFormatsResultDataJob?.invokeOnCompletion {

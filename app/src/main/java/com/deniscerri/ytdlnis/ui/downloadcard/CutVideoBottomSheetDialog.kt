@@ -80,6 +80,7 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val urls
     private lateinit var newCutBtn : Button
     private lateinit var resetBtn : Button
     private lateinit var chipGroup : ChipGroup
+    private lateinit var suggestedLabel : View
 
     private var timeSeconds by Delegates.notNull<Int>()
     private lateinit var selectedCuts: MutableList<String>
@@ -127,6 +128,7 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val urls
         okBtn = view.findViewById(R.id.okButton)
         suggestedChips = view.findViewById(R.id.chapters)
         suggestedChapters = view.findViewById(R.id.suggested_cuts)
+        suggestedLabel = view.findViewById(R.id.suggestedLabel)
 
 
         //cut list section
@@ -451,6 +453,12 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val urls
             cutListSection.visibility = View.GONE
             rangeSlider.setValues(0F, 100F)
             player.seekTo(0)
+            suggestedChips.children.apply {
+                this.forEach {
+                    it.isVisible = ! selectedCuts.contains((it as Chip).text)
+                }
+                suggestedLabel.isVisible = this.any { it.isVisible }
+            }
         }
 
         resetBtn.setOnClickListener {

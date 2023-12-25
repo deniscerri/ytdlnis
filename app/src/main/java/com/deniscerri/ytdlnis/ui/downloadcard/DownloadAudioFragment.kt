@@ -39,6 +39,7 @@ import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.textfield.TextInputLayout.END_ICON_NONE
 import com.google.gson.Gson
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
@@ -69,8 +70,8 @@ class DownloadAudioFragment(private var resultItem: ResultItem? = null, private 
     ): View? {
         fragmentView = inflater.inflate(R.layout.fragment_download_audio, container, false)
         activity = getActivity()
-        downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
-        resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]
+        downloadViewModel = ViewModelProvider(requireActivity())[DownloadViewModel::class.java]
+        resultViewModel = ViewModelProvider(requireActivity())[ResultViewModel::class.java]
         infoUtil = InfoUtil(requireContext())
         genericAudioFormats = infoUtil.getGenericAudioFormats(requireContext().resources)
         preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
@@ -289,6 +290,13 @@ class DownloadAudioFragment(private var resultItem: ResultItem? = null, private 
                                 if (parentFragmentManager.findFragmentByTag("cutVideoSheet") == null){
                                     val bottomSheet = CutVideoBottomSheetDialog(downloadItem, resultItem?.urls ?: "", resultItem?.chapters ?: listOf(), cutVideoListener)
                                     bottomSheet.show(parentFragmentManager, "cutVideoSheet")
+                                }
+                            },
+                            updateDataClicked = {
+                                CoroutineScope(Dispatchers.IO).launch {
+                                    resultItem?.apply {
+                                        resultViewModel.updateItemData(this)
+                                    }
                                 }
                             },
                             extraCommandsClicked = {

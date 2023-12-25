@@ -49,10 +49,11 @@
 
             <TextView
                 android:id="@+id/bottom_sheet_title"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:maxLines="2"
+                android:layout_marginEnd="20dp"
                 android:singleLine="false"
                 android:text="@string/download"
                 android:textSize="25sp"
@@ -84,9 +85,10 @@
 
             <TextView
                 android:id="@+id/bottom_sheet_subtitle"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:maxLines="2"
+                android:layout_marginEnd="20dp"
                 android:singleLine="false"
                 android:text="@string/configure_download"
                 android:textSize="12sp"

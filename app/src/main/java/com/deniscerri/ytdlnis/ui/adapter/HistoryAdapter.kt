@@ -8,6 +8,7 @@ import android.graphics.ColorMatrix
 import android.graphics.ColorMatrixColorFilter
 import android.os.Handler
 import android.os.Looper
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,7 +23,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.HistoryItem
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
-import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.squareup.picasso.Picasso
@@ -89,13 +89,12 @@ class HistoryAdapter(onItemClickListener: OnItemClickListener, activity: Activit
         itemTitle.text = title
 
         // Bottom Info ----------------------------------
-        val bottomInfo = card.findViewById<TextView>(R.id.downloads_info_bottom)
-        var info = item.author
-        if (item.duration.isNotEmpty()) {
-            if (item.author.isNotEmpty()) info += " • "
-            info += item.duration
-        }
-        bottomInfo.text = info
+        val author = card.findViewById<TextView>(R.id.downloads_info_bottom)
+        author.text = item.author
+
+        val length = card.findViewById<TextView>(R.id.length)
+        length.text = item.duration
+
 
         // TIME DOWNLOADED  ----------------------------------
         val datetime = card.findViewById<TextView>(R.id.downloads_info_time)
@@ -122,9 +121,14 @@ class HistoryAdapter(onItemClickListener: OnItemClickListener, activity: Activit
                 }
             })
             thumbnail.alpha = 0.7f
+            btn.backgroundTintList = ContextCompat.getColorStateList(activity, R.color.black)
+            btn.imageTintList = ContextCompat.getColorStateList(activity, R.color.white)
         }
+
         if (item.type == DownloadViewModel.Type.audio) {
-            if (filePresent) btn.setImageResource(R.drawable.ic_music_downloaded) else btn.setImageResource(R.drawable.ic_music)
+            if (filePresent) btn.setImageResource(R.drawable.ic_music_downloaded) else {
+                btn.setImageResource(R.drawable.ic_music)
+            }
         } else if (item.type == DownloadViewModel.Type.video) {
             if (filePresent) btn.setImageResource(R.drawable.ic_video_downloaded) else btn.setImageResource(R.drawable.ic_video)
         }else{

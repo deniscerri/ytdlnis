@@ -26,7 +26,6 @@ import androidx.preference.PreferenceManager
 import com.deniscerri.ytdlnis.BuildConfig
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.GithubRelease
-import com.deniscerri.ytdlnis.util.Extensions.enableFastScroll
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
@@ -38,7 +37,9 @@ import com.yausername.youtubedl_android.YoutubeDL.UpdateStatus
 import io.noties.markwon.AbstractMarkwonPlugin
 import io.noties.markwon.Markwon
 import io.noties.markwon.MarkwonConfiguration
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.InputStreamReader
@@ -122,7 +123,8 @@ class UpdateUtil(var context: Context) {
                                     )
                                     .setAllowedOverRoaming(true)
                                     .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-                                    .setTitle(context.getString(R.string.downloading_update))
+                                    .setTitle(releaseVersion.name)
+                                    .setDescription(context.getString(R.string.downloading_update))
                                     .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, releaseVersion.name)
                             )
 
@@ -176,42 +178,7 @@ class UpdateUtil(var context: Context) {
             layoutParams.setMargins(20, 20, 20, 0)
             scrollView.layoutParams = layoutParams
             scrollView.addView(linearLayout)
-
-            getGithubReleases().forEach {
-                (activity.layoutInflater.inflate(R.layout.changelog_item, null) as MaterialCardView).apply {
-                    this.layoutParams = layoutParams
-                    findViewById<TextView>(R.id.version).text = it.tag_name
-                    findViewById<TextView>(R.id.date).text =  SimpleDateFormat(
-                        DateFormat.getBestDateTimePattern(
-                            Locale.getDefault(), "ddMMMyyyy - HHmm"), Locale.getDefault()).format(it.published_at.time)
-
-                    val mdText = findViewById<TextView>(R.id.content)
-                    val mw = Markwon.builder(context).usePlugin(object: AbstractMarkwonPlugin() {
-                        override fun configureConfiguration(builder: MarkwonConfiguration.Builder) {
-                            builder.linkResolver { view, link ->
-                                val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
-                                startActivity(context, browserIntent, Bundle())
-                            }
-                        }
-                    }).build()
-                    mw.setMarkdown(mdText, it.body)
-
-
-                    val assetGroup = findViewById<ChipGroup>(R.id.assets)
-                    it.assets.forEachIndexed { idx, c ->
-                        val tmp = activity.layoutInflater.inflate(R.layout.suggestion_chip, assetGroup, false) as Chip
-                        tmp.text = c.name
-                        tmp.id = idx
-                        tmp.setOnClickListener {
-                            val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(c.browser_download_url))
-                            startActivity(context, browserIntent, Bundle())
-                        }
-                        assetGroup!!.addView(tmp)
-                    }
-
-                    linearLayout.addView(this)
-                }
-            }
+            val releases = getGithubReleases()
 
             val changeLogDialog = MaterialAlertDialogBuilder(context)
                 .setTitle(activity.getString(R.string.changelog))
@@ -220,6 +187,46 @@ class UpdateUtil(var context: Context) {
                 .setNegativeButton(context.resources.getString(R.string.cancel)) { _: DialogInterface?, _: Int -> }
             Handler(Looper.getMainLooper()).post {
                 changeLogDialog.show()
+            }
+
+            CoroutineScope(Dispatchers.IO).launch {
+                releases.forEach {
+                    (activity.layoutInflater.inflate(R.layout.changelog_item, null) as MaterialCardView).apply {
+                        this.layoutParams = layoutParams
+                        findViewById<TextView>(R.id.version).text = it.tag_name
+                        findViewById<TextView>(R.id.date).text =  SimpleDateFormat(
+                            DateFormat.getBestDateTimePattern(
+                                Locale.getDefault(), "ddMMMyyyy - HHmm"), Locale.getDefault()).format(it.published_at.time)
+
+                        val mdText = findViewById<TextView>(R.id.content)
+                        val mw = Markwon.builder(context).usePlugin(object: AbstractMarkwonPlugin() {
+                            override fun configureConfiguration(builder: MarkwonConfiguration.Builder) {
+                                builder.linkResolver { view, link ->
+                                    val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
+                                    startActivity(context, browserIntent, Bundle())
+                                }
+                            }
+                        }).build()
+                        mw.setMarkdown(mdText, it.body)
+
+
+                        val assetGroup = findViewById<ChipGroup>(R.id.assets)
+                        it.assets.forEachIndexed { idx, c ->
+                            val tmp = activity.layoutInflater.inflate(R.layout.suggestion_chip, assetGroup, false) as Chip
+                            tmp.text = c.name
+                            tmp.id = idx
+                            tmp.setOnClickListener {
+                                val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(c.browser_download_url))
+                                startActivity(context, browserIntent, Bundle())
+                            }
+                            assetGroup!!.addView(tmp)
+                        }
+
+                        withContext(Dispatchers.Main){
+                            linearLayout.addView(this@apply)
+                        }
+                    }
+                }
             }
 
         }.onFailure {

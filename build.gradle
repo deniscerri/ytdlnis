@@ -16,14 +16,14 @@ buildscript {
         commonsCompressVer = '1.12'
         youtubedlAndroidVer = "-SNAPSHOT"
         youtubedlAndroidVerNoPyCrypto = "97bee6c0e8"
-        workVer = "2.8.1"
+        workVer = "2.9.0"
         composeVer = '1.4.2'
         kotlinVer = "1.7.21"
         coroutineVer = '1.7.3'
         retrofitVer = "2.9.0"
         kodeinVer = "7.16.0"
-        navVer = "2.7.5"
-        media3_version = "1.1.1"
+        navVer = "2.7.6"
+        media3_version = "1.2.0"
         agp_version = '8.1.0'
         agp_version1 = '7.4.2'
         roomVer = '2.5.2'

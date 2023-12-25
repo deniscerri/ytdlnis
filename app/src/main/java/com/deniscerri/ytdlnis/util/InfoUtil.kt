@@ -1,5 +1,6 @@
 package com.deniscerri.ytdlnis.util
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.res.Resources
@@ -553,6 +554,7 @@ class InfoUtil(private val context: Context) {
         urlsFile.delete()
     }
 
+    @SuppressLint("RestrictedApi")
     fun getFromYTDL(query: String): ArrayList<ResultItem?> {
         val items = arrayListOf<ResultItem?>()
         val searchEngine = sharedPreferences.getString("search_engine", "ytsearch")
@@ -978,6 +980,7 @@ class InfoUtil(private val context: Context) {
         }
     }
 
+    @SuppressLint("RestrictedApi")
     fun buildYoutubeDLRequest(downloadItem: DownloadItem) : YoutubeDLRequest{
         val request = if (downloadItem.playlistURL.isNullOrBlank() || downloadItem.playlistTitle.isBlank() || downloadItem.playlistIndex == null){
             YoutubeDLRequest(downloadItem.url)
@@ -1108,15 +1111,14 @@ class InfoUtil(private val context: Context) {
                         request.addOption("--force-keyframes-at-cuts")
                     }
                 }
-                if (filenameTemplate.isBlank()){
-                    filenameTemplate = "%(section_title& {}|)s    %(title)s"
+                filenameTemplate = if (filenameTemplate.isBlank()){
+                    "%(section_title& {}|)s%(title)s"
                 }else{
-                    filenameTemplate += "    %(section_title& {}|)s "
+                    "%(section_title& {}|)s$filenameTemplate"
                 }
                 if (downloadItem.downloadSections.split(";").size > 1){
-                    filenameTemplate = "%(autonumber)d. %(section_start& {}|)s $filenameTemplate"
+                    filenameTemplate = "%(autonumber)d. %(section_start>%H:%M:%S)s $filenameTemplate"
                 }
-                request.addOption("--output-na-placeholder", " ")
             }
 
             if (sharedPreferences.getBoolean("use_audio_quality", false)){
@@ -1163,7 +1165,7 @@ class InfoUtil(private val context: Context) {
                 if (audioQualityId.isBlank() || listOf("0", context.getString(R.string.best_quality), "ba", "best", "").contains(audioQualityId)){
                     audioQualityId = ""
                 }else if (listOf(context.getString(R.string.worst_quality), "wa", "worst").contains(audioQualityId)){
-                    audioQualityId = "worstaudio"
+                    audioQualityId = "wa/w"
                 }
 
 
@@ -1224,7 +1226,7 @@ class InfoUtil(private val context: Context) {
                         if (cropThumb){
                             try {
                                 val config = File(context.cacheDir.absolutePath + "/config" + downloadItem.id + "##ffmpegCrop.txt")
-                                val configData = "--ppa \"ffmpeg: -c:v mjpeg -vf crop=\\\"'if(gt(ih,iw),iw,ih)':'if(gt(iw,ih),ih,iw)'\\\"\""
+                                val configData = "--ppa \"ffmpeg:-c:v mjpeg -vf crop=\\\"'if(gt(ih,iw),iw,ih)':'if(gt(iw,ih),ih,iw)'\\\"\""
                                 config.writeText(configData)
                                 request.addOption("--ppa", "ThumbnailsConvertor:-qmin 1 -q:v 1")
                                 request.addOption("--config", config.absolutePath)
@@ -1296,7 +1298,8 @@ class InfoUtil(private val context: Context) {
                     if (videoF == context.resources.getString(R.string.best_quality) || videoF == "best") {
                         videoF = "bv"
                     }else if (videoF == context.resources.getString(R.string.worst_quality) || videoF == "worst") {
-                        videoF = "worst"
+                        videoF = "wv"
+                        if (audioF == "ba") audioF = "wa"
                     }else if (defaultFormats.contains(videoF)) {
                         videoF = "bv[height<="+videoF.split("_")[0].dropLast(1)+"]"
                     }
@@ -1316,7 +1319,7 @@ class InfoUtil(private val context: Context) {
                         .filter { it.isNotBlank() }
                         .ifEmpty {
                             val list = mutableListOf<String>()
-                            if (preferredAudioLanguage.isNotEmpty()) list.add("ba[language^=$preferredAudioLanguage]")
+                            if (preferredAudioLanguage.isNotEmpty() && !downloadItem.videoPreferences.removeAudio) list.add("ba[language^=$preferredAudioLanguage]")
                             list.add(audioF)
                             list
                         }.apply {
@@ -1346,7 +1349,7 @@ class InfoUtil(private val context: Context) {
                                 if (!f.contains(al)) f.append(al)
                             }
                             //build format with best audio
-                            if (!f.contains("$v+ba/")) f.append("$v+ba/")
+                            if (!f.contains("$v+ba/") && !f.contains("wa")) f.append("$v+ba/")
                             //build format with standalone video
                             f.append("$v/")
                         }

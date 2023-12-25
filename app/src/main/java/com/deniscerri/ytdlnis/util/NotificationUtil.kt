@@ -549,6 +549,31 @@ class NotificationUtil(var context: Context) {
         notificationManager.notify(FORMAT_UPDATING_FINISHED_NOTIFICATION_ID, notificationBuilder.build())
     }
 
+    fun showQueriesFinished() {
+        val notificationBuilder = getBuilder(DOWNLOAD_FINISHED_CHANNEL_ID)
+
+        val openMultipleDownloads = NavDeepLinkBuilder(context)
+            .setGraph(R.navigation.nav_graph)
+            .setDestination(R.id.homeFragment)
+            .createPendingIntent()
+
+        notificationBuilder
+            .setContentTitle(resources.getString(R.string.finished_download_notification_channel_name))
+            .setSmallIcon(R.drawable.ic_launcher_foreground_large)
+            .setLargeIcon(
+                BitmapFactory.decodeResource(
+                    resources,
+                    R.drawable.ic_launcher_foreground_large
+                )
+            )
+            .setContentIntent(openMultipleDownloads)
+            .setPriority(NotificationCompat.PRIORITY_MAX)
+            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+            .clearActions()
+
+        notificationManager.notify(QUERY_PROCESS_FINISHED_NOTIFICATION_ID, notificationBuilder.build())
+    }
+
     companion object {
         const val DOWNLOAD_SERVICE_CHANNEL_ID = "1"
         const val COMMAND_DOWNLOAD_SERVICE_CHANNEL_ID = "2"
@@ -562,6 +587,7 @@ class NotificationUtil(var context: Context) {
         const val DOWNLOAD_UPDATING_NOTIFICATION_ID =           50000
         const val DOWNLOAD_ERRORED_NOTIFICATION_ID =            60000
         const val FORMAT_UPDATING_FINISHED_NOTIFICATION_ID =    70000
+        const val QUERY_PROCESS_FINISHED_NOTIFICATION_ID =      80000
 
         private const val PROGRESS_MAX = 100
         private const val PROGRESS_CURR = 0

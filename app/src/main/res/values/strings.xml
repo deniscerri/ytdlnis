@@ -330,4 +330,5 @@
     <string name="changelog">Changelog</string>
     <string name="source">Source</string>
     <string name="app">App</string>
+    <string name="cut_unavailable">You need to update the item data in order to be able to use cut feature</string>
 </resources>

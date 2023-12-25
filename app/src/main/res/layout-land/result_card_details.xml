@@ -3,114 +3,129 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:paddingBottom="20dp"
     android:layout_height="wrap_content">
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/frame_layout"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/player_constraint"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintWidth_percent=".5"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:cardCornerRadius="0dp"
-        app:layout_constraintDimensionRatio="H,16:9"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/info"
-        app:layout_constraintTop_toTopOf="parent">
-
-
-        <androidx.media3.ui.PlayerView
-            android:id="@+id/video_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:resize_mode="fixed_height"
-            app:useDefaultControls="true"
-            app:use_controller="true" />
-
-    </com.google.android.material.card.MaterialCardView>
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/download_thumb"
-        style="@style/Widget.Material3.Button.IconButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:icon="@drawable/ic_image"
-        app:iconSize="30dp"
-        app:iconTint="?android:colorAccent"
-        app:layout_constraintTop_toTopOf="@+id/frame_layout"
-        app:layout_constraintEnd_toEndOf="@+id/frame_layout" />
-
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="0dp"
-        android:layout_marginTop="10dp"
-        android:textStyle="bold"
-        android:layout_marginHorizontal="10dp"
-        android:layout_height="wrap_content"
-        android:ellipsize="end"
-        android:maxLines="2"
-        android:singleLine="false"
-        android:text="@string/app_name"
-        android:textSize="17sp"
-        app:layout_constraintEnd_toStartOf="@+id/download_music"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/frame_layout" />
-
-    <TextView
-        android:id="@+id/bottom_info"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="10dp"
-        android:ellipsize="end"
-        app:layout_constraintVertical_bias="0.0"
-        android:singleLine="false"
-        android:text="@string/app_name"
-        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/download_music"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/title" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_default="percent"
+        app:layout_constraintWidth_percent=".67">
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/frame_layout"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:cardCornerRadius="0dp"
+            app:layout_constraintDimensionRatio="H,16:9"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/download_music"
-        style="@style/Widget.Material3.ExtendedFloatingActionButton.Icon.Secondary"
-        android:layout_width="55dp"
-        android:layout_marginTop="10dp"
-        android:layout_height="55dp"
-        android:layout_marginHorizontal="10dp"
-        app:icon="@drawable/ic_music"
-        app:layout_constraintEnd_toStartOf="@+id/download_video"
-        app:layout_constraintTop_toBottomOf="@id/frame_layout" />
+            <androidx.media3.ui.PlayerView
+                android:id="@+id/video_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:resize_mode="fixed_height"
+                app:useDefaultControls="true"
+                app:use_controller="true" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/download_video"
-        style="@style/Widget.Material3.ExtendedFloatingActionButton.Icon.Secondary"
-        android:layout_width="55dp"
-        android:layout_marginTop="10dp"
-        android:layout_height="55dp"
-        android:layout_marginHorizontal="10dp"
-        app:icon="@drawable/ic_video"
-        app:layout_constraintEnd_toEndOf="@id/frame_layout"
-        app:layout_constraintTop_toBottomOf="@id/frame_layout" />
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/download_thumb"
+            style="@style/Widget.Material3.Button.IconButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:icon="@drawable/ic_image"
+            app:iconSize="30dp"
+            app:iconTint="?android:colorAccent"
+            app:layout_constraintTop_toTopOf="@+id/frame_layout"
+            app:layout_constraintEnd_toEndOf="@+id/frame_layout" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:singleLine="false"
+            android:text="@string/app_name"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            android:layout_marginTop="10dp"
+            app:layout_constraintEnd_toStartOf="@+id/download_music"
+            app:layout_constraintHorizontal_bias="0.277"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/frame_layout" />
+
+        <TextView
+            android:id="@+id/bottom_info"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:ellipsize="end"
+            app:layout_constraintVertical_bias="0.0"
+            android:singleLine="false"
+            android:text="@string/app_name"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/download_music"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/title" />
 
 
-    <Button
-        android:id="@+id/bottom_sheet_link"
-        style="@style/Widget.Material3.Button.TextButton.Icon"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:singleLine="true"
-        android:text="@string/app_name"
-        android:textAlignment="textStart"
-        android:textSize="15sp"
-        app:icon="@drawable/ic_link"
-        app:layout_constraintEnd_toStartOf="@+id/info"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/download_music" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/download_music"
+            style="@style/Widget.Material3.ExtendedFloatingActionButton.Icon.Secondary"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginTop="10dp"
+            app:icon="@drawable/ic_music"
+            app:layout_constraintEnd_toStartOf="@+id/download_video"
+            app:layout_constraintTop_toBottomOf="@id/frame_layout" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/download_video"
+            style="@style/Widget.Material3.ExtendedFloatingActionButton.Icon.Secondary"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginTop="10dp"
+            app:icon="@drawable/ic_video"
+            app:layout_constraintEnd_toEndOf="@id/frame_layout"
+            app:layout_constraintTop_toBottomOf="@id/frame_layout" />
+
+        <Button
+            android:id="@+id/bottom_sheet_link"
+            style="@style/Widget.Material3.Button.TextButton.Icon"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:text="@string/app_name"
+            android:textAlignment="textStart"
+            android:textSize="15sp"
+            app:icon="@drawable/ic_link"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/download_music"
+            app:layout_constraintVertical_bias="0.0" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
 
     <androidx.core.widget.NestedScrollView
@@ -119,9 +134,8 @@
         android:layout_width="0dp"
         android:layout_marginHorizontal="10dp"
         android:scrollbars="none"
-        app:layout_constraintWidth_percent=".5"
-        app:layout_constraintVertical_bias="0.5"
-        app:layout_constraintStart_toEndOf="@id/frame_layout"
+        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintStart_toEndOf="@id/player_constraint"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"

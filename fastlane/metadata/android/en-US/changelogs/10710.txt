@@ -1,0 +1,31 @@
+## What's New
+- fixed error notification not being dismissed and having a progress bar
+- fixed editing filename template not using multiple copies of the same tag and writing at the cursor
+- fixed appending search items in the search view not working for links
+- fixed terminal removing any instance of yt-dlp in the command instead of just the beginning
+- added ability to long press an item in the format details sheet to see the full string, and copy it/strings
+- ellipsised really long titles and authors in history/download details bottom sheet
+- now u can see all available piped instances in the piped instance dialog for you to choose
+- removed really long format command and replaced them with -S format sorting
+- fixed app not hiding adjust templates if user unchecked it
+- added ability to show the command that was used in a history item, u can also see that in a queued,cancelled ... download
+- Implemented preferred Audio Language. App will automatically choose an audio with your preference if it can find it, both in the download card also if you quick downloaded it
+- added subtitle language codes suggestions in the settings page
+- made the extractor chips in history page Sentence case
+- added a changelog screen where you can see recent releases and you can download the apks from it too
+- prevented app from crashing when trying to backup from a corrupted backup
+- added uploader_id as fallback for author data fetching in yt-dlp in case others are empty
+- fixed null pointer exception when running the update multiple items formats worker
+- added the seconds where the cut starts on downloads with cuts in them
+- made autonumbers be normal numbers instead of being 5 digits
+- fixed filename templates in cut files and added the index in the beginning and fixed bugs if the users left the template as empty
+- added 240p as a generic format
+
+## Intent integration with the app
+You can use intents or apps like tasker or macrodroid to run commands to the app to run a download without user interaction
+Accepted variables:
+
+TYPE -> it can be: audio,video,command
+BACKGROUND -> whether the app downloads on its own and wont show the download card if you have it on
+COMMAND -> if your preferred type is audio/video or you set the TYPE variable as so, this will be appended to your Extra Commands string. If the type is command, the whole command will be used for the download
+The intent that needs to be created is of android.intent.action.SEND and the intent text should be the url that you need to download.

@@ -1,0 +1,25 @@
+## What's New
+- Errored downloads sometimes had no title if it was quick downloaded. showed url instead
+- Fixed logs not being highlightable
+- Fixed app crashing when moving to landscape when having download card on
+- same thing for the details card
+- Fixed app crashing if you pressed download before data is loaded
+- Fixed app going to main activity when using rvx
+- Fixed errored downloads log button crashing the app
+- added hungarian
+- added serbian
+- added ability to enable/disable swipe gestures on any screen
+- added ability to choose whether extra command applies to audio video or both
+- hide search providers if the user has typed out an url in the searchview
+- fixed log removing some lines
+- added MASTER channel in yt-dlp updates
+- made errored downloads as a separate notification channel
+- fix notification language conflict for portugal brasil in worker notification
+- kept state of download card when going in landscape, even while updating data
+- add crop thumbnail to adjust audio preferences
+- fix command templates creation card showing extra command checkboxes even though extra command is disabled
+- fix preferred audio codec disrupting preferred audio id
+- made command tab sync title and author changes in the download item
+- fixed app duplicating --download-sections when spamming the extra commands page
+- added BUFFER SIZE as a preference in download settings
+- fixed prx series search engine not working

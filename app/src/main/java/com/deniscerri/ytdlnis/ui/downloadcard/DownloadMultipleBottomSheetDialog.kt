@@ -455,6 +455,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                                         bottomSheet.dismiss()
                                     },
                                     cutClicked = {},
+                                    updateDataClicked = {},
                                     extraCommandsClicked = {
                                         val callback = object : ExtraCommandsListener {
                                             override fun onChangeExtraCommand(c: String) {
@@ -509,6 +510,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                                         bottomSheet.dismiss()
                                     },
                                     cutClicked = {},
+                                    updateDataClicked = {},
                                     filenameTemplateSet = { checked ->
                                         items.forEach { it.customFileNameTemplate = checked }
                                     },

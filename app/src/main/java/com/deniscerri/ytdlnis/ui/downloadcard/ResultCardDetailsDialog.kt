@@ -19,6 +19,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
+import android.view.WindowManager
 import android.widget.*
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
@@ -45,6 +46,7 @@ import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.deniscerri.ytdlnis.database.repository.DownloadRepository
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.ResultViewModel
+import com.deniscerri.ytdlnis.util.Extensions.setFullScreen
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.InfoUtil
 import com.deniscerri.ytdlnis.util.NotificationUtil
@@ -126,11 +128,7 @@ class ResultCardDetailsDialog : BottomSheetDialogFragment(), GenericDownloadAdap
             val displayMetrics = DisplayMetrics()
             requireActivity().windowManager.defaultDisplay.getMetrics(displayMetrics)
             if(resources.getBoolean(R.bool.isTablet) || resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE){
-                behavior.state = BottomSheetBehavior.STATE_EXPANDED
-                behavior.peekHeight = displayMetrics.heightPixels
-            }
-            if (!resources.getBoolean(R.bool.isTablet) && resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE){
-                behavior.maxWidth = displayMetrics.widthPixels
+                dialog.setFullScreen()
             }
         }
     }

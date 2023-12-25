@@ -1,9 +1,11 @@
 package com.deniscerri.ytdlnis.util
 
 import android.annotation.SuppressLint
+import android.app.Dialog
 import android.content.Context
 import android.content.res.Resources
 import android.graphics.Color
+import android.graphics.Outline
 import android.graphics.drawable.ShapeDrawable
 import android.graphics.drawable.shapes.OvalShape
 import android.media.MediaMetadataRetriever
@@ -12,13 +14,23 @@ import android.net.Uri
 import android.util.DisplayMetrics
 import android.view.MotionEvent
 import android.view.View
+import android.view.ViewGroup
+import android.view.ViewOutlineProvider
 import android.widget.EditText
 import android.widget.ScrollView
 import android.widget.TextView
+import androidx.annotation.Px
+import androidx.core.view.updateLayoutParams
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.whenStarted
+import androidx.lifecycle.withStarted
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.neo.highlight.core.Highlight
 import com.neo.highlight.util.listener.HighlightTextWatcher
 import com.neo.highlight.util.scheme.ColorScheme
+import kotlinx.coroutines.launch
 import me.zhanghai.android.fastscroll.FastScrollerBuilder
 import java.io.File
 import java.util.regex.Pattern
@@ -108,5 +120,42 @@ object Extensions {
 
             duration?.toIntOrNull()?.div(1000) ?: 0
         }.getOrElse { 0 }
+    }
+
+
+    fun Dialog.setFullScreen(
+        @Px cornerRadius: Int = 0,
+    skipCollapsed: Boolean = true
+    ) {
+        check(this is BottomSheetDialog) {
+            "Dialog must be a BottomSheetBottomSheetDialog."
+        }
+
+        lifecycleScope.launch {
+            withStarted {
+                val bottomSheetLayout = findViewById<ViewGroup>(com.google.android.material.R.id.design_bottom_sheet)  ?: return@withStarted
+                with(bottomSheetLayout) {
+                    updateLayoutParams {
+                        height = ViewGroup.LayoutParams.MATCH_PARENT
+                        width = ViewGroup.LayoutParams.MATCH_PARENT
+                    }
+                    clipToOutline = true
+                    outlineProvider = object : ViewOutlineProvider() {
+                        override fun getOutline(view: View, outline: Outline) {
+                            outline.setRoundRect(
+                                0,
+                                0,
+                                view.width,
+                                view.height + cornerRadius,
+                                cornerRadius.toFloat()
+                            )
+                        }
+                    }
+                }
+                behavior.state = BottomSheetBehavior.STATE_EXPANDED
+                behavior.maxWidth = ViewGroup.LayoutParams.MATCH_PARENT
+                behavior.skipCollapsed = skipCollapsed
+            }
+        }
     }
 }

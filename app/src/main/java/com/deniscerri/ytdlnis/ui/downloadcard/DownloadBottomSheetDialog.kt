@@ -23,6 +23,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.commit
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.media3.common.Player.Command
 import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.RecyclerView
@@ -34,6 +35,7 @@ import com.deniscerri.ytdlnis.database.dao.CommandTemplateDao
 import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.deniscerri.ytdlnis.database.repository.DownloadRepository
+import com.deniscerri.ytdlnis.database.viewmodel.CommandTemplateViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel.Type
 import com.deniscerri.ytdlnis.database.viewmodel.HistoryViewModel
@@ -47,6 +49,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.progressindicator.LinearProgressIndicator
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -69,7 +72,7 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
     private lateinit var historyViewModel: HistoryViewModel
     private lateinit var resultViewModel: ResultViewModel
     private lateinit var behavior: BottomSheetBehavior<View>
-    private lateinit var commandTemplateDao : CommandTemplateDao
+    private lateinit var commandTemplateViewModel : CommandTemplateViewModel
     private lateinit var infoUtil: InfoUtil
     private lateinit var sharedPreferences : SharedPreferences
     private lateinit var updateItem : Button
@@ -89,7 +92,7 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
         downloadViewModel = ViewModelProvider(requireActivity())[DownloadViewModel::class.java]
         historyViewModel = ViewModelProvider(requireActivity())[HistoryViewModel::class.java]
         resultViewModel = ViewModelProvider(requireActivity())[ResultViewModel::class.java]
-        commandTemplateDao = DBManager.getInstance(requireContext()).commandTemplateDao
+        commandTemplateViewModel = ViewModelProvider(requireActivity())[CommandTemplateViewModel::class.java]
         infoUtil = InfoUtil(requireContext())
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
 
@@ -166,7 +169,7 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
         var commandTemplateNr = 0
         lifecycleScope.launch{
             withContext(Dispatchers.IO){
-                commandTemplateNr = commandTemplateDao.getTotalNumber()
+                commandTemplateNr = commandTemplateViewModel.getTotalNumber()
                 if (!Patterns.WEB_URL.matcher(result.url).matches()) commandTemplateNr++
                 if(commandTemplateNr <= 0){
                     (tabLayout.getChildAt(0) as? ViewGroup)?.getChildAt(2)?.isClickable = true
@@ -242,7 +245,16 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 if (tab!!.position == 2 && commandTemplateNr == 0){
                     tabLayout.selectTab(tabLayout.getTabAt(1))
-                    Toast.makeText(context, getString(R.string.add_template_first), Toast.LENGTH_SHORT).show()
+                    val s = Snackbar.make(view, getString(R.string.add_template_first), Snackbar.LENGTH_LONG)
+                    s.setAction(R.string.new_template){
+                        UiUtil.showCommandTemplateCreationOrUpdatingSheet(item = null, context = requireActivity(), lifeCycle = this@DownloadBottomSheetDialog, commandTemplateViewModel = commandTemplateViewModel){
+                            commandTemplateNr = 1
+                            (tabLayout.getChildAt(0) as? ViewGroup)?.getChildAt(2)?.isClickable = true
+                            (tabLayout.getChildAt(0) as? ViewGroup)?.getChildAt(2)?.alpha = 1f
+                            tabLayout.selectTab(tabLayout.getTabAt(2))
+                        }
+                    }
+                    s.show()
                 }else if (tab.position == 1 && isAudioOnly){
                     tabLayout.selectTab(tabLayout.getTabAt(0))
                     Toast.makeText(context, getString(R.string.audio_only_item), Toast.LENGTH_SHORT).show()

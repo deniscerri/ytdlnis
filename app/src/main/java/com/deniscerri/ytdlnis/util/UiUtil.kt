@@ -29,10 +29,14 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.compose.ui.text.font.Typeface
+import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.FileProvider
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.children
 import androidx.core.view.isVisible
+import androidx.core.view.updateLayoutParams
 import androidx.core.widget.doOnTextChanged
 import androidx.documentfile.provider.DocumentFile
 import androidx.fragment.app.FragmentManager
@@ -896,6 +900,7 @@ object UiUtil {
         )
     }
 
+    @SuppressLint("RestrictedApi")
     fun showSubtitleLanguagesDialog(context: Activity, currentValue: String, ok: (newValue: String) -> Unit){
         val builder = MaterialAlertDialogBuilder(context)
         builder.setTitle(context.getString(R.string.subtitle_languages))
@@ -1073,7 +1078,8 @@ object UiUtil {
         saveSubtitlesClicked: (Boolean) -> Unit,
         subtitleLanguagesSet: (String) -> Unit,
         removeAudioClicked: (Boolean) -> Unit,
-        extraCommandsClicked: () -> Unit
+        extraCommandsClicked: () -> Unit,
+        updateDataClicked: () -> Unit
     ){
         val embedSubs = view.findViewById<Chip>(R.id.embed_subtitles)
         val saveSubtitles = view.findViewById<Chip>(R.id.save_subtitles)
@@ -1162,7 +1168,7 @@ object UiUtil {
         else{
             if(items[0].duration.isNotEmpty()){
                 val downloadItem = items[0]
-                cut.isEnabled = true
+                cut.alpha = 1f
                 if (downloadItem.downloadSections.isNotBlank()) cut.text = downloadItem.downloadSections
                 val cutVideoListener = object : VideoCutListener {
 
@@ -1198,7 +1204,14 @@ object UiUtil {
                     cutClicked(cutVideoListener)
                 }
             }else{
-                cut.isEnabled = false
+                cut.alpha = 0.3f
+                cut.setOnClickListener {
+                    val snack = Snackbar.make(view, context.getString(R.string.cut_unavailable), Snackbar.LENGTH_SHORT)
+                    snack.setAction(R.string.update){
+                        updateDataClicked()
+                    }
+                    snack.show()
+                }
             }
         }
 
@@ -1268,7 +1281,7 @@ object UiUtil {
         sponsorBlockItemsSet: (Array<String>, List<Boolean>) -> Unit,
         cutClicked: (VideoCutListener) -> Unit,
         extraCommandsClicked: () -> Unit,
-
+        updateDataClicked: () -> Unit
     ){
         val embedThumb = view.findViewById<Chip>(R.id.embed_thumb)
         val cropThumb = view.findViewById<Chip>(R.id.crop_thumb)
@@ -1351,7 +1364,7 @@ object UiUtil {
         else{
             val downloadItem = items[0]
             if (downloadItem.duration.isNotEmpty()){
-                cut.isEnabled = true
+                cut.alpha = 1f
                 if (downloadItem.downloadSections.isNotBlank()) cut.text = downloadItem.downloadSections
                 val cutVideoListener = object : VideoCutListener {
                     override fun onChangeCut(list: List<String>) {
@@ -1379,7 +1392,14 @@ object UiUtil {
                 }
 
             }else{
-                cut.isEnabled = false
+                cut.alpha = 0.3f
+                cut.setOnClickListener {
+                    val snack = Snackbar.make(view, context.getString(R.string.cut_unavailable), Snackbar.LENGTH_SHORT)
+                    snack.setAction(R.string.update){
+                        updateDataClicked()
+                    }
+                    snack.show()
+                }
             }
         }
 
@@ -1632,6 +1652,7 @@ object UiUtil {
         deleteDialog.show()
     }
 
+    @SuppressLint("RestrictedApi")
     fun showFilenameTemplateDialog(context: Activity, currentFilename: String, dialogTitle: String = context.getString(R.string.file_name_template), filenameSelected: (f: String) -> Unit){
         val builder = MaterialAlertDialogBuilder(context)
         builder.setTitle(dialogTitle)
@@ -1783,11 +1804,13 @@ object UiUtil {
         val builder = MaterialAlertDialogBuilder(context)
         builder.setTitle(context.getString(R.string.command))
         val view = context.layoutInflater.inflate(R.layout.command_dialog, null)
-        val text = view.findViewById<TextView>(R.id.commandText)
-        text.text = command
-        text.isLongClickable = true
-        text.setTextIsSelectable(true)
-        text.enableTextHighlight()
+        view.findViewById<TextView>(R.id.commandText).apply {
+            text = command
+            isLongClickable = true
+            setTextIsSelectable(true)
+            enableTextHighlight()
+            setPadding(20, 0, 20, 0)
+        }
 
         builder.setView(view)
         builder.setPositiveButton(

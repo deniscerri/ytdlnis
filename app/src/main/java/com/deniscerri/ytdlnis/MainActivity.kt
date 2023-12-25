@@ -240,12 +240,14 @@ class MainActivity : BaseActivity() {
 
         if (preferences.getBoolean("auto_update_ytdlp", false)){
             CoroutineScope(SupervisorJob()).launch(Dispatchers.IO) {
-                if(DBManager.getInstance(this@MainActivity).downloadDao.getDownloadsCountByStatus(listOf("Active", "Queued")) == 0){
-                    if (UpdateUtil(this@MainActivity).updateYoutubeDL() == YoutubeDL.UpdateStatus.DONE) {
-                        val version = YoutubeDL.getInstance().version(context)
-                        Snackbar.make(findViewById(android.R.id.content),
-                            this@MainActivity.getString(R.string.ytld_update_success) + " [${version}]",
-                            Snackbar.LENGTH_LONG).show()
+                kotlin.runCatching {
+                    if(DBManager.getInstance(this@MainActivity).downloadDao.getDownloadsCountByStatus(listOf("Active", "Queued")) == 0){
+                        if (UpdateUtil(this@MainActivity).updateYoutubeDL() == YoutubeDL.UpdateStatus.DONE) {
+                            val version = YoutubeDL.getInstance().version(context)
+                            Snackbar.make(findViewById(android.R.id.content),
+                                this@MainActivity.getString(R.string.ytld_update_success) + " [${version}]",
+                                Snackbar.LENGTH_LONG).show()
+                        }
                     }
                 }
 

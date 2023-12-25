@@ -37,6 +37,7 @@
 
     <string-array name="video_formats">
         <item>@string/worst_quality</item>
+        <item>240p</item>
         <item>360p</item>
         <item>480p</item>
         <item>720p</item>
@@ -48,6 +49,7 @@
 
     <string-array name="video_formats_values">
         <item>worst</item>
+        <item>240p_ytdlnisgeneric</item>
         <item>360p_ytdlnisgeneric</item>
         <item>480p_ytdlnisgeneric</item>
         <item>720p_ytdlnisgeneric</item>
