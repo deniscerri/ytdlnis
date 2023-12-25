@@ -324,4 +324,7 @@
     <string name="ytdl_source">yt-dlp Mənbə</string>
     <string name="buffer_size">Bufer həcmi</string>
     <string name="update_ytdl_stable">yt-dlp-nin sabit versiyası</string>
+    <string name="changelog">Dəyişiklik jurnalı</string>
+    <string name="app">Tətbiq</string>
+    <string name="source">Mənbə</string>
 </resources>

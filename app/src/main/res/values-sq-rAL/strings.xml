@@ -124,7 +124,7 @@
     <string name="template">Modeli</string>
     <string name="logs">Shënimet</string>
     <string name="date_added">Data e shtuar</string>
-    <string name="update_ytdl_nightly">Shkarko versionin beta të yt-dlp</string>
+    <string name="update_ytdl_nightly">Versioni Nightly i yt-dlp</string>
     <string name="adjust_audio">Modifiko Audion</string>
     <string name="file_name_template">Formati i Emrit të Skedarit</string>
     <string name="language">Gjuha</string>
@@ -324,4 +324,7 @@
     <string name="buffer_size">Madhësia e Bufferit</string>
     <string name="preferred_audio_language">Gjuha e Preferuar e Audios</string>
     <string name="update_ytdl_stable">Versioni Stabël i yt-dlp</string>
+    <string name="changelog">Ndryshimet</string>
+    <string name="app">Aplikacioni</string>
+    <string name="source">Burimi</string>
 </resources>
