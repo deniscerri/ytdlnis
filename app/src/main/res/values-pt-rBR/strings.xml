@@ -327,4 +327,5 @@
     <string name="changelog">Log de alterações</string>
     <string name="app">Aplicativo</string>
     <string name="source">Fonte</string>
+    <string name="cut_unavailable">É necessário atualizar os dados do item para poder utilizar a função de corte</string>
 </resources>
