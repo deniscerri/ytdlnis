@@ -327,4 +327,5 @@
     <string name="changelog">Registro de cambios</string>
     <string name="app">Aplicación</string>
     <string name="source">Fuente</string>
+    <string name="cut_unavailable">Debes actualizar los datos del artículo para poder utilizar la función de corte</string>
 </resources>
