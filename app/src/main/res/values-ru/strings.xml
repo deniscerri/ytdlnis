@@ -70,7 +70,7 @@
     <string name="download_all">Загрузить всё</string>
     <string name="directories">Папки</string>
     <string name="updating">Обновление</string>
-    <string name="ytdl_update_hint">Полезно при проблемах с загрузкой</string>
+    <string name="ytdl_update_hint">Полезно, если у вас проблемы со скачиванием</string>
     <string name="confirm_delete_history_desc">Удалить всю историю навсегда</string>
     <string name="ytdl_already_updating">Установка новой версии</string>
     <string name="command_directory">Папка пользовательских команд</string>
@@ -92,7 +92,7 @@
     <string name="download_card_summary">Диалог с настройками загрузки файлов</string>
     <string name="delete_files_too">Удалить файлы с устройства</string>
     <string name="Open_File">Открыть</string>
-    <string name="you_are_going_to_delete_multiple_items">Удалить несколько элементов?</string>
+    <string name="you_are_going_to_delete_multiple_items">Удаление нескольких элементов</string>
     <string name="delete_file_too">Удалить файл с устройства</string>
     <string name="request_permission_desc">Приложению необходим доступ к файлам для сохранения загрузок на устройстве</string>
     <string name="download_notification_channel_description">Уведомление о ходе загрузки аудио и видео файлов</string>
@@ -327,5 +327,5 @@
     <string name="changelog">Список изменений</string>
     <string name="app">Приложение</string>
     <string name="source">Источник</string>
-    <string name="cut_unavailable">Необходимо обновить данные элемента для возможности использовать обрезку</string>
+    <string name="cut_unavailable">Вам необходимо обновить данные элемента, чтобы иметь возможность использовать функцию резки</string>
 </resources>
