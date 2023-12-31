@@ -327,4 +327,5 @@
     <string name="changelog">Список змін</string>
     <string name="app">Застосунок</string>
     <string name="source">Джерело</string>
+    <string name="cut_unavailable">Вам потрібно оновити дані товару, щоб мати можливість використовувати функцію вирізання</string>
 </resources>
