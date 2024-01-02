@@ -46,7 +46,7 @@
     <string name="video_format">Video formát</string>
     <string name="run_command">Spustit příkaz</string>
     <string name="Remove">Odstranit</string>
-    <string name="confirm_delete_history_desc">Trvale smazat celou historii</string>
+    <string name="confirm_delete_history_desc">Trvale odstraní celou historii</string>
     <string name="more">Více</string>
     <string name="history_is_empty">Historie je prázdná</string>
     <string name="concurrent_fragments">Souběžné fragmenty</string>
@@ -208,7 +208,7 @@
     <string name="write_description_summary">Zapište soubor s popisem</string>
     <string name="updating_download_data">Aktualizace dat položky stahování</string>
     <string name="download">Stažené</string>
-    <string name="swipe_gestures_summary">Položky přejetí prstem pro určité akce</string>
+    <string name="swipe_gestures_summary">Přejeďte prstem položky pro určité akce</string>
     <string name="backup">Zálohování</string>
     <string name="license">Licence</string>
     <string name="backup_created_successfully">Záložní soubor uložený ve složce stažených souborů</string>
@@ -272,7 +272,7 @@
     <string name="video_recommendations">Doporučená videa</string>
     <string name="accents">Akcenty</string>
     <string name="extra_command">Extra příkaz</string>
-    <string name="swipe_gestures">Gesta přejetí prstem</string>
+    <string name="swipe_gestures">Swipe gesta</string>
     <string name="errored_download_notification_channel_description">Notifikace o chybném stahování</string>
     <string name="auto_update_ytdlp">Automatická aktualizace yt-dlp</string>
     <string name="running">Spuštěno</string>
@@ -281,7 +281,7 @@
     <string name="quality">Kvalita</string>
     <string name="loading">Načítá se</string>
     <string name="download_now">Stáhnout nyní</string>
-    <string name="update_formats_summary">Stáhnout formáty, jakmile se objeví karta pro stahování</string>
+    <string name="update_formats_summary">Načíst formáty, jakmile se objeví karta pro stahování</string>
     <string name="security">Bezpečnost</string>
     <string name="finished_download_notification_channel_name">Dokončené stahování</string>
     <string name="buffer_size_summary">Velikost mezipaměti pro stahování, např. 1024 nebo 16K (výchozí hodnota je 1024)</string>
@@ -321,7 +321,7 @@
     <string name="download_over_metered_networks_summary">Stahování pomocí libovolného typu sítě. V opačném případě čeká na neměřenou síť</string>
     <string name="blue">Modrý</string>
     <string name="update_ytdl_stable">Stabilní verze yt-dlp</string>
-    <string name="confirm_delete_logs_desc">Trvale odstranit celý seznam protokolů.</string>
+    <string name="confirm_delete_logs_desc">Trvale odstraní celý seznam protokolů.</string>
     <string name="crop_thumb">Ořezání náhledu</string>
     <string name="force_keyframes">Vynucení klíčových snímků při střihu</string>
     <string name="preferred_format_id">Preferovaný formát ID</string>
