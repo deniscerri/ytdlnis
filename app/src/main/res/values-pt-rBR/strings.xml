@@ -184,7 +184,7 @@
     <string name="format_filtering_hint">Todos os itens devem ser do mesmo tipo para usar esta opção</string>
     <string name="preferred_search_engine_summary">O mecanismo de pesquisa a ser usado para pesquisas no aplicativo</string>
     <string name="preferred_search_engine">Mecanismo de pesquisa preferido</string>
-    <string name="video_recommendations_summary">Obtenha vídeos recomendados do YouTube na tela inicial a partir da API do servidor PIPED</string>
+    <string name="video_recommendations_summary">Obtenha vídeos recomendados do YouTube na tela inicial a partir da API do Servidor Piped</string>
     <string name="video_recommendations">Recomendações de vídeo</string>
     <string name="format_source">Origem dos formatos</string>
     <string name="subtitle_languages">Idiomas das legendas</string>
@@ -267,8 +267,8 @@
     <string name="fragment_retries">Novas tentativas de fragmento</string>
     <string name="format_order">Ordem do formato</string>
     <string name="swipe_gestures">Gestos</string>
-    <string name="piped_instance">Instância do servidor PIPED</string>
-    <string name="piped_instance_summary">Insira a API do servidor PIPED, o aplicativo pode usar para consultas e formatos do youtube</string>
+    <string name="piped_instance">Instância do Servidor Piped</string>
+    <string name="piped_instance_summary">Insira a API do Servidor Piped, o aplicativo pode usar para consultas e formatos do YouTube</string>
     <string name="retries">Novas tentativas</string>
     <string name="sponsorblock_outro">Cartões finais/créditos</string>
     <string name="sponsorblock">SponsorBlock</string>
@@ -327,4 +327,5 @@
     <string name="changelog">Log de alterações</string>
     <string name="app">Aplicativo</string>
     <string name="source">Fonte</string>
+    <string name="cut_unavailable">É necessário atualizar os dados do item para poder utilizar a função de corte</string>
 </resources>

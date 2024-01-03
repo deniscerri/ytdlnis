@@ -327,4 +327,5 @@
     <string name="changelog">更新日志</string>
     <string name="app">应用</string>
     <string name="source">源</string>
+    <string name="cut_unavailable">你需要更新项目数据才能使用剪切功能</string>
 </resources>
