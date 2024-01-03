@@ -8,11 +8,11 @@
     <string name="source_code">Исходный код</string>
     <string name="search_hint">Поиск или вставка URL</string>
     <string name="update_ytdl">Установить новую версию yt-dlp</string>
-    <string name="failed_download">Не удалось загрузить файл</string>
+    <string name="failed_download">Не удалось скачать файл</string>
     <string name="download_notification_channel_name">Загрузка файлов</string>
     <string name="you_are_in_latest_version">Используется последняя версия</string>
     <string name="ytld_update_success">Установлена новая версия</string>
-    <string name="ytdl_updating_started">Загрузка новой версии</string>
+    <string name="ytdl_updating_started">Скачиваем новую версию</string>
     <string name="Remove">Удалить</string>
     <string name="ok">OK</string>
     <string name="cancel">Отмена</string>
@@ -23,10 +23,10 @@
     <string name="update_app">Проверять обновления</string>
     <string name="version">Версия</string>
     <string name="couldnt_find_apk">Не удалось найти подходящий APK</string>
-    <string name="downloading_update">Загрузка новой версии</string>
+    <string name="downloading_update">Скачиваем новую версию</string>
     <string name="audio">Аудио</string>
     <string name="video">Видео</string>
-    <string name="concurrent_fragments_summary">Количество фрагментов DASH/HLS в видео для одновременной загрузки</string>
+    <string name="concurrent_fragments_summary">Количество фрагментов собственного видео DASH/HLS для одновременной загрузки</string>
     <string name="downloading">Загрузка</string>
     <string name="limit_rate">Ограничение скорости</string>
     <string name="processing">Процесс загрузки</string>
@@ -48,7 +48,7 @@
     <string name="api_key">Использовать ключ API</string>
     <string name="api_key_summary">Видеорекомендации от YouTube API</string>
     <string name="downloads">Загрузки</string>
-    <string name="command_download_notification_channel_name">Загрузка команды</string>
+    <string name="command_download_notification_channel_name">Загрузка команд</string>
     <string name="remove_deleted">Удалить удалённые</string>
     <string name="remove_duplicates">Удалить дубликаты</string>
     <string name="sort_by">Сортировка</string>
@@ -67,7 +67,7 @@
     <string name="sponsorblock_nonmusic">Немузыкальные фрагменты</string>
     <string name="settings">Настройки</string>
     <string name="video_directory">Папка видео</string>
-    <string name="download_all">Загрузить всё</string>
+    <string name="download_all">Скачать все</string>
     <string name="directories">Папки</string>
     <string name="updating">Обновление</string>
     <string name="ytdl_update_hint">Полезно, если у вас проблемы со скачиванием</string>
@@ -86,7 +86,7 @@
     <string name="incognito_summary">Загружать без добавления в историю</string>
     <string name="video_quality">Качество видео</string>
     <string name="author">Автор</string>
-    <string name="download">Загрузить</string>
+    <string name="download">Скачать</string>
     <string name="embed_subtitles">Добавлять субтитры</string>
     <string name="show_download_card">Показывать параметры загрузки</string>
     <string name="download_card_summary">Диалог с настройками загрузки файлов</string>
@@ -173,7 +173,7 @@
     <string name="new_cookie">Новый Cookie</string>
     <string name="get_cookies">Получить Cookies</string>
     <string name="delete_all_cookies">Удалить все Cookies</string>
-    <string name="log_downloads">Сохранять логи загрузок</string>
+    <string name="log_downloads">Журнал загрузок</string>
     <string name="cut">Обрезать</string>
     <string name="new_cut">Новая обрезка</string>
     <string name="share">Поделиться</string>
