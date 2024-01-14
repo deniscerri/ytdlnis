@@ -11,7 +11,9 @@ import android.graphics.drawable.shapes.OvalShape
 import android.media.MediaMetadataRetriever
 import android.media.MediaMetadataRetriever.METADATA_KEY_DURATION
 import android.net.Uri
+import android.os.Build
 import android.util.DisplayMetrics
+import android.util.TypedValue
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
@@ -25,6 +27,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.whenStarted
 import androidx.lifecycle.withStarted
 import androidx.recyclerview.widget.RecyclerView
+import com.deniscerri.ytdlnis.database.models.CommandTemplate
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.neo.highlight.core.Highlight
@@ -32,6 +35,7 @@ import com.neo.highlight.util.listener.HighlightTextWatcher
 import com.neo.highlight.util.scheme.ColorScheme
 import kotlinx.coroutines.launch
 import me.zhanghai.android.fastscroll.FastScrollerBuilder
+import org.json.JSONObject
 import java.io.File
 import java.util.regex.Pattern
 
@@ -158,4 +162,29 @@ object Extensions {
             }
         }
     }
+
+    fun JSONObject.getIntByAny(vararg tags:String): Int {
+        tags.forEach {
+            runCatching {
+                return this.getInt(it)
+            }
+        }
+        return -1
+    }
+
+    fun JSONObject.getStringByAny(vararg tags:String): String {
+        tags.forEach {
+            runCatching {
+                val tmp = this.getString(it)
+                if (tmp != "null") return tmp
+            }
+        }
+
+        return ""
+    }
+
+    fun TextView.setCustomTextSize(newSize: Float){
+        this.setTextSize(TypedValue.COMPLEX_UNIT_SP, newSize)
+    }
+
 }

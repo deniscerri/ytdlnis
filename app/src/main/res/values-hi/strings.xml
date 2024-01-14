@@ -194,7 +194,7 @@
     <string name="finished_download_notification_channel_description">पूर्ण डाउनलोड के लिए नोटीफिकेशन</string>
     <string name="quick_download">त्वरित डाउनलोड</string>
     <string name="quick_download_summary">डाउनलोड कार्ड में डेटा न लाएं</string>
-    <string name="cancel_download">डाउनलोड रद्द करें</string>
+    <string name="cancel_task">डाउनलोड रद्द करें</string>
     <string name="command_download_notification_channel_name">कमांड डाउनलोड</string>
     <string name="command_download_notification_channel_description">yt-dlp कमांड का उपयोग करके डाउनलोडिंग की प्रगति दिखाने वाली अधिसूचना</string>
     <string name="url">यूआरएल</string>

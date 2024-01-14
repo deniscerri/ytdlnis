@@ -4,42 +4,32 @@ import android.annotation.SuppressLint
 import android.app.ActionBar
 import android.content.ClipboardManager
 import android.content.Context.CLIPBOARD_SERVICE
-import android.graphics.Color
 import android.os.Bundle
-import android.text.method.LinkMovementMethod
-import android.text.method.MovementMethod
-import android.text.method.ScrollingMovementMethod
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.HorizontalScrollView
 import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
-import androidx.core.view.children
 import androidx.core.view.get
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.viewmodel.LogViewModel
 import com.deniscerri.ytdlnis.util.Extensions.enableTextHighlight
+import com.deniscerri.ytdlnis.util.Extensions.setCustomTextSize
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+import com.google.android.material.slider.Slider
 import com.google.android.material.snackbar.Snackbar
-import com.neo.highlight.core.Highlight
-import com.neo.highlight.util.listener.HighlightTextWatcher
-import com.neo.highlight.util.scheme.ColorScheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import java.util.regex.Pattern
 
 
 class DownloadLogFragment : Fragment() {
@@ -105,7 +95,7 @@ class DownloadLogFragment : Fragment() {
 
         content.isFocusable = true
         content.enableTextHighlight()
-
+        val slider = view.findViewById<Slider>(R.id.textsize_seekbar)
         bottomAppBar?.setOnMenuItemClickListener { m: MenuItem ->
             when(m.itemId){
                 R.id.wrap -> {
@@ -140,8 +130,21 @@ class DownloadLogFragment : Fragment() {
                     m.isVisible = false
                     contentScrollView.fullScroll(View.FOCUS_DOWN)
                 }
+
+                R.id.text_size -> {
+                    slider!!.isVisible = !slider.isVisible
+                }
             }
             true
+        }
+
+        slider?.apply {
+            this.valueFrom = 0f
+            this.valueTo = 10f
+            this.value = 2f
+            this.addOnChangeListener { slider, value, fromUser ->
+                content.setCustomTextSize(value + 13f)
+            }
         }
 
         contentScrollView.setOnScrollChangeListener { view, sx, sy, osx, osy ->

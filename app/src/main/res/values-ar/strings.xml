@@ -113,7 +113,7 @@
     <string name="video_format">صيغة الفيديو</string>
     <string name="audio_quality">جودة الصوت</string>
     <string name="audio_quality_summary">0(الأفضل) 10(الأدنى)</string>
-    <string name="cancel_download">إلغاء التحميل</string>
+    <string name="cancel_task">إلغاء التحميل</string>
     <string name="run_command">تشغيل الأمر</string>
     <string name="command_download_notification_channel_name">تحميلات الأوامر</string>
     <string name="command_download_notification_channel_description">إشعار يُظهر مستوى التقدم في تحميل ملفات الصوت والفيديو بإستخدام أوامر yt-dlp</string>

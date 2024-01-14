@@ -5,7 +5,7 @@
     <string name="ytdl_already_updating">Új verzió telepítése</string>
     <string name="sponsorblock_fillers">Fiók</string>
     <string name="sponsorblock_reminders">Előfizetési emlékeztetők</string>
-    <string name="cancel_download">Letöltés megszakítása</string>
+    <string name="cancel_task">Letöltés megszakítása</string>
     <string name="logs">Naplók</string>
     <string name="audio_quality">Audio minőség</string>
     <string name="audio_format">Audio formátum</string>

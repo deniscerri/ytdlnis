@@ -79,7 +79,7 @@
     <string name="audio_format">Format Audio</string>
     <string name="audio_quality">Kualitas Audio</string>
     <string name="audio_quality_summary">0 (terbaik) 10 (terburuk)</string>
-    <string name="cancel_download">Batalkan Pengunduhan</string>
+    <string name="cancel_task">Batalkan Pengunduhan</string>
     <string name="api_key">Gunakan Kunci API</string>
     <string name="ytdl_version">Versi yt-dlp</string>
     <string name="Open_File">Buka Berkas</string>

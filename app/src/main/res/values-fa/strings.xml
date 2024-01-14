@@ -42,7 +42,7 @@
     <string name="save_thumb">ذخیره تصویر بندانگشتی</string>
     <string name="audio_format">فرمت صدا</string>
     <string name="video_format">فرمت ویدئو</string>
-    <string name="cancel_download">لغو دانلود</string>
+    <string name="cancel_task">لغو دانلود</string>
     <string name="run_command">اجرای دستور</string>
     <string name="command_download_notification_channel_name">دستور دانلودها</string>
     <string name="command_download_notification_channel_description">اعلان پیشرفت دانلود با استفاده از دستور yt-dlp</string>

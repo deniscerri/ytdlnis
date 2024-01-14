@@ -16,7 +16,7 @@ data class HistoryItem(
     val thumb: String,
     val type: DownloadViewModel.Type,
     val time: Long,
-    val downloadPath: String,
+    val downloadPath: List<String>,
     val website: String,
     val format: Format,
     @ColumnInfo(defaultValue = "0")

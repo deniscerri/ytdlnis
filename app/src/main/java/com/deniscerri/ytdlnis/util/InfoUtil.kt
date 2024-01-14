@@ -18,6 +18,8 @@ import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.models.Format
 import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
+import com.deniscerri.ytdlnis.util.Extensions.getIntByAny
+import com.deniscerri.ytdlnis.util.Extensions.getStringByAny
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.yausername.youtubedl_android.YoutubeDL
@@ -617,27 +619,13 @@ class InfoUtil(private val context: Context) {
         for (result in results) {
             if (result.isNullOrBlank()) continue
             val jsonObject = JSONObject(result)
-            val title = if (jsonObject.has("title")) {
-                if (jsonObject.getString("title") == "[Private video]") continue
-                jsonObject.getString("title")
-            } else {
-                jsonObject.getString("webpage_url_basename")
-            }
-            var author: String = if (jsonObject.has("uploader")) jsonObject.getString("uploader") else ""
-            if (author.isEmpty() || author == "null"){
-                author = if (jsonObject.has("channel")) jsonObject.getString("channel") else ""
-                if (author.isEmpty() || author == "null"){
-                    author = if (jsonObject.has("playlist_uploader")) jsonObject.getString("playlist_uploader") else ""
-                    if (author.isEmpty() || author == "null"){
-                        author = if (jsonObject.has("uploader_id")) jsonObject.getString("uploader_id") else ""
-                    }
-                }
-            }
-            var duration = ""
-            runCatching {
-                if (jsonObject.has("duration")) {
-                    duration = formatIntegerDuration(jsonObject.getInt("duration"), Locale.US)
-                }
+            val title = jsonObject.getStringByAny("track", "alt_title", "title", "webpage_url_basename")
+            if (title == "[Private video]") continue
+
+            val author = jsonObject.getStringByAny("uploader", "channel", "playlist_uploader", "uploader_id")
+            var duration = jsonObject.getIntByAny("duration").toString()
+            if (duration != "-1"){
+                duration = formatIntegerDuration(jsonObject.getInt("duration"), Locale.US)
             }
 
             var thumb: String? = ""
@@ -649,16 +637,15 @@ class InfoUtil(private val context: Context) {
                     thumb = thumbs.getJSONObject(thumbs.length() - 1).getString("url")
                 }
             }
-            val website = jsonObject.getString(listOf("ie_key", "extractor_key", "extractor").first { jsonObject.has(it) })
 
-            var playlistTitle: String? = ""
+            val website = jsonObject.getStringByAny("ie_key", "extractor_key", "extractor")
+            var playlistTitle = jsonObject.getStringByAny("playlist_title")
             var playlistURL: String? = ""
             var playlistIndex: Int? = null
 
-            if (jsonObject.has("playlist_title")) playlistTitle = jsonObject.getString("playlist_title")
-            if(playlistTitle?.removeSurrounding("\"").equals(query)) playlistTitle = ""
+            if(playlistTitle.removeSurrounding("\"") == query) playlistTitle = ""
 
-            if (playlistTitle?.isNotBlank() == true){
+            if (playlistTitle.isNotBlank()){
                 playlistURL = query
                 kotlin.runCatching { playlistIndex = jsonObject.getInt("playlist_index") }
             }
@@ -703,7 +690,7 @@ class InfoUtil(private val context: Context) {
                 duration,
                 thumb!!,
                 website,
-                playlistTitle!!,
+                playlistTitle,
                 formats,
                 urls,
                 chapters,
@@ -788,22 +775,12 @@ class InfoUtil(private val context: Context) {
         val youtubeDLResponse = YoutubeDL.getInstance().execute(request)
         val jsonObject = JSONObject(youtubeDLResponse.out)
 
-        var author: String = if (jsonObject.has("uploader")) jsonObject.getString("uploader") else ""
-        if (author.isEmpty() || author == "null"){
-            author = if (jsonObject.has("channel")) jsonObject.getString("channel") else ""
-            if (author.isEmpty() || author == "null"){
-                author = if (jsonObject.has("playlist_uploader")) jsonObject.getString("playlist_uploader") else ""
-                if (author.isEmpty() || author == "null"){
-                    author = if (jsonObject.has("uploader_id")) jsonObject.getString("uploader_id") else ""
-                }
-            }
-        }
+        val title = jsonObject.getStringByAny("track", "alt_title", "title", "webpage_url_basename")
+        val author = jsonObject.getStringByAny("uploader", "channel", "playlist_uploader", "uploader_id")
 
-        var duration = ""
-        runCatching {
-            if (jsonObject.has("duration")) {
-                duration = formatIntegerDuration(jsonObject.getInt("duration"), Locale.US)
-            }
+        var duration = jsonObject.getIntByAny("duration").toString()
+        if (duration != "-1"){
+            duration = formatIntegerDuration(jsonObject.getInt("duration"), Locale.US)
         }
 
         var thumb: String? = ""
@@ -820,11 +797,7 @@ class InfoUtil(private val context: Context) {
         return ResultItem(
             0,
             url,
-            if (isPlaylist){
-                ""
-            }else{
-                jsonObject.getString("title")
-            },
+            if (isPlaylist) "" else title,
             author,
             duration,
             thumb!!,
@@ -986,8 +959,7 @@ class InfoUtil(private val context: Context) {
             YoutubeDLRequest(downloadItem.url)
         }else{
             YoutubeDLRequest(downloadItem.playlistURL!!).apply {
-                addOption("--playlist-start", downloadItem.playlistIndex!!)
-                addOption("--playlist-end", downloadItem.playlistIndex!!)
+                addOption("-I", "${downloadItem.playlistIndex!!}:${downloadItem.playlistIndex}")
             }
         }
 
@@ -1117,7 +1089,7 @@ class InfoUtil(private val context: Context) {
                     "%(section_title&{} |)s$filenameTemplate"
                 }
                 if (downloadItem.downloadSections.split(";").size > 1){
-                    filenameTemplate = "%(autonumber)d. %(section_start>%H:%M:%S)s $filenameTemplate"
+                    filenameTemplate = "%(autonumber)d. %(section_start>%H∶%M∶%S)s $filenameTemplate"
                 }
             }
 
@@ -1145,11 +1117,11 @@ class InfoUtil(private val context: Context) {
         }
 
         if (downloadItem.playlistTitle.isNotBlank()){
-            request.addOption("--parse-metadata","${downloadItem.playlistTitle}:%(playlist)s")
+            request.addCommands(listOf("--replace-in-metadata", "playlist", ".+", downloadItem.playlistTitle))
             runCatching {
-                request.addOption("--parse-metadata",
-                    downloadItem.playlistIndex.toString() + ":%(playlist_index)s"
-                )
+                if (downloadItem.playlistIndex != null){
+                    request.addOption("--parse-metadata", downloadItem.playlistIndex.toString() + ":%(playlist_index)s")
+                }
             }
         }
 
@@ -1209,6 +1181,7 @@ class InfoUtil(private val context: Context) {
                         request.addOption("--embed-metadata")
 
                         request.addOption("--parse-metadata", "%(release_year,release_date>%Y,upload_date>%Y)s:%(meta_date)s")
+                        request.addOption("--parse-metadata", "video:%(uploader)s:%(album_artist)s")
 
                         if (downloadItem.playlistTitle.isNotEmpty()) {
                             request.addOption("--parse-metadata", "%(album,playlist,title)s:%(meta_album)s")
@@ -1279,6 +1252,10 @@ class InfoUtil(private val context: Context) {
 
                 val f = StringBuilder()
 
+                val preferredCodec = sharedPreferences.getString("video_codec", "")
+                val vCodecPrefIndex = context.getStringArray(R.array.video_codec_values).indexOf(preferredCodec)
+                val vCodecPref = context.getStringArray(R.array.video_codec_values_ytdlp)[vCodecPrefIndex]
+
                 val defaultFormats = context.resources.getStringArray(R.array.video_formats_values)
                 val usingGenericFormat = defaultFormats.contains(videoF) || downloadItem.allFormats.isEmpty() || downloadItem.allFormats == getGenericVideoFormats(context.resources)
                 if (!usingGenericFormat){
@@ -1333,9 +1310,7 @@ class InfoUtil(private val context: Context) {
                         request.addOption("--audio-multistreams")
                     }
 
-                    val preferredCodec = sharedPreferences.getString("video_codec", "")
-                    val vCodecPrefIndex = context.getStringArray(R.array.video_codec_values).indexOf(preferredCodec)
-                    val vCodecPref = context.getStringArray(R.array.video_codec_values_ytdlp)[vCodecPrefIndex]
+
                     preferredFormatIDs.forEach { v ->
                         preferredAudioFormatIDs.forEach { a ->
                             val aa = if (a.isNotBlank()) "+$a" else ""
@@ -1345,13 +1320,21 @@ class InfoUtil(private val context: Context) {
                         if (!downloadItem.videoPreferences.removeAudio){
                             //build format with audio with preferred language
                             if (preferredAudioLanguage.isNotBlank()){
-                                val al = "$v+ba[language^=$preferredAudioLanguage]/"
+                                val al = if (v == "wv"){
+                                    "$v+wa[language^=$preferredAudioLanguage]/"
+                                }else{
+                                    "$v+ba[language^=$preferredAudioLanguage]/"
+                                }
                                 if (!f.contains(al)) f.append(al)
                             }
                             //build format with best audio
                             if (!f.contains("$v+ba/") && !f.contains("wa")) f.append("$v+ba/")
                             //build format with standalone video
-                            f.append("$v/")
+                            if (v == "wv"){
+                                f.append("w/")
+                            }else{
+                                if (v != "bv") f.append("$v/")
+                            }
                         }
                     }
 
@@ -1360,15 +1343,15 @@ class InfoUtil(private val context: Context) {
                         f.append("b")
                     }
 
-                    StringBuilder().apply {
-                        if (vCodecPref.isNotBlank()) append(",vcodec:$vCodecPref")
-                        if (aCodecPref.isNotBlank()) append(",acodec:$aCodecPref")
-                        if (cont.isNotBlank()) append(",ext:$cont")
-                        if (this.isNotBlank()){
-                            request.addOption("-S", "+hasaud$this")
-                        }
-                    }
+                }
 
+                StringBuilder().apply {
+                    if (vCodecPref.isNotBlank()) append(",vcodec:$vCodecPref")
+                    if (aCodecPref.isNotBlank()) append(",acodec:$aCodecPref")
+                    if (cont.isNotBlank()) append(",ext:$cont")
+                    if (this.isNotBlank()){
+                        request.addOption("-S", "+hasaud$this")
+                    }
                 }
 
 

@@ -116,7 +116,7 @@ class ResultViewModel(private val application: Application) : AndroidViewModel(a
 
                 }
             }
-            if (!isForegrounded()){
+            if (!isForegrounded() && inputQueries.size > 1){
                 notificationUtil.showQueriesFinished()
             }
             uiState.update {it.copy(processing = false)}

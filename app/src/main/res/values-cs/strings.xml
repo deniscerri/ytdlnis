@@ -21,7 +21,7 @@
     <string name="save_thumb_summary">Uložit náhled ve složce stahování</string>
     <string name="command_download_notification_channel_name">Stažené příkazy</string>
     <string name="ytdl_already_updating">Instalace nové verze</string>
-    <string name="cancel_download">Zrušit stahování</string>
+    <string name="cancel_task">Zrušit stahování</string>
     <string name="audio_quality">Kvalita audia</string>
     <string name="audio_format">Audio formát</string>
     <string name="couldnt_find_apk">Nepodařilo se najít vhodný APK soubor</string>

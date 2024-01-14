@@ -1,5 +1,6 @@
 package com.deniscerri.ytdlnis.database.viewmodel
 
+import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
@@ -424,8 +425,15 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
 
         val audioPreferences = AudioPreferences(embedThumb, cropThumb,false, ArrayList(sponsorblock!!))
         val videoPreferences = VideoPreferences(embedSubs, addChapters, false, ArrayList(sponsorblock), saveSubs)
-        val downloadPath = File(historyItem.downloadPath)
-        val path = if (downloadPath.exists()) downloadPath.parent else defaultPath
+        var path = defaultPath
+        historyItem.downloadPath.first().apply {
+            File(this).parent?.apply {
+                if (File(this).exists()){
+                    path = this
+                }
+            }
+
+        }
         return DownloadItem(0,
             historyItem.url,
             historyItem.title,
@@ -443,23 +451,37 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
     }
 
 
+    fun getPreferredAudioRequirements(): MutableList<(Format) -> Boolean> {
+        val requirements: MutableList<(Format) -> Boolean> = mutableListOf()
+        requirements.add {it: Format -> audioFormatIDPreference.contains(it.format_id)}
+
+        sharedPreferences.getString("audio_language", "")?.apply {
+            if (this.isNotBlank()){
+                requirements.add { it: Format -> it.lang == this }
+            }
+        }
+
+        requirements.add {it: Format -> it.container == audioContainer }
+        requirements.add {it: Format -> "^(${audioCodec}).+$".toRegex(RegexOption.IGNORE_CASE).matches(it.acodec)}
+        return requirements
+    }
+
+    fun getPreferredVideoRequirements(): MutableList<(Format) -> Boolean> {
+        val requirements: MutableList<(Format) -> Boolean> = mutableListOf()
+        requirements.add { it: Format -> formatIDPreference.contains(it.format_id) }
+        requirements.add { it: Format -> if (videoContainer == "mp4") it.container.equals("mpeg_4", true) else it.container.equals(videoContainer, true)}
+        requirements.add { it: Format -> it.format_note.contains(videoQualityPreference.split("_")[0].dropLast(1)) }
+        requirements.add { it: Format -> "^(${videoCodec}).+$".toRegex(RegexOption.IGNORE_CASE).matches(it.vcodec)}
+        return  requirements
+    }
+
     fun getFormat(formats: List<Format>, type: Type) : Format {
         when(type) {
             Type.audio -> {
                 return cloneFormat (
                     try {
                         val theFormats = formats.filter { it.format_note.contains("audio", ignoreCase = true) }
-                        val requirements: MutableList<(Format) -> Boolean> = mutableListOf()
-                        requirements.add {it: Format -> audioFormatIDPreference.contains(it.format_id)}
-
-                        sharedPreferences.getString("audio_language", "")?.apply {
-                            if (this.isNotBlank()){
-                                requirements.add { it: Format -> it.lang == this }
-                            }
-                        }
-
-                        requirements.add {it: Format -> it.container == audioContainer }
-                        requirements.add {it: Format -> "^(${audioCodec}).+$".toRegex(RegexOption.IGNORE_CASE).matches(it.acodec)}
+                        val requirements = getPreferredAudioRequirements()
                         theFormats.maxByOrNull { f -> requirements.count{req -> req(f)} } ?: throw Exception()
                     }catch (e: Exception){
                         bestAudioFormat
@@ -476,11 +498,7 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
                                 theFormats.last()
                             }
                             else /*best*/ -> {
-                                val requirements: MutableList<(Format) -> Boolean> = mutableListOf()
-                                requirements.add { it: Format -> formatIDPreference.contains(it.format_id) }
-                                requirements.add { it: Format -> if (videoContainer == "mp4") it.container.equals("mpeg_4", true) else it.container.equals(videoContainer, true)}
-                                requirements.add { it: Format -> it.format_note.contains(videoQualityPreference.split("_")[0].dropLast(1)) }
-                                requirements.add { it: Format -> "^(${videoCodec}).+$".toRegex(RegexOption.IGNORE_CASE).matches(it.vcodec)}
+                                val requirements = getPreferredVideoRequirements()
                                 theFormats.maxByOrNull { f -> requirements.count{ req -> req(f)} } ?: throw Exception()
                             }
                         }
@@ -677,7 +695,7 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
             }else{
                 //check if downloaded and file exists
                 val history = withContext(Dispatchers.IO){
-                    historyRepository.getAllByURL(it.url).filter { item -> FileUtil.exists(item.downloadPath) }
+                    historyRepository.getAllByURL(it.url).filter { item -> item.downloadPath.any { path -> FileUtil.exists(path) } }
                 }
 
                 val existingHistory = history.firstOrNull {
@@ -733,6 +751,7 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
         }
     }
 
+    @SuppressLint("RestrictedApi")
     private suspend fun startDownloadWorker(queuedItems: List<DownloadItem>) {
         val context = App.instance
         val allowMeteredNetworks = sharedPreferences.getBoolean("metered_networks", true)
@@ -812,7 +831,7 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
                 if (downloadItem.thumb.isEmpty()) downloadItem.thumb = info?.thumb.toString()
                 runBlocking {
                     wasQuickDownloaded = resultDao.getCountInt() == 0
-                    dao.update(downloadItem)
+                    repository.updateWithoutUpsert(downloadItem)
                 }
             }
         }

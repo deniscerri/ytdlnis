@@ -56,7 +56,7 @@
     <string name="aria2_summary">기본값 대신 aria2c를 다운로더로 사용</string>
     <string name="embed_subs_summary">비디오에 자막 추가</string>
     <string name="audio_quality_summary">최고 (0) 최저 (10)</string>
-    <string name="cancel_download">다운로드 취소</string>
+    <string name="cancel_task">다운로드 취소</string>
     <string name="command_download_notification_channel_name">명령 다운로드</string>
     <string name="items_left">항목 남음</string>
     <string name="history_is_empty">기록이 비어 있습니다</string>

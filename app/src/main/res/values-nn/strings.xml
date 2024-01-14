@@ -47,7 +47,7 @@
     <string name="save_thumb_summary">Gøym småbilete i lag med videoar/lydar</string>
     <string name="audio_format">Lydformat</string>
     <string name="embed_subs_summary">Bygg inn undertekster i videoar</string>
-    <string name="cancel_download">Avbryt hentinga</string>
+    <string name="cancel_task">Avbryt hentinga</string>
     <string name="run_command">Køyr påbod</string>
     <string name="command_download_notification_channel_name">Henta med påbod</string>
     <string name="command_download_notification_channel_description">Varsel som viser kvar langt hentingar med yt-dlp-påbod har kome</string>

@@ -81,7 +81,7 @@
     <string name="audio_format">Format dźwięku</string>
     <string name="video_format">Format filmu</string>
     <string name="audio_quality_summary">0 (najlepsze) 10 (najgorsze)</string>
-    <string name="cancel_download">Anuluj pobieranie</string>
+    <string name="cancel_task">Anuluj pobieranie</string>
     <string name="command_download_notification_channel_name">Pobrania przy użyciu poleceń</string>
     <string name="history_is_empty">Historia jest pusta</string>
     <string name="you_are_going_to_delete">Usuwanie</string>

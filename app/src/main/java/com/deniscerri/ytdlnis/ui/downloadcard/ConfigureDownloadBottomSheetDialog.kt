@@ -161,7 +161,7 @@ class ConfigureDownloadBottomSheetDialog(private var result: ResultItem, private
                         putString("last_used_download_type",
                             listOf(Type.audio, Type.video, Type.command)[position].toString())
                     }
-                    updateTitleAuthorWhenSwitching()
+                    updateWhenSwitching()
                 }
             }
         })
@@ -205,7 +205,7 @@ class ConfigureDownloadBottomSheetDialog(private var result: ResultItem, private
     }
 
 
-    private fun updateTitleAuthorWhenSwitching(){
+    private fun updateWhenSwitching(){
         val prevDownloadItem = getDownloadItem(
             if (viewPager2.currentItem == 1) 0 else 1
         )
@@ -223,6 +223,7 @@ class ConfigureDownloadBottomSheetDialog(private var result: ResultItem, private
             1 -> {
                 val f = fragmentManager?.findFragmentByTag("f1") as DownloadVideoFragment
                 f.updateTitleAuthor(prevDownloadItem.title, prevDownloadItem.author)
+                f.updateSelectedAudioFormat(getDownloadItem(0).format)
             }
             else -> {}
         }

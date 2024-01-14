@@ -155,9 +155,17 @@
     <dialog
         android:id="@+id/downloadBottomSheetDialog"
         android:name="com.deniscerri.ytdlnis.ui.downloadcard.DownloadBottomSheetDialog"
-        android:label="DownloadBottomSheetDialog" />
+        android:label="DownloadBottomSheetDialog" >
+        <action
+            android:id="@+id/action_downloadBottomSheetDialog_to_cutVideoBottomSheetDialog"
+            app:destination="@id/cutVideoBottomSheetDialog" />
+    </dialog>
     <dialog
         android:id="@+id/downloadMultipleBottomSheetDialog2"
         android:name="com.deniscerri.ytdlnis.ui.downloadcard.DownloadMultipleBottomSheetDialog"
         android:label="DownloadMultipleBottomSheetDialog" />
+    <dialog
+        android:id="@+id/cutVideoBottomSheetDialog"
+        android:name="com.deniscerri.ytdlnis.ui.downloadcard.CutVideoBottomSheetDialog"
+        android:label="CutVideoBottomSheetDialog" />
 </navigation>

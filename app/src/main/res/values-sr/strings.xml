@@ -13,7 +13,7 @@
     <string name="embed_metadata_summary">Рашчланите и уградите метаподатке у фајл аудио снимка</string>
     <string name="sponsorblock_fillers">Попуњавања</string>
     <string name="sponsorblock_reminders">Подсетници о праћењу</string>
-    <string name="cancel_download">Откажи преузимање</string>
+    <string name="cancel_task">Откажи преузимање</string>
     <string name="logs">Евиденције</string>
     <string name="export_file">Извези фајл</string>
     <string name="in_queue">У редоследу</string>

@@ -60,7 +60,7 @@
     <string name="audio">Áudio</string>
     <string name="save_thumb">Guardar miniatura</string>
     <string name="save_thumb_summary">Guardar miniatura na pasta de descargas</string>
-    <string name="cancel_download">Cancelar descarga</string>
+    <string name="cancel_task">Cancelar descarga</string>
     <string name="run_command">Executar comando</string>
     <string name="command_download_notification_channel_name">Comando e descargas</string>
     <string name="command_download_notification_channel_description">Notificação que mostra o progresso das descargas usando um comando yt-dlp</string>

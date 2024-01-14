@@ -9,29 +9,25 @@ import android.os.Build
 import android.os.Bundle
 import android.text.format.DateFormat
 import android.util.DisplayMetrics
-import android.util.Log
 import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.edit
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
-import androidx.fragment.app.commit
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.media3.common.Player.Command
 import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.afollestad.materialdialogs.utils.MDUtil.getStringArray
 import com.deniscerri.ytdlnis.R
-import com.deniscerri.ytdlnis.database.DBManager
-import com.deniscerri.ytdlnis.database.dao.CommandTemplateDao
 import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.deniscerri.ytdlnis.database.repository.DownloadRepository
@@ -246,6 +242,9 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
                 if (tab!!.position == 2 && commandTemplateNr == 0){
                     tabLayout.selectTab(tabLayout.getTabAt(1))
                     val s = Snackbar.make(view, getString(R.string.add_template_first), Snackbar.LENGTH_LONG)
+                    val snackbarView: View = s.view
+                    val snackTextView = snackbarView.findViewById<View>(com.google.android.material.R.id.snackbar_text) as TextView
+                    snackTextView.maxLines = 9999999
                     s.setAction(R.string.new_template){
                         UiUtil.showCommandTemplateCreationOrUpdatingSheet(item = null, context = requireActivity(), lifeCycle = this@DownloadBottomSheetDialog, commandTemplateViewModel = commandTemplateViewModel){
                             commandTemplateNr = 1
@@ -279,7 +278,7 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
                         putString("last_used_download_type",
                             listOf(Type.audio, Type.video, Type.command)[position].toString())
                     }
-                    updateTitleAuthorWhenSwitching()
+                    updateWhenSwitching()
                 }
             }
         })
@@ -437,6 +436,7 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
                         shimmerLoadingSubtitle.visibility = View.VISIBLE
                         shimmerLoading.startShimmer()
                         shimmerLoadingSubtitle.startShimmer()
+                        updateItem.visibility = View.GONE
                     }else{
                         title.visibility = View.VISIBLE
                         subtitle.visibility = View.VISIBLE
@@ -600,7 +600,7 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
         }
     }
 
-    private fun updateTitleAuthorWhenSwitching(){
+    private fun updateWhenSwitching(){
         val prevDownloadItem = getDownloadItem(
             if (viewPager2.currentItem == 1) 0 else 1
         )
@@ -617,6 +617,7 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
                 kotlin.runCatching {
                     val f = fragmentManager?.findFragmentByTag("f1") as DownloadVideoFragment
                     f.updateTitleAuthor(prevDownloadItem.title, prevDownloadItem.author)
+                    f.updateSelectedAudioFormat(getDownloadItem(0).format)
                 }
             }
             2 -> {

@@ -8,12 +8,13 @@ import android.graphics.ColorMatrix
 import android.graphics.ColorMatrixColorFilter
 import android.os.Handler
 import android.os.Looper
-import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.annotation.OptIn
 import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.AsyncDifferConfig
@@ -23,7 +24,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.HistoryItem
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
+import com.google.android.material.badge.BadgeDrawable
+import com.google.android.material.badge.BadgeUtils
+import com.google.android.material.badge.ExperimentalBadgeUtils
 import com.google.android.material.card.MaterialCardView
+import com.google.android.material.color.MaterialColors
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.squareup.picasso.Picasso
 import java.io.File
@@ -54,10 +59,28 @@ class HistoryAdapter(onItemClickListener: OnItemClickListener, activity: Activit
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val cardView = LayoutInflater.from(parent.context)
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HistoryAdapter.ViewHolder {
+        return if (viewType == 0){
+            val cardView = LayoutInflater.from(parent.context)
                 .inflate(R.layout.history_card, parent, false)
-        return ViewHolder(cardView, onItemClickListener)
+            ViewHolder(cardView, onItemClickListener)
+        }else{
+            val cardView = LayoutInflater.from(parent.context)
+                .inflate(R.layout.history_card_multiple, parent, false)
+            ViewHolder(cardView, onItemClickListener)
+        }
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        getItem(position)?.apply {
+            return if(this.downloadPath.size == 1){
+                0
+            }else{
+                1
+            }
+        }
+        return 0
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -82,7 +105,7 @@ class HistoryAdapter(onItemClickListener: OnItemClickListener, activity: Activit
 
         // TITLE  ----------------------------------
         val itemTitle = card.findViewById<TextView>(R.id.downloads_title)
-        var title = item!!.title
+        var title = item!!.title.ifEmpty { item.url }
         if (title.length > 100) {
             title = title.substring(0, 40) + "..."
         }
@@ -98,44 +121,38 @@ class HistoryAdapter(onItemClickListener: OnItemClickListener, activity: Activit
 
         // TIME DOWNLOADED  ----------------------------------
         val datetime = card.findViewById<TextView>(R.id.downloads_info_time)
-
-//        val relativeTime = DateUtils.getRelativeTimeSpanString(
-//            item.time * 1000L,
-//            System.currentTimeMillis(),
-//            DateUtils.MINUTE_IN_MILLIS
-//        )
         datetime.text = SimpleDateFormat(android.text.format.DateFormat.getBestDateTimePattern(Locale.getDefault(), "ddMMMyyyy - HHmm"), Locale.getDefault()).format(item.time * 1000L)
 
         // BUTTON ----------------------------------
         val btn = card.findViewById<FloatingActionButton>(R.id.downloads_download_button_type)
-        var filePresent = true
+        var filesPresent = true
 
         //IS IN THE FILE SYSTEM?
-        val path = item.downloadPath
-        val file = File(path)
-        if (!file.exists() && path.isNotEmpty()) {
-            filePresent = false
+        if (item.downloadPath.all { !File(it).exists() && it.isNotBlank()}) {
+            filesPresent = false
             thumbnail.colorFilter = ColorMatrixColorFilter(object : ColorMatrix() {
                 init {
                     setSaturation(0f)
                 }
             })
             thumbnail.alpha = 0.7f
-            btn.backgroundTintList = ContextCompat.getColorStateList(activity, R.color.black)
-            btn.imageTintList = ContextCompat.getColorStateList(activity, R.color.white)
+            btn.backgroundTintList = MaterialColors.getColorStateList(activity, R.attr.colorSurface, ContextCompat.getColorStateList(activity, android.R.color.transparent)!!)
+        }else{
+            thumbnail.alpha = 1f
+            btn.backgroundTintList = MaterialColors.getColorStateList(activity, R.attr.colorPrimaryContainer, ContextCompat.getColorStateList(activity, android.R.color.transparent)!!)
         }
 
         if (item.type == DownloadViewModel.Type.audio) {
-            if (filePresent) btn.setImageResource(R.drawable.ic_music_downloaded) else {
+            if (filesPresent) btn.setImageResource(R.drawable.ic_music_downloaded) else {
                 btn.setImageResource(R.drawable.ic_music)
             }
         } else if (item.type == DownloadViewModel.Type.video) {
-            if (filePresent) btn.setImageResource(R.drawable.ic_video_downloaded) else btn.setImageResource(R.drawable.ic_video)
+            if (filesPresent) btn.setImageResource(R.drawable.ic_video_downloaded) else btn.setImageResource(R.drawable.ic_video)
         }else{
-            if (filePresent) btn.setImageResource(R.drawable.ic_terminal) else btn.setImageResource(R.drawable.baseline_code_off_24)
+            if (filesPresent) btn.setImageResource(R.drawable.ic_terminal) else btn.setImageResource(R.drawable.baseline_code_off_24)
         }
         if (btn.hasOnClickListeners()) btn.setOnClickListener(null)
-        btn.isClickable = filePresent
+        btn.isClickable = filesPresent
 
         if (checkedItems.contains(item.id)) {
             card.isChecked = true
@@ -144,7 +161,7 @@ class HistoryAdapter(onItemClickListener: OnItemClickListener, activity: Activit
             card.isChecked = false
             card.strokeWidth = 0
         }
-        val finalFilePresent = filePresent
+        val finalFilePresent = filesPresent
         card.setOnLongClickListener {
             checkCard(card, item.id)
             true

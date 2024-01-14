@@ -32,7 +32,7 @@
     <string name="audio_format">รูปแบบเสียง</string>
     <string name="video_format">รูปแบบวิดีโอ</string>
     <string name="audio_quality">คุณภาพเสียง</string>
-    <string name="cancel_download">ยกเลิกการดาวน์โหลด</string>
+    <string name="cancel_task">ยกเลิกการดาวน์โหลด</string>
     <string name="run_command">เรียกใช้คำสั่ง</string>
     <string name="items_left">รายการที่เหลือ</string>
     <string name="history_is_empty">ประวัติว่างเปล่า</string>

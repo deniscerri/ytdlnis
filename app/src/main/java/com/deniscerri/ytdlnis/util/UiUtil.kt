@@ -18,6 +18,7 @@ import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewTreeObserver
 import android.view.Window
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
@@ -26,17 +27,15 @@ import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.OptIn
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
-import androidx.compose.ui.text.font.Typeface
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.text.toUpperCase
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.FileProvider
-import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.children
 import androidx.core.view.isVisible
-import androidx.core.view.updateLayoutParams
 import androidx.core.widget.doOnTextChanged
 import androidx.documentfile.provider.DocumentFile
 import androidx.fragment.app.FragmentManager
@@ -57,6 +56,9 @@ import com.deniscerri.ytdlnis.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdlnis.ui.downloadcard.ConfigureDownloadBottomSheetDialog
 import com.deniscerri.ytdlnis.ui.downloadcard.VideoCutListener
 import com.deniscerri.ytdlnis.util.Extensions.enableTextHighlight
+import com.google.android.material.badge.BadgeDrawable
+import com.google.android.material.badge.BadgeUtils
+import com.google.android.material.badge.ExperimentalBadgeUtils
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
@@ -81,6 +83,7 @@ import kotlinx.coroutines.withContext
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Date
 import java.util.Locale
 
 
@@ -380,6 +383,46 @@ object UiUtil {
         }
     }
 
+    private fun openMultipleFilesIntent(context: Activity, path: List<String>){
+        val bottomSheet = BottomSheetDialog(context)
+        bottomSheet.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        bottomSheet.setContentView(R.layout.filepathlist)
+
+        val list = bottomSheet.findViewById<LinearLayout>(R.id.filepath_list)
+
+        list?.apply {
+            path.forEach {path ->
+                val file = File(path)
+                val item = context.layoutInflater.inflate(R.layout.filepath_card, list, false)
+                item.apply {
+                    findViewById<TextView>(R.id.file_name).text = file.nameWithoutExtension
+                    findViewById<TextView>(R.id.filesize).text = FileUtil.convertFileSize(file.length())
+                    findViewById<TextView>(R.id.extension).text = file.extension.uppercase()
+                    if (!file.exists()){
+                        isEnabled = false
+                        alpha = 0.7f
+                    }
+                    isEnabled = file.exists()
+                    setOnClickListener {
+                        openFileIntent(context, path)
+                        bottomSheet.dismiss()
+                    }
+                }
+                list.addView(item)
+
+            }
+        }
+
+        bottomSheet.show()
+        val displayMetrics = DisplayMetrics()
+        context.windowManager.defaultDisplay.getMetrics(displayMetrics)
+        bottomSheet.behavior.peekHeight = displayMetrics.heightPixels
+        bottomSheet.window!!.setLayout(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.MATCH_PARENT
+        )
+    }
+
     fun shareFileIntent(context: Context, paths: List<String>){
         val uris : ArrayList<Uri> = arrayListOf()
         paths.runCatching {
@@ -479,14 +522,16 @@ object UiUtil {
         bottomSheet.setContentView(R.layout.history_item_details_bottom_sheet)
         bottomSheet.findViewById<TextView>(R.id.bottom_sheet_title)?.apply {
             text = item.title.ifEmpty { "`${context.getString(R.string.defaultValue)}`" }
-            setOnClickListener{
+            setOnLongClickListener{
                 showFullTextDialog(context, text.toString(), context.getString(R.string.title))
+                true
             }
         }
         bottomSheet.findViewById<TextView>(R.id.bottom_sheet_author)?.apply {
             text = item.author.ifEmpty { "`${context.getString(R.string.defaultValue)}`" }
-            setOnClickListener{
+            setOnLongClickListener{
                 showFullTextDialog(context, text.toString(), context.getString(R.string.author))
+                true
             }
         }
 
@@ -682,8 +727,25 @@ object UiUtil {
         btn?.setImageResource(typeImageResource)
 
         if (isPresent){
-            btn?.setOnClickListener {
-                shareFileIntent(context, listOf(item.downloadPath))
+            btn?.apply {
+                if (item.downloadPath.size > 1){
+                    viewTreeObserver.addOnGlobalLayoutListener(object :
+                        ViewTreeObserver.OnGlobalLayoutListener {
+                        @OptIn(ExperimentalBadgeUtils::class) override fun onGlobalLayout() {
+                            val badgeDrawable = BadgeDrawable.create(context)
+                            badgeDrawable.number = item.downloadPath.size
+                            //Important to change the position of the Badge
+                            badgeDrawable.horizontalOffset = 25
+                            badgeDrawable.verticalOffset = 25
+                            BadgeUtils.attachBadgeDrawable(badgeDrawable, btn, null)
+                            btn.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                        }
+                    })
+                }
+
+                setOnClickListener {
+                    shareFileIntent(context, item.downloadPath)
+                }
             }
         }
 
@@ -693,7 +755,7 @@ object UiUtil {
         val codec = bottomSheet.findViewById<TextView>(R.id.codec)
         val fileSize = bottomSheet.findViewById<TextView>(R.id.file_size)
         val command = bottomSheet.findViewById<Chip>(R.id.command)
-        val file = File(item.downloadPath)
+        val file = File(item.downloadPath.first())
 
         val calendar = Calendar.getInstance()
         calendar.timeInMillis = item.time * 1000L
@@ -708,7 +770,7 @@ object UiUtil {
             formatNote?.isVisible = false
         }
 
-        if (item.format.container != "") {
+        if (item.format.container != "" && item.downloadPath.size == 1) {
             container!!.text = if (file.exists()) file.extension.uppercase() else item.format.container.uppercase()
             container.setChipIconResource(typeImageResource)
         }else {
@@ -723,7 +785,7 @@ object UiUtil {
             } else {
                 item.format.acodec.uppercase()
             }
-        if (codecText == "" || codecText == "none"){
+        if (codecText == "" || codecText == "none" || item.downloadPath.size > 1){
             codec!!.visibility = View.GONE
         }else{
             codec!!.visibility = View.VISIBLE
@@ -731,7 +793,7 @@ object UiUtil {
         }
 
         val fileSizeReadable = FileUtil.convertFileSize(if (file.exists()) file.length() else item.format.filesize)
-        if (fileSizeReadable == "?") fileSize!!.visibility = View.GONE
+        if (fileSizeReadable == "?" || item.downloadPath.size > 1) fileSize!!.visibility = View.GONE
         else fileSize!!.text = fileSizeReadable
 
         command?.setOnClickListener {
@@ -761,7 +823,11 @@ object UiUtil {
         val openFile = bottomSheet.findViewById<Button>(R.id.bottomsheet_open_file_button)
         openFile!!.tag = item.id
         openFile.setOnClickListener{
-            openFileIntent(context, item.downloadPath)
+            if (item.downloadPath.size == 1) {
+                openFileIntent(context, item.downloadPath.first())
+            }else{
+                openMultipleFilesIntent(context, item.downloadPath)
+            }
         }
 
         val redownload = bottomSheet.findViewById<Button>(R.id.bottomsheet_redownload_button)
@@ -1044,11 +1110,8 @@ object UiUtil {
             val chip = activity.layoutInflater.inflate(R.layout.suggestion_chip, chipGroup, false) as Chip
             chip.text = shortcut.content
             chip.setOnClickListener {
-                if (chip.isChecked){
-                    itemSelected(shortcut.content)
-                }else{
-                    itemRemoved(shortcut.content)
-                }
+                chip.isChecked = false
+                itemSelected(shortcut.content)
             }
             chipGroup.addView(chip)
         }
@@ -1081,6 +1144,8 @@ object UiUtil {
         extraCommandsClicked: () -> Unit,
         updateDataClicked: () -> Unit
     ){
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+
         val embedSubs = view.findViewById<Chip>(R.id.embed_subtitles)
         val saveSubtitles = view.findViewById<Chip>(R.id.save_subtitles)
         val subtitleLanguages = view.findViewById<Chip>(R.id.subtitle_languages)
@@ -1127,6 +1192,7 @@ object UiUtil {
         }
 
         val sponsorBlock = view.findViewById<Chip>(R.id.sponsorblock_filters)
+        sponsorBlock.isEnabled = sharedPreferences.getBoolean("use_sponsorblock", true)
         sponsorBlock!!.setOnClickListener {
             val builder = MaterialAlertDialogBuilder(context)
             builder.setTitle(context.getString(R.string.select_sponsorblock_filtering))
@@ -1228,7 +1294,6 @@ object UiUtil {
         }
 
 
-        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 
         items.forEach { it.videoPreferences.subsLanguages = sharedPreferences.getString("subs_lang", "en.*,.*-orig")!! }
         if (items.all { it.videoPreferences.writeSubs}) {
@@ -1638,8 +1703,7 @@ object UiUtil {
         val deleteDialog = MaterialAlertDialogBuilder(context)
         deleteDialog.setTitle(context.getString(R.string.you_are_going_to_delete) + " \"" + item.title + "\"!")
         val path = item.downloadPath
-        val file = File(path)
-        if (file.exists() && path.isNotEmpty()) {
+        if (path.any { File(it).exists() && it.isNotEmpty() }) {
             deleteDialog.setMultiChoiceItems(
                 arrayOf(context.getString(R.string.delete_file_too)),
                 booleanArrayOf(false)
@@ -1839,14 +1903,14 @@ object UiUtil {
 
         builder.setView(view)
         builder.setPositiveButton(
-            context.getString(android.R.string.copy)
+            context.getString(R.string.dismiss)
         ) { _: DialogInterface?, _: Int ->
             copyToClipboard(txt, context)
         }
 
         // handle the negative button of the alert dialog
         builder.setNegativeButton(
-            context.getString(R.string.cancel)
+            context.getString(android.R.string.cancel)
         ) { _: DialogInterface?, _: Int -> }
 
         val dialog = builder.create()

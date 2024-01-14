@@ -25,6 +25,7 @@ import androidx.preference.PreferenceManager
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import com.deniscerri.ytdlnis.BuildConfig
+import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.CommandTemplate
 import com.deniscerri.ytdlnis.database.models.CookieItem
@@ -201,7 +202,7 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
                         saveFile.writeText(GsonBuilder().setPrettyPrinting().create().toJson(json))
                         val s = Snackbar.make(requireView(), getString(R.string.backup_created_successfully), Snackbar.LENGTH_LONG)
                         s.setAction(R.string.Open_File){
-                            UiUtil.openFileIntent(requireContext(), saveFile.absolutePath)
+                            UiUtil.openFileIntent(requireActivity(), saveFile.absolutePath)
                         }
                         s.show()
                     }
@@ -600,10 +601,11 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
                     builder.setPositiveButton(
                         getString(R.string.restart)
                     ) { _: DialogInterface?, _: Int ->
-                        val intent: Intent? = requireContext().packageManager
-                            .getLaunchIntentForPackage(requireContext().packageName)
-                        intent?.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                        startActivity(intent!!)
+                        val intent = Intent(requireContext(), MainActivity::class.java)
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        startActivity(intent)
+                        requireActivity().finishAffinity()
                         if(json.has("settings")){
                             AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(preferences.getString("app_language", "en")))
                         }

@@ -28,18 +28,21 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.NavDestination
 import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.models.ResultItem
+import com.deniscerri.ytdlnis.database.models.SearchSuggestionItem
+import com.deniscerri.ytdlnis.database.models.SearchSuggestionType
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdlnis.ui.adapter.HomeAdapter
+import com.deniscerri.ytdlnis.ui.adapter.SearchSuggestionsAdapter
 import com.deniscerri.ytdlnis.util.Extensions.enableFastScroll
 import com.deniscerri.ytdlnis.util.InfoUtil
 import com.deniscerri.ytdlnis.util.ThemeUtil
@@ -53,6 +56,7 @@ import com.google.android.material.chip.ChipGroup
 import com.google.android.material.color.MaterialColors
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.search.SearchBar
 import com.google.android.material.search.SearchView
 import kotlinx.coroutines.CoroutineScope
@@ -64,17 +68,15 @@ import kotlinx.coroutines.withContext
 import java.util.*
 
 
-class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListener {
+class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggestionsAdapter.OnItemClickListener, OnClickListener {
     private var inputQueries: MutableList<String>? = null
     private var homeAdapter: HomeAdapter? = null
+    private var searchSuggestionsAdapter: SearchSuggestionsAdapter? = null
+    private var queriesConstraint: ConstraintLayout? = null
 
-    private var searchSuggestions: ScrollView? = null
-    private var searchSuggestionsLinearLayout: LinearLayout? = null
-    private var searchHistory: ScrollView? = null
-    private var searchHistoryLinearLayout: LinearLayout? = null
-
-    private var downloadFabs: CoordinatorLayout? = null
-    private var downloadAllFabCoordinator: CoordinatorLayout? = null
+    private var downloadSelectedFab: ExtendedFloatingActionButton? = null
+    private var downloadAllFab: ExtendedFloatingActionButton? = null
+    private var clipboardFab: FloatingActionButton? = null
     private var homeFabs: CoordinatorLayout? = null
     private var infoUtil: InfoUtil? = null
     private var downloadQueue: ArrayList<ResultItem>? = null
@@ -92,9 +94,9 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
     private var searchView: SearchView? = null
     private var providersChipGroup: ChipGroup? = null
     private var chipGroupDivider: View? = null
-    private var linkYouCopied: ConstraintLayout? = null
     private var queriesChipGroup: ChipGroup? = null
     private var recyclerView: RecyclerView? = null
+    private var searchSuggestionsRecyclerView: RecyclerView? = null
     private var uiHandler: Handler? = null
     private var resultsList: List<ResultItem?>? = null
     private var selectedObjects: ArrayList<ResultItem>? = null
@@ -136,17 +138,14 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
         shimmerCards = view.findViewById(R.id.shimmer_results_framelayout)
         searchBar = view.findViewById(R.id.search_bar)
         searchView = view.findViewById(R.id.search_view)
-        linkYouCopied = searchView?.findViewById(R.id.link_you_copied)
         appBarLayout = view.findViewById(R.id.home_appbarlayout)
         materialToolbar = view.findViewById(R.id.home_toolbar)
         queriesChipGroup = view.findViewById(R.id.queries)
-        searchSuggestions = view.findViewById(R.id.search_suggestions_scroll_view)
-        searchSuggestionsLinearLayout = view.findViewById(R.id.search_suggestions_linear_layout)
-        searchHistory = view.findViewById(R.id.search_history_scroll_view)
-        searchHistoryLinearLayout = view.findViewById(R.id.search_history_linear_layout)
+        queriesConstraint = view.findViewById(R.id.queries_constraint)
         homeFabs = view.findViewById(R.id.home_fabs)
-        downloadFabs = homeFabs!!.findViewById(R.id.download_selected_coordinator)
-        downloadAllFabCoordinator = homeFabs!!.findViewById(R.id.download_all_coordinator)
+        downloadSelectedFab = homeFabs!!.findViewById(R.id.download_selected_fab)
+        downloadAllFab = homeFabs!!.findViewById(R.id.download_all_fab)
+        clipboardFab = homeFabs!!.findViewById(R.id.copied_url_fab)
 
         runCatching { materialToolbar!!.title = ThemeUtil.getStyledAppName(requireContext()) }
 
@@ -160,6 +159,17 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
         recyclerView?.adapter = homeAdapter
         recyclerView?.enableFastScroll()
 
+
+        searchSuggestionsAdapter = SearchSuggestionsAdapter(
+                this,
+                requireActivity()
+            )
+        searchSuggestionsRecyclerView = view.findViewById(R.id.search_suggestions_recycler)
+        searchSuggestionsRecyclerView?.layoutManager = LinearLayoutManager(context)
+        searchSuggestionsRecyclerView?.adapter = searchSuggestionsAdapter
+        searchSuggestionsRecyclerView?.enableFastScroll()
+
+
         resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]
         resultViewModel.items.observe(requireActivity()) {
             kotlin.runCatching {
@@ -167,9 +177,9 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
                 resultsList = it
                 if(resultViewModel.repository.itemCount.value > 1 || resultViewModel.repository.itemCount.value == -1){
                     if (it.size > 1 && it[0].playlistTitle.isNotEmpty() && !loadingItems){
-                        downloadAllFabCoordinator!!.visibility = VISIBLE
+                        downloadAllFab!!.visibility = VISIBLE
                     }else{
-                        downloadAllFabCoordinator!!.visibility = GONE
+                        downloadAllFab!!.visibility = GONE
                     }
                 }else if (resultViewModel.repository.itemCount.value == 1){
                     if (sharedPreferences!!.getBoolean("download_card", true)){
@@ -181,20 +191,17 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
                         }
                     }
                 }else{
-                    downloadAllFabCoordinator!!.visibility = GONE
+                    downloadAllFab!!.visibility = GONE
                 }
                 quickLaunchSheet = true
             }
         }
 
         initMenu()
-        val downloadSelectedFab = downloadFabs!!.findViewById<ExtendedFloatingActionButton>(R.id.download_selected_fab)
-        downloadSelectedFab.tag = "downloadSelected"
-        downloadSelectedFab.setOnClickListener(this)
-        val downloadAllFab =
-            downloadAllFabCoordinator!!.findViewById<ExtendedFloatingActionButton>(R.id.download_all_fab)
-        downloadAllFab.tag = "downloadAll"
-        downloadAllFab.setOnClickListener(this)
+        downloadSelectedFab?.tag = "downloadSelected"
+        downloadSelectedFab?.setOnClickListener(this)
+        downloadAllFab?.tag = "downloadAll"
+        downloadAllFab?.setOnClickListener(this)
 
         if (arguments?.getString("url") != null){
             val url = requireArguments().getString("url")
@@ -247,9 +254,9 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
                         shimmerCards!!.stopShimmer()
                         shimmerCards!!.visibility = GONE
                         if (resultsList!!.size > 1 && resultsList!![0]!!.playlistTitle.isNotEmpty()){
-                            downloadAllFabCoordinator!!.visibility = VISIBLE
+                            this@HomeFragment.downloadAllFab!!.visibility = VISIBLE
                         }else{
-                            downloadAllFabCoordinator!!.visibility = GONE
+                            this@HomeFragment.downloadAllFab!!.visibility = GONE
                         }
                     }
                 }
@@ -286,7 +293,18 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
         }
 
         if (searchView?.currentTransitionState == SearchView.TransitionState.SHOWN){
-            updateSearchViewItems(searchView?.editText?.text, linkYouCopied)
+            updateSearchViewItems(searchView?.editText?.text)
+        }
+
+        requireView().post {
+            checkClipboard().apply {
+                clipboardFab?.isVisible = this != null
+                clipboardFab?.setOnClickListener {
+                    searchView!!.setText(this)
+                    clipboardFab?.isVisible = false
+                    initSearch(searchView!!)
+                }
+            }
         }
     }
 
@@ -339,53 +357,13 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
                     chipGroupDivider?.visibility = VISIBLE
                 }
 
-                try{
-                    val clipboard =
-                        requireContext().getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
-                    val clip = clipboard.primaryClip!!.getItemAt(0).text
-                    if (Patterns.WEB_URL.matcher(clip.toString()).matches()) {
-                        linkYouCopied!!.visibility = VISIBLE
-                        val textView = linkYouCopied!!.findViewById<TextView>(R.id.suggestion_text)
-                        textView.text = getString(R.string.link_you_copied)
-                        textView.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_language, 0, 0, 0)
-                        val mb = linkYouCopied!!.findViewById<ImageButton>(R.id.set_search_query_button)
-                        mb.setImageResource(R.drawable.ic_plus)
-
-                        mb.setOnClickListener {
-                            val present = queriesChipGroup!!.children.firstOrNull { (it as Chip).text.toString() == clip.toString() }
-                            if (present == null) {
-                                val chip = layoutinflater!!.inflate(R.layout.input_chip, queriesChipGroup, false) as Chip
-                                chip.text = clip.toString()
-                                chip.chipBackgroundColor = ColorStateList.valueOf(MaterialColors.getColor(requireContext(), R.attr.colorSecondaryContainer, Color.BLACK))
-                                chip.setOnClickListener {
-                                    queriesChipGroup!!.removeView(chip)
-                                }
-                                queriesChipGroup!!.addView(chip)
-                            }
-                            if (queriesChipGroup!!.childCount == 0) queriesConstraint.visibility = GONE
-                            else queriesConstraint.visibility = VISIBLE
-                            searchView!!.editText.setText("")
-                            linkYouCopied!!.visibility = GONE
-                        }
-
-                        textView.setOnClickListener {
-                            searchView!!.setText(clip.toString())
-                            initSearch(searchView!!)
-                        }
-                    }else{
-                        linkYouCopied!!.visibility = GONE
-                    }
-                    updateSearchViewItems(searchView!!.editText.text, linkYouCopied)
-                }catch (e: Exception){
-                    e.printStackTrace()
-                    linkYouCopied!!.visibility = GONE
-                }
+                updateSearchViewItems(searchView!!.editText.text)
             }
         }
 
         searchView!!.editText.doAfterTextChanged {
             if (searchView!!.currentTransitionState != SearchView.TransitionState.SHOWN) return@doAfterTextChanged
-            updateSearchViewItems(it, linkYouCopied)
+            updateSearchViewItems(it)
         }
 
         searchView!!.editText.setOnTouchListener(OnTouchListener { _, event ->
@@ -405,6 +383,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
                             chip.chipBackgroundColor = ColorStateList.valueOf(MaterialColors.getColor(requireContext(), R.attr.colorSecondaryContainer, Color.BLACK))
                             chip.setOnClickListener {
                                 queriesChipGroup!!.removeView(chip)
+                                if (queriesChipGroup!!.childCount == 0) queriesConstraint.visibility = GONE
                             }
                             queriesChipGroup!!.addView(chip)
                         }
@@ -430,12 +409,12 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
                     resultViewModel.getTrending()
                     selectedObjects = ArrayList()
                     searchBar!!.setText("")
-                    downloadAllFabCoordinator!!.visibility = GONE
-                    downloadFabs!!.visibility = GONE
+                    downloadAllFab!!.visibility = GONE
+                    downloadSelectedFab!!.visibility = GONE
                 }
                 R.id.delete_search -> {
                     resultViewModel.deleteAllSearchQueryHistory()
-                    searchSuggestionsLinearLayout!!.removeAllViews()
+                    searchSuggestionsAdapter?.submitList(listOf())
                 }
             }
             true
@@ -451,26 +430,20 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
     }
 
     @SuppressLint("InflateParams")
-    private fun updateSearchViewItems(searchQuery: Editable?, linkYouCopied: View?) = lifecycleScope.launch(Dispatchers.Main) {
+    private fun updateSearchViewItems(searchQuery: Editable?) = lifecycleScope.launch(Dispatchers.Main) {
         lifecycleScope.launch {
-            searchSuggestionsLinearLayout!!.visibility = GONE
-            searchHistoryLinearLayout!!.visibility = GONE
-            searchSuggestionsLinearLayout!!.post {
-                searchSuggestionsLinearLayout!!.removeAllViews()
-            }
-            searchHistoryLinearLayout!!.post {
-                searchHistoryLinearLayout!!.removeAllViews()
-            }
-
-            linkYouCopied!!.visibility = GONE
-
             if (searchView!!.editText.text.isEmpty()){
                 searchView!!.editText.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, 0, 0)
             }else{
                 searchView!!.editText.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_plus, 0)
             }
+
+            val combinedList = mutableListOf<SearchSuggestionItem>()
+
             val history = withContext(Dispatchers.IO){
                 resultViewModel.getSearchHistory().map { it.query }.filter { it.contains(searchQuery!!) }
+            }.map {
+                SearchSuggestionItem(it, SearchSuggestionType.HISTORY)
             }
             val suggestions = if (sharedPreferences!!.getBoolean("search_suggestions", false)){
                 withContext(Dispatchers.IO){
@@ -478,66 +451,80 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
                 }
             }else{
                 emptyList()
+            }.map {
+                SearchSuggestionItem(it, SearchSuggestionType.SUGGESTION)
             }
 
-            history.forEach { s ->
-                val v = LayoutInflater.from(fragmentContext).inflate(R.layout.search_suggestion_item, null)
-                val textView = v.findViewById<TextView>(R.id.suggestion_text)
-                textView.text = s
-                textView.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_restore, 0, 0, 0)
-                Handler(Looper.getMainLooper()).post {
-                    searchHistoryLinearLayout!!.addView(
-                        v
-                    )
-                }
-                textView.setOnClickListener {
-                    searchView!!.setText(s)
-                    initSearch(searchView!!)
-                }
-                textView.setOnLongClickListener {
-                    val deleteDialog = MaterialAlertDialogBuilder(requireContext())
-                    deleteDialog.setTitle(getString(R.string.you_are_going_to_delete) + " \"" + s + "\"!")
-                    deleteDialog.setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, _: Int -> dialogInterface.cancel() }
-                    deleteDialog.setPositiveButton(getString(R.string.ok)) { _: DialogInterface?, _: Int ->
-                        searchHistoryLinearLayout!!.removeView(v)
-                        resultViewModel.removeSearchQueryFromHistory(s)
-                    }
-                    deleteDialog.show()
-                    true
-                }
+            combinedList.addAll(history)
+            combinedList.addAll(suggestions)
 
-                val mb = v.findViewById<ImageButton>(R.id.set_search_query_button)
-                mb.setOnClickListener {
-                    searchView!!.editText.setText(s)
-                    searchView!!.editText.setSelection(searchView!!.editText.length())
-                }
-            }
-            searchHistoryLinearLayout!!.isVisible = history.isNotEmpty()
-            if (linkYouCopied.findViewById<TextView>(R.id.suggestion_text).text.isNotEmpty()){
-                linkYouCopied.visibility = VISIBLE
+            val url = checkClipboard()
+            url?.apply {
+                combinedList.add(0, SearchSuggestionItem(this, SearchSuggestionType.CLIPBOARD))
             }
 
-            suggestions.forEach { s ->
-                val v = LayoutInflater.from(fragmentContext)
-                    .inflate(R.layout.search_suggestion_item, null)
-                val textView = v.findViewById<TextView>(R.id.suggestion_text)
-                textView.text = s
-                Handler(Looper.getMainLooper()).post {
-                    searchSuggestionsLinearLayout!!.addView(
-                        v
-                    )
-                }
-                textView.setOnClickListener {
-                    searchView!!.setText(s)
-                    initSearch(searchView!!)
-                }
-                val mb = v.findViewById<ImageButton>(R.id.set_search_query_button)
-                mb.setOnClickListener {
-                    searchView!!.editText.setText(s)
-                    searchView!!.editText.setSelection(searchView!!.editText.length())
-                }
-            }
-            searchSuggestionsLinearLayout!!.isVisible = suggestions.isNotEmpty()
+
+            searchSuggestionsAdapter?.submitList(combinedList)
+
+//            history.forEach { s ->
+//                val v = LayoutInflater.from(fragmentContext).inflate(R.layout.search_suggestion_item, null)
+//                val textView = v.findViewById<TextView>(R.id.suggestion_text)
+//                textView.text = s
+//                textView.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_restore, 0, 0, 0)
+//                Handler(Looper.getMainLooper()).post {
+//                    searchHistoryLinearLayout!!.addView(
+//                        v
+//                    )
+//                }
+//                textView.setOnClickListener {
+//                    searchView!!.setText(s)
+//                    initSearch(searchView!!)
+//                }
+//                textView.setOnLongClickListener {
+//                    val deleteDialog = MaterialAlertDialogBuilder(requireContext())
+//                    deleteDialog.setTitle(getString(R.string.you_are_going_to_delete) + " \"" + s + "\"!")
+//                    deleteDialog.setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, _: Int -> dialogInterface.cancel() }
+//                    deleteDialog.setPositiveButton(getString(R.string.ok)) { _: DialogInterface?, _: Int ->
+//                        searchHistoryLinearLayout!!.removeView(v)
+//                        resultViewModel.removeSearchQueryFromHistory(s)
+//                    }
+//                    deleteDialog.show()
+//                    true
+//                }
+//
+//                val mb = v.findViewById<ImageButton>(R.id.set_search_query_button)
+//                mb.setOnClickListener {
+//                    searchView!!.editText.setText(s)
+//                    searchView!!.editText.setSelection(searchView!!.editText.length())
+//                }
+//            }
+//            searchHistoryLinearLayout!!.isVisible = history.isNotEmpty()
+//            if (linkYouCopied.findViewById<TextView>(R.id.suggestion_text).text.isNotEmpty()){
+//                linkYouCopied.visibility = VISIBLE
+//                clipboardFab?.isVisible = true
+//            }
+//
+//            suggestions.forEach { s ->
+//                val v = LayoutInflater.from(fragmentContext)
+//                    .inflate(R.layout.search_suggestion_item, null)
+//                val textView = v.findViewById<TextView>(R.id.suggestion_text)
+//                textView.text = s
+//                Handler(Looper.getMainLooper()).post {
+//                    searchSuggestionsLinearLayout!!.addView(
+//                        v
+//                    )
+//                }
+//                textView.setOnClickListener {
+//                    searchView!!.setText(s)
+//                    initSearch(searchView!!)
+//                }
+//                val mb = v.findViewById<ImageButton>(R.id.set_search_query_button)
+//                mb.setOnClickListener {
+//                    searchView!!.editText.setText(s)
+//                    searchView!!.editText.setSelection(searchView!!.editText.length())
+//                }
+//            }
+//            searchSuggestionsLinearLayout!!.isVisible = suggestions.isNotEmpty()
 
             if (Patterns.WEB_URL.matcher(searchView!!.editText.text).matches()){
                 providersChipGroup?.visibility = GONE
@@ -637,6 +624,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
         showSingleDownloadSheet(item!!, type!!)
     }
 
+    @SuppressLint("RestrictedApi")
     private fun showSingleDownloadSheet(
         resultItem: ResultItem,
         type: DownloadViewModel.Type
@@ -807,6 +795,15 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
     }
 
 
+    private fun checkClipboard(): String?{
+        return kotlin.runCatching {
+            val clipboard = requireContext().getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+            val clip = clipboard.primaryClip!!.getItemAt(0).text
+            val matchesURL = Patterns.WEB_URL.matcher(clip.toString()).matches()
+            return if (matchesURL) clip.toString() else null
+        }.getOrNull()
+    }
+
     override fun onStop() {
         actionMode?.finish()
         super.onStop()
@@ -815,5 +812,50 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
 
     companion object {
         private const val TAG = "HomeFragment"
+    }
+
+    override fun onSearchSuggestionClick(text: String) {
+        clipboardFab?.isVisible = false
+        searchView!!.setText(text)
+        initSearch(searchView!!)
+    }
+
+    override fun onSearchSuggestionAdd(text: String) {
+        val present = queriesChipGroup!!.children.firstOrNull { (it as Chip).text.toString() == text }
+        if (present == null) {
+            val chip = layoutinflater!!.inflate(R.layout.input_chip, queriesChipGroup, false) as Chip
+            chip.text = text
+            chip.chipBackgroundColor = ColorStateList.valueOf(MaterialColors.getColor(requireContext(), R.attr.colorSecondaryContainer, Color.BLACK))
+            chip.setOnClickListener {
+                queriesChipGroup!!.removeView(chip)
+                if (queriesChipGroup!!.childCount == 0) queriesChipGroup!!.visibility = View.GONE
+            }
+            queriesChipGroup!!.addView(chip)
+        }
+        if (queriesChipGroup!!.childCount == 0) queriesConstraint!!.visibility = View.GONE
+        else queriesConstraint!!.visibility = View.VISIBLE
+        searchView!!.editText.setText("")
+        val clipBoardItem = searchSuggestionsRecyclerView?.layoutManager?.findViewByPosition(0)
+        clipBoardItem?.apply {
+            if ((this as ConstraintLayout).findViewById<TextView>(R.id.suggestion_text).text == getString(R.string.link_you_copied)){
+                searchSuggestionsAdapter?.notifyItemRemoved(0)
+            }
+        }
+    }
+
+    override fun onSearchSuggestionLongClick(text: String, position: Int) {
+        val deleteDialog = MaterialAlertDialogBuilder(requireContext())
+        deleteDialog.setTitle(getString(R.string.you_are_going_to_delete) + " \"" + text + "\"!")
+        deleteDialog.setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, _: Int -> dialogInterface.cancel() }
+        deleteDialog.setPositiveButton(getString(R.string.ok)) { _: DialogInterface?, _: Int ->
+            resultViewModel.removeSearchQueryFromHistory(text)
+            searchSuggestionsAdapter?.notifyItemRemoved(position)
+        }
+        deleteDialog.show()
+    }
+
+    override fun onSearchSuggestionAddToSearchBar(text: String) {
+          searchView!!.editText.setText(text)
+          searchView!!.editText.setSelection(searchView!!.editText.length())
     }
 }

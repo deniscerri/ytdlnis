@@ -253,7 +253,7 @@ object FileUtil {
                     MediaScannerConnection.scanFile(context, arrayOf(it), null, null)
                 }
             }
-            return paths
+            return paths.sortedBy { File(it).lastModified() }
         }catch (e: Exception){
             e.printStackTrace()
         }

@@ -1,5 +1,6 @@
 package com.deniscerri.ytdlnis.work
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.Configuration
 import android.content.res.Resources
@@ -46,6 +47,7 @@ class DownloadWorker(
     private val context: Context,
     workerParams: WorkerParameters
 ) : CoroutineWorker(context, workerParams) {
+    @SuppressLint("RestrictedApi")
     override suspend fun doWork(): Result {
         if (isStopped) return Result.success()
 
@@ -126,7 +128,7 @@ class DownloadWorker(
                     val logString = StringBuilder("\n ${commandString}\n\n")
                     val logItem = LogItem(
                         0,
-                        downloadItem.title.ifEmpty { downloadItem.url },
+                        downloadItem.title.ifBlank { downloadItem.url },
                         "Downloading:\n" +
                                 "Title: ${downloadItem.title}\n" +
                                 "URL: ${downloadItem.url}\n" +
@@ -168,10 +170,12 @@ class DownloadWorker(
                             if (noCache){
                                 setProgressAsync(workDataOf("progress" to 100, "output" to "Scanning Files", "id" to downloadItem.id))
                                 finalPaths = it.out.split("\n")
+                                    .asSequence()
                                     .filter { it.startsWith("'/storage") }
                                     .map { it.removePrefix("'") }
                                     .map { it.removeSuffix("\n") }
                                     .map { it.removeSuffix("'") }
+                                    .sortedBy { File(it).lastModified() }
                                     .toList()
 //                                finalPaths = File(FileUtil.formatPath(downloadLocation))
 //                                    .walkTopDown()
@@ -191,7 +195,7 @@ class DownloadWorker(
                                         FileUtil.moveFile(tempFileDir.absoluteFile,context, downloadLocation, keepCache){ p ->
                                             setProgressAsync(workDataOf("progress" to p, "output" to "Moving file to ${FileUtil.formatPath(downloadLocation)}", "id" to downloadItem.id))
                                         }
-                                    }
+                                    }.filter { !it.matches("\\.(description)|(txt)\$".toRegex()) }
 
                                     if (finalPaths.isNotEmpty()){
                                         setProgressAsync(workDataOf("progress" to 100, "output" to "Moved file to $downloadLocation", "id" to downloadItem.id))
@@ -207,6 +211,7 @@ class DownloadWorker(
                                 }
                             }
 
+                            finalPaths = finalPaths?.filter { !it.matches("(\\.description)|(\\.srt)|(\\.ass)|(\\.lrc)|(\\.vtt)|(\\.txt)|(\\.jpg)|(\\.png)\$".toRegex()) }
                             FileUtil.deleteConfigFiles(request)
 
                             //put download in history
@@ -218,29 +223,27 @@ class DownloadWorker(
                                     }
                                 }else{
                                     val unixTime = System.currentTimeMillis() / 1000
-                                    finalPaths?.forEachIndexed {idx, ff ->
-                                        val file = File(ff)
-                                        var index = ""
-                                        var duration = downloadItem.duration
-                                        if (idx > 0) {
-                                            index = "[${idx + 1}] "
-                                            downloadItem.author = file.nameWithoutExtension
-                                        }
-                                        val d = file.getMediaDuration(context)
-                                        if (d > 0) duration = infoUtil.formatIntegerDuration(d, Locale.US)
+                                    finalPaths?.apply {
+                                        this.first().apply {
+                                            val file = File(this)
+                                            var duration = downloadItem.duration
+                                            val d = file.getMediaDuration(context)
+                                            if (d > 0) duration = infoUtil.formatIntegerDuration(d, Locale.US)
 
-                                        downloadItem.format.filesize = file.length()
-                                        downloadItem.format.container = file.extension
-                                        downloadItem.duration = duration
+                                            downloadItem.format.filesize = file.length()
+                                            downloadItem.format.container = file.extension
+                                            downloadItem.duration = duration
+                                        }
+
                                         val historyItem = HistoryItem(0,
                                             downloadItem.url,
-                                            index + downloadItem.title,
+                                            downloadItem.title,
                                             downloadItem.author,
                                             downloadItem.duration,
                                             downloadItem.thumb,
                                             downloadItem.type,
                                             unixTime,
-                                            ff,
+                                            this,
                                             downloadItem.website,
                                             downloadItem.format,
                                             downloadItem.id,

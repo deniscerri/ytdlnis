@@ -58,7 +58,7 @@
     <string name="video_format">Video Format</string>
     <string name="audio_quality">Audio Quality</string>
     <string name="audio_quality_summary">0 (best) 10 (worst)</string>
-    <string name="cancel_download">Cancel Download</string>
+    <string name="cancel_task">Cancel Task</string>
     <string name="run_command">Run Command</string>
     <string name="command_download_notification_channel_name">Command Downloads</string>
     <string name="command_download_notification_channel_description">Notification showing the progress of downloading using a yt-dlp command</string>
@@ -85,8 +85,8 @@
     <string name="video_quality">Video Quality</string>
     <string name="embed_subtitles">Embed Subtitles</string>
     <string name="add_chapter">Add Chapters</string>
-    <string name="show_download_card">Show Options for Downloading</string>
-    <string name="download_card_summary">Settings for how to download items</string>
+    <string name="show_download_card">Show Download Card</string>
+    <string name="download_card_summary">Modify settings for that item before downloading. Disabling this option starts the download immediately</string>
     <string name="Open_File">Open File</string>
     <string name="you_are_going_to_delete_multiple_items">Deleting multiple items</string>
     <string name="delete_file_too">Delete the file from the device</string>
@@ -331,4 +331,11 @@
     <string name="source">Source</string>
     <string name="app">App</string>
     <string name="cut_unavailable">You need to update the item data in order to be able to use cut feature</string>
+    <string name="changed_path_for_everyone_to">Changed every item\'s download path to:</string>
+    <string name="dismiss">Dismiss</string>
+    <string name="all">All</string>
+    <string name="generic">Generic</string>
+    <string name="multiple_download_card">Multiple Download Card</string>
+    <string name="format_filter">Format Filter</string>
+    <string name="format_smallest">Smallest format (per Resolution)</string>
 </resources>

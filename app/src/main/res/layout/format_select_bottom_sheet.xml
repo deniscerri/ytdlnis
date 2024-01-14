@@ -23,49 +23,80 @@
 
             <TextView
                 android:id="@+id/bottom_sheet_title"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@string/format"
+                android:layout_marginTop="4dp"
                 android:maxLines="2"
+                android:layout_marginEnd="20dp"
                 android:singleLine="false"
+                android:text="@string/format"
                 android:textSize="25sp"
+                app:layout_constraintEnd_toStartOf="@+id/format_buttons"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-
 
             <TextView
                 android:id="@+id/bottom_sheet_subtitle"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:maxLines="2"
+                android:layout_marginEnd="20dp"
+                android:singleLine="false"
                 android:text="@string/select_format"
                 android:textSize="12sp"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintEnd_toStartOf="@+id/format_buttons"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/bottom_sheet_title" />
 
-
-            <Button
-                android:id="@+id/format_ok"
-                style="@style/Widget.Material3.Button.ElevatedButton.Icon"
+            <LinearLayout
+                android:id="@+id/format_buttons"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:autoLink="all"
-                android:text="@string/ok"
-                app:icon="@drawable/ic_check"
+                android:layout_height="match_parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                >
 
-            <Button
-                android:id="@+id/format_refresh"
-                style="@style/Widget.Material3.Button.ElevatedButton.Icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:autoLink="all"
-                android:text="@string/update_formats"
-                app:icon="@drawable/ic_refresh"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                <Button
+                    android:id="@+id/format_filter"
+                    style="@style/Widget.Material3.Button.IconButton.Filled"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    app:icon="@drawable/baseline_align_horizontal_left_24"
+                    app:layout_constraintBottom_toBottomOf="@id/format_refresh"
+                    app:layout_constraintEnd_toStartOf="@+id/format_refresh"
+                    app:layout_constraintTop_toTopOf="@id/format_refresh" />
+
+                <Button
+                    android:id="@+id/format_refresh"
+                    style="@style/Widget.Material3.Button.ElevatedButton.Icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:autoLink="all"
+                    android:text="@string/update_formats"
+                    app:icon="@drawable/ic_refresh"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <Button
+                    android:id="@+id/format_ok"
+                    android:visibility="gone"
+                    style="@style/Widget.Material3.Button.ElevatedButton.Icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:autoLink="all"
+                    android:text="@string/ok"
+                    app:icon="@drawable/ic_check"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </LinearLayout>
+
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

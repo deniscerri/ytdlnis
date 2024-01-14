@@ -66,6 +66,10 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
         downloadDao.update(item)
     }
 
+    suspend fun updateWithoutUpsert(item: DownloadItem){
+        kotlin.runCatching { downloadDao.updateWithoutUpsert(item) }
+    }
+
 
     suspend fun setDownloadStatus(item: DownloadItem, status: Status){
         item.status = status.toString()

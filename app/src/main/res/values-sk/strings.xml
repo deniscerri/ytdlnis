@@ -2,7 +2,7 @@
 <resources>
     <string name="save_thumb_summary">Uložiť miniatúru do priečinka prevzatých súborov</string>
     <string name="ytdl_already_updating">Inštaluje sa nová verzia</string>
-    <string name="cancel_download">Zrušiť Sťahovanie</string>
+    <string name="cancel_task">Zrušiť Sťahovanie</string>
     <string name="audio_quality">Kvalita Zvuku</string>
     <string name="audio_format">Formát Zvuku</string>
     <string name="music_directory">Hudobný priečinok</string>

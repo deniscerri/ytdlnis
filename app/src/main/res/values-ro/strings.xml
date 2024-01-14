@@ -61,7 +61,7 @@
     <string name="export_from_clipboard">Exportă în clipboard</string>
     <string name="create_template">Creați un șablon</string>
     <string name="audio_quality">Calitate audio</string>
-    <string name="cancel_download">Anulați descărcarea</string>
+    <string name="cancel_task">Anulați descărcarea</string>
     <string name="defaultValue">Valoare implicită</string>
     <string name="template">Șablon</string>
     <string name="date_added">Data adăugării</string>

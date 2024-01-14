@@ -1086,6 +1086,7 @@
         <item>@string/saved</item>
         <item>@string/command_templates</item>
         <item>@string/cookies</item>
+        <item>@string/multiple_download_card</item>
     </array>
 
     <array name="swipe_gestures_values">
@@ -1096,6 +1097,7 @@
         <item>saved</item>
         <item>templates</item>
         <item>cookies</item>
+        <item>multipledownloadcard</item>
     </array>
 
     <array name="ytdlp_source">
@@ -1334,5 +1336,18 @@
         <item>Yoruba</item>
         <item>Zulu</item>
     </string-array>
+
+    <array name="format_filtering">
+        <item>@string/all</item>
+        <item>@string/suggested</item>
+        <item>@string/format_smallest</item>
+    </array>
+
+
+    <array name="format_filtering_values">
+        <item>ALL</item>
+        <item>SUGGESTED</item>
+        <item>SMALLEST</item>
+    </array>
 
 </resources>

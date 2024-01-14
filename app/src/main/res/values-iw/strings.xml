@@ -4,7 +4,7 @@
     <string name="sponsorblock_intro">פתיח</string>
     <string name="ytdl_already_updating">מעדכן גירסה חדשה</string>
     <string name="sponsorblock_reminders">הזכרות הרשמה</string>
-    <string name="cancel_download">בטל הורדה</string>
+    <string name="cancel_task">בטל הורדה</string>
     <string name="audio_quality">איכות אודיו</string>
     <string name="audio_format">פורמט אודיו</string>
     <string name="title">כותרת</string>

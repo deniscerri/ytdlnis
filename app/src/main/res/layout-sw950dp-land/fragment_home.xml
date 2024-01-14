@@ -17,106 +17,65 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <ScrollView
-                android:id="@+id/search_history_scroll_view"
+            <HorizontalScrollView
+                android:layout_width="wrap_content"
+                android:scrollbars="none"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/providers"
+                    android:layout_margin="10dp"
+                    app:singleSelection="true"
+                    app:chipSpacingVertical="-10dp"
+                    android:paddingEnd="20dp"
+                    android:paddingStart="0dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:singleLine="true" />
+
+            </HorizontalScrollView>
+
+            <View
+                android:id="@+id/chipGroupDivider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                style="@style/Divider.Vertical"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/queries_constraint"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/queries"
+                    android:layout_margin="10dp"
+                    app:chipSpacingVertical="-10dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintEnd_toStartOf="@+id/init_search_query"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    app:singleLine="false" />
 
-                    <HorizontalScrollView
-                        android:layout_width="wrap_content"
-                        android:scrollbars="none"
-                        android:layout_height="wrap_content">
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/init_search_query"
+                    style="?attr/materialIconButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    app:iconSize="20dp"
+                    app:cornerRadius="10dp"
+                    app:icon="@drawable/ic_search"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                        <com.google.android.material.chip.ChipGroup
-                            android:id="@+id/providers"
-                            android:layout_margin="10dp"
-                            app:singleSelection="true"
-                            app:chipSpacingVertical="-10dp"
-                            android:paddingEnd="20dp"
-                            android:paddingStart="0dp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            app:singleLine="true" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-                    </HorizontalScrollView>
-
-                    <View
-                        android:id="@+id/chipGroupDivider"
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        style="@style/Divider.Vertical"/>
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/queries_constraint"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <com.google.android.material.chip.ChipGroup
-                            android:id="@+id/queries"
-                            android:layout_margin="10dp"
-                            app:chipSpacingVertical="-10dp"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintHorizontal_bias="0.0"
-                            app:layout_constraintEnd_toStartOf="@+id/init_search_query"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            app:singleLine="false" />
-
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/init_search_query"
-                            style="?attr/materialIconButtonStyle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="10dp"
-                            app:iconSize="20dp"
-                            app:cornerRadius="10dp"
-                            app:icon="@drawable/ic_search"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    <include
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="-10dp"
-                        android:visibility="gone"
-                        android:id="@+id/link_you_copied"
-                        layout="@layout/search_suggestion_item"
-                        />
-
-
-                    <LinearLayout
-                        android:id="@+id/search_history_linear_layout"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                    </LinearLayout>
-
-                </LinearLayout>
-
-            </ScrollView>
-
-            <ScrollView
-                android:id="@+id/search_suggestions_scroll_view"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/search_suggestions_recycler"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <LinearLayout
-                    android:id="@+id/search_suggestions_linear_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                </LinearLayout>
-            </ScrollView>
-
+                android:layout_height="wrap_content" />
 
         </LinearLayout>
 
@@ -294,37 +253,42 @@
     </com.facebook.shimmer.ShimmerFrameLayout>
 
 
-
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/home_fabs"
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
 
-        <androidx.coordinatorlayout.widget.CoordinatorLayout
-            android:id="@+id/download_all_coordinator"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:visibility="gone"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="bottom|end">
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/copied_url_fab"
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:layout_marginHorizontal="5dp"
+                android:contentDescription="@string/link_you_copied"
+                android:src="@drawable/ic_clipboard"
+                android:text="@string/download_all"
+                app:useCompatPadding="true" />
 
             <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
                 android:id="@+id/download_all_fab"
+                android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="16dp"
                 android:layout_gravity="bottom|end"
+                android:layout_marginHorizontal="16dp"
                 android:text="@string/download_all"
-                app:icon="@drawable/ic_down"/>
-
-        </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
-        <androidx.coordinatorlayout.widget.CoordinatorLayout
-            android:id="@+id/download_selected_coordinator"
-            android:layout_width="match_parent"
-            android:visibility="gone"
-            android:layout_height="match_parent">
+                app:icon="@drawable/ic_down" />
 
             <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
                 android:id="@+id/download_selected_fab"
+                android:visibility="gone"
                 app:elevation="0dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -334,10 +298,9 @@
                 android:text="@string/download"
                 app:srcCompat="@drawable/ic_music"/>
 
-
-        </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
+        </LinearLayout>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

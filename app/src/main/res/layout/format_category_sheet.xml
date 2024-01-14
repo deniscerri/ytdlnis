@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout style="@style/Widget.Material3.BottomSheet"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/all"
+            android:layout_marginTop="20dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackground"
+            android:paddingVertical="10dp"
+            android:paddingHorizontal="20dp"
+            android:drawablePadding="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:text="@string/all"
+            app:drawableStartCompat="@drawable/ic_check" />
+
+
+        <TextView
+            android:id="@+id/suggested"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackground"
+            android:paddingVertical="10dp"
+            android:paddingHorizontal="20dp"
+            android:drawablePadding="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:text="@string/suggested"
+            app:drawableStartCompat="@drawable/empty" />
+
+        <TextView
+            android:id="@+id/smallest"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackground"
+            android:paddingVertical="10dp"
+            android:paddingHorizontal="20dp"
+            android:drawablePadding="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:text="@string/format_smallest"
+            app:drawableStartCompat="@drawable/empty" />
+
+
+        <TextView
+            android:id="@+id/generic"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackground"
+            android:paddingVertical="10dp"
+            android:paddingHorizontal="20dp"
+            android:drawablePadding="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:text="@string/generic"
+            app:drawableStartCompat="@drawable/empty" />
+
+    </LinearLayout>
+
+
+</FrameLayout>

@@ -69,7 +69,7 @@
     <string name="video_format">Formati i Videos</string>
     <string name="audio_quality">Kualiteti i Audios</string>
     <string name="audio_quality_summary">0 (Më i miri) 10 (Më i keqi)</string>
-    <string name="cancel_download">Anulo Shkarkimin</string>
+    <string name="cancel_task">Anulo Shkarkimin</string>
     <string name="run_command">Ekzekuto Komandën</string>
     <string name="command_download_notification_channel_name">Shkarkimet e Skedarëve nga Komanda</string>
     <string name="command_download_notification_channel_description">Njoftimi i cili tregon progresin e shkarkimeve te skedarëve audio dhe video nga komanda</string>

@@ -4,7 +4,7 @@
     <string name="command_download_notification_channel_name">Commando Downloads</string>
     <string name="sponsorblock_intro">Intro</string>
     <string name="ytdl_already_updating">Nieuwe versie aan het installeren</string>
-    <string name="cancel_download">Download Annuleren</string>
+    <string name="cancel_task">Download Annuleren</string>
     <string name="audio_quality">Audio Kwaliteit</string>
     <string name="audio_format">Audio Formaat</string>
     <string name="title">Titel</string>

@@ -75,7 +75,7 @@
     <string name="run_command">ਕਮਾਂਡ ਚਲਾਓ</string>
     <string name="command_download_notification_channel_description">ਇੱਕ yt-dlp ਕਮਾਂਡ ਦੀ ਵਰਤੋਂ ਕਰਕੇ ਡਾਊਨਲੋਡ ਕਰਨ ਦੀ ਪ੍ਰਗਤੀ ਨੂੰ ਦਰਸਾਉਂਦਾ ਨੋਟੀਫਿਕੇਸ਼ਨ</string>
     <string name="sort_by">ਛਾਂਟੀ</string>
-    <string name="cancel_download">ਡਾਊਨਲੋਡ ਰੱਦ ਕਰੋ</string>
+    <string name="cancel_task">ਡਾਊਨਲੋਡ ਰੱਦ ਕਰੋ</string>
     <string name="command_download_notification_channel_name">ਕਮਾਂਡ ਡਾਊਨਲੋਡ</string>
     <string name="link_copied_to_clipboard">ਲਿੰਕ ਕਲਿੱਪਬੋਰਡ \'ਤੇ ਕਾਪੀ ਕੀਤਾ ਗਿਆ</string>
     <string name="api_key">API ਕੁੰਜੀ ਦੀ ਵਰਤੋਂ ਕਰੋ</string>

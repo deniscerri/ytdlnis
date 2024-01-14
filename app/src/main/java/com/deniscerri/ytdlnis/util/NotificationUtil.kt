@@ -550,7 +550,7 @@ class NotificationUtil(var context: Context) {
     }
 
     fun showQueriesFinished() {
-        val notificationBuilder = getBuilder(DOWNLOAD_FINISHED_CHANNEL_ID)
+        val notificationBuilder = getBuilder(DOWNLOAD_MISC_CHANNEL_ID)
 
         val openMultipleDownloads = NavDeepLinkBuilder(context)
             .setGraph(R.navigation.nav_graph)

@@ -12,6 +12,7 @@ import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -122,6 +123,13 @@ class DownloadCommandFragment(private val resultItem: ResultItem? = null, privat
                         preferences.edit().putString("lastCommandTemplateUsed", p0.toString()).apply()
                     }
                 })
+
+                chosenCommandView.editText!!.setSelection(chosenCommandView.editText!!.text.length)
+                val imm = context?.getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager
+                chosenCommandView.editText!!.postDelayed({
+                    chosenCommandView.editText!!.requestFocus()
+                    imm.showSoftInput(chosenCommandView.editText, 0)
+                }, 300)
 
                 chosenCommandView.setEndIconOnClickListener {
                     if(chosenCommandView.editText!!.text.isEmpty()){
@@ -252,8 +260,9 @@ class DownloadCommandFragment(private val resultItem: ResultItem? = null, privat
                             shortcutClicked = {
                                 UiUtil.showShortcuts(requireActivity(), commandTemplateViewModel,
                                     itemSelected = {
-                                        chosenCommandView.editText!!.setText("${chosenCommandView.editText!!.text} $it")
-                                        downloadItem.format.format_note = chosenCommandView.editText!!.text.toString()
+                                        val selectionStart = chosenCommandView.editText!!.selectionStart
+                                        chosenCommandView.editText!!.text.insert(selectionStart, it)
+                                        chosenCommandView.editText!!.setSelection(selectionStart + it.length)
                                         preferences.edit().putString("lastCommandTemplateUsed",  downloadItem.format.format_note).apply()
                                     },
                                     itemRemoved = {removed ->

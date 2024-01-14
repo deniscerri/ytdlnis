@@ -70,8 +70,8 @@ class DownloadAudioFragment(private var resultItem: ResultItem? = null, private 
     ): View? {
         fragmentView = inflater.inflate(R.layout.fragment_download_audio, container, false)
         activity = getActivity()
-        downloadViewModel = ViewModelProvider(requireActivity())[DownloadViewModel::class.java]
-        resultViewModel = ViewModelProvider(requireActivity())[ResultViewModel::class.java]
+        downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
+        resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]
         infoUtil = InfoUtil(requireContext())
         genericAudioFormats = infoUtil.getGenericAudioFormats(requireContext().resources)
         preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
@@ -295,7 +295,8 @@ class DownloadAudioFragment(private var resultItem: ResultItem? = null, private 
                             updateDataClicked = {
                                 CoroutineScope(Dispatchers.IO).launch {
                                     resultItem?.apply {
-                                        resultViewModel.updateItemData(this)
+                                        val rsVM = ViewModelProvider(requireActivity())[ResultViewModel::class.java]
+                                        rsVM.updateItemData(this)
                                     }
                                 }
                             },

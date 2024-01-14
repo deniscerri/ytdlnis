@@ -48,14 +48,18 @@ class HistoryRepository(private val historyDao: HistoryDao) {
     suspend fun delete(item: HistoryItem, deleteFile: Boolean){
         historyDao.delete(item.id)
         if (deleteFile){
-            FileUtil.deleteFile(item.downloadPath)
+            item.downloadPath.forEach {
+                FileUtil.deleteFile(it)
+            }
         }
     }
 
     suspend fun deleteAll(deleteFile: Boolean = false){
         if (deleteFile){
             historyDao.getAllHistoryList().forEach { item ->
-                FileUtil.deleteFile(item.downloadPath)
+                item.downloadPath.forEach {
+                    FileUtil.deleteFile(it)
+                }
             }
         }
         historyDao.deleteAll()
@@ -72,7 +76,7 @@ class HistoryRepository(private val historyDao: HistoryDao) {
     suspend fun clearDeletedHistory(){
         items.collectLatest {
             it.forEach { item ->
-                if (!FileUtil.exists(item.downloadPath)){
+                if (item.downloadPath.all { path -> !FileUtil.exists(path) }){
                     historyDao.delete(item.id)
                 }
             }

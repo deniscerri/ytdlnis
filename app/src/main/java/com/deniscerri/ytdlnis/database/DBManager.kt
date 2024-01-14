@@ -23,7 +23,7 @@ import com.deniscerri.ytdlnis.database.models.*
         LogItem::class,
         TerminalItem::class
    ],
-    version = 13,
+    version = 14,
     autoMigrations = [
         AutoMigration (from = 1, to = 2),
         AutoMigration (from = 2, to = 3),
@@ -36,7 +36,8 @@ import com.deniscerri.ytdlnis.database.models.*
         AutoMigration (from = 9, to = 10),
         AutoMigration (from = 10, to = 11),
         AutoMigration (from = 11, to = 12),
-        AutoMigration (from = 12, to = 13)
+        AutoMigration (from = 12, to = 13),
+        //AutoMigration (from = 13, to = 14), MANUALLY HANDLED
     ]
 )
 abstract class DBManager : RoomDatabase(){
@@ -66,6 +67,7 @@ abstract class DBManager : RoomDatabase(){
                     DBManager::class.java,
                     "YTDLnisDatabase"
                 )
+                    .addMigrations(*Migrations.migrationList)
                     .build()
                 instance = dbInstance
                 dbInstance

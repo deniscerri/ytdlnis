@@ -138,6 +138,9 @@ interface DownloadDao {
     @Upsert
     suspend fun update(item: DownloadItem)
 
+    @Update
+    suspend fun updateWithoutUpsert(item: DownloadItem)
+
     @Query("UPDATE downloads SET logID=null")
     fun removeAllLogID()
 

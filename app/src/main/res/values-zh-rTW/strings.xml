@@ -35,7 +35,7 @@
     <string name="add_chapters">影片章節</string>
     <string name="save_thumb_summary">將縮圖保存在下載資料夾中</string>
     <string name="audio_format">音訊格式</string>
-    <string name="cancel_download">取消下載</string>
+    <string name="cancel_task">取消下載</string>
     <string name="run_command">執行命令</string>
     <string name="link_copied_to_clipboard">連結已複製到剪貼簿</string>
     <string name="api_key">使用 API 金鑰</string>

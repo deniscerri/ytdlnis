@@ -135,7 +135,7 @@
     <string name="home">Sākums</string>
     <string name="title">Nosaukums</string>
     <string name="video_format">Video Formāts</string>
-    <string name="cancel_download">Atcelt Lejupielādi</string>
+    <string name="cancel_task">Atcelt Lejupielādi</string>
     <string name="limit_rate_summary">Maksimālais lejupielādes ātrums (baitos sekundē), piem., 50K vai 4.2M</string>
     <string name="aria2_summary">Izmantot aria2c kā lejupielādētāju, nevis noklusējuma</string>
     <string name="add_chapters_summary">Atzīmē YouTube / SponsorBlock segmentus kā video nodaļas</string>

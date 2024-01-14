@@ -24,7 +24,7 @@
     <string name="embed_thumb">Miniatyrbildeomslag</string>
     <string name="save_thumb_summary">Lagre miniatyrbildet i nedlastingsmappen</string>
     <string name="audio_quality_summary">0 (best) 10 (verst)</string>
-    <string name="cancel_download">Avbryt nedlasting</string>
+    <string name="cancel_task">Avbryt nedlasting</string>
     <string name="command_download_notification_channel_description">Merknad som viser nedlastingsfremdrift for bruk av yt-dlp -kommando</string>
     <string name="history_is_empty">Historikken er tom.</string>
     <string name="api_key_summary">Raskere resultater fra YouTube</string>

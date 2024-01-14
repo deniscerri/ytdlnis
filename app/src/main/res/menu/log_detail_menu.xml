@@ -14,7 +14,13 @@
         android:title=""
         android:visible="false"
         android:icon="@drawable/ic_down"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/text_size"
+        android:title=""
+        android:icon="@drawable/ic_textformat"
+        app:showAsAction="always" />
 
 </menu>
 

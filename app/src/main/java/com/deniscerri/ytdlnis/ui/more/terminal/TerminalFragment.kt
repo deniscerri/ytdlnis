@@ -8,7 +8,6 @@ import android.content.Context.INPUT_METHOD_SERVICE
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.text.method.ScrollingMovementMethod
 import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.MenuItem
@@ -23,6 +22,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.get
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -38,15 +38,16 @@ import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.NotificationUtil
 import com.deniscerri.ytdlnis.util.UiUtil
 import com.deniscerri.ytdlnis.util.Extensions.enableTextHighlight
+import com.deniscerri.ytdlnis.util.Extensions.setCustomTextSize
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+import com.google.android.material.slider.Slider
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.util.concurrent.Executor
 import kotlin.properties.Delegates
 
 
@@ -236,6 +237,8 @@ class TerminalFragment : Fragment() {
         topAppBar?.menu?.get(0)?.isVisible = false
         topAppBar?.menu?.get(1)?.isVisible = true
         topAppBar?.menu?.get(2)?.isVisible = true
+        topAppBar?.menu?.get(3)?.isVisible = true
+        val slider = requireActivity().findViewById<Slider>(R.id.textsize_seekbar)
         topAppBar?.setOnMenuItemClickListener { m: MenuItem ->
             when(m.itemId){
                 R.id.wrap -> {
@@ -264,8 +267,22 @@ class TerminalFragment : Fragment() {
                         clipboard.setText(output?.text)
                     }
                 }
+
+                R.id.text_size -> {
+                    slider?.isVisible = !slider.isVisible
+                }
             }
             true
+        }
+
+        slider?.apply {
+            this.valueFrom = 0f
+            this.valueTo = 10f
+            this.value = 2f
+            this.addOnChangeListener { slider, value, fromUser ->
+                output?.setCustomTextSize(value + 13f)
+                input?.setCustomTextSize(value + 13f)
+            }
         }
     }
     private fun hideCancelFab() {
@@ -276,7 +293,7 @@ class TerminalFragment : Fragment() {
     }
     private fun showCancelFab() {
         kotlin.runCatching {
-            fab!!.text = getString(R.string.cancel_download)
+            fab!!.text = getString(R.string.cancel_task)
             fab!!.setIconResource(R.drawable.ic_cancel)
         }
     }

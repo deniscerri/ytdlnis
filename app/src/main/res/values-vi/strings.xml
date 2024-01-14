@@ -43,7 +43,7 @@
     <string name="video_format">Định dạng cuộn băng</string>
     <string name="audio_quality">Chất lượng âm thanh</string>
     <string name="audio_quality_summary">0 (tốt nhất) 10 (tệ nhất)</string>
-    <string name="cancel_download">Hủy tải xuống</string>
+    <string name="cancel_task">Hủy tải xuống</string>
     <string name="run_command">Chạy lệnh</string>
     <string name="command_download_notification_channel_name">Lệnh tải xuống</string>
     <string name="command_download_notification_channel_description">Thông báo hiển thị tiến trình tải xuống bằng lệnh yt-dlp</string>

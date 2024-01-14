@@ -61,7 +61,7 @@
     <string name="download">Descargar</string>
     <string name="save_thumb">Guardar Miniatura</string>
     <string name="save_thumb_summary">Guarda la miniatura en el directorio de descarga</string>
-    <string name="cancel_download">Cancelar Descarga</string>
+    <string name="cancel_task">Cancelar Descarga</string>
     <string name="video_quality">Calidad de Video</string>
     <string name="video_format">Formato de Video</string>
     <string name="audio_quality">Calidad de Audio</string>

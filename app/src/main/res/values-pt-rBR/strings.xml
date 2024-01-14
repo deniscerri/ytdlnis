@@ -84,7 +84,7 @@
     <string name="author">Autor</string>
     <string name="run_command">Executar comando</string>
     <string name="audio_quality_summary">0 (melhor) 10 (pior)</string>
-    <string name="cancel_download">Cancelar download</string>
+    <string name="cancel_task">Cancelar download</string>
     <string name="update_app_summary">Verifica se há atualizações ao iniciar o aplicativo</string>
     <string name="configure_download">Ajustar download</string>
     <string name="save_thumb_summary">Salve a miniatura na pasta de download</string>

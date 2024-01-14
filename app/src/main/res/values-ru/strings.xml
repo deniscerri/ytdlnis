@@ -39,7 +39,7 @@
     <string name="video_format">Видео формат</string>
     <string name="audio_quality">Качество аудио</string>
     <string name="audio_quality_summary">0 (лучшее) 10 (худшее)</string>
-    <string name="cancel_download">Отменить загрузку</string>
+    <string name="cancel_task">Отменить загрузку</string>
     <string name="run_command">Запустить команду</string>
     <string name="items_left">фрагмент(ов) осталось</string>
     <string name="you_are_going_to_delete">Удаление</string>

@@ -38,7 +38,7 @@
     <string name="video_format">Μορφή Βίντεο</string>
     <string name="audio_quality">Ποιότητα Ήχου</string>
     <string name="audio_quality_summary">0 (καλύτερη) 10 (χειρότερη)</string>
-    <string name="cancel_download">Ακύρωση Λήψης</string>
+    <string name="cancel_task">Ακύρωση Λήψης</string>
     <string name="run_command">Εκτέλεση Εντολής</string>
     <string name="command_download_notification_channel_name">Λήψεις Εντολών</string>
     <string name="command_download_notification_channel_description">Ειδοποίηση που δείχνει την πρόοδο της λήψης με χρήση μιας εντολής yt-dlp</string>

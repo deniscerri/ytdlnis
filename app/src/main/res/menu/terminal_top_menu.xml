@@ -13,6 +13,12 @@
         android:id="@+id/wrap"/>
 
     <item
+        android:id="@+id/text_size"
+        android:title=""
+        android:icon="@drawable/ic_textformat"
+        app:showAsAction="always" />
+
+    <item
         android:id="@+id/export_clipboard"
         android:title="@string/export_from_clipboard"
         app:showAsAction="never" />

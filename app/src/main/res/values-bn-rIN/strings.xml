@@ -8,7 +8,7 @@
     <string name="ytdl_already_updating">নতুন সংস্করণ ইনস্টল করা হচ্ছে</string>
     <string name="sponsorblock_fillers">ফিল্টার</string>
     <string name="sponsorblock_reminders">সদস্যতা রিমাইন্ডার</string>
-    <string name="cancel_download">ডাউনলোড বাতিল করুন</string>
+    <string name="cancel_task">ডাউনলোড বাতিল করুন</string>
     <string name="logs">লগ</string>
     <string name="in_queue">কিউ তে আছে</string>
     <string name="audio_quality">অডিও মান</string>

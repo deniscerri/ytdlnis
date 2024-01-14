@@ -10,7 +10,7 @@
             app:title="@string/ytdl_version"/>
 
         <ListPreference
-            android:defaultValue="nightly"
+            android:defaultValue="stable"
             android:entries="@array/ytdlp_source"
             android:entryValues="@array/ytdlp_source_values"
             android:icon="@drawable/baseline_source_24"
@@ -48,6 +48,15 @@
             app:key="format_order"
             app:useSimpleSummaryProvider="true"
             app:title="@string/format_order" />
+
+        <ListPreference
+            android:defaultValue="all"
+            android:entries="@array/format_filtering"
+            android:entryValues="@array/format_filtering_values"
+            android:icon="@drawable/baseline_align_horizontal_left_24"
+            app:key="format_filter"
+            app:useSimpleSummaryProvider="true"
+            app:title="@string/format_filter" />
 
         <SwitchPreferenceCompat
             android:widgetLayout="@layout/preferece_material_switch"

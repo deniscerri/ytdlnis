@@ -1,5 +1,6 @@
 package com.deniscerri.ytdlnis.ui.downloads
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.DialogInterface
@@ -103,6 +104,7 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
         return fragmentView
     }
 
+    @SuppressLint("RestrictedApi")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -519,7 +521,7 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
                     true
                 }
                 R.id.share -> {
-                    UiUtil.shareFileIntent(requireContext(), selectedObjects!!.map { it.downloadPath })
+                    UiUtil.shareFileIntent(requireContext(), selectedObjects!!.map { it.downloadPath }.flatten())
                     clearCheckedItems()
                     actionMode?.finish()
                     true
@@ -633,7 +635,7 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
 
     override fun onButtonClick(itemID: Long, isPresent: Boolean) {
         if (isPresent){
-            UiUtil.shareFileIntent(requireContext(), listOf(historyList!!.first { it!!.id == itemID }!!.downloadPath))
+            UiUtil.shareFileIntent(requireContext(), historyList!!.first { it!!.id == itemID }!!.downloadPath)
         }
     }
     companion object {

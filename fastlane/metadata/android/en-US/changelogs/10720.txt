@@ -1,0 +1,17 @@
+## What's New
+- Increased the height of the history card a slight bit
+- Fixed app not using the -S format sorter in normal GUI downloads
+- Added the multiple download card as an option to disable the swipe gestures
+- Added a recyclerview to the search results because they were buggy before and would not show sometimes
+- Added a new history item card design in cases if you quick-downloaded a playlist or if you made multiple cuts of a file. Instead of being separate, they are bundled and you can share them all at once and if you want to open the file a new dialog will show telling you to choose which one. If any of them is deleted, they are greyed out
+- Fixed the shortcuts behaviour by allowing duplicate shortcuts to be added to textbox and to not check
+- Added format filtering in the format list bottom sheet. You can filter between ALL, SUGGESTED, SMALLEST, GENERIC. Suggested formats are built upon your app preferences like your preferred codec, container, quality. Smallest formats are all formats for each resolution with the smallest filesize. Generic are formats you see if an item has not updated the formats yet, in case you want to use those for some reason
+- Added clipboard button right in the home screen for quick access to the url you copied instead of going to the searchview. That item is also available there aswell
+- Added ability to show the URL in a history item if the download produced no title for it
+- Added zoom-in zoom-out slider for logs and terminal screens.
+- Added more options of datafetching for titles and authors, like track, alt_title to avoid the default youtube naming scheme when available. Useful for audio downloads
+- Since some people are confused. In the download card each tab item is independent and they each create a distinct download item and when you press download the app picks from the tab you are currently. If you want to select the audio format in the video tab you can just open the format list and scroll to the bottom for the audio formats. You can select multiple if you want and then press ok. But since some people thought that selecting the audio in audio tab would apply to the video tab, i added the ability to synchronise that format automatically in case people dont know about this lol
+- Other small bug fixes
+
+The history item has been updated in this version so old backups will not work. Please make a backup of your stuff in the settings before updating. In case this update fails, notify people in telegram and revert back to the past version and use your backup and also give us the backup to reproduce the error if it happens.
+Happy Downloading & Happy belated New Year :)

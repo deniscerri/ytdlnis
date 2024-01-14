@@ -54,7 +54,7 @@
     <string name="video_format">Format vidéo</string>
     <string name="audio_quality">Qualité audio</string>
     <string name="audio_quality_summary">0 (meilleur) 10 (pire)</string>
-    <string name="cancel_download">Annuler le téléchargement</string>
+    <string name="cancel_task">Annuler le téléchargement</string>
     <string name="run_command">Exécuter la commande</string>
     <string name="command_download_notification_channel_name">Téléchargements de commandes</string>
     <string name="command_download_notification_channel_description">Notification indiquant la progression du téléchargement à l\'aide d\'une commande yt-dlp</string>

@@ -37,7 +37,7 @@
     <string name="video_format">ভিডিও ফরম্যাট</string>
     <string name="audio_quality">অডিও মান</string>
     <string name="audio_quality_summary">0 (সেরা) 10 (সবচেয়ে খারাপ)</string>
-    <string name="cancel_download">ডাউনলোড বাতিল করুন</string>
+    <string name="cancel_task">ডাউনলোড বাতিল করুন</string>
     <string name="run_command">কমান্ড চালু করুন</string>
     <string name="items_left">বাকি আইটেম(গুলি)</string>
     <string name="history_is_empty">ইতিহাস খালি</string>

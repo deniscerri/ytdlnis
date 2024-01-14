@@ -77,7 +77,7 @@
     <string name="audio">音声</string>
     <string name="aria2_summary">ダウンローダーとして Aria2c を使用します</string>
     <string name="audio_quality">音質</string>
-    <string name="cancel_download">ダウンロードをキャンセル</string>
+    <string name="cancel_task">ダウンロードをキャンセル</string>
     <string name="save_thumb">サムネイルを保存</string>
     <string name="add_chapters_summary">YouTube / SponsorBlock の登録シーンを動画のチャプターとして表示</string>
     <string name="run_command">コマンドを実行</string>

@@ -55,7 +55,7 @@
     <string name="video_format">Video Formatı</string>
     <string name="audio_quality">Ses Kalitesi</string>
     <string name="audio_quality_summary">0 (en iyi) 10 (en kötü)</string>
-    <string name="cancel_download">İndirmeyi İptal Et</string>
+    <string name="cancel_task">İndirmeyi İptal Et</string>
     <string name="run_command">Komutu Çalıştır</string>
     <string name="command_download_notification_channel_name">Komut İndirmeleri</string>
     <string name="command_download_notification_channel_description">Yt-dlp komutu kullanarak indirme işlemi ilerleyişini gösteren bildirim</string>

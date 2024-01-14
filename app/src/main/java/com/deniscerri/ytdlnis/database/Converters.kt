@@ -16,6 +16,12 @@ class Converters {
     fun listOfFormatsToString(list: List<Format?>?) = Gson().toJson(list).toString()
 
     @TypeConverter
+    fun stringToListOfStrings(value: String) = Gson().fromJson(value, Array<String>::class.java).toList()
+
+    @TypeConverter
+    fun listOfStringsToString(list: List<String>) = Gson().toJson(list).toString()
+
+    @TypeConverter
     fun formatToString(format: Format): String = Gson().toJson(format)
 
     @TypeConverter

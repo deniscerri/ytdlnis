@@ -79,7 +79,7 @@
     <string name="add_chapters">Kapitel in Videos</string>
     <string name="embed_thumb_summary">Verwende das Vorschaubild als Cover-Art</string>
     <string name="save_thumb">Vorschaubild speichern</string>
-    <string name="cancel_download">Herunterladen abbrechen</string>
+    <string name="cancel_task">Herunterladen abbrechen</string>
     <string name="you_are_going_to_delete">Löschen</string>
     <string name="incognito_summary">Herunterladen ohne es zum Verlauf hinzuzufügen</string>
     <string name="video_format">Videoformat</string>

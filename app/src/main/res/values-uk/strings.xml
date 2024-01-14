@@ -65,7 +65,7 @@
     <string name="audio_format">Формат аудіо</string>
     <string name="save_thumb_summary">Зберегти мініатюру в папці завантаження</string>
     <string name="audio_quality_summary">0 (найкраще) 10 (найгірше)</string>
-    <string name="cancel_download">Скасувати завантаження</string>
+    <string name="cancel_task">Скасувати завантаження</string>
     <string name="run_command">Виконати команду</string>
     <string name="command_download_notification_channel_name">Команда завантажує</string>
     <string name="items_left">елементів залишилося</string>

@@ -33,6 +33,7 @@ import androidx.work.Data
 import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
+import com.afollestad.materialdialogs.utils.MDUtil.getStringArray
 import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.ui.adapter.ConfigureMultipleDownloadsAdapter
@@ -136,7 +137,9 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = listAdapter
         recyclerView.enableFastScroll()
-        if(sharedPreferences.getBoolean("swipe_gestures", true)){
+
+        val preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
+        if (preferences.getStringSet("swipe_gesture", requireContext().getStringArray(R.array.swipe_gestures_values).toSet())!!.toList().contains("multipledownloadcard")){
             val itemTouchHelper = ItemTouchHelper(simpleCallback)
             itemTouchHelper.attachToRecyclerView(recyclerView)
         }
@@ -603,7 +606,8 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
             items.forEach {
                 it.downloadPath = result.data?.data.toString()
             }
-            Toast.makeText(requireContext(), "Changed every item's download path to: ${FileUtil.formatPath(result.data!!.data.toString())}", Toast.LENGTH_LONG).show()
+            val path = FileUtil.formatPath(result.data!!.data.toString())
+            Snackbar.make(requireView(),getString(R.string.changed_path_for_everyone_to) + " " + path, Snackbar.LENGTH_LONG).show()
         }
     }
 

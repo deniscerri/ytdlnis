@@ -25,9 +25,10 @@
 
             <com.facebook.shimmer.ShimmerFrameLayout
                 android:visibility="gone"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_marginTop="4dp"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
                 app:layout_constraintEnd_toStartOf="@+id/bottomsheet_schedule_button"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
@@ -37,7 +38,7 @@
 
                 <TextView
                     android:id="@+id/bottom_sheet_loading_title"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:maxLines="2"
                     android:singleLine="false"
@@ -64,9 +65,10 @@
 
             <com.facebook.shimmer.ShimmerFrameLayout
                 android:visibility="gone"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:layout_constraintHorizontal_bias="0.0"
+                android:layout_marginEnd="20dp"
                 app:layout_constraintEnd_toStartOf="@+id/bottomsheet_schedule_button"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/shimmer_loading_title"
@@ -74,7 +76,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:maxLines="2"
                     android:singleLine="false"

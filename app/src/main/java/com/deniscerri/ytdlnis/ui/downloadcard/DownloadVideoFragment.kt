@@ -74,8 +74,8 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
     ): View? {
         fragmentView = inflater.inflate(R.layout.fragment_download_video, container, false)
         activity = getActivity()
-        downloadViewModel = ViewModelProvider(requireActivity())[DownloadViewModel::class.java]
-        resultViewModel = ViewModelProvider(requireActivity())[ResultViewModel::class.java]
+        downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
+        resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]
         infoUtil = InfoUtil(requireContext())
         genericVideoFormats = infoUtil.getGenericVideoFormats(requireContext().resources)
         preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
@@ -218,8 +218,9 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
                             downloadItem.videoPreferences.audioFormatIDs.clear()
                             downloadItem.videoPreferences.audioFormatIDs.addAll(it)
                         }
-                        UiUtil.populateFormatCard(requireContext(), formatCard, item.first().format, item.first().audioFormats)
-
+                        UiUtil.populateFormatCard(requireContext(), formatCard, item.first().format,
+                            if(downloadItem.videoPreferences.removeAudio) listOf() else item.first().audioFormats
+                        )
                     }
 
                     override fun onFormatsUpdated(allFormats: List<List<Format>>) {
@@ -241,7 +242,9 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
                         val preferredAudioFormats = downloadViewModel.getPreferredAudioFormats(formats)
                         downloadItem.format = preferredFormat
                         downloadItem.allFormats = formats
-                        UiUtil.populateFormatCard(requireContext(), formatCard, preferredFormat, formats.filter { preferredAudioFormats.contains(it.format_id) })
+                        UiUtil.populateFormatCard(requireContext(), formatCard, preferredFormat,
+                            if(downloadItem.videoPreferences.removeAudio) listOf() else formats.filter { preferredAudioFormats.contains(it.format_id) }
+                        )
                     }
 
                 }
@@ -315,7 +318,8 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
                             updateDataClicked = {
                                 CoroutineScope(SupervisorJob()).launch(Dispatchers.IO) {
                                     resultItem?.apply {
-                                        resultViewModel.updateItemData(this)
+                                        val rsVM = ViewModelProvider(requireActivity())[ResultViewModel::class.java]
+                                        rsVM.updateItemData(this)
                                     }
                                 }
                             },
@@ -330,6 +334,7 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
                             },
                             removeAudioClicked = {
                                 downloadItem.videoPreferences.removeAudio = it
+                                UiUtil.populateFormatCard(requireContext(), formatCard, downloadItem.format, if (it) listOf() else downloadItem.allFormats.filter { downloadItem.videoPreferences.audioFormatIDs.contains(it.format_id) })
                             },
                             extraCommandsClicked = {
                                 val callback = object : ExtraCommandsListener {
@@ -364,6 +369,16 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
         val state = Bundle()
         state.putBoolean("updated", true)
         onViewCreated(requireView(),savedInstanceState = state)
+    }
+
+    @SuppressLint("RestrictedApi")
+    fun updateSelectedAudioFormat(format: Format){
+        downloadItem.videoPreferences.audioFormatIDs.clear()
+        downloadItem.videoPreferences.audioFormatIDs.addAll(arrayListOf(format.format_id))
+        val formatCard = requireView().findViewById<MaterialCardView>(R.id.format_card_constraintLayout)
+        UiUtil.populateFormatCard(requireContext(), formatCard, downloadItem.format,
+            if(downloadItem.videoPreferences.removeAudio) listOf() else listOf(format)
+        )
     }
 
     private var pathResultLauncher = registerForActivityResult(
