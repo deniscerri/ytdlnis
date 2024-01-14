@@ -67,7 +67,7 @@
     <string name="audio_quality_summary">0 (найкраще) 10 (найгірше)</string>
     <string name="cancel_task">Скасувати завантаження</string>
     <string name="run_command">Виконати команду</string>
-    <string name="command_download_notification_channel_name">Команда завантажує</string>
+    <string name="command_download_notification_channel_name">Завантаження команд</string>
     <string name="items_left">елементів залишилося</string>
     <string name="command_download_notification_channel_description">Сповіщення про хід завантаження за допомогою команди yt-dlp</string>
     <string name="remove_duplicates">Видалити дублікати</string>
@@ -327,4 +327,5 @@
     <string name="changelog">Список змін</string>
     <string name="app">Застосунок</string>
     <string name="source">Джерело</string>
+    <string name="cut_unavailable">Вам потрібно оновити дані товару, щоб мати можливість використовувати функцію вирізання</string>
 </resources>

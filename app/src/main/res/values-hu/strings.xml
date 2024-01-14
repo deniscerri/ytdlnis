@@ -30,7 +30,7 @@
     <string name="save_thumb">Miniatűr mentése</string>
     <string name="select_sponsorblock_filtering">Válassza a SponsorBlock szűrést</string>
     <string name="embed_thumb">Miniatűr borítók</string>
-    <string name="search_history_hint">Keresés a történelemből</string>
+    <string name="search_history_hint">Keresés az előzmények között</string>
     <string name="search_command_hint">Keresés a parancsokból</string>
     <string name="download_notification_channel_description">Az értesítés megmutatja az audio és videofájlok letöltésének előrehaladását</string>
     <string name="update_ytdl">Telepítse az yt-dlp új verzióját</string>

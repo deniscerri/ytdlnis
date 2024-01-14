@@ -327,4 +327,5 @@
     <string name="changelog">ਚੇਂਜਲੌਗ</string>
     <string name="app">ਐਪ</string>
     <string name="source">ਸ੍ਰੋਤ</string>
+    <string name="cut_unavailable">ਕੱਟ ਫੀਚਰ ਦੀ ਵਰਤੋਂ ਕਰਨ ਦੇ ਯੋਗ ਹੋਣ ਲਈ ਤੁਹਾਨੂੰ ਆਈਟਮ ਡੇਟਾ ਨੂੰ ਅਪਡੇਟ ਕਰਨ ਦੀ ਲੋੜ ਹੈ</string>
 </resources>

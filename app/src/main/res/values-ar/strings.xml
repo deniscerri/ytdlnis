@@ -327,4 +327,5 @@
     <string name="changelog">سجل التغييرات</string>
     <string name="app">التطبيق</string>
     <string name="source">المصادر</string>
+    <string name="cut_unavailable">تحتاج إلى تحديث بيانات العنصر حتى تتمكن من استخدام ميزة القص</string>
 </resources>

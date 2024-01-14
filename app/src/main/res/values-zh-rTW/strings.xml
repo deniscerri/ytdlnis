@@ -324,4 +324,8 @@
     <string name="ytdl_source">yt-dlp 來源</string>
     <string name="buffer_size">緩衝區大小</string>
     <string name="update_ytdl_stable">yt-dlp 的穩定版本</string>
+    <string name="changelog">更新日誌</string>
+    <string name="cut_unavailable">為了使用剪切功能，您需要更新項目資料</string>
+    <string name="app">應用程式</string>
+    <string name="source">來源</string>
 </resources>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="search">Ara</string>
+    <string name="search">_Ara</string>
     <string name="remove_all">Hepsini Kaldır</string>
     <string name="remove_results">Sonuçları Temizle</string>
     <string name="download_all">Hepsini İndir</string>
@@ -9,7 +9,7 @@
     <string name="directories"> Klasörler</string>
     <string name="music_directory"> Müzik Klasörü</string>
     <string name="video_directory"> Video Klasörü</string>
-    <string name="updating">Güncelleniyor</string>
+    <string name="updating">Güncelleme</string>
     <string name="ytdl_update_hint">İndirmede sorun yaşıyorsanız kullanışlıdır</string>
     <string name="update_ytdl">yt-dlp\'nin yeni sürümünü yükle</string>
     <string name="source_code">Kaynak Kodu</string>
@@ -20,7 +20,7 @@
     <string name="you_are_in_latest_version">Son sürümü kullanıyorsun</string>
     <string name="ytld_update_success">Yeni sürüm yüklendi</string>
     <string name="ytdl_already_updating">Yeni sürüm yükleniyor</string>
-    <string name="ytdl_updating_started">Yeni sürüm indiriliyor</string>
+    <string name="ytdl_updating_started">YTDLnis yeni sürümü.apk</string>
     <string name="Remove">Kaldır</string>
     <string name="ok">Tamam</string>
     <string name="cancel">İptal et</string>
@@ -327,4 +327,7 @@
     <string name="length">Uzunluğu</string>
     <string name="preferred_audio_language">Tercih Edilen Ses Dili</string>
     <string name="update_ytdl_stable">yt-dlp\'nin Kararlı Sürümü</string>
+    <string name="changelog">Değişim günlüğü</string>
+    <string name="app">Uygulama</string>
+    <string name="source">Kaynak</string>
 </resources>
