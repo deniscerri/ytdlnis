@@ -140,7 +140,7 @@
     <string name="pause">Pozastavit</string>
     <string name="search_command_hint">Hledat z příkazů</string>
     <string name="sponsorblock_previews">Náhledy</string>
-    <string name="show_download_card">Zobrazí možnosti pro stahování</string>
+    <string name="show_download_card">Zobrazit kartu stahování</string>
     <string name="format_order">Pořadí formátů</string>
     <string name="fragment_retries">Opakování fragmentů</string>
     <string name="cut_unavailable">Abyste mohli použít funkci střihu, musíte aktualizovat údaje o položce</string>
@@ -249,7 +249,7 @@
     <string name="confirm_terminate">Zastaví všechna stahování a vynutí si zavření aplikace</string>
     <string name="general">Obecné</string>
     <string name="errored">Chybné</string>
-    <string name="download_card_summary">Nastavení způsobu stahování položek</string>
+    <string name="download_card_summary">Upravte nastavení pro tuto položku před stahováním. Zakázáním této možnosti se stahování spustí okamžitě</string>
     <string name="preferred_format_id_summary">Vyberte formát s tímto ID na kartě pro stahování</string>
     <string name="Theme">Motiv</string>
     <string name="cancelled">Zrušené</string>
@@ -328,4 +328,11 @@
     <string name="force_keyframes_summary">Pomalejší proces, ale přesnější střihy</string>
     <string name="preferred_search_engine">Preferovaný vyhledávač</string>
     <string name="couldnt_parse_file">Nelze analyzovat soubor</string>
+    <string name="changed_path_for_everyone_to">Změněná cesta stahování každé položky na:</string>
+    <string name="dismiss">Odmítnout</string>
+    <string name="all">Vše</string>
+    <string name="generic">Generické</string>
+    <string name="multiple_download_card">Znásobit kartu stahování</string>
+    <string name="format_filter">Filtr formátu</string>
+    <string name="format_smallest">Nejmenší formát (podle rozlišení)</string>
 </resources>
