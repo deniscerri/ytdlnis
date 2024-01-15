@@ -61,7 +61,7 @@
     <string name="embed_subtitles">字幕を埋め込む</string>
     <string name="add_chapter">チャプターを追加</string>
     <string name="show_download_card">ダウンロードのオプションを表示</string>
-    <string name="download_card_summary">ダウンロード方法の設定です</string>
+    <string name="download_card_summary">ダウンロード前に設定を変更します。このオプションが無効なら、すぐにダウンロードを開始します</string>
     <string name="ytdl_updating_started">新しいバージョンのダウンロード</string>
     <string name="you_are_going_to_delete_multiple_items">複数の項目を削除します</string>
     <string name="delete_file_too">この端末からファイルを削除</string>
@@ -328,4 +328,10 @@
     <string name="app">アプリ</string>
     <string name="source">取得元</string>
     <string name="cut_unavailable">カット機能を使うにはこの項目のデータを更新する必要があります</string>
+    <string name="dismiss">非表示</string>
+    <string name="all">すべて</string>
+    <string name="multiple_download_card">複数ダウンロードの画面</string>
+    <string name="changed_path_for_everyone_to">各項目のダウンロードパスを以下に変更:</string>
+    <string name="format_filter">形式の絞り込み</string>
+    <string name="format_smallest">最小の形式 (解像度ごとに)</string>
 </resources>
