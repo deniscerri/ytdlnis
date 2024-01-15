@@ -84,8 +84,8 @@
     <string name="author">Autor</string>
     <string name="Open_File">Abrir Archivo</string>
     <string name="warning">Advertencia</string>
-    <string name="show_download_card">Mostrar Opciones de Descarga</string>
-    <string name="download_card_summary">Ajustes de descargas</string>
+    <string name="show_download_card">Mostrar tarjeta de descarga</string>
+    <string name="download_card_summary">Modifique la configuración de ese elemento antes de descargarlo. Deshabilitar esta opción inicia la descarga inmediatamente</string>
     <string name="delete_file_too">Eliminar el archivo del dispositivo</string>
     <string name="you_are_going_to_delete_multiple_items">Eliminación de varios elementos</string>
     <string name="delete_files_too">Eliminar los archivos del dispositivo</string>
@@ -328,4 +328,11 @@
     <string name="app">Aplicación</string>
     <string name="source">Fuente</string>
     <string name="cut_unavailable">Debes actualizar los datos del artículo para poder utilizar la función de corte</string>
+    <string name="changed_path_for_everyone_to">Cambiada la ruta de descarga de cada elemento a:</string>
+    <string name="dismiss">Descartar</string>
+    <string name="all">Todos</string>
+    <string name="generic">Genérico</string>
+    <string name="multiple_download_card">Tarjeta de descarga múltiple</string>
+    <string name="format_filter">Filtro de formato</string>
+    <string name="format_smallest">Formato más pequeño (por resolución)</string>
 </resources>
