@@ -88,7 +88,7 @@
     <string name="search_command_hint">Претрага из команди</string>
     <string name="download_notification_channel_description">Обавештење које приказује напредак преузимања аудио и видео снимака</string>
     <string name="sponsorblock_previews">Прегледи</string>
-    <string name="show_download_card">Прикажи опције за преузимање</string>
+    <string name="show_download_card">Прикажи картицу за преузимање</string>
     <string name="format_order">Редослед формата</string>
     <string name="fragment_retries">Поновни покушаји фрагмента</string>
     <string name="copy_log">Копирај евиденцију</string>
@@ -226,7 +226,7 @@
     <string name="confirm_terminate">Зауставља сва преузимања и принудно затвара апликацију</string>
     <string name="general">Опште</string>
     <string name="errored">Неисправно</string>
-    <string name="download_card_summary">Подешавања за преузимање предмета</string>
+    <string name="download_card_summary">Измените подешавања за тај предмет пре преузимања. Онемогућавање ове опције одмах започиње преузимање</string>
     <string name="preferred_format_id_summary">Изаберите формат са овим ID-ом на картици за преузимање</string>
     <string name="failed_download">Није могуће преузети фајл</string>
     <string name="Theme">Тема</string>
@@ -328,4 +328,11 @@
     <string name="app">Апликација</string>
     <string name="source">Извор</string>
     <string name="cut_unavailable">Морате да ажурирате податке о предмету да бисте могли да користите функцију сечења</string>
+    <string name="dismiss">Одбаци</string>
+    <string name="changed_path_for_everyone_to">Путања за преузимање свих предмета је промењена у:</string>
+    <string name="all">Све</string>
+    <string name="generic">Генерично</string>
+    <string name="multiple_download_card">Картица за вишеструко преузимање</string>
+    <string name="format_filter">Филтер формата</string>
+    <string name="format_smallest">Најмањи формат (по резолуцији)</string>
 </resources>
