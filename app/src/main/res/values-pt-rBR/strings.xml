@@ -48,7 +48,7 @@
     <string name="remove_duplicates">Remover duplicados</string>
     <string name="sort_by">Ordenar por</string>
     <string name="incognito_summary">Baixar sem adicionar no histórico</string>
-    <string name="download">Baixar</string>
+    <string name="download">Download</string>
     <string name="video_quality">Qualidade do vídeo</string>
     <string name="embed_subtitles">Adicionar legendas</string>
     <string name="add_chapter">Adicionar capítulos</string>
@@ -201,14 +201,14 @@
     <string name="red">Vermelho</string>
     <string name="material_you">Material You</string>
     <string name="pure_theme_summary">Tema preto/branco puro</string>
-    <string name="downloaded">"Baixado: "</string>
+    <string name="downloaded">"Download concluído: "</string>
     <string name="monochrome">Monocromático</string>
     <string name="yellow">Amarelo</string>
     <string name="purple">Roxo</string>
     <string name="green">Verde</string>
     <string name="quick_download_summary">Não busque dados no cartão de download</string>
     <string name="quick_download">Download rápido</string>
-    <string name="finished_download_notification_channel_description">Notificação para downloads concluídos</string>
+    <string name="finished_download_notification_channel_description">Notificação de downloads concluídos</string>
     <string name="remove_audio">Remover áudio</string>
     <string name="download_now">Baixar agora</string>
     <string name="download_already_exists">O download já existe</string>
@@ -242,7 +242,7 @@
     <string name="redownload">Baixar novamente</string>
     <string name="cookies">Cookies</string>
     <string name="update_formats_summary">Obtenha os formatos assim que o cartão de download for exibido</string>
-    <string name="start">Começo</string>
+    <string name="start">Começar</string>
     <string name="ytdl_version">Versão do yt-dlp</string>
     <string name="end">Fim</string>
     <string name="kill_app">Encerrar Aplicativo</string>
@@ -318,7 +318,7 @@
     <string name="export_file">Exportar arquivo</string>
     <string name="update_ytdl_master">Versão principal do yt-dlp</string>
     <string name="errored_downloads">Downloads com erros</string>
-    <string name="errored_download_notification_channel_description">Notificação para downloads defeituosos</string>
+    <string name="errored_download_notification_channel_description">Notificação de downloads com erro</string>
     <string name="ytdl_source">Canal de atualização do yt-dlp</string>
     <string name="buffer_size_summary">Tamanho do buffer para downloads, ex. 1024 ou 16K (o padrão é 1024)</string>
     <string name="buffer_size">Tamanho do buffer</string>
