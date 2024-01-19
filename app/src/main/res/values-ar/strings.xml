@@ -137,8 +137,8 @@
     <string name="video_quality">جودة الفيديو</string>
     <string name="embed_subtitles">تضمين الترجمات</string>
     <string name="add_chapter">تعيين الفصول</string>
-    <string name="show_download_card">إظهار بطاقة التحميل</string>
-    <string name="download_card_summary">إعدادات لكيفية تحميل العناصر</string>
+    <string name="show_download_card">إظهار بطاقة التنزيل</string>
+    <string name="download_card_summary">عدِّل الإعدادات لهذا العنصر قبل التنزيل. يؤدي تعطيل هذا الخيار إلى بدء التنزيل على الفور</string>
     <string name="Open_File">فتح الملف</string>
     <string name="delete_files_too">الحذف من وحدة التخزين أيضًا</string>
     <string name="delete_file_too">الحذف من وحدة التخزين أيضًا</string>
@@ -328,4 +328,11 @@
     <string name="app">التطبيق</string>
     <string name="source">المصادر</string>
     <string name="cut_unavailable">تحتاج إلى تحديث بيانات العنصر حتى تتمكن من استخدام ميزة القص</string>
+    <string name="changed_path_for_everyone_to">تغيّر مسار تنزيل كل عنصر إلى:</string>
+    <string name="multiple_download_card">بطاقة تنزيل متعددة</string>
+    <string name="dismiss">تجاهَل</string>
+    <string name="all">الكل</string>
+    <string name="generic">عام</string>
+    <string name="format_filter">نسق التصفيَة</string>
+    <string name="format_smallest">أصغر تنسيق (لكل دقة)</string>
 </resources>
