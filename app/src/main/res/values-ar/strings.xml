@@ -129,7 +129,7 @@
     <string name="remove_duplicates">إزالة المكررة</string>
     <string name="sort_by">الفرز وفقًا لـ</string>
     <string name="remove_downloading">إلغاء التنزيلات</string>
-    <string name="incognito_summary">البحث والتحميل بدون سجلات</string>
+    <string name="incognito_summary">البحث والتنزيل بدون سجلات</string>
     <string name="configure_download">تخصيص التحميل</string>
     <string name="title">العنوان</string>
     <string name="author">الناشر</string>
