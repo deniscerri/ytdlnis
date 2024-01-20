@@ -108,7 +108,7 @@
     <string name="link_you_copied">الرابط الذي نسخته</string>
     <string name="restrict_filenames">تقييد العنوان</string>
     <string name="save_thumb">حفظ الصورة المصغرة</string>
-    <string name="save_thumb_summary">احفظ الصورة المصغرة في مجلد التنزيل</string>
+    <string name="save_thumb_summary">حفظ الصورة المصغرة في مجلد التنزيل</string>
     <string name="audio_format">صيغة الصوت</string>
     <string name="video_format">صيغة الفيديو</string>
     <string name="audio_quality">جودة الصوت</string>
