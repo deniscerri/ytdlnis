@@ -124,7 +124,7 @@
     <string name="api_key">استخدام مفتاح API</string>
     <string name="api_key_summary">توصيات الفيديو من واجهة يوتيوب البرمجية</string>
     <string name="update_app_summary">الإعلام بإصدارات التطبيق الجديدة عند الفتح</string>
-    <string name="downloads">التحميلات</string>
+    <string name="downloads">التنزيلات</string>
     <string name="remove_deleted">إزالة المحذوفة أساسًا</string>
     <string name="remove_duplicates">إزالة المكررة</string>
     <string name="sort_by">الفرز وفقًا لـ</string>
