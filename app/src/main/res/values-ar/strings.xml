@@ -34,7 +34,7 @@
     <string name="command_directory">مجلد الأوامر المخصصة</string>
     <string name="couldnt_find_apk">لم يتم العثور على APK صالح</string>
     <string name="best_quality">أفضل جودة متاحة</string>
-    <string name="downloading">التحميل</string>
+    <string name="downloading">جارِ التنزيل</string>
     <string name="limit_rate">حد السرعة</string>
     <string name="embed_thumb_summary">استخدام الصور المصغرة كغلاف فني</string>
     <string name="add_chapters">فصول الفيديو</string>
