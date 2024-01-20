@@ -82,7 +82,7 @@
     <string name="enable_mtime_summary">ضبط تاريخ ووقت التعديل استنادًا للرابط</string>
     <string name="update_formats">تحيين التنسيقات</string>
     <string name="error_updating_formats">هنالك مشكلة في تحيين التنسيقات!</string>
-    <string name="log_downloads">تقارير التحميل (السجلات)</string>
+    <string name="log_downloads">تقارير التنزيل (السجلات)</string>
     <string name="download_queue">جدول التحميلات</string>
     <string name="running">الجارية</string>
     <string name="command">الأوامر</string>
