@@ -63,7 +63,7 @@
     <string name="edit_selected">تحرير القالب المختار</string>
     <string name="adjust_video">ضبط ملف الفيديو</string>
     <string name="concurrent_downloads">التنزيلات المتزامنة</string>
-    <string name="concurrent_downloads_summary">عدد التحميلات الممكن إجراؤها في نفس الوقت</string>
+    <string name="concurrent_downloads_summary">عدد التنزيلات الممكن إجراؤها في نفس الوقت</string>
     <string name="defaultValue">افتراضي</string>
     <string name="template">قالب</string>
     <string name="logs">السجلات</string>
