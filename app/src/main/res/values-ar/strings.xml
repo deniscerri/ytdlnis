@@ -133,7 +133,7 @@
     <string name="configure_download">تخصيص التنزيل</string>
     <string name="title">العنوان</string>
     <string name="author">الناشر</string>
-    <string name="download">تحميل</string>
+    <string name="download">تنزيل</string>
     <string name="video_quality">جودة الفيديو</string>
     <string name="embed_subtitles">تضمين الترجمات</string>
     <string name="add_chapter">تعيين الفصول</string>
