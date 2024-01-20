@@ -170,12 +170,12 @@
     <string name="clear_errored">تنظيف المتعطلة</string>
     <string name="split_by_chapters">تفريق الفصول</string>
     <string name="items_imported">العناصر المستوردة</string>
-    <string name="download_rescheduled_to">تمت جدولة التحميل الى:</string>
+    <string name="download_rescheduled_to">تمت جدولة التنزيل الى:</string>
     <string name="downloads_running_try_later">أداة التحميل قيد التشغيل. حاول مرة اُخرى لاحقًا</string>
     <string name="ytdl_version">إصدار الـ yt-dlp</string>
     <string name="update_formats_summary">جلب التنسيقات بمجرد ظهور بطاقة التحميل</string>
     <string name="ignore_battery_optimization">تجاهل تحسين البطارية</string>
-    <string name="log_downloads_summary">أنشئ ملف سجّل لكل تنزيل</string>
+    <string name="log_downloads_summary">إنشاء ملف سجل للتنزيل المكتمل</string>
     <string name="shortcuts_desc">طريقة وصول أسرع للأوامر كثيرة الاستخدام</string>
     <string name="restrict_filenames_summary">حصر العنوان بأحرف الـ ASCII فقط، وإزالة \"&amp;\" والمسافات</string>
     <string name="add_chapters_summary">تعليم أجزاء مقطع اليوتيوب و/أو حاجب شرائح الإعلانات كفصول للفيديو</string>
