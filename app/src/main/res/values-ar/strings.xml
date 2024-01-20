@@ -116,7 +116,7 @@
     <string name="cancel_task">إلغاء التحميل</string>
     <string name="run_command">تشغيل الأمر</string>
     <string name="command_download_notification_channel_name">تنزيلات الأوامر</string>
-    <string name="command_download_notification_channel_description">إشعار يُظهر مستوى التقدم في تحميل ملفات الصوت والفيديو بإستخدام أوامر yt-dlp</string>
+    <string name="command_download_notification_channel_description">إشعار يُظهر مستوى التقدم في تنزيل ملفات الصوت والفيديو بإستخدام أوامر yt-dlp</string>
     <string name="items_left">العناصر المتبقية</string>
     <string name="history_is_empty">سجل التحميلات فارغ</string>
     <string name="you_are_going_to_delete">إزالة/حذف</string>
