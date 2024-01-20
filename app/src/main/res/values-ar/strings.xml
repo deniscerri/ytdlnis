@@ -51,7 +51,7 @@
     <string name="embed_subs_summary">دمج الترجمات التي يوفرها الناشر مع ملف الفيديو</string>
     <string name="about">حول</string>
     <string name="link_copied_to_clipboard">تم نسخ الرابط إلى الحافظة</string>
-    <string name="request_permission_desc">يحتاج التطبيق إلى إذن \"التخزين\" لحفظ التحميلات على الجهاز</string>
+    <string name="request_permission_desc">يحتاج التطبيق إلى إذن \"التخزين\" لحفظ التنزيلات على الجهاز</string>
     <string name="exit_app">الخروج من التطبيق</string>
     <string name="warning">تنبيه</string>
     <string name="sponsorblock_nonmusic">أجزاء غير موسيقية/خارج الموضوع</string>
