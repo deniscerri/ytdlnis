@@ -175,7 +175,7 @@
     <string name="ytdl_version">إصدار الـ yt-dlp</string>
     <string name="update_formats_summary">جلب التنسيقات بمجرد ظهور بطاقة التحميل</string>
     <string name="ignore_battery_optimization">تجاهل تحسين البطارية</string>
-    <string name="log_downloads_summary">إنشاء ملف سجل للتحميل المكتمل</string>
+    <string name="log_downloads_summary">أنشئ ملف سجّل لكل تنزيل</string>
     <string name="shortcuts_desc">طريقة وصول أسرع للأوامر كثيرة الاستخدام</string>
     <string name="restrict_filenames_summary">حصر العنوان بأحرف الـ ASCII فقط، وإزالة \"&amp;\" والمسافات</string>
     <string name="add_chapters_summary">تعليم أجزاء مقطع اليوتيوب و/أو حاجب شرائح الإعلانات كفصول للفيديو</string>
