@@ -44,7 +44,7 @@
     <string name="audio">الصوت</string>
     <string name="video">الفيديو</string>
     <string name="concurrent_fragments">الأجزاء المتزامنة</string>
-    <string name="concurrent_fragments_summary">عدد أجزاء الفيديو الأصلي DASH/HLS التي سيتم تنزيله في نفس الوقت</string>
+    <string name="concurrent_fragments_summary">عدد أجزاء الفيديو الأصلي DASH/HLS التي سيتم تنزيلها في نفس الوقت</string>
     <string name="limit_rate_summary">الحد الأقصى لسرعة التحميل (بالبايت في الثانية)، مثلًا 50K أو 4.2M</string>
     <string name="aria2_summary">التحميل بأداة aria2c بدلًا من الإفتراضية</string>
     <string name="processing">المعالجة</string>
