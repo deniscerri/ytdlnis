@@ -16,7 +16,7 @@
     <string name="search_hint">بحث أو إدخال رابط</string>
     <string name="failed_download">تعذّر تنزيل الملف</string>
     <string name="download_notification_channel_description">إشعار يُظهر مستوى التقدم في تحميل ملفات الصوت والفيديو</string>
-    <string name="download_notification_channel_name">تنزيلات الملف</string>
+    <string name="download_notification_channel_name">تنزيلات الملفات</string>
     <string name="ok">حسنًا</string>
     <string name="ytdl_already_updating">يتم تثبيت أحدث إصدار</string>
     <string name="ytdl_updating_started">بحث/تحميل أحدث إصدار</string>
