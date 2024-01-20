@@ -266,7 +266,7 @@
     <string name="crop_thumb_summary">Recortar miniatura em um quadrado para downloads de áudio</string>
     <string name="fragment_retries">Novas tentativas de fragmento</string>
     <string name="format_order">Ordem do formato</string>
-    <string name="swipe_gestures">Gestos de deslizar</string>
+    <string name="swipe_gestures">Gestos deslizantes</string>
     <string name="piped_instance">Instância Piped</string>
     <string name="piped_instance_summary">Insira a API do servidor Piped, o aplicativo pode usar para consultas e formatos do YouTube</string>
     <string name="retries">Novas tentativas</string>
