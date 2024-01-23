@@ -213,7 +213,7 @@
     <string name="swipe_gestures">ਸਵਾਈਪ ਸੰਕੇਤ</string>
     <string name="swipe_gestures_summary">ਕੁਝ ਖਾਸ ਕਾਰਵਾਈਆਂ ਲਈ ਆਈਟਮਾਂ ਨੂੰ ਸਵਾਈਪ ਕਰੋ</string>
     <string name="audio_only_item">ਇਸ ਆਈਟਮ ਵਿੱਚ ਸਿਰਫ਼ ਆਡੀਓ ਫਾਰਮੈਟ ਸ਼ਾਮਿਲ ਹਨ</string>
-    <string name="show_download_card">ਡਾਊਨਲੋਡ ਕਰਨ ਲਈ ਵਿਕਲਪ ਵਿਖਾਓ</string>
+    <string name="show_download_card">ਡਾਉਨਲੋਡ ਕਾਰਡ ਦਿਖਾਓ</string>
     <string name="warning">ਚੇਤਾਵਨੀ</string>
     <string name="delete_file_too">ਡਿਵਾਈਸ ਤੋਂ ਫਾਈਲ ਮਿਟਾਓ</string>
     <string name="Open_File">ਫਾਈਲ ਖੋਲ੍ਹੋ</string>
@@ -222,7 +222,7 @@
     <string name="video_quality">ਵੀਡੀਓ ਗੁਣਵੱਤਾ</string>
     <string name="embed_subtitles">ਸਬਟਾਈਟਲ ਸ਼ਾਮਿਲ ਕਰੋ</string>
     <string name="add_chapter">ਚੈਪਟਰ ਜੋੜ੍ਹੋ</string>
-    <string name="download_card_summary">ਆਈਟਮਾਂ ਨੂੰ ਡਾਊਨਲੋਡ ਕਰਨ ਦੇ ਤਰੀਕੇ ਲਈ ਸੈਟਿੰਗਾਂ</string>
+    <string name="download_card_summary">ਡਾਊਨਲੋਡ ਕਰਨ ਤੋਂ ਪਹਿਲਾਂ ਉਸ ਆਈਟਮ ਲਈ ਸੈਟਿੰਗਾਂ ਨੂੰ ਸੋਧੋ। ਇਸ ਵਿਕਲਪ ਨੂੰ ਡਿਸੇਬਲ ਕਰਨ ਨਾਲ ਡਾਊਨਲੋਡ ਤੁਰੰਤ ਸ਼ੁਰੂ ਹੋ ਜਾਂਦਾ ਹੈ</string>
     <string name="delete_files_too">ਡਿਵਾਈਸ ਤੋਂ ਫਾਈਲਾਂ ਨੂੰ ਮਿਟਾਓ</string>
     <string name="request_permission_desc">ਇਸ ਐਪ ਨੂੰ ਡੀਵਾਈਸ \'ਤੇ ਡਾਊਨਲੋਡਾਂ ਨੂੰ ਸੁਰੱਖਿਅਤ ਕਰਨ ਲਈ ਫ਼ਾਈਲ ਅਨੁਮਤੀਆਂ ਦੀ ਲੋੜ ਹੈ</string>
     <string name="sponsorblock_outro">ਆਊਟਰੋ</string>
@@ -328,4 +328,11 @@
     <string name="app">ਐਪ</string>
     <string name="source">ਸ੍ਰੋਤ</string>
     <string name="cut_unavailable">ਕੱਟ ਫੀਚਰ ਦੀ ਵਰਤੋਂ ਕਰਨ ਦੇ ਯੋਗ ਹੋਣ ਲਈ ਤੁਹਾਨੂੰ ਆਈਟਮ ਡੇਟਾ ਨੂੰ ਅਪਡੇਟ ਕਰਨ ਦੀ ਲੋੜ ਹੈ</string>
+    <string name="format_filter">ਫਾਰਮੈਟ ਫਿਲਟਰ</string>
+    <string name="changed_path_for_everyone_to">ਹਰ ਆਈਟਮ ਦੇ ਡਾਊਨਲੋਡ ਮਾਰਗ ਨੂੰ ਇਸ ਵਿੱਚ ਬਦਲਿਆ:</string>
+    <string name="dismiss">ਖਾਰਿਜ ਕਰੋ</string>
+    <string name="all">ਸਾਰੇ</string>
+    <string name="generic">ਆਮ</string>
+    <string name="multiple_download_card">ਮਲਟੀਪਲ ਡਾਊਨਲੋਡ ਕਾਰਡ</string>
+    <string name="format_smallest">ਸਭ ਤੋਂ ਛੋਟਾ ਫਾਰਮੈਟ (ਪ੍ਰਤੀ ਰੈਜ਼ੋਲਿਊਸ਼ਨ)</string>
 </resources>
