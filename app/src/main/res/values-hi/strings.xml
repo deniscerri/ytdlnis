@@ -60,7 +60,7 @@
     <string name="add_chapters_summary">वीडियो के अध्यायों के रूप में YouTube / SponsorBlock खंडों को चिह्नित करें</string>
     <string name="save_thumb">थंबनेल सहेजें</string>
     <string name="save_thumb_summary">थंबनेल को डाउनलोड फोल्डर में सेव करें</string>
-    <string name="audio_format">ऑडियो प्रारूप</string>
+    <string name="audio_format">ऑडियो फार्मेट</string>
     <string name="video_format">वीडियो फार्मेट</string>
     <string name="audio_quality_summary">0 (सर्वश्रेष्ठ) 10 (सबसे खराब)</string>
     <string name="you_are_going_to_delete">हटाया जा रहा है</string>
@@ -94,7 +94,7 @@
     <string name="language">भाषा</string>
     <string name="command_templates">कमांड टेम्प्लेट</string>
     <string name="remove_search_history">खोज इतिहास साफ़ करें</string>
-    <string name="error_updating_formats">स्वरूपों को अपडेट करने में त्रुटि!</string>
+    <string name="error_updating_formats">फार्मेटस को अपडेट करने में त्रुटि!</string>
     <string name="log_downloads">लॉग डाउनलोड करें</string>
     <string name="running">प्रगति</string>
     <string name="command">आज्ञा</string>
@@ -138,7 +138,7 @@
     <string name="video_recommendations">वीडियो अनुशंसाएँ</string>
     <string name="preferred_search_engine_summary">ऐप्लिकेशन के अंतर्गत खोजों के लिए उपयोग किया जाने वाला खोज इंजन</string>
     <string name="preferred_home_screen">पसंदीदा होम स्क्रीन</string>
-    <string name="format_id">प्रारूप आईडी</string>
+    <string name="format_id">फार्मेट आईडी</string>
     <string name="codec">कोडेक</string>
     <string name="audio_samplerate">ऑडियो नमूना दर</string>
     <string name="copied_to_clipboard">क्लिपबोर्ड पर नकल</string>
@@ -149,7 +149,7 @@
     <string name="downloaded">"डाउनलोड किया गया: "</string>
     <string name="finished_download_notification_channel_name">डाउनलोड जो समाप्त हो गए हैं</string>
     <string name="remove_audio">ऑडियो हटाएं</string>
-    <string name="preferred_format_id">पसंदीदा प्रारूप आईडी</string>
+    <string name="preferred_format_id">वरीयता प्राप्त फार्मेट आईडी</string>
     <string name="download_now">तुरंत डाउनलोड करें</string>
     <string name="preferred_locale">पसंदीदा लोकेल</string>
     <string name="pause">रोको</string>
@@ -168,8 +168,8 @@
     <string name="clear_temporary_files">अस्थायी फ़ाइलें साफ़ करें</string>
     <string name="red">लाल</string>
     <string name="end">अंत</string>
-    <string name="format_source">प्रारूप स्रोत</string>
-    <string name="audio_only_item">इस आइटम में केवल ऑडियो प्रारूप हैं</string>
+    <string name="format_source">फार्मेट स्रोत</string>
+    <string name="audio_only_item">इस आइटम में केवल ऑडियो फार्मेट हैं</string>
     <string name="sponsorblock">प्रायोजक ब्लॉक</string>
     <string name="configure_download">डाउनलोड समायोजित करें</string>
     <string name="embed_thumb_summary">थंबनेल को कवर आर्ट के रूप में उपयोग करें</string>
@@ -180,7 +180,7 @@
     <string name="api_key_summary">यूट्यूब एपीआई से वीडियो अनुशंसाएँ</string>
     <string name="update_app_summary">खोले जाने पर ऐप के नए संस्करणों की घोषणा करता है</string>
     <string name="downloads">डाउनलोड</string>
-    <string name="download_card_summary">आइटम डाउनलोड करने के तरीके के लिए सेटिंग</string>
+    <string name="download_card_summary">डाउनलोड करने से पहले उस आइटम के लिए सेटिंग्स संशोधित करें। इस विकल्प को अक्षम करने से डाउनलोड तुरंत प्रारंभ हो जाता है</string>
     <string name="Open_File">फ़ाइल खोलें</string>
     <string name="enable_mtime">एमटाइम सक्षम करें</string>
     <string name="enable_mtime_summary">HTTP अंतिम-संशोधित शीर्षलेख को अंतिम संशोधित समय के रूप में सेट करें</string>
@@ -200,12 +200,12 @@
     <string name="url">यूआरएल</string>
     <string name="embed_subtitles">एम्बेड उपशीर्षक</string>
     <string name="sort_by">छंटाई</string>
-    <string name="show_download_card">डाउनलोड करने के लिए विकल्प दिखाएं</string>
+    <string name="show_download_card">डाउनलोड कार्ड दिखाएं</string>
     <string name="sponsorblock_reminders">सदस्यता अनुस्मारक</string>
-    <string name="update_formats">स्वरूपों को अद्यतन करें</string>
+    <string name="update_formats">फार्मेटस अपडेट करें</string>
     <string name="concurrent_downloads">समवर्ती डाउनलोड</string>
-    <string name="format">प्रारूप</string>
-    <string name="select_format">प्रारूप का चयन करें</string>
+    <string name="format">फार्मेट</string>
+    <string name="select_format">फार्मेट का चयन करें</string>
     <string name="search_suggestions">खोज सुझाव</string>
     <string name="search_suggestions_summary">Google से खोज सुझाव प्राप्त करें</string>
     <string name="move_temporary_files_summary">कैचे की गई फ़ाइलों को डाउनलोड फ़ोल्डर में स्थानांतरित करें</string>
@@ -256,14 +256,14 @@
     <string name="socks5_proxy_summary">निर्दिष्ट HTTP/HTTPS/SOCKS प्रॉक्सी का उपयोग करें</string>
     <string name="socks5_proxy">सॉक्स5 प्रॉक्सी यूआरएल</string>
     <string name="move_temporary_files">अस्थायी फ़ाइलों को स्थानांतरित करें</string>
-    <string name="preferred_format_id_summary">डाउनलोड कार्ड में इस आईडी के साथ प्रारूप का चयन करें</string>
+    <string name="preferred_format_id_summary">डाउनलोड कार्ड में इस आईडी के साथ फार्मेट का चयन करें</string>
     <string name="misc">विविध</string>
     <string name="general">आम</string>
     <string name="swipe_gestures">स्वाइप इशारों</string>
     <string name="swipe_gestures_summary">कुछ कार्यों के लिए आइटम स्वाइप करें</string>
     <string name="crop_thumb">थंबनेल क्रॉप करें</string>
     <string name="crop_thumb_summary">ऑडियो डाउनलोड के लिए थंबनेल को एक वर्ग में क्रॉप करें</string>
-    <string name="piped_instance_summary">एक पाइप्ड एपीआई सर्वर लिखें, ऐप यूट्यूब प्रश्नों और प्रारूपों के लिए उपयोग कर सकता है</string>
+    <string name="piped_instance_summary">एक पाइप्ड एपीआई सर्वर डालें, ऐप यूट्यूब प्रश्नों और फार्मेटस के लिए उपयोग कर सकता है</string>
     <string name="audio_quality">ऑडियो गुणवत्ता</string>
     <string name="select_sponsorblock_filtering">प्रायोजक ब्लॉक फ़िल्टरिंग का चयन करें</string>
     <string name="import_from_clipboard">क्लिपबोर्ड से आयात करें</string>
@@ -274,9 +274,9 @@
     <string name="clear_saved">सहेजे हुए मिटाएं</string>
     <string name="save_for_later">डाउनलोड को बाद के लिए सहेजें\?</string>
     <string name="force_keyframes_summary">सटीक वीडियो कट्स, पर धीमा</string>
-    <string name="subtitle_format">सबटाइटल फॉर्मेट</string>
+    <string name="subtitle_format">सबटाइटल फार्मेट</string>
     <string name="hide_thumbnails">थंबनेल छिपाएँ</string>
-    <string name="format_order">फॉर्मेट क्रम</string>
+    <string name="format_order">फार्मेट का क्रम</string>
     <string name="force_keyframes">कट्स पर कीफ़्रेम को बाध्य करें</string>
     <string name="use_extra_commands">अतिरिक्त कमांड जोड़ें</string>
     <string name="use_extra_commands_summary">ऑडियो/वीडियो डाउनलोड के लिए, GUI कॉन्फ़िगरेशन के साथ अतिरिक्त कमांड जोड़ें</string>
@@ -290,7 +290,7 @@
     <string name="write_description_summary">विवरण फ़ाइल लिखें</string>
     <string name="extra_command">अतिरिक्त कमांड</string>
     <string name="use_cookies">कुकीज़ का उपयोग करें</string>
-    <string name="update_formats_background">पृष्ठभूमि में फ़ॉर्मेट अपडेट करें</string>
+    <string name="update_formats_background">पृष्ठभूमि में फार्मेट अपडेट करें</string>
     <string name="auto_update_ytdlp">yt-dlp को ऑटो-अपडेट करें</string>
     <string name="use_sponsorblock">स्पॉन्सरब्लॉक का उपयोग करें</string>
     <string name="scheduling">निर्धारण</string>
@@ -328,4 +328,11 @@
     <string name="app">ऐप</string>
     <string name="source">स्रोत</string>
     <string name="cut_unavailable">कट सुविधा का उपयोग करने में सक्षम होने के लिए आपको आइटम डेटा को अपडेट करना होगा</string>
+    <string name="changed_path_for_everyone_to">प्रत्येक आइटम के डाउनलोड पथ को इसमें बदल दिया:</string>
+    <string name="dismiss">ख़ारिज करें</string>
+    <string name="all">सभी</string>
+    <string name="generic">सामान्य</string>
+    <string name="multiple_download_card">एकाधिक डाउनलोड कार्ड</string>
+    <string name="format_smallest">सबसे छोटा फार्मेट (प्रति रिज़ॉल्यूशन)</string>
+    <string name="format_filter">फार्मेट फ़िल्टर</string>
 </resources>
