@@ -89,7 +89,7 @@
     <string name="download">Скачать</string>
     <string name="embed_subtitles">Добавлять субтитры</string>
     <string name="show_download_card">Показывать параметры загрузки</string>
-    <string name="download_card_summary">Диалог с настройками загрузки файлов</string>
+    <string name="download_card_summary">Измените настройки этого элемента перед загрузкой. Отключение этой опции запускает загрузку немедленно</string>
     <string name="delete_files_too">Удалить файлы с устройства</string>
     <string name="Open_File">Открыть</string>
     <string name="you_are_going_to_delete_multiple_items">Удаление нескольких элементов</string>
@@ -328,4 +328,11 @@
     <string name="app">Приложение</string>
     <string name="source">Источник</string>
     <string name="cut_unavailable">Вам необходимо обновить данные элемента, чтобы иметь возможность использовать функцию резки</string>
+    <string name="changed_path_for_everyone_to">Изменен путь загрузки каждого элемента на:</string>
+    <string name="all">Все</string>
+    <string name="generic">Общий</string>
+    <string name="multiple_download_card">Карта многократной загрузки</string>
+    <string name="format_filter">Фильтр формата</string>
+    <string name="format_smallest">Наименьший формат (по разрешению)</string>
+    <string name="dismiss">Отклонить</string>
 </resources>

@@ -104,7 +104,7 @@
     <string name="api_key_summary">使用 Youtube API 获取视频推荐</string>
     <string name="update_app_summary">打开应用时通知新版本</string>
     <string name="url">URL</string>
-    <string name="show_download_card">显示下载选项</string>
+    <string name="show_download_card">显示下载卡片</string>
     <string name="exit_app">退出应用</string>
     <string name="warning">警告</string>
     <string name="sponsorblock_sponsors">赞助商</string>
@@ -212,7 +212,7 @@
     <string name="help_translate_summary">使用 Weblate 将该应用翻译成您的语言</string>
     <string name="file_size">文件大小</string>
     <string name="help_translate">帮助翻译</string>
-    <string name="download_card_summary">设置如何下载项目</string>
+    <string name="download_card_summary">下载前修改那个项目的设置，停用此选项会立即启动下载</string>
     <string name="clear_temporary_files_summary">删除崩溃/错误/取消下载的缓存文件</string>
     <string name="cache_cleared">临时文件已清除</string>
     <string name="ytdl_version">yt-dlp 版本</string>
@@ -328,4 +328,11 @@
     <string name="app">应用</string>
     <string name="source">源</string>
     <string name="cut_unavailable">你需要更新项目数据才能使用剪切功能</string>
+    <string name="changed_path_for_everyone_to">已将每个项目的下载路径更改至：</string>
+    <string name="dismiss">放弃</string>
+    <string name="all">全部</string>
+    <string name="generic">普通</string>
+    <string name="multiple_download_card">多个下载卡片</string>
+    <string name="format_filter">格式筛选器</string>
+    <string name="format_smallest">最小格式（根据分辨率）</string>
 </resources>
