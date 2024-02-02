@@ -85,7 +85,7 @@
     <string name="command_download_notification_channel_name">Pobrania przy użyciu poleceń</string>
     <string name="history_is_empty">Historia jest pusta</string>
     <string name="you_are_going_to_delete">Usuwanie</string>
-    <string name="url">Źródło</string>
+    <string name="url">URL</string>
     <string name="Open_File">Otwórz plik</string>
     <string name="delete_files_too">Usuń pliki z urządzenia</string>
     <string name="sponsorblock_intro">Wprowadzenie</string>
