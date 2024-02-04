@@ -45,7 +45,7 @@
     <string name="update_ytdl_nightly">Ноћна верзија yt-dlp-а</string>
     <string name="command_download_notification_channel_description">Обавештење које приказује напредак преузимања помоћу команде yt-dlp</string>
     <string name="add_chapters">Поглавља у видео снимцима</string>
-    <string name="concurrent_downloads_summary">Број преузимања која се извршавају у исто време</string>
+    <string name="concurrent_downloads_summary">"Број превземања кои се извршуваат во  исто време"</string>
     <string name="embed_subtitles">Угради титлове</string>
     <string name="clear_saved">Очисти сачувано</string>
     <string name="schedule">Закажи</string>
@@ -53,7 +53,7 @@
     <string name="enable_mtime">Омогући mtime</string>
     <string name="api_key">Користи API кључ</string>
     <string name="download_over_metered_networks">Преузимање преко мобилних података</string>
-    <string name="adjust_video">Прилагођавање видео снимка</string>
+    <string name="adjust_video">Прилагодување на видео</string>
     <string name="processing">Обрада</string>
     <string name="clear_temporary_files_summary">Избришите кеширане фајлове из срушених/неисправних/отказаних преузимања</string>
     <string name="user_agent_header">User-Agent заглавље</string>
@@ -201,7 +201,7 @@
     <string name="select">Изабери</string>
     <string name="updating">Ажурирање</string>
     <string name="preferred_video_codec">Преферирани кодек видео снимка</string>
-    <string name="concurrent_downloads">Истовремена преузимања</string>
+    <string name="concurrent_downloads">Истовремени превземања</string>
     <string name="new_cut">Ново сечење</string>
     <string name="log_downloads">Преузимања евиденција</string>
     <string name="audio_samplerate">Брзина узорковања аудио снимка</string>
@@ -222,7 +222,7 @@
     <string name="error_restarting_download">Грешка при покушају рестартовања преузимања</string>
     <string name="help_translate_summary">Преведите ову апликацију на свој језик користећи Weblate</string>
     <string name="remove_search_history">Очисти историју претраге</string>
-    <string name="adjust_templates">Прилагођавање шаблона</string>
+    <string name="adjust_templates">Прилагоди шаблон</string>
     <string name="confirm_terminate">Зауставља сва преузимања и принудно затвара апликацију</string>
     <string name="general">Опште</string>
     <string name="errored">Неисправно</string>
