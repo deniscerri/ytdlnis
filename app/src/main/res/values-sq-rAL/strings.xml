@@ -95,8 +95,8 @@
     <string name="video_quality">Kualiteti i Videos</string>
     <string name="embed_subtitles">Vendos Titrat</string>
     <string name="add_chapter">Vendos Kapituj</string>
-    <string name="show_download_card">Shfaq Opsionet e Shkarkimit</string>
-    <string name="download_card_summary">Konfiguro përpara se sa ta shkarkosh</string>
+    <string name="show_download_card">Shfaq Kartën e Shkarkimit</string>
+    <string name="download_card_summary">Konfiguro përpara se sa ta shkarkosh. Fikja e këtij opsioni fillon shkarkimin direkt</string>
     <string name="Open_File">Hap Skedarin</string>
     <string name="you_are_going_to_delete_multiple_items">Fshi disa artikuj</string>
     <string name="delete_files_too">Fshi skedarët nga paisja</string>
@@ -328,4 +328,11 @@
     <string name="app">Aplikacioni</string>
     <string name="source">Burimi</string>
     <string name="cut_unavailable">Ju duhet të përditësoni të dhënat e artikullit që të përdorni prerjen</string>
+    <string name="changed_path_for_everyone_to">Direktoria e secilit element u ndryshua tek:</string>
+    <string name="dismiss">Hiq</string>
+    <string name="all">Të gjitha</string>
+    <string name="generic">Baziket</string>
+    <string name="multiple_download_card">Karta me shumë shkarkime</string>
+    <string name="format_filter">Filteri i Formateve</string>
+    <string name="format_smallest">Formati më i vogël (sipas Rezolucionit)</string>
 </resources>
