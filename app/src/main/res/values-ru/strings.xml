@@ -343,7 +343,7 @@
     <string name="set_time">Установить время</string>
     <string name="never">Никогда</string>
     <string name="starts">Начинается</string>
-    <string name="on">Вкл</string>
+    <string name="on_time">Вкл</string>
     <string name="day">День</string>
     <string name="occurrences">случаи</string>
     <string name="download_archive_summary">Используйте архивный файл загрузок yt-dlp, чтобы предотвратить дублирование загрузок вместо встроенной функции</string>

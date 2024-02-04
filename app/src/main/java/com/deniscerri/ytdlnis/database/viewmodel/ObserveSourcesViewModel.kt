@@ -63,10 +63,15 @@ class ObserveSourcesViewModel(private val application: Application) : AndroidVie
     }
 
     fun delete(item: ObserveSourcesItem) = viewModelScope.launch(Dispatchers.IO) {
+        runCatching { DownloadUtil.cancelObservationTaskByID(application, item.id) }
         repository.delete(item)
     }
 
     fun deleteAll() = viewModelScope.launch(Dispatchers.IO) {
+        getAll().forEach {
+            runCatching { DownloadUtil.cancelObservationTaskByID(application, it.id) }
+        }
+
         repository.deleteAll()
     }
 

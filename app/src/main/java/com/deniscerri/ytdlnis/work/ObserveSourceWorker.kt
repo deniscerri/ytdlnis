@@ -83,6 +83,11 @@ class ObserveSourceWorker(
             items.add(downloadItem)
         }
 
+        withContext(Dispatchers.IO){
+            repo.update(item)
+        }
+
+
         if (items.isNotEmpty()){
 
             //QUEUE DOWNLOADS
@@ -149,7 +154,7 @@ class ObserveSourceWorker(
                 DownloadUtil.startDownloadWorker(queuedItems, context)
 
                 if(!useScheduler){
-                    queuedItems.filter { it.downloadStartTime != 0L && (it.title.isEmpty() || it.author.isEmpty() || it.thumb.isEmpty()) }.forEach {
+                    queuedItems.filter { it.downloadStartTime != 0L || (it.title.isEmpty() || it.author.isEmpty() || it.thumb.isEmpty()) }.forEach {
                         try{
                             updateDownloadItem(it, infoUtil, downloadRepo, dbManager.resultDao)
                         }catch (ignored: Exception){}
@@ -165,7 +170,6 @@ class ObserveSourceWorker(
 
             item.alreadyProcessedLinks.addAll(items.map { it.url })
         }
-
 
         if (item.runCount > item.endsAfterCount && item.endsAfterCount > 0){
             item.status = ObserveSourcesRepository.SourceStatus.STOPPED

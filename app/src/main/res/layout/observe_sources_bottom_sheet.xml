@@ -394,20 +394,23 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
+                    android:weightSum="5"
                     android:orientation="horizontal">
 
                     <RadioButton
                         android:id="@+id/on"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="@string/on"
+                        android:text="@string/on_time"
+                        android:layout_weight="2"
                         android:paddingHorizontal="10dp" />
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/on_date"
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         app:hintEnabled="false"
+                        android:layout_weight="3"
                         android:layout_marginStart="15dp"
                         style="@style/Widget.Material3.TextInputLayout.FilledBox">
 
@@ -425,18 +428,22 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:weightSum="7"
                     android:orientation="horizontal">
 
                     <RadioButton
                         android:id="@+id/after"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_weight="3"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="-4dp"
                         android:text="@string/after"
                         android:paddingHorizontal="10dp" />
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/after_nr"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
                         android:layout_height="match_parent"
                         style="@style/Widget.Material3.TextInputLayout.FilledBox.Dense">
 
@@ -452,7 +459,8 @@
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
+                        android:layout_weight="2"
                         android:layout_height="wrap_content"
                         android:paddingHorizontal="10dp"
                         android:text="@string/occurrences"/>

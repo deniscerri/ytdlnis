@@ -342,7 +342,7 @@
     <string name="ends">Termina</string>
     <string name="never">Nunca</string>
     <string name="after">Depois</string>
-    <string name="on">Habilitar</string>
+    <string name="on_time">Habilitar</string>
     <string name="week">Semana</string>
     <string name="month">Mês</string>
     <string name="bitrate">Taxa de bits</string>

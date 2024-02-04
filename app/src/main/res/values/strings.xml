@@ -350,7 +350,7 @@
     <string name="starts">Starts</string>
     <string name="ends">Ends</string>
     <string name="never">Never</string>
-    <string name="on">On</string>
+    <string name="on_time">On</string>
     <string name="after">After</string>
     <string name="occurrences">occurrences</string>
     <string name="day">Day</string>

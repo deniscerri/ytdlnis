@@ -343,7 +343,7 @@
     <string name="set_time">Встановити час</string>
     <string name="ends">Закінчується</string>
     <string name="never">Ніколи</string>
-    <string name="on">Вкл</string>
+    <string name="on_time">Вкл</string>
     <string name="after">Після</string>
     <string name="day">День</string>
     <string name="week">Тиждень</string>
