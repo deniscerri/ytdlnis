@@ -26,9 +26,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.afollestad.materialdialogs.utils.MDUtil.getStringArray
 import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
-import com.deniscerri.ytdlnis.ui.adapter.CookieAdapter
 import com.deniscerri.ytdlnis.database.models.CookieItem
 import com.deniscerri.ytdlnis.database.viewmodel.CookieViewModel
+import com.deniscerri.ytdlnis.ui.adapter.CookieAdapter
 import com.deniscerri.ytdlnis.util.UiUtil
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.chip.Chip
@@ -39,6 +39,7 @@ import com.google.android.material.textfield.TextInputLayout
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
 
 
@@ -162,38 +163,51 @@ class CookiesFragment : Fragment(), CookieAdapter.OnItemClickListener {
     }
 
     private fun showDialog(url: String){
-        val builder = MaterialAlertDialogBuilder(requireContext())
-        builder.setTitle(getString(R.string.cookies))
-        val inputLayout = layoutInflater.inflate(R.layout.textinput, null)
-        val editText = inputLayout.findViewById<EditText>(R.id.url_edittext)
-        inputLayout.findViewById<TextInputLayout>(R.id.url_textinput).hint = "URL"
-        val text = if (url.isNullOrBlank()) "https://" else url
-        editText.setText(text)
-        editText.setSelection(editText.text.length)
-        builder.setView(inputLayout)
-        builder.setPositiveButton(
-            getString(R.string.get_cookies)
-        ) { dialog: DialogInterface?, which: Int ->
-            val myIntent = Intent(requireContext(), WebViewActivity::class.java)
-            myIntent.putExtra("url", editText.text.toString())
-            startActivity(myIntent)
-        }
+        lifecycleScope.launch {
+            var item = withContext(Dispatchers.IO){
+                cookiesViewModel.getByURL(url)
+            }
 
-        // handle the negative button of the alert dialog
-        builder.setNegativeButton(
-            getString(R.string.cancel)
-        ) { dialog: DialogInterface?, which: Int -> }
-        val dialog = builder.create()
-        editText.doOnTextChanged { text, start, before, count ->
+
+            val builder = MaterialAlertDialogBuilder(requireContext())
+            builder.setTitle(getString(R.string.cookies))
+            val inputLayout = layoutInflater.inflate(R.layout.textinput, null)
+            val editText = inputLayout.findViewById<EditText>(R.id.url_edittext)
+            inputLayout.findViewById<TextInputLayout>(R.id.url_textinput).hint = "URL"
+            val text = if (url.isNullOrBlank()) "https://" else url
+            editText.setText(text)
+            editText.setSelection(editText.text.length)
+            builder.setView(inputLayout)
+            builder.setNeutralButton(
+                getString(android.R.string.copy)
+            ) { dialog: DialogInterface?, which: Int ->
+                UiUtil.copyToClipboard(item.content, requireActivity())
+            }
+            builder.setPositiveButton(
+                getString(R.string.get_cookies)
+            ) { dialog: DialogInterface?, which: Int ->
+                val myIntent = Intent(requireContext(), WebViewActivity::class.java)
+                myIntent.putExtra("url", editText.text.toString())
+                startActivity(myIntent)
+            }
+
+            // handle the negative button of the alert dialog
+            builder.setNegativeButton(
+                getString(R.string.cancel)
+            ) { dialog: DialogInterface?, which: Int -> }
+            val dialog = builder.create()
+            editText.doOnTextChanged { text, start, before, count ->
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = editText.text.isNotEmpty()
+            }
+            dialog.show()
+            val imm = mainActivity.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+            editText!!.postDelayed({
+                editText.requestFocus()
+                imm.showSoftInput(editText, 0)
+            }, 300)
             dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = editText.text.isNotEmpty()
         }
-        dialog.show()
-        val imm = mainActivity.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-        editText!!.postDelayed({
-            editText.requestFocus()
-            imm.showSoftInput(editText, 0)
-        }, 300)
-        dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = editText.text.isNotEmpty()
+
     }
 
     companion object {

@@ -31,6 +31,7 @@ import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.util.InfoUtil
 import com.deniscerri.ytdlnis.util.UiUtil
 import com.deniscerri.ytdlnis.util.Extensions.setTextAndRecalculateWidth
+import com.deniscerri.ytdlnis.util.Extensions.toStringDuration
 import com.deniscerri.ytdlnis.util.VideoPlayerUtil
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -203,7 +204,7 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val urls
         //poll video progress
         lifecycleScope.launch {
             videoProgress(player).collect { p ->
-                val currentTime = infoUtil.formatIntegerDuration(p, Locale.US)
+                val currentTime = p.toStringDuration(Locale.US)
                 durationText.text = "$currentTime / ${item.duration}"
                 val startTimestamp = convertStringToTimestamp(fromTextInput.editText!!.text.toString())
                 if (toTextInput.editText!!.text.isNotBlank()){
@@ -310,11 +311,11 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val urls
                     val endValue = (endSeconds.toFloat() / endTimestamp) * 100
 
                     if (seconds == 0) {
-                        fromTextInput.editText!!.setTextAndRecalculateWidth(infoUtil.formatIntegerDuration(startTimestamp, Locale.US))
+                        fromTextInput.editText!!.setTextAndRecalculateWidth(startTimestamp.toStringDuration(Locale.US))
                     }else if (startValue > 100){
                         startTimestamp = 0
                         seconds = 0
-                        fromTextInput.editText!!.setTextAndRecalculateWidth(infoUtil.formatIntegerDuration(startTimestamp, Locale.US))
+                        fromTextInput.editText!!.setTextAndRecalculateWidth(startTimestamp.toStringDuration(Locale.US))
                         startValue = 0F
                     }
 
@@ -350,14 +351,14 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val urls
                     var endValue = (seconds.toFloat() / endTimestamp) * 100
                     if (endValue > 100F){
                         endTimestamp = timeSeconds
-                        toTextInput.editText!!.setTextAndRecalculateWidth(infoUtil.formatIntegerDuration(endTimestamp, Locale.US))
+                        toTextInput.editText!!.setTextAndRecalculateWidth(endTimestamp.toStringDuration(Locale.US))
                         endValue = 100F
                     }
 
                     if (seconds == 0) {
-                        toTextInput.editText!!.setTextAndRecalculateWidth(infoUtil.formatIntegerDuration(endTimestamp, Locale.US))
+                        toTextInput.editText!!.setTextAndRecalculateWidth(endTimestamp.toStringDuration(Locale.US))
                     }else if (endValue <= rangeSlider.valueFrom.toInt()){
-                        toTextInput.editText!!.setTextAndRecalculateWidth(infoUtil.formatIntegerDuration(endTimestamp, Locale.US))
+                        toTextInput.editText!!.setTextAndRecalculateWidth(endTimestamp.toStringDuration(Locale.US))
                     }
 
                     toTextInput.editText!!.setTextAndRecalculateWidth(toTextInput.editText!!.text.toString())
@@ -402,8 +403,8 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val urls
         val startTimestamp = (values[0].toInt() * timeSeconds) / 100
         val endTimestamp = (values[1].toInt() * timeSeconds) / 100
 
-        val startTimestampString = infoUtil.formatIntegerDuration(startTimestamp, Locale.US)
-        val endTimestampString = infoUtil.formatIntegerDuration(endTimestamp, Locale.US)
+        val startTimestampString = startTimestamp.toStringDuration(Locale.US)
+        val endTimestampString = endTimestamp.toStringDuration(Locale.US)
 
         fromTextInput.editText!!.setTextAndRecalculateWidth(startTimestampString)
         toTextInput.editText!!.setTextAndRecalculateWidth(endTimestampString)

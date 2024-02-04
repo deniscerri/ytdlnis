@@ -77,7 +77,15 @@ class DownloadCommandFragment(private val resultItem: ResultItem? = null, privat
         super.onViewCreated(view, savedInstanceState)
         lifecycleScope.launch {
             downloadItem = withContext(Dispatchers.IO){
-                if (currentDownloadItem != null && currentDownloadItem!!.type == DownloadViewModel.Type.command){
+                if (currentDownloadItem != null){
+                    currentDownloadItem?.apply {
+                        if (type != DownloadViewModel.Type.command){
+                            type = DownloadViewModel.Type.command
+                        }
+
+                        format = downloadViewModel.getFormat(allFormats, DownloadViewModel.Type.command)
+                    }
+
                     val string = Gson().toJson(currentDownloadItem, DownloadItem::class.java)
                     Gson().fromJson(string, DownloadItem::class.java)
                 }else{

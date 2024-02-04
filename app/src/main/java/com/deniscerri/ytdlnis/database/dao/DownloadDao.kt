@@ -16,6 +16,9 @@ interface DownloadDao {
     @Query("SELECT * FROM downloads WHERE status in ('Active', 'ActivePaused', 'PausedReQueued')")
     fun getActiveDownloads() : Flow<List<DownloadItem>>
 
+    @Query("SELECT * FROM downloads WHERE status = 'Processing'")
+    fun getProcessingDownloads() : Flow<List<DownloadItem>>
+
     @Query("SELECT COUNT(*) FROM downloads WHERE status in ('Active', 'ActivePaused', 'PausedReQueued')")
     fun getActiveDownloadsCountFlow() : Flow<Int>
 
@@ -25,8 +28,28 @@ interface DownloadDao {
     @Query("SELECT COUNT(*) FROM downloads WHERE status in (:status)")
     fun getDownloadsCountByStatus(status : List<String>) : Int
 
+
+    @Query("""
+        SELECT COUNT(*) FROM downloads WHERE status = 'Processing'
+        UNION
+        SELECT COUNT(*) FROM downloads WHERE status ='Processing' AND type =
+            (SELECT type from downloads WHERE status = 'Processing' ORDER BY id LIMIT 1)
+    """)
+    fun getProcessingDownloadsCountByType() : List<Int>
+
+
+    @Query("UPDATE downloads set status = 'Processing' WHERE id in (:ids)")
+    suspend fun updateItemsToProcessing(ids: List<Long>)
+
+
+    @Query("SELECT * FROM downloads WHERE status = 'Processing' ORDER BY id LIMIT 1")
+    fun getFirstProcessingDownload() : DownloadItem
+
     @Query("SELECT * FROM downloads WHERE status in('Active','ActivePaused','PausedReQueued')")
     fun getActiveAndPausedDownloadsList() : List<DownloadItem>
+
+    @Query("SELECT * FROM downloads WHERE status = 'Processing'")
+    fun getProcessingDownloadsList() : List<DownloadItem>
 
     @Query("SELECT * FROM downloads WHERE status='Active'")
     fun getActiveDownloadsList() : List<DownloadItem>
@@ -126,6 +149,9 @@ interface DownloadDao {
     @Query("DELETE FROM downloads WHERE status='Saved'")
     suspend fun deleteSaved()
 
+    @Query("DELETE FROM downloads WHERE status='Processing'")
+    suspend fun deleteProcessing()
+
     @Query("DELETE FROM downloads WHERE id in (:list)")
     suspend fun deleteAllWithIDs(list: List<Long>)
 
@@ -174,11 +200,17 @@ interface DownloadDao {
     @Query("Select id from downloads where id not in (:list) and status in (:status)")
     fun getDownloadIDsNotPresentInList(list: List<Long>, status: List<String>) : List<Long>
 
+    @Query("Select url from downloads where status in (:status)")
+    fun getURLsByStatus(status: List<String>) : List<String>
+
     @Query("UPDATE downloads SET downloadStartTime=0 where id in (:list)")
     fun resetScheduleTimeForItems(list: List<Long>)
 
     @Query("Update downloads SET status='Queued', downloadStartTime = 0 WHERE id in (:list)")
     fun reQueueDownloadItems(list: List<Long>)
+
+    @Query("Update downloads SET status='Saved' WHERE status='Processing'")
+    fun updateProcessingtoSavedStatus()
 
     @Transaction
     fun putAtTopOfTheQueue(id: Long){

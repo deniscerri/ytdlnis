@@ -22,6 +22,7 @@ class HistoryViewModel(application: Application) : AndroidViewModel(application)
     val websiteFilter = MutableLiveData("")
     private val queryFilter = MutableLiveData("")
     private val formatFilter = MutableLiveData("")
+    private val notDeletedFilter = MutableLiveData(false)
 
     val allItems : LiveData<List<HistoryItem>>
     private var _items = MediatorLiveData<List<HistoryItem>>()
@@ -32,19 +33,23 @@ class HistoryViewModel(application: Application) : AndroidViewModel(application)
         allItems = repository.items.asLiveData()
 
         _items.addSource(allItems){
-            filter(queryFilter.value!!, formatFilter.value!!, websiteFilter.value!!, sortType.value!!, sortOrder.value!!)
+            filter(queryFilter.value!!, formatFilter.value!!, websiteFilter.value!!, sortType.value!!, sortOrder.value!!, notDeletedFilter.value!!)
         }
         _items.addSource(formatFilter){
-            filter(queryFilter.value!!, formatFilter.value!!, websiteFilter.value!!, sortType.value!!, sortOrder.value!!)
+            filter(queryFilter.value!!, formatFilter.value!!, websiteFilter.value!!, sortType.value!!, sortOrder.value!!, notDeletedFilter.value!!)
         }
         _items.addSource(sortType){
-            filter(queryFilter.value!!, formatFilter.value!!, websiteFilter.value!!, sortType.value!!, sortOrder.value!!)
+            filter(queryFilter.value!!, formatFilter.value!!, websiteFilter.value!!, sortType.value!!, sortOrder.value!!, notDeletedFilter.value!!)
         }
         _items.addSource(websiteFilter){
-            filter(queryFilter.value!!, formatFilter.value!!, websiteFilter.value!!, sortType.value!!, sortOrder.value!!)
+            filter(queryFilter.value!!, formatFilter.value!!, websiteFilter.value!!, sortType.value!!, sortOrder.value!!, notDeletedFilter.value!!)
         }
         _items.addSource(queryFilter){
-            filter(queryFilter.value!!, formatFilter.value!!, websiteFilter.value!!, sortType.value!!, sortOrder.value!!)
+            filter(queryFilter.value!!, formatFilter.value!!, websiteFilter.value!!, sortType.value!!, sortOrder.value!!, notDeletedFilter.value!!)
+        }
+
+        _items.addSource(notDeletedFilter){
+            filter(queryFilter.value!!, formatFilter.value!!, websiteFilter.value!!, sortType.value!!, sortOrder.value!!, notDeletedFilter.value!!)
         }
 
     }
@@ -76,8 +81,12 @@ class HistoryViewModel(application: Application) : AndroidViewModel(application)
         formatFilter.value = filter
     }
 
-    private fun filter(query : String, format : String, site : String, sortType: HistorySortType, sort: SORTING) = viewModelScope.launch(Dispatchers.IO){
-        _items.postValue(repository.getFiltered(query, format, site, sortType, sort))
+    fun setNotDeleted(filter: Boolean){
+        notDeletedFilter.value = filter
+    }
+
+    private fun filter(query : String, format : String, site : String, sortType: HistorySortType, sort: SORTING, notDeleted: Boolean) = viewModelScope.launch(Dispatchers.IO){
+        _items.postValue(repository.getFiltered(query, format, site, sortType, sort, notDeleted))
     }
 
     fun getAll() : List<HistoryItem> {

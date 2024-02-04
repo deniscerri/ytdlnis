@@ -147,7 +147,7 @@ class FormatSelectionBottomSheetDialog(private val items: List<DownloadItem?>, p
         }
 
         val refreshBtn = view.findViewById<Button>(R.id.format_refresh)
-        if (!hasGenericFormats || items.isEmpty()) refreshBtn.visibility = View.GONE
+        if (!hasGenericFormats || items.isEmpty() || items.first()?.url?.isEmpty() == true) refreshBtn.visibility = View.GONE
 
 
         refreshBtn.setOnClickListener {

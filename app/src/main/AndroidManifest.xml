@@ -202,8 +202,9 @@
         <receiver android:name=".receiver.CancelDownloadNotificationReceiver" />
         <receiver android:name=".receiver.CancelWorkReceiver" />
         <receiver android:name=".receiver.PauseDownloadNotificationReceiver" />
-        <receiver android:name=".receiver.AlarmStartReceiver" />
-        <receiver android:name=".receiver.AlarmStopReceiver" />
+        <receiver android:name=".receiver.downloadAlarmReceivers.AlarmStartReceiver" />
+        <receiver android:name=".receiver.downloadAlarmReceivers.AlarmStopReceiver" />
+        <receiver android:name=".receiver.ObserveAlarmReceiver" />
 
         <activity
             android:name=".receiver.ResumeActivity"

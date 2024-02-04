@@ -163,7 +163,7 @@ class MainActivity : BaseActivity() {
         if (navigationView is NavigationView){
             (navigationView as NavigationView).setupWithNavController(navController)
             //terminate button
-            (navigationView as NavigationView).menu.getItem(7).setOnMenuItemClickListener {
+            (navigationView as NavigationView).menu.getItem(8).setOnMenuItemClickListener {
                 if (preferences.getBoolean("ask_terminate_app", true)){
                     var doNotShowAgain = false
                     val terminateDialog = MaterialAlertDialogBuilder(this)
@@ -204,7 +204,7 @@ class MainActivity : BaseActivity() {
                 true
             }
             //settings button
-            (navigationView as NavigationView).menu.getItem(8).setOnMenuItemClickListener {
+            (navigationView as NavigationView).menu.getItem(9).setOnMenuItemClickListener {
                 val intent = Intent(context, SettingsActivity::class.java)
                 startActivity(intent)
                 true
@@ -244,7 +244,7 @@ class MainActivity : BaseActivity() {
                     if(DBManager.getInstance(this@MainActivity).downloadDao.getDownloadsCountByStatus(listOf("Active", "Queued")) == 0){
                         if (UpdateUtil(this@MainActivity).updateYoutubeDL() == YoutubeDL.UpdateStatus.DONE) {
                             val version = YoutubeDL.getInstance().version(context)
-                            Snackbar.make(findViewById(android.R.id.content),
+                            Snackbar.make(findViewById(R.id.frame_layout),
                                 this@MainActivity.getString(R.string.ytld_update_success) + " [${version}]",
                                 Snackbar.LENGTH_LONG).show()
                         }
@@ -253,6 +253,8 @@ class MainActivity : BaseActivity() {
 
             }
         }
+
+
 
     }
     override fun onSaveInstanceState(savedInstanceState: Bundle) {

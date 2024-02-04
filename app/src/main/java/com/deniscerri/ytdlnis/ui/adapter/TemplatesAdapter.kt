@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.CommandTemplate
 import com.deniscerri.ytdlnis.database.models.LogItem
+import com.deniscerri.ytdlnis.util.Extensions.popup
 import com.google.android.material.card.MaterialCardView
 
 class TemplatesAdapter(onItemClickListener: OnItemClickListener, activity: Activity) : ListAdapter<CommandTemplate?, TemplatesAdapter.ViewHolder>(AsyncDifferConfig.Builder(
@@ -46,6 +47,7 @@ class TemplatesAdapter(onItemClickListener: OnItemClickListener, activity: Activ
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)
         val card = holder.item
+        card.popup()
 
         val title = card.findViewById<TextView>(R.id.title)
         title.text = item?.title

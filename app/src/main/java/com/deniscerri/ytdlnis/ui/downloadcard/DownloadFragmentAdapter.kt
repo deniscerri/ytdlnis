@@ -11,7 +11,8 @@ class DownloadFragmentAdapter (
     fragmentManager : FragmentManager,
     lifecycle : Lifecycle,
     private var result: ResultItem,
-    private var downloadItem: DownloadItem?
+    private var downloadItem: DownloadItem?,
+    private var nonSpecific: Boolean = false
 ) : FragmentStateAdapter(fragmentManager, lifecycle) {
 
     fun setResultItem(res: ResultItem){
@@ -35,8 +36,8 @@ class DownloadFragmentAdapter (
 
     override fun createFragment(position: Int): Fragment {
         return when(position){
-            0 -> DownloadAudioFragment(result, downloadItem)
-            1 -> DownloadVideoFragment(result, downloadItem)
+            0 -> DownloadAudioFragment(result, downloadItem,"", nonSpecific)
+            1 -> DownloadVideoFragment(result, downloadItem,"",  nonSpecific)
             else -> DownloadCommandFragment(result, downloadItem)
         }
     }

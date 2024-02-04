@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.TerminalItem
+import com.deniscerri.ytdlnis.util.Extensions.popup
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.progressindicator.LinearProgressIndicator
@@ -47,6 +48,8 @@ class TerminalDownloadsAdapter(onItemClickListener: OnItemClickListener, activit
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)
         val card = holder.cardView
+        card.popup()
+
         card.tag = "${item!!.id}##card"
 
         // PROGRESS BAR ----------------------------------------------------

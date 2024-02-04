@@ -9,6 +9,9 @@ interface CookieDao {
     @Query("SELECT * FROM cookies ORDER BY id DESC")
     fun getAllCookies() : List<CookieItem>
 
+    @Query("SELECT * FROM cookies WHERE url = :url LIMIT 1")
+    fun getByURL(url: String) : CookieItem
+
     @Query("SELECT * FROM cookies ORDER BY id DESC")
     fun getAllCookiesFlow() : Flow<List<CookieItem>>
 

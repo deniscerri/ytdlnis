@@ -1,5 +1,6 @@
 package com.deniscerri.ytdlnis.ui.adapter
 
+import android.animation.ValueAnimator
 import android.app.Activity
 import android.content.SharedPreferences
 import android.graphics.Color
@@ -18,10 +19,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
+import com.deniscerri.ytdlnis.util.Extensions
+import com.deniscerri.ytdlnis.util.Extensions.popup
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.squareup.picasso.Picasso
+
 
 class HomeAdapter(onItemClickListener: OnItemClickListener, activity: Activity) : ListAdapter<ResultItem?, HomeAdapter.ViewHolder>(AsyncDifferConfig.Builder(
     DIFF_CALLBACK
@@ -55,6 +59,7 @@ class HomeAdapter(onItemClickListener: OnItemClickListener, activity: Activity) 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val video = getItem(position)
         val card = holder.cardView
+        card.popup()
 
         val uiHandler = Handler(Looper.getMainLooper())
         val thumbnail = card.findViewById<ImageView>(R.id.result_image_view)

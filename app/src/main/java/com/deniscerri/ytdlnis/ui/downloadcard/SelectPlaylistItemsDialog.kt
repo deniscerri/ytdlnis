@@ -22,6 +22,7 @@ import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.ui.adapter.PlaylistAdapter
 import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.models.ResultItem
+import com.deniscerri.ytdlnis.database.repository.DownloadRepository
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdlnis.receiver.ShareActivity
@@ -31,6 +32,7 @@ import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.textfield.TextInputLayout
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -197,11 +199,13 @@ class SelectPlaylistItemsDialog : DialogFragment(), PlaylistAdapter.OnItemClickL
                         downloadItems.add(i)
                     }
 
-                    withContext(Dispatchers.Main){
-                        findNavController().navigate(R.id.action_selectPlaylistItemsDialog_to_downloadMultipleBottomSheetDialog, bundleOf(
-                            Pair("downloads", downloadItems)
-                        ))
+                    CoroutineScope(Dispatchers.IO).launch {
+                        downloadViewModel.insertToProcessing(downloadItems)
                     }
+
+                    findNavController().navigate(R.id.downloadMultipleBottomSheetDialog2, bundleOf(
+                        Pair("type", downloadItems[0].type)
+                    ))
                 }
 
                 dismiss()

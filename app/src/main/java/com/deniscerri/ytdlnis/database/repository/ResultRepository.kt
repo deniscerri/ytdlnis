@@ -65,6 +65,10 @@ class ResultRepository(private val resultDao: ResultDao, private val context: Co
         val items : ArrayList<ResultItem?> = arrayListOf()
         do {
             val tmp = infoUtil.getPlaylist(query, nextPageToken, if (items.isNotEmpty()) items[0]?.playlistTitle ?: "" else "")
+            val ids = resultDao.insertMultiple(tmp.videos.toList())
+            ids.forEachIndexed { index, id ->
+                tmp.videos[index]?.id = id
+            }
             items.addAll(tmp.videos)
             val tmpToken = tmp.nextPageToken
             if (tmpToken.isEmpty()) break
@@ -72,10 +76,6 @@ class ResultRepository(private val resultDao: ResultDao, private val context: Co
             nextPageToken = tmpToken
         } while (true)
         itemCount.value = items.size
-        val ids = resultDao.insertMultiple(items.toList())
-        ids.forEachIndexed { index, id ->
-            items[index]?.id = id
-        }
         return items
     }
 

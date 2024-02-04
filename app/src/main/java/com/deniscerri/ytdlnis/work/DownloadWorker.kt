@@ -29,6 +29,7 @@ import com.deniscerri.ytdlnis.database.models.LogItem
 import com.deniscerri.ytdlnis.database.repository.DownloadRepository
 import com.deniscerri.ytdlnis.database.repository.LogRepository
 import com.deniscerri.ytdlnis.util.Extensions.getMediaDuration
+import com.deniscerri.ytdlnis.util.Extensions.toStringDuration
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.InfoUtil
 import com.deniscerri.ytdlnis.util.NotificationUtil
@@ -228,7 +229,7 @@ class DownloadWorker(
                                             val file = File(this)
                                             var duration = downloadItem.duration
                                             val d = file.getMediaDuration(context)
-                                            if (d > 0) duration = infoUtil.formatIntegerDuration(d, Locale.US)
+                                            if (d > 0) duration = d.toStringDuration(Locale.US)
 
                                             downloadItem.format.filesize = file.length()
                                             downloadItem.format.container = file.extension

@@ -1,5 +1,6 @@
 package com.deniscerri.ytdlnis.ui.downloadcard
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.content.SharedPreferences
@@ -18,6 +19,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.isVisible
+import androidx.core.view.setPadding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -48,7 +50,7 @@ import kotlinx.coroutines.withContext
 import java.io.File
 
 
-class DownloadAudioFragment(private var resultItem: ResultItem? = null, private var currentDownloadItem: DownloadItem? = null, private var url: String = "") : Fragment(), GUISync {
+class DownloadAudioFragment(private var resultItem: ResultItem? = null, private var currentDownloadItem: DownloadItem? = null, private var url: String = "", private var nonSpecific: Boolean = false) : Fragment(), GUISync {
     private var fragmentView: View? = null
     private var activity: Activity? = null
     private lateinit var downloadViewModel : DownloadViewModel
@@ -63,6 +65,7 @@ class DownloadAudioFragment(private var resultItem: ResultItem? = null, private 
     lateinit var author : TextInputLayout
     lateinit var preferences: SharedPreferences
     lateinit var shownFields: List<String>
+    @SuppressLint("RestrictedApi")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -95,7 +98,7 @@ class DownloadAudioFragment(private var resultItem: ResultItem? = null, private 
 
             try {
                 title = view.findViewById(R.id.title_textinput)
-                title.visibility = if (shownFields.contains("title")) View.VISIBLE else View.GONE
+                title.visibility = if (shownFields.contains("title") && !nonSpecific) View.VISIBLE else View.GONE
                 if (title.editText?.text?.isEmpty() == true){
                     title.editText!!.setText(downloadItem.title)
                     title.endIconMode = END_ICON_NONE
@@ -109,7 +112,7 @@ class DownloadAudioFragment(private var resultItem: ResultItem? = null, private 
                 })
 
                 author = view.findViewById(R.id.author_textinput)
-                author.visibility = if (shownFields.contains("author")) View.VISIBLE else View.GONE
+                author.visibility = if (shownFields.contains("author") && !nonSpecific) View.VISIBLE else View.GONE
                 if (author.editText?.text?.isEmpty() == true){
                     author.editText!!.setText(downloadItem.author)
                     author.endIconMode = END_ICON_NONE
@@ -185,13 +188,22 @@ class DownloadAudioFragment(private var resultItem: ResultItem? = null, private 
                         }
                     }
                 }
-                if (formats.isEmpty()) formats.addAll(downloadItem.allFormats.filter { it.format_note.contains("audio", ignoreCase = true) })
+                if (formats.isEmpty()) formats.addAll(downloadItem.allFormats.filter { it.vcodec.isBlank() || it.vcodec == "none"})
 
                 val containers = requireContext().resources.getStringArray(R.array.audio_containers)
                 var containerPreference = sharedPreferences.getString("audio_format", "Default")
                 if (containerPreference == "Default") containerPreference = getString(R.string.defaultValue)
                 val container = view.findViewById<TextInputLayout>(R.id.downloadContainer)
                 container.visibility = if (shownFields.contains("container")) View.VISIBLE else View.GONE
+                if (nonSpecific){
+                    val param = LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        1.0f
+                    )
+                    container.layoutParams = param
+                    container.setPadding(0)
+                }
                 val containerAutoCompleteTextView =
                     view.findViewById<AutoCompleteTextView>(R.id.container_textview)
 

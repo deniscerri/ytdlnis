@@ -18,6 +18,7 @@ import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.isVisible
+import androidx.core.view.setPadding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -34,23 +35,19 @@ import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.InfoUtil
 import com.deniscerri.ytdlnis.util.UiUtil
 import com.google.android.material.card.MaterialCardView
-import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.textfield.TextInputLayout.END_ICON_CUSTOM
 import com.google.android.material.textfield.TextInputLayout.END_ICON_NONE
-import com.google.android.material.textfield.TextInputLayout.EndIconMode
 import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
 
 
-class DownloadVideoFragment(private var resultItem: ResultItem? = null, private var currentDownloadItem: DownloadItem? = null, private var url: String = "") : Fragment(), GUISync {
+class DownloadVideoFragment(private var resultItem: ResultItem? = null, private var currentDownloadItem: DownloadItem? = null, private var url: String = "", private var nonSpecific: Boolean = false) : Fragment(), GUISync {
     private var fragmentView: View? = null
     private var activity: Activity? = null
     private lateinit var downloadViewModel : DownloadViewModel
@@ -67,6 +64,7 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
     lateinit var downloadItem: DownloadItem
 
 
+    @SuppressLint("RestrictedApi")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -100,7 +98,7 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
             val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
             try {
                 title = view.findViewById(R.id.title_textinput)
-                title.visibility = if (shownFields.contains("title")) View.VISIBLE else View.GONE
+                title.visibility = if (shownFields.contains("title") && !nonSpecific) View.VISIBLE else View.GONE
                 if (title.editText?.text?.isEmpty() == true){
                     title.editText!!.setText(downloadItem.title)
                     title.endIconMode = END_ICON_NONE
@@ -114,7 +112,7 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
                 })
 
                 author = view.findViewById(R.id.author_textinput)
-                author.visibility = if (shownFields.contains("author")) View.VISIBLE else View.GONE
+                author.visibility = if (shownFields.contains("author") && !nonSpecific) View.VISIBLE else View.GONE
                 if (author.editText?.text?.isEmpty() == true){
                     author.editText!!.setText(downloadItem.author)
                     author.endIconMode = END_ICON_NONE
@@ -200,6 +198,15 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
                 val containers = requireContext().resources.getStringArray(R.array.video_containers)
                 val container = view.findViewById<TextInputLayout>(R.id.downloadContainer)
                 container.visibility = if (shownFields.contains("container")) View.VISIBLE else View.GONE
+                if (nonSpecific){
+                    val param = LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        1.0f
+                    )
+                    container.layoutParams = param
+                    container.setPadding(0)
+                }
                 val containerAutoCompleteTextView =
                     view.findViewById<AutoCompleteTextView>(R.id.container_textview)
                 var containerPreference = sharedPreferences.getString("video_format", "Default")
@@ -328,6 +335,9 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
                             },
                             saveSubtitlesClicked = {
                                 downloadItem.videoPreferences.writeSubs = it
+                            },
+                            saveAutoSubtitlesClicked = {
+                                downloadItem.videoPreferences.writeAutoSubs = it
                             },
                             subtitleLanguagesSet = {
                                 downloadItem.videoPreferences.subsLanguages = it

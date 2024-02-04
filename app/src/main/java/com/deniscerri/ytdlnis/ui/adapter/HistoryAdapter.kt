@@ -11,10 +11,8 @@ import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.annotation.OptIn
 import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.AsyncDifferConfig
@@ -24,9 +22,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.HistoryItem
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
-import com.google.android.material.badge.BadgeDrawable
-import com.google.android.material.badge.BadgeUtils
-import com.google.android.material.badge.ExperimentalBadgeUtils
+import com.deniscerri.ytdlnis.util.Extensions.popup
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.color.MaterialColors
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -86,6 +82,8 @@ class HistoryAdapter(onItemClickListener: OnItemClickListener, activity: Activit
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)
         val card = holder.cardView
+        card.popup()
+
 
         val uiHandler = Handler(Looper.getMainLooper())
         val thumbnail = card.findViewById<ImageView>(R.id.downloads_image_view)
@@ -116,7 +114,7 @@ class HistoryAdapter(onItemClickListener: OnItemClickListener, activity: Activit
         author.text = item.author
 
         val length = card.findViewById<TextView>(R.id.length)
-        length.text = item.duration
+        length.text = if(item.downloadPath.size == 1) item.duration else "[${item.downloadPath.size}]"
 
 
         // TIME DOWNLOADED  ----------------------------------

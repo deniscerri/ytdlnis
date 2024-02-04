@@ -18,6 +18,7 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
         pagingSourceFactory = {downloadDao.getAllDownloads()}
     )
     val activeDownloads : Flow<List<DownloadItem>> = downloadDao.getActiveDownloads().distinctUntilChanged()
+    val processingDownloads : Flow<List<DownloadItem>> = downloadDao.getProcessingDownloads().distinctUntilChanged()
     val queuedDownloads : Pager<Int, DownloadItemSimple> = Pager(
         config = PagingConfig(pageSize = 20, initialLoadSize = 20, prefetchDistance = 1),
         pagingSourceFactory = {downloadDao.getQueuedDownloads()}
@@ -38,7 +39,7 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
     val activeDownloadsCount : Flow<Int> = downloadDao.getActiveDownloadsCountFlow()
 
     enum class Status {
-        Active, ActivePaused, PausedReQueued, Queued, QueuedPaused, Error, Cancelled, Saved
+        Active, ActivePaused, PausedReQueued, Queued, QueuedPaused, Error, Cancelled, Saved, Processing
     }
 
     suspend fun insert(item: DownloadItem) : Long {
@@ -58,7 +59,7 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
     private fun deleteCache(items: List<DownloadItem>) {
         val cacheDir = FileUtil.getCachePath(App.instance)
         items.forEach {
-           File(cacheDir, it.id.toString()).deleteRecursively()
+           runCatching { File(cacheDir, it.id.toString()).deleteRecursively() }
         }
     }
 
@@ -82,6 +83,10 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
 
     fun getActiveDownloads() : List<DownloadItem> {
         return downloadDao.getActiveAndPausedDownloadsList()
+    }
+
+    fun getProcessingDownloads() : List<DownloadItem> {
+        return downloadDao.getProcessingDownloadsList()
     }
 
     fun getActiveAndQueuedDownloads() : List<DownloadItem> {
@@ -122,6 +127,10 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
 
     suspend fun deleteSaved(){
         downloadDao.deleteSaved()
+    }
+
+    suspend fun deleteProcessing(){
+        downloadDao.deleteProcessing()
     }
 
     suspend fun deleteAllWithIDs(ids: List<Long>){

@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.LogItem
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
+import com.deniscerri.ytdlnis.util.Extensions.popup
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
@@ -50,6 +51,7 @@ class DownloadLogsAdapter(onItemClickListener: OnItemClickListener, activity: Ac
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)
         val card = holder.item
+        card.popup()
 
         val title = card.findViewById<TextView>(R.id.title)
         title.text = item?.title

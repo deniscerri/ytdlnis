@@ -191,7 +191,7 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
             (tabLayout.getChildAt(0) as? ViewGroup)?.getChildAt(1)?.isClickable = false
             (tabLayout.getChildAt(0) as? ViewGroup)?.getChildAt(1)?.alpha = 0.3f
 
-            updateItem.visibility = View.GONE
+            (updateItem.parent as LinearLayout).visibility = View.GONE
         }
 
         //remove outdated player url of 1hr so it can refetch it in the cut player
@@ -393,27 +393,7 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
             }
         }
 
-        lifecycleScope.launch{
-            downloadViewModel.uiState.collectLatest { res ->
-                if (res.errorMessage != null) {
-                    withContext(Dispatchers.Main){
-                        kotlin.runCatching {
-                            UiUtil.handleDownloadsResponse(
-                                requireActivity(),
-                                requireActivity().lifecycleScope,
-                                requireActivity().supportFragmentManager,
-                                res,
-                                downloadViewModel,
-                                historyViewModel)
-                        }
-                    }
-                    downloadViewModel.uiState.value =  DownloadViewModel.DownloadsUiState(
-                        errorMessage = null,
-                        actions = null
-                    )
-                }
-            }
-        }
+
 
         lifecycleScope.launch {
             resultViewModel.uiState.collectLatest { res ->
@@ -436,7 +416,7 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
                         shimmerLoadingSubtitle.visibility = View.VISIBLE
                         shimmerLoading.startShimmer()
                         shimmerLoadingSubtitle.startShimmer()
-                        updateItem.visibility = View.GONE
+                        (updateItem.parent as LinearLayout).visibility = View.GONE
                     }else{
                         title.visibility = View.VISIBLE
                         subtitle.visibility = View.VISIBLE
@@ -651,6 +631,14 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
                 resultViewModel.updateFormatItemData(res)
             }
         }
+    }
+
+    override fun onDismiss(dialog: DialogInterface) {
+        lifecycleScope.launch {
+            resultViewModel.cancelUpdateItemData()
+            resultViewModel.cancelUpdateFormatsItemData()
+        }
+        super.onDismiss(dialog)
     }
 }
 

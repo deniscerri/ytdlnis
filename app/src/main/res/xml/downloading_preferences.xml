@@ -14,6 +14,14 @@
 
         <SwitchPreferenceCompat
             android:widgetLayout="@layout/preferece_material_switch"
+            app:defaultValue="false"
+            android:icon="@drawable/baseline_archive_24"
+            android:key="download_archive"
+            app:summary="@string/download_archive_summary"
+            app:title="@string/download_archive" />
+
+        <SwitchPreferenceCompat
+            android:widgetLayout="@layout/preferece_material_switch"
             app:defaultValue="true"
             android:icon="@drawable/ic_card"
             android:key="download_card"
@@ -35,6 +43,14 @@
             android:key="metered_networks"
             app:summary="@string/download_over_metered_networks_summary"
             app:title="@string/download_over_metered_networks" />
+
+        <SwitchPreferenceCompat
+            android:widgetLayout="@layout/preferece_material_switch"
+            app:defaultValue="false"
+            android:icon="@drawable/baseline_import_export_24"
+            android:key="force_ipv4"
+            app:summary="@string/force_ipv4_desc"
+            app:title="@string/force_ipv4" />
 
 
         <SwitchPreferenceCompat

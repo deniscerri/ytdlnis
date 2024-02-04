@@ -3,6 +3,7 @@ package com.deniscerri.ytdlnis.database
 import androidx.room.TypeConverter
 import com.deniscerri.ytdlnis.database.models.AudioPreferences
 import com.deniscerri.ytdlnis.database.models.ChapterItem
+import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.models.Format
 import com.deniscerri.ytdlnis.database.models.VideoPreferences
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
@@ -57,4 +58,19 @@ class Converters {
         val gson = Gson()
         return gson.toJson(list)
     }
+
+    @TypeConverter
+    fun downloadItemToString(downloadItem: DownloadItem) : String {
+        val gson = Gson()
+        return gson.toJson(downloadItem)
+    }
+
+    @TypeConverter
+    fun stringToDownloadItem(s: String) = Gson().fromJson(s, DownloadItem::class.java)
+
+    @TypeConverter
+    fun mutableListOfStringsToString(s: MutableList<String>) = Gson().toJson(s)
+
+    @TypeConverter
+    fun stringtoMutableListofStrings(s: String) = Gson().fromJson(s, Array<String>::class.java).toMutableList()
 }

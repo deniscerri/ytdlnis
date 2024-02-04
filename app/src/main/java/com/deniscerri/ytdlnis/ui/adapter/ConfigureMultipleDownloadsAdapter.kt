@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
+import com.deniscerri.ytdlnis.util.Extensions.popup
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.google.android.material.button.MaterialButton
 import com.squareup.picasso.Picasso
@@ -54,13 +55,16 @@ class ConfigureMultipleDownloadsAdapter(onItemClickListener: OnItemClickListener
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)
         val card = holder.cardView
+        card.popup()
+        if (item == null) return
+        card.tag = item.id.toString()
 
         val uiHandler = Handler(Looper.getMainLooper())
         val thumbnail = card.findViewById<ImageView>(R.id.downloads_image_view)
 
         // THUMBNAIL ----------------------------------
         if (!sharedPreferences.getStringSet("hide_thumbnails", emptySet())!!.contains("home")){
-            val imageURL = item?.thumb
+            val imageURL = item.thumb
             if (!imageURL.isNullOrBlank()) {
                 uiHandler.post { Picasso.get().load(imageURL).into(thumbnail) }
             } else {
@@ -72,7 +76,7 @@ class ConfigureMultipleDownloadsAdapter(onItemClickListener: OnItemClickListener
         }
 
         val duration = card.findViewById<TextView>(R.id.duration)
-        duration.text = item!!.duration
+        duration.text = item.duration
 
         // TITLE  ----------------------------------
         val itemTitle = card.findViewById<TextView>(R.id.title)
@@ -120,7 +124,7 @@ class ConfigureMultipleDownloadsAdapter(onItemClickListener: OnItemClickListener
         if (btn.hasOnClickListeners()) btn.setOnClickListener(null)
 
         btn.setOnClickListener {
-            onItemClickListener.onButtonClick(item.url)
+            onItemClickListener.onButtonClick(item.id)
         }
 
         when(item.type) {
@@ -136,18 +140,18 @@ class ConfigureMultipleDownloadsAdapter(onItemClickListener: OnItemClickListener
         }
 
         card.setOnClickListener {
-            onItemClickListener.onCardClick(item.url)
+            onItemClickListener.onCardClick(item.id)
         }
 
         card.setOnLongClickListener {
-            onItemClickListener.onDelete(item.url); true
+            onItemClickListener.onDelete(item.id); true
         }
     }
 
     interface OnItemClickListener {
-        fun onButtonClick(itemURL: String)
-        fun onCardClick(itemURL: String)
-        fun onDelete(itemURL: String)
+        fun onButtonClick(id: Long)
+        fun onCardClick(id: Long)
+        fun onDelete(id: Long)
     }
 
     companion object {
@@ -157,7 +161,10 @@ class ConfigureMultipleDownloadsAdapter(onItemClickListener: OnItemClickListener
             }
 
             override fun areContentsTheSame(oldItem: DownloadItem, newItem: DownloadItem): Boolean {
-                return oldItem.title == newItem.title && oldItem.author == newItem.author && oldItem.type == newItem.type && oldItem.format == newItem.format
+                return oldItem.title == newItem.title &&
+                    oldItem.author == newItem.author &&
+                    oldItem.type == newItem.type &&
+                    oldItem.format == newItem.format
             }
         }
     }

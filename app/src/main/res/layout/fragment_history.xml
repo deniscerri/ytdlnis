@@ -57,6 +57,16 @@
 
                     <View style="@style/Divider.Vertical"/>
 
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/not_deleted_chip"
+                        style="@style/Widget.Material3.Chip.Filter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/not_deleted"/>
+
+                    <View android:id="@+id/notdeleted_divider" style="@style/Divider.Vertical"/>
+
                     <com.google.android.material.chip.ChipGroup
                         android:layout_width="wrap_content"
                         app:selectionRequired="false"

@@ -1,6 +1,7 @@
 package com.deniscerri.ytdlnis.receiver
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -97,6 +98,7 @@ class ShareActivity : BaseActivity() {
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.frame_layout) as NavHostFragment
         navController = navHostFragment.findNavController()
         navController.addOnDestinationChangedListener(object: NavController.OnDestinationChangedListener{
+            @SuppressLint("RestrictedApi")
             override fun onDestinationChanged(
                 controller: NavController,
                 destination: NavDestination,

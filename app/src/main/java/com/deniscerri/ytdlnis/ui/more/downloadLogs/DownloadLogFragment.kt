@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.ActionBar
 import android.content.ClipboardManager
 import android.content.Context.CLIPBOARD_SERVICE
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
@@ -13,10 +14,12 @@ import android.widget.HorizontalScrollView
 import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
+import androidx.core.content.edit
 import androidx.core.view.get
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.preference.PreferenceManager
 import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.viewmodel.LogViewModel
@@ -39,6 +42,7 @@ class DownloadLogFragment : Fragment() {
     private lateinit var copyLog : ExtendedFloatingActionButton
     private lateinit var mainActivity: MainActivity
     private lateinit var logViewModel: LogViewModel
+    private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,6 +51,7 @@ class DownloadLogFragment : Fragment() {
     ): View? {
         mainActivity = activity as MainActivity
         mainActivity.hideBottomNavigation()
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
         return inflater.inflate(R.layout.fragment_download_log, container, false)
     }
 
@@ -141,9 +146,13 @@ class DownloadLogFragment : Fragment() {
         slider?.apply {
             this.valueFrom = 0f
             this.valueTo = 10f
-            this.value = 2f
+            this.value = sharedPreferences.getFloat("log_zoom", 2f)
+            content.setCustomTextSize(this.value + 13f)
             this.addOnChangeListener { slider, value, fromUser ->
                 content.setCustomTextSize(value + 13f)
+                sharedPreferences.edit(true){
+                    putFloat("log_zoom", value)
+                }
             }
         }
 

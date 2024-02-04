@@ -60,6 +60,7 @@ import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.color.MaterialColors
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
@@ -80,7 +81,7 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
     private var fragmentContext: Context? = null
     private var layoutinflater: LayoutInflater? = null
     private var topAppBar: MaterialToolbar? = null
-    private var recyclerView: RecyclerView? = null
+    private lateinit var recyclerView: RecyclerView
     private var historyAdapter: HistoryAdapter? = null
     private var sortSheet: BottomSheetDialog? = null
     private var uiHandler: Handler? = null
@@ -128,8 +129,8 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
                 requireActivity()
             )
         recyclerView = view.findViewById(R.id.recyclerviewhistorys)
-        recyclerView?.adapter = historyAdapter
-        recyclerView?.enableFastScroll()
+        recyclerView.adapter = historyAdapter
+        recyclerView.enableFastScroll()
 
         val preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
         if (preferences.getStringSet("swipe_gesture", requireContext().getStringArray(R.array.swipe_gestures_values).toSet())!!.toList().contains("history")){
@@ -137,7 +138,7 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
             itemTouchHelper.attachToRecyclerView(recyclerView)
         }
 
-        recyclerView?.layoutManager = GridLayoutManager(context, resources.getInteger(R.integer.grid_size))
+        recyclerView.layoutManager = GridLayoutManager(context, resources.getInteger(R.integer.grid_size))
         noResults?.visibility = GONE
 
 
@@ -185,11 +186,11 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
 
 
         lifecycleScope.launch{
-            downloadViewModel.uiState.collectLatest { res ->
-                if (res.errorMessage != null) {
+            downloadViewModel.alreadyExistsUiState.collectLatest { res ->
+                if (res.downloadItems.isNotEmpty() || res.historyItems.isNotEmpty()) {
                     withContext(Dispatchers.Main){
                         kotlin.runCatching {
-                            UiUtil.handleDownloadsResponse(
+                            UiUtil.handleExistingDownloadsResponse(
                                 requireActivity(),
                                 requireActivity().lifecycleScope,
                                 requireActivity().supportFragmentManager,
@@ -198,9 +199,9 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
                                 historyViewModel)
                         }
                     }
-                    downloadViewModel.uiState.value =  DownloadViewModel.DownloadsUiState(
-                        errorMessage = null,
-                        actions = null
+                    downloadViewModel.alreadyExistsUiState.value =  DownloadViewModel.AlreadyExistsUIState(
+                        mutableListOf(),
+                        mutableListOf()
                     )
                 }
             }
@@ -396,6 +397,17 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
                 command.isChecked = false
             }
         }
+
+        val notDeleted = fragmentView!!.findViewById<Chip>(R.id.not_deleted_chip)
+        notDeleted.setOnClickListener {
+            if (notDeleted.isChecked) {
+                historyViewModel.setNotDeleted(true)
+                notDeleted.isChecked = true
+            } else {
+                historyViewModel.setNotDeleted(false)
+                notDeleted.isChecked = false
+            }
+        }
     }
 
     private fun updateWebsiteChips(list : List<HistoryItem>) {
@@ -577,7 +589,18 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
                         historyAdapter!!.notifyItemChanged(position)
                         UiUtil.showRemoveHistoryItemDialog(deletedItem!!, requireActivity(),
                             delete = { item, deleteFile ->
-                                historyViewModel.delete(item, deleteFile)
+                                lifecycleScope.launch {
+                                    withContext(Dispatchers.IO){
+                                        historyViewModel.delete(item, deleteFile)
+                                    }
+
+                                    if (!deleteFile){
+                                        Snackbar.make(recyclerView, getString(R.string.you_are_going_to_delete) + ": " + deletedItem.title, Snackbar.LENGTH_LONG)
+                                            .setAction(getString(R.string.undo)) {
+                                                historyViewModel.insert(deletedItem)
+                                            }.show()
+                                    }
+                                }
                             })
                     }
                     ItemTouchHelper.RIGHT -> {

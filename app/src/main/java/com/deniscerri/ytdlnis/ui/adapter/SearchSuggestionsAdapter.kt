@@ -62,6 +62,7 @@ class SearchSuggestionsAdapter(onItemClickListener: OnItemClickListener, activit
                 }
                 textView.setOnLongClickListener { true }
                 val mb = linear.findViewById<ImageButton>(R.id.set_search_query_button)
+                mb.setImageResource(R.drawable.ic_arrow_outward)
                 mb.setOnClickListener {
                     onItemClickListener.onSearchSuggestionAddToSearchBar(item.text)
                 }
@@ -79,6 +80,7 @@ class SearchSuggestionsAdapter(onItemClickListener: OnItemClickListener, activit
                 }
 
                 val mb = linear.findViewById<ImageButton>(R.id.set_search_query_button)
+                mb.setImageResource(R.drawable.ic_arrow_outward)
                 mb.setOnClickListener {
                     onItemClickListener.onSearchSuggestionAddToSearchBar(item.text)
                 }

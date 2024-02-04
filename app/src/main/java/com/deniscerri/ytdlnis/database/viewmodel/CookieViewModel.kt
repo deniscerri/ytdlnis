@@ -17,6 +17,7 @@ import com.deniscerri.ytdlnis.BuildConfig
 import com.deniscerri.ytdlnis.database.DBManager
 import com.deniscerri.ytdlnis.database.models.CookieItem
 import com.deniscerri.ytdlnis.database.repository.CookieRepository
+import com.deniscerri.ytdlnis.ui.more.CookiesFragment
 import com.deniscerri.ytdlnis.ui.more.WebViewActivity
 import com.deniscerri.ytdlnis.util.FileUtil
 import kotlinx.coroutines.Dispatchers
@@ -41,6 +42,10 @@ class CookieViewModel(private val application: Application) : AndroidViewModel(a
 
     fun getAll(): List<CookieItem> {
         return repository.getAll()
+    }
+
+    fun getByURL(url: String) : CookieItem {
+        return repository.getByURL(url)
     }
 
     suspend fun insert(item: CookieItem) : Long {

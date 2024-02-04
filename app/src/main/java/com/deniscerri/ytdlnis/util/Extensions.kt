@@ -1,5 +1,6 @@
 package com.deniscerri.ytdlnis.util
 
+import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Context
@@ -11,25 +12,26 @@ import android.graphics.drawable.shapes.OvalShape
 import android.media.MediaMetadataRetriever
 import android.media.MediaMetadataRetriever.METADATA_KEY_DURATION
 import android.net.Uri
-import android.os.Build
 import android.util.DisplayMetrics
 import android.util.TypedValue
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewOutlineProvider
+import android.view.animation.Interpolator
 import android.widget.EditText
-import android.widget.ScrollView
 import android.widget.TextView
 import androidx.annotation.Px
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.updateLayoutParams
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.whenStarted
 import androidx.lifecycle.withStarted
 import androidx.recyclerview.widget.RecyclerView
-import com.deniscerri.ytdlnis.database.models.CommandTemplate
+import com.deniscerri.ytdlnis.R
+import com.deniscerri.ytdlnis.util.Extensions.popup
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.card.MaterialCardView
 import com.neo.highlight.core.Highlight
 import com.neo.highlight.util.listener.HighlightTextWatcher
 import com.neo.highlight.util.scheme.ColorScheme
@@ -37,7 +39,9 @@ import kotlinx.coroutines.launch
 import me.zhanghai.android.fastscroll.FastScrollerBuilder
 import org.json.JSONObject
 import java.io.File
+import java.util.Locale
 import java.util.regex.Pattern
+import kotlin.math.abs
 
 
 object Extensions {
@@ -110,6 +114,7 @@ object Extensions {
         drawable.paint.color = context.getColor(android.R.color.transparent)
 
         FastScrollerBuilder(this)
+            .useMd2Style()
             .setTrackDrawable(drawable)
             .build()
     }
@@ -186,5 +191,42 @@ object Extensions {
     fun TextView.setCustomTextSize(newSize: Float){
         this.setTextSize(TypedValue.COMPLEX_UNIT_SP, newSize)
     }
+
+    fun Int.toStringDuration(locale: Locale): String {
+        var format = String.format(
+            locale,
+            "%02d:%02d:%02d",
+            this / 3600,
+            this % 3600 / 60,
+            this % 60
+        )
+        // 00:00:00
+        if (this < 600) format = format.substring(4) else if (this < 3600) format =
+            format.substring(3) else if (this < 36000) format = format.substring(1)
+        return format
+    }
+
+
+    fun View.popup(){
+        val animator = ValueAnimator.ofFloat( 0.75f, 1f)
+        animator.addUpdateListener { animation: ValueAnimator ->
+            val value = animation.animatedValue as Float
+            this.scaleX = value
+            this.scaleY = value
+        }
+        animator.interpolator = Extensions.CustomInterpolator()
+        animator.setDuration(300)
+        animator.start()
+    }
+
+    fun List<String>.closestValue(value: String) = minBy { abs(value.toInt() - it.toInt()) }
+
+    class CustomInterpolator : Interpolator {
+        override fun getInterpolation(input: Float): Float {
+            // Adjust this curve as needed for desired animation feel
+            return (Math.pow((input - 1).toDouble(), 5.0) + 1).toFloat()
+        }
+    }
+
 
 }

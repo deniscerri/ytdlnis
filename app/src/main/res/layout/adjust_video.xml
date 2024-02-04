@@ -175,6 +175,14 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <com.google.android.material.chip.Chip
+                android:id="@+id/save_auto_subtitles"
+                style="@style/Widget.Material3.Chip.Filter.Elevated"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false"
+                android:text="@string/save_auto_subs"/>
+
+            <com.google.android.material.chip.Chip
                 android:id="@+id/subtitle_languages"
                 style="@style/Widget.Material3.Chip.Assist.Elevated"
                 android:layout_width="wrap_content"

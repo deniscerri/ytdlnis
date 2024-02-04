@@ -35,6 +35,7 @@ class MoreFragment : Fragment() {
     private lateinit var commandTemplates: TextView
     private lateinit var downloadQueue: TextView
     private lateinit var cookies: TextView
+    private lateinit var observeSources: TextView
     private lateinit var terminateApp: TextView
     private lateinit var settings: TextView
     private lateinit var mainActivity: MainActivity
@@ -58,6 +59,7 @@ class MoreFragment : Fragment() {
         commandTemplates = view.findViewById(R.id.command_templates)
         downloadQueue = view.findViewById(R.id.download_queue)
         cookies = view.findViewById(R.id.cookies)
+        observeSources = view.findViewById(R.id.observe_sources)
         terminateApp = view.findViewById(R.id.terminate)
         settings = view.findViewById(R.id.settings)
 
@@ -80,6 +82,10 @@ class MoreFragment : Fragment() {
 
         cookies.setOnClickListener {
             findNavController().navigate(R.id.cookiesFragment)
+        }
+
+        observeSources.setOnClickListener {
+            findNavController().navigate(R.id.observeSourcesFragment)
         }
 
         terminateApp.setOnClickListener {

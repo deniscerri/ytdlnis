@@ -21,6 +21,7 @@ import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.edit
 import androidx.core.view.get
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -278,10 +279,15 @@ class TerminalFragment : Fragment() {
         slider?.apply {
             this.valueFrom = 0f
             this.valueTo = 10f
-            this.value = 2f
+            this.value = sharedPreferences.getFloat("terminal_zoom", 2f)
+            output?.setCustomTextSize(this.value + 13f)
+            input?.setCustomTextSize(this.value + 13f)
             this.addOnChangeListener { slider, value, fromUser ->
                 output?.setCustomTextSize(value + 13f)
                 input?.setCustomTextSize(value + 13f)
+                sharedPreferences.edit(true){
+                    putFloat("terminal_zoom", value)
+                }
             }
         }
     }

@@ -25,6 +25,7 @@ import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.LinearLayout
+import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.OptIn
@@ -33,14 +34,18 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.compose.ui.text.toUpperCase
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.FileProvider
 import androidx.core.view.children
 import androidx.core.view.isVisible
+import androidx.core.view.setPadding
 import androidx.core.widget.doOnTextChanged
 import androidx.documentfile.provider.DocumentFile
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LifecycleOwner
 import androidx.preference.PreferenceManager
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.afollestad.materialdialogs.utils.MDUtil.getStringArray
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.CommandTemplate
@@ -53,12 +58,18 @@ import com.deniscerri.ytdlnis.database.viewmodel.CommandTemplateViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.HistoryViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.ResultViewModel
+import com.deniscerri.ytdlnis.ui.adapter.AlreadyExistsAdapter
 import com.deniscerri.ytdlnis.ui.downloadcard.ConfigureDownloadBottomSheetDialog
 import com.deniscerri.ytdlnis.ui.downloadcard.VideoCutListener
+import com.deniscerri.ytdlnis.util.Extensions.dp
+import com.deniscerri.ytdlnis.util.Extensions.enableFastScroll
 import com.deniscerri.ytdlnis.util.Extensions.enableTextHighlight
+import com.deniscerri.ytdlnis.util.Extensions.getMediaDuration
+import com.deniscerri.ytdlnis.util.Extensions.toStringDuration
 import com.google.android.material.badge.BadgeDrawable
 import com.google.android.material.badge.BadgeUtils
 import com.google.android.material.badge.ExperimentalBadgeUtils
+import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
@@ -396,6 +407,14 @@ object UiUtil {
                 val item = context.layoutInflater.inflate(R.layout.filepath_card, list, false)
                 item.apply {
                     findViewById<TextView>(R.id.file_name).text = file.nameWithoutExtension
+
+                    findViewById<TextView>(R.id.duration).apply {
+                        val duration = file.getMediaDuration(context)
+                        isVisible = duration > 0
+                        text = duration.toStringDuration(Locale.US)
+                    }
+
+
                     findViewById<TextView>(R.id.filesize).text = FileUtil.convertFileSize(file.length())
                     findViewById<TextView>(R.id.extension).text = file.extension.uppercase()
                     if (!file.exists()){
@@ -454,6 +473,25 @@ object UiUtil {
                 context.startActivity(Intent.createChooser(this, context.getString(R.string.share)))
             }
         }
+    }
+
+    fun showDatePickerOnly(fragmentManager: FragmentManager , onSubmit : (chosenDate: Calendar) -> Unit ){
+        val date = Calendar.getInstance()
+
+        val datePicker = MaterialDatePicker.Builder.datePicker()
+            .setCalendarConstraints(
+                CalendarConstraints.Builder()
+                    .setValidator(DateValidatorPointForward.now())
+                    .build()
+            )
+            .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+            .build()
+
+        datePicker.addOnPositiveButtonClickListener{
+            date.timeInMillis = it
+            onSubmit(date)
+        }
+        datePicker.show(fragmentManager, "datepicker")
     }
 
     fun showDatePicker(fragmentManager: FragmentManager , onSubmit : (chosenDate: Calendar) -> Unit ){
@@ -869,6 +907,7 @@ object UiUtil {
         val formatnoteParent = bottomSheet.findViewById<ConstraintLayout>(R.id.format_note_parent)
         val fpsParent = bottomSheet.findViewById<ConstraintLayout>(R.id.fps_parent)
         val asrParent = bottomSheet.findViewById<ConstraintLayout>(R.id.asr_parent)
+        val bitrateParent = bottomSheet.findViewById<ConstraintLayout>(R.id.bitrate_parent)
 
 
         val clicker = View.OnClickListener {
@@ -952,6 +991,13 @@ object UiUtil {
             asrParent?.findViewById<TextView>(R.id.asr_value)?.text = format.asr
             asrParent?.setOnClickListener(clicker)
             asrParent?.setOnLongClickListener(longClicker)
+        }
+
+        if (format.tbr.isNullOrBlank()) bitrateParent?.visibility = View.GONE
+        else{
+            bitrateParent?.findViewById<TextView>(R.id.bitrate_value)?.text = format.tbr
+            bitrateParent?.setOnClickListener(clicker)
+            bitrateParent?.setOnLongClickListener(longClicker)
         }
 
 
@@ -1139,6 +1185,7 @@ object UiUtil {
         cutClicked: (VideoCutListener) -> Unit,
         filenameTemplateSet: (String) -> Unit,
         saveSubtitlesClicked: (Boolean) -> Unit,
+        saveAutoSubtitlesClicked: (Boolean) -> Unit,
         subtitleLanguagesSet: (String) -> Unit,
         removeAudioClicked: (Boolean) -> Unit,
         extraCommandsClicked: () -> Unit,
@@ -1148,6 +1195,7 @@ object UiUtil {
 
         val embedSubs = view.findViewById<Chip>(R.id.embed_subtitles)
         val saveSubtitles = view.findViewById<Chip>(R.id.save_subtitles)
+        val saveAutoSubtitles = view.findViewById<Chip>(R.id.save_auto_subtitles)
         val subtitleLanguages = view.findViewById<Chip>(R.id.subtitle_languages)
 
         embedSubs!!.isChecked = items.all { it.videoPreferences.embedSubs }
@@ -1173,6 +1221,8 @@ object UiUtil {
         if (splitByChapters.isChecked){
             items.forEach { it.videoPreferences.addChapters = false }
             addChapters.isChecked = false
+            addChapters.isEnabled = false
+            addChaptersClicked(false)
         }
         splitByChapters.setOnClickListener {
             if (splitByChapters.isChecked){
@@ -1230,7 +1280,7 @@ object UiUtil {
         }
 
         val cut = view.findViewById<Chip>(R.id.cut)
-        if (items.size > 1) cut.isVisible = false
+        if (items.size > 1 || items.first().url.isEmpty()) cut.isVisible = false
         else{
             if(items[0].duration.isNotEmpty()){
                 val downloadItem = items[0]
@@ -1304,6 +1354,10 @@ object UiUtil {
         saveSubtitles.setOnCheckedChangeListener { _, _ ->
             subtitleLanguages.isEnabled = embedSubs.isChecked || saveSubtitles.isChecked
             saveSubtitlesClicked(saveSubtitles.isChecked)
+        }
+
+        saveAutoSubtitles.setOnCheckedChangeListener { _, _ ->
+            saveAutoSubtitlesClicked(saveAutoSubtitles.isChecked)
         }
 
         subtitleLanguages.isEnabled = embedSubs.isChecked || saveSubtitles.isChecked
@@ -1425,7 +1479,7 @@ object UiUtil {
         }
 
         val cut = view.findViewById<Chip>(R.id.cut)
-        if (items.size > 1) cut.isVisible = false
+        if (items.size > 1 || items.first().url.isEmpty()) cut.isVisible = false
         else{
             val downloadItem = items[0]
             if (downloadItem.duration.isNotEmpty()){
@@ -1555,136 +1609,163 @@ object UiUtil {
     }
 
     @SuppressLint("SetTextI18n")
-    fun handleDownloadsResponse(context: Activity, lifecycleScope: CoroutineScope, supportFragmentManager: FragmentManager, it: DownloadViewModel.DownloadsUiState, downloadViewModel: DownloadViewModel, historyViewModel: HistoryViewModel){
-        val downloadAnywayAction = it.actions?.first { it.second == DownloadViewModel.DownloadsAction.DOWNLOAD_ANYWAY}
-        if (downloadAnywayAction != null){
-            if (downloadAnywayAction.third == null) return
-            val downloads =downloadAnywayAction.third!!.toMutableList()
-            val ids = downloadAnywayAction.third!!.map { it.id }
-            val titles = downloadAnywayAction.third!!.map { it.title }
+    fun handleExistingDownloadsResponse(context: Activity, lifecycleScope: CoroutineScope, supportFragmentManager: FragmentManager, it: DownloadViewModel.AlreadyExistsUIState, downloadViewModel: DownloadViewModel, historyViewModel: HistoryViewModel){
+        if (it.downloadItems.isEmpty() && it.historyItems.isEmpty()) return
 
+        val title = context.getString(R.string.download_already_exists)
+        val message = context.getString(R.string.download_already_exists_summary)
 
-            val title = context.getString(it.errorMessage!!.first)
-            val message = context.getString(it.errorMessage!!.second)
+        val sheet = BottomSheetDialog(context)
+        sheet.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        sheet.setContentView(R.layout.download_multiple_bottom_sheet)
+        sheet.findViewById<TextView>(R.id.bottom_sheet_title)?.apply {
+            text = title
+            textSize = 20f
+        }
+        sheet.findViewById<TextView>(R.id.bottom_sheet_subtitle)?.text = message
 
-            val errDialog = MaterialAlertDialogBuilder(context)
-                .setTitle(title)
-                .setMessage(message)
+        var adapter: AlreadyExistsAdapter? = null
+        val list = mutableListOf<Pair<DownloadItem, Long?>>()
+        val alreadyExistsClickListener = object: AlreadyExistsAdapter.OnItemClickListener {
 
-            var dialog: Dialog? = null
-
-            val linearLayout = context.layoutInflater.inflate(R.layout.already_exists_card, null) as LinearLayout
-            ids.forEachIndexed { index, id ->
-                val alreadyExistsItem = context.layoutInflater.inflate(R.layout.already_exists_item, null)
-                alreadyExistsItem.tag = id.toString()
-                val ttle = alreadyExistsItem.findViewById<Button>(R.id.already_exists_title)
-                ttle.text = "${index + 1}. ${titles[index]}"
-                CoroutineScope(Dispatchers.IO).launch {
-                    val editBtn = alreadyExistsItem.findViewById<Button>(R.id.already_exists_edit)
-                    var downloadItem: DownloadItem = downloadViewModel.getItemByID(id)
-                    val historyItem: HistoryItem? = downloadViewModel.getHistoryItemById(id)
-
-                    if (historyItem != null){
-                        val idx = downloads.indexOfFirst { it.id == historyItem.id }
-                        downloadItem = downloadViewModel.createDownloadItemFromHistory(historyItem)
-                        downloadItem.id = historyItem.id
-                        downloads[idx] = downloadItem
+            override fun onEditItem(downloadItem: DownloadItem, position: Int) {
+                val resultItem = downloadViewModel.createResultItemFromDownload(downloadItem)
+                val onItemUpdated = object: ConfigureDownloadBottomSheetDialog.OnDownloadItemUpdateListener {
+                    override fun onDownloadItemUpdate(
+                        resultItemID: Long,
+                        item: DownloadItem
+                    ) {
+                        val currentIndex = list.indexOfFirst { it.first.id == item.id }
+                        val current = list[currentIndex]
+                        list[currentIndex] = Pair(item, current.second)
+                        adapter?.submitList(list)
+                        adapter?.notifyItemChanged(position)
                     }
+                }
+                val bottomSheet = ConfigureDownloadBottomSheetDialog(resultItem, downloadItem, onItemUpdated)
+                bottomSheet.show(supportFragmentManager, "configureDownloadSingleSheet")
+            }
 
+            override fun onDeleteItem(downloadItem: DownloadItem, position: Int, historyID: Long?) {
+                showGenericDeleteDialog(context, downloadItem.title){
+                    if (historyID == null){
+                        CoroutineScope(Dispatchers.IO).launch {
+                            downloadViewModel.deleteDownload(downloadItem.id)
+                        }
+                    }
+                    list.removeAll { it.first.id == downloadItem.id }
+                    if (list.isEmpty()){
+                        sheet.dismiss()
+                    }
+                    adapter?.notifyDataSetChanged()
+                }
+            }
+
+            override fun onShowHistoryItem(id: Long) {
+                lifecycleScope.launch {
+                    val historyItem = withContext(Dispatchers.IO){
+                        downloadViewModel.getHistoryItemById(id)
+                    }
+                    showHistoryItemDetailsCard(historyItem, context, isPresent = true,
+                        removeItem = { item, deleteFile ->
+                            historyViewModel.delete(item, deleteFile)
+                        },
+                        redownloadItem = { },
+                        redownloadShowDownloadCard = {}
+                    )
+                }
+
+            }
+
+
+        }
+
+        adapter = AlreadyExistsAdapter(alreadyExistsClickListener, context)
+        sheet.findViewById<RecyclerView>(R.id.downloadMultipleRecyclerview)?.apply {
+            layoutManager = GridLayoutManager(context, 1)
+            this.adapter = adapter
+            enableFastScroll()
+            setPadding(0,20,0,0)
+        }
+
+
+        CoroutineScope(Dispatchers.IO).launch {
+            it.downloadItems.forEach {
+                val downloadItem = downloadViewModel.getItemByID(it)
+                list.add(Pair(downloadItem, null))
+                adapter.submitList(list)
+            }
+
+            it.historyItems.forEach {
+                val historyItem = downloadViewModel.getHistoryItemById(it) ?: return@forEach
+                val downloadItem = downloadViewModel.createDownloadItemFromHistory(historyItem)
+                downloadItem.id = it
+                list.add(Pair(downloadItem, historyItem.id))
+                adapter.submitList(list)
+            }
+
+        }
+
+        sheet.findViewById<Button>(R.id.bottomsheet_download_button)?.apply {
+            setOnClickListener {
+                CoroutineScope(Dispatchers.IO).launch {
+                    downloadViewModel.deleteProcessing()
+                    val items = list.map { it.first }
+                    items.forEach { it.id = 0 }
+                    downloadViewModel.queueDownloads(items, true)
                     withContext(Dispatchers.Main){
-                        editBtn.visibility = View.VISIBLE
-                    }
-
-                    editBtn.setOnClickListener {
-                        val resultItem = downloadViewModel.createResultItemFromDownload(downloadItem)
-                        val onItemUpdated = object: ConfigureDownloadBottomSheetDialog.OnDownloadItemUpdateListener {
-                            override fun onDownloadItemUpdate(
-                                resultItemID: Long,
-                                item: DownloadItem
-                            ) {
-                                lifecycleScope.launch {
-                                    val idx = downloads.indexOfFirst { it.id == item.id }
-                                    downloads[idx] = item
-                                    withContext(Dispatchers.Main){
-                                        ttle.text = "${index + 1}. ${item.title}"
-                                    }
-                                }
-                            }
-                        }
-                        val bottomSheet = ConfigureDownloadBottomSheetDialog(resultItem, downloadItem, onItemUpdated)
-                        bottomSheet.show(supportFragmentManager, "configureDownloadSingleSheet")
-                    }
-
-                    if (historyItem != null){
-                        ttle.setOnClickListener {
-                            showHistoryItemDetailsCard(historyItem, context, isPresent = true,
-                                removeItem = { item, deleteFile ->
-                                    historyViewModel.delete(item, deleteFile)
-                                },
-                                redownloadItem = { },
-                                redownloadShowDownloadCard = {}
-                            )
-                        }
+                        sheet.dismiss()
                     }
                 }
-
-                ttle.setOnLongClickListener {
-                    showGenericDeleteDialog(context, ttle.text.toString(), accepted = {
-                        linearLayout.removeView(alreadyExistsItem)
-                        if (linearLayout.childCount == 0){
-                            dialog?.dismiss()
-                        }
-                    })
-                    true
-                }
-
-                linearLayout.addView(alreadyExistsItem)
             }
+        }
 
-            errDialog.setView(linearLayout)
-
-            errDialog.setPositiveButton(downloadAnywayAction.first) { d:DialogInterface?, _:Int ->
-                CoroutineScope(Dispatchers.IO).launch {
-                    linearLayout.children.forEach {view ->
-                        val downloadItem = downloads.first { it.id == (view.tag as String).toLong()}
-                        downloadItem.id = 0
-                        downloadViewModel.queueDownloads(listOf(downloadItem), true)
-                    }
-                }
-                d?.dismiss()
-            }
-
-            errDialog.setNegativeButton(R.string.schedule) { d:DialogInterface?, _:Int ->
+        sheet.findViewById<Button>(R.id.bottomsheet_schedule_button)?.apply {
+            setOnClickListener {
                 showDatePicker(supportFragmentManager) { calendar ->
                     CoroutineScope(Dispatchers.IO).launch {
-                        val items = mutableListOf<DownloadItem>()
-                        linearLayout.children.forEach {view ->
-                            val downloadItem = downloads.first { it.id == (view.tag as String).toLong()}
-                            downloadItem.downloadStartTime = calendar.timeInMillis
-                            downloadItem.id = 0
-                            items.add(downloadItem)
+                        downloadViewModel.deleteProcessing()
+                        val items = list.map { it.first }
+                        items.forEach {
+                            it.id = 0
+                            it.downloadStartTime = calendar.timeInMillis
                         }
 
+
                         runBlocking {
-                            val chunks = items.chunked(10)
-                            for (c in chunks) {
-                                downloadViewModel.queueDownloads(c, true)
-                            }
+                            downloadViewModel.queueDownloads(items, true)
                             val first = items.first()
-                            val date = SimpleDateFormat(DateFormat.getBestDateTimePattern(Locale.getDefault(), "ddMMMyyyy - HHmm"), Locale.getDefault()).format(first.downloadStartTime)
-                            withContext(Dispatchers.Main){
-                                Toast.makeText(context, context.getString(R.string.download_rescheduled_to) + " " + date, Toast.LENGTH_LONG).show()
+                            val date = SimpleDateFormat(
+                                DateFormat.getBestDateTimePattern(
+                                    Locale.getDefault(),
+                                    "ddMMMyyyy - HHmm"
+                                ), Locale.getDefault()
+                            ).format(first.downloadStartTime)
+                            withContext(Dispatchers.Main) {
+                                Toast.makeText(
+                                    context,
+                                    context.getString(R.string.download_rescheduled_to) + " " + date,
+                                    Toast.LENGTH_LONG
+                                ).show()
                             }
                         }
-                        withContext(Dispatchers.Main){
-                            d?.dismiss()
+
+                        withContext(Dispatchers.Main) {
+                            sheet.dismiss()
                         }
                     }
                 }
             }
-
-            dialog = errDialog.show()
         }
+
+        sheet.setOnDismissListener {
+            CoroutineScope(Dispatchers.IO).launch {
+                downloadViewModel.deleteProcessing()
+            }
+        }
+
+        sheet.findViewById<BottomAppBar>(R.id.bottomAppBar)?.isVisible = false
+        sheet.show()
     }
 
 
@@ -1903,14 +1984,14 @@ object UiUtil {
 
         builder.setView(view)
         builder.setPositiveButton(
-            context.getString(R.string.dismiss)
+            context.getString(android.R.string.copy)
         ) { _: DialogInterface?, _: Int ->
             copyToClipboard(txt, context)
         }
 
         // handle the negative button of the alert dialog
         builder.setNegativeButton(
-            context.getString(android.R.string.cancel)
+            context.getString(R.string.dismiss)
         ) { _: DialogInterface?, _: Int -> }
 
         val dialog = builder.create()

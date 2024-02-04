@@ -26,8 +26,8 @@ class HistoryRepository(private val historyDao: HistoryDao) {
         return historyDao.getAllHistoryByURL(url)
     }
 
-    fun getFiltered(query : String, format : String, site : String, sortType: HistorySortType, sort: SORTING) : List<HistoryItem> {
-        return when(sortType){
+    fun getFiltered(query : String, format : String, site : String, sortType: HistorySortType, sort: SORTING, notDeleted: Boolean) : List<HistoryItem> {
+        var filtered = when(sortType){
             HistorySortType.DATE ->  historyDao.getHistorySortedByID(query, format, site, sort.toString())
             HistorySortType.TITLE ->  historyDao.getHistorySortedByTitle(query, format, site, sort.toString())
             HistorySortType.AUTHOR ->  historyDao.getHistorySortedByAuthor(query, format, site, sort.toString())
@@ -39,6 +39,11 @@ class HistoryRepository(private val historyDao: HistoryDao) {
                 }
             }
         }
+        if(notDeleted){
+            filtered = filtered.filter { it.downloadPath.any { it2 -> FileUtil.exists(it2) } }
+        }
+
+        return filtered
     }
 
     suspend fun insert(item: HistoryItem){

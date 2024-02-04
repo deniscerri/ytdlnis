@@ -1,4 +1,4 @@
-package com.deniscerri.ytdlnis.receiver
+package com.deniscerri.ytdlnis.receiver.downloadAlarmReceivers
 
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -13,7 +13,6 @@ import java.util.concurrent.TimeUnit
 
 class AlarmStartReceiver : BroadcastReceiver() {
     override fun onReceive(p0: Context?, p1: Intent?) {
-        Log.e("assa", "Start")
         val workConstraints = Constraints.Builder()
         val workRequest = OneTimeWorkRequestBuilder<DownloadWorker>()
             .addTag("download")

@@ -7,7 +7,7 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceManager
 import androidx.preference.SwitchPreferenceCompat
 import com.deniscerri.ytdlnis.R
-import com.deniscerri.ytdlnis.receiver.AlarmStartReceiver
+import com.deniscerri.ytdlnis.receiver.downloadAlarmReceivers.AlarmStartReceiver
 import com.deniscerri.ytdlnis.util.UiUtil
 import com.deniscerri.ytdlnis.work.AlarmScheduler
 import java.util.Calendar

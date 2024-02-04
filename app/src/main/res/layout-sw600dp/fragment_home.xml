@@ -232,18 +232,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:paddingVertical="10dp"
             android:layout_gravity="bottom|end">
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
                 android:id="@+id/copied_url_fab"
                 android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|end"
-                android:layout_marginHorizontal="5dp"
+                android:text="@string/link_you_copied"
+                android:layout_marginHorizontal="16dp"
                 android:contentDescription="@string/link_you_copied"
-                android:src="@drawable/ic_clipboard"
-                android:text="@string/download_all"
+                app:icon="@drawable/ic_clipboard"
                 app:useCompatPadding="true" />
 
             <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
@@ -253,6 +254,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|end"
                 android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="10dp"
                 android:text="@string/download_all"
                 app:icon="@drawable/ic_down" />
 

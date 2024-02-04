@@ -5,8 +5,8 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import androidx.preference.PreferenceManager
-import com.deniscerri.ytdlnis.receiver.AlarmStartReceiver
-import com.deniscerri.ytdlnis.receiver.AlarmStopReceiver
+import com.deniscerri.ytdlnis.receiver.downloadAlarmReceivers.AlarmStartReceiver
+import com.deniscerri.ytdlnis.receiver.downloadAlarmReceivers.AlarmStopReceiver
 import java.util.Calendar
 
 class AlarmScheduler(private val context: Context) {

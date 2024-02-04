@@ -11,6 +11,10 @@ class CookieRepository(private val cookieDao: CookieDao) {
         return cookieDao.getAllCookies()
     }
 
+    fun getByURL(url: String) : CookieItem {
+        return cookieDao.getByURL(url)
+    }
+
 
     suspend fun insert(item: CookieItem) : Long{
         if (! cookieDao.checkIfExistsWithSameURL(item.url)){

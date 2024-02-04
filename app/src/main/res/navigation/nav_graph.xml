@@ -69,6 +69,9 @@
         <action
             android:id="@+id/action_moreFragment_to_terminalActivity"
             app:destination="@id/terminalActivity" />
+        <action
+            android:id="@+id/action_moreFragment_to_observeSourcesFragment"
+            app:destination="@id/observeSourcesFragment" />
     </fragment>
     <activity
         android:id="@+id/terminalActivity"
@@ -163,9 +166,29 @@
     <dialog
         android:id="@+id/downloadMultipleBottomSheetDialog2"
         android:name="com.deniscerri.ytdlnis.ui.downloadcard.DownloadMultipleBottomSheetDialog"
-        android:label="DownloadMultipleBottomSheetDialog" />
+        android:label="DownloadMultipleBottomSheetDialog" >
+        <action
+            android:id="@+id/action_downloadMultipleBottomSheetDialog2_to_configureDownloadBottomSheetDialog"
+            app:destination="@id/configureDownloadBottomSheetDialog" />
+    </dialog>
     <dialog
         android:id="@+id/cutVideoBottomSheetDialog"
         android:name="com.deniscerri.ytdlnis.ui.downloadcard.CutVideoBottomSheetDialog"
         android:label="CutVideoBottomSheetDialog" />
+    <dialog
+        android:id="@+id/configureDownloadBottomSheetDialog"
+        android:name="com.deniscerri.ytdlnis.ui.downloadcard.ConfigureDownloadBottomSheetDialog"
+        android:label="ConfigureDownloadBottomSheetDialog" />
+    <fragment
+        android:id="@+id/observeSourcesFragment"
+        android:name="com.deniscerri.ytdlnis.ui.more.ObserveSourcesFragment"
+        android:label="ObserveSourcesFragment" >
+        <action
+            android:id="@+id/action_observeSourcesFragment_to_observeSourcesBottomSheetDialog"
+            app:destination="@id/observeSourcesBottomSheetDialog" />
+    </fragment>
+    <dialog
+        android:id="@+id/observeSourcesBottomSheetDialog"
+        android:name="com.deniscerri.ytdlnis.ui.downloadcard.ObserveSourcesBottomSheetDialog"
+        android:label="ObserveSourcesBottomSheetDialog" />
 </navigation>

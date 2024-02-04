@@ -7,6 +7,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -17,8 +18,10 @@ import androidx.viewpager2.widget.ViewPager2
 import androidx.work.WorkManager
 import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
+import com.deniscerri.ytdlnis.database.repository.DownloadRepository
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.util.NotificationUtil
+import com.deniscerri.ytdlnis.util.UiUtil
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.tabs.TabLayout
@@ -135,6 +138,24 @@ class DownloadQueueMainFragment : Fragment(){
                         showDeleteDialog {
                             downloadViewModel.deleteSaved()
                         }
+                    }
+                    R.id.copy_urls -> {
+                        lifecycleScope.launch {
+                            val tabStatus = mapOf(
+                                0 to listOf(DownloadRepository.Status.Active, DownloadRepository.Status.ActivePaused, DownloadRepository.Status.PausedReQueued),
+                                1 to listOf(DownloadRepository.Status.Queued, DownloadRepository.Status.Queued),
+                                2 to listOf(DownloadRepository.Status.Cancelled),
+                                3 to listOf(DownloadRepository.Status.Error),
+                                4 to listOf(DownloadRepository.Status.Saved),
+                            )
+                            tabStatus[tabLayout.selectedTabPosition]?.apply {
+                                val urls = withContext(Dispatchers.IO){
+                                    downloadViewModel.getURLsByStatus(this@apply)
+                                }
+                                UiUtil.copyToClipboard(urls.joinToString("\n"), requireActivity())
+                            }
+                        }
+
                     }
                 }
             }catch (e: Exception){

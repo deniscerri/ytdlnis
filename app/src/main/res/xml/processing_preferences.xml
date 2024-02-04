@@ -61,6 +61,14 @@
         app:summary="@string/save_subs_desc"
         app:title="@string/save_subs" />
 
+    <SwitchPreferenceCompat
+        android:widgetLayout="@layout/preferece_material_switch"
+        app:defaultValue="false"
+        app:icon="@drawable/ic_subtitles_alternative"
+        app:key="write_auto_subtitles"
+        app:summary="@string/save_subs_desc"
+        app:title="@string/save_auto_subs" />
+
     <Preference
         android:icon="@drawable/baseline_subject_24"
         app:key="subs_lang"

@@ -1,4 +1,4 @@
-package com.deniscerri.ytdlnis.receiver
+package com.deniscerri.ytdlnis.receiver.downloadAlarmReceivers
 
 import android.content.BroadcastReceiver
 import android.content.Context

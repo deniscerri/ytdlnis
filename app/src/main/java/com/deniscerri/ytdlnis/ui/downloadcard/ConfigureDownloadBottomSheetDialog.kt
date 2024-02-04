@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.edit
 import androidx.lifecycle.ViewModelProvider
@@ -22,12 +23,14 @@ import com.deniscerri.ytdlnis.database.DBManager
 import com.deniscerri.ytdlnis.database.dao.CommandTemplateDao
 import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.models.ResultItem
+import com.deniscerri.ytdlnis.database.viewmodel.CommandTemplateViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel.Type
 import com.deniscerri.ytdlnis.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdlnis.util.UiUtil
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -40,7 +43,7 @@ class ConfigureDownloadBottomSheetDialog(private var result: ResultItem, private
     private lateinit var fragmentAdapter : DownloadFragmentAdapter
     private lateinit var downloadViewModel: DownloadViewModel
     private lateinit var resultViewModel: ResultViewModel
-    private lateinit var commandTemplateDao: CommandTemplateDao
+    private lateinit var commandTemplateViewModel: CommandTemplateViewModel
     private lateinit var behavior: BottomSheetBehavior<View>
     private lateinit var onDownloadItemUpdateListener: OnDownloadItemUpdateListener
     private lateinit var sharedPreferences : SharedPreferences
@@ -49,7 +52,7 @@ class ConfigureDownloadBottomSheetDialog(private var result: ResultItem, private
         super.onCreate(savedInstanceState)
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
         resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]
-        commandTemplateDao = DBManager.getInstance(requireContext()).commandTemplateDao
+        commandTemplateViewModel = ViewModelProvider(requireActivity())[CommandTemplateViewModel::class.java]
         onDownloadItemUpdateListener = listener
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
     }
@@ -84,7 +87,7 @@ class ConfigureDownloadBottomSheetDialog(private var result: ResultItem, private
         var commandTemplateNr = 0
         lifecycleScope.launch{
             withContext(Dispatchers.IO){
-                commandTemplateNr = commandTemplateDao.getTotalNumber()
+                commandTemplateNr = commandTemplateViewModel.getTotalNumber()
                 if(commandTemplateNr <= 0){
                     (tabLayout.getChildAt(0) as? ViewGroup)?.getChildAt(2)?.isClickable = true
                     (tabLayout.getChildAt(0) as? ViewGroup)?.getChildAt(2)?.alpha = 0.3f
@@ -137,7 +140,19 @@ class ConfigureDownloadBottomSheetDialog(private var result: ResultItem, private
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 if (tab!!.position == 2 && commandTemplateNr == 0){
                     tabLayout.selectTab(tabLayout.getTabAt(1))
-                    Toast.makeText(context, getString(R.string.add_template_first), Toast.LENGTH_SHORT).show()
+                    val s = Snackbar.make(view, getString(R.string.add_template_first), Snackbar.LENGTH_LONG)
+                    val snackbarView: View = s.view
+                    val snackTextView = snackbarView.findViewById<View>(com.google.android.material.R.id.snackbar_text) as TextView
+                    snackTextView.maxLines = 9999999
+                    s.setAction(R.string.new_template){
+                        UiUtil.showCommandTemplateCreationOrUpdatingSheet(item = null, context = requireActivity(), lifeCycle = this@ConfigureDownloadBottomSheetDialog, commandTemplateViewModel = commandTemplateViewModel){
+                            commandTemplateNr = 1
+                            (tabLayout.getChildAt(0) as? ViewGroup)?.getChildAt(2)?.isClickable = true
+                            (tabLayout.getChildAt(0) as? ViewGroup)?.getChildAt(2)?.alpha = 1f
+                            tabLayout.selectTab(tabLayout.getTabAt(2))
+                        }
+                    }
+                    s.show()
                 }else if (tab.position == 1 && isAudioOnly){
                     tabLayout.selectTab(tabLayout.getTabAt(0))
                     Toast.makeText(context, getString(R.string.audio_only_item), Toast.LENGTH_SHORT).show()
@@ -191,15 +206,15 @@ class ConfigureDownloadBottomSheetDialog(private var result: ResultItem, private
         return when(selectedTabPosition){
             0 -> {
                 val f = fragmentManager?.findFragmentByTag("f0") as DownloadAudioFragment
-                f.downloadItem
+                f.downloadItem.apply { id = currentDownloadItem.id }
             }
             1 -> {
                 val f = fragmentManager?.findFragmentByTag("f1") as DownloadVideoFragment
-                f.downloadItem
+                f.downloadItem.apply { id = currentDownloadItem.id }
             }
             else -> {
                 val f = fragmentManager?.findFragmentByTag("f2") as DownloadCommandFragment
-                f.downloadItem
+                f.downloadItem.apply { id = currentDownloadItem.id }
             }
         }
     }
@@ -209,21 +224,27 @@ class ConfigureDownloadBottomSheetDialog(private var result: ResultItem, private
         val prevDownloadItem = getDownloadItem(
             if (viewPager2.currentItem == 1) 0 else 1
         )
-
-        result.title = prevDownloadItem.title
-        result.author = prevDownloadItem.author
-        currentDownloadItem.title = prevDownloadItem.title
-        currentDownloadItem.author = prevDownloadItem.author
+        fragmentAdapter.setTitleAuthor(prevDownloadItem.title, prevDownloadItem.author)
 
         when(viewPager2.currentItem){
             0 -> {
-                val f = fragmentManager?.findFragmentByTag("f0") as DownloadAudioFragment
-                f.updateTitleAuthor(prevDownloadItem.title, prevDownloadItem.author)
+                kotlin.runCatching {
+                    val f = fragmentManager?.findFragmentByTag("f0") as DownloadAudioFragment
+                    f.updateTitleAuthor(prevDownloadItem.title, prevDownloadItem.author)
+                }
             }
             1 -> {
-                val f = fragmentManager?.findFragmentByTag("f1") as DownloadVideoFragment
-                f.updateTitleAuthor(prevDownloadItem.title, prevDownloadItem.author)
-                f.updateSelectedAudioFormat(getDownloadItem(0).format)
+                kotlin.runCatching {
+                    val f = fragmentManager?.findFragmentByTag("f1") as DownloadVideoFragment
+                    f.updateTitleAuthor(prevDownloadItem.title, prevDownloadItem.author)
+                    f.updateSelectedAudioFormat(getDownloadItem(0).format)
+                }
+            }
+            2 -> {
+                kotlin.runCatching {
+                    val f = fragmentManager?.findFragmentByTag("f2") as DownloadCommandFragment
+                    f.updateTitleAuthor(prevDownloadItem.title, prevDownloadItem.author)
+                }
             }
             else -> {}
         }

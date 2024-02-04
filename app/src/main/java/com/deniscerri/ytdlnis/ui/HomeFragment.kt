@@ -1,5 +1,6 @@
 package com.deniscerri.ytdlnis.ui
 
+import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.*
@@ -14,6 +15,7 @@ import android.util.Log
 import android.util.Patterns
 import android.view.*
 import android.view.View.*
+import android.view.animation.Interpolator
 import android.widget.*
 import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
@@ -35,14 +37,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
-import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.deniscerri.ytdlnis.database.models.SearchSuggestionItem
 import com.deniscerri.ytdlnis.database.models.SearchSuggestionType
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
+import com.deniscerri.ytdlnis.database.viewmodel.HistoryViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdlnis.ui.adapter.HomeAdapter
 import com.deniscerri.ytdlnis.ui.adapter.SearchSuggestionsAdapter
+import com.deniscerri.ytdlnis.util.Extensions
 import com.deniscerri.ytdlnis.util.Extensions.enableFastScroll
 import com.deniscerri.ytdlnis.util.InfoUtil
 import com.deniscerri.ytdlnis.util.ThemeUtil
@@ -56,11 +59,11 @@ import com.google.android.material.chip.ChipGroup
 import com.google.android.material.color.MaterialColors
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.search.SearchBar
 import com.google.android.material.search.SearchView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -76,13 +79,14 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
 
     private var downloadSelectedFab: ExtendedFloatingActionButton? = null
     private var downloadAllFab: ExtendedFloatingActionButton? = null
-    private var clipboardFab: FloatingActionButton? = null
+    private var clipboardFab: ExtendedFloatingActionButton? = null
     private var homeFabs: CoordinatorLayout? = null
     private var infoUtil: InfoUtil? = null
     private var downloadQueue: ArrayList<ResultItem>? = null
 
     private lateinit var resultViewModel : ResultViewModel
     private lateinit var downloadViewModel : DownloadViewModel
+    private lateinit var historyViewModel : HistoryViewModel
 
     private var fragmentView: View? = null
     private var activity: Activity? = null
@@ -126,7 +130,8 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
         uiHandler = Handler(Looper.getMainLooper())
         selectedObjects = ArrayList()
 
-        downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
+        downloadViewModel = ViewModelProvider(requireActivity())[DownloadViewModel::class.java]
+        historyViewModel = ViewModelProvider(this)[HistoryViewModel::class.java]
 
         downloadQueue = ArrayList()
         resultsList = mutableListOf()
@@ -167,7 +172,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
         searchSuggestionsRecyclerView = view.findViewById(R.id.search_suggestions_recycler)
         searchSuggestionsRecyclerView?.layoutManager = LinearLayoutManager(context)
         searchSuggestionsRecyclerView?.adapter = searchSuggestionsAdapter
-        searchSuggestionsRecyclerView?.enableFastScroll()
+        searchSuggestionsRecyclerView?.itemAnimator = null
 
 
         resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]
@@ -263,6 +268,30 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
             }
         }
 
+        lifecycleScope.launch {
+            launch{
+                downloadViewModel.alreadyExistsUiState.collectLatest { res ->
+                    if (res.downloadItems.isNotEmpty() || res.historyItems.isNotEmpty()) {
+                        withContext(Dispatchers.Main){
+                            kotlin.runCatching {
+                                UiUtil.handleExistingDownloadsResponse(
+                                    requireActivity(),
+                                    requireActivity().lifecycleScope,
+                                    requireActivity().supportFragmentManager,
+                                    res,
+                                    downloadViewModel,
+                                    historyViewModel)
+                            }
+                        }
+                        downloadViewModel.alreadyExistsUiState.value =  DownloadViewModel.AlreadyExistsUIState(
+                            mutableListOf(),
+                            mutableListOf()
+                        )
+                    }
+                }
+            }
+        }
+
     }
 
     override fun onResume() {
@@ -278,15 +307,11 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
         if (arguments?.getBoolean("showDownloadsWithUpdatedFormats") == true){
             arguments?.remove("showDownloadsWithUpdatedFormats")
             CoroutineScope(Dispatchers.IO).launch {
-                val ids = arguments?.getLongArray("downloadIds")
-                val items = mutableListOf<DownloadItem>()
-                ids?.forEach {
-                    items.add(downloadViewModel.getItemByID(it))
-                    downloadViewModel.deleteDownload(it)
-                }
+                val ids = arguments?.getLongArray("downloadIds") ?: return@launch
+                val type = downloadViewModel.updateItemsWithIdsToProcessingStatus(ids.toList())
                 withContext(Dispatchers.Main){
                     findNavController().navigate(R.id.downloadMultipleBottomSheetDialog2, bundleOf(
-                        Pair("downloads", items)
+                        Pair("type", type)
                     ))
                 }
             }
@@ -303,6 +328,12 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
                     searchView!!.setText(this)
                     clipboardFab?.isVisible = false
                     initSearch(searchView!!)
+                }
+
+                lifecycleScope.launch {
+                    clipboardFab?.extend()
+                    delay(1000)
+                    clipboardFab?.shrink()
                 }
             }
         }
@@ -679,11 +710,15 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
                         downloadViewModel.turnResultItemsToDownloadItems(resultsList!!)
                     }
                     if (sharedPreferences!!.getBoolean("download_card", true)) {
-                        findNavController().navigate(R.id.downloadMultipleBottomSheetDialog2, bundleOf(
-                            Pair("downloads", downloadList)
-                        ))
+                        CoroutineScope(Dispatchers.IO).launch {
+                            downloadViewModel.insertToProcessing(downloadList)
+                        }
+
+                        findNavController().navigate(R.id.downloadMultipleBottomSheetDialog2, bundleOf(Pair("type", downloadList[0].type)))
                     } else {
-                        downloadViewModel.queueDownloads(downloadList)
+                        downloadList.chunked(100).forEach {
+                            downloadViewModel.queueDownloads(it)
+                        }
                     }
                 }
             }
@@ -741,8 +776,12 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
                             }
 
                             if (sharedPreferences!!.getBoolean("download_card", true)) {
+                                CoroutineScope(Dispatchers.IO).launch {
+                                    downloadViewModel.insertToProcessing(downloadList)
+                                }
+
                                 findNavController().navigate(R.id.downloadMultipleBottomSheetDialog2, bundleOf(
-                                    Pair("downloads", downloadList)
+                                    Pair("type", downloadList[0].type)
                                 ))
                             } else {
                                 downloadViewModel.queueDownloads(downloadList)
@@ -827,8 +866,8 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
             chip.text = text
             chip.chipBackgroundColor = ColorStateList.valueOf(MaterialColors.getColor(requireContext(), R.attr.colorSecondaryContainer, Color.BLACK))
             chip.setOnClickListener {
+                if (queriesChipGroup!!.childCount == 1) queriesConstraint!!.visibility = View.GONE
                 queriesChipGroup!!.removeView(chip)
-                if (queriesChipGroup!!.childCount == 0) queriesChipGroup!!.visibility = View.GONE
             }
             queriesChipGroup!!.addView(chip)
         }
@@ -849,7 +888,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
         deleteDialog.setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, _: Int -> dialogInterface.cancel() }
         deleteDialog.setPositiveButton(getString(R.string.ok)) { _: DialogInterface?, _: Int ->
             resultViewModel.removeSearchQueryFromHistory(text)
-            searchSuggestionsAdapter?.notifyItemRemoved(position)
+            updateSearchViewItems(searchView!!.editText.text)
         }
         deleteDialog.show()
     }

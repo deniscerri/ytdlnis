@@ -27,4 +27,10 @@
         android:icon="@drawable/ic_delete_all"
         android:title="@string/clear_saved"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/copy_urls"
+        android:icon="@drawable/ic_delete_all"
+        android:title="@string/copy_urls"
+        app:showAsAction="never" />
 </menu>

@@ -286,6 +286,10 @@ object FileUtil {
         return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)?.absolutePath + File.separator + "YTDLnis/Command"
     }
 
+    fun getDownloadArchivePath(context: Context) : String {
+        return context.cacheDir.absolutePath + "/download_archive.txt"
+    }
+
     fun getDefaultTerminalPath() : String {
         return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)?.absolutePath + File.separator + "YTDLnis/TERMINAL_CACHE"
     }

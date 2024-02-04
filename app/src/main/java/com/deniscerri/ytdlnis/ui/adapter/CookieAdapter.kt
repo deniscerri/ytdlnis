@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.CookieItem
+import com.deniscerri.ytdlnis.util.Extensions.popup
 import com.google.android.material.card.MaterialCardView
 
 class CookieAdapter(onItemClickListener: OnItemClickListener, activity: Activity) : ListAdapter<CookieItem?, CookieAdapter.ViewHolder>(AsyncDifferConfig.Builder(
@@ -41,6 +42,7 @@ class CookieAdapter(onItemClickListener: OnItemClickListener, activity: Activity
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)
         val card = holder.item
+        card.popup()
 
         val title = card.findViewById<TextView>(R.id.title)
         title.text = item?.url

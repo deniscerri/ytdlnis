@@ -105,7 +105,7 @@ class ResultViewModel(private val application: Application) : AndroidViewModel(a
                         else -> res.addAll(repository.getDefault(inputQuery, resetResults))
                     }
                 } catch (e: Exception) {
-                    if (e !is kotlinx.coroutines.CancellationException){
+                    if (updateResultDataJob?.isCancelled == false){
                         uiState.update {it.copy(
                             processing = false,
                             errorMessage = Pair(R.string.no_results, e.message.toString()),

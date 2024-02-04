@@ -29,6 +29,10 @@
         android:icon="@drawable/baseline_cookie_24"
         android:checkable="true"
         android:id="@+id/cookiesFragment"/>
+    <item android:title="@string/observe_sources"
+        android:icon="@drawable/baseline_calendar_month_24"
+        android:checkable="true"
+        android:id="@+id/observeSourcesFragment"/>
     <item android:title="@string/kill_app"
         android:checkable="true"
         android:icon="@drawable/ic_power"

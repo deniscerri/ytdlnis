@@ -21,7 +21,8 @@ import com.deniscerri.ytdlnis.database.models.*
         TemplateShortcut::class,
         CookieItem::class,
         LogItem::class,
-        TerminalItem::class
+        TerminalItem::class,
+        ObserveSourcesItem::class
    ],
     version = 14,
     autoMigrations = [
@@ -37,7 +38,7 @@ import com.deniscerri.ytdlnis.database.models.*
         AutoMigration (from = 10, to = 11),
         AutoMigration (from = 11, to = 12),
         AutoMigration (from = 12, to = 13),
-        //AutoMigration (from = 13, to = 14), MANUALLY HANDLED
+        // AutoMigration (from = 13, to = 14) MANUALLY HANDLED
     ]
 )
 abstract class DBManager : RoomDatabase(){
@@ -49,6 +50,7 @@ abstract class DBManager : RoomDatabase(){
     abstract val cookieDao: CookieDao
     abstract val logDao: LogDao
     abstract val terminalDao: TerminalDao
+    abstract val observeSourcesDao: ObserveSourcesDao
 
     enum class SORTING{
         DESC, ASC

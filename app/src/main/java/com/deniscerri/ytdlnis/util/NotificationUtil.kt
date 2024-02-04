@@ -126,6 +126,27 @@ class NotificationUtil(var context: Context) {
             .build()
     }
 
+    fun createObserveSourcesNotification(title: String) : Notification {
+        val notificationBuilder = getBuilder(DOWNLOAD_WORKER_CHANNEL_ID)
+
+        return notificationBuilder
+            .setContentTitle(resources.getString(R.string.observe_sources))
+            .setContentText(title)
+            .setOngoing(true)
+            .setSmallIcon(R.drawable.ic_launcher_foreground_large)
+            .setLargeIcon(
+                BitmapFactory.decodeResource(
+                    resources,
+                    R.drawable.ic_launcher_foreground_large
+                )
+            )
+            .setPriority(NotificationCompat.PRIORITY_LOW)
+            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+            .setForegroundServiceBehavior(NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE)
+            .clearActions()
+            .build()
+    }
+
     fun createDownloadServiceNotification(
         pendingIntent: PendingIntent?,
         title: String?,

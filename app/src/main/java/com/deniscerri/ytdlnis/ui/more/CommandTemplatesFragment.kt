@@ -38,7 +38,6 @@ import com.deniscerri.ytdlnis.database.viewmodel.CommandTemplateViewModel
 import com.deniscerri.ytdlnis.database.repository.CommandTemplateRepository.CommandTemplateSortType
 import com.deniscerri.ytdlnis.database.DBManager.SORTING
 import com.deniscerri.ytdlnis.database.models.CommandTemplateExport
-import com.deniscerri.ytdlnis.database.models.LogItem
 import com.deniscerri.ytdlnis.util.UiUtil
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.MaterialToolbar

@@ -50,7 +50,7 @@
             app:title="@string/format_order" />
 
         <ListPreference
-            android:defaultValue="all"
+            android:defaultValue="ALL"
             android:entries="@array/format_filtering"
             android:entryValues="@array/format_filtering_values"
             android:icon="@drawable/baseline_align_horizontal_left_24"
