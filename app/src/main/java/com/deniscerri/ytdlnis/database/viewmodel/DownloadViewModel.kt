@@ -913,11 +913,20 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
     }
 
 
-    suspend fun updateItemsWithIdsToProcessingStatus(ids: List<Long>) : Type {
+    suspend fun updateItemsWithIdsToProcessingStatus(ids: List<Long>) {
         repository.deleteProcessing()
         dao.updateItemsToProcessing(ids)
         val first = dao.getFirstProcessingDownload()
-        return first.type
+    }
+
+    suspend fun addDownloadsToProcessing(ids: List<Long>) {
+        repository.deleteProcessing()
+        val items = repository.getAllItemsByIDs(ids)
+        items.forEach {
+            it.id = 0
+            it.status = DownloadRepository.Status.Processing.toString()
+            insert(it)
+        }
     }
 
     fun getURLsByStatus(list: List<DownloadRepository.Status>) : List<String> {

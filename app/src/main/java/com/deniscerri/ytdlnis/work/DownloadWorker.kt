@@ -102,7 +102,7 @@ class DownloadWorker(
             val eligibleDownloads = items.take(if (concurrentDownloads < 0) 0 else concurrentDownloads).filter {  it.id !in running }
 
             eligibleDownloads.forEach{downloadItem ->
-                val notification = notificationUtil.createDownloadServiceNotification(pendingIntent, downloadItem.title, downloadItem.id.toInt())
+                val notification = notificationUtil.createDownloadServiceNotification(pendingIntent, downloadItem.title.ifEmpty { downloadItem.url }, downloadItem.id.toInt())
                 notificationUtil.notify(downloadItem.id.toInt(), notification)
 
                 CoroutineScope(Dispatchers.IO).launch {
@@ -150,7 +150,7 @@ class DownloadWorker(
                     runCatching {
                         YoutubeDL.getInstance().execute(request, downloadItem.id.toString()){ progress, _, line ->
                             setProgressAsync(workDataOf("progress" to progress.toInt(), "output" to line.chunked(5000).first().toString(), "id" to downloadItem.id))
-                            val title: String = downloadItem.title
+                            val title: String = downloadItem.title.ifEmpty { downloadItem.url }
                             notificationUtil.updateDownloadNotification(
                                 downloadItem.id.toInt(),
                                 line, progress.toInt(), 0, title,

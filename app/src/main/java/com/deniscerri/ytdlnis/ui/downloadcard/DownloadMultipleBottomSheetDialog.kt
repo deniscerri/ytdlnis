@@ -81,7 +81,6 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
     private lateinit var bottomAppBar: BottomAppBar
     private lateinit var filesize : TextView
     private lateinit var sharedPreferences: SharedPreferences
-    private lateinit var type: DownloadViewModel.Type
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -98,16 +97,6 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
         super.setupDialog(dialog, style)
         val view = LayoutInflater.from(context).inflate(R.layout.download_multiple_bottom_sheet, null)
         dialog.setContentView(view)
-
-        arguments?.getSerializable("type").apply {
-            if (this == null){
-                dismiss()
-                return
-            }else{
-                type = this as DownloadViewModel.Type
-            }
-        }
-
 
         dialog.setOnShowListener {
             behavior = BottomSheetBehavior.from(view.parent as View)
@@ -196,20 +185,6 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
 
         bottomAppBar = view.findViewById(R.id.bottomAppBar)
         val preferredDownloadType = bottomAppBar.menu.findItem(R.id.preferred_download_type)
-        when(type){
-            DownloadViewModel.Type.audio -> {
-                preferredDownloadType.setIcon(R.drawable.baseline_audio_file_24)
-            }
-            DownloadViewModel.Type.video -> {
-                preferredDownloadType.setIcon(R.drawable.baseline_video_file_24)
-
-            }
-            DownloadViewModel.Type.command -> {
-                preferredDownloadType.setIcon(R.drawable.baseline_insert_drive_file_24)
-            }
-
-            else -> {}
-        }
 
         val formatListener = object : OnFormatClickListener {
             override fun onFormatClick(selectedFormats: List<FormatTuple>) {
@@ -234,9 +209,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                 dismiss()
             }
         }
-        if (type == DownloadViewModel.Type.command){
-            bottomAppBar.menu[3].icon?.alpha = 30
-        }
+
         bottomAppBar.setOnMenuItemClickListener { m: MenuItem ->
             when (m.itemId) {
                 R.id.folder -> {
@@ -580,6 +553,24 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                         bottomAppBar.menu[1].icon?.alpha = 30
                         bottomAppBar.menu[3].icon?.alpha = 30
                     }
+
+                    val type = it.first().type
+
+                    when(type){
+                        DownloadViewModel.Type.audio -> {
+                            preferredDownloadType.setIcon(R.drawable.baseline_audio_file_24)
+                        }
+                        DownloadViewModel.Type.video -> {
+                            preferredDownloadType.setIcon(R.drawable.baseline_video_file_24)
+
+                        }
+                        DownloadViewModel.Type.command -> {
+                            preferredDownloadType.setIcon(R.drawable.baseline_insert_drive_file_24)
+                        }
+
+                        else -> {}
+                    }
+
                 }
 
             }

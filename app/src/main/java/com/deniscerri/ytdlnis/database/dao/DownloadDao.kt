@@ -106,6 +106,9 @@ interface DownloadDao {
     @Query("SELECT * FROM downloads WHERE id=:id LIMIT 1")
     fun getDownloadById(id: Long) : DownloadItem
 
+    @Query("SELECT * FROM downloads WHERE id IN (:ids)")
+    fun getDownloadsByIds(ids: List<Long>) : List<DownloadItem>
+
     @Query("SELECT id FROM downloads ORDER BY id DESC LIMIT 1")
     fun getLastDownloadId(): Long
 

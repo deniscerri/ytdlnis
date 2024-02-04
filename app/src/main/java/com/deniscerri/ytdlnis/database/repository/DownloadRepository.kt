@@ -81,6 +81,10 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
         return downloadDao.getDownloadById(id)
     }
 
+    fun getAllItemsByIDs(ids : List<Long>) : List<DownloadItem>{
+        return downloadDao.getDownloadsByIds(ids)
+    }
+
     fun getActiveDownloads() : List<DownloadItem> {
         return downloadDao.getActiveAndPausedDownloadsList()
     }

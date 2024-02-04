@@ -203,9 +203,7 @@ class SelectPlaylistItemsDialog : DialogFragment(), PlaylistAdapter.OnItemClickL
                         downloadViewModel.insertToProcessing(downloadItems)
                     }
 
-                    findNavController().navigate(R.id.downloadMultipleBottomSheetDialog2, bundleOf(
-                        Pair("type", downloadItems[0].type)
-                    ))
+                    findNavController().navigate(R.id.downloadMultipleBottomSheetDialog2)
                 }
 
                 dismiss()

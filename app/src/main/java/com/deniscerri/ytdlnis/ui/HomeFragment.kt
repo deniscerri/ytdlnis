@@ -308,11 +308,9 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
             arguments?.remove("showDownloadsWithUpdatedFormats")
             CoroutineScope(Dispatchers.IO).launch {
                 val ids = arguments?.getLongArray("downloadIds") ?: return@launch
-                val type = downloadViewModel.updateItemsWithIdsToProcessingStatus(ids.toList())
+                downloadViewModel.updateItemsWithIdsToProcessingStatus(ids.toList())
                 withContext(Dispatchers.Main){
-                    findNavController().navigate(R.id.downloadMultipleBottomSheetDialog2, bundleOf(
-                        Pair("type", type)
-                    ))
+                    findNavController().navigate(R.id.downloadMultipleBottomSheetDialog2)
                 }
             }
         }
@@ -714,7 +712,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
                             downloadViewModel.insertToProcessing(downloadList)
                         }
 
-                        findNavController().navigate(R.id.downloadMultipleBottomSheetDialog2, bundleOf(Pair("type", downloadList[0].type)))
+                        findNavController().navigate(R.id.downloadMultipleBottomSheetDialog2)
                     } else {
                         downloadList.chunked(100).forEach {
                             downloadViewModel.queueDownloads(it)
@@ -780,9 +778,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
                                     downloadViewModel.insertToProcessing(downloadList)
                                 }
 
-                                findNavController().navigate(R.id.downloadMultipleBottomSheetDialog2, bundleOf(
-                                    Pair("type", downloadList[0].type)
-                                ))
+                                findNavController().navigate(R.id.downloadMultipleBottomSheetDialog2)
                             } else {
                                 downloadViewModel.queueDownloads(downloadList)
                             }

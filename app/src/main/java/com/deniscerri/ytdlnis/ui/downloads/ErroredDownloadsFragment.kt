@@ -1,7 +1,9 @@
 package com.deniscerri.ytdlnis.ui.downloads
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.DialogInterface
+import android.content.SharedPreferences
 import android.graphics.Canvas
 import android.graphics.Color
 import android.os.Bundle
@@ -51,6 +53,7 @@ class ErroredDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickL
     private var activity: Activity? = null
     private lateinit var downloadViewModel : DownloadViewModel
     private lateinit var erroredRecyclerView : RecyclerView
+    private lateinit var preferences : SharedPreferences
     private lateinit var noResults : RelativeLayout
     private lateinit var adapter : GenericDownloadAdapter
     private var actionMode : ActionMode? = null
@@ -63,9 +66,11 @@ class ErroredDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickL
         fragmentView = inflater.inflate(R.layout.generic_list, container, false)
         activity = getActivity()
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
+        preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
         return fragmentView
     }
 
+    @SuppressLint("RestrictedApi")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -80,7 +85,7 @@ class ErroredDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickL
         erroredRecyclerView.forceFastScrollMode()
         erroredRecyclerView.adapter = adapter
         erroredRecyclerView.enableFastScroll()
-        val preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
+        preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
         if (preferences.getStringSet("swipe_gesture", requireContext().getStringArray(R.array.swipe_gestures_values).toSet())!!.toList().contains("errored")){
             val itemTouchHelper = ItemTouchHelper(simpleCallback)
             itemTouchHelper.attachToRecyclerView(erroredRecyclerView)
@@ -235,10 +240,21 @@ class ErroredDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickL
                         }else{
                             adapter.checkedItems.toList()
                         }
-                        adapter.clearCheckedItems()
-                        withContext(Dispatchers.IO){
-                            downloadViewModel.reQueueDownloadItems(selectedObjects)
+
+                        if (preferences.getBoolean("download_card", true)){
+                            withContext(Dispatchers.IO){
+                                downloadViewModel.addDownloadsToProcessing(selectedObjects)
+                            }
+                            withContext(Dispatchers.Main){
+                                findNavController().navigate(R.id.downloadMultipleBottomSheetDialog2)
+                            }
+                        }else{
+                            withContext(Dispatchers.IO) {
+                                downloadViewModel.reQueueDownloadItems(selectedObjects)
+                            }
                         }
+
+                        adapter.clearCheckedItems()
                         actionMode?.finish()
                     }
                     true

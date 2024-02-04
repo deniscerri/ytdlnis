@@ -1,17 +1,65 @@
 ## What's New
+
 - Increased the height of the history card a slight bit
 - Fixed app not using the -S format sorter in normal GUI downloads
 - Added the multiple download card as an option to disable the swipe gestures
 - Added a recyclerview to the search results because they were buggy before and would not show sometimes
 - Added a new history item card design in cases if you quick-downloaded a playlist or if you made multiple cuts of a file. Instead of being separate, they are bundled and you can share them all at once and if you want to open the file a new dialog will show telling you to choose which one. If any of them is deleted, they are greyed out
 - Fixed the shortcuts behaviour by allowing duplicate shortcuts to be added to textbox and to not check
-- Added format filtering in the format list bottom sheet. You can filter between ALL, SUGGESTED, SMALLEST, GENERIC. Suggested formats are built upon your app preferences like your preferred codec, container, quality. Smallest formats are all formats for each resolution with the smallest filesize. Generic are formats you see if an item has not updated the formats yet, in case you want to use those for some reason
-- Added clipboard button right in the home screen for quick access to the url you copied instead of going to the searchview. That item is also available there aswell
+
+# Format Filtering
+
+App can now let you filter between 4 categories.
+All, self explanatory.
+Suggested, a combination of multiple preferences you have set in the app like your preferred codec, container and format id, quality and resolution.
+Smallest, it will select for each format the smallest size.
+Generic, the generic formats you see on the app while an item hasn't updated to real formats yet, in case you want to use those for some reason.
+
+...
+
+- Added clipboard button right in the home screen for quick access to the url you copied instead of going to the searchview. That item is also available there aswell.
+- Added an animation of it shrinking when it pops up
 - Added ability to show the URL in a history item if the download produced no title for it
-- Added zoom-in zoom-out slider for logs and terminal screens.
-- Added more options of datafetching for titles and authors, like track, alt_title to avoid the default youtube naming scheme when available. Useful for audio downloads
+- Same idea with the download notification if you hit download too fast and the data fetching process hadn't finished yet.
+- Added zoom-in zoom-out slider for logs and terminal screens. It can remember your zoom choice for both
+- Added more options of data fetching for titles and authors, like track, alt_title to avoid the default youtube naming scheme when available. Useful for audio downloads
 - Since some people are confused. In the download card each tab item is independent and they each create a distinct download item and when you press download the app picks from the tab you are currently. If you want to select the audio format in the video tab you can just open the format list and scroll to the bottom for the audio formats. You can select multiple if you want and then press ok. But since some people thought that selecting the audio in audio tab would apply to the video tab, i added the ability to synchronise that format automatically in case people dont know about this lol
+- Added the snackbar notification when there are no current command templates when trying to edit an existing download item
+- Fixed that snackbar to fill the full text
+- Fixed app crashing when trying to change the directory of multiple items in the multiple download card
+- Fixed cases where the app downloaded a playlist but items had mismatching titles. This was due to playlist index being different from piped API to yt-dlp. Added filtering by ID instead which is fool-proof
+
+# Introducing Observe Sources
+
+A long awaited feature that was planned for a long time, but always pushed back by other features.
+You can now set a playlist to be observed by the app over and over based on a time period.
+The download configuration is the exact same as if you would do a normal download. You can select types of audio video and command etc etc.
+You can set it to run every day, every week, every month. or every 2 days and so on.
+You can set the time the app should try to check for new entries to download.
+You can set the time the app will start this observation process, in case you dont want it to start now.
+You can set the case where the app should stop running it. Like after 10 runs, or after it reaches a certain date.
+The item can store which url's it had registered and passed over to the download process, so it can skip them on the next run.
+But you can set it to check the app's internal download history in case those files are still present. If not, the app will try to re-download them again.
+You can make as much as you want :), but since its running on Alarm Manager its waking up the phone to run the task so be wary of battery usage if you have way too many of them.
+
+
+...
+
+- added pop-up animations for all lists on the app
+- added ability to copy cookie content for a single cookie instead of just all of em
+- added a chip filter on the history fragment to hide the deleted records
+- added force ipv4 feature
+- added bitrate format information for formats long press details card
+- made the quick scroll handle rounder
+- fixed app still trying to fetch data even though the user cancelled it
+- added the ability to show the multiple download card in cancelled/errored/saved downloads when trying to redownload them. If the card is disabled in settings it will act like previous, instant downlaod
+- added ability to copy urls for each download tab items
+- added a chip option in the video tab to download automatic subtitles. its also an app setting
+- fixed a strange bug when the app would consider some video formats as audio formats
+- ellipsised the audio format id in the format section in the download card in case it was stupidly long, (facebook...)
+- fixed the app checking for duplicate downloads if you are trying to query multiple downloads, it will show a bottom sheet of all duplicate items
+- added ability to use the download archive of yt-dlp instead of using the app's method of duplicate checking. archive checks only the video id but the app checks the whole command config. up to you
 - Other small bug fixes
 
 The history item has been updated in this version so old backups will not work. Please make a backup of your stuff in the settings before updating. In case this update fails, notify people in telegram and revert back to the past version and use your backup and also give us the backup to reproduce the error if it happens.
-Happy Downloading & Happy belated New Year :)
+Happy Downloading :)

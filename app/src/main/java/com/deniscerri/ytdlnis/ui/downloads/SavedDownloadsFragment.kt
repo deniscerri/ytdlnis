@@ -1,7 +1,9 @@
 package com.deniscerri.ytdlnis.ui.downloads
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.DialogInterface
+import android.content.SharedPreferences
 import android.graphics.Canvas
 import android.graphics.Color
 import android.os.Bundle
@@ -51,6 +53,7 @@ class SavedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLis
     private lateinit var downloadViewModel : DownloadViewModel
     private lateinit var savedRecyclerView: RecyclerView
     private lateinit var adapter: GenericDownloadAdapter
+    private lateinit var preferences: SharedPreferences
     private lateinit var noResults: RelativeLayout
     private var actionMode : ActionMode? = null
     private var totalSize : Int = 0
@@ -62,9 +65,11 @@ class SavedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLis
         fragmentView = inflater.inflate(R.layout.generic_list, container, false)
         activity = getActivity()
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
+        preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
         return fragmentView
     }
 
+    @SuppressLint("RestrictedApi")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -79,7 +84,7 @@ class SavedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLis
         savedRecyclerView.forceFastScrollMode()
         savedRecyclerView.enableFastScroll()
         savedRecyclerView.adapter = adapter
-        val preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
+        preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
         if (preferences.getStringSet("swipe_gesture", requireContext().getStringArray(R.array.swipe_gestures_values).toSet())!!.toList().contains("saved")){
             val itemTouchHelper = ItemTouchHelper(simpleCallback)
             itemTouchHelper.attachToRecyclerView(savedRecyclerView)
@@ -232,7 +237,18 @@ class SavedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLis
                             adapter.checkedItems.toList()
                         }
                         adapter.clearCheckedItems()
-                        downloadViewModel.deleteAllWithID(selectedObjects)
+                        if (preferences.getBoolean("download_card", true)){
+                            withContext(Dispatchers.IO){
+                                downloadViewModel.addDownloadsToProcessing(selectedObjects)
+                            }
+                            withContext(Dispatchers.Main){
+                                findNavController().navigate(R.id.downloadMultipleBottomSheetDialog2)
+                            }
+                        }else{
+                            withContext(Dispatchers.IO) {
+                                downloadViewModel.reQueueDownloadItems(selectedObjects)
+                            }
+                        }
                         actionMode?.finish()
 
                     }

@@ -14,14 +14,6 @@
 
         <SwitchPreferenceCompat
             android:widgetLayout="@layout/preferece_material_switch"
-            app:defaultValue="false"
-            android:icon="@drawable/baseline_archive_24"
-            android:key="download_archive"
-            app:summary="@string/download_archive_summary"
-            app:title="@string/download_archive" />
-
-        <SwitchPreferenceCompat
-            android:widgetLayout="@layout/preferece_material_switch"
             app:defaultValue="true"
             android:icon="@drawable/ic_card"
             android:key="download_card"
@@ -35,6 +27,14 @@
             android:key="quick_download"
             app:summary="@string/quick_download_summary"
             app:title="@string/quick_download" />
+
+        <SwitchPreferenceCompat
+            android:widgetLayout="@layout/preferece_material_switch"
+            app:defaultValue="false"
+            android:icon="@drawable/baseline_archive_24"
+            android:key="download_archive"
+            app:summary="@string/download_archive_summary"
+            app:title="@string/download_archive" />
 
         <SwitchPreferenceCompat
             android:widgetLayout="@layout/preferece_material_switch"
