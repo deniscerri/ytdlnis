@@ -225,7 +225,7 @@
     <string name="embed_thumb">Miniatúry obálok</string>
     <string name="search_suggestions_summary">Získajte návrhy vyhľadávania z Google</string>
     <string name="sponsorblock_previews">Ukážky</string>
-    <string name="show_download_card">Zobraziť možnosti sťahovania</string>
+    <string name="show_download_card">Zobraziť kartu sťahovania</string>
     <string name="socks5_proxy">Socks5 Proxy URL</string>
     <string name="video_quality">Kvalita videa</string>
     <string name="template">Šablóna</string>
@@ -254,7 +254,7 @@
     <string name="delete_files_too">Vymazať súbory zo zariadenia</string>
     <string name="adjust_templates">Upraviť šablóny</string>
     <string name="general">Všeobecné</string>
-    <string name="download_card_summary">Nastavenia spôsobu sťahovania položiek</string>
+    <string name="download_card_summary">Upravte nastavenia pred stiahnutím tejto položky. Zakázaním tejto možnosti sa sťahovanie spustí okamžite</string>
     <string name="preferred_format_id_summary">Vyberte formát s týmto ID na karte sťahovania</string>
     <string name="edit_selected">Upraviť vybrané</string>
     <string name="configure_download">Upraviť sťahovanie</string>
@@ -328,4 +328,11 @@
     <string name="use_scheduler">Sťahovať podľa rozvrhu</string>
     <string name="sponsorblock_api_url">Sponsorblock API URL</string>
     <string name="force_keyframes">Vynútiť kľúčové snímky pri orezaní</string>
+    <string name="dismiss">Odmietnuť</string>
+    <string name="format_smallest">Najmenší formát (podľa rozlíšenia)</string>
+    <string name="all">Všetko</string>
+    <string name="generic">Generické</string>
+    <string name="format_filter">Filtrovať formát</string>
+    <string name="changed_path_for_everyone_to">Zmenená cesta sťahovania každej položky na:</string>
+    <string name="multiple_download_card">Viacnásobná karta sťahovania</string>
 </resources>

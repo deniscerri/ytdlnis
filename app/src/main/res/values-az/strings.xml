@@ -79,8 +79,8 @@
     <string name="video_quality">Video Keyfiyyəti</string>
     <string name="embed_subtitles">Titrləri Yerləşdir</string>
     <string name="add_chapter">Bölmələr Əlavə Et</string>
-    <string name="show_download_card">Yükləmə üçün seçimlər göstər</string>
-    <string name="download_card_summary">Elementləri yükləmək üçün tənzimləmələr</string>
+    <string name="show_download_card">Yükləmə Kartın Göstər</string>
+    <string name="download_card_summary">Yükləməzdən əvvəl həmin element üçün tənzimləmələri dəyişdirin. Bu seçimi bağlayanda dərhal yükləməyə başlayır</string>
     <string name="Open_File">Faylı Aç</string>
     <string name="you_are_going_to_delete_multiple_items">Çoxlu element silinir</string>
     <string name="delete_file_too">Faylı cihazdan sil</string>
@@ -204,7 +204,7 @@
     <string name="preferred_search_engine">Üstünlük Verilən Axtarış Mühərrik</string>
     <string name="format_filtering_hint">Bu seçimi işlətmək üçün bütün elementlər eyni növdə olmalıdır</string>
     <string name="preferred_search_engine_summary">Tətbiqdaxili axtarışlar üçün istifadə edilməli axtarış mühərriki</string>
-    <string name="preferred_home_screen">Üstünlük Verilən Ev Ekran</string>
+    <string name="preferred_home_screen">Üstünlük Verilən Əsas Ekran</string>
     <string name="audio_samplerate">Səs Nümunə Sürəti</string>
     <string name="copied_to_clipboard">Buferə Köçürüldü</string>
     <string name="undo">Ləğv et</string>
@@ -328,4 +328,11 @@
     <string name="app">Tətbiq</string>
     <string name="source">Mənbə</string>
     <string name="cut_unavailable">Kəsmə xüsusiyyətin istifadə etmək üçün element məlumatın yeniləməlisiniz</string>
+    <string name="changed_path_for_everyone_to">Hər bir elementin yükləmə yeri buna dəyişdirildi:</string>
+    <string name="dismiss">Ləğv et</string>
+    <string name="all">Hamısı</string>
+    <string name="generic">Ümumi</string>
+    <string name="multiple_download_card">Çox Bölməli Yükləmə Kartı</string>
+    <string name="format_filter">Format Filtri</string>
+    <string name="format_smallest">Ən kiçik format (hər ayırdetməyə görə)</string>
 </resources>

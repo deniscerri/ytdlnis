@@ -48,12 +48,12 @@
     <string name="remove_duplicates">Remover duplicados</string>
     <string name="sort_by">Ordenar por</string>
     <string name="incognito_summary">Baixar sem adicionar no histórico</string>
-    <string name="download">Baixar</string>
+    <string name="download">Download</string>
     <string name="video_quality">Qualidade do vídeo</string>
     <string name="embed_subtitles">Adicionar legendas</string>
     <string name="add_chapter">Adicionar capítulos</string>
-    <string name="show_download_card">Mostrar opções para download</string>
-    <string name="download_card_summary">Configurações de como baixar itens</string>
+    <string name="show_download_card">Mostrar cartão de download</string>
+    <string name="download_card_summary">Modifique as configurações desse item antes de fazer o download. Desativar esta opção inicia o download imediatamente</string>
     <string name="Open_File">Abrir arquivo</string>
     <string name="you_are_going_to_delete_multiple_items">Excluir vários itens</string>
     <string name="delete_file_too">Excluir arquivo do dispositivo</string>
@@ -201,14 +201,14 @@
     <string name="red">Vermelho</string>
     <string name="material_you">Material You</string>
     <string name="pure_theme_summary">Tema preto/branco puro</string>
-    <string name="downloaded">"Baixado: "</string>
+    <string name="downloaded">"Download concluído: "</string>
     <string name="monochrome">Monocromático</string>
     <string name="yellow">Amarelo</string>
     <string name="purple">Roxo</string>
     <string name="green">Verde</string>
     <string name="quick_download_summary">Não busque dados no cartão de download</string>
     <string name="quick_download">Download rápido</string>
-    <string name="finished_download_notification_channel_description">Notificação para downloads concluídos</string>
+    <string name="finished_download_notification_channel_description">Notificação de downloads concluídos</string>
     <string name="remove_audio">Remover áudio</string>
     <string name="download_now">Baixar agora</string>
     <string name="download_already_exists">O download já existe</string>
@@ -242,7 +242,7 @@
     <string name="redownload">Baixar novamente</string>
     <string name="cookies">Cookies</string>
     <string name="update_formats_summary">Obtenha os formatos assim que o cartão de download for exibido</string>
-    <string name="start">Começo</string>
+    <string name="start">Começar</string>
     <string name="ytdl_version">Versão do yt-dlp</string>
     <string name="end">Fim</string>
     <string name="kill_app">Encerrar Aplicativo</string>
@@ -266,7 +266,7 @@
     <string name="crop_thumb_summary">Recortar miniatura em um quadrado para downloads de áudio</string>
     <string name="fragment_retries">Novas tentativas de fragmento</string>
     <string name="format_order">Ordem do formato</string>
-    <string name="swipe_gestures">Gestos de deslizar</string>
+    <string name="swipe_gestures">Gestos deslizantes</string>
     <string name="piped_instance">Instância Piped</string>
     <string name="piped_instance_summary">Insira a API do servidor Piped, o aplicativo pode usar para consultas e formatos do YouTube</string>
     <string name="retries">Novas tentativas</string>
@@ -318,7 +318,7 @@
     <string name="export_file">Exportar arquivo</string>
     <string name="update_ytdl_master">Versão principal do yt-dlp</string>
     <string name="errored_downloads">Downloads com erros</string>
-    <string name="errored_download_notification_channel_description">Notificação para downloads defeituosos</string>
+    <string name="errored_download_notification_channel_description">Notificação de downloads com erro</string>
     <string name="ytdl_source">Canal de atualização do yt-dlp</string>
     <string name="buffer_size_summary">Tamanho do buffer para downloads, ex. 1024 ou 16K (o padrão é 1024)</string>
     <string name="buffer_size">Tamanho do buffer</string>
@@ -328,4 +328,11 @@
     <string name="app">Aplicativo</string>
     <string name="source">Fonte</string>
     <string name="cut_unavailable">É necessário atualizar os dados do item para poder utilizar a função de corte</string>
+    <string name="changed_path_for_everyone_to">Caminho de download de cada item alterado para:</string>
+    <string name="format_smallest">Menor formato (por resolução)</string>
+    <string name="dismiss">Dispensar</string>
+    <string name="all">Todos</string>
+    <string name="generic">Genérico</string>
+    <string name="multiple_download_card">Cartão de download múltiplo</string>
+    <string name="format_filter">Filtrar formato</string>
 </resources>

@@ -327,4 +327,5 @@
     <string name="changelog">Ndryshimet</string>
     <string name="app">Aplikacioni</string>
     <string name="source">Burimi</string>
+    <string name="cut_unavailable">Ju duhet të përditësoni të dhënat e artikullit që të përdorni prerjen</string>
 </resources>

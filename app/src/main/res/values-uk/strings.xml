@@ -82,7 +82,7 @@
     <string name="update_app_summary">Оголошувати про нові версії застосунку, коли його відкривають</string>
     <string name="remove_deleted">Вилучити видалене</string>
     <string name="title">Назва</string>
-    <string name="show_download_card">Показати параметри для завантаження</string>
+    <string name="show_download_card">Показати картку завантаження</string>
     <string name="sponsorblock_outro">Кінцівка</string>
     <string name="sort_by">Сортування</string>
     <string name="incognito_summary">Завантажити без додавання до історії</string>
@@ -90,7 +90,7 @@
     <string name="configure_download">Налаштувати завантаження</string>
     <string name="embed_subtitles">Вставити субтитри</string>
     <string name="add_chapter">Додати розділи</string>
-    <string name="download_card_summary">Налаштування завантаження елементів</string>
+    <string name="download_card_summary">Змініть налаштування для цього елемента перед завантаженням. Якщо вимкнути цю опцію, завантаження розпочнеться негайно</string>
     <string name="author">Автор</string>
     <string name="sponsorblock_intro">Вступ</string>
     <string name="save_dir">Зберегти каталог</string>
@@ -328,4 +328,11 @@
     <string name="app">Застосунок</string>
     <string name="source">Джерело</string>
     <string name="cut_unavailable">Вам потрібно оновити дані товару, щоб мати можливість використовувати функцію вирізання</string>
+    <string name="changed_path_for_everyone_to">Змінено шлях завантаження кожного елемента на:</string>
+    <string name="dismiss">Відхилити</string>
+    <string name="all">Все</string>
+    <string name="generic">Загальний</string>
+    <string name="multiple_download_card">Багаторазова картка завантаження</string>
+    <string name="format_filter">Фільтр формату</string>
+    <string name="format_smallest">Найменший формат (за роздільною здатністю)</string>
 </resources>

@@ -77,8 +77,8 @@
     <string name="video_quality">Qualidade do vídeo</string>
     <string name="embed_subtitles">Incluir legendas</string>
     <string name="add_chapter">Adicionar capítulos</string>
-    <string name="show_download_card">Mostrar opções para descarregar</string>
-    <string name="download_card_summary">Definições para as descargas de vídeos</string>
+    <string name="show_download_card">Mostrar cartão de descarga</string>
+    <string name="download_card_summary">Modificar as definições para esse item antes de efetuar a descarga. Se desativar esta opção, a descarga é iniciado imediatamente</string>
     <string name="delete_file_too">Eliminar ficheiro do dispositivo</string>
     <string name="directories">Pastas</string>
     <string name="delete_files_too">Eliminar ficheiros do dispositivo</string>
@@ -328,4 +328,11 @@
     <string name="app">Aplicação</string>
     <string name="source">Fonte</string>
     <string name="cut_unavailable">É necessário atualizar os dados do item para poder utilizar a função de corte</string>
+    <string name="changed_path_for_everyone_to">Alterado o caminho da descarga de cada item para:</string>
+    <string name="dismiss">Rejeitar</string>
+    <string name="all">Tudo</string>
+    <string name="generic">Genéricos</string>
+    <string name="multiple_download_card">Cartão de descarga múltipla</string>
+    <string name="format_filter">Filtro de formato</string>
+    <string name="format_smallest">Formato mais pequeno (por resolução)</string>
 </resources>
