@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="search">_Ara</string>
+    <string name="search">Ara</string>
     <string name="remove_all">Hepsini Kaldır</string>
     <string name="remove_results">Sonuçları Temizle</string>
     <string name="download_all">Hepsini İndir</string>
@@ -9,7 +9,7 @@
     <string name="directories"> Klasörler</string>
     <string name="music_directory"> Müzik Klasörü</string>
     <string name="video_directory"> Video Klasörü</string>
-    <string name="updating">Güncelleme</string>
+    <string name="updating">Güncelleniyor</string>
     <string name="ytdl_update_hint">İndirmede sorun yaşıyorsanız kullanışlıdır</string>
     <string name="update_ytdl">yt-dlp\'nin yeni sürümünü yükle</string>
     <string name="source_code">Kaynak Kodu</string>
@@ -20,7 +20,7 @@
     <string name="you_are_in_latest_version">Son sürümü kullanıyorsun</string>
     <string name="ytld_update_success">Yeni sürüm yüklendi</string>
     <string name="ytdl_already_updating">Yeni sürüm yükleniyor</string>
-    <string name="ytdl_updating_started">YTDLnis yeni sürümü.apk</string>
+    <string name="ytdl_updating_started">Yeni sürüm indiriliyor</string>
     <string name="Remove">Kaldır</string>
     <string name="ok">Tamam</string>
     <string name="cancel">İptal et</string>
@@ -82,8 +82,8 @@
     <string name="video_quality">Video Kalitesi</string>
     <string name="embed_subtitles">Altyazıları Yerleştir</string>
     <string name="add_chapter">Bölüm Ekle</string>
-    <string name="show_download_card">İndirme Seçeneklerini Göster</string>
-    <string name="download_card_summary">Ögelerin nasıl indirileceğine ilişkin ayarlar</string>
+    <string name="show_download_card">İndirme Kartını Göster</string>
+    <string name="download_card_summary">İndirmeden önce söz konusu ögenin ayarlarını değiştirin. Bu seçeneğin devre dışı bırakılması indirmeyi hemen başlatır</string>
     <string name="Open_File">Dosya Aç</string>
     <string name="you_are_going_to_delete_multiple_items">Birden fazla öge siliniyor</string>
     <string name="delete_file_too">Dosyayı cihazdan sil</string>
@@ -330,4 +330,12 @@
     <string name="changelog">Değişim günlüğü</string>
     <string name="app">Uygulama</string>
     <string name="source">Kaynak</string>
+    <string name="changed_path_for_everyone_to">Her ögenin indirme yolunu şu şekilde değiştirildi:</string>
+    <string name="dismiss">Reddet</string>
+    <string name="all">Hepsi</string>
+    <string name="generic">Genel</string>
+    <string name="multiple_download_card">Çoklu İndirme Kartı</string>
+    <string name="format_filter">Biçim Filtresi</string>
+    <string name="format_smallest">En küçük format (Çözünürlük başına)</string>
+    <string name="cut_unavailable">Kesme özelliğini kullanabilmek için öge verilerini güncellemeniz gerekir</string>
 </resources>

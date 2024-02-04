@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="worst_quality">Најлош квалитет</string>
+    <string name="best_quality">"Најдобар  квалитет"</string>
+    <string name="remove_results">Изчисти резултати</string>
+    <string name="download_all">Симни сé</string>
+    <string name="settings">Подесување</string>
+    <string name="home">Дома</string>
+    <string name="music_directory">Музичка папка</string>
+    <string name="video_directory">Видео папка</string>
+    <string name="updating">Апдејт</string>
+    <string name="about">За</string>
+    <string name="source_code">Изворен код</string>
+    <string name="search_hint">Барај или вметни УРЛ</string>
+    <string name="failed_download">"Можно е да не  се симне фајлот"</string>
+    <string name="download_notification_channel_name">Симнати фајлови</string>
+    <string name="search">Барај</string>
+    <string name="remove_all">Избриши СЕ</string>
+    <string name="directories">Фолдер</string>
+    <string name="ytdl_update_hint">Корисно доколку имаш проблем со симнување</string>
+    <string name="update_ytdl">Инсталирај нова верзија на yt-dlp</string>
+</resources>

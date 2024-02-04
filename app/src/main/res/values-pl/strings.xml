@@ -27,8 +27,8 @@
     <string name="video_quality">Jakość wideo</string>
     <string name="embed_subtitles">Osadź napisy</string>
     <string name="add_chapter">Dodaj rozdziały</string>
-    <string name="show_download_card">Pokaż opcję pobierania</string>
-    <string name="download_card_summary">Ustawienia pobierania elementów</string>
+    <string name="show_download_card">Pokaż kartę pobierania</string>
+    <string name="download_card_summary">Zmodyfikuj ustawienia tego elementu przed pobraniem. Wyłączenie tej opcji rozpoczyna pobieranie natychmiast</string>
     <string name="request_permission_desc">Ta aplikacja wymaga uprawnień do plików, aby zapisywać pobrane pliki na urządzeniu</string>
     <string name="exit_app">Wyjdź z aplikacji</string>
     <string name="search">Szukaj</string>
@@ -85,7 +85,7 @@
     <string name="command_download_notification_channel_name">Pobrania przy użyciu poleceń</string>
     <string name="history_is_empty">Historia jest pusta</string>
     <string name="you_are_going_to_delete">Usuwanie</string>
-    <string name="url">Źródło</string>
+    <string name="url">URL</string>
     <string name="Open_File">Otwórz plik</string>
     <string name="delete_files_too">Usuń pliki z urządzenia</string>
     <string name="sponsorblock_intro">Wprowadzenie</string>
@@ -324,4 +324,15 @@
     <string name="buffer_size">Rozmiar bufora</string>
     <string name="preferred_audio_language">Preferowany język dźwięku</string>
     <string name="update_ytdl_stable">Stabilna wersja yt-dlp</string>
+    <string name="changelog">Dziennik zmian</string>
+    <string name="source">Źródło</string>
+    <string name="app">Aplikacja</string>
+    <string name="changed_path_for_everyone_to">Zmieniono ścieżkę pobierania każdego elementu na:</string>
+    <string name="dismiss">Odrzuć</string>
+    <string name="all">Wszystko</string>
+    <string name="generic">Ogólne</string>
+    <string name="multiple_download_card">Karta wielokrotnego pobierania</string>
+    <string name="format_filter">Format filtra</string>
+    <string name="format_smallest">Najmniejszy format (według rozdzielczości)</string>
+    <string name="cut_unavailable">Musisz zaktualizować dane elementu, aby móc korzystać z funkcji cięcia</string>
 </resources>
