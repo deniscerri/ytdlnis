@@ -63,7 +63,7 @@
     <string name="ytld_update_success">Nová verze nainstalována</string>
     <string name="no_results">Žádné výsledky</string>
     <string name="embed_subs_summary">Přidat titulky do videa</string>
-    <string name="api_key">Použít API klíč</string>
+    <string name="api_key">Použít klíč API</string>
     <string name="downloads">Stažené</string>
     <string name="you_are_going_to_delete">Odstraní se</string>
     <string name="update_app_summary">Oznámit novou verzi aplikace, když je otevřena</string>
@@ -335,4 +335,28 @@
     <string name="multiple_download_card">Znásobit kartu stahování</string>
     <string name="format_filter">Filtr formátu</string>
     <string name="format_smallest">Nejmenší formát (podle rozlišení)</string>
+    <string name="delete_all_sources">Odstranit všechny zdroje</string>
+    <string name="force_ipv4_desc">Provede všechna připojení pomocí IPv4</string>
+    <string name="force_ipv4">Vynutit IPv4</string>
+    <string name="copy_urls">Kopírovat adresy URL</string>
+    <string name="set_time">Nastavit čas</string>
+    <string name="starts">Začíná</string>
+    <string name="ends">Končí</string>
+    <string name="never">Nikdy</string>
+    <string name="after">Po</string>
+    <string name="occurrences">výskyty</string>
+    <string name="day">Den</string>
+    <string name="week">Týden</string>
+    <string name="retry_missing_downloads">Opakovat chybějící stahování</string>
+    <string name="save_auto_subs">Uložit automatické titulky</string>
+    <string name="not_deleted">Neodstraněno</string>
+    <string name="download_archive">Stáhnout archiv</string>
+    <string name="observe_sources">Sledovat zdroje</string>
+    <string name="new_source">Nový zfroj</string>
+    <string name="confirm_delete_sources_desc">Trvale odstraní všechny zdroje</string>
+    <string name="every">Každý</string>
+    <string name="on_time">Zapnout</string>
+    <string name="month">Měsíc</string>
+    <string name="bitrate">Rychlost přenosu</string>
+    <string name="download_archive_summary">Použije archivní soubor yt-dlp pro zabránění duplicitního stahování místo vestavěné funkce</string>
 </resources>
