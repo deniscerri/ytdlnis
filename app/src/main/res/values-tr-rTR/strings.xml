@@ -9,7 +9,7 @@
     <string name="directories"> Klasörler</string>
     <string name="music_directory"> Müzik Klasörü</string>
     <string name="video_directory"> Video Klasörü</string>
-    <string name="updating">Güncelleniyor</string>
+    <string name="updating">Güncelleme</string>
     <string name="ytdl_update_hint">İndirmede sorun yaşıyorsanız kullanışlıdır</string>
     <string name="update_ytdl">yt-dlp\'nin yeni sürümünü yükle</string>
     <string name="source_code">Kaynak Kodu</string>
