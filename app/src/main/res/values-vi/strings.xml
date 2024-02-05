@@ -81,7 +81,7 @@
     <string name="video_quality">Chất lượng cuộn băng</string>
     <string name="embed_subtitles">Nhúng phụ đề</string>
     <string name="add_chapter">Thêm chương</string>
-    <string name="show_download_card">Hiển thị tùy chọn để tải xuống</string>
+    <string name="show_download_card">Hiển thị thẻ tải xuống</string>
     <string name="music_directory">Thư mục âm nhạc</string>
     <string name="download_notification_channel_description">Thông báo hiển thị tiến trình tải xuống các tệp âm thanh và băng hình</string>
     <string name="cancel">Hủy</string>
@@ -96,7 +96,7 @@
     <string name="save_thumb_summary">Lưu hình thu nhỏ trong thư mục tải xuống</string>
     <string name="audio_format">Định dạng âm thanh</string>
     <string name="download">Tải về</string>
-    <string name="download_card_summary">Cài đặt cách tải xuống các mục</string>
+    <string name="download_card_summary">Thay đổi cài đặt cách tải xuống mục trước khi tải xuống. Tắt tùy chọn này sẽ làm các quá trình tải xuống bắt đầu ngay tức thì</string>
     <string name="worst_quality">Chất lượng thấp nhất</string>
     <string name="best_quality">Chất lượng tốt nhất</string>
     <string name="about">Về chúng tôi</string>
@@ -328,4 +328,20 @@
     <string name="buffer_size">Kích thước bộ đệm</string>
     <string name="source">Mã nguồn</string>
     <string name="update_ytdl_stable">Phiên bản ổn định của yt-dlp</string>
+    <string name="observe_sources">Quan sát nguồn</string>
+    <string name="new_source">Nguồn mới</string>
+    <string name="delete_all_sources">Xóa tất cả nguồn</string>
+    <string name="confirm_delete_sources_desc">Xóa vĩnh viễn tất cả nguồn</string>
+    <string name="force_ipv4">Buộc dùng IPv4</string>
+    <string name="force_ipv4_desc">Thực hiện tất cả các kết nối qua IPv4</string>
+    <string name="copy_urls">Sao chép URL</string>
+    <string name="save_auto_subs">Lưu phụ đề tự động</string>
+    <string name="download_archive_summary">Sử dụng tải xuống tệp lưu trữ của yt-dlp để ngăn tải xuống trùng lặp thay vì chức năng tích hợp sẵn</string>
+    <string name="download_archive">Tải xuống lưu trữ</string>
+    <string name="dismiss">Bỏ qua</string>
+    <string name="changed_path_for_everyone_to">Đã thay đổi đường dẫn tải xuống của mọi mục thành:</string>
+    <string name="all">Tất cả</string>
+    <string name="multiple_download_card">Nhiều thẻ tải xuống</string>
+    <string name="format_filter">Bộ lọc định dạng</string>
+    <string name="format_smallest">Định dạng nhỏ nhất (trên Độ phân giải)</string>
 </resources>
