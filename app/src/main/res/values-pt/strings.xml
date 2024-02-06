@@ -356,7 +356,7 @@
     <string name="day">Dia</string>
     <string name="month">Mês</string>
     <string name="set_time">Definir tempo</string>
-    <string name="on_time">Ligado</string>
+    <string name="on_time">Em</string>
     <string name="download_archive">Arquivo de descarga</string>
     <string name="download_archive_summary">Use o arquivo de descarga do yt-dlp para evitar descargas duplicados em vez da funcionalidade integrada</string>
 </resources>
