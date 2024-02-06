@@ -13,7 +13,7 @@
     <string name="video_directory">Pasta de vídeos</string>
     <string name="about">Sobre</string>
     <string name="source_code">Código fonte</string>
-    <string name="search_hint">Digitar um URL ou pesquisar</string>
+    <string name="search_hint">Pesquisar ou digitar URL</string>
     <string name="failed_download">Não foi possível baixar o arquivo</string>
     <string name="download_notification_channel_name">Arquivos baixados</string>
     <string name="you_are_in_latest_version">Você já possui a atualização mais recente</string>
