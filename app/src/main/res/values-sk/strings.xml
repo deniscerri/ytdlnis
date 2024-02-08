@@ -159,7 +159,7 @@
     <string name="download_rescheduled_to">Sťahovanie preložené na:</string>
     <string name="keep_cache">Uchovávať fragmenty</string>
     <string name="file_size">Veľkosť súboru</string>
-    <string name="restrict_filenames_summary">Obmedzí názvy súborov len na znaky ASCII a vyhnite sa znakom \"&amp;\" a medzerám v názvoch súborov</string>
+    <string name="restrict_filenames_summary">Obmedzí názvy súborov len na znaky ASCII a vyhne sa znakom \"&amp;\" a medzerám v názvoch súborov</string>
     <string name="shortcuts">Skratky</string>
     <string name="sponsorblock">SponsorBlock</string>
     <string name="video_recommendations">Odporúčané videá</string>
