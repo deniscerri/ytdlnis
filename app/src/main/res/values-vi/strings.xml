@@ -344,4 +344,19 @@
     <string name="multiple_download_card">Nhiều thẻ tải xuống</string>
     <string name="format_filter">Bộ lọc định dạng</string>
     <string name="format_smallest">Định dạng nhỏ nhất (trên Độ phân giải)</string>
+    <string name="every">Mỗi</string>
+    <string name="set_time">Đặt thời gian</string>
+    <string name="starts">Bắt đầu</string>
+    <string name="never">Không bao giờ</string>
+    <string name="after">Sau đó</string>
+    <string name="day">Ngày</string>
+    <string name="week">Tuần</string>
+    <string name="month">Tháng</string>
+    <string name="occurrences">lần xuất hiện</string>
+    <string name="retry_missing_downloads">Thử lại các bản tải xuống bị thiếu</string>
+    <string name="on_time">Bật</string>
+    <string name="ends">Kết thúc</string>
+    <string name="bitrate">Tốc độ bit</string>
+    <string name="not_deleted">Chưa xóa</string>
+    <string name="generic">Chung</string>
 </resources>
