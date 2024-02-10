@@ -18,7 +18,7 @@
     <string name="worst_quality">Nejhorší kvalita</string>
     <string name="ytdl_update_hint">Užitečné při problémech se stahováním</string>
     <string name="best_quality">Nejlepší kvalita</string>
-    <string name="save_thumb_summary">Uložit náhled ve složce stahování</string>
+    <string name="save_thumb_summary">Uložte náhled ve složce stahování</string>
     <string name="command_download_notification_channel_name">Stažené příkazy</string>
     <string name="ytdl_already_updating">Instalace nové verze</string>
     <string name="cancel_task">Zrušit stahování</string>
@@ -54,15 +54,15 @@
     <string name="download_notification_channel_name">Stažené soubory</string>
     <string name="update_app">Zkontrolovat aktualizace</string>
     <string name="video">Video</string>
-    <string name="embed_thumb_summary">Použít náhled na obálku</string>
+    <string name="embed_thumb_summary">Použijte náhled na obálku</string>
     <string name="downloading_update">Stahování nové verze</string>
     <string name="command_directory">Složka vlastních příkazů</string>
     <string name="you_are_in_latest_version">Používáte poslední verzi</string>
     <string name="audio">Audio</string>
-    <string name="add_chapters_summary">Označit YouTube / SponsorBlock segmenty jako kapitoly pro video</string>
+    <string name="add_chapters_summary">Označte YouTube / SponsorBlock segmenty jako kapitoly pro video</string>
     <string name="ytld_update_success">Nová verze nainstalována</string>
     <string name="no_results">Žádné výsledky</string>
-    <string name="embed_subs_summary">Přidat titulky do videa</string>
+    <string name="embed_subs_summary">Přidejte titulky do videa</string>
     <string name="api_key">Použít klíč API</string>
     <string name="downloads">Stažené</string>
     <string name="you_are_going_to_delete">Odstraní se</string>
@@ -79,7 +79,7 @@
     <string name="current">Aktuální příkaz</string>
     <string name="embed_metadata_summary">Analyzujte a vložte metadata do souboru audia</string>
     <string name="sponsorblock_fillers">Výplně</string>
-    <string name="sponsorblock_reminders">Připomenutí předplatného</string>
+    <string name="sponsorblock_reminders">Připomenutí odběrů</string>
     <string name="logs">Protokoly</string>
     <string name="export_file">Exportovat soubor</string>
     <string name="in_queue">Ve frontě</string>
@@ -191,7 +191,7 @@
     <string name="access_all_directories">Povolení přístupu do všech adresářů</string>
     <string name="monochrome">Monochromatický</string>
     <string name="format_id">Formát ID</string>
-    <string name="move_temporary_files_summary">Přenos souborů z mezipaměti do složky stažených souborů</string>
+    <string name="move_temporary_files_summary">Přesune soubory z mezipaměti do složky stažených souborů</string>
     <string name="subtitle_languages">Jazyk titulků</string>
     <string name="help_translate">Pomoc s překladem</string>
     <string name="sort_by">Řazení</string>
@@ -240,7 +240,7 @@
     <string name="dark">Tmavý</string>
     <string name="red">Červený</string>
     <string name="delete_files_too">Odstraní soubory ze zařízení</string>
-    <string name="download_queue">Fronta stahování</string>
+    <string name="download_queue">Stahovací fronta</string>
     <string name="please_wait">Počkejte prosím</string>
     <string name="error_restarting_download">Chyba při pokusu o restart stahování</string>
     <string name="help_translate_summary">Přeložte tuto aplikaci do svého jazyka pomocí Weblate</string>
@@ -264,7 +264,7 @@
     <string name="keep_cache">Uchování fragmentů</string>
     <string name="preferred_audio_language">Preferovaný jazyk audia</string>
     <string name="file_size">Velikost souboru</string>
-    <string name="restrict_filenames_summary">Omezte názvy souborů pouze na znaky ASCII a vyhněte se znakům \"&amp;\" a mezerám v názvech souborů</string>
+    <string name="restrict_filenames_summary">Omezí názvy souborů pouze na znaky ASCII a vyhněte se znakům \"&amp;\" a mezerám v názvech souborů</string>
     <string name="auto">Auto</string>
     <string name="configure_download">Upravit stahování</string>
     <string name="shortcuts">Zkratky</string>
@@ -304,7 +304,7 @@
     <string name="source">Zdroj</string>
     <string name="share">Sdílení</string>
     <string name="import_from_clipboard">Import ze schránky</string>
-    <string name="get_cookies">Získejte cookies</string>
+    <string name="get_cookies">Získat cookies</string>
     <string name="exit_app">Ukončit aplikaci</string>
     <string name="remember_download_type_summary">Výběr posledního otevřeného typu stahování pro aktuální položku</string>
     <string name="items_imported">Položky importovány</string>
@@ -344,10 +344,10 @@
     <string name="ends">Končí</string>
     <string name="never">Nikdy</string>
     <string name="after">Po</string>
-    <string name="occurrences">výskyty</string>
+    <string name="occurrences">událostech</string>
     <string name="day">Den</string>
     <string name="week">Týden</string>
-    <string name="retry_missing_downloads">Opakovat chybějící stahování</string>
+    <string name="retry_missing_downloads">Opakovat zmeškané stahování</string>
     <string name="save_auto_subs">Uložit automatické titulky</string>
     <string name="not_deleted">Neodstraněno</string>
     <string name="download_archive">Stáhnout archiv</string>

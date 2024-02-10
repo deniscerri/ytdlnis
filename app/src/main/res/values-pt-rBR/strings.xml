@@ -7,7 +7,7 @@
     <string name="home">Início</string>
     <string name="directories">Pastas</string>
     <string name="updating">Atualização</string>
-    <string name="ytdl_update_hint">Útil se você tiver problemas ao fazer downloads</string>
+    <string name="ytdl_update_hint">Útil se você tiver problemas para fazer download</string>
     <string name="remove_results">Limpar resultados</string>
     <string name="download_all">Baixar todos</string>
     <string name="video_directory">Pasta de vídeos</string>
@@ -343,8 +343,8 @@
     <string name="never">Nunca</string>
     <string name="after">Depois</string>
     <string name="on_time">Em</string>
-    <string name="week">Semana</string>
-    <string name="month">Mês</string>
+    <string name="week">Semana(s)</string>
+    <string name="month">Mês(es)</string>
     <string name="bitrate">Taxa de bits</string>
     <string name="not_deleted">Não excluído</string>
     <string name="download_archive">Arquivo de download</string>
@@ -354,7 +354,7 @@
     <string name="copy_urls">Copiar URLs</string>
     <string name="starts">Começa</string>
     <string name="occurrences">ocorrências</string>
-    <string name="day">Dia</string>
+    <string name="day">Dia(s)</string>
     <string name="save_auto_subs">Salvar legendas automáticas</string>
     <string name="download_archive_summary">Use o arquivo de download do yt-dlp para evitar downloads duplicados em vez da funcionalidade integrada</string>
     <string name="retry_missing_downloads">Repetir downloads ausentes</string>
