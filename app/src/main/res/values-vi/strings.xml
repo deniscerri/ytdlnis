@@ -35,12 +35,12 @@
     <string name="limit_rate_summary">Tốc độ tải xuống tối đa (tính bằng byte trên giây), ví dụ: 50K hoặc 4,2M</string>
     <string name="limit_rate">Giới hạn tốc độ</string>
     <string name="processing">Đang xử lý</string>
-    <string name="embed_subs_summary">Thêm phụ đề vào cuộn băng</string>
+    <string name="embed_subs_summary">Thêm phụ đề vào video</string>
     <string name="embed_thumb">Bìa hình thu nhỏ</string>
     <string name="embed_thumb_summary">Sử dụng hình thu nhỏ làm ảnh bìa</string>
-    <string name="add_chapters">Các chương trong các cuộn băng</string>
-    <string name="add_chapters_summary">Đánh dấu các phân đoạn YouTube / SponsorBlock làm chương cho cuộn băng</string>
-    <string name="video_format">Định dạng cuộn băng</string>
+    <string name="add_chapters">Các chương trong video</string>
+    <string name="add_chapters_summary">Đánh dấu các phân đoạn YouTube / SponsorBlock làm chương cho video</string>
+    <string name="video_format">Định dạng video</string>
     <string name="audio_quality">Chất lượng âm thanh</string>
     <string name="audio_quality_summary">0 (tốt nhất) 10 (tệ nhất)</string>
     <string name="cancel_task">Hủy tải xuống</string>
@@ -89,8 +89,8 @@
     <string name="delete_file_too">Xóa tệp khỏi thiết bị</string>
     <string name="aria2_summary">Sử dụng aria2c làm trình tải xuống thay cho mặc định</string>
     <string name="downloading_update">Đang tải phiên bản mới</string>
-    <string name="video">Băng hình</string>
-    <string name="concurrent_fragments_summary">Số mảnh băng DASH/HLS gốc để tải xuống đồng thời</string>
+    <string name="video">Video</string>
+    <string name="concurrent_fragments_summary">Số đoạn gốc của video DASH/ HLS để tải xuống đồng thời</string>
     <string name="audio">Âm thanh</string>
     <string name="save_thumb">Lưu hình thu nhỏ</string>
     <string name="save_thumb_summary">Lưu hình thu nhỏ trong thư mục tải xuống</string>
@@ -113,7 +113,7 @@
     <string name="format">Định dạng</string>
     <string name="select_format">Chọn định dạng</string>
     <string name="import_from_clipboard">Nhập từ khay nhớ tạm</string>
-    <string name="remove_search_history">Dọn dẹp Lịch sử Tìm kiếm</string>
+    <string name="remove_search_history">Dọn dẹp Lịch sử tìm kiếm</string>
     <string name="download_queue">Xếp hàng Tải xuống</string>
     <string name="command">Lệnh</string>
     <string name="save_dir">Lưu vào thư mục</string>
@@ -284,7 +284,7 @@
     <string name="embed_metadata_summary">Phân tích và nhúng siêu dữ liệu vào tệp âm thanh</string>
     <string name="use_cookies">Dùng Cookies</string>
     <string name="use_extra_commands">Thêm các lệnh bổ sung</string>
-    <string name="clear_saved">Xóa đã lưu</string>
+    <string name="clear_saved">Dọn dẹp đã lưu</string>
     <string name="saved">Đã lưu</string>
     <string name="format_order">Thứ tự các định dạng</string>
     <string name="socks5_proxy">Dùng Socks5 Proxy URL</string>
