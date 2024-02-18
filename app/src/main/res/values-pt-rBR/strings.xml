@@ -41,7 +41,7 @@
     <string name="save_thumb">Salvar miniatura</string>
     <string name="video_format">Formato de vídeo</string>
     <string name="audio_quality">Qualidade do áudio</string>
-    <string name="command_download_notification_channel_description">Mostrar uma notificação do progresso de download usando um comando do yt-dlp</string>
+    <string name="command_download_notification_channel_description">Mostrar notificação do progresso de download usando um comando do yt-dlp</string>
     <string name="history_is_empty">O histórico está vazio</string>
     <string name="api_key">Usar chave de API</string>
     <string name="api_key_summary">Recomendações de vídeo da API do YouTube</string>
