@@ -358,5 +358,5 @@
     <string name="set_time">Definir tempo</string>
     <string name="on_time">Em</string>
     <string name="download_archive">Arquivo de descarga</string>
-    <string name="download_archive_summary">Use o arquivo de descarga do yt-dlp para evitar descargas duplicados em vez da funcionalidade integrada</string>
+    <string name="download_archive_summary">Utilizar ficheiro de descarga yt-dlp para evitar duplicação de descargas</string>
 </resources>

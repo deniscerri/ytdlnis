@@ -162,8 +162,8 @@
     <string name="video_quality">Calitate Video</string>
     <string name="embed_subtitles">Subtitrări încorporate</string>
     <string name="add_chapter">Adaugă Capitole</string>
-    <string name="show_download_card">Afișează Opțiuni pentru Descărcare</string>
-    <string name="download_card_summary">Setări cum să descarci articole</string>
+    <string name="show_download_card">Afișează cardul de descărcare</string>
+    <string name="download_card_summary">Modificați setările pentru itemul respectiv înainte de descărcare. Dezactivarea acestei opțiuni începe descărcarea imediat</string>
     <string name="Open_File">Deschide Fișier</string>
     <string name="delete_file_too">Șterge fișier de pe dispozitiv</string>
     <string name="edit_selected">Modifică selecția</string>
@@ -223,7 +223,7 @@
     <string name="dont_ask_again">Nu mă mai întreba niciodată</string>
     <string name="end">Sfârșit</string>
     <string name="start">Pornire</string>
-    <string name="update_formats_summary">Caută în mod automat formate de fișiere pierdute atunci când formatezi cardul</string>
+    <string name="update_formats_summary">Preia formatele de îndată ce apare cardul de descărcare</string>
     <string name="ignore_battery_optimization">Ignoră optimizarea bateriei din setările telefonului</string>
     <string name="new_cut">Tăiere nouă</string>
     <string name="select_all">Selectează toate</string>
@@ -256,7 +256,7 @@
     <string name="purple">Violet</string>
     <string name="yellow">Galben</string>
     <string name="finished_download_notification_channel_name">Descărcări finalizate</string>
-    <string name="quick_download_summary">Nu prelua datele în prealabil</string>
+    <string name="quick_download_summary">Nu preluați date în cardul de descărcare</string>
     <string name="remove_audio">Elimină coloana audio</string>
     <string name="monochrome">Monocromat</string>
     <string name="download_already_exists">Descărcarea exista deja</string>

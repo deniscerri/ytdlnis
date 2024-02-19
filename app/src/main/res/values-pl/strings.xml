@@ -357,4 +357,6 @@
     <string name="download_archive">Pobierz archiwum</string>
     <string name="download_archive_summary">Użyj pliku archiwum pobierania yt-dlp, aby zapobiec duplikatom pobierania zamiast wbudowanej funkcjonalności</string>
     <string name="month">Miesiąc</string>
+    <string name="not_deleted">Nie usunięte</string>
+    <string name="save_auto_subs">Zapisz automatyczne napisy</string>
 </resources>
