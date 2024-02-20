@@ -206,7 +206,7 @@
     <string name="video_recommendations_summary">PIPED API\'sinden önerilen YouTube videolarını ana ekranda alın</string>
     <string name="preferred_search_engine">Tercih Edilen Arama Motoru</string>
     <string name="preferred_search_engine_summary">Uygulama içi aramalar için kullanılacak arama motoru</string>
-    <string name="format_filtering_hint">Bu seçeneği kullanabilmek için tüm öğeler aynı türde olmalıdır</string>
+    <string name="format_filtering_hint">Bu seçeneği kullanabilmek için tüm ögeler aynı türde olmalıdır</string>
     <string name="preferred_home_screen">Tercih Edilen Ana Ekran</string>
     <string name="undo">Geri al</string>
     <string name="format_id">Format Kimliği</string>
@@ -323,7 +323,7 @@
     <string name="ytdl_source">yt-dlp Kaynağı</string>
     <string name="remember_download_type">İndirme Türünü Hatırlayın</string>
     <string name="buffer_size">Arabellek Boyutu</string>
-    <string name="remember_download_type_summary">Geçerli öğe için son açılan indirme türünü seçin</string>
+    <string name="remember_download_type_summary">Geçerli öge için son açılan indirme türünü seçin</string>
     <string name="length">Uzunluğu</string>
     <string name="preferred_audio_language">Tercih Edilen Ses Dili</string>
     <string name="update_ytdl_stable">yt-dlp\'nin Kararlı Sürümü</string>
@@ -335,7 +335,7 @@
     <string name="all">Hepsi</string>
     <string name="generic">Genel</string>
     <string name="multiple_download_card">Çoklu İndirme Kartı</string>
-    <string name="format_filter">Biçim Filtresi</string>
+    <string name="format_filter">Format Filtresi</string>
     <string name="format_smallest">En küçük format (Çözünürlük başına)</string>
     <string name="cut_unavailable">Kesme özelliğini kullanabilmek için öge verilerini güncellemeniz gerekir</string>
     <string name="observe_sources">Kaynakları Gözlemle</string>
