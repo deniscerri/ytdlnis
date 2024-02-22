@@ -156,7 +156,7 @@ Except for the source code licensed under the GPLv3 license, all other parties a
 - [yt-dlp](https://github.com/yt-dlp/yt-dlp) and its contributors for making this tool possible. Without it this app wouldn't exist.
 - [youtubedl-android](https://github.com/yausername/youtubedl-android) for porting yt-dlp to android
 - [dvd](https://github.com/yausername/dvd) for showing how to implement youtubedl-android
-- [seal](https://github.com/JunkFood02/Seal) for certain design elements and features i wanted to use aswell in this app
+- [seal](https://github.com/JunkFood02/Seal) for certain design elements and features i wanted to use aswell in this app when i started developing
 - [decipher3114](https://github.com/decipher3114) for the app icon
 
 and alot of other internet forum strangers.
