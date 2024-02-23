@@ -324,7 +324,7 @@
     <string name="buffer_size">Tamanho do buffer</string>
     <string name="preferred_audio_language">Idioma de áudio preferido</string>
     <string name="update_ytdl_stable">Versão estável do yt-dlp</string>
-    <string name="changelog">Log de alterações</string>
+    <string name="changelog">Histórico de atualizações</string>
     <string name="app">Aplicativo</string>
     <string name="source">Origem</string>
     <string name="cut_unavailable">É necessário atualizar os dados do item para poder utilizar a função de corte</string>
@@ -347,7 +347,7 @@
     <string name="month">Mês(es)</string>
     <string name="bitrate">Taxa de bits</string>
     <string name="not_deleted">Não excluído</string>
-    <string name="download_archive">Arquivo de download</string>
+    <string name="download_archive">Arquivamento de download</string>
     <string name="observe_sources">Observar Origens</string>
     <string name="delete_all_sources">Excluir todas as origens</string>
     <string name="confirm_delete_sources_desc">Excluir todas as origens, permanentemente</string>
@@ -356,7 +356,7 @@
     <string name="occurrences">ocorrências</string>
     <string name="day">Dia(s)</string>
     <string name="save_auto_subs">Salvar legendas automáticas</string>
-    <string name="download_archive_summary">Usar arquivo de download do yt-dlp para evitar downloads duplicados em vez da funcionalidade integrada</string>
+    <string name="download_archive_summary">Usar arquivamento de download do yt-dlp para evitar downloads duplicados</string>
     <string name="retry_missing_downloads">Repetir downloads ausentes</string>
     <string name="force_ipv4_desc">Efetuar todas as conexões com IPv4</string>
 </resources>
