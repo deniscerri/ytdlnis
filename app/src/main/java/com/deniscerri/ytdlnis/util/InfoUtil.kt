@@ -35,6 +35,7 @@ import java.io.InputStreamReader
 import java.lang.reflect.Type
 import java.net.HttpURLConnection
 import java.net.URL
+import java.text.SimpleDateFormat
 import java.util.*
 import java.util.regex.Pattern
 
@@ -53,7 +54,7 @@ class InfoUtil(private val context: Context) {
     }
 
 
-    fun search(query: String): ArrayList<ResultItem?> {
+    fun search(query: String): ArrayList<ResultItem> {
         return runCatching {
             when(sharedPreferences.getString("search_engine", "ytsearch")){
                 "ytsearch" -> searchFromPiped(query)
@@ -66,8 +67,8 @@ class InfoUtil(private val context: Context) {
     }
 
     @Throws(JSONException::class)
-    fun searchFromPiped(query: String): ArrayList<ResultItem?> {
-        val items = arrayListOf<ResultItem?>()
+    fun searchFromPiped(query: String): ArrayList<ResultItem> {
+        val items = arrayListOf<ResultItem>()
         val data = genericRequest("$pipedURL/search?q=$query&filter=videos&region=${countryCODE}")
         val dataArray = data.getJSONArray("items")
         if (dataArray.length() == 0) return getFromYTDL(query)
@@ -85,8 +86,8 @@ class InfoUtil(private val context: Context) {
     }
 
     @Throws(JSONException::class)
-    fun searchFromPipedMusic(query: String): ArrayList<ResultItem?> {
-        val items = arrayListOf<ResultItem?>()
+    fun searchFromPipedMusic(query: String): ArrayList<ResultItem> {
+        val items = arrayListOf<ResultItem>()
         val data = genericRequest("$pipedURL/search?q=$query=&filter=music_songs&region=${countryCODE}")
         val dataArray = data.getJSONArray("items")
         if (dataArray.length() == 0) return getFromYTDL(query)
@@ -106,7 +107,7 @@ class InfoUtil(private val context: Context) {
     @Throws(JSONException::class)
     fun getPlaylist(id: String, nextPageToken: String, playlistName: String): PlaylistTuple {
         try{
-            val items = arrayListOf<ResultItem?>()
+            val items = arrayListOf<ResultItem>()
             // -------------- PIPED API FUNCTION -------------------
             var url = ""
             url = if (nextPageToken.isBlank()) "$pipedURL/playlists/$id"
@@ -120,10 +121,11 @@ class InfoUtil(private val context: Context) {
             for (i in 0 until dataArray.length()){
                 kotlin.runCatching {
                     val obj = dataArray.getJSONObject(i)
-                    val itm = createVideoFromPipedJSON(obj, "https://youtube.com" + obj.getString("url"))
-                    itm?.playlistTitle = runCatching { res.getString("name") }.getOrElse { playlistName }
-                    itm?.playlistURL = "https://www.youtube.com/playlist?list=$id"
-                    items.add(itm)
+                    createVideoFromPipedJSON(obj, "https://youtube.com" + obj.getString("url"))?.apply {
+                        playlistTitle = runCatching { res.getString("name") }.getOrElse { playlistName }
+                        playlistURL = "https://www.youtube.com/playlist?list=$id"
+                        items.add(this)
+                    }
                 }
             }
             if (nextpage == "null") nextpage = ""
@@ -137,17 +139,25 @@ class InfoUtil(private val context: Context) {
     }
 
     @Throws(JSONException::class)
-    fun getYoutubeVideo(url: String): List<ResultItem?> {
+    fun getYoutubeVideo(url: String): List<ResultItem>? {
         val theURL = url.replace("\\?list.*".toRegex(), "")
-        return try {
+        try{
             val id = getIDFromYoutubeURL(theURL)
             val res = genericRequest("$pipedURL/streams/$id")
-            if (res.length() == 0) getFromYTDL(theURL) else listOf(createVideoFromPipedJSON(res, theURL))
+            if (res.length() == 0) {
+                return getFromYTDL(theURL)
+            }
+
+            createVideoFromPipedJSON(res, theURL)?.apply {
+                return listOf(this)
+            }
         }catch (e: Exception){
             val v = getFromYTDL(theURL)
-            v.forEach { it!!.url = theURL }
-            v
+            v.forEach { it.url = theURL }
+            return v
         }
+
+        return null
     }
 
     private fun createVideofromJSON(obj: JSONObject): ResultItem? {
@@ -359,7 +369,7 @@ class InfoUtil(private val context: Context) {
     }
 
     @Throws(JSONException::class)
-    fun getTrending(): ArrayList<ResultItem?> {
+    fun getTrending(): ArrayList<ResultItem> {
         if (sharedPreferences.getString("api_key", "")!!.isNotBlank()){
             return getTrendingFromYoutubeAPI()
         }
@@ -367,8 +377,8 @@ class InfoUtil(private val context: Context) {
     }
 
     @Throws(JSONException::class)
-    fun getTrendingFromYoutubeAPI(): ArrayList<ResultItem?> {
-        val items = arrayListOf<ResultItem?>()
+    fun getTrendingFromYoutubeAPI(): ArrayList<ResultItem> {
+        val items = arrayListOf<ResultItem>()
         val key = sharedPreferences.getString("api_key", "")!!
         val url = "https://www.googleapis.com/youtube/v3/videos?part=snippet&chart=mostPopular&videoCategoryId=10&regionCode=$countryCODE&maxResults=25&key=$key"
         //short data
@@ -397,8 +407,8 @@ class InfoUtil(private val context: Context) {
         return items
     }
 
-    private fun getTrendingFromPiped(): ArrayList<ResultItem?> {
-        val items = arrayListOf<ResultItem?>()
+    private fun getTrendingFromPiped(): ArrayList<ResultItem> {
+        val items = arrayListOf<ResultItem>()
         val url = "$pipedURL/trending?region=$countryCODE"
         val res = genericArrayRequest(url)
         for (i in 0 until res.length()) {
@@ -438,7 +448,7 @@ class InfoUtil(private val context: Context) {
             return try {
                 val id = getIDFromYoutubeURL(url)
                 val res = genericRequest("$pipedURL/streams/$id")
-                if (res.length() == 0) getFromYTDL(url)[0]!!
+                if (res.length() == 0) getFromYTDL(url)[0]
                 val item = createVideoFromPipedJSON(res, "https://youtube.com/watch?v=$id")
                 item!!.formats
             }catch(e: Exception) {
@@ -571,8 +581,8 @@ class InfoUtil(private val context: Context) {
     }
 
     @SuppressLint("RestrictedApi")
-    fun getFromYTDL(query: String): ArrayList<ResultItem?> {
-        val items = arrayListOf<ResultItem?>()
+    fun getFromYTDL(query: String, singleItem: Boolean = false): ArrayList<ResultItem> {
+        val items = arrayListOf<ResultItem>()
         val searchEngine = sharedPreferences.getString("search_engine", "ytsearch")
 
         val request : YoutubeDLRequest
@@ -596,7 +606,7 @@ class InfoUtil(private val context: Context) {
         }
 
         request.addOption("--flat-playlist")
-        request.addOption("-j")
+        request.addOption(if (singleItem) "-J" else "-j")
         request.addOption("--skip-download")
         request.addOption("-R", "1")
         request.addOption("--compat-options", "manifest-filesize-approx")
@@ -694,14 +704,15 @@ class InfoUtil(private val context: Context) {
             val url = if (jsonObject.has("url") && results.size > 1){
                 jsonObject.getString("url")
             }else{
-                if (Patterns.WEB_URL.matcher(query).matches()){
+                if (Patterns.WEB_URL.matcher(query).matches() && playlistURL?.isEmpty() == true){
                     query
                 }else{
+                    jsonObject.getStringByAny("webpage_url", "original_url", "url", )
                     jsonObject.getString("webpage_url")
                 }
             }
 
-            items.add(ResultItem(0,
+            val res = ResultItem(0,
                 url,
                 title,
                 author,
@@ -715,7 +726,8 @@ class InfoUtil(private val context: Context) {
                 playlistURL,
                 playlistIndex
             )
-            )
+
+            items.add(res)
         }
         return items
     }
@@ -770,79 +782,6 @@ class InfoUtil(private val context: Context) {
             }
         }
         return formats
-    }
-
-    fun getMissingInfo(url: String): ResultItem? {
-        val request = YoutubeDLRequest(url)
-        request.addOption("--flat-playlist")
-        request.addOption("-J")
-        request.addOption("--skip-download")
-        request.addOption("-R", "1")
-        request.addOption("--socket-timeout", "5")
-
-        if (sharedPreferences.getBoolean("force_ipv4", false)){
-            request.addOption("-4")
-        }
-
-        if (sharedPreferences.getBoolean("use_cookies", false)){
-            FileUtil.getCookieFile(context){
-                request.addOption("--cookies", it)
-            }
-
-            val useHeader = sharedPreferences.getBoolean("use_header", false)
-            val header = sharedPreferences.getString("useragent_header", "")
-            if (useHeader && !header.isNullOrBlank()){
-                request.addOption("--add-header","User-Agent:${header}")
-            }
-        }
-
-
-
-        val proxy = sharedPreferences.getString("proxy", "")
-        if (proxy!!.isNotBlank()){
-            request.addOption("--proxy", proxy)
-        }
-
-
-
-        val youtubeDLResponse = YoutubeDL.getInstance().execute(request)
-        val jsonObject = JSONObject(youtubeDLResponse.out)
-
-        val title = jsonObject.getStringByAny("track", "alt_title", "title", "webpage_url_basename")
-        val author = jsonObject.getStringByAny("uploader", "channel", "playlist_uploader", "uploader_id")
-
-        var duration = jsonObject.getIntByAny("duration").toString()
-        if (duration != "-1"){
-            duration = jsonObject.getInt("duration").toStringDuration(Locale.US)
-        }
-
-        var thumb: String? = ""
-        if (jsonObject.has("thumbnail")) {
-            thumb = jsonObject.getString("thumbnail")
-        } else if (jsonObject.has("thumbnails")) {
-            val thumbs = jsonObject.getJSONArray("thumbnails")
-            if (thumbs.length() > 0){
-                thumb = thumbs.getJSONObject(thumbs.length() - 1).getString("url")
-            }
-        }
-
-        val isPlaylist = jsonObject.has("playlist_count")
-        return ResultItem(
-            0,
-            url,
-            if (isPlaylist) "" else title,
-            author,
-            duration,
-            thumb!!,
-            jsonObject.getString("extractor"),
-            if (isPlaylist) jsonObject.getString("title") else "",
-            arrayListOf(),
-            "",
-            arrayListOf(),
-            "",
-            null,
-            System.currentTimeMillis()
-        )
     }
 
 
@@ -1064,7 +1003,7 @@ class InfoUtil(private val context: Context) {
 
             if (downloadItem.SaveThumb) {
                 request.addOption("--write-thumbnail")
-                request.addOption("--convert-thumbnails", "jpg")
+                request.addOption("--convert-thumbnails", sharedPreferences.getString("thumbnail_format", "jpg")!!)
             }
             if (!sharedPreferences.getBoolean("mtime", false)){
                 request.addOption("--no-mtime")
@@ -1093,15 +1032,42 @@ class InfoUtil(private val context: Context) {
                 }
             }
 
-            if(downloadItem.title.isNotBlank()){
-                request.addCommands(listOf("--replace-in-metadata", "title", ".+", downloadItem.title))
+
+
+            try {
+                val config = File(context.cacheDir.absolutePath + "/config" + downloadItem.id + "##replaceMetadata.txt")
+                YoutubeDLRequest("").apply {
+
+                    if (downloadItem.playlistTitle.isNotBlank()){
+                        addCommands(listOf("--replace-in-metadata", "playlist", ".+", downloadItem.playlistTitle))
+                        runCatching {
+                            if (downloadItem.playlistIndex != null){
+                                addOption("--parse-metadata", downloadItem.playlistIndex.toString() + ":%(playlist_index)s")
+                            }
+                        }
+                    }
+
+                    if(downloadItem.title.isNotBlank()){
+                        addCommands(listOf("--replace-in-metadata", "title", ".+", downloadItem.title))
+                    }
+
+
+                    if (downloadItem.author.isNotBlank()){
+                        addCommands(listOf("--replace-in-metadata", "uploader", ".+", downloadItem.author))
+                    }
+
+                    val configData = parseYTDLRequestString(this).replace(" \" \"", "")
+                    config.writeText(configData)
+                    request.addOption("--config", config.absolutePath)
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
 
-            request.addOption("--parse-metadata", "%(channel,uploader,creator,artist|null)s:%(uploader)s")
-            request.addOption("--parse-metadata", "%(uploader)s:%(album_artist)s")
-            if (downloadItem.author.isNotBlank()){
-                request.addCommands(listOf("--replace-in-metadata", "uploader", ".+", downloadItem.author))
-                request.addCommands(listOf("--replace-in-metadata","uploader"," - Topic$",""))
+            request.addOption("--parse-metadata", "uploader:(?P<uploader>.+)(?: - Topic)$")
+
+            if (embedMetadata){
+                request.addOption("--parse-metadata", "%(uploader,channel,creator,artist|null)s:%(uploader)s")
             }
 
             if (downloadItem.downloadSections.isNotBlank()){
@@ -1122,7 +1088,7 @@ class InfoUtil(private val context: Context) {
                     "%(section_title&{} |)s$filenameTemplate"
                 }
                 if (downloadItem.downloadSections.split(";").size > 1){
-                    filenameTemplate = "%(autonumber)d. %(section_start>%H∶%M∶%S)s $filenameTemplate"
+                    filenameTemplate = "%(autonumber)d. $filenameTemplate [%(section_start>%H∶%M∶%S)s]"
                 }
             }
 
@@ -1133,7 +1099,7 @@ class InfoUtil(private val context: Context) {
             if (downloadItem.extraCommands.isNotBlank()){
                 val cache = File(FileUtil.getCachePath(context))
                 cache.mkdirs()
-                val conf = File(cache.absolutePath + "/${System.currentTimeMillis()}.txt")
+                val conf = File(cache.absolutePath + "/${System.currentTimeMillis()}${UUID.randomUUID()}.txt")
                 conf.createNewFile()
                 conf.writeText(downloadItem.extraCommands)
                 request.addOption(
@@ -1146,16 +1112,9 @@ class InfoUtil(private val context: Context) {
                 request.addOption("--write-description")
             }
 
-            filenameTemplate = filenameTemplate.replace("%(uploader)s", "%(uploader,channel)s")
-        }
-
-        if (downloadItem.playlistTitle.isNotBlank()){
-            request.addCommands(listOf("--replace-in-metadata", "playlist", ".+", downloadItem.playlistTitle))
-            runCatching {
-                if (downloadItem.playlistIndex != null){
-                    request.addOption("--parse-metadata", downloadItem.playlistIndex.toString() + ":%(playlist_index)s")
-                }
-            }
+            filenameTemplate = filenameTemplate
+                                    .replace("%(uploader)s", "%(uploader,channel).30B")
+                                    .replace("%(title)s", "%(title).170B")
         }
 
         if (sharedPreferences.getBoolean("download_archive", false)){
@@ -1216,9 +1175,9 @@ class InfoUtil(private val context: Context) {
 
                     if (embedMetadata){
                         request.addOption("--embed-metadata")
-
+                        request.addOption("--parse-metadata", "artist:(?P<meta_album_artist>[^,]+)")
+                        request.addOption("--parse-metadata", "%(album_artist,meta_album_artist,uploader)s:%(album_artist)s")
                         request.addOption("--parse-metadata", "%(release_year,release_date>%Y,upload_date>%Y)s:%(meta_date)s")
-                        request.addOption("--parse-metadata", "video:%(uploader)s:%(album_artist)s")
 
                         if (downloadItem.playlistTitle.isNotEmpty()) {
                             request.addOption("--parse-metadata", "%(album,playlist,title)s:%(meta_album)s")
@@ -1519,7 +1478,7 @@ class InfoUtil(private val context: Context) {
 
     class PlaylistTuple internal constructor(
         var nextPageToken: String,
-        var videos: ArrayList<ResultItem?>
+        var videos: ArrayList<ResultItem>
     )
 
     companion object {

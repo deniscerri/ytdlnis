@@ -3,7 +3,6 @@ package com.deniscerri.ytdlnis.receiver.downloadAlarmReceivers
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import androidx.work.Constraints
 import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder

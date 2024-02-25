@@ -20,7 +20,6 @@ import com.deniscerri.ytdlnis.database.repository.LogRepository
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.ui.more.terminal.TerminalActivity
 import com.deniscerri.ytdlnis.util.FileUtil
-import com.deniscerri.ytdlnis.util.InfoUtil
 import com.deniscerri.ytdlnis.util.NotificationUtil
 import com.yausername.youtubedl_android.YoutubeDL
 import com.yausername.youtubedl_android.YoutubeDLRequest
@@ -93,7 +92,7 @@ class TerminalDownloadWorker(
             0,
             "Terminal Task",
             "Terminal Task\n" +
-                    "Command: ${command}\n\n",
+                    "Command: \n ${command}\n\n",
             Format(),
             DownloadViewModel.Type.command,
             System.currentTimeMillis(),

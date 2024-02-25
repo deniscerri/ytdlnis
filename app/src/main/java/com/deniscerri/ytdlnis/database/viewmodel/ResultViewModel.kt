@@ -5,7 +5,6 @@ import android.app.ActivityManager.RunningAppProcessInfo
 import android.app.Application
 import android.content.SharedPreferences
 import android.util.Log
-import android.util.Patterns
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.asLiveData
@@ -21,14 +20,14 @@ import com.deniscerri.ytdlnis.database.repository.ResultRepository
 import com.deniscerri.ytdlnis.database.repository.SearchHistoryRepository
 import com.deniscerri.ytdlnis.util.InfoUtil
 import com.deniscerri.ytdlnis.util.NotificationUtil
+import com.yausername.youtubedl_android.YoutubeDLException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import java.util.regex.Pattern
+import java.util.concurrent.CancellationException
 
 
 class ResultViewModel(private val application: Application) : AndroidViewModel(application) {
@@ -53,6 +52,18 @@ class ResultViewModel(private val application: Application) : AndroidViewModel(a
         errorMessage = null,
         actions = null
     ))
+
+
+    val updatingData: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    var updateResultData: MutableStateFlow<List<ResultItem?>?> = MutableStateFlow(null)
+    private var updateResultDataJob : Job? = null
+
+    val updatingFormats: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    var updateFormatsResultData: MutableStateFlow<MutableList<Format>?> = MutableStateFlow(null)
+    private var updateFormatsResultDataJob: Job? = null
+
+    var parsingQueries: Job? = null
+
     private val sharedPreferences: SharedPreferences
 
     init {
@@ -86,41 +97,45 @@ class ResultViewModel(private val application: Application) : AndroidViewModel(a
             deleteAll()
         }
     }
-    suspend fun parseQueries(inputQueries: List<String>) : List<ResultItem?> {
-        if (inputQueries.size > 1){
-            repository.itemCount.value = inputQueries.size
-        }
-        val resetResults = inputQueries.size == 1
 
-        uiState.update {it.copy(processing = true, errorMessage = null, actions = null)}
-        return withContext(Dispatchers.IO){
-            val res = mutableListOf<ResultItem?>()
-            inputQueries.forEach { inputQuery ->
-                val type = getQueryType(inputQuery)
-                try {
-                     when (type) {
-                        "Search" -> res.addAll(repository.search(inputQuery, resetResults))
-                        "YT_Video" -> res.addAll(repository.getYoutubeVideo(inputQuery, resetResults))
-                        "YT_Playlist" -> res.addAll(repository.getPlaylist(inputQuery, resetResults))
-                        else -> res.addAll(repository.getDefault(inputQuery, resetResults))
-                    }
-                } catch (e: Exception) {
-                    if (updateResultDataJob?.isCancelled == false){
-                        uiState.update {it.copy(
-                            processing = false,
-                            errorMessage = Pair(R.string.no_results, e.message.toString()),
-                            actions = mutableListOf(Pair(R.string.copy_log, ResultAction.COPY_LOG))
-                        )}
-                        Log.e(tag, e.toString())
-                    }
+    fun cancelParsingQueries(){
+        parsingQueries?.cancel(CancellationException())
+        uiState.update {it.copy(processing = false)}
+    }
 
+    suspend fun parseQueries(inputQueries: List<String>, onResult: (list: List<ResultItem?>) -> Unit) {
+        if (parsingQueries == null || parsingQueries?.isCancelled == true || parsingQueries?.isCompleted == true) {
+            parsingQueries = viewModelScope.launch(Dispatchers.IO) {
+                if (inputQueries.size > 1){
+                    repository.itemCount.value = inputQueries.size
                 }
+                val resetResults = inputQueries.size == 1
+
+                uiState.update {it.copy(processing = true, errorMessage = null, actions = null)}
+                val res = mutableListOf<ResultItem?>()
+                inputQueries.forEach { inputQuery ->
+                    try {
+                        res.addAll(repository.getResultsFromSource(inputQuery, resetResults))
+                    } catch (e: Exception) {
+                        if (updateResultDataJob?.isCancelled == false || e is YoutubeDLException){
+                            uiState.update {it.copy(
+                                processing = false,
+                                errorMessage = Pair(R.string.no_results, e.message.toString()),
+                                actions = mutableListOf(Pair(R.string.copy_log, ResultAction.COPY_LOG))
+                            )}
+                            Log.e(tag, e.toString())
+                        }
+
+                    }
+                }
+                if (!isForegrounded() && inputQueries.size > 1){
+                    notificationUtil.showQueriesFinished()
+                }
+                uiState.update {it.copy(processing = false)}
+                onResult(res)
             }
-            if (!isForegrounded() && inputQueries.size > 1){
-                notificationUtil.showQueriesFinished()
-            }
-            uiState.update {it.copy(processing = false)}
-            res
+        }else{
+            onResult(listOf())
         }
     }
 
@@ -133,20 +148,7 @@ class ResultViewModel(private val application: Application) : AndroidViewModel(a
         }.getOrElse { true }
     }
 
-    private fun getQueryType(inputQuery: String) : String {
-        var type = "Search"
-        val p = Pattern.compile("(^(https?)://(www.)?youtu(.be)?)|(^(https?)://(www.)?piped.video)")
-        val m = p.matcher(inputQuery)
-        if (m.find()) {
-            type = "YT_Video"
-            if (inputQuery.contains("playlist?list=")) {
-                type = "YT_Playlist"
-            }
-        } else if (Patterns.WEB_URL.matcher(inputQuery).matches()) {
-            type = "Default"
-        }
-        return type
-    }
+
 
     fun insert(items: ArrayList<ResultItem?>) = viewModelScope.launch(Dispatchers.IO){
         items.forEach {
@@ -196,21 +198,19 @@ class ResultViewModel(private val application: Application) : AndroidViewModel(a
         }
     }
 
-    val updatingData: MutableStateFlow<Boolean> = MutableStateFlow(false)
-    var updateResultData: MutableStateFlow<List<ResultItem?>?> = MutableStateFlow(null)
-    private var updateResultDataJob : Job? = null
-
-    val updatingFormats: MutableStateFlow<Boolean> = MutableStateFlow(false)
-    var updateFormatsResultData: MutableStateFlow<MutableList<Format>?> = MutableStateFlow(null)
-    private var updateFormatsResultDataJob: Job? = null
 
     suspend fun updateItemData(res: ResultItem){
         if (updateResultDataJob == null || updateResultDataJob?.isCancelled == true || updateResultDataJob?.isCompleted == true){
             updateResultDataJob = viewModelScope.launch(Dispatchers.IO) {
                 updatingData.emit(true)
-                val result = parseQueries(listOf(res.url))
-                updatingData.emit(false)
-                updateResultData.emit(result)
+                updatingData.value = true
+                parseQueries(listOf(res.url)){ result ->
+                    viewModelScope.launch(Dispatchers.IO){
+                        updatingData.emit(false)
+                        updatingData.value = false
+                        updateResultData.emit(result)
+                    }
+                }
             }
 
             updateResultDataJob?.start()
@@ -218,6 +218,7 @@ class ResultViewModel(private val application: Application) : AndroidViewModel(a
                 if (it != null){
                     viewModelScope.launch(Dispatchers.IO) {
                         updatingData.emit(false)
+                        updatingData.value = false
                         updateResultData.emit(mutableListOf())
                     }
                 }
@@ -226,13 +227,14 @@ class ResultViewModel(private val application: Application) : AndroidViewModel(a
     }
 
     suspend fun cancelUpdateItemData(){
-        updateResultDataJob?.cancel()
+        updateResultDataJob?.cancel(CancellationException())
         updatingData.emit(false)
+        updatingData.value = false
         updateResultData.emit(null)
     }
 
     suspend fun cancelUpdateFormatsItemData(){
-        updateFormatsResultDataJob?.cancel()
+        updateFormatsResultDataJob?.cancel(CancellationException())
         updatingFormats.emit(false)
         updateFormatsResultData.emit(null)
     }

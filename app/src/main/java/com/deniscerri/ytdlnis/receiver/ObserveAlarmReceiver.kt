@@ -8,7 +8,6 @@ import androidx.work.Data
 import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
-import com.deniscerri.ytdlnis.work.DownloadWorker
 import com.deniscerri.ytdlnis.work.ObserveSourceWorker
 import java.util.concurrent.TimeUnit
 

@@ -40,6 +40,7 @@
                 app:layout_collapseMode="pin"
                 app:layout_scrollFlags="scroll"
                 app:navigationIcon="@drawable/ic_back"
+            app:navigationContentDescription="@string/back"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"/>
 

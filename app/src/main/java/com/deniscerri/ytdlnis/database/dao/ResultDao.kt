@@ -1,6 +1,11 @@
 package com.deniscerri.ytdlnis.database.dao
 
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import androidx.room.Transaction
+import androidx.room.Update
 import com.deniscerri.ytdlnis.database.models.ResultItem
 import kotlinx.coroutines.flow.Flow
 
@@ -26,6 +31,11 @@ interface ResultDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertMultiple(items: List<ResultItem?>) : List<Long>
+
+    @Transaction
+    suspend fun insertMultipleNoDuplicates(items: List<ResultItem>) : List<Long> {
+        return insertMultiple(items.filter { getResultByURL(it.url) == null })
+    }
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
     suspend fun update(item: ResultItem)

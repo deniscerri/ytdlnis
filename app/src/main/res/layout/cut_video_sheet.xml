@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+<androidx.core.widget.NestedScrollView android:layout_width="match_parent"
     android:scrollbars="none"
     android:orientation="vertical"
     android:layout_height="wrap_content"
@@ -75,6 +74,7 @@
             app:icon="@drawable/exomedia_ic_rewind_white"
             android:layout_marginHorizontal="20dp"
             android:layout_width="wrap_content"
+            android:contentDescription="@string/restart"
             android:indeterminate="true"
             app:layout_constraintHorizontal_bias="0.0"
             android:layout_height="wrap_content"
@@ -87,6 +87,7 @@
             android:id="@+id/mute"
             style="@style/Widget.Material3.Button.IconButton"
             android:layout_width="wrap_content"
+            android:contentDescription="@string/remove_audio"
             android:layout_height="wrap_content"
             app:icon="@drawable/ic_music"
             app:iconSize="30dp"

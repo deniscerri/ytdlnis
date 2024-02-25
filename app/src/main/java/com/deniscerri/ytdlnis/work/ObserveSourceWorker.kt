@@ -6,27 +6,23 @@ import android.content.Context
 import android.content.Intent
 import androidx.preference.PreferenceManager
 import androidx.work.CoroutineWorker
+import androidx.work.Data
 import androidx.work.ForegroundInfo
 import androidx.work.WorkerParameters
 import com.deniscerri.ytdlnis.App
 import com.deniscerri.ytdlnis.database.DBManager
-import com.deniscerri.ytdlnis.database.dao.ResultDao
 import com.deniscerri.ytdlnis.database.models.DownloadItem
-import com.deniscerri.ytdlnis.database.models.Format
 import com.deniscerri.ytdlnis.database.models.ObserveSourcesItem
-import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.deniscerri.ytdlnis.database.repository.DownloadRepository
 import com.deniscerri.ytdlnis.database.repository.HistoryRepository
 import com.deniscerri.ytdlnis.database.repository.ObserveSourcesRepository
+import com.deniscerri.ytdlnis.database.repository.ResultRepository
 import com.deniscerri.ytdlnis.receiver.ObserveAlarmReceiver
-import com.deniscerri.ytdlnis.util.DownloadUtil
-import com.deniscerri.ytdlnis.util.Extensions.closestValue
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.InfoUtil
 import com.deniscerri.ytdlnis.util.NotificationUtil
 import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import java.util.Calendar
 
@@ -41,6 +37,7 @@ class ObserveSourceWorker(
         if (sourceID == 0L) return Result.failure()
         val dbManager = DBManager.getInstance(context)
         val repo = ObserveSourcesRepository(dbManager.observeSourcesDao)
+        val resultsRepo = ResultRepository(dbManager.resultDao, App.instance)
         val historyRepo = HistoryRepository(dbManager.historyDao)
         val downloadRepo = DownloadRepository(dbManager.downloadDao)
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
@@ -48,7 +45,7 @@ class ObserveSourceWorker(
 
         val item = repo.getByID(sourceID)
         if (item.status == ObserveSourcesRepository.SourceStatus.STOPPED){
-            DownloadUtil.cancelObservationTaskByID(context, item.id)
+            repo.cancelObservationTaskByID(context, item.id)
             return Result.failure()
         }
 
@@ -57,34 +54,48 @@ class ObserveSourceWorker(
         val foregroundInfo = ForegroundInfo(workerID, notification)
         setForegroundAsync(foregroundInfo)
 
-        item.runCount = item.runCount + 1
-
-        var res = runCatching { infoUtil.getFromYTDL(item.url).toList() }.getOrElse { listOf() }
-        res = if (!item.retryMissingDownloads){
-            res.filter { result ->
-                //all items that are not present in history
-                !historyRepo.getAllByURL(result!!.url).filter {  hi ->
-                    hi.downloadPath.any { path -> FileUtil.exists(path) }
-                }.map { it.url }.contains(result.url)
+        val res = runCatching { infoUtil.getFromYTDL(item.url).toList() }.getOrElse { listOf() }
+            .filter { result ->
+                //if first run and get new items only is preferred then dont get anything on first run
+                if (item.getOnlyNewUploads && item.runCount == 0){
+                    item.alreadyProcessedLinks.add(result.url)
+                    false
+                }else{
+                    true
+                }
             }
-        }else{
-            //all items that are not already processed
-            res.filter { !item.alreadyProcessedLinks.contains(it!!.url) }
-        }
+            .filter { result ->
 
+            val history = historyRepo.getAllByURL(result.url)
+            if (!item.retryMissingDownloads){
+                //all items that are not present in history
+                history.none { hi -> hi.downloadPath.any { path -> FileUtil.exists(path) } }
+            }else{
+                //all items that are not already processed
+                if(item.alreadyProcessedLinks.isEmpty()){
+                    !history.map { it.url }.contains(result.url) && !item.alreadyProcessedLinks.contains(result.url)
+                }else{
+                    !item.alreadyProcessedLinks.contains(result.url)
+                }
+            }
+
+        }
 
         val items = mutableListOf<DownloadItem>()
 
         res.forEach {
             val string = Gson().toJson(item.downloadItemTemplate, DownloadItem::class.java)
             val downloadItem = Gson().fromJson(string, DownloadItem::class.java)
-            downloadItem.url = it!!.url
+            downloadItem.url = it.url
+            downloadItem.title = it.title
+            downloadItem.author = it.author
+            downloadItem.thumb = it.thumb
+            downloadItem.status = DownloadRepository.Status.Queued.toString()
+            downloadItem.playlistTitle = it.playlistTitle
+            downloadItem.playlistURL = it.playlistURL
+            downloadItem.playlistIndex = it.playlistIndex
             downloadItem.id = 0L
             items.add(downloadItem)
-        }
-
-        withContext(Dispatchers.IO){
-            repo.update(item)
         }
 
 
@@ -108,68 +119,72 @@ class ObserveSourceWorker(
                 items.forEachIndexed { index, it -> it.playlistTitle = "Various[${index+1}]" }
             }
 
-            runBlocking {
-                items.forEach {
-                    if (it.status != DownloadRepository.Status.ActivePaused.toString()) it.status = DownloadRepository.Status.Queued.toString()
-                    val currentCommand = infoUtil.buildYoutubeDLRequest(it)
-                    val parsedCurrentCommand = infoUtil.parseYTDLRequestString(currentCommand)
-                    val existingDownload = activeAndQueuedDownloads.firstOrNull{d ->
-                        d.id = 0
-                        d.logID = null
-                        d.customFileNameTemplate = it.customFileNameTemplate
-                        d.status = DownloadRepository.Status.Queued.toString()
-                        d.toString() == it.toString()
+            items.forEach {
+                if (it.status != DownloadRepository.Status.ActivePaused.toString()) it.status = DownloadRepository.Status.Queued.toString()
+                val currentCommand = infoUtil.buildYoutubeDLRequest(it)
+                val parsedCurrentCommand = infoUtil.parseYTDLRequestString(currentCommand)
+                val existingDownload = activeAndQueuedDownloads.firstOrNull{d ->
+                    d.id = 0
+                    d.logID = null
+                    d.customFileNameTemplate = it.customFileNameTemplate
+                    d.status = DownloadRepository.Status.Queued.toString()
+                    d.toString() == it.toString()
+                }
+                if (existingDownload != null) {
+                    it.id = existingDownload.id
+                    existing.add(it)
+                }else{
+                    //check if downloaded and file exists
+                    val history = withContext(Dispatchers.IO){
+                        historyRepo.getAllByURL(it.url).filter { item -> item.downloadPath.any { path -> FileUtil.exists(path) } }
                     }
-                    if (existingDownload != null) {
-                        it.id = existingDownload.id
+
+                    val existingHistory = history.firstOrNull {
+                            h -> h.command.replace("(-P \"(.*?)\")|(--trim-filenames \"(.*?)\")".toRegex(), "") == parsedCurrentCommand.replace("(-P \"(.*?)\")|(--trim-filenames \"(.*?)\")".toRegex(), "")
+                    }
+
+                    if (existingHistory != null){
+                        it.id = existingHistory.id
                         existing.add(it)
                     }else{
-                        //check if downloaded and file exists
-                        val history = withContext(Dispatchers.IO){
-                            historyRepo.getAllByURL(it.url).filter { item -> item.downloadPath.any { path -> FileUtil.exists(path) } }
+                        if (it.id == 0L){
+                            it.id = downloadRepo.insert(it)
+                        }else if (it.status == DownloadRepository.Status.Queued.toString()){
+                            downloadRepo.update(it)
                         }
 
-                        val existingHistory = history.firstOrNull {
-                                h -> h.command.replace("(-P \"(.*?)\")|(--trim-filenames \"(.*?)\")".toRegex(), "") == parsedCurrentCommand.replace("(-P \"(.*?)\")|(--trim-filenames \"(.*?)\")".toRegex(), "")
-                        }
-
-                        if (existingHistory != null){
-                            it.id = existingHistory.id
-                            existing.add(it)
-                        }else{
-                            if (it.id == 0L){
-                                it.id = downloadRepo.insert(it)
-                            }else if (it.status == DownloadRepository.Status.Queued.toString()){
-                                downloadRepo.update(it)
-                            }
-
-                            queuedItems.add(it)
-                        }
+                        queuedItems.add(it)
                     }
                 }
             }
 
-
             if (!useScheduler || alarmScheduler.isDuringTheScheduledTime() || queuedItems.any { it.downloadStartTime > 0L } ){
-                DownloadUtil.startDownloadWorker(queuedItems, context)
+                downloadRepo.startDownloadWorker(queuedItems, context, Data.Builder().putBoolean("createResultItem", false))
 
                 if(!useScheduler){
                     queuedItems.filter { it.downloadStartTime != 0L || (it.title.isEmpty() || it.author.isEmpty() || it.thumb.isEmpty()) }.forEach {
-                        try{
-                            updateDownloadItem(it, infoUtil, downloadRepo, dbManager.resultDao)
-                        }catch (ignored: Exception){}
+                        runCatching {
+                            resultsRepo.updateDownloadItem(it)?.apply {
+                                downloadRepo.updateWithoutUpsert(this)
+                            }
+                        }
                     }
                 }else{
                     queuedItems.filter { it.title.isEmpty() || it.author.isEmpty() || it.thumb.isEmpty() }.forEach {
-                        try{
-                            updateDownloadItem(it, infoUtil, downloadRepo, dbManager.resultDao)
-                        }catch (ignored: Exception){}
+                        runCatching {
+                            resultsRepo.updateDownloadItem(it)?.apply {
+                                downloadRepo.updateWithoutUpsert(this)
+                            }
+                        }
                     }
                 }
             }
 
+            item.alreadyProcessedLinks.removeAll(items.map { it.url })
             item.alreadyProcessedLinks.addAll(items.map { it.url })
         }
+
+        item.runCount = item.runCount + 1
 
         if (item.runCount > item.endsAfterCount && item.endsAfterCount > 0){
             item.status = ObserveSourcesRepository.SourceStatus.STOPPED
@@ -185,8 +200,12 @@ class ObserveSourceWorker(
             withContext(Dispatchers.IO){
                 repo.update(item)
             }
-            DownloadUtil.cancelObservationTaskByID(context, item.id)
+            repo.cancelObservationTaskByID(context, item.id)
             return Result.success()
+        }
+
+        withContext(Dispatchers.IO){
+            repo.update(item)
         }
 
         scheduleForNextTime(item)
@@ -230,30 +249,6 @@ class ObserveSourceWorker(
             c.timeInMillis,
             PendingIntent.getBroadcast(context, item.id.toInt(), intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
         )
-    }
-
-    private fun updateDownloadItem(
-        downloadItem: DownloadItem,
-        infoUtil: InfoUtil,
-        repository: DownloadRepository,
-        resultDao: ResultDao
-    ) : Boolean {
-        var wasQuickDownloaded = false
-        if (downloadItem.title.isEmpty() || downloadItem.author.isEmpty() || downloadItem.thumb.isEmpty()){
-            runCatching {
-                val info = infoUtil.getMissingInfo(downloadItem.url)
-                if (downloadItem.title.isEmpty()) downloadItem.title = info?.title.toString()
-                if (downloadItem.author.isEmpty()) downloadItem.author = info?.author.toString()
-                downloadItem.duration = info?.duration.toString()
-                downloadItem.website = info?.website.toString()
-                if (downloadItem.thumb.isEmpty()) downloadItem.thumb = info?.thumb.toString()
-                runBlocking {
-                    wasQuickDownloaded = resultDao.getCountInt() == 0
-                    repository.updateWithoutUpsert(downloadItem)
-                }
-            }
-        }
-        return wasQuickDownloaded
     }
 
 }

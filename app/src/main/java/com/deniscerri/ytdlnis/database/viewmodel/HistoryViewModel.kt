@@ -8,9 +8,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.deniscerri.ytdlnis.database.DBManager
+import com.deniscerri.ytdlnis.database.DBManager.SORTING
 import com.deniscerri.ytdlnis.database.models.HistoryItem
 import com.deniscerri.ytdlnis.database.repository.HistoryRepository
-import com.deniscerri.ytdlnis.database.DBManager.SORTING
 import com.deniscerri.ytdlnis.database.repository.HistoryRepository.HistorySortType
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

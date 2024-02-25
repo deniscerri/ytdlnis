@@ -5,20 +5,20 @@
 
     <item
         android:id="@+id/wrap"
-        android:title=""
+        android:title="@string/wrap_text"
         android:icon="@drawable/baseline_wrap_text_24"
         app:showAsAction="always" />
 
     <item
         android:id="@+id/scroll_down"
-        android:title=""
+        android:title="@string/scroll_down"
         android:visible="false"
         android:icon="@drawable/ic_down"
         app:showAsAction="always" />
 
     <item
         android:id="@+id/text_size"
-        android:title=""
+        android:title="@string/text_size"
         android:icon="@drawable/ic_textformat"
         app:showAsAction="always" />
 

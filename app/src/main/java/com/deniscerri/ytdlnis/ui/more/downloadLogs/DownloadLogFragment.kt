@@ -15,6 +15,7 @@ import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
 import androidx.core.content.edit
+import androidx.core.view.children
 import androidx.core.view.get
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -168,10 +169,12 @@ class DownloadLogFragment : Fragment() {
                 requireActivity().runOnUiThread{
                     if (logItem != null){
                         if (logItem.content.isNotBlank()) {
-                            content.text = logItem.content
+                            content.setText(logItem.content, TextView.BufferType.SPANNABLE)
                         }
-                        content.scrollTo(0, content.height)
-                        contentScrollView.fullScroll(View.FOCUS_DOWN)
+                        if (!bottomAppBar.menu.children.first { it.itemId == R.id.scroll_down }.isVisible){
+                            content.scrollTo(0, content.height)
+                            contentScrollView.fullScroll(View.FOCUS_DOWN)
+                        }
                     }
                 }
             }

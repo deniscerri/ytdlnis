@@ -123,10 +123,24 @@
 
         <SwitchPreferenceCompat
             android:widgetLayout="@layout/preferece_material_switch"
+            app:defaultValue="true"
+            android:icon="@drawable/baseline_swipe_24"
+            android:key="swipe_gestures_download_card"
+            app:title="@string/swipe_gestures_download_card" />
+
+        <SwitchPreferenceCompat
+            android:widgetLayout="@layout/preferece_material_switch"
             app:defaultValue="false"
             android:icon="@drawable/baseline_share2_24"
             android:key="show_terminal"
             app:title="@string/show_terminal" />
+
+        <SwitchPreferenceCompat
+            android:widgetLayout="@layout/preferece_material_switch"
+            app:defaultValue="false"
+            android:icon="@drawable/baseline_numbers_24"
+            android:key="show_count_downloads"
+            app:title="@string/show_download_count" />
 
 
         <Preference

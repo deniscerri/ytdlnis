@@ -1,36 +1,25 @@
 package com.deniscerri.ytdlnis.database.viewmodel
 
-import android.annotation.SuppressLint
 import android.app.Application
-import android.content.Context
 import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.content.res.Resources
-import android.net.ConnectivityManager
-import android.os.Looper
 import android.util.DisplayMetrics
-import android.widget.Toast
-import androidx.compose.animation.core.updateTransition
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.preference.PreferenceManager
-import androidx.work.Constraints
 import androidx.work.Data
 import androidx.work.ExistingWorkPolicy
-import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.WorkInfo
 import androidx.work.WorkManager
-import androidx.work.await
 import com.deniscerri.ytdlnis.App
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.DBManager
 import com.deniscerri.ytdlnis.database.dao.CommandTemplateDao
 import com.deniscerri.ytdlnis.database.dao.DownloadDao
-import com.deniscerri.ytdlnis.database.dao.ResultDao
 import com.deniscerri.ytdlnis.database.models.AudioPreferences
 import com.deniscerri.ytdlnis.database.models.CommandTemplate
 import com.deniscerri.ytdlnis.database.models.DownloadItem
@@ -41,12 +30,11 @@ import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.deniscerri.ytdlnis.database.models.VideoPreferences
 import com.deniscerri.ytdlnis.database.repository.DownloadRepository
 import com.deniscerri.ytdlnis.database.repository.HistoryRepository
+import com.deniscerri.ytdlnis.database.repository.ResultRepository
 import com.deniscerri.ytdlnis.ui.downloadcard.FormatTuple
-import com.deniscerri.ytdlnis.util.DownloadUtil
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.InfoUtil
 import com.deniscerri.ytdlnis.work.AlarmScheduler
-import com.deniscerri.ytdlnis.work.DownloadWorker
 import com.deniscerri.ytdlnis.work.UpdatePlaylistFormatsWorker
 import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
@@ -59,7 +47,6 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import java.io.File
 import java.util.Locale
-import java.util.concurrent.TimeUnit
 
 
 class DownloadViewModel(private val application: Application) : AndroidViewModel(application) {
@@ -72,10 +59,15 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
     val queuedDownloads : Flow<PagingData<DownloadItemSimple>>
     val activeDownloads : Flow<List<DownloadItem>>
     val processingDownloads : Flow<List<DownloadItem>>
-    val activeDownloadsCount : Flow<Int>
     val cancelledDownloads : Flow<PagingData<DownloadItemSimple>>
     val erroredDownloads : Flow<PagingData<DownloadItemSimple>>
     val savedDownloads : Flow<PagingData<DownloadItemSimple>>
+
+    val activeDownloadsCount : Flow<Int>
+    val queuedDownloadsCount : Flow<Int>
+    val cancelledDownloadsCount : Flow<Int>
+    val erroredDownloadsCount : Flow<Int>
+    val savedDownloadsCount : Flow<Int>
 
     private var bestVideoFormat : Format
     private var bestAudioFormat : Format
@@ -94,6 +86,7 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
     private var audioCodec: String?
     private val dao: DownloadDao
     private val historyRepository: HistoryRepository
+    private val resultRepository: ResultRepository
 
     data class AlreadyExistsUIState(
         var historyItems: MutableList<Long>,
@@ -120,15 +113,21 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         dao = dbManager.downloadDao
         repository = DownloadRepository(dao)
         historyRepository = HistoryRepository(dbManager.historyDao)
+        resultRepository = ResultRepository(dbManager.resultDao, application)
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(application)
         commandTemplateDao = DBManager.getInstance(application).commandTemplateDao
         infoUtil = InfoUtil(application)
+
+        activeDownloadsCount = repository.activeDownloadsCount
+        queuedDownloadsCount = repository.queuedDownloadsCount
+        cancelledDownloadsCount = repository.cancelledDownloadsCount
+        erroredDownloadsCount = repository.erroredDownloadsCount
+        savedDownloadsCount = repository.savedDownloadsCount
 
         allDownloads = repository.allDownloads.flow
         queuedDownloads = repository.queuedDownloads.flow
         activeDownloads = repository.activeDownloads
         processingDownloads = repository.processingDownloads
-        activeDownloadsCount = repository.activeDownloadsCount
         savedDownloads = repository.savedDownloads.flow
         cancelledDownloads = repository.cancelledDownloads.flow
         erroredDownloads = repository.erroredDownloads.flow
@@ -663,17 +662,17 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
 
     suspend fun resetScheduleTimeForItemsAndStartDownload(items: List<Long>) = CoroutineScope(Dispatchers.IO).launch {
         dbManager.downloadDao.resetScheduleTimeForItems(items)
-        DownloadUtil.startDownloadWorker(emptyList(), application)
+        repository.startDownloadWorker(emptyList(), application)
     }
 
-    suspend fun putAtTopOfQueue(id: Long) = CoroutineScope(Dispatchers.IO).launch{
-        dbManager.downloadDao.putAtTopOfTheQueue(id)
-        DownloadUtil.startDownloadWorker(emptyList(), application)
+    suspend fun putAtTopOfQueue(ids: List<Long>) = CoroutineScope(Dispatchers.IO).launch{
+        dbManager.downloadDao.putAtTopOfTheQueue(ids)
+        repository.startDownloadWorker(emptyList(), application)
     }
 
     suspend fun reQueueDownloadItems(items: List<Long>) = CoroutineScope(Dispatchers.IO).launch {
         dbManager.downloadDao.reQueueDownloadItems(items)
-        DownloadUtil.startDownloadWorker(emptyList(), application)
+        repository.startDownloadWorker(emptyList(), application)
     }
 
     suspend fun queueDownloads(items: List<DownloadItem>, ign : Boolean = false) : Pair<List<Long>, List<Long>> {
@@ -761,19 +760,27 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
 
         if (queuedItems.isNotEmpty()){
             if (!useScheduler || alarmScheduler.isDuringTheScheduledTime()){
-                DownloadUtil.startDownloadWorker(queuedItems, context)
+                repository.startDownloadWorker(queuedItems, context)
 
                 if(!useScheduler){
                     queuedItems.filter { it.downloadStartTime != 0L && (it.title.isEmpty() || it.author.isEmpty() || it.thumb.isEmpty()) }.forEach {
-                        try{
-                            updateDownloadItem(it, infoUtil, dbManager.downloadDao, dbManager.resultDao)
-                        }catch (ignored: Exception){}
+                        CoroutineScope(Dispatchers.IO).launch {
+                            runCatching {
+                                resultRepository.updateDownloadItem(it)?.apply {
+                                    repository.updateWithoutUpsert(this)
+                                }
+                            }
+                        }
                     }
                 }else{
                     queuedItems.filter { it.title.isEmpty() || it.author.isEmpty() || it.thumb.isEmpty() }.forEach {
-                        try{
-                            updateDownloadItem(it, infoUtil, dbManager.downloadDao, dbManager.resultDao)
-                        }catch (ignored: Exception){}
+                        CoroutineScope(Dispatchers.IO).launch {
+                            runCatching {
+                                resultRepository.updateDownloadItem(it)?.apply {
+                                    repository.updateWithoutUpsert(this)
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -819,7 +826,7 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         items.forEachIndexed { index, i ->
             i.format = selectedFormats[index].format
             if (i.type == Type.video) selectedFormats[index].audioFormats?.map { it.format_id }?.let { i.videoPreferences.audioFormatIDs.addAll(it) }
-            updateDownload(i)
+            repository.update(i)
         }
 
         return items.map { it.format.filesize }
@@ -829,7 +836,7 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         val items = repository.getProcessingDownloads()
         items.forEach { i ->
             i.format = format
-            updateDownload(i)
+            repository.update(i)
         }
     }
 
@@ -837,7 +844,7 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         val items = repository.getProcessingDownloads()
         items.forEach { i ->
             i.downloadPath = path
-            updateDownload(i)
+            repository.update(i)
         }
     }
 
@@ -866,7 +873,7 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
                     dbManager.resultDao.update(this)
                 }
             }
-            updateDownload(i)
+            repository.update(i)
         }
     }
 
@@ -874,7 +881,7 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         dao.getProcessingDownloadsList().apply {
             this.forEach {
                 it.status = DownloadRepository.Status.Saved.toString()
-                updateDownload(it)
+                repository.update(it)
             }
 
             val ids = this.map { it.id }
@@ -900,7 +907,7 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         repository.getProcessingDownloads().apply {
             val new = switchDownloadType(this, newType)
             new.forEach {
-                updateDownload(it)
+                repository.update(it)
             }
         }
     }
@@ -933,28 +940,5 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         return dao.getURLsByStatus(list.map { it.toString() })
     }
 
-    private fun updateDownloadItem(
-        downloadItem: DownloadItem,
-        infoUtil: InfoUtil,
-        dao: DownloadDao,
-        resultDao: ResultDao
-    ) : Boolean {
-        var wasQuickDownloaded = false
-        if (downloadItem.title.isEmpty() || downloadItem.author.isEmpty() || downloadItem.thumb.isEmpty()){
-            runCatching {
-                val info = infoUtil.getMissingInfo(downloadItem.url)
-                if (downloadItem.title.isEmpty()) downloadItem.title = info?.title.toString()
-                if (downloadItem.author.isEmpty()) downloadItem.author = info?.author.toString()
-                downloadItem.duration = info?.duration.toString()
-                downloadItem.website = info?.website.toString()
-                if (downloadItem.thumb.isEmpty()) downloadItem.thumb = info?.thumb.toString()
-                runBlocking {
-                    wasQuickDownloaded = resultDao.getCountInt() == 0
-                    repository.updateWithoutUpsert(downloadItem)
-                }
-            }
-        }
-        return wasQuickDownloaded
-    }
 
 }

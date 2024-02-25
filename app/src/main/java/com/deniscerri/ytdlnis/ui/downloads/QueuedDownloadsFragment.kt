@@ -28,16 +28,15 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.work.WorkManager
 import com.afollestad.materialdialogs.utils.MDUtil.getStringArray
 import com.deniscerri.ytdlnis.R
-import com.deniscerri.ytdlnis.ui.adapter.GenericDownloadAdapter
 import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.repository.DownloadRepository
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
-import com.deniscerri.ytdlnis.ui.downloadcard.DownloadBottomSheetDialog
+import com.deniscerri.ytdlnis.ui.adapter.GenericDownloadAdapter
+import com.deniscerri.ytdlnis.util.Extensions.enableFastScroll
+import com.deniscerri.ytdlnis.util.Extensions.forceFastScrollMode
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.NotificationUtil
 import com.deniscerri.ytdlnis.util.UiUtil
-import com.deniscerri.ytdlnis.util.Extensions.enableFastScroll
-import com.deniscerri.ytdlnis.util.Extensions.forceFastScrollMode
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.color.MaterialColors
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -201,7 +200,7 @@ class QueuedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLi
                     downloadViewModel.checkAllQueuedItemsAreScheduledAfterNow(adapter.checkedItems, adapter.inverted, now)
                 }
 
-                actionMode!!.menu.getItem(1).isVisible = selectedObjects == 1 && position > 0
+                actionMode!!.menu.getItem(1).isVisible = position > 0
             }
         }
     }
@@ -314,22 +313,20 @@ class QueuedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLi
                 }
                 R.id.up -> {
                     lifecycleScope.launch {
-                        if (adapter.getSelectedObjectsCount(totalSize) == 1){
-                            val selectedObjects = if (adapter.inverted || adapter.checkedItems.isEmpty()){
-                                withContext(Dispatchers.IO){
-                                    downloadViewModel.getItemIDsNotPresentIn(adapter.checkedItems, listOf(
-                                        DownloadRepository.Status.Queued, DownloadRepository.Status.QueuedPaused))
-                                }
-                            }else{
-                                adapter.checkedItems.toList()
-                            }
-
-                            adapter.clearCheckedItems()
+                        val selectedObjects = if (adapter.inverted || adapter.checkedItems.isEmpty()){
                             withContext(Dispatchers.IO){
-                                downloadViewModel.putAtTopOfQueue(selectedObjects[0])
+                                downloadViewModel.getItemIDsNotPresentIn(adapter.checkedItems, listOf(
+                                    DownloadRepository.Status.Queued, DownloadRepository.Status.QueuedPaused))
                             }
-                            actionMode?.finish()
+                        }else{
+                            adapter.checkedItems.toList()
                         }
+
+                        adapter.clearCheckedItems()
+                        withContext(Dispatchers.IO){
+                            downloadViewModel.putAtTopOfQueue(selectedObjects)
+                        }
+                        actionMode?.finish()
                     }
                     true
                 }

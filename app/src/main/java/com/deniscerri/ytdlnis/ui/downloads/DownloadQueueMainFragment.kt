@@ -1,18 +1,18 @@
 package com.deniscerri.ytdlnis.ui.downloads
 
 import android.content.DialogInterface
+import android.content.SharedPreferences
+import android.icu.text.Transliterator.Position
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.setupWithNavController
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import androidx.work.WorkManager
@@ -20,14 +20,17 @@ import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.repository.DownloadRepository
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
+import com.deniscerri.ytdlnis.util.Extensions.createBadge
 import com.deniscerri.ytdlnis.util.NotificationUtil
 import com.deniscerri.ytdlnis.util.UiUtil
 import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.badge.BadgeDrawable
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.yausername.youtubedl_android.YoutubeDL
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -40,6 +43,7 @@ class DownloadQueueMainFragment : Fragment(){
     private lateinit var viewPager2: ViewPager2
     private lateinit var fragmentAdapter : DownloadListFragmentAdapter
     private lateinit var mainActivity: MainActivity
+    private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,13 +51,14 @@ class DownloadQueueMainFragment : Fragment(){
         savedInstanceState: Bundle?
     ): View? {
         mainActivity = activity as MainActivity
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
         return inflater.inflate(R.layout.fragment_download_queue_main_screen, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         workManager = WorkManager.getInstance(requireContext())
-        downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
+        downloadViewModel = ViewModelProvider(requireActivity())[DownloadViewModel::class.java]
 
         topAppBar = view.findViewById(R.id.logs_toolbar)
         topAppBar.setNavigationOnClickListener { mainActivity.onBackPressedDispatcher.onBackPressed() }
@@ -113,6 +118,50 @@ class DownloadQueueMainFragment : Fragment(){
                 viewPager2.setCurrentItem(3, false)
             }, 200)
         }
+
+        if (sharedPreferences.getBoolean("show_count_downloads", false)){
+            lifecycleScope.launch {
+                downloadViewModel.activeDownloadsCount.collectLatest {
+                    tabLayout.getTabAt(0)?.apply {
+                        if (it == 0) removeBadge()
+                        else createBadge(it)
+                    }
+                }
+            }
+            lifecycleScope.launch {
+                downloadViewModel.queuedDownloadsCount.collectLatest {
+                    tabLayout.getTabAt(1)?.apply {
+                        if (it == 0) removeBadge()
+                        else createBadge(it)
+                    }
+                }
+            }
+            lifecycleScope.launch {
+                downloadViewModel.cancelledDownloadsCount.collectLatest {
+                    tabLayout.getTabAt(2)?.apply {
+                        if (it == 0) removeBadge()
+                        else createBadge(it)
+                    }
+                }
+            }
+            lifecycleScope.launch {
+                downloadViewModel.erroredDownloadsCount.collectLatest {
+                    tabLayout.getTabAt(3)?.apply {
+                        if (it == 0) removeBadge()
+                        else createBadge(it)
+                    }
+                }
+            }
+            lifecycleScope.launch {
+                downloadViewModel.savedDownloadsCount.collectLatest {
+                    tabLayout.getTabAt(4)?.apply {
+                        if (it == 0) removeBadge()
+                        else createBadge(it)
+                    }
+                }
+            }
+        }
+
     }
 
     private fun initMenu() {

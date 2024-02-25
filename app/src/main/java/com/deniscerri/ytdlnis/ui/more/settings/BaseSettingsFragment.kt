@@ -1,6 +1,5 @@
 package com.deniscerri.ytdlnis.ui.more.settings
 
-import android.content.DialogInterface
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.EditTextPreference

@@ -18,16 +18,15 @@ import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import androidx.work.await
 import androidx.work.workDataOf
+import com.afollestad.materialdialogs.utils.MDUtil.getStringArray
 import com.deniscerri.ytdlnis.App
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.DBManager
-import com.deniscerri.ytdlnis.database.dao.DownloadDao
-import com.deniscerri.ytdlnis.database.dao.ResultDao
-import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.models.HistoryItem
 import com.deniscerri.ytdlnis.database.models.LogItem
 import com.deniscerri.ytdlnis.database.repository.DownloadRepository
 import com.deniscerri.ytdlnis.database.repository.LogRepository
+import com.deniscerri.ytdlnis.database.repository.ResultRepository
 import com.deniscerri.ytdlnis.util.Extensions.getMediaDuration
 import com.deniscerri.ytdlnis.util.Extensions.toStringDuration
 import com.deniscerri.ytdlnis.util.FileUtil
@@ -36,6 +35,7 @@ import com.deniscerri.ytdlnis.util.NotificationUtil
 import com.yausername.youtubedl_android.YoutubeDL
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
@@ -59,6 +59,7 @@ class DownloadWorker(
         val historyDao = dbManager.historyDao
         val resultDao = dbManager.resultDao
         val logRepo = LogRepository(dbManager.logDao)
+        val resultRepo = ResultRepository(dbManager.resultDao, context)
         val handler = Handler(Looper.getMainLooper())
         val alarmScheduler = AlarmScheduler(context)
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
@@ -66,6 +67,8 @@ class DownloadWorker(
         val queuedItems = dao.getQueuedDownloadsThatAreNotScheduledChunked(time)
         val currentWork = WorkManager.getInstance(context).getWorkInfosByTag("download").await()
         if (currentWork.count{it.state == WorkInfo.State.RUNNING} > 1) return Result.success()
+
+        val createResultItem = inputData.getBoolean("createResultItem", true)
 
         val confTmp = Configuration(context.resources.configuration)
         val currLang = sharedPreferences.getString("app_language", "")!!.ifEmpty { Locale.getDefault().language }.split("-")
@@ -111,8 +114,11 @@ class DownloadWorker(
                     val request = infoUtil.buildYoutubeDLRequest(downloadItem)
                     downloadItem.status = DownloadRepository.Status.Active.toString()
                     CoroutineScope(Dispatchers.IO).launch {
+                        delay(1500)
                         //update item if its incomplete
-                        updateDownloadItem(downloadItem, infoUtil, dao, resultDao)
+                        resultRepo.updateDownloadItem(downloadItem)?.apply {
+                            dao.updateWithoutUpsert(this)
+                        }
                     }
 
                     val cacheDir = FileUtil.getCachePath(context)
@@ -164,7 +170,10 @@ class DownloadWorker(
                             }
                         }
                     }.onSuccess {
-                        val wasQuickDownloaded = updateDownloadItem(downloadItem, infoUtil, dao, resultDao)
+                        resultRepo.updateDownloadItem(downloadItem)?.apply {
+                            dao.updateWithoutUpsert(this)
+                        }
+                        val wasQuickDownloaded = resultDao.getCountInt() == 0
                         runBlocking {
                             var finalPaths : List<String>?
 
@@ -178,12 +187,6 @@ class DownloadWorker(
                                     .map { it.removeSuffix("'") }
                                     .sortedBy { File(it).lastModified() }
                                     .toList()
-//                                finalPaths = File(FileUtil.formatPath(downloadLocation))
-//                                    .walkTopDown()
-//                                    .filter { it.isFile && p.any { f -> f.contains(it.nameWithoutExtension) }}
-//                                    .sortedByDescending { it.length() }
-//                                    .map { it.absolutePath }
-//                                    .toList()
                                 FileUtil.scanMedia(finalPaths, context)
                                 if (finalPaths.isEmpty()){
                                     finalPaths = listOf(context.getString(R.string.unfound_file))
@@ -212,7 +215,14 @@ class DownloadWorker(
                                 }
                             }
 
-                            finalPaths = finalPaths?.filter { !it.matches("(\\.description)|(\\.srt)|(\\.ass)|(\\.lrc)|(\\.vtt)|(\\.txt)|(\\.jpg)|(\\.png)\$".toRegex()) }
+
+                            val nonMediaExtensions = mutableListOf<String>().apply {
+                                addAll(context.getStringArray(R.array.thumbnail_containers_values))
+                                addAll(context.getStringArray(R.array.sub_formats_values).filter { it.isNotBlank() })
+                                add("description")
+                                add("txt")
+                            }
+                            finalPaths = finalPaths?.filter { path -> !nonMediaExtensions.any { path.endsWith(it) } }
                             FileUtil.deleteConfigFiles(request)
 
                             //put download in history
@@ -260,7 +270,7 @@ class DownloadWorker(
                                 downloadItem.title,  if (finalPaths?.first().equals(context.getString(R.string.unfound_file))) null else finalPaths, resources
                             )
 
-                            if (wasQuickDownloaded){
+                            if (wasQuickDownloaded && createResultItem){
                                 runCatching {
                                     setProgressAsync(workDataOf("progress" to 100, "output" to "Creating Result Items", "id" to downloadItem.id))
                                     runBlocking {
@@ -336,32 +346,6 @@ class DownloadWorker(
 
 
         return Result.success()
-    }
-
-    private fun updateDownloadItem(
-        downloadItem: DownloadItem,
-        infoUtil: InfoUtil,
-        dao: DownloadDao,
-        resultDao: ResultDao
-    ) : Boolean {
-        var wasQuickDownloaded = false
-        if (downloadItem.title.isEmpty() || downloadItem.author.isEmpty() || downloadItem.thumb.isEmpty()){
-            runCatching {
-                if (isStopped) YoutubeDL.getInstance().destroyProcessById(downloadItem.id.toString())
-                setProgressAsync(workDataOf("progress" to 0, "output" to context.getString(R.string.updating_download_data), "id" to downloadItem.id))
-                val info = infoUtil.getMissingInfo(downloadItem.url)
-                if (downloadItem.title.isEmpty()) downloadItem.title = info?.title.toString()
-                if (downloadItem.author.isEmpty()) downloadItem.author = info?.author.toString()
-                downloadItem.duration = info?.duration.toString()
-                downloadItem.website = info?.website.toString()
-                if (downloadItem.thumb.isEmpty()) downloadItem.thumb = info?.thumb.toString()
-                runBlocking {
-                    wasQuickDownloaded = resultDao.getCountInt() == 0
-                    dao.update(downloadItem)
-                }
-            }
-        }
-        return wasQuickDownloaded
     }
 
 

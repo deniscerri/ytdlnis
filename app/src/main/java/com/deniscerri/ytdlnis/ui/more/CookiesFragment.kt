@@ -1,5 +1,6 @@
 package com.deniscerri.ytdlnis.ui.more
 
+import android.annotation.SuppressLint
 import android.content.Context.INPUT_METHOD_SERVICE
 import android.content.DialogInterface
 import android.content.Intent
@@ -63,6 +64,7 @@ class CookiesFragment : Fragment(), CookieAdapter.OnItemClickListener {
         return inflater.inflate(R.layout.fragment_cookies, container, false)
     }
 
+    @SuppressLint("RestrictedApi")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         topAppBar = view.findViewById(R.id.logs_toolbar)
@@ -164,7 +166,7 @@ class CookiesFragment : Fragment(), CookieAdapter.OnItemClickListener {
 
     private fun showDialog(url: String){
         lifecycleScope.launch {
-            var item = withContext(Dispatchers.IO){
+            val item = withContext(Dispatchers.IO){
                 cookiesViewModel.getByURL(url)
             }
 
@@ -178,11 +180,15 @@ class CookiesFragment : Fragment(), CookieAdapter.OnItemClickListener {
             editText.setText(text)
             editText.setSelection(editText.text.length)
             builder.setView(inputLayout)
-            builder.setNeutralButton(
-                getString(android.R.string.copy)
-            ) { dialog: DialogInterface?, which: Int ->
-                UiUtil.copyToClipboard(item.content, requireActivity())
+
+            item?.apply {
+                builder.setNeutralButton(
+                    getString(android.R.string.copy)
+                ) { dialog: DialogInterface?, which: Int ->
+                    UiUtil.copyToClipboard(item.content, requireActivity())
+                }
             }
+
             builder.setPositiveButton(
                 getString(R.string.get_cookies)
             ) { dialog: DialogInterface?, which: Int ->

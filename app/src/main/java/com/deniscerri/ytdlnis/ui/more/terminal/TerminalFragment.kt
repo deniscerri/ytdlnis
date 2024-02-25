@@ -35,11 +35,11 @@ import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.TerminalItem
 import com.deniscerri.ytdlnis.database.viewmodel.CommandTemplateViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.TerminalViewModel
+import com.deniscerri.ytdlnis.util.Extensions.enableTextHighlight
+import com.deniscerri.ytdlnis.util.Extensions.setCustomTextSize
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.NotificationUtil
 import com.deniscerri.ytdlnis.util.UiUtil
-import com.deniscerri.ytdlnis.util.Extensions.enableTextHighlight
-import com.deniscerri.ytdlnis.util.Extensions.setCustomTextSize
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
@@ -228,6 +228,8 @@ class TerminalFragment : Fragment() {
         input!!.requestFocus()
         input!!.setSelection(input!!.text.length)
         output?.text = bundle?.getString("output") ?: output?.text
+        output?.isVisible = output?.text.toString().isNotEmpty()
+
         if (bundle?.getBoolean("run") == true){
             showCancelFab()
         }
@@ -326,6 +328,7 @@ class TerminalFragment : Fragment() {
                     requireActivity().runOnUiThread{
                         if (it != null){
                             if (!it.log.isNullOrBlank()) {
+                                output?.isVisible = true
                                 output?.text = it.log
                             }
                             output?.scrollTo(0, output!!.height)

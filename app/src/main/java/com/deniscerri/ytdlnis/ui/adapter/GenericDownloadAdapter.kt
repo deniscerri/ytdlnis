@@ -118,11 +118,21 @@ class GenericDownloadAdapter(onItemClickListener: OnItemClickListener, activity:
         if (actionButton.hasOnClickListeners()) actionButton.setOnClickListener(null)
 
         when(item.status){
-            DownloadRepository.Status.Cancelled.toString() -> actionButton.setIconResource(R.drawable.ic_refresh)
-            DownloadRepository.Status.Saved.toString() -> actionButton.setIconResource(R.drawable.ic_downloads)
-            DownloadRepository.Status.Queued.toString() -> actionButton.setIconResource(R.drawable.ic_baseline_delete_outline_24)
+            DownloadRepository.Status.Cancelled.toString() -> {
+                actionButton.setIconResource(R.drawable.ic_refresh)
+                actionButton.contentDescription = activity.getString(R.string.download)
+            }
+            DownloadRepository.Status.Saved.toString() -> {
+                actionButton.setIconResource(R.drawable.ic_downloads)
+                actionButton.contentDescription = activity.getString(R.string.download)
+            }
+            DownloadRepository.Status.Queued.toString() -> {
+                actionButton.setIconResource(R.drawable.ic_baseline_delete_outline_24)
+                actionButton.contentDescription = activity.getString(R.string.Remove)
+            }
             else -> {
                 actionButton.setIconResource(R.drawable.ic_baseline_file_open_24)
+                actionButton.contentDescription = activity.getString(R.string.logs)
                 if (item.logID == null){
                     actionButton.visibility = View.GONE
                 }

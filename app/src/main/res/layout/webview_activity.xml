@@ -29,6 +29,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:layout_scrollFlags="scroll"
+                app:navigationContentDescription="@string/back"
                 app:navigationIcon="?attr/homeAsUpIndicator">
 
                 <Button

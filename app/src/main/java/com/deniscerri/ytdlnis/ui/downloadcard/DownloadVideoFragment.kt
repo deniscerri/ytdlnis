@@ -35,6 +35,7 @@ import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.InfoUtil
 import com.deniscerri.ytdlnis.util.UiUtil
 import com.google.android.material.card.MaterialCardView
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.textfield.TextInputLayout.END_ICON_CUSTOM
 import com.google.android.material.textfield.TextInputLayout.END_ICON_NONE
@@ -322,12 +323,22 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
                                     bottomSheet.show(parentFragmentManager, "cutVideoSheet")
                                 }
                             },
-                            updateDataClicked = {
-                                CoroutineScope(SupervisorJob()).launch(Dispatchers.IO) {
-                                    resultItem?.apply {
-                                        val rsVM = ViewModelProvider(requireActivity())[ResultViewModel::class.java]
-                                        rsVM.updateItemData(this)
+                            cutDisabledClicked = {
+                                val isUpdatingData = ViewModelProvider(requireActivity())[ResultViewModel::class.java].updatingData.value
+                                if(isUpdatingData){
+                                    val snack = Snackbar.make(view, context.getString(R.string.please_wait), Snackbar.LENGTH_SHORT)
+                                    snack.show()
+                                }else{
+                                    val snack = Snackbar.make(view, context.getString(R.string.cut_unavailable), Snackbar.LENGTH_SHORT)
+                                    snack.setAction(R.string.update){
+                                        CoroutineScope(SupervisorJob()).launch(Dispatchers.IO) {
+                                            resultItem?.apply {
+                                                val rsVM = ViewModelProvider(requireActivity())[ResultViewModel::class.java]
+                                                rsVM.updateItemData(this)
+                                            }
+                                        }
                                     }
+                                    snack.show()
                                 }
                             },
                             filenameTemplateSet = {
@@ -345,6 +356,9 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
                             removeAudioClicked = {
                                 downloadItem.videoPreferences.removeAudio = it
                                 UiUtil.populateFormatCard(requireContext(), formatCard, downloadItem.format, if (it) listOf() else downloadItem.allFormats.filter { downloadItem.videoPreferences.audioFormatIDs.contains(it.format_id) })
+                            },
+                            alsoDownloadAsAudioClicked = {
+                                downloadItem.videoPreferences.alsoDownloadAsAudio = it
                             },
                             extraCommandsClicked = {
                                 val callback = object : ExtraCommandsListener {

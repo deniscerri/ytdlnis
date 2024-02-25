@@ -148,7 +148,7 @@
                 android:text="@string/every" />
 
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:paddingHorizontal="10dp"
                 android:layout_height="wrap_content"
@@ -158,33 +158,38 @@
                     android:id="@+id/every_textinput"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    app:hintEnabled="false">
+                    app:hintEnabled="false"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
-                        android:inputType="number"
-                        android:textAlignment="center"
-                        android:text="1"
                         android:layout_height="wrap_content"
-                        />
+                        android:inputType="number"
+                        android:text="1"
+                        android:textAlignment="center" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/textInputLayout"
                     style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
                     android:layout_width="0dp"
-                    android:layout_weight="45"
-                    android:paddingStart="10dp"
+                    android:layout_height="match_parent"
                     android:hint="@string/every"
-                    android:layout_height="match_parent">
+                    android:paddingStart="10dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/everyMonthDay_textInput"
+                    app:layout_constraintStart_toEndOf="@+id/every_textinput"
+                    app:layout_constraintTop_toTopOf="parent">
 
                     <AutoCompleteTextView
                         android:id="@+id/everyCat"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:inputType="none"
-                        />
+                        android:inputType="none" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -192,22 +197,23 @@
                     android:id="@+id/everyMonthDay_textInput"
                     style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
                     android:layout_width="0dp"
-                    android:paddingStart="10dp"
-                    android:layout_weight="25"
+                    android:layout_height="match_parent"
                     android:hint="@string/day"
-                    android:layout_height="wrap_content">
+                    android:paddingStart="10dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
                     <AutoCompleteTextView
                         android:id="@+id/everyMonthDay"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:inputType="none"
-                        app:simpleItems="@array/monthDays"
-                        />
+                        app:simpleItems="@array/monthDays" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
-            </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <com.google.android.material.chip.ChipGroup
                 android:id="@+id/weekdays"
@@ -390,7 +396,7 @@
                     android:checked="true"
                     android:text="@string/never" />
 
-                <LinearLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
@@ -400,77 +406,96 @@
                     <RadioButton
                         android:id="@+id/on"
                         android:layout_width="0dp"
+                        app:layout_constraintWidth_percent="0.4"
                         android:layout_height="wrap_content"
+                        android:paddingHorizontal="10dp"
                         android:text="@string/on_time"
-                        android:layout_weight="2"
-                        android:paddingHorizontal="10dp" />
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/on_date"
+                        style="@style/Widget.Material3.TextInputLayout.FilledBox"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        app:hintEnabled="false"
                         android:layout_weight="3"
-                        android:layout_marginStart="15dp"
-                        style="@style/Widget.Material3.TextInputLayout.FilledBox">
+                        app:hintEnabled="false"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/on"
+                        app:layout_constraintTop_toTopOf="parent">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:layout_width="match_parent"
-                            android:inputType="text"
-                            android:padding="15dp"
                             android:layout_height="wrap_content"
-                            />
+                            android:inputType="text"
+                            android:padding="15dp" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
-                </LinearLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <LinearLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:weightSum="7"
+                    android:weightSum="5"
                     android:orientation="horizontal">
 
                     <RadioButton
                         android:id="@+id/after"
                         android:layout_width="0dp"
-                        android:layout_weight="3"
+                        app:layout_constraintWidth_percent="0.4"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="-4dp"
+                        android:paddingHorizontal="10dp"
                         android:text="@string/after"
-                        android:paddingHorizontal="10dp" />
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/after_nr"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
+                        style="@style/Widget.Material3.TextInputLayout.FilledBox.Dense"
+                        android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        style="@style/Widget.Material3.TextInputLayout.FilledBox.Dense">
+                        app:layout_constraintStart_toEndOf="@+id/after">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:layout_width="match_parent"
-                            android:inputType="number"
-                            android:textAlignment="center"
-                            android:text="1"
-                            android:padding="15dp"
                             android:layout_height="wrap_content"
-                            />
+                            android:inputType="number"
+                            android:padding="15dp"
+                            android:text="1"
+                            android:textAlignment="center" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <TextView
+                        android:id="@+id/textView8"
                         android:layout_width="0dp"
-                        android:layout_weight="2"
                         android:layout_height="wrap_content"
                         android:paddingHorizontal="10dp"
-                        android:text="@string/occurrences"/>
+                        android:maxLines="2"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        android:text="@string/occurrences"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/after_nr"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-                </LinearLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <com.google.android.material.materialswitch.MaterialSwitch
+                    android:id="@+id/get_new_uploads"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="20dp"
+                    android:layout_height="wrap_content"
+                    android:checked="false"
+                    android:text="@string/get_new_uploads"/>
 
                 <com.google.android.material.materialswitch.MaterialSwitch
                     android:id="@+id/retry_missing_downloads"
                     android:layout_width="match_parent"
-                    android:layout_marginTop="20dp"
                     android:layout_height="wrap_content"
                     android:checked="false"
                     android:text="@string/retry_missing_downloads"/>

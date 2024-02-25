@@ -130,12 +130,15 @@ class ConfigureMultipleDownloadsAdapter(onItemClickListener: OnItemClickListener
         when(item.type) {
             DownloadViewModel.Type.audio -> {
                 btn.setIconResource(R.drawable.ic_music)
+                btn.contentDescription = activity.getString(R.string.audio)
             }
             DownloadViewModel.Type.video -> {
                 btn.setIconResource(R.drawable.ic_video)
+                btn.contentDescription = activity.getString(R.string.video)
             }
             else -> {
                 btn.setIconResource(R.drawable.ic_terminal)
+                btn.contentDescription = activity.getString(R.string.command)
             }
         }
 

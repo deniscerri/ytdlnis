@@ -119,12 +119,18 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <TextView
+                    <Button
                         android:id="@+id/video_title"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:paddingHorizontal="20dp"
-                        android:paddingVertical="5dp"
+                        android:clickable="false"
+                        style="@style/Widget.Material3.Button.ElevatedButton.Icon"
+                        android:gravity="start"
+                        app:cornerRadius="0dp"
+                        android:textStyle="bold"
+                        android:textSize="16sp"
+                        android:paddingVertical="20dp"
                         android:text="@string/video" />
 
                     <LinearLayout
@@ -139,12 +145,18 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <TextView
+                    <Button
                         android:id="@+id/audio_title"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:paddingHorizontal="20dp"
-                        android:paddingVertical="5dp"
+                        android:textStyle="bold"
+                        android:textSize="16sp"
+                        android:clickable="false"
+                        style="@style/Widget.Material3.Button.ElevatedButton.Icon"
+                        android:gravity="start"
+                        app:cornerRadius="0dp"
+                        android:paddingVertical="20dp"
                         android:text="@string/audio" />
 
                     <LinearLayout

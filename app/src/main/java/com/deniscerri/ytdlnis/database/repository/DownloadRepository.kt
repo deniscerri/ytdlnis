@@ -1,15 +1,32 @@
 package com.deniscerri.ytdlnis.database.repository
 
+import android.annotation.SuppressLint
+import android.content.Context
+import android.net.ConnectivityManager
+import android.os.Looper
+import android.widget.Toast
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
+import androidx.preference.PreferenceManager
+import androidx.work.Constraints
+import androidx.work.Data
+import androidx.work.ExistingWorkPolicy
+import androidx.work.NetworkType
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkInfo
+import androidx.work.WorkManager
+import androidx.work.await
 import com.deniscerri.ytdlnis.App
+import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.dao.DownloadDao
 import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.models.DownloadItemSimple
 import com.deniscerri.ytdlnis.util.FileUtil
+import com.deniscerri.ytdlnis.work.DownloadWorker
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import java.io.File
+import java.util.concurrent.TimeUnit
 
 
 class DownloadRepository(private val downloadDao: DownloadDao) {
@@ -36,10 +53,18 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
         pagingSourceFactory = {downloadDao.getSavedDownloads()}
     )
 
-    val activeDownloadsCount : Flow<Int> = downloadDao.getActiveDownloadsCountFlow()
+    val activeDownloadsCount : Flow<Int> = downloadDao.getDownloadsCountByStatusFlow(listOf(Status.Active, Status.ActivePaused, Status.PausedReQueued).toListString())
+    val queuedDownloadsCount : Flow<Int> = downloadDao.getDownloadsCountByStatusFlow(listOf(Status.Queued, Status.QueuedPaused).toListString())
+    val cancelledDownloadsCount : Flow<Int> = downloadDao.getDownloadsCountByStatusFlow(listOf(Status.Cancelled).toListString())
+    val erroredDownloadsCount : Flow<Int> = downloadDao.getDownloadsCountByStatusFlow(listOf(Status.Error).toListString())
+    val savedDownloadsCount : Flow<Int> = downloadDao.getDownloadsCountByStatusFlow(listOf(Status.Saved).toListString())
 
     enum class Status {
         Active, ActivePaused, PausedReQueued, Queued, QueuedPaused, Error, Cancelled, Saved, Processing
+    }
+
+    private fun List<Status>.toListString() : List<String>{
+        return this.map { it.toString() }
     }
 
     suspend fun insert(item: DownloadItem) : Long {
@@ -160,6 +185,55 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
 
     fun removeAllLogID(){
         downloadDao.removeAllLogID()
+    }
+
+
+    @SuppressLint("RestrictedApi")
+    suspend fun startDownloadWorker(queuedItems: List<DownloadItem>, context: Context, inputData: Data.Builder = Data.Builder()) {
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+        val allowMeteredNetworks = sharedPreferences.getBoolean("metered_networks", true)
+        val workManager = WorkManager.getInstance(context)
+
+        val currentWork = workManager.getWorkInfosByTag("download").await()
+        if (currentWork.size == 0 || currentWork.none{ it.state == WorkInfo.State.RUNNING } || (queuedItems.isNotEmpty() && queuedItems[0].downloadStartTime != 0L)){
+
+            val currentTime = System.currentTimeMillis()
+            var delay = 0L
+            if (queuedItems.isNotEmpty()){
+                delay = if (queuedItems[0].downloadStartTime != 0L){
+                    queuedItems[0].downloadStartTime.minus(currentTime)
+                } else 0
+                if (delay <= 60000L) delay = 0L
+            }
+
+
+            val workConstraints = Constraints.Builder()
+            if (!allowMeteredNetworks) workConstraints.setRequiredNetworkType(NetworkType.UNMETERED)
+
+            val workRequest = OneTimeWorkRequestBuilder<DownloadWorker>()
+                .addTag("download")
+                .setConstraints(workConstraints.build())
+                .setInitialDelay(delay, TimeUnit.MILLISECONDS)
+                .setInputData(inputData.build())
+
+            queuedItems.forEach {
+                workRequest.addTag(it.id.toString())
+            }
+
+            workManager.enqueueUniqueWork(
+                System.currentTimeMillis().toString(),
+                ExistingWorkPolicy.REPLACE,
+                workRequest.build()
+            )
+
+        }
+
+        val isCurrentNetworkMetered = (context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager).isActiveNetworkMetered
+        if (!allowMeteredNetworks && isCurrentNetworkMetered){
+            Looper.prepare().run {
+                Toast.makeText(context, context.getString(R.string.metered_network_download_start_info), Toast.LENGTH_LONG).show()
+            }
+        }
     }
 
 }

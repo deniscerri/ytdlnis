@@ -10,8 +10,6 @@ import android.content.res.Configuration
 import android.graphics.Canvas
 import android.graphics.Color
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.text.format.DateFormat
 import android.util.DisplayMetrics
 import android.view.LayoutInflater
@@ -30,15 +28,10 @@ import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.work.Data
-import androidx.work.ExistingWorkPolicy
-import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.WorkManager
 import com.afollestad.materialdialogs.utils.MDUtil.getStringArray
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.models.Format
-import com.deniscerri.ytdlnis.database.repository.DownloadRepository
 import com.deniscerri.ytdlnis.database.viewmodel.CommandTemplateViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.HistoryViewModel
@@ -48,8 +41,6 @@ import com.deniscerri.ytdlnis.util.Extensions.enableFastScroll
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.InfoUtil
 import com.deniscerri.ytdlnis.util.UiUtil
-import com.deniscerri.ytdlnis.work.UpdatePlaylistFormatsWorker
-import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -63,7 +54,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -80,6 +70,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
     private lateinit var behavior: BottomSheetBehavior<View>
     private lateinit var bottomAppBar: BottomAppBar
     private lateinit var filesize : TextView
+    private lateinit var count : TextView
     private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -135,6 +126,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
         val scheduleBtn = view.findViewById<MaterialButton>(R.id.bottomsheet_schedule_button)
         val download = view.findViewById<Button>(R.id.bottomsheet_download_button)
         filesize = view.findViewById(R.id.filesize)
+        count = view.findViewById(R.id.count)
 
 
         scheduleBtn.setOnClickListener{
@@ -406,7 +398,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                                             bottomSheet.dismiss()
                                         },
                                         cutClicked = {},
-                                        updateDataClicked = {},
+                                        cutDisabledClicked = {},
                                         extraCommandsClicked = {
                                             val callback = object : ExtraCommandsListener {
                                                 override fun onChangeExtraCommand(c: String) {
@@ -476,7 +468,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                                             bottomSheet.dismiss()
                                         },
                                         cutClicked = {},
-                                        updateDataClicked = {},
+                                        cutDisabledClicked = {},
                                         filenameTemplateSet = { checked ->
                                             items.forEach { it.customFileNameTemplate = checked }
                                             CoroutineScope(Dispatchers.IO).launch { items.forEach { downloadViewModel.updateDownload(it) } }
@@ -497,6 +489,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                                             items.forEach { it.videoPreferences.removeAudio = checked }
                                             CoroutineScope(Dispatchers.IO).launch { items.forEach { downloadViewModel.updateDownload(it) } }
                                         },
+                                        alsoDownloadAsAudioClicked = {},
                                         extraCommandsClicked = {
                                             val callback = object : ExtraCommandsListener {
                                                 override fun onChangeExtraCommand(c: String) {
@@ -536,6 +529,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
 
         lifecycleScope.launch {
             downloadViewModel.processingDownloads.collectLatest {
+                count.text = "${it.size} ${getString(R.string.selected)}"
                 listAdapter.submitList(it)
                 withContext(Dispatchers.Main){
                     updateFileSize(it.map { it2 -> it2.format.filesize })
@@ -575,7 +569,6 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
 
             }
         }
-
     }
 
     private fun updateFileSize(items: List<Long>){

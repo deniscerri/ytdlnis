@@ -3,7 +3,6 @@ package com.deniscerri.ytdlnis.database.viewmodel
 import android.app.AlarmManager
 import android.app.Application
 import android.app.PendingIntent
-import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import androidx.lifecycle.AndroidViewModel
@@ -12,12 +11,9 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.preference.PreferenceManager
 import com.deniscerri.ytdlnis.database.DBManager
-import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.models.ObserveSourcesItem
 import com.deniscerri.ytdlnis.database.repository.ObserveSourcesRepository
 import com.deniscerri.ytdlnis.receiver.ObserveAlarmReceiver
-import com.deniscerri.ytdlnis.util.DownloadUtil
-import com.deniscerri.ytdlnis.util.Extensions.closestValue
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.time.Month
@@ -63,13 +59,13 @@ class ObserveSourcesViewModel(private val application: Application) : AndroidVie
     }
 
     fun delete(item: ObserveSourcesItem) = viewModelScope.launch(Dispatchers.IO) {
-        runCatching { DownloadUtil.cancelObservationTaskByID(application, item.id) }
+        runCatching { repository.cancelObservationTaskByID(application, item.id) }
         repository.delete(item)
     }
 
     fun deleteAll() = viewModelScope.launch(Dispatchers.IO) {
         getAll().forEach {
-            runCatching { DownloadUtil.cancelObservationTaskByID(application, it.id) }
+            runCatching { repository.cancelObservationTaskByID(application, it.id) }
         }
 
         repository.deleteAll()
@@ -94,7 +90,7 @@ class ObserveSourcesViewModel(private val application: Application) : AndroidVie
         c.set(Calendar.MINUTE, hourMin.get(Calendar.MINUTE))
 
 
-        DownloadUtil.cancelObservationTaskByID(application, id)
+        repository.cancelObservationTaskByID(application, id)
 
         val intent = Intent(application, ObserveAlarmReceiver::class.java)
         intent.putExtra("id", id)

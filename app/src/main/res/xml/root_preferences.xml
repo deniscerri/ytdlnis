@@ -80,7 +80,7 @@
         </Preference>
 
         <Preference
-            app:icon="@drawable/baseline_draw_24"
+            app:icon="@drawable/ic_license"
             app:key="license"
             app:summary="GNU General Public License v3.0"
             app:title="@string/license">

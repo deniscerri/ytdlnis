@@ -2,7 +2,6 @@ package com.deniscerri.ytdlnis.ui.more.settings
 
 import android.os.Bundle
 import androidx.preference.EditTextPreference
-import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceManager
 import com.deniscerri.ytdlnis.R

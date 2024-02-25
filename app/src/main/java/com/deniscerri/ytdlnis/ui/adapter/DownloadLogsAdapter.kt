@@ -63,9 +63,18 @@ class DownloadLogsAdapter(onItemClickListener: OnItemClickListener, activity: Ac
 
         val downloadTypeIcon = card.findViewById<MaterialButton>(R.id.download_type)
         when(item.downloadType){
-            DownloadViewModel.Type.audio -> downloadTypeIcon.setIconResource(R.drawable.ic_music)
-            DownloadViewModel.Type.video -> downloadTypeIcon.setIconResource(R.drawable.ic_video)
-            DownloadViewModel.Type.command -> downloadTypeIcon.setIconResource(R.drawable.ic_terminal)
+            DownloadViewModel.Type.audio -> {
+                downloadTypeIcon.setIconResource(R.drawable.ic_music)
+                downloadTypeIcon.contentDescription = activity.getString(R.string.audio)
+            }
+            DownloadViewModel.Type.video -> {
+                downloadTypeIcon.setIconResource(R.drawable.ic_video)
+                downloadTypeIcon.contentDescription = activity.getString(R.string.video)
+            }
+            DownloadViewModel.Type.command -> {
+                downloadTypeIcon.setIconResource(R.drawable.ic_terminal)
+                downloadTypeIcon.contentDescription = activity.getString(R.string.command)
+            }
             else -> {}
         }
 

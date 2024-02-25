@@ -25,6 +25,7 @@
             android:elevation="0dp"
             app:menu="@menu/terminal_top_menu"
             app:navigationIcon="@drawable/ic_back"
+            app:navigationContentDescription="@string/back"
             app:title="@string/terminal" />
 
 

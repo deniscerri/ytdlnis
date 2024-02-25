@@ -25,7 +25,6 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.squareup.picasso.Picasso
-import java.lang.StringBuilder
 
 class ActiveDownloadMinifiedAdapter(onItemClickListener: OnItemClickListener, activity: Activity) : ListAdapter<DownloadItem?, ActiveDownloadMinifiedAdapter.ViewHolder>(AsyncDifferConfig.Builder(
     DIFF_CALLBACK
@@ -122,11 +121,13 @@ class ActiveDownloadMinifiedAdapter(onItemClickListener: OnItemClickListener, ac
         if (item.status == DownloadRepository.Status.ActivePaused.toString()){
             progressBar.isIndeterminate = false
             pauseButton.icon = ContextCompat.getDrawable(activity, R.drawable.exomedia_ic_play_arrow_white)
+            pauseButton.contentDescription = activity.getString(R.string.start)
             pauseButton.tag = ActiveDownloadAdapter.ActiveDownloadAction.Resume
             cancelButton.visibility = View.VISIBLE
         }else{
             progressBar.isIndeterminate = true
             pauseButton.icon = ContextCompat.getDrawable(activity, R.drawable.exomedia_ic_pause_white)
+            pauseButton.contentDescription = activity.getString(R.string.pause)
             cancelButton.visibility = View.GONE
             pauseButton.tag = ActiveDownloadAdapter.ActiveDownloadAction.Pause
         }

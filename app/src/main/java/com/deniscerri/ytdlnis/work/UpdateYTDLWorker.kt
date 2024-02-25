@@ -2,9 +2,7 @@ package com.deniscerri.ytdlnis.work
 
 import android.content.Context
 import androidx.work.CoroutineWorker
-import androidx.work.ForegroundInfo
 import androidx.work.WorkerParameters
-import com.deniscerri.ytdlnis.util.NotificationUtil
 import com.deniscerri.ytdlnis.util.UpdateUtil
 
 

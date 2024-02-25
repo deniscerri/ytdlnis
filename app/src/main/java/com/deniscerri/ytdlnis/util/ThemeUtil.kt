@@ -6,13 +6,11 @@ import android.content.pm.PackageManager
 import android.text.Spanned
 import android.util.TypedValue
 import androidx.annotation.DrawableRes
-import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.text.HtmlCompat
 import androidx.core.text.parseAsHtml
 import androidx.preference.PreferenceManager
-import androidx.preference.SwitchPreferenceCompat
 import com.deniscerri.ytdlnis.R
 import com.google.android.material.color.DynamicColors
 

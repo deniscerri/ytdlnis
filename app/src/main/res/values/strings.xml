@@ -69,7 +69,7 @@
     <string name="link_copied_to_clipboard">Link copied to clipboard</string>
     <string name="api_key">Use API Key</string>
     <string name="api_key_summary">Video Recommendations from Youtube API</string>
-    <string name="update_app_summary">Announce new versions of the app when it is opened</string>
+    <string name="update_app_summary">Announce new versions of the app when it is opened. The data is extracted from the official Github Repository</string>
     <string name="downloads">Downloads</string>
     <string name="remove_deleted">Remove Deleted</string>
     <string name="remove_duplicates">Remove Duplicates</string>
@@ -362,4 +362,14 @@
     <string name="not_deleted">Not Deleted</string>
     <string name="download_archive">Download Archive</string>
     <string name="download_archive_summary">Use yt-dlp\'s download archive file to prevent duplicate downloads instead of the built in functionality</string>
+    <string name="swipe_gestures_download_card">Swipe Gestures in download card</string>
+    <string name="show_download_count">Show counts in the download queue screen</string>
+    <string name="thumbnail_format">Thumbnail Format</string>
+    <string name="get_new_uploads">Get New Uploads Only</string>
+    <string name="also_download_audio">Also Download as Audio</string>
+    <string name="wrap_text">Wrap Text</string>
+    <string name="scroll_down">Scroll Down</string>
+    <string name="text_size">Text Size</string>
+    <string name="add">Add</string>
+    <string name="back">Back</string>
 </resources>

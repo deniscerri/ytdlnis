@@ -19,6 +19,7 @@
             app:title="@string/observe_sources"
             android:layout_width="match_parent"
             app:navigationIcon="@drawable/ic_back"
+            app:navigationContentDescription="@string/back"
             app:menu="@menu/observe_sources_menu"
             android:layout_height="match_parent"/>
 

@@ -2,6 +2,7 @@ package com.deniscerri.ytdlnis.ui.downloadcard
 
 import android.annotation.SuppressLint
 import android.app.Dialog
+import android.content.Context
 import android.content.DialogInterface
 import android.content.SharedPreferences
 import android.content.res.Configuration
@@ -19,7 +20,11 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.edit
 import androidx.core.os.bundleOf
+import androidx.core.view.get
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.commitNow
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -139,6 +144,7 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
         tabLayout = view.findViewById(R.id.download_tablayout)
         viewPager2 = view.findViewById(R.id.download_viewpager)
         updateItem = view.findViewById(R.id.update_item)
+        viewPager2.isUserInputEnabled = sharedPreferences.getBoolean("swipe_gestures_download_card", true)
 
 
         //loading shimmers
@@ -307,12 +313,31 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
                 download.isEnabled = false
                 val item: DownloadItem = getDownloadItem()
                 item.downloadStartTime = it.timeInMillis
-                runBlocking {
-                    downloadViewModel.queueDownloads(listOf(item))
-                    val date = SimpleDateFormat(DateFormat.getBestDateTimePattern(Locale.getDefault(), "ddMMMyyyy - HHmm"), Locale.getDefault()).format(item.downloadStartTime)
-                    Toast.makeText(context, getString(R.string.download_rescheduled_to) + " " + date, Toast.LENGTH_LONG).show()
+                if (item.videoPreferences.alsoDownloadAsAudio){
+                    val itemsToQueue = mutableListOf<DownloadItem>()
+                    itemsToQueue.add(item)
+
+                    getAlsoAudioDownloadItem{ audioDownloadItem ->
+                        audioDownloadItem.downloadStartTime = it.timeInMillis
+                        itemsToQueue.add(audioDownloadItem)
+
+                        runBlocking {
+                            downloadViewModel.queueDownloads(itemsToQueue)
+                            val date = SimpleDateFormat(DateFormat.getBestDateTimePattern(Locale.getDefault(), "ddMMMyyyy - HHmm"), Locale.getDefault()).format(item.downloadStartTime)
+                            Toast.makeText(context, getString(R.string.download_rescheduled_to) + " " + date, Toast.LENGTH_LONG).show()
+                        }
+                        dismiss()
+                    }
+                }else{
+                    runBlocking {
+                        downloadViewModel.queueDownloads(listOf(item))
+                        val date = SimpleDateFormat(DateFormat.getBestDateTimePattern(Locale.getDefault(), "ddMMMyyyy - HHmm"), Locale.getDefault()).format(item.downloadStartTime)
+                        Toast.makeText(context, getString(R.string.download_rescheduled_to) + " " + date, Toast.LENGTH_LONG).show()
+                    }
+                    dismiss()
+
                 }
-                dismiss()
+
             }
         }
         download!!.setOnClickListener {
@@ -324,10 +349,24 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
                 scheduleBtn.isEnabled = false
                 download.isEnabled = false
                 val item: DownloadItem = getDownloadItem()
-                runBlocking {
-                    downloadViewModel.queueDownloads(listOf(item))
+                if (item.videoPreferences.alsoDownloadAsAudio){
+                    val itemsToQueue = mutableListOf<DownloadItem>()
+                    itemsToQueue.add(item)
+
+                    getAlsoAudioDownloadItem {
+                        itemsToQueue.add(it)
+
+                        runBlocking {
+                            downloadViewModel.queueDownloads(itemsToQueue)
+                        }
+                        dismiss()
+                    }
+                }else{
+                    runBlocking {
+                        downloadViewModel.queueDownloads(listOf(item))
+                    }
+                    dismiss()
                 }
-                dismiss()
             }
         }
 
@@ -563,7 +602,7 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
         }
     }
 
-    private fun getDownloadItem(selectedTabPosition: Int = tabLayout.selectedTabPosition) : DownloadItem{
+    private fun getDownloadItem(selectedTabPosition: Int = tabLayout.selectedTabPosition) : DownloadItem {
         return when(selectedTabPosition){
             0 -> {
                 val f = fragmentManager?.findFragmentByTag("f0") as DownloadAudioFragment
@@ -580,6 +619,33 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
         }
     }
 
+    private fun getAlsoAudioDownloadItem(finished: (it: DownloadItem) -> Unit) {
+        try {
+            val ff = (fragmentManager?.findFragmentByTag("f0") as DownloadAudioFragment)
+            ff.updateSelectedAudioFormat(getDownloadItem(1).videoPreferences.audioFormatIDs.first())
+            finished(ff.downloadItem)
+        }catch (e: Exception){
+            val fragmentLifecycleCallback = object:
+                FragmentManager.FragmentLifecycleCallbacks() {
+
+                override fun onFragmentStarted(fm: FragmentManager, f: Fragment) {
+                    fragmentManager?.unregisterFragmentLifecycleCallbacks(this)
+                    val ff = (f as DownloadAudioFragment)
+                    ff.requireView().post {
+                        ff.updateSelectedAudioFormat(getDownloadItem(1).videoPreferences.audioFormatIDs.first())
+                        finished(ff.downloadItem)
+                    }
+                    super.onFragmentStarted(fm, f)
+                }
+
+
+            }
+
+            fragmentManager?.registerFragmentLifecycleCallbacks(fragmentLifecycleCallback, true)
+            viewPager2.setCurrentItem(0, true)
+        }
+    }
+
     private fun updateWhenSwitching(){
         val prevDownloadItem = getDownloadItem(
             if (viewPager2.currentItem == 1) 0 else 1
@@ -591,6 +657,7 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
                 kotlin.runCatching {
                     val f = fragmentManager?.findFragmentByTag("f0") as DownloadAudioFragment
                     f.updateTitleAuthor(prevDownloadItem.title, prevDownloadItem.author)
+                    f.updateSelectedAudioFormat(getDownloadItem(1).videoPreferences.audioFormatIDs.first())
                 }
             }
             1 -> {

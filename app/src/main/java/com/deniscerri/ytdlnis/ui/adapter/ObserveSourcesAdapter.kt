@@ -1,11 +1,9 @@
 package com.deniscerri.ytdlnis.ui.adapter
 
 import android.app.Activity
-import android.graphics.Color
 import android.os.Handler
 import android.os.Looper
 import android.text.format.DateFormat
-import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,7 +23,6 @@ import com.google.android.material.card.MaterialCardView
 import com.google.android.material.chip.Chip
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.progressindicator.LinearProgressIndicator
-import com.squareup.picasso.Picasso
 import java.text.DateFormatSymbols
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -139,7 +136,6 @@ class ObserveSourcesAdapter(onItemClickListener: OnItemClickListener, activity: 
             }
         }else{
             info.isVisible = true
-            checkMissing.isVisible = true
 
             btn.setImageResource(R.drawable.ic_search)
             btn.setOnClickListener {

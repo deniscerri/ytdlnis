@@ -117,7 +117,7 @@
                             android:textStyle="bold"
                             app:cornerRadius="10dp"
                             android:maxLength="10"
-                            app:drawableStartCompat="@drawable/ic_music"
+                            app:drawableStartCompat="@drawable/ic_music_formatcard"
                             android:textCursorDrawable="@string/audio_format"
                             app:drawableTint="@color/white"
                             app:layout_constraintBottom_toBottomOf="parent"

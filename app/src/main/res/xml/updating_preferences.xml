@@ -9,6 +9,12 @@
             app:key="ytdl-version"
             app:title="@string/ytdl_version"/>
 
+        <Preference
+            app:icon="@drawable/ic_update"
+            app:key="update_ytdl"
+            app:summary="@string/ytdl_update_hint"
+            app:title="@string/update_ytdl" />
+
         <ListPreference
             android:defaultValue="stable"
             android:entries="@array/ytdlp_source"
@@ -18,11 +24,7 @@
             app:useSimpleSummaryProvider="true"
             app:title="@string/ytdl_source" />
 
-        <Preference
-            app:icon="@drawable/ic_update"
-            app:key="update_ytdl"
-            app:summary="@string/ytdl_update_hint"
-            app:title="@string/update_ytdl" />
+
 
         <SwitchPreferenceCompat
             android:widgetLayout="@layout/preferece_material_switch"
@@ -67,6 +69,7 @@
             app:title="@string/update_formats" />
 
         <Preference
+            android:icon="@drawable/ic_dns"
             app:key="piped_instance"
             app:defaultValue=""
             android:summary="@string/piped_instance_summary"
@@ -92,7 +95,7 @@
         <SwitchPreferenceCompat
             android:widgetLayout="@layout/preferece_material_switch"
             app:defaultValue="false"
-            android:icon="@drawable/ic_update_app"
+            android:icon="@drawable/ic_experiment"
             android:key="update_beta"
             app:summary="@string/update_app_beta_summary"
             app:title="@string/update_app_beta" />

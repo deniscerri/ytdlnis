@@ -47,7 +47,7 @@
         <SwitchPreferenceCompat
             android:widgetLayout="@layout/preferece_material_switch"
             app:defaultValue="false"
-            android:icon="@drawable/baseline_import_export_24"
+            android:icon="@drawable/ic_ipv4"
             android:key="force_ipv4"
             app:summary="@string/force_ipv4_desc"
             app:title="@string/force_ipv4" />
@@ -110,7 +110,7 @@
             app:title="@string/concurrent_downloads" />
 
         <EditTextPreference
-            android:icon="@drawable/ic_down"
+            android:icon="@drawable/ic_limitrate"
             app:key="limit_rate"
             app:summary="@string/limit_rate_summary"
             app:title="@string/limit_rate" />
@@ -140,12 +140,14 @@
 
         <EditTextPreference
             app:key="retries"
+            android:icon="@drawable/ic_retries"
             android:defaultValue=""
             app:useSimpleSummaryProvider="true"
             app:title="@string/retries" />
 
         <EditTextPreference
             app:key="fragment_retries"
+            android:icon="@drawable/ic_retries"
             android:defaultValue=""
             app:useSimpleSummaryProvider="true"
             app:title="@string/fragment_retries" />
@@ -155,12 +157,13 @@
         <SwitchPreferenceCompat
             android:widgetLayout="@layout/preferece_material_switch"
             app:defaultValue="false"
-            android:icon="@drawable/ic_baseline_file_open_24"
+            android:icon="@drawable/ic_clock"
             android:key="use_scheduler"
             app:title="@string/use_scheduler" />
 
         <Preference
             android:dependency="use_scheduler"
+            android:icon="@drawable/ic_start"
             app:title="@string/start"
             app:defaultValue="00:00"
             app:summary="12:00"
@@ -170,6 +173,7 @@
         <Preference
             android:dependency="use_scheduler"
             app:title="@string/end"
+            android:icon="@drawable/ic_end"
             app:defaultValue="05:00"
             app:summary="05:00"
             android:key="schedule_end"

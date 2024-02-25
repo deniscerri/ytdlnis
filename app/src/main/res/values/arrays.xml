@@ -798,6 +798,7 @@
         <item>@string/command_templates</item>
         <item>@string/shortcuts</item>
         <item>@string/search_history</item>
+        <item>@string/observe_sources</item>
     </array>
 
     <array name="backup_category_values">
@@ -811,6 +812,7 @@
         <item>templates</item>
         <item>shortcuts</item>
         <item>searchHistory</item>
+        <item>observeSources</item>
     </array>
 
     <string-array name="sub_formats">
@@ -1383,5 +1385,15 @@
         <item>30</item>
         <item>31</item>
     </string-array>
+
+    <array name="thumbnail_containers">
+        <item>PNG</item>
+        <item>JPG</item>
+    </array>
+
+    <array name="thumbnail_containers_values">
+        <item>png</item>
+        <item>jpg</item>
+    </array>
 
 </resources>

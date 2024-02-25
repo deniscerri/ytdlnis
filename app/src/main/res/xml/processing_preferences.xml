@@ -129,6 +129,15 @@
         app:summary="@string/save_thumb_summary"
         app:title="@string/save_thumb" />
 
+    <ListPreference
+        android:defaultValue="png"
+        android:entries="@array/thumbnail_containers"
+        android:entryValues="@array/thumbnail_containers_values"
+        android:icon="@drawable/ic_image"
+        app:key="thumbnail_format"
+        app:useSimpleSummaryProvider="true"
+        app:title="@string/thumbnail_format" />
+
 
     <SwitchPreferenceCompat
         android:widgetLayout="@layout/preferece_material_switch"

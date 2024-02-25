@@ -1,6 +1,5 @@
 package com.deniscerri.ytdlnis.ui
 
-import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.*
@@ -15,14 +14,12 @@ import android.util.Log
 import android.util.Patterns
 import android.view.*
 import android.view.View.*
-import android.view.animation.Interpolator
 import android.widget.*
 import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.core.os.bundleOf
 import androidx.core.view.children
 import androidx.core.view.forEach
 import androidx.core.view.isVisible
@@ -45,7 +42,6 @@ import com.deniscerri.ytdlnis.database.viewmodel.HistoryViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdlnis.ui.adapter.HomeAdapter
 import com.deniscerri.ytdlnis.ui.adapter.SearchSuggestionsAdapter
-import com.deniscerri.ytdlnis.util.Extensions
 import com.deniscerri.ytdlnis.util.Extensions.enableFastScroll
 import com.deniscerri.ytdlnis.util.InfoUtil
 import com.deniscerri.ytdlnis.util.ThemeUtil
@@ -220,7 +216,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
         if (inputQueries != null) {
             resultViewModel.deleteAll()
             lifecycleScope.launch(Dispatchers.IO){
-                resultViewModel.parseQueries(inputQueries!!)
+                resultViewModel.parseQueries(inputQueries!!){}
                 inputQueries = null
             }
         }
@@ -321,11 +317,25 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
 
         requireView().post {
             checkClipboard().apply {
-                clipboardFab?.isVisible = this != null
-                clipboardFab?.setOnClickListener {
-                    searchView!!.setText(this)
-                    clipboardFab?.isVisible = false
-                    initSearch(searchView!!)
+                this?.apply {
+                    clipboardFab?.isVisible = this.isNotEmpty()
+                    clipboardFab?.setOnClickListener {
+                        if (this.size == 1){
+                            searchView?.setText(this.first())
+                            clipboardFab?.isVisible = false
+                            initSearch(searchView!!)
+                        }else{
+                            searchBar?.performClick()
+                            lifecycleScope.launch {
+                                withContext(Dispatchers.IO){
+                                    delay(500)
+                                }
+                                this@apply.forEach {
+                                    onSearchSuggestionAdd(it)
+                                }
+                            }
+                        }
+                    }
                 }
 
                 lifecycleScope.launch {
@@ -435,6 +445,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
         searchBar!!.setOnMenuItemClickListener { m: MenuItem ->
             when (m.itemId) {
                 R.id.delete_results -> {
+                    resultViewModel.cancelParsingQueries()
                     resultViewModel.getTrending()
                     selectedObjects = ArrayList()
                     searchBar!!.setText("")
@@ -489,7 +500,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
 
             val url = checkClipboard()
             url?.apply {
-                combinedList.add(0, SearchSuggestionItem(this, SearchSuggestionType.CLIPBOARD))
+                combinedList.add(0, SearchSuggestionItem(this.joinToString("\n"), SearchSuggestionType.CLIPBOARD))
             }
 
 
@@ -614,10 +625,10 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
                     }
 
                 }else{
-                    resultViewModel.parseQueries(queryList)
+                    resultViewModel.parseQueries(queryList){}
                 }
             }else{
-                resultViewModel.parseQueries(queryList)
+                resultViewModel.parseQueries(queryList){}
             }
         }
     }
@@ -830,12 +841,11 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
     }
 
 
-    private fun checkClipboard(): String?{
+    private fun checkClipboard(): List<String>?{
         return kotlin.runCatching {
             val clipboard = requireContext().getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
             val clip = clipboard.primaryClip!!.getItemAt(0).text
-            val matchesURL = Patterns.WEB_URL.matcher(clip.toString()).matches()
-            return if (matchesURL) clip.toString() else null
+            return clip.split("\r\n").filter { Patterns.WEB_URL.matcher(it).matches() }
         }.getOrNull()
     }
 
@@ -850,9 +860,17 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
     }
 
     override fun onSearchSuggestionClick(text: String) {
-        clipboardFab?.isVisible = false
-        searchView!!.setText(text)
-        initSearch(searchView!!)
+        val res = text.split("\n")
+        if (res.size == 1){
+            clipboardFab?.isVisible = false
+            searchView!!.setText(text)
+            initSearch(searchView!!)
+        }else{
+            res.forEach {
+                onSearchSuggestionAdd(it)
+            }
+        }
+
     }
 
     override fun onSearchSuggestionAdd(text: String) {

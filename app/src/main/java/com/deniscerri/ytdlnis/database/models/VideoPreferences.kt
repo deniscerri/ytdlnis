@@ -13,5 +13,6 @@ data class VideoPreferences (
     var writeAutoSubs: Boolean = false,
     var subsLanguages: String = "en.*,.*-orig",
     var audioFormatIDs : ArrayList<String> = arrayListOf(),
-    var removeAudio: Boolean = false
+    var removeAudio: Boolean = false,
+    var alsoDownloadAsAudio: Boolean = false
 ) : Parcelable

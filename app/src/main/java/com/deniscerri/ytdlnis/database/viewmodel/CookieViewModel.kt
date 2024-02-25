@@ -17,12 +17,11 @@ import com.deniscerri.ytdlnis.BuildConfig
 import com.deniscerri.ytdlnis.database.DBManager
 import com.deniscerri.ytdlnis.database.models.CookieItem
 import com.deniscerri.ytdlnis.database.repository.CookieRepository
-import com.deniscerri.ytdlnis.ui.more.CookiesFragment
 import com.deniscerri.ytdlnis.ui.more.WebViewActivity
-import com.deniscerri.ytdlnis.util.FileUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.File
+import java.net.URL
 import java.util.Date
 
 class CookieViewModel(private val application: Application) : AndroidViewModel(application) {
@@ -44,7 +43,7 @@ class CookieViewModel(private val application: Application) : AndroidViewModel(a
         return repository.getAll()
     }
 
-    fun getByURL(url: String) : CookieItem {
+    fun getByURL(url: String) : CookieItem? {
         return repository.getByURL(url)
     }
 
@@ -75,7 +74,7 @@ class CookieViewModel(private val application: Application) : AndroidViewModel(a
     }
 
     @SuppressLint("SdCardPath")
-    fun getCookiesFromDB() : Result<String> = kotlin.runCatching {
+    fun getCookiesFromDB(url: String) : Result<String> = kotlin.runCatching {
         CookieManager.getInstance().run {
             if (!hasCookies()) throw Exception("There is no cookies in the database!")
             flush()
@@ -83,30 +82,35 @@ class CookieViewModel(private val application: Application) : AndroidViewModel(a
         val dbPath = File("/data/data/${BuildConfig.APPLICATION_ID}/").walkTopDown().find { it.name == "Cookies" }
             ?: throw Exception("Cookies File not found!")
 
-        SQLiteDatabase.openDatabase(
+        val db = SQLiteDatabase.openDatabase(
             dbPath.absolutePath, null, OPEN_READONLY
-        ).run {
-            val projection = arrayOf(
-                CookieObject.HOST,
-                CookieObject.EXPIRY,
-                CookieObject.PATH,
-                CookieObject.NAME,
-                CookieObject.VALUE,
-                CookieObject.SECURE
-            )
-            val cookieList = mutableListOf<WebViewActivity.CookieItem>()
-            query(
-                "cookies", projection, null, null, null, null, null
-            ).run {
-                while (moveToNext()) {
-                    val expiry = getLong(getColumnIndexOrThrow(CookieObject.EXPIRY))
-                    val name = getString(getColumnIndexOrThrow(CookieObject.NAME))
-                    val value = getString(getColumnIndexOrThrow(CookieObject.VALUE))
-                    val path = getString(getColumnIndexOrThrow(CookieObject.PATH))
-                    val secure = getLong(getColumnIndexOrThrow(CookieObject.SECURE)) == 1L
-                    val hostKey = getString(getColumnIndexOrThrow(CookieObject.HOST))
+        )
 
-                    val host = if (hostKey[0] != '.') ".$hostKey" else hostKey
+        val projection = arrayOf(
+            CookieObject.HOST,
+            CookieObject.EXPIRY,
+            CookieObject.PATH,
+            CookieObject.NAME,
+            CookieObject.VALUE,
+            CookieObject.SECURE
+        )
+        val cookieList = mutableListOf<WebViewActivity.CookieItem>()
+        db.query(
+            "cookies", projection, null, null, null, null, null
+        ).run {
+            while (moveToNext()) {
+                val expiry = getLong(getColumnIndexOrThrow(CookieObject.EXPIRY))
+                val name = getString(getColumnIndexOrThrow(CookieObject.NAME))
+                val value = getString(getColumnIndexOrThrow(CookieObject.VALUE))
+                val path = getString(getColumnIndexOrThrow(CookieObject.PATH))
+                val secure = getLong(getColumnIndexOrThrow(CookieObject.SECURE)) == 1L
+                val hostKey = getString(getColumnIndexOrThrow(CookieObject.HOST))
+
+
+                val host = if (hostKey[0] != '.') ".$hostKey" else hostKey
+
+                val requiredHost = URL(url).host
+                if(host.contains(requiredHost)){
                     cookieList.add(
                         WebViewActivity.CookieItem(
                             domain = host,
@@ -118,13 +122,13 @@ class CookieViewModel(private val application: Application) : AndroidViewModel(a
                         )
                     )
                 }
-                close()
             }
             close()
-            cookieList.fold(StringBuilder("")) { acc, cookie ->
-                acc.append(cookie.toNetscapeFormat()).append("\n")
-            }.toString()
         }
+        db.close()
+        cookieList.fold(StringBuilder("")) { acc, cookie ->
+            acc.append(cookie.toNetscapeFormat()).append("\n")
+        }.toString()
     }
 
     fun updateCookiesFile() = viewModelScope.launch(Dispatchers.IO) {

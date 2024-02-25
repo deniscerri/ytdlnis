@@ -28,10 +28,10 @@ import androidx.preference.PreferenceManager
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.ChapterItem
 import com.deniscerri.ytdlnis.database.models.DownloadItem
-import com.deniscerri.ytdlnis.util.InfoUtil
-import com.deniscerri.ytdlnis.util.UiUtil
 import com.deniscerri.ytdlnis.util.Extensions.setTextAndRecalculateWidth
 import com.deniscerri.ytdlnis.util.Extensions.toStringDuration
+import com.deniscerri.ytdlnis.util.InfoUtil
+import com.deniscerri.ytdlnis.util.UiUtil
 import com.deniscerri.ytdlnis.util.VideoPlayerUtil
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment

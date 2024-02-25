@@ -18,12 +18,12 @@ import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import androidx.work.WorkQuery
 import com.deniscerri.ytdlnis.R
-import com.deniscerri.ytdlnis.ui.adapter.ActiveDownloadAdapter
 import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.repository.DownloadRepository
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
-import com.deniscerri.ytdlnis.util.NotificationUtil
+import com.deniscerri.ytdlnis.ui.adapter.ActiveDownloadAdapter
 import com.deniscerri.ytdlnis.util.Extensions.forceFastScrollMode
+import com.deniscerri.ytdlnis.util.NotificationUtil
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.yausername.youtubedl_android.YoutubeDL

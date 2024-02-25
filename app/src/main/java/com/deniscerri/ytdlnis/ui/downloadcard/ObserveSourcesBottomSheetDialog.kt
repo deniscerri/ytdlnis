@@ -7,8 +7,6 @@ import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.text.format.DateFormat
 import android.util.DisplayMetrics
 import android.view.LayoutInflater
@@ -16,23 +14,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
-import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.RadioButton
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
-import androidx.compose.ui.text.capitalize
 import androidx.core.content.edit
 import androidx.core.view.children
 import androidx.core.view.isVisible
-import androidx.core.widget.addTextChangedListener
 import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
-import com.afollestad.materialdialogs.utils.MDUtil.getStringArray
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.models.ObserveSourcesItem
@@ -49,7 +44,6 @@ import com.deniscerri.ytdlnis.util.UiUtil
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.button.MaterialButton
-import com.google.android.material.checkbox.MaterialCheckBox
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.materialswitch.MaterialSwitch
@@ -58,12 +52,9 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
-import org.w3c.dom.Text
 import java.text.SimpleDateFormat
 import java.time.Month
-import java.time.format.TextStyle
 import java.util.Calendar
 import java.util.Locale
 
@@ -102,6 +93,7 @@ class ObserveSourcesBottomSheetDialog : BottomSheetDialogFragment() {
     private lateinit var endsOnTime: TextInputLayout
     private lateinit var endsAfterNr: TextInputLayout
     private lateinit var retryMissingDownloads: MaterialSwitch
+    private lateinit var getOnlyNewUploads: MaterialSwitch
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -114,13 +106,13 @@ class ObserveSourcesBottomSheetDialog : BottomSheetDialogFragment() {
         infoUtil = InfoUtil(requireContext())
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
 
-        type = arguments?.getSerializable("type") as Type
         currentItem = if (Build.VERSION.SDK_INT >= 33){
             arguments?.getParcelable("item", ObserveSourcesItem::class.java)
         }else{
             arguments?.getParcelable<ObserveSourcesItem>("item")
         }
 
+        type = currentItem?.downloadItemTemplate?.type ?: arguments?.getSerializable("type") as Type
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -259,6 +251,7 @@ class ObserveSourcesBottomSheetDialog : BottomSheetDialogFragment() {
         endsAfter = view.findViewById(R.id.after)
         endsAfterNr = view.findViewById(R.id.after_nr)
         retryMissingDownloads = view.findViewById(R.id.retry_missing_downloads)
+        getOnlyNewUploads = view.findViewById(R.id.get_new_uploads)
         okButton = view.findViewById(R.id.okButton)
 
         title.editText!!.setText(currentItem?.name ?: "")
@@ -451,6 +444,9 @@ class ObserveSourcesBottomSheetDialog : BottomSheetDialogFragment() {
             endsAfter.performClick()
         }
 
+        retryMissingDownloads.isChecked = currentItem?.retryMissingDownloads ?: false
+        getOnlyNewUploads.isChecked = currentItem?.getOnlyNewUploads ?: false
+
         if (currentItem != null) okButton.text = getString(R.string.update)
         okButton.setOnClickListener {
             lifecycleScope.launch {
@@ -483,6 +479,7 @@ class ObserveSourcesBottomSheetDialog : BottomSheetDialogFragment() {
                     ends,
                     endsAfterCount,
                     0,
+                    getOnlyNewUploads.isChecked,
                     retryMissingDownloads.isChecked,
                     mutableListOf()
                 )

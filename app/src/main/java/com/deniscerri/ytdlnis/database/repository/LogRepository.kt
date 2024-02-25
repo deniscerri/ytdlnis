@@ -2,9 +2,8 @@ package com.deniscerri.ytdlnis.database.repository
 
 import com.deniscerri.ytdlnis.database.dao.LogDao
 import com.deniscerri.ytdlnis.database.models.LogItem
+import com.deniscerri.ytdlnis.util.Extensions.appendLineToLog
 import kotlinx.coroutines.flow.Flow
-import java.util.regex.MatchResult
-import java.util.regex.Pattern
 
 class LogRepository(private val logDao: LogDao) {
     val items : Flow<List<LogItem>> = logDao.getAllLogsFlow()
@@ -43,16 +42,7 @@ class LogRepository(private val logDao: LogDao) {
         runCatching {
             val item = getItem(id) ?: return
             val log = item.content ?: ""
-            val lines = log.split("\n")
-            //clean dublicate progress + add newline
-                var newLine = line
-                if (newLine.contains("[download")){
-                    newLine = "[download]" + line.split("[download]").last()
-                }
-
-                val l = lines.dropLastWhile { it.contains("[download") }.joinToString("\n") +  "\n${newLine}"
-                item.content = l
-
+            item.content = log.appendLineToLog(line)
             //item.content += "\n$line"
             logDao.update(item)
         }

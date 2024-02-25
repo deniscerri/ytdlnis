@@ -11,7 +11,7 @@ class CookieRepository(private val cookieDao: CookieDao) {
         return cookieDao.getAllCookies()
     }
 
-    fun getByURL(url: String) : CookieItem {
+    fun getByURL(url: String) : CookieItem? {
         return cookieDao.getByURL(url)
     }
 

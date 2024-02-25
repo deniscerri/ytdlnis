@@ -10,7 +10,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceManager
@@ -22,9 +21,7 @@ import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.repository.DownloadRepository
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
-import com.deniscerri.ytdlnis.util.Extensions
 import com.deniscerri.ytdlnis.util.Extensions.dp
-import com.deniscerri.ytdlnis.util.Extensions.popup
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
@@ -63,7 +60,6 @@ class ActiveDownloadAdapter(onItemClickListener: OnItemClickListener, activity: 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)
         val card = holder.cardView
-        card.popup()
         card.tag = "${item!!.id}##card"
         val uiHandler = Handler(Looper.getMainLooper())
         val thumbnail = card.findViewById<ImageView>(R.id.image_view)
@@ -98,7 +94,7 @@ class ActiveDownloadAdapter(onItemClickListener: OnItemClickListener, activity: 
         // Author ----------------------------------
         val author = card.findViewById<TextView>(R.id.author)
         var info = item.author
-        if (item.duration.isNotEmpty()) {
+        if (item.duration.isNotEmpty() && item.duration != "-1") {
             if (item.author.isNotEmpty()) info += " • "
             info += item.duration
         }
@@ -153,6 +149,7 @@ class ActiveDownloadAdapter(onItemClickListener: OnItemClickListener, activity: 
                         val value = animation.animatedValue as Int
                         pauseButton.cornerRadius = value
                         pauseButton.icon = ContextCompat.getDrawable(activity, R.drawable.exomedia_ic_pause_white)
+                        pauseButton.contentDescription = activity.getString(R.string.pause)
                         pauseButton.isEnabled = true
                         pauseButton.tag = ActiveDownloadAction.Pause
                     }
@@ -171,6 +168,7 @@ class ActiveDownloadAdapter(onItemClickListener: OnItemClickListener, activity: 
                         val value = animation.animatedValue as Int
                         pauseButton.cornerRadius = value
                         pauseButton.icon = ContextCompat.getDrawable(activity, R.drawable.exomedia_ic_play_arrow_white)
+                        pauseButton.contentDescription = activity.getString(R.string.start)
                         pauseButton.tag = ActiveDownloadAction.Resume
                         pauseButton.isEnabled = true
                     }
@@ -180,6 +178,7 @@ class ActiveDownloadAdapter(onItemClickListener: OnItemClickListener, activity: 
             DownloadRepository.Status.PausedReQueued -> {
                 progressBar.isIndeterminate = true
                 pauseButton.icon = ContextCompat.getDrawable(activity, R.drawable.ic_refresh)
+                pauseButton.contentDescription = activity.getString(R.string.please_wait)
                 pauseButton.tag = null
                 pauseButton.isEnabled = false
                 cancelButton.visibility = View.GONE

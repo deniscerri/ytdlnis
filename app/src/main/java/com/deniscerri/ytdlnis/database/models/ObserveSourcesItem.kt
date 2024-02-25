@@ -7,8 +7,6 @@ import androidx.room.PrimaryKey
 import com.deniscerri.ytdlnis.database.repository.ObserveSourcesRepository
 import kotlinx.parcelize.Parcelize
 import java.time.Month
-import java.util.Calendar
-import java.util.Date
 
 @Entity(tableName = "observeSources")
 @Parcelize
@@ -32,6 +30,8 @@ data class ObserveSourcesItem(
     var endsAfterCount: Int,
     @ColumnInfo(defaultValue = "0")
     var runCount: Int,
+    @ColumnInfo(defaultValue = "0")
+    var getOnlyNewUploads: Boolean,
     var retryMissingDownloads: Boolean,
     var alreadyProcessedLinks : MutableList<String>
 ) : Parcelable

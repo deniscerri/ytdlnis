@@ -114,7 +114,7 @@ class HistoryAdapter(onItemClickListener: OnItemClickListener, activity: Activit
         author.text = item.author
 
         val length = card.findViewById<TextView>(R.id.length)
-        length.text = if(item.downloadPath.size == 1) item.duration else "[${item.downloadPath.size}]"
+        length.text = if(item.downloadPath.size == 1) item.duration else ""
 
 
         // TIME DOWNLOADED  ----------------------------------

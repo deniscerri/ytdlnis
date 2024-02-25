@@ -1,7 +1,10 @@
 package com.deniscerri.ytdlnis.database.dao
 
-import androidx.room.*
-import com.deniscerri.ytdlnis.database.models.CookieItem
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import androidx.room.Update
 import com.deniscerri.ytdlnis.database.models.ObserveSourcesItem
 import kotlinx.coroutines.flow.Flow
 

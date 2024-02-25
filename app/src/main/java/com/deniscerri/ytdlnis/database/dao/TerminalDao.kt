@@ -1,7 +1,11 @@
 package com.deniscerri.ytdlnis.database.dao
 
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.Query
+import androidx.room.Transaction
 import com.deniscerri.ytdlnis.database.models.TerminalItem
+import com.deniscerri.ytdlnis.util.Extensions.appendLineToLog
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -28,16 +32,7 @@ interface TerminalDao {
     fun updateLog(line: String, id: Long){
         val t = getTerminalById(id) ?: return
         val log = t.log ?: ""
-        val lines = log.split("\n")
-        //clean dublicate progress + add newline
-        var newLine = line
-        if (newLine.contains("[download")){
-            newLine = "[download]" + line.split("[download]").last()
-        }
-
-        val l = lines.dropLastWhile { it.contains("[download") }.joinToString("\n") +  "\n${newLine}"
-
-        updateTerminalLog(l, id)
+        updateTerminalLog(log.appendLineToLog(line), id)
     }
 
     @Insert

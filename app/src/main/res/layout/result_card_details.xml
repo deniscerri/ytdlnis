@@ -38,6 +38,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:icon="@drawable/ic_image"
+            android:contentDescription="@string/save_thumb"
             app:iconSize="30dp"
             app:iconTint="?android:colorAccent"
             app:layout_constraintTop_toTopOf="@+id/frame_layout"
@@ -99,6 +100,7 @@
                     android:id="@+id/download_music"
                     style="@style/Widget.Material3.ExtendedFloatingActionButton.Icon.Secondary"
                     android:layout_width="55dp"
+                    android:contentDescription="@string/audio"
                     android:layout_height="55dp"
                     android:layout_marginHorizontal="10dp"
                     app:icon="@drawable/ic_music"
@@ -110,6 +112,7 @@
                     style="@style/Widget.Material3.ExtendedFloatingActionButton.Icon.Secondary"
                     android:layout_width="55dp"
                     android:layout_height="55dp"
+                    android:contentDescription="@string/video"
                     android:layout_marginHorizontal="10dp"
                     app:icon="@drawable/ic_video"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -139,6 +142,7 @@
 
                         <TextView
                             android:id="@+id/running"
+                            android:visibility="gone"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginVertical="10dp"
@@ -159,6 +163,7 @@
 
                         <TextView
                             android:id="@+id/queued"
+                            android:visibility="gone"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginVertical="10dp"

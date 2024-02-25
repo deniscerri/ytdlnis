@@ -1,11 +1,11 @@
 package com.deniscerri.ytdlnis.database.repository
 
+import com.deniscerri.ytdlnis.database.DBManager.SORTING
 import com.deniscerri.ytdlnis.database.dao.HistoryDao
 import com.deniscerri.ytdlnis.database.models.HistoryItem
 import com.deniscerri.ytdlnis.util.FileUtil
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
-import com.deniscerri.ytdlnis.database.DBManager.SORTING
 
 class HistoryRepository(private val historyDao: HistoryDao) {
     val items : Flow<List<HistoryItem>> = historyDao.getAllHistory()

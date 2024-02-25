@@ -1,14 +1,30 @@
 package com.deniscerri.ytdlnis.database
 
 import android.content.Context
-import androidx.room.*
-import androidx.room.migration.AutoMigrationSpec
-import androidx.room.migration.Migration
-import androidx.sqlite.db.SupportSQLiteDatabase
-import androidx.work.impl.Migration_11_12
-import androidx.work.impl.Migration_12_13
-import com.deniscerri.ytdlnis.database.dao.*
-import com.deniscerri.ytdlnis.database.models.*
+import androidx.room.AutoMigration
+import androidx.room.Database
+import androidx.room.Room
+import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
+import com.deniscerri.ytdlnis.database.dao.CommandTemplateDao
+import com.deniscerri.ytdlnis.database.dao.CookieDao
+import com.deniscerri.ytdlnis.database.dao.DownloadDao
+import com.deniscerri.ytdlnis.database.dao.HistoryDao
+import com.deniscerri.ytdlnis.database.dao.LogDao
+import com.deniscerri.ytdlnis.database.dao.ObserveSourcesDao
+import com.deniscerri.ytdlnis.database.dao.ResultDao
+import com.deniscerri.ytdlnis.database.dao.SearchHistoryDao
+import com.deniscerri.ytdlnis.database.dao.TerminalDao
+import com.deniscerri.ytdlnis.database.models.CommandTemplate
+import com.deniscerri.ytdlnis.database.models.CookieItem
+import com.deniscerri.ytdlnis.database.models.DownloadItem
+import com.deniscerri.ytdlnis.database.models.HistoryItem
+import com.deniscerri.ytdlnis.database.models.LogItem
+import com.deniscerri.ytdlnis.database.models.ObserveSourcesItem
+import com.deniscerri.ytdlnis.database.models.ResultItem
+import com.deniscerri.ytdlnis.database.models.SearchHistoryItem
+import com.deniscerri.ytdlnis.database.models.TemplateShortcut
+import com.deniscerri.ytdlnis.database.models.TerminalItem
 
 @TypeConverters(Converters::class)
 @Database(
@@ -24,7 +40,7 @@ import com.deniscerri.ytdlnis.database.models.*
         TerminalItem::class,
         ObserveSourcesItem::class
    ],
-    version = 14,
+    version = 15,
     autoMigrations = [
         AutoMigration (from = 1, to = 2),
         AutoMigration (from = 2, to = 3),
@@ -39,6 +55,7 @@ import com.deniscerri.ytdlnis.database.models.*
         AutoMigration (from = 11, to = 12),
         AutoMigration (from = 12, to = 13),
         // AutoMigration (from = 13, to = 14) MANUALLY HANDLED
+        AutoMigration (from = 14, to = 15),
     ]
 )
 abstract class DBManager : RoomDatabase(){

@@ -18,6 +18,7 @@
             android:elevation="0dp"
             android:layout_width="match_parent"
             app:navigationIcon="@drawable/ic_back"
+            app:navigationContentDescription="@string/back"
             android:layout_height="match_parent"/>
 
         <com.google.android.material.slider.Slider
@@ -47,27 +48,20 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingBottom="150dp"
                 android:focusableInTouchMode="true"
                 android:orientation="vertical">
 
-                <HorizontalScrollView
-                    android:id="@+id/horizontalscroll_output"
-                    android:layout_width="match_parent"
-                    android:paddingBottom="150dp"
-                    android:layout_height="match_parent">
-
-                    <TextView
-                        android:id="@+id/content"
-                        android:padding="10dp"
-                        android:fontFamily="monospace"
-                        android:textSize="15sp"
-                        android:gravity="bottom"
-                        android:scrollbars="none"
-                        android:layout_width="wrap_content"
-                        android:textIsSelectable="true"
-                        android:layout_height="wrap_content" />
-
-                </HorizontalScrollView>
+                <TextView
+                    android:id="@+id/content"
+                    android:padding="10dp"
+                    android:fontFamily="monospace"
+                    android:textSize="15sp"
+                    android:gravity="bottom"
+                    android:scrollbars="none"
+                    android:layout_width="wrap_content"
+                    android:textIsSelectable="true"
+                    android:layout_height="wrap_content" />
 
             </LinearLayout>
 

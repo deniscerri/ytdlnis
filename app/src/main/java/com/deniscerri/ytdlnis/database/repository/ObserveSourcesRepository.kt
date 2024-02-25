@@ -1,8 +1,13 @@
 package com.deniscerri.ytdlnis.database.repository
 
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.dao.ObserveSourcesDao
 import com.deniscerri.ytdlnis.database.models.ObserveSourcesItem
+import com.deniscerri.ytdlnis.receiver.ObserveAlarmReceiver
 import kotlinx.coroutines.flow.Flow
 
 class ObserveSourcesRepository(private val observeSourcesDao: ObserveSourcesDao) {
@@ -55,6 +60,18 @@ class ObserveSourcesRepository(private val observeSourcesDao: ObserveSourcesDao)
 
     suspend fun update(item: ObserveSourcesItem){
         observeSourcesDao.update(item)
+    }
+
+    fun cancelObservationTaskByID(context: Context, id: Long){
+        val alarmManager = context.getSystemService(AlarmManager::class.java)
+        alarmManager.cancel(
+            PendingIntent.getBroadcast(
+                context,
+                id.toInt(),
+                Intent(context, ObserveAlarmReceiver::class.java),
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            )
+        )
     }
 
 }

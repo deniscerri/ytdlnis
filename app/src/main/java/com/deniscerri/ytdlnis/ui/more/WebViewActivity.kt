@@ -24,6 +24,7 @@ import com.google.accompanist.web.AccompanistWebChromeClient
 import com.google.accompanist.web.AccompanistWebViewClient
 import com.google.accompanist.web.WebView
 import com.google.accompanist.web.rememberWebViewState
+import com.google.android.exoplayer2.util.Log
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton
@@ -57,48 +58,58 @@ class WebViewActivity : BaseActivity() {
         cookieManager = CookieManager.getInstance()
         preferences = PreferenceManager.getDefaultSharedPreferences(this)
 
-        webViewClient = object : AccompanistWebViewClient() {
-            override fun onPageFinished(view: WebView?, url: String?) {
-                super.onPageFinished(view, url)
-                kotlin.runCatching {
-                    toolbar.title = view?.title ?: ""
-                    cookies = CookieManager.getInstance().getCookie(view?.url)
-                }
-            }
-        }
-
-        cookieManager = CookieManager.getInstance()
-
-        toolbar.setNavigationOnClickListener {
-            cookieManager.flush()
-            onBackPressedDispatcher.onBackPressed()
-        }
-
-        generateBtn.setOnClickListener {
-            cookiesViewModel.getCookiesFromDB().getOrNull()?.let {
-                kotlin.runCatching {
-                    lifecycleScope.launch {
-                        withContext(Dispatchers.IO){
-                            cookiesViewModel.insert(
-                                CookieItem(
-                                    0,
-                                    url,
-                                    it
-                                )
-                            )
-                        }
-                        cookiesViewModel.updateCookiesFile()
+        lifecycleScope.launch{
+            webViewClient = object : AccompanistWebViewClient() {
+                override fun onPageFinished(view: WebView?, url: String?) {
+                    super.onPageFinished(view, url)
+                    kotlin.runCatching {
+                        toolbar.title = view?.title ?: ""
+                        cookies = CookieManager.getInstance().getCookie(view?.url)
                     }
-                }.onFailure {
-                    Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show()
                 }
             }
-            onBackPressedDispatcher.onBackPressed()
+
+            cookieManager = CookieManager.getInstance()
+
+            toolbar.setNavigationOnClickListener {
+                cookieManager.flush()
+                onBackPressedDispatcher.onBackPressed()
+            }
+
+            generateBtn.setOnClickListener {
+                lifecycleScope.launch {
+                    withContext(Dispatchers.IO){
+                        val a = cookieManager.getCookie(url).replace(";", "\n")
+                        Log.e("TESTING", a)
+                        cookiesViewModel.getCookiesFromDB(url).getOrNull()?.let {
+                            kotlin.runCatching {
+                                cookiesViewModel.insert(
+                                    CookieItem(
+                                        0,
+                                        url,
+                                        it
+                                    )
+                                )
+                                cookiesViewModel.updateCookiesFile()
+                            }.onFailure {
+                                withContext(Dispatchers.Main){
+                                    Toast.makeText(this@WebViewActivity, "Something went wrong", Toast.LENGTH_SHORT).show()
+                                }
+                            }
+                        }
+                        withContext(Dispatchers.Main){
+                            onBackPressedDispatcher.onBackPressed()
+                        }
+                    }
+                }
+            }
+
+            webViewCompose.apply {
+                setContent { WebViewView() }
+            }
         }
 
-        webViewCompose.apply {
-            setContent { WebViewView() }
-        }
+
     }
 
     @SuppressLint("SetJavaScriptEnabled")

@@ -1,0 +1,23 @@
+## What's New
+
+- Added names to subtitle codes in the subtitle selector dialog
+- To prevent filename templates the app automatically adds .170B in the title tag and .30B in the uploader tag if they are written as the default template, otherwise they wont be tampered with
+- Fixed app taking a bit before scheduling a download when it was quick downloaded
+- Fixed app not updating the item data after being scheduled
+- Fixed new cookie items having the previous' cookie data in them
+- Fixed app not updating playlist data thumbnail while downloading
+- Added a note in the auto-updater that the apks come from the github repo
+- Added an option to disable swipe gestures in the download card between audio,video,command
+- While the app is updating data inside the download card and the user taps the cut button, instead of asking the user to update now it knows its updating and just tells him to wait a bit
+- When clearing results in the home screen, the running query job is cancelled
+- When creating a new cookie, hid the copy cookie button (duh!)
+- Replaced some icons around the app
+- Now if you have copied multiple links back to back the app will know that and will populate the links in the search view. You can then remove or add more and then hit search
+- Added a feature to show the item count for each tab in the download queue screen
+- Added a feature to also download the current video item as audio. Just so you know, whatever changes you made in the audio tab will be used for this audio download
+- When fetching playlist data, check if there are duplicate records in it
+- Made the video and audio titles more noticeable in the format selection card
+- Fixed app not updating formats while being in incognito mode in the multiple download card
+- Added content description for many buttons in the app to help people with accessibility problems or people who use TalkBack
+- Added a feature to only check for future videos in observe sources
+

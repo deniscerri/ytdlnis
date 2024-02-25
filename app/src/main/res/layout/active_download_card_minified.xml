@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/active_download_card_view"
+<com.google.android.material.card.MaterialCardView android:id="@+id/active_download_card_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:checkable="true"
@@ -133,6 +132,7 @@
             style="@style/Widget.Material3.Button.IconButton"
             app:layout_constraintVertical_bias="0.0"
             android:layout_width="wrap_content"
+            android:contentDescription="@string/pause"
             android:layout_height="wrap_content"
             android:background="?android:attr/selectableItemBackground"
             app:cornerRadius="15dp"
@@ -148,6 +148,7 @@
             style="@style/Widget.Material3.Button.IconButton"
             app:layout_constraintVertical_bias="0.0"
             android:layout_width="wrap_content"
+            android:contentDescription="@string/Remove"
             android:layout_height="wrap_content"
             android:background="?android:attr/selectableItemBackground"
             app:cornerRadius="15dp"

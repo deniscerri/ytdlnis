@@ -1,9 +1,7 @@
 package com.deniscerri.ytdlnis.ui.adapter
 
-import android.animation.ValueAnimator
 import android.app.Activity
 import android.content.SharedPreferences
-import android.graphics.Color
 import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
@@ -19,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
-import com.deniscerri.ytdlnis.util.Extensions
 import com.deniscerri.ytdlnis.util.Extensions.popup
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
@@ -72,7 +69,6 @@ class HomeAdapter(onItemClickListener: OnItemClickListener, activity: Activity) 
             } else {
                 uiHandler.post { Picasso.get().load(R.color.black).into(thumbnail) }
             }
-            thumbnail.setColorFilter(Color.argb(20, 0, 0, 0))
         }else{
             uiHandler.post { Picasso.get().load(R.color.black).into(thumbnail) }
         }

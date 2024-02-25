@@ -20,6 +20,7 @@
             app:menu="@menu/command_templates_menu"
             android:layout_width="match_parent"
             app:navigationIcon="@drawable/ic_back"
+            app:navigationContentDescription="@string/back"
             android:layout_height="match_parent"/>
 
         <RelativeLayout

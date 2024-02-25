@@ -15,7 +15,6 @@ import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.isVisible
@@ -23,7 +22,6 @@ import androidx.core.view.setPadding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.media3.common.util.Log
 import androidx.preference.PreferenceManager
 import com.afollestad.materialdialogs.utils.MDUtil.getStringArray
 import com.deniscerri.ytdlnis.R
@@ -37,14 +35,13 @@ import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.InfoUtil
 import com.deniscerri.ytdlnis.util.UiUtil
 import com.google.android.material.card.MaterialCardView
-import com.google.android.material.progressindicator.LinearProgressIndicator
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.textfield.TextInputLayout.END_ICON_NONE
 import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
@@ -83,7 +80,6 @@ class DownloadAudioFragment(private var resultItem: ResultItem? = null, private 
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
         lifecycleScope.launch {
             downloadItem = withContext(Dispatchers.IO) {
                 if (currentDownloadItem != null){
@@ -304,12 +300,22 @@ class DownloadAudioFragment(private var resultItem: ResultItem? = null, private 
                                     bottomSheet.show(parentFragmentManager, "cutVideoSheet")
                                 }
                             },
-                            updateDataClicked = {
-                                CoroutineScope(Dispatchers.IO).launch {
-                                    resultItem?.apply {
-                                        val rsVM = ViewModelProvider(requireActivity())[ResultViewModel::class.java]
-                                        rsVM.updateItemData(this)
+                            cutDisabledClicked = {
+                                val isUpdatingData = ViewModelProvider(requireActivity())[ResultViewModel::class.java].updatingData.value
+                                if(isUpdatingData){
+                                    val snack = Snackbar.make(view, context.getString(R.string.please_wait), Snackbar.LENGTH_SHORT)
+                                    snack.show()
+                                }else{
+                                    val snack = Snackbar.make(view, context.getString(R.string.cut_unavailable), Snackbar.LENGTH_SHORT)
+                                    snack.setAction(R.string.update){
+                                        CoroutineScope(SupervisorJob()).launch(Dispatchers.IO) {
+                                            resultItem?.apply {
+                                                val rsVM = ViewModelProvider(requireActivity())[ResultViewModel::class.java]
+                                                rsVM.updateItemData(this)
+                                            }
+                                        }
                                     }
+                                    snack.show()
                                 }
                             },
                             extraCommandsClicked = {
@@ -328,6 +334,16 @@ class DownloadAudioFragment(private var resultItem: ResultItem? = null, private 
             }catch (e : Exception){
                 e.printStackTrace()
             }
+            super.onViewCreated(view, savedInstanceState)
+        }
+    }
+
+    @SuppressLint("RestrictedApi")
+    fun updateSelectedAudioFormat(formatID: String){
+        resultItem?.formats?.find { it.format_id == formatID }?.apply {
+            downloadItem.format = this
+            val formatCard = requireView().findViewById<MaterialCardView>(R.id.format_card_constraintLayout)
+            UiUtil.populateFormatCard(requireContext(), formatCard, downloadItem.format, listOf())
         }
     }
 

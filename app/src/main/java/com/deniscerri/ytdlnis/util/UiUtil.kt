@@ -2,7 +2,6 @@ package com.deniscerri.ytdlnis.util
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.app.Dialog
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
@@ -10,6 +9,8 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.text.format.DateFormat
@@ -25,20 +26,16 @@ import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.LinearLayout
-import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.OptIn
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
-import androidx.compose.ui.text.toUpperCase
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.FileProvider
-import androidx.core.view.children
 import androidx.core.view.isVisible
-import androidx.core.view.setPadding
+import androidx.core.view.setMargins
 import androidx.core.widget.doOnTextChanged
 import androidx.documentfile.provider.DocumentFile
 import androidx.fragment.app.FragmentManager
@@ -61,7 +58,6 @@ import com.deniscerri.ytdlnis.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdlnis.ui.adapter.AlreadyExistsAdapter
 import com.deniscerri.ytdlnis.ui.downloadcard.ConfigureDownloadBottomSheetDialog
 import com.deniscerri.ytdlnis.ui.downloadcard.VideoCutListener
-import com.deniscerri.ytdlnis.util.Extensions.dp
 import com.deniscerri.ytdlnis.util.Extensions.enableFastScroll
 import com.deniscerri.ytdlnis.util.Extensions.enableTextHighlight
 import com.deniscerri.ytdlnis.util.Extensions.getMediaDuration
@@ -94,7 +90,6 @@ import kotlinx.coroutines.withContext
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Calendar
-import java.util.Date
 import java.util.Locale
 
 
@@ -496,6 +491,7 @@ object UiUtil {
 
     fun showDatePicker(fragmentManager: FragmentManager , onSubmit : (chosenDate: Calendar) -> Unit ){
         val currentDate = Calendar.getInstance()
+        currentDate.timeInMillis = (currentDate.timeInMillis - (currentDate.timeInMillis % 1800000)) + 1800000
         val date = Calendar.getInstance()
 
         val datePicker = MaterialDatePicker.Builder.datePicker()
@@ -530,6 +526,7 @@ object UiUtil {
 
     fun showTimePicker(fragmentManager: FragmentManager , onSubmit : (chosenTime: Calendar) -> Unit ){
         val currentDate = Calendar.getInstance()
+        currentDate.timeInMillis = (currentDate.timeInMillis - (currentDate.timeInMillis % 1800000)) + 1800000
         val date = Calendar.getInstance()
 
         val timepicker = MaterialTimePicker.Builder()
@@ -1055,16 +1052,22 @@ object UiUtil {
             val chips = mutableListOf<Chip>()
             context.getStringArray(R.array.subtitle_langs).forEachIndexed { index, s ->
                 val tmp = context.layoutInflater.inflate(R.layout.filter_chip, chipGroup, false) as Chip
-                tmp.text = s
+                tmp.text = Locale(s).displayLanguage
+                tmp.tag = s
                 tmp.id = index
 
                 tmp.setOnClickListener {
                     val c = it as Chip
                     if(!c.isChecked){
-                        editText.setText(editText.text.toString().replace(c.text.toString(), ""))
+                        editText.setText(editText.text.toString().replace(c.tag.toString(), "").removeSuffix(","))
                         editText.setSelection(editText.text.length)
                     }else{
-                        editText.append(c.text)
+                        if (editText.text.isBlank()){
+                            editText.setText(c.tag.toString())
+                            editText.setSelection(editText.text.length)
+                        }else{
+                            editText.append(",${c.tag}")
+                        }
                     }
                 }
 
@@ -1183,13 +1186,14 @@ object UiUtil {
         saveThumbnailClicked: (Boolean) -> Unit,
         sponsorBlockItemsSet: (values: Array<String>, checkedItems: List<Boolean>) -> Unit,
         cutClicked: (VideoCutListener) -> Unit,
+        cutDisabledClicked: () -> Unit,
         filenameTemplateSet: (String) -> Unit,
         saveSubtitlesClicked: (Boolean) -> Unit,
         saveAutoSubtitlesClicked: (Boolean) -> Unit,
         subtitleLanguagesSet: (String) -> Unit,
         removeAudioClicked: (Boolean) -> Unit,
-        extraCommandsClicked: () -> Unit,
-        updateDataClicked: () -> Unit
+        alsoDownloadAsAudioClicked: (Boolean) -> Unit,
+        extraCommandsClicked: () -> Unit
     ){
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 
@@ -1322,11 +1326,7 @@ object UiUtil {
             }else{
                 cut.alpha = 0.3f
                 cut.setOnClickListener {
-                    val snack = Snackbar.make(view, context.getString(R.string.cut_unavailable), Snackbar.LENGTH_SHORT)
-                    snack.setAction(R.string.update){
-                        updateDataClicked()
-                    }
-                    snack.show()
+                    cutDisabledClicked()
                 }
             }
         }
@@ -1372,10 +1372,41 @@ object UiUtil {
             }
         }
 
-        val removeAudio = view.findViewById<Chip>(R.id.remove_audio)
-        removeAudio.isChecked = items.all { it.videoPreferences.removeAudio }
-        removeAudio.setOnCheckedChangeListener { _, _ ->
-            removeAudioClicked(removeAudio.isChecked)
+        if (items.size == 1 && items.first().id == 0L){
+            val adjustAudio = view.findViewById<Chip>(R.id.adjust_audio)
+            adjustAudio.setOnClickListener {
+                val adjustAudioView = context.layoutInflater.inflate(R.layout.audio_download_preferences_dialog, null)
+                adjustAudioView.findViewById<MaterialSwitch>(R.id.remove_audio).apply {
+                    isChecked = items.first().videoPreferences.removeAudio
+                    setOnCheckedChangeListener { _, b ->
+                        removeAudioClicked(b)
+                    }
+                }
+
+                adjustAudioView.findViewById<MaterialSwitch>(R.id.also_download_audio).apply {
+                    isChecked = items.first().videoPreferences.alsoDownloadAsAudio
+                    setOnCheckedChangeListener { _, b ->
+                        alsoDownloadAsAudioClicked(b)
+                    }
+                }
+
+                val adjustAudioDialog = MaterialAlertDialogBuilder(context)
+                    .setTitle(context.getString(R.string.adjust_audio))
+                    .setView(adjustAudioView)
+                    .setIcon(R.drawable.ic_music)
+                    .setNegativeButton(context.resources.getString(R.string.dismiss)) { _: DialogInterface?, _: Int -> }
+
+                adjustAudioDialog.show()
+            }
+        }else{
+            val adjustAudio = view.findViewById<Chip>(R.id.adjust_audio)
+            adjustAudio.isVisible = false
+            val removeAudio = view.findViewById<Chip>(R.id.remove_audio)
+            removeAudio.isVisible = true
+            removeAudio.isChecked = items.all { it.videoPreferences.removeAudio }
+            removeAudio.setOnCheckedChangeListener { _, _ ->
+                removeAudioClicked(removeAudio.isChecked)
+            }
         }
 
         val extraCommands = view.findViewById<Chip>(R.id.extra_commands)
@@ -1399,8 +1430,8 @@ object UiUtil {
         filenameTemplateSet: (String) -> Unit,
         sponsorBlockItemsSet: (Array<String>, List<Boolean>) -> Unit,
         cutClicked: (VideoCutListener) -> Unit,
-        extraCommandsClicked: () -> Unit,
-        updateDataClicked: () -> Unit
+        cutDisabledClicked: () -> Unit,
+        extraCommandsClicked: () -> Unit
     ){
         val embedThumb = view.findViewById<Chip>(R.id.embed_thumb)
         val cropThumb = view.findViewById<Chip>(R.id.crop_thumb)
@@ -1513,11 +1544,7 @@ object UiUtil {
             }else{
                 cut.alpha = 0.3f
                 cut.setOnClickListener {
-                    val snack = Snackbar.make(view, context.getString(R.string.cut_unavailable), Snackbar.LENGTH_SHORT)
-                    snack.setAction(R.string.update){
-                        updateDataClicked()
-                    }
-                    snack.show()
+                    cutDisabledClicked()
                 }
             }
         }

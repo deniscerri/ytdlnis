@@ -19,8 +19,6 @@ import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.deniscerri.ytdlnis.R
-import com.deniscerri.ytdlnis.database.DBManager
-import com.deniscerri.ytdlnis.database.dao.CommandTemplateDao
 import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.deniscerri.ytdlnis.database.viewmodel.CommandTemplateViewModel
@@ -36,7 +34,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-//TODO MAKE CONFIGURE LIKE NORMAL SHEET
 class ConfigureDownloadBottomSheetDialog(private var result: ResultItem, private val currentDownloadItem: DownloadItem, private val listener: OnDownloadItemUpdateListener) : BottomSheetDialogFragment() {
     private lateinit var tabLayout: TabLayout
     private lateinit var viewPager2: ViewPager2
@@ -77,6 +74,7 @@ class ConfigureDownloadBottomSheetDialog(private var result: ResultItem, private
 
         tabLayout = view.findViewById(R.id.download_tablayout)
         viewPager2 = view.findViewById(R.id.download_viewpager)
+        viewPager2.isUserInputEnabled = sharedPreferences.getBoolean("swipe_gestures_download_card", true)
 
         (viewPager2.getChildAt(0) as? RecyclerView)?.apply {
             isNestedScrollingEnabled = false
@@ -231,6 +229,7 @@ class ConfigureDownloadBottomSheetDialog(private var result: ResultItem, private
                 kotlin.runCatching {
                     val f = fragmentManager?.findFragmentByTag("f0") as DownloadAudioFragment
                     f.updateTitleAuthor(prevDownloadItem.title, prevDownloadItem.author)
+                    f.updateSelectedAudioFormat(getDownloadItem(1).videoPreferences.audioFormatIDs.first())
                 }
             }
             1 -> {

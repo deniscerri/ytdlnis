@@ -26,6 +26,7 @@ import androidx.preference.PreferenceManager
 import com.deniscerri.ytdlnis.BuildConfig
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.GithubRelease
+import com.deniscerri.ytdlnis.util.Extensions.enableFastScroll
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
@@ -175,7 +176,7 @@ class UpdateUtil(var context: Context) {
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT
             )
 
-            layoutParams.setMargins(20, 20, 20, 0)
+            layoutParams.setMargins(5, 5, 5, 0)
             scrollView.layoutParams = layoutParams
             scrollView.addView(linearLayout)
             val releases = getGithubReleases()
@@ -212,7 +213,9 @@ class UpdateUtil(var context: Context) {
 
                         val assetGroup = findViewById<ChipGroup>(R.id.assets)
                         it.assets.forEachIndexed { idx, c ->
-                            val tmp = activity.layoutInflater.inflate(R.layout.suggestion_chip, assetGroup, false) as Chip
+                            val tmp = activity.layoutInflater.inflate(R.layout.filter_chip, assetGroup, false) as Chip
+                            tmp.isCheckable = false
+                            tmp.layoutParams = layoutParams
                             tmp.text = c.name
                             tmp.id = idx
                             tmp.setOnClickListener {
