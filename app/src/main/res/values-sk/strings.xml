@@ -315,7 +315,7 @@
     <string name="remember_download_type">Zapamätať si typ sťahovania</string>
     <string name="piped_instance_summary">Uveďte server API PIPED, ktorý môže aplikácia používať na dotazy a formáty YouTube</string>
     <string name="buffer_size">Veľkosť vyrovnávacej pamäte</string>
-    <string name="remember_download_type_summary">Vyberie naposledy otvorený typu sťahovania pre aktuálnu položku</string>
+    <string name="remember_download_type_summary">Vyberie naposledy otvorený typ sťahovania pre aktuálnu položku</string>
     <string name="length">Dĺžka</string>
     <string name="update_ytdl_stable">Stabilná verzia yt-dlp</string>
     <string name="force_keyframes_summary">Pomalší proces, ale presnejšie orezania</string>
