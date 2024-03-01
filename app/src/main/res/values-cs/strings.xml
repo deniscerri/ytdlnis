@@ -19,7 +19,7 @@
     <string name="ytdl_update_hint">Užitečné při problémech se stahováním</string>
     <string name="best_quality">Nejlepší kvalita</string>
     <string name="save_thumb_summary">Uložte náhled ve složce stahování</string>
-    <string name="command_download_notification_channel_name">Stažené příkazy</string>
+    <string name="command_download_notification_channel_name">Příkazové stažení</string>
     <string name="ytdl_already_updating">Instalace nové verze</string>
     <string name="cancel_task">Zrušit stahování</string>
     <string name="audio_quality">Kvalita audia</string>
@@ -163,7 +163,7 @@
     <string name="add_template_first">Musíte mít vytvořenou alespoň jednu šablonu příkazu!</string>
     <string name="show_terminal">Zobrazení terminálu v nabídce sdílení</string>
     <string name="select_format">Vyberte formát</string>
-    <string name="crop_thumb_summary">Ořežte náhled do čtverce pro stažené audio</string>
+    <string name="crop_thumb_summary">Ořeže náhled do čtverce pro stažené audio</string>
     <string name="new_cookie">Nový soubor cookie</string>
     <string name="network_error">Chyba sítě</string>
     <string name="cookies">Cookies</string>
@@ -207,7 +207,7 @@
     <string name="incognito">Inkognito</string>
     <string name="write_description_summary">Zapište soubor s popisem</string>
     <string name="updating_download_data">Aktualizace dat položky stahování</string>
-    <string name="download">Stažené</string>
+    <string name="download">Stažení</string>
     <string name="swipe_gestures_summary">Přejeďte prstem položky pro určité akce</string>
     <string name="backup">Zálohování</string>
     <string name="license">Licence</string>
