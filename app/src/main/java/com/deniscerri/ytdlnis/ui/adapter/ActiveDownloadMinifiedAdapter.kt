@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.repository.DownloadRepository
+import com.deniscerri.ytdlnis.util.Extensions.loadThumbnail
 import com.deniscerri.ytdlnis.util.Extensions.popup
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.google.android.material.button.MaterialButton
@@ -62,17 +63,8 @@ class ActiveDownloadMinifiedAdapter(onItemClickListener: OnItemClickListener, ac
         val thumbnail = card.findViewById<ImageView>(R.id.image_view)
 
         // THUMBNAIL ----------------------------------
-        if (!sharedPreferences.getStringSet("hide_thumbnails", emptySet())!!.contains("queue")){
-            val imageURL = item!!.thumb
-            if (imageURL.isNotEmpty()) {
-                uiHandler.post { Picasso.get().load(imageURL).into(thumbnail) }
-            } else {
-                uiHandler.post { Picasso.get().load(R.color.black).into(thumbnail) }
-            }
-            thumbnail.setColorFilter(Color.argb(20, 0, 0, 0))
-        }else{
-            uiHandler.post { Picasso.get().load(R.color.black).into(thumbnail) }
-        }
+        val hideThumb = sharedPreferences.getStringSet("hide_thumbnails", emptySet())!!.contains("queue")
+        uiHandler.post { thumbnail.loadThumbnail(hideThumb, item!!.thumb) }
 
         // PROGRESS BAR ----------------------------------------------------
         val progressBar = card.findViewById<LinearProgressIndicator>(R.id.progress)

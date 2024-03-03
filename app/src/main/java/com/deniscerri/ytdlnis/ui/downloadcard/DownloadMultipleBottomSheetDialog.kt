@@ -9,6 +9,7 @@ import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.graphics.Canvas
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.text.format.DateFormat
 import android.util.DisplayMetrics
@@ -32,6 +33,7 @@ import com.afollestad.materialdialogs.utils.MDUtil.getStringArray
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.models.Format
+import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.deniscerri.ytdlnis.database.viewmodel.CommandTemplateViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.HistoryViewModel
@@ -73,6 +75,8 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
     private lateinit var count : TextView
     private lateinit var sharedPreferences: SharedPreferences
 
+    private lateinit var currentDownloadIDs: List<Long>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         downloadViewModel = ViewModelProvider(requireActivity())[DownloadViewModel::class.java]
@@ -81,6 +85,8 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
         commandTemplateViewModel = ViewModelProvider(requireActivity())[CommandTemplateViewModel::class.java]
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
         infoUtil = InfoUtil(requireContext())
+
+        currentDownloadIDs = arguments?.getLongArray("currentDownloadIDs")?.toList() ?: listOf()
     }
 
     @SuppressLint("RestrictedApi", "NotifyDataSetChanged")
@@ -137,6 +143,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
 
                 lifecycleScope.launch {
                     withContext(Dispatchers.IO){
+                        downloadViewModel.deleteAllWithID(currentDownloadIDs)
                         downloadViewModel.downloadProcessingDownloads(cal.timeInMillis)
                     }
 
@@ -153,6 +160,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
             download.isEnabled = false
             lifecycleScope.launch {
                 withContext(Dispatchers.IO){
+                    downloadViewModel.deleteAllWithID(currentDownloadIDs)
                     downloadViewModel.downloadProcessingDownloads()
                 }
                 dismiss()
@@ -166,6 +174,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
             dd.setPositiveButton(getString(R.string.ok)) { _: DialogInterface?, _: Int ->
                 lifecycleScope.launch{
                     withContext(Dispatchers.IO){
+                        downloadViewModel.deleteAllWithID(currentDownloadIDs)
                         downloadViewModel.moveProcessingToSavedCategory()
                     }
                     dismiss()

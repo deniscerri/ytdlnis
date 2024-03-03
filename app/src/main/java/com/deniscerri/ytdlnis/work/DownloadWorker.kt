@@ -267,7 +267,7 @@ class DownloadWorker(
 
                             notificationUtil.cancelDownloadNotification(downloadItem.id.toInt())
                             notificationUtil.createDownloadFinished(
-                                downloadItem.title,  if (finalPaths?.first().equals(context.getString(R.string.unfound_file))) null else finalPaths, resources
+                                downloadItem.id, downloadItem.title,  if (finalPaths?.first().equals(context.getString(R.string.unfound_file))) null else finalPaths, resources
                             )
 
                             if (wasQuickDownloaded && createResultItem){
@@ -326,7 +326,9 @@ class DownloadWorker(
                             }
 
                             notificationUtil.createDownloadErrored(
-                                downloadItem.title.ifEmpty { downloadItem.url }, it.message,
+                                downloadItem.id,
+                                downloadItem.title.ifEmpty { downloadItem.url },
+                                it.message,
                                 downloadItem.logID,
                                 resources
                             )

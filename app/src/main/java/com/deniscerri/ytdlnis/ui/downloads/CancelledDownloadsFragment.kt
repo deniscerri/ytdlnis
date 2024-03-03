@@ -17,6 +17,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
 import androidx.core.os.bundleOf
+import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -33,6 +34,7 @@ import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.ui.adapter.GenericDownloadAdapter
 import com.deniscerri.ytdlnis.util.Extensions.enableFastScroll
 import com.deniscerri.ytdlnis.util.Extensions.forceFastScrollMode
+import com.deniscerri.ytdlnis.util.Extensions.toListString
 import com.deniscerri.ytdlnis.util.UiUtil
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.color.MaterialColors
@@ -152,6 +154,22 @@ class CancelledDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClic
     override fun onCardSelect(isChecked: Boolean, position: Int) {
         lifecycleScope.launch {
             val selectedObjects = adapter.getSelectedObjectsCount(totalSize)
+            if (actionMode == null) actionMode = (getActivity() as AppCompatActivity?)!!.startSupportActionMode(contextualActionBar)
+            actionMode?.apply {
+                if (selectedObjects == 0){
+                    this.finish()
+                }else{
+                    this.title = "$selectedObjects ${getString(R.string.selected)}"
+                    if (selectedObjects == 2){
+                        val selectedIDs = contextualActionBar.getSelectedIDs().sortedBy { it }
+                        val idsInMiddle = withContext(Dispatchers.IO){
+                            downloadViewModel.getIDsBetweenTwoItems(selectedIDs.first(), selectedIDs.last(), listOf(DownloadRepository.Status.Cancelled).toListString())
+                        }
+                        this.menu.findItem(R.id.select_between).isVisible = idsInMiddle.isNotEmpty()
+                    }
+                }
+            }
+
             if (isChecked) {
                 if (actionMode == null){
                     actionMode = (getActivity() as AppCompatActivity?)!!.startSupportActionMode(contextualActionBar)
@@ -200,21 +218,28 @@ class CancelledDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClic
             item: MenuItem?
         ): Boolean {
             return when (item!!.itemId) {
+                R.id.select_between -> {
+                    lifecycleScope.launch {
+                        val selectedIDs = getSelectedIDs().sortedBy { it }
+                        val idsInMiddle = withContext(Dispatchers.IO){
+                            downloadViewModel.getIDsBetweenTwoItems(selectedIDs.first(), selectedIDs.last(), listOf(DownloadRepository.Status.Cancelled).toListString())
+                        }.toMutableList()
+                        idsInMiddle.addAll(selectedIDs)
+                        if (idsInMiddle.isNotEmpty()){
+                            adapter.checkMultipleItems(idsInMiddle)
+                            actionMode?.title = "${idsInMiddle.count()} ${getString(R.string.selected)}"
+                        }
+                        mode?.menu?.findItem(R.id.select_between)?.isVisible = false
+                    }
+                    true
+                }
                 R.id.delete_results -> {
                     val deleteDialog = MaterialAlertDialogBuilder(requireContext())
                     deleteDialog.setTitle(getString(R.string.you_are_going_to_delete_multiple_items))
                     deleteDialog.setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, _: Int -> dialogInterface.cancel() }
                     deleteDialog.setPositiveButton(getString(R.string.ok)) { _: DialogInterface?, _: Int ->
                         lifecycleScope.launch {
-                            val selectedObjects = if (adapter.inverted || adapter.checkedItems.isEmpty()){
-                                withContext(Dispatchers.IO){
-                                    downloadViewModel.getItemIDsNotPresentIn(adapter.checkedItems, listOf(
-                                        DownloadRepository.Status.Cancelled))
-                                }
-                            }else{
-                                adapter.checkedItems.toList()
-                            }
-
+                            val selectedObjects = getSelectedIDs()
                             adapter.clearCheckedItems()
                             downloadViewModel.deleteAllWithID(selectedObjects)
                             actionMode?.finish()
@@ -225,21 +250,15 @@ class CancelledDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClic
                 }
                 R.id.redownload -> {
                     lifecycleScope.launch {
-                        val selectedObjects = if (adapter.inverted || adapter.checkedItems.isEmpty()){
-                            withContext(Dispatchers.IO){
-                                downloadViewModel.getItemIDsNotPresentIn(adapter.checkedItems, listOf(
-                                    DownloadRepository.Status.Cancelled))
-                            }
-                        }else{
-                            adapter.checkedItems.toList()
-                        }
-
+                        val selectedObjects = getSelectedIDs()
                         if (preferences.getBoolean("download_card", true)){
                             withContext(Dispatchers.IO){
                                 downloadViewModel.addDownloadsToProcessing(selectedObjects)
                             }
                             withContext(Dispatchers.Main){
-                                findNavController().navigate(R.id.downloadMultipleBottomSheetDialog2)
+                                val bundle = Bundle()
+                                bundle.putLongArray("currentDownloadIDs", selectedObjects.toLongArray())
+                                findNavController().navigate(R.id.downloadMultipleBottomSheetDialog2,bundle)
                             }
                         }else{
                             withContext(Dispatchers.IO) {
@@ -266,6 +285,17 @@ class CancelledDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClic
                     if (selectedObjects == 0) actionMode?.finish()
                     true
                 }
+                R.id.copy_urls -> {
+                    lifecycleScope.launch {
+                        val selectedObjects = getSelectedIDs()
+                        val urls = withContext(Dispatchers.IO){
+                            downloadViewModel.getURLsByIds(selectedObjects)
+                        }
+                        UiUtil.copyToClipboard(urls.joinToString("\n"), requireActivity())
+                        actionMode?.finish()
+                    }
+                    true
+                }
                 else -> false
             }
         }
@@ -273,6 +303,17 @@ class CancelledDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClic
         override fun onDestroyActionMode(mode: ActionMode?) {
             actionMode = null
             adapter.clearCheckedItems()
+        }
+
+        suspend fun getSelectedIDs() : List<Long>{
+            return if (adapter.inverted || adapter.checkedItems.isEmpty()){
+                withContext(Dispatchers.IO){
+                    downloadViewModel.getItemIDsNotPresentIn(adapter.checkedItems.toList(), listOf(
+                        DownloadRepository.Status.Cancelled))
+                }
+            }else{
+                adapter.checkedItems.toList()
+            }
         }
     }
 

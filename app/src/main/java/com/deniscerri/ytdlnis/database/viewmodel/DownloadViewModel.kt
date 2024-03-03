@@ -940,5 +940,13 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         return dao.getURLsByStatus(list.map { it.toString() })
     }
 
+    fun getURLsByIds(list: List<Long>) : List<String> {
+        return dao.getURLsByID(list)
+    }
+
+    fun getIDsBetweenTwoItems(item1: Long, item2: Long, statuses: List<String>) : List<Long> {
+        return dao.getIDsBetweenTwoItems(item1, item2, statuses)
+    }
+
 
 }

@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.ResultItem
+import com.deniscerri.ytdlnis.util.Extensions.loadThumbnail
 import com.deniscerri.ytdlnis.util.Extensions.popup
 import com.squareup.picasso.Picasso
 import java.util.*
@@ -62,17 +63,8 @@ class PlaylistAdapter(onItemClickListener: OnItemClickListener, activity: Activi
         val thumbnail = card.findViewById<ImageView>(R.id.downloads_image_view)
 
         // THUMBNAIL ----------------------------------
-        if (!sharedPreferences.getStringSet("hide_thumbnails", emptySet())!!.contains("home")){
-            val imageURL = item!!.thumb
-            if (imageURL.isNotEmpty()) {
-                uiHandler.post { Picasso.get().load(imageURL).into(thumbnail) }
-            } else {
-                uiHandler.post { Picasso.get().load(R.color.black).into(thumbnail) }
-            }
-            thumbnail.setColorFilter(Color.argb(95, 0, 0, 0))
-        }else{
-            uiHandler.post { Picasso.get().load(R.color.black).into(thumbnail) }
-        }
+        val hideThumb = sharedPreferences.getStringSet("hide_thumbnails", emptySet())!!.contains("home")
+        uiHandler.post { thumbnail.loadThumbnail(hideThumb, item!!.thumb) }
 
         card.findViewById<TextView>(R.id.title).text = item!!.title
         card.findViewById<TextView>(R.id.author).text = item.author

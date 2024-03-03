@@ -22,6 +22,7 @@ import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.repository.DownloadRepository
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.util.Extensions.dp
+import com.deniscerri.ytdlnis.util.Extensions.loadThumbnail
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
@@ -65,17 +66,8 @@ class ActiveDownloadAdapter(onItemClickListener: OnItemClickListener, activity: 
         val thumbnail = card.findViewById<ImageView>(R.id.image_view)
 
         // THUMBNAIL ----------------------------------
-        if (!sharedPreferences.getStringSet("hide_thumbnails", emptySet())!!.contains("queue")){
-            val imageURL = item.thumb
-            if (imageURL.isNotEmpty()) {
-                uiHandler.post { Picasso.get().load(imageURL).into(thumbnail) }
-            } else {
-                uiHandler.post { Picasso.get().load(R.color.black).into(thumbnail) }
-            }
-            thumbnail.setColorFilter(Color.argb(20, 0, 0, 0))
-        }else{
-            uiHandler.post { Picasso.get().load(R.color.black).into(thumbnail) }
-        }
+        val hideThumb = sharedPreferences.getStringSet("hide_thumbnails", emptySet())!!.contains("queue")
+        uiHandler.post { thumbnail.loadThumbnail(hideThumb, item.thumb) }
 
         // PROGRESS BAR ----------------------------------------------------
         val progressBar = card.findViewById<LinearProgressIndicator>(R.id.progress)
@@ -168,7 +160,7 @@ class ActiveDownloadAdapter(onItemClickListener: OnItemClickListener, activity: 
                         val value = animation.animatedValue as Int
                         pauseButton.cornerRadius = value
                         pauseButton.icon = ContextCompat.getDrawable(activity, R.drawable.exomedia_ic_play_arrow_white)
-                        pauseButton.contentDescription = activity.getString(R.string.start)
+                        pauseButton.contentDescription = activity.getString(R.string.resume)
                         pauseButton.tag = ActiveDownloadAction.Resume
                         pauseButton.isEnabled = true
                     }

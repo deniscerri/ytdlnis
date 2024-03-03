@@ -185,7 +185,7 @@ class CookiesFragment : Fragment(), CookieAdapter.OnItemClickListener {
                 builder.setNeutralButton(
                     getString(android.R.string.copy)
                 ) { dialog: DialogInterface?, which: Int ->
-                    UiUtil.copyToClipboard(item.content, requireActivity())
+                    UiUtil.copyToClipboard(cookiesViewModel.cookieHeader + "\n" + item.content, requireActivity())
                 }
             }
 

@@ -372,4 +372,7 @@
     <string name="text_size">Text Size</string>
     <string name="add">Add</string>
     <string name="back">Back</string>
+    <string name="all_queries_finished">All Queries have been processed</string>
+    <string name="select_between">Select Items Between</string>
+    <string name="reset_processed_links">Reset Already Processed Links</string>
 </resources>

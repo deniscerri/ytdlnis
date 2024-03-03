@@ -51,8 +51,8 @@ class SelectPlaylistItemsDialog : DialogFragment(), PlaylistAdapter.OnItemClickL
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setStyle(STYLE_NORMAL, R.style.FullScreenDialogTheme)
-        downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
-        resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]
+        downloadViewModel = ViewModelProvider(requireActivity())[DownloadViewModel::class.java]
+        resultViewModel = ViewModelProvider(requireActivity())[ResultViewModel::class.java]
     }
 
     override fun onCreateView(
@@ -173,6 +173,7 @@ class SelectPlaylistItemsDialog : DialogFragment(), PlaylistAdapter.OnItemClickL
         ok = toolbar.menu.getItem(0)
         ok.isEnabled = false
         ok.setOnMenuItemClickListener {
+            ok.isEnabled = false
             lifecycleScope.launch(Dispatchers.IO) {
                 val checkedItems = listAdapter.getCheckedItems()
                 val checkedResultItems = items.filter { item -> checkedItems.contains(item!!.url) }
@@ -196,11 +197,11 @@ class SelectPlaylistItemsDialog : DialogFragment(), PlaylistAdapter.OnItemClickL
                         downloadItems.add(i)
                     }
 
-                    CoroutineScope(Dispatchers.IO).launch {
-                        downloadViewModel.insertToProcessing(downloadItems)
-                    }
+                    downloadViewModel.insertToProcessing(downloadItems)
 
-                    findNavController().navigate(R.id.downloadMultipleBottomSheetDialog2)
+                    withContext(Dispatchers.Main){
+                        findNavController().navigate(R.id.downloadMultipleBottomSheetDialog)
+                    }
                 }
 
                 dismiss()

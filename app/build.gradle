@@ -11,12 +11,12 @@ def properties = new Properties()
 def versionMajor = 1
 def versionMinor = 7
 def versionPatch = 3
-def versionBuild = 0 // bump for dogfood builds, public betas, etc.
-def versionExt = ""
+def versionBuild = 1 // bump for dogfood builds, public betas, etc.
+def versionExt = ".${versionBuild}"
 
-if (versionBuild > 0){
-    versionExt = ".${versionBuild}-beta"
-}
+//if (versionBuild > 0){
+//    versionExt = ".${versionBuild}-beta"
+//}
 
 android {
     namespace 'com.deniscerri.ytdlnis'
@@ -116,6 +116,13 @@ android {
     }
     composeOptions {
         kotlinCompilerExtensionVersion composeVer
+    }
+
+    dependenciesInfo {
+        // Disables dependency metadata when building APKs.
+        includeInApk = false
+        // Disables dependency metadata when building Android App Bundles.
+        includeInBundle = false
     }
 }
 

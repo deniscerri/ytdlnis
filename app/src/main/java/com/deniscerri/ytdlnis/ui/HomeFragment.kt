@@ -500,7 +500,9 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
 
             val url = checkClipboard()
             url?.apply {
-                combinedList.add(0, SearchSuggestionItem(this.joinToString("\n"), SearchSuggestionType.CLIPBOARD))
+                if (this.isNotEmpty()){
+                    combinedList.add(0, SearchSuggestionItem(this.joinToString("\n"), SearchSuggestionType.CLIPBOARD))
+                }
             }
 
 
@@ -845,7 +847,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
         return kotlin.runCatching {
             val clipboard = requireContext().getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
             val clip = clipboard.primaryClip!!.getItemAt(0).text
-            return clip.split("\r\n").filter { Patterns.WEB_URL.matcher(it).matches() }
+            return clip.split("\r","\n").map { it.trim() }.filter { Patterns.WEB_URL.matcher(it).matches() }
         }.getOrNull()
     }
 
@@ -873,27 +875,36 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
 
     }
 
-    override fun onSearchSuggestionAdd(text: String) {
-        val present = queriesChipGroup!!.children.firstOrNull { (it as Chip).text.toString() == text }
-        if (present == null) {
-            val chip = layoutinflater!!.inflate(R.layout.input_chip, queriesChipGroup, false) as Chip
-            chip.text = text
-            chip.chipBackgroundColor = ColorStateList.valueOf(MaterialColors.getColor(requireContext(), R.attr.colorSecondaryContainer, Color.BLACK))
-            chip.setOnClickListener {
-                if (queriesChipGroup!!.childCount == 1) queriesConstraint!!.visibility = View.GONE
-                queriesChipGroup!!.removeView(chip)
+    override fun onSearchSuggestionAdd(t: String) {
+        val items = t.split("\n")
+
+        items.forEach {text ->
+            val present = queriesChipGroup!!.children.firstOrNull { (it as Chip).text.toString() == text }
+            if (present == null) {
+                val chip = layoutinflater!!.inflate(R.layout.input_chip, queriesChipGroup, false) as Chip
+                chip.text = text
+                chip.chipBackgroundColor = ColorStateList.valueOf(MaterialColors.getColor(requireContext(), R.attr.colorSecondaryContainer, Color.BLACK))
+                chip.setOnClickListener {
+                    if (queriesChipGroup!!.childCount == 1) queriesConstraint!!.visibility = View.GONE
+                    queriesChipGroup!!.removeView(chip)
+                }
+                queriesChipGroup!!.addView(chip)
             }
-            queriesChipGroup!!.addView(chip)
+
         }
+
+        searchView!!.editText.setText("")
         if (queriesChipGroup!!.childCount == 0) queriesConstraint!!.visibility = View.GONE
         else queriesConstraint!!.visibility = View.VISIBLE
-        searchView!!.editText.setText("")
+
         val clipBoardItem = searchSuggestionsRecyclerView?.layoutManager?.findViewByPosition(0)
         clipBoardItem?.apply {
             if ((this as ConstraintLayout).findViewById<TextView>(R.id.suggestion_text).text == getString(R.string.link_you_copied)){
                 searchSuggestionsAdapter?.notifyItemRemoved(0)
             }
         }
+
+
     }
 
     override fun onSearchSuggestionLongClick(text: String, position: Int) {

@@ -500,6 +500,13 @@
                     android:checked="false"
                     android:text="@string/retry_missing_downloads"/>
 
+                <com.google.android.material.materialswitch.MaterialSwitch
+                    android:id="@+id/reset_processed_links"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:checked="false"
+                    android:text="@string/reset_processed_links"/>
+
             </LinearLayout>
 
         </LinearLayout>

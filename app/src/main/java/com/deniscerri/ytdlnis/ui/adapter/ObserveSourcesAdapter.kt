@@ -57,14 +57,12 @@ class ObserveSourcesAdapter(onItemClickListener: OnItemClickListener, activity: 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)
         val card = holder.cardView
-        val uiHandler = Handler(Looper.getMainLooper())
         card.popup()
 
         if (item == null) return
         card.tag = item.url
         holder.itemView.tag = item.url
 
-        val thumbnail = card.findViewById<ImageView>(R.id.result_image_view)
 
         // TITLE  ----------------------------------
         val itemTitle = card.findViewById<TextView>(R.id.title)

@@ -219,6 +219,7 @@ class NotificationUtil(var context: Context) {
     }
 
     fun createDownloadFinished(
+        id: Long,
         title: String?,
         filepath: List<String>?,
         res: Resources
@@ -234,64 +235,75 @@ class NotificationUtil(var context: Context) {
                     R.drawable.ic_launcher_foreground_large
                 )
             )
+            .setGroup(DOWNLOAD_FINISHED_NOTIFICATION_ID.toString())
+            .setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_CHILDREN)
             .setContentText("")
             .setPriority(NotificationCompat.PRIORITY_MAX)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .clearActions()
         if (filepath != null){
             try{
-                val uri = filepath.first().runCatching {
-                    DocumentFile.fromSingleUri(context, Uri.parse(filepath.first())).run{
-                        if (this?.exists() == true){
-                            this.uri
-                        }else if (File(this@runCatching).exists()){
-                            FileProvider.getUriForFile(context, context.packageName + ".fileprovider",
-                                File(this@runCatching))
-                        }else null
-                    }
-                }.getOrNull()
+                val uris = filepath.mapNotNull {
+                    runCatching {
+                        DocumentFile.fromSingleUri(context, Uri.parse(it)).run{
+                            if (this?.exists() == true){
+                                this.uri
+                            }else if (File(it).exists()){
+                                FileProvider.getUriForFile(context, context.packageName + ".fileprovider",
+                                    File(it))
+                            }else null
+                        }
+                    }.getOrNull()
+                }
 
                 val openFileIntent = Intent()
+                val shareFileIntent = Intent()
 
-                if (uri != null){
+                if (uris.isNotEmpty()){
                     openFileIntent.apply {
                         addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                         addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                         action = Intent.ACTION_VIEW
-                        data = uri
+                        data = uris.first()
+                    }
+
+                    shareFileIntent.apply {
+                        addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        action = Intent.ACTION_SEND_MULTIPLE
+                        putParcelableArrayListExtra(Intent.EXTRA_STREAM, ArrayList(uris))
+                        type = if (uris.size == 1) uris[0].let { context.contentResolver.getType(it) } ?: "media/*" else "*/*"
+                        putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
                     }
                 }
 
                 val openNotificationPendingIntent: PendingIntent = TaskStackBuilder.create(context).run {
                     addNextIntentWithParentStack(openFileIntent)
-                    getPendingIntent(0,
+                    getPendingIntent(id.toInt(),
                         PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
                 }
 
-
-
                 //share intent
-                val shareIntent = Intent(context, ShareFileActivity::class.java)
-                shareIntent.putExtra("path", filepath.toTypedArray())
-                shareIntent.putExtra("notificationID", DOWNLOAD_FINISHED_NOTIFICATION_ID)
                 val shareNotificationPendingIntent: PendingIntent = PendingIntent.getActivity(
                     context,
-                    0,
-                    shareIntent,
-                    PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE
+                    id.toInt(),
+                    Intent.createChooser(shareFileIntent, res.getString(R.string.share)),
+                    PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
                 )
 
                 notificationBuilder.addAction(0, res.getString(R.string.Open_File), openNotificationPendingIntent)
                 notificationBuilder.addAction(0, res.getString(R.string.share), shareNotificationPendingIntent)
             }catch (_: Exception){}
         }
-        notificationManager.notify(DOWNLOAD_FINISHED_NOTIFICATION_ID, notificationBuilder.build())
+        notificationManager.notify(DOWNLOAD_FINISHED_NOTIFICATION_ID + id.toInt(), notificationBuilder.build())
     }
 
-    fun createDownloadErrored(title: String?,
-                               error: String?,
-                               logID: Long?,
-                               res: Resources
+    fun createDownloadErrored(
+        id: Long,
+        title: String?,
+        error: String?,
+        logID: Long?,
+        res: Resources
     ) {
         val notificationBuilder = getBuilder(DOWNLOAD_ERRORED_CHANNEL_ID)
 
@@ -333,7 +345,7 @@ class NotificationUtil(var context: Context) {
             notificationBuilder.setContentIntent(errorPendingIntent)
             notificationBuilder.addAction(0, res.getString(R.string.logs), errorPendingIntent)
         }
-        notificationManager.notify(DOWNLOAD_ERRORED_NOTIFICATION_ID, notificationBuilder.build())
+        notificationManager.notify(DOWNLOAD_ERRORED_NOTIFICATION_ID + id.toInt(), notificationBuilder.build())
     }
 
 
@@ -422,7 +434,6 @@ class NotificationUtil(var context: Context) {
     fun cancelDownloadNotification(id: Int) {
         notificationManager.cancel(id)
     }
-
     fun createMoveCacheFilesNotification(pendingIntent: PendingIntent?, downloadMiscChannelId: String): Notification {
         val notificationBuilder = getBuilder(downloadMiscChannelId)
 
@@ -574,7 +585,7 @@ class NotificationUtil(var context: Context) {
             .createPendingIntent()
 
         notificationBuilder
-            .setContentTitle(resources.getString(R.string.finished_download_notification_channel_name))
+            .setContentTitle(resources.getString(R.string.all_queries_finished))
             .setSmallIcon(R.drawable.ic_launcher_foreground_large)
             .setLargeIcon(
                 BitmapFactory.decodeResource(

@@ -761,7 +761,7 @@ class InfoUtil(private val context: Context) {
                         formatProper.format_note = format.getString("format_note")
                     }else{
                         if (!formatProper.format_note.endsWith("audio", true)){
-                            formatProper.format_note = "${format.getString("format_note")} audio"
+                            formatProper.format_note = format.getString("format_note").uppercase().removeSuffix("AUDIO") + " AUDIO"
                         }
                     }
                 }
@@ -772,8 +772,8 @@ class InfoUtil(private val context: Context) {
                     formatProper.tbr = formatProper.tbr + "k"
                 }
 
-                if(formatProper.vcodec.isEmpty() || formatProper.vcodec == "null"){
-                    if(formatProper.acodec.isEmpty() || formatProper.acodec == "null"){
+                if(formatProper.vcodec.isNullOrEmpty() || formatProper.vcodec == "null"){
+                    if(formatProper.acodec.isNullOrEmpty() || formatProper.acodec == "null"){
                         formatProper.vcodec = format.getStringByAny("video_ext", "ext").ifEmpty { "unknown" }
                     }
                 }
@@ -1032,36 +1032,22 @@ class InfoUtil(private val context: Context) {
                 }
             }
 
-
-
-            try {
-                val config = File(context.cacheDir.absolutePath + "/config" + downloadItem.id + "##replaceMetadata.txt")
-                YoutubeDLRequest("").apply {
-
-                    if (downloadItem.playlistTitle.isNotBlank()){
-                        addCommands(listOf("--replace-in-metadata", "playlist", ".+", downloadItem.playlistTitle))
-                        runCatching {
-                            if (downloadItem.playlistIndex != null){
-                                addOption("--parse-metadata", downloadItem.playlistIndex.toString() + ":%(playlist_index)s")
-                            }
-                        }
+            if (downloadItem.playlistTitle.isNotBlank()){
+                request.addCommands(listOf("--replace-in-metadata", "video:playlist", ".+", downloadItem.playlistTitle))
+                runCatching {
+                    if (downloadItem.playlistIndex != null){
+                        request.addOption("--parse-metadata", downloadItem.playlistIndex.toString() + ":%(playlist_index)s")
                     }
-
-                    if(downloadItem.title.isNotBlank()){
-                        addCommands(listOf("--replace-in-metadata", "title", ".+", downloadItem.title))
-                    }
-
-
-                    if (downloadItem.author.isNotBlank()){
-                        addCommands(listOf("--replace-in-metadata", "uploader", ".+", downloadItem.author))
-                    }
-
-                    val configData = parseYTDLRequestString(this).replace(" \" \"", "")
-                    config.writeText(configData)
-                    request.addOption("--config", config.absolutePath)
                 }
-            } catch (e: Exception) {
-                e.printStackTrace()
+            }
+
+            if(downloadItem.title.isNotBlank()){
+                request.addCommands(listOf("--replace-in-metadata", "video:title", ".+", downloadItem.title.take(150)))
+            }
+
+
+            if (downloadItem.author.isNotBlank()){
+                request.addCommands(listOf("--replace-in-metadata", "video:uploader", ".+", downloadItem.author.take(30)))
             }
 
             request.addOption("--parse-metadata", "uploader:(?P<uploader>.+)(?: - Topic)$")
@@ -1111,10 +1097,6 @@ class InfoUtil(private val context: Context) {
             if (sharedPreferences.getBoolean("write_description", false)){
                 request.addOption("--write-description")
             }
-
-            filenameTemplate = filenameTemplate
-                                    .replace("%(uploader)s", "%(uploader,channel).30B")
-                                    .replace("%(title)s", "%(title).170B")
         }
 
         if (sharedPreferences.getBoolean("download_archive", false)){

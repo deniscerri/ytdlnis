@@ -94,6 +94,7 @@ class ObserveSourcesBottomSheetDialog : BottomSheetDialogFragment() {
     private lateinit var endsAfterNr: TextInputLayout
     private lateinit var retryMissingDownloads: MaterialSwitch
     private lateinit var getOnlyNewUploads: MaterialSwitch
+    private lateinit var resetProcessedLinks: MaterialSwitch
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -252,6 +253,7 @@ class ObserveSourcesBottomSheetDialog : BottomSheetDialogFragment() {
         endsAfterNr = view.findViewById(R.id.after_nr)
         retryMissingDownloads = view.findViewById(R.id.retry_missing_downloads)
         getOnlyNewUploads = view.findViewById(R.id.get_new_uploads)
+        resetProcessedLinks = view.findViewById(R.id.reset_processed_links)
         okButton = view.findViewById(R.id.okButton)
 
         title.editText!!.setText(currentItem?.name ?: "")
@@ -446,6 +448,7 @@ class ObserveSourcesBottomSheetDialog : BottomSheetDialogFragment() {
 
         retryMissingDownloads.isChecked = currentItem?.retryMissingDownloads ?: false
         getOnlyNewUploads.isChecked = currentItem?.getOnlyNewUploads ?: false
+        resetProcessedLinks.isVisible = currentItem != null
 
         if (currentItem != null) okButton.text = getString(R.string.update)
         okButton.setOnClickListener {
@@ -481,7 +484,7 @@ class ObserveSourcesBottomSheetDialog : BottomSheetDialogFragment() {
                     0,
                     getOnlyNewUploads.isChecked,
                     retryMissingDownloads.isChecked,
-                    mutableListOf()
+                    if (resetProcessedLinks.isChecked) mutableListOf() else currentItem?.alreadyProcessedLinks ?: mutableListOf()
                 )
                 withContext(Dispatchers.IO){
                     observeSourcesViewModel.insert(observeItem)

@@ -75,67 +75,58 @@ class ObserveSourcesViewModel(private val application: Application) : AndroidVie
         repository.update(item)
     }
 
+    fun cancelObservationTaskByID(id : Long){
+        repository.cancelObservationTaskByID(application, id)
+    }
+
 
     private fun observeTask(it: ObserveSourcesItem){
+        cancelObservationTaskByID(it.id)
+
         val id = it.id
         val c = Calendar.getInstance()
-            val date = Calendar.getInstance()
-            date.timeInMillis = it.startsTime
-            val hourMin = Calendar.getInstance()
-            hourMin.timeInMillis = it.everyTime
+
+        val date = Calendar.getInstance()
+        date.timeInMillis = it.startsTime
+        val hourMin = Calendar.getInstance()
+        hourMin.timeInMillis = it.everyTime
         c.set(Calendar.DAY_OF_MONTH, date.get(Calendar.DAY_OF_MONTH))
         c.set(Calendar.MONTH, date.get(Calendar.MONTH))
         c.set(Calendar.YEAR, date.get(Calendar.YEAR))
         c.set(Calendar.HOUR_OF_DAY, hourMin.get(Calendar.HOUR_OF_DAY))
         c.set(Calendar.MINUTE, hourMin.get(Calendar.MINUTE))
 
-
-        repository.cancelObservationTaskByID(application, id)
-
         val intent = Intent(application, ObserveAlarmReceiver::class.java)
         intent.putExtra("id", id)
-        if (it.everyNr == 0) it.everyNr = 1
 
         when(it.everyCategory){
-            ObserveSourcesRepository.EveryCategory.DAY -> {
-                alarmManager.setExact(
-                    AlarmManager.RTC,
-                    c.timeInMillis,
-                    PendingIntent.getBroadcast(application, it.id.toInt(), intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
-                )
-            }
+            ObserveSourcesRepository.EveryCategory.DAY -> {}
             ObserveSourcesRepository.EveryCategory.WEEK -> {
-                if (it.everyWeekDay.isNotEmpty()){
-                    val weekDayID = c.get(Calendar.DAY_OF_WEEK).toString()
-                    val followingWeekDay = (it.everyWeekDay.firstOrNull { it.toInt() > weekDayID.toInt() } ?: it.everyWeekDay.minBy { it.toInt() }).toInt()
-                    c.set(Calendar.DAY_OF_WEEK, followingWeekDay)
-                    if(c.timeInMillis < System.currentTimeMillis()){
-                        c.add(Calendar.DAY_OF_MONTH, 7)
-                    }
+                val weekDayNr = c.get(Calendar.DAY_OF_WEEK)
+                val followingWeekDay = it.everyWeekDay.firstOrNull { it.toInt() >= weekDayNr }
+                if (followingWeekDay == null){
+                    c.add(Calendar.DAY_OF_MONTH, it.everyWeekDay.minBy { it.toInt() }.toInt() + (7 - weekDayNr))
+                }else{
+                    c.add(Calendar.DAY_OF_MONTH, followingWeekDay.toInt() - weekDayNr)
                 }
-
-                alarmManager.setExact(
-                    AlarmManager.RTC,
-                    c.timeInMillis,
-                    PendingIntent.getBroadcast(application, it.id.toInt(), intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
-                )
             }
             ObserveSourcesRepository.EveryCategory.MONTH -> {
                 val theMonthIndex = Month.values().indexOf(it.startsMonth)
                 val currentMonthIndex = c.get(Calendar.MONTH)
                 if (theMonthIndex != currentMonthIndex){
                     c.set(Calendar.MONTH, theMonthIndex)
-                    if (c.timeInMillis < System.currentTimeMillis()){
+                    if (c.timeInMillis < Calendar.getInstance().timeInMillis){
                         c.add(Calendar.YEAR, 1)
                     }
                 }
-                alarmManager.setExact(
-                    AlarmManager.RTC,
-                    c.timeInMillis,
-                    PendingIntent.getBroadcast(application, it.id.toInt(), intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
-                )
             }
         }
+
+        alarmManager.setExact(
+            AlarmManager.RTC,
+            c.timeInMillis,
+            PendingIntent.getBroadcast(application, it.id.toInt(), intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
+        )
 
     }
 

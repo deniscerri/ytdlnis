@@ -9,6 +9,7 @@ import com.deniscerri.ytdlnis.database.dao.ObserveSourcesDao
 import com.deniscerri.ytdlnis.database.models.ObserveSourcesItem
 import com.deniscerri.ytdlnis.receiver.ObserveAlarmReceiver
 import kotlinx.coroutines.flow.Flow
+import java.util.Calendar
 
 class ObserveSourcesRepository(private val observeSourcesDao: ObserveSourcesDao) {
     val items : Flow<List<ObserveSourcesItem>> = observeSourcesDao.getAllSourcesFlow()
@@ -72,6 +73,49 @@ class ObserveSourcesRepository(private val observeSourcesDao: ObserveSourcesDao)
                 PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
             )
         )
+    }
+
+    fun calculateNextTime(item: ObserveSourcesItem) : Long {
+        val c = Calendar.getInstance()
+
+        val hourMin = Calendar.getInstance()
+        hourMin.timeInMillis = item.everyTime
+
+        c.set(Calendar.HOUR_OF_DAY, hourMin.get(Calendar.HOUR_OF_DAY))
+        c.set(Calendar.MINUTE, hourMin.get(Calendar.MINUTE))
+
+        if (item.everyNr == 0) item.everyNr = 1
+
+        when(item.everyCategory){
+            EveryCategory.DAY -> {
+                c.add(Calendar.DAY_OF_MONTH, item.everyNr)
+            }
+            EveryCategory.WEEK -> {
+                if(item.everyWeekDay.isEmpty()){
+                    c.add(Calendar.DAY_OF_MONTH, 7 * item.everyNr)
+                }else{
+                    val weekDayNr = c.get(Calendar.DAY_OF_WEEK)
+                    val followingWeekDay = item.everyWeekDay.firstOrNull { it.toInt() > weekDayNr }
+                    if (followingWeekDay == null){
+                        c.add(Calendar.DAY_OF_MONTH, item.everyWeekDay.minBy { it.toInt() }.toInt() + (7 - weekDayNr))
+                        item.everyNr--
+                    }else{
+                        c.add(Calendar.DAY_OF_MONTH, followingWeekDay.toInt() - weekDayNr)
+                    }
+
+                    if (item.everyNr > 1){
+                        c.add(Calendar.DAY_OF_MONTH, 7 * item.everyNr)
+                    }
+                }
+            }
+            EveryCategory.MONTH -> {
+                c.add(Calendar.MONTH, item.everyNr)
+                c.set(Calendar.DAY_OF_MONTH, item.everyMonthDay)
+            }
+        }
+
+
+        return c.timeInMillis
     }
 
 }

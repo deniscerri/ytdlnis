@@ -216,6 +216,9 @@ interface DownloadDao {
     @Query("Select url from downloads where status in (:status)")
     fun getURLsByStatus(status: List<String>) : List<String>
 
+    @Query("Select url from downloads where id in (:ids)")
+    fun getURLsByID(ids: List<Long>) : List<String>
+
     @Query("UPDATE downloads SET downloadStartTime=0 where id in (:list)")
     suspend fun resetScheduleTimeForItems(list: List<Long>)
 
@@ -243,4 +246,8 @@ interface DownloadDao {
 
     @Query("Update downloads set id=:newId where id=:id")
     suspend fun updateDownloadID(id: Long, newId: Long)
+
+
+    @Query("SELECT id from downloads WHERE id > :item1 AND id < :item2 AND status in (:statuses) ORDER BY id DESC")
+    fun getIDsBetweenTwoItems(item1: Long, item2: Long, statuses: List<String>) : List<Long>
 }

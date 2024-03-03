@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.DownloadItemSimple
 import com.deniscerri.ytdlnis.database.repository.DownloadRepository
+import com.deniscerri.ytdlnis.util.Extensions.loadThumbnail
 import com.deniscerri.ytdlnis.util.Extensions.popup
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.google.android.material.button.MaterialButton
@@ -28,12 +29,12 @@ class GenericDownloadAdapter(onItemClickListener: OnItemClickListener, activity:
 ) {
     private val onItemClickListener: OnItemClickListener
     private val activity: Activity
-    val checkedItems: ArrayList<Long>
+    val checkedItems: MutableSet<Long>
     var inverted: Boolean
     private val sharedPreferences: SharedPreferences
 
     init {
-        checkedItems = ArrayList()
+        checkedItems = mutableSetOf()
         this.onItemClickListener = onItemClickListener
         this.activity = activity
         this.inverted = false
@@ -65,16 +66,8 @@ class GenericDownloadAdapter(onItemClickListener: OnItemClickListener, activity:
         val thumbnail = card.findViewById<ImageView>(R.id.downloads_image_view)
 
         // THUMBNAIL ----------------------------------
-        if (!sharedPreferences.getStringSet("hide_thumbnails", emptySet())!!.contains("queue")){
-            val imageURL = item.thumb
-            if (imageURL.isNotEmpty()) {
-                uiHandler.post { Picasso.get().load(imageURL).into(thumbnail) }
-            } else {
-                uiHandler.post { Picasso.get().load(R.color.black).into(thumbnail) }
-            }
-        }else{
-            uiHandler.post { Picasso.get().load(R.color.black).into(thumbnail) }
-        }
+        val hideThumb = sharedPreferences.getStringSet("hide_thumbnails", emptySet())!!.contains("queue")
+        uiHandler.post { thumbnail.loadThumbnail(hideThumb, item.thumb) }
 
         val duration = card.findViewById<TextView>(R.id.duration)
         duration.text = item.duration
@@ -177,6 +170,14 @@ class GenericDownloadAdapter(onItemClickListener: OnItemClickListener, activity:
     fun checkAll() {
         checkedItems.clear()
         inverted = true
+        notifyDataSetChanged()
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun checkMultipleItems(list: List<Long>){
+        checkedItems.clear()
+        inverted = false
+        checkedItems.addAll(list)
         notifyDataSetChanged()
     }
 

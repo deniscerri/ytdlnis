@@ -65,21 +65,19 @@ class ObserveSourceWorker(
                 }
             }
             .filter { result ->
-
-            val history = historyRepo.getAllByURL(result.url)
-            if (!item.retryMissingDownloads){
-                //all items that are not present in history
-                history.none { hi -> hi.downloadPath.any { path -> FileUtil.exists(path) } }
-            }else{
-                //all items that are not already processed
-                if(item.alreadyProcessedLinks.isEmpty()){
-                    !history.map { it.url }.contains(result.url) && !item.alreadyProcessedLinks.contains(result.url)
+                val history = historyRepo.getAllByURL(result.url)
+                if (item.retryMissingDownloads){
+                    //all items that are not present in history
+                    history.none { hi -> hi.downloadPath.any { path -> FileUtil.exists(path) } }
                 }else{
-                    !item.alreadyProcessedLinks.contains(result.url)
+                    //all items that are not already processed
+                    if(item.alreadyProcessedLinks.isEmpty()){
+                        !history.map { it.url }.contains(result.url)
+                    }else{
+                        !item.alreadyProcessedLinks.contains(result.url)
+                    }
                 }
             }
-
-        }
 
         val items = mutableListOf<DownloadItem>()
 
@@ -208,47 +206,18 @@ class ObserveSourceWorker(
             repo.update(item)
         }
 
-        scheduleForNextTime(item)
-        return Result.success()
-    }
-
-    private fun scheduleForNextTime(item: ObserveSourcesItem){
+        //schedule for next time
         val alarmManager = context.getSystemService(AlarmManager::class.java)
         val intent = Intent(context, ObserveAlarmReceiver::class.java)
         intent.putExtra("id", item.id)
 
-        val c = Calendar.getInstance()
-        val hourMin = Calendar.getInstance()
-        hourMin.timeInMillis = item.everyTime
-        c.set(Calendar.HOUR_OF_DAY, hourMin.get(Calendar.HOUR_OF_DAY))
-        c.set(Calendar.MINUTE, hourMin.get(Calendar.MINUTE))
-
-        when(item.everyCategory){
-            ObserveSourcesRepository.EveryCategory.DAY -> {
-                c.add(Calendar.DAY_OF_MONTH, item.everyNr)
-            }
-            ObserveSourcesRepository.EveryCategory.WEEK -> {
-                if(item.everyWeekDay.isEmpty()){
-                    c.add(Calendar.DAY_OF_MONTH, 7 * item.everyNr)
-                }else{
-                    val weekDayID = c.get(Calendar.DAY_OF_WEEK).toString()
-                    val followingWeekDay = (item.everyWeekDay.firstOrNull { it.toInt() > weekDayID.toInt() } ?: item.everyWeekDay.minBy { it.toInt() }).toInt()
-                    c.set(Calendar.DAY_OF_WEEK, followingWeekDay)
-                    if (item.everyNr > 1){
-                        c.add(Calendar.DAY_OF_MONTH, 7 * item.everyNr)
-                    }
-                }
-            }
-            ObserveSourcesRepository.EveryCategory.MONTH -> {
-                c.add(Calendar.MONTH, item.everyNr)
-                c.set(Calendar.DAY_OF_MONTH, item.everyMonthDay)
-            }
-        }
         alarmManager.setExact(
-            AlarmManager.RTC,
-            c.timeInMillis,
+            AlarmManager.RTC_WAKEUP,
+            repo.calculateNextTime(item),
             PendingIntent.getBroadcast(context, item.id.toInt(), intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
         )
+
+        return Result.success()
     }
 
 }

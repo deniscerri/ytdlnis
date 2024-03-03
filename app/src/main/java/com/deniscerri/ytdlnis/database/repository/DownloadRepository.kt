@@ -21,6 +21,7 @@ import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.dao.DownloadDao
 import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.models.DownloadItemSimple
+import com.deniscerri.ytdlnis.util.Extensions.toListString
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.work.DownloadWorker
 import kotlinx.coroutines.flow.Flow
@@ -61,10 +62,6 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
 
     enum class Status {
         Active, ActivePaused, PausedReQueued, Queued, QueuedPaused, Error, Cancelled, Saved, Processing
-    }
-
-    private fun List<Status>.toListString() : List<String>{
-        return this.map { it.toString() }
     }
 
     suspend fun insert(item: DownloadItem) : Long {

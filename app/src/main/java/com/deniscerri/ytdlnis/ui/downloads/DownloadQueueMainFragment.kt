@@ -123,40 +123,36 @@ class DownloadQueueMainFragment : Fragment(){
             lifecycleScope.launch {
                 downloadViewModel.activeDownloadsCount.collectLatest {
                     tabLayout.getTabAt(0)?.apply {
-                        if (it == 0) removeBadge()
-                        else createBadge(it)
+                        createBadge(it)
                     }
                 }
             }
             lifecycleScope.launch {
                 downloadViewModel.queuedDownloadsCount.collectLatest {
                     tabLayout.getTabAt(1)?.apply {
-                        if (it == 0) removeBadge()
-                        else createBadge(it)
+                        createBadge(it)
                     }
                 }
             }
             lifecycleScope.launch {
                 downloadViewModel.cancelledDownloadsCount.collectLatest {
                     tabLayout.getTabAt(2)?.apply {
-                        if (it == 0) removeBadge()
-                        else createBadge(it)
+                        createBadge(it)
                     }
                 }
             }
             lifecycleScope.launch {
                 downloadViewModel.erroredDownloadsCount.collectLatest {
                     tabLayout.getTabAt(3)?.apply {
-                        if (it == 0) removeBadge()
-                        else createBadge(it)
+                        createBadge(it)
                     }
                 }
             }
             lifecycleScope.launch {
                 downloadViewModel.savedDownloadsCount.collectLatest {
                     tabLayout.getTabAt(4)?.apply {
-                        if (it == 0) removeBadge()
-                        else createBadge(it)
+                        removeBadge()
+                        if (it > 0) createBadge(it)
                     }
                 }
             }

@@ -34,6 +34,7 @@ import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.ui.adapter.GenericDownloadAdapter
 import com.deniscerri.ytdlnis.util.Extensions.enableFastScroll
 import com.deniscerri.ytdlnis.util.Extensions.forceFastScrollMode
+import com.deniscerri.ytdlnis.util.Extensions.toListString
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.NotificationUtil
 import com.deniscerri.ytdlnis.util.UiUtil
@@ -180,27 +181,26 @@ class QueuedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLi
     override fun onCardSelect(isChecked: Boolean, position: Int) {
         lifecycleScope.launch {
             val selectedObjects = adapter.getSelectedObjectsCount(totalSize)
+            if (actionMode == null) actionMode = (getActivity() as AppCompatActivity?)!!.startSupportActionMode(contextualActionBar)
             val now = System.currentTimeMillis()
-            if (isChecked) {
-                if (actionMode == null){
-                    actionMode = (getActivity() as AppCompatActivity?)!!.startSupportActionMode(contextualActionBar)
-                }else{
-
-                    actionMode!!.title = "$selectedObjects ${getString(R.string.selected)}"
-                }
-            }
-            else {
-                actionMode?.title = "$selectedObjects ${getString(R.string.selected)}"
+            actionMode?.apply {
                 if (selectedObjects == 0){
-                    actionMode?.finish()
-                }
-            }
-            if (actionMode != null){
-                actionMode!!.menu.getItem(2).isVisible = withContext(Dispatchers.IO){
-                    downloadViewModel.checkAllQueuedItemsAreScheduledAfterNow(adapter.checkedItems, adapter.inverted, now)
-                }
+                    this.finish()
+                }else{
+                    this.title = "$selectedObjects ${getString(R.string.selected)}"
+                    this.menu.findItem(R.id.download).isVisible = withContext(Dispatchers.IO){
+                        downloadViewModel.checkAllQueuedItemsAreScheduledAfterNow(adapter.checkedItems.toList(), adapter.inverted, now)
+                    }
 
-                actionMode!!.menu.getItem(1).isVisible = position > 0
+                    this.menu.findItem(R.id.up).isVisible = position > 0
+                    if(selectedObjects == 2){
+                        val selectedIDs = contextualActionBar.getSelectedIDs().sortedBy { it }
+                        val idsInMiddle = withContext(Dispatchers.IO){
+                            downloadViewModel.getIDsBetweenTwoItems(selectedIDs.first(), selectedIDs.last(), listOf(DownloadRepository.Status.Queued, DownloadRepository.Status.QueuedPaused).toListString())
+                        }
+                        this.menu.findItem(R.id.select_between).isVisible = idsInMiddle.isNotEmpty()
+                    }
+                }
             }
         }
     }
@@ -250,20 +250,28 @@ class QueuedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLi
             item: MenuItem?
         ): Boolean {
             return when (item!!.itemId) {
+                R.id.select_between -> {
+                    lifecycleScope.launch {
+                        val selectedIDs = getSelectedIDs().sortedBy { it }
+                        val idsInMiddle = withContext(Dispatchers.IO){
+                            downloadViewModel.getIDsBetweenTwoItems(selectedIDs.first(), selectedIDs.last(), listOf(DownloadRepository.Status.Cancelled).toListString())
+                        }.toMutableList()
+                        idsInMiddle.addAll(selectedIDs)
+                        if (idsInMiddle.isNotEmpty()){
+                            adapter.checkMultipleItems(idsInMiddle)
+                            actionMode?.title = "${idsInMiddle.count()} ${getString(R.string.selected)}"
+                        }
+                        mode?.menu?.findItem(R.id.select_between)?.isVisible = false
+                    }
+                    true
+                }
                 R.id.delete_results -> {
                     val deleteDialog = MaterialAlertDialogBuilder(requireContext())
                     deleteDialog.setTitle(getString(R.string.you_are_going_to_delete_multiple_items))
                     deleteDialog.setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, _: Int -> dialogInterface.cancel() }
                     deleteDialog.setPositiveButton(getString(R.string.ok)) { _: DialogInterface?, _: Int ->
                         lifecycleScope.launch {
-                            val selectedObjects = if (adapter.inverted || adapter.checkedItems.isEmpty()){
-                                withContext(Dispatchers.IO){
-                                    downloadViewModel.getItemIDsNotPresentIn(adapter.checkedItems, listOf(
-                                        DownloadRepository.Status.Queued, DownloadRepository.Status.QueuedPaused))
-                                }
-                            }else{
-                                adapter.checkedItems.toList()
-                            }
+                            val selectedObjects = getSelectedIDs()
                             adapter.clearCheckedItems()
                             for (id in selectedObjects){
                                 YoutubeDL.getInstance().destroyProcessById(id.toInt().toString())
@@ -280,14 +288,7 @@ class QueuedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLi
                 }
                 R.id.download -> {
                     lifecycleScope.launch {
-                        val selectedObjects = if (adapter.inverted || adapter.checkedItems.isEmpty()){
-                            withContext(Dispatchers.IO){
-                                downloadViewModel.getItemIDsNotPresentIn(adapter.checkedItems, listOf(
-                                    DownloadRepository.Status.Queued, DownloadRepository.Status.QueuedPaused))
-                            }
-                        }else{
-                            adapter.checkedItems.toList()
-                        }
+                        val selectedObjects = getSelectedIDs()
                         adapter.clearCheckedItems()
                         for (id in selectedObjects){
                             WorkManager.getInstance(requireContext()).cancelAllWorkByTag(id.toInt().toString())
@@ -313,19 +314,22 @@ class QueuedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLi
                 }
                 R.id.up -> {
                     lifecycleScope.launch {
-                        val selectedObjects = if (adapter.inverted || adapter.checkedItems.isEmpty()){
-                            withContext(Dispatchers.IO){
-                                downloadViewModel.getItemIDsNotPresentIn(adapter.checkedItems, listOf(
-                                    DownloadRepository.Status.Queued, DownloadRepository.Status.QueuedPaused))
-                            }
-                        }else{
-                            adapter.checkedItems.toList()
-                        }
-
+                        val selectedObjects = getSelectedIDs()
                         adapter.clearCheckedItems()
                         withContext(Dispatchers.IO){
                             downloadViewModel.putAtTopOfQueue(selectedObjects)
                         }
+                        actionMode?.finish()
+                    }
+                    true
+                }
+                R.id.copy_urls -> {
+                    lifecycleScope.launch {
+                        val selectedObjects = getSelectedIDs()
+                        val urls = withContext(Dispatchers.IO){
+                            downloadViewModel.getURLsByIds(selectedObjects)
+                        }
+                        UiUtil.copyToClipboard(urls.joinToString("\n"), requireActivity())
                         actionMode?.finish()
                     }
                     true
@@ -337,6 +341,17 @@ class QueuedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLi
         override fun onDestroyActionMode(mode: ActionMode?) {
             actionMode = null
             adapter.clearCheckedItems()
+        }
+
+        suspend fun getSelectedIDs() : List<Long>{
+            return if (adapter.inverted || adapter.checkedItems.isEmpty()){
+                withContext(Dispatchers.IO){
+                    downloadViewModel.getItemIDsNotPresentIn(adapter.checkedItems.toList(), listOf(
+                        DownloadRepository.Status.Queued, DownloadRepository.Status.QueuedPaused))
+                }
+            }else{
+                adapter.checkedItems.toList()
+            }
         }
     }
 

@@ -130,6 +130,7 @@ class ObserveSourcesFragment : Fragment(), ObserveSourcesAdapter.OnItemClickList
     }
     override fun onItemSearch(item: ObserveSourcesItem) {
         runCatching {
+            observeSourcesViewModel.cancelObservationTaskByID(item.id)
             val intent = Intent(context, ObserveAlarmReceiver::class.java)
             intent.putExtra("id", item.id)
             requireActivity().sendBroadcast(intent)

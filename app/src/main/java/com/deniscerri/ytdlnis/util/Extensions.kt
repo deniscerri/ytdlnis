@@ -20,18 +20,22 @@ import android.view.ViewGroup
 import android.view.ViewOutlineProvider
 import android.view.animation.Interpolator
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.Px
 import androidx.core.view.updateLayoutParams
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.withStarted
 import androidx.recyclerview.widget.RecyclerView
+import com.deniscerri.ytdlnis.R
+import com.deniscerri.ytdlnis.database.repository.DownloadRepository
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.tabs.TabLayout
 import com.neo.highlight.core.Highlight
 import com.neo.highlight.util.listener.HighlightTextWatcher
 import com.neo.highlight.util.scheme.ColorScheme
+import com.squareup.picasso.Picasso
 import kotlinx.coroutines.launch
 import me.zhanghai.android.fastscroll.FastScrollerBuilder
 import org.json.JSONObject
@@ -215,10 +219,16 @@ object Extensions {
     }
 
     fun TabLayout.Tab.createBadge(nr: Int){
-        this.orCreateBadge.apply {
-            number = nr
-            verticalOffset = 5
-            horizontalOffset = 10
+        removeBadge()
+        if (nr > 0) {
+            orCreateBadge.apply {
+                number = nr
+                verticalOffset = 3
+                horizontalOffset =
+                    if (nr < 10) 7
+                    else if (nr < 100) 10
+                    else 20
+            }
         }
     }
 
@@ -231,6 +241,26 @@ object Extensions {
         }
 
         return lines.dropLastWhile { it.contains("[download") }.joinToString("\n") + "\n${newLine}"
+    }
+
+    fun ImageView.loadThumbnail(hideThumb: Boolean, imageURL: String){
+        if(!hideThumb){
+            if (imageURL.isNotEmpty()) {
+                Picasso.get()
+                    .load(imageURL)
+                    .resize(1280, 0)
+                    .onlyScaleDown()
+                    .into(this)
+
+            } else {
+                Picasso.get().load(R.color.black).into(this)
+            }
+        }
+    }
+
+
+    fun List<DownloadRepository.Status>.toListString() : List<String>{
+        return this.map { it.toString() }
     }
 
     fun List<String>.closestValue(value: String) = minBy { abs(value.toInt() - it.toInt()) }

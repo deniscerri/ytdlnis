@@ -171,6 +171,7 @@
                         style="?attr/materialIconButtonFilledStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:contentDescription="@string/pause"
                         android:layoutAnimation="@anim/popup_enter"
                         app:backgroundTint="?attr/colorSurface"
                         app:cornerRadius="15dp"

@@ -1,0 +1,15 @@
+## What's New
+
+- Added ability to select all items between two selected items in download queue
+- Fixed app only getting one URL when tapping "Link you copied" in search view even if you copied multiple links
+- Fixed app crashing on playlist selector when sharing a playlist. Forgor to configure it with the new changes
+- Fixed app not removing errored, cancelled, saved downloads after you queued them for re-download
+- Added option to copy URLs of selected downloads in the download queue screen
+- Made app show all finished and errored notifications, instead of the latest one
+- Kinda fixed the app not giving you the correct path when sharing a file from the notification
+- Fixed app crashing when loading soundcloud results. They had stupidly large thumbnails, they are resized now
+- Added option to reset the recorded links in observe resources when you are trying to update it. From now on they wont get reset like before
+- Fixed major bug of app adding extra quotes in the yt-dlp config, making it fail on titles with quotes in them
+
+Had to push this soon because of mostly the last error
+

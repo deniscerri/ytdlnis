@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.HistoryItem
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
+import com.deniscerri.ytdlnis.util.Extensions.loadThumbnail
 import com.deniscerri.ytdlnis.util.Extensions.popup
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.color.MaterialColors
@@ -89,17 +90,8 @@ class HistoryAdapter(onItemClickListener: OnItemClickListener, activity: Activit
         val thumbnail = card.findViewById<ImageView>(R.id.downloads_image_view)
 
         // THUMBNAIL ----------------------------------
-        if (!sharedPreferences.getStringSet("hide_thumbnails", emptySet())!!.contains("downloads")){
-            val imageURL = item!!.thumb
-            if (imageURL.isNotEmpty()) {
-                uiHandler.post { Picasso.get().load(imageURL).into(thumbnail) }
-            } else {
-                uiHandler.post { Picasso.get().load(R.color.black).into(thumbnail) }
-            }
-            thumbnail.setColorFilter(Color.argb(20, 0, 0, 0))
-        }else{
-            uiHandler.post { Picasso.get().load(R.color.black).into(thumbnail) }
-        }
+        val hideThumb = sharedPreferences.getStringSet("hide_thumbnails", emptySet())!!.contains("downloads")
+        uiHandler.post { thumbnail.loadThumbnail(hideThumb, item!!.thumb) }
 
         // TITLE  ----------------------------------
         val itemTitle = card.findViewById<TextView>(R.id.downloads_title)

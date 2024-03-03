@@ -103,7 +103,7 @@ class UpdateUtil(var context: Context) {
                         d?.dismiss()
                     }
                     .setNegativeButton(context.resources.getString(R.string.cancel)) { _: DialogInterface?, _: Int -> }
-                    .setPositiveButton(context.resources.getString(R.string.update)) { _: DialogInterface?, _: Int ->
+                    .setPositiveButton(context.resources.getString(R.string.update)) { d: DialogInterface?, _: Int ->
                         runCatching {
                             val releaseVersion = v.assets.firstOrNull { it.name.contains(Build.SUPPORTED_ABIS[0]) }
                             if (releaseVersion == null){
@@ -140,8 +140,8 @@ class UpdateUtil(var context: Context) {
                                 }
 
                             context.registerReceiver(onDownloadComplete, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
+                            d?.dismiss()
                         }
-
                     }
                 val view = updateDialog.show()
                 val textView = view.findViewById<TextView>(android.R.id.message)
@@ -176,7 +176,7 @@ class UpdateUtil(var context: Context) {
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT
             )
 
-            layoutParams.setMargins(5, 5, 5, 0)
+            layoutParams.setMargins(10, 10, 10, 0)
             scrollView.layoutParams = layoutParams
             scrollView.addView(linearLayout)
             val releases = getGithubReleases()
