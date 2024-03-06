@@ -66,7 +66,7 @@
     <string name="api_key">Použít klíč API</string>
     <string name="downloads">Stažené</string>
     <string name="you_are_going_to_delete">Odstraní se</string>
-    <string name="update_app_summary">Oznámit novou verzi aplikace, když je otevřena</string>
+    <string name="update_app_summary">Oznámení nových verzí aplikace při jejím otevření. Data jsou převzata z oficiálního repozitáře Github</string>
     <string name="url">URL adresa</string>
     <string name="link_copied_to_clipboard">Odkaz zkopírován do schránky</string>
     <string name="api_key_summary">Doporučená videa z rozhraní Youtube API</string>
@@ -359,4 +359,17 @@
     <string name="month">Měsíc</string>
     <string name="bitrate">Rychlost přenosu</string>
     <string name="download_archive_summary">Použije archivní soubor yt-dlp pro zabránění duplicitního stahování místo vestavěné funkce</string>
+    <string name="show_download_count">Zobrazení počtů na obrazovce stahovací fronty</string>
+    <string name="thumbnail_format">Formát miniatur</string>
+    <string name="get_new_uploads">Získat pouze nové nahrávky</string>
+    <string name="scroll_down">Posun dolů</string>
+    <string name="text_size">Velikost textu</string>
+    <string name="add">Přidat</string>
+    <string name="back">Nazpět</string>
+    <string name="all_queries_finished">Všechny požadavky jsou zpracovány</string>
+    <string name="select_between">Vybrat položky mezi</string>
+    <string name="reset_processed_links">Resetovat již zpracované linky</string>
+    <string name="wrap_text">Zabalit text</string>
+    <string name="swipe_gestures_download_card">Swipe gesta na kartě stahování</string>
+    <string name="also_download_audio">Stáhnout také jako audio</string>
 </resources>
