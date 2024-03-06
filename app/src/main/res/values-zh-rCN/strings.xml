@@ -102,7 +102,7 @@
     <string name="link_copied_to_clipboard">链接已复制到剪贴板</string>
     <string name="api_key">使用 API 密钥</string>
     <string name="api_key_summary">使用 Youtube API 获取视频推荐</string>
-    <string name="update_app_summary">打开应用时通知新版本</string>
+    <string name="update_app_summary">打开应用时通知新版本。数据从官方 GitHub 仓库提取</string>
     <string name="url">URL</string>
     <string name="show_download_card">显示下载卡片</string>
     <string name="exit_app">退出应用</string>
@@ -359,4 +359,17 @@
     <string name="bitrate">比特率</string>
     <string name="save_auto_subs">保存自动字幕</string>
     <string name="download_archive">下载存档</string>
+    <string name="also_download_audio">同样下载为音频</string>
+    <string name="wrap_text">换行显示过长文本</string>
+    <string name="text_size">文本尺寸</string>
+    <string name="back">返回</string>
+    <string name="all_queries_finished">已经处理了所有查询</string>
+    <string name="select_between">选择特定范围内的项目</string>
+    <string name="reset_processed_links">重置已经处理的链接</string>
+    <string name="show_download_count">在下载队列屏中显示计数</string>
+    <string name="thumbnail_format">缩略图格式</string>
+    <string name="swipe_gestures_download_card">下载卡片中的滑动手势</string>
+    <string name="get_new_uploads">只获取新上传</string>
+    <string name="scroll_down">向下滚动</string>
+    <string name="add">添加</string>
 </resources>
