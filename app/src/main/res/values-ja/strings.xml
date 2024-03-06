@@ -48,7 +48,7 @@
     <string name="url">URL</string>
     <string name="link_copied_to_clipboard">リンクをクリップボードにコピー完了</string>
     <string name="api_key">API キーを使用する</string>
-    <string name="update_app_summary">アプリを開いた時に最新版を通知します</string>
+    <string name="update_app_summary">アプリを開いた時に最新版を通知。データは公式のGitHubリポジトリから展開されました</string>
     <string name="remove_duplicates">重複を削除</string>
     <string name="sort_by">並び替え</string>
     <string name="remove_downloading">ダウンロードをキャンセル</string>
@@ -359,4 +359,16 @@
     <string name="ends">終了日</string>
     <string name="on_time">以下の日</string>
     <string name="every">間隔</string>
+    <string name="back">戻る</string>
+    <string name="swipe_gestures_download_card">ダウンロードカードでのスワイプジェスチャー</string>
+    <string name="show_download_count">ダウンロード待ちの数を表示</string>
+    <string name="get_new_uploads">新しいアップロードのみ取得</string>
+    <string name="also_download_audio">音声としてもダウンロード</string>
+    <string name="wrap_text">文章を折り返す</string>
+    <string name="thumbnail_format">サムネイルの形式</string>
+    <string name="text_size">文字サイズ</string>
+    <string name="add">追加</string>
+    <string name="all_queries_finished">すべてのクエリが処理されました</string>
+    <string name="reset_processed_links">処理済みのリンクを初期化</string>
+    <string name="scroll_down">スクロールダウン</string>
 </resources>
