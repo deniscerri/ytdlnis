@@ -48,7 +48,7 @@
     <string name="items_left">itens restantes</string>
     <string name="download">Descarregar</string>
     <string name="api_key_summary">Recomendações de vídeos via API do YouTube</string>
-    <string name="update_app_summary">Ao iniciar, anunciar novas versões da aplicação</string>
+    <string name="update_app_summary">Ao iniciar, anunciar novas versões da aplicação. Os dados são extraídos do repositório oficial do Github</string>
     <string name="remove_duplicates">Remover duplicadas</string>
     <string name="downloads">Descargas</string>
     <string name="remove_deleted">Remover eliminadas</string>
@@ -359,4 +359,17 @@
     <string name="on_time">Em</string>
     <string name="download_archive">Arquivo de descarga</string>
     <string name="download_archive_summary">Utilizar ficheiro de descarga yt-dlp para evitar duplicação de descargas</string>
+    <string name="swipe_gestures_download_card">Gestos de deslizar no cartão de descarga</string>
+    <string name="show_download_count">Mostrar contagens no ecrã da Fila de descarga</string>
+    <string name="get_new_uploads">Obter apenas novos envios</string>
+    <string name="scroll_down">Deslocar para baixo</string>
+    <string name="text_size">Tamanho do texto</string>
+    <string name="add">Adicionar</string>
+    <string name="back">Voltar</string>
+    <string name="all_queries_finished">Todas as consultas foram processadas</string>
+    <string name="also_download_audio">Descarregar também como áudio</string>
+    <string name="wrap_text">Envolver texto</string>
+    <string name="select_between">Selecionar itens entre</string>
+    <string name="reset_processed_links">Repor ligações já processadas</string>
+    <string name="thumbnail_format">Formato de miniatura</string>
 </resources>
