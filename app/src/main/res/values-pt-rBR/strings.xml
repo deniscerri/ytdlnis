@@ -85,7 +85,7 @@
     <string name="run_command">Executar comando</string>
     <string name="audio_quality_summary">0 (melhor) 10 (pior)</string>
     <string name="cancel_task">Cancelar download</string>
-    <string name="update_app_summary">Verifica se há atualizações ao iniciar o aplicativo</string>
+    <string name="update_app_summary">Verifica se há atualizações ao iniciar o aplicativo. Os dados são extraídos do repositório oficial do Github</string>
     <string name="configure_download">Ajustar download</string>
     <string name="save_thumb_summary">Salvar miniatura na pasta de download</string>
     <string name="audio_format">Formato de áudio</string>
@@ -359,4 +359,17 @@
     <string name="download_archive_summary">Usar o arquivamento de downloads do yt-dlp para evitar downloads duplicados</string>
     <string name="retry_missing_downloads">Repetir downloads ausentes</string>
     <string name="force_ipv4_desc">Efetuar todas as conexões com IPv4</string>
+    <string name="thumbnail_format">Formato da miniatura</string>
+    <string name="get_new_uploads">Obter apenas novos uploads</string>
+    <string name="also_download_audio">Baixar também como áudio</string>
+    <string name="wrap_text">Quebra de linha</string>
+    <string name="scroll_down">Rolar para baixo</string>
+    <string name="text_size">Tamanho do texto</string>
+    <string name="add">Adicionar</string>
+    <string name="back">Voltar</string>
+    <string name="all_queries_finished">Todas as consultas foram processadas</string>
+    <string name="select_between">Selecionar itens</string>
+    <string name="swipe_gestures_download_card">Gestos deslizantes no cartão de download</string>
+    <string name="show_download_count">Mostrar contagens na guia Central de Downloads</string>
+    <string name="reset_processed_links">Redefinir links já processados</string>
 </resources>
