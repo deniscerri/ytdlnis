@@ -114,7 +114,7 @@
     <string name="remove_search_history">Limpar histórico de pesquisa</string>
     <string name="enable_mtime">Habilitar \'mtime\'</string>
     <string name="update_formats">Atualizar formatos</string>
-    <string name="log_downloads">Log de downloads</string>
+    <string name="log_downloads">Registrar downloads</string>
     <string name="concurrent_downloads_summary">Número de downloads executados ao mesmo tempo</string>
     <string name="defaultValue">Padrão</string>
     <string name="new_template">Novo modelo</string>
@@ -270,7 +270,7 @@
     <string name="piped_instance">Instância Piped</string>
     <string name="piped_instance_summary">Insira a API do servidor Piped, o aplicativo pode usar para consultas e formatos do YouTube</string>
     <string name="retries">Novas tentativas</string>
-    <string name="sponsorblock_outro">Cartões finais/créditos</string>
+    <string name="sponsorblock_outro">Cartões finais e créditos</string>
     <string name="sponsorblock">SponsorBlock</string>
     <string name="force_keyframes">Forçar quadros-chave nos cortes</string>
     <string name="force_keyframes_summary">Processo mais lento, mas cortes mais precisos</string>
@@ -347,7 +347,7 @@
     <string name="month">Mês(es)</string>
     <string name="bitrate">Taxa de bits</string>
     <string name="not_deleted">Não excluído</string>
-    <string name="download_archive">Arquivamento de download</string>
+    <string name="download_archive">Arquivar downloads</string>
     <string name="observe_sources">Observar Origens</string>
     <string name="delete_all_sources">Excluir todas as origens</string>
     <string name="confirm_delete_sources_desc">Excluir todas as origens, permanentemente</string>
@@ -356,7 +356,7 @@
     <string name="occurrences">ocorrências</string>
     <string name="day">Dia(s)</string>
     <string name="save_auto_subs">Salvar legendas automáticas</string>
-    <string name="download_archive_summary">Usar arquivamento de download do yt-dlp para evitar downloads duplicados</string>
+    <string name="download_archive_summary">Usar o arquivamento de downloads do yt-dlp para evitar downloads duplicados</string>
     <string name="retry_missing_downloads">Repetir downloads ausentes</string>
     <string name="force_ipv4_desc">Efetuar todas as conexões com IPv4</string>
 </resources>
