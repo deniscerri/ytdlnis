@@ -81,7 +81,7 @@
     <string name="embed_thumb_summary">Использовать миниатюру в качестве обложки</string>
     <string name="command_download_notification_channel_description">Уведомление о ходе загрузки с помощью команды yt-dlp</string>
     <string name="history_is_empty">История пуста</string>
-    <string name="update_app_summary">Сообщать о новой версии при открытии приложения</string>
+    <string name="update_app_summary">Сообщать о новой версии при открытии приложения. Данные взяты из репозитория Github</string>
     <string name="configure_download">Настроить загрузку</string>
     <string name="incognito_summary">Загружать без добавления в историю</string>
     <string name="video_quality">Качество видео</string>
@@ -359,4 +359,16 @@
     <string name="save_auto_subs">Сохранить автоматически субтитры</string>
     <string name="not_deleted">Не удалено</string>
     <string name="download_archive">Скачать архив</string>
+    <string name="swipe_gestures_download_card">Жесты смахивания в карточке загрузок</string>
+    <string name="show_download_count">Показывать кол-во контента на экране очереди загрузки</string>
+    <string name="thumbnail_format">Формат миниатюр</string>
+    <string name="also_download_audio">Также скачать как аудио</string>
+    <string name="scroll_down">Прокрутить вниз</string>
+    <string name="text_size">Размер текста</string>
+    <string name="back">Назад</string>
+    <string name="all_queries_finished">Все запросы обработаны</string>
+    <string name="select_between">Выберите элементы между</string>
+    <string name="reset_processed_links">Сбросить уже обработанные ссылки</string>
+    <string name="get_new_uploads">Получать только новые загрузки</string>
+    <string name="add">Добавить</string>
 </resources>
