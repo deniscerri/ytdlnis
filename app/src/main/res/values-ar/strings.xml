@@ -369,4 +369,7 @@
     <string name="reset_processed_links">إعادة تعيين الروابط التي تمت معالجتها بالفعل</string>
     <string name="back">رجوع</string>
     <string name="all_queries_finished">تمت معالجة جميع الاستفسارات</string>
+    <string name="wrap_text">التفاف النص</string>
+    <string name="scroll_down">الإنتقال للأسفل</string>
+    <string name="select_between">تحديد عناصر النطاق المحدد</string>
 </resources>
