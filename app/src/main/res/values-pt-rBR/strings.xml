@@ -363,7 +363,7 @@
     <string name="get_new_uploads">Obter apenas novos uploads</string>
     <string name="also_download_audio">Baixar também como áudio</string>
     <string name="wrap_text">Quebra de linha</string>
-    <string name="scroll_down">Rolar para baixo</string>
+    <string name="scroll_down">Ir para o final</string>
     <string name="text_size">Tamanho do texto</string>
     <string name="add">Adicionar</string>
     <string name="back">Voltar</string>
