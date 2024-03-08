@@ -70,7 +70,7 @@
     <string name="history_is_empty">la historia esta vacia</string>
     <string name="api_key">Usar llave API</string>
     <string name="link_copied_to_clipboard">Vínculo copiado al portapapeles</string>
-    <string name="update_app_summary">Anunciar nuevas versiones de la aplicación cuando se abra</string>
+    <string name="update_app_summary">Anunciar nuevas versiones de la aplicación cuando se abre. Los datos se extraen del repositorio oficial de Github</string>
     <string name="remove_downloading">Cancelar Descargas</string>
     <string name="embed_subtitles">Insertar Subtítulos</string>
     <string name="add_chapter">Agregar Capítulos</string>
@@ -359,4 +359,17 @@
     <string name="week">Semana</string>
     <string name="confirm_delete_sources_desc">Borrar todas las fuentes, permanentemente</string>
     <string name="force_ipv4_desc">Realizar todas las conexiones con IPv4</string>
+    <string name="swipe_gestures_download_card">Gesto de deslizar en la tarjeta de descarga</string>
+    <string name="show_download_count">Mostrar recuento en la pantalla de cola de descarga</string>
+    <string name="thumbnail_format">Formato de las miniaturas</string>
+    <string name="scroll_down">Desplazar hacia abajo</string>
+    <string name="text_size">Tamaño del texto</string>
+    <string name="add">Añadir</string>
+    <string name="back">Atrás</string>
+    <string name="all_queries_finished">Se han procesado todas las consultas</string>
+    <string name="select_between">Seleccione los elementos entre</string>
+    <string name="reset_processed_links">Restablecer enlaces ya procesados</string>
+    <string name="get_new_uploads">Obtener sólo las nuevas cargas</string>
+    <string name="wrap_text">Ajustar texto</string>
+    <string name="also_download_audio">Descargar también en audio</string>
 </resources>
