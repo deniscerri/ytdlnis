@@ -30,7 +30,7 @@
     <string name="version">Verzia</string>
     <string name="concurrent_fragments_summary">Počet fragmentov videa DASH/HLS, ktoré možno sťahovať súbežne</string>
     <string name="ok">OK</string>
-    <string name="update_app_summary">Oznámi novú verziu aplikácie pri jej spustení</string>
+    <string name="update_app_summary">Oznámi nové verzie aplikácie pri jej otvorení. Údaje sú prevzaté z oficiálneho repozitára Github</string>
     <string name="url">URL adresa</string>
     <string name="link_copied_to_clipboard">Odkaz skopírovaný do schránky</string>
     <string name="remove_all">Odstrániť všetko</string>
@@ -359,4 +359,17 @@
     <string name="week">Týždeň</string>
     <string name="bitrate">Prenosová rýchlosť</string>
     <string name="on_time">Zapnúť</string>
+    <string name="swipe_gestures_download_card">Swipe gestá na karte sťahovania</string>
+    <string name="show_download_count">Zobraziť počty na obrazovke sťahovacieho pásma</string>
+    <string name="thumbnail_format">Formát miniatúr</string>
+    <string name="get_new_uploads">Prevziať len nové nahrávky</string>
+    <string name="also_download_audio">Stiahnuť aj ako audio</string>
+    <string name="wrap_text">Zabaliť text</string>
+    <string name="scroll_down">Posun dole</string>
+    <string name="text_size">Veľkosť textu</string>
+    <string name="add">Pridať</string>
+    <string name="back">Naspäť</string>
+    <string name="select_between">Vybrať položky medzi</string>
+    <string name="reset_processed_links">Resetovať už spracované odkazy</string>
+    <string name="all_queries_finished">Všetky požiadavky boli spracované</string>
 </resources>

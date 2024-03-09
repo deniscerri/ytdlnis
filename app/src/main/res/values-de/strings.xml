@@ -324,4 +324,5 @@
     <string name="remember_download_type_summary">Nutze den zuletzt ausgewählten Download-Typ für den nächsten Vorgang</string>
     <string name="length">Länge</string>
     <string name="update_ytdl_stable">Stabile yt-dlp Version</string>
+    <string name="source">Quelle</string>
 </resources>

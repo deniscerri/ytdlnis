@@ -178,7 +178,7 @@
     <string name="link_copied_to_clipboard">लिंक को क्लिपबोर्ड पर कॉपी किया गया</string>
     <string name="api_key">एपीआई कुंजी का प्रयोग करें</string>
     <string name="api_key_summary">यूट्यूब एपीआई से वीडियो अनुशंसाएँ</string>
-    <string name="update_app_summary">खोले जाने पर ऐप के नए संस्करणों की घोषणा करता है</string>
+    <string name="update_app_summary">ऐप खुलने पर उसके नए संस्करण की घोषणा करता है। डेटा आधिकारिक GitHub रिपोजिटरी से निकाला गया है</string>
     <string name="downloads">डाउनलोड</string>
     <string name="download_card_summary">डाउनलोड करने से पहले उस आइटम के लिए सेटिंग्स संशोधित करें। इस विकल्प को अक्षम करने से डाउनलोड तुरंत प्रारंभ हो जाता है</string>
     <string name="Open_File">फ़ाइल खोलें</string>
@@ -359,4 +359,17 @@
     <string name="occurrences">घटनाएँ</string>
     <string name="download_archive_summary">डुप्लिकेट डाउनलोड को रोकने के लिए अंतर्निहित कार्यक्षमता के बजाय yt-dlp की डाउनलोड संग्रह फ़ाइल का उपयोग करें</string>
     <string name="retry_missing_downloads">गुम हुए डाउनलोड पुनः प्रयास करें</string>
+    <string name="thumbnail_format">थंबनेल प्रारूप</string>
+    <string name="get_new_uploads">केवल नए अपलोड प्राप्त करें</string>
+    <string name="also_download_audio">ऑडियो के रूप में भी डाउनलोड करें</string>
+    <string name="wrap_text">टेक्स्ट को आवृत करें</string>
+    <string name="text_size">टेक्स्ट का आकार</string>
+    <string name="add">जोड़ें</string>
+    <string name="all_queries_finished">सभी प्रश्न संसाधित कर दिए गए हैं</string>
+    <string name="select_between">इसके बीच में आइटम चुनें</string>
+    <string name="swipe_gestures_download_card">डाउनलोड कार्ड में स्वाइप जेस्चर</string>
+    <string name="show_download_count">डाउनलोड कतार स्क्रीन में गिनती दिखाएँ</string>
+    <string name="scroll_down">नीचे स्क्रॉल करें</string>
+    <string name="back">पीछे</string>
+    <string name="reset_processed_links">पहले से संसाधित लिंक रीसेट करें</string>
 </resources>
