@@ -1,2 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="best_quality">بہترین معیار</string>
+    <string name="search">ڈھونڈیں</string>
+    <string name="remove_results">نتائج صاف کریں</string>
+    <string name="download_all">سب ڈاؤنلوڈ کریں</string>
+    <string name="settings">ترتیبات</string>
+    <string name="directories">فولڈرز</string>
+    <string name="music_directory">موسیقی کا فولڈر</string>
+    <string name="video_directory">ویڈیو فولڈر</string>
+    <string name="updating">تحديث</string>
+    <string name="update_ytdl">yt-dlp کا نیا ورژن انسٹال کریں.</string>
+    <string name="about">متعلق</string>
+    <string name="source_code">سورس کوڈ</string>
+    <string name="search_hint">URL تلاش کریں یا داخل کریں</string>
+    <string name="failed_download">فائل ڈاؤن لوڈ نہیں ہو سکی</string>
+    <string name="download_notification_channel_name">فائل ڈاؤن لوڈز</string>
+    <string name="you_are_in_latest_version">تازہ ترین ورژن استعمال کیا جا رہا ہے</string>
+    <string name="ytld_update_success">نیا ورژن انسٹال ہو گیا</string>
+    <string name="ytdl_already_updating">نیا ورژن انسٹال کیا جا رہا ہے</string>
+    <string name="ytdl_updating_started">نیا ورژن ڈاؤن لوڈ ہو رہا ہے</string>
+    <string name="Remove">حذف کریں</string>
+    <string name="ok">ٹھیک ہے</string>
+    <string name="worst_quality">بدترین معیار</string>
+    <string name="remove_all">سب ہٹا دیں</string>
+    <string name="home">گھر</string>
+    <string name="ytdl_update_hint">اگر آپ کو ڈاؤن لوڈ کرنے میں دشواری ہو تو مفید ہے.</string>
+    <string name="download_notification_channel_description">آڈیو اور ویڈیو فائلوں کو ڈاؤن لوڈ کرنے کی پیشرفت کو ظاہر کرنے والی اطلاع</string>
+    <string name="cancel">منسوخ کریں</string>
+</resources>
