@@ -79,7 +79,7 @@
     <string name="video_quality">Якість відео</string>
     <string name="Open_File">Відкрити файл</string>
     <string name="api_key_summary">Рекомендації щодо відео з Youtube API</string>
-    <string name="update_app_summary">Оголошувати про нові версії застосунку, коли його відкривають</string>
+    <string name="update_app_summary">Оголошувати про нові версії програми, коли її відкривають. Дані отримано з офіційного репозиторію Github</string>
     <string name="remove_deleted">Вилучити видалене</string>
     <string name="title">Назва</string>
     <string name="show_download_card">Показати картку завантаження</string>
@@ -359,4 +359,17 @@
     <string name="save_auto_subs">Зберегти автоматично субтитри</string>
     <string name="download_archive">Архів завантажень</string>
     <string name="download_archive_summary">Використовуйте файл архіву завантажень yt-dlp, щоб запобігти повторним завантаженням замість вбудованої функції</string>
+    <string name="swipe_gestures_download_card">Жести пальцем у картці завантаження</string>
+    <string name="show_download_count">Показати підрахунки на екрані черги завантаження</string>
+    <string name="thumbnail_format">Формат мініатюр</string>
+    <string name="get_new_uploads">Отримуйте лише нові завантаження</string>
+    <string name="also_download_audio">Також завантажити як аудіо</string>
+    <string name="wrap_text">Перенесення тексту</string>
+    <string name="scroll_down">Прокрути вниз</string>
+    <string name="text_size">Розмір тексту</string>
+    <string name="add">Додати</string>
+    <string name="back">Назад</string>
+    <string name="all_queries_finished">Усі запити оброблено</string>
+    <string name="select_between">Виберіть пункти між</string>
+    <string name="reset_processed_links">Скинути вже оброблені посилання</string>
 </resources>
