@@ -371,4 +371,5 @@
     <string name="reset_processed_links">Сбросить уже обработанные ссылки</string>
     <string name="get_new_uploads">Получать только новые загрузки</string>
     <string name="add">Добавить</string>
+    <string name="wrap_text">Перенос текста</string>
 </resources>
