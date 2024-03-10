@@ -79,7 +79,7 @@
     <string name="command_download_notification_channel_name">ਕਮਾਂਡ ਡਾਊਨਲੋਡ</string>
     <string name="link_copied_to_clipboard">ਲਿੰਕ ਕਲਿੱਪਬੋਰਡ \'ਤੇ ਕਾਪੀ ਕੀਤਾ ਗਿਆ</string>
     <string name="api_key">API ਕੁੰਜੀ ਦੀ ਵਰਤੋਂ ਕਰੋ</string>
-    <string name="update_app_summary">ਐਪ ਖੋਲ੍ਹਣ \'ਤੇ ਇਸ ਦੇ ਨਵੇਂ ਸੰਸਕਰਣਾਂ ਦੀ ਘੋਸ਼ਣਾ ਕਰੋ</string>
+    <string name="update_app_summary">ਐਪ ਖੋਲ੍ਹਣ \'ਤੇ ਇਸ ਦੇ ਨਵੇਂ ਸੰਸਕਰਣਾਂ ਦੀ ਘੋਸ਼ਣਾ ਕਰੋ। ਡਾਟਾ ਅਧਿਕਾਰਤ ਗਿਟਹੱਬ ਰਿਪੋਜ਼ਟਰੀ ਤੋਂ ਕੱਢਿਆ ਜਾਂਦਾ ਹੈ</string>
     <string name="downloads">ਡਾਊਨਲੋਡ</string>
     <string name="api_key_summary">Youtube API ਤੋਂ ਵੀਡੀਓ ਸਿਫ਼ਾਰਿਸ਼ਾਂ</string>
     <string name="remove_deleted">ਡਿਲੀਟ ਕੀਤੇ ਹਟਾਓ</string>
@@ -359,4 +359,17 @@
     <string name="ends">ਖਤਮ ਹੁੰਦਾ ਹੈ</string>
     <string name="save_auto_subs">ਸਵੈਚਲਿਤ ਸਬਟਾਈਟਲਾਂ ਨੂੰ ਸੇਵ ਕਰੋ</string>
     <string name="download_archive_summary">ਬਿਲਟ-ਇਨ ਫੰਕਸ਼ਨੈਲਿਟੀ ਦੀ ਬਜਾਏ ਡੁਪਲੀਕੇਟ ਡਾਉਨਲੋਡਸ ਨੂੰ ਰੋਕਣ ਲਈ yt-dlp ਦੀ ਡਾਉਨਲੋਡ ਆਰਕਾਈਵ ਫਾਈਲ ਦੀ ਵਰਤੋਂ ਕਰੋ</string>
+    <string name="swipe_gestures_download_card">ਡਾਉਨਲੋਡ ਕਾਰਡ ਵਿੱਚ ਸਵਾਈਪ ਇਸ਼ਾਰੇ</string>
+    <string name="thumbnail_format">ਥੰਮਨੇਲ ਫਾਰਮੈਟ</string>
+    <string name="text_size">ਟੈਕਸਟ ਦਾ ਆਕਾਰ</string>
+    <string name="add">ਜੋੜੋ</string>
+    <string name="get_new_uploads">ਸਿਰਫ਼ ਨਵੇਂ ਅੱਪਲੋਡ ਪ੍ਰਾਪਤ ਕਰੋ</string>
+    <string name="wrap_text">ਟੈਕਸਟ ਲਪੇਟੋ</string>
+    <string name="scroll_down">ਥੱਲੇ ਜਾਓ</string>
+    <string name="show_download_count">ਡਾਊਨਲੋਡ ਕਤਾਰ ਸਕ੍ਰੀਨ ਵਿੱਚ ਗਿਣਤੀ ਵਿਖਾਓ</string>
+    <string name="back">ਪਿੱਛੇ</string>
+    <string name="all_queries_finished">ਸਾਰੀਆਂ ਪੁੱਛਗਿੱਛਾਂ \'ਤੇ ਕਾਰਵਾਈ ਕੀਤੀ ਗਈ ਹੈ</string>
+    <string name="select_between">ਵਿਚਕਾਰ ਆਈਟਮਾਂ ਦੀ ਚੋਣ ਕਰੋ</string>
+    <string name="reset_processed_links">ਪਹਿਲਾਂ ਤੋਂ ਪ੍ਰੋਸੈਸ ਕੀਤੇ ਲਿੰਕ ਰੀਸੈਟ ਕਰੋ</string>
+    <string name="also_download_audio">ਆਡੀਓ ਦੇ ਤੌਰ \'ਤੇ ਵੀ ਡਾਊਨਲੋਡ ਕਰੋ</string>
 </resources>
