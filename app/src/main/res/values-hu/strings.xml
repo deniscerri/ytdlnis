@@ -49,7 +49,7 @@
     <string name="version">Kiszolgáló verziója</string>
     <string name="concurrent_fragments_summary">A DASH/HLS natív videó töredékeinek száma, hogy konkurenciálisan letöltse</string>
     <string name="ok">OK</string>
-    <string name="update_app_summary">Indítsa el az alkalmazás új verzióit, amikor megnyitott</string>
+    <string name="update_app_summary">Az alkalmazás új verzióinak bejelentése az alkalmazás megnyitásakor. Az adatok a hivatalos Github Repositoryból származnak</string>
     <string name="url">URL:</string>
     <string name="access_all_directories">Engedélyezze az összes könyvtárhoz való hozzáférést</string>
     <string name="sort_by">Megosztás</string>
@@ -87,7 +87,7 @@
     <string name="embed_thumb_summary">Használja a hüvelykujt, mint a fedélzeti művészet</string>
     <string name="downloading_update">Új verzió letöltése</string>
     <string name="settings">Beállíŧások</string>
-    <string name="command_directory">Egyéni parancsmappa</string>
+    <string name="command_directory">Egyéni Parancs Mappa</string>
     <string name="worst_quality">Legrosszabb minőség</string>
     <string name="api_key_summary">Videó Ajánlások Youtube API</string>
     <string name="remove_downloading">Töltse le a letöltéseket</string>
@@ -359,4 +359,17 @@
     <string name="day">Nap</string>
     <string name="week">Hét</string>
     <string name="month">Hónap</string>
+    <string name="show_download_count">Számok megjelenítése a letöltési várólista képernyőn</string>
+    <string name="text_size">Szövegméret</string>
+    <string name="reset_processed_links">Már feldolgozott linkek visszaállítása</string>
+    <string name="swipe_gestures_download_card">Húzási gesztusok a letöltőkártyán</string>
+    <string name="thumbnail_format">Indexkép formátum</string>
+    <string name="get_new_uploads">Csak új feltöltéseket</string>
+    <string name="also_download_audio">Továbbá töltse le hangként</string>
+    <string name="wrap_text">Szöveg felgöngyölítése</string>
+    <string name="scroll_down">Legörgetés</string>
+    <string name="add">Hozzáad</string>
+    <string name="back">Vissza</string>
+    <string name="all_queries_finished">Minden lekérdezés feldolgozása megtörtént</string>
+    <string name="select_between">Elemek kiválasztása</string>
 </resources>
