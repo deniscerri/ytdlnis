@@ -359,4 +359,10 @@
     <string name="month">Miesiąc</string>
     <string name="not_deleted">Nie usunięte</string>
     <string name="save_auto_subs">Zapisz automatyczne napisy</string>
+    <string name="thumbnail_format">Format miniaturki</string>
+    <string name="wrap_text">Zawijaj tekst</string>
+    <string name="scroll_down">Przewiń w dół</string>
+    <string name="add">Dodaj</string>
+    <string name="back">Wstecz</string>
+    <string name="text_size">Rozmiar tekstu</string>
 </resources>
