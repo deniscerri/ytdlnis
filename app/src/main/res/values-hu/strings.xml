@@ -9,7 +9,7 @@
     <string name="logs">Naplók</string>
     <string name="audio_quality">Audio minőség</string>
     <string name="audio_format">Audio formátum</string>
-    <string name="adjust_audio">Adjust Audio</string>
+    <string name="adjust_audio">Hang beállítása</string>
     <string name="music_directory">Zene mappa</string>
     <string name="couldnt_find_apk">Nem találhat megfelelő APK-t</string>
     <string name="ytdl_updating_started">Új verzió letöltése</string>
@@ -23,7 +23,7 @@
     <string name="adjust_video">Adjust videó</string>
     <string name="processing">Feldolgozás</string>
     <string name="remove_deleted">Távolítsa el a törölt</string>
-    <string name="downloading">Letöltés folyamatban…</string>
+    <string name="downloading">Letöltés</string>
     <string name="remove_duplicates">Ismétlődések eltávolítása</string>
     <string name="add_chapter">Fejezetek hozzáadása</string>
     <string name="items_left">tétel(ek) maradt</string>
@@ -50,11 +50,11 @@
     <string name="concurrent_fragments_summary">A DASH/HLS natív videó töredékeinek száma, hogy konkurenciálisan letöltse</string>
     <string name="ok">OK</string>
     <string name="update_app_summary">Az alkalmazás új verzióinak bejelentése az alkalmazás megnyitásakor. Az adatok a hivatalos Github Repositoryból származnak</string>
-    <string name="url">URL:</string>
+    <string name="url">URL</string>
     <string name="access_all_directories">Engedélyezze az összes könyvtárhoz való hozzáférést</string>
     <string name="sort_by">Megosztás</string>
     <string name="link_copied_to_clipboard">Link másolt a vágólapra</string>
-    <string name="save_dir">Save dir</string>
+    <string name="save_dir">Mentés helye</string>
     <string name="remove_all">Minden eltávolítása</string>
     <string name="defaultValue">Alapértelmezett</string>
     <string name="video_format">Video Format</string>
@@ -65,7 +65,7 @@
     <string name="download_all">Összes letöltése</string>
     <string name="date_added">Dátum hozzáadva</string>
     <string name="Remove">-</string>
-    <string name="file_name_template">Filename Template</string>
+    <string name="file_name_template">Fájlnév sablon</string>
     <string name="confirm_delete_history_desc">Törölje az egész előzményt</string>
     <string name="more">Egyéb</string>
     <string name="history_is_empty">Nincsenek előzmények</string>
