@@ -13,7 +13,7 @@
     <string name="search_hint">Szukaj lub wstaw URL</string>
     <string name="Remove">Usuń</string>
     <string name="api_key_summary">Rekomendacje wideo z interfejsu API YouTube</string>
-    <string name="update_app_summary">Informuj o nowych wersjach aplikacji po jej otwarciu</string>
+    <string name="update_app_summary">Informuj o nowych wersjach aplikacji po jej otwarciu. Dane są pobierane z oficjalnego repozytorium Github</string>
     <string name="downloads">Pobrane</string>
     <string name="remove_deleted">Wyczyść usunięte</string>
     <string name="remove_duplicates">Usuń duplikaty</string>
@@ -365,4 +365,11 @@
     <string name="add">Dodaj</string>
     <string name="back">Wstecz</string>
     <string name="text_size">Rozmiar tekstu</string>
+    <string name="swipe_gestures_download_card">Przesuń gesty na karcie pobierania</string>
+    <string name="show_download_count">Pokaż liczniki na ekranie kolejki pobierania</string>
+    <string name="get_new_uploads">Otrzymuj tylko nowe przesłane pliki</string>
+    <string name="also_download_audio">Pobierz ponadto jako dźwięk</string>
+    <string name="all_queries_finished">Wszystkie zapytania zostały przetworzone</string>
+    <string name="select_between">Wybierz pozycje pomiędzy</string>
+    <string name="reset_processed_links">Zresetuj już przetworzone linki</string>
 </resources>
