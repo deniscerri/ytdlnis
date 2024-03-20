@@ -350,7 +350,7 @@
     <string name="download_archive">Arquivar downloads</string>
     <string name="observe_sources">Observar Origens</string>
     <string name="delete_all_sources">Excluir todas as origens</string>
-    <string name="confirm_delete_sources_desc">Excluir todas as origens, permanentemente</string>
+    <string name="confirm_delete_sources_desc">Excluir todas as origens permanentemente</string>
     <string name="copy_urls">Copiar URLs</string>
     <string name="starts">Começa</string>
     <string name="occurrences">ocorrências</string>

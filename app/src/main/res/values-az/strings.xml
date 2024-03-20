@@ -65,7 +65,7 @@
     <string name="link_copied_to_clipboard">Bağlantı buferə köçürüldü</string>
     <string name="api_key">API Açar İşlət</string>
     <string name="api_key_summary">YouTube API-dən Video Tövsiyələri</string>
-    <string name="update_app_summary">Açıldıqda, tətbiqin yeni versiyasın bildir</string>
+    <string name="update_app_summary">Açıldıqda tətbiqin yeni versiyasın bildir. Məlumatlar rəsmi olaraq Github Saxlayıcıdan götürülüb</string>
     <string name="downloads">Yükləmələr</string>
     <string name="remove_deleted">Silinənləri Təmizlə</string>
     <string name="remove_duplicates">Dublikatları Təmizlə</string>
@@ -359,4 +359,17 @@
     <string name="occurrences">proses</string>
     <string name="save_auto_subs">Avtomatik Titirləri Saxla</string>
     <string name="download_archive_summary">Dublikat yükləmələrə mane olmaq üçün daxili funksionallıq əvəzinə, yt-dlp-nin yükləmə arxiv faylın istifadə et</string>
+    <string name="text_size">Mətn Ölçüsü</string>
+    <string name="add">Əlavə et</string>
+    <string name="swipe_gestures_download_card">Yükləmə Kartında Sürüşdürmə Jestləri</string>
+    <string name="show_download_count">Yükləmə növbəsi ekranında sayı göstər</string>
+    <string name="thumbnail_format">Miniatür Formatı</string>
+    <string name="get_new_uploads">Yalnız Yeni Yükləmələri Əldə Et</string>
+    <string name="also_download_audio">Həmçinin Səs kimi Yüklə</string>
+    <string name="wrap_text">Mətni Bük</string>
+    <string name="scroll_down">Aşağı Sürüşdür</string>
+    <string name="back">Geri</string>
+    <string name="all_queries_finished">Bütün sorğular emal edilib</string>
+    <string name="select_between">Arasındakı elementləri seç</string>
+    <string name="reset_processed_links">Artıq emal edilmiş bağlantıları sıfırla</string>
 </resources>
