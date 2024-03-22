@@ -365,9 +365,9 @@
     <string name="add">Dodaj</string>
     <string name="back">Wstecz</string>
     <string name="text_size">Rozmiar tekstu</string>
-    <string name="swipe_gestures_download_card">Przesuń gesty na karcie pobierania</string>
+    <string name="swipe_gestures_download_card">Gesty machnięcia na karcie pobierania</string>
     <string name="show_download_count">Pokaż liczniki na ekranie kolejki pobierania</string>
-    <string name="get_new_uploads">Otrzymuj tylko nowe przesłane pliki</string>
+    <string name="get_new_uploads">Pobierz tylko nowe przesłane pliki</string>
     <string name="also_download_audio">Pobierz ponadto jako dźwięk</string>
     <string name="all_queries_finished">Wszystkie zapytania zostały przetworzone</string>
     <string name="select_between">Wybierz pozycje pomiędzy</string>
