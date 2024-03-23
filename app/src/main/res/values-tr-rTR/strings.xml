@@ -66,7 +66,7 @@
     <string name="link_copied_to_clipboard">Panoya kopyalanan bağlantı</string>
     <string name="api_key">API Anahtarı Kullan</string>
     <string name="api_key_summary">Youtube API\'sinden Video Önerileri</string>
-    <string name="update_app_summary">Uygulama açıldığında yeni sürümlerini göster</string>
+    <string name="update_app_summary">Uygulama açıldığında yeni sürümleri duyurun. Veriler resmi Github Deposundan alınmıştır</string>
     <string name="downloads">İndirilenler</string>
     <string name="remove_deleted">Silinenleri Kaldır</string>
     <string name="remove_duplicates">Kopyaları Kaldır</string>
@@ -362,4 +362,17 @@
     <string name="on_time">Çalışmakta</string>
     <string name="day">Gün</string>
     <string name="download_archive">İndirme Arşivi</string>
+    <string name="thumbnail_format">Küçük Resim Formatı</string>
+    <string name="get_new_uploads">Yalnızca Yeni Yüklemeleri Alın</string>
+    <string name="also_download_audio">Ayrıca Ses Olarak İndir</string>
+    <string name="wrap_text">Metni Sar</string>
+    <string name="back">Geri</string>
+    <string name="all_queries_finished">Tüm Sorgular işlendi</string>
+    <string name="select_between">Aradaki Ögeleri Seç</string>
+    <string name="swipe_gestures_download_card">İndirme kartındaki Kaydırma Hareketleri</string>
+    <string name="show_download_count">İndirme kuyruğu ekranında sayıları göster</string>
+    <string name="scroll_down">Aşağı kaydır</string>
+    <string name="text_size">Yazı Boyutu</string>
+    <string name="add">Ekle</string>
+    <string name="reset_processed_links">Zaten İşlenmiş Bağlantıları Sıfırla</string>
 </resources>
