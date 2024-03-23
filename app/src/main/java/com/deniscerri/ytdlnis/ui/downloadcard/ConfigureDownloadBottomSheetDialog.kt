@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.DialogInterface
 import android.content.SharedPreferences
+import android.content.res.Configuration
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.LayoutInflater
@@ -69,7 +70,10 @@ class ConfigureDownloadBottomSheetDialog(private var result: ResultItem, private
             behavior = BottomSheetBehavior.from(view.parent as View)
             val displayMetrics = DisplayMetrics()
             requireActivity().windowManager.defaultDisplay.getMetrics(displayMetrics)
-            behavior.peekHeight = displayMetrics.heightPixels - 400
+            if(resources.getBoolean(R.bool.isTablet) || resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE){
+                behavior.state = BottomSheetBehavior.STATE_EXPANDED
+                behavior.peekHeight = displayMetrics.heightPixels
+            }
         }
 
         tabLayout = view.findViewById(R.id.download_tablayout)

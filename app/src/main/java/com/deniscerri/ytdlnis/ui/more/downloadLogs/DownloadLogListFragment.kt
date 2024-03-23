@@ -45,7 +45,7 @@ class DownloadLogListFragment : Fragment(), DownloadLogsAdapter.OnItemClickListe
     private lateinit var topAppBar: MaterialToolbar
     private lateinit var mainActivity: MainActivity
     private lateinit var logViewModel: LogViewModel
-    private var selectedObjects: ArrayList<LogItem>? = null
+    private lateinit var  selectedObjects: ArrayList<LogItem>
     private var actionMode : ActionMode? = null
 
     override fun onCreateView(
@@ -139,18 +139,18 @@ class DownloadLogListFragment : Fragment(), DownloadLogsAdapter.OnItemClickListe
     override fun onCardSelect(itemID: Long, isChecked: Boolean) {
         val item = items.find { it.id == itemID }
         if (isChecked) {
-            selectedObjects!!.add(item!!)
+            selectedObjects.add(item!!)
             if (actionMode == null){
                 actionMode = (activity as AppCompatActivity?)!!.startSupportActionMode(contextualActionBar)
 
             }else{
-                actionMode!!.title = "${selectedObjects!!.size} ${getString(R.string.selected)}"
+                actionMode!!.title = "${selectedObjects.size} ${getString(R.string.selected)}"
             }
         }
         else {
-            selectedObjects!!.remove(item)
-            actionMode?.title = "${selectedObjects!!.size} ${getString(R.string.selected)}"
-            if (selectedObjects!!.isEmpty()){
+            selectedObjects.remove(item)
+            actionMode?.title = "${selectedObjects.size} ${getString(R.string.selected)}"
+            if (selectedObjects.isEmpty()){
                 actionMode?.finish()
             }
         }
@@ -159,7 +159,7 @@ class DownloadLogListFragment : Fragment(), DownloadLogsAdapter.OnItemClickListe
     private val contextualActionBar = object : ActionMode.Callback {
         override fun onCreateActionMode(mode: ActionMode?, menu: Menu?): Boolean {
             mode!!.menuInflater.inflate(R.menu.logs_menu_context, menu)
-            mode.title = "${selectedObjects!!.size} ${getString(R.string.selected)}"
+            mode.title = "${selectedObjects.size} ${getString(R.string.selected)}"
             return true
         }
 
@@ -180,7 +180,7 @@ class DownloadLogListFragment : Fragment(), DownloadLogsAdapter.OnItemClickListe
                     deleteDialog.setTitle(getString(R.string.you_are_going_to_delete_multiple_items))
                     deleteDialog.setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, _: Int -> dialogInterface.cancel() }
                     deleteDialog.setPositiveButton(getString(R.string.ok)) { _: DialogInterface?, _: Int ->
-                        for (obj in selectedObjects!!){
+                        for (obj in selectedObjects){
                             logViewModel.delete(obj)
                         }
                         clearCheckedItems()
@@ -191,8 +191,8 @@ class DownloadLogListFragment : Fragment(), DownloadLogsAdapter.OnItemClickListe
                 }
                 R.id.select_all -> {
                     downloadLogAdapter.checkAll(items)
-                    selectedObjects?.clear()
-                    items.forEach { selectedObjects?.add(it) }
+                    selectedObjects.clear()
+                    items.forEach { selectedObjects.add(it) }
                     mode?.title = getString(R.string.all_items_selected)
                     true
                 }
@@ -200,11 +200,11 @@ class DownloadLogListFragment : Fragment(), DownloadLogsAdapter.OnItemClickListe
                     downloadLogAdapter.invertSelected(items)
                     val invertedList = arrayListOf<LogItem>()
                     items.forEach {
-                        if (!selectedObjects?.contains(it)!!) invertedList.add(it)
+                        if (!selectedObjects.contains(it)!!) invertedList.add(it)
                     }
-                    selectedObjects?.clear()
-                    selectedObjects?.addAll(invertedList)
-                    actionMode!!.title = "${selectedObjects!!.size} ${getString(R.string.selected)}"
+                    selectedObjects.clear()
+                    selectedObjects.addAll(invertedList)
+                    actionMode!!.title = "${selectedObjects.size} ${getString(R.string.selected)}"
                     if (invertedList.isEmpty()) actionMode?.finish()
                     true
                 }
@@ -220,7 +220,7 @@ class DownloadLogListFragment : Fragment(), DownloadLogsAdapter.OnItemClickListe
 
     private fun clearCheckedItems(){
         downloadLogAdapter.clearCheckeditems()
-        selectedObjects?.clear()
+        selectedObjects.clear()
     }
 
 

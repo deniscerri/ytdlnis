@@ -111,6 +111,9 @@ object UiUtil {
             if (!audioFormats.isNullOrEmpty()){
                 text = "id: " + audioFormats.joinToString("+") { it.format_id }
                 visibility = View.VISIBLE
+            }else if (chosenFormat.vcodec != "none" && chosenFormat.vcodec != "" && chosenFormat.acodec != "none" && chosenFormat.acodec != "") {
+                text = chosenFormat.acodec
+                visibility = View.VISIBLE
             }else{
                 visibility = View.GONE
             }
@@ -1351,12 +1354,18 @@ object UiUtil {
             subtitleLanguages.visibility = View.VISIBLE
         }
 
+        if (items.all { it.videoPreferences.writeAutoSubs}) {
+            saveAutoSubtitles.isChecked = true
+            subtitleLanguages.visibility = View.VISIBLE
+        }
+
         saveSubtitles.setOnCheckedChangeListener { _, _ ->
-            subtitleLanguages.isEnabled = embedSubs.isChecked || saveSubtitles.isChecked
+            subtitleLanguages.isEnabled = embedSubs.isChecked || saveSubtitles.isChecked || saveAutoSubtitles.isChecked
             saveSubtitlesClicked(saveSubtitles.isChecked)
         }
 
         saveAutoSubtitles.setOnCheckedChangeListener { _, _ ->
+            subtitleLanguages.isEnabled = embedSubs.isChecked || saveSubtitles.isChecked || saveAutoSubtitles.isChecked
             saveAutoSubtitlesClicked(saveAutoSubtitles.isChecked)
         }
 
@@ -1650,6 +1659,7 @@ object UiUtil {
             textSize = 20f
         }
         sheet.findViewById<TextView>(R.id.bottom_sheet_subtitle)?.text = message
+        sheet.findViewById<LinearLayout>(R.id.multiple_top_info)?.isVisible = false
 
         var adapter: AlreadyExistsAdapter? = null
         val list = mutableListOf<Pair<DownloadItem, Long?>>()
@@ -1712,7 +1722,7 @@ object UiUtil {
             layoutManager = GridLayoutManager(context, 1)
             this.adapter = adapter
             enableFastScroll()
-            setPadding(0,20,0,0)
+            setPadding(0,0,0,0)
         }
 
 
@@ -1993,7 +2003,7 @@ object UiUtil {
 
         // handle the negative button of the alert dialog
         builder.setNegativeButton(
-            context.getString(R.string.cancel)
+            context.getString(R.string.dismiss)
         ) { _: DialogInterface?, _: Int -> }
 
         val dialog = builder.create()

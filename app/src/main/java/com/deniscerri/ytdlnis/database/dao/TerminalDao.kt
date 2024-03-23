@@ -24,12 +24,12 @@ interface TerminalDao {
     fun getActiveTerminalsCount() : Int
 
     @Query("UPDATE terminalDownloads set log=:l where id=:id")
-    fun updateTerminalLog(l: String, id: Long)
+    suspend fun updateTerminalLog(l: String, id: Long)
 
     @Query("SELECT * FROM terminalDownloads WHERE id=:id LIMIT 1")
     fun getTerminalById(id: Long) : TerminalItem?
     @Transaction
-    fun updateLog(line: String, id: Long){
+    suspend fun updateLog(line: String, id: Long){
         val t = getTerminalById(id) ?: return
         val log = t.log ?: ""
         updateTerminalLog(log.appendLineToLog(line), id)

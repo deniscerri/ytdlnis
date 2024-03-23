@@ -3,6 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:theme="@style/BaseTheme">
 
+    <item
+        android:id="@+id/select_between"
+        android:visible="false"
+        android:title="@string/select_between"
+        android:icon="@drawable/ic_select_between"
+        app:showAsAction="never" />
+
     <item android:title="@string/invert_selected"
         android:icon="@drawable/ic_terminal"
         app:showAsAction="never"

@@ -181,6 +181,13 @@ class HistoryAdapter(onItemClickListener: OnItemClickListener, activity: Activit
         onItemClickListener.onCardSelect(itemID, card.isChecked)
     }
 
+    @SuppressLint("NotifyDataSetChanged")
+    fun checkMultipleItems(list: List<Long>){
+        checkedItems.clear()
+        checkedItems.addAll(list)
+        notifyDataSetChanged()
+    }
+
     interface OnItemClickListener {
         fun onCardClick(itemID: Long, isPresent: Boolean)
         fun onButtonClick(itemID: Long, isPresent: Boolean)

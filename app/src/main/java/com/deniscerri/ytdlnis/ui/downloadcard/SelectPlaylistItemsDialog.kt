@@ -1,15 +1,20 @@
 package com.deniscerri.ytdlnis.ui.downloadcard
 
+import android.annotation.SuppressLint
 import android.app.ActionBar.LayoutParams
 import android.app.Dialog
+import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
+import android.widget.TextView
 import androidx.core.os.bundleOf
+import androidx.core.view.children
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
@@ -27,50 +32,38 @@ import com.deniscerri.ytdlnis.util.Extensions.enableFastScroll
 import com.deniscerri.ytdlnis.util.Extensions.setTextAndRecalculateWidth
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomappbar.BottomAppBar
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlin.math.absoluteValue
 
-class SelectPlaylistItemsDialog : DialogFragment(), PlaylistAdapter.OnItemClickListener {
+class SelectPlaylistItemsDialog : BottomSheetDialogFragment(), PlaylistAdapter.OnItemClickListener {
     private lateinit var downloadViewModel: DownloadViewModel
     private lateinit var resultViewModel: ResultViewModel
     private lateinit var listAdapter : PlaylistAdapter
     private lateinit var recyclerView: RecyclerView
-    private lateinit var ok: MenuItem
-    private lateinit var toolbar: MaterialToolbar
+    private lateinit var ok: MaterialButton
+    private lateinit var behavior: BottomSheetBehavior<View>
     private lateinit var fromTextInput: TextInputLayout
     private lateinit var toTextInput: TextInputLayout
-
+    private lateinit var count: TextView
+    private lateinit var selectBetween: MenuItem
 
     private lateinit var items: List<ResultItem?>
+    private lateinit var itemURLs: List<String>
     private lateinit var type: DownloadViewModel.Type
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setStyle(STYLE_NORMAL, R.style.FullScreenDialogTheme)
         downloadViewModel = ViewModelProvider(requireActivity())[DownloadViewModel::class.java]
         resultViewModel = ViewModelProvider(requireActivity())[ResultViewModel::class.java]
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.select_playlist_items, container, false)
-    }
-
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val dialog = super.onCreateDialog(savedInstanceState)
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        return dialog
-    }
-
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         if (Build.VERSION.SDK_INT >= 33){
             arguments?.getParcelableArrayList("results", ResultItem::class.java)
@@ -85,11 +78,24 @@ class SelectPlaylistItemsDialog : DialogFragment(), PlaylistAdapter.OnItemClickL
             }
         }
         type = arguments?.getSerializable("type") as DownloadViewModel.Type
+    }
 
+    @SuppressLint("RestrictedApi", "NotifyDataSetChanged")
+    override fun setupDialog(dialog: Dialog, style: Int) {
+        super.setupDialog(dialog, style)
+        val view = LayoutInflater.from(context).inflate(R.layout.select_playlist_items, null)
+        dialog.setContentView(view)
 
-        dialog?.window?.setLayout(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
+        dialog.setOnShowListener {
+            behavior = BottomSheetBehavior.from(view.parent as View)
+            val displayMetrics = DisplayMetrics()
+            requireActivity().windowManager.defaultDisplay.getMetrics(displayMetrics)
+            if(resources.getBoolean(R.bool.isTablet) || resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE){
+                behavior.state = BottomSheetBehavior.STATE_EXPANDED
+                behavior.peekHeight = displayMetrics.heightPixels
+            }
+        }
 
-        toolbar = view.findViewById<MaterialToolbar>(R.id.toolbar)
 
         listAdapter =
             PlaylistAdapter(
@@ -103,7 +109,8 @@ class SelectPlaylistItemsDialog : DialogFragment(), PlaylistAdapter.OnItemClickL
         recyclerView.enableFastScroll()
         listAdapter.submitList(items)
 
-        toolbar.title = "0 ${resources.getString(R.string.selected)}"
+        count = view.findViewById(R.id.count)
+        count.text = "0 ${resources.getString(R.string.selected)}"
 
         fromTextInput = view.findViewById(R.id.from_textinput)
         toTextInput = view.findViewById(R.id.to_textinput)
@@ -124,7 +131,7 @@ class SelectPlaylistItemsDialog : DialogFragment(), PlaylistAdapter.OnItemClickL
                     if (endNr > items.size) endNr = items.size - 1
                     listAdapter.checkRange(startNr, endNr)
                     ok.isEnabled = true
-                    toolbar.title = "${listAdapter.getCheckedItems().size} ${resources.getString(R.string.selected)}"
+                    count.text = "${listAdapter.getCheckedItems().size} ${resources.getString(R.string.selected)}"
                 }
             }
         }
@@ -144,12 +151,12 @@ class SelectPlaylistItemsDialog : DialogFragment(), PlaylistAdapter.OnItemClickL
                     if (endNr > items.size) endNr = items.size -1
                     listAdapter.checkRange(startNr, endNr)
                     ok.isEnabled = true
-                    toolbar.title = "${listAdapter.getCheckedItems().size} ${resources.getString(R.string.selected)}"
+                    count.text = "${listAdapter.getCheckedItems().size} ${resources.getString(R.string.selected)}"
                 }
             }
         }
 
-        val checkAll = view.findViewById<ExtendedFloatingActionButton>(R.id.check_all)
+        val checkAll = view.findViewById<FloatingActionButton>(R.id.check_all)
         checkAll!!.setOnClickListener {
             if (listAdapter.getCheckedItems().size != items.size){
                 fromTextInput.editText!!.setTextAndRecalculateWidth("1")
@@ -158,7 +165,7 @@ class SelectPlaylistItemsDialog : DialogFragment(), PlaylistAdapter.OnItemClickL
                 fromTextInput.isEnabled = true
                 toTextInput.isEnabled = true
                 ok.isEnabled = true
-                toolbar.title = resources.getString(R.string.all_items_selected)
+                count.text = resources.getString(R.string.all_items_selected)
             }else{
                 reset()
                 fromTextInput.isEnabled = true
@@ -170,9 +177,9 @@ class SelectPlaylistItemsDialog : DialogFragment(), PlaylistAdapter.OnItemClickL
         }
 
 
-        ok = toolbar.menu.getItem(0)
+        ok = view.findViewById(R.id.bottomsheet_ok_button)
         ok.isEnabled = false
-        ok.setOnMenuItemClickListener {
+        ok.setOnClickListener {
             ok.isEnabled = false
             lifecycleScope.launch(Dispatchers.IO) {
                 val checkedItems = listAdapter.getCheckedItems()
@@ -200,7 +207,7 @@ class SelectPlaylistItemsDialog : DialogFragment(), PlaylistAdapter.OnItemClickL
                     downloadViewModel.insertToProcessing(downloadItems)
 
                     withContext(Dispatchers.Main){
-                        findNavController().navigate(R.id.downloadMultipleBottomSheetDialog)
+                        findNavController().navigate(R.id.action_selectPlaylistItemsDialog_to_downloadMultipleBottomSheetDialog)
                     }
                 }
 
@@ -210,29 +217,44 @@ class SelectPlaylistItemsDialog : DialogFragment(), PlaylistAdapter.OnItemClickL
             true
         }
 
-        view.findViewById<BottomAppBar>(R.id.bottomAppBar).setOnMenuItemClickListener { m: MenuItem ->
-            val itemId = m.itemId
-            if (itemId == R.id.invert_selected) {
-                listAdapter.invertSelected(items)
-                val checkedItems = listAdapter.getCheckedItems()
-                if (checkedItems.size == items.size){
-                    toolbar.title= resources.getString(R.string.all_items_selected)
-                }else{
-                    toolbar.title = "${checkedItems.size} ${resources.getString(R.string.selected)}"
+        val bottomAppBar = view.findViewById<BottomAppBar>(R.id.bottomAppBar)
+        bottomAppBar.setOnMenuItemClickListener { m: MenuItem ->
+            when(m.itemId) {
+                R.id.invert_selected -> {
+                    listAdapter.invertSelected(items)
+                    val checkedItems = listAdapter.getCheckedItems()
+                    if (checkedItems.size == items.size){
+                        count.text = resources.getString(R.string.all_items_selected)
+                    }else{
+                        count.text = "${checkedItems.size} ${resources.getString(R.string.selected)}"
+                    }
+                    if(checkedItems.isNotEmpty() && checkedItems.size < items.size){
+                        fromTextInput.isEnabled = false
+                        toTextInput.isEnabled = false
+                    }
+                    ok.isEnabled = checkedItems.isNotEmpty()
                 }
-                if(checkedItems.isNotEmpty() && checkedItems.size < items.size){
-                    fromTextInput.isEnabled = false
-                    toTextInput.isEnabled = false
+                R.id.select_between -> {
+                    val selectedItems = listAdapter.getCheckedItems()
+                    if(selectedItems.size != 2){
+                        m.isVisible = false
+                    }else{
+                        val item2 = itemURLs.indexOf(selectedItems.last())
+                        val item1 = itemURLs.indexOf(selectedItems.first())
+                        if(item1 > item2) listAdapter.checkRange(item2, item1)
+                        else listAdapter.checkRange(item1, item2)
+                        count.text = "${listAdapter.getCheckedItems().size} ${resources.getString(R.string.selected)}"
+                    }
                 }
-                ok.isEnabled = checkedItems.isNotEmpty()
             }
             true
         }
 
-        toolbar.setNavigationOnClickListener {
-            dismiss()
-        }
+        selectBetween = bottomAppBar.menu.findItem(R.id.select_between)
+        itemURLs = items.map { it!!.url }
+
     }
+
 
     private fun checkRanges(start: String, end: String) : Boolean {
         return start.isNotBlank() && end.isNotBlank()
@@ -241,15 +263,15 @@ class SelectPlaylistItemsDialog : DialogFragment(), PlaylistAdapter.OnItemClickL
     private fun reset(){
         ok.isEnabled = false
         listAdapter.clearCheckeditems()
-        toolbar.title = "0 ${resources.getString(R.string.selected)}"
+        count.text = "0 ${resources.getString(R.string.selected)}"
     }
 
 
     override fun onCardSelect(itemURL: String, isChecked: Boolean, checkedItems: List<String>) {
         if (checkedItems.size == items.size){
-            toolbar.title = resources.getString(R.string.all_items_selected)
+            count.text = resources.getString(R.string.all_items_selected)
         }else{
-            toolbar.title = "${checkedItems.size} ${resources.getString(R.string.selected)}"
+            count.text = "${checkedItems.size} ${resources.getString(R.string.selected)}"
         }
         if (checkedItems.isEmpty()){
             ok.isEnabled = false
@@ -259,6 +281,17 @@ class SelectPlaylistItemsDialog : DialogFragment(), PlaylistAdapter.OnItemClickL
             ok.isEnabled = true
             fromTextInput.isEnabled = false
             toTextInput.isEnabled = false
+            val canSelectBetween = run {
+                val size = checkedItems.size
+                if(size != 2) false
+                else {
+                    val item1 = itemURLs.indexOf(checkedItems.first())
+                    val item2 = itemURLs.indexOf(checkedItems.last())
+
+                    (item1-item2).absoluteValue > 1
+                }
+            }
+            selectBetween.isVisible = canSelectBetween
         }
     }
 

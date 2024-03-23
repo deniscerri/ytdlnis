@@ -30,6 +30,7 @@ import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.CookieItem
 import com.deniscerri.ytdlnis.database.viewmodel.CookieViewModel
 import com.deniscerri.ytdlnis.ui.adapter.CookieAdapter
+import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.UiUtil
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.chip.Chip
@@ -128,7 +129,9 @@ class CookiesFragment : Fragment(), CookieAdapter.OnItemClickListener {
                     deleteDialog.setPositiveButton(getString(R.string.ok)) { _: DialogInterface?, _: Int ->
                         cookiesViewModel.deleteAll()
                         kotlin.runCatching {
-                            File(context?.cacheDir, "cookies.txt").apply { writeText("") }
+                            FileUtil.getCookieFile(requireContext(), true){
+                                File(it).apply { writeText("") }
+                            }
                         }
                     }
                     deleteDialog.show()

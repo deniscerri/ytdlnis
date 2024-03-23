@@ -117,4 +117,15 @@ class HistoryViewModel(application: Application) : AndroidViewModel(application)
         repository.clearDeletedHistory()
     }
 
+    fun getRecordsBetweenTwoItems(item1: Long, item2: Long) : List<HistoryItem> {
+        val filtered = repository.getFiltered(queryFilter.value!!, formatFilter.value!!, websiteFilter.value!!, sortType.value!!, sortOrder.value!!, notDeletedFilter.value!!)
+        val firstIndex = filtered.indexOfFirst { it.id == item1 }
+        val secondIndex = filtered.indexOfFirst { it.id == item2 }
+        if(firstIndex > secondIndex) {
+            return filtered.filterIndexed { index, _ -> index in (secondIndex + 1) until firstIndex }
+        }else{
+            return filtered.filterIndexed { index, _ -> index in (firstIndex + 1) until secondIndex }
+        }
+    }
+
 }

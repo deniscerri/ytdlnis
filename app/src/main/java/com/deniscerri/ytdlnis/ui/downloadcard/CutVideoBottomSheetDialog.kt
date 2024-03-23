@@ -438,8 +438,8 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val urls
                 }
 
                 //replace existing chip to enable click events
-                if (selectedCuts.contains(it.title)){
-                    val idx = selectedCuts.indexOf(it.title)
+                val idx = selectedCuts.indexOfFirst { c -> c.contains(it.title) }
+                if (idx > -1){
                     val chipForDeletion = chipGroup.children.firstOrNull { cc -> (cc as Chip).text == it.title }
                     chipGroup.removeView(chipForDeletion)
                     createChapterChip(it, idx)
@@ -456,7 +456,7 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val urls
             player.seekTo(0)
             suggestedChips.children.apply {
                 this.forEach {
-                    it.isVisible = ! selectedCuts.contains((it as Chip).text)
+                    it.isVisible = ! selectedCuts.any { c -> c.contains((it as Chip).text) }
                 }
                 suggestedLabel.isVisible = this.any { it.isVisible }
             }
@@ -527,15 +527,17 @@ class CutVideoBottomSheetDialog(private val item: DownloadItem, private val urls
 
     private fun createChapterChip(chapter: ChapterItem, position: Int?) : Chip {
         val chip = layoutInflater.inflate(R.layout.filter_chip, chipGroup, false) as Chip
-        chip.text = chapter.title
+        val timestamp = "${chapter.start_time.toInt().toStringDuration(Locale.US)}-${chapter.end_time.toInt().toStringDuration(Locale.US)} [${chapter.title}]"
+        chip.text = timestamp
         chip.chipBackgroundColor = ColorStateList.valueOf(MaterialColors.getColor(requireContext(), R.attr.colorSecondaryContainer, Color.BLACK))
         chip.isCheckedIconVisible = false
 
         if (position != null) chipGroup.addView(chip, position)
         else chipGroup.addView(chip)
 
-        if (! selectedCuts.contains(chapter.title))
-            selectedCuts.add(chip.text.toString())
+
+        if (! selectedCuts.contains(timestamp))
+            selectedCuts.add(timestamp)
 
         listener.onChangeCut(selectedCuts)
         if (chapter.start_time == 0L && chapter.end_time == 0L) {

@@ -92,7 +92,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"
                     android:clickable="false"
                     android:focusable="false"
                     android:scrollbars="none">
@@ -182,6 +181,7 @@
                 android:ellipsize="end"
                 android:gravity="bottom|end"
                 android:maxLength="10"
+                android:layout_marginEnd="5dp"
                 app:cornerRadius="10dp"
                 app:layout_constraintBottom_toBottomOf="@+id/format_note"
                 app:layout_constraintEnd_toEndOf="parent"

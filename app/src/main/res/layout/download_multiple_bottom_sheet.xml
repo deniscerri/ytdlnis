@@ -92,6 +92,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <LinearLayout
+            android:id="@+id/multiple_top_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 

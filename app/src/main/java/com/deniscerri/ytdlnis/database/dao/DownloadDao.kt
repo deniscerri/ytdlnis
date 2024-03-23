@@ -59,7 +59,7 @@ interface DownloadDao {
     fun getProcessingDownloadsList() : List<DownloadItem>
 
     @Query("SELECT * FROM downloads WHERE status='Active'")
-    fun getActiveDownloadsList() : List<DownloadItem>
+    suspend fun getActiveDownloadsList() : List<DownloadItem>
 
     @Query("SELECT * FROM downloads WHERE status in('Active','Queued','QueuedPaused','ActivePaused','PausedReQueued')")
     fun getActiveAndQueuedDownloadsList() : List<DownloadItem>
@@ -250,4 +250,7 @@ interface DownloadDao {
 
     @Query("SELECT id from downloads WHERE id > :item1 AND id < :item2 AND status in (:statuses) ORDER BY id DESC")
     fun getIDsBetweenTwoItems(item1: Long, item2: Long, statuses: List<String>) : List<Long>
+
+    @Query("SELECT id from downloads WHERE id > :item1 AND id < :item2 AND status in('Queued','QueuedPaused') ORDER BY downloadStartTime, id")
+    fun getQueuedIDsBetweenTwoItems(item1: Long, item2: Long) : List<Long>
 }

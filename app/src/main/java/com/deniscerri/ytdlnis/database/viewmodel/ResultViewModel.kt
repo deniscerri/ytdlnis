@@ -13,6 +13,8 @@ import androidx.preference.PreferenceManager
 import com.deniscerri.ytdlnis.App
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.DBManager
+import com.deniscerri.ytdlnis.database.dao.DownloadDao
+import com.deniscerri.ytdlnis.database.dao.ResultDao
 import com.deniscerri.ytdlnis.database.models.Format
 import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.deniscerri.ytdlnis.database.models.SearchHistoryItem
@@ -37,6 +39,7 @@ class ResultViewModel(private val application: Application) : AndroidViewModel(a
     val items : LiveData<List<ResultItem>>
     private val infoUtil: InfoUtil
     private val notificationUtil: NotificationUtil
+    private val dao: ResultDao
     data class ResultsUiState(
         var processing: Boolean,
         var errorMessage: Pair<Int, String>?,
@@ -67,7 +70,7 @@ class ResultViewModel(private val application: Application) : AndroidViewModel(a
     private val sharedPreferences: SharedPreferences
 
     init {
-        val dao = DBManager.getInstance(application).resultDao
+        dao = DBManager.getInstance(application).resultDao
         repository = ResultRepository(dao, getApplication<Application>().applicationContext)
         searchHistoryRepository = SearchHistoryRepository(DBManager.getInstance(application).searchHistoryDao)
         items = repository.allResults.asLiveData()
@@ -156,7 +159,7 @@ class ResultViewModel(private val application: Application) : AndroidViewModel(a
         }
     }
 
-    fun deleteAll() = viewModelScope.launch(Dispatchers.IO) {
+    suspend fun deleteAll() = viewModelScope.launch(Dispatchers.IO) {
         repository.deleteAll()
     }
 
@@ -219,7 +222,8 @@ class ResultViewModel(private val application: Application) : AndroidViewModel(a
                     viewModelScope.launch(Dispatchers.IO) {
                         updatingData.emit(false)
                         updatingData.value = false
-                        updateResultData.emit(mutableListOf())
+                        updateResultData.emit(null)
+                        updateResultData.value = null
                     }
                 }
             }
@@ -231,53 +235,66 @@ class ResultViewModel(private val application: Application) : AndroidViewModel(a
         updatingData.emit(false)
         updatingData.value = false
         updateResultData.emit(null)
+        updateResultData.value = null
     }
 
     suspend fun cancelUpdateFormatsItemData(){
-        updateFormatsResultDataJob?.cancel(CancellationException())
         updatingFormats.emit(false)
+        updatingFormats.value = false
         updateFormatsResultData.emit(null)
+        updateFormatsResultData.value = null
+        updateFormatsResultDataJob?.cancel(CancellationException())
     }
 
     suspend fun updateFormatItemData(result: ResultItem){
         if (updateFormatsResultDataJob == null || updateFormatsResultDataJob?.isCancelled == true || updateFormatsResultDataJob?.isCompleted == true) {
             updateFormatsResultDataJob = viewModelScope.launch(Dispatchers.IO) {
                 updatingFormats.emit(true)
-                val formats = kotlin.runCatching {
-                    infoUtil.getFormats(result.url)
-                }.onFailure { e ->
-                    if (e !is kotlinx.coroutines.CancellationException){
-                        uiState.update {it.copy(
-                            processing = false,
-                            errorMessage = Pair(R.string.no_results, e.message.toString()),
-                            actions = mutableListOf(Pair(R.string.copy_log, ResultAction.COPY_LOG))
-                        )}
+                try {
+                    val formats = infoUtil.getFormats(result.url)
+                    updatingFormats.emit(false)
+                    formats.apply {
+                        if (formats.isNotEmpty() && updateFormatsResultDataJob?.isCancelled == false) {
+                            getItemByURL(result.url)?.apply {
+                                this.formats = formats.toMutableList()
+                                update(this)
+                            }
+                            updateFormatsResultData.emit(formats.toMutableList())
+                        }
+                    }
+                }catch(e: Exception) {
+                    if (e !is kotlinx.coroutines.CancellationException) {
+                        uiState.update {
+                            it.copy(
+                                processing = false,
+                                errorMessage = Pair(R.string.no_results, e.message.toString()),
+                                actions = mutableListOf(
+                                    Pair(
+                                        R.string.copy_log,
+                                        ResultAction.COPY_LOG
+                                    )
+                                )
+                            )
+                        }
                         Log.e(tag, e.toString())
                     }
-                }.getOrNull()
-
-                updatingFormats.emit(false)
-
-                formats?.apply {
-                    if (formats.isNotEmpty() && isActive) {
-                        getItemByURL(result.url)?.apply {
-                            this.formats = formats.toMutableList()
-                            update(this)
-                        }
-                        updateFormatsResultData.emit(formats.toMutableList())
-                    }
                 }
-
             }
             updateFormatsResultDataJob?.start()
             updateFormatsResultDataJob?.invokeOnCompletion {
                 if (it != null){
                     viewModelScope.launch(Dispatchers.IO) {
                         updatingFormats.emit(false)
-                        updateFormatsResultData.emit(mutableListOf())
+                        updatingFormats.value = false
+                        updateFormatsResultData.emit(null)
+                        updateFormatsResultData.value = null
                     }
                 }
             }
         }
+    }
+
+    fun getResultsBetweenTwoItems(item1: Long, item2: Long) : List<ResultItem>{
+        return dao.getResultsBetweenTwoItems(item1, item2)
     }
 }

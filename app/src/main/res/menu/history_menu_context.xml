@@ -4,6 +4,13 @@
     tools:context=".MainActivity" >
 
     <item
+        android:id="@+id/select_between"
+        android:visible="false"
+        android:title="@string/select_between"
+        android:icon="@drawable/ic_select_between"
+        app:showAsAction="ifRoom" />
+
+    <item
         android:id="@+id/delete_results"
         android:title="@string/remove_results"
         android:icon="@drawable/baseline_delete_24"

@@ -39,6 +39,15 @@
     <SwitchPreferenceCompat
         android:widgetLayout="@layout/preferece_material_switch"
         app:defaultValue="false"
+        android:icon="@drawable/baseline_save_alt_24"
+        android:key="no_part"
+        app:summary="@string/no_download_fragments_summary"
+        app:title="@string/no_download_fragments" />
+
+
+    <SwitchPreferenceCompat
+        android:widgetLayout="@layout/preferece_material_switch"
+        app:defaultValue="false"
         android:icon="@drawable/baseline_save_24"
         android:key="keep_cache"
         app:summary="@string/keep_cache_summary"

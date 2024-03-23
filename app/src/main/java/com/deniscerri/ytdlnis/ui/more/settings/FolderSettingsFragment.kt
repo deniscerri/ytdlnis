@@ -11,6 +11,7 @@ import android.provider.Settings
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.preference.Preference
 import androidx.preference.PreferenceManager
+import androidx.preference.SwitchPreferenceCompat
 import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkInfo
@@ -30,6 +31,8 @@ class FolderSettingsFragment : BaseSettingsFragment() {
     private var videoPath: Preference? = null
     private var commandPath: Preference? = null
     private var accessAllFiles : Preference? = null
+    private var noFragments: SwitchPreferenceCompat? = null
+    private var keepFragments: SwitchPreferenceCompat? = null
     private var cacheDownloads : Preference? = null
     private var audioFilenameTemplate : Preference? = null
     private var videoFilenameTemplate : Preference? = null
@@ -50,6 +53,8 @@ class FolderSettingsFragment : BaseSettingsFragment() {
         videoPath = findPreference("video_path")
         commandPath = findPreference("command_path")
         accessAllFiles = findPreference("access_all_files")
+        noFragments = findPreference("no_part")
+        keepFragments = findPreference("keep_cache")
         cacheDownloads = findPreference("cache_downloads")
         videoFilenameTemplate = findPreference("file_name_template")
         audioFilenameTemplate = findPreference("file_name_template_audio")
@@ -116,6 +121,17 @@ class FolderSettingsFragment : BaseSettingsFragment() {
                 true
             }
 
+        noFragments!!.setOnPreferenceChangeListener { _, newValue ->
+            if(newValue as Boolean){
+                editor.putBoolean("keep_cache", false).apply()
+                keepFragments!!.isChecked = false
+                keepFragments!!.isEnabled = false
+            }else{
+                keepFragments!!.isEnabled = true
+            }
+            true
+        }
+
         videoFilenameTemplate?.title = "${getString(R.string.file_name_template)} [${getString(R.string.video)}]"
         videoFilenameTemplate?.summary = preferences.getString("file_name_template", "%(uploader)s - %(title)s")
         audioFilenameTemplate?.title = "${getString(R.string.file_name_template)} [${getString(R.string.audio)}]"
@@ -171,7 +187,7 @@ class FolderSettingsFragment : BaseSettingsFragment() {
                         if (list.first() == null) return@observe
 
                         if (list.first().state == WorkInfo.State.SUCCEEDED){
-                            cacheSize = File(requireContext().cacheDir.absolutePath + "/downloads").walkBottomUp().fold(0L) { acc, file -> acc + file.length() }
+                            cacheSize = File(FileUtil.getCachePath(requireContext())).walkBottomUp().fold(0L) { acc, file -> acc + file.length() }
                             clearCache!!.summary = "(${FileUtil.convertFileSize(cacheSize)}) ${resources.getString(R.string.clear_temporary_files_summary)}"
                         }
                     }

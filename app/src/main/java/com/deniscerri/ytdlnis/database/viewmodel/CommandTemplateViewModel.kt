@@ -179,4 +179,15 @@ class CommandTemplateViewModel(private val application: Application) : AndroidVi
         }
     }
 
+    fun getRecordsBetweenTwoItems(item1: Long, item2: Long) : List<CommandTemplate> {
+        val filtered = repository.getFiltered(queryFilter.value!!,  sortType.value!!, sortOrder.value!!)
+        val firstIndex = filtered.indexOfFirst { it.id == item1 }
+        val secondIndex = filtered.indexOfFirst { it.id == item2 }
+        if(firstIndex > secondIndex) {
+            return filtered.filterIndexed { index, _ -> index in (secondIndex + 1) until firstIndex }
+        }else{
+            return filtered.filterIndexed { index, _ -> index in (firstIndex + 1) until secondIndex }
+        }
+    }
+
 }

@@ -22,6 +22,7 @@ import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.deniscerri.ytdlnis.util.Extensions.loadThumbnail
 import com.deniscerri.ytdlnis.util.Extensions.popup
+import com.google.android.material.card.MaterialCardView
 import com.squareup.picasso.Picasso
 import java.util.*
 
@@ -42,10 +43,10 @@ class PlaylistAdapter(onItemClickListener: OnItemClickListener, activity: Activi
     }
 
     class ViewHolder(itemView: View, onItemClickListener: OnItemClickListener?) : RecyclerView.ViewHolder(itemView) {
-        val cardView: ConstraintLayout
+        val cardView: MaterialCardView
 
         init {
-            cardView = itemView.findViewById(R.id.playlist_card_constraintLayout)
+            cardView = itemView.findViewById(R.id.playlist_card)
         }
     }
 

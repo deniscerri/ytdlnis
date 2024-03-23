@@ -1,5 +1,6 @@
 package com.deniscerri.ytdlnis.ui.more
 
+import android.annotation.SuppressLint
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.DialogInterface
@@ -62,7 +63,7 @@ class CommandTemplatesFragment : Fragment(), TemplatesAdapter.OnItemClickListene
     private lateinit var noResults: RelativeLayout
     private lateinit var mainActivity: MainActivity
     private lateinit var sortChip: Chip
-    private var selectedObjects: ArrayList<CommandTemplate>? = null
+    private lateinit var  selectedObjects: ArrayList<CommandTemplate>
     private var actionMode : ActionMode? = null
     private val jsonFormat = Json { prettyPrint = true }
 
@@ -76,6 +77,7 @@ class CommandTemplatesFragment : Fragment(), TemplatesAdapter.OnItemClickListene
         return inflater.inflate(R.layout.fragment_command_templates, container, false)
     }
 
+    @SuppressLint("RestrictedApi")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         templatesList = listOf()
@@ -273,21 +275,26 @@ class CommandTemplatesFragment : Fragment(), TemplatesAdapter.OnItemClickListene
     }
 
     override fun onCardSelect(itemID: Long, isChecked: Boolean) {
-        val item = templatesList.find { it.id == itemID }
-        if (isChecked) {
-            selectedObjects!!.add(item!!)
-            if (actionMode == null){
-                actionMode = (activity as AppCompatActivity?)!!.startSupportActionMode(contextualActionBar)
+        lifecycleScope.launch {
+            val item = templatesList.find { it.id == itemID }
+            if (actionMode == null) actionMode = (getActivity() as AppCompatActivity?)!!.startSupportActionMode(contextualActionBar)
+            actionMode?.apply {
+                if (isChecked) selectedObjects.add(item!!)
+                else selectedObjects.remove(item!!)
 
-            }else{
-                actionMode!!.title = "${selectedObjects!!.size} ${getString(R.string.selected)}"
-            }
-        }
-        else {
-            selectedObjects!!.remove(item)
-            actionMode?.title = "${selectedObjects!!.size} ${getString(R.string.selected)}"
-            if (selectedObjects!!.isEmpty()){
-                actionMode?.finish()
+                if (selectedObjects.size == 0){
+                    this.finish()
+                }else{
+                    actionMode?.title = "${selectedObjects.size} ${getString(R.string.selected)}"
+                    this.menu.findItem(R.id.select_between).isVisible = false
+                    if(selectedObjects.size == 2){
+                        val selectedIDs = selectedObjects.sortedBy { it.id }
+                        val resultsInMiddle = withContext(Dispatchers.IO){
+                            commandTemplateViewModel.getRecordsBetweenTwoItems(selectedIDs.first().id, selectedIDs.last().id)
+                        }.toMutableList()
+                        this.menu.findItem(R.id.select_between).isVisible = resultsInMiddle.isNotEmpty()
+                    }
+                }
             }
         }
     }
@@ -295,7 +302,7 @@ class CommandTemplatesFragment : Fragment(), TemplatesAdapter.OnItemClickListene
     private val contextualActionBar = object : ActionMode.Callback {
         override fun onCreateActionMode(mode: ActionMode?, menu: Menu?): Boolean {
             mode!!.menuInflater.inflate(R.menu.templates_menu_context, menu)
-            mode.title = "${selectedObjects!!.size} ${getString(R.string.selected)}"
+            mode.title = "${selectedObjects.size} ${getString(R.string.selected)}"
             return true
         }
 
@@ -311,12 +318,27 @@ class CommandTemplatesFragment : Fragment(), TemplatesAdapter.OnItemClickListene
             item: MenuItem?
         ): Boolean {
             return when (item!!.itemId) {
+                R.id.select_between -> {
+                    lifecycleScope.launch {
+                        val selectedIDs = selectedObjects.sortedBy { it.id }
+                        val resultsInMiddle = withContext(Dispatchers.IO){
+                            commandTemplateViewModel.getRecordsBetweenTwoItems(selectedIDs.first().id, selectedIDs.last().id)
+                        }.toMutableList()
+                        if (resultsInMiddle.isNotEmpty()){
+                            selectedObjects.addAll(resultsInMiddle)
+                            templatesAdapter.checkMultipleItems(selectedObjects.map { it.id })
+                            actionMode?.title = "${selectedObjects.count()} ${getString(R.string.selected)}"
+                        }
+                        mode?.menu?.findItem(R.id.select_between)?.isVisible = false
+                    }
+                    true
+                }
                 R.id.delete_results -> {
                     val deleteDialog = MaterialAlertDialogBuilder(requireContext())
                     deleteDialog.setTitle(getString(R.string.you_are_going_to_delete_multiple_items))
                     deleteDialog.setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, _: Int -> dialogInterface.cancel() }
                     deleteDialog.setPositiveButton(getString(R.string.ok)) { _: DialogInterface?, _: Int ->
-                        for (obj in selectedObjects!!){
+                        for (obj in selectedObjects){
                             commandTemplateViewModel.delete(obj)
                         }
                         clearCheckedItems()
@@ -327,8 +349,8 @@ class CommandTemplatesFragment : Fragment(), TemplatesAdapter.OnItemClickListene
                 }
                 R.id.select_all -> {
                     templatesAdapter.checkAll(templatesList)
-                    selectedObjects?.clear()
-                    templatesList.forEach { selectedObjects?.add(it) }
+                    selectedObjects.clear()
+                    templatesList.forEach { selectedObjects.add(it) }
                     mode?.title = getString(R.string.all_items_selected)
                     true
                 }
@@ -336,11 +358,11 @@ class CommandTemplatesFragment : Fragment(), TemplatesAdapter.OnItemClickListene
                     templatesAdapter.invertSelected(templatesList)
                     val invertedList = arrayListOf<CommandTemplate>()
                     templatesList.forEach {
-                        if (!selectedObjects?.contains(it)!!) invertedList.add(it)
+                        if (!selectedObjects.contains(it)!!) invertedList.add(it)
                     }
-                    selectedObjects?.clear()
-                    selectedObjects?.addAll(invertedList)
-                    actionMode!!.title = "${selectedObjects!!.size} ${getString(R.string.selected)}"
+                    selectedObjects.clear()
+                    selectedObjects.addAll(invertedList)
+                    actionMode!!.title = "${selectedObjects.size} ${getString(R.string.selected)}"
                     if (invertedList.isEmpty()) actionMode?.finish()
                     true
                 }
@@ -348,7 +370,7 @@ class CommandTemplatesFragment : Fragment(), TemplatesAdapter.OnItemClickListene
                     lifecycleScope.launch{
                         val output = jsonFormat.encodeToString(
                             CommandTemplateExport(
-                                templates = selectedObjects!!.toList(),
+                                templates = selectedObjects.toList(),
                                 shortcuts = listOf()
                             )
                         )
@@ -374,7 +396,7 @@ class CommandTemplatesFragment : Fragment(), TemplatesAdapter.OnItemClickListene
 
     private fun clearCheckedItems(){
         templatesAdapter.clearCheckeditems()
-        selectedObjects?.clear()
+        selectedObjects.clear()
     }
 
     private var simpleCallback: ItemTouchHelper.SimpleCallback =

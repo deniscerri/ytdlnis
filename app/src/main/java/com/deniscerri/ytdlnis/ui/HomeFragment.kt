@@ -37,12 +37,14 @@ import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.ResultItem
 import com.deniscerri.ytdlnis.database.models.SearchSuggestionItem
 import com.deniscerri.ytdlnis.database.models.SearchSuggestionType
+import com.deniscerri.ytdlnis.database.repository.DownloadRepository
 import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.HistoryViewModel
 import com.deniscerri.ytdlnis.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdlnis.ui.adapter.HomeAdapter
 import com.deniscerri.ytdlnis.ui.adapter.SearchSuggestionsAdapter
 import com.deniscerri.ytdlnis.util.Extensions.enableFastScroll
+import com.deniscerri.ytdlnis.util.Extensions.toListString
 import com.deniscerri.ytdlnis.util.InfoUtil
 import com.deniscerri.ytdlnis.util.ThemeUtil
 import com.deniscerri.ytdlnis.util.UiUtil
@@ -99,7 +101,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
     private var searchSuggestionsRecyclerView: RecyclerView? = null
     private var uiHandler: Handler? = null
     private var resultsList: List<ResultItem?>? = null
-    private var selectedObjects: ArrayList<ResultItem>? = null
+    private lateinit var selectedObjects: ArrayList<ResultItem>
     private var quickLaunchSheet = false
     private var sharedPreferences: SharedPreferences? = null
     private var actionMode: ActionMode? = null
@@ -115,6 +117,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
         mainActivity = activity as MainActivity?
         quickLaunchSheet = false
         infoUtil = InfoUtil(requireContext())
+        selectedObjects = arrayListOf()
         return fragmentView
     }
 
@@ -136,7 +139,6 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
 
         //initViews
-        shimmerCards = view.findViewById(R.id.shimmer_results_framelayout)
         searchBar = view.findViewById(R.id.search_bar)
         searchView = view.findViewById(R.id.search_view)
         appBarLayout = view.findViewById(R.id.home_appbarlayout)
@@ -159,6 +161,9 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
         recyclerView?.layoutManager = GridLayoutManager(context, resources.getInteger(R.integer.grid_size))
         recyclerView?.adapter = homeAdapter
         recyclerView?.enableFastScroll()
+
+        shimmerCards = view.findViewById(R.id.shimmer_results_framelayout)
+
 
 
         searchSuggestionsAdapter = SearchSuggestionsAdapter(
@@ -214,8 +219,8 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
         }
 
         if (inputQueries != null) {
-            resultViewModel.deleteAll()
             lifecycleScope.launch(Dispatchers.IO){
+                resultViewModel.deleteAll()
                 resultViewModel.parseQueries(inputQueries!!){}
                 inputQueries = null
             }
@@ -606,9 +611,8 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
                 resultViewModel.addSearchQueryToHistory(q)
             }
         }
-        resultViewModel.deleteAll()
         lifecycleScope.launch(Dispatchers.IO){
-            Thread.sleep(300)
+            resultViewModel.deleteAll()
             if(sharedPreferences!!.getBoolean("quick_download", false) || sharedPreferences!!.getString("preferred_download_type", "video") == "command"){
                 if (queryList.size == 1 && Patterns.WEB_URL.matcher(queryList.first()).matches()){
                     if (sharedPreferences!!.getBoolean("download_card", true)) {
@@ -683,23 +687,28 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
     }
 
     override fun onCardClick(videoURL: String, add: Boolean) {
-        val item = resultsList?.find { it?.url == videoURL }
-        if (add) {
-            selectedObjects!!.add(item!!)
-            if (actionMode == null){
-                actionMode = (getActivity() as AppCompatActivity?)!!.startSupportActionMode(contextualActionBar)
-            }else{
-                actionMode!!.title = "${selectedObjects!!.size} ${getString(R.string.selected)}"
-            }
-        } else {
-            selectedObjects!!.remove(item)
-            actionMode?.title = "${selectedObjects!!.size} ${getString(R.string.selected)}"
-            if (selectedObjects!!.isEmpty()){
-                actionMode?.finish()
+        lifecycleScope.launch {
+            val item = resultsList?.find { it?.url == videoURL }
+            if (actionMode == null) actionMode = (getActivity() as AppCompatActivity?)!!.startSupportActionMode(contextualActionBar)
+            actionMode?.apply {
+                if (add) selectedObjects.add(item!!)
+                else selectedObjects.remove(item!!)
+
+                if (selectedObjects.size == 0){
+                    this.finish()
+                }else{
+                    actionMode?.title = "${selectedObjects.size} ${getString(R.string.selected)}"
+                    this.menu.findItem(R.id.select_between).isVisible = false
+                    if(selectedObjects.size == 2){
+                        val selectedIDs = selectedObjects.sortedBy { it.id }
+                        val resultsInMiddle = withContext(Dispatchers.IO){
+                            resultViewModel.getResultsBetweenTwoItems(selectedIDs.first().id, selectedIDs.last().id)
+                        }.toMutableList()
+                        this.menu.findItem(R.id.select_between).isVisible = resultsInMiddle.isNotEmpty()
+                    }
+                }
             }
         }
-
-
     }
 
     override fun onCardDetailsClick(videoURL: String) {
@@ -739,7 +748,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
     private val contextualActionBar = object : ActionMode.Callback {
         override fun onCreateActionMode(mode: ActionMode?, menu: Menu?): Boolean {
             mode!!.menuInflater.inflate(R.menu.main_menu_context, menu)
-            mode.title = "${selectedObjects!!.size} ${getString(R.string.selected)}"
+            mode.title = "${selectedObjects.size} ${getString(R.string.selected)}"
             searchBar!!.isEnabled = false
             searchBar!!.menu.forEach { it.isEnabled = false }
             (activity as MainActivity).disableBottomNavigation()
@@ -758,15 +767,32 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
             item: MenuItem?
         ): Boolean {
             return when (item!!.itemId) {
+                R.id.select_between -> {
+                    lifecycleScope.launch {
+                        val selectedIDs = selectedObjects.sortedBy { it.id }
+                        val resultsInMiddle = withContext(Dispatchers.IO){
+                            resultViewModel.getResultsBetweenTwoItems(selectedIDs.first().id, selectedIDs.last().id)
+                        }.toMutableList()
+                        if (resultsInMiddle.isNotEmpty()){
+                            selectedObjects.addAll(resultsInMiddle)
+                            homeAdapter?.checkMultipleItems(selectedObjects.map { it.url })
+                            actionMode?.title = "${selectedObjects.count()} ${getString(R.string.selected)}"
+                        }
+                        mode?.menu?.findItem(R.id.select_between)?.isVisible = false
+                    }
+                    true
+                }
                 R.id.delete_results -> {
                     val deleteDialog = MaterialAlertDialogBuilder(fragmentContext!!)
                     deleteDialog.setTitle(getString(R.string.you_are_going_to_delete_multiple_items))
                     deleteDialog.setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, _: Int -> dialogInterface.cancel() }
                     deleteDialog.setPositiveButton(getString(R.string.ok)) { _: DialogInterface?, _: Int ->
-                        if (selectedObjects?.size == resultsList?.size){
-                            resultViewModel.deleteAll()
+                        if (selectedObjects.size == resultsList?.size){
+                            lifecycleScope.launch(Dispatchers.IO){
+                                resultViewModel.deleteAll()
+                            }
                         }else{
-                            resultViewModel.deleteSelected(selectedObjects!!.toList())
+                            resultViewModel.deleteSelected(selectedObjects.toList())
                         }
                         clearCheckedItems()
                         actionMode?.finish()
@@ -776,14 +802,14 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
                 }
                 R.id.download -> {
                     lifecycleScope.launch {
-                        if (sharedPreferences!!.getBoolean("download_card", true) && selectedObjects!!.size == 1) {
+                        if (sharedPreferences!!.getBoolean("download_card", true) && selectedObjects.size == 1) {
                             showSingleDownloadSheet(
-                                selectedObjects!![0],
-                                downloadViewModel.getDownloadType(url = selectedObjects!![0].url)
+                                selectedObjects[0],
+                                downloadViewModel.getDownloadType(url = selectedObjects[0].url)
                             )
                         }else{
                             val downloadList = withContext(Dispatchers.IO){
-                                downloadViewModel.turnResultItemsToDownloadItems(selectedObjects!!)
+                                downloadViewModel.turnResultItemsToDownloadItems(selectedObjects)
                             }
 
                             if (sharedPreferences!!.getBoolean("download_card", true)) {
@@ -803,8 +829,8 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
                 }
                 R.id.select_all -> {
                     homeAdapter?.checkAll(resultsList)
-                    selectedObjects?.clear()
-                    resultsList?.forEach { selectedObjects?.add(it!!) }
+                    selectedObjects.clear()
+                    resultsList?.forEach { selectedObjects.add(it!!) }
                     mode?.title = getString(R.string.all_items_selected)
                     true
                 }
@@ -812,11 +838,11 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
                     homeAdapter?.invertSelected(resultsList)
                     val invertedList = arrayListOf<ResultItem>()
                     resultsList?.forEach {
-                        if (!selectedObjects?.contains(it)!!) invertedList.add(it!!)
+                        if (!selectedObjects.contains(it)) invertedList.add(it!!)
                     }
-                    selectedObjects?.clear()
-                    selectedObjects?.addAll(invertedList)
-                    actionMode!!.title = "${selectedObjects!!.size} ${getString(R.string.selected)}"
+                    selectedObjects.clear()
+                    selectedObjects.addAll(invertedList)
+                    actionMode!!.title = "${selectedObjects.size} ${getString(R.string.selected)}"
                     if (invertedList.isEmpty()) actionMode?.finish()
                     true
                 }
@@ -836,10 +862,10 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
 
     private fun clearCheckedItems(){
         homeAdapter?.clearCheckedItems()
-        selectedObjects?.forEach {
+        selectedObjects.forEach {
             homeAdapter?.notifyItemChanged(resultsList!!.indexOf(it))
         }
-        selectedObjects?.clear()
+        selectedObjects.clear()
     }
 
 

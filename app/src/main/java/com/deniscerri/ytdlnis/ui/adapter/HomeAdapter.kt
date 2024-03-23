@@ -1,5 +1,6 @@
 package com.deniscerri.ytdlnis.ui.adapter
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.SharedPreferences
 import android.os.Handler
@@ -22,19 +23,18 @@ import com.deniscerri.ytdlnis.util.Extensions.popup
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.progressindicator.LinearProgressIndicator
-import com.squareup.picasso.Picasso
 
 
 class HomeAdapter(onItemClickListener: OnItemClickListener, activity: Activity) : ListAdapter<ResultItem?, HomeAdapter.ViewHolder>(AsyncDifferConfig.Builder(
     DIFF_CALLBACK
 ).build()) {
-    private val checkedVideos: ArrayList<String>
+    private val checkedItems: ArrayList<String>
     private val onItemClickListener: OnItemClickListener
     private val activity: Activity
     private val sharedPreferences: SharedPreferences
 
     init {
-        checkedVideos = ArrayList()
+        checkedItems = ArrayList()
         this.onItemClickListener = onItemClickListener
         this.activity = activity
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity)
@@ -132,7 +132,7 @@ class HomeAdapter(onItemClickListener: OnItemClickListener, activity: Activity) 
 //                videoBtn.setIcon(ContextCompat.getDrawable(activity, R.drawable.ic_video));
 //            }
 //        }
-        if (checkedVideos.contains(videoURL)) {
+        if (checkedItems.contains(videoURL)) {
             card.isChecked = true
             card.strokeWidth = 5
         } else {
@@ -145,7 +145,7 @@ class HomeAdapter(onItemClickListener: OnItemClickListener, activity: Activity) 
             true
         }
         card.setOnClickListener {
-            if (checkedVideos.size > 0) {
+            if (checkedItems.size > 0) {
                 checkCard(card, videoURL)
             }else{
                 onItemClickListener.onCardDetailsClick(videoURL)
@@ -156,10 +156,10 @@ class HomeAdapter(onItemClickListener: OnItemClickListener, activity: Activity) 
     private fun checkCard(card: MaterialCardView, videoURL: String) {
         if (card.isChecked) {
             card.strokeWidth = 0
-            checkedVideos.remove(videoURL)
+            checkedItems.remove(videoURL)
         } else {
             card.strokeWidth = 5
-            checkedVideos.add(videoURL)
+            checkedItems.add(videoURL)
         }
         card.isChecked = !card.isChecked
         onItemClickListener.onCardClick(videoURL, card.isChecked)
@@ -173,23 +173,30 @@ class HomeAdapter(onItemClickListener: OnItemClickListener, activity: Activity) 
     }
 
     fun checkAll(items: List<ResultItem?>?){
-        checkedVideos.clear()
-        checkedVideos.addAll(items!!.map { it!!.url })
+        checkedItems.clear()
+        checkedItems.addAll(items!!.map { it!!.url })
+        notifyDataSetChanged()
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun checkMultipleItems(list: List<String>){
+        checkedItems.clear()
+        checkedItems.addAll(list)
         notifyDataSetChanged()
     }
 
     fun invertSelected(items: List<ResultItem?>?){
         val invertedList = mutableListOf<String>()
         items?.forEach {
-            if (!checkedVideos.contains(it!!.url)) invertedList.add(it.url)
+            if (!checkedItems.contains(it!!.url)) invertedList.add(it.url)
         }
-        checkedVideos.clear()
-        checkedVideos.addAll(invertedList)
+        checkedItems.clear()
+        checkedItems.addAll(invertedList)
         notifyDataSetChanged()
     }
 
     fun clearCheckedItems(){
-        checkedVideos.clear()
+        checkedItems.clear()
     }
 
     companion object {

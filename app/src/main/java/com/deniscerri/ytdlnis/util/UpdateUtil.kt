@@ -185,7 +185,7 @@ class UpdateUtil(var context: Context) {
                 .setTitle(activity.getString(R.string.changelog))
                 .setView(scrollView)
                 .setIcon(R.drawable.ic_chapters)
-                .setNegativeButton(context.resources.getString(R.string.cancel)) { _: DialogInterface?, _: Int -> }
+                .setNegativeButton(context.resources.getString(R.string.dismiss)) { _: DialogInterface?, _: Int -> }
             Handler(Looper.getMainLooper()).post {
                 changeLogDialog.show()
             }

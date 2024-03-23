@@ -161,6 +161,7 @@ class ErroredDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickL
                     this.finish()
                 }else{
                     actionMode?.title = "$selectedObjects ${getString(R.string.selected)}"
+                    this.menu.findItem(R.id.select_between).isVisible = false
                     if(selectedObjects == 2){
                         val selectedIDs = contextualActionBar.getSelectedIDs().sortedBy { it }
                         val idsInMiddle = withContext(Dispatchers.IO){
@@ -213,7 +214,7 @@ class ErroredDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickL
                     lifecycleScope.launch {
                         val selectedIDs = getSelectedIDs().sortedBy { it }
                         val idsInMiddle = withContext(Dispatchers.IO){
-                            downloadViewModel.getIDsBetweenTwoItems(selectedIDs.first(), selectedIDs.last(), listOf(DownloadRepository.Status.Cancelled).toListString())
+                            downloadViewModel.getIDsBetweenTwoItems(selectedIDs.first(), selectedIDs.last(), listOf(DownloadRepository.Status.Error).toListString())
                         }.toMutableList()
                         idsInMiddle.addAll(selectedIDs)
                         if (idsInMiddle.isNotEmpty()){

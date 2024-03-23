@@ -15,6 +15,7 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceManager
+import com.afollestad.materialdialogs.utils.MDUtil.getStringArray
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.DownloadItem
 import com.deniscerri.ytdlnis.database.models.Format
@@ -499,7 +500,7 @@ class FormatSelectionBottomSheetDialog(private val items: List<DownloadItem?>, p
                     }else{
                         val selectedFormats = mutableListOf<Format>()
                         formatCollection.forEach {
-                            selectedFormats.add(it.first{ f -> f.format_id == format.format_id})
+                            selectedFormats.add(it.firstOrNull{ f -> f.format_id == format.format_id} ?: format)
                         }
                         if (selectedFormats.isEmpty()) {
                             items.forEach { _ ->

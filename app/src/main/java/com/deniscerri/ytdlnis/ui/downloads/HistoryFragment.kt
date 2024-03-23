@@ -86,7 +86,7 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
     private var websiteGroup: ChipGroup? = null
     private var historyList: List<HistoryItem?>? = null
     private var allhistoryList: List<HistoryItem?>? = null
-    private var selectedObjects: ArrayList<HistoryItem>? = null
+    private lateinit var selectedObjects: ArrayList<HistoryItem>
     private var actionMode : ActionMode? = null
 
     private lateinit var sortChip: Chip
@@ -113,7 +113,7 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
         websiteGroup = view.findViewById(R.id.website_chip_group)
         uiHandler = Handler(Looper.getMainLooper())
         sortChip = view.findViewById(R.id.sortChip)
-        selectedObjects = ArrayList()
+        selectedObjects = arrayListOf()
 
 
         historyList = mutableListOf()
@@ -465,21 +465,26 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
     }
 
     override fun onCardSelect(itemID: Long, isChecked: Boolean) {
-        val item = findItem(itemID)
-        if (isChecked) {
-            selectedObjects!!.add(item!!)
-            if (actionMode == null){
-                actionMode = (getActivity() as AppCompatActivity?)!!.startSupportActionMode(contextualActionBar)
+        lifecycleScope.launch {
+            val item = findItem(itemID)
+            if (actionMode == null) actionMode = (getActivity() as AppCompatActivity?)!!.startSupportActionMode(contextualActionBar)
+            actionMode?.apply {
+                if (isChecked) selectedObjects.add(item!!)
+                else selectedObjects.remove(item!!)
 
-            }else{
-                actionMode!!.title = "${selectedObjects!!.size} ${getString(R.string.selected)}"
-            }
-        }
-        else {
-            selectedObjects!!.remove(item)
-            actionMode?.title = "${selectedObjects!!.size} ${getString(R.string.selected)}"
-            if (selectedObjects!!.isEmpty()){
-                actionMode?.finish()
+                if (selectedObjects.size == 0){
+                    this.finish()
+                }else{
+                    actionMode?.title = "${selectedObjects.size} ${getString(R.string.selected)}"
+                    this.menu.findItem(R.id.select_between).isVisible = false
+                    if(selectedObjects.size == 2){
+                        val selectedIDs = selectedObjects.sortedBy { it.id }
+                        val resultsInMiddle = withContext(Dispatchers.IO){
+                            historyViewModel.getRecordsBetweenTwoItems(selectedIDs.first().id, selectedIDs.last().id)
+                        }.toMutableList()
+                        this.menu.findItem(R.id.select_between).isVisible = resultsInMiddle.isNotEmpty()
+                    }
+                }
             }
         }
     }
@@ -491,7 +496,7 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
     private val contextualActionBar = object : ActionMode.Callback {
         override fun onCreateActionMode(mode: ActionMode?, menu: Menu?): Boolean {
             mode!!.menuInflater.inflate(R.menu.history_menu_context, menu)
-            mode.title = "${selectedObjects!!.size} ${getString(R.string.selected)}"
+            mode.title = "${selectedObjects.size} ${getString(R.string.selected)}"
             (activity as MainActivity).disableBottomNavigation()
             topAppBar!!.menu.forEach { it.isEnabled = false }
             return true
@@ -509,6 +514,21 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
             item: MenuItem?
         ): Boolean {
             return when (item!!.itemId) {
+                R.id.select_between -> {
+                    lifecycleScope.launch {
+                        val selectedIDs = selectedObjects.sortedBy { it.id }
+                        val resultsInMiddle = withContext(Dispatchers.IO){
+                            historyViewModel.getRecordsBetweenTwoItems(selectedIDs.first().id, selectedIDs.last().id)
+                        }.toMutableList()
+                        if (resultsInMiddle.isNotEmpty()){
+                            selectedObjects.addAll(resultsInMiddle)
+                            historyAdapter?.checkMultipleItems(selectedObjects.map { it.id })
+                            actionMode?.title = "${selectedObjects.count()} ${getString(R.string.selected)}"
+                        }
+                        mode?.menu?.findItem(R.id.select_between)?.isVisible = false
+                    }
+                    true
+                }
                 R.id.delete_results -> {
                     val deleteFile = booleanArrayOf(false)
                     val deleteDialog = MaterialAlertDialogBuilder(fragmentContext!!)
@@ -519,7 +539,7 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
                     ) { _: DialogInterface?, _: Int, b: Boolean -> deleteFile[0] = b }
                     deleteDialog.setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, _: Int -> dialogInterface.cancel() }
                     deleteDialog.setPositiveButton(getString(R.string.ok)) { _: DialogInterface?, _: Int ->
-                        for (obj in selectedObjects!!){
+                        for (obj in selectedObjects){
                             historyViewModel.delete(obj, deleteFile[0])
                         }
                         clearCheckedItems()
@@ -529,15 +549,15 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
                     true
                 }
                 R.id.share -> {
-                    UiUtil.shareFileIntent(requireContext(), selectedObjects!!.map { it.downloadPath }.flatten())
+                    UiUtil.shareFileIntent(requireContext(), selectedObjects.map { it.downloadPath }.flatten())
                     clearCheckedItems()
                     actionMode?.finish()
                     true
                 }
                 R.id.select_all -> {
                     historyAdapter?.checkAll(historyList)
-                    selectedObjects?.clear()
-                    historyList?.forEach { selectedObjects?.add(it!!) }
+                    selectedObjects.clear()
+                    historyList?.forEach { selectedObjects.add(it!!) }
                     mode?.title = getString(R.string.all_items_selected)
                     true
                 }
@@ -545,11 +565,11 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
                     historyAdapter?.invertSelected(historyList)
                     val invertedList = arrayListOf<HistoryItem>()
                     historyList?.forEach {
-                        if (!selectedObjects?.contains(it)!!) invertedList.add(it!!)
+                        if (!selectedObjects.contains(it)!!) invertedList.add(it!!)
                     }
-                    selectedObjects?.clear()
-                    selectedObjects?.addAll(invertedList)
-                    actionMode!!.title = "${selectedObjects!!.size} ${getString(R.string.selected)}"
+                    selectedObjects.clear()
+                    selectedObjects.addAll(invertedList)
+                    actionMode!!.title = "${selectedObjects.size} ${getString(R.string.selected)}"
                     if (invertedList.isEmpty()) actionMode?.finish()
                     true
                 }
@@ -567,7 +587,7 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
 
     private fun clearCheckedItems(){
         historyAdapter?.clearCheckeditems()
-        selectedObjects?.clear()
+        selectedObjects.clear()
     }
 
     private var simpleCallback: ItemTouchHelper.SimpleCallback =

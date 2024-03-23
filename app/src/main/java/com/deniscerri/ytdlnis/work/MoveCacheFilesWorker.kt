@@ -14,6 +14,7 @@ import androidx.work.WorkerParameters
 import com.deniscerri.ytdlnis.App
 import com.deniscerri.ytdlnis.MainActivity
 import com.deniscerri.ytdlnis.R
+import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.NotificationUtil
 import java.io.File
 import java.nio.file.Files
@@ -28,7 +29,8 @@ class MoveCacheFilesWorker(
         val notificationUtil = NotificationUtil(App.instance)
         val id = System.currentTimeMillis().toInt()
 
-        val downloadFolders = File(context.cacheDir.absolutePath + "/downloads")
+        val cachePath = FileUtil.getCachePath(context)
+        val downloadFolders = File(cachePath)
         val allContent = downloadFolders.walk()
         allContent.drop(1)
         val totalFiles = allContent.count()
@@ -44,7 +46,7 @@ class MoveCacheFilesWorker(
         allContent.forEach {
             progress++
             notificationUtil.updateCacheMovingNotification(id, progress, totalFiles)
-            val destFile = File(destination.absolutePath + "/${it.absolutePath.removePrefix(context.cacheDir.absolutePath + "/downloads")}")
+            val destFile = File(destination.absolutePath + "/${it.absolutePath.removePrefix(cachePath)}")
             if (it.isDirectory) {
                 destFile.mkdirs()
                 return@forEach

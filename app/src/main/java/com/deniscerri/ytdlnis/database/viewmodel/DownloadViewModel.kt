@@ -1,5 +1,6 @@
 package com.deniscerri.ytdlnis.database.viewmodel
 
+import android.annotation.SuppressLint
 import android.app.Application
 import android.content.SharedPreferences
 import android.content.res.Configuration
@@ -15,6 +16,7 @@ import androidx.work.Data
 import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
+import com.afollestad.materialdialogs.utils.MDUtil.getStringArray
 import com.deniscerri.ytdlnis.App
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.DBManager
@@ -179,10 +181,11 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         if (sharedPreferences.getBoolean("incognito", false)){
             if (item.status == DownloadRepository.Status.Cancelled.toString() || item.status == DownloadRepository.Status.Error.toString()){
                 repository.delete(item.id)
+                return
             }
-        }else{
-            repository.update(item)
         }
+
+        repository.update(item)
     }
 
     fun getItemByID(id: Long) : DownloadItem {
@@ -461,7 +464,7 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
 
         sharedPreferences.getString("audio_language", "")?.apply {
             if (this.isNotBlank()){
-                requirements.add { it: Format -> it.lang == this }
+                requirements.add { it: Format -> it.lang?.contains(this) == true }
             }
         }
 
@@ -476,6 +479,7 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         requirements.add { it: Format -> if (videoContainer == "mp4") it.container.equals("mpeg_4", true) else it.container.equals(videoContainer, true)}
         requirements.add { it: Format -> it.format_note.contains(videoQualityPreference.split("_")[0].dropLast(1)) }
         requirements.add { it: Format -> "^(${videoCodec}).+$".toRegex(RegexOption.IGNORE_CASE).matches(it.vcodec)}
+        requirements.add { it: Format -> it.acodec == "none" || it.acodec == "" }
         return  requirements
     }
 
@@ -946,6 +950,10 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
 
     fun getIDsBetweenTwoItems(item1: Long, item2: Long, statuses: List<String>) : List<Long> {
         return dao.getIDsBetweenTwoItems(item1, item2, statuses)
+    }
+
+    fun getQueuedIDsBetweenTwoItems(item1: Long, item2: Long) : List<Long> {
+        return dao.getQueuedIDsBetweenTwoItems(item1, item2)
     }
 
 

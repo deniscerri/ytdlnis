@@ -5,6 +5,7 @@ import android.os.Looper
 import android.widget.Toast
 import androidx.core.content.edit
 import androidx.preference.PreferenceManager
+import com.deniscerri.ytdlnis.util.CrashListener
 import com.deniscerri.ytdlnis.util.NotificationUtil
 import com.yausername.aria2c.Aria2c
 import com.yausername.ffmpeg.FFmpeg
@@ -25,7 +26,6 @@ class App : Application() {
 
         val sharedPreferences =  PreferenceManager.getDefaultSharedPreferences(this@App)
         setDefaultValues()
-
         applicationScope = CoroutineScope(SupervisorJob())
         applicationScope.launch((Dispatchers.IO)) {
             try {

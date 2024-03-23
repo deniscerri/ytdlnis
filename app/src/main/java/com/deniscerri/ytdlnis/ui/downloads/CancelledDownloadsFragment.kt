@@ -160,6 +160,7 @@ class CancelledDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClic
                     this.finish()
                 }else{
                     this.title = "$selectedObjects ${getString(R.string.selected)}"
+                    this.menu.findItem(R.id.select_between).isVisible = false
                     if (selectedObjects == 2){
                         val selectedIDs = contextualActionBar.getSelectedIDs().sortedBy { it }
                         val idsInMiddle = withContext(Dispatchers.IO){

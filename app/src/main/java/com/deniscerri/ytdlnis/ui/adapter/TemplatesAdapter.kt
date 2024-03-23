@@ -106,6 +106,14 @@ class TemplatesAdapter(onItemClickListener: OnItemClickListener, activity: Activ
     }
 
     @SuppressLint("NotifyDataSetChanged")
+    fun checkMultipleItems(list: List<Long>){
+        checkedItems.clear()
+        checkedItems.addAll(list)
+        notifyDataSetChanged()
+    }
+
+
+    @SuppressLint("NotifyDataSetChanged")
     fun invertSelected(items: List<CommandTemplate?>?){
         val invertedList = mutableListOf<Long>()
         items?.forEach {

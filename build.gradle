@@ -22,8 +22,8 @@ buildscript {
         coroutineVer = '1.7.3'
         retrofitVer = "2.9.0"
         kodeinVer = "7.16.0"
-        navVer = "2.7.6"
-        media3_version = "1.2.0"
+        navVer = "2.7.7"
+        media3_version = "1.2.1"
         agp_version = '8.1.0'
         agp_version1 = '7.4.2'
         roomVer = '2.5.2'

@@ -222,8 +222,8 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
                 val listener = object : OnFormatClickListener {
                     override fun onFormatClick(item: List<FormatTuple>) {
                         downloadItem.format = item.first().format
+                        downloadItem.videoPreferences.audioFormatIDs.clear()
                         item.first().audioFormats?.map { it.format_id }?.let {
-                            downloadItem.videoPreferences.audioFormatIDs.clear()
                             downloadItem.videoPreferences.audioFormatIDs.addAll(it)
                         }
                         UiUtil.populateFormatCard(requireContext(), formatCard, item.first().format,

@@ -96,13 +96,13 @@
         android:layout_marginEnd="4dp"
         android:background="@color/light_grey"
         android:clickable="false"
-        android:gravity="bottom|end"
         android:maxLength="10"
+        android:layout_marginTop="10dp"
         android:minWidth="30dp"
         app:cornerRadius="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

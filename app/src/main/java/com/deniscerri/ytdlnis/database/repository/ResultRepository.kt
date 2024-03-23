@@ -145,7 +145,7 @@ class ResultRepository(private val resultDao: ResultDao, private val context: Co
                 search(inputQuery, resetResults, addToResults)
             }
             SourceType.YT_DLP -> {
-                getDefault(inputQuery, resetResults, addToResults)
+                getDefault(inputQuery, resetResults, addToResults, singleItem)
             }
         }
 

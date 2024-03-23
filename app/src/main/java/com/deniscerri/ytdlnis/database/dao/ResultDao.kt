@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ResultDao {
-    @Query("SELECT * FROM results")
+    @Query("SELECT * FROM results order by id")
     fun getResults() : Flow<List<ResultItem>>
 
     @Query("SELECT COUNT(id) FROM results")
@@ -48,5 +48,8 @@ interface ResultDao {
 
     @Query("SELECT * FROM results WHERE url=:url LIMIT 1")
     fun getResultByURL(url: String) : ResultItem?
+
+    @Query("SELECT * from results WHERE id > :item1 AND id < :item2 ORDER BY id")
+    fun getResultsBetweenTwoItems(item1: Long, item2: Long) : List<ResultItem>
 
 }

@@ -193,6 +193,7 @@ class QueuedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLi
                     }
 
                     this.menu.findItem(R.id.up).isVisible = position > 0
+                    this.menu.findItem(R.id.select_between).isVisible = false
                     if(selectedObjects == 2){
                         val selectedIDs = contextualActionBar.getSelectedIDs().sortedBy { it }
                         val idsInMiddle = withContext(Dispatchers.IO){
@@ -254,7 +255,7 @@ class QueuedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLi
                     lifecycleScope.launch {
                         val selectedIDs = getSelectedIDs().sortedBy { it }
                         val idsInMiddle = withContext(Dispatchers.IO){
-                            downloadViewModel.getIDsBetweenTwoItems(selectedIDs.first(), selectedIDs.last(), listOf(DownloadRepository.Status.Cancelled).toListString())
+                            downloadViewModel.getQueuedIDsBetweenTwoItems(selectedIDs.first(), selectedIDs.last())
                         }.toMutableList()
                         idsInMiddle.addAll(selectedIDs)
                         if (idsInMiddle.isNotEmpty()){

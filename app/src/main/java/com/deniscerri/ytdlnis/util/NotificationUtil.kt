@@ -17,6 +17,8 @@ import androidx.core.content.FileProvider
 import androidx.documentfile.provider.DocumentFile
 import androidx.navigation.NavDeepLinkBuilder
 import com.deniscerri.ytdlnis.R
+import com.deniscerri.ytdlnis.database.models.DownloadItem
+import com.deniscerri.ytdlnis.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdlnis.receiver.CancelDownloadNotificationReceiver
 import com.deniscerri.ytdlnis.receiver.CancelWorkReceiver
 import com.deniscerri.ytdlnis.receiver.PauseDownloadNotificationReceiver
@@ -221,13 +223,14 @@ class NotificationUtil(var context: Context) {
     fun createDownloadFinished(
         id: Long,
         title: String?,
+        downloadType: DownloadViewModel.Type,
         filepath: List<String>?,
         res: Resources
     ) {
         val notificationBuilder = getBuilder(DOWNLOAD_FINISHED_CHANNEL_ID)
 
         notificationBuilder
-            .setContentTitle("${res.getString(R.string.downloaded)} $title")
+            .setContentTitle("${res.getString(R.string.downloaded)} (${downloadType}): $title")
             .setSmallIcon(R.drawable.ic_launcher_foreground_large)
             .setLargeIcon(
                 BitmapFactory.decodeResource(
@@ -237,7 +240,7 @@ class NotificationUtil(var context: Context) {
             )
             .setGroup(DOWNLOAD_FINISHED_NOTIFICATION_ID.toString())
             .setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_CHILDREN)
-            .setContentText("")
+            .setContentText(title)
             .setPriority(NotificationCompat.PRIORITY_MAX)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .clearActions()
@@ -387,7 +390,7 @@ class NotificationUtil(var context: Context) {
         )
 
         try {
-            notificationBuilder.setProgress(100, progress, false)
+            notificationBuilder.setProgress(100, progress, progress == 0)
                 .setContentTitle(title)
                 .setStyle(NotificationCompat.BigTextStyle().bigText(contentText))
                 .clearActions()
@@ -420,7 +423,7 @@ class NotificationUtil(var context: Context) {
         )
 
         try {
-            notificationBuilder.setProgress(100, progress, false)
+            notificationBuilder.setProgress(100, progress, progress == 0)
                 .setContentTitle(title)
                 .setStyle(NotificationCompat.BigTextStyle().bigText(contentText))
                 .clearActions()
@@ -462,7 +465,7 @@ class NotificationUtil(var context: Context) {
         val notificationBuilder = getBuilder(DOWNLOAD_MISC_CHANNEL_ID)
         val contentText = "${progress}/${totalFiles}"
         try {
-            notificationBuilder.setProgress(100, progress, false)
+            notificationBuilder.setProgress(100, progress, progress == 0)
                 .setContentTitle(resources.getString(R.string.move_temporary_files))
                 .setStyle(NotificationCompat.BigTextStyle().bigText(contentText))
             notificationManager.notify(id, notificationBuilder.build())
@@ -534,7 +537,7 @@ class NotificationUtil(var context: Context) {
 
 
         try {
-            notificationBuilder.setProgress(queue, progress, false)
+            notificationBuilder.setProgress(queue, progress, progress == 0)
                 .setContentTitle(resources.getString(R.string.update_formats_background))
                 .setStyle(NotificationCompat.BigTextStyle().bigText(contentText))
                 .clearActions()

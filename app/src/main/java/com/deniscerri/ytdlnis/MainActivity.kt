@@ -11,6 +11,8 @@ import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.provider.Settings
 import android.util.Log
 import android.view.View
@@ -41,6 +43,7 @@ import com.deniscerri.ytdlnis.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdlnis.ui.BaseActivity
 import com.deniscerri.ytdlnis.ui.HomeFragment
 import com.deniscerri.ytdlnis.ui.more.settings.SettingsActivity
+import com.deniscerri.ytdlnis.util.CrashListener
 import com.deniscerri.ytdlnis.util.FileUtil
 import com.deniscerri.ytdlnis.util.ThemeUtil
 import com.deniscerri.ytdlnis.util.UpdateUtil
@@ -56,6 +59,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -81,6 +85,7 @@ class MainActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        CrashListener(this).registerExceptionHandler()
         ThemeUtil.updateTheme(this)
         window.navigationBarColor = SurfaceColors.SURFACE_2.getColor(this)
         setContentView(R.layout.activity_main)
@@ -90,7 +95,11 @@ class MainActivity : BaseActivity() {
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
         preferences = PreferenceManager.getDefaultSharedPreferences(context)
 
-        if (preferences.getBoolean("incognito", false)) resultViewModel.deleteAll()
+        if (preferences.getBoolean("incognito", false)) {
+            lifecycleScope.launch(Dispatchers.IO){
+                resultViewModel.deleteAll()
+            }
+        }
 
         askPermissions()
         checkUpdate()
@@ -211,13 +220,15 @@ class MainActivity : BaseActivity() {
         }
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            if (navigationView is NavigationBarView){
-                when(destination.id){
-                    R.id.homeFragment, R.id.historyFragment, R.id.moreFragment -> showBottomNavigation()
-                    else -> hideBottomNavigation()
+            Handler(Looper.getMainLooper()).post {
+                if (navigationView is NavigationBarView){
+                    when(destination.id){
+                        R.id.homeFragment, R.id.historyFragment, R.id.moreFragment -> showBottomNavigation()
+                        else -> hideBottomNavigation()
+                    }
                 }
-
             }
+
         }
 
         navigationView.visibilityChanged {
@@ -288,9 +299,16 @@ class MainActivity : BaseActivity() {
             findViewById<FragmentContainerView>(R.id.frame_layout).updateLayoutParams {
                 this.width = LayoutParams.MATCH_PARENT
             }
-            navigationView.animate()?.translationX(-navigationView.width.toFloat())?.setDuration(300)?.withEndAction {
-                navigationView.visibility = View.GONE
-            }?.start()
+
+            if (resources.getBoolean(R.bool.is_right_to_left)){
+                navigationView.animate()?.translationX(navigationView.width.toFloat())?.setDuration(300)?.withEndAction {
+                    navigationView.visibility = View.GONE
+                }?.start()
+            }else{
+                navigationView.animate()?.translationX(-navigationView.width.toFloat())?.setDuration(300)?.withEndAction {
+                    navigationView.visibility = View.GONE
+                }?.start()
+            }
         }
     }
 

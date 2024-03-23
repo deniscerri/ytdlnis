@@ -64,9 +64,8 @@ class TerminalDownloadWorker(
         )
 
         if (sharedPreferences.getBoolean("use_cookies", false)){
-            val cookiesFile = File(context.cacheDir, "cookies.txt")
-            if (cookiesFile.exists()){
-                request.addOption("--cookies", cookiesFile.absolutePath)
+            FileUtil.getCookieFile(context){
+                request.addOption("--cookies", it)
             }
 
             val useHeader = sharedPreferences.getBoolean("use_header", false)
@@ -144,7 +143,6 @@ class TerminalDownloadWorker(
             return runBlocking {
                 if (logDownloads) logRepo.update(it.out, logItem.id)
                 dao.updateLog(it.out, itemId.toLong())
-                Thread.sleep(1000)
                 dao.delete(itemId.toLong())
                 notificationUtil.cancelDownloadNotification(itemId)
 
@@ -156,7 +154,6 @@ class TerminalDownloadWorker(
                     if (it.message != null){
                         if (logDownloads) logRepo.update(it.message!!, logItem.id)
                         dao.updateLog(it.message!!, itemId.toLong())
-                        Thread.sleep(1000)
                         dao.delete(itemId.toLong())
                     }
                 }

@@ -20,11 +20,11 @@ import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.models.CookieItem
 import com.deniscerri.ytdlnis.database.viewmodel.CookieViewModel
 import com.deniscerri.ytdlnis.ui.BaseActivity
+import com.deniscerri.ytdlnis.util.Extensions.convertNetscapeToSetCookie
 import com.google.accompanist.web.AccompanistWebChromeClient
 import com.google.accompanist.web.AccompanistWebViewClient
 import com.google.accompanist.web.WebView
 import com.google.accompanist.web.rememberWebViewState
-import com.google.android.exoplayer2.util.Log
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton
@@ -49,16 +49,15 @@ class WebViewActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.webview_activity)
         url = intent.extras!!.getString("url")!!
-        cookies = ""
         cookiesViewModel = ViewModelProvider(this)[CookieViewModel::class.java]
-        val appbar = findViewById<AppBarLayout>(R.id.webview_appbarlayout)
-        toolbar = appbar.findViewById(R.id.webviewToolbar)
-        generateBtn = toolbar.findViewById(R.id.generate)
-        webViewCompose = findViewById(R.id.webview_compose)
-        cookieManager = CookieManager.getInstance()
-        preferences = PreferenceManager.getDefaultSharedPreferences(this)
+        lifecycleScope.launch {
+            val appbar = findViewById<AppBarLayout>(R.id.webview_appbarlayout)
+            toolbar = appbar.findViewById(R.id.webviewToolbar)
+            generateBtn = toolbar.findViewById(R.id.generate)
+            webViewCompose = findViewById(R.id.webview_compose)
+            cookieManager = CookieManager.getInstance()
+            preferences = PreferenceManager.getDefaultSharedPreferences(this@WebViewActivity)
 
-        lifecycleScope.launch{
             webViewClient = object : AccompanistWebViewClient() {
                 override fun onPageFinished(view: WebView?, url: String?) {
                     super.onPageFinished(view, url)
@@ -78,9 +77,7 @@ class WebViewActivity : BaseActivity() {
 
             generateBtn.setOnClickListener {
                 lifecycleScope.launch {
-                    withContext(Dispatchers.IO){
-                        val a = cookieManager.getCookie(url).replace(";", "\n")
-                        Log.e("TESTING", a)
+                    withContext(Dispatchers.IO) {
                         cookiesViewModel.getCookiesFromDB(url).getOrNull()?.let {
                             kotlin.runCatching {
                                 cookiesViewModel.insert(
@@ -92,12 +89,17 @@ class WebViewActivity : BaseActivity() {
                                 )
                                 cookiesViewModel.updateCookiesFile()
                             }.onFailure {
-                                withContext(Dispatchers.Main){
-                                    Toast.makeText(this@WebViewActivity, "Something went wrong", Toast.LENGTH_SHORT).show()
+                                withContext(Dispatchers.Main) {
+                                    Toast.makeText(
+                                        this@WebViewActivity,
+                                        "Something went wrong",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
                                 }
                             }
                         }
-                        withContext(Dispatchers.Main){
+                        cookieManager.removeAllCookies(null)
+                        withContext(Dispatchers.Main) {
                             onBackPressedDispatcher.onBackPressed()
                         }
                     }
@@ -108,7 +110,6 @@ class WebViewActivity : BaseActivity() {
                 setContent { WebViewView() }
             }
         }
-
 
     }
 

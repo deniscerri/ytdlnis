@@ -34,7 +34,7 @@
             app:title="@string/auto_update_ytdlp" />
 
         <ListPreference
-            android:defaultValue="piped"
+            android:defaultValue="yt-dlp"
             android:entries="@array/formats_source"
             android:entryValues="@array/formats_source_values"
             android:icon="@drawable/baseline_manage_search_24"

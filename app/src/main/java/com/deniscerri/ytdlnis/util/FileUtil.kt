@@ -262,15 +262,22 @@ object FileUtil {
     }
 
     fun getCachePath(context: Context) : String {
-        return context.cacheDir.absolutePath + "/downloads/"
+        val externalPath = context.getExternalFilesDir(null)
+        return if (externalPath == null){
+            context.cacheDir.absolutePath + "/downloads/"
+        }else{
+            externalPath.absolutePath + "/downloads/"
+        }
     }
 
     fun deleteConfigFiles(request: YoutubeDLRequest) {
-        request.getArguments("--config")?.forEach {
-            if (it != null) File(it).delete()
-        }
-        request.getArguments("--config-locations")?.forEach {
-            if (it != null) File(it).delete()
+        runCatching {
+            request.getArguments("--config")?.forEach {
+                if (it != null) File(it).delete()
+            }
+            request.getArguments("--config-locations")?.forEach {
+                if (it != null) File(it).delete()
+            }
         }
     }
 
@@ -287,16 +294,18 @@ object FileUtil {
     }
 
     fun getDownloadArchivePath(context: Context) : String {
-        return context.cacheDir.absolutePath + "/download_archive.txt"
+        return context.filesDir.absolutePath + "/download_archive.txt"
     }
 
     fun getDefaultTerminalPath() : String {
         return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)?.absolutePath + File.separator + "YTDLnis/TERMINAL_CACHE"
     }
 
-    fun getCookieFile(context : Context, path: (path: String) -> Unit){
+    fun getCookieFile(context : Context, ignoreIfExists: Boolean = false,  path: (path: String) -> Unit){
         val cookiesFile = File(context.cacheDir, "cookies.txt")
-        if (cookiesFile.exists()) path(cookiesFile.absolutePath)
+        if (ignoreIfExists || cookiesFile.exists()){
+            path(cookiesFile.absolutePath)
+        }
     }
 
     fun convertFileSize(s: Long): String{

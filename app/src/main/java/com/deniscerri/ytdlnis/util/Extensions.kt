@@ -27,6 +27,7 @@ import androidx.core.view.updateLayoutParams
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.withStarted
 import androidx.recyclerview.widget.RecyclerView
+import com.deniscerri.ytdlnis.App
 import com.deniscerri.ytdlnis.R
 import com.deniscerri.ytdlnis.database.repository.DownloadRepository
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -40,6 +41,7 @@ import kotlinx.coroutines.launch
 import me.zhanghai.android.fastscroll.FastScrollerBuilder
 import org.json.JSONObject
 import java.io.File
+import java.net.HttpCookie
 import java.util.Locale
 import java.util.regex.Pattern
 import kotlin.math.abs
@@ -225,22 +227,26 @@ object Extensions {
                 number = nr
                 verticalOffset = 3
                 horizontalOffset =
-                    if (nr < 10) 7
-                    else if (nr < 100) 10
-                    else 20
+                    if (nr < 10) dp(App.instance.resources,  7f)
+                    else if (nr < 100) dp(App.instance.resources,  10f)
+                    else dp(App.instance.resources,  20f)
             }
         }
     }
 
     fun String.appendLineToLog(line: String): String {
         val lines = this.split("\n")
-        //clean dublicate progress + add newline
-        var newLine = line
-        if (newLine.contains("[download")) {
-            newLine = "[download]" + line.split("[download]").last()
+        if (!lines.takeLast(3).contains(line)){
+            //clean dublicate progress + add newline
+            var newLine = line
+            if (newLine.contains("[download")) {
+                newLine = "[download]" + line.split("[download]").last()
+            }
+
+            return lines.dropLastWhile { it.contains("[download") }.joinToString("\n") + "\n${newLine}"
         }
 
-        return lines.dropLastWhile { it.contains("[download") }.joinToString("\n") + "\n${newLine}"
+        return this
     }
 
     fun ImageView.loadThumbnail(hideThumb: Boolean, imageURL: String){
@@ -270,6 +276,56 @@ object Extensions {
             // Adjust this curve as needed for desired animation feel
             return (Math.pow((input - 1).toDouble(), 5.0) + 1).toFloat()
         }
+    }
+
+    fun String.convertToTimestamp() : Int {
+        return try {
+            val timeArray = this.split(":")
+            var timeSeconds = timeArray[timeArray.lastIndex].toInt()
+            var times = 60
+            for (i in timeArray.lastIndex - 1 downTo 0) {
+                timeSeconds += timeArray[i].toInt() * times
+                times *= 60
+            }
+            timeSeconds
+        }catch (e: Exception){
+            e.printStackTrace()
+            0
+        }
+    }
+
+    fun String.convertNetscapeToSetCookie(): String {
+        // Split the Netscape cookie string
+        val parts =
+            this.split("\t").dropLastWhile { it.isEmpty() }
+                .toTypedArray()
+
+        if (parts.isEmpty()) return ""
+
+        // Extract the individual components
+        val domain = parts[0].trim { it <= ' ' }
+        val isSecure =
+            java.lang.Boolean.parseBoolean(parts[3].trim { it <= ' ' })
+        val expiry = parts[4].trim { it <= ' ' }.toLong()
+        val name = parts[5].trim { it <= ' ' }
+        val value = parts[6].trim { it <= ' ' }
+
+        // Create the BasicClientCookie
+        val cookie = HttpCookie(name, value)
+        cookie.domain = domain
+        cookie.path = "/"
+        cookie.secure = isSecure
+
+        // Set expiry
+        if (expiry != 0L) {
+            cookie.maxAge = expiry
+        } else {
+            // For session cookies, set to null
+            cookie.maxAge = -1L
+        }
+
+        // Get the Set-Cookie header format
+        return cookie.toString()
     }
 
 

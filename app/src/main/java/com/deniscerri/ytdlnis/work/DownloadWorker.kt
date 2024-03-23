@@ -88,7 +88,8 @@ class DownloadWorker(
 
         queuedItems.collect { items ->
             runningYTDLInstances.clear()
-            dao.getActiveDownloadsList().forEach {
+            val activeDownloads = dao.getActiveDownloadsList()
+            activeDownloads.forEach {
                 runningYTDLInstances.add(it.id)
             }
 
@@ -155,7 +156,7 @@ class DownloadWorker(
 
                     runCatching {
                         YoutubeDL.getInstance().execute(request, downloadItem.id.toString()){ progress, _, line ->
-                            setProgressAsync(workDataOf("progress" to progress.toInt(), "output" to line.chunked(5000).first().toString(), "id" to downloadItem.id))
+                            setProgressAsync(workDataOf("progress" to progress.toInt(), "output" to line.chunked(5000).ifEmpty { listOf("") }.first().toString(), "id" to downloadItem.id))
                             val title: String = downloadItem.title.ifEmpty { downloadItem.url }
                             notificationUtil.updateDownloadNotification(
                                 downloadItem.id.toInt(),
@@ -267,7 +268,7 @@ class DownloadWorker(
 
                             notificationUtil.cancelDownloadNotification(downloadItem.id.toInt())
                             notificationUtil.createDownloadFinished(
-                                downloadItem.id, downloadItem.title,  if (finalPaths?.first().equals(context.getString(R.string.unfound_file))) null else finalPaths, resources
+                                downloadItem.id, downloadItem.title, downloadItem.type,  if (finalPaths?.first().equals(context.getString(R.string.unfound_file))) null else finalPaths, resources
                             )
 
                             if (wasQuickDownloaded && createResultItem){
@@ -335,7 +336,7 @@ class DownloadWorker(
 
                             setProgressAsync(workDataOf("progress" to 100, "output" to it.toString(), "id" to downloadItem.id))
                         }
-                        if (items.size <= 1) WorkManager.getInstance(context).cancelWorkById(this@DownloadWorker.id)
+                        //if (items.size <= 1) WorkManager.getInstance(context).cancelWorkById(this@DownloadWorker.id)
                     }
                 }
             }
