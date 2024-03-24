@@ -372,4 +372,6 @@
     <string name="select_between">Vybrať položky medzi</string>
     <string name="reset_processed_links">Resetovať už spracované odkazy</string>
     <string name="all_queries_finished">Všetky požiadavky boli spracované</string>
+    <string name="no_download_fragments_summary">Nepoužije súbory .part a zapisuje priamo do výstupného súboru</string>
+    <string name="no_download_fragments">Nesťahovať ako fragmenty</string>
 </resources>
