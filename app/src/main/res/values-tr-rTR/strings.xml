@@ -375,4 +375,6 @@
     <string name="text_size">Yazı Boyutu</string>
     <string name="add">Ekle</string>
     <string name="reset_processed_links">Zaten İşlenmiş Bağlantıları Sıfırla</string>
+    <string name="no_download_fragments">Parçalar halinde indirme</string>
+    <string name="no_download_fragments_summary">.part dosyalarını kullanmayın ve doğrudan çıktı dosyasına yazmayın</string>
 </resources>
