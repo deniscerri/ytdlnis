@@ -372,4 +372,6 @@
     <string name="all_queries_finished">Усі запити оброблено</string>
     <string name="select_between">Виберіть пункти між</string>
     <string name="reset_processed_links">Скинути вже оброблені посилання</string>
+    <string name="no_download_fragments">Не завантажуйте як фрагменти</string>
+    <string name="no_download_fragments_summary">Не використовуйте файли .part і записуйте безпосередньо у вихідний файл</string>
 </resources>
