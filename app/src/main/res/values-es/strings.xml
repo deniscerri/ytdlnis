@@ -372,4 +372,6 @@
     <string name="get_new_uploads">Obtener sólo las nuevas cargas</string>
     <string name="wrap_text">Ajustar texto</string>
     <string name="also_download_audio">Descargar también en audio</string>
+    <string name="no_download_fragments">No descargar como fragmentos</string>
+    <string name="no_download_fragments_summary">No utilice archivos .part y escriba directamente en el archivo de salida</string>
 </resources>
