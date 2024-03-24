@@ -372,4 +372,6 @@
     <string name="get_new_uploads">Получать только новые загрузки</string>
     <string name="add">Добавить</string>
     <string name="wrap_text">Перенос текста</string>
+    <string name="no_download_fragments">Не загружать как фрагменты</string>
+    <string name="no_download_fragments_summary">Не используйте файлы .part и записывайте непосредственно в выходной файл</string>
 </resources>
