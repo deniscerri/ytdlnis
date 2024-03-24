@@ -372,4 +372,6 @@
     <string name="wrap_text">Zabalit text</string>
     <string name="swipe_gestures_download_card">Swipe gesta na kartě stahování</string>
     <string name="also_download_audio">Stáhnout také jako audio</string>
+    <string name="no_download_fragments">Nestahovat jako fragmenty</string>
+    <string name="no_download_fragments_summary">Nepoužije soubory .part a zapisuje přímo do výstupního souboru</string>
 </resources>
