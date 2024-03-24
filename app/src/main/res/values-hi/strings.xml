@@ -372,4 +372,6 @@
     <string name="scroll_down">नीचे स्क्रॉल करें</string>
     <string name="back">पीछे</string>
     <string name="reset_processed_links">पहले से संसाधित लिंक रीसेट करें</string>
+    <string name="no_download_fragments">टुकड़ों में डाउनलोड न करें</string>
+    <string name="no_download_fragments_summary">.part फ़ाइलों का उपयोग न करें और सीधे आउटपुट फ़ाइल में लिखें</string>
 </resources>
