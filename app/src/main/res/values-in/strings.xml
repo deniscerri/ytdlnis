@@ -94,7 +94,7 @@
     <string name="sponsorblock_outro">Outro</string>
     <string name="sponsorblock_promos">Promo Diri Sendiri</string>
     <string name="api_key_summary">Rekomendasi Video dari API YouTube</string>
-    <string name="update_app_summary">Mengumumkan versi aplikasi yang baru saat membukanya</string>
+    <string name="update_app_summary">Beri tahu versi aplikasi yang baru saat aplikasi dibuka. Data tersebut diambil dari Repositori Github resmi</string>
     <string name="remove_duplicates">Bersihkan Duplikat</string>
     <string name="sort_by">Penyortiran</string>
     <string name="incognito_summary">Unduh tanpa menambahkannya ke riwayat</string>
@@ -147,7 +147,7 @@
     <string name="create">Buat</string>
     <string name="update">Mutakhirkan</string>
     <string name="preferred_download_type">Preferensi Jenis Unduhan</string>
-    <string name="confirm_delete_logs_desc">Hapus seluruh daftar rekam-catat, secara permanen.</string>
+    <string name="confirm_delete_logs_desc">Hapus seluruh daftar log, secara permanen.</string>
     <string name="select">Pilih</string>
     <string name="selected">Dipilih</string>
     <string name="all_items_selected">Semua butir dipilih</string>
@@ -359,4 +359,18 @@
     <string name="format_filter">Penyaringan Format</string>
     <string name="format_smallest">Format terkecil (per Resolusi)</string>
     <string name="cut_unavailable">Kamu perlu memutakhirkan data butir agar bisa menggunakan fitur pemotongan</string>
+    <string name="no_download_fragments">Jangan unduh sebagai Fragmen</string>
+    <string name="wrap_text">Bungkus Teks</string>
+    <string name="swipe_gestures_download_card">Gestur Usap di kartu unduhan</string>
+    <string name="show_download_count">Perlihatkan jumlah butir di layar Antrean Unduhan</string>
+    <string name="thumbnail_format">Format Keluku (Thumbnail)</string>
+    <string name="get_new_uploads">Dapatkan Unggahan Baru Saja</string>
+    <string name="also_download_audio">Unduh Juga sebagai Audio</string>
+    <string name="scroll_down">Gulir ke Bawah</string>
+    <string name="text_size">Ukuran Teks</string>
+    <string name="add">Tambahkan</string>
+    <string name="back">Kembali</string>
+    <string name="all_queries_finished">Semua Kueri telah diproses</string>
+    <string name="select_between">Pilih Butir yang di Tengah-Tengah</string>
+    <string name="reset_processed_links">Setel Ulang Pranala yang Sudah Diproses</string>
 </resources>

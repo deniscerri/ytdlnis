@@ -372,4 +372,6 @@
     <string name="get_new_uploads">只获取新上传</string>
     <string name="scroll_down">向下滚动</string>
     <string name="add">添加</string>
+    <string name="no_download_fragments">不要下载为分段</string>
+    <string name="no_download_fragments_summary">不使用 .part 文件并直接写入至输出文件</string>
 </resources>
