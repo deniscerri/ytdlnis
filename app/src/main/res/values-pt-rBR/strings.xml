@@ -372,4 +372,6 @@
     <string name="swipe_gestures_download_card">Gestos deslizantes no cartão de download</string>
     <string name="show_download_count">Mostrar contagens na guia Central de Downloads</string>
     <string name="reset_processed_links">Redefinir links já processados</string>
+    <string name="no_download_fragments">Não baixar como fragmentos</string>
+    <string name="no_download_fragments_summary">Não use arquivos \".part\" e escreva diretamente no arquivo de saída</string>
 </resources>
