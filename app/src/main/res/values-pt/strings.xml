@@ -372,4 +372,6 @@
     <string name="select_between">Selecionar itens entre</string>
     <string name="reset_processed_links">Repor ligações já processadas</string>
     <string name="thumbnail_format">Formato de miniatura</string>
+    <string name="no_download_fragments">Não descarregar fragmentos</string>
+    <string name="no_download_fragments_summary">Não usar ficheiros .part e escrever diretamente no destino</string>
 </resources>
