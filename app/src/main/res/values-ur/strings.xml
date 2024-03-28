@@ -27,4 +27,8 @@
     <string name="ytdl_update_hint">اگر آپ کو ڈاؤن لوڈ کرنے میں دشواری ہو تو مفید ہے.</string>
     <string name="download_notification_channel_description">آڈیو اور ویڈیو فائلوں کو ڈاؤن لوڈ کرنے کی پیشرفت کو ظاہر کرنے والی اطلاع</string>
     <string name="cancel">منسوخ کریں</string>
+    <string name="confirm_delete_history_desc">تمام تاریخ کو مستقل طور پر حذف کریں</string>
+    <string name="confirm_delete_history">تصدیق کریں</string>
+    <string name="search_history_hint">تاریخ سے تلاش کریں</string>
+    <string name="search_command_hint">حکموں سے تلاش کریں</string>
 </resources>
