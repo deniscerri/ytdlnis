@@ -370,6 +370,8 @@
     <string name="get_new_uploads">Pobierz tylko nowe przesłane pliki</string>
     <string name="also_download_audio">Pobierz ponadto jako dźwięk</string>
     <string name="all_queries_finished">Wszystkie zapytania zostały przetworzone</string>
-    <string name="select_between">Wybierz pozycje pomiędzy</string>
+    <string name="select_between">Wybierz elementy pomiędzy</string>
     <string name="reset_processed_links">Zresetuj już przetworzone linki</string>
+    <string name="no_download_fragments">Nie pobieraj jako fragmenty</string>
+    <string name="no_download_fragments_summary">Nie używaj plików .part i pisz bezpośrednio do pliku wyjściowego</string>
 </resources>
