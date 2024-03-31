@@ -368,7 +368,7 @@
     <string name="get_new_uploads">Get New Uploads Only</string>
     <string name="also_download_audio">Also Download as Audio</string>
     <string name="wrap_text">Wrap Text</string>
-    <string name="scroll_down">Scroll Down</string>
+    <string name="scroll_down">Scroll to the Bottom</string>
     <string name="text_size">Text Size</string>
     <string name="add">Add</string>
     <string name="back">Back</string>
@@ -377,4 +377,9 @@
     <string name="reset_processed_links">Reset Already Processed Links</string>
     <string name="no_download_fragments">Don\'t download as Fragments</string>
     <string name="no_download_fragments_summary">Don\'t use .part files and write directly into output file</string>
+    <string name="my_filename_templates">My Filename Templates</string>
+    <string name="prefer_smaller_formats">Prefer Smaller Sized Formats</string>
+    <string name="display_over_apps">Display Over Apps</string>
+    <string name="display_over_apps_summary">Make the download card always display on top. Turn this on if the currently running app closes when the download card shows up</string>
+    <string name="hour">Hour</string>
 </resources>

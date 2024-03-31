@@ -1,0 +1,66 @@
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:shortcutId="search"
+        android:enabled="true"
+        android:icon="@drawable/ic_search"
+        android:shortcutShortLabel="@string/search"
+        android:shortcutDisabledMessage="@string/search">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.deniscerri.ytdl"
+            android:targetClass="com.deniscerri.ytdl.MainActivity">
+
+            <extra android:name="destination" android:value="Search" />
+
+        </intent>
+    </shortcut>
+
+
+    <shortcut
+        android:shortcutId="downloads"
+        android:enabled="true"
+        android:icon="@drawable/ic_downloads"
+        android:shortcutShortLabel="@string/downloads"
+        android:shortcutDisabledMessage="@string/downloads">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.deniscerri.ytdl"
+            android:targetClass="com.deniscerri.ytdl.MainActivity">
+
+            <extra android:name="destination" android:value="Downloads" />
+
+        </intent>
+    </shortcut>
+
+    <shortcut
+        android:shortcutId="queue"
+        android:enabled="true"
+        android:icon="@drawable/baseline_downloading_24"
+        android:shortcutShortLabel="@string/download_queue"
+        android:shortcutDisabledMessage="@string/download_queue">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.deniscerri.ytdl"
+            android:targetClass="com.deniscerri.ytdl.MainActivity">
+
+            <extra android:name="destination" android:value="Queue" />
+
+        </intent>
+    </shortcut>
+
+    <shortcut
+        android:shortcutId="newTemplate"
+        android:enabled="true"
+        android:icon="@drawable/baseline_downloading_24"
+        android:shortcutShortLabel="@string/new_template"
+        android:shortcutDisabledMessage="@string/new_template">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.deniscerri.ytdl"
+            android:targetClass="com.deniscerri.ytdl.receiver.TransparentActivity">
+
+            <extra android:name="action" android:value="NEW_TEMPLATE" />
+
+        </intent>
+    </shortcut>
+</shortcuts>

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.deniscerri.ytdlnis.ui.more.settings.SettingsActivity">
+    tools:context="com.deniscerri.ytdl.ui.more.settings.SettingsActivity">
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/frame_layout"

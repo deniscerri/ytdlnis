@@ -63,7 +63,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/coordinatorLayout2"
-        tools:composableName="com.deniscerri.ytdlnis.ui.more.WebViewActivity.WebViewView" />
+        tools:composableName="com.deniscerri.ytdl.ui.more.WebViewActivity.WebViewView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -1,0 +1,67 @@
+## What's New
+
+- Added select between two items in home screen
+- Fixed select between in cancelled screen not working
+- Fixed app crashing when you selected a generic format for multiple items at once
+- Fixed graphical glitch on RTL screens when the navigation bar showed up in landscape when moving tabs in download queue
+- Moved the cache location to the data folder so its accessible to everyone. If for some reason the app cant read that folder, it will use the old cache location
+- Fixed app not converting thumbnail to png even if set so
+- Slightly changed the thumbnail cropping command since the png thumbnail commands got added
+- Fixed app sometimes not closing the share activity when you dismiss the multiple download card
+- Fixed app not enabling sub languages chip when you only selected save auto subtitles
+- Added the title of the finished notification to the bottom if you want to see the full one
+- Added a toggle in the settings to disable downloading the file as a fragment
+- Slightly changed the counter badge offset in the download queue
+- Fixed app not checking save auto subtitles when you get back to it
+- Added indeterminate progress bar for running downloads notification if its in the beginning
+- Reverted cookies functionality since it was broken for people. It will always sign you out when you generate the cookie
+
+
+### Added supported web addresses to the app
+
+- you can make this app be the default launcher for some website links
+currently the sites supported are the major yt-dlp extractors:
+facebook
+twitter
+instagram
+youtube
+soundcloud
+tiktok
+bilibili
+twitch
+
+- Fixed huge bug of app sometimes showing the title of the previous video in the home screen
+- Added select between two items in history screen
+- Added select between two items in command templates screen
+- Added select between two items when choosing playlist items
+- Fixed app sometimes not downloading suggested chapters from the cut screen
+- Added "EVERY HOUR" in the observe sources screen
+
+### Added shortcuts when long pressing the app icon
+
+- I added 4 actions
+Search
+Downloads
+Download Queue
+New Command Template
+
+- Added big icon to the finished download notification showing the download type
+- Added a new permission to make the app be always on top. This slightly helps with the revanced pip issue. The download hook button sometimes sends you to pip but through the share menu its fixed. Not sure how to resolve this. will look further. If anyone has a solution, let me know
+- Fixed app downloading the original language of a video even though you chose another language. This was a bug with piped formats format id parsing
+- Fixed app not cancelling updating data of an item in the download card
+- Added a preference to prefer smaller sized formats
+- Added ability to choose another audio format in the video tab but not reset the video format
+- Sometimes the preferred resolution is not available, and the video defaulted to the maximum resolution when it should select the next higher quality.
+- Now formats that already have audio formats in them show the audio chip in the format list
+- Added an internal crash listener for the app. If the app crashes, it creates a crash log for you with the error stacktrace
+- Added ability to have saved filename templates. You can add them straight from the filename template dialog. They will also show up at the top of the list
+- fixed app sometimes not selecting preferred format based on format id even if it exists
+- fixed app not matching preferred vp9 codec formats
+
+
+### Observe sources table had some changes and it was recreated
+
+If you have any observe sources running, try recreating them manually. Backup and restore wont work as the structure is different
+
+- Added parse metadata commands for audio type to fetch the release year if the description has it
+- Removed alarm manager and instead relied in workmanager for scheduled downloads due to android 14 restrictions

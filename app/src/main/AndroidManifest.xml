@@ -9,6 +9,7 @@
         android:maxSdkVersion="32" />
     <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
     <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
+    <uses-permission android:name="android.permission.READ_MEDIA_VISUAL_USER_SELECTED" />
     <uses-permission
         android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
         tools:ignore="ScopedStorage" />
@@ -18,10 +19,7 @@
     <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
-    <uses-permission
-        android:name="android.permission.SCHEDULE_EXACT_ALARM"
-        android:maxSdkVersion="32" />
-    <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
 
     <application
@@ -50,6 +48,7 @@
             android:exported="true"
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustPan">
+            <meta-data android:name="android.app.shortcuts" android:resource="@xml/shortcuts" />
 
         </activity>
         <activity
@@ -222,17 +221,20 @@
                 <data android:host="rutube.com" />
             </intent-filter>
         </activity>
+
         <activity
-            android:name=".receiver.ShareFileActivity"
+            android:name=".receiver.TransparentActivity"
             android:configChanges="smallestScreenSize|layoutDirection|locale|orientation|screenSize"
             android:excludeFromRecents="true"
             android:exported="true"
             android:launchMode="singleInstance"
             android:theme="@style/Theme.BottomSheet">
             <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".ui.more.settings.SettingsActivity"
             android:configChanges="smallestScreenSize|layoutDirection|orientation|screenSize"
@@ -280,6 +282,7 @@
             android:targetActivity=".MainActivity"
             android:windowSoftInputMode="adjustPan"
             android:exported="true">
+            <meta-data android:name="android.app.shortcuts" android:resource="@xml/shortcuts" />
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -302,6 +305,7 @@
             android:launchMode="singleTask"
             android:targetActivity=".MainActivity"
             android:windowSoftInputMode="adjustPan">
+            <meta-data android:name="android.app.shortcuts" android:resource="@xml/shortcuts" />
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -323,6 +327,7 @@
             android:launchMode="singleTask"
             android:targetActivity=".MainActivity"
             android:windowSoftInputMode="adjustPan">
+            <meta-data android:name="android.app.shortcuts" android:resource="@xml/shortcuts" />
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -351,9 +356,6 @@
         <receiver android:name=".receiver.CancelDownloadNotificationReceiver" />
         <receiver android:name=".receiver.CancelWorkReceiver" />
         <receiver android:name=".receiver.PauseDownloadNotificationReceiver" />
-        <receiver android:name=".receiver.downloadAlarmReceivers.AlarmStartReceiver" />
-        <receiver android:name=".receiver.downloadAlarmReceivers.AlarmStopReceiver" />
-        <receiver android:name=".receiver.ObserveAlarmReceiver" />
 
         <activity
             android:name=".receiver.ResumeActivity"

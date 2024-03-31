@@ -21,7 +21,7 @@
         app:destination="@id/settingsNav" />
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.deniscerri.ytdlnis.ui.HomeFragment"
+        android:name="com.deniscerri.ytdl.ui.HomeFragment"
         android:label="@string/app_name"
         tools:layout="@layout/fragment_home" >
         <action
@@ -36,7 +36,7 @@
     </fragment>
     <fragment
         android:id="@+id/historyFragment"
-        android:name="com.deniscerri.ytdlnis.ui.downloads.HistoryFragment"
+        android:name="com.deniscerri.ytdl.ui.downloads.HistoryFragment"
         android:label="@string/downloads"
         tools:layout="@layout/fragment_history" >
         <action
@@ -45,7 +45,7 @@
     </fragment>
     <fragment
         android:id="@+id/moreFragment"
-        android:name="com.deniscerri.ytdlnis.ui.more.MoreFragment"
+        android:name="com.deniscerri.ytdl.ui.more.MoreFragment"
         android:label="More"
         tools:layout="@layout/fragment_more" >
        <action
@@ -75,22 +75,22 @@
     </fragment>
     <activity
         android:id="@+id/terminalActivity"
-        android:name="com.deniscerri.ytdlnis.ui.more.terminal.TerminalActivity"
+        android:name="com.deniscerri.ytdl.ui.more.terminal.TerminalActivity"
         android:label="activity_terminal"
         tools:layout="@layout/fragment_terminal" />
     <fragment
         android:id="@+id/cookiesFragment"
-        android:name="com.deniscerri.ytdlnis.ui.more.CookiesFragment"
+        android:name="com.deniscerri.ytdl.ui.more.CookiesFragment"
         tools:layout="@layout/fragment_cookies"
         android:label="CookiesFragment" />
     <fragment
         android:id="@+id/commandTemplatesFragment"
-        android:name="com.deniscerri.ytdlnis.ui.more.CommandTemplatesFragment"
+        android:name="com.deniscerri.ytdl.ui.more.CommandTemplatesFragment"
         tools:layout="@layout/fragment_command_templates"
         android:label="CommandTemplatesFragment" />
     <fragment
         android:id="@+id/downloadQueueMainFragment"
-        android:name="com.deniscerri.ytdlnis.ui.downloads.DownloadQueueMainFragment"
+        android:name="com.deniscerri.ytdl.ui.downloads.DownloadQueueMainFragment"
         tools:layout="@layout/fragment_download_queue_main_screen"
         android:label="DownloadQueueMainFragment" >
         <action
@@ -99,7 +99,7 @@
     </fragment>
     <fragment
         android:id="@+id/downloadLogListFragment"
-        android:name="com.deniscerri.ytdlnis.ui.more.downloadLogs.DownloadLogListFragment"
+        android:name="com.deniscerri.ytdl.ui.more.downloadLogs.DownloadLogListFragment"
         android:label="DownloadLogListFragment" >
         <action
             android:id="@+id/action_downloadLogListFragment2_to_downloadLogFragment2"
@@ -107,32 +107,32 @@
     </fragment>
     <fragment
         android:id="@+id/downloadLogFragment"
-        android:name="com.deniscerri.ytdlnis.ui.more.downloadLogs.DownloadLogFragment"
+        android:name="com.deniscerri.ytdl.ui.more.downloadLogs.DownloadLogFragment"
         android:label="DownloadLogFragment" />
     <dialog
         android:id="@+id/resultCardDetailsDialog"
-        android:name="com.deniscerri.ytdlnis.ui.downloadcard.ResultCardDetailsDialog"
+        android:name="com.deniscerri.ytdl.ui.downloadcard.ResultCardDetailsDialog"
         android:label="ResultCardDetailsDialog" />
     <navigation android:id="@+id/settingsNav">
         <fragment
             android:id="@+id/folderSettingsFragment"
-            android:name="com.deniscerri.ytdlnis.ui.more.settings.FolderSettingsFragment"
+            android:name="com.deniscerri.ytdl.ui.more.settings.FolderSettingsFragment"
             android:label="FolderSettingsFragment" />
         <fragment
             android:id="@+id/processingSettingsFragment"
-            android:name="com.deniscerri.ytdlnis.ui.more.settings.ProcessingSettingsFragment"
+            android:name="com.deniscerri.ytdl.ui.more.settings.ProcessingSettingsFragment"
             android:label="ProcessingSettingsFragment" />
         <fragment
             android:id="@+id/downloadSettingsFragment"
-            android:name="com.deniscerri.ytdlnis.ui.more.settings.DownloadSettingsFragment"
+            android:name="com.deniscerri.ytdl.ui.more.settings.DownloadSettingsFragment"
             android:label="DownloadSettingsFragment" />
         <fragment
             android:id="@+id/updateSettingsFragment"
-            android:name="com.deniscerri.ytdlnis.ui.more.settings.UpdateSettingsFragment"
+            android:name="com.deniscerri.ytdl.ui.more.settings.UpdateSettingsFragment"
             android:label="UpdateSettingsFragment" />
         <fragment
             android:id="@+id/mainSettingsFragment"
-            android:name="com.deniscerri.ytdlnis.ui.more.settings.MainSettingsFragment"
+            android:name="com.deniscerri.ytdl.ui.more.settings.MainSettingsFragment"
             android:label="MainSettingsFragment">
             <action
                 android:id="@+id/action_mainSettingsFragment_to_appearanceSettingsFragment"
@@ -152,12 +152,12 @@
         </fragment>
         <fragment
             android:id="@+id/appearanceSettingsFragment"
-            android:name="com.deniscerri.ytdlnis.ui.more.settings.GeneralSettingsFragment"
+            android:name="com.deniscerri.ytdl.ui.more.settings.GeneralSettingsFragment"
             android:label="AppearanceSettingsFragment" />
     </navigation>
     <dialog
         android:id="@+id/downloadBottomSheetDialog"
-        android:name="com.deniscerri.ytdlnis.ui.downloadcard.DownloadBottomSheetDialog"
+        android:name="com.deniscerri.ytdl.ui.downloadcard.DownloadBottomSheetDialog"
         android:label="DownloadBottomSheetDialog" >
         <action
             android:id="@+id/action_downloadBottomSheetDialog_to_cutVideoBottomSheetDialog"
@@ -165,7 +165,7 @@
     </dialog>
     <dialog
         android:id="@+id/downloadMultipleBottomSheetDialog2"
-        android:name="com.deniscerri.ytdlnis.ui.downloadcard.DownloadMultipleBottomSheetDialog"
+        android:name="com.deniscerri.ytdl.ui.downloadcard.DownloadMultipleBottomSheetDialog"
         android:label="DownloadMultipleBottomSheetDialog" >
         <action
             android:id="@+id/action_downloadMultipleBottomSheetDialog2_to_configureDownloadBottomSheetDialog"
@@ -173,15 +173,15 @@
     </dialog>
     <dialog
         android:id="@+id/cutVideoBottomSheetDialog"
-        android:name="com.deniscerri.ytdlnis.ui.downloadcard.CutVideoBottomSheetDialog"
+        android:name="com.deniscerri.ytdl.ui.downloadcard.CutVideoBottomSheetDialog"
         android:label="CutVideoBottomSheetDialog" />
     <dialog
         android:id="@+id/configureDownloadBottomSheetDialog"
-        android:name="com.deniscerri.ytdlnis.ui.downloadcard.ConfigureDownloadBottomSheetDialog"
+        android:name="com.deniscerri.ytdl.ui.downloadcard.ConfigureDownloadBottomSheetDialog"
         android:label="ConfigureDownloadBottomSheetDialog" />
     <fragment
         android:id="@+id/observeSourcesFragment"
-        android:name="com.deniscerri.ytdlnis.ui.more.ObserveSourcesFragment"
+        android:name="com.deniscerri.ytdl.ui.more.ObserveSourcesFragment"
         android:label="ObserveSourcesFragment" >
         <action
             android:id="@+id/action_observeSourcesFragment_to_observeSourcesBottomSheetDialog"
@@ -189,6 +189,6 @@
     </fragment>
     <dialog
         android:id="@+id/observeSourcesBottomSheetDialog"
-        android:name="com.deniscerri.ytdlnis.ui.downloadcard.ObserveSourcesBottomSheetDialog"
+        android:name="com.deniscerri.ytdl.ui.downloadcard.ObserveSourcesBottomSheetDialog"
         android:label="ObserveSourcesBottomSheetDialog" />
 </navigation>

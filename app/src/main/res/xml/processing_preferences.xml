@@ -237,14 +237,23 @@
         <EditTextPreference
             app:key="format_id"
             app:defaultValue=""
+            app:icon="@drawable/ic_format_id"
             app:summary="@string/preferred_format_id_summary"
             app:title="@string/preferred_format_id" />
 
         <EditTextPreference
             app:key="format_id_audio"
             app:defaultValue=""
+            app:icon="@drawable/ic_format_id"
             app:summary="@string/preferred_format_id_summary"
             app:title="@string/preferred_format_id" />
+
+        <SwitchPreferenceCompat
+            android:widgetLayout="@layout/preferece_material_switch"
+            app:defaultValue="false"
+            app:icon="@drawable/ic_format"
+            app:key="prefer_smaller_formats"
+            app:title="@string/prefer_smaller_formats" />
     </PreferenceCategory>
 
 </PreferenceScreen>

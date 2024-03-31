@@ -17,6 +17,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="10dp"
+            app:endIconDrawable="@drawable/ic_plus"
+            app:endIconMode="custom"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -29,40 +31,87 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <TextView
-            android:id="@+id/suggested"
-            android:layout_width="match_parent"
-            android:padding="10dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/filename"
-            android:text="@string/suggested" />
-
-        <ScrollView
+        <LinearLayout
+            android:id="@+id/mytemplates"
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintHeight_max="200dp"
-            android:paddingHorizontal="10dp"
-            app:layout_constraintVertical_bias="0.0"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/suggested">
+            android:orientation="vertical">
 
-            <com.google.android.material.chip.ChipGroup
-                android:id="@+id/filename_suggested_chipgroup"
+            <TextView
+                android:layout_width="match_parent"
+                android:padding="10dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/filename"
+                android:text="@string/my_filename_templates" />
+
+            <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:chipSpacingVertical="-7dp"
-                app:chipSpacingHorizontal="5dp"
-                app:selectionRequired="false"
-                app:singleSelection="false">
+                app:layout_constraintHeight_max="200dp"
+                android:paddingHorizontal="10dp"
+                app:layout_constraintVertical_bias="0.0"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/suggested">
 
-            </com.google.android.material.chip.ChipGroup>
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/filename_personal_chipgroup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:chipSpacingVertical="-7dp"
+                    app:chipSpacingHorizontal="5dp"
+                    app:selectionRequired="false"
+                    app:singleSelection="true">
 
-        </ScrollView>
+                </com.google.android.material.chip.ChipGroup>
 
+            </ScrollView>
 
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/suggested"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:padding="10dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/filename"
+                android:text="@string/suggested" />
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintHeight_max="200dp"
+                android:paddingHorizontal="10dp"
+                app:layout_constraintVertical_bias="0.0"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/suggested">
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/filename_suggested_chipgroup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:chipSpacingVertical="-7dp"
+                    app:chipSpacingHorizontal="5dp"
+                    app:selectionRequired="false"
+                    app:singleSelection="false">
+
+                </com.google.android.material.chip.ChipGroup>
+
+            </ScrollView>
+
+        </LinearLayout>
 
     </LinearLayout>
 

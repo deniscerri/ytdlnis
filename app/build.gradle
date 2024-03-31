@@ -12,14 +12,14 @@ def versionMajor = 1
 def versionMinor = 7
 def versionPatch = 4
 def versionBuild = 0 // bump for dogfood builds, public betas, etc.
-def versionExt = ".${versionBuild}"
+def versionExt = ""
 
 if (versionBuild > 0){
     versionExt = ".${versionBuild}-beta"
 }
 
 android {
-    namespace 'com.deniscerri.ytdlnis'
+    namespace 'com.deniscerri.ytdl'
     compileSdk 34
 
     try {
