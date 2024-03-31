@@ -372,4 +372,6 @@
     <string name="back">Назад</string>
     <string name="all_queries_finished">Сви упити су обрађени</string>
     <string name="select_between">Избор предмета између</string>
+    <string name="no_download_fragments">Не преузимај као фрагменте</string>
+    <string name="no_download_fragments_summary">Без коришћења .part фајлова и писања директно у излазни фајл</string>
 </resources>
