@@ -365,7 +365,7 @@
     <string name="show_download_count">Hiển thị số lượng trong bảng Hàng đợi tải xuống</string>
     <string name="thumbnail_format">Định dạng của Ảnh thu nhỏ</string>
     <string name="get_new_uploads">Chỉ nhận các tải lên mới</string>
-    <string name="scroll_down">Cuộn xuống</string>
+    <string name="scroll_down">Cuộn xuống dưới</string>
     <string name="text_size">Cỡ chữ</string>
     <string name="no_download_fragments">Không tải dưới dạng Fragments</string>
     <string name="no_download_fragments_summary">Không dùng tệp .part và ghi trực tiếp vào tệp đầu ra</string>
@@ -374,4 +374,9 @@
     <string name="all_queries_finished">Tất cả truy vấn đã được xử lý</string>
     <string name="select_between">Chọn các mục ở giữa</string>
     <string name="reset_processed_links">Làm mới các liên kết đã được xử lý</string>
+    <string name="prefer_smaller_formats">Ưu tiên định dạng có kích thước nhỏ hơn</string>
+    <string name="display_over_apps_summary">Làm cho thẻ tải xuống luôn hiển thị ở trên cùng. Bật tính năng này nếu ứng dụng hiện tại bị đóng khi hiển thị thẻ tải xuống</string>
+    <string name="hour">Giờ</string>
+    <string name="my_filename_templates">Mẫu tên tệp của tôi</string>
+    <string name="display_over_apps">Hiển thị trên ứng dụng khác</string>
 </resources>
