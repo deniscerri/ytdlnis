@@ -369,9 +369,14 @@
     <string name="select_between">इसके बीच में आइटम चुनें</string>
     <string name="swipe_gestures_download_card">डाउनलोड कार्ड में स्वाइप जेस्चर</string>
     <string name="show_download_count">डाउनलोड कतार स्क्रीन में गिनती दिखाएँ</string>
-    <string name="scroll_down">नीचे स्क्रॉल करें</string>
+    <string name="scroll_down">नीचे तक स्क्रॉल करें</string>
     <string name="back">पीछे</string>
     <string name="reset_processed_links">पहले से संसाधित लिंक रीसेट करें</string>
     <string name="no_download_fragments">टुकड़ों में डाउनलोड न करें</string>
     <string name="no_download_fragments_summary">.part फ़ाइलों का उपयोग न करें और सीधे आउटपुट फ़ाइल में लिखें</string>
+    <string name="my_filename_templates">मेरे फाइलनाम खाके</string>
+    <string name="prefer_smaller_formats">छोटे आकार के प्रारूपों को प्राथमिकता दें</string>
+    <string name="display_over_apps">ऐप्स पर प्रदर्शित करें</string>
+    <string name="display_over_apps_summary">डाउनलोड कार्ड को हमेशा शीर्ष पर प्रदर्शित करें। यदि डाउनलोड कार्ड दिखाई देने पर वर्तमान में चल रहा ऐप बंद हो जाए तो इसे चालू करें</string>
+    <string name="hour">घंटा</string>
 </resources>
