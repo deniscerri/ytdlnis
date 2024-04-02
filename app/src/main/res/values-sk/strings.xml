@@ -374,4 +374,9 @@
     <string name="all_queries_finished">Všetky požiadavky boli spracované</string>
     <string name="no_download_fragments_summary">Nepoužije súbory .part a zapisuje priamo do výstupného súboru</string>
     <string name="no_download_fragments">Nesťahovať ako fragmenty</string>
+    <string name="display_over_apps">Zobraziť cez ostatné aplikácie</string>
+    <string name="my_filename_templates">Moje šablóny názvov súborov</string>
+    <string name="prefer_smaller_formats">Uprednostňovať menšie formáty</string>
+    <string name="display_over_apps_summary">Zabezpečí, aby sa karta sťahovania vždy zobrazovala na vrchu. Pri zapnutí tejto funkcie, ak sa aktuálne spustená aplikácia zatvorí, tak sa zobrazí karta sťahovania</string>
+    <string name="hour">Hodina</string>
 </resources>
