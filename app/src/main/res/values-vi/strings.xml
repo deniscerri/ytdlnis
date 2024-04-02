@@ -367,4 +367,11 @@
     <string name="get_new_uploads">Chỉ nhận các tải lên mới</string>
     <string name="scroll_down">Cuộn xuống</string>
     <string name="text_size">Cỡ chữ</string>
+    <string name="no_download_fragments">Không tải dưới dạng Fragments</string>
+    <string name="no_download_fragments_summary">Không dùng tệp .part và ghi trực tiếp vào tệp đầu ra</string>
+    <string name="add">Thêm</string>
+    <string name="back">Trở lại</string>
+    <string name="all_queries_finished">Tất cả truy vấn đã được xử lý</string>
+    <string name="select_between">Chọn các mục ở giữa</string>
+    <string name="reset_processed_links">Làm mới các liên kết đã được xử lý</string>
 </resources>
