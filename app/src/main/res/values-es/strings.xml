@@ -362,7 +362,7 @@
     <string name="swipe_gestures_download_card">Gesto de deslizar en la tarjeta de descarga</string>
     <string name="show_download_count">Mostrar recuento en la pantalla de cola de descarga</string>
     <string name="thumbnail_format">Formato de las miniaturas</string>
-    <string name="scroll_down">Desplazar hacia abajo</string>
+    <string name="scroll_down">Desplácese hasta abajo</string>
     <string name="text_size">Tamaño del texto</string>
     <string name="add">Añadir</string>
     <string name="back">Atrás</string>
@@ -374,4 +374,9 @@
     <string name="also_download_audio">Descargar también en audio</string>
     <string name="no_download_fragments">No descargar como fragmentos</string>
     <string name="no_download_fragments_summary">No utilice archivos .part y escriba directamente en el archivo de salida</string>
+    <string name="prefer_smaller_formats">Preferir formatos más pequeños</string>
+    <string name="display_over_apps">Visualizar sobre aplicaciones</string>
+    <string name="hour">Hora</string>
+    <string name="my_filename_templates">El nombre de mis plantillas</string>
+    <string name="display_over_apps_summary">Hacer que la tarjeta de descarga se muestre siempre delante. Active esta opción si la aplicación que se está ejecutando se cierra cuando aparece la tarjeta de descarga</string>
 </resources>

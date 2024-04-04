@@ -370,8 +370,13 @@
     <string name="thumbnail_format">缩略图格式</string>
     <string name="swipe_gestures_download_card">下载卡片中的滑动手势</string>
     <string name="get_new_uploads">只获取新上传</string>
-    <string name="scroll_down">向下滚动</string>
+    <string name="scroll_down">滚动到底部</string>
     <string name="add">添加</string>
     <string name="no_download_fragments">不要下载为分段</string>
     <string name="no_download_fragments_summary">不使用 .part 文件并直接写入至输出文件</string>
+    <string name="my_filename_templates">我的文件名模板</string>
+    <string name="prefer_smaller_formats">偏好文件尺寸更小的格式</string>
+    <string name="display_over_apps_summary">使下载卡片时钟显示在顶部。如果在下载卡片出现时当前正在运行的应用关闭，请打开此选项</string>
+    <string name="display_over_apps">展示在其他应用上方</string>
+    <string name="hour">小时</string>
 </resources>

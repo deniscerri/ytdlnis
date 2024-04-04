@@ -374,4 +374,9 @@
     <string name="also_download_audio">Stáhnout také jako audio</string>
     <string name="no_download_fragments">Nestahovat jako fragmenty</string>
     <string name="no_download_fragments_summary">Nepoužije soubory .part a zapisuje přímo do výstupního souboru</string>
+    <string name="my_filename_templates">Moje šablony názvů souborů</string>
+    <string name="prefer_smaller_formats">Preferovat menší formáty</string>
+    <string name="hour">Hodina</string>
+    <string name="display_over_apps">Zobrazit přes ostatní aplikace</string>
+    <string name="display_over_apps_summary">Zajistí, aby se karta stahování vždy zobrazovala nahoře. Zapne tuto funkci, pokud se aktuálně spuštěná aplikace zavře, tak se zobrazí karta stahování</string>
 </resources>

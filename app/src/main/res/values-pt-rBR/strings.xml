@@ -190,8 +190,8 @@
     <string name="subtitle_languages">Idiomas das legendas</string>
     <string name="save_subs_desc">Salvar arquivo de legenda na pasta de download</string>
     <string name="invert_selected">Inverter seleção</string>
-    <string name="download_over_metered_networks_summary">Faça o download usando qualquer tipo de rede. Caso contrário, espera por uma rede ilimitada</string>
-    <string name="download_over_metered_networks">Download através de redes limitadas</string>
+    <string name="download_over_metered_networks_summary">Faça o download usando qualquer tipo de rede. Caso contrário, espera por uma rede Wi-Fi</string>
+    <string name="download_over_metered_networks">Download através da rede móvel</string>
     <string name="confirm_delete_cookies_desc">Excluir todos os cookies permanentemente</string>
     <string name="delete_all_cookies">Excluir todos os cookies</string>
     <string name="get_cookies">Obter Cookies</string>
@@ -242,7 +242,7 @@
     <string name="redownload">Baixar novamente</string>
     <string name="cookies">Cookies</string>
     <string name="update_formats_summary">Obter formatos assim que o cartão de download for exibido</string>
-    <string name="start">Começar</string>
+    <string name="start">Início</string>
     <string name="ytdl_version">Versão do yt-dlp</string>
     <string name="end">Fim</string>
     <string name="kill_app">Encerrar Aplicativo</string>
@@ -370,8 +370,13 @@
     <string name="all_queries_finished">Todas as consultas foram processadas</string>
     <string name="select_between">Selecionar itens</string>
     <string name="swipe_gestures_download_card">Gestos deslizantes no cartão de download</string>
-    <string name="show_download_count">Mostrar contagens na guia Central de Downloads</string>
+    <string name="show_download_count">Mostrar contagens na tela Central de Downloads</string>
     <string name="reset_processed_links">Redefinir links já processados</string>
     <string name="no_download_fragments">Não baixar como fragmentos</string>
-    <string name="no_download_fragments_summary">Não use arquivos \".part\" e escreva diretamente no arquivo de saída</string>
+    <string name="no_download_fragments_summary">Não usar arquivos \".part\" e escreva diretamente no arquivo de saída</string>
+    <string name="prefer_smaller_formats">Prefiro formatos menores</string>
+    <string name="display_over_apps">Aparecer sobre outros aplicativos</string>
+    <string name="hour">Hora(s)</string>
+    <string name="my_filename_templates">Meus modelos de nome de arquivo</string>
+    <string name="display_over_apps_summary">Fazer com que o cartão de download seja sempre exibido na parte superior. Ative esta opção se o aplicativo em execução fechar quando o cartão de download aparecer</string>
 </resources>
