@@ -367,11 +367,16 @@
     <string name="copy_urls">Copia URLs</string>
     <string name="never">Mai</string>
     <string name="download_archive_summary">Utilizza l\'archivio download di yt-dlp per evitare download duplicati invece della funzionalità integrata</string>
-    <string name="swipe_gestures_download_card">Gestualità di Scorrimento nella download card</string>
+    <string name="swipe_gestures_download_card">Gestualità di Scorrimento nella scheda download</string>
     <string name="get_new_uploads">Ricevi Solo Nuovi Upload</string>
     <string name="also_download_audio">Scarica Anche come Audio</string>
     <string name="text_size">Dimensione del Testo</string>
     <string name="add">Aggiungi</string>
     <string name="back">Indietro</string>
     <string name="all_queries_finished">Tutte le Query sono state processate</string>
+    <string name="prefer_smaller_formats">Preferire formati di dimensioni più piccole</string>
+    <string name="display_over_apps">Visualizza sopra le App</string>
+    <string name="hour">Ora</string>
+    <string name="my_filename_templates">Nome file dei miei modelli</string>
+    <string name="display_over_apps_summary">Fai in modo che la scheda di download venga sempre visualizzata in alto. Attiva questa opzione se l\'app attualmente in esecuzione si chiude quando viene visualizzata la scheda di download</string>
 </resources>
