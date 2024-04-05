@@ -234,7 +234,7 @@
     <string name="socks5_proxy_summary">Usar proxy HTTP/HTTPS/SOCKS especificado</string>
     <string name="backup">Backup</string>
     <string name="finished_download_notification_channel_name">Downloads concluídos</string>
-    <string name="metered_network_download_start_info">O download começará assim que você estiver conectado a uma rede ilimitada</string>
+    <string name="metered_network_download_start_info">O download começará assim que você estiver conectado a uma rede Wi-Fi</string>
     <string name="keep_cache_summary">Não excluir arquivos temporários após concluir o download</string>
     <string name="link_you_copied">Link que você copiou</string>
     <string name="clear_temporary_files_summary">Excluir arquivos em cache de downloads com falhas/erros/cancelados</string>
