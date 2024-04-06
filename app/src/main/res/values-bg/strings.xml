@@ -228,12 +228,12 @@
     <string name="get_new_uploads">Получавайте само нови изтегляния</string>
     <string name="also_download_audio">Също така изтегляне като аудио</string>
     <string name="text_size">Размер на текста</string>
-    <string name="scroll_down">Превъртане до дъното</string>
+    <string name="scroll_down">Превъртане до края</string>
     <string name="wrap_text">Пренос на текст</string>
     <string name="select_between">Изберете елементи между</string>
     <string name="reset_processed_links">Нулирайте вече обработените връзки</string>
     <string name="no_download_fragments_summary">Не използвайте .part файлове и пишете директно в изходния файл</string>
-    <string name="my_filename_templates">Моите шаблони за имена на файлове</string>
+    <string name="my_filename_templates">Мои шаблони за имена на файлове</string>
     <string name="display_over_apps_summary">Показване на състоянието на изтегляне в горната част на всички прозорци. Включете това, ако текущо работещото приложение се затвори, когато се покаже картата за изтегляне</string>
     <string name="download_archive_summary">Използвайте архивния файл за изтегляне на yt-dlp, за да предотвратите дублиращи се изтегляния вместо вградената функционалност</string>
     <string name="start">Старт</string>
@@ -244,9 +244,9 @@
     <string name="ignore_battery_optimization">Игнорирайте оптимизацията на батерията</string>
     <string name="add_template_first">Трябва да създадете поне един команден шаблон!</string>
     <string name="download_over_metered_networks">Изтегляне през мрежи с измерване на данни</string>
-    <string name="add">Добавете</string>
+    <string name="add">Добавяне</string>
     <string name="back">Назад</string>
-    <string name="all_queries_finished">Всички заявки обработени</string>
+    <string name="all_queries_finished">Всички Заявки обработени</string>
     <string name="no_download_fragments">Не изтегляйте като фрагменти</string>
     <string name="download_over_metered_networks_summary">Изтеглете през всички мрежи. В противен случай изчакайте мрежа без лимити</string>
     <string name="metered_network_download_start_info">Изтеглянето ще започне, когато се свържете с безлимитна мрежа</string>
@@ -322,7 +322,7 @@
     <string name="piped_instance_summary">Посочете PIPED API сървър, който приложението може да използва за заявки и формати в YouTube</string>
     <string name="custom_audio_quality">Използвайте персонализирано качество на звука</string>
     <string name="retries">Брой повторения</string>
-    <string name="prefer_smaller_formats">Предпочитане формати с по-малък размер</string>
+    <string name="prefer_smaller_formats">Предпочитан формати с по-малък размер</string>
     <string name="display_over_apps">Показване върху приложения</string>
     <string name="update_app_summary">Известяване за нова версия при отваряне на приложението. Данните взети от хранилището на Github</string>
     <string name="downloads">Изтегляния</string>
