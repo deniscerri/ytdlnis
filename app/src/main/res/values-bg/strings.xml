@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="you_are_in_latest_version">Използвате най-актуалната версия</string>
+    <string name="you_are_in_latest_version">Използвате актуална версия</string>
     <string name="Remove">Премахване</string>
     <string name="update_app">Проверка за обновления</string>
     <string name="version">Версия</string>
@@ -31,6 +31,32 @@
     <string name="ytdl_already_updating">Инсталиране на нова версия</string>
     <string name="cancel">Отказ</string>
     <string name="confirm_delete_history_desc">Изтрийте цялата история за постоянно</string>
-    <string name="confirm_delete_history">Подтвърдете</string>
+    <string name="confirm_delete_history">Потвърдете</string>
     <string name="search_history_hint">Търсене в историята</string>
+    <string name="no_results">Без резултат</string>
+    <string name="audio">Аудио</string>
+    <string name="more">Още</string>
+    <string name="command_directory">Папка с персонализирани команди</string>
+    <string name="couldnt_find_apk">Не може да се намери подходящо приложение</string>
+    <string name="video">Видео</string>
+    <string name="limit_rate">Ограничение на скоростта</string>
+    <string name="concurrent_fragments_summary">Брой DASH/HLS собствени видео фрагменти за едновременно изтегляне</string>
+    <string name="processing">Процес</string>
+    <string name="embed_thumb_summary">Използване на миниатюра за обложка</string>
+    <string name="add_chapters">Глави във видео</string>
+    <string name="save_thumb">Запазване на миниатюра</string>
+    <string name="audio_quality_summary">0 (най-добро качество), 10 (най-ниско)</string>
+    <string name="cancel_task">Отмяна на задача</string>
+    <string name="downloading">Изтегляне</string>
+    <string name="embed_subs_summary">Добавете субтитри към видеоклипа</string>
+    <string name="embed_thumb">Миниатюрни обложки</string>
+    <string name="limit_rate_summary">Максимална скорост на изтегляне (в байта за секунда), примерно, 50К или 4.2М</string>
+    <string name="aria2_summary">Ползване aria2c, като downloader вместо стандартен</string>
+    <string name="run_command">Изпълнете команда</string>
+    <string name="add_chapters_summary">Използвайте сегменти от YouTube/SponsorBlock като видео глави</string>
+    <string name="downloading_update">Изтегляне на нова версия</string>
+    <string name="save_thumb_summary">Запазете миниатюра в папката си за изтегляния</string>
+    <string name="audio_format">Аудио формат</string>
+    <string name="video_format">Видео формат</string>
+    <string name="audio_quality">Качество на звука</string>
 </resources>
