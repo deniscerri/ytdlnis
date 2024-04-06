@@ -268,8 +268,7 @@
     <string name="incognito">ছদ্মবেশী</string>
     <string name="preferred_locale">পছন্দিত ভাষা</string>
     <string name="select_backup_categories">ব্যাকআপ ক্যাটাগরি নির্বাচন করুন</string>
-    <string name="subtitle_format">সাবটাইটেল ফরম্যাট
-\n</string>
+    <string name="subtitle_format">সাবটাইটেল ফরম্যাট</string>
     <string name="audio_only_item">এই আইটেমটি শুধুমাত্র অডিও ফরম্যাট ধারণ করে</string>
     <string name="pause">বিরতি দিন</string>
     <string name="show_terminal">শেয়ার মেনুতে টার্মিনাল দেখান</string>
