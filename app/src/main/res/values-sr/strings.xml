@@ -45,7 +45,7 @@
     <string name="update_ytdl_nightly">Ноћна верзија yt-dlp-а</string>
     <string name="command_download_notification_channel_description">Обавештење које приказује напредак преузимања помоћу команде yt-dlp</string>
     <string name="add_chapters">Поглавља у видео снимцима</string>
-    <string name="concurrent_downloads_summary">"Број превземања кои се извршуваат во  исто време"</string>
+    <string name="concurrent_downloads_summary">Број превземања кои се извршуваат во исто време</string>
     <string name="embed_subtitles">Угради титлове</string>
     <string name="clear_saved">Очисти сачувано</string>
     <string name="schedule">Закажи</string>
