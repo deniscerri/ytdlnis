@@ -1,2 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="you_are_in_latest_version">Използвате най-актуалната версия</string>
+    <string name="Remove">Премахване</string>
+    <string name="update_app">Проверка за обновления</string>
+    <string name="version">Версия</string>
+    <string name="hour">Час</string>
+    <string name="worst_quality">Най-ниско качество</string>
+    <string name="best_quality">Най-високо качество</string>
+    <string name="search">Търсене</string>
+    <string name="remove_all">Премахни всичко</string>
+    <string name="remove_results">Изчисти резултатите</string>
+    <string name="download_all">Изтегли всичко</string>
+    <string name="settings">Настройки</string>
+    <string name="home">Главна</string>
+    <string name="directories">Папки</string>
+    <string name="music_directory">Папка аудио</string>
+    <string name="video_directory">Папка видео</string>
+    <string name="updating">Обновяване</string>
+    <string name="ytdl_update_hint">Полезно, ако имате проблеми с изтеглянето</string>
+    <string name="update_ytdl">Инсталиране на нова версия yt-dlp</string>
+    <string name="about">За</string>
+    <string name="source_code">Source Code</string>
+    <string name="search_hint">Търсене или вмъкване на URL</string>
+    <string name="failed_download">Няма възможност за изтегляне на файла</string>
+    <string name="download_notification_channel_name">Изтегляне на файлове</string>
+    <string name="download_notification_channel_description">Известие за напредъка на изтеглянето на аудио и видео файлове</string>
+    <string name="ytld_update_success">Инсталирана е нова версия</string>
+    <string name="ytdl_updating_started">Изтегля се нова версия</string>
+    <string name="ok">OK</string>
+    <string name="ytdl_already_updating">Инсталиране на нова версия</string>
+    <string name="cancel">Отказ</string>
+    <string name="confirm_delete_history_desc">Изтрийте цялата история за постоянно</string>
+    <string name="confirm_delete_history">Подтвърдете</string>
+    <string name="search_history_hint">Търсене в историята</string>
+</resources>
