@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="worst_quality">Најлош квалитет</string>
-    <string name="best_quality">"Најдобар  квалитет"</string>
+    <string name="best_quality">Најдобар квалитет</string>
     <string name="remove_results">Изчисти резултати</string>
     <string name="download_all">Симни сé</string>
     <string name="settings">Подесување</string>
@@ -12,7 +12,7 @@
     <string name="about">За</string>
     <string name="source_code">Изворен код</string>
     <string name="search_hint">Барај или вметни УРЛ</string>
-    <string name="failed_download">"Можно е да не  се симне фајлот"</string>
+    <string name="failed_download">Можно е да не се симне фајлот</string>
     <string name="download_notification_channel_name">Симнати фајлови</string>
     <string name="search">Барај</string>
     <string name="remove_all">Избриши СЕ</string>
@@ -20,10 +20,10 @@
     <string name="ytdl_update_hint">Корисно доколку имаш проблем со симнување</string>
     <string name="update_ytdl">Инсталирај нова верзија на yt-dlp</string>
     <string name="limit_rate">Гранична стапка</string>
-    <string name="aria2_summary">"Користи ариа2к   за симнување наместо  главниот"</string>
+    <string name="aria2_summary">Користи ариа2к за симнување наместо главниот</string>
     <string name="processing">Обработува</string>
-    <string name="embed_subs_summary">"Додај титлови во  видеото"</string>
-    <string name="embed_thumb_summary">"Користи малечки тапети за  насловна"</string>
+    <string name="embed_subs_summary">Додај титлови во видеото</string>
+    <string name="embed_thumb_summary">Користи малечки тапети за насловна</string>
     <string name="add_chapters">Поглавја во видеото</string>
     <string name="save_thumb">Зачувај сликичка</string>
     <string name="save_thumb_summary">Зачувај сликичка во фолдерот за симнување</string>
@@ -67,7 +67,7 @@
     <string name="concurrent_downloads">Истовремени превземања</string>
     <string name="defaultValue">Стандардно</string>
     <string name="container">Контејнер</string>
-    <string name="concurrent_fragments_summary">"Број на фрагменти  на DASH/HLS  на оргинално видео за симнување подобро"</string>
+    <string name="concurrent_fragments_summary">Број на фрагменти на DASH/HLS на оргинално видео за симнување подобро</string>
     <string name="audio">Музика</string>
     <string name="concurrent_fragments">Подобри парчиња</string>
     <string name="video">Видео</string>

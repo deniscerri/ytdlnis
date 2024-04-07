@@ -359,4 +359,21 @@
     <string name="download_archive_summary">使用 yt-dlp 的下載存檔檔案以防止重複下載，而非使用內建功能</string>
     <string name="on_time">準</string>
     <string name="force_ipv4_desc">使所有連線均使用 IPv4</string>
+    <string name="my_filename_templates">我的檔案名稱範本</string>
+    <string name="prefer_smaller_formats">喜歡較小尺寸的格式</string>
+    <string name="display_over_apps">在最上層顯示</string>
+    <string name="display_over_apps_summary">使下載永遠顯示在最上層。如果目前執行的應用程式正在下載卡顯示關閉，請開啟此選項</string>
+    <string name="hour">小時</string>
+    <string name="no_download_fragments">不要下載為片段</string>
+    <string name="no_download_fragments_summary">不使用 .part 檔案定直接寫入輸出文件</string>
+    <string name="get_new_uploads">僅取得最新上傳內容</string>
+    <string name="also_download_audio">也可以下載為音訊</string>
+    <string name="back">返回</string>
+    <string name="wrap_text">文字換行</string>
+    <string name="scroll_down">滑動到底部</string>
+    <string name="text_size">文字大小</string>
+    <string name="add">新增</string>
+    <string name="all_queries_finished">所有查詢均已處理</string>
+    <string name="select_between">選擇之間的項目</string>
+    <string name="reset_processed_links">重設已處理的連結</string>
 </resources>
