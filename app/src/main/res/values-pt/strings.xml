@@ -374,4 +374,5 @@
     <string name="thumbnail_format">Formato de miniatura</string>
     <string name="no_download_fragments">Não descarregar fragmentos</string>
     <string name="no_download_fragments_summary">Não usar ficheiros .part e escrever diretamente no destino</string>
+    <string name="hour">Hora</string>
 </resources>
