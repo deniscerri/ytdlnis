@@ -25,7 +25,7 @@
     <string name="confirm_delete_history">Confirmar</string>
     <string name="search_history_hint">Pesquisar no histórico</string>
     <string name="no_results">Nenhum resultado</string>
-    <string name="command_directory">Pasta de comando personalizado</string>
+    <string name="command_directory">Pasta de comandos personalizados</string>
     <string name="couldnt_find_apk">Não foi possível encontrar o apk adequado</string>
     <string name="downloading_update">Fazendo o download da nova versão</string>
     <string name="audio">Áudio</string>
@@ -114,7 +114,7 @@
     <string name="remove_search_history">Limpar histórico de pesquisa</string>
     <string name="enable_mtime">Habilitar \'mtime\'</string>
     <string name="update_formats">Atualizar formatos</string>
-    <string name="log_downloads">Registrar downloads</string>
+    <string name="log_downloads">Registros de downloads</string>
     <string name="concurrent_downloads_summary">Número de downloads executados ao mesmo tempo</string>
     <string name="defaultValue">Padrão</string>
     <string name="new_template">Novo modelo</string>
@@ -122,7 +122,7 @@
     <string name="adjust_audio">Ajustar áudio</string>
     <string name="error_updating_formats">Erro ao atualizar formatos!</string>
     <string name="download_queue">Central de Downloads</string>
-    <string name="log_downloads_summary">Criar arquivo de log para cada download</string>
+    <string name="log_downloads_summary">Criar um arquivo de log para cada download</string>
     <string name="running">Executando</string>
     <string name="command">Comando</string>
     <string name="shortcuts">Atalhos</string>
@@ -164,12 +164,12 @@
     <string name="audio_samplerate">Taxa de amostragem de áudio</string>
     <string name="format_id">ID do formato</string>
     <string name="enable_mtime_summary">Definir cabeçalho HTTP \"Last-Modified\" com a hora da última modificação</string>
-    <string name="preferred_download_type_summary">Guia padrão na qual o cartão de download será aberto</string>
+    <string name="preferred_download_type_summary">Guia padrão na qual o cartão de download será mostrado</string>
     <string name="download_rescheduled_to">Download reagendado para:</string>
     <string name="suggested">Sugerido</string>
     <string name="add_template_first">Você precisa ter pelo menos um modelo de comando existente!</string>
     <string name="new_cut">Novo corte</string>
-    <string name="ignore_battery_optimization">Ignorar a Otimização da Bateria</string>
+    <string name="ignore_battery_optimization">Ignorar \'Otimização da Bateria\'</string>
     <string name="confirm_terminate">Interromper todos os downloads e forçar o fechamento do aplicativo</string>
     <string name="restrict_filenames">Restringir nomes de arquivos</string>
     <string name="cache_cleared">Arquivos temporários removidos</string>
@@ -208,7 +208,7 @@
     <string name="green">Verde</string>
     <string name="quick_download_summary">Não buscar dados no cartão de download</string>
     <string name="quick_download">Download rápido</string>
-    <string name="finished_download_notification_channel_description">Notificação de downloads concluídos</string>
+    <string name="finished_download_notification_channel_description">Notificação para downloads concluídos</string>
     <string name="remove_audio">Remover áudio</string>
     <string name="download_now">Baixar agora</string>
     <string name="download_already_exists">O download já existe</string>
@@ -237,7 +237,7 @@
     <string name="metered_network_download_start_info">O download começará assim que você estiver conectado a uma rede Wi-Fi</string>
     <string name="keep_cache_summary">Não excluir arquivos temporários após concluir o download</string>
     <string name="link_you_copied">Link que você copiou</string>
-    <string name="clear_temporary_files_summary">Excluir arquivos em cache de downloads com falhas/erros/cancelados</string>
+    <string name="clear_temporary_files_summary">Excluir arquivos em cache de downloads como falhas, erros e cancelados</string>
     <string name="preferred_format_id">ID do formato preferido</string>
     <string name="redownload">Baixar novamente</string>
     <string name="cookies">Cookies</string>
