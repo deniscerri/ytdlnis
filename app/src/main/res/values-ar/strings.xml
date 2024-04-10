@@ -370,7 +370,7 @@
     <string name="back">رجوع</string>
     <string name="all_queries_finished">تمت معالجة جميع الاستفسارات</string>
     <string name="wrap_text">التفاف النص</string>
-    <string name="scroll_down">الإنتقال للأسفل</string>
+    <string name="scroll_down">انتقل للأسفل</string>
     <string name="select_between">تحديد عناصر النطاق المحدد</string>
     <string name="no_download_fragments">لا تنزّل كأجزاء</string>
     <string name="no_download_fragments_summary">لا تستخدم ملفات .part واكتب مباشرة في ملف الإخراج</string>

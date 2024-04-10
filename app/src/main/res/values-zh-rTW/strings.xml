@@ -177,7 +177,7 @@
     <string name="history_is_empty">歷史記錄為空</string>
     <string name="api_key_summary">Youtube API 的影片推薦</string>
     <string name="url">網址</string>
-    <string name="update_app_summary">打開應用程式時公佈新版本</string>
+    <string name="update_app_summary">當應用程式開啟時，宣布新版本。資料從官方 Github 儲存庫提取</string>
     <string name="remove_downloading">取消下載</string>
     <string name="incognito_summary">下載而不將其添加到歷史記錄中</string>
     <string name="show_download_card">顯示下載卡片</string>
@@ -376,4 +376,7 @@
     <string name="all_queries_finished">所有查詢均已處理</string>
     <string name="select_between">選擇之間的項目</string>
     <string name="reset_processed_links">重設已處理的連結</string>
+    <string name="swipe_gestures_download_card">在下載卡片中使用滑動手勢</string>
+    <string name="show_download_count">在下載隊列畫面顯示數量</string>
+    <string name="thumbnail_format">縮圖格式</string>
 </resources>
