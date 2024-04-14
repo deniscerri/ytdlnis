@@ -367,9 +367,16 @@
     <string name="get_new_uploads">Yalnız Yeni Yükləmələri Əldə Et</string>
     <string name="also_download_audio">Həmçinin Səs kimi Yüklə</string>
     <string name="wrap_text">Mətni Bük</string>
-    <string name="scroll_down">Aşağı Sürüşdür</string>
+    <string name="scroll_down">Aşağıya sürüşdür</string>
     <string name="back">Geri</string>
     <string name="all_queries_finished">Bütün sorğular emal edilib</string>
     <string name="select_between">Arasındakı elementləri seç</string>
     <string name="reset_processed_links">Artıq emal edilmiş bağlantıları sıfırla</string>
+    <string name="my_filename_templates">Fayl Adı Şablonlarım</string>
+    <string name="prefer_smaller_formats">Daha kiçik ölçülü formatlara üstünlük ver</string>
+    <string name="display_over_apps">Tətbiqlər Üzərində Göstər</string>
+    <string name="hour">Saat</string>
+    <string name="no_download_fragments">Fraqmentlər kimi yükləmə</string>
+    <string name="no_download_fragments_summary">.part fayllarından istifadə etmə və birbaşa çıxış faylına yazma</string>
+    <string name="display_over_apps_summary">Yükləmə kartını həmişə yuxarıda göstərin. Yükləmə kartı görünəndə hazırda işləyən tətbiq bağlanarsa, bunu aktivləşdir</string>
 </resources>

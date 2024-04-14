@@ -370,7 +370,8 @@
     <string name="add">追加</string>
     <string name="all_queries_finished">すべてのクエリが処理されました</string>
     <string name="reset_processed_links">処理済みのリンクを初期化</string>
-    <string name="scroll_down">スクロールダウン</string>
+    <string name="scroll_down">末尾までスクロール</string>
     <string name="no_download_fragments_summary">.partファイルを使わず、出力ファイルに直接書き込む</string>
     <string name="no_download_fragments">バラバラにダウンロードしない</string>
+    <string name="hour">時間</string>
 </resources>
