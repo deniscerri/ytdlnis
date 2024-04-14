@@ -350,7 +350,7 @@
     <string name="retry_missing_downloads">Opakovat zmeškané stahování</string>
     <string name="save_auto_subs">Uložit automatické titulky</string>
     <string name="not_deleted">Neodstraněno</string>
-    <string name="download_archive">Stáhnout archiv</string>
+    <string name="archive">Stáhnout archiv [Použije archivní soubor yt-dlp pro zabránění duplicitního stahování místo vestavěné funkce]</string>
     <string name="observe_sources">Sledovat zdroje</string>
     <string name="new_source">Nový zfroj</string>
     <string name="confirm_delete_sources_desc">Trvale odstraní všechny zdroje</string>
@@ -358,7 +358,6 @@
     <string name="on_time">Zapnout</string>
     <string name="month">Měsíc</string>
     <string name="bitrate">Rychlost přenosu</string>
-    <string name="download_archive_summary">Použije archivní soubor yt-dlp pro zabránění duplicitního stahování místo vestavěné funkce</string>
     <string name="show_download_count">Zobrazení počtů na obrazovce stahovací fronty</string>
     <string name="thumbnail_format">Formát miniatur</string>
     <string name="get_new_uploads">Získat pouze nové nahrávky</string>

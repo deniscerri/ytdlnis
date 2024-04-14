@@ -360,8 +360,8 @@
     <string name="bitrate">Bitrate</string>
     <string name="save_auto_subs">Save Automatic Subtitles</string>
     <string name="not_deleted">Not Deleted</string>
-    <string name="download_archive">Download Archive</string>
-    <string name="download_archive_summary">Use yt-dlp\'s download archive file to prevent duplicate downloads instead of the built in functionality</string>
+    <string name="archive">Download Archive [Use yt-dlp\'s download archive file to prevent duplicate downloads instead of the built in functionality]</string>
+    <string name="disabled">Disabled</string>
     <string name="swipe_gestures_download_card">Swipe Gestures in download card</string>
     <string name="show_download_count">Show counts in the download queue screen</string>
     <string name="thumbnail_format">Thumbnail Format</string>
@@ -382,4 +382,13 @@
     <string name="display_over_apps">Display Over Apps</string>
     <string name="display_over_apps_summary">Make the download card always display on top. Turn this on if the currently running app closes when the download card shows up</string>
     <string name="hour">Hour</string>
+    <string name="subtitles">Subtitles</string>
+    <string name="prevent_duplicate_downloads">Prevent Duplicate Downloads</string>
+    <string name="prevent_duplicate_url_type"><![CDATA[URL & Download Type]]></string>
+    <string name="prevent_duplicate_config">Full Configuration</string>
+    <string name="copy_url">Copy URL</string>
+    <string name="move_top">Move to the Top</string>
+    <string name="move_bottom">Move to the Bottom</string>
+    <string name="scheduled">Scheduled</string>
+    <string name="clear_scheduled">Clear Scheduled</string>
 </resources>

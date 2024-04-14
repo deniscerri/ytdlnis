@@ -29,6 +29,7 @@ import com.deniscerri.ytdl.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdl.util.UiUtil
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.android.material.elevation.SurfaceColors
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
 import kotlinx.coroutines.Dispatchers
@@ -66,6 +67,7 @@ class ConfigureDownloadBottomSheetDialog(private var result: ResultItem, private
         super.setupDialog(dialog, style)
         val view = LayoutInflater.from(context).inflate(R.layout.configure_download_bottom_sheet, null)
         dialog.setContentView(view)
+        dialog.window?.navigationBarColor = SurfaceColors.SURFACE_1.getColor(requireActivity())
         dialog.setOnShowListener {
             behavior = BottomSheetBehavior.from(view.parent as View)
             val displayMetrics = DisplayMetrics()

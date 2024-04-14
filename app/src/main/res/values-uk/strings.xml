@@ -357,8 +357,7 @@
     <string name="month">Місяць</string>
     <string name="not_deleted">Не видалено</string>
     <string name="save_auto_subs">Зберегти автоматично субтитри</string>
-    <string name="download_archive">Архів завантажень</string>
-    <string name="download_archive_summary">Використовуйте файл архіву завантажень yt-dlp, щоб запобігти повторним завантаженням замість вбудованої функції</string>
+    <string name="archive">Архів завантажень [Використовуйте файл архіву завантажень yt-dlp, щоб запобігти повторним завантаженням замість вбудованої функції]</string>
     <string name="swipe_gestures_download_card">Жести пальцем у картці завантаження</string>
     <string name="show_download_count">Показати підрахунки на екрані черги завантаження</string>
     <string name="thumbnail_format">Формат мініатюр</string>

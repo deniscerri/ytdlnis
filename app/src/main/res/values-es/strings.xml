@@ -353,8 +353,7 @@
     <string name="bitrate">Tasa de datos</string>
     <string name="save_auto_subs">Guardar subtítulos automáticos</string>
     <string name="not_deleted">No eliminado</string>
-    <string name="download_archive">Descargar archivo</string>
-    <string name="download_archive_summary">Utilice el archivo de descarga de yt-dlp para evitar descargas duplicadas en lugar de la funcionalidad integrada</string>
+    <string name="archive">Descargar archivo [Utilice el archivo de descarga de yt-dlp para evitar descargas duplicadas en lugar de la funcionalidad integrada]</string>
     <string name="on_time">En</string>
     <string name="week">Semana</string>
     <string name="confirm_delete_sources_desc">Borrar todas las fuentes, permanentemente</string>

@@ -350,14 +350,13 @@
     <string name="bitrate">बिटरेट</string>
     <string name="save_auto_subs">स्वचालित उपशीर्षक सहेजें</string>
     <string name="not_deleted">हटाया नहीं गया</string>
-    <string name="download_archive">डाउनलोड संग्रह</string>
+    <string name="archive">डाउनलोड संग्रह [डुप्लिकेट डाउनलोड को रोकने के लिए अंतर्निहित कार्यक्षमता के बजाय yt-dlp की डाउनलोड संग्रह फ़ाइल का उपयोग करें]</string>
     <string name="on_time">नियत समय पर</string>
     <string name="delete_all_sources">सभी स्रोत हटाएँ</string>
     <string name="force_ipv4">IPv4 को बाध्य करें</string>
     <string name="never">कभी नहीं</string>
     <string name="copy_urls">URL कॉपी करें</string>
     <string name="occurrences">घटनाएँ</string>
-    <string name="download_archive_summary">डुप्लिकेट डाउनलोड को रोकने के लिए अंतर्निहित कार्यक्षमता के बजाय yt-dlp की डाउनलोड संग्रह फ़ाइल का उपयोग करें</string>
     <string name="retry_missing_downloads">गुम हुए डाउनलोड पुनः प्रयास करें</string>
     <string name="thumbnail_format">थंबनेल प्रारूप</string>
     <string name="get_new_uploads">केवल नए अपलोड प्राप्त करें</string>

@@ -352,13 +352,12 @@
     <string name="ends">结束</string>
     <string name="after">后</string>
     <string name="day">天</string>
-    <string name="download_archive_summary">使用 yt-dlp 的下载存档文件而非应用的内置功能来防止重复下载</string>
     <string name="month">月</string>
     <string name="retry_missing_downloads">重试缺少的下载</string>
     <string name="not_deleted">未删除</string>
     <string name="bitrate">比特率</string>
     <string name="save_auto_subs">保存自动字幕</string>
-    <string name="download_archive">下载存档</string>
+    <string name="archive">下载存档 [使用 yt-dlp 的下载存档文件而非应用的内置功能来防止重复下载]</string>
     <string name="also_download_audio">同样下载为音频</string>
     <string name="wrap_text">换行显示过长文本</string>
     <string name="text_size">文本尺寸</string>

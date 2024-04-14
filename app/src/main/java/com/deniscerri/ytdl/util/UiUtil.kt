@@ -1,12 +1,18 @@
 package com.deniscerri.ytdl.util
 
+import android.animation.Animator
+import android.animation.ObjectAnimator
+import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.ClipData
+import android.content.ClipData.Item
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.res.ColorStateList
+import android.graphics.Canvas
 import android.net.Uri
 import android.os.Build
 import android.text.Editable
@@ -26,10 +32,13 @@ import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.DimenRes
 import androidx.annotation.OptIn
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.cardview.widget.CardView
+import androidx.compose.ui.graphics.Color
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.FileProvider
 import androidx.core.view.isVisible
@@ -39,6 +48,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LifecycleOwner
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.afollestad.materialdialogs.utils.MDUtil.getStringArray
 import com.deniscerri.ytdl.R
@@ -77,6 +87,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.materialswitch.MaterialSwitch
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
+import com.google.android.material.textfield.TextInputLayout.END_ICON_NONE
+import com.google.android.material.textfield.TextInputLayout.EndIconMode
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import kotlinx.coroutines.CoroutineScope
@@ -696,11 +708,11 @@ object UiUtil {
                     true
                 }
             }
-            DownloadRepository.Status.Queued, DownloadRepository.Status.QueuedPaused -> {
-                if (item.downloadStartTime <= System.currentTimeMillis() / 1000) download!!.visibility = View.GONE
-                else{
-                    download!!.text = context.getString(R.string.download_now)
-                }
+            DownloadRepository.Status.Queued -> {
+                download!!.visibility = View.GONE
+            }
+            DownloadRepository.Status.Scheduled -> {
+                download!!.text = context.getString(R.string.download_now)
             }
             else -> {
                 download?.setOnLongClickListener {
@@ -1803,9 +1815,10 @@ object UiUtil {
             }
         }
 
-        sheet.setOnDismissListener {
+        sheet.setOnDismissListener { _ ->
             CoroutineScope(Dispatchers.IO).launch {
                 downloadViewModel.deleteProcessing()
+                downloadViewModel.deleteAllWithID(it.downloadItems)
             }
         }
 
@@ -2023,7 +2036,10 @@ object UiUtil {
         builder.setTitle(context.getString(R.string.piped_instance))
         val view = context.layoutInflater.inflate(R.layout.filename_template_dialog, null)
         val editText = view.findViewById<EditText>(R.id.filename_edittext)
-        view.findViewById<TextInputLayout>(R.id.filename).hint = context.getString(R.string.piped_instance)
+        view.findViewById<TextInputLayout>(R.id.filename).apply {
+            hint = context.getString(R.string.piped_instance)
+            endIconMode = END_ICON_NONE
+        }
         editText.setText(currentInstance)
         editText.setSelection(editText.text.length)
         builder.setView(view)
@@ -2141,5 +2157,29 @@ object UiUtil {
 
         val dialog = builder.create()
         dialog.show()
+    }
+
+
+    fun getAlphaAnimator(view: View, alphaTo: Float): Animator {
+        return ObjectAnimator.ofFloat(view, View.ALPHA, view.alpha, alphaTo)
+    }
+
+    fun getScaleXAnimator(view: View, scaleTo: Float): Animator {
+        return ObjectAnimator.ofFloat(view, View.SCALE_X, view.scaleX, scaleTo)
+    }
+
+    fun getScaleYAnimator(view: View, scaleTo: Float): Animator {
+        return ObjectAnimator.ofFloat(view, View.SCALE_Y, view.scaleX, scaleTo)
+    }
+
+    fun getElevationAnimator(view: MaterialCardView, @DimenRes elevationTo: Int): Animator {
+        val valueFrom = view.cardElevation
+        val valueTo = view.context.resources.getDimensionPixelSize(elevationTo).toFloat()
+
+        return ValueAnimator.ofFloat(valueFrom, valueTo).apply {
+            addUpdateListener {
+                view.cardElevation = it.animatedValue as? Float ?: return@addUpdateListener
+            }
+        }
     }
 }

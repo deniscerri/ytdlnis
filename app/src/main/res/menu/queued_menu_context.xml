@@ -20,7 +20,13 @@
         android:id="@+id/up"
         android:icon="@drawable/ic_arrow_up"
         app:showAsAction="ifRoom"
-        android:title="Move Up" />
+        android:title="@string/move_top" />
+
+    <item
+        android:id="@+id/down"
+        android:icon="@drawable/ic_arrow_up"
+        app:showAsAction="ifRoom"
+        android:title="@string/move_bottom" />
 
     <item
         android:id="@+id/download"

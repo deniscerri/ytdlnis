@@ -357,8 +357,7 @@
     <string name="month">Mês</string>
     <string name="set_time">Definir tempo</string>
     <string name="on_time">Em</string>
-    <string name="download_archive">Arquivo de descarga</string>
-    <string name="download_archive_summary">Utilizar ficheiro de descarga yt-dlp para evitar duplicação de descargas</string>
+    <string name="archive">Arquivo de descarga [Utilizar ficheiro de descarga yt-dlp para evitar duplicação de descargas]</string>
     <string name="swipe_gestures_download_card">Gestos de deslizar no cartão de descarga</string>
     <string name="show_download_count">Mostrar contagens no ecrã da Fila de descarga</string>
     <string name="get_new_uploads">Obter apenas novos envios</string>

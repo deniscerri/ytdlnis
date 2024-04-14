@@ -345,8 +345,7 @@
     <string name="retry_missing_downloads">Opakovať zmeškané sťahovania</string>
     <string name="save_auto_subs">Uložiť automatické titulky</string>
     <string name="not_deleted">Nevymazané</string>
-    <string name="download_archive">Stiahnuť archív</string>
-    <string name="download_archive_summary">Použije archívny súbor yt-dlp namiesto vstavanej funkcie, aby sa zabránilo duplicitnému sťahovaniu</string>
+    <string name="archive">Stiahnuť archív [Použije archívny súbor yt-dlp namiesto vstavanej funkcie, aby sa zabránilo duplicitnému sťahovaniu]</string>
     <string name="copy_urls">Kopírovať adresy URL</string>
     <string name="observe_sources">Sledovať zdroje</string>
     <string name="new_source">Nový zdroj</string>

@@ -351,14 +351,13 @@
     <string name="bitrate">Bit Sürəti</string>
     <string name="after">Sonra</string>
     <string name="not_deleted">Silinməyib</string>
-    <string name="download_archive">Yükləmə Arxivi</string>
+    <string name="archive">Yükləmə Arxivi [Dublikat yükləmələrə mane olmaq üçün daxili funksionallıq əvəzinə, yt-dlp-nin yükləmə arxiv faylın istifadə et]</string>
     <string name="on_time">Aç</string>
     <string name="observe_sources">Mənbələrə Nəzarət Et</string>
     <string name="confirm_delete_sources_desc">Bütün mənbələri həmişəlik sil</string>
     <string name="starts">Başlayır</string>
     <string name="occurrences">proses</string>
     <string name="save_auto_subs">Avtomatik Titirləri Saxla</string>
-    <string name="download_archive_summary">Dublikat yükləmələrə mane olmaq üçün daxili funksionallıq əvəzinə, yt-dlp-nin yükləmə arxiv faylın istifadə et</string>
     <string name="text_size">Mətn Ölçüsü</string>
     <string name="add">Əlavə et</string>
     <string name="swipe_gestures_download_card">Yükləmə Kartında Sürüşdürmə Jestləri</string>

@@ -1,0 +1,54 @@
+## What's New
+
+- Added AVI / FLV / MOV video container options
+- Fixed app not showing the current download's command if it was a command type download when coming from multiple download sheet
+- Added release year from description as metadata for audio downloads
+- Set progress bar as interterminate when it reached 100% so people wont think it froze (its ffmpeg working, and it doesnt have a progress callback)
+- Fix app crashing when trying to toggle on Show Terminal in share sheet
+- Fix app crashing when going on landscape when you open the format list
+- Fixed app not disabling the keep fragments toggle if you toggled the dont download as fragments
+- Fixed app not fetching format list when some formats had None as a filesize
+- Fixed app only showing the download type icon in the finished notification only when you expanded it. Now its a popping orange
+- Showed navigation bar color when opening the download card
+- Showed stylized codec name for generic audio formats
+- Fixed app crashing when going on landscape when you open the multiple download card
+- Fixed app crashing when you tapped the home button twice on foldable mode
+- Fixed observe sources spamming and running every second
+- Swapped around some icons
+- Added new Language BULGARIAN
+- Showed the download path in the finished notification
+- Fixed calculating the next time observe sources should run
+- Added a scheduled section in the download queue so that they dont stay in the same spot with queued items that are expected to run soon. You can see their ETA there for each item
+
+
+## Duplicate checking
+
+For a while the app had its own duplicate checking system when it checked the whole configuration with current history items or active downloads.
+Since this system was too precise and even a slight change in options will consider it a new download and not an exact replica and most people were confused why the app allowed them to still download
+So i created 3 methods of duplicate checking
+
+- download archive -> uses the .txt file of yt-dlp to check if any url has been downloaded before or not
+- url and type -> checks download history and running downloads to check if any item with the same url and type was downloaded
+- full config -> the good ol method
+
+----
+
+- Removed paused button for each active download item. It didnt make sense. If you paused one item, the other items will continue to run anyway so what was the point. Instead i added a floating action button to pause and resume the whole queue
+- Removed the cookie toggle throbbing every time you entered the page
+- Slight changes to album_arist metadata parsing
+- Fixed app downloading music file instead when using M4A music format
+- Fixed app showing the grey deleted filter on present items
+
+
+## Reordering download queue items
+
+Now you can toggle the drag and drop mode in the queued tab to reorder your items with ease. Also you can now move multiple items to the top and to the bottom of the queue. or a single item
+
+-------
+
+- removed the plus icon in the piped instance dialog.
+- combined the thumbnail cropper and resizer commands in audio downloads
+- fixed app not removing audio on some pre-merged formats like in tiktok or instagram
+- removed the -f bv[height<=...] and instead moved to -S res:... due to some problems when trying to quick download an item
+- fix terminal sometimes not showing the finishing line of output or error
+- added colors to app shortcut icons

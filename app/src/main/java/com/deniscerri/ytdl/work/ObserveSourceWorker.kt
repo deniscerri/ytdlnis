@@ -17,7 +17,7 @@ import com.deniscerri.ytdl.database.repository.DownloadRepository
 import com.deniscerri.ytdl.database.repository.HistoryRepository
 import com.deniscerri.ytdl.database.repository.ObserveSourcesRepository
 import com.deniscerri.ytdl.database.repository.ResultRepository
-import com.deniscerri.ytdl.util.Extensions.calculateNextTime
+import com.deniscerri.ytdl.util.Extensions.calculateNextTimeForObserving
 import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.util.InfoUtil
 import com.deniscerri.ytdl.util.NotificationUtil
@@ -210,7 +210,7 @@ class ObserveSourceWorker(
             .addTag("observeSources")
             .addTag(sourceID.toString())
             .setConstraints(workConstraints.build())
-            .setInitialDelay(System.currentTimeMillis() - item.calculateNextTime(), TimeUnit.MILLISECONDS)
+            .setInitialDelay(item.calculateNextTimeForObserving() - System.currentTimeMillis(), TimeUnit.MILLISECONDS)
             .setInputData(Data.Builder().putLong("id", sourceID).build())
 
         WorkManager.getInstance(context).enqueueUniqueWork(

@@ -351,7 +351,7 @@
     <string name="bitrate">Velocità di trasmissione</string>
     <string name="save_auto_subs">Salva i Sottotitoli Automatici</string>
     <string name="not_deleted">Non Eliminato</string>
-    <string name="download_archive">Scarica Archivio</string>
+    <string name="archive">Scarica Archivio [Utilizza l\'archivio download di yt-dlp per evitare download duplicati invece della funzionalità integrata]</string>
     <string name="on_time">Acceso</string>
     <string name="no_download_fragments">Non scaricare come Frammenti</string>
     <string name="no_download_fragments_summary">Non usare i file .part e scrivi direttamente nel file di output</string>
@@ -366,7 +366,6 @@
     <string name="confirm_delete_sources_desc">Cancella tutti i sorgenti, permanentemente</string>
     <string name="copy_urls">Copia URLs</string>
     <string name="never">Mai</string>
-    <string name="download_archive_summary">Utilizza l\'archivio download di yt-dlp per evitare download duplicati invece della funzionalità integrata</string>
     <string name="swipe_gestures_download_card">Gestualità di Scorrimento nella download card</string>
     <string name="get_new_uploads">Ricevi Solo Nuovi Upload</string>
     <string name="also_download_audio">Scarica Anche come Audio</string>

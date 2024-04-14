@@ -116,11 +116,6 @@ class ActiveDownloadAdapter(onItemClickListener: OnItemClickListener, activity: 
             onItemClickListener.onOutputClick(item)
         }
 
-
-        // PAUSE BUTTON ----------------------------------
-        val pauseButton = card.findViewById<MaterialButton>(R.id.active_download_pause)
-        if (pauseButton.hasOnClickListeners()) pauseButton.setOnClickListener(null)
-
         // CANCEL BUTTON ----------------------------------
         val cancelButton = card.findViewById<MaterialButton>(R.id.active_download_delete)
         if (cancelButton.hasOnClickListeners()) cancelButton.setOnClickListener(null)
@@ -130,64 +125,18 @@ class ActiveDownloadAdapter(onItemClickListener: OnItemClickListener, activity: 
         when(DownloadRepository.Status.valueOf(item.status)){
             DownloadRepository.Status.Active -> {
                 progressBar.isIndeterminate = true
-
-                val fromRadius: Int = dp(activity.resources, 30f)
-                val toRadius: Int = dp(activity.resources, 15f)
-                val animator = ValueAnimator.ofInt(fromRadius, toRadius)
-                animator.setDuration(500)
-                    .addUpdateListener { animation ->
-                        val value = animation.animatedValue as Int
-                        pauseButton.cornerRadius = value
-                        pauseButton.icon = ContextCompat.getDrawable(activity, R.drawable.exomedia_ic_pause_white)
-                        pauseButton.contentDescription = activity.getString(R.string.pause)
-                        pauseButton.isEnabled = true
-                        pauseButton.tag = ActiveDownloadAction.Pause
-                    }
-                animator.start()
-
-                cancelButton.visibility = View.GONE
+                cancelButton.isEnabled = true
             }
             DownloadRepository.Status.ActivePaused -> {
                 progressBar.isIndeterminate = false
-
-                val fromRadius: Int = dp(activity.resources, 15f)
-                val toRadius: Int = dp(activity.resources, 30f)
-                val animator = ValueAnimator.ofInt(fromRadius, toRadius)
-                animator.setDuration(500)
-                    .addUpdateListener { animation ->
-                        val value = animation.animatedValue as Int
-                        pauseButton.cornerRadius = value
-                        pauseButton.icon = ContextCompat.getDrawable(activity, R.drawable.exomedia_ic_play_arrow_white)
-                        pauseButton.contentDescription = activity.getString(R.string.resume)
-                        pauseButton.tag = ActiveDownloadAction.Resume
-                        pauseButton.isEnabled = true
-                    }
-                animator.start()
-                cancelButton.visibility = View.VISIBLE
-            }
-            DownloadRepository.Status.PausedReQueued -> {
-                progressBar.isIndeterminate = true
-                pauseButton.icon = ContextCompat.getDrawable(activity, R.drawable.ic_refresh)
-                pauseButton.contentDescription = activity.getString(R.string.please_wait)
-                pauseButton.tag = null
-                pauseButton.isEnabled = false
-                cancelButton.visibility = View.GONE
+                cancelButton.isEnabled = true
+                output.text = activity.getString(R.string.exo_download_paused)
             }
             else -> {}
         }
-
-        pauseButton.setOnClickListener {
-            if (pauseButton.tag == ActiveDownloadAction.Pause){
-                onItemClickListener.onPauseClick(item.id, ActiveDownloadAction.Pause, position)
-            }else{
-                onItemClickListener.onPauseClick(item.id, ActiveDownloadAction.Resume, position)
-            }
-        }
-
     }
     interface OnItemClickListener {
         fun onCancelClick(itemID: Long)
-        fun onPauseClick(itemID: Long, action: ActiveDownloadAction, position: Int)
         fun onOutputClick(item: DownloadItem)
     }
 

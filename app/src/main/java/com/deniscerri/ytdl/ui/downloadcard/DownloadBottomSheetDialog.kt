@@ -46,6 +46,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.elevation.SurfaceColors
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
@@ -127,6 +128,7 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
         super.setupDialog(dialog, style)
         view = LayoutInflater.from(context).inflate(R.layout.download_bottom_sheet, null)
         dialog.setContentView(view)
+        dialog.window?.navigationBarColor = SurfaceColors.SURFACE_1.getColor(requireActivity())
 
         dialog.setOnShowListener {
             behavior = BottomSheetBehavior.from(view.parent as View)
@@ -313,6 +315,7 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
                 scheduleBtn.isEnabled = false
                 download.isEnabled = false
                 val item: DownloadItem = getDownloadItem()
+                item.status = DownloadRepository.Status.Scheduled.toString()
                 item.downloadStartTime = it.timeInMillis
                 if (item.videoPreferences.alsoDownloadAsAudio){
                     val itemsToQueue = mutableListOf<DownloadItem>()

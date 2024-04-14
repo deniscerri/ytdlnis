@@ -357,8 +357,7 @@
     <string name="ends">Mbaron</string>
     <string name="day">Ditë</string>
     <string name="month">Muaj</string>
-    <string name="download_archive">Arkiva e Shkarkimeve</string>
-    <string name="download_archive_summary">Përdor skedarin e arkivës të yt-dlp për të parandaluar shkarkimet duplicate në vend të funksionalitetit të aplikacionit</string>
+    <string name="archive">Arkiva e Shkarkimeve [Përdor skedarin e arkivës të yt-dlp për të parandaluar shkarkimet duplicate]</string>
     <string name="swipe_gestures_download_card">Gjestet e rrëshqitjes në kartën e shkarkimit</string>
     <string name="show_download_count">Shfaq numrat në faqen e rradhës së shkarkimeve</string>
     <string name="also_download_audio">Shkarko Gjithashtu si Audio</string>

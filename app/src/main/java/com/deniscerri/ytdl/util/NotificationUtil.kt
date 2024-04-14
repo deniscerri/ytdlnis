@@ -8,6 +8,7 @@ import android.app.TaskStackBuilder
 import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
@@ -243,19 +244,18 @@ class NotificationUtil(var context: Context) {
         }
 
         val bitmap = iconType.toBitmap(context)
-        val bigPictureStyle = NotificationCompat.BigPictureStyle()
-        bigPictureStyle.bigLargeIcon(bitmap)
-        if (Build.VERSION.SDK_INT >= 31){
-            bigPictureStyle.showBigPictureWhenCollapsed(true)
-        }
-
         notificationBuilder
             .setContentTitle("${res.getString(R.string.downloaded)} $title")
             .setSmallIcon(R.drawable.ic_launcher_foreground_large)
+            .setLargeIcon(bitmap)
             .setGroup(DOWNLOAD_FINISHED_NOTIFICATION_ID.toString())
             .setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_CHILDREN)
             .setContentText(title)
-            .setStyle(bigPictureStyle)
+            .setStyle(NotificationCompat.BigTextStyle()
+                .bigText("""
+                    $title
+                    ${filepath?.joinToString("\n")}
+                """.trimIndent()))
             .setPriority(NotificationCompat.PRIORITY_MAX)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .clearActions()
@@ -404,7 +404,7 @@ class NotificationUtil(var context: Context) {
         )
 
         try {
-            notificationBuilder.setProgress(100, progress, progress == 0)
+            notificationBuilder.setProgress(100, progress, (progress == 0 || progress == 100))
                 .setContentTitle(title)
                 .setStyle(NotificationCompat.BigTextStyle().bigText(contentText))
                 .clearActions()

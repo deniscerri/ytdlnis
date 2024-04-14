@@ -29,6 +29,7 @@ import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.elevation.SurfaceColors
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.Dispatchers
@@ -77,6 +78,7 @@ class SelectPlaylistItemsDialog : BottomSheetDialogFragment(), PlaylistAdapter.O
         super.setupDialog(dialog, style)
         val view = LayoutInflater.from(context).inflate(R.layout.select_playlist_items, null)
         dialog.setContentView(view)
+        dialog.window?.navigationBarColor = SurfaceColors.SURFACE_1.getColor(requireActivity())
 
         dialog.setOnShowListener {
             behavior = BottomSheetBehavior.from(view.parent as View)

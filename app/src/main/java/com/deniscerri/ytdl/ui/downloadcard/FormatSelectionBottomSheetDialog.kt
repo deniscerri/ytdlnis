@@ -36,7 +36,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 
-class FormatSelectionBottomSheetDialog(private val items: List<DownloadItem?>, private var formats: List<List<Format>>, private val listener: OnFormatClickListener) : BottomSheetDialogFragment() {
+class FormatSelectionBottomSheetDialog(private val _items: List<DownloadItem?>? = null, private var _formats: List<List<Format>>? = null, private val _listener: OnFormatClickListener? = null) : BottomSheetDialogFragment() {
     private lateinit var behavior: BottomSheetBehavior<View>
     private lateinit var infoUtil: InfoUtil
     private lateinit var downloadViewModel: DownloadViewModel
@@ -62,6 +62,10 @@ class FormatSelectionBottomSheetDialog(private val items: List<DownloadItem?>, p
 
     private var hasGenericFormats: Boolean = false
 
+    private lateinit var items: List<DownloadItem?>
+    private lateinit var formats: List<List<Format>>
+    private lateinit var listener: OnFormatClickListener
+
     enum class FormatSorting {
         filesize, container, codec, id
     }
@@ -86,6 +90,15 @@ class FormatSelectionBottomSheetDialog(private val items: List<DownloadItem?>, p
         super.setupDialog(dialog, style)
         view = LayoutInflater.from(context).inflate(R.layout.format_select_bottom_sheet, null)
         dialog.setContentView(view)
+
+        if (_items == null){
+            this.dismiss()
+            return
+        }
+
+        items = _items
+        formats = _formats!!
+        listener = _listener!!
 
         sortBy = FormatSorting.valueOf(sharedPreferences.getString("format_order", "filesize")!!)
         filterBy = FormatCategory.valueOf(sharedPreferences.getString("format_filter", "ALL")!!)
@@ -368,9 +381,10 @@ class FormatSelectionBottomSheetDialog(private val items: List<DownloadItem?>, p
             FormatSorting.codec -> {
                 val codecOrder = resources.getStringArray(R.array.video_codec_values).toMutableList()
                 codecOrder.removeFirst()
-                chosenFormats.groupBy { format -> codecOrder.indexOfFirst { format.vcodec.startsWith(it) } }
+                chosenFormats.groupBy { format -> codecOrder.indexOfFirst { format.vcodec.matches("^(${it})(.+)?$".toRegex()) } }
+
                     .flatMap {
-                        it.value.sortedBy { l -> l.filesize }
+                        it.value.sortedByDescending { l -> l.filesize }
                     }
             }
             FormatSorting.filesize -> chosenFormats

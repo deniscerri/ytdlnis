@@ -64,10 +64,11 @@ class DownloadWorker(
         val alarmScheduler = AlarmScheduler(context)
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
         val time = System.currentTimeMillis() + 6000
-        val queuedItems = dao.getQueuedDownloadsThatAreNotScheduledChunked(time)
+        val queuedItems = dao.getQueuedScheduledDownloadsUntil(time)
         val currentWork = WorkManager.getInstance(context).getWorkInfosByTag("download").await()
         if (currentWork.count{it.state == WorkInfo.State.RUNNING} > 1) return Result.success()
 
+        // this is needed for observe sources call, so it wont create result items
         val createResultItem = inputData.getBoolean("createResultItem", true)
 
         val confTmp = Configuration(context.resources.configuration)
@@ -176,21 +177,31 @@ class DownloadWorker(
                         }
                         val wasQuickDownloaded = resultDao.getCountInt() == 0
                         runBlocking {
-                            var finalPaths : List<String>?
+                            var finalPaths : MutableList<String>?
 
                             if (noCache){
                                 setProgressAsync(workDataOf("progress" to 100, "output" to "Scanning Files", "id" to downloadItem.id))
-                                finalPaths = it.out.split("\n")
-                                    .asSequence()
+                                val outputSequence = it.out.split("\n")
+                                finalPaths =
+                                    outputSequence.asSequence()
                                     .filter { it.startsWith("'/storage") }
-                                    .map { it.removePrefix("'") }
-                                    .map { it.removeSuffix("\n") }
-                                    .map { it.removeSuffix("'") }
-                                    .sortedBy { File(it).lastModified() }
-                                    .toList()
+                                        .map { it.removeSuffix("\n") }
+                                        .map { it.removeSurrounding("'", "'") }
+                                    .toMutableList()
+
+                                finalPaths.addAll(
+                                            outputSequence.asSequence()
+                                                .filter { it.startsWith("[SplitChapters]") && it.contains("Destination: ") }
+                                                .map { it.split("Destination: ")[1] }
+                                                .map { it.removeSuffix("\n") }
+                                                .toList()
+                                        )
+
+                                finalPaths.sortBy { File(it).lastModified() }
+                                finalPaths = finalPaths.distinct().toMutableList()
                                 FileUtil.scanMedia(finalPaths, context)
                                 if (finalPaths.isEmpty()){
-                                    finalPaths = listOf(context.getString(R.string.unfound_file))
+                                    finalPaths = mutableListOf(context.getString(R.string.unfound_file))
                                 }
                             }else{
                                 //move file from internal to set download directory
@@ -200,15 +211,15 @@ class DownloadWorker(
                                         FileUtil.moveFile(tempFileDir.absoluteFile,context, downloadLocation, keepCache){ p ->
                                             setProgressAsync(workDataOf("progress" to p, "output" to "Moving file to ${FileUtil.formatPath(downloadLocation)}", "id" to downloadItem.id))
                                         }
-                                    }.filter { !it.matches("\\.(description)|(txt)\$".toRegex()) }
+                                    }.filter { !it.matches("\\.(description)|(txt)\$".toRegex()) }.toMutableList()
 
                                     if (finalPaths.isNotEmpty()){
                                         setProgressAsync(workDataOf("progress" to 100, "output" to "Moved file to $downloadLocation", "id" to downloadItem.id))
                                     }else{
-                                        finalPaths = listOf(context.getString(R.string.unfound_file))
+                                        finalPaths = mutableListOf(context.getString(R.string.unfound_file))
                                     }
                                 }catch (e: Exception){
-                                    finalPaths = listOf(context.getString(R.string.unfound_file))
+                                    finalPaths = mutableListOf(context.getString(R.string.unfound_file))
                                     e.printStackTrace()
                                     handler.postDelayed({
                                         Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
@@ -223,7 +234,7 @@ class DownloadWorker(
                                 add("description")
                                 add("txt")
                             }
-                            finalPaths = finalPaths?.filter { path -> !nonMediaExtensions.any { path.endsWith(it) } }
+                            finalPaths = finalPaths?.filter { path -> !nonMediaExtensions.any { path.endsWith(it) } }?.toMutableList()
                             FileUtil.deleteConfigFiles(request)
 
                             //put download in history

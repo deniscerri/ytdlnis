@@ -2,7 +2,7 @@
     <shortcut
         android:shortcutId="search"
         android:enabled="true"
-        android:icon="@drawable/ic_search"
+        android:icon="@drawable/ic_search_red"
         android:shortcutShortLabel="@string/search"
         android:shortcutDisabledMessage="@string/search">
         <intent
@@ -19,7 +19,7 @@
     <shortcut
         android:shortcutId="downloads"
         android:enabled="true"
-        android:icon="@drawable/ic_downloads"
+        android:icon="@drawable/ic_downloads_red"
         android:shortcutShortLabel="@string/downloads"
         android:shortcutDisabledMessage="@string/downloads">
         <intent
@@ -35,7 +35,7 @@
     <shortcut
         android:shortcutId="queue"
         android:enabled="true"
-        android:icon="@drawable/baseline_downloading_24"
+        android:icon="@drawable/baseline_downloading_red"
         android:shortcutShortLabel="@string/download_queue"
         android:shortcutDisabledMessage="@string/download_queue">
         <intent
@@ -51,7 +51,7 @@
     <shortcut
         android:shortcutId="newTemplate"
         android:enabled="true"
-        android:icon="@drawable/baseline_downloading_24"
+        android:icon="@drawable/ic_terminal_red"
         android:shortcutShortLabel="@string/new_template"
         android:shortcutDisabledMessage="@string/new_template">
         <intent

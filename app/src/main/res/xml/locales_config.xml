@@ -5,6 +5,7 @@
     <locale android:name="az"/>
     <locale android:name="bn"/>
     <locale android:name="bn-IN"/>
+    <locale android:name="bg"/>
     <locale android:name="bs"/>
     <locale android:name="de"/>
     <locale android:name="el"/>

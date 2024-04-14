@@ -53,15 +53,23 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
         config = PagingConfig(pageSize = 20, initialLoadSize = 20, prefetchDistance = 1),
         pagingSourceFactory = {downloadDao.getSavedDownloads()}
     )
+    val scheduledDownloads: Pager<Int, DownloadItemSimple> = Pager(
+        config = PagingConfig(pageSize = 20, initialLoadSize = 20, prefetchDistance = 1),
+        pagingSourceFactory = {downloadDao.getScheduledDownloads()}
+    )
 
-    val activeDownloadsCount : Flow<Int> = downloadDao.getDownloadsCountByStatusFlow(listOf(Status.Active, Status.ActivePaused, Status.PausedReQueued).toListString())
+    val activeDownloadsCount : Flow<Int> = downloadDao.getDownloadsCountByStatusFlow(listOf(Status.Active).toListString())
+    val activeAndActivePausedDownloadsCount : Flow<Int> = downloadDao.getDownloadsCountByStatusFlow(listOf(Status.Active, Status.ActivePaused).toListString())
     val queuedDownloadsCount : Flow<Int> = downloadDao.getDownloadsCountByStatusFlow(listOf(Status.Queued, Status.QueuedPaused).toListString())
+    val activeQueuedDownloadsCount : Flow<Int> = downloadDao.getDownloadsCountByStatusFlow(listOf(Status.Active, Status.ActivePaused, Status.Queued, Status.QueuedPaused).toListString())
     val cancelledDownloadsCount : Flow<Int> = downloadDao.getDownloadsCountByStatusFlow(listOf(Status.Cancelled).toListString())
     val erroredDownloadsCount : Flow<Int> = downloadDao.getDownloadsCountByStatusFlow(listOf(Status.Error).toListString())
     val savedDownloadsCount : Flow<Int> = downloadDao.getDownloadsCountByStatusFlow(listOf(Status.Saved).toListString())
+    val pausedDownloadsCount : Flow<Int> = downloadDao.getDownloadsCountByStatusFlow(listOf(Status.ActivePaused, Status.QueuedPaused).toListString())
+    val scheduledDownloadsCount : Flow<Int> = downloadDao.getDownloadsCountByStatusFlow(listOf(Status.Scheduled).toListString())
 
     enum class Status {
-        Active, ActivePaused, PausedReQueued, Queued, QueuedPaused, Error, Cancelled, Saved, Processing
+        Active, ActivePaused, Queued, QueuedPaused, Error, Cancelled, Saved, Processing, Scheduled
     }
 
     suspend fun insert(item: DownloadItem) : Long {
@@ -139,10 +147,18 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
         return downloadDao.getErroredDownloadsList()
     }
 
+    fun getScheduledDownloadIDs() : List<Long> {
+        return downloadDao.getScheduledDownloadIDs()
+    }
+
     suspend fun deleteCancelled(){
         val cancelled = getCancelledDownloads()
         downloadDao.deleteCancelled()
         deleteCache(cancelled)
+    }
+
+    suspend fun deleteScheduled() {
+        downloadDao.deleteScheduled()
     }
 
     suspend fun deleteErrored(){

@@ -357,8 +357,7 @@
     <string name="every">Сваки</string>
     <string name="after">Након</string>
     <string name="not_deleted">Није избрисано</string>
-    <string name="download_archive_summary">Користите yt-dlp архиву преузимања да бисте спречили дупла преузимања, уместо уграђене функционалности</string>
-    <string name="download_archive">Архива преузимања</string>
+    <string name="archive">Архива преузимања [Користите yt-dlp архиву преузимања да бисте спречили дупла преузимања, уместо уграђене функционалности]</string>
     <string name="show_download_count">Прикажи бројеве на екрану редоследа за преузимање</string>
     <string name="get_new_uploads">Добијај само нова отпремања</string>
     <string name="also_download_audio">Такође преузми као аудио снимак</string>

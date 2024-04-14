@@ -4,11 +4,13 @@ import android.app.Activity
 import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
+import android.os.Build
 import android.os.Build.VERSION
 import android.os.Bundle
 import android.os.Environment
 import android.provider.Settings
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.preference.Preference
 import androidx.preference.PreferenceManager
 import androidx.preference.SwitchPreferenceCompat
@@ -112,15 +114,22 @@ class FolderSettingsFragment : BaseSettingsFragment() {
                 commandPathResultLauncher.launch(intent)
                 true
             }
-        accessAllFiles!!.onPreferenceClickListener =
-            Preference.OnPreferenceClickListener {
-                val intent = Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
-                val uri = Uri.parse("package:" + requireContext().packageName)
-                intent.data = uri
-                startActivity(intent)
-                true
-            }
+        if(VERSION.SDK_INT >= 30){
+            accessAllFiles!!.onPreferenceClickListener =
+                Preference.OnPreferenceClickListener {
+                    val intent = Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
+                    val uri = Uri.parse("package:" + requireContext().packageName)
+                    intent.data = uri
+                    startActivity(intent)
+                    true
+                }
+        }
 
+        if (noFragments!!.isChecked) {
+            editor.putBoolean("keep_cache", false).apply()
+            keepFragments!!.isChecked = false
+            keepFragments!!.isEnabled = false
+        }
         noFragments!!.setOnPreferenceChangeListener { _, newValue ->
             if(newValue as Boolean){
                 editor.putBoolean("keep_cache", false).apply()

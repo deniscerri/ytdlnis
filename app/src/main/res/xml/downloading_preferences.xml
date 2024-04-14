@@ -27,14 +27,15 @@
             android:key="quick_download"
             app:summary="@string/quick_download_summary"
             app:title="@string/quick_download" />
-
-        <SwitchPreferenceCompat
-            android:widgetLayout="@layout/preferece_material_switch"
-            app:defaultValue="false"
+        
+        <ListPreference
+            android:defaultValue=""
+            android:entries="@array/prevent_duplicate_downloads"
+            android:entryValues="@array/prevent_duplicate_downloads_values"
             android:icon="@drawable/baseline_archive_24"
-            android:key="download_archive"
-            app:summary="@string/download_archive_summary"
-            app:title="@string/download_archive" />
+            app:key="prevent_duplicate_downloads"
+            app:useSimpleSummaryProvider="true"
+            app:title="@string/prevent_duplicate_downloads" />
 
         <SwitchPreferenceCompat
             android:widgetLayout="@layout/preferece_material_switch"

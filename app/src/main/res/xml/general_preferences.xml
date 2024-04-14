@@ -60,7 +60,7 @@
         <SwitchPreferenceCompat
             android:widgetLayout="@layout/preferece_material_switch"
             app:defaultValue="false"
-            android:icon="@drawable/baseline_invert_colors_24"
+            android:icon="@drawable/baseline_layers_24"
             android:key="display_over_apps"
             app:summary="@string/display_over_apps_summary"
             app:title="@string/display_over_apps" />

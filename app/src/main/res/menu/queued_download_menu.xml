@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group>
+
+        <item
+            android:id="@+id/cancel"
+            android:title="@string/cancel" />
+
+        <item
+            android:id="@+id/move_top"
+            android:title="@string/move_top" />
+
+        <item
+            android:id="@+id/move_bottom"
+            android:title="@string/move_bottom" />
+
+    </group>
+
+    <item
+        android:id="@+id/copy_url"
+        android:icon="@drawable/ic_copy"
+        android:title="@string/copy_url" />
+</menu>

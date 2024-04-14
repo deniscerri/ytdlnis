@@ -347,7 +347,7 @@
     <string name="month">Mês(es)</string>
     <string name="bitrate">Taxa de bits</string>
     <string name="not_deleted">Não excluído</string>
-    <string name="download_archive">Arquivar downloads</string>
+    <string name="archive">Arquivar downloads [Usar o arquivamento de downloads do yt-dlp para evitar downloads duplicados]</string>
     <string name="observe_sources">Observar Origens</string>
     <string name="delete_all_sources">Excluir todas as origens</string>
     <string name="confirm_delete_sources_desc">Excluir todas as origens permanentemente</string>
@@ -356,7 +356,6 @@
     <string name="occurrences">ocorrências</string>
     <string name="day">Dia(s)</string>
     <string name="save_auto_subs">Salvar legendas automáticas</string>
-    <string name="download_archive_summary">Usar o arquivamento de downloads do yt-dlp para evitar downloads duplicados</string>
     <string name="retry_missing_downloads">Repetir downloads ausentes</string>
     <string name="force_ipv4_desc">Efetuar todas as conexões com IPv4</string>
     <string name="thumbnail_format">Formato da miniatura</string>

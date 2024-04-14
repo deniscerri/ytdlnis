@@ -1,6 +1,7 @@
 package com.deniscerri.ytdl.util
 
 import android.content.Context
+import android.util.Log
 import com.deniscerri.ytdl.database.DBManager
 import com.deniscerri.ytdl.database.models.Format
 import com.deniscerri.ytdl.database.models.LogItem
@@ -15,6 +16,7 @@ class CrashListener(private val context: Context) : Thread.UncaughtExceptionHand
 
     override fun uncaughtException(p0: Thread, p1: Throwable) {
         p1.message?.apply {
+            Log.e("ERROR", this)
             CoroutineScope(SupervisorJob()).launch(Dispatchers.IO) {
                 createLog(this@apply)
             }

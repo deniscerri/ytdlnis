@@ -346,7 +346,6 @@
     <string name="on_time">Вкл</string>
     <string name="day">День</string>
     <string name="occurrences">случаев</string>
-    <string name="download_archive_summary">Используйте архивный файл загрузок yt-dlp, чтобы предотвратить дублирование загрузок вместо встроенной функции</string>
     <string name="observe_sources">Источники загрузки</string>
     <string name="new_source">Новый источник</string>
     <string name="confirm_delete_sources_desc">Удалить все источники навсегда</string>
@@ -358,7 +357,7 @@
     <string name="bitrate">Битрейт</string>
     <string name="save_auto_subs">Сохранить автоматически субтитры</string>
     <string name="not_deleted">Не удалено</string>
-    <string name="download_archive">Скачать архив</string>
+    <string name="archive">Скачать архив [Используйте архивный файл загрузок yt-dlp, чтобы предотвратить дублирование загрузок вместо встроенной функции]</string>
     <string name="swipe_gestures_download_card">Жесты смахивания в карточке загрузок</string>
     <string name="show_download_count">Показывать кол-во контента на экране очереди загрузки</string>
     <string name="thumbnail_format">Формат миниатюр</string>

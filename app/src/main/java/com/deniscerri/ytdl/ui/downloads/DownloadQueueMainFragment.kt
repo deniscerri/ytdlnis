@@ -4,6 +4,8 @@ import android.content.DialogInterface
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +17,7 @@ import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import androidx.work.WorkManager
+import com.afollestad.materialdialogs.utils.MDUtil.inflate
 import com.deniscerri.ytdl.MainActivity
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.repository.DownloadRepository
@@ -69,7 +72,7 @@ class DownloadQueueMainFragment : Fragment(){
             overScrollMode = View.OVER_SCROLL_NEVER
         }
 
-        val fragments = mutableListOf(ActiveDownloadsFragment(), QueuedDownloadsFragment(), CancelledDownloadsFragment(), ErroredDownloadsFragment(), SavedDownloadsFragment())
+        val fragments = mutableListOf(ActiveDownloadsFragment(), QueuedDownloadsFragment(), ScheduledDownloadsFragment(), CancelledDownloadsFragment(), ErroredDownloadsFragment(), SavedDownloadsFragment())
 
         fragmentAdapter = DownloadListFragmentAdapter(
             childFragmentManager,
@@ -84,9 +87,10 @@ class DownloadQueueMainFragment : Fragment(){
             when (position) {
                 0 -> tab.text = getString(R.string.running)
                 1 -> tab.text = getString(R.string.in_queue)
-                2 -> tab.text = getString(R.string.cancelled)
-                3 -> tab.text = getString(R.string.errored)
-                4 -> tab.text = getString(R.string.saved)
+                2 -> tab.text = getString(R.string.scheduled)
+                3 -> tab.text = getString(R.string.cancelled)
+                4 -> tab.text = getString(R.string.errored)
+                5 -> tab.text = getString(R.string.saved)
             }
         }.attach()
 
@@ -105,6 +109,7 @@ class DownloadQueueMainFragment : Fragment(){
         viewPager2.registerOnPageChangeCallback(object: ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 tabLayout.selectTab(tabLayout.getTabAt(position))
+                initMenu()
             }
         })
         mainActivity.hideBottomNavigation()
@@ -133,22 +138,30 @@ class DownloadQueueMainFragment : Fragment(){
                 }
             }
             lifecycleScope.launch {
-                downloadViewModel.cancelledDownloadsCount.collectLatest {
+                downloadViewModel.scheduledDownloadsCount.collectLatest {
                     tabLayout.getTabAt(2)?.apply {
                         createBadge(it)
                     }
                 }
             }
             lifecycleScope.launch {
-                downloadViewModel.erroredDownloadsCount.collectLatest {
+                downloadViewModel.cancelledDownloadsCount.collectLatest {
                     tabLayout.getTabAt(3)?.apply {
                         createBadge(it)
                     }
                 }
             }
             lifecycleScope.launch {
-                downloadViewModel.savedDownloadsCount.collectLatest {
+                downloadViewModel.erroredDownloadsCount.collectLatest {
                     tabLayout.getTabAt(4)?.apply {
+                        removeBadge()
+                        if (it > 0) createBadge(it)
+                    }
+                }
+            }
+            lifecycleScope.launch {
+                downloadViewModel.savedDownloadsCount.collectLatest {
+                    tabLayout.getTabAt(5)?.apply {
                         removeBadge()
                         if (it > 0) createBadge(it)
                     }
@@ -159,6 +172,7 @@ class DownloadQueueMainFragment : Fragment(){
     }
 
     private fun initMenu() {
+
         topAppBar.setOnMenuItemClickListener { m: MenuItem ->
             try{
                 when(m.itemId){
@@ -170,6 +184,11 @@ class DownloadQueueMainFragment : Fragment(){
                     R.id.clear_cancelled -> {
                         showDeleteDialog {
                             downloadViewModel.deleteCancelled()
+                        }
+                    }
+                    R.id.clear_scheduled -> {
+                        showDeleteDialog {
+                            downloadViewModel.deleteScheduled()
                         }
                     }
                     R.id.clear_errored -> {
@@ -185,11 +204,12 @@ class DownloadQueueMainFragment : Fragment(){
                     R.id.copy_urls -> {
                         lifecycleScope.launch {
                             val tabStatus = mapOf(
-                                0 to listOf(DownloadRepository.Status.Active, DownloadRepository.Status.ActivePaused, DownloadRepository.Status.PausedReQueued),
-                                1 to listOf(DownloadRepository.Status.Queued, DownloadRepository.Status.Queued),
-                                2 to listOf(DownloadRepository.Status.Cancelled),
-                                3 to listOf(DownloadRepository.Status.Error),
-                                4 to listOf(DownloadRepository.Status.Saved),
+                                0 to listOf(DownloadRepository.Status.Active, DownloadRepository.Status.ActivePaused),
+                                1 to listOf(DownloadRepository.Status.Queued, DownloadRepository.Status.QueuedPaused),
+                                2 to listOf(DownloadRepository.Status.Scheduled),
+                                3 to listOf(DownloadRepository.Status.Cancelled),
+                                4 to listOf(DownloadRepository.Status.Error),
+                                5 to listOf(DownloadRepository.Status.Saved),
                             )
                             tabStatus[tabLayout.selectedTabPosition]?.apply {
                                 val urls = withContext(Dispatchers.IO){
@@ -232,10 +252,5 @@ class DownloadQueueMainFragment : Fragment(){
                 notificationUtil.cancelDownloadNotification(id.toInt())
             }
         }
-    }
-
-
-    companion object {
-        private const val TAG = "DownloadQueueActivity"
     }
 }

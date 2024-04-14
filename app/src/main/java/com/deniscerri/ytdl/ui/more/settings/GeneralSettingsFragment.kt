@@ -115,7 +115,7 @@ class GeneralSettingsFragment : BaseSettingsFragment() {
         showTerminalShareIcon!!.onPreferenceChangeListener =
             Preference.OnPreferenceChangeListener { pref: Preference?, _: Any ->
                 val packageManager = requireContext().packageManager
-                val aliasComponentName = ComponentName(requireContext(), "com.deniscerri.ytdlnis.terminalShareAlias")
+                val aliasComponentName = ComponentName(requireContext(), "com.deniscerri.ytdl.terminalShareAlias")
                 if ((pref as SwitchPreferenceCompat).isChecked){
                     packageManager.setComponentEnabledSetting(aliasComponentName,
                         PackageManager.COMPONENT_ENABLED_STATE_DISABLED,

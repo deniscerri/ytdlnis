@@ -55,7 +55,7 @@
             android:defaultValue="ALL"
             android:entries="@array/format_filtering"
             android:entryValues="@array/format_filtering_values"
-            android:icon="@drawable/baseline_align_horizontal_left_24"
+            android:icon="@drawable/baseline_filter_alt_24"
             app:key="format_filter"
             app:useSimpleSummaryProvider="true"
             app:title="@string/format_filter" />

@@ -348,7 +348,7 @@
     <string name="never">從不</string>
     <string name="after">之後</string>
     <string name="occurrences">次數</string>
-    <string name="download_archive">下載存檔</string>
+    <string name="archive">下載存檔 [使用 yt-dlp 的下載存檔檔案以防止重複下載，而非使用內建功能]</string>
     <string name="not_deleted">未刪除</string>
     <string name="save_auto_subs">儲存自動字幕</string>
     <string name="day">天</string>
@@ -356,7 +356,6 @@
     <string name="month">月</string>
     <string name="retry_missing_downloads">重試遺漏的下載</string>
     <string name="bitrate">比特率</string>
-    <string name="download_archive_summary">使用 yt-dlp 的下載存檔檔案以防止重複下載，而非使用內建功能</string>
     <string name="on_time">準</string>
     <string name="force_ipv4_desc">使所有連線均使用 IPv4</string>
 </resources>

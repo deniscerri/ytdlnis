@@ -15,6 +15,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceManager
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.models.DownloadItem
@@ -24,12 +25,13 @@ import com.deniscerri.ytdl.util.InfoUtil
 import com.deniscerri.ytdl.util.UiUtil
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.android.material.elevation.SurfaceColors
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 
-class AddExtraCommandsDialog(private val item: DownloadItem?, private val callback: ExtraCommandsListener) : BottomSheetDialogFragment() {
+class AddExtraCommandsDialog(private val item: DownloadItem? = null, private val callback: ExtraCommandsListener? = null) : BottomSheetDialogFragment() {
     private lateinit var infoUtil: InfoUtil
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var commandTemplateViewModel: CommandTemplateViewModel
@@ -64,14 +66,17 @@ class AddExtraCommandsDialog(private val item: DownloadItem?, private val callba
                 WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
         val view = LayoutInflater.from(context).inflate(R.layout.result_card_details, null)
         dialog.setContentView(view)
-
-
+        dialog.window?.navigationBarColor = SurfaceColors.SURFACE_1.getColor(requireActivity())
     }
 
     @SuppressLint("SetTextI18n")
     @androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        if (callback == null){
+            this.dismiss()
+            return
+        }
 
         val behavior = BottomSheetBehavior.from(view.parent as View)
         behavior.state = BottomSheetBehavior.STATE_EXPANDED

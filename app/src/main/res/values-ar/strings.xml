@@ -353,8 +353,7 @@
     <string name="month">شهر</string>
     <string name="bitrate">معدّل البتات</string>
     <string name="not_deleted">غير المحذوفة</string>
-    <string name="download_archive_summary">استخدام ملف أرشيف التنزيل الخاص بـ yt-dlp لمنع التنزيل المكرر بدلًا من الطريقة الافتراضية</string>
-    <string name="download_archive">أرشيف التنزيل</string>
+    <string name="archive"> أرشيف التنزيل [استخدام ملف أرشيف التنزيل الخاص بـ yt-dlp لمنع التنزيل المكرر بدلًا من الطريقة الافتراضية]</string>
     <string name="on_time">في</string>
     <string name="retry_missing_downloads">إعادة المحاولة للتنزيلات المفقودة</string>
     <string name="save_auto_subs">حفظ الترجمات التلقائية</string>

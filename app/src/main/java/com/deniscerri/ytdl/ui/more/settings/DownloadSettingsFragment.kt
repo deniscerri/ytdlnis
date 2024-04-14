@@ -1,7 +1,9 @@
 package com.deniscerri.ytdl.ui.more.settings
 
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
+import androidx.core.content.edit
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceManager
@@ -14,6 +16,8 @@ import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.util.UiUtil
 import com.deniscerri.ytdl.work.AlarmScheduler
 import com.deniscerri.ytdl.work.DownloadWorker
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.materialswitch.MaterialSwitch
 import java.util.Calendar
 import java.util.concurrent.TimeUnit
 
@@ -24,6 +28,16 @@ class DownloadSettingsFragment : BaseSettingsFragment() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.downloading_preferences, rootKey)
         val preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
+
+        findPreference<Preference>("prevent_duplicate_downloads")?.apply {
+            //TODO transitioning code, delete after couple releases
+            if (preferences.getBoolean("download_archive", false)){
+                preferences.edit(commit = true){
+                    putBoolean("download_archive", false).apply()
+                    putString("prevent_duplicate_downloads", "download_archive")
+                }
+            }
+        }
 
         val rememberDownloadType = findPreference<SwitchPreferenceCompat>("remember_download_type")
         val downloadType = findPreference<ListPreference>("preferred_download_type")

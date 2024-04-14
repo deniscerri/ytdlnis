@@ -336,8 +336,7 @@
     <string name="force_ipv4_desc">Thực hiện tất cả các kết nối qua IPv4</string>
     <string name="copy_urls">Sao chép URL</string>
     <string name="save_auto_subs">Lưu phụ đề tự động</string>
-    <string name="download_archive_summary">Sử dụng tải xuống tệp lưu trữ của yt-dlp để ngăn tải xuống trùng lặp thay vì chức năng tích hợp sẵn</string>
-    <string name="download_archive">Tải xuống lưu trữ</string>
+    <string name="archive">Tải xuống lưu trữ [Sử dụng tải xuống tệp lưu trữ của yt-dlp để ngăn tải xuống trùng lặp thay vì chức năng tích hợp sẵn]</string>
     <string name="dismiss">Bỏ qua</string>
     <string name="changed_path_for_everyone_to">Đã thay đổi đường dẫn tải xuống của mọi mục thành:</string>
     <string name="all">Tất cả</string>

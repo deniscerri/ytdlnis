@@ -25,14 +25,18 @@
         <item>@string/defaultValue</item>
         <item>mp4</item>
         <item>mkv</item>
-        <item>webm</item>
+        <item>avi</item>
+        <item>flv</item>
+        <item>mov</item>
     </string-array>
 
     <string-array name="video_containers_values">
         <item>Default</item>
         <item>mp4</item>
         <item>mkv</item>
-        <item>webm</item>
+        <item>avi</item>
+        <item>flv</item>
+        <item>mov</item>
     </string-array>
 
     <string-array name="video_formats">
@@ -116,6 +120,7 @@
         <item>Azərbaycanca</item>
         <item>বাংলা</item>
         <item>বাংলা (India)</item>
+        <item>български</item>
         <item>Босански</item>
         <item>Deutsch</item>
         <item>Ἑλληνική</item>
@@ -159,6 +164,7 @@
         <item>az</item>
         <item>bn</item>
         <item>bn-IN</item>
+        <item>bg</item>
         <item>bs</item>
         <item>de</item>
         <item>el</item>
@@ -1084,6 +1090,7 @@
         <item>@string/downloads</item>
         <item>@string/in_queue</item>
         <item>@string/cancelled</item>
+        <item>@string/scheduled</item>
         <item>@string/errored</item>
         <item>@string/saved</item>
         <item>@string/command_templates</item>
@@ -1095,6 +1102,7 @@
         <item>history</item>
         <item>queued</item>
         <item>cancelled</item>
+        <item>scheduled</item>
         <item>errored</item>
         <item>saved</item>
         <item>templates</item>
@@ -1395,5 +1403,19 @@
         <item>png</item>
         <item>jpg</item>
     </array>
+
+    <string-array name="prevent_duplicate_downloads">
+        <item>@string/disabled</item>
+        <item>@string/archive</item>
+        <item>@string/prevent_duplicate_url_type</item>
+        <item>@string/prevent_duplicate_config</item>
+    </string-array>
+
+    <string-array name="prevent_duplicate_downloads_values">
+        <item></item>
+        <item>download_archive</item>
+        <item>url_type</item>
+        <item>config</item>
+    </string-array>
 
 </resources>

@@ -352,8 +352,7 @@
     <string name="bitrate">Bitráta</string>
     <string name="save_auto_subs">Feliratok automatikus mentése</string>
     <string name="not_deleted">Nincs törölve</string>
-    <string name="download_archive">Archívum letöltése</string>
-    <string name="download_archive_summary">Használja az yt-dlp letöltési archívum fájlját a duplikált letöltések megakadályozására a beépített funkció helyett</string>
+    <string name="archive">Archívum letöltése [Használja az yt-dlp letöltési archívum fájlját a duplikált letöltések megakadályozására a beépített funkció helyett]</string>
     <string name="on_time">Be</string>
     <string name="occurrences">események</string>
     <string name="day">Nap</string>

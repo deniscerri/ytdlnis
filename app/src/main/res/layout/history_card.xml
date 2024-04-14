@@ -76,9 +76,9 @@
                         android:paddingEnd="10dp"
                         android:scrollbars="none"
                         android:shadowColor="@color/black"
-                        android:shadowDx="4"
-                        android:shadowDy="4"
-                        android:shadowRadius="1.5"
+                        android:shadowDx="2"
+                        android:shadowDy="2"
+                        android:shadowRadius="1"
                         android:textColor="#FFF"
                         android:textSize="11sp"
                         android:textStyle="bold" />

@@ -11,6 +11,8 @@ import androidx.work.Constraints
 import androidx.work.Data
 import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.PeriodicWorkRequest
+import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.deniscerri.ytdl.database.DBManager
 import com.deniscerri.ytdl.database.models.observeSources.ObserveSourcesItem
@@ -88,10 +90,6 @@ class ObserveSourcesViewModel(private val application: Application) : AndroidVie
 
         Calendar.getInstance().apply {
             timeInMillis = it.startsTime
-            val date = Calendar.getInstance()
-            set(Calendar.DAY_OF_MONTH, date.get(Calendar.DAY_OF_MONTH))
-            set(Calendar.MONTH, date.get(Calendar.MONTH))
-            set(Calendar.YEAR, date.get(Calendar.YEAR))
 
             if (it.everyCategory != ObserveSourcesRepository.EveryCategory.HOUR){
                 val hourMin = Calendar.getInstance()
@@ -131,7 +129,7 @@ class ObserveSourcesViewModel(private val application: Application) : AndroidVie
                 .addTag("observeSources")
                 .addTag(it.id.toString())
                 .setConstraints(workConstraints.build())
-                .setInitialDelay(System.currentTimeMillis() - timeInMillis, TimeUnit.MILLISECONDS)
+                .setInitialDelay(timeInMillis - System.currentTimeMillis(), TimeUnit.MILLISECONDS)
                 .setInputData(Data.Builder().putLong("id", it.id).build())
 
             workManager.enqueueUniqueWork(

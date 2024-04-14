@@ -337,8 +337,7 @@
     <string name="retry_missing_downloads">누락된 다운로드 재시도</string>
     <string name="save_auto_subs">자동 자막 저장</string>
     <string name="not_deleted">삭제되지 않음</string>
-    <string name="download_archive">아카이브 다운로드</string>
-    <string name="download_archive_summary">내장된 기능 대신 yt-dlp의 다운로드 아카이브를 사용하여 중복된 다운로드를 방지합니다</string>
+    <string name="archive">아카이브 다운로드 [내장된 기능 대신 yt-dlp의 다운로드 아카이브를 사용하여 중복된 다운로드를 방지합니다]</string>
     <string name="preferred_audio_language">선호하는 오디오 언어</string>
     <string name="changed_path_for_everyone_to">모든 항목의 다운로드 경로를 바꾸기:</string>
     <string name="dismiss">무시</string>

@@ -59,6 +59,7 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.chip.Chip
 import com.google.android.material.color.MaterialColors
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.elevation.SurfaceColors
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.android.material.snackbar.Snackbar
 import com.yausername.youtubedl_android.YoutubeDL
@@ -123,6 +124,7 @@ class ResultCardDetailsDialog : BottomSheetDialogFragment(), GenericDownloadAdap
         super.setupDialog(dialog, style)
         val view = LayoutInflater.from(context).inflate(R.layout.result_card_details, null)
         dialog.setContentView(view)
+        dialog.window?.navigationBarColor = SurfaceColors.SURFACE_1.getColor(requireActivity())
 
         dialog.setOnShowListener {
             val behavior = BottomSheetBehavior.from(dialogView.parent as View)
@@ -613,7 +615,7 @@ class ResultCardDetailsDialog : BottomSheetDialogFragment(), GenericDownloadAdap
                 }
                 ActiveDownloadAdapter.ActiveDownloadAction.Resume -> {
                     lifecycleScope.launch {
-                        item.status = DownloadRepository.Status.PausedReQueued.toString()
+                        item.status = DownloadRepository.Status.Queued.toString()
                         withContext(Dispatchers.IO){
                             downloadViewModel.updateDownload(item)
                         }

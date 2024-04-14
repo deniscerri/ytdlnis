@@ -763,6 +763,14 @@ class InfoUtil(private val context: Context) {
                         format.put("filesize", size)
                     }catch (ignored: Exception){}
                 }
+
+                if (format.has("filesize_approx")){
+                    if (format.get("filesize_approx") == "None"){
+                        format.remove("filesize_approx")
+                        format.put("filesize_approx", 0)
+                    }
+                }
+
                 val formatProper = Gson().fromJson(format.toString(), Format::class.java)
 
                 if (formatProper.format_note == null) continue
@@ -1089,7 +1097,7 @@ class InfoUtil(private val context: Context) {
             }
         }
 
-        if (sharedPreferences.getBoolean("download_archive", false)){
+        if (sharedPreferences.getString("prevent_duplicate_downloads", "")!! == "download_archive"){
             request.addOption("--download-archive", FileUtil.getDownloadArchivePath(context))
         }
 
@@ -1152,7 +1160,7 @@ class InfoUtil(private val context: Context) {
                     if (embedMetadata){
                         request.addOption("--embed-metadata")
                         request.addOption("--parse-metadata", "artist:(?P<meta_album_artist>[^,]+)")
-                        request.addOption("--parse-metadata", "%(album_artist,meta_album_artist,uploader)s:%(album_artist)s")
+                        request.addOption("--parse-metadata", "%(album_artist,meta_album_artist,uploader|)s:%(album_artist)s")
 
                         request.addOption("--parse-metadata", "description:(?:Released on: )(?P<dscrptn_year>\\d{4})")
                         request.addOption("--parse-metadata", "%(dscrptn_year,release_year,release_date>%Y,upload_date>%Y)s:%(meta_date)s")
@@ -1166,21 +1174,29 @@ class InfoUtil(private val context: Context) {
                     }
 
                     val cropThumb = downloadItem.audioPreferences.cropThumb ?: sharedPreferences.getBoolean("crop_thumbnail", true)
-                    if (thumbnailFormat == "jpg"){
-                        request.addOption("--ppa", "ThumbnailsConvertor:-qmin 1 -q:v 1")
-                    }
-
                     if (downloadItem.audioPreferences.embedThumb){
                         request.addOption("--embed-thumbnail")
                         if (!request.hasOption("--convert-thumbnails")) request.addOption("--convert-thumbnails", thumbnailFormat!!)
+
+                        val thumbnailConfig = StringBuilder("")
+                        val cropConfig = """-vf crop=\"'if(gt(ih,iw),iw,ih)':'if(gt(iw,ih),ih,iw)'\"""""
+                        if (thumbnailFormat == "jpg")  thumbnailConfig.append("""--ppa "ThumbnailsConvertor:-qmin 1 -q:v 1"""")
                         if (cropThumb){
+                            if (thumbnailFormat == "jpg") {
+                                thumbnailConfig.deleteCharAt(thumbnailConfig.length - 1)
+                                thumbnailConfig.append(""" $cropConfig""")
+                            }
+                            else thumbnailConfig.append("""--ppa "ThumbnailsConvertor:$cropConfig""")
+                        }
+
+                        if (thumbnailConfig.isNotBlank()){
                             runCatching {
                                 val config = File(context.cacheDir.absolutePath + "/config" + downloadItem.id + "##ffmpegCrop.txt")
-                                val configData = "--ppa \"ThumbnailsConvertor:-vf crop=\\\"'if(gt(ih,iw),iw,ih)':'if(gt(iw,ih),ih,iw)'\\\"\""
-                                config.writeText(configData)
+                                config.writeText(thumbnailConfig.toString())
                                 request.addOption("--config", config.absolutePath)
                             }
                         }
+
                     }
 
                     if (filenameTemplate.isNotBlank()){
@@ -1220,19 +1236,20 @@ class InfoUtil(private val context: Context) {
 
                 //format logic
                 var videoF = downloadItem.format.format_id
-                var audioF = downloadItem.videoPreferences.audioFormatIDs.joinToString("+") { f ->
+                var altAudioF = ""
+                var audioF = downloadItem.videoPreferences.audioFormatIDs.map { f ->
                     val format = downloadItem.allFormats.find { it.format_id == f }
                     format?.run {
                         if (this.format_id.contains("-")) {
                             if (!this.lang.isNullOrBlank() && this.lang != "None") {
                                 "ba[format_id~='^(${this.format_id.split("-")[0]})'][language^=${this.lang}]"
                             } else {
-                                "${this.format_id}/${this.format_id.split("-")[0]}"
+                                altAudioF = this.format_id.split("-")[0]
+                                this.format_id
                             }
                         } else this.format_id
                     } ?: f
-
-                }.ifBlank { "ba" }
+                }.joinToString("+").ifBlank { "ba" }
                 val preferredAudioLanguage = sharedPreferences.getString("audio_language", "")!!
                 if (downloadItem.videoPreferences.removeAudio) audioF = ""
 
@@ -1244,13 +1261,18 @@ class InfoUtil(private val context: Context) {
 
                 val defaultFormats = context.resources.getStringArray(R.array.video_formats_values)
                 val usingGenericFormat = defaultFormats.contains(videoF) || downloadItem.allFormats.isEmpty() || downloadItem.allFormats == getGenericVideoFormats(context.resources)
+                var hasGenericResulutionFormat = ""
                 if (!usingGenericFormat){
                     // with audio removed
                     if (audioF.isBlank()){
                         f.append("$videoF/bv/b")
                     }else{
                         //with audio
-                        f.append("$videoF+$audioF/$videoF+ba/$videoF/b")
+                        f.append("$videoF+$audioF/")
+                        if (altAudioF.isNotBlank()){
+                            f.append("$videoF+$altAudioF/")
+                        }
+                        f.append("$videoF+ba/$videoF/b")
 
                         if (audioF.count("+") > 0){
                             request.addOption("--audio-multistreams")
@@ -1263,7 +1285,8 @@ class InfoUtil(private val context: Context) {
                         videoF = "wv"
                         if (audioF == "ba") audioF = "wa"
                     }else if (defaultFormats.contains(videoF)) {
-                        videoF = "bv[height<="+videoF.split("_")[0].dropLast(1)+"]"
+                        hasGenericResulutionFormat = videoF.split("_")[0].dropLast(1)
+                        videoF = "bv"
                     }
 
                     val preferredFormatIDs = sharedPreferences.getString("format_id", "").toString()
@@ -1331,6 +1354,7 @@ class InfoUtil(private val context: Context) {
                 }
 
                 StringBuilder().apply {
+                    if (hasGenericResulutionFormat.isNotBlank()) append(",res:${hasGenericResulutionFormat}")
                     if (sharedPreferences.getBoolean("prefer_smaller_formats", false)) append(",+size")
                     if (vCodecPref.isNotBlank()) append(",vcodec:$vCodecPref")
                     if (aCodecPref.isNotBlank()) append(",acodec:$aCodecPref")
@@ -1369,7 +1393,9 @@ class InfoUtil(private val context: Context) {
 
 
                 if (downloadItem.videoPreferences.removeAudio){
-                    request.addOption("--ppa", "ffmpeg:-an")
+                    request.addOption("--use-postprocessor", "FFmpegCopyStream")
+                    request.addOption("--ppa", "CopyStream:-c copy -an")
+
                 }
 
                 request.addOption("-P", downDir.absolutePath)
@@ -1458,7 +1484,15 @@ class InfoUtil(private val context: Context) {
         val audioFormatsValues = resources.getStringArray(R.array.audio_formats_values)
         val formats = mutableListOf<Format>()
         val containerPreference = sharedPreferences.getString("audio_format", "")
-        val acodecPreference = sharedPreferences.getString("audio_codec", "m4a|mp4a|aac")
+        val acodecPreference = sharedPreferences.getString("audio_codec", "m4a|mp4a|aac")!!.run {
+            if (this.isEmpty()){
+                resources.getString(R.string.defaultValue)
+            }else{
+                val audioCodecs = resources.getStringArray(R.array.audio_codec)
+                val audioCodecsValues = resources.getStringArray(R.array.audio_codec_values)
+                audioCodecs[audioCodecsValues.indexOf(this)]
+            }
+        }
         audioFormats.forEachIndexed { idx, it -> formats.add(Format(audioFormatsValues[idx], containerPreference!!,"",acodecPreference!!, "",0, it)) }
         audioFormats.reverse()
         audioFormatIDPreference.forEach { formats.add(Format(it, containerPreference!!,"",resources.getString(R.string.preferred_format_id), "",1, it)) }

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView android:id="@+id/active_download_card_view"
+<com.google.android.material.card.MaterialCardView android:id="@+id/download_card_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:backgroundTint="@android:color/transparent"
     android:checkable="true"
     android:clickable="true"
     android:focusable="true"
@@ -12,66 +13,53 @@
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent"
+    app:cardCornerRadius="10dp"
+    android:layout_marginVertical="10dp"
     app:shapeAppearance="@style/ShapeAppearanceOverlay.Avatar"
     app:strokeWidth="0dp"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/progress"
+        android:layout_width="match_parent"
+        app:trackColor="#000"
+        android:layout_height="match_parent"
+        android:layout_gravity="bottom"
+        android:alpha="0.3"
+        android:scaleY="200"/>
+
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:paddingHorizontal="10dp"
         android:paddingVertical="10dp"
-        android:layout_height="wrap_content">
+        android:layout_height="80dp">
 
-        <FrameLayout
-            android:id="@+id/image_frame"
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/downloads_image_view"
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="16dp"
+            android:adjustViewBounds="true"
+            android:background="?attr/colorSurfaceVariant"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="H,1:1"
+            app:layout_constraintEnd_toStartOf="@+id/download_item_data"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintDimensionRatio="H,16:9"
-            app:shapeAppearance="@style/ShapeAppearanceOverlay.Avatar"
-            android:adjustViewBounds="true"
-            app:layout_constraintEnd_toStartOf="@+id/download_item_data"
-            app:layout_constraintBottom_toBottomOf="parent"
-            >
-
-            <com.google.android.material.progressindicator.LinearProgressIndicator
-                android:id="@+id/progress"
-                android:layout_width="match_parent"
-                android:elevation="10dp"
-                app:layout_constraintStart_toStartOf="@id/image_view"
-                app:layout_constraintEnd_toEndOf="@id/image_view"
-                app:layout_constraintBottom_toBottomOf="@id/image_view"
-                app:layout_constraintTop_toTopOf="@id/image_view"
-                android:layout_height="0dp"
-                android:layout_gravity="bottom"
-                android:alpha="0.6"
-                android:scaleY="200"
-                app:trackColor="#000" />
-
-
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/image_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:layout_constraintVertical_bias="0.0"
-                android:background="?attr/colorSurfaceVariant"
-                android:scaleType="centerCrop"/>
-
-        </FrameLayout>
-
+            app:shapeAppearance="@style/ShapeAppearanceOverlay.Avatar" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/download_item_data"
-            app:layout_constraintVertical_bias="0.0"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/active_download_pause"
-            app:layout_constraintHorizontal_weight="0.7"
-            app:layout_constraintStart_toEndOf="@+id/image_frame"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintEnd_toStartOf="@+id/options"
+            app:layout_constraintStart_toEndOf="@+id/downloads_image_view"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0">
 
             <TextView
                 android:id="@+id/title"
@@ -91,8 +79,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="bottom"
-                android:paddingStart="5dp"
-                android:paddingEnd="0dp"
                 android:scrollbars="none"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -100,72 +86,116 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/title">
 
-                <TextView
-                    android:id="@+id/format_note"
-                    style="@style/Widget.Material3.FloatingActionButton.Large.Secondary"
+                <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="5dp"
-                    android:background="@drawable/rounded_corner"
-                    android:backgroundTint="?attr/colorSecondary"
-                    android:clickable="false"
-                    android:ellipsize="end"
-                    android:gravity="center"
-                    android:maxLength="17"
-                    android:maxLines="1"
-                    android:minWidth="30dp"
-                    android:paddingHorizontal="5dp"
-                    android:textSize="12sp"
-                    android:textStyle="bold"
-                    app:cornerRadius="10dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/download_type"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="5dp"
+                        android:background="@drawable/rounded_corner"
+                        android:backgroundTint="?attr/colorPrimaryContainer"
+                        android:clickable="false"
+                        android:gravity="center"
+                        android:paddingHorizontal="5dp"
+                        android:textColor="@color/white"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        app:cornerRadius="10dp"
+                        app:drawableStartCompat="@drawable/ic_music_formatcard"
+                        app:drawableTint="@color/white"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.0" />
+
+
+                    <TextView
+                        android:id="@+id/file_size"
+                        style="@style/Widget.Material3.FloatingActionButton.Large.Secondary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="5dp"
+                        android:background="@drawable/rounded_corner"
+                        android:backgroundTint="?attr/colorSecondary"
+                        android:clickable="false"
+                        android:gravity="center"
+                        android:minWidth="30dp"
+                        android:paddingHorizontal="5dp"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        app:cornerRadius="10dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/format_note"
+                        style="@style/Widget.Material3.FloatingActionButton.Large.Secondary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="5dp"
+                        android:background="@drawable/rounded_corner"
+                        android:backgroundTint="?attr/colorSecondary"
+                        android:clickable="false"
+                        android:ellipsize="end"
+                        android:gravity="center"
+                        android:maxLength="17"
+                        android:maxLines="1"
+                        android:minWidth="30dp"
+                        android:paddingHorizontal="5dp"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        app:cornerRadius="10dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/codec"
+                        style="@style/Widget.Material3.FloatingActionButton.Large.Secondary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="5dp"
+                        android:background="@drawable/rounded_corner"
+                        android:backgroundTint="?attr/colorSecondary"
+                        android:clickable="false"
+                        android:gravity="center"
+                        android:minWidth="30dp"
+                        android:paddingHorizontal="5dp"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        app:cornerRadius="10dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+
+
+                </LinearLayout>
+
 
             </HorizontalScrollView>
 
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/active_download_pause"
-            style="@style/Widget.Material3.Button.IconButton"
-            app:layout_constraintVertical_bias="0.0"
-            android:layout_width="wrap_content"
-            android:contentDescription="@string/pause"
-            android:layout_height="wrap_content"
-            android:background="?android:attr/selectableItemBackground"
-            app:cornerRadius="15dp"
-            app:icon="@drawable/exomedia_ic_pause_white"
-            app:iconSize="30dp"
-            app:iconTint="?android:textColorPrimary"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/active_download_delete"
-            app:layout_constraintTop_toTopOf="parent" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/active_download_delete"
-            style="@style/Widget.Material3.Button.IconButton"
-            app:layout_constraintVertical_bias="0.0"
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/options"
             android:layout_width="wrap_content"
-            android:contentDescription="@string/Remove"
             android:layout_height="wrap_content"
-            android:background="?android:attr/selectableItemBackground"
-            app:cornerRadius="15dp"
-            app:icon="@drawable/baseline_delete_24"
-            app:iconSize="30dp"
-            app:iconTint="?android:textColorPrimary"
+            android:layout_gravity="end|center_vertical"
+            android:clickable="false"
+            android:focusable="false"
+            android:padding="16dp"
+            android:tintMode="src_in"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-
-        <androidx.constraintlayout.widget.Barrier
-            android:id="@+id/barrier"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:barrierDirection="bottom"
-            app:constraint_referenced_ids="download_item_data,active_download_delete" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/baseline_more_vert_24"
+            app:tint="?attr/colorControlNormal"
+            tools:ignore="ContentDescription" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,22 +1,26 @@
 package com.deniscerri.ytdl.ui.downloads
 
+import android.animation.AnimatorSet
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.DialogInterface
 import android.graphics.Canvas
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
 import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -31,7 +35,7 @@ import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.models.DownloadItem
 import com.deniscerri.ytdl.database.repository.DownloadRepository
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
-import com.deniscerri.ytdl.ui.adapter.GenericDownloadAdapter
+import com.deniscerri.ytdl.ui.adapter.QueuedDownloadAdapter
 import com.deniscerri.ytdl.util.Extensions.enableFastScroll
 import com.deniscerri.ytdl.util.Extensions.forceFastScrollMode
 import com.deniscerri.ytdl.util.Extensions.toListString
@@ -39,6 +43,7 @@ import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.util.NotificationUtil
 import com.deniscerri.ytdl.util.UiUtil
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.card.MaterialCardView
 import com.google.android.material.color.MaterialColors
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
@@ -51,15 +56,16 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 
 
-class QueuedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickListener {
+class QueuedDownloadsFragment : Fragment(), QueuedDownloadAdapter.OnItemClickListener {
     private var fragmentView: View? = null
     private var activity: Activity? = null
     private lateinit var downloadViewModel : DownloadViewModel
     private lateinit var queuedRecyclerView : RecyclerView
-    private lateinit var adapter : GenericDownloadAdapter
+    private lateinit var adapter : QueuedDownloadAdapter
     private lateinit var noResults : RelativeLayout
     private lateinit var notificationUtil: NotificationUtil
     private lateinit var fileSize: TextView
+    private lateinit var dragHandleToggle: TextView
     private var totalSize: Int = 0
     private var actionMode : ActionMode? = null
 
@@ -75,21 +81,20 @@ class QueuedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLi
         return fragmentView
     }
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint("SetTextI18n", "RestrictedApi")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         fileSize = view.findViewById(R.id.filesize)
-        adapter =
-            GenericDownloadAdapter(
-                this,
-                requireActivity()
-            )
+        dragHandleToggle = view.findViewById(R.id.drag)
+        val itemTouchHelper = ItemTouchHelper(queuedDragDropHelper)
+        adapter = QueuedDownloadAdapter(this, requireActivity(), itemTouchHelper)
 
         noResults = view.findViewById(R.id.no_results)
         queuedRecyclerView = view.findViewById(R.id.download_recyclerview)
         queuedRecyclerView.forceFastScrollMode()
         queuedRecyclerView.adapter = adapter
         queuedRecyclerView.enableFastScroll()
+        itemTouchHelper.attachToRecyclerView(queuedRecyclerView)
 
         val preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
         if (preferences.getStringSet("swipe_gesture", requireContext().getStringArray(R.array.swipe_gestures_values).toSet())!!.toList().contains("queued")){
@@ -126,83 +131,12 @@ class QueuedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLi
 
         downloadViewModel.getTotalSize(listOf(DownloadRepository.Status.Queued, DownloadRepository.Status.QueuedPaused)).observe(viewLifecycleOwner){
             totalSize = it
-            noResults.visibility = if (it == 0) View.VISIBLE else View.GONE
+            noResults.isVisible = it == 0
+            dragHandleToggle.isVisible = it > 1
         }
-    }
 
-    override fun onActionButtonClick(itemID: Long) {
-        removeItem(itemID)
-    }
-
-    override fun onCardClick(itemID: Long) {
-        lifecycleScope.launch {
-            val item = withContext(Dispatchers.IO){
-                downloadViewModel.getItemByID(itemID)
-            }
-
-            UiUtil.showDownloadItemDetailsCard(
-                item,
-                requireActivity(),
-                DownloadRepository.Status.valueOf(item.status),
-                removeItem = { it: DownloadItem, sheet: BottomSheetDialog ->
-                    sheet.hide()
-                    removeItem(it.id)
-                },
-                downloadItem = {
-                    downloadViewModel.deleteDownload(it.id)
-                    it.downloadStartTime = 0
-                    WorkManager.getInstance(requireContext()).cancelAllWorkByTag(it.id.toString())
-                    runBlocking {
-                        downloadViewModel.queueDownloads(listOf(it))
-                    }
-                },
-                longClickDownloadButton = {
-                    findNavController().navigate(R.id.downloadBottomSheetDialog, bundleOf(
-                        Pair("downloadItem", it),
-                        Pair("result", downloadViewModel.createResultItemFromDownload(it)),
-                        Pair("type", it.type)
-                    ))
-                },
-                scheduleButtonClick = {downloadItem ->
-                    UiUtil.showDatePicker(parentFragmentManager) {
-                        Toast.makeText(context, getString(R.string.download_rescheduled_to) + " " + it.time, Toast.LENGTH_LONG).show()
-                        downloadViewModel.deleteDownload(downloadItem.id)
-                        downloadItem.downloadStartTime = it.timeInMillis
-                        WorkManager.getInstance(requireContext()).cancelAllWorkByTag(downloadItem.id.toString())
-                        runBlocking {
-                            downloadViewModel.queueDownloads(listOf(downloadItem))
-                        }
-                    }
-                }
-            )
-        }
-    }
-
-    override fun onCardSelect(isChecked: Boolean, position: Int) {
-        lifecycleScope.launch {
-            val selectedObjects = adapter.getSelectedObjectsCount(totalSize)
-            if (actionMode == null) actionMode = (getActivity() as AppCompatActivity?)!!.startSupportActionMode(contextualActionBar)
-            val now = System.currentTimeMillis()
-            actionMode?.apply {
-                if (selectedObjects == 0){
-                    this.finish()
-                }else{
-                    this.title = "$selectedObjects ${getString(R.string.selected)}"
-                    this.menu.findItem(R.id.download).isVisible = withContext(Dispatchers.IO){
-                        downloadViewModel.checkAllQueuedItemsAreScheduledAfterNow(adapter.checkedItems.toList(), adapter.inverted, now)
-                    }
-
-                    this.menu.findItem(R.id.up).isVisible = position > 0
-                    this.menu.findItem(R.id.select_between).isVisible = false
-                    if(selectedObjects == 2){
-                        val selectedIDs = contextualActionBar.getSelectedIDs().sortedBy { it }
-                        val idsInMiddle = withContext(Dispatchers.IO){
-                            downloadViewModel.getIDsBetweenTwoItems(selectedIDs.first(), selectedIDs.last(), listOf(DownloadRepository.Status.Queued, DownloadRepository.Status.QueuedPaused).toListString())
-                        }
-                        this.menu.findItem(R.id.select_between).isVisible = idsInMiddle.isNotEmpty()
-                    }
-                }
-            }
+        dragHandleToggle.setOnClickListener {
+            adapter.toggleShowDragHandle()
         }
     }
 
@@ -255,7 +189,8 @@ class QueuedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLi
                     lifecycleScope.launch {
                         val selectedIDs = getSelectedIDs().sortedBy { it }
                         val idsInMiddle = withContext(Dispatchers.IO){
-                            downloadViewModel.getQueuedIDsBetweenTwoItems(selectedIDs.first(), selectedIDs.last())
+                            downloadViewModel.getIDsBetweenTwoItems(selectedIDs.first(), selectedIDs.last(), listOf(
+                                DownloadRepository.Status.Queued, DownloadRepository.Status.QueuedPaused).toListString())
                         }.toMutableList()
                         idsInMiddle.addAll(selectedIDs)
                         if (idsInMiddle.isNotEmpty()){
@@ -319,6 +254,17 @@ class QueuedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLi
                         adapter.clearCheckedItems()
                         withContext(Dispatchers.IO){
                             downloadViewModel.putAtTopOfQueue(selectedObjects)
+                        }
+                        actionMode?.finish()
+                    }
+                    true
+                }
+                R.id.down -> {
+                    lifecycleScope.launch {
+                        val selectedObjects = getSelectedIDs()
+                        adapter.clearCheckedItems()
+                        withContext(Dispatchers.IO){
+                            downloadViewModel.putAtBottomOfQueue(selectedObjects)
                         }
                         actionMode?.finish()
                     }
@@ -420,4 +366,186 @@ class QueuedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLi
                 )
             }
         }
+
+    var movedToNewPositionID = 0L
+    private val queuedDragDropHelper: ItemTouchHelper.SimpleCallback =
+        object : ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP or ItemTouchHelper.DOWN, 0) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                val fromPosition = viewHolder.bindingAdapterPosition
+                val toPosition = target.bindingAdapterPosition
+                movedToNewPositionID = target.itemView.tag.toString().toLong()
+                adapter.notifyItemMoved(fromPosition, toPosition)
+                return true
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+            }
+
+            override fun onSelectedChanged(
+                viewHolder: RecyclerView.ViewHolder?,
+                actionState: Int
+            ) {
+                super.onSelectedChanged(viewHolder, actionState)
+                if (ItemTouchHelper.ACTION_STATE_DRAG == actionState) {
+                    /**
+                     * Change alpha, scale and elevation on drag.
+                     */
+                    (viewHolder?.itemView as? MaterialCardView)?.also {
+                        AnimatorSet().apply {
+                            this.duration = 100L
+                            this.interpolator = AccelerateDecelerateInterpolator()
+
+                            playTogether(
+                                UiUtil.getAlphaAnimator(it, 0.7f),
+                                UiUtil.getScaleXAnimator(it, 1.02f),
+                                UiUtil.getScaleYAnimator(it, 1.02f),
+                                UiUtil.getElevationAnimator(it, R.dimen.elevation_6dp)
+                            )
+                        }.start()
+                    }
+                }
+            }
+
+            override fun clearView(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder
+            ) {
+                super.clearView(recyclerView, viewHolder)
+                /**
+                 * Clear alpha, scale and elevation after drag/swipe
+                 */
+                (viewHolder.itemView as? MaterialCardView)?.also {
+                    AnimatorSet().apply {
+                        this.duration = 100L
+                        this.interpolator = AccelerateDecelerateInterpolator()
+
+                        playTogether(
+                            UiUtil.getAlphaAnimator(it, 1f),
+                            UiUtil.getScaleXAnimator(it, 1f),
+                            UiUtil.getScaleYAnimator(it, 1f),
+                            UiUtil.getElevationAnimator(it, R.dimen.elevation_2dp)
+                        )
+                    }.start()
+                }
+
+                downloadViewModel.putAtPosition(viewHolder.itemView.tag.toString().toLong(), movedToNewPositionID)
+            }
+
+            override fun isLongPressDragEnabled(): Boolean {
+                return false
+            }
+        }
+
+    override fun onMoveQueuedItemToTop(itemID: Long) {
+        lifecycleScope.launch {
+            downloadViewModel.putAtTopOfQueue(listOf(itemID))
+        }
+    }
+
+    override fun onMoveQueuedItemToBottom(itemID: Long) {
+        lifecycleScope.launch {
+            downloadViewModel.putAtBottomOfQueue(listOf(itemID))
+        }
+    }
+
+    override fun onQueuedCardClick(itemID: Long) {
+        lifecycleScope.launch {
+            val item = withContext(Dispatchers.IO){
+                downloadViewModel.getItemByID(itemID)
+            }
+
+            UiUtil.showDownloadItemDetailsCard(
+                item,
+                requireActivity(),
+                DownloadRepository.Status.valueOf(item.status),
+                removeItem = { it: DownloadItem, sheet: BottomSheetDialog ->
+                    sheet.hide()
+                    removeItem(it.id)
+                },
+                downloadItem = {
+                    downloadViewModel.deleteDownload(it.id)
+                    it.downloadStartTime = 0
+                    WorkManager.getInstance(requireContext()).cancelAllWorkByTag(it.id.toString())
+                    runBlocking {
+                        downloadViewModel.queueDownloads(listOf(it))
+                    }
+                },
+                longClickDownloadButton = {
+                    findNavController().navigate(R.id.downloadBottomSheetDialog, bundleOf(
+                        Pair("downloadItem", it),
+                        Pair("result", downloadViewModel.createResultItemFromDownload(it)),
+                        Pair("type", it.type)
+                    )
+                    )
+                },
+                scheduleButtonClick = {downloadItem ->
+                    UiUtil.showDatePicker(parentFragmentManager) {
+                        Toast.makeText(context, getString(R.string.download_rescheduled_to) + " " + it.time, Toast.LENGTH_LONG).show()
+                        downloadViewModel.deleteDownload(downloadItem.id)
+                        downloadItem.downloadStartTime = it.timeInMillis
+                        WorkManager.getInstance(requireContext()).cancelAllWorkByTag(downloadItem.id.toString())
+                        runBlocking {
+                            downloadViewModel.queueDownloads(listOf(downloadItem))
+                        }
+                    }
+                }
+            )
+        }
+    }
+
+    override fun onQueuedCardSelect(isChecked: Boolean, position: Int) {
+        lifecycleScope.launch {
+            val selectedObjects = adapter.getSelectedObjectsCount(totalSize)
+            if (actionMode == null) actionMode = (getActivity() as AppCompatActivity?)!!.startSupportActionMode(contextualActionBar)
+            val now = System.currentTimeMillis()
+            actionMode?.apply {
+                if (selectedObjects == 0){
+                    this.finish()
+                }else{
+                    this.title = "$selectedObjects ${getString(R.string.selected)}"
+                    this.menu.findItem(R.id.download).isVisible = withContext(Dispatchers.IO){
+                        downloadViewModel.checkAllQueuedItemsAreScheduledAfterNow(adapter.checkedItems.toList(), adapter.inverted, now)
+                    }
+
+                    this.menu.findItem(R.id.up).isVisible = position > 0
+                    this.menu.findItem(R.id.down).isVisible = position < totalSize
+                    this.menu.findItem(R.id.select_between).isVisible = false
+                    if(selectedObjects == 2){
+                        val selectedIDs = contextualActionBar.getSelectedIDs().sortedBy { it }
+                        val idsInMiddle = withContext(Dispatchers.IO){
+                            downloadViewModel.getIDsBetweenTwoItems(selectedIDs.first(), selectedIDs.last(), listOf(DownloadRepository.Status.Queued, DownloadRepository.Status.QueuedPaused).toListString())
+                        }
+                        this.menu.findItem(R.id.select_between).isVisible = idsInMiddle.isNotEmpty()
+                    }
+                }
+            }
+        }
+    }
+
+    override fun onQueuedCancelClick(itemID: Long) {
+        cancelDownload(itemID)
+    }
+
+    private fun cancelDownload(itemID: Long){
+        lifecycleScope.launch {
+            cancelItem(itemID.toInt())
+            withContext(Dispatchers.IO){
+                downloadViewModel.getItemByID(itemID)
+            }.let {
+                it.status = DownloadRepository.Status.Cancelled.toString()
+                withContext(Dispatchers.IO){
+                    downloadViewModel.updateDownload(it)
+                }
+            }
+        }
+    }
+
+    private fun cancelItem(id: Int){
+        YoutubeDL.getInstance().destroyProcessById(id.toString())
+        notificationUtil.cancelDownloadNotification(id)
+    }
 }

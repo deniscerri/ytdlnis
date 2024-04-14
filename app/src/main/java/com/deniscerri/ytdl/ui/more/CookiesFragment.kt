@@ -107,6 +107,7 @@ class CookiesFragment : Fragment(), CookieAdapter.OnItemClickListener {
 
         val useCookiesPref = preferences.getBoolean("use_cookies", false)
         useCookies.isChecked = useCookiesPref
+        useCookies.jumpDrawablesToCurrentState()
         newCookie.isEnabled = useCookiesPref
     }
 

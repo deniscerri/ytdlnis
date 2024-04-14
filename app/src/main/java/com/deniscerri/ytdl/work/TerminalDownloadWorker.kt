@@ -25,8 +25,10 @@ import com.yausername.youtubedl_android.YoutubeDL
 import com.yausername.youtubedl_android.YoutubeDLRequest
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import java.io.File
 
 
@@ -140,29 +142,23 @@ class TerminalDownloadWorker(
                 }
             }
 
-            return runBlocking {
-                if (logDownloads) logRepo.update(it.out, logItem.id)
-                dao.updateLog(it.out, itemId.toLong())
-                dao.delete(itemId.toLong())
-                notificationUtil.cancelDownloadNotification(itemId)
-
-                Result.success()
-            }
+            if (logDownloads) logRepo.update(it.out, logItem.id)
+            dao.updateLog(it.out, itemId.toLong())
+            notificationUtil.cancelDownloadNotification(itemId)
+            delay(1000)
+            dao.delete(itemId.toLong())
+            Result.success()
         }.onFailure {
-            return runBlocking {
-                CoroutineScope(Dispatchers.IO).launch {
-                    if (it.message != null){
-                        if (logDownloads) logRepo.update(it.message!!, logItem.id)
-                        dao.updateLog(it.message!!, itemId.toLong())
-                        dao.delete(itemId.toLong())
-                    }
-                }
-                notificationUtil.cancelDownloadNotification(itemId)
-                File(FileUtil.getDefaultCommandPath() + "/" + itemId).deleteRecursively()
-                Log.e(TAG, context.getString(R.string.failed_download), it)
-                Result.failure()
+            if (it.message != null){
+                if (logDownloads) logRepo.update(it.message!!, logItem.id)
+                dao.updateLog(it.message!!, itemId.toLong())
             }
-
+            notificationUtil.cancelDownloadNotification(itemId)
+            File(FileUtil.getDefaultCommandPath() + "/" + itemId).deleteRecursively()
+            Log.e(TAG, context.getString(R.string.failed_download), it)
+            delay(1000)
+            dao.delete(itemId.toLong())
+            Result.failure()
 
         }
 

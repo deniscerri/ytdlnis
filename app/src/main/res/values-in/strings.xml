@@ -342,10 +342,9 @@
     <string name="retry_missing_downloads">Coba Kembali Unduhan yang Hilang</string>
     <string name="bitrate">Laju Bit</string>
     <string name="save_auto_subs">Simpan Takarir (Subtitle) Otomatis</string>
-    <string name="download_archive">Arsip Unduhan</string>
+    <string name="archive">Arsip Unduhan [Gunakan berkas arsip unduhan yt-dlp untuk mencegah unduhan duplikat alih-alih menggunakan fungsionalitas bawaan]</string>
     <string name="observe_sources">Amati Sumber</string>
     <string name="confirm_delete_sources_desc">Hapus semua sumber, secara permanen</string>
-    <string name="download_archive_summary">Gunakan berkas arsip unduhan yt-dlp untuk mencegah unduhan duplikat alih-alih menggunakan fungsionalitas bawaan</string>
     <string name="day">Hari</string>
     <string name="not_deleted">Tidak Dihapus</string>
     <string name="changelog">Log Perubahan</string>

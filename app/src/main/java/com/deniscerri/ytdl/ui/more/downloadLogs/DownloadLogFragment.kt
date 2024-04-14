@@ -170,6 +170,7 @@ class DownloadLogFragment : Fragment() {
                     if (logItem != null){
                         if (logItem.content.isNotBlank()) {
                             content.setText(logItem.content, TextView.BufferType.SPANNABLE)
+                            bottomAppBar?.menu?.get(1)?.isVisible = contentScrollView.canScrollVertically(1)
                         }
                         if (!bottomAppBar.menu.children.first { it.itemId == R.id.scroll_down }.isVisible){
                             content.scrollTo(0, content.height)

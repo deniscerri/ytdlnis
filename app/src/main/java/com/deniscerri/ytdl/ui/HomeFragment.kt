@@ -645,7 +645,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
 
     fun scrollToTop() {
         recyclerView!!.scrollToPosition(0)
-        (searchBar!!.parent as AppBarLayout).setExpanded(true, true)
+        runCatching { (searchBar!!.parent as AppBarLayout).setExpanded(true, true) }
     }
 
     @SuppressLint("ResourceType")

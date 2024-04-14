@@ -356,12 +356,11 @@
     <string name="bitrate">Bit hızı</string>
     <string name="save_auto_subs">Otomatik Altyazıları Kaydet</string>
     <string name="not_deleted">Silinmedi</string>
-    <string name="download_archive_summary">Yerleşik işlevsellik yerine yinelenen indirmeleri önlemek için yt-dlp\'nin indirme arşiv dosyasını kullanın</string>
     <string name="every">Herhangi</string>
     <string name="never">Asla</string>
     <string name="on_time">Çalışmakta</string>
     <string name="day">Gün</string>
-    <string name="download_archive">İndirme Arşivi</string>
+    <string name="archive">İndirme Arşivi [Yerleşik işlevsellik yerine yinelenen indirmeleri önlemek için yt-dlp\'nin indirme arşiv dosyasını kullanın]</string>
     <string name="thumbnail_format">Küçük Resim Formatı</string>
     <string name="get_new_uploads">Yalnızca Yeni Yüklemeleri Alın</string>
     <string name="also_download_audio">Ayrıca Ses Olarak İndir</string>

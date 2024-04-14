@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.view.isVisible
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.AsyncDifferConfig
 import androidx.recyclerview.widget.DiffUtil
@@ -75,6 +76,8 @@ class ConfigureMultipleDownloadsAdapter(onItemClickListener: OnItemClickListener
             title = title.substring(0, 40) + "..."
         }
         itemTitle.text = title
+
+        card.findViewById<TextView>(R.id.download_type).isVisible = false
 
         // Format Note ----------------------------------
         val formatNote = card.findViewById<TextView>(R.id.format_note)

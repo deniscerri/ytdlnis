@@ -80,8 +80,6 @@ class DownloadCommandFragment(private val resultItem: ResultItem? = null, privat
                         if (type != DownloadViewModel.Type.command){
                             type = DownloadViewModel.Type.command
                         }
-
-                        format = downloadViewModel.getFormat(allFormats, DownloadViewModel.Type.command)
                     }
 
                     val string = Gson().toJson(currentDownloadItem, DownloadItem::class.java)

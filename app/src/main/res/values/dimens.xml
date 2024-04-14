@@ -1,2 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <dimen name="elevation_6dp">6dp</dimen>
+    <dimen name="elevation_2dp">2dp</dimen>
+</resources>

@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.models.observeSources.ObserveSourcesItem
 import com.deniscerri.ytdl.database.repository.ObserveSourcesRepository
-import com.deniscerri.ytdl.util.Extensions.calculateNextTime
+import com.deniscerri.ytdl.util.Extensions.calculateNextTimeForObserving
 import com.deniscerri.ytdl.util.Extensions.popup
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.chip.Chip
@@ -76,7 +76,7 @@ class ObserveSourcesAdapter(onItemClickListener: OnItemClickListener, activity: 
 
         //INFO
         val info = card.findViewById<Chip>(R.id.info)
-        val nextTime = item.calculateNextTime()
+        val nextTime = item.calculateNextTimeForObserving()
         val c = Calendar.getInstance()
         c.timeInMillis = nextTime
 
@@ -149,7 +149,7 @@ class ObserveSourcesAdapter(onItemClickListener: OnItemClickListener, activity: 
                         && oldItem.status == newItem.status
                         && oldItem.retryMissingDownloads == newItem.retryMissingDownloads
                         && oldItem.runCount == newItem.runCount
-                        && oldItem.everyCategory == newItem.everyCategory
+                        && oldItem.calculateNextTimeForObserving() == newItem.calculateNextTimeForObserving()
             }
         }
     }

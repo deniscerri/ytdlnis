@@ -127,6 +127,7 @@ class HistoryAdapter(onItemClickListener: OnItemClickListener, activity: Activit
             btn.backgroundTintList = MaterialColors.getColorStateList(activity, R.attr.colorSurface, ContextCompat.getColorStateList(activity, android.R.color.transparent)!!)
         }else{
             thumbnail.alpha = 1f
+            thumbnail.colorFilter = null
             btn.backgroundTintList = MaterialColors.getColorStateList(activity, R.attr.colorPrimaryContainer, ContextCompat.getColorStateList(activity, android.R.color.transparent)!!)
         }
 

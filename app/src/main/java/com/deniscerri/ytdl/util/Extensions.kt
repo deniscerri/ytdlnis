@@ -1,5 +1,6 @@
 package com.deniscerri.ytdl.util
 
+import android.R.color
 import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.app.Dialog
@@ -9,7 +10,9 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Outline
-import android.graphics.drawable.Drawable
+import android.graphics.Paint
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffColorFilter
 import android.graphics.drawable.ShapeDrawable
 import android.graphics.drawable.shapes.OvalShape
 import android.media.MediaMetadataRetriever
@@ -27,6 +30,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.Px
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.updateLayoutParams
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.withStarted
@@ -335,10 +339,13 @@ object Extensions {
         return cookie.toString()
     }
     
-    fun ObserveSourcesItem.calculateNextTime() : Long {
+    fun ObserveSourcesItem.calculateNextTimeForObserving() : Long {
         val item = this
+        val now = System.currentTimeMillis()
         Calendar.getInstance().apply {
-            if (item.everyCategory != com.deniscerri.ytdl.database.repository.ObserveSourcesRepository.EveryCategory.HOUR){
+            timeInMillis = item.startsTime
+
+            if (item.everyCategory != EveryCategory.HOUR){
                 val hourMin = Calendar.getInstance()
                 hourMin.timeInMillis = item.everyTime
 
@@ -346,38 +353,40 @@ object Extensions {
                 set(Calendar.MINUTE, hourMin.get(Calendar.MINUTE))
             }
 
-            when(item.everyCategory){
-                EveryCategory.HOUR -> {
-                    add(Calendar.HOUR, item.everyNr)
-                }
-                EveryCategory.DAY -> {
-                    add(Calendar.DAY_OF_MONTH, item.everyNr)
-                }
-                EveryCategory.WEEK -> {
-                    item.weeklyConfig?.apply {
-                        if (this.weekDays.isEmpty()){
-                            add(Calendar.DAY_OF_MONTH, 7 * item.everyNr)
-                        }else{
-                            var weekDayNr = get(Calendar.DAY_OF_WEEK) - 1
-                            if (weekDayNr == 0) weekDayNr = 7
-                            val followingWeekDay = this.weekDays.firstOrNull { it > weekDayNr }
-                            if (followingWeekDay == null){
-                                add(Calendar.DAY_OF_MONTH, this.weekDays.minBy { it } + (7 - weekDayNr))
-                                item.everyNr--
-                            }else{
-                                add(Calendar.DAY_OF_MONTH, followingWeekDay.toInt() - weekDayNr)
-                            }
-
-                            if (item.everyNr > 1){
+            while (timeInMillis < now){
+                when(item.everyCategory){
+                    EveryCategory.HOUR -> {
+                        add(Calendar.HOUR, item.everyNr)
+                    }
+                    EveryCategory.DAY -> {
+                        add(Calendar.DAY_OF_MONTH, item.everyNr)
+                    }
+                    EveryCategory.WEEK -> {
+                        item.weeklyConfig?.apply {
+                            if (this.weekDays.isEmpty()){
                                 add(Calendar.DAY_OF_MONTH, 7 * item.everyNr)
+                            }else{
+                                var weekDayNr = get(Calendar.DAY_OF_WEEK) - 1
+                                if (weekDayNr == 0) weekDayNr = 7
+                                val followingWeekDay = this.weekDays.firstOrNull { it > weekDayNr }
+                                if (followingWeekDay == null){
+                                    add(Calendar.DAY_OF_MONTH, this.weekDays.minBy { it } + (7 - weekDayNr))
+                                    item.everyNr--
+                                }else{
+                                    add(Calendar.DAY_OF_MONTH, followingWeekDay.toInt() - weekDayNr)
+                                }
+
+                                if (item.everyNr > 1){
+                                    add(Calendar.DAY_OF_MONTH, 7 * item.everyNr)
+                                }
                             }
                         }
                     }
-                }
-                EveryCategory.MONTH -> {
-                    add(Calendar.MONTH, item.everyNr)
-                    item.monthlyConfig?.apply {
-                        set(Calendar.DAY_OF_MONTH, this.everyMonthDay)
+                    EveryCategory.MONTH -> {
+                        add(Calendar.MONTH, item.everyNr)
+                        item.monthlyConfig?.apply {
+                            set(Calendar.DAY_OF_MONTH, this.everyMonthDay)
+                        }
                     }
                 }
             }
@@ -392,7 +401,14 @@ object Extensions {
             drawable!!.intrinsicWidth,
             drawable.intrinsicHeight, Bitmap.Config.ARGB_8888
         )
+
+        val paint = Paint()
+        val colorValue = TypedValue()
+        context.theme.resolveAttribute(android.R.attr.colorActivatedHighlight, colorValue, true)
+        paint.setColorFilter(PorterDuffColorFilter(colorValue.data, PorterDuff.Mode.SRC_IN))
+
         val canvas = Canvas(bitmap)
+        DrawableCompat.setTint(drawable, colorValue.data)
         drawable.setBounds(0, 0, canvas.width, canvas.height)
         drawable.draw(canvas)
         return bitmap
