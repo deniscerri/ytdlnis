@@ -370,10 +370,15 @@
     <string name="select_between">Aradaki Ögeleri Seç</string>
     <string name="swipe_gestures_download_card">İndirme kartındaki Kaydırma Hareketleri</string>
     <string name="show_download_count">İndirme kuyruğu ekranında sayıları göster</string>
-    <string name="scroll_down">Aşağı kaydır</string>
+    <string name="scroll_down">En Alta Kaydır</string>
     <string name="text_size">Yazı Boyutu</string>
     <string name="add">Ekle</string>
     <string name="reset_processed_links">Zaten İşlenmiş Bağlantıları Sıfırla</string>
     <string name="no_download_fragments">Parçalar halinde indirme</string>
     <string name="no_download_fragments_summary">.part dosyalarını kullanmayın ve doğrudan çıktı dosyasına yazmayın</string>
+    <string name="my_filename_templates">Dosya Adı Şablonlarım</string>
+    <string name="prefer_smaller_formats">Daha Küçük Boyutlu Formatları Tercih Et</string>
+    <string name="display_over_apps">Uygulamalar Üzerinden Görüntüleme</string>
+    <string name="display_over_apps_summary">İndirme kartının her zaman en üstte görüntülenmesini sağlayın. İndirme kartı göründüğünde çalışmakta olan uygulama kapanırsa bunu açın</string>
+    <string name="hour">Saat</string>
 </resources>

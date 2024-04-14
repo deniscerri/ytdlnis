@@ -272,4 +272,5 @@
     <string name="retries">Προσπάθειες</string>
     <string name="fragment_retries">Προσπάθειες Θραυσμάτων</string>
     <string name="format_order">Σειρά Μορφών</string>
+    <string name="search_command_hint">Αναζήτηση από εντολές</string>
 </resources>

@@ -373,4 +373,9 @@
     <string name="wrap_text">Перенос текста</string>
     <string name="no_download_fragments">Не загружать как фрагменты</string>
     <string name="no_download_fragments_summary">Не используйте файлы .part и записывайте непосредственно в выходной файл</string>
+    <string name="my_filename_templates">Мои шаблоны названий</string>
+    <string name="display_over_apps">Поверх всех окон</string>
+    <string name="hour">Час</string>
+    <string name="prefer_smaller_formats">Предпочитать файлы меньшего размера</string>
+    <string name="display_over_apps_summary">Отображать статус загрузки поверх всех окон. Включите, если другие приложения закрывают окно загрузки</string>
 </resources>

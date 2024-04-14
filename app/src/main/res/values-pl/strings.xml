@@ -373,4 +373,9 @@
     <string name="reset_processed_links">Zresetuj już przetworzone linki</string>
     <string name="no_download_fragments">Nie pobieraj jako fragmenty</string>
     <string name="no_download_fragments_summary">Nie używaj plików .part i pisz bezpośrednio do pliku wyjściowego</string>
+    <string name="hour">Godzina</string>
+    <string name="display_over_apps_summary">Karta pobierania powinna być zawsze wyświetlana na wierzchu. Włącz tę opcję, jeśli aktualnie uruchomiona aplikacja zostanie zamknięta po wyświetleniu karty pobierania</string>
+    <string name="my_filename_templates">Moje szablony nazw plików</string>
+    <string name="prefer_smaller_formats">Preferowane mniejsze formaty</string>
+    <string name="display_over_apps">Wyświetlaj nad aplikacjami</string>
 </resources>

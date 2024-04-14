@@ -364,11 +364,18 @@
     <string name="add">ਜੋੜੋ</string>
     <string name="get_new_uploads">ਸਿਰਫ਼ ਨਵੇਂ ਅੱਪਲੋਡ ਪ੍ਰਾਪਤ ਕਰੋ</string>
     <string name="wrap_text">ਟੈਕਸਟ ਲਪੇਟੋ</string>
-    <string name="scroll_down">ਥੱਲੇ ਜਾਓ</string>
+    <string name="scroll_down">ਹੇਠਾਂ ਤੱਕ ਸਕ੍ਰੋਲ ਕਰੋ</string>
     <string name="show_download_count">ਡਾਊਨਲੋਡ ਕਤਾਰ ਸਕ੍ਰੀਨ ਵਿੱਚ ਗਿਣਤੀ ਵਿਖਾਓ</string>
     <string name="back">ਪਿੱਛੇ</string>
     <string name="all_queries_finished">ਸਾਰੀਆਂ ਪੁੱਛਗਿੱਛਾਂ \'ਤੇ ਕਾਰਵਾਈ ਕੀਤੀ ਗਈ ਹੈ</string>
     <string name="select_between">ਵਿਚਕਾਰ ਆਈਟਮਾਂ ਦੀ ਚੋਣ ਕਰੋ</string>
     <string name="reset_processed_links">ਪਹਿਲਾਂ ਤੋਂ ਪ੍ਰੋਸੈਸ ਕੀਤੇ ਲਿੰਕ ਰੀਸੈਟ ਕਰੋ</string>
     <string name="also_download_audio">ਆਡੀਓ ਦੇ ਤੌਰ \'ਤੇ ਵੀ ਡਾਊਨਲੋਡ ਕਰੋ</string>
+    <string name="no_download_fragments">ਟੁਕੜਿਆਂ ਵਜੋਂ ਡਾਊਨਲੋਡ ਨਾ ਕਰੋ</string>
+    <string name="no_download_fragments_summary">.part ਫਾਈਲਾਂ ਦੀ ਵਰਤੋਂ ਨਾ ਕਰੋ ਅਤੇ ਸਿੱਧੇ ਆਉਟਪੁੱਟ ਫਾਈਲ ਵਿੱਚ ਲਿਖੋ</string>
+    <string name="my_filename_templates">ਮੇਰੀ ਫਾਈਲ ਨਾਮ ਟੈਮਪਲੇਟਸ</string>
+    <string name="prefer_smaller_formats">ਛੋਟੇ ਆਕਾਰ ਦੇ ਫਾਰਮੈਟਾਂ ਨੂੰ ਤਰਜੀਹ ਦਿਓ</string>
+    <string name="display_over_apps">ਐਪਸ ਉੱਤੇ ਡਿਸਪਲੇ ਕਰੋ</string>
+    <string name="display_over_apps_summary">ਡਾਉਨਲੋਡ ਕਾਰਡ ਨੂੰ ਹਮੇਸ਼ਾ ਹੋਰਨਾਂ ਐਪਾਂ ਦੇ ਉੱਪਰ ਪ੍ਰਦਰਸ਼ਿਤ ਕਰੋ। ਜੇਕਰ ਵਰਤਮਾਨ ਵਿੱਚ ਚੱਲ ਰਹੀ ਐਪ ਬੰਦ ਹੋ ਜਾਂਦੀ ਹੈ ਜਦੋਂ ਡਾਊਨਲੋਡ ਕਾਰਡ ਵਿਖਾਈ ਦਿੰਦਾ ਹੈ ਤਾਂ ਇਸ ਨੂੰ ਆਨ ਕਰੋ</string>
+    <string name="hour">ਘੰਟਾ</string>
 </resources>

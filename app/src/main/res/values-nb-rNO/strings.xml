@@ -149,7 +149,7 @@
     <string name="sponsorblock_promos">Selv-promotering</string>
     <string name="sponsorblock_sponsors">Sponsorer</string>
     <string name="adjust_audio">Juster lyd</string>
-    <string name="error_updating_formats">Kunne ikke oppdatere formater.</string>
+    <string name="error_updating_formats">Kunne ikke oppdatere formater!</string>
     <string name="edit">Rediger</string>
     <string name="create_shortcut">Opprett snarvei</string>
     <string name="file_name_template">Filmal</string>
@@ -183,7 +183,7 @@
     <string name="select_all">Velg alle</string>
     <string name="share">Del</string>
     <string name="kill_app">Avslutt program</string>
-    <string name="add_template_first">Du må ha valgt minst én kommandomal.</string>
+    <string name="add_template_first">Du må ha valgt minst én kommandomal!</string>
     <string name="suggested">Foreslått</string>
     <string name="cookies">Informasjonskapsler</string>
     <string name="new_cookie">Ny informasjonskapsel</string>

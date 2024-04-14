@@ -45,7 +45,7 @@
     <string name="update_ytdl_nightly">Ноћна верзија yt-dlp-а</string>
     <string name="command_download_notification_channel_description">Обавештење које приказује напредак преузимања помоћу команде yt-dlp</string>
     <string name="add_chapters">Поглавља у видео снимцима</string>
-    <string name="concurrent_downloads_summary">"Број превземања кои се извршуваат во  исто време"</string>
+    <string name="concurrent_downloads_summary">Број превземања кои се извршуваат во исто време</string>
     <string name="embed_subtitles">Угради титлове</string>
     <string name="clear_saved">Очисти сачувано</string>
     <string name="schedule">Закажи</string>
@@ -365,7 +365,7 @@
     <string name="reset_processed_links">Ресетуј већ обрађене линкове</string>
     <string name="swipe_gestures_download_card">Покрети превлачења на картици за преузимање</string>
     <string name="thumbnail_format">Формат сличице</string>
-    <string name="scroll_down">Превуци надоле</string>
+    <string name="scroll_down">Превуци до дна</string>
     <string name="add">Додај</string>
     <string name="text_size">Величина текста</string>
     <string name="back">Назад</string>
@@ -373,4 +373,9 @@
     <string name="select_between">Избор предмета између</string>
     <string name="no_download_fragments">Не преузимај као фрагменте</string>
     <string name="no_download_fragments_summary">Без коришћења .part фајлова и писања директно у излазни фајл</string>
+    <string name="my_filename_templates">Моји шаблони имена фајлова</string>
+    <string name="prefer_smaller_formats">Преферирај формате мање величине</string>
+    <string name="display_over_apps_summary">Нека се картица за преузимање увек приказује на врху. Укључите ово ако се тренутно покренута апликација затвори када се појави картица за преузимање</string>
+    <string name="hour">Сат</string>
+    <string name="display_over_apps">Приказуј преко апликација</string>
 </resources>

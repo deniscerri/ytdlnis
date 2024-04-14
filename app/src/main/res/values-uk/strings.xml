@@ -364,7 +364,7 @@
     <string name="get_new_uploads">Отримуйте лише нові завантаження</string>
     <string name="also_download_audio">Також завантажити як аудіо</string>
     <string name="wrap_text">Перенесення тексту</string>
-    <string name="scroll_down">Прокрути вниз</string>
+    <string name="scroll_down">Прокрутіть униз</string>
     <string name="text_size">Розмір тексту</string>
     <string name="add">Додати</string>
     <string name="back">Назад</string>
@@ -373,4 +373,9 @@
     <string name="reset_processed_links">Скинути вже оброблені посилання</string>
     <string name="no_download_fragments">Не завантажуйте як фрагменти</string>
     <string name="no_download_fragments_summary">Не використовуйте файли .part і записуйте безпосередньо у вихідний файл</string>
+    <string name="my_filename_templates">Мої шаблони назв</string>
+    <string name="display_over_apps">Поверх всіх вікон</string>
+    <string name="prefer_smaller_formats">Віддавати перевагу файлам меншого розміру</string>
+    <string name="display_over_apps_summary">Відображати статус завантаження поверх усіх вікон. Увімкніть, якщо інші програми закривають вікно завантаження</string>
+    <string name="hour">Година</string>
 </resources>
