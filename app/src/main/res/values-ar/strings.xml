@@ -377,5 +377,5 @@
     <string name="display_over_apps">العرض فوق التطبيقات</string>
     <string name="my_filename_templates">قوالب اسم الملف الخاص بي</string>
     <string name="prefer_smaller_formats">تفضل التنسيقات الأصغر حجما</string>
-    <string name="display_over_apps_summary">اجعل بطاقة التنزيل معروضة دائما في الأعلى. قم بتشغيل هذا إذا تم إغلاق التطبيق قيد التشغيل حاليا عند ظهور بطاقة التنزيل</string>
+    <string name="display_over_apps_summary">اجعل بطاقة التنزيل معروضة دائمًا في الأعلى. قم بتشغيل هذا إذا تم إغلاق التطبيق قيد التشغيل حاليًا عند ظهور بطاقة التنزيل</string>
 </resources>
