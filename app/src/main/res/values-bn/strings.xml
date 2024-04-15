@@ -46,7 +46,7 @@
     <string name="link_copied_to_clipboard">ক্লিপবোর্ডে লিঙ্ক কপি করা হয়েছে</string>
     <string name="api_key">API কী ব্যবহার করুন</string>
     <string name="api_key_summary">YouTube API থেকে প্রস্তাবিত ভিডিওগুলো</string>
-    <string name="update_app_summary">অ্যাপটি খোলা হলে এর নতুন সংস্করণ ঘোষণা করুন</string>
+    <string name="update_app_summary">অ্যাপটি খোলা হলে এর নতুন সংস্করণ ঘোষণা করুন। তথ্য অফিসিয়াল Github সংগ্রহস্থল থেকে বের করা হয়</string>
     <string name="downloads">ডাউনলোডসমূহ</string>
     <string name="remove_deleted">ডিলেট মুছে ফেলুন</string>
     <string name="remove_duplicates">সদৃশ অপসারণ</string>
@@ -89,12 +89,12 @@
     <string name="audio_format">অডিও ফরম্যাট</string>
     <string name="command_download_notification_channel_name">কমান্ড ডাউনলোড</string>
     <string name="command_download_notification_channel_description">একটি yt-dlp কমান্ড ব্যবহার করে ডাউনলোডের অগ্রগতি দেখানো বিজ্ঞপ্তি</string>
-    <string name="show_download_card">ডাউনলোড করার জন্য বিকল্পগুলি দেখান</string>
+    <string name="show_download_card">ডাউনলোড কার্ড দেখান</string>
     <string name="configure_download">ডাউনলোড সামঞ্জস্য করুন</string>
     <string name="author">আপলোডার</string>
     <string name="Open_File">ফাইল খুলুন</string>
     <string name="add_chapter">অধ্যায় যোগ করুন</string>
-    <string name="download_card_summary">আইটেম ডাউনলোড করার জন্য সেটিংস</string>
+    <string name="download_card_summary">ডাউনলোড করার আগে সেই আইটেমটির জন্য সেটিংস পরিবর্তন করুন। এই বিকল্পটি নিষ্ক্রিয় করা অবিলম্বে ডাউনলোড শুরু করে</string>
     <string name="sponsorblock_fillers">ফিল্টার</string>
     <string name="concurrent_fragments_summary">একযোগে ডাউনলোড করার জন্য একটি DASH/HLS নেটিভ ভিডিওর খণ্ডের সংখ্যা</string>
     <string name="new_template">নতুন টেমপ্লেট</string>
@@ -211,7 +211,7 @@
     <string name="audio_samplerate">অডিও নমুনা হার</string>
     <string name="copied_to_clipboard">ক্লিপবোর্ডে কপি করা হয়েছে</string>
     <string name="quick_download">দ্রুত ডাউনলোড</string>
-    <string name="quick_download_summary">আগে থেকে ডেটা আনবেন না</string>
+    <string name="quick_download_summary">ডাউনলোড কার্ডে ডেটা আনবেন না</string>
     <string name="Theme">থিম</string>
     <string name="dark">গাঢ়</string>
     <string name="light">উজ্জ্বল</string>
@@ -243,7 +243,7 @@
     <string name="restore_complete">অ্যাপ পুনরুদ্ধার সম্পূর্ণ হয়েছে। নিম্নলিখিত আইটেমগুলি পুনরুদ্ধার করা হয়েছে:</string>
     <string name="general">সাধারণ</string>
     <string name="updating_download_data">ডাউনলোড আইটেম ডাটা আপডেট হচ্ছে</string>
-    <string name="keep_cache">ক্যাশে রাখুন</string>
+    <string name="keep_cache">টুকরা রাখুন</string>
     <string name="search_history">অনুসন্ধান ইতিহাস</string>
     <string name="backup_created_successfully">ব্যাকআপ ফাইল ডাউনলোড ফোল্ডারে সংরক্ষিত হয়েছে</string>
     <string name="backup_restore">ব্যাকআপ এবং পুনরুদ্ধার</string>
@@ -281,7 +281,7 @@
     <string name="format_order">ফরম্যাট অর্ডার</string>
     <string name="move_temporary_files">অস্থায়ী ফাইল স্থানান্তর করুন</string>
     <string name="move_temporary_files_summary">ক্যাশে ফাইল ডাউনলোড ফোল্ডারে সরিয়ে নিন</string>
-    <string name="embed_metadata_summary">ভিডিও ফাইলে মেটাডেটা এম্বেড করুন। এছাড়াও অধ্যায়/ইনফোজসন উপস্থিত থাকলে এম্বেড করে</string>
+    <string name="embed_metadata_summary">অডিও ফাইলে মেটাডেটা পার্স এবং এম্বেড করুন</string>
     <string name="embed_metadata">মেটাডেটা এম্বেড করুন</string>
     <string name="search_suggestions">অনুসন্ধান প্রস্তাবনা</string>
     <string name="search_suggestions_summary">Google থেকে অনুসন্ধান প্রস্তাবনা পান</string>
@@ -291,4 +291,10 @@
     <string name="misc">বিবিধ</string>
     <string name="use_extra_commands_summary">অডিও / ভিডিও ডাউনলোডের জন্য। জিউআই কনফিগারেশনের সাথে অতিরিক্ত কমান্ড যোগ করুন</string>
     <string name="search_command_hint">কমান্ড থেকে অনুসন্ধান করুন</string>
+    <string name="update_formats_background">পটভূমিতে ফর্ম্যাট আপডেট করুন</string>
+    <string name="auto_update_ytdlp">স্বতঃ-আপডেট yt-dlp</string>
+    <string name="cache_first">প্রথমে ক্যাশে ডাউনলোড করুন</string>
+    <string name="errored_download_notification_channel_description">ত্রুটিপূর্ণ ডাউনলোডের জন্য বিজ্ঞপ্তি</string>
+    <string name="errored_downloads">ত্রুটিপূর্ণ ডাউনলোড</string>
+    <string name="use_sponsorblock">স্পনসরব্লক ব্যবহার করুন</string>
 </resources>
