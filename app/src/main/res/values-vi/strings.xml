@@ -16,7 +16,7 @@
     <string name="search_hint">Tìm kiếm hoặc chèn URL</string>
     <string name="failed_download">Không thể tải xuống tệp</string>
     <string name="download_notification_channel_name">Tệp tải xuống</string>
-    <string name="you_are_in_latest_version">Sử dụng phiên bản mới nhất</string>
+    <string name="you_are_in_latest_version">Đang dùng phiên bản mới nhất</string>
     <string name="ytld_update_success">Phiên bản mới được cài đặt</string>
     <string name="ytdl_already_updating">Đang cài đặt phiên bản mới</string>
     <string name="ytdl_updating_started">Đang tải phiên bản mới</string>
@@ -78,12 +78,12 @@
     <string name="configure_download">Cấu hình tải xuống</string>
     <string name="title">Tiêu đề</string>
     <string name="author">Tác giả</string>
-    <string name="video_quality">Chất lượng cuộn băng</string>
+    <string name="video_quality">Chất lượng video</string>
     <string name="embed_subtitles">Nhúng phụ đề</string>
     <string name="add_chapter">Thêm chương</string>
     <string name="show_download_card">Hiển thị thẻ tải xuống</string>
     <string name="music_directory">Thư mục âm nhạc</string>
-    <string name="download_notification_channel_description">Thông báo hiển thị tiến trình tải xuống các tệp âm thanh và băng hình</string>
+    <string name="download_notification_channel_description">Thông báo hiển thị tiến trình tải xuống các tệp âm thanh và video</string>
     <string name="cancel">Hủy</string>
     <string name="you_are_going_to_delete_multiple_items">Đang xóa nhiều mục</string>
     <string name="delete_file_too">Xóa tệp khỏi thiết bị</string>
@@ -378,4 +378,14 @@
     <string name="hour">Giờ</string>
     <string name="my_filename_templates">Mẫu tên tệp của tôi</string>
     <string name="display_over_apps">Hiển thị trên ứng dụng khác</string>
+    <string name="subtitles">Phụ đề</string>
+    <string name="prevent_duplicate_downloads">Chặn tải xuống trùng lặp</string>
+    <string name="prevent_duplicate_url_type">URL &amp; Loại tải về</string>
+    <string name="prevent_duplicate_config">Cấu hình đầy đủ</string>
+    <string name="scheduled">Đã lên lịch</string>
+    <string name="move_bottom">Chuyển xuống dưới</string>
+    <string name="move_top">Chuyển lên trên</string>
+    <string name="copy_url">Sao chép URL</string>
+    <string name="disabled">Vô hiệu</string>
+    <string name="clear_scheduled">Dọn dẹp Lịch trình</string>
 </resources>
