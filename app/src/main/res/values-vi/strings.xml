@@ -89,7 +89,7 @@
     <string name="delete_file_too">Xóa tệp khỏi thiết bị</string>
     <string name="aria2_summary">Sử dụng aria2c làm trình tải xuống thay cho mặc định</string>
     <string name="downloading_update">Đang tải phiên bản mới</string>
-    <string name="video">Video</string>
+    <string name="video">Băng hình</string>
     <string name="concurrent_fragments_summary">Số đoạn gốc của video DASH/ HLS để tải xuống đồng thời</string>
     <string name="audio">Âm thanh</string>
     <string name="save_thumb">Lưu hình thu nhỏ</string>
@@ -127,7 +127,7 @@
     <string name="file_name_template">Mẫu tên tệp</string>
     <string name="language">Ngôn ngữ</string>
     <string name="command_templates">Bản mẫu câu lệnh</string>
-    <string name="terminal">Dùng lệnh</string>
+    <string name="terminal">Thiết bị đầu cuối</string>
     <string name="enable_mtime">Bật mtime</string>
     <string name="update_formats">Cập nhật định dạng</string>
     <string name="error_updating_formats">Lỗi cập nhật định dạng!</string>
