@@ -82,4 +82,6 @@
     <string name="no_results">Geen Resultaten</string>
     <string name="best_quality">Beste Kwaliteit</string>
     <string name="embed_subs_summary">Voeg ondertitels toe in de video</string>
+    <string name="concurrent_fragments_summary">Aantal fragmenten van een DASH/HLS native video om gelijktijdig te downloaden</string>
+    <string name="limit_rate">Limiet Ratio</string>
 </resources>
