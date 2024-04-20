@@ -68,7 +68,7 @@
     <string name="add_chapter">Вграждане на глави</string>
     <string name="show_download_card">Показване на опциите за изтегляне</string>
     <string name="Open_File">Отворете файла</string>
-    <string name="you_are_going_to_delete_multiple_items">Изтриване на множество елементи</string>
+    <string name="you_are_going_to_delete_multiple_items">Изтриване на елементи</string>
     <string name="exit_app">Изход от приложението</string>
     <string name="warning">Предупреждение</string>
     <string name="sponsorblock_nonmusic">Немузикални и извън темата части</string>
@@ -204,7 +204,7 @@
     <string name="format_smallest">Най-малък формат (по разделителна способност)</string>
     <string name="multiple_download_card">Multiple Download</string>
     <string name="generic">Общ</string>
-    <string name="observe_sources">Спазвайте източниците</string>
+    <string name="observe_sources">Източници за изтегляне</string>
     <string name="delete_all_sources">Изтриване на всички източници</string>
     <string name="confirm_delete_sources_desc">Изтрийте всички източници за постоянно</string>
     <string name="force_ipv4_desc">Изпълнете всички връзки с IPv4</string>
@@ -376,7 +376,7 @@
     <string name="url">URL</string>
     <string name="confirm_delete_logs_desc">Изтрийте целия списък с регистрационни файлове за постоянно.</string>
     <string name="download_card_summary">Променете настройките на този елемент, преди изтегляне. Деактивирането на тази опция стартира незабавно изтегляне</string>
-    <string name="kill_app">Прекратете приложението</string>
+    <string name="kill_app">Спиране на приложението</string>
     <string name="cache_first_summary">Кешът се изтегля във вътрешната памет и се прехвърля в папката по ваш избор. Използвайте, когато е невъзможно да запишете файлове в паметта</string>
     <string name="prevent_duplicate_downloads">Предотвратяване дублиране на изтегляния</string>
     <string name="move_bottom">Премести най-долу</string>
