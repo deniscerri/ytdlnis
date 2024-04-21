@@ -54,7 +54,7 @@
     <string name="video_quality">Videoqualität</string>
     <string name="embed_subtitles">Untertitel einbetten</string>
     <string name="add_chapter">Kapitel hinzufügen</string>
-    <string name="show_download_card">Optionen für das Herunterladen anzeigen</string>
+    <string name="show_download_card">Öffne die Downloadliste</string>
     <string name="download_card_summary">Einstellungen für den Download dieses Elements ändern. Deaktivieren dieser Option startet das Herunterladen sofort.</string>
     <string name="you_are_going_to_delete_multiple_items">Mehrere Elemente löschen</string>
     <string name="delete_file_too">Lösche die Datei vom Gerät</string>
@@ -338,7 +338,7 @@
     <string name="force_ipv4_desc">Alle Verbindungen über IPv4 herstellen</string>
     <string name="copy_urls">URLs kopieren</string>
     <string name="swipe_gestures_download_card">Wischgesten in Downloadkarte</string>
-    <string name="set_time">Zeit setzen</string>
+    <string name="set_time">Uhrzeit einstellen</string>
     <string name="starts">Startet</string>
     <string name="ends">Endet</string>
     <string name="never">Nie</string>
@@ -346,7 +346,7 @@
     <string name="after">Nachdem</string>
     <string name="add">Hinzufügen</string>
     <string name="back">Zurück</string>
-    <string name="occurrences">vorkommnisse</string>
+    <string name="occurrences">Besondere Ereignisse</string>
     <string name="day">Tag</string>
     <string name="week">Woche</string>
     <string name="month">Monat</string>
@@ -374,8 +374,11 @@
     <string name="move_bottom">Ans Ende verschieben</string>
     <string name="scheduled">Geplant</string>
     <string name="clear_scheduled">Geplante leeren</string>
-    <string name="all">alle</string>
+    <string name="all">Vollständig/Alle</string>
     <string name="generic">generisch</string>
-    <string name="format_filter">Filter formatieren</string>
+    <string name="format_filter">Anpassen der Filtereinstellungen</string>
     <string name="format_smallest">Kleinstes Format (pro Auflösung)</string>
+    <string name="retry_missing_downloads">Fehlende Downloads erneut versuchen</string>
+    <string name="dismiss">Ablehnen/Nicht zustimmen</string>
+    <string name="cut_unavailable">Um das Schnittprogramm nutzen zu können, ist es nötig, zuerst die Daten in die richtige Reihenfolge zu bringen.</string>
 </resources>
