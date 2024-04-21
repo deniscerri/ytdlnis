@@ -372,10 +372,20 @@
     <string name="select_between">Arasındakı elementləri seç</string>
     <string name="reset_processed_links">Artıq emal edilmiş bağlantıları sıfırla</string>
     <string name="my_filename_templates">Fayl Adı Şablonlarım</string>
-    <string name="prefer_smaller_formats">Daha kiçik ölçülü formatlara üstünlük ver</string>
+    <string name="prefer_smaller_formats">Daha kiçik həcmli formatlara üstünlük ver</string>
     <string name="display_over_apps">Tətbiqlər Üzərində Göstər</string>
     <string name="hour">Saat</string>
     <string name="no_download_fragments">Fraqmentlər kimi yükləmə</string>
     <string name="no_download_fragments_summary">.part fayllarından istifadə etmə və birbaşa çıxış faylına yazma</string>
     <string name="display_over_apps_summary">Yükləmə kartını həmişə yuxarıda göstərin. Yükləmə kartı görünəndə hazırda işləyən tətbiq bağlanarsa, bunu aktivləşdir</string>
+    <string name="disabled">Qeyri-aktiv</string>
+    <string name="subtitles">Titrlər</string>
+    <string name="prevent_duplicate_downloads">Eyni Yükləmələrin Qarşısını Al</string>
+    <string name="prevent_duplicate_url_type">URL və Yükləmə Növü</string>
+    <string name="prevent_duplicate_config">Tam Konfiqurasiya</string>
+    <string name="copy_url">URL-i Köçür</string>
+    <string name="move_top">Yuxarıya keçin</string>
+    <string name="move_bottom">Aşağıya keçin</string>
+    <string name="scheduled">Planlaşdırılan</string>
+    <string name="clear_scheduled">Planlaşdırılanı Təmizlə</string>
 </resources>
