@@ -374,4 +374,18 @@
     <string name="no_download_fragments">Não descarregar fragmentos</string>
     <string name="no_download_fragments_summary">Não usar ficheiros .part e escrever diretamente no destino</string>
     <string name="hour">Hora</string>
+    <string name="my_filename_templates">Modelos para nomes de ficheiros</string>
+    <string name="prefer_smaller_formats">Preferir formatos com menor tamanho</string>
+    <string name="display_over_apps">Mostrar por cima das aplicações</string>
+    <string name="display_over_apps_summary">O cartão de descarga será mostrado por cima das aplicações. Ative esta opção se a aplicação em execução encerrar ou se o cartão não for mostrado</string>
+    <string name="disabled">Desativado</string>
+    <string name="subtitles">Legendas</string>
+    <string name="prevent_duplicate_downloads">Impedir duplicação de descargas</string>
+    <string name="prevent_duplicate_url_type">URL e tipo de descarga</string>
+    <string name="prevent_duplicate_config">Configuração total</string>
+    <string name="copy_url">Copiar URL</string>
+    <string name="move_top">Mover para cima</string>
+    <string name="move_bottom">Mover para baixo</string>
+    <string name="scheduled">Agendado</string>
+    <string name="clear_scheduled">Limpar agendamento</string>
 </resources>
