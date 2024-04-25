@@ -93,7 +93,7 @@
     <string name="select_sponsorblock_filtering">Wybierz filtrowanie SponsorBlock</string>
     <string name="sponsorblock_nonmusic">Części niezwiązane z muzyką i nie na temat</string>
     <string name="sponsorblock_sponsors">Sponsorzy</string>
-    <string name="sponsorblock_outro">Outro</string>
+    <string name="sponsorblock_outro">Wyjście</string>
     <string name="sponsorblock_promos">Promocje własne</string>
     <string name="sponsorblock_previews">Podglądy</string>
     <string name="sponsorblock_fillers">Wypełniacze</string>
@@ -208,7 +208,7 @@
     <string name="keep_cache_summary">Nie usuwaj plików tymczasowych po zakończeniu pobierania</string>
     <string name="restore">Przywróć</string>
     <string name="network_error">Błąd sieci</string>
-    <string name="sponsorblock">SponsorBlock</string>
+    <string name="sponsorblock">Blokada Sponsorów</string>
     <string name="couldnt_parse_file">Nie można przeanalizować pliku</string>
     <string name="restore_complete">Ukończono przywracanie aplikacji. Przywrócono następujące elementy:</string>
     <string name="select_backup_categories">Wybierz elementy kopii zapasowej</string>
@@ -222,7 +222,7 @@
     <string name="select_all">Zaznacz wszystko</string>
     <string name="dark">Ciemny</string>
     <string name="container">Kontener</string>
-    <string name="incognito">Incognito</string>
+    <string name="incognito">Prywatny</string>
     <string name="defaultValue">Domyślny</string>
     <string name="green">Zielony</string>
     <string name="resume">Wznów</string>
@@ -364,7 +364,7 @@
     <string name="add">Dodaj</string>
     <string name="back">Wstecz</string>
     <string name="text_size">Rozmiar tekstu</string>
-    <string name="swipe_gestures_download_card">Gesty machnięcia na karcie pobierania</string>
+    <string name="swipe_gestures_download_card">Gesty przesunięcia na karcie pobierania</string>
     <string name="show_download_count">Pokaż liczniki na ekranie kolejki pobierania</string>
     <string name="get_new_uploads">Pobierz tylko nowe przesłane pliki</string>
     <string name="also_download_audio">Pobierz ponadto jako dźwięk</string>
@@ -372,10 +372,10 @@
     <string name="select_between">Wybierz elementy pomiędzy</string>
     <string name="reset_processed_links">Zresetuj już przetworzone linki</string>
     <string name="no_download_fragments">Nie pobieraj jako fragmenty</string>
-    <string name="no_download_fragments_summary">Nie używaj plików .part i pisz bezpośrednio do pliku wyjściowego</string>
+    <string name="no_download_fragments_summary">Nie używaj plików .part i zapisuj bezpośrednio do pliku wyjściowego</string>
     <string name="hour">Godzina</string>
     <string name="display_over_apps_summary">Karta pobierania powinna być zawsze wyświetlana na wierzchu. Włącz tę opcję, jeśli aktualnie uruchomiona aplikacja zostanie zamknięta po wyświetleniu karty pobierania</string>
-    <string name="my_filename_templates">Moje szablony nazw plików</string>
-    <string name="prefer_smaller_formats">Preferowane mniejsze formaty</string>
+    <string name="my_filename_templates">Szablony nazw plików</string>
+    <string name="prefer_smaller_formats">Preferowane formaty zajmujące mniej miejsca</string>
     <string name="display_over_apps">Wyświetlaj nad aplikacjami</string>
 </resources>

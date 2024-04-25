@@ -362,7 +362,7 @@
     <string name="show_download_count">Shfaq numrat në faqen e rradhës së shkarkimeve</string>
     <string name="also_download_audio">Shkarko Gjithashtu si Audio</string>
     <string name="wrap_text">Mblidh Tekstin</string>
-    <string name="scroll_down">Shko Poshtë</string>
+    <string name="scroll_down">Lëvizni në fund</string>
     <string name="text_size">Madhësia e Tekstit</string>
     <string name="add">Shto</string>
     <string name="back">Pas</string>
@@ -371,4 +371,11 @@
     <string name="reset_processed_links">Pastro Linket e Proçesuara Deri Tani</string>
     <string name="thumbnail_format">Formati i Thumbnailit</string>
     <string name="get_new_uploads">Merr Vetëm Ngarkimet e Reja</string>
+    <string name="my_filename_templates">Modelet e emrave të mia të skedarit</string>
+    <string name="prefer_smaller_formats">Preferoni formate me përmasa më të vogla</string>
+    <string name="display_over_apps">Shfaq mbi aplikacionet</string>
+    <string name="display_over_apps_summary">Bëni që karta e shkarkimit të shfaqet gjithmonë në krye. Aktivizoni këtë nëse aplikacioni aktual mbyllet kur shfaqet karta e shkarkimit</string>
+    <string name="hour">Ora</string>
+    <string name="no_download_fragments">Mos shkarkoni si Fragmente</string>
+    <string name="no_download_fragments_summary">Mos përdorni skedarë .part dhe shkruani direkt në skedarin dalës</string>
 </resources>

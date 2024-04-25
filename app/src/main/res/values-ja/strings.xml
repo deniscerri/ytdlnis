@@ -373,4 +373,19 @@
     <string name="no_download_fragments_summary">.partファイルを使わず、出力ファイルに直接書き込む</string>
     <string name="no_download_fragments">バラバラにダウンロードしない</string>
     <string name="hour">時間</string>
+    <string name="display_over_apps_summary">ダウンロードカードを常に手前に表示します。カードが表示されると実行中のアプリが終了してしまうなら無効にしてください</string>
+    <string name="my_filename_templates">ファイル名のテンプレート</string>
+    <string name="display_over_apps">アプリの手前に表示</string>
+    <string name="prefer_smaller_formats">サイズの小さい形式を優先</string>
+    <string name="select_between">これらの間を選択</string>
+    <string name="subtitles">字幕</string>
+    <string name="prevent_duplicate_downloads">重複ダウンロードを防止</string>
+    <string name="prevent_duplicate_url_type">URLとダウンロード種別</string>
+    <string name="prevent_duplicate_config">構成設定も完全に同一なら</string>
+    <string name="scheduled">予定済み</string>
+    <string name="clear_scheduled">予定を取り消し済み</string>
+    <string name="disabled">しない</string>
+    <string name="move_bottom">下に移動</string>
+    <string name="copy_url">URLをコピー</string>
+    <string name="move_top">上に移動</string>
 </resources>

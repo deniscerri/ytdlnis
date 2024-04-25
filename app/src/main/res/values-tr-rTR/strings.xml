@@ -225,7 +225,7 @@
     <string name="accents">Tonlar</string>
     <string name="high_contrast">Yüksek Kontrast</string>
     <string name="pure_theme_summary">Tam Siyah / Beyaz Tema</string>
-    <string name="material_you">Malzeme Siz</string>
+    <string name="material_you">Material You</string>
     <string name="blue">Mavi</string>
     <string name="red">Kırmızı</string>
     <string name="green">Yeşil</string>
@@ -381,4 +381,14 @@
     <string name="display_over_apps">Uygulamalar Üzerinden Görüntüleme</string>
     <string name="display_over_apps_summary">İndirme kartının her zaman en üstte görüntülenmesini sağlayın. İndirme kartı göründüğünde çalışmakta olan uygulama kapanırsa bunu açın</string>
     <string name="hour">Saat</string>
+    <string name="disabled">Kapalı</string>
+    <string name="subtitles">Altyazılar</string>
+    <string name="prevent_duplicate_downloads">Yinelenen İndirmeleri Önle</string>
+    <string name="prevent_duplicate_url_type">URL &amp; İndirme Türü</string>
+    <string name="copy_url">URL\'yi kopyala</string>
+    <string name="move_top">Yukarı Taşı</string>
+    <string name="move_bottom">Aşağı Taşı</string>
+    <string name="scheduled">Planlı</string>
+    <string name="clear_scheduled">Planlamayı Temizle</string>
+    <string name="prevent_duplicate_config">Tam Yapılandırma</string>
 </resources>

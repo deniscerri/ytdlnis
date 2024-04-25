@@ -349,7 +349,7 @@
     <string name="thumbnail_format">썸네일 포맷</string>
     <string name="get_new_uploads">새 업로드만 가져오기</string>
     <string name="wrap_text">텍스트 정리</string>
-    <string name="scroll_down">스크롤 내리기</string>
+    <string name="scroll_down">맨 아래로 스크롤</string>
     <string name="text_size">텍스트 크기</string>
     <string name="add">추가</string>
     <string name="back">뒤로</string>
@@ -371,4 +371,21 @@
     <string name="format_filter">포맷 필터</string>
     <string name="format_smallest">가장 작은 포맷 (해상도 단위)</string>
     <string name="cut_unavailable">컷 기능을 사용하기 위해 항목 데이터를 업데이트해야 합니다</string>
+    <string name="my_filename_templates">내 파일 이름 템플릿</string>
+    <string name="prefer_smaller_formats">파일 크기가 더 작은 형식을 선호합니다</string>
+    <string name="display_over_apps">앱 위에 표시</string>
+    <string name="display_over_apps_summary">다운로드 카드가 항상 맨 위에 표시되도록 합니다. 다운로드 카드가 나타나면 현재 실행 중인 앱이 닫히면 이 기능이 겨집니다</string>
+    <string name="hour">시간</string>
+    <string name="disabled">사용하지 않음</string>
+    <string name="subtitles">자막</string>
+    <string name="prevent_duplicate_config">전체 구성</string>
+    <string name="move_top">맨 위로 이동</string>
+    <string name="move_bottom">맨 아래로 이동</string>
+    <string name="no_download_fragments">세션으로 다운로드하지 않기</string>
+    <string name="no_download_fragments_summary">.part 파일을 사용하지 않고 출력 파일에 직접 쓰기</string>
+    <string name="prevent_duplicate_downloads">중복 다운로드 방지</string>
+    <string name="prevent_duplicate_url_type">URL &amp; 다운로드 유형</string>
+    <string name="copy_url">URL 복사</string>
+    <string name="scheduled">예정</string>
+    <string name="clear_scheduled">예약 취소</string>
 </resources>
