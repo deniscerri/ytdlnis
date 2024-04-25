@@ -1,2 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="search">തിരയുക</string>
+    <string name="remove_results">ഫലങ്ങൾ നീക്കം ചെയ്യുക</string>
+    <string name="download_all">എല്ലാം ഡൌൺലോഡ് ചെയ്യുക</string>
+    <string name="settings">ക്രമീകരണങ്ങൾ</string>
+    <string name="home">ഹോം</string>
+    <string name="music_directory">മ്യൂസിക് ഫോൾഡർ</string>
+    <string name="video_directory">വീഡിയോ ഫോൾഡർ</string>
+    <string name="updating">അപ്ഡേറ്റ് ചെയ്യുന്നു</string>
+    <string name="worst_quality">ഏറ്റവും മോശം ക്വാളിറ്റി</string>
+    <string name="best_quality">ഏറ്റവും നല്ല ക്വാളിറ്റി</string>
+    <string name="remove_all">എല്ലാം നീക്കം ചെയ്യുക</string>
+    <string name="directories">ഫോൾഡറുകൾ</string>
+</resources>
