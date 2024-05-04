@@ -302,4 +302,16 @@
     <string name="ytdl_source">Bron van yt-dlp</string>
     <string name="modify_download_card">Download­kaart bewerken</string>
     <string name="format_filter">Formaat­filter</string>
+    <string name="delete_all_sources">Alle bronnen verwĳderen</string>
+    <string name="retry_missing_downloads">Ontbrekende downloads opnieuw proberen</string>
+    <string name="save_auto_subs">Automatische ondertitels opslaan</string>
+    <string name="sponsorblock_nonmusic">Niet-muziek- en offtopic-gedeelten</string>
+    <string name="update_ytdl_nightly">Nachtelijke versie van yt-dlp</string>
+    <string name="finished_download_notification_channel_description">Meldingen voor voltooide downloads</string>
+    <string name="download_over_metered_networks">Downloaden via gemeten netwerken</string>
+    <string name="my_filename_templates">Mĳn bestandsnaam­sjablonen</string>
+    <string name="display_over_apps">Over apps weergeven</string>
+    <string name="select_between">Items tussenin selecteren</string>
+    <string name="prevent_duplicate_downloads">Dubbele downloads voorkomen</string>
+    <string name="multiple_download_card">Kaart met meerdere downloads</string>
 </resources>
