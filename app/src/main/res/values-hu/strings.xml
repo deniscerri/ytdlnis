@@ -371,4 +371,5 @@
     <string name="back">Vissza</string>
     <string name="all_queries_finished">Minden lekérdezés feldolgozása megtörtént</string>
     <string name="select_between">Elemek kiválasztása</string>
+    <string name="disabled">Letiltva</string>
 </resources>
