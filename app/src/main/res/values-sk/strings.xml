@@ -364,7 +364,7 @@
     <string name="get_new_uploads">Prevziať len nové nahrávky</string>
     <string name="also_download_audio">Stiahnuť aj ako audio</string>
     <string name="wrap_text">Zabaliť text</string>
-    <string name="scroll_down">Posun dole</string>
+    <string name="scroll_down">Posun na spodok</string>
     <string name="text_size">Veľkosť textu</string>
     <string name="add">Pridať</string>
     <string name="back">Naspäť</string>
@@ -378,4 +378,14 @@
     <string name="prefer_smaller_formats">Uprednostňovať menšie formáty</string>
     <string name="display_over_apps_summary">Zabezpečí, aby sa karta sťahovania vždy zobrazovala na vrchu. Pri zapnutí tejto funkcie, ak sa aktuálne spustená aplikácia zatvorí, tak sa zobrazí karta sťahovania</string>
     <string name="hour">Hodina</string>
+    <string name="disabled">Zakázané</string>
+    <string name="subtitles">Titulky</string>
+    <string name="prevent_duplicate_downloads">Zabrániť duplicitnému sťahovaniu</string>
+    <string name="prevent_duplicate_url_type">URL a typ sťahovania</string>
+    <string name="prevent_duplicate_config">Úplná konfigurácia</string>
+    <string name="copy_url">Kopírovať adresu URL</string>
+    <string name="move_top">Presunúť nahor</string>
+    <string name="move_bottom">Presunúť nadol</string>
+    <string name="clear_scheduled">Vymazať naplánované</string>
+    <string name="scheduled">Naplánované</string>
 </resources>

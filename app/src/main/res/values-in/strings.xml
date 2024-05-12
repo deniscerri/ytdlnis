@@ -372,4 +372,7 @@
     <string name="all_queries_finished">Semua Kueri telah diproses</string>
     <string name="select_between">Pilih Butir yang di Tengah-Tengah</string>
     <string name="reset_processed_links">Setel Ulang Pranala yang Sudah Diproses</string>
+    <string name="my_filename_templates">Templat Nama Berkas Saya</string>
+    <string name="hour">Jam</string>
+    <string name="no_download_fragments_summary">Jangan gunakan berkas .part dan tulislah langsung ke dalam berkas keluaran</string>
 </resources>

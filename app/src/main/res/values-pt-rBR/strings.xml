@@ -21,7 +21,7 @@
     <string name="ytdl_updating_started">Fazendo o download da nova versão</string>
     <string name="Remove">Remover</string>
     <string name="ok">OK</string>
-    <string name="confirm_delete_history_desc">Excluir todo o histórico permanentemente</string>
+    <string name="confirm_delete_history_desc">Todo o histórico será excluído</string>
     <string name="confirm_delete_history">Confirmar</string>
     <string name="search_history_hint">Pesquisar no histórico</string>
     <string name="no_results">Nenhum resultado</string>
@@ -138,7 +138,7 @@
     <string name="create">Criar</string>
     <string name="update">Atualizar</string>
     <string name="preferred_download_type">Tipo de download preferido</string>
-    <string name="confirm_delete_logs_desc">Excluir toda a lista de logs permanentemente.</string>
+    <string name="confirm_delete_logs_desc">Toda a lista de logs será excluída.</string>
     <string name="select">Selecionar</string>
     <string name="selected">selecionado(s)</string>
     <string name="all_items_selected">Todos os itens selecionados</string>
@@ -192,7 +192,7 @@
     <string name="invert_selected">Inverter seleção</string>
     <string name="download_over_metered_networks_summary">Faça o download usando qualquer tipo de rede. Caso contrário, espera por uma rede Wi-Fi</string>
     <string name="download_over_metered_networks">Download através da rede móvel</string>
-    <string name="confirm_delete_cookies_desc">Excluir todos os cookies permanentemente</string>
+    <string name="confirm_delete_cookies_desc">Todas os cookies serão excluídos</string>
     <string name="delete_all_cookies">Excluir todos os cookies</string>
     <string name="get_cookies">Obter Cookies</string>
     <string name="new_cookie">Novo Cookie</string>
@@ -335,7 +335,7 @@
     <string name="generic">Genérico</string>
     <string name="multiple_download_card">Cartão de download múltiplo</string>
     <string name="format_filter">Filtro de formato</string>
-    <string name="new_source">Nova origem</string>
+    <string name="new_source">Nova fonte</string>
     <string name="force_ipv4">Forçar IPv4</string>
     <string name="set_time">Definir horário</string>
     <string name="every">A cada</string>
@@ -348,18 +348,18 @@
     <string name="bitrate">Taxa de bits</string>
     <string name="not_deleted">Não excluído</string>
     <string name="archive">Arquivar downloads [Usar o arquivamento de downloads do yt-dlp para evitar downloads duplicados]</string>
-    <string name="observe_sources">Observar Origens</string>
-    <string name="delete_all_sources">Excluir todas as origens</string>
-    <string name="confirm_delete_sources_desc">Excluir todas as origens permanentemente</string>
+    <string name="observe_sources">Observar Fontes</string>
+    <string name="delete_all_sources">Excluir todas as fontes</string>
+    <string name="confirm_delete_sources_desc">Todas as fontes serão excluídas</string>
     <string name="copy_urls">Copiar URLs</string>
     <string name="starts">Começa</string>
-    <string name="occurrences">ocorrências</string>
+    <string name="occurrences">ocorrência(s)</string>
     <string name="day">Dia(s)</string>
     <string name="save_auto_subs">Salvar legendas automáticas</string>
     <string name="retry_missing_downloads">Repetir downloads ausentes</string>
     <string name="force_ipv4_desc">Efetuar todas as conexões com IPv4</string>
     <string name="thumbnail_format">Formato da miniatura</string>
-    <string name="get_new_uploads">Obter apenas novos uploads</string>
+    <string name="get_new_uploads">Obter apenas novos envios</string>
     <string name="also_download_audio">Baixar também como áudio</string>
     <string name="wrap_text">Quebra de linha</string>
     <string name="scroll_down">Ir para o final</string>
@@ -378,4 +378,14 @@
     <string name="hour">Hora(s)</string>
     <string name="my_filename_templates">Meus modelos de nome de arquivo</string>
     <string name="display_over_apps_summary">Fazer com que o cartão de download seja sempre exibido na parte superior. Ative esta opção se o aplicativo em execução fechar quando o cartão de download aparecer</string>
+    <string name="disabled">Desabilitado</string>
+    <string name="subtitles">Legendas</string>
+    <string name="prevent_duplicate_downloads">Evitar downloads duplicados</string>
+    <string name="prevent_duplicate_url_type">URL &amp; Tipo de download</string>
+    <string name="prevent_duplicate_config">Configuração completa</string>
+    <string name="move_bottom">Mover para baixo</string>
+    <string name="scheduled">Agendado</string>
+    <string name="clear_scheduled">Limpar downloads agendados</string>
+    <string name="copy_url">Copiar URL</string>
+    <string name="move_top">Mover para cima</string>
 </resources>
