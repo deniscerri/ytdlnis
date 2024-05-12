@@ -15,6 +15,7 @@ import android.os.Build
 import android.os.Bundle
 import androidx.core.app.NotificationCompat
 import androidx.core.content.FileProvider
+import androidx.core.os.bundleOf
 import androidx.documentfile.provider.DocumentFile
 import androidx.navigation.NavDeepLinkBuilder
 import com.deniscerri.ytdl.R
@@ -33,6 +34,7 @@ class NotificationUtil(var context: Context) {
     private val commandDownloadNotificationBuilder: NotificationCompat.Builder = NotificationCompat.Builder(context, COMMAND_DOWNLOAD_SERVICE_CHANNEL_ID)
     private val finishedDownloadNotificationBuilder: NotificationCompat.Builder = NotificationCompat.Builder(context, DOWNLOAD_FINISHED_CHANNEL_ID)
     private val erroredDownloadNotificationBuilder: NotificationCompat.Builder = NotificationCompat.Builder(context, DOWNLOAD_ERRORED_CHANNEL_ID)
+    private val miscDownloadNotificationBuilder: NotificationCompat.Builder = NotificationCompat.Builder(context, DOWNLOAD_MISC_CHANNEL_ID)
 
     private val notificationManager: NotificationManager = context.getSystemService(NotificationManager::class.java)
     private val resources: Resources = context.resources
@@ -99,6 +101,7 @@ class NotificationUtil(var context: Context) {
             DOWNLOAD_FINISHED_CHANNEL_ID -> { return finishedDownloadNotificationBuilder }
             DOWNLOAD_WORKER_CHANNEL_ID -> { return workerNotificationBuilder }
             DOWNLOAD_ERRORED_CHANNEL_ID -> { return erroredDownloadNotificationBuilder }
+            DOWNLOAD_MISC_CHANNEL_ID -> { return miscDownloadNotificationBuilder }
         }
         return downloadNotificationBuilder
     }
@@ -336,13 +339,21 @@ class NotificationUtil(var context: Context) {
             .setArguments(bundle)
             .createPendingIntent()
 
-        val tabBundle = Bundle()
-        tabBundle.putString("tab", "error")
-
         val errorTabPendingIntent = NavDeepLinkBuilder(context)
             .setGraph(R.navigation.nav_graph)
             .setDestination(R.id.downloadQueueMainFragment)
-            .setArguments(tabBundle)
+            .setArguments(bundleOf(Pair("tab", "error")))
+            .createPendingIntent()
+
+        val reconfigurePendingItent = NavDeepLinkBuilder(context)
+            .setGraph(R.navigation.nav_graph)
+            .setDestination(R.id.downloadQueueMainFragment)
+            .setArguments(
+                bundleOf(
+                    Pair("tab", "error"),
+                    Pair("reconfigure", id)
+                )
+            )
             .createPendingIntent()
 
         notificationBuilder
@@ -359,6 +370,8 @@ class NotificationUtil(var context: Context) {
             .setPriority(NotificationCompat.PRIORITY_MAX)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .clearActions()
+
+        notificationBuilder.addAction(0, res.getString(R.string.configure_download), reconfigurePendingItent)
         if (logID != null){
             notificationBuilder.addAction(0, res.getString(R.string.logs), errorPendingIntent)
         }
@@ -616,6 +629,25 @@ class NotificationUtil(var context: Context) {
             .clearActions()
 
         notificationManager.notify(QUERY_PROCESS_FINISHED_NOTIFICATION_ID, notificationBuilder.build())
+    }
+
+    fun createProcessingDownloads() : Notification{
+        val notificationBuilder = getBuilder(DOWNLOAD_MISC_CHANNEL_ID)
+
+        notificationBuilder
+            .setContentTitle(resources.getString(R.string.processing))
+            .setSmallIcon(R.drawable.ic_app_icon)
+            .setLargeIcon(
+                BitmapFactory.decodeResource(
+                    resources,
+                    R.drawable.ic_app_icon
+                )
+            )
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+            .clearActions()
+
+        return notificationBuilder.build()
     }
 
     companion object {

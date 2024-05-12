@@ -33,6 +33,9 @@
         <action
             android:id="@+id/action_homeFragment_to_downloadMultipleBottomSheetDialog2"
             app:destination="@id/downloadMultipleBottomSheetDialog2" />
+        <action
+            android:id="@+id/action_homeFragment_to_downloadsAlreadyExistDialog"
+            app:destination="@id/downloadsAlreadyExistDialog" />
     </fragment>
     <fragment
         android:id="@+id/historyFragment"
@@ -42,6 +45,9 @@
         <action
             android:id="@+id/action_historyFragment_to_downloadQueueMainFragment"
             app:destination="@id/downloadQueueMainFragment" />
+        <action
+            android:id="@+id/action_historyFragment_to_downloadsAlreadyExistDialog"
+            app:destination="@id/downloadsAlreadyExistDialog" />
     </fragment>
     <fragment
         android:id="@+id/moreFragment"
@@ -191,4 +197,8 @@
         android:id="@+id/observeSourcesBottomSheetDialog"
         android:name="com.deniscerri.ytdl.ui.downloadcard.ObserveSourcesBottomSheetDialog"
         android:label="ObserveSourcesBottomSheetDialog" />
+    <dialog
+        android:id="@+id/downloadsAlreadyExistDialog"
+        android:name="com.deniscerri.ytdl.ui.downloadcard.DownloadsAlreadyExistDialog"
+        android:label="DownloadsAlreadyExistDialog" />
 </navigation>

@@ -553,10 +553,8 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
                             }else{
                                 //open multi download card instead
                                 if (activity is ShareActivity){
-                                    val preferredType = DownloadViewModel.Type.valueOf(sharedPreferences.getString("preferred_download_type", "video")!!)
                                     findNavController().navigate(R.id.action_downloadBottomSheetDialog_to_selectPlaylistItemsDialog, bundleOf(
-                                        Pair("results", result),
-                                        Pair("type", preferredType),
+                                        Pair("resultIDs", result.map { it!!.id }.toLongArray()),
                                     ))
                                 }else{
                                     dismiss()

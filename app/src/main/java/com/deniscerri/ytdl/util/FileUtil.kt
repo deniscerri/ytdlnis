@@ -10,6 +10,8 @@ import android.util.Log
 import android.webkit.MimeTypeMap
 import androidx.core.net.toUri
 import androidx.documentfile.provider.DocumentFile
+import androidx.preference.PreferenceManager
+import androidx.work.impl.utils.PreferenceUtils
 import com.anggrayudi.storage.callback.FileCallback
 import com.anggrayudi.storage.callback.FolderCallback
 import com.anggrayudi.storage.file.copyFolderTo
@@ -294,7 +296,8 @@ object FileUtil {
     }
 
     fun getDownloadArchivePath(context: Context) : String {
-        return context.filesDir.absolutePath + "/download_archive.txt"
+        val folder = PreferenceManager.getDefaultSharedPreferences(context).getString("download_archive_path", context.filesDir.absolutePath + "/")!!
+        return "${formatPath(folder)}download_archive.txt"
     }
 
     fun getDefaultTerminalPath() : String {

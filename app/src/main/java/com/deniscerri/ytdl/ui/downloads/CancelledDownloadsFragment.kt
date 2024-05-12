@@ -40,7 +40,9 @@ import com.google.android.material.color.MaterialColors
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -251,19 +253,18 @@ class CancelledDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClic
                 R.id.redownload -> {
                     lifecycleScope.launch {
                         val selectedObjects = getSelectedIDs()
-                        if (preferences.getBoolean("download_card", true)){
-                            withContext(Dispatchers.IO){
-                                downloadViewModel.addDownloadsToProcessing(selectedObjects)
+                        val showDownloadCard = preferences.getBoolean("download_card", true)
+                        if (showDownloadCard) {
+                            CoroutineScope(SupervisorJob()).launch(Dispatchers.IO) {
+                                downloadViewModel.turnDownloadItemsToProcessingDownloads(selectedObjects)
                             }
                             withContext(Dispatchers.Main){
                                 val bundle = Bundle()
                                 bundle.putLongArray("currentDownloadIDs", selectedObjects.toLongArray())
-                                findNavController().navigate(R.id.downloadMultipleBottomSheetDialog2,bundle)
+                                findNavController().navigate(R.id.downloadMultipleBottomSheetDialog2, bundle)
                             }
-                        }else{
-                            withContext(Dispatchers.IO) {
-                                downloadViewModel.reQueueDownloadItems(selectedObjects)
-                            }
+                        }else {
+                            downloadViewModel.reQueueDownloadItems(selectedObjects)
                         }
 
                         adapter.clearCheckedItems()
@@ -275,7 +276,7 @@ class CancelledDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClic
                 }
                 R.id.select_all -> {
                     adapter.checkAll()
-                    mode?.title = getString(R.string.all_items_selected)
+                    mode?.title = "(${adapter.getSelectedObjectsCount(totalSize)}) ${resources.getString(R.string.all_items_selected)}"
                     true
                 }
                 R.id.invert_selected -> {

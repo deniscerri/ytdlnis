@@ -617,7 +617,7 @@ object UiUtil {
         val command = bottomSheet.findViewById<Chip>(R.id.command)
 
         when(status){
-            DownloadRepository.Status.Queued, DownloadRepository.Status.QueuedPaused -> {
+            DownloadRepository.Status.Scheduled -> {
                 if (item.downloadStartTime <= System.currentTimeMillis() / 1000) time!!.visibility = View.GONE
                 else {
                     val calendar = Calendar.getInstance()
@@ -712,7 +712,8 @@ object UiUtil {
                 download!!.visibility = View.GONE
             }
             DownloadRepository.Status.Scheduled -> {
-                download!!.text = context.getString(R.string.download_now)
+                download!!.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_downloads, 0, 0, 0);
+                download.text = context.getString(R.string.download_now)
             }
             else -> {
                 download?.setOnLongClickListener {
@@ -813,6 +814,7 @@ object UiUtil {
         val codec = bottomSheet.findViewById<TextView>(R.id.codec)
         val fileSize = bottomSheet.findViewById<TextView>(R.id.file_size)
         val command = bottomSheet.findViewById<Chip>(R.id.command)
+        val location = bottomSheet.findViewById<Chip>(R.id.location)
         val file = File(item.downloadPath.first())
 
         val calendar = Calendar.getInstance()
@@ -856,6 +858,11 @@ object UiUtil {
 
         command?.setOnClickListener {
             showGeneratedCommand(context, item.command)
+        }
+
+        location?.isVisible = true
+        location?.setOnClickListener {
+            showFullTextDialog(context, item.downloadPath.joinToString("\n"), context.getString(R.string.location))
         }
 
 
@@ -1663,169 +1670,6 @@ object UiUtil {
 
         errDialog.show()
     }
-
-    @SuppressLint("SetTextI18n")
-    fun handleExistingDownloadsResponse(context: Activity, lifecycleScope: CoroutineScope, supportFragmentManager: FragmentManager, it: DownloadViewModel.AlreadyExistsUIState, downloadViewModel: DownloadViewModel, historyViewModel: HistoryViewModel){
-        if (it.downloadItems.isEmpty() && it.historyItems.isEmpty()) return
-
-        val title = context.getString(R.string.download_already_exists)
-        val message = context.getString(R.string.download_already_exists_summary)
-
-        val sheet = BottomSheetDialog(context)
-        sheet.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        sheet.setContentView(R.layout.download_multiple_bottom_sheet)
-        sheet.findViewById<TextView>(R.id.bottom_sheet_title)?.apply {
-            text = title
-            textSize = 20f
-        }
-        sheet.findViewById<TextView>(R.id.bottom_sheet_subtitle)?.text = message
-        sheet.findViewById<LinearLayout>(R.id.multiple_top_info)?.isVisible = false
-
-        var adapter: AlreadyExistsAdapter? = null
-        val list = mutableListOf<Pair<DownloadItem, Long?>>()
-        val alreadyExistsClickListener = object: AlreadyExistsAdapter.OnItemClickListener {
-
-            override fun onEditItem(downloadItem: DownloadItem, position: Int) {
-                val resultItem = downloadViewModel.createResultItemFromDownload(downloadItem)
-                val onItemUpdated = object: ConfigureDownloadBottomSheetDialog.OnDownloadItemUpdateListener {
-                    override fun onDownloadItemUpdate(
-                        resultItemID: Long,
-                        item: DownloadItem
-                    ) {
-                        val currentIndex = list.indexOfFirst { it.first.id == item.id }
-                        val current = list[currentIndex]
-                        list[currentIndex] = Pair(item, current.second)
-                        adapter?.submitList(list)
-                        adapter?.notifyItemChanged(position)
-                    }
-                }
-                val bottomSheet = ConfigureDownloadBottomSheetDialog(resultItem, downloadItem, onItemUpdated)
-                bottomSheet.show(supportFragmentManager, "configureDownloadSingleSheet")
-            }
-
-            override fun onDeleteItem(downloadItem: DownloadItem, position: Int, historyID: Long?) {
-                showGenericDeleteDialog(context, downloadItem.title){
-                    if (historyID == null){
-                        CoroutineScope(Dispatchers.IO).launch {
-                            downloadViewModel.deleteDownload(downloadItem.id)
-                        }
-                    }
-                    list.removeAll { it.first.id == downloadItem.id }
-                    if (list.isEmpty()){
-                        sheet.dismiss()
-                    }
-                    adapter?.notifyDataSetChanged()
-                }
-            }
-
-            override fun onShowHistoryItem(id: Long) {
-                lifecycleScope.launch {
-                    val historyItem = withContext(Dispatchers.IO){
-                        downloadViewModel.getHistoryItemById(id)
-                    }
-                    showHistoryItemDetailsCard(historyItem, context, isPresent = true,
-                        removeItem = { item, deleteFile ->
-                            historyViewModel.delete(item, deleteFile)
-                        },
-                        redownloadItem = { },
-                        redownloadShowDownloadCard = {}
-                    )
-                }
-
-            }
-
-
-        }
-
-        adapter = AlreadyExistsAdapter(alreadyExistsClickListener, context)
-        sheet.findViewById<RecyclerView>(R.id.downloadMultipleRecyclerview)?.apply {
-            layoutManager = GridLayoutManager(context, 1)
-            this.adapter = adapter
-            enableFastScroll()
-            setPadding(0,0,0,0)
-        }
-
-
-        CoroutineScope(Dispatchers.IO).launch {
-            it.downloadItems.forEach {
-                val downloadItem = downloadViewModel.getItemByID(it)
-                list.add(Pair(downloadItem, null))
-                adapter.submitList(list)
-            }
-
-            it.historyItems.forEach {
-                val historyItem = downloadViewModel.getHistoryItemById(it) ?: return@forEach
-                val downloadItem = downloadViewModel.createDownloadItemFromHistory(historyItem)
-                downloadItem.id = it
-                list.add(Pair(downloadItem, historyItem.id))
-                adapter.submitList(list)
-            }
-
-        }
-
-        sheet.findViewById<Button>(R.id.bottomsheet_download_button)?.apply {
-            setOnClickListener {
-                CoroutineScope(Dispatchers.IO).launch {
-                    downloadViewModel.deleteProcessing()
-                    val items = list.map { it.first }
-                    items.forEach { it.id = 0 }
-                    downloadViewModel.queueDownloads(items, true)
-                    withContext(Dispatchers.Main){
-                        sheet.dismiss()
-                    }
-                }
-            }
-        }
-
-        sheet.findViewById<Button>(R.id.bottomsheet_schedule_button)?.apply {
-            setOnClickListener {
-                showDatePicker(supportFragmentManager) { calendar ->
-                    CoroutineScope(Dispatchers.IO).launch {
-                        downloadViewModel.deleteProcessing()
-                        val items = list.map { it.first }
-                        items.forEach {
-                            it.id = 0
-                            it.downloadStartTime = calendar.timeInMillis
-                        }
-
-
-                        runBlocking {
-                            downloadViewModel.queueDownloads(items, true)
-                            val first = items.first()
-                            val date = SimpleDateFormat(
-                                DateFormat.getBestDateTimePattern(
-                                    Locale.getDefault(),
-                                    "ddMMMyyyy - HHmm"
-                                ), Locale.getDefault()
-                            ).format(first.downloadStartTime)
-                            withContext(Dispatchers.Main) {
-                                Toast.makeText(
-                                    context,
-                                    context.getString(R.string.download_rescheduled_to) + " " + date,
-                                    Toast.LENGTH_LONG
-                                ).show()
-                            }
-                        }
-
-                        withContext(Dispatchers.Main) {
-                            sheet.dismiss()
-                        }
-                    }
-                }
-            }
-        }
-
-        sheet.setOnDismissListener { _ ->
-            CoroutineScope(Dispatchers.IO).launch {
-                downloadViewModel.deleteProcessing()
-                downloadViewModel.deleteAllWithID(it.downloadItems)
-            }
-        }
-
-        sheet.findViewById<BottomAppBar>(R.id.bottomAppBar)?.isVisible = false
-        sheet.show()
-    }
-
 
     fun showGenericDeleteDialog(context: Context, itemTitle: String, accepted: () -> Unit){
         val deleteDialog = MaterialAlertDialogBuilder(context)

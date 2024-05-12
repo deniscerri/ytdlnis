@@ -124,12 +124,18 @@
 
         </LinearLayout>
 
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/loadingItemsProgress"
+            android:layout_width="match_parent"
+            android:indeterminate="true"
+            android:layout_height="wrap_content" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/downloadMultipleRecyclerview"
             android:layout_width="match_parent"
-            android:paddingTop="10dp"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:paddingTop="10dp"
             android:paddingBottom="70dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 

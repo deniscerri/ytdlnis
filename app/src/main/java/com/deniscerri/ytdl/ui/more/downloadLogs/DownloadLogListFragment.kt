@@ -193,7 +193,7 @@ class DownloadLogListFragment : Fragment(), DownloadLogsAdapter.OnItemClickListe
                     downloadLogAdapter.checkAll(items)
                     selectedObjects.clear()
                     items.forEach { selectedObjects.add(it) }
-                    mode?.title = getString(R.string.all_items_selected)
+                    mode?.title = "(${selectedObjects.size}) ${resources.getString(R.string.all_items_selected)}"
                     true
                 }
                 R.id.invert_selected -> {

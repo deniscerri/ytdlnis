@@ -40,37 +40,37 @@
     </string-array>
 
     <string-array name="video_formats">
-        <item>@string/worst_quality</item>
-        <item>240p</item>
-        <item>360p</item>
-        <item>480p</item>
-        <item>720p</item>
-        <item>1080p</item>
-        <item>1440p</item>
-        <item>2160p</item>
         <item>@string/best_quality</item>
+        <item>2160p</item>
+        <item>1440p</item>
+        <item>1080p</item>
+        <item>720p</item>
+        <item>480p</item>
+        <item>360p</item>
+        <item>240p</item>
+        <item>@string/worst_quality</item>
     </string-array>
 
     <string-array name="video_formats_values">
-        <item>worst</item>
-        <item>240p_ytdlnisgeneric</item>
-        <item>360p_ytdlnisgeneric</item>
-        <item>480p_ytdlnisgeneric</item>
-        <item>720p_ytdlnisgeneric</item>
-        <item>1080p_ytdlnisgeneric</item>
-        <item>1440p_ytdlnisgeneric</item>
-        <item>2160p_ytdlnisgeneric</item>
         <item>best</item>
+        <item>2160p_ytdlnisgeneric</item>
+        <item>1440p_ytdlnisgeneric</item>
+        <item>1080p_ytdlnisgeneric</item>
+        <item>720p_ytdlnisgeneric</item>
+        <item>480p_ytdlnisgeneric</item>
+        <item>360p_ytdlnisgeneric</item>
+        <item>240p_ytdlnisgeneric</item>
+        <item>worst</item>
     </string-array>
 
     <string-array name="audio_formats">
-        <item>worst</item>
         <item>best</item>
+        <item>worst</item>
     </string-array>
 
     <string-array name="audio_formats_values">
-        <item>wa</item>
         <item>ba</item>
+        <item>wa</item>
     </string-array>
 
     <string-array name="format_ordering">
@@ -896,6 +896,7 @@
         <item>%(uploader)s___(string): Full name of the video uploader)</item>
         <item>%(title)s___(string): Video title)</item>
         <item>%(id)s___(string): Video identifier)</item>
+        <item>%(playlist_index,playlist_autonumber&amp;{}. |)s%(title)s___(string): Title with playlist index in front if its available</item>
         <item>%(fulltitle)s___(string): Video title ignoring live timestamp and generic title)</item>
 <!--        <item>%(ext)s___(string): Video filename extension)</item>-->
         <item>%(alt_title)s___(string): A secondary title of the video)</item>
@@ -1416,6 +1417,36 @@
         <item>download_archive</item>
         <item>url_type</item>
         <item>config</item>
+    </string-array>
+
+    <string-array name="format_importance_audio">
+        <item>@string/preferred_format_id</item>
+        <item>@string/language</item>
+        <item>@string/codec</item>
+        <item>@string/container</item>
+    </string-array>
+
+    <string-array name="format_importance_audio_values">
+        <item>id</item>
+        <item>language</item>
+        <item>codec</item>
+        <item>container</item>
+    </string-array>
+
+    <string-array name="format_importance_video">
+        <item>@string/preferred_format_id</item>
+        <item>@string/video_quality</item>
+        <item>@string/codec</item>
+        <item>@string/no_audio</item>
+        <item>@string/container</item>
+    </string-array>
+
+    <string-array name="format_importance_video_values">
+        <item>id</item>
+        <item>resolution</item>
+        <item>codec</item>
+        <item>no_audio</item>
+        <item>container</item>
     </string-array>
 
 </resources>

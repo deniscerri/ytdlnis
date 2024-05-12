@@ -12,6 +12,7 @@ import androidx.room.Upsert
 import com.deniscerri.ytdl.database.models.DownloadItem
 import com.deniscerri.ytdl.database.models.DownloadItemSimple
 import com.deniscerri.ytdl.database.models.Format
+import com.deniscerri.ytdl.database.repository.DownloadRepository
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -130,7 +131,7 @@ interface DownloadDao {
     fun getLastDownloadId(): Long
 
     @Query("SELECT status FROM downloads WHERE id=:id")
-    fun checkStatus(id: Long) : String
+    fun checkStatus(id: Long) : DownloadRepository.Status?
 
     @Query("UPDATE downloads " +
             "SET status = CASE " +
@@ -178,7 +179,7 @@ interface DownloadDao {
     @Query("DELETE FROM downloads WHERE id in (:list)")
     suspend fun deleteAllWithIDs(list: List<Long>)
 
-    @Query("UPDATE downloads SET status='Cancelled' WHERE status in('Queued','QueuedPaused','Active','ActivePaused')")
+    @Query("UPDATE downloads SET status='Cancelled' WHERE status in('Queued','QueuedPaused','Active','ActivePaused', 'Scheduled')")
     suspend fun cancelActiveQueued()
 
     @Query("DELETE FROM downloads WHERE status='Processing' AND id=:id")
@@ -229,8 +230,11 @@ interface DownloadDao {
     @Query("Select url from downloads where id in (:ids)")
     fun getURLsByID(ids: List<Long>) : List<String>
 
-    @Query("UPDATE downloads SET downloadStartTime=0 where id in (:list)")
+    @Query("UPDATE downloads SET downloadStartTime=0, status='Queued' where id in (:list)")
     suspend fun resetScheduleTimeForItems(list: List<Long>)
+
+    @Query("UPDATE downloads SET status='Queued' where status in ('QueuedPaused', 'ActivePaused')")
+    suspend fun resetPausedItems()
 
     @Query("Update downloads SET status='Queued', downloadStartTime = 0 WHERE id in (:list)")
     suspend fun reQueueDownloadItems(list: List<Long>)

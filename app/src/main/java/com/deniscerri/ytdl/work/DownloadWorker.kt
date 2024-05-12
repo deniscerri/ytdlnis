@@ -119,7 +119,10 @@ class DownloadWorker(
                         delay(1500)
                         //update item if its incomplete
                         resultRepo.updateDownloadItem(downloadItem)?.apply {
-                            dao.updateWithoutUpsert(this)
+                            val status = dao.checkStatus(this.id)
+                            if (listOf(DownloadRepository.Status.Active, DownloadRepository.Status.ActivePaused).contains(status)){
+                                dao.updateWithoutUpsert(this)
+                            }
                         }
                     }
 
@@ -172,9 +175,7 @@ class DownloadWorker(
                             }
                         }
                     }.onSuccess {
-                        resultRepo.updateDownloadItem(downloadItem)?.apply {
-                            dao.updateWithoutUpsert(this)
-                        }
+                        resultRepo.updateDownloadItem(downloadItem)
                         val wasQuickDownloaded = resultDao.getCountInt() == 0
                         runBlocking {
                             var finalPaths : MutableList<String>?
@@ -241,9 +242,9 @@ class DownloadWorker(
                             val incognito = sharedPreferences.getBoolean("incognito", false)
                             if (!incognito) {
                                 if (request.hasOption("--download-archive") && finalPaths == listOf(context.getString(R.string.unfound_file))) {
-                                    Looper.prepare().run {
+                                    handler.postDelayed({
                                         Toast.makeText(context, resources.getString(R.string.download_already_exists), Toast.LENGTH_LONG).show()
-                                    }
+                                    }, 100)
                                 }else{
                                     val unixTime = System.currentTimeMillis() / 1000
                                     finalPaths?.apply {
@@ -303,6 +304,8 @@ class DownloadWorker(
                         }
 
                     }.onFailure {
+                        if (this@DownloadWorker.isStopped) return@onFailure
+
                         FileUtil.deleteConfigFiles(request)
 
                         withContext(Dispatchers.Main){
@@ -345,7 +348,6 @@ class DownloadWorker(
 
                             setProgressAsync(workDataOf("progress" to 100, "output" to it.toString(), "id" to downloadItem.id))
                         }
-                        //if (items.size <= 1) WorkManager.getInstance(context).cancelWorkById(this@DownloadWorker.id)
                     }
                 }
             }

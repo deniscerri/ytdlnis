@@ -238,7 +238,7 @@ class QueuedDownloadsFragment : Fragment(), QueuedDownloadAdapter.OnItemClickLis
                 }
                 R.id.select_all -> {
                     adapter.checkAll()
-                    mode?.title = getString(R.string.all_items_selected)
+                    mode?.title = "(${adapter.getSelectedObjectsCount(totalSize)}) ${resources.getString(R.string.all_items_selected)}"
                     true
                 }
                 R.id.invert_selected -> {

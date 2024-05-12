@@ -58,15 +58,9 @@ class CancelScheduledDownloadWorker(
         WorkManager.getInstance(context).cancelAllWorkByTag("download")
         runningDownloads.forEach {
             YoutubeDL.getInstance().destroyProcessById(it.id.toString())
+            it.status = DownloadRepository.Status.Queued.toString()
+            dao.update(it)
         }
         return Result.success()
     }
-
-
-
-    companion object {
-        val runningYTDLInstances: MutableList<Long> = mutableListOf()
-        const val TAG = "DownloadWorker"
-    }
-
 }

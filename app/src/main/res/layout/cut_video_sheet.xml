@@ -95,6 +95,23 @@
             app:layout_constraintBottom_toBottomOf="@+id/frame_layout"
             app:layout_constraintEnd_toEndOf="@+id/frame_layout" />
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/forward"
+            android:clickable="false"
+            app:iconSize="50dp"
+            style="@style/Widget.Material3.Button.IconButton"
+            app:iconTint="?android:colorAccent"
+            app:icon="@drawable/exomedia_ic_fast_forward_white"
+            android:layout_marginHorizontal="20dp"
+            android:layout_width="wrap_content"
+            android:contentDescription="@string/end"
+            android:indeterminate="true"
+            app:layout_constraintHorizontal_bias="0.0"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/frame_layout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
 
         <TextView
             android:id="@+id/durationText"
@@ -162,6 +179,7 @@
                     android:hint="@string/start">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/from_textinput_edittext"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="text" />
@@ -189,6 +207,7 @@
                     app:layout_constraintStart_toEndOf="@+id/colon">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/to_textinput_edittext"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:inputType="text" />

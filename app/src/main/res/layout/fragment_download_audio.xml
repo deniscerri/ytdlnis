@@ -67,6 +67,7 @@
                         android:id="@+id/container_textview"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:textDirection="locale"
                         android:inputType="none"
                         app:simpleItems="@array/audio_containers"
                         />

@@ -54,6 +54,14 @@
             android:summary="@string/use_extra_commands_summary"
             app:title="@string/use_extra_commands" />
 
+        <SwitchPreferenceCompat
+            android:widgetLayout="@layout/preferece_material_switch"
+            app:defaultValue="false"
+            app:icon="@drawable/ic_cut"
+            app:key="force_keyframes"
+            app:summary="@string/force_keyframes_summary"
+            app:title="@string/force_keyframes" />
+
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/audio">
@@ -81,14 +89,6 @@
             app:key="crop_thumbnail"
             app:summary="@string/crop_thumb_summary"
             app:title="@string/crop_thumb" />
-
-        <SwitchPreferenceCompat
-            android:widgetLayout="@layout/preferece_material_switch"
-            app:defaultValue="false"
-            app:icon="@drawable/ic_cut"
-            app:key="force_keyframes"
-            app:summary="@string/force_keyframes_summary"
-            app:title="@string/force_keyframes" />
 
     </PreferenceCategory>
 
@@ -144,7 +144,7 @@
             app:title="@string/save_thumb" />
 
         <ListPreference
-            android:defaultValue="png"
+            android:defaultValue="jpg"
             android:entries="@array/thumbnail_containers"
             android:entryValues="@array/thumbnail_containers_values"
             android:icon="@drawable/ic_image"
@@ -254,6 +254,17 @@
             app:icon="@drawable/ic_format"
             app:key="prefer_smaller_formats"
             app:title="@string/prefer_smaller_formats" />
+
+        <Preference
+            android:icon="@drawable/ic_format"
+            android:key="format_importance_audio"
+            app:title="@string/format_importance_audio" />
+
+        <Preference
+            android:icon="@drawable/ic_format"
+            android:key="format_importance_video"
+            app:title="@string/format_importance_video" />
+
     </PreferenceCategory>
 
 </PreferenceScreen>

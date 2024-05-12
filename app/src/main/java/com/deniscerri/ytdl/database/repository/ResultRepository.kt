@@ -129,6 +129,10 @@ class ResultRepository(private val resultDao: ResultDao, private val context: Co
         return resultDao.getResultByURL(url)
     }
 
+    fun getAllByIDs(ids: List<Long>) : List<ResultItem> {
+        return resultDao.getAllByIDs(ids)
+    }
+
     suspend fun getResultsFromSource(inputQuery: String, resetResults: Boolean, addToResults: Boolean = true, singleItem: Boolean = false) : ArrayList<ResultItem> {
         return when(getQueryType(inputQuery)){
             SourceType.YOUTUBE_VIDEO -> {
@@ -151,9 +155,9 @@ class ResultRepository(private val resultDao: ResultDao, private val context: Co
 
     }
 
-    fun getQueryType(inputQuery: String) : SourceType {
+    private fun getQueryType(inputQuery: String) : SourceType {
         var type = SourceType.SEARCH_QUERY
-        val p = Pattern.compile("(^(https?)://(www.)?youtu(.be)?)|(^(https?)://(www.)?piped.video)")
+        val p = Pattern.compile("((^(https?)://)?(www.)?youtu(.be)?)|(^(https?)://(www.)?piped.video)")
         val m = p.matcher(inputQuery)
         if (m.find()) {
             type = SourceType.YOUTUBE_VIDEO

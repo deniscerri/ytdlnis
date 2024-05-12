@@ -253,13 +253,14 @@ class FormatSelectionBottomSheetDialog(private val _items: List<DownloadItem?>? 
                                        .sumOf { itt -> itt.filesize }
                            }
                        }
-                       hasGenericFormats = false
+                       hasGenericFormats = formatCollection.size == 0
                        withContext(Dispatchers.Main){
                            shimmers.visibility = View.GONE
                            shimmers.stopShimmer()
-                           filterBtn.isVisible = true
+                           filterBtn.isVisible = !hasGenericFormats
                            addFormatsToView()
-                           refreshBtn.visibility = View.GONE
+                           refreshBtn.isVisible = hasGenericFormats
+                           refreshBtn.isEnabled = hasGenericFormats
                            formatListLinearLayout.visibility = View.VISIBLE
                        }
                    }catch (e: Exception){

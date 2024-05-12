@@ -52,6 +52,7 @@ class SearchSuggestionsAdapter(onItemClickListener: OnItemClickListener, activit
         val linear = holder.linear
         when (item.type){
             SearchSuggestionType.SUGGESTION -> {
+                holder.itemView.tag = SearchSuggestionType.SUGGESTION.toString()
                 val textView = linear.findViewById<TextView>(R.id.suggestion_text)
                 textView.text = item.text
                 textView.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_search, 0, 0, 0)
@@ -67,6 +68,7 @@ class SearchSuggestionsAdapter(onItemClickListener: OnItemClickListener, activit
                 }
             }
             SearchSuggestionType.HISTORY -> {
+                holder.itemView.tag = SearchSuggestionType.HISTORY.toString()
                 val textView = linear.findViewById<TextView>(R.id.suggestion_text)
                 textView.text = item.text
                 textView.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_restore, 0, 0, 0)
@@ -85,6 +87,7 @@ class SearchSuggestionsAdapter(onItemClickListener: OnItemClickListener, activit
                 }
             }
             SearchSuggestionType.CLIPBOARD -> {
+                holder.itemView.tag = SearchSuggestionType.CLIPBOARD.toString()
                 val textView = linear.findViewById<TextView>(R.id.suggestion_text)
                 textView.text = activity.getString(R.string.link_you_copied)
                 textView.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_language, 0, 0, 0)
@@ -101,6 +104,9 @@ class SearchSuggestionsAdapter(onItemClickListener: OnItemClickListener, activit
                 textView.setOnLongClickListener { true }
             }
         }
+    }
+    fun getList() : List<SearchSuggestionItem> {
+        return this.currentList
     }
 
     interface OnItemClickListener {

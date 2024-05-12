@@ -21,6 +21,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
 import androidx.core.app.ActivityCompat
+import androidx.core.os.bundleOf
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.ViewModelProvider
@@ -34,9 +35,11 @@ import com.deniscerri.ytdl.MainActivity
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.viewmodel.CookieViewModel
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
+import com.deniscerri.ytdl.database.viewmodel.HistoryViewModel
 import com.deniscerri.ytdl.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdl.ui.BaseActivity
 import com.deniscerri.ytdl.util.ThemeUtil
+import com.deniscerri.ytdl.util.UiUtil
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -52,6 +55,7 @@ class ShareActivity : BaseActivity() {
 
     lateinit var context: Context
     private lateinit var resultViewModel: ResultViewModel
+    private lateinit var historyViewModel: HistoryViewModel
     private lateinit var downloadViewModel: DownloadViewModel
     private lateinit var cookieViewModel: CookieViewModel
     private lateinit var sharedPreferences: SharedPreferences
@@ -115,6 +119,7 @@ class ShareActivity : BaseActivity() {
 
         context = baseContext
         resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]
+        historyViewModel = ViewModelProvider(this)[HistoryViewModel::class.java]
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
         cookieViewModel = ViewModelProvider(this)[CookieViewModel::class.java]
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
@@ -207,6 +212,18 @@ class ShareActivity : BaseActivity() {
                         downloadViewModel.queueDownloads(listOf(downloadItem))
                     }
                     this@ShareActivity.finish()
+                }
+
+                downloadViewModel.alreadyExistsUiState.collectLatest { res ->
+                    if (res.isNotEmpty()){
+                        withContext(Dispatchers.Main){
+                            val bundle = bundleOf(
+                                Pair("duplicates", res)
+                            )
+                            navController.navigate(R.id.downloadsAlreadyExistDialog2, bundle)
+                        }
+                        downloadViewModel.alreadyExistsUiState.value = mutableListOf()
+                    }
                 }
             }
         }

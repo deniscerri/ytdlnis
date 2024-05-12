@@ -183,22 +183,14 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
 
         lifecycleScope.launch{
             downloadViewModel.alreadyExistsUiState.collectLatest { res ->
-                if (res.downloadItems.isNotEmpty() || res.historyItems.isNotEmpty()) {
+                if (res.isNotEmpty()){
                     withContext(Dispatchers.Main){
-                        kotlin.runCatching {
-                            UiUtil.handleExistingDownloadsResponse(
-                                requireActivity(),
-                                requireActivity().lifecycleScope,
-                                requireActivity().supportFragmentManager,
-                                res,
-                                downloadViewModel,
-                                historyViewModel)
-                        }
+                        val bundle = bundleOf(
+                            Pair("duplicates", res)
+                        )
+                        findNavController().navigate(R.id.action_historyFragment_to_downloadsAlreadyExistDialog, bundle)
                     }
-                    downloadViewModel.alreadyExistsUiState.value =  DownloadViewModel.AlreadyExistsUIState(
-                        mutableListOf(),
-                        mutableListOf()
-                    )
+                    downloadViewModel.alreadyExistsUiState.value = mutableListOf()
                 }
             }
         }
@@ -558,7 +550,7 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
                     historyAdapter?.checkAll(historyList)
                     selectedObjects.clear()
                     historyList?.forEach { selectedObjects.add(it!!) }
-                    mode?.title = getString(R.string.all_items_selected)
+                    mode?.title = "(${selectedObjects.size}) ${resources.getString(R.string.all_items_selected)}"
                     true
                 }
                 R.id.invert_selected -> {

@@ -222,6 +222,9 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
 
             val workConstraints = Constraints.Builder()
             if (!allowMeteredNetworks) workConstraints.setRequiredNetworkType(NetworkType.UNMETERED)
+            else {
+                workConstraints.setRequiredNetworkType(NetworkType.CONNECTED)
+            }
 
             val workRequest = OneTimeWorkRequestBuilder<DownloadWorker>()
                 .addTag("download")

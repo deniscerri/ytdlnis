@@ -55,6 +55,7 @@ import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.hamcrest.core.Every
 import java.text.SimpleDateFormat
 import java.time.Month
 import java.util.Calendar
@@ -84,6 +85,7 @@ class ObserveSourcesBottomSheetDialog : BottomSheetDialogFragment() {
     private lateinit var title: TextInputLayout
     private lateinit var url: TextInputLayout
     private lateinit var everyCat: AutoCompleteTextView
+    private lateinit var categoryAdapter: ArrayAdapter<String>
     private lateinit var everyTime: TextInputLayout
     private lateinit var weekDays: ChipGroup
     private lateinit var everyMonthDay: TextInputLayout
@@ -291,7 +293,7 @@ class ObserveSourcesBottomSheetDialog : BottomSheetDialogFragment() {
         everyNr.editText?.doAfterTextChanged { checkIfValid() }
 
         val cats = ObserveSourcesRepository.everyCategoryName.map { getString(it.value) }
-        val adapter = ArrayAdapter(requireActivity(),android.R.layout.simple_dropdown_item_1line, cats)
+        categoryAdapter = ArrayAdapter(requireActivity(),android.R.layout.simple_dropdown_item_1line, cats)
         everyCat.doAfterTextChanged {
             everyTime.isVisible = it.toString() != cats[0]
             weekDays.isVisible = it.toString() == cats[2]
@@ -299,7 +301,7 @@ class ObserveSourcesBottomSheetDialog : BottomSheetDialogFragment() {
             startTime.isVisible = !startMonth.isVisible
             everyMonthDay.isVisible = startMonth.isVisible
         }
-        everyCat.setAdapter(adapter)
+        everyCat.setAdapter(categoryAdapter)
         if (currentItem != null){
             val idx = ObserveSourcesRepository.EveryCategory.values().indexOf(currentItem!!.everyCategory)
             everyCat.setText(cats[idx], false)
@@ -473,6 +475,7 @@ class ObserveSourcesBottomSheetDialog : BottomSheetDialogFragment() {
         okButton.setOnClickListener {
             lifecycleScope.launch {
                 val item: DownloadItem = getDownloadItem()
+                item.url = url.editText!!.text.toString()
 
                 var ends = 0L
                 if(endsOn.isChecked){
@@ -484,7 +487,7 @@ class ObserveSourcesBottomSheetDialog : BottomSheetDialogFragment() {
                     endsAfterCount = endsAfterNr.editText!!.text.toString().toInt()
                 }
 
-                val category = ObserveSourcesRepository.EveryCategory.values()[adapter.getPosition(everyCat.text.toString())]
+                val category = ObserveSourcesRepository.EveryCategory.values()[categoryAdapter.getPosition(everyCat.text.toString())]
 
                 val observeItem = ObserveSourcesItem(
                     id = currentItem?.id ?: 0,
@@ -493,7 +496,7 @@ class ObserveSourcesBottomSheetDialog : BottomSheetDialogFragment() {
                     downloadItemTemplate = item,
                     everyNr = everyNr.editText!!.text.toString().toInt(),
                     everyCategory = category,
-                    everyTime = everyTime.tag as Long,
+                    everyTime = (everyTime.tag ?: 0L) as Long,
                     weeklyConfig = if (category == ObserveSourcesRepository.EveryCategory.WEEK) {
                         ObserveSourcesWeeklyConfig(
                             weekDays = weekDays.children.filter { (it as Chip).isChecked }.map { it.tag.toString().toInt() }.toList()
@@ -534,16 +537,31 @@ class ObserveSourcesBottomSheetDialog : BottomSheetDialogFragment() {
     }
 
     private fun checkIfValid(){
-        var valid = title.editText?.text?.isNotBlank() == true
-                    && url.editText?.text?.isNotBlank() == true
-                    && everyNr.editText?.text?.isNotBlank() == true
-                    && everyTime.editText?.text?.isNotBlank() == true
-                    && startTime.editText?.text?.isNotBlank() == true
+        val title = title.editText?.text?.isNotBlank() == true
+        val url = url.editText?.text?.isNotBlank() == true
+        val category = ObserveSourcesRepository.EveryCategory.values()[categoryAdapter.getPosition(everyCat.text.toString())]
 
-        if (endsOn.isChecked && endsOnTime.editText?.text?.isBlank() == true) valid = false
-        else if (endsAfter.isChecked && endsAfterNr.editText?.text?.isBlank() == true) valid = false
+        val everyNr = everyNr.editText?.text?.isNotBlank() == true
+        val everyTime = everyTime.editText?.text?.isNotBlank() == true
 
-        okButton.isEnabled = valid
+        val every = when(category){
+            ObserveSourcesRepository.EveryCategory.HOUR -> {
+                everyNr
+            }
+            else -> {
+                everyNr && everyTime
+            }
+        }
+
+        val ends = if (endsOn.isChecked){
+            endsOnTime.editText?.text?.isNotBlank() == true
+        }else if (endsAfter.isChecked){
+            endsAfterNr.editText?.text?.isNotBlank() == true
+        }else{
+            true
+        }
+
+        okButton.isEnabled = title && url && every && ends
     }
 
     private fun getDownloadItem(selectedTabPosition: Int = tabLayout.selectedTabPosition) : DownloadItem{

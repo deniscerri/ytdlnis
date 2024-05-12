@@ -234,55 +234,49 @@
     </com.facebook.shimmer.ShimmerFrameLayout>
 
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <LinearLayout
         android:id="@+id/home_fabs"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="bottom|end">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/copied_url_fab"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingVertical="10dp"
-            android:layout_gravity="bottom|end">
+            android:layout_gravity="bottom|end"
+            android:text="@string/link_you_copied"
+            android:layout_marginHorizontal="16dp"
+            android:contentDescription="@string/link_you_copied"
+            app:icon="@drawable/ic_clipboard"
+            app:useCompatPadding="true" />
 
-            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-                android:id="@+id/copied_url_fab"
-                android:visibility="gone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom|end"
-                android:text="@string/link_you_copied"
-                android:layout_marginHorizontal="16dp"
-                android:contentDescription="@string/link_you_copied"
-                app:icon="@drawable/ic_clipboard"
-                app:useCompatPadding="true" />
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/download_all_fab"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_marginBottom="10dp"
+            android:layout_marginHorizontal="16dp"
+            android:text="@string/download_all"
+            app:icon="@drawable/ic_down" />
 
-            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-                android:id="@+id/download_all_fab"
-                android:visibility="gone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom|end"
-                android:layout_marginHorizontal="16dp"
-                android:layout_marginTop="10dp"
-                android:text="@string/download_all"
-                app:icon="@drawable/ic_down" />
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/download_selected_fab"
+            android:visibility="gone"
+            app:elevation="0dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="16dp"
+            android:layout_marginBottom="10dp"
+            app:icon="@drawable/ic_down"
+            android:text="@string/download"
+            app:srcCompat="@drawable/ic_music"/>
 
-            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-                android:id="@+id/download_selected_fab"
-                android:visibility="gone"
-                app:elevation="0dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom|end"
-                android:layout_margin="16dp"
-                app:icon="@drawable/ic_down"
-                android:text="@string/download"
-                app:srcCompat="@drawable/ic_music"/>
-
-        </LinearLayout>
-
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </LinearLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

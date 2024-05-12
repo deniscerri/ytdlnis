@@ -1,8 +1,11 @@
 package com.deniscerri.ytdl.ui.more.settings
 
-import android.content.DialogInterface
+import android.app.Activity
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.edit
 import androidx.preference.ListPreference
 import androidx.preference.Preference
@@ -13,17 +16,18 @@ import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import com.deniscerri.ytdl.R
+import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.util.UiUtil
 import com.deniscerri.ytdl.work.AlarmScheduler
 import com.deniscerri.ytdl.work.DownloadWorker
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.materialswitch.MaterialSwitch
 import java.util.Calendar
 import java.util.concurrent.TimeUnit
 
 
 class DownloadSettingsFragment : BaseSettingsFragment() {
     override val title: Int = R.string.downloads
+
+    private lateinit var archivePath: Preference
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.downloading_preferences, rootKey)
@@ -47,6 +51,25 @@ class DownloadSettingsFragment : BaseSettingsFragment() {
             true
         }
 
+        val preventDuplicateDownloads = findPreference<ListPreference>("prevent_duplicate_downloads")
+        preventDuplicateDownloads?.setOnPreferenceChangeListener { _, newValue ->
+            archivePath.isVisible = newValue == "download_archive"
+            true
+        }
+
+        archivePath = findPreference("download_archive_path")!!
+        archivePath.summary = FileUtil.getDownloadArchivePath(requireContext())
+        archivePath.isVisible = preferences.getString("prevent_duplicate_downloads", "") == "download_archive"
+        archivePath.onPreferenceClickListener =
+            Preference.OnPreferenceClickListener {
+                val intent = Intent(Intent.ACTION_OPEN_DOCUMENT_TREE)
+                intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION)
+                archivePathResultLauncher.launch(intent)
+                true
+            }
+
         val useScheduler = findPreference<SwitchPreferenceCompat>("use_scheduler")
         val scheduleStart = findPreference<Preference>("schedule_start")
         scheduleStart?.summary = preferences.getString("schedule_start", "00:00")
@@ -55,8 +78,17 @@ class DownloadSettingsFragment : BaseSettingsFragment() {
         val scheduler = AlarmScheduler(requireContext())
 
         useScheduler?.setOnPreferenceChangeListener { preference, newValue ->
+            var allowChange = true
             if (newValue as Boolean){
-                scheduler.schedule()
+                if (!scheduler.canSchedule() && Build.VERSION.SDK_INT >= 31){
+                    Intent().also { intent ->
+                        intent.action = Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM
+                        requireContext().startActivity(intent)
+                    }
+                    allowChange = false
+                }else{
+                    scheduler.schedule()
+                }
             }else{
                 scheduler.cancel()
                 //start worker if there are leftover downloads waiting for scheduler
@@ -72,7 +104,7 @@ class DownloadSettingsFragment : BaseSettingsFragment() {
                     workRequest.build()
                 )
             }
-            true
+            allowChange
         }
 
         scheduleStart?.setOnPreferenceClickListener {
@@ -99,6 +131,27 @@ class DownloadSettingsFragment : BaseSettingsFragment() {
                 scheduler.schedule()
             }
             true
+        }
+    }
+
+    private var archivePathResultLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            result.data?.data?.let {
+                activity?.contentResolver?.takePersistableUriPermission(
+                    it,
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION or
+                            Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+                )
+            }
+
+            val path = result.data!!.data.toString()
+            val preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
+            val editor = preferences.edit()
+            editor.putString("download_archive_path", path)
+            editor.apply()
+            archivePath.summary = FileUtil.getDownloadArchivePath(requireContext())
         }
     }
 

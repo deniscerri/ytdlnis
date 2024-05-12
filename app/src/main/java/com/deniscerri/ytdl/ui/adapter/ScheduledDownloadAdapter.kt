@@ -66,6 +66,7 @@ class ScheduledDownloadAdapter(onItemClickListener: OnItemClickListener, activit
 
         if (item == null) return
         card.tag = item.id.toString()
+        holder.itemView.tag = item.id.toString()
 
         //Scheduled Time
         val time = mainView.findViewById<TextView>(R.id.scheduled_time)
@@ -152,7 +153,7 @@ class ScheduledDownloadAdapter(onItemClickListener: OnItemClickListener, activit
             if (checkedItems.size > 0 || inverted) {
                 checkCard(card, item.id, position)
             } else {
-                onItemClickListener.onCardClick(item.id)
+                onItemClickListener.onCardClick(item.id, position)
             }
         }
 
@@ -218,7 +219,7 @@ class ScheduledDownloadAdapter(onItemClickListener: OnItemClickListener, activit
 
     interface OnItemClickListener {
         fun onActionButtonClick(itemID: Long)
-        fun onCardClick(itemID: Long)
+        fun onCardClick(itemID: Long, position: Int)
         fun onCardSelect(isChecked: Boolean, position: Int)
     }
 
@@ -230,7 +231,11 @@ class ScheduledDownloadAdapter(onItemClickListener: OnItemClickListener, activit
             }
 
             override fun areContentsTheSame(oldItem: DownloadItemSimple, newItem: DownloadItemSimple): Boolean {
-                return oldItem.id == newItem.id && oldItem.title == newItem.title && oldItem.author == newItem.author && oldItem.thumb == newItem.thumb
+                return oldItem.id == newItem.id &&
+                        oldItem.title == newItem.title &&
+                        oldItem.author == newItem.author &&
+                        oldItem.thumb == newItem.thumb &&
+                        oldItem.downloadStartTime == newItem.downloadStartTime
             }
         }
     }

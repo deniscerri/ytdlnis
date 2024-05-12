@@ -1,6 +1,5 @@
 package com.deniscerri.ytdl.util
 
-import android.R.color
 import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.app.Dialog
@@ -37,9 +36,11 @@ import androidx.lifecycle.withStarted
 import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdl.App
 import com.deniscerri.ytdl.R
+import com.deniscerri.ytdl.database.models.DownloadItem
 import com.deniscerri.ytdl.database.models.observeSources.ObserveSourcesItem
 import com.deniscerri.ytdl.database.repository.DownloadRepository
 import com.deniscerri.ytdl.database.repository.ObserveSourcesRepository.EveryCategory
+import com.deniscerri.ytdl.util.Extensions.toTimePeriodsArray
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.tabs.TabLayout
@@ -56,6 +57,7 @@ import java.util.Calendar
 import java.util.Locale
 import java.util.regex.Pattern
 import kotlin.math.abs
+import kotlin.math.min
 
 
 object Extensions {
@@ -289,19 +291,66 @@ object Extensions {
         }
     }
 
-    fun String.convertToTimestamp() : Int {
+    enum class Period {
+        HOUR, MINUTE, SECOND, MILLISECOND
+    }
+
+    fun Long.toTimePeriodsArray() : Map<Period, Int> {
+        var tmp = this
+        val millis = ((tmp % 1000) / 100).toInt()
+        tmp /= 1000
+        val hours = (tmp / 3600).toInt()
+        tmp %= 3600
+        val minutes = (tmp / 60).toInt()
+        tmp %= 60
+        val seconds = tmp.toInt()
+
+        return mapOf(
+            Period.HOUR to hours,
+            Period.MINUTE to minutes,
+            Period.SECOND to seconds,
+            Period.MILLISECOND to millis
+        )
+    }
+
+    fun Long.toStringTimeStamp() : String {
+        var tmp = this
+        val millis = ((tmp % 1000) / 100).toInt()
+        tmp /= 1000
+        val hours = (tmp / 3600).toInt()
+        tmp %= 3600
+        val minutes = (tmp / 60).toInt()
+        tmp %= 60
+        val seconds = tmp.toInt()
+
+        var res = "${minutes.toString().padStart(if (hours > 0) 2 else 1, '0')}:${seconds.toString().padStart(2, '0')}"
+        if (hours > 0){
+            res = "${hours}:" + res
+        }
+        if (millis > 0){
+            res += ".${millis}"
+        }
+
+        return res
+    }
+
+    fun String.convertToTimestamp() : Long {
         return try {
             val timeArray = this.split(":")
-            var timeSeconds = timeArray[timeArray.lastIndex].toInt()
+            val secondsMillis = timeArray[timeArray.lastIndex]
+            var timeSeconds = secondsMillis.split(".")[0].toLong()
+            val millis = kotlin.runCatching { secondsMillis.split(".")[1].toInt() }.getOrElse { 0 }
+
             var times = 60
             for (i in timeArray.lastIndex - 1 downTo 0) {
                 timeSeconds += timeArray[i].toInt() * times
                 times *= 60
             }
-            timeSeconds
+
+            (timeSeconds * 1000) + millis * 100
         }catch (e: Exception){
             e.printStackTrace()
-            0
+            0L
         }
     }
 
@@ -408,11 +457,15 @@ object Extensions {
         paint.setColorFilter(PorterDuffColorFilter(colorValue.data, PorterDuff.Mode.SRC_IN))
 
         val canvas = Canvas(bitmap)
-        DrawableCompat.setTint(drawable, colorValue.data)
+        DrawableCompat.setTint(drawable, ContextCompat.getColor(context, R.color.icon_fg))
         drawable.setBounds(0, 0, canvas.width, canvas.height)
         drawable.draw(canvas)
         return bitmap
     }
 
+    fun DownloadItem.setAsScheduling(timeInMillis: Long) {
+        status = DownloadRepository.Status.Scheduled.toString()
+        downloadStartTime = timeInMillis
+    }
 
 }

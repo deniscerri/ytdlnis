@@ -71,7 +71,7 @@
     <PreferenceCategory android:title="@string/misc">
         <SwitchPreferenceCompat
             android:widgetLayout="@layout/preferece_material_switch"
-            app:defaultValue="false"
+            app:defaultValue="true"
             android:icon="@drawable/baseline_recommend_24"
             android:key="home_recommendations"
             app:summary="@string/video_recommendations_summary"
@@ -145,7 +145,7 @@
 
         <SwitchPreferenceCompat
             android:widgetLayout="@layout/preferece_material_switch"
-            app:defaultValue="false"
+            app:defaultValue="true"
             android:icon="@drawable/baseline_numbers_24"
             android:key="show_count_downloads"
             app:title="@string/show_download_count" />

@@ -20,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.os.bundleOf
 import androidx.core.view.children
 import androidx.core.view.forEach
 import androidx.core.view.isVisible
@@ -59,12 +60,14 @@ import com.google.android.material.search.SearchBar
 import com.google.android.material.search.SearchView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggestionsAdapter.OnItemClickListener, OnClickListener {
@@ -76,7 +79,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
     private var downloadSelectedFab: ExtendedFloatingActionButton? = null
     private var downloadAllFab: ExtendedFloatingActionButton? = null
     private var clipboardFab: ExtendedFloatingActionButton? = null
-    private var homeFabs: CoordinatorLayout? = null
+    private var homeFabs: LinearLayout? = null
     private var infoUtil: InfoUtil? = null
     private var downloadQueue: ArrayList<ResultItem>? = null
 
@@ -216,12 +219,6 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
             inputQueries!!.addAll(argList)
         }
 
-        if(arguments?.getBoolean("search") == true){
-            requireView().post {
-                searchBar?.performClick()
-            }
-        }
-
         if (inputQueries != null) {
             lifecycleScope.launch(Dispatchers.IO){
                 resultViewModel.deleteAll()
@@ -276,22 +273,15 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
         lifecycleScope.launch {
             launch{
                 downloadViewModel.alreadyExistsUiState.collectLatest { res ->
-                    if (res.downloadItems.isNotEmpty() || res.historyItems.isNotEmpty()) {
+                    if (res.isNotEmpty()){
                         withContext(Dispatchers.Main){
-                            kotlin.runCatching {
-                                UiUtil.handleExistingDownloadsResponse(
-                                    requireActivity(),
-                                    requireActivity().lifecycleScope,
-                                    requireActivity().supportFragmentManager,
-                                    res,
-                                    downloadViewModel,
-                                    historyViewModel)
-                            }
+                            val bundle = bundleOf(
+                                Pair("duplicates", ArrayList(res))
+                            )
+                            delay(500)
+                            findNavController().navigate(R.id.downloadsAlreadyExistDialog, bundle)
                         }
-                        downloadViewModel.alreadyExistsUiState.value =  DownloadViewModel.AlreadyExistsUIState(
-                            mutableListOf(),
-                            mutableListOf()
-                        )
+                        downloadViewModel.alreadyExistsUiState.value = mutableListOf()
                     }
                 }
             }
@@ -313,15 +303,24 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
             arguments?.remove("showDownloadsWithUpdatedFormats")
             CoroutineScope(Dispatchers.IO).launch {
                 val ids = arguments?.getLongArray("downloadIds") ?: return@launch
-                downloadViewModel.updateItemsWithIdsToProcessingStatus(ids.toList())
+                val jobID = downloadViewModel.turnDownloadItemsToProcessingDownloads(ids.toList())
                 withContext(Dispatchers.Main){
-                    findNavController().navigate(R.id.downloadMultipleBottomSheetDialog2)
+                    findNavController().navigate(R.id.downloadMultipleBottomSheetDialog2, bundleOf(
+                        Pair("processingDownloadsJobID", jobID)
+                    ))
                 }
+            }
+        }
+        
+        if(arguments?.getBoolean("search") == true){
+            arguments?.remove("search")
+            requireView().post {
+                searchBar?.performClick()
             }
         }
 
         if (searchView?.currentTransitionState == SearchView.TransitionState.SHOWN){
-            updateSearchViewItems(searchView?.editText?.text)
+            updateSearchViewItems(searchView?.editText?.text.toString())
         }
 
         requireView().post {
@@ -405,13 +404,13 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
                     chipGroupDivider?.visibility = VISIBLE
                 }
 
-                updateSearchViewItems(searchView!!.editText.text)
+                updateSearchViewItems(searchView!!.editText.text.toString())
             }
         }
 
         searchView!!.editText.doAfterTextChanged {
             if (searchView!!.currentTransitionState != SearchView.TransitionState.SHOWN) return@doAfterTextChanged
-            updateSearchViewItems(it)
+            updateSearchViewItems(it.toString())
         }
 
         searchView!!.editText.setOnTouchListener(OnTouchListener { _, event ->
@@ -454,7 +453,11 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
         searchBar!!.setOnMenuItemClickListener { m: MenuItem ->
             when (m.itemId) {
                 R.id.delete_results -> {
-                    resultViewModel.cancelParsingQueries()
+                    lifecycleScope.launch {
+                        withContext(Dispatchers.IO){
+                            resultViewModel.cancelParsingQueries()
+                        }
+                    }
                     resultViewModel.getTrending()
                     selectedObjects = ArrayList()
                     searchBar!!.setText("")
@@ -479,7 +482,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
     }
 
     @SuppressLint("InflateParams")
-    private fun updateSearchViewItems(searchQuery: Editable?) = lifecycleScope.launch(Dispatchers.Main) {
+    private fun updateSearchViewItems(searchQuery: String) = lifecycleScope.launch(Dispatchers.Main) {
         lifecycleScope.launch {
             if (searchView!!.editText.text.isEmpty()){
                 searchView!!.editText.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, 0, 0)
@@ -490,13 +493,13 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
             val combinedList = mutableListOf<SearchSuggestionItem>()
 
             val history = withContext(Dispatchers.IO){
-                resultViewModel.getSearchHistory().map { it.query }.filter { it.contains(searchQuery!!) }
+                resultViewModel.getSearchHistory().map { it.query }.filter { it.contains(searchQuery) }
             }.map {
                 SearchSuggestionItem(it, SearchSuggestionType.HISTORY)
             }
             val suggestions = if (sharedPreferences!!.getBoolean("search_suggestions", false)){
                 withContext(Dispatchers.IO){
-                    infoUtil!!.getSearchSuggestions(searchQuery.toString())
+                    infoUtil!!.getSearchSuggestions(searchQuery)
                 }
             }else{
                 emptyList()
@@ -509,11 +512,11 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
 
             val url = checkClipboard()
             url?.apply {
-                if (this.isNotEmpty()){
+                var alreadyHasThem = this.all { queriesChipGroup?.children?.any { c -> (c as Chip).text.contains(it) } == true }
+                if (this.isNotEmpty() && !alreadyHasThem){
                     combinedList.add(0, SearchSuggestionItem(this.joinToString("\n"), SearchSuggestionType.CLIPBOARD))
                 }
             }
-
 
             searchSuggestionsAdapter?.submitList(combinedList)
 
@@ -729,21 +732,12 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
         } catch (e: Exception) {""}
         if (viewIdName.isNotEmpty()) {
             if (viewIdName == "downloadAll") {
-                lifecycleScope.launch {
-                    val downloadList = withContext(Dispatchers.IO){
-                        downloadViewModel.turnResultItemsToDownloadItems(resultsList!!)
-                    }
-                    if (sharedPreferences!!.getBoolean("download_card", true)) {
-                        CoroutineScope(Dispatchers.IO).launch {
-                            downloadViewModel.insertToProcessing(downloadList)
-                        }
-
-                        findNavController().navigate(R.id.downloadMultipleBottomSheetDialog2)
-                    } else {
-                        downloadList.chunked(100).forEach {
-                            downloadViewModel.queueDownloads(it)
-                        }
-                    }
+                val showDownloadCard = sharedPreferences!!.getBoolean("download_card", true)
+                val jobID = downloadViewModel.turnResultItemsToProcessingDownloads(resultsList!!.map { it!!.id }, downloadNow = !showDownloadCard)
+                if (showDownloadCard){
+                    findNavController().navigate(R.id.downloadMultipleBottomSheetDialog2, bundleOf(
+                        Pair("processingDownloadsJobID", jobID)
+                    ))
                 }
             }
         }
@@ -806,24 +800,18 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
                 }
                 R.id.download -> {
                     lifecycleScope.launch {
-                        if (sharedPreferences!!.getBoolean("download_card", true) && selectedObjects.size == 1) {
+                        val showDownloadCard = sharedPreferences!!.getBoolean("download_card", true)
+                        if (showDownloadCard && selectedObjects.size == 1) {
                             showSingleDownloadSheet(
                                 selectedObjects[0],
                                 downloadViewModel.getDownloadType(url = selectedObjects[0].url)
                             )
                         }else{
-                            val downloadList = withContext(Dispatchers.IO){
-                                downloadViewModel.turnResultItemsToDownloadItems(selectedObjects)
-                            }
-
-                            if (sharedPreferences!!.getBoolean("download_card", true)) {
-                                CoroutineScope(Dispatchers.IO).launch {
-                                    downloadViewModel.insertToProcessing(downloadList)
-                                }
-
-                                findNavController().navigate(R.id.downloadMultipleBottomSheetDialog2)
-                            } else {
-                                downloadViewModel.queueDownloads(downloadList)
+                            val jobID = downloadViewModel.turnResultItemsToProcessingDownloads(selectedObjects.map { it.id }, downloadNow = !showDownloadCard)
+                            if (showDownloadCard){
+                                findNavController().navigate(R.id.downloadMultipleBottomSheetDialog2, bundleOf(
+                                    Pair("processingDownloadsJobID", jobID)
+                                ))
                             }
                         }
                         clearCheckedItems()
@@ -835,7 +823,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
                     homeAdapter?.checkAll(resultsList)
                     selectedObjects.clear()
                     resultsList?.forEach { selectedObjects.add(it!!) }
-                    mode?.title = getString(R.string.all_items_selected)
+                    mode?.title = "(${selectedObjects.size}) ${resources.getString(R.string.all_items_selected)}"
                     true
                 }
                 R.id.invert_selected -> {
@@ -905,14 +893,14 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
 
     }
 
-    override fun onSearchSuggestionAdd(t: String) {
-        val items = t.split("\n")
+    override fun onSearchSuggestionAdd(text: String) {
+        val items = text.split("\n")
 
-        items.forEach {text ->
-            val present = queriesChipGroup!!.children.firstOrNull { (it as Chip).text.toString() == text }
+        items.forEach {t ->
+            val present = queriesChipGroup!!.children.firstOrNull { (it as Chip).text.toString() == t }
             if (present == null) {
                 val chip = layoutinflater!!.inflate(R.layout.input_chip, queriesChipGroup, false) as Chip
-                chip.text = text
+                chip.text = t
                 chip.chipBackgroundColor = ColorStateList.valueOf(MaterialColors.getColor(requireContext(), R.attr.colorSecondaryContainer, Color.BLACK))
                 chip.setOnClickListener {
                     if (queriesChipGroup!!.childCount == 1) queriesConstraint!!.visibility = View.GONE
@@ -924,17 +912,14 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
         }
 
         searchView!!.editText.setText("")
-        if (queriesChipGroup!!.childCount == 0) queriesConstraint!!.visibility = View.GONE
-        else queriesConstraint!!.visibility = View.VISIBLE
+        queriesConstraint?.isVisible = queriesChipGroup?.childCount!! > 0
 
-        val clipBoardItem = searchSuggestionsRecyclerView?.layoutManager?.findViewByPosition(0)
-        clipBoardItem?.apply {
-            if ((this as ConstraintLayout).findViewById<TextView>(R.id.suggestion_text).text == getString(R.string.link_you_copied)){
-                searchSuggestionsAdapter?.notifyItemRemoved(0)
+        searchSuggestionsAdapter?.getList()?.apply {
+            if (this.first().type == SearchSuggestionType.CLIPBOARD){
+                val newList = this.toMutableList().drop(1)
+                searchSuggestionsAdapter?.submitList(newList)
             }
         }
-
-
     }
 
     override fun onSearchSuggestionLongClick(text: String, position: Int) {
@@ -943,7 +928,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
         deleteDialog.setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, _: Int -> dialogInterface.cancel() }
         deleteDialog.setPositiveButton(getString(R.string.ok)) { _: DialogInterface?, _: Int ->
             resultViewModel.removeSearchQueryFromHistory(text)
-            updateSearchViewItems(searchView!!.editText.text)
+            updateSearchViewItems(searchView!!.editText.text.toString())
         }
         deleteDialog.show()
     }

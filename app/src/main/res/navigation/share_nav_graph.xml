@@ -34,4 +34,8 @@
         android:id="@+id/downloadMultipleBottomSheetDialog"
         android:name="com.deniscerri.ytdl.ui.downloadcard.DownloadMultipleBottomSheetDialog"
         android:label="DownloadMultipleBottomSheetDialog" />
+    <dialog
+        android:id="@+id/downloadsAlreadyExistDialog2"
+        android:name="com.deniscerri.ytdl.ui.downloadcard.DownloadsAlreadyExistDialog"
+        android:label="DownloadsAlreadyExistDialog" />
 </navigation>

@@ -37,6 +37,12 @@
             app:useSimpleSummaryProvider="true"
             app:title="@string/prevent_duplicate_downloads" />
 
+        <Preference
+            android:defaultValue=""
+            app:icon="@drawable/baseline_archive_24"
+            app:key="download_archive_path"
+            app:title="@string/download_archive_folder" />
+
         <SwitchPreferenceCompat
             android:widgetLayout="@layout/preferece_material_switch"
             app:defaultValue="true"

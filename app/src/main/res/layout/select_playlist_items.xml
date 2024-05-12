@@ -129,6 +129,13 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/loadingItemsProgress"
+            android:layout_width="match_parent"
+            android:indeterminate="true"
+            android:layout_marginTop="10dp"
+            android:layout_height="wrap_content" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/downloadMultipleRecyclerview"
             android:layout_width="match_parent"

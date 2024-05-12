@@ -13,6 +13,8 @@
         android:id="@+id/file_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:maxLines="2"
+        android:ellipsize="end"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -37,7 +39,7 @@
             android:scrollbars="none"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -113,19 +115,6 @@
 
 
         </HorizontalScrollView>
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/action_button"
-            style="?attr/materialIconButtonStyle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:minHeight="0dp"
-            android:padding="0dp"
-            app:cornerRadius="10dp"
-            app:iconTint="?attr/colorAccent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

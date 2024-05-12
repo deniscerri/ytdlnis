@@ -37,6 +37,9 @@ interface ResultDao {
         return insertMultiple(items.filter { getResultByURL(it.url) == null })
     }
 
+    @Query("SELECT * FROM results WHERE id IN (:ids)")
+    fun getAllByIDs(ids: List<Long>) : List<ResultItem>
+
     @Update(onConflict = OnConflictStrategy.REPLACE)
     suspend fun update(item: ResultItem)
 

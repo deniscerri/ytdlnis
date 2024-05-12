@@ -2,27 +2,34 @@ package com.deniscerri.ytdl.ui.adapter
 
 import android.app.Activity
 import android.content.SharedPreferences
+import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.PopupMenu
 import android.widget.TextView
+import androidx.core.view.isVisible
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.AsyncDifferConfig
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdl.R
+import com.deniscerri.ytdl.database.models.AlreadyExistsItem
 import com.deniscerri.ytdl.database.models.DownloadItem
+import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.util.Extensions.loadThumbnail
 import com.deniscerri.ytdl.util.Extensions.popup
 import com.deniscerri.ytdl.util.FileUtil
+import com.deniscerri.ytdl.util.UiUtil
 import com.google.android.material.card.MaterialCardView
 
-class AlreadyExistsAdapter(onItemClickListener: OnItemClickListener, activity: Activity) : ListAdapter<Pair<DownloadItem, Long?>, AlreadyExistsAdapter.ViewHolder>(AsyncDifferConfig.Builder(
+class AlreadyExistsAdapter(onItemClickListener: OnItemClickListener, activity: Activity) : ListAdapter<AlreadyExistsItem, AlreadyExistsAdapter.ViewHolder>(AsyncDifferConfig.Builder(
     DIFF_CALLBACK
 ).build()) {
     private val onItemClickListener: OnItemClickListener
@@ -39,7 +46,7 @@ class AlreadyExistsAdapter(onItemClickListener: OnItemClickListener, activity: A
         val cardView: MaterialCardView
 
         init {
-            cardView = itemView as MaterialCardView
+            cardView = itemView.findViewById(R.id.download_card_view)
         }
     }
 
@@ -51,12 +58,9 @@ class AlreadyExistsAdapter(onItemClickListener: OnItemClickListener, activity: A
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val alreadyExistsItem = getItem(position) ?: return
-        val item = alreadyExistsItem.first
-        val historyID = alreadyExistsItem.second
-
         val card = holder.cardView
-        card.tag = item.id.toString()
-        card.popup()
+        card.tag = alreadyExistsItem.downloadItem.id.toString()
+        val item = alreadyExistsItem.downloadItem
 
         val uiHandler = Handler(Looper.getMainLooper())
         val thumbnail = card.findViewById<ImageView>(R.id.downloads_image_view)
@@ -75,6 +79,20 @@ class AlreadyExistsAdapter(onItemClickListener: OnItemClickListener, activity: A
             title = title.substring(0, 40) + "..."
         }
         itemTitle.text = title.ifEmpty { item.url }
+
+        //DOWNLOAD TYPE -----------------------------
+        val type = card.findViewById<TextView>(R.id.download_type)
+        when(item.type){
+            DownloadViewModel.Type.audio -> type.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                R.drawable.ic_music_formatcard, 0,0,0
+            )
+            DownloadViewModel.Type.video -> type.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                R.drawable.ic_video_formatcard, 0,0,0
+            )
+            else -> type.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                R.drawable.ic_terminal_formatcard, 0,0,0
+            )
+        }
 
         val formatNote = card.findViewById<TextView>(R.id.format_note)
         if (item.format.format_note == "?" || item.format.format_note == "") formatNote!!.visibility =
@@ -102,45 +120,64 @@ class AlreadyExistsAdapter(onItemClickListener: OnItemClickListener, activity: A
         if (fileSizeReadable == "?") fileSize.visibility = View.GONE
         else fileSize.text = fileSizeReadable
 
-        val editBtn = card.findViewById<Button>(R.id.already_exists_edit)
-        val deleteBtn = card.findViewById<Button>(R.id.already_exists_delete)
+        val menu = card.findViewById<View>(R.id.options)
+        menu.isVisible = true
+        menu.setOnClickListener {
+            val popup = PopupMenu(activity, it)
+            popup.menuInflater.inflate(R.menu.already_exists_menu, popup.menu)
+            if (Build.VERSION.SDK_INT > 27) popup.menu.setGroupDividerEnabled(true)
+
+            popup.setOnMenuItemClickListener { m ->
+                when(m.itemId){
+                    R.id.edit -> {
+                        onItemClickListener.onEditItem(alreadyExistsItem, position)
+                        popup.dismiss()
+                    }
+                    R.id.delete -> {
+                        onItemClickListener.onDeleteItem(alreadyExistsItem, position)
+                        popup.dismiss()
+                    }
+                    R.id.copy_url -> {
+                        UiUtil.copyLinkToClipBoard(activity, item.url)
+                        popup.dismiss()
+                    }
+                }
+                true
+            }
+
+            popup.show()
+
+        }
 
         card.setOnLongClickListener {
-            onItemClickListener.onDeleteItem(item, position, historyID)
+            onItemClickListener.onDeleteItem(alreadyExistsItem, position)
             true
         }
 
-        editBtn.setOnClickListener {
-            onItemClickListener.onEditItem(item, position)
-        }
-
-        deleteBtn.setOnClickListener {
-            onItemClickListener.onDeleteItem(item, position, historyID)
-        }
-
-        card.setOnClickListener(null)
-        if (historyID != null){
+        if (alreadyExistsItem.historyID != null){
             card.setOnClickListener {
-                onItemClickListener.onShowHistoryItem(historyID)
+                onItemClickListener.onShowHistoryItem(alreadyExistsItem.historyID!!)
             }
+        }else{
+            card.setOnClickListener(null)
         }
 
     }
 
     interface OnItemClickListener {
-        fun onEditItem(downloadItem: DownloadItem, position: Int)
-        fun onDeleteItem(downloadItem: DownloadItem, position: Int, historyID: Long?)
-        fun onShowHistoryItem(id: Long)
+        fun onEditItem(alreadyExistsItem: AlreadyExistsItem, position: Int)
+        fun onDeleteItem(alreadyExistsItem: AlreadyExistsItem, position: Int)
+        fun onShowHistoryItem(historyItemID: Long)
     }
 
     companion object {
-        private val DIFF_CALLBACK: DiffUtil.ItemCallback<Pair<DownloadItem, Long?>> = object : DiffUtil.ItemCallback<Pair<DownloadItem, Long?>>() {
-            override fun areItemsTheSame(oldItem: Pair<DownloadItem, Long?>, newItem: Pair<DownloadItem, Long?>): Boolean {
-                return oldItem.first.id == newItem.first.id
+        private val DIFF_CALLBACK: DiffUtil.ItemCallback<AlreadyExistsItem> = object : DiffUtil.ItemCallback<AlreadyExistsItem>() {
+            override fun areItemsTheSame(oldItem: AlreadyExistsItem, newItem: AlreadyExistsItem): Boolean {
+                return oldItem.downloadItem.id == newItem.downloadItem.id
             }
 
-            override fun areContentsTheSame(oldItem: Pair<DownloadItem, Long?>, newItem: Pair<DownloadItem, Long?>): Boolean {
-                return oldItem.first.id == newItem.first.id && oldItem.first.title == newItem.first.title && oldItem.first.author == newItem.first.author && oldItem.first.thumb == newItem.first.thumb
+            override fun areContentsTheSame(oldItem: AlreadyExistsItem, newItem: AlreadyExistsItem): Boolean {
+                return oldItem.downloadItem.id == newItem.downloadItem.id && oldItem.downloadItem.title == newItem.downloadItem.title && oldItem.downloadItem.author == newItem.downloadItem.author && oldItem.downloadItem.thumb == newItem.downloadItem.thumb
             }
         }
     }

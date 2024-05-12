@@ -1,0 +1,42 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".MainActivity" >
+
+    <item
+        android:id="@+id/select_between"
+        android:visible="false"
+        android:title="@string/select_between"
+        android:icon="@drawable/ic_select_between"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/delete_results"
+        android:title="@string/remove_results"
+        android:icon="@drawable/baseline_delete_24"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/download"
+        android:title="@string/download"
+        android:icon="@drawable/baseline_download_24"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/select_all"
+        android:title="@string/select_all"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/invert_selected"
+        android:title="@string/invert_selected"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/copy_urls"
+        android:icon="@drawable/ic_delete_all"
+        android:title="@string/copy_urls"
+        app:showAsAction="never" />
+
+</menu>
+

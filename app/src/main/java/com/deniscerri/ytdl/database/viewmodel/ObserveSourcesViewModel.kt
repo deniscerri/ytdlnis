@@ -10,6 +10,7 @@ import androidx.preference.PreferenceManager
 import androidx.work.Constraints
 import androidx.work.Data
 import androidx.work.ExistingWorkPolicy
+import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.PeriodicWorkRequest
 import androidx.work.PeriodicWorkRequestBuilder
@@ -124,7 +125,15 @@ class ObserveSourcesViewModel(private val application: Application) : AndroidVie
             }
 
             //schedule for next time
+            val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(application)
+            val allowMeteredNetworks = sharedPreferences.getBoolean("metered_networks", true)
+
             val workConstraints = Constraints.Builder()
+            if (!allowMeteredNetworks) workConstraints.setRequiredNetworkType(NetworkType.UNMETERED)
+            else {
+                workConstraints.setRequiredNetworkType(NetworkType.CONNECTED)
+            }
+
             val workRequest = OneTimeWorkRequestBuilder<ObserveSourceWorker>()
                 .addTag("observeSources")
                 .addTag(it.id.toString())

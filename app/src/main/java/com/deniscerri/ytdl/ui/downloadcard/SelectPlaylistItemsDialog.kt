@@ -11,9 +11,12 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
 import androidx.core.os.bundleOf
+import androidx.core.view.children
+import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.map
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -31,6 +34,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.elevation.SurfaceColors
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -49,28 +53,23 @@ class SelectPlaylistItemsDialog : BottomSheetDialogFragment(), PlaylistAdapter.O
     private lateinit var count: TextView
     private lateinit var selectBetween: MenuItem
 
-    private lateinit var items: List<ResultItem?>
+    private lateinit var resultItemIDs: List<Long>
     private lateinit var itemURLs: List<String>
-    private lateinit var type: DownloadViewModel.Type
+    private var items = listOf<ResultItem>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         downloadViewModel = ViewModelProvider(requireActivity())[DownloadViewModel::class.java]
         resultViewModel = ViewModelProvider(requireActivity())[ResultViewModel::class.java]
 
-        if (Build.VERSION.SDK_INT >= 33){
-            arguments?.getParcelableArrayList("results", ResultItem::class.java)
-        }else{
-            arguments?.getParcelableArrayList<ResultItem>("results")
-        }.apply {
+        arguments?.getLongArray("resultIDs").apply {
             if (this == null){
                 dismiss()
                 return
             }else{
-                items = this
+                resultItemIDs = this.toList()
             }
         }
-        type = arguments?.getSerializable("type") as DownloadViewModel.Type
     }
 
     @SuppressLint("RestrictedApi", "NotifyDataSetChanged")
@@ -90,6 +89,7 @@ class SelectPlaylistItemsDialog : BottomSheetDialogFragment(), PlaylistAdapter.O
             }
         }
 
+        val progress = view.findViewById<LinearProgressIndicator>(R.id.loadingItemsProgress)
 
         listAdapter =
             PlaylistAdapter(
@@ -101,7 +101,6 @@ class SelectPlaylistItemsDialog : BottomSheetDialogFragment(), PlaylistAdapter.O
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = listAdapter
         recyclerView.enableFastScroll()
-        listAdapter.submitList(items)
 
         count = view.findViewById(R.id.count)
         count.text = "0 ${resources.getString(R.string.selected)}"
@@ -159,7 +158,7 @@ class SelectPlaylistItemsDialog : BottomSheetDialogFragment(), PlaylistAdapter.O
                 fromTextInput.isEnabled = true
                 toTextInput.isEnabled = true
                 ok.isEnabled = true
-                count.text = resources.getString(R.string.all_items_selected)
+                count.text = "(${listAdapter.getCheckedItems().size}) ${resources.getString(R.string.all_items_selected)} "
             }else{
                 reset()
                 fromTextInput.isEnabled = true
@@ -183,25 +182,15 @@ class SelectPlaylistItemsDialog : BottomSheetDialogFragment(), PlaylistAdapter.O
                     withContext(Dispatchers.Main){
                         findNavController().navigate(R.id.action_selectPlaylistItemsDialog_to_downloadBottomSheetDialog, bundleOf(
                             Pair("result", resultItem),
-                            Pair("type", downloadViewModel.getDownloadType(type, resultItem.url)),
+                            Pair("type", downloadViewModel.getDownloadType(url = resultItem.url)),
                         ))
                     }
                 }else{
-                    val downloadItems = mutableListOf<DownloadItem>()
-                    checkedResultItems.forEach { c ->
-                        c!!.id = 0
-                        val i = downloadViewModel.createDownloadItemFromResult(
-                            result = c, givenType = type)
-                        if (type == DownloadViewModel.Type.command){
-                            i.format = downloadViewModel.getLatestCommandTemplateAsFormat()
-                        }
-                        downloadItems.add(i)
-                    }
-
-                    downloadViewModel.insertToProcessing(downloadItems)
-
+                    val jobID = downloadViewModel.turnResultItemsToProcessingDownloads(checkedResultItems.map { it!!.id })
                     withContext(Dispatchers.Main){
-                        findNavController().navigate(R.id.action_selectPlaylistItemsDialog_to_downloadMultipleBottomSheetDialog)
+                        findNavController().navigate(R.id.action_selectPlaylistItemsDialog_to_downloadMultipleBottomSheetDialog,
+                            bundleOf(Pair("processingDownloadsJobID", jobID))
+                        )
                     }
                 }
 
@@ -218,7 +207,7 @@ class SelectPlaylistItemsDialog : BottomSheetDialogFragment(), PlaylistAdapter.O
                     listAdapter.invertSelected(items)
                     val checkedItems = listAdapter.getCheckedItems()
                     if (checkedItems.size == items.size){
-                        count.text = resources.getString(R.string.all_items_selected)
+                        count.text = "(${listAdapter.getCheckedItems().size}) ${resources.getString(R.string.all_items_selected)} "
                     }else{
                         count.text = "${checkedItems.size} ${resources.getString(R.string.selected)}"
                     }
@@ -245,7 +234,23 @@ class SelectPlaylistItemsDialog : BottomSheetDialogFragment(), PlaylistAdapter.O
         }
 
         selectBetween = bottomAppBar.menu.findItem(R.id.select_between)
-        itemURLs = items.map { it!!.url }
+
+        lifecycleScope.launch {
+            resultViewModel.items.map { items -> items.filter { resultItemIDs.contains(it.id) } }.observe(this@SelectPlaylistItemsDialog) {
+                val isLoading = it.size != resultItemIDs.size
+                progress.isVisible = isLoading
+                listAdapter.submitList(it)
+                recyclerView.suppressLayout(isLoading)
+                bottomAppBar.menu.children.forEach { c -> c.isEnabled = !isLoading }
+                ok.isEnabled = !isLoading
+                checkAll.isEnabled = !isLoading
+                fromTextInput.isEnabled = !isLoading
+                toTextInput.isEnabled = !isLoading
+
+                items = it
+                itemURLs = items.map { itm -> itm.url }
+            }
+        }
 
     }
 
@@ -263,7 +268,7 @@ class SelectPlaylistItemsDialog : BottomSheetDialogFragment(), PlaylistAdapter.O
 
     override fun onCardSelect(itemURL: String, isChecked: Boolean, checkedItems: List<String>) {
         if (checkedItems.size == items.size){
-            count.text = resources.getString(R.string.all_items_selected)
+            count.text = "(${listAdapter.getCheckedItems().size}) ${resources.getString(R.string.all_items_selected)} "
         }else{
             count.text = "${checkedItems.size} ${resources.getString(R.string.selected)}"
         }

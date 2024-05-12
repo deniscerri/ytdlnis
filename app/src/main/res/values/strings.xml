@@ -391,4 +391,15 @@
     <string name="move_bottom">Move to the Bottom</string>
     <string name="scheduled">Scheduled</string>
     <string name="clear_scheduled">Clear Scheduled</string>
+    <string name="minute">Minute</string>
+    <string name="second">Second</string>
+    <string name="milliseconds">Milliseconds</string>
+    <string name="format_importance_audio">Format Importance Order (Audio)</string>
+    <string name="format_importance_video">Format Importance Order (Video)</string>
+    <string name="format_importance_note">Adjust format element importance. This order will only be used when the app fetches the formats in the download card and auto-selects the format!</string>
+    <string name="no_audio">Video with no Audio</string>
+    <string name="download_archive_folder">Download Archive Folder</string>
+    <string name="location">Location</string>
+    <string name="enable_alarm_permission">You need to enable the SCHEDULE_EXACT_ALARM permission in the app settings.</string>
+    <string name="process_downloads_background">Downloads are still loading. Continue procesing them in the background and start downloading?</string>
 </resources>

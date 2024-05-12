@@ -76,14 +76,12 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
-                android:maxLines="3"
-                app:layout_constraintVertical_bias="0.0"
+                android:maxLines="2"
                 android:paddingHorizontal="5dp"
                 android:scrollbars="none"
                 android:textSize="15sp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/horizontalScrollView"
-                app:layout_constraintEnd_toStartOf="@+id/already_exists_buttons"
+                app:layout_constraintEnd_toStartOf="@+id/options"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -92,10 +90,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:barrierDirection="bottom"
-                app:constraint_referenced_ids="title,already_exists_buttons" />
+                app:constraint_referenced_ids="title,options" />
 
             <HorizontalScrollView
-                android:id="@+id/horizontalScrollView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="bottom"
@@ -111,6 +108,44 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/download_type"
+                        style="@style/Widget.Material3.FloatingActionButton.Large.Secondary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="5dp"
+                        android:background="@drawable/rounded_corner"
+                        android:backgroundTint="?attr/colorSecondary"
+                        android:clickable="false"
+                        android:gravity="center"
+                        android:minWidth="30dp"
+                        android:paddingHorizontal="5dp"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        app:cornerRadius="10dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"/>
+
+                    <TextView
+                        android:id="@+id/file_size"
+                        style="@style/Widget.Material3.FloatingActionButton.Large.Secondary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="5dp"
+                        android:background="@drawable/rounded_corner"
+                        android:backgroundTint="?attr/colorSecondary"
+                        android:clickable="false"
+                        android:gravity="center"
+                        android:minWidth="30dp"
+                        android:paddingHorizontal="5dp"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        app:cornerRadius="10dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/format_note"
@@ -153,24 +188,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                    <TextView
-                        android:id="@+id/file_size"
-                        style="@style/Widget.Material3.FloatingActionButton.Large.Secondary"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="5dp"
-                        android:background="@drawable/rounded_corner"
-                        android:backgroundTint="?attr/colorSecondary"
-                        android:clickable="false"
-                        android:gravity="center"
-                        android:minWidth="30dp"
-                        android:paddingHorizontal="5dp"
-                        android:textSize="12sp"
-                        android:textStyle="bold"
-                        app:cornerRadius="10dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+
 
 
                 </LinearLayout>
@@ -178,35 +196,21 @@
 
             </HorizontalScrollView>
 
-            <LinearLayout
-                android:id="@+id/already_exists_buttons"
-                android:layout_width="wrap_content"
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/options"
+                style="?attr/materialIconButtonStyle"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:minHeight="0dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:padding="0dp"
+                app:cornerRadius="10dp"
+                app:icon="@drawable/baseline_more_vert_24"
+                app:iconTint="?attr/colorAccent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0">
-
-                <Button
-                    android:id="@+id/already_exists_edit"
-                    style="@style/Widget.Material3.Button.IconButton.Filled"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:icon="@drawable/ic_edit"
-                    android:contentDescription="@string/edit"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintVertical_bias="1.0" />
-
-
-                <Button
-                    android:id="@+id/already_exists_delete"
-                    style="@style/Widget.Material3.Button.IconButton.Filled"
-                    android:layout_width="wrap_content"
-                    android:contentDescription="@string/Remove"
-                    android:layout_height="wrap_content"
-                    app:icon="@drawable/baseline_delete_24"
-                    app:layout_constraintEnd_toEndOf="parent" />
-
-            </LinearLayout>
+                app:layout_constraintVertical_bias="0.0" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

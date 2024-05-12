@@ -1,18 +1,28 @@
 package com.deniscerri.ytdl.work
 
+import android.annotation.SuppressLint
+import android.app.AlarmManager
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
+import android.os.Build
 import androidx.preference.PreferenceManager
 import androidx.work.Constraints
 import androidx.work.ExistingWorkPolicy
+import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
+import com.deniscerri.ytdl.receiver.CancelScheduleAlarmReceiver
+import com.deniscerri.ytdl.receiver.ScheduleAlarmReceiver
 import java.util.Calendar
 import java.util.concurrent.TimeUnit
 
 class AlarmScheduler(private val context: Context) {
 
     private val preferences = PreferenceManager.getDefaultSharedPreferences(context)
+    private val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as? AlarmManager
 
+    @SuppressLint("ScheduleExactAlarm")
     fun schedule() {
         cancel()
 
@@ -25,17 +35,15 @@ class AlarmScheduler(private val context: Context) {
         val time = calculateNextTime(sTime)
 
         //schedule starting work
-        val workConstraints = Constraints.Builder()
-        val workRequest = OneTimeWorkRequestBuilder<ObserveSourceWorker>()
-            .addTag("scheduledDownload")
-            .addTag("download")
-            .setConstraints(workConstraints.build())
-            .setInitialDelay(System.currentTimeMillis() - time.timeInMillis, TimeUnit.MILLISECONDS)
-
-        WorkManager.getInstance(context).enqueueUniqueWork(
-            System.currentTimeMillis().toString(),
-            ExistingWorkPolicy.REPLACE,
-            workRequest.build()
+        alarmManager?.setExactAndAllowWhileIdle(
+            AlarmManager.RTC_WAKEUP,
+            time.timeInMillis,
+            PendingIntent.getBroadcast(
+                context,
+                0,
+                Intent(context, ScheduleAlarmReceiver::class.java),
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            )
         )
 
         //schedule closing work
@@ -46,27 +54,35 @@ class AlarmScheduler(private val context: Context) {
         sTime.set(Calendar.SECOND, 0)
         val calendar = calculateNextTime(eTime)
 
-
-        val workRequest2 = OneTimeWorkRequestBuilder<CancelScheduledDownloadWorker>()
-            .addTag("cancelScheduledDownload")
-            .setConstraints(workConstraints.build())
-            .setInitialDelay(System.currentTimeMillis() - calendar.timeInMillis + 60000, TimeUnit.MILLISECONDS)
-
-        WorkManager.getInstance(context).enqueueUniqueWork(
-            System.currentTimeMillis().toString(),
-            ExistingWorkPolicy.REPLACE,
-            workRequest2.build()
+        alarmManager?.setExactAndAllowWhileIdle(
+            AlarmManager.RTC_WAKEUP,
+            calendar.timeInMillis,
+            PendingIntent.getBroadcast(
+                context,
+                0,
+                Intent(context, CancelScheduleAlarmReceiver::class.java),
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            )
         )
-
     }
 
     fun cancel() {
-        val wm = WorkManager.getInstance(context)
-        wm.cancelAllWorkByTag("scheduledDownload")
-        wm.cancelAllWorkByTag("cancelScheduledDownload")
+        val intent = Intent(context, ScheduleAlarmReceiver::class.java)
+        val pendingIntent = PendingIntent.getService(context, 0, intent,
+            PendingIntent.FLAG_NO_CREATE or PendingIntent.FLAG_IMMUTABLE)
+
+
+        val cancelIntent = Intent(context, CancelScheduleAlarmReceiver::class.java)
+        val cancelPendingIntent = PendingIntent.getService(context, 0, cancelIntent,
+            PendingIntent.FLAG_NO_CREATE or PendingIntent.FLAG_IMMUTABLE)
+
+        kotlin.runCatching {
+            alarmManager?.cancel(pendingIntent)
+            alarmManager?.cancel(cancelPendingIntent)
+        }
     }
 
-    fun calculateNextTime(c: Calendar) : Calendar {
+    private fun calculateNextTime(c: Calendar) : Calendar {
         val calendar = Calendar.getInstance()
         if (c.get(Calendar.HOUR_OF_DAY) < calendar.get(Calendar.HOUR_OF_DAY)){
             c.add(Calendar.DATE, 1)
@@ -109,5 +125,13 @@ class AlarmScheduler(private val context: Context) {
         }
 
         return false
+    }
+
+    fun canSchedule() : Boolean {
+        return if (Build.VERSION.SDK_INT >= 31){
+            alarmManager?.canScheduleExactAlarms() == true
+        }else {
+            false
+        }
     }
 }

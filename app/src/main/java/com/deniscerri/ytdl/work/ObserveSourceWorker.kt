@@ -7,6 +7,7 @@ import androidx.work.CoroutineWorker
 import androidx.work.Data
 import androidx.work.ExistingWorkPolicy
 import androidx.work.ForegroundInfo
+import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
@@ -205,7 +206,14 @@ class ObserveSourceWorker(
         }
 
         //schedule for next time
+        val allowMeteredNetworks = sharedPreferences.getBoolean("metered_networks", true)
+
         val workConstraints = Constraints.Builder()
+        if (!allowMeteredNetworks) workConstraints.setRequiredNetworkType(NetworkType.UNMETERED)
+        else {
+            workConstraints.setRequiredNetworkType(NetworkType.CONNECTED)
+        }
+
         val workRequest = OneTimeWorkRequestBuilder<ObserveSourceWorker>()
             .addTag("observeSources")
             .addTag(sourceID.toString())

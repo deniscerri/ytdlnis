@@ -21,6 +21,7 @@ import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.util.Extensions.getIntByAny
 import com.deniscerri.ytdl.util.Extensions.getStringByAny
 import com.deniscerri.ytdl.util.Extensions.toStringDuration
+import com.deniscerri.ytdl.work.TerminalDownloadWorker
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.yausername.youtubedl_android.YoutubeDL
@@ -488,6 +489,7 @@ class InfoUtil(private val context: Context) {
         if (proxy!!.isNotBlank()) {
             request.addOption("--proxy", proxy)
         }
+        request.addOption("-P", FileUtil.getCachePath(context) + "/tmp")
 
 
 
@@ -546,7 +548,7 @@ class InfoUtil(private val context: Context) {
                 if (proxy!!.isNotBlank()){
                     request.addOption("--proxy", proxy)
                 }
-
+                request.addOption("-P", FileUtil.getCachePath(context) + "/tmp")
 
 
                 YoutubeDL.getInstance().execute(request){ progress, _, line ->
@@ -631,6 +633,7 @@ class InfoUtil(private val context: Context) {
         if (proxy!!.isNotBlank()){
             request.addOption("--proxy", proxy)
         }
+        request.addOption("-P", FileUtil.getCachePath(context) + "/tmp")
 
 
 
@@ -904,6 +907,7 @@ class InfoUtil(private val context: Context) {
                 if (proxy!!.isNotBlank()){
                     request.addOption("--proxy", proxy)
                 }
+                request.addOption("-P", FileUtil.getCachePath(context) + "/tmp")
 
 
 
@@ -1055,12 +1059,12 @@ class InfoUtil(private val context: Context) {
             }
 
             if(downloadItem.title.isNotBlank()){
-                request.addCommands(listOf("--replace-in-metadata", "video:title", ".+", downloadItem.title.replace("\"", "\\\"").take(150)))
+                request.addCommands(listOf("--replace-in-metadata", "video:title", ".+", downloadItem.title.take(150)))
             }
 
 
             if (downloadItem.author.isNotBlank()){
-                request.addCommands(listOf("--replace-in-metadata", "video:uploader", ".+", downloadItem.author.replace("\"", "\\\"").take(30)))
+                request.addCommands(listOf("--replace-in-metadata", "video:uploader", ".+", downloadItem.author.take(30)))
             }
 
             request.addOption("--parse-metadata", "uploader:(?P<uploader>.+)(?: - Topic)$")
@@ -1230,6 +1234,7 @@ class InfoUtil(private val context: Context) {
                         val embedThumb = sharedPreferences.getBoolean("embed_thumbnail", false)
                         if (embedThumb) {
                             request.addOption("--embed-thumbnail")
+                            if (!request.hasOption("--convert-thumbnails")) request.addOption("--convert-thumbnails", thumbnailFormat!!)
                         }
                     }
                 }
@@ -1402,7 +1407,7 @@ class InfoUtil(private val context: Context) {
 
                 if (downloadItem.videoPreferences.splitByChapters  && downloadItem.downloadSections.isBlank()){
                     request.addOption("--split-chapters")
-                    request.addOption("-o", "chapter:%(section_title)s.%(ext)s")
+                    request.addOption("-o", "chapter:%(section_number)d - %(section_title)s.%(ext)s")
                 }else{
                     if (filenameTemplate.isNotBlank()){
                         request.addOption("-o", "${filenameTemplate.removeSuffix(".%(ext)s")}.%(ext)s")
@@ -1494,7 +1499,6 @@ class InfoUtil(private val context: Context) {
             }
         }
         audioFormats.forEachIndexed { idx, it -> formats.add(Format(audioFormatsValues[idx], containerPreference!!,"",acodecPreference!!, "",0, it)) }
-        audioFormats.reverse()
         audioFormatIDPreference.forEach { formats.add(Format(it, containerPreference!!,"",resources.getString(R.string.preferred_format_id), "",1, it)) }
         return formats
     }
@@ -1520,7 +1524,7 @@ class InfoUtil(private val context: Context) {
                 videoCodecs[videoCodecsValues.indexOf(this)]
             }
         }
-        videoFormats.reversed().forEach { formats.add(Format(it, containerPreference!!,videoCodecPreference,audioCodecPreference, "",0, it.split("_")[0])) }
+        videoFormats.forEach { formats.add(Format(it, containerPreference!!,videoCodecPreference,audioCodecPreference, "",0, it.split("_")[0])) }
         formatIDPreference.forEach { formats.add(Format(it, containerPreference!!,resources.getString(R.string.preferred_format_id),"", "",1, it)) }
         return formats
     }

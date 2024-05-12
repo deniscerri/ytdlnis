@@ -3,15 +3,20 @@ package com.deniscerri.ytdl.ui.downloadcard
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Dialog
+import android.content.ComponentName
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.ServiceConnection
 import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.graphics.Canvas
 import android.graphics.Color
 import android.os.Bundle
+import android.os.IBinder
 import android.text.format.DateFormat
 import android.util.DisplayMetrics
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -21,7 +26,11 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
+import androidx.core.view.children
+import androidx.core.view.forEach
 import androidx.core.view.get
+import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceManager
@@ -36,6 +45,7 @@ import com.deniscerri.ytdl.database.viewmodel.CommandTemplateViewModel
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.database.viewmodel.HistoryViewModel
 import com.deniscerri.ytdl.database.viewmodel.ResultViewModel
+import com.deniscerri.ytdl.services.ProcessDownloadsInBackgroundService
 import com.deniscerri.ytdl.ui.adapter.ConfigureMultipleDownloadsAdapter
 import com.deniscerri.ytdl.util.Extensions.enableFastScroll
 import com.deniscerri.ytdl.util.FileUtil
@@ -49,12 +59,17 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.color.MaterialColors
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.elevation.SurfaceColors
+import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.android.material.snackbar.Snackbar
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -75,6 +90,8 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
     private lateinit var sharedPreferences: SharedPreferences
 
     private lateinit var currentDownloadIDs: List<Long>
+    private var processingDownloadsJobID: Long = 0
+    private var processingItemsCount : Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -86,6 +103,8 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
         infoUtil = InfoUtil(requireContext())
 
         currentDownloadIDs = arguments?.getLongArray("currentDownloadIDs")?.toList() ?: listOf()
+        processingDownloadsJobID = arguments?.getLong("processingDownloadsJobID") ?: 0
+        processingItemsCount = currentDownloadIDs.size
     }
 
     @SuppressLint("RestrictedApi", "NotifyDataSetChanged")
@@ -131,40 +150,83 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
 
         val scheduleBtn = view.findViewById<MaterialButton>(R.id.bottomsheet_schedule_button)
         val download = view.findViewById<Button>(R.id.bottomsheet_download_button)
+        val progressBar = view.findViewById<LinearProgressIndicator>(R.id.loadingItemsProgress)
+
         filesize = view.findViewById(R.id.filesize)
         count = view.findViewById(R.id.count)
 
 
         scheduleBtn.setOnClickListener{
-            UiUtil.showDatePicker(parentFragmentManager) { cal ->
-                scheduleBtn.isEnabled = false
-                download.isEnabled = false
+            fun initSchedule() {
+                UiUtil.showDatePicker(parentFragmentManager) { cal ->
+                    scheduleBtn.isEnabled = false
+                    download.isEnabled = false
 
+                    lifecycleScope.launch {
+                        withContext(Dispatchers.IO){
+                            downloadViewModel.deleteAllWithID(currentDownloadIDs)
+                        }
 
-                lifecycleScope.launch {
-                    withContext(Dispatchers.IO){
-                        downloadViewModel.deleteAllWithID(currentDownloadIDs)
-                        downloadViewModel.downloadProcessingDownloads(cal.timeInMillis)
+                        val jobData = withContext(Dispatchers.IO){
+                            downloadViewModel.getLoadingProcessingDownloadJob(processingDownloadsJobID)
+                        }
+                        jobData?.job?.cancel(CancellationException())
+                        downloadProcessDownloadsInBackground(jobData, cal.timeInMillis)
+
+                        val date = SimpleDateFormat(DateFormat.getBestDateTimePattern(Locale.getDefault(), "ddMMMyyyy - HHmm"), Locale.getDefault()).format(cal.timeInMillis)
+                        Toast.makeText(context, getString(R.string.download_rescheduled_to) + " " + date, Toast.LENGTH_LONG).show()
+
+                        dismiss()
                     }
-
-                    val date = SimpleDateFormat(DateFormat.getBestDateTimePattern(Locale.getDefault(), "ddMMMyyyy - HHmm"), Locale.getDefault()).format(cal.timeInMillis)
-                    Toast.makeText(context, getString(R.string.download_rescheduled_to) + " " + date, Toast.LENGTH_LONG).show()
-
-                    dismiss()
                 }
+            }
+
+            if (progressBar.isVisible){
+                val continueInBackgroundSnackBar = Snackbar.make(view, R.string.process_downloads_background, Snackbar.LENGTH_LONG)
+                val snackbarView: View = continueInBackgroundSnackBar.view
+                val snackTextView = snackbarView.findViewById<View>(com.google.android.material.R.id.snackbar_text) as TextView
+                snackTextView.maxLines = 9999999
+                continueInBackgroundSnackBar.setAction(R.string.ok) {
+                    initSchedule()
+                }
+                continueInBackgroundSnackBar.show()
+            }else{
+                initSchedule()
             }
         }
 
         download!!.setOnClickListener {
-            scheduleBtn.isEnabled = false
-            download.isEnabled = false
-            lifecycleScope.launch {
-                withContext(Dispatchers.IO){
-                    downloadViewModel.deleteAllWithID(currentDownloadIDs)
-                    downloadViewModel.downloadProcessingDownloads()
+            fun initDownload() {
+                scheduleBtn.isEnabled = false
+                download.isEnabled = false
+                lifecycleScope.launch {
+                    withContext(Dispatchers.IO){
+                        downloadViewModel.deleteAllWithID(currentDownloadIDs)
+                    }
+
+                    val jobData = withContext(Dispatchers.IO){
+                        downloadViewModel.getLoadingProcessingDownloadJob(processingDownloadsJobID)
+                    }
+                    jobData?.job?.cancel(CancellationException())
+                    downloadProcessDownloadsInBackground(jobData)
+                    dismiss()
                 }
-                dismiss()
             }
+
+            if (progressBar.isVisible){
+                val continueInBackgroundSnackBar = Snackbar.make(view, R.string.process_downloads_background, Snackbar.LENGTH_LONG)
+                val snackbarView: View = continueInBackgroundSnackBar.view
+                val snackTextView = snackbarView.findViewById<View>(com.google.android.material.R.id.snackbar_text) as TextView
+                snackTextView.maxLines = 9999999
+                continueInBackgroundSnackBar.setAction(R.string.ok) {
+                    initDownload()
+                }
+                continueInBackgroundSnackBar.show()
+            }else{
+                initDownload()
+            }
+
+
         }
 
         download.setOnLongClickListener {
@@ -206,8 +268,8 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                     withContext(Dispatchers.IO){
                         downloadViewModel.continueUpdatingFormatsOnBackground()
                     }
+                    dismiss()
                 }
-                dismiss()
             }
         }
 
@@ -537,45 +599,55 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
         }
 
         lifecycleScope.launch {
-            downloadViewModel.processingDownloads.collectLatest {
-                count.text = "${it.size} ${getString(R.string.selected)}"
-                listAdapter.submitList(it)
-                withContext(Dispatchers.Main){
-                    updateFileSize(it.map { it2 -> it2.format.filesize })
-                }
+            downloadViewModel.loadingProcessingDownloadsJobs.collectLatest { jobs ->
+                processingItemsCount = jobs.firstOrNull { j -> j.jobID == processingDownloadsJobID }?.itemIDs?.size ?: currentDownloadIDs.size
+                lifecycleScope.launch {
+                    downloadViewModel.processingDownloads.collectLatest {
+                        count.text = "${it.size} ${getString(R.string.selected)}"
 
-                if (it.isNotEmpty()){
-                    if (it.all { it2 -> it2.type == it[0].type }) {
-                        withContext(Dispatchers.Main) {
-                            bottomAppBar.menu[1].icon?.alpha = 255
-                            if (it[0].type != DownloadViewModel.Type.command) {
-                                bottomAppBar.menu[3].icon?.alpha = 255
+                        val loading = it.size != processingItemsCount
+                        progressBar.isVisible = loading
+                        bottomAppBar.menu.children.forEach { m -> m.isEnabled = !loading }
+
+                        listAdapter.submitList(it)
+                        withContext(Dispatchers.Main){
+                            updateFileSize(it.map { it2 -> it2.format.filesize })
+                        }
+
+                        if (it.isNotEmpty()){
+                            if (it.all { it2 -> it2.type == it[0].type }) {
+                                withContext(Dispatchers.Main) {
+                                    bottomAppBar.menu[1].icon?.alpha = 255
+                                    if (it[0].type != DownloadViewModel.Type.command) {
+                                        bottomAppBar.menu[3].icon?.alpha = 255
+                                    }
+                                }
+                            } else {
+                                bottomAppBar.menu[1].icon?.alpha = 30
+                                bottomAppBar.menu[3].icon?.alpha = 30
                             }
+
+                            val type = it.first().type
+
+                            when(type){
+                                DownloadViewModel.Type.audio -> {
+                                    preferredDownloadType.setIcon(R.drawable.baseline_audio_file_24)
+                                }
+                                DownloadViewModel.Type.video -> {
+                                    preferredDownloadType.setIcon(R.drawable.baseline_video_file_24)
+
+                                }
+                                DownloadViewModel.Type.command -> {
+                                    preferredDownloadType.setIcon(R.drawable.baseline_insert_drive_file_24)
+                                }
+
+                                else -> {}
+                            }
+
                         }
-                    } else {
-                        bottomAppBar.menu[1].icon?.alpha = 30
-                        bottomAppBar.menu[3].icon?.alpha = 30
+
                     }
-
-                    val type = it.first().type
-
-                    when(type){
-                        DownloadViewModel.Type.audio -> {
-                            preferredDownloadType.setIcon(R.drawable.baseline_audio_file_24)
-                        }
-                        DownloadViewModel.Type.video -> {
-                            preferredDownloadType.setIcon(R.drawable.baseline_video_file_24)
-
-                        }
-                        DownloadViewModel.Type.command -> {
-                            preferredDownloadType.setIcon(R.drawable.baseline_insert_drive_file_24)
-                        }
-
-                        else -> {}
-                    }
-
                 }
-
             }
         }
     }
@@ -700,15 +772,14 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
 
             UiUtil.showGenericDeleteDialog(requireContext(), deletedItem.title){
                 lifecycleScope.launch {
-                    val count = withContext(Dispatchers.IO){
-                        downloadViewModel.getProcessingDownloadsCount()
-                    }
+                    processingItemsCount--
                     downloadViewModel.deleteDownload(id)
 
-                    if (count > 1){
+                    if (processingItemsCount > 0){
                         Snackbar.make(recyclerView, getString(R.string.you_are_going_to_delete) + ": " + deletedItem.title, Snackbar.LENGTH_LONG)
                             .setAction(getString(R.string.undo)) {
                                 lifecycleScope.launch(Dispatchers.IO) {
+                                    processingItemsCount++
                                     downloadViewModel.insert(deletedItem)
                                 }
                             }.show()
@@ -736,9 +807,8 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
     }
 
     override fun onDismiss(dialog: DialogInterface) {
-        requireActivity().lifecycleScope.launch {
-            downloadViewModel.deleteProcessing()
-        }
+        downloadViewModel.cancelLoadingProcessingDownloads(processingDownloadsJobID)
+        downloadViewModel.deleteProcessing()
         super.onDismiss(dialog)
     }
 
@@ -757,16 +827,16 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                             val deletedItem = withContext(Dispatchers.IO){
                                 downloadViewModel.getItemByID(itemID)
                             }
-                            val count = withContext(Dispatchers.IO){
-                                downloadViewModel.getProcessingDownloadsCount()
-                            }
+                            processingItemsCount--
                             withContext(Dispatchers.IO){
                                 downloadViewModel.deleteDownload(deletedItem.id)
                             }
 
-                            if (count > 1) {
+
+                            if (processingItemsCount > 0) {
                                 Snackbar.make(recyclerView, getString(R.string.you_are_going_to_delete) + ": " + deletedItem.title, Snackbar.LENGTH_LONG)
                                     .setAction(getString(R.string.undo)) {
+                                        processingItemsCount++
                                         downloadViewModel.insert(deletedItem)
                                     }.show()
                             }else{
@@ -818,6 +888,18 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                 )
             }
         }
+
+    private fun downloadProcessDownloadsInBackground(jobData: DownloadViewModel.ProcessingItemsJob?, timeInMillis: Long = 0){
+        Intent(requireActivity(), ProcessDownloadsInBackgroundService::class.java).also { intent ->
+            jobData?.apply {
+                intent.putExtra("itemType", jobData.itemType)
+                intent.putExtra("itemIDs", jobData.itemIDs.toLongArray())
+                intent.putExtra("timeInMillis", timeInMillis)
+            }
+
+            requireActivity().startService(intent)
+        }
+    }
 
 }
 

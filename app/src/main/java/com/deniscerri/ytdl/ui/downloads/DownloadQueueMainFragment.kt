@@ -1,8 +1,13 @@
 package com.deniscerri.ytdl.ui.downloads
 
+import android.content.ComponentName
+import android.content.Context
 import android.content.DialogInterface
+import android.content.Intent
+import android.content.ServiceConnection
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.os.IBinder
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -10,9 +15,11 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
@@ -22,6 +29,7 @@ import com.deniscerri.ytdl.MainActivity
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.repository.DownloadRepository
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
+import com.deniscerri.ytdl.services.ProcessDownloadsInBackgroundService
 import com.deniscerri.ytdl.util.Extensions.createBadge
 import com.deniscerri.ytdl.util.NotificationUtil
 import com.deniscerri.ytdl.util.UiUtil
@@ -116,9 +124,24 @@ class DownloadQueueMainFragment : Fragment(){
         initMenu()
 
         if (arguments?.getString("tab") != null){
-            tabLayout.getTabAt(3)!!.select()
+            tabLayout.getTabAt(4)!!.select()
             viewPager2.postDelayed( {
-                viewPager2.setCurrentItem(3, false)
+                viewPager2.setCurrentItem(4, false)
+                val reconfigureID = arguments?.getLong("reconfigure")
+                reconfigureID?.apply {
+                    lifecycleScope.launch {
+                        val item = withContext(Dispatchers.IO){
+                            downloadViewModel.getItemByID(reconfigureID)
+                        }
+                        findNavController().navigate(R.id.downloadBottomSheetDialog, bundleOf(
+                            Pair("downloadItem", item),
+                            Pair("result", downloadViewModel.createResultItemFromDownload(item)),
+                            Pair("type", item.type)
+                        )
+                        )
+                    }
+
+                }
             }, 200)
         }
 
@@ -243,14 +266,37 @@ class DownloadQueueMainFragment : Fragment(){
         workManager.cancelAllWorkByTag("download")
         lifecycleScope.launch {
             val notificationUtil = NotificationUtil(requireContext())
+            downloadViewModel.cancelActiveQueued()
+            cancelBackgroundProcessingDownloads()
             val activeAndQueued = withContext(Dispatchers.IO){
                 downloadViewModel.getActiveAndQueuedDownloadIDs()
             }
-            downloadViewModel.cancelActiveQueued()
             activeAndQueued.forEach { id ->
                 YoutubeDL.getInstance().destroyProcessById(id.toString())
                 notificationUtil.cancelDownloadNotification(id.toInt())
             }
+        }
+    }
+
+    private fun cancelBackgroundProcessingDownloads(){
+        val connection = object : ServiceConnection {
+            private lateinit var mService: ProcessDownloadsInBackgroundService
+            private var mBound: Boolean = false
+            override fun onServiceConnected(className: ComponentName, service: IBinder) {
+                val binder = service as ProcessDownloadsInBackgroundService.LocalBinder
+                mService = binder.service
+                mBound = true
+
+                mService.cancelAllProcessingJobs()
+            }
+
+            override fun onServiceDisconnected(arg0: ComponentName) {
+                mBound = false
+            }
+        }
+
+        Intent(requireActivity(), ProcessDownloadsInBackgroundService::class.java).also { intent ->
+            requireActivity().bindService(intent, connection, Context.BIND_AUTO_CREATE)
         }
     }
 }

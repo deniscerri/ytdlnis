@@ -10,13 +10,10 @@ plugins {
 def properties = new Properties()
 def versionMajor = 1
 def versionMinor = 7
-def versionPatch = 5
+def versionPatch = 6
 def versionBuild = 0 // bump for dogfood builds, public betas, etc.
-def versionExt = ""
-
-if (versionBuild > 0){
-    versionExt = ".${versionBuild}-beta"
-}
+def isBeta = true
+def versionExt = isBeta ? ".${versionBuild}-beta" : ""
 
 android {
     namespace 'com.deniscerri.ytdl'

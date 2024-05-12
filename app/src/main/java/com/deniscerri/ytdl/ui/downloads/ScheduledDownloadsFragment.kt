@@ -116,8 +116,7 @@ class ScheduledDownloadsFragment : Fragment(), ScheduledDownloadAdapter.OnItemCl
                     downloadViewModel.getItemByID(itemID)
                 }
                 withContext(Dispatchers.IO){
-                    item.downloadStartTime = 0
-                    downloadViewModel.queueDownloads(listOf(item), true)
+                    downloadViewModel.resetScheduleTimeForItemsAndStartDownload(listOf(item.id))
                 }
             }.onFailure {
                 Toast.makeText(requireContext(), it.message, Toast.LENGTH_LONG).show()
@@ -125,7 +124,7 @@ class ScheduledDownloadsFragment : Fragment(), ScheduledDownloadAdapter.OnItemCl
         }
     }
 
-    override fun onCardClick(itemID: Long) {
+    override fun onCardClick(itemID: Long, position: Int) {
         lifecycleScope.launch {
             val item = withContext(Dispatchers.IO){
                 downloadViewModel.getItemByID(itemID)
@@ -163,6 +162,7 @@ class ScheduledDownloadsFragment : Fragment(), ScheduledDownloadAdapter.OnItemCl
                         WorkManager.getInstance(requireContext()).cancelAllWorkByTag(downloadItem.id.toString())
                         runBlocking {
                             downloadViewModel.queueDownloads(listOf(downloadItem))
+                            adapter.notifyItemChanged(position)
                         }
                     }
                 }
@@ -221,7 +221,7 @@ class ScheduledDownloadsFragment : Fragment(), ScheduledDownloadAdapter.OnItemCl
 
     private val contextualActionBar = object : ActionMode.Callback {
         override fun onCreateActionMode(mode: ActionMode?, menu: Menu?): Boolean {
-            mode!!.menuInflater.inflate(R.menu.queued_menu_context, menu)
+            mode!!.menuInflater.inflate(R.menu.scheduled_downloads_menu_context, menu)
             mode.title = "${adapter.getSelectedObjectsCount(totalSize)} ${getString(R.string.selected)}"
             return true
         }
@@ -284,7 +284,7 @@ class ScheduledDownloadsFragment : Fragment(), ScheduledDownloadAdapter.OnItemCl
                 }
                 R.id.select_all -> {
                     adapter.checkAll()
-                    mode?.title = getString(R.string.all_items_selected)
+                    mode?.title = "(${adapter.getSelectedObjectsCount(totalSize)}) ${resources.getString(R.string.all_items_selected)}"
                     true
                 }
                 R.id.invert_selected -> {
@@ -383,13 +383,13 @@ class ScheduledDownloadsFragment : Fragment(), ScheduledDownloadAdapter.OnItemCl
                             R.attr.colorOnSurfaceInverse,Color.TRANSPARENT
                         )
                     )
-                    .addSwipeRightActionIcon(R.drawable.ic_refresh)
+                    .addSwipeRightActionIcon(R.drawable.ic_downloads)
                     .create()
                     .decorate()
                 super.onChildDraw(
                     c,
                     recyclerView,
-                    viewHolder!!,
+                    viewHolder,
                     dX,
                     dY,
                     actionState,

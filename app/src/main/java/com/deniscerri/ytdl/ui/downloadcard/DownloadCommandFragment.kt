@@ -91,7 +91,7 @@ class DownloadCommandFragment(private val resultItem: ResultItem? = null, privat
 
             preferences.edit().putString("lastCommandTemplateUsed", downloadItem.format.format_note).apply()
 
-            if (!Patterns.WEB_URL.matcher(downloadItem.url).matches()){
+            if (!Patterns.WEB_URL.matcher(downloadItem.url).matches() && downloadItem.url.endsWith(".txt")){
                 downloadItem.format = downloadViewModel.generateCommandFormat(CommandTemplate(0,"txt", "-a \"${downloadItem.url}\"", useAsExtraCommand = false, useAsExtraCommandAudio = false, useAsExtraCommandVideo = false))
                 downloadItem.url = ""
             }
