@@ -388,4 +388,15 @@
     <string name="move_bottom">下に移動</string>
     <string name="copy_url">URLをコピー</string>
     <string name="move_top">上に移動</string>
+    <string name="milliseconds">ミリ秒</string>
+    <string name="download_archive_folder">ダウンロード記録のフォルダ</string>
+    <string name="format_importance_video">形式の重要度の順序 (動画)</string>
+    <string name="process_downloads_background">ダウンロードはまだ読み込み中です。処理をバックグラウンドで続け、ダウンロードを開始しますか？</string>
+    <string name="minute">分</string>
+    <string name="second">秒</string>
+    <string name="no_audio">音声なし動画</string>
+    <string name="location">場所</string>
+    <string name="format_importance_audio">形式の重要度の順序 (音声)</string>
+    <string name="enable_alarm_permission">アプリの設定から SCHEDULE_EXACT_ALARM の権限を有効にする必要があります。</string>
+    <string name="format_importance_note">形式の要素の重要度を調整します。この順序はアプリがダウンロードカード内で形式を取得し、形式を自動選択する際にみ使われます！</string>
 </resources>
