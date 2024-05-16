@@ -388,4 +388,9 @@
     <string name="prevent_duplicate_downloads">Спречи дуплирана преузимања</string>
     <string name="move_top">Помери на врх</string>
     <string name="scheduled">Заказано</string>
+    <string name="second">Секунд</string>
+    <string name="milliseconds">Милисекунде</string>
+    <string name="minute">Минут</string>
+    <string name="format_importance_audio">Формат важности налога (аудио)</string>
+    <string name="format_importance_video">Редослед важности формата (видео)</string>
 </resources>
