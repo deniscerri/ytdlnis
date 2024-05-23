@@ -388,4 +388,15 @@
     <string name="clear_scheduled">清除已安排的下载</string>
     <string name="subtitles">字幕</string>
     <string name="move_bottom">移到底部</string>
+    <string name="milliseconds">毫秒</string>
+    <string name="format_importance_audio">格式重要性顺序（音频）</string>
+    <string name="format_importance_video">格式重要性顺序（视频）</string>
+    <string name="format_importance_note">调整格式元素重要性。此顺序仅当应用在下载卡片中获取格式并自动选择格式时才会用到！</string>
+    <string name="no_audio">没有声音的视频</string>
+    <string name="download_archive_folder">下载档案文件夹</string>
+    <string name="location">位置</string>
+    <string name="enable_alarm_permission">你需要在应用设置中启用 SCHEDULE_EXACT_ALARM 权限。</string>
+    <string name="process_downloads_background">仍在加载下载。继续在后台处理它们并开始下载吗？</string>
+    <string name="minute">分钟</string>
+    <string name="second">秒</string>
 </resources>

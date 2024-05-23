@@ -327,4 +327,36 @@
     <string name="crop_thumb">Recadrer la vignette</string>
     <string name="force_keyframes">Forcer les images clés lors des coupes</string>
     <string name="force_keyframes_summary">Processus plus lent, mais coupes plus précises</string>
+    <string name="observe_sources">Observer les sources</string>
+    <string name="new_source">Nouvelle source</string>
+    <string name="delete_all_sources">Supprimer toutes sources</string>
+    <string name="force_ipv4_desc">Effectuer toutes les connexions avec IPv4</string>
+    <string name="force_ipv4">Forcer IPv4</string>
+    <string name="copy_urls">Copier les URL</string>
+    <string name="every">Chaque</string>
+    <string name="set_time">Régler le temps</string>
+    <string name="never">Jamais</string>
+    <string name="starts">Démarrage</string>
+    <string name="ends">Fins</string>
+    <string name="after">Après</string>
+    <string name="occurrences">occurrences</string>
+    <string name="day">Jour</string>
+    <string name="retry_missing_downloads">Réessayer télécharg manquants</string>
+    <string name="save_auto_subs">Enregistrer sous-titres automatiques</string>
+    <string name="not_deleted">Non supprimé</string>
+    <string name="on_time">Sur</string>
+    <string name="cut_unavailable">Vous devez mettre à jour les données de l\'élément pour utiliser la fonction de coupe.</string>
+    <string name="format_smallest">Le plus petit format
+\n(par résolution)</string>
+    <string name="confirm_delete_sources_desc">Supprimer définitivement
+\ntoutes les sources</string>
+    <string name="week">Semaine</string>
+    <string name="month">Mois</string>
+    <string name="bitrate">Bitrate</string>
+    <string name="changed_path_for_everyone_to">Modification chemin de téléchargement de chaque élément en :</string>
+    <string name="dismiss">Rejeter</string>
+    <string name="all">Tous</string>
+    <string name="generic">Générique</string>
+    <string name="multiple_download_card">Téléchargement multiple</string>
+    <string name="format_filter">Filtre de format</string>
 </resources>

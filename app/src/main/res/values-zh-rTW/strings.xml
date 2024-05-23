@@ -388,4 +388,15 @@
     <string name="move_bottom">移至底部</string>
     <string name="scheduled">已排程</string>
     <string name="clear_scheduled">清除排程</string>
+    <string name="minute">分鐘</string>
+    <string name="milliseconds">毫秒</string>
+    <string name="format_importance_video">格式重要性順序（影片）</string>
+    <string name="process_downloads_background">下載仍在加載中。繼續在背景處理它們並開始下載嗎？</string>
+    <string name="second">秒</string>
+    <string name="format_importance_audio">格式重要性順序（音訊）</string>
+    <string name="download_archive_folder">下載存檔資料夾</string>
+    <string name="enable_alarm_permission">您需要在應用程式設定中啟用 SCHEDULE_EXACT_ALARM 權限。</string>
+    <string name="location">位置</string>
+    <string name="format_importance_note">調整格式元素的重要性。這個順序只會在應用程式在下載卡片中抓取格式並自動選擇格式時使用！</string>
+    <string name="no_audio">無音訊的影片</string>
 </resources>
