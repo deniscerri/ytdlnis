@@ -129,7 +129,7 @@
     <string name="updating_download_data">Aktualizácia údajov položky sťahovania</string>
     <string name="backup">Zálohovať</string>
     <string name="update_template">Aktualizovať šablónu</string>
-    <string name="downloaded">"Sťahované: "</string>
+    <string name="downloaded">"Stiahnuté: "</string>
     <string name="undo">Navrátiť</string>
     <string name="restart">Reštartovať</string>
     <string name="orange">Oranžový</string>
