@@ -401,5 +401,5 @@
     <string name="download_archive_folder">Download Archive Folder</string>
     <string name="location">Location</string>
     <string name="enable_alarm_permission">You need to enable the SCHEDULE_EXACT_ALARM permission in the app settings.</string>
-    <string name="process_downloads_background">Downloads are still loading. Continue procesing them in the background and start downloading?</string>
+    <string name="process_downloads_background">"Downloads are still loading. Continue processing them in the background and start downloading? "</string>
 </resources>

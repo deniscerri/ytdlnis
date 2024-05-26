@@ -467,7 +467,6 @@ class InfoUtil(private val context: Context) {
         request.addOption("--skip-download")
         request.addOption("-R", "1")
         request.addOption("--compat-options", "manifest-filesize-approx")
-        request.addOption("--socket-timeout", "5")
 
         if (sharedPreferences.getBoolean("force_ipv4", false)){
             request.addOption("-4")
@@ -993,6 +992,8 @@ class InfoUtil(private val context: Context) {
             request.addOption("--no-resize-buffer")
         }
 
+        request.addOption("--socket-timeout", 60)
+
         val sponsorblockURL = sharedPreferences.getString("sponsorblock_url", "")!!
         if (sponsorblockURL.isNotBlank()) request.addOption("--sponsorblock-api", sponsorblockURL)
 
@@ -1059,7 +1060,7 @@ class InfoUtil(private val context: Context) {
             }
 
             if(downloadItem.title.isNotBlank()){
-                request.addCommands(listOf("--replace-in-metadata", "video:title", ".+", downloadItem.title.take(150)))
+                request.addCommands(listOf("--replace-in-metadata", "video:title", ".+", downloadItem.title.take(120)))
             }
 
 
@@ -1115,7 +1116,7 @@ class InfoUtil(private val context: Context) {
 
                 var audioQualityId : String = downloadItem.format.format_id
                 if (audioQualityId.isBlank() || listOf("0", context.getString(R.string.best_quality), "ba", "best", "").contains(audioQualityId)){
-                    audioQualityId = ""
+                    audioQualityId = "ba/b"
                 }else if (listOf(context.getString(R.string.worst_quality), "wa", "worst").contains(audioQualityId)){
                     audioQualityId = "wa/w"
                 }
@@ -1149,7 +1150,7 @@ class InfoUtil(private val context: Context) {
                 if(ext.isNotBlank()){
                     if(!ext.matches("(webm)|(Default)|(${context.getString(R.string.defaultValue)})".toRegex()) && supportedContainers.contains(ext)){
                         request.addOption("--audio-format", ext)
-                        formatSorting.append(",ext:$ext")
+                        formatSorting.append(",ext::$ext")
                     }
                 }
 
@@ -1171,7 +1172,7 @@ class InfoUtil(private val context: Context) {
 
                         if (downloadItem.playlistTitle.isNotEmpty()) {
                             request.addOption("--parse-metadata", "%(album,playlist,title)s:%(meta_album)s")
-                            request.addOption("--parse-metadata", "%(track_number,playlist_index)d:%(meta_track_number)s")
+                            request.addOption("--parse-metadata", "%(track_number,playlist_index)d:%(track_number)s")
                         } else {
                             request.addOption("--parse-metadata", "%(album,title)s:%(meta_album)s")
                         }
@@ -1261,6 +1262,7 @@ class InfoUtil(private val context: Context) {
                 val f = StringBuilder()
 
                 val preferredCodec = sharedPreferences.getString("video_codec", "")
+                val preferredQuality = sharedPreferences.getString("video_quality", "best")
                 val vCodecPrefIndex = context.getStringArray(R.array.video_codec_values).indexOf(preferredCodec)
                 val vCodecPref = context.getStringArray(R.array.video_codec_values_ytdlp)[vCodecPrefIndex]
 
@@ -1358,12 +1360,18 @@ class InfoUtil(private val context: Context) {
 
                 }
 
+                val genericFormats = getGenericVideoFormats(context.resources).map { it.format_id }
+
                 StringBuilder().apply {
-                    if (hasGenericResulutionFormat.isNotBlank()) append(",res:${hasGenericResulutionFormat}")
+                    if (hasGenericResulutionFormat.isNotBlank()) {
+                        append(",res:${hasGenericResulutionFormat}")
+                    }else if (genericFormats.contains(videoF) && preferredQuality!!.contains("p_")){
+                        append(",res:${preferredQuality.split("_")[0]}")
+                    }
                     if (sharedPreferences.getBoolean("prefer_smaller_formats", false)) append(",+size")
                     if (vCodecPref.isNotBlank()) append(",vcodec:$vCodecPref")
                     if (aCodecPref.isNotBlank()) append(",acodec:$aCodecPref")
-                    if (cont.isNotBlank()) append(",ext:$cont")
+                    if (cont.isNotBlank()) append(",ext:$cont:")
                     if (this.isNotBlank()){
                         request.addOption("-S", "+hasaud$this")
                     }
@@ -1489,7 +1497,7 @@ class InfoUtil(private val context: Context) {
         val audioFormatsValues = resources.getStringArray(R.array.audio_formats_values)
         val formats = mutableListOf<Format>()
         val containerPreference = sharedPreferences.getString("audio_format", "")
-        val acodecPreference = sharedPreferences.getString("audio_codec", "m4a|mp4a|aac")!!.run {
+        val acodecPreference = sharedPreferences.getString("audio_codec", "")!!.run {
             if (this.isEmpty()){
                 resources.getString(R.string.defaultValue)
             }else{
@@ -1508,14 +1516,14 @@ class InfoUtil(private val context: Context) {
         val videoFormats = resources.getStringArray(R.array.video_formats_values)
         val formats = mutableListOf<Format>()
         val containerPreference = sharedPreferences.getString("video_format", "")
-        val audioCodecPreference = sharedPreferences.getString("audio_codec", "m4a|mp4a|aac")!!.run {
+        val audioCodecPreference = sharedPreferences.getString("audio_codec", "")!!.run {
             if (this.isNotEmpty()){
                 val audioCodecs = resources.getStringArray(R.array.audio_codec)
                 val audioCodecsValues = resources.getStringArray(R.array.audio_codec_values)
                 audioCodecs[audioCodecsValues.indexOf(this)]
             }else this
         }
-        val videoCodecPreference = sharedPreferences.getString("video_codec", "avc|h264")!!.run {
+        val videoCodecPreference = sharedPreferences.getString("video_codec", "")!!.run {
             if (this.isEmpty()){
                 resources.getString(R.string.defaultValue)
             }else{

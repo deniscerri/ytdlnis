@@ -323,6 +323,7 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
 
                     getAlsoAudioDownloadItem{ audioDownloadItem ->
                         audioDownloadItem.downloadStartTime = it.timeInMillis
+                        audioDownloadItem.status = DownloadRepository.Status.Scheduled.toString()
                         itemsToQueue.add(audioDownloadItem)
 
                         runBlocking {

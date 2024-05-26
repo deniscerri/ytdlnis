@@ -78,7 +78,7 @@ class HomeAdapter(onItemClickListener: OnItemClickListener, activity: Activity) 
         val author = card.findViewById<TextView>(R.id.author)
         author.text = video.author
         val duration = card.findViewById<TextView>(R.id.duration)
-        if (video.duration.isNotEmpty()) {
+        if (video.duration.isNotEmpty() && video.duration != "-1") {
             duration.text = video.duration
         }
 

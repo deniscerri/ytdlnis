@@ -167,6 +167,23 @@
                     >
 
                     <com.google.android.material.button.MaterialButton
+                        android:id="@+id/active_download_resume"
+                        style="?attr/materialIconButtonFilledStyle"
+                        android:visibility="gone"
+                        android:layout_width="wrap_content"
+                        android:contentDescription="@string/resume"
+                        android:layout_height="wrap_content"
+                        app:backgroundTint="?attr/colorSurface"
+                        app:cornerRadius="15dp"
+                        app:icon="@drawable/exomedia_ic_play_arrow_white"
+                        app:iconSize="30dp"
+                        app:iconTint="?android:textColorPrimary"
+                        app:layout_constraintBottom_toTopOf="@+id/output"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/linearlayout2_horizontalscrollview"
+                        app:layout_constraintVertical_bias="0.51" />
+
+                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/active_download_delete"
                         style="?attr/materialIconButtonFilledStyle"
                         android:layout_width="wrap_content"

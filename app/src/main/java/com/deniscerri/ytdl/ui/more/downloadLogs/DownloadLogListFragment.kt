@@ -99,6 +99,7 @@ class DownloadLogListFragment : Fragment(), DownloadLogsAdapter.OnItemClickListe
         topAppBar.setOnMenuItemClickListener { m: MenuItem ->
             val itemId = m.itemId
             if (itemId == R.id.remove_logs) {
+                throw Exception("asffffffffff")
                 try{
                     val deleteDialog = MaterialAlertDialogBuilder(requireContext())
                     deleteDialog.setTitle(getString(R.string.confirm_delete_history))

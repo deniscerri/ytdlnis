@@ -105,123 +105,153 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:title="@string/app_name" />
 
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/progress"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:translationZ="250dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/search_bar"
+                app:layout_constraintEnd_toEndOf="@+id/search_bar"
+                app:layout_constraintStart_toStartOf="@+id/search_bar"
+                app:layout_constraintTop_toTopOf="@+id/search_bar"
+                app:shimmer_auto_start="true">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:cardCornerRadius="30dp">
+
+                </com.google.android.material.card.MaterialCardView>
+
+
+            </com.facebook.shimmer.ShimmerFrameLayout>
+
             <com.google.android.material.search.SearchBar
                 android:id="@+id/search_bar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                app:layout_scrollFlags="scroll|enterAlways"
                 android:hint="@string/search_hint"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toEndOf="@+id/home_toolbar"
                 app:layout_constraintTop_toTopOf="parent"
-                app:menu="@menu/main_menu" />
+                app:menu="@menu/main_menu">
+
+            </com.google.android.material.search.SearchBar>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
+    <RelativeLayout
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:layout_width="match_parent"
-        android:id="@+id/recyclerViewHome"
-        android:orientation="vertical"
-        android:layout_height="wrap_content"
-        android:scrollbars="none"
-        android:clipToPadding="false"
-        android:paddingBottom="100dp"
-        app:spanCount="2"
-        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        />
-    <com.facebook.shimmer.ShimmerFrameLayout
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/shimmer_results_framelayout"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <LinearLayout
+        <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
+            android:id="@+id/recyclerViewHome"
+            android:orientation="vertical"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:scrollbars="none"
+            android:clipToPadding="false"
+            android:paddingBottom="100dp"
+            app:spanCount="2"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            />
+
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/recyclerViewHome"
+            android:id="@+id/shimmer_results_framelayout"
             android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:weightSum="2"
-                android:layout_height="250dp">
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:orientation="vertical">
 
-                <include
-                    android:layout_weight="1"
-                    layout="@layout/result_card_shimmer"
-                    android:layout_height="wrap_content"
-                    android:layout_width="0dp" />
-                <include
-                    android:layout_weight="1"
-                    layout="@layout/result_card_shimmer"
-                    android:layout_height="wrap_content"
-                    android:layout_width="0dp" />
-                <include
-                    android:layout_weight="1"
-                    layout="@layout/result_card_shimmer"
-                    android:layout_height="wrap_content"
-                    android:layout_width="0dp" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:weightSum="2"
+                    android:layout_height="wrap_content">
+
+                    <include
+                        android:layout_weight="1"
+                        layout="@layout/result_card_shimmer"
+                        android:layout_height="wrap_content"
+                        android:layout_width="0dp" />
+                    <include
+                        android:layout_weight="1"
+                        layout="@layout/result_card_shimmer"
+                        android:layout_height="wrap_content"
+                        android:layout_width="0dp" />
+                    <include
+                        android:layout_weight="1"
+                        layout="@layout/result_card_shimmer"
+                        android:layout_height="wrap_content"
+                        android:layout_width="0dp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:weightSum="2"
+                    android:layout_height="wrap_content">
+
+                    <include
+                        android:layout_weight="1"
+                        layout="@layout/result_card_shimmer"
+                        android:layout_height="wrap_content"
+                        android:layout_width="0dp" />
+                    <include
+                        android:layout_weight="1"
+                        layout="@layout/result_card_shimmer"
+                        android:layout_height="wrap_content"
+                        android:layout_width="0dp" />
+                    <include
+                        android:layout_weight="1"
+                        layout="@layout/result_card_shimmer"
+                        android:layout_height="wrap_content"
+                        android:layout_width="0dp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:weightSum="2"
+                    android:layout_height="wrap_content">
+
+                    <include
+                        android:layout_weight="1"
+                        layout="@layout/result_card_shimmer"
+                        android:layout_height="wrap_content"
+                        android:layout_width="0dp" />
+                    <include
+                        android:layout_weight="1"
+                        layout="@layout/result_card_shimmer"
+                        android:layout_height="wrap_content"
+                        android:layout_width="0dp" />
+                    <include
+                        android:layout_weight="1"
+                        layout="@layout/result_card_shimmer"
+                        android:layout_height="wrap_content"
+                        android:layout_width="0dp" />
+
+                </LinearLayout>
+
 
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:weightSum="2"
-                android:layout_height="250dp">
-
-                <include
-                    android:layout_weight="1"
-                    layout="@layout/result_card_shimmer"
-                    android:layout_height="wrap_content"
-                    android:layout_width="0dp" />
-                <include
-                    android:layout_weight="1"
-                    layout="@layout/result_card_shimmer"
-                    android:layout_height="wrap_content"
-                    android:layout_width="0dp" />
-                <include
-                    android:layout_weight="1"
-                    layout="@layout/result_card_shimmer"
-                    android:layout_height="wrap_content"
-                    android:layout_width="0dp" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:weightSum="2"
-                android:layout_height="250dp">
-
-                <include
-                    android:layout_weight="1"
-                    layout="@layout/result_card_shimmer"
-                    android:layout_height="wrap_content"
-                    android:layout_width="0dp" />
-                <include
-                    android:layout_weight="1"
-                    layout="@layout/result_card_shimmer"
-                    android:layout_height="wrap_content"
-                    android:layout_width="0dp" />
-                <include
-                    android:layout_weight="1"
-                    layout="@layout/result_card_shimmer"
-                    android:layout_height="wrap_content"
-                    android:layout_width="0dp" />
-
-            </LinearLayout>
+        </com.facebook.shimmer.ShimmerFrameLayout>
 
 
-        </LinearLayout>
-
-    </com.facebook.shimmer.ShimmerFrameLayout>
-
+    </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/home_fabs"
@@ -237,6 +267,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:text="@string/link_you_copied"
+            android:layout_marginBottom="10dp"
             android:layout_marginHorizontal="16dp"
             android:contentDescription="@string/link_you_copied"
             app:icon="@drawable/ic_clipboard"

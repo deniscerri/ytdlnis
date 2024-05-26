@@ -80,7 +80,9 @@ class UpdateSettingsFragment : BaseSettingsFragment() {
                     withContext(Dispatchers.IO){
                         updateUtil!!.updateApp{ msg ->
                             lifecycleScope.launch(Dispatchers.Main){
-                                Snackbar.make(requireView(), msg, Snackbar.LENGTH_LONG).show()
+                                view?.apply {
+                                    Snackbar.make(requireView(), msg, Snackbar.LENGTH_LONG).show()
+                                }
                             }
                         }
                     }
@@ -119,14 +121,17 @@ class UpdateSettingsFragment : BaseSettingsFragment() {
             }
         }.onFailure {
             val msg = it.message ?: requireContext().getString(R.string.errored)
-            val snackBar = Snackbar.make(requireView(), msg, Snackbar.LENGTH_LONG)
-            snackBar.setAction(R.string.copy_log){
-                UiUtil.copyToClipboard(msg, requireActivity())
+            view?.apply {
+                val snackBar = Snackbar.make(this, msg, Snackbar.LENGTH_LONG)
+                snackBar.setAction(R.string.copy_log){
+                    UiUtil.copyToClipboard(msg, requireActivity())
+                }
+                val snackbarView: View = snackBar.view
+                val snackTextView = snackbarView.findViewById<View>(com.google.android.material.R.id.snackbar_text) as TextView
+                snackTextView.maxLines = 9999999
+                snackBar.show()
             }
-            val snackbarView: View = snackBar.view
-            val snackTextView = snackbarView.findViewById<View>(com.google.android.material.R.id.snackbar_text) as TextView
-            snackTextView.maxLines = 9999999
-            snackBar.show()
+
         }
     }
 

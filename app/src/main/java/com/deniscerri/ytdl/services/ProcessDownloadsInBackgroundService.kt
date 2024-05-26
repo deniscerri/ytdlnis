@@ -18,6 +18,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 
 
@@ -43,39 +44,25 @@ class ProcessDownloadsInBackgroundService : Service() {
 
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
+
+        val binding = intent.getBooleanExtra("binding", false)
+        if (binding) return super.onStartCommand(intent, flags, startId)
+
         val notificationUtil = NotificationUtil(this)
         startForeground(System.currentTimeMillis().toInt(), notificationUtil.createProcessingDownloads())
 
-        val itemType = intent.getStringExtra("itemType") ?: ""
-        val itemIDs = intent.getLongArrayExtra("itemIDs") ?: longArrayOf()
-        val jobData = DownloadViewModel.ProcessingItemsJob(
-            itemType = itemType,
-            itemIDs = itemIDs.toList()
-        )
+
+        val itemType = intent.getStringExtra("itemType")!!
+        val itemIDs = intent.getLongArrayExtra("itemIDs")!!.toList()
+        val processingItemIDs = intent.getLongArrayExtra("processingItemIDs")!!.toList()
         val timeInMillis = intent.getLongExtra("timeInMillis", 0)
-        CoroutineScope(SupervisorJob()).launch(Dispatchers.IO) {
-            runJob(jobData, timeInMillis)
-        }
-        return super.onStartCommand(intent, flags, startId)
-    }
+        val processingFinished = intent.getBooleanExtra("processingFinished", true)
 
-    override fun onBind(intent: Intent): IBinder {
-        return binder
-    }
-
-    private fun DownloadItem.setAsScheduling(timeInMillis: Long) {
-        status = DownloadRepository.Status.Scheduled.toString()
-        downloadStartTime = timeInMillis
-    }
-
-    private suspend fun runJob(jobData: DownloadViewModel.ProcessingItemsJob, timeInMillis: Long = 0) {
         val job = CoroutineScope(SupervisorJob()).launch(Dispatchers.IO) {
-            if (jobData.itemType != "") {
-                val itemIDS = jobData.itemIDs
-                val processingType = jobData.itemType
-                when(processingType) {
+            if (!processingFinished) {
+                when(itemType) {
                     ResultItem::class.java.toString() -> {
-                        itemIDS.chunked(100).map { ids ->
+                        itemIDs.chunked(100).map { ids ->
                             resultRepository.getAllByIDs(ids).map {
                                 downloadViewModel.createDownloadItemFromResult(
                                     result = it, givenType = DownloadViewModel.Type.valueOf(
@@ -88,33 +75,42 @@ class ProcessDownloadsInBackgroundService : Service() {
                                         it.setAsScheduling(timeInMillis)
                                     }
                                 }
-                                downloadViewModel.queueDownloads(this)
+                                if (isActive){
+                                    downloadViewModel.queueDownloads(this)
+                                }
                             }
                         }
                     }
 
                     DownloadItem::class.java.toString() -> {
-                        itemIDS.chunked(100).map { ids ->
+                        itemIDs.chunked(100).map { ids ->
                             repository.getAllItemsByIDs(ids).apply {
                                 if (timeInMillis > 0) {
                                     this.forEach {
                                         it.setAsScheduling(timeInMillis)
                                     }
                                 }
-                                downloadViewModel.queueDownloads(this)
+                                if (isActive){
+                                    downloadViewModel.queueDownloads(this)
+                                }
                             }
                         }
                     }
                 }
             }else {
-                repository.getProcessingDownloads().apply {
-                    if (timeInMillis > 0){
-                        this.forEach {
-                            it.setAsScheduling(timeInMillis)
+                repository.getAllItemsByIDs(processingItemIDs).apply {
+                    this.chunked(100).map {
+                        if (timeInMillis > 0){
+                            this.forEach { d ->
+                                d.setAsScheduling(timeInMillis)
+                            }
+                        }
+
+                        if (isActive){
+                            downloadViewModel.queueDownloads(it)
                         }
                     }
 
-                    downloadViewModel.queueDownloads(this)
                 }
             }
         }
@@ -126,6 +122,17 @@ class ProcessDownloadsInBackgroundService : Service() {
             }
         }
         queueProcessingDownloadsJobList.add(job)
+
+        return super.onStartCommand(intent, flags, startId)
+    }
+
+    override fun onBind(intent: Intent): IBinder {
+        return binder
+    }
+
+    private fun DownloadItem.setAsScheduling(timeInMillis: Long) {
+        status = DownloadRepository.Status.Scheduled.toString()
+        downloadStartTime = timeInMillis
     }
 
     fun cancelAllProcessingJobs(){

@@ -39,6 +39,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
+import org.greenrobot.eventbus.EventBus
 import java.io.File
 import java.util.Locale
 import kotlin.random.Random
@@ -88,6 +89,7 @@ class DownloadWorker(
         setForegroundAsync(foregroundInfo)
 
         queuedItems.collect { items ->
+            if (isStopped) return@collect
             runningYTDLInstances.clear()
             val activeDownloads = dao.getActiveDownloadsList()
             activeDownloads.forEach {
@@ -120,7 +122,7 @@ class DownloadWorker(
                         //update item if its incomplete
                         resultRepo.updateDownloadItem(downloadItem)?.apply {
                             val status = dao.checkStatus(this.id)
-                            if (listOf(DownloadRepository.Status.Active, DownloadRepository.Status.ActivePaused).contains(status)){
+                            if (status == DownloadRepository.Status.Active){
                                 dao.updateWithoutUpsert(this)
                             }
                         }
@@ -158,9 +160,11 @@ class DownloadWorker(
                         dao.update(downloadItem)
                     }
 
+                    val eventBus = EventBus.getDefault()
+
                     runCatching {
                         YoutubeDL.getInstance().execute(request, downloadItem.id.toString()){ progress, _, line ->
-                            setProgressAsync(workDataOf("progress" to progress.toInt(), "output" to line.chunked(5000).ifEmpty { listOf("") }.first().toString(), "id" to downloadItem.id))
+                            eventBus.post(WorkerProgress(progress.toInt(), line, downloadItem.id))
                             val title: String = downloadItem.title.ifEmpty { downloadItem.url }
                             notificationUtil.updateDownloadNotification(
                                 downloadItem.id.toInt(),
@@ -181,7 +185,7 @@ class DownloadWorker(
                             var finalPaths : MutableList<String>?
 
                             if (noCache){
-                                setProgressAsync(workDataOf("progress" to 100, "output" to "Scanning Files", "id" to downloadItem.id))
+                                eventBus.post(WorkerProgress(100, "Scanning Files", downloadItem.id))
                                 val outputSequence = it.out.split("\n")
                                 finalPaths =
                                     outputSequence.asSequence()
@@ -206,16 +210,16 @@ class DownloadWorker(
                                 }
                             }else{
                                 //move file from internal to set download directory
-                                setProgressAsync(workDataOf("progress" to 100, "output" to "Moving file to ${FileUtil.formatPath(downloadLocation)}", "id" to downloadItem.id))
+                                eventBus.post(WorkerProgress(100, "Moving file to ${FileUtil.formatPath(downloadLocation)}", downloadItem.id))
                                 try {
                                     finalPaths = withContext(Dispatchers.IO){
                                         FileUtil.moveFile(tempFileDir.absoluteFile,context, downloadLocation, keepCache){ p ->
-                                            setProgressAsync(workDataOf("progress" to p, "output" to "Moving file to ${FileUtil.formatPath(downloadLocation)}", "id" to downloadItem.id))
+                                            eventBus.post(WorkerProgress(p, "Moving file to ${FileUtil.formatPath(downloadLocation)}", downloadItem.id))
                                         }
                                     }.filter { !it.matches("\\.(description)|(txt)\$".toRegex()) }.toMutableList()
 
                                     if (finalPaths.isNotEmpty()){
-                                        setProgressAsync(workDataOf("progress" to 100, "output" to "Moved file to $downloadLocation", "id" to downloadItem.id))
+                                        eventBus.post(WorkerProgress(100, "Moved file to ${FileUtil.formatPath(downloadLocation)}", downloadItem.id))
                                     }else{
                                         finalPaths = mutableListOf(context.getString(R.string.unfound_file))
                                     }
@@ -285,7 +289,7 @@ class DownloadWorker(
 
                             if (wasQuickDownloaded && createResultItem){
                                 runCatching {
-                                    setProgressAsync(workDataOf("progress" to 100, "output" to "Creating Result Items", "id" to downloadItem.id))
+                                    eventBus.post(WorkerProgress(100, "Creating Result Items", downloadItem.id))
                                     runBlocking {
                                         infoUtil.getFromYTDL(downloadItem.url).forEach { res ->
                                             if (res != null) {
@@ -304,50 +308,46 @@ class DownloadWorker(
                         }
 
                     }.onFailure {
-                        if (this@DownloadWorker.isStopped) return@onFailure
-
                         FileUtil.deleteConfigFiles(request)
-
                         withContext(Dispatchers.Main){
                             notificationUtil.cancelDownloadNotification(downloadItem.id.toInt())
                         }
-                        if (it is YoutubeDL.CanceledException) {
+                        if (this@DownloadWorker.isStopped) return@onFailure
+                        if (it is YoutubeDL.CanceledException) return@onFailure
 
-                        }else{
-                            if(it.message != null){
-                                if (logDownloads){
-                                    logRepo.update(it.message!!, logItem.id)
-                                }else{
-                                    logString.append("${it.message}\n")
-                                    logItem.content = logString.toString()
-                                    val logID = logRepo.insert(logItem)
-                                    downloadItem.logID = logID
-                                }
+                        if(it.message != null){
+                            if (logDownloads){
+                                logRepo.update(it.message!!, logItem.id)
+                            }else{
+                                logString.append("${it.message}\n")
+                                logItem.content = logString.toString()
+                                val logID = logRepo.insert(logItem)
+                                downloadItem.logID = logID
                             }
-
-                            tempFileDir.delete()
-                            handler.postDelayed({
-                                Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
-                            }, 1000)
-
-                            Log.e(TAG, context.getString(R.string.failed_download), it)
-                            notificationUtil.cancelDownloadNotification(downloadItem.id.toInt())
-
-                            downloadItem.status = DownloadRepository.Status.Error.toString()
-                            runBlocking {
-                                dao.update(downloadItem)
-                            }
-
-                            notificationUtil.createDownloadErrored(
-                                downloadItem.id,
-                                downloadItem.title.ifEmpty { downloadItem.url },
-                                it.message,
-                                downloadItem.logID,
-                                resources
-                            )
-
-                            setProgressAsync(workDataOf("progress" to 100, "output" to it.toString(), "id" to downloadItem.id))
                         }
+
+                        tempFileDir.delete()
+                        handler.postDelayed({
+                            Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
+                        }, 1000)
+
+                        Log.e(TAG, context.getString(R.string.failed_download), it)
+                        notificationUtil.cancelDownloadNotification(downloadItem.id.toInt())
+
+                        downloadItem.status = DownloadRepository.Status.Error.toString()
+                        runBlocking {
+                            dao.update(downloadItem)
+                        }
+
+                        notificationUtil.createDownloadErrored(
+                            downloadItem.id,
+                            downloadItem.title.ifEmpty { downloadItem.url },
+                            it.message,
+                            downloadItem.logID,
+                            resources
+                        )
+
+                        eventBus.post(WorkerProgress(100, it.toString(), downloadItem.id))
                     }
                 }
             }
@@ -368,5 +368,11 @@ class DownloadWorker(
         val runningYTDLInstances: MutableList<Long> = mutableListOf()
         const val TAG = "DownloadWorker"
     }
+
+    class WorkerProgress(
+        val progress: Int,
+        val output: String,
+        val downloadItemID: Long
+    )
 
 }

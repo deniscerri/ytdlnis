@@ -130,15 +130,17 @@ class DownloadQueueMainFragment : Fragment(){
                 val reconfigureID = arguments?.getLong("reconfigure")
                 reconfigureID?.apply {
                     lifecycleScope.launch {
-                        val item = withContext(Dispatchers.IO){
-                            downloadViewModel.getItemByID(reconfigureID)
+                        kotlin.runCatching {
+                            val item = withContext(Dispatchers.IO){
+                                downloadViewModel.getItemByID(reconfigureID)
+                            }
+                            findNavController().navigate(R.id.downloadBottomSheetDialog, bundleOf(
+                                Pair("downloadItem", item),
+                                Pair("result", downloadViewModel.createResultItemFromDownload(item)),
+                                Pair("type", item.type)
+                            )
+                            )
                         }
-                        findNavController().navigate(R.id.downloadBottomSheetDialog, bundleOf(
-                            Pair("downloadItem", item),
-                            Pair("result", downloadViewModel.createResultItemFromDownload(item)),
-                            Pair("type", item.type)
-                        )
-                        )
                     }
 
                 }
@@ -227,8 +229,8 @@ class DownloadQueueMainFragment : Fragment(){
                     R.id.copy_urls -> {
                         lifecycleScope.launch {
                             val tabStatus = mapOf(
-                                0 to listOf(DownloadRepository.Status.Active, DownloadRepository.Status.ActivePaused),
-                                1 to listOf(DownloadRepository.Status.Queued, DownloadRepository.Status.QueuedPaused),
+                                0 to listOf(DownloadRepository.Status.Active),
+                                1 to listOf(DownloadRepository.Status.Queued),
                                 2 to listOf(DownloadRepository.Status.Scheduled),
                                 3 to listOf(DownloadRepository.Status.Cancelled),
                                 4 to listOf(DownloadRepository.Status.Error),
@@ -263,11 +265,10 @@ class DownloadQueueMainFragment : Fragment(){
     }
 
     private fun cancelAllDownloads() {
+        cancelBackgroundProcessingDownloads()
         workManager.cancelAllWorkByTag("download")
         lifecycleScope.launch {
             val notificationUtil = NotificationUtil(requireContext())
-            downloadViewModel.cancelActiveQueued()
-            cancelBackgroundProcessingDownloads()
             val activeAndQueued = withContext(Dispatchers.IO){
                 downloadViewModel.getActiveAndQueuedDownloadIDs()
             }
@@ -275,6 +276,7 @@ class DownloadQueueMainFragment : Fragment(){
                 YoutubeDL.getInstance().destroyProcessById(id.toString())
                 notificationUtil.cancelDownloadNotification(id.toInt())
             }
+            downloadViewModel.cancelActiveQueued()
         }
     }
 
@@ -296,6 +298,7 @@ class DownloadQueueMainFragment : Fragment(){
         }
 
         Intent(requireActivity(), ProcessDownloadsInBackgroundService::class.java).also { intent ->
+            intent.putExtra("binding", true)
             requireActivity().bindService(intent, connection, Context.BIND_AUTO_CREATE)
         }
     }

@@ -1,112 +1,118 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout android:layout_width="match_parent"
-    android:layout_height="230dp"
-    app:layout_constraintDimensionRatio="H,16:9"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.constraintlayout.widget.ConstraintLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:cardCornerRadius="20dp"
-        app:cardElevation="10dp"
-        app:cardMaxElevation="12dp"
-        app:cardBackgroundColor="@color/grey"
-        app:cardPreventCornerOverlap="true"
-        android:layout_margin="10dp"
+    <RelativeLayout android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="H,16:9"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         >
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-        <TextView
-            android:layout_width="300dp"
-            android:layout_height="10dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="10dp"
-            android:paddingRight="20dp"
-            android:paddingBottom="20dp"
-            android:paddingLeft="20dp"
-            android:textSize="15sp"
-            android:textColor="@color/white"
-            android:background="@color/light_grey"
-            android:textStyle="bold"
-            android:shadowRadius="2"
-            android:shadowDx="4"
-            android:shadowDy="4"
-            android:shadowColor="@color/black" />
-
-        <TextView
-            android:layout_width="200dp"
-            android:layout_height="10dp"
-            android:layout_marginTop="40dp"
-            android:layout_marginLeft="10dp"
-            android:paddingRight="20dp"
-            android:paddingBottom="20dp"
-            android:paddingLeft="20dp"
-            android:textSize="15sp"
-            android:textColor="@color/white"
-            android:background="@color/light_grey"
-            android:textStyle="bold"
-            android:shadowRadius="2"
-            android:shadowDx="4"
-            android:shadowDy="4"
-            android:shadowColor="@color/black" />
-
-        <TextView
-            android:layout_width="50dp"
-            android:layout_height="10dp"
-            android:layout_gravity="bottom"
-            android:layout_marginBottom="20dp"
-            android:layout_marginLeft="10dp"
-            android:background="@color/light_grey"
-            android:gravity="bottom"
-            android:paddingTop="10dp"
-            android:paddingRight="20dp"
-            android:paddingBottom="20dp"
-            android:paddingLeft="20dp"
-            android:textSize="15sp"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            android:shadowRadius="1.5"
-            android:shadowDx="4"
-            android:shadowDy="4"
-            android:shadowColor="@color/black" />
-
-        <LinearLayout
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="bottom|right"
-            android:orientation="horizontal"
-            android:paddingBottom="16dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp">
+            app:cardCornerRadius="20dp"
+            app:cardElevation="10dp"
+            app:cardMaxElevation="12dp"
+            app:cardBackgroundColor="@color/grey"
+            app:cardPreventCornerOverlap="true"
+            android:layout_margin="10dp"
+            >
 
-            <com.google.android.material.button.MaterialButton
-                style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton.Icon"
-                android:id="@+id/download_music"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                app:cornerRadius="10dp"
-                app:backgroundTint="@color/light_grey"
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <TextView
+                android:layout_width="300dp"
+                android:layout_height="10dp"
+                android:layout_marginTop="20dp"
                 android:layout_marginLeft="10dp"
-                />
+                android:paddingRight="20dp"
+                android:paddingBottom="20dp"
+                android:paddingLeft="20dp"
+                android:textSize="15sp"
+                android:textColor="@color/white"
+                android:background="@color/light_grey"
+                android:textStyle="bold"
+                android:shadowRadius="2"
+                android:shadowDx="4"
+                android:shadowDy="4"
+                android:shadowColor="@color/black" />
 
-            <com.google.android.material.button.MaterialButton
-                style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton.Icon"
-                android:id="@+id/download_video"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                app:cornerRadius="10dp"
-                app:backgroundTint="@color/light_grey"
+            <TextView
+                android:layout_width="200dp"
+                android:layout_height="10dp"
+                android:layout_marginTop="40dp"
                 android:layout_marginLeft="10dp"
-                />
+                android:paddingRight="20dp"
+                android:paddingBottom="20dp"
+                android:paddingLeft="20dp"
+                android:textSize="15sp"
+                android:textColor="@color/white"
+                android:background="@color/light_grey"
+                android:textStyle="bold"
+                android:shadowRadius="2"
+                android:shadowDx="4"
+                android:shadowDy="4"
+                android:shadowColor="@color/black" />
 
-        </LinearLayout>
+            <TextView
+                android:layout_width="50dp"
+                android:layout_height="10dp"
+                android:layout_gravity="bottom"
+                android:layout_marginBottom="20dp"
+                android:layout_marginLeft="10dp"
+                android:background="@color/light_grey"
+                android:gravity="bottom"
+                android:paddingTop="10dp"
+                android:paddingRight="20dp"
+                android:paddingBottom="20dp"
+                android:paddingLeft="20dp"
+                android:textSize="15sp"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:shadowRadius="1.5"
+                android:shadowDx="4"
+                android:shadowDy="4"
+                android:shadowColor="@color/black" />
 
-    </androidx.cardview.widget.CardView>
-</RelativeLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="bottom|right"
+                android:orientation="horizontal"
+                android:paddingBottom="16dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp">
+
+                <com.google.android.material.button.MaterialButton
+                    style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton.Icon"
+                    android:id="@+id/download_music"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    app:cornerRadius="10dp"
+                    app:backgroundTint="@color/light_grey"
+                    android:layout_marginLeft="10dp"
+                    />
+
+                <com.google.android.material.button.MaterialButton
+                    style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton.Icon"
+                    android:id="@+id/download_video"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    app:cornerRadius="10dp"
+                    app:backgroundTint="@color/light_grey"
+                    android:layout_marginLeft="10dp"
+                    />
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+    </RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

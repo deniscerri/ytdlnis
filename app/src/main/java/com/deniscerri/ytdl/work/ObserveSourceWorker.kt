@@ -118,7 +118,7 @@ class ObserveSourceWorker(
             }
 
             items.forEach {
-                if (it.status != DownloadRepository.Status.ActivePaused.toString()) it.status = DownloadRepository.Status.Queued.toString()
+                it.status = DownloadRepository.Status.Queued.toString()
                 val currentCommand = infoUtil.buildYoutubeDLRequest(it)
                 val parsedCurrentCommand = infoUtil.parseYTDLRequestString(currentCommand)
                 val existingDownload = activeAndQueuedDownloads.firstOrNull{d ->

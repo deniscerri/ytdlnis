@@ -125,6 +125,7 @@ class ActiveDownloadMinifiedAdapter(onItemClickListener: OnItemClickListener, ac
         else fileSize.text = fileSizeReadable
 
         val menu = card.findViewById<View>(R.id.options)
+        val paused = sharedPreferences.getBoolean("paused_downloads", false) || item.status == DownloadRepository.Status.ActivePaused.toString()
         menu.setOnClickListener {
             val popup = PopupMenu(activity, it)
             popup.menuInflater.inflate(R.menu.active_downloads_minified, popup.menu)
@@ -133,7 +134,7 @@ class ActiveDownloadMinifiedAdapter(onItemClickListener: OnItemClickListener, ac
             val pause = popup.menu[0]
             val resume = popup.menu[1]
 
-            if (item.status == DownloadRepository.Status.ActivePaused.toString()){
+            if (paused){
                 pause.isVisible = false
                 resume.isVisible = true
             }else{
@@ -165,7 +166,7 @@ class ActiveDownloadMinifiedAdapter(onItemClickListener: OnItemClickListener, ac
 
         }
 
-        progressBar.isIndeterminate = item.status != DownloadRepository.Status.ActivePaused.toString()
+        progressBar.isIndeterminate = !paused
 
         card.setOnClickListener {
             onItemClickListener.onCardClick()

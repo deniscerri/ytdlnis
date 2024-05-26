@@ -85,7 +85,21 @@ class DownloadAudioFragment(private var resultItem: ResultItem? = null, private 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         lifecycleScope.launch {
             downloadItem = withContext(Dispatchers.IO) {
-                if (currentDownloadItem != null){
+                if (savedInstanceState?.containsKey("updated") == true) {
+                    downloadItem.apply {
+                        title = resultItem!!.title
+                        author = resultItem!!.author
+                        allFormats = resultItem!!.formats
+                        format = downloadViewModel.getFormat(allFormats, Type.audio)
+                        duration = resultItem!!.duration
+                        playlistIndex = resultItem!!.playlistIndex
+                        playlistURL = resultItem!!.playlistURL
+                        playlistTitle = resultItem!!.playlistTitle
+                        thumb = resultItem!!.thumb
+                        website = resultItem!!.website
+                        url = resultItem!!.url
+                    }
+                }else if (currentDownloadItem != null){
                     //object cloning
                     val string = Gson().toJson(currentDownloadItem, DownloadItem::class.java)
                     Gson().fromJson(string, DownloadItem::class.java)

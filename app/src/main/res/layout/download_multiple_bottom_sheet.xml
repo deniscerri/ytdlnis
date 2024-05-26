@@ -41,6 +41,29 @@
             android:orientation="horizontal"
             android:paddingTop="20dp">
 
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:layout_marginEnd="20dp"
+                app:layout_constraintEnd_toStartOf="@+id/bottomsheet_schedule_button"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:id="@+id/shimmer_loading_title"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/bottom_sheet_loading_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLines="2"
+                    android:singleLine="false"
+                    android:text="@string/loading"
+                    android:textSize="25sp" />
+
+            </com.facebook.shimmer.ShimmerFrameLayout>
+
             <TextView
                 android:id="@+id/bottom_sheet_title"
                 android:layout_width="0dp"
@@ -52,6 +75,28 @@
                 app:layout_constraintEnd_toStartOf="@+id/bottomsheet_schedule_button"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:layout_width="0dp"
+                android:visibility="gone"
+                android:layout_height="wrap_content"
+                app:layout_constraintHorizontal_bias="0.0"
+                android:layout_marginEnd="20dp"
+                app:layout_constraintEnd_toStartOf="@+id/bottomsheet_schedule_button"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/shimmer_loading_title"
+                android:id="@+id/shimmer_loading_subtitle"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLines="2"
+                    android:singleLine="false"
+                    android:text="@string/please_wait"
+                    android:textSize="12sp" />
+
+            </com.facebook.shimmer.ShimmerFrameLayout>
 
 
             <TextView
@@ -114,6 +159,7 @@
                 android:layout_height="wrap_content"
                 android:visibility="gone"
                 android:paddingEnd="20dp"
+                android:paddingStart="0dp"
                 android:paddingTop="10dp"
                 android:text="@string/file_size"
                 android:textStyle="bold"
@@ -123,12 +169,6 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
         </LinearLayout>
-
-        <com.google.android.material.progressindicator.LinearProgressIndicator
-            android:id="@+id/loadingItemsProgress"
-            android:layout_width="match_parent"
-            android:indeterminate="true"
-            android:layout_height="wrap_content" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/downloadMultipleRecyclerview"

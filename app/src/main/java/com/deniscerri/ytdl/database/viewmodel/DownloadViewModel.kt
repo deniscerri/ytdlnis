@@ -5,13 +5,10 @@ import android.app.Application
 import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.content.res.Resources
-import android.os.Handler
-import android.os.Looper
-import android.os.Parcelable
 import android.util.DisplayMetrics
-import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
@@ -20,7 +17,6 @@ import androidx.work.Data
 import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
-import com.afollestad.materialdialogs.utils.MDUtil.getStringArray
 import com.deniscerri.ytdl.App
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.DBManager
@@ -41,21 +37,20 @@ import com.deniscerri.ytdl.ui.downloadcard.FormatTuple
 import com.deniscerri.ytdl.util.Extensions.toListString
 import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.util.InfoUtil
-import com.deniscerri.ytdl.work.AlarmScheduler
 import com.deniscerri.ytdl.work.UpdatePlaylistFormatsWorker
-import com.google.gson.Gson
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.last
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
-import kotlinx.parcelize.Parcelize
 import java.io.File
 import java.util.Locale
 
@@ -77,14 +72,12 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
     val scheduledDownloads : Flow<PagingData<DownloadItemSimple>>
 
     val activeDownloadsCount : Flow<Int>
-    val activeAndActivePausedDownloadsCount : Flow<Int>
     val queuedDownloadsCount : Flow<Int>
     val activeQueuedDownloadsCount : Flow<Int>
     val cancelledDownloadsCount : Flow<Int>
     val erroredDownloadsCount : Flow<Int>
     val savedDownloadsCount : Flow<Int>
     val scheduledDownloadsCount : Flow<Int>
-    val pausedDownloadsCount: Flow<Int>
 
     val alreadyExistsUiState: MutableStateFlow<List<SharedDownloadViewModel.AlreadyExistsIDs>>
 
@@ -130,14 +123,12 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         infoUtil = InfoUtil(application)
 
         activeDownloadsCount = repository.activeDownloadsCount
-        activeAndActivePausedDownloadsCount = repository.activeAndActivePausedDownloadsCount
         queuedDownloadsCount = repository.queuedDownloadsCount
         activeQueuedDownloadsCount = repository.activeQueuedDownloadsCount
         cancelledDownloadsCount = repository.cancelledDownloadsCount
         erroredDownloadsCount = repository.erroredDownloadsCount
         savedDownloadsCount = repository.savedDownloadsCount
         scheduledDownloadsCount = repository.scheduledDownloadsCount
-        pausedDownloadsCount = repository.pausedDownloadsCount
 
         allDownloads = repository.allDownloads.flow
         queuedDownloads = repository.queuedDownloads.flow
@@ -294,8 +285,8 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         val cropThumb = sharedPreferences.getBoolean("crop_thumbnail", false)
 
         val customFileNameTemplate = when(historyItem.type) {
-            Type.audio -> sharedPreferences.getString("file_name_template_audio", "%(uploader)s - %(title)s")
-            Type.video -> sharedPreferences.getString("file_name_template", "%(uploader)s - %(title)s")
+            Type.audio -> sharedPreferences.getString("file_name_template_audio", "%(uploader)30B - %(title)120B")
+            Type.video -> sharedPreferences.getString("file_name_template", "%(uploader)30B - %(title)120B")
             else -> ""
         }
 
@@ -371,78 +362,57 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
     }
 
     data class ProcessingItemsJob(
-        var jobID: Long = 0,
         var job: Job? = null,
-        var itemType: String,
-        var itemIDs: List<Long>
+        var originItemType: String,
+        var originItemIDs: List<Long>,
+        var processingDownloadItemIDs: MutableList<Long> = mutableListOf()
     )
 
-    val loadingProcessingItems: MutableStateFlow<Boolean> = MutableStateFlow(false)
-    var loadingProcessingDownloadsJobs: MutableStateFlow<List<ProcessingItemsJob>> = MutableStateFlow(listOf())
-    private fun cancelAllLoadingProcessingDownloads() {
-        loadingProcessingDownloadsJobs.value.onEach {
-            it.job?.cancel(CancellationException())
-        }
+    var processingItemsJob: MutableLiveData<ProcessingItemsJob?> = MutableLiveData(null)
+    var _filteredProcessingItems = MutableStateFlow<List<DownloadItem>>(listOf())
+    var filteredProcessingItems: StateFlow<List<DownloadItem>> = _filteredProcessingItems
+    private fun updateProcessingJobData(item: ProcessingItemsJob) = viewModelScope.launch {
+        processingItemsJob.postValue(item)
     }
 
-    fun getLoadingProcessingDownloadJob(jobID: Long) : ProcessingItemsJob? {
-        return loadingProcessingDownloadsJobs.value.firstOrNull { it.jobID == jobID }
-    }
-
-    fun cancelLoadingProcessingDownloads(jobID: Long) {
-        loadingProcessingDownloadsJobs.value.firstOrNull {it.jobID == jobID }?.apply {
-            this.job?.cancel(CancellationException())
-        }
-    }
-
-    fun turnDownloadItemsToProcessingDownloads(itemIDs: List<Long>) : Long {
-        val jobID = System.currentTimeMillis()
+    fun turnDownloadItemsToProcessingDownloads(itemIDs: List<Long>) = viewModelScope.launch(Dispatchers.IO){
+        processingItemsJob.postValue(ProcessingItemsJob(null, DownloadItem::class.java.toString(), itemIDs))
         val job = viewModelScope.launch(Dispatchers.IO) {
-            val insertedIDs = mutableListOf<Long>()
             try {
-                loadingProcessingItems.emit(true)
-
                 itemIDs.chunked(100).forEach { ids ->
                     val items = repository.getAllItemsByIDs(ids)
-                    items.apply {
-                        if (!isActive) {
-                            throw CancellationException()
-                        }
-                        this.forEach {
-                            it.id = 0
-                            it.status = DownloadRepository.Status.Processing.toString()
-                            insertedIDs.add(repository.insert(it))
-                        }
+                    if (!isActive) {
+                        throw CancellationException()
+                    }
+                    items.forEach {
+                        it.id = 0
+                        it.status = DownloadRepository.Status.Processing.toString()
+                    }
+
+                    processingItemsJob.value?.apply {
+                        processingDownloadItemIDs.addAll(repository.insertAll(items))
+                        updateProcessingJobData(this)
                     }
                 }
 
-                loadingProcessingItems.emit(false)
             } catch (e: Exception) {
-                repository.deleteAllWithIDs(insertedIDs)
-                loadingProcessingItems.emit(false)
+                processingItemsJob.value?.apply {
+                    this.processingDownloadItemIDs.chunked(100).forEach {
+                        repository.deleteAllWithIDs(it)
+                    }
+                }
+                processingItemsJob.postValue(null)
             }
         }
-
-        viewModelScope.launch(Dispatchers.IO) {
-            val currentJobs = loadingProcessingDownloadsJobs.value.toMutableList()
-            currentJobs.add(
-                ProcessingItemsJob(jobID, job, DownloadItem::class.java.toString(), itemIDs)
-            )
-            loadingProcessingDownloadsJobs.emit(currentJobs)
-        }
-
-        return jobID
+        processingItemsJob.postValue(ProcessingItemsJob(job, DownloadItem::class.java.toString(), itemIDs))
     }
 
 
-    fun turnResultItemsToProcessingDownloads(itemIds: List<Long>, downloadNow: Boolean = false) : Long {
-        val jobID = System.currentTimeMillis()
-        val job =  viewModelScope.launch(Dispatchers.IO) {
-            val insertedIds = mutableListOf<Long>()
+    fun turnResultItemsToProcessingDownloads(itemIDs: List<Long>, downloadNow: Boolean = false) = viewModelScope.launch(Dispatchers.IO) {
+        processingItemsJob.postValue(ProcessingItemsJob(null, ResultItem::class.java.toString(), itemIDs))
+        val job = viewModelScope.launch(Dispatchers.IO) {
             try {
-                loadingProcessingItems.emit(true)
-
-                itemIds.chunked(100).forEach { ids ->
+                itemIDs.chunked(100).forEach { ids ->
                     val items = resultRepository.getAllByIDs(ids)
                     val downloadItems = items.map {
                         val preferredType = getDownloadType(url = it.url).toString()
@@ -462,39 +432,27 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
                         }
                         queueDownloads(downloadItems)
                     }else{
-                        downloadItems.forEach {
-                            insertedIds.add(repository.insert(it))
+                        processingItemsJob.value?.apply {
+                            processingDownloadItemIDs.addAll(repository.insertAll(downloadItems))
+                            updateProcessingJobData(this)
                         }
                     }
                 }
-                loadingProcessingItems.emit(false)
             }catch (e: Exception) {
-                repository.deleteAllWithIDs(insertedIds)
-                loadingProcessingItems.emit(false)
+                processingItemsJob.value?.apply {
+                    this.processingDownloadItemIDs.chunked(100).forEach {
+                        repository.deleteAllWithIDs(it)
+                    }
+                }
+                processingItemsJob.postValue(null)
             }
         }
 
-        viewModelScope.launch(Dispatchers.IO) {
-            val currentJobs = loadingProcessingDownloadsJobs.value.toMutableList()
-            currentJobs.add(
-                ProcessingItemsJob(jobID, job, ResultItem::class.java.toString(), itemIds)
-            )
-            loadingProcessingDownloadsJobs.emit(currentJobs)
-        }
-
-        return jobID
+        processingItemsJob.postValue(ProcessingItemsJob(job, ResultItem::class.java.toString(), itemIDs))
     }
 
     fun insert(item: DownloadItem) = viewModelScope.launch(Dispatchers.IO){
         repository.insert(item)
-    }
-
-    fun pauseDownloads() = viewModelScope.launch(Dispatchers.IO){
-        repository.pauseDownloads()
-    }
-
-    fun unPauseDownloads() = viewModelScope.launch(Dispatchers.IO){
-        repository.unPauseDownloads()
     }
 
     fun insertAll(items: List<DownloadItem>)= viewModelScope.launch(Dispatchers.IO){
@@ -540,7 +498,7 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
     }
 
     fun cancelActiveQueued() = viewModelScope.launch(Dispatchers.IO) {
-        cancelAllLoadingProcessingDownloads()
+        processingItemsJob.value?.apply { this.job?.cancel(CancellationException()) }
         repository.cancelActiveQueued()
     }
 
@@ -563,8 +521,12 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         return repository.getActiveDownloads()
     }
 
-    fun getActiveAndQueuedDownloads() : List<DownloadItem>{
-        return repository.getActiveAndQueuedDownloads()
+    fun getActiveDownloadsCount() : Int {
+        return dao.getDownloadsCountByStatus(listOf(DownloadRepository.Status.Active, DownloadRepository.Status.ActivePaused).toListString())
+    }
+
+    fun getQueuedDownloadsCount() : Int {
+        return dao.getDownloadsCountByStatus(listOf(DownloadRepository.Status.Queued).toListString())
     }
 
     fun getActiveAndQueuedDownloadIDs() : List<Long>{
@@ -573,8 +535,11 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
 
     suspend fun resetScheduleTimeForItemsAndStartDownload(items: List<Long>) = CoroutineScope(Dispatchers.IO).launch {
         dbManager.downloadDao.resetScheduleTimeForItems(items)
-        dbManager.downloadDao.resetPausedItems()
         repository.startDownloadWorker(emptyList(), application)
+    }
+
+    suspend fun resetActivePaused() {
+        dbManager.downloadDao.resetActivePausedItems()
     }
 
     suspend fun startDownloadWorker(list: List<DownloadItem>){
@@ -664,36 +629,42 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         return dbManager.downloadDao.getDownloadIDsNotPresentInList(items.ifEmpty { listOf(-1L) }, status.map { it.toString() })
     }
 
-    fun moveProcessingToSavedCategory(){
-        dao.updateProcessingtoSavedStatus()
+    fun moveProcessingToSavedCategory(ids: List<Long>){
+        ids.chunked(100).forEach {
+            dao.updateProcessingtoSavedStatus(it)
+        }
     }
 
-    suspend fun updateProcessingFormat(selectedFormats: List<FormatTuple>): List<Long> {
-        val items = repository.getProcessingDownloads()
-        items.forEachIndexed { index, i ->
-            selectedFormats[index].format?.apply {
-                i.format = this
+    suspend fun updateProcessingFormat(ids: List<Long>, selectedFormats: List<FormatTuple>): List<Long> {
+        return ids.chunked(100).map {
+            val items = repository.getAllItemsByIDs(it)
+            items.forEachIndexed { index, i ->
+                selectedFormats[index].format?.apply {
+                    i.format = this
+                }
+                if (i.type == Type.video) selectedFormats[index].audioFormats?.map { it.format_id }?.let { i.videoPreferences.audioFormatIDs.addAll(it) }
+                repository.update(i)
             }
-            if (i.type == Type.video) selectedFormats[index].audioFormats?.map { it.format_id }?.let { i.videoPreferences.audioFormatIDs.addAll(it) }
-            repository.update(i)
-        }
 
-        return items.map { it.format.filesize }
+            items.map { itm -> itm.format.filesize }
+        }.flatten()
     }
 
-    suspend fun updateProcessingCommandFormat(format: Format){
-        val items = repository.getProcessingDownloads()
-        items.forEach { i ->
-            i.format = format
-            repository.update(i)
+    suspend fun updateProcessingCommandFormat(ids: List<Long>, format: Format){
+        ids.chunked(100).forEach {
+            repository.getAllItemsByIDs(it).forEach { i ->
+                i.format = format
+                repository.update(i)
+            }
         }
     }
 
-    suspend fun updateProcessingDownloadPath(path: String){
-        val items = repository.getProcessingDownloads()
-        items.forEach { i ->
-            i.downloadPath = path
-            repository.update(i)
+    suspend fun updateProcessingDownloadPath(ids: List<Long>, path: String){
+        ids.chunked(100).forEach {
+            repository.getAllItemsByIDs(it).forEach { i ->
+                i.downloadPath = path
+                repository.update(i)
+            }
         }
     }
 
@@ -706,66 +677,73 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
     }
 
 
-    suspend fun updateProcessingAllFormats(formatCollection: List<List<Format>>) {
-        val items = repository.getProcessingDownloads()
-        items.forEachIndexed { index, i ->
-            i.allFormats.clear()
-            if (formatCollection.size == items.size && formatCollection[index].isNotEmpty()) {
-                runCatching {
-                    i.allFormats.addAll(formatCollection[index])
+    suspend fun updateProcessingAllFormats(ids: List<Long>, formatCollection: List<List<Format>>) {
+        ids.chunked(100).forEach {
+            val items = repository.getAllItemsByIDs(it)
+            items.forEachIndexed { index, i ->
+                i.allFormats.clear()
+                if (formatCollection.size == items.size && formatCollection[index].isNotEmpty()) {
+                    runCatching {
+                        i.allFormats.addAll(formatCollection[index])
+                    }
                 }
-            }
-            i.format = getFormat(i.allFormats, i.type)
-            kotlin.runCatching {
-                dbManager.resultDao.getResultByURL(i.url)?.apply {
-                    this.formats = formatCollection[index].toMutableList()
-                    dbManager.resultDao.update(this)
+                i.format = getFormat(i.allFormats, i.type)
+                kotlin.runCatching {
+                    dbManager.resultDao.getResultByURL(i.url)?.apply {
+                        this.formats = formatCollection[index].toMutableList()
+                        dbManager.resultDao.update(this)
+                    }
                 }
+                repository.update(i)
             }
-            repository.update(i)
         }
+
     }
 
-    suspend fun continueUpdatingFormatsOnBackground(){
-        dao.getProcessingDownloadsList().apply {
-            this.forEach {
+    suspend fun continueUpdatingFormatsOnBackground(itemIDs: List<Long>){
+        itemIDs.chunked(100).forEach {list ->
+            repository.getAllItemsByIDs(list).onEach {
                 it.status = DownloadRepository.Status.Saved.toString()
                 repository.update(it)
             }
-
-            val ids = this.map { it.id }
-            val id = System.currentTimeMillis().toInt()
-            val workRequest = OneTimeWorkRequestBuilder<UpdatePlaylistFormatsWorker>()
-                .setInputData(
-                    Data.Builder()
-                        .putLongArray("ids", ids.toLongArray())
-                        .putInt("id", id)
-                        .build())
-                .addTag("updateFormats")
-                .build()
-            val context = App.instance
-            WorkManager.getInstance(context).enqueueUniqueWork(
-                id.toString(),
-                ExistingWorkPolicy.REPLACE,
-                workRequest
-            )
         }
+
+        val id = System.currentTimeMillis().toInt()
+        val workRequest = OneTimeWorkRequestBuilder<UpdatePlaylistFormatsWorker>()
+            .setInputData(
+                Data.Builder()
+                    .putLongArray("ids", itemIDs.toLongArray())
+                    .putInt("id", id)
+                    .build())
+            .addTag("updateFormats")
+            .build()
+        val context = App.instance
+        WorkManager.getInstance(context).enqueueUniqueWork(
+            id.toString(),
+            ExistingWorkPolicy.REPLACE,
+            workRequest
+        )
+
     }
 
-    suspend fun updateProcessingType(newType: Type) {
-        repository.getProcessingDownloads().apply {
-            val new = switchDownloadType(this, newType)
-            new.forEach {
-                repository.update(it)
+    suspend fun updateProcessingType(ids: List<Long>, newType: Type) {
+        ids.chunked(100).forEach { _ ->
+            repository.getAllItemsByIDs(ids).apply {
+                val new = switchDownloadType(this, newType)
+                new.forEach {
+                    repository.update(it)
+                }
             }
         }
     }
 
-    fun checkIfAllProcessingItemsHaveSameType() : Pair<Boolean, Type> {
-        val counts = dao.getProcessingDownloadsCountByType()
-        val sameType = counts.size == 1 || counts[0] == counts[1]
-        val first = dao.getFirstProcessingDownload()
-        return Pair(sameType, first.type)
+    fun checkIfAllProcessingItemsHaveSameType(ids: List<Long>) : Pair<Boolean, Type> {
+        val types = mutableSetOf<String>()
+        ids.chunked(100).forEach {
+            types.addAll(dao.getProcessingDownloadTypes(it))
+        }
+
+        return Pair(types.size == 1, Type.valueOf(types.first()))
     }
 
 
@@ -773,6 +751,10 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         repository.deleteProcessing()
         dao.updateItemsToProcessing(ids)
         val first = dao.getFirstProcessingDownload()
+    }
+
+    suspend fun updateToStatus(id: Long, status: DownloadRepository.Status) {
+        repository.setDownloadStatus(id, status)
     }
 
     fun getURLsByStatus(list: List<DownloadRepository.Status>) : List<String> {

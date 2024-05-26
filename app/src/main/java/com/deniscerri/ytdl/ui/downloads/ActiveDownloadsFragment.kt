@@ -2,21 +2,13 @@ package com.deniscerri.ytdl.ui.downloads
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.DialogInterface
-import android.graphics.Canvas
-import android.graphics.Color
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RelativeLayout
 import android.widget.TextView
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.view.ActionMode
-import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -24,38 +16,30 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import androidx.work.WorkQuery
-import com.afollestad.materialdialogs.utils.MDUtil.getStringArray
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.models.DownloadItem
 import com.deniscerri.ytdl.database.repository.DownloadRepository
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.ui.adapter.ActiveDownloadAdapter
-import com.deniscerri.ytdl.ui.adapter.QueuedDownloadAdapter
 import com.deniscerri.ytdl.util.Extensions.forceFastScrollMode
-import com.deniscerri.ytdl.util.Extensions.toListString
 import com.deniscerri.ytdl.util.NotificationUtil
-import com.deniscerri.ytdl.util.UiUtil
-import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.chip.Chip
-import com.google.android.material.color.MaterialColors
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.deniscerri.ytdl.work.DownloadWorker
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.progressindicator.LinearProgressIndicator
-import com.google.android.material.snackbar.Snackbar
 import com.yausername.youtubedl_android.YoutubeDL
-import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 
 class ActiveDownloadsFragment : Fragment(), ActiveDownloadAdapter.OnItemClickListener {
@@ -71,6 +55,7 @@ class ActiveDownloadsFragment : Fragment(), ActiveDownloadAdapter.OnItemClickLis
     private lateinit var resume: ExtendedFloatingActionButton
     private lateinit var noResults: RelativeLayout
     private lateinit var workManager: WorkManager
+    private lateinit var preferences: SharedPreferences
 
 
     override fun onCreateView(
@@ -90,6 +75,7 @@ class ActiveDownloadsFragment : Fragment(), ActiveDownloadAdapter.OnItemClickLis
         notificationUtil = NotificationUtil(requireContext())
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
         workManager = WorkManager.getInstance(requireContext())
+        preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
 
         activeDownloads = ActiveDownloadAdapter(this,requireActivity())
         activeRecyclerView = view.findViewById(R.id.download_recyclerview)
@@ -105,102 +91,45 @@ class ActiveDownloadsFragment : Fragment(), ActiveDownloadAdapter.OnItemClickLis
         pause.setOnClickListener {
             lifecycleScope.launch {
                 workManager.cancelAllWorkByTag("download")
-                pause.isEnabled = false
-
-                // pause queued
-                withContext(Dispatchers.IO){
-                    downloadViewModel.getQueued()
-                }.forEach {
-                    it.status = DownloadRepository.Status.QueuedPaused.toString()
-                    downloadViewModel.updateDownload(it)
-                }
-
-                // pause active
                 withContext(Dispatchers.IO){
                     downloadViewModel.getActiveDownloads()
                 }.forEach {
-                    cancelItem(it.id.toInt())
-                    it.status = DownloadRepository.Status.ActivePaused.toString()
-                    downloadViewModel.updateDownload(it)
+                    YoutubeDL.getInstance().destroyProcessById(it.id.toString())
                 }
-
+                preferences.edit().putBoolean("paused_downloads", true).apply()
                 activeDownloads.notifyDataSetChanged()
-                pause.isEnabled = true
+                resume.isVisible = true
+                pause.isVisible = false
             }
         }
 
         resume.setOnClickListener {
             lifecycleScope.launch {
-                resume.isEnabled = false
-
-                val active = withContext(Dispatchers.IO){
-                    downloadViewModel.getActiveDownloads()
-                }
-
-                val toQueue = active.filter { it.status == DownloadRepository.Status.ActivePaused.toString() }.toMutableList()
-                runBlocking {
-                    toQueue.forEach {
-                        it.status = DownloadRepository.Status.Queued.toString()
-                        downloadViewModel.updateDownload(it)
-                    }
-                }
-
-                runBlocking {
+                preferences.edit().putBoolean("paused_downloads", false).apply()
+                resume.isVisible = false
+                pause.isVisible = true
+                withContext(Dispatchers.IO) {
+                    downloadViewModel.resetActivePaused()
                     downloadViewModel.startDownloadWorker(listOf())
-                }
-
-                val queuedItems = withContext(Dispatchers.IO){
-                    downloadViewModel.getQueued()
-                }
-                queuedItems.map {
-                    it.status = DownloadRepository.Status.Queued.toString()
-                    downloadViewModel.updateDownload(it)
-                }
-
-                resume.isEnabled = true
-            }
-        }
-
-        WorkManager.getInstance(requireContext())
-            .getWorkInfosLiveData(WorkQuery.fromStates(WorkInfo.State.RUNNING))
-            .observe(viewLifecycleOwner){ list ->
-                list.forEach {work ->
-                    if (work == null) return@forEach
-                    val id = work.progress.getLong("id", 0L)
-                    if(id == 0L) return@forEach
-
-                    val progress = work.progress.getInt("progress", 0)
-                    val output = work.progress.getString("output")
-
-                    val progressBar = view.findViewWithTag<LinearProgressIndicator>("$id##progress")
-                    val outputText = view.findViewWithTag<TextView>("$id##output")
-
-                    requireActivity().runOnUiThread {
-                        try {
-                            progressBar?.setProgressCompat(progress, true)
-                            outputText?.text = output
-                        }catch (ignored: Exception) {}
+                    withContext(Dispatchers.Main){
+                        activeDownloads.notifyDataSetChanged()
                     }
                 }
-            }
-
-
-        lifecycleScope.launch {
-            downloadViewModel.activeAndActivePausedDownloadsCount.collectLatest {
-                noResults.isVisible = it == 0
             }
         }
 
         lifecycleScope.launch {
             downloadViewModel.activeDownloadsCount.collectLatest {
-                pause.isVisible = it > 0
+                noResults.isVisible = it == 0
+                val pausedDownloads = preferences.getBoolean("paused_downloads", false)
+                pause.isVisible = it > 0 && !pausedDownloads
             }
         }
 
-
         lifecycleScope.launch {
-            downloadViewModel.pausedDownloadsCount.collectLatest {
-                resume.isVisible = it > 0
+            downloadViewModel.activeQueuedDownloadsCount.collectLatest {
+                val pausedDownloads = preferences.getBoolean("paused_downloads", false)
+                resume.isVisible = it > 0 && pausedDownloads
             }
         }
 
@@ -212,27 +141,79 @@ class ActiveDownloadsFragment : Fragment(), ActiveDownloadAdapter.OnItemClickLis
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onDownloadProgressEvent(event: DownloadWorker.WorkerProgress) {
+        val progressBar = requireView().findViewWithTag<LinearProgressIndicator>("${event.downloadItemID}##progress")
+        val outputText = requireView().findViewWithTag<TextView>("${event.downloadItemID}##output")
+
+        requireActivity().runOnUiThread {
+            try {
+                progressBar?.setProgressCompat(event.progress, true)
+                outputText?.text = event.output
+            }catch (ignored: Exception) {}
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        EventBus.getDefault().register(this)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        EventBus.getDefault().unregister(this)
+    }
+
     override fun onCancelClick(itemID: Long) {
         lifecycleScope.launch {
-            val count = withContext(Dispatchers.IO){
-                downloadViewModel.getActiveDownloads()
-            }.count()
+            YoutubeDL.getInstance().destroyProcessById(itemID.toString())
+            notificationUtil.cancelDownloadNotification(itemID.toInt())
 
-            if (count == 1){
+            val item = withContext(Dispatchers.IO){
+                downloadViewModel.getItemByID(itemID)
+            }
+            item.status = DownloadRepository.Status.Cancelled.toString()
+            withContext(Dispatchers.IO){
+                downloadViewModel.updateDownload(item)
+            }
+
+            val activeCount = withContext(Dispatchers.IO){
+                downloadViewModel.getActiveDownloadsCount()
+            }
+
+            if (activeCount == 0){
+                val queuedCount = withContext(Dispatchers.IO){
+                    downloadViewModel.getQueuedDownloadsCount()
+                }
+                if (queuedCount == 0) {
+                    preferences.edit().putBoolean("paused_downloads", false).apply()
+                }
+            }
+
+            if (activeCount == 1){
                 val queue = withContext(Dispatchers.IO){
-                    val list = downloadViewModel.getQueued().toMutableList()
-                    list.map { it.status = DownloadRepository.Status.Queued.toString() }
-                    list
+                    downloadViewModel.getQueued()
                 }
 
-                runBlocking {
-                    downloadViewModel.queueDownloads(queue)
+                if (!preferences.getBoolean("paused_downloads", false)){
+                    runBlocking {
+                        downloadViewModel.queueDownloads(queue)
+                    }
                 }
             }
 
         }
+    }
 
-        cancelDownload(itemID)
+    override fun onResumeClick(itemID: Long) {
+        lifecycleScope.launch {
+            val item = withContext(Dispatchers.IO){
+                downloadViewModel.getItemByID(itemID)
+            }
+            withContext(Dispatchers.IO){
+                downloadViewModel.queueDownloads(listOf(item))
+            }
+        }
     }
 
     override fun onOutputClick(item: DownloadItem) {
@@ -246,22 +227,4 @@ class ActiveDownloadsFragment : Fragment(), ActiveDownloadAdapter.OnItemClickLis
         }
     }
 
-    private fun cancelItem(id: Int){
-        YoutubeDL.getInstance().destroyProcessById(id.toString())
-        notificationUtil.cancelDownloadNotification(id)
-    }
-
-    private fun cancelDownload(itemID: Long){
-        lifecycleScope.launch {
-            cancelItem(itemID.toInt())
-            withContext(Dispatchers.IO){
-                downloadViewModel.getItemByID(itemID)
-            }.let {
-                it.status = DownloadRepository.Status.Cancelled.toString()
-                withContext(Dispatchers.IO){
-                    downloadViewModel.updateDownload(it)
-                }
-            }
-        }
-    }
 }

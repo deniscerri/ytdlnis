@@ -24,6 +24,7 @@
     <string-array name="video_containers">
         <item>@string/defaultValue</item>
         <item>mp4</item>
+        <item>webm</item>
         <item>mkv</item>
         <item>avi</item>
         <item>flv</item>
@@ -33,6 +34,7 @@
     <string-array name="video_containers_values">
         <item>Default</item>
         <item>mp4</item>
+        <item>webm</item>
         <item>mkv</item>
         <item>avi</item>
         <item>flv</item>

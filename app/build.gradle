@@ -11,7 +11,7 @@ def properties = new Properties()
 def versionMajor = 1
 def versionMinor = 7
 def versionPatch = 6
-def versionBuild = 0 // bump for dogfood builds, public betas, etc.
+def versionBuild = 1 // bump for dogfood builds, public betas, etc.
 def isBeta = true
 def versionExt = isBeta ? ".${versionBuild}-beta" : ""
 
@@ -195,4 +195,5 @@ dependencies {
     implementation 'com.google.accompanist:accompanist-webview:0.30.1'
     implementation 'androidx.compose.material3:material3-android:1.2.1'
     implementation "io.noties.markwon:core:4.6.2"
+    implementation("org.greenrobot:eventbus:3.3.1")
 }

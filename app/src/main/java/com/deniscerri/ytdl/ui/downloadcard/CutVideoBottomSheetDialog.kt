@@ -7,6 +7,7 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
+import android.text.method.DigitsKeyListener
 import android.util.DisplayMetrics
 import android.view.KeyEvent
 import android.view.LayoutInflater
@@ -144,7 +145,9 @@ class CutVideoBottomSheetDialog(private val _item: DownloadItem? = null, private
         muteBtn = view.findViewById(R.id.mute)
         rangeSlider = view.findViewById(R.id.rangeSlider)
         fromTextInput = view.findViewById(R.id.from_textinput_edittext)
+        fromTextInput.keyListener = DigitsKeyListener.getInstance("0123456789:.")
         toTextInput = view.findViewById(R.id.to_textinput_edittext)
+        toTextInput.keyListener = DigitsKeyListener.getInstance("0123456789:.")
         cancelBtn = view.findViewById(R.id.cancelButton)
         okBtn = view.findViewById(R.id.okButton)
         suggestedChips = view.findViewById(R.id.chapters)

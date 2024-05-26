@@ -29,7 +29,7 @@
             app:title="@string/quick_download" />
         
         <ListPreference
-            android:defaultValue=""
+            android:defaultValue="url_type"
             android:entries="@array/prevent_duplicate_downloads"
             android:entryValues="@array/prevent_duplicate_downloads_values"
             android:icon="@drawable/baseline_archive_24"

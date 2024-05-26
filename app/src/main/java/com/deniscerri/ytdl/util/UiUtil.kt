@@ -100,6 +100,7 @@ import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
+import java.util.Queue
 
 
 object UiUtil {
@@ -709,7 +710,13 @@ object UiUtil {
                 }
             }
             DownloadRepository.Status.Queued -> {
-                download!!.visibility = View.GONE
+                download!!.text = context.getString(R.string.configure_download)
+                download.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_retries, 0, 0, 0);
+                download.setOnClickListener {
+                    longClickDownloadButton(item)
+                    bottomSheet.cancel()
+                    true
+                }
             }
             DownloadRepository.Status.Scheduled -> {
                 download!!.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_downloads, 0, 0, 0);
@@ -724,9 +731,11 @@ object UiUtil {
             }
         }
 
-        download?.setOnClickListener {
-            bottomSheet.dismiss()
-            downloadItem(item)
+        if (status != DownloadRepository.Status.Queued){
+            download?.setOnClickListener {
+                bottomSheet.dismiss()
+                downloadItem(item)
+            }
         }
 
         bottomSheet.show()
@@ -860,9 +869,10 @@ object UiUtil {
             showGeneratedCommand(context, item.command)
         }
 
-        location?.isVisible = true
+        val availableFiles = item.downloadPath.filter { FileUtil.exists(it) }
+        location?.isVisible = availableFiles.isNotEmpty()
         location?.setOnClickListener {
-            showFullTextDialog(context, item.downloadPath.joinToString("\n"), context.getString(R.string.location))
+            showFullTextDialog(context, availableFiles.joinToString("\n"), context.getString(R.string.location))
         }
 
 
@@ -1316,7 +1326,8 @@ object UiUtil {
         val cut = view.findViewById<Chip>(R.id.cut)
         if (items.size > 1 || items.first().url.isEmpty()) cut.isVisible = false
         else{
-            if(items[0].duration.isNotEmpty()){
+            val invalidDuration = items[0].duration == "-1"
+            if(items[0].duration.isNotEmpty() && !invalidDuration){
                 val downloadItem = items[0]
                 cut.alpha = 1f
                 if (downloadItem.downloadSections.isNotBlank()) cut.text = downloadItem.downloadSections
@@ -1355,8 +1366,10 @@ object UiUtil {
                 }
             }else{
                 cut.alpha = 0.3f
-                cut.setOnClickListener {
-                    cutDisabledClicked()
+                if (!invalidDuration) {
+                    cut.setOnClickListener {
+                        cutDisabledClicked()
+                    }
                 }
             }
         }
@@ -1549,7 +1562,8 @@ object UiUtil {
         if (items.size > 1 || items.first().url.isEmpty()) cut.isVisible = false
         else{
             val downloadItem = items[0]
-            if (downloadItem.duration.isNotEmpty()){
+            val invalidDuration = downloadItem.duration == "-1"
+            if (downloadItem.duration.isNotEmpty() && !invalidDuration){
                 cut.alpha = 1f
                 if (downloadItem.downloadSections.isNotBlank()) cut.text = downloadItem.downloadSections
                 val cutVideoListener = object : VideoCutListener {
@@ -1579,8 +1593,10 @@ object UiUtil {
 
             }else{
                 cut.alpha = 0.3f
-                cut.setOnClickListener {
-                    cutDisabledClicked()
+                if (!invalidDuration) {
+                    cut.setOnClickListener {
+                        cutDisabledClicked()
+                    }
                 }
             }
         }

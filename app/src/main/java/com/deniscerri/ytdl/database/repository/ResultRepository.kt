@@ -157,7 +157,7 @@ class ResultRepository(private val resultDao: ResultDao, private val context: Co
 
     private fun getQueryType(inputQuery: String) : SourceType {
         var type = SourceType.SEARCH_QUERY
-        val p = Pattern.compile("((^(https?)://)?(www.)?youtu(.be)?)|(^(https?)://(www.)?piped.video)")
+        val p = Pattern.compile("((^(https?)://)?(www.)?(m.)?youtu(.be)?)|(^(https?)://(www.)?piped.video)")
         val m = p.matcher(inputQuery)
         if (m.find()) {
             type = SourceType.YOUTUBE_VIDEO

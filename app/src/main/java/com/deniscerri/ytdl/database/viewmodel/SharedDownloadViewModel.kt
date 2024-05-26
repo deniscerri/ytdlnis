@@ -40,6 +40,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import kotlinx.parcelize.Parcelize
+import okhttp3.internal.immutableListOf
 import java.io.File
 import java.util.Locale
 
@@ -282,16 +283,32 @@ class SharedDownloadViewModel(private val context: Context) {
 
     private fun getPreferredAudioRequirements(): MutableList<(Format) -> Int> {
         val requirements: MutableList<(Format) -> Int> = mutableListOf()
-        requirements.add {it: Format -> if (audioFormatIDPreference.contains(it.format_id)) 10 else 0}
 
-        sharedPreferences.getString("audio_language", "")?.apply {
-            if (this.isNotBlank()){
-                requirements.add { it: Format -> if (it.lang?.contains(this) == true) 3 else 0 }
+        val itemValues = resources.getStringArray(R.array.format_importance_audio_values).toSet()
+        val prefAudio = sharedPreferences.getString("format_importance_audio", itemValues.joinToString(","))!!
+
+        prefAudio.split(",").forEachIndexed { idx, s ->
+            var importance = (itemValues.size - idx) * 10
+            when(s) {
+                "id" -> {
+                    requirements.add {it: Format -> if (audioFormatIDPreference.contains(it.format_id)) importance else 0}
+                }
+                "language" -> {
+                    sharedPreferences.getString("audio_language", "")?.apply {
+                        if (this.isNotBlank()){
+                            requirements.add { it: Format -> if (it.lang?.contains(this) == true) importance else 0 }
+                        }
+                    }
+                }
+                "codec" -> {
+                    requirements.add {it: Format -> if ("^(${audioCodec}).+$".toRegex(RegexOption.IGNORE_CASE).matches(it.acodec)) importance else 0}
+                }
+                "container" -> {
+                    requirements.add {it: Format -> if (it.container == audioContainer) importance else 0 }
+                }
             }
         }
 
-        requirements.add {it: Format -> if ("^(${audioCodec}).+$".toRegex(RegexOption.IGNORE_CASE).matches(it.acodec)) 2 else 0}
-        requirements.add {it: Format -> if (it.container == audioContainer) 1 else 0 }
         return requirements
     }
 
@@ -299,42 +316,61 @@ class SharedDownloadViewModel(private val context: Context) {
     @SuppressLint("RestrictedApi")
     fun getPreferredVideoRequirements(): MutableList<(Format) -> Int> {
         val requirements: MutableList<(Format) -> Int> = mutableListOf()
-        //format id
-        requirements.add { it: Format -> if (formatIDPreference.contains(it.format_id)) 20 else 0 }
-        //resolutions
-        context.getStringArray(R.array.video_formats_values)
-            .filter { it.contains("_") }
-            .map{ it.split("_")[0].dropLast(1)
-            }.toMutableList().apply {
-                when(videoQualityPreference) {
-                    "worst" -> {
-                        requirements.add { it: Format -> if (it.format_note.contains("worst", ignoreCase = true)) (15) else 0 }
-                    }
-                    "best" -> {
-                        requirements.add { it: Format -> if (it.format_note.contains("best", ignoreCase = true)) (15) else 0 }
-                    }
-                    else -> {
-                        val preferenceIndex = this.indexOfFirst { videoQualityPreference.contains(it) }
-                        val preference = this[preferenceIndex]
-                        for(i in 0..preferenceIndex){
-                            removeAt(0)
+
+        val itemValues = resources.getStringArray(R.array.format_importance_video_values).toSet()
+        val prefVideo = sharedPreferences.getString("format_importance_video", itemValues.joinToString(","))!!
+
+        prefVideo.split(",").forEachIndexed { idx, s ->
+            val importance = (itemValues.size - idx) * 10
+
+            when(s) {
+                "id" -> {
+                    requirements.add { it: Format -> if (formatIDPreference.contains(it.format_id)) importance else 0 }
+                }
+                "resolution" -> {
+                    context.getStringArray(R.array.video_formats_values)
+                        .filter { it.contains("_") }
+                        .map{ it.split("_")[0].dropLast(1)
+                        }.toMutableList().apply {
+                            when(videoQualityPreference) {
+                                "worst" -> {
+                                    requirements.add { it: Format -> if (it.format_note.contains("worst", ignoreCase = true)) (importance) else 0 }
+                                }
+                                "best" -> {
+                                    requirements.add { it: Format -> if (it.format_note.contains("best", ignoreCase = true)) (importance) else 0 }
+                                }
+                                else -> {
+                                    val preferenceIndex = this.indexOfFirst { videoQualityPreference.contains(it) }
+                                    val preference = this[preferenceIndex]
+                                    for(i in 0..preferenceIndex){
+                                        removeAt(0)
+                                    }
+                                    add(0, preference)
+                                    forEachIndexed { index, res ->
+                                        requirements.add { it: Format -> if (it.format_note.contains(res, ignoreCase = true)) (importance - index - 1) else 0 }
+                                    }
+                                }
+                            }
+
                         }
-                        add(0, preference)
-                        forEachIndexed { index, res ->
-                            requirements.add { it: Format -> if (it.format_note.contains(res, ignoreCase = true)) (15 - index - 1) else 0 }
-                        }
+                }
+                "codec" -> {
+                    requirements.add { it: Format -> if ("^(${videoCodec})(.+)?$".toRegex(RegexOption.IGNORE_CASE).matches(it.vcodec)) importance else 0 }
+                }
+                "no_audio" -> {
+                    requirements.add { it: Format -> if (it.acodec == "none" || it.acodec == "") importance else 0 }
+                }
+                "container" -> {
+                    requirements.add { it: Format ->
+                        if (videoContainer == "mp4")
+                            if (it.container.equals("mpeg_4", true)) importance else 0
+                        else
+                            if (it.container.equals(videoContainer, true)) importance else 0
                     }
                 }
-
             }
-        requirements.add { it: Format -> if ("^(${videoCodec})(.+)?$".toRegex(RegexOption.IGNORE_CASE).matches(it.vcodec)) 5 else 0 }
-        requirements.add { it: Format -> if (it.acodec == "none" || it.acodec == "") 1 else 0 }
-        requirements.add { it: Format ->
-            if (videoContainer == "mp4")
-                if (it.container.equals("mpeg_4", true)) 1 else 0
-            else
-                if (it.container.equals(videoContainer, true)) 1 else 0
         }
+
         return  requirements
     }
 
@@ -445,7 +481,7 @@ class SharedDownloadViewModel(private val context: Context) {
         val downloadArchive = runCatching { File(FileUtil.getDownloadArchivePath(context)).useLines { it.toList() } }.getOrElse { listOf() }
             .map { it.split(" ")[1] }
         items.forEach {
-            if (! listOf(DownloadRepository.Status.ActivePaused, DownloadRepository.Status.Scheduled).toListString().contains(it.status))
+            if (it.status != DownloadRepository.Status.Scheduled.toString())
                 it.status = DownloadRepository.Status.Queued.toString()
             var alreadyExists = false
 
@@ -584,7 +620,9 @@ class SharedDownloadViewModel(private val context: Context) {
             }
         }else{
             if (queuedItems.isNotEmpty()){
-                repository.startDownloadWorker(queuedItems, context)
+                if (!sharedPreferences.getBoolean("paused_downloads", false)) {
+                    repository.startDownloadWorker(queuedItems, context)
+                }
 
                 if(!useScheduler){
                     queuedItems.filter { it.downloadStartTime != 0L && (it.title.isEmpty() || it.author.isEmpty() || it.thumb.isEmpty()) }.forEach {

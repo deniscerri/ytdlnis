@@ -186,11 +186,9 @@ class SelectPlaylistItemsDialog : BottomSheetDialogFragment(), PlaylistAdapter.O
                         ))
                     }
                 }else{
-                    val jobID = downloadViewModel.turnResultItemsToProcessingDownloads(checkedResultItems.map { it!!.id })
+                    downloadViewModel.turnResultItemsToProcessingDownloads(checkedResultItems.map { it.id })
                     withContext(Dispatchers.Main){
-                        findNavController().navigate(R.id.action_selectPlaylistItemsDialog_to_downloadMultipleBottomSheetDialog,
-                            bundleOf(Pair("processingDownloadsJobID", jobID))
-                        )
+                        findNavController().navigate(R.id.action_selectPlaylistItemsDialog_to_downloadMultipleBottomSheetDialog)
                     }
                 }
 

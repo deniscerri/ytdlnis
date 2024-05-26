@@ -11,7 +11,6 @@ import androidx.preference.PreferenceManager
 import androidx.work.CoroutineWorker
 import androidx.work.ForegroundInfo
 import androidx.work.WorkerParameters
-import androidx.work.workDataOf
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.DBManager
 import com.deniscerri.ytdl.database.models.Format
@@ -28,7 +27,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
+import org.greenrobot.eventbus.EventBus
 import java.io.File
 
 
@@ -99,6 +98,8 @@ class TerminalDownloadWorker(
             System.currentTimeMillis(),
         )
 
+        val eventBus = EventBus.getDefault()
+
         kotlin.runCatching {
             if (logDownloads){
                 runBlocking {
@@ -108,10 +109,7 @@ class TerminalDownloadWorker(
 
             YoutubeDL.getInstance().execute(request, itemId.toString()){ progress, _, line ->
                 runBlocking {
-                    line.chunked(10000).forEach {
-                        setProgress(workDataOf("progress" to progress.toInt(), "output" to it, "id" to itemId, "log" to logDownloads))
-                        Thread.sleep(100)
-                    }
+                    eventBus.post(DownloadWorker.WorkerProgress(progress.toInt(), line, itemId.toLong()))
                 }
 
                 val title: String = command.take(65)
@@ -131,7 +129,7 @@ class TerminalDownloadWorker(
                     //move file from internal to set download directory
                     try {
                         FileUtil.moveFile(File(FileUtil.getCachePath(context) + "/TERMINAL/" + itemId),context, downloadLocation!!, false){ p ->
-                            setProgressAsync(workDataOf("progress" to p))
+                            eventBus.post(DownloadWorker.WorkerProgress(p, "", itemId.toLong()))
                         }
                     }catch (e: Exception){
                         e.printStackTrace()

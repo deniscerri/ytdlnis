@@ -51,11 +51,13 @@ import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.card.MaterialCardView
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.color.MaterialColors
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.android.material.search.SearchBar
 import com.google.android.material.search.SearchView
 import kotlinx.coroutines.CoroutineScope
@@ -176,12 +178,14 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
         searchSuggestionsRecyclerView?.adapter = searchSuggestionsAdapter
         searchSuggestionsRecyclerView?.itemAnimator = null
 
+        val progressBar = view.findViewById<View>(R.id.progress)
 
         resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]
         resultViewModel.items.observe(requireActivity()) {
             kotlin.runCatching {
                 homeAdapter!!.submitList(it)
                 resultsList = it
+                progressBar.isVisible = loadingItems && resultsList!!.isNotEmpty()
                 if(resultViewModel.repository.itemCount.value > 1 || resultViewModel.repository.itemCount.value == -1){
                     if (it.size > 1 && it[0].playlistTitle.isNotEmpty() && !loadingItems){
                         downloadAllFab!!.visibility = VISIBLE
@@ -252,6 +256,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
                     }
 
                     loadingItems = res.processing
+                    progressBar.isVisible = loadingItems && resultsList!!.isNotEmpty()
                     if (res.processing){
                         recyclerView?.setPadding(0,0,0,0)
                         shimmerCards!!.startShimmer()
@@ -303,11 +308,9 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
             arguments?.remove("showDownloadsWithUpdatedFormats")
             CoroutineScope(Dispatchers.IO).launch {
                 val ids = arguments?.getLongArray("downloadIds") ?: return@launch
-                val jobID = downloadViewModel.turnDownloadItemsToProcessingDownloads(ids.toList())
+                downloadViewModel.turnDownloadItemsToProcessingDownloads(ids.toList())
                 withContext(Dispatchers.Main){
-                    findNavController().navigate(R.id.downloadMultipleBottomSheetDialog2, bundleOf(
-                        Pair("processingDownloadsJobID", jobID)
-                    ))
+                    findNavController().navigate(R.id.downloadMultipleBottomSheetDialog2)
                 }
             }
         }
@@ -453,6 +456,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
         searchBar!!.setOnMenuItemClickListener { m: MenuItem ->
             when (m.itemId) {
                 R.id.delete_results -> {
+                    resultsList = listOf()
                     lifecycleScope.launch {
                         withContext(Dispatchers.IO){
                             resultViewModel.cancelParsingQueries()
@@ -733,11 +737,9 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
         if (viewIdName.isNotEmpty()) {
             if (viewIdName == "downloadAll") {
                 val showDownloadCard = sharedPreferences!!.getBoolean("download_card", true)
-                val jobID = downloadViewModel.turnResultItemsToProcessingDownloads(resultsList!!.map { it!!.id }, downloadNow = !showDownloadCard)
+                downloadViewModel.turnResultItemsToProcessingDownloads(resultsList!!.map { it!!.id }, downloadNow = !showDownloadCard)
                 if (showDownloadCard){
-                    findNavController().navigate(R.id.downloadMultipleBottomSheetDialog2, bundleOf(
-                        Pair("processingDownloadsJobID", jobID)
-                    ))
+                    findNavController().navigate(R.id.downloadMultipleBottomSheetDialog2)
                 }
             }
         }
@@ -807,11 +809,9 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
                                 downloadViewModel.getDownloadType(url = selectedObjects[0].url)
                             )
                         }else{
-                            val jobID = downloadViewModel.turnResultItemsToProcessingDownloads(selectedObjects.map { it.id }, downloadNow = !showDownloadCard)
+                            downloadViewModel.turnResultItemsToProcessingDownloads(selectedObjects.map { it.id }, downloadNow = !showDownloadCard)
                             if (showDownloadCard){
-                                findNavController().navigate(R.id.downloadMultipleBottomSheetDialog2, bundleOf(
-                                    Pair("processingDownloadsJobID", jobID)
-                                ))
+                                findNavController().navigate(R.id.downloadMultipleBottomSheetDialog2)
                             }
                         }
                         clearCheckedItems()

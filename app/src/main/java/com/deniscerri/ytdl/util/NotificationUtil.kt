@@ -1,5 +1,6 @@
 package com.deniscerri.ytdl.util
 
+import android.annotation.SuppressLint
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -14,6 +15,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.FileProvider
 import androidx.core.os.bundleOf
 import androidx.documentfile.provider.DocumentFile
@@ -36,15 +38,11 @@ class NotificationUtil(var context: Context) {
     private val erroredDownloadNotificationBuilder: NotificationCompat.Builder = NotificationCompat.Builder(context, DOWNLOAD_ERRORED_CHANNEL_ID)
     private val miscDownloadNotificationBuilder: NotificationCompat.Builder = NotificationCompat.Builder(context, DOWNLOAD_MISC_CHANNEL_ID)
 
-    private val notificationManager: NotificationManager = context.getSystemService(NotificationManager::class.java)
+    private val notificationManager: NotificationManagerCompat = NotificationManagerCompat.from(context)
     private val resources: Resources = context.resources
 
     fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val notificationManager = context.getSystemService(
-                NotificationManager::class.java
-            )
-
             //downloading worker notification
             var name: CharSequence = resources.getString(R.string.downloading)
             var description = "WorkManager Default Notification"
@@ -176,6 +174,7 @@ class NotificationUtil(var context: Context) {
             .build()
     }
 
+    @SuppressLint("MissingPermission")
     fun createResumeDownload(itemID: Int, title: String?){
         val notificationBuilder = getBuilder(DOWNLOAD_SERVICE_CHANNEL_ID)
 
@@ -205,6 +204,7 @@ class NotificationUtil(var context: Context) {
         notificationManager.notify(DOWNLOAD_RESUME_NOTIFICATION_ID + itemID, notificationBuilder.build())
     }
 
+    @SuppressLint("MissingPermission")
     fun createUpdatingItemNotification(channel: String){
         val notificationBuilder = getBuilder(channel)
 
@@ -223,6 +223,7 @@ class NotificationUtil(var context: Context) {
         notificationManager.notify(DOWNLOAD_UPDATING_NOTIFICATION_ID, notificationBuilder.build())
     }
 
+    @SuppressLint("MissingPermission")
     fun createDownloadFinished(
         id: Long,
         title: String?,
@@ -319,6 +320,7 @@ class NotificationUtil(var context: Context) {
         notificationManager.notify(DOWNLOAD_FINISHED_NOTIFICATION_ID + id.toInt(), notificationBuilder.build())
     }
 
+    @SuppressLint("MissingPermission")
     fun createDownloadErrored(
         id: Long,
         title: String?,
@@ -379,10 +381,12 @@ class NotificationUtil(var context: Context) {
     }
 
 
+    @SuppressLint("MissingPermission")
     fun notify(id: Int, notification: Notification){
         notificationManager.notify(id, notification)
     }
 
+    @SuppressLint("MissingPermission")
     fun updateDownloadNotification(
         id: Int,
         desc: String,
@@ -428,6 +432,8 @@ class NotificationUtil(var context: Context) {
             e.printStackTrace()
         }
     }
+
+    @SuppressLint("MissingPermission")
     fun updateTerminalDownloadNotification(
         id: Int,
         desc: String,
@@ -488,6 +494,8 @@ class NotificationUtil(var context: Context) {
             .build()
     }
 
+
+    @SuppressLint("MissingPermission")
     fun updateCacheMovingNotification(id: Int, progress: Int, totalFiles: Int) {
         val notificationBuilder = getBuilder(DOWNLOAD_MISC_CHANNEL_ID)
         val contentText = "${progress}/${totalFiles}"
@@ -542,6 +550,7 @@ class NotificationUtil(var context: Context) {
             .build()
     }
 
+    @SuppressLint("MissingPermission")
     fun updateFormatUpdateNotification(
         workID: Int,
         workTag: String,
@@ -576,6 +585,7 @@ class NotificationUtil(var context: Context) {
     }
 
 
+    @SuppressLint("MissingPermission")
     fun showFormatsUpdatedNotification(downloadIds: List<Long>) {
         val notificationBuilder = getBuilder(DOWNLOAD_FINISHED_CHANNEL_ID)
 
@@ -606,6 +616,8 @@ class NotificationUtil(var context: Context) {
         notificationManager.notify(FORMAT_UPDATING_FINISHED_NOTIFICATION_ID, notificationBuilder.build())
     }
 
+
+    @SuppressLint("MissingPermission")
     fun showQueriesFinished() {
         val notificationBuilder = getBuilder(DOWNLOAD_MISC_CHANNEL_ID)
 

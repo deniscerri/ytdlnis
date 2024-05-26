@@ -22,38 +22,43 @@
             app:menu="@menu/select_playlist_menu"
             android:layout_gravity="bottom">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/from_textinput"
-                style="@style/Widget.Material3.TextInputLayout.FilledBox.Dense"
-                android:layout_width="70dp"
-                android:layout_height="wrap_content"
+            <LinearLayout
+                android:layout_width="wrap_content"
                 android:layout_marginStart="50dp"
-                android:layout_marginEnd="10dp"
-                android:hint="@string/start">
+                android:layout_height="wrap_content">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/from_textinput"
+                    style="@style/Widget.Material3.TextInputLayout.FilledBox.Dense"
+                    android:layout_width="70dp"
                     android:layout_height="wrap_content"
-                    android:inputType="number" />
+                    android:layout_marginEnd="10dp"
+                    android:hint="@string/start">
 
-            </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="number" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/to_textinput"
-                style="@style/Widget.Material3.TextInputLayout.FilledBox.Dense"
-                android:layout_width="70dp"
-                android:layout_height="wrap_content"
-                android:hint="@string/end"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/colon">
+                </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/to_textinput"
+                    style="@style/Widget.Material3.TextInputLayout.FilledBox.Dense"
+                    android:layout_width="70dp"
                     android:layout_height="wrap_content"
-                    android:inputType="text" />
+                    android:hint="@string/end"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/colon">
 
-            </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text" />
 
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
 
         </com.google.android.material.bottomappbar.BottomAppBar>
 

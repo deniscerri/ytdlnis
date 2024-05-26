@@ -26,6 +26,7 @@ import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.work.DownloadWorker
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 import java.io.File
 import java.util.concurrent.TimeUnit
 
@@ -59,17 +60,15 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
     )
 
     val activeDownloadsCount : Flow<Int> = downloadDao.getDownloadsCountByStatusFlow(listOf(Status.Active).toListString())
-    val activeAndActivePausedDownloadsCount : Flow<Int> = downloadDao.getDownloadsCountByStatusFlow(listOf(Status.Active, Status.ActivePaused).toListString())
-    val queuedDownloadsCount : Flow<Int> = downloadDao.getDownloadsCountByStatusFlow(listOf(Status.Queued, Status.QueuedPaused).toListString())
-    val activeQueuedDownloadsCount : Flow<Int> = downloadDao.getDownloadsCountByStatusFlow(listOf(Status.Active, Status.ActivePaused, Status.Queued, Status.QueuedPaused).toListString())
+    val queuedDownloadsCount : Flow<Int> = downloadDao.getDownloadsCountByStatusFlow(listOf(Status.Queued).toListString())
+    val activeQueuedDownloadsCount : Flow<Int> = downloadDao.getDownloadsCountByStatusFlow(listOf(Status.Active, Status.Queued).toListString())
     val cancelledDownloadsCount : Flow<Int> = downloadDao.getDownloadsCountByStatusFlow(listOf(Status.Cancelled).toListString())
     val erroredDownloadsCount : Flow<Int> = downloadDao.getDownloadsCountByStatusFlow(listOf(Status.Error).toListString())
     val savedDownloadsCount : Flow<Int> = downloadDao.getDownloadsCountByStatusFlow(listOf(Status.Saved).toListString())
-    val pausedDownloadsCount : Flow<Int> = downloadDao.getDownloadsCountByStatusFlow(listOf(Status.ActivePaused, Status.QueuedPaused).toListString())
     val scheduledDownloadsCount : Flow<Int> = downloadDao.getDownloadsCountByStatusFlow(listOf(Status.Scheduled).toListString())
 
     enum class Status {
-        Active, ActivePaused, Queued, QueuedPaused, Error, Cancelled, Saved, Processing, Scheduled
+        Active, ActivePaused, Queued, Error, Cancelled, Saved, Processing, Scheduled
     }
 
     suspend fun insert(item: DownloadItem) : Long {
@@ -102,9 +101,8 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
     }
 
 
-    suspend fun setDownloadStatus(item: DownloadItem, status: Status){
-        item.status = status.toString()
-        update(item)
+    suspend fun setDownloadStatus(id: Long, status: Status){
+        downloadDao.setStatus(id, status.toString())
     }
 
     fun getItemByID(id: Long) : DownloadItem {
@@ -184,20 +182,19 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
         downloadDao.cancelActiveQueued()
     }
 
-    fun pauseDownloads(){
-        downloadDao.pauseActiveAndQueued()
-    }
-
-    fun unPauseDownloads(){
-        downloadDao.unPauseActiveAndQueued()
-    }
-
     fun removeLogID(logID: Long){
         downloadDao.removeLogID(logID)
     }
 
     fun removeAllLogID(){
         downloadDao.removeAllLogID()
+    }
+
+    fun getFilteredProcessingDownloads(ids: List<Long>) : Flow<List<DownloadItem>> {
+        return downloadDao.getProcessingDownloads()
+            .map {
+                it.filter { ids.contains(it.id) }
+            }
     }
 
 

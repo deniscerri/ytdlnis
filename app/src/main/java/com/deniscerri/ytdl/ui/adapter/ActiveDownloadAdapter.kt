@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.AsyncDifferConfig
 import androidx.recyclerview.widget.DiffUtil
@@ -121,22 +122,27 @@ class ActiveDownloadAdapter(onItemClickListener: OnItemClickListener, activity: 
         if (cancelButton.hasOnClickListeners()) cancelButton.setOnClickListener(null)
         cancelButton.setOnClickListener {onItemClickListener.onCancelClick(item.id)}
 
+        val activePaused = item.status == DownloadRepository.Status.ActivePaused.toString()
+        val resumeButton = card.findViewById<MaterialButton>(R.id.active_download_resume)
+        resumeButton.isVisible = activePaused
+        if (resumeButton.hasOnClickListeners()) resumeButton.setOnClickListener(null)
+        resumeButton.setOnClickListener {
+            resumeButton.isVisible = false
+            onItemClickListener.onResumeClick(item.id)
+        }
 
-        when(DownloadRepository.Status.valueOf(item.status)){
-            DownloadRepository.Status.Active -> {
-                progressBar.isIndeterminate = true
-                cancelButton.isEnabled = true
-            }
-            DownloadRepository.Status.ActivePaused -> {
-                progressBar.isIndeterminate = false
-                cancelButton.isEnabled = true
-                output.text = activity.getString(R.string.exo_download_paused)
-            }
-            else -> {}
+        if (sharedPreferences.getBoolean("paused_downloads", false) || activePaused) {
+            progressBar.isIndeterminate = false
+            cancelButton.isEnabled = true
+            output.text = activity.getString(R.string.exo_download_paused)
+        }else{
+            progressBar.isIndeterminate = true
+            cancelButton.isEnabled = true
         }
     }
     interface OnItemClickListener {
         fun onCancelClick(itemID: Long)
+        fun onResumeClick(itemID: Long)
         fun onOutputClick(item: DownloadItem)
     }
 

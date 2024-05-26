@@ -179,6 +179,7 @@ class FormatSelectionBottomSheetDialog(private val _items: List<DownloadItem?>? 
                    try{
                        //simple download
                        if (items.size == 1) {
+                           formatCollection.clear()
                            kotlin.runCatching {
                                val res = withContext(Dispatchers.IO){
                                    infoUtil.getFormats(items.first()!!.url)
@@ -195,6 +196,7 @@ class FormatSelectionBottomSheetDialog(private val _items: List<DownloadItem?>? 
                                withContext(Dispatchers.Main){
                                    listener.onFormatsUpdated(formats)
                                }
+                               formatCollection.add(res)
                            }.onFailure { err ->
                                withContext(Dispatchers.Main){
                                    UiUtil.handleResultResponse(requireActivity(), ResultViewModel.ResultsUiState(

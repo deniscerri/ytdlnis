@@ -181,7 +181,7 @@
             app:title="@string/video_format" />
 
         <ListPreference
-            android:defaultValue="avc|h264"
+            android:defaultValue=""
             android:entries="@array/video_codec"
             android:entryValues="@array/video_codec_values"
             android:icon="@drawable/ic_code"
@@ -190,7 +190,7 @@
             app:title="@string/preferred_video_codec" />
 
         <ListPreference
-            android:defaultValue="m4a|mp4a|aac"
+            android:defaultValue=""
             android:entries="@array/audio_codec"
             android:entryValues="@array/audio_codec_values"
             android:icon="@drawable/ic_code"

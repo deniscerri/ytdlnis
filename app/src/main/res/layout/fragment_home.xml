@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -141,13 +141,45 @@
             app:layout_scrollFlags="scroll|enterAlways"
             android:layout_height="wrap_content" />
 
-        <com.google.android.material.search.SearchBar
-            android:id="@+id/search_bar"
-            app:menu="@menu/main_menu"
-            app:layout_scrollFlags="scroll|enterAlways"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/search_hint" />
+            android:layout_marginVertical="15dp"
+            app:layout_scrollFlags="scroll|enterAlways"
+            android:layout_height="wrap_content">
+
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/progress"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:translationZ="250dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/search_bar"
+                app:layout_constraintEnd_toEndOf="@+id/search_bar"
+                app:layout_constraintStart_toStartOf="@+id/search_bar"
+                app:layout_constraintTop_toTopOf="@+id/search_bar"
+                app:shimmer_auto_start="true">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:cardCornerRadius="30dp">
+
+                </com.google.android.material.card.MaterialCardView>
+
+
+            </com.facebook.shimmer.ShimmerFrameLayout>
+
+
+            <com.google.android.material.search.SearchBar
+                android:id="@+id/search_bar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="@string/search_hint"
+                app:menu="@menu/main_menu" >
+
+            </com.google.android.material.search.SearchBar>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -167,6 +199,7 @@
                 android:layout_gravity="bottom|end"
                 android:text="@string/link_you_copied"
                 android:layout_marginHorizontal="16dp"
+                android:layout_marginBottom="10dp"
                 android:contentDescription="@string/link_you_copied"
                 app:icon="@drawable/ic_clipboard"
                 app:useCompatPadding="true" />
