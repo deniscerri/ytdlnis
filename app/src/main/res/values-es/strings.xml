@@ -388,4 +388,15 @@
     <string name="move_bottom">Mover hacia abajo</string>
     <string name="scheduled">Programado</string>
     <string name="clear_scheduled">Borrar programado</string>
+    <string name="second">Segundo</string>
+    <string name="milliseconds">Milisegundos</string>
+    <string name="format_importance_audio">Orden de importancia del formato (audio)</string>
+    <string name="format_importance_video">Orden de importancia del formato (vídeo)</string>
+    <string name="format_importance_note">Ajustar la importancia de los elementos de formato. ¡Este orden solo se utilizará cuando la aplicación busque los formatos en la tarjeta de descarga y los seleccione automáticamente!</string>
+    <string name="no_audio">Vídeo sin sonido</string>
+    <string name="download_archive_folder">Descargar carpeta de archivos</string>
+    <string name="location">Ubicación</string>
+    <string name="enable_alarm_permission">Debe activar el permiso SCHEDULE_EXACT_ALARM en la configuración de la aplicación.</string>
+    <string name="process_downloads_background">Las descargas aún se están cargando. ¿Continuar procesándolas en segundo plano e iniciar la descarga?</string>
+    <string name="minute">Minuto</string>
 </resources>
