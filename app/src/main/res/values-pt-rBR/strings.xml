@@ -398,5 +398,5 @@
     <string name="format_importance_audio">Ordem de importância do formato (áudio)</string>
     <string name="enable_alarm_permission">Você precisa habilitar a permissão SCHEDULE_EXACT_ALARM nas configurações do aplicativo.</string>
     <string name="format_importance_note">Ajuste a importância do elemento de formato. Essa ordem só será usada quando o aplicativo buscar os formatos no cartão de download e selecionar automaticamente o formato!</string>
-    <string name="process_downloads_background">Os downloads ainda estão sendo carregados. Continuar processando-os em segundo plano e iniciar o download?</string>
+    <string name="process_downloads_background">"Os downloads ainda estão sendo carregados. Continuar processando-os em segundo plano e iniciar o download? "</string>
 </resources>
