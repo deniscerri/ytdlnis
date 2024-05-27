@@ -398,5 +398,5 @@
     <string name="download_archive_folder">संग्रह फ़ोल्डर डाउनलोड करें</string>
     <string name="location">स्थान</string>
     <string name="enable_alarm_permission">आपको ऐप सेटिंग में SCHEDULE_EXACT_ALARM अनुमति सक्षम करनी होगी।</string>
-    <string name="process_downloads_background">डाउनलोड अभी भी लोड हो रहे हैं. उन्हें पृष्ठभूमि में संसाधित करना जारी रखें और डाउनलोड करना प्रारंभ करें?</string>
+    <string name="process_downloads_background">"डाउनलोड अभी भी लोड हो रहे हैं. उन्हें पृष्ठभूमि में संसाधित करना जारी रखें और डाउनलोड करना प्रारंभ करें? "</string>
 </resources>
