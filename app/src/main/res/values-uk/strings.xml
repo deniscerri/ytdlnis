@@ -393,7 +393,7 @@
     <string name="format_importance_audio">Порядок важливості формату (аудіо)</string>
     <string name="format_importance_note">Налаштуйте важливість елемента формату. Цей порядок буде використовуватися лише в тому випадку, якщо програма витягує формати з карти завантаження та автоматично вибирає формат!</string>
     <string name="no_audio">Відео без звуку</string>
-    <string name="process_downloads_background">Завантаження все ще завантажуються. Продовжити їх обробку у фоновому режимі та розпочати завантаження?</string>
+    <string name="process_downloads_background">"Завантаження все ще завантажуються. Продовжити їх обробку у фоновому режимі та розпочати завантаження? "</string>
     <string name="milliseconds">Мілісекунди</string>
     <string name="format_importance_video">Порядок важливості формату (відео)</string>
     <string name="download_archive_folder">Завантажити папку архіву</string>
