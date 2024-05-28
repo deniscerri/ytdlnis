@@ -398,5 +398,5 @@
     <string name="format_importance_note">Отрегулируйте важность элемента формата. Этот порядок будет использоваться только в том случае, если приложение извлекает форматы из карты загрузки и автоматически выбирает формат!</string>
     <string name="no_audio">Видео без звука</string>
     <string name="enable_alarm_permission">Вам необходимо включить разрешение SCHEDULE_EXACT_ALARM в настройках приложения.</string>
-    <string name="process_downloads_background">Загрузки все еще загружаются. Продолжить их обработку в фоновом режиме и начать загрузку?</string>
+    <string name="process_downloads_background">"Загрузки все еще загружаются. Продолжить их обработку в фоновом режиме и начать загрузку?. "</string>
 </resources>
