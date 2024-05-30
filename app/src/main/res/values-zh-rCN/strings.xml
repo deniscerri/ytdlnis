@@ -396,7 +396,7 @@
     <string name="download_archive_folder">下载档案文件夹</string>
     <string name="location">位置</string>
     <string name="enable_alarm_permission">你需要在应用设置中启用 SCHEDULE_EXACT_ALARM 权限。</string>
-    <string name="process_downloads_background">仍在加载下载。继续在后台处理它们并开始下载吗？</string>
+    <string name="process_downloads_background">"仍在加载下载。继续在后台处理它们并开始下载吗？ "</string>
     <string name="minute">分钟</string>
     <string name="second">秒</string>
 </resources>

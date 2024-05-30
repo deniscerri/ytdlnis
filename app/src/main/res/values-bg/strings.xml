@@ -388,4 +388,11 @@
     <string name="prevent_duplicate_url_type">URL &amp; Тип изтегляне</string>
     <string name="subtitles">Субтитри</string>
     <string name="copy_url">Копиране URL</string>
+    <string name="minute">Минута</string>
+    <string name="second">Секунда</string>
+    <string name="enable_alarm_permission">Необходимо е да включите SCHEDULE_EXACT_ALARM в настройките на приложението.</string>
+    <string name="milliseconds">Милисекунди</string>
+    <string name="no_audio">Видео без звук</string>
+    <string name="location">Локация</string>
+    <string name="process_downloads_background">"Все още има активни изтегляния. Продължаване на процеса на заден план и започване на изтегляне? "</string>
 </resources>

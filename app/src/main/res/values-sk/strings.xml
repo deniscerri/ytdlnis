@@ -391,7 +391,7 @@
     <string name="milliseconds">Milisekundy</string>
     <string name="format_importance_note">Upravte dôležitosť prvku formátu. Toto poradie sa použije len vtedy, keď aplikácia načíta formáty na karte sťahovania a automaticky vyberie formát!</string>
     <string name="download_archive_folder">Stiahnuť archívnu zložku</string>
-    <string name="process_downloads_background">Položky na stiahnutie sa stále načítavajú. Pokračovať v ich spracovaní na pozadí a začať sťahovanie?</string>
+    <string name="process_downloads_background">"Položky na stiahnutie sa stále načítavajú. Pokračovať v ich spracovaní na pozadí a začať sťahovanie? "</string>
     <string name="minute">Minúta</string>
     <string name="second">Sekunda</string>
     <string name="format_importance_audio">Poradie dôležitosti formátu (Audio)</string>

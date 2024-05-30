@@ -388,4 +388,10 @@
     <string name="scheduled">الموَقتة</string>
     <string name="clear_scheduled">تنظيف الموَقتة</string>
     <string name="move_top">نقل للأعلى</string>
+    <string name="format_importance_note">ضبط أهمية عنصر التنسيق. لن يتم استخدام هذا الطلب إلا عندما يجلب التطبيق التنسيقات الموجودة في بطاقة التنزيل ويحدد التنسيق تلقائيًا</string>
+    <string name="minute">دقيقه</string>
+    <string name="second">وقت قليل</string>
+    <string name="milliseconds">جزء من الثانيه</string>
+    <string name="format_importance_audio">مسح أوامر الصوت</string>
+    <string name="format_importance_video">مسح أوامر الفيديو</string>
 </resources>

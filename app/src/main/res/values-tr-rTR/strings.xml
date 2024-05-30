@@ -401,5 +401,5 @@
     <string name="download_archive_folder">Arşiv Klasörünü İndir</string>
     <string name="location">Konum</string>
     <string name="enable_alarm_permission">Uygulama ayarlarında SCHEDULE_EXACT_ALARM iznini etkinleştirmeniz gerekir.</string>
-    <string name="process_downloads_background">İndirmeler hala yükleniyor. Bunları arka planda işlemeye devam edip indirmeye başlamak ister misiniz?</string>
+    <string name="process_downloads_background">"İndirmeler hala devam ediyor. Bunları arka planda işlemeye devam edip indirmeye başlamak ister misiniz? "</string>
 </resources>

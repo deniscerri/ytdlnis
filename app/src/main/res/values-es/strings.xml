@@ -397,6 +397,6 @@
     <string name="download_archive_folder">Descargar carpeta de archivos</string>
     <string name="location">Ubicación</string>
     <string name="enable_alarm_permission">Debe activar el permiso SCHEDULE_EXACT_ALARM en la configuración de la aplicación.</string>
-    <string name="process_downloads_background">Las descargas aún se están cargando. ¿Continuar procesándolas en segundo plano e iniciar la descarga?</string>
+    <string name="process_downloads_background">"Las descargas aún se están cargando. ¿Continuar procesándolos en segundo plano y comenzar a descargarlos? "</string>
     <string name="minute">Minuto</string>
 </resources>
