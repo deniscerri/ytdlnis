@@ -388,10 +388,15 @@
     <string name="scheduled">الموَقتة</string>
     <string name="clear_scheduled">تنظيف الموَقتة</string>
     <string name="move_top">نقل للأعلى</string>
-    <string name="format_importance_note">ضبط أهمية عنصر التنسيق. لن يتم استخدام هذا الطلب إلا عندما يجلب التطبيق التنسيقات الموجودة في بطاقة التنزيل ويحدد التنسيق تلقائيًا</string>
-    <string name="minute">دقيقه</string>
-    <string name="second">وقت قليل</string>
-    <string name="milliseconds">جزء من الثانيه</string>
-    <string name="format_importance_audio">مسح أوامر الصوت</string>
-    <string name="format_importance_video">مسح أوامر الفيديو</string>
+    <string name="format_importance_note">ضبط الأولوية لعناصر التنسيق. لن يتم استخدام هذا النهج إلا عندما يتم جلب واختيار التنسيقات بشكل تلقائي!</string>
+    <string name="minute">دقيقة</string>
+    <string name="second">ثانية</string>
+    <string name="milliseconds">ملّي ثانية</string>
+    <string name="format_importance_audio">ترتيب الأولوية في التنسيق (الصوت)</string>
+    <string name="format_importance_video">ترتيب الأولوية في التنسيق (الفيديو)</string>
+    <string name="no_audio">فيديو بدون صوت</string>
+    <string name="download_archive_folder">مجلد أرشيف التنزيل</string>
+    <string name="location">المسار</string>
+    <string name="enable_alarm_permission">تحتاج إلى تمكين إذن SCHEDULE_EXACT_ALARM في إعدادات التطبيق.</string>
+    <string name="process_downloads_background">"التنزيلات لا تزال قيد المعالجة. هل تريد الاستمرار في معالجتها في الخلفية وبدء التنزيل؟ "</string>
 </resources>
