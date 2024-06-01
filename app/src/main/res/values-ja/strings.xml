@@ -391,7 +391,7 @@
     <string name="milliseconds">ミリ秒</string>
     <string name="download_archive_folder">ダウンロード記録のフォルダ</string>
     <string name="format_importance_video">形式の重要度の順序 (動画)</string>
-    <string name="process_downloads_background">ダウンロードはまだ読み込み中です。処理をバックグラウンドで続け、ダウンロードを開始しますか？</string>
+    <string name="process_downloads_background">"ダウンロードはまだ読み込み中です。処理をバックグラウンドで続け、ダウンロードを開始しますか？ "</string>
     <string name="minute">分</string>
     <string name="second">秒</string>
     <string name="no_audio">音声なし動画</string>
