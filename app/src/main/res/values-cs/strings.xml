@@ -389,7 +389,7 @@
     <string name="subtitles">Titulky</string>
     <string name="move_bottom">Přesunout dolů</string>
     <string name="enable_alarm_permission">V nastavení aplikace je třeba povolit oprávnění SCHEDULE_EXACT_ALARM.</string>
-    <string name="process_downloads_background">Stahované položky se stále načítají. Pokračovat v jejich zpracování na pozadí a zahájit stahování?</string>
+    <string name="process_downloads_background">"Stahované položky se stále načítají. Pokračovat v jejich zpracování na pozadí a zahájit stahování? "</string>
     <string name="minute">Minuta</string>
     <string name="format_importance">Pořadí důležitosti formátu</string>
     <string name="second">Sekunda</string>

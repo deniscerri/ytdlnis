@@ -388,4 +388,14 @@
     <string name="prevent_duplicate_downloads">ਡੁਪਲੀਕੇਟ ਡਾਊਨਲੋਡਾਂ ਨੂੰ ਰੋਕੋ</string>
     <string name="copy_url">URL ਕਾਪੀ ਕਰੋ</string>
     <string name="move_top">ਸਿਖਰ \'ਤੇ ਜਾਓ</string>
+    <string name="minute">ਮਿੰਟ</string>
+    <string name="second">ਸਕਿੰਟ</string>
+    <string name="milliseconds">ਮਿਲੀਸਕਿੰਟ</string>
+    <string name="format_importance">ਫਾਰਮੈਟ ਮਹੱਤਵ ਕ੍ਰਮ</string>
+    <string name="no_audio">ਬਿਨਾਂ ਆਡੀਓ ਦੇ ਵੀਡੀਓ</string>
+    <string name="download_archive_folder">ਡਾਊਨਲੋਡ ਲਈ ਆਰਕਾਈਵ ਫੋਲਡਰ</string>
+    <string name="format_importance_note">ਫਾਰਮੈਟ ਤੱਤਾਂ ਦੀ ਮਹੱਤਤਾ ਨੂੰ ਵਿਵਸਥਿਤ ਕਰੋ। ਇਹ ਕ੍ਰਮ ਸਿਰਫ਼ ਉਦੋਂ ਹੀ ਵਰਤਿਆ ਜਾਵੇਗਾ ਜਦੋਂ ਐਪ ਡਾਉਨਲੋਡ ਕਾਰਡ ਵਿੱਚ ਫਾਰਮੈਟਾਂ ਨੂੰ ਪ੍ਰਾਪਤ ਕਰਦਾ ਹੈ ਅਤੇ ਫਾਰਮੈਟ ਨੂੰ ਸਵੈਚਲਿਤ ਤੌਰ \'ਤੇ ਚੁਣਦਾ ਹੈ!</string>
+    <string name="location">ਸਥਾਨ</string>
+    <string name="enable_alarm_permission">ਤੁਹਾਨੂੰ ਐਪ ਸੈਟਿੰਗਾਂ ਵਿੱਚ SCHEDULE_EXACT_ALARM ਅਨੁਮਤੀ ਨੂੰ ਸਮਰੱਥ ਕਰਨ ਦੀ ਲੋੜ ਹੈ।</string>
+    <string name="process_downloads_background">"ਡਾਊਨਲੋਡ ਹਾਲੇ ਵੀ ਲੋਡ ਹੋ ਰਹੇ ਹਨ। ਕੀ ਉਹਨਾਂ ਨੂੰ ਬੈਕਗ੍ਰਾਊਂਡ ਵਿੱਚ ਪ੍ਰੋਸੈਸ ਕਰਨਾ ਜਾਰੀ ਰੱਖਣਾ ਹੈ ਅਤੇ ਡਾਊਨਲੋਡ ਕਰਨਾ ਸ਼ੁਰੂ ਕਰਨਾ ਹੈ? "</string>
 </resources>

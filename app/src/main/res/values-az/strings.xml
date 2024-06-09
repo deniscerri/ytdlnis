@@ -388,4 +388,14 @@
     <string name="move_bottom">Aşağıya keçin</string>
     <string name="scheduled">Planlaşdırılan</string>
     <string name="clear_scheduled">Planlaşdırılanı Təmizlə</string>
+    <string name="minute">Dəqiqə</string>
+    <string name="second">Saniyə</string>
+    <string name="format_importance">Format Vacibliyi Sırası</string>
+    <string name="format_importance_note">Format elementinin vacibliyini tənzimləyin. Bu düzülüş yalnız tətbiq yükləmə kartındakı formatları əldə etdikdə və formatı avtomatik seçdikdə istifadə olunacaq!</string>
+    <string name="no_audio">Səs olmayan video</string>
+    <string name="download_archive_folder">Yükləmə Arxivi Qovluğu</string>
+    <string name="location">Məkan</string>
+    <string name="enable_alarm_permission">Siz tətbiq tənzimləmələrində \"SCHEDULE_EXACT_ALARM\" icazəsin aktivləşdirməlisiniz.</string>
+    <string name="milliseconds">Milisaniyə</string>
+    <string name="process_downloads_background">"Yükləmələr hələ də yüklənir. Onları arxa planda emal etməyə davam edib yükləməyə başlanılsın? "</string>
 </resources>

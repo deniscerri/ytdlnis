@@ -35,7 +35,7 @@
     <string name="downloading">Fazendo o download</string>
     <string name="limit_rate">Limite de conexão</string>
     <string name="limit_rate_summary">Taxa máxima de download (em bytes por segundo), ex. 50k ou 4.2M</string>
-    <string name="aria2_summary">Usar aria2c como ferramenta de download padrão</string>
+    <string name="aria2_summary">Usar aria2c como provedor de download padrão</string>
     <string name="embed_subs_summary">Adicionar legendas aos vídeos</string>
     <string name="add_chapters_summary">Marcar segmentos YouTube/SponsorBlock como capítulos do vídeo</string>
     <string name="save_thumb">Salvar miniatura</string>
@@ -397,5 +397,5 @@
     <string name="no_audio">Vídeo sem áudio</string>
     <string name="enable_alarm_permission">Você precisa habilitar a permissão SCHEDULE_EXACT_ALARM nas configurações do aplicativo.</string>
     <string name="format_importance_note">Ajuste a importância do elemento de formato. Essa ordem só será usada quando o aplicativo buscar os formatos no cartão de download e selecionar automaticamente o formato!</string>
-    <string name="process_downloads_background">Os downloads ainda estão sendo carregados. Continuar processando-os em segundo plano e iniciar o download?</string>
+    <string name="process_downloads_background">"Os downloads ainda estão sendo carregados. Continuar processando-os em segundo plano e iniciar o download? "</string>
 </resources>

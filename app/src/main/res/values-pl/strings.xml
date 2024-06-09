@@ -236,7 +236,7 @@
     <string name="save_subs_desc">Zapisz plik z napisami</string>
     <string name="custom_audio_quality">Użyj niestandardowej jakości dźwięku</string>
     <string name="piped_instance">Instancja Piped</string>
-    <string name="piped_instance_summary">Napisz serwer API PIPED, którego aplikacja może używać do zapytań i formatów YouTube</string>
+    <string name="piped_instance_summary">Zapisz serwer PIPED API, którego aplikacja może używać do zapytań i formatów YouTube</string>
     <string name="socks5_proxy_summary">Użyj określonego serwera proxy HTTP/HTTPS/SOCKS</string>
     <string name="socks5_proxy">Adres URL serwera proxy Socks5</string>
     <string name="retries">Ponowne próby</string>
@@ -256,13 +256,13 @@
     <string name="copied_to_clipboard">Skopiowano do schowka</string>
     <string name="search_suggestions_summary">Uzyskuj sugestie wyszukiwania od Google</string>
     <string name="search_suggestions">Sugestie wyszukiwania</string>
-    <string name="accents">Akcenty</string>
+    <string name="accents">Akcent</string>
     <string name="preferred_format_id_summary">Wybierz format z tym identyfikatorem na karcie pobierania</string>
     <string name="misc">Różne</string>
     <string name="swipe_gestures_summary">Przesuwaj elementy, aby wykonać określone czynności</string>
     <string name="crop_thumb">Przytnij miniaturę</string>
     <string name="shortcuts_desc">Użyj często używanych poleceń do tworzenia szablonów</string>
-    <string name="cancelled">Anulowany</string>
+    <string name="cancelled">Anulowane</string>
     <string name="access_all_directories_summary">Zezwól aplikacji na pobieranie do katalogów, które są domyślnie ograniczone</string>
     <string name="clear_temporary_files_summary">Usuń pliki pamięci podręcznej z pobrań zakończonych awarią, błędem bądź anulowaniem</string>
     <string name="restrict_filenames_summary">Ogranicz nazwy plików do znaków ASCII i unikaj znaków „&amp;” oraz spacji w nazwach plików</string>
@@ -294,7 +294,7 @@
     <string name="show_terminal">Pokaż terminal w menu udostępnienia</string>
     <string name="write_description">Zapisz opis</string>
     <string name="cache_first_summary">Pliki pamięci podręcznej są pobierane do pamięci wewnętrznej, a następnie przenoszone do wybranego katalogu. Użyj tej opcji, jeśli nie możesz pisać bezpośrednio do pamięci</string>
-    <string name="write_description_summary">Napisz plik opisu</string>
+    <string name="write_description_summary">Zapisz plik opisu</string>
     <string name="cache_first">Najpierw buforuj pobieranie</string>
     <string name="use_sponsorblock">Użyj SponsorBlock</string>
     <string name="preferred_video_codec">Preferowany kodek wideo</string>
@@ -378,4 +378,23 @@
     <string name="my_filename_templates">Szablony nazw plików</string>
     <string name="prefer_smaller_formats">Preferowane formaty zajmujące mniej miejsca</string>
     <string name="display_over_apps">Wyświetlaj nad aplikacjami</string>
+    <string name="second">Sekundy</string>
+    <string name="enable_alarm_permission">Należy włączyć zgodę SCHEDULE_EXACT_ALARM w ustawieniach aplikacji.</string>
+    <string name="format_importance_note">Dostosuj ważność elementów formatu. Ta kolejność będzie używana tylko wtedy, gdy aplikacja pobierze formaty z karty pobierania i automatycznie wybierze format!</string>
+    <string name="no_audio">Wideo bez dźwięku</string>
+    <string name="download_archive_folder">Pobierz folder archiwum</string>
+    <string name="location">Lokalizacja</string>
+    <string name="minute">Minuty</string>
+    <string name="milliseconds">Milisekundy</string>
+    <string name="disabled">Wyłączone</string>
+    <string name="subtitles">Napisy</string>
+    <string name="prevent_duplicate_downloads">Zapobieganie pobieraniu duplikatów</string>
+    <string name="prevent_duplicate_url_type">Adres URL i typ pobierania</string>
+    <string name="prevent_duplicate_config">Pełna konfiguracja</string>
+    <string name="copy_url">Kopiuj adres URL</string>
+    <string name="scheduled">Zaplanowane</string>
+    <string name="clear_scheduled">Wyczyść zaplanowane</string>
+    <string name="move_bottom">Przesuń na dół</string>
+    <string name="move_top">Przesuń na szczyt</string>
+    <string name="process_downloads_background">"Pliki do pobrania wciąż się ładują. Kontynuować ich przetwarzanie w tle i rozpocząć pobieranie? "</string>
 </resources>

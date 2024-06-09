@@ -69,7 +69,7 @@
     <string name="settings">Instellingen</string>
     <string name="command_directory">Aangepaste opdracht­map</string>
     <string name="worst_quality">Slechtste kwaliteit</string>
-    <string name="api_key_summary">Video Aanbevelingen van Youtube API</string>
+    <string name="api_key_summary">Video­aanbevelingen van de YouTube-API</string>
     <string name="remove_downloading">Downloads annuleren</string>
     <string name="author">Auteur</string>
     <string name="ytdl_update_hint">Handig als u problemen heeft met downloaden</string>
@@ -122,9 +122,9 @@
     <string name="command_templates">Opdracht­sjablonen</string>
     <string name="terminal">Terminal</string>
     <string name="format">Formaat</string>
-    <string name="running">Draaiend</string>
+    <string name="running">Actief</string>
     <string name="command">Opdracht</string>
-    <string name="shortcuts">Snel­toetsen</string>
+    <string name="shortcuts">Snel­koppelingen</string>
     <string name="select_format">Formaat selecteren</string>
     <string name="please_wait">Even geduld</string>
     <string name="enable_mtime">Mtime inschakelen</string>
@@ -379,7 +379,7 @@
     <string name="format_importance_note">Pas de prioriteit van formaat­elementen aan. Deze bestelling wordt alleen gebruikt als de app de formaten op de download­kaart ophaalt en het formaat automatisch selecteert!</string>
     <string name="enable_alarm_permission">U moet de machtiging SCHEDULE_EXACT_ALARM inschakelen in de app-instellingen.</string>
     <string name="no_download_fragments_summary">Gebruik geen .part-bestanden en schrĳf recht­streeks naar het uitvoer­bestand</string>
-    <string name="quick_download_summary">Haalt heen datum op in de download­kaart</string>
+    <string name="quick_download_summary">Haal geen gegevens op in de download­kaart</string>
     <string name="keep_cache_summary">Verwĳder geen tĳdelĳke bestanden nadat het down­loaden is voltooid</string>
     <string name="restore_complete">App-herstel voltooid. De volgende items zĳn hersteld:</string>
     <string name="preferred_format_id_summary">Selecteer het formaat met deze ID op de download­kaart</string>
@@ -393,7 +393,7 @@
     <string name="download_already_exists_summary">Wilt u nog steeds downloaden?</string>
     <string name="backup_created_successfully">Back-up­bestand opgeslagen in de download­map</string>
     <string name="crop_thumb_summary">Snĳd de miniatuur bĳ tot een vierkant voor audio­downloads</string>
-    <string name="process_downloads_background">Downloads worden nog steeds geladen. Doorgaan met het verwerken ervan op de achtergrond en beginnen met downloaden?</string>
+    <string name="process_downloads_background">"Downloads worden nog steeds geladen. Doorgaan met het verwerken ervan op de achtergrond en beginnen met downloaden? "</string>
     <string name="cache_first_summary">Cache­bestanden worden naar de interne opslag gedownload en vervolgens naar de door u gekozen map verplaatst. Gebruik dit als u niet recht­streeks naar de opslag kunt schrĳven</string>
     <string name="update_app_beta_summary">Meld u aan voor het bèta­programma. Bèta­versies kunnen problemen bevatten.</string>
     <string name="archive">Archief downloaden [Gebruik het download­archief­bestand van yt-dlp om dubbele downloads te voorkomen in plaats van de ingebouwde functionaliteit]</string>

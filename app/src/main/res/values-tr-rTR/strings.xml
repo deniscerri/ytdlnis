@@ -10,7 +10,7 @@
     <string name="music_directory"> Müzik Klasörü</string>
     <string name="video_directory"> Video Klasörü</string>
     <string name="updating">Güncelleniyor</string>
-    <string name="ytdl_update_hint">İndirmede sorun yaşıyorsanız kullanışlıdır</string>
+    <string name="ytdl_update_hint">İndirirken sorun yaşıyorsanız faydalıdır</string>
     <string name="update_ytdl">yt-dlp\'nin yeni sürümünü yükle</string>
     <string name="source_code">Kaynak Kodu</string>
     <string name="search_hint">Ara veya URL Ekle</string>
@@ -28,7 +28,7 @@
     <string name="confirm_delete_history">Onayla</string>
     <string name="search_history_hint">Geçmişten Ara</string>
     <string name="no_results">Sonuç Yok</string>
-    <string name="more">Daha fazla</string>
+    <string name="more">Daha Fazla</string>
     <string name="update_app">Güncellemeleri kontrol et</string>
     <string name="version">Sürüm</string>
     <string name="command_directory">Özel Komut Klasörü</string>
@@ -37,7 +37,7 @@
     ile sınırla
     <string name="audio">Ses</string>
     <string name="video">Video</string>
-    <string name="concurrent_fragments_summary">Eşzamanlı olarak indirilecek DASH/HLS yerel video parçası sayısı</string>
+    <string name="concurrent_fragments_summary">Eşzamanlı olarak indirilecek DASH/HLS yerel video parçalarının sayısı</string>
     <string name="concurrent_fragments">Eşzamanlı Parçalar</string>
     <string name="downloading">İndiriliyor</string>
     <string name="limit_rate">Limit Oranı</string>
@@ -59,14 +59,14 @@
     <string name="run_command">Komutu Çalıştır</string>
     <string name="command_download_notification_channel_name">Komut İndirmeleri</string>
     <string name="command_download_notification_channel_description">Bir yt-dlp komutu kullanarak indirme işleminin ilerlemesini gösteren bildirim</string>
-    <string name="items_left">kalan öğe(ler)</string>
-    <string name="history_is_empty">Tarih boş</string>
+    <string name="items_left">öğe(ler) kaldı</string>
+    <string name="history_is_empty">Geçmiş boş</string>
     <string name="you_are_going_to_delete">Siliniyor</string>
     <string name="url">URL</string>
     <string name="link_copied_to_clipboard">Panoya kopyalanan bağlantı</string>
     <string name="api_key">API Anahtarı Kullan</string>
     <string name="api_key_summary">Youtube API\'sinden Video Önerileri</string>
-    <string name="update_app_summary">Uygulama açıldığında yeni sürümlerini duyur. Veriler resmi Github Deposundan alınır</string>
+    <string name="update_app_summary">Uygulama açıldığında yeni sürümleri duyur. Veriler resmi Github Deposundan alınır</string>
     <string name="downloads">İndirmeler</string>
     <string name="remove_deleted">Silinmişleri Kaldır</string>
     <string name="remove_duplicates">Kopyaları Kaldır</string>
@@ -123,7 +123,7 @@
     <string name="log_downloads">İndirilenler Günlüğü</string>
     <string name="log_downloads_summary">Her indirme için bir günlük dosyası oluştur</string>
     <string name="concurrent_downloads">Eşzamanlı İndirmeler</string>
-    <string name="update_ytdl_nightly">yt-dlp\'nin Gecelik Sürümü</string>
+    <string name="update_ytdl_nightly">yt-dlp\'nin Ön İzleme Sürümü</string>
     <string name="download_queue">İndirme Kuyruğu</string>
     <string name="split_by_chapters">Bölümlere Göre Ayır</string>
     <string name="template">Şablon</string>
@@ -283,7 +283,7 @@
     <string name="current">Geçerli Komut</string>
     <string name="save_for_later">Daha Sonra İndirmek için Kaydedilsin mi\?</string>
     <string name="subtitle_format">Altyazı Formatı</string>
-    <string name="saved">Kaydedilen</string>
+    <string name="saved">Kaydedildi</string>
     <string name="clear_saved">Kaydedilenleri Temizle</string>
     <string name="hide_thumbnails">Küçük Resimleri Gizle</string>
     <string name="show_terminal">Paylaşım Menüsünde Terminali Göster</string>
@@ -311,7 +311,7 @@
     <string name="schedule">Program</string>
     <string name="update_ytdl_master">yt-dlp\'nin Ana Sürümü</string>
     <string name="user_agent_header">Kullanıcı-Aracı başlığı</string>
-    <string name="search_command_hint">Komutlardan Ara</string>
+    <string name="search_command_hint">Komutlarda Ara</string>
     <string name="ignore">Yoksay</string>
     <string name="errored_downloads">Hatalı İndirmeler</string>
     <string name="license">Lisans</string>
@@ -388,7 +388,17 @@
     <string name="copy_url">URL\'yi kopyala</string>
     <string name="move_top">En Yukarı Taşı</string>
     <string name="move_bottom">En Aşağı Taşı</string>
-    <string name="scheduled">Planlı</string>
+    <string name="scheduled">Planlanmış</string>
     <string name="clear_scheduled">Planlamayı Temizle</string>
     <string name="prevent_duplicate_config">Tam Yapılandırma</string>
+    <string name="minute">Dakika</string>
+    <string name="second">Saniye</string>
+    <string name="milliseconds">Milisaniye</string>
+    <string name="format_importance">Biçim Önem Sırası</string>
+    <string name="format_importance_note">Biçim öğesinin önemini ayarlayın. Bu sıra yalnızca uygulama indirme kartındaki formatları alıp formatı otomatik seçtiğinde kullanılacaktır!</string>
+    <string name="no_audio">Video ama ses olmadan</string>
+    <string name="download_archive_folder">Arşiv Klasörünü İndir</string>
+    <string name="location">Konum</string>
+    <string name="enable_alarm_permission">Uygulama ayarlarında SCHEDULE_EXACT_ALARM iznini etkinleştirmeniz gerekir.</string>
+    <string name="process_downloads_background">"İndirmeler hala devam ediyor. Bunları arka planda işlemeye devam edip indirmeye başlamak ister misiniz? "</string>
 </resources>

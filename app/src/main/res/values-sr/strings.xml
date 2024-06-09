@@ -45,7 +45,7 @@
     <string name="update_ytdl_nightly">Ноћна верзија yt-dlp-а</string>
     <string name="command_download_notification_channel_description">Обавештење које приказује напредак преузимања помоћу команде yt-dlp</string>
     <string name="add_chapters">Поглавља у видео снимцима</string>
-    <string name="concurrent_downloads_summary">Број превземања кои се извршуваат во исто време</string>
+    <string name="concurrent_downloads_summary">Број преузимања која се извршавају у исто време</string>
     <string name="embed_subtitles">Угради титлове</string>
     <string name="clear_saved">Очисти сачувано</string>
     <string name="schedule">Закажи</string>
@@ -53,7 +53,7 @@
     <string name="enable_mtime">Омогући mtime</string>
     <string name="api_key">Користи API кључ</string>
     <string name="download_over_metered_networks">Преузимање преко мобилних података</string>
-    <string name="adjust_video">Прилагодување на видео</string>
+    <string name="adjust_video">Прилагођавање видео снимка</string>
     <string name="processing">Обрада</string>
     <string name="clear_temporary_files_summary">Избришите кеширане фајлове из срушених/неисправних/отказаних преузимања</string>
     <string name="user_agent_header">User-Agent заглавље</string>
@@ -104,8 +104,8 @@
     <string name="format_source">Извор формата</string>
     <string name="limit_rate_summary">Максимална брзина преузимања (у бајтовима по секунди), нпр. 50К или 4.2М</string>
     <string name="appearance">Изглед</string>
-    <string name="confirm_delete_history">Потврди</string>
-    <string name="search_hint">Претражите или унесите URL</string>
+    <string name="confirm_delete_history">Потврдите</string>
+    <string name="search_hint">Претрага или унос URL адресе</string>
     <string name="link_you_copied">Копирани линк</string>
     <string name="downloads">Преузимања</string>
     <string name="custom_audio_quality">Користи прилагођени квалитет аудио снимка</string>
@@ -201,7 +201,7 @@
     <string name="select">Изабери</string>
     <string name="updating">Ажурирање</string>
     <string name="preferred_video_codec">Преферирани кодек видео снимка</string>
-    <string name="concurrent_downloads">Истовремени превземања</string>
+    <string name="concurrent_downloads">Истовремена преузимања</string>
     <string name="new_cut">Ново сечење</string>
     <string name="log_downloads">Преузимања евиденција</string>
     <string name="audio_samplerate">Брзина узорковања аудио снимка</string>
@@ -222,7 +222,7 @@
     <string name="error_restarting_download">Грешка при покушају рестартовања преузимања</string>
     <string name="help_translate_summary">Преведите ову апликацију на свој језик користећи Weblate</string>
     <string name="remove_search_history">Очисти историју претраге</string>
-    <string name="adjust_templates">Прилагоди шаблон</string>
+    <string name="adjust_templates">Прилагођавање шаблона</string>
     <string name="confirm_terminate">Зауставља сва преузимања и принудно затвара апликацију</string>
     <string name="general">Опште</string>
     <string name="errored">Неисправно</string>
@@ -324,7 +324,7 @@
     <string name="buffer_size">Величина бафера</string>
     <string name="preferred_audio_language">Преферирани језик аудио снимка</string>
     <string name="update_ytdl_stable">Стабилна верзија yt-dlp</string>
-    <string name="changelog">Евиденција измена</string>
+    <string name="changelog">Евиденција промена</string>
     <string name="app">Апликација</string>
     <string name="source">Извор</string>
     <string name="cut_unavailable">Морате да ажурирате податке о предмету да бисте могли да користите функцију сечења</string>
@@ -373,10 +373,10 @@
     <string name="select_between">Избор предмета између</string>
     <string name="no_download_fragments">Не преузимај као фрагменте</string>
     <string name="no_download_fragments_summary">Без коришћења .part фајлова и писања директно у излазни фајл</string>
-    <string name="my_filename_templates">Моји шаблони имена фајлова</string>
+    <string name="my_filename_templates">Моји шаблони назива фајлова</string>
     <string name="prefer_smaller_formats">Преферирај формате мање величине</string>
     <string name="display_over_apps_summary">Нека се картица за преузимање увек приказује на врху. Укључите ово ако се тренутно покренута апликација затвори када се појави картица за преузимање</string>
-    <string name="hour">Сат</string>
+    <string name="hour">Час</string>
     <string name="display_over_apps">Приказуј преко апликација</string>
     <string name="subtitles">Титлови</string>
     <string name="prevent_duplicate_url_type">URL адреса и тип преузимања</string>
@@ -394,7 +394,7 @@
     <string name="format_importance">Редослед важности формата</string>
     <string name="format_importance_note">Подесите важност елемента формата. Овај налог ће се користити само када апликација преузме формате на картици за преузимање и аутоматски изабере формат!</string>
     <string name="no_audio">Видео без звука</string>
-    <string name="process_downloads_background">Преузимања се и даље учитавају. Наставити с обрађивањем преузимања у позадини и започети преузимање?</string>
+    <string name="process_downloads_background">"Преузимања се и даље учитавају. Наставити с обрађивањем преузимања у позадини и започети преузимање? "</string>
     <string name="download_archive_folder">Фолдер архиве преузимања</string>
     <string name="location">Локација</string>
     <string name="enable_alarm_permission">Морате да омогућите дозволу SCHEDULE_EXACT_ALARM у подешавањима апликације.</string>
