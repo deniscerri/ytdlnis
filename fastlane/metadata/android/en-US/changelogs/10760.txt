@@ -1,0 +1,71 @@
+## What's New
+
+- Made finished notification icon color to red
+- Added download path in the history item details sheet
+- Fixed Download On Schedule feature. Switched back to AlarmManager as its more accurate than WorkManager
+- Removed move to top and to bottom in the scheduled tab. Code cleanup
+- Fixed a huge issue when you press cancel to the quick download item before the data isn't fully fetched, it would go back to being queued after the data fetching is finally done
+- moved force keyframes at cuts in the general category in processing settings
+- showed the number when you select all items in the context menu bar
+- fixed app going always to the search bar when you return to home if you launched the search shortcut from the app menu
+- Fixed app not hiding update formats button after updating formats
+- Fixed app not passing ba/b in format logic when using generic best audio format
+- Fixed meta track parse metadata
+- Fixed app not cancelling downloads in some cases
+- Fixed huge issue when using multiple download card and it wouldnt keep user defined changes
+- Fixed app not removing download notification when cancelling download
+- Fixed some errors in arabic interface when selecting playlist items
+- Limited characters in cut interface textboxes to just numbers colons and periods
+- When user had a defined preferred format id and the user selects a generic 'best' format the app just accounted that format id and didnt consider the preferred video resolution as a fallback
+- Fixed when trying to schedule a video download and setting it to download as audio as well, the audio is put in queued and not in scheduled
+- Fixed app crashing when trying to tap adjust download in the errored notification, in case the user removed the download beforehand
+- Added ability to modify the download item in the queue. But to prevent the app from starting the download prematurely, it is moved to the saved category and after you hit ok it will be requeued. If you cancel the edit card, the item will stay in saved
+- Fixed app reseting user defined changes in the download card like the download path when it finally updates data
+- Fixed app crashing when trying to open a download that has no duration in it. Now its disabled
+- Previously the app would change the state of downloads to Paused, whether it is activepaused or queuedpaused. Since the app now simply pauses all downloads, there is no need to do such transformations especially when you could have many items in the queue. Now simply the app cancels the ytdlp instances and the download worker and stores a state whether the downloads are paused or not
+- Fixed album playlist track not being saved  #482
+- Fixed retries and fragment retries settings not applying
+- Fixed container in RTL not showing correctly in video tab in the download card
+- Fixed bad spacing in RTL for search engines
+- Fixed app crashing when you multiple select cancelled downloads for redownload
+- Removed the ability of the app to rename extractors in the history tab. Now they are raw from yt-dlp
+- Changelog was too slow and buggy, so now its on a recyclerview ultra fast
+- Fixed the case when you pasted multiple links in the home section and only one item would be registered
+- Fixed observe sources not downloading new uploads when checked as such
+- On select playlist items the end textbox was not purely numeric. fixed
+- Fixed sub format conversion not applying when embedding subtitles
+- added scheduled as a backup category in teh settings
+- added ability to show cookie details
+- fixed app crash in some cases when u copied multiple url and tapped the FAB in home screen
+- removed excessive file permissions for API 30 and above
+
+## Format aspect importance
+
+Now in the settings you can order around which element based on your preferences like codec, container, quality, preferred format id should be prioritised when the app automatically chooses a format for you. The app uses a weigh system to sort formats based on preference.
+
+- fixed app crashing when swipe to delete a scheduled item
+- fixed app not modifying time in a scheduled item
+- added network constraint for observe sources worker
+- added reconfigure button in errored notification
+- fixed app not hiding the "Link you copied" after clicking on it
+- fixed app crashing when trying to toast in the end (#469)
+- added alternate urls for instagram,facebook,and reddit as supported sites
+- fixed app not escaping double quotes in filenames
+- fixed container text alignment for arabic interface
+- rearranged video quality order in descending order in the settings
+
+
+## Background processing of items for download
+
+Someone tested to download a 4000 long playlist in the app. First of all it couldnt even load them in the multiple download card. In those extreme cases the usual recommendation was to just turn quick download on, and consider the whole playlist as a single item and download.
+
+But still, if a madman wants the ability to modify the list, now the app can handle it and will show the download card. Since it will take a while until all items all processed and converted into download items, a progress bar is added.
+Still you are able to hit download and schedule button early and let the app continue on its own by using the default configurations of the download items. So its fast like quick download but still separates all items into separate downloads.
+
+- fixed app using -a "" on observe sources command type downloads
+- added milliseconds when trying to cut a download
+- added ability to set the folder location of your download archive path. The file has to be named as download_archive.txt
+- added feature to number each chapter when using split by chapters
+- slight changes to downloads already exist dialog
+- fixed app not considering m.youtube links
+- other small fixes

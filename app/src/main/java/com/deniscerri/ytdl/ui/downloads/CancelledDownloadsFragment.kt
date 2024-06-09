@@ -67,7 +67,7 @@ class CancelledDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClic
     ): View? {
         fragmentView = inflater.inflate(R.layout.generic_list, container, false)
         activity = getActivity()
-        downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
+        downloadViewModel = ViewModelProvider(requireActivity())[DownloadViewModel::class.java]
         preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
         return fragmentView
     }
@@ -251,24 +251,20 @@ class CancelledDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClic
                     true
                 }
                 R.id.redownload -> {
-                    lifecycleScope.launch {
-                        val selectedObjects = getSelectedIDs()
-                        val showDownloadCard = preferences.getBoolean("download_card", true)
-                        if (showDownloadCard) {
-                            CoroutineScope(SupervisorJob()).launch(Dispatchers.IO) {
-                                downloadViewModel.turnDownloadItemsToProcessingDownloads(selectedObjects)
-                            }
-                            withContext(Dispatchers.Main){
-                                val bundle = Bundle()
-                                bundle.putLongArray("currentDownloadIDs", selectedObjects.toLongArray())
-                                findNavController().navigate(R.id.downloadMultipleBottomSheetDialog2, bundle)
-                            }
-                        }else {
-                            downloadViewModel.reQueueDownloadItems(selectedObjects)
-                        }
-
-                        adapter.clearCheckedItems()
+                    val selectedObjects = runBlocking {
+                        getSelectedIDs()
                     }
+                    val showDownloadCard = preferences.getBoolean("download_card", true)
+                    if (showDownloadCard) {
+                        downloadViewModel.turnDownloadItemsToProcessingDownloads(selectedObjects)
+                        val bundle = Bundle()
+                        bundle.putLongArray("currentDownloadIDs", selectedObjects.toLongArray())
+                        findNavController().navigate(R.id.downloadMultipleBottomSheetDialog2, bundle)
+                    }else {
+                        downloadViewModel.reQueueDownloadItems(selectedObjects)
+                    }
+
+                    adapter.clearCheckedItems()
                     runBlocking {
                         actionMode?.finish()
                     }

@@ -3,8 +3,10 @@ package com.deniscerri.ytdl.services
 import android.app.Service
 import android.content.Intent
 import android.os.Binder
+import android.os.Build
 import android.os.IBinder
 import androidx.core.content.IntentCompat
+import androidx.lifecycle.lifecycleScope
 import com.deniscerri.ytdl.database.DBManager
 import com.deniscerri.ytdl.database.models.DownloadItem
 import com.deniscerri.ytdl.database.models.ResultItem
@@ -18,8 +20,10 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 class ProcessDownloadsInBackgroundService : Service() {
@@ -46,7 +50,25 @@ class ProcessDownloadsInBackgroundService : Service() {
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
 
         val binding = intent.getBooleanExtra("binding", false)
-        if (binding) return super.onStartCommand(intent, flags, startId)
+        if (binding) {
+            val cancel = intent.getBooleanExtra("cancel", false)
+            if (cancel) {
+                cancelAllProcessingJobs()
+                CoroutineScope(SupervisorJob()).launch(Dispatchers.IO){
+                    repository.deleteProcessing()
+                    withContext(Dispatchers.Main){
+                        if (Build.VERSION.SDK_INT > 23){
+                            stopForeground(STOP_FOREGROUND_REMOVE)
+                        }else{
+                            stopForeground(true)
+                        }
+                        stopSelf()
+                    }
+                }
+            }else{
+                return super.onStartCommand(intent, flags, startId)
+            }
+        }
 
         val notificationUtil = NotificationUtil(this)
         startForeground(System.currentTimeMillis().toInt(), notificationUtil.createProcessingDownloads())
@@ -98,7 +120,7 @@ class ProcessDownloadsInBackgroundService : Service() {
                     }
                 }
             }else {
-                repository.getAllItemsByIDs(processingItemIDs).apply {
+                repository.getProcessingItemsBetweenIDs(processingItemIDs.first(), processingItemIDs.last()).apply {
                     this.chunked(100).map {
                         if (timeInMillis > 0){
                             this.forEach { d ->

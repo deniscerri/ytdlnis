@@ -26,6 +26,7 @@ import com.deniscerri.ytdl.receiver.CancelDownloadNotificationReceiver
 import com.deniscerri.ytdl.receiver.CancelWorkReceiver
 import com.deniscerri.ytdl.receiver.PauseDownloadNotificationReceiver
 import com.deniscerri.ytdl.receiver.ResumeActivity
+import com.deniscerri.ytdl.services.ProcessDownloadsInBackgroundService
 import com.deniscerri.ytdl.util.Extensions.toBitmap
 import java.io.File
 
@@ -247,6 +248,8 @@ class NotificationUtil(var context: Context) {
             else -> R.drawable.ic_launcher_foreground_large
         }
 
+        val contentText = StringBuilder("$title")
+
         val bitmap = iconType.toBitmap(context)
         notificationBuilder
             .setContentTitle("${res.getString(R.string.downloaded)} $title")
@@ -255,15 +258,11 @@ class NotificationUtil(var context: Context) {
             .setGroup(DOWNLOAD_FINISHED_NOTIFICATION_ID.toString())
             .setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_CHILDREN)
             .setContentText(title)
-            .setStyle(NotificationCompat.BigTextStyle()
-                .bigText("""
-                    $title
-                    ${filepath?.joinToString("\n")}
-                """.trimIndent()))
             .setPriority(NotificationCompat.PRIORITY_MAX)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .clearActions()
         if (filepath != null){
+            contentText.append("\n\n"+ filepath.joinToString("\n"))
             try{
                 val uris = filepath.mapNotNull {
                     runCatching {
@@ -317,6 +316,7 @@ class NotificationUtil(var context: Context) {
                 notificationBuilder.addAction(0, res.getString(R.string.share), shareNotificationPendingIntent)
             }catch (_: Exception){}
         }
+        notificationBuilder.setStyle(NotificationCompat.BigTextStyle().bigText(contentText.toString().trimIndent()))
         notificationManager.notify(DOWNLOAD_FINISHED_NOTIFICATION_ID + id.toInt(), notificationBuilder.build())
     }
 
@@ -646,6 +646,16 @@ class NotificationUtil(var context: Context) {
     fun createProcessingDownloads() : Notification{
         val notificationBuilder = getBuilder(DOWNLOAD_MISC_CHANNEL_ID)
 
+        val intent = Intent(context, ProcessDownloadsInBackgroundService::class.java)
+        intent.putExtra("binding", true)
+        intent.putExtra("cancel", true)
+        val cancelNotificationPendingIntent = PendingIntent.getService(
+            context,
+            System.currentTimeMillis().toInt(),
+            intent,
+            PendingIntent.FLAG_IMMUTABLE
+        )
+
         notificationBuilder
             .setContentTitle(resources.getString(R.string.processing))
             .setSmallIcon(R.drawable.ic_app_icon)
@@ -658,6 +668,7 @@ class NotificationUtil(var context: Context) {
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .clearActions()
+            .addAction(0, resources.getString(R.string.cancel), cancelNotificationPendingIntent)
 
         return notificationBuilder.build()
     }

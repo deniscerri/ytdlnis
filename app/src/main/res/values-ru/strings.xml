@@ -388,13 +388,12 @@
     <string name="move_bottom">Двигайтесь вниз</string>
     <string name="scheduled">Запланированное</string>
     <string name="clear_scheduled">Очистить Запланированное</string>
-    <string name="format_importance_video">Порядок важности формата (видео)</string>
     <string name="download_archive_folder">Скачать папку архива</string>
     <string name="location">Расположение</string>
     <string name="minute">Минута</string>
     <string name="second">Секунда</string>
     <string name="milliseconds">Миллисекунды</string>
-    <string name="format_importance_audio">Порядок важности формата (аудио)</string>
+    <string name="format_importance">Порядок важности формата</string>
     <string name="format_importance_note">Отрегулируйте важность элемента формата. Этот порядок будет использоваться только в том случае, если приложение извлекает форматы из карты загрузки и автоматически выбирает формат!</string>
     <string name="no_audio">Видео без звука</string>
     <string name="enable_alarm_permission">Вам необходимо включить разрешение SCHEDULE_EXACT_ALARM в настройках приложения.</string>

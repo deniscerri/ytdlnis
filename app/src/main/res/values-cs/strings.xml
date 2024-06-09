@@ -391,10 +391,9 @@
     <string name="enable_alarm_permission">V nastavení aplikace je třeba povolit oprávnění SCHEDULE_EXACT_ALARM.</string>
     <string name="process_downloads_background">Stahované položky se stále načítají. Pokračovat v jejich zpracování na pozadí a zahájit stahování?</string>
     <string name="minute">Minuta</string>
-    <string name="format_importance_video">Pořadí důležitosti formátu (Video)</string>
+    <string name="format_importance">Pořadí důležitosti formátu</string>
     <string name="second">Sekunda</string>
     <string name="milliseconds">Milisekundy</string>
-    <string name="format_importance_audio">Pořadí důležitosti formátu (Audio)</string>
     <string name="location">Umístění</string>
     <string name="format_importance_note">Upravte důležitost prvku formátu. Toto pořadí se použije pouze tehdy, když aplikace načte formáty na kartě stahování a automaticky vybere formát!</string>
     <string name="no_audio">Video bez zvuku</string>

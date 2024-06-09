@@ -414,7 +414,7 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
             val w = websites[i]
             if (w == "null" || w.isEmpty()) continue
             val tmp = layoutinflater!!.inflate(R.layout.filter_chip, websiteGroup, false) as Chip
-            tmp.text = w.replaceFirstChar { if (it.isLowerCase()) it.titlecase(java.util.Locale.getDefault()) else it.toString() }
+            tmp.text = w
             tmp.id = i
             tmp.setOnClickListener {
                 Log.e(TAG, tmp.isChecked.toString())

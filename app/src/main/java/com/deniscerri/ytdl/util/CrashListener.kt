@@ -16,7 +16,7 @@ class CrashListener(private val context: Context) : Thread.UncaughtExceptionHand
 
     override fun uncaughtException(p0: Thread, p1: Throwable) {
         CoroutineScope(SupervisorJob()).launch(Dispatchers.IO) {
-            createLog("${p1.message}\n${p1.stackTrace}")
+            createLog("${p1.message}\n\n${p1.stackTrace.joinToString("\n")}")
         }
     }
 

@@ -66,6 +66,7 @@
                 <AutoCompleteTextView
                     android:id="@+id/container_textview"
                     android:layout_width="match_parent"
+                    android:textDirection="locale"
                     android:layout_height="wrap_content"
                     android:inputType="none"
                     app:simpleItems="@array/audio_containers" />

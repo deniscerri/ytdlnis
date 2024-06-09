@@ -78,11 +78,11 @@ class ActiveDownloadMinifiedAdapter(onItemClickListener: OnItemClickListener, ac
 
         // TITLE  ----------------------------------
         val itemTitle = card.findViewById<TextView>(R.id.title)
-        var title = item.title
+        var title = item.title.ifEmpty { item.playlistTitle.ifEmpty { item.url } }
         if (title.length > 100) {
             title = title.substring(0, 40) + "..."
         }
-        itemTitle.text = title.ifEmpty { item.url }
+        itemTitle.text = title
 
         //DOWNLOAD TYPE -----------------------------
         val type = card.findViewById<TextView>(R.id.download_type)

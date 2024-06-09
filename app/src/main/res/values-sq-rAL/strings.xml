@@ -390,8 +390,7 @@
     <string name="minute">Minuta</string>
     <string name="second">Sekonda</string>
     <string name="milliseconds">Milisekonda</string>
-    <string name="format_importance_audio">Rradha e rëndësisë së Formateve (Audio)</string>
-    <string name="format_importance_video">Rradha e rëndësisë së Formateve (Video)</string>
+    <string name="format_importance">Rradha e rëndësisë së Formateve</string>
     <string name="format_importance_note">Rregullo rëndësinë e elementit të formatit. Kjo porosi do të përdoret vetëm kur aplikacioni merr formatet në kartën e shkarkimit dhe zgjedh automatikisht formatin!</string>
     <string name="no_audio">Video pa audio</string>
     <string name="download_archive_folder">Skedari i arkivës së shkarkimeve</string>

@@ -84,8 +84,7 @@ class DownloadWorker(
             .createPendingIntent()
 
         val workNotif = notificationUtil.createDefaultWorkerNotification()
-        val workNotifID = Random.nextInt(900000000, 1000000000)
-        val foregroundInfo = ForegroundInfo(workNotifID, workNotif)
+        val foregroundInfo = ForegroundInfo(1000000000, workNotif)
         setForegroundAsync(foregroundInfo)
 
         queuedItems.collect { items ->
@@ -265,7 +264,7 @@ class DownloadWorker(
 
                                         val historyItem = HistoryItem(0,
                                             downloadItem.url,
-                                            downloadItem.title,
+                                            downloadItem.title.ifEmpty { downloadItem.playlistTitle },
                                             downloadItem.author,
                                             downloadItem.duration,
                                             downloadItem.thumb,
@@ -287,18 +286,18 @@ class DownloadWorker(
                                 downloadItem.id, downloadItem.title, downloadItem.type,  if (finalPaths?.first().equals(context.getString(R.string.unfound_file))) null else finalPaths, resources
                             )
 
-                            if (wasQuickDownloaded && createResultItem){
-                                runCatching {
-                                    eventBus.post(WorkerProgress(100, "Creating Result Items", downloadItem.id))
-                                    runBlocking {
-                                        infoUtil.getFromYTDL(downloadItem.url).forEach { res ->
-                                            if (res != null) {
-                                                resultDao.insert(res)
-                                            }
-                                        }
-                                    }
-                                }
-                            }
+//                            if (wasQuickDownloaded && createResultItem){
+//                                runCatching {
+//                                    eventBus.post(WorkerProgress(100, "Creating Result Items", downloadItem.id))
+//                                    runBlocking {
+//                                        infoUtil.getFromYTDL(downloadItem.url).forEach { res ->
+//                                            if (res != null) {
+//                                                resultDao.insert(res)
+//                                            }
+//                                        }
+//                                    }
+//                                }
+//                            }
 
                             dao.delete(downloadItem.id)
 

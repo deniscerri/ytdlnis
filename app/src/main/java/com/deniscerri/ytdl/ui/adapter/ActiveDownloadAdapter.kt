@@ -76,11 +76,11 @@ class ActiveDownloadAdapter(onItemClickListener: OnItemClickListener, activity: 
 
         // TITLE  ----------------------------------
         val itemTitle = card.findViewById<TextView>(R.id.title)
-        var title = item.title
+        var title = item.title.ifEmpty { item.playlistTitle.ifEmpty { item.url } }
         if (title.length > 100) {
             title = title.substring(0, 40) + "..."
         }
-        itemTitle.text = title.ifEmpty { item.url }
+        itemTitle.text = title
 
         // Author ----------------------------------
         val author = card.findViewById<TextView>(R.id.author)
@@ -107,7 +107,7 @@ class ActiveDownloadAdapter(onItemClickListener: OnItemClickListener, activity: 
 
         val fileSize = FileUtil.convertFileSize(item.format.filesize)
         if (fileSize != "?") sideDetails.add(fileSize)
-        formatDetailsChip.text = sideDetails.joinToString("  ·  ")
+        formatDetailsChip.text = sideDetails.filter { it.isNotBlank() }.joinToString("  ·  ")
 
         //OUTPUT
         val output = card.findViewById<TextView>(R.id.output)

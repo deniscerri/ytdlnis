@@ -26,18 +26,20 @@ open class BaseActivity : AppCompatActivity() {
 
     fun askPermissions() {
         val permissions = arrayListOf<String>()
-        if (!checkFilePermission()) {
-            if (Build.VERSION.SDK_INT >= 33){
-                permissions.add(Manifest.permission.READ_MEDIA_AUDIO)
-                permissions.add(Manifest.permission.READ_MEDIA_VIDEO)
-                if (Build.VERSION.SDK_INT >= 34){
-                    permissions.add(Manifest.permission.READ_MEDIA_VISUAL_USER_SELECTED)
-                }
-            }else{
-                permissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                permissions.add(Manifest.permission.READ_EXTERNAL_STORAGE)
-            }
+        val hasFilePerm = if (Build.VERSION.SDK_INT >= 30) {
+            true
+        }else {
+            (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    == PackageManager.PERMISSION_GRANTED) &&
+                    (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+                            == PackageManager.PERMISSION_GRANTED)
         }
+
+        if (!hasFilePerm){
+            permissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            permissions.add(Manifest.permission.READ_EXTERNAL_STORAGE)
+        }
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (!checkNotificationPermission()){
                 permissions.add(Manifest.permission.POST_NOTIFICATIONS)
@@ -64,20 +66,6 @@ open class BaseActivity : AppCompatActivity() {
             if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
                 createPermissionRequestDialog()
             }
-        }
-    }
-
-    private fun checkFilePermission(): Boolean {
-        return if(Build.VERSION.SDK_INT >= 33){
-            (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_AUDIO)
-                    == PackageManager.PERMISSION_GRANTED) &&
-                    (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_VIDEO)
-                            == PackageManager.PERMISSION_GRANTED)
-        }else{
-            (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                    == PackageManager.PERMISSION_GRANTED) &&
-                    (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
-                            == PackageManager.PERMISSION_GRANTED)
         }
     }
 

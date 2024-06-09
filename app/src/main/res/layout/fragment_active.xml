@@ -2,12 +2,12 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <LinearLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/download_recyclerview"
@@ -16,14 +16,16 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
             android:scrollbars="none"
+            tools:listitem="@layout/active_download_card"
             app:layout_constraintHorizontal_bias="0.0"
+            android:paddingBottom="100dp"
             app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginBottom="100dp"
             app:layout_constraintTop_toBottomOf="@+id/pause_resume">
         </androidx.recyclerview.widget.RecyclerView>
 
 
-    </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/pause"
@@ -50,6 +52,7 @@
 
 
     <include layout="@layout/no_results"
+        android:layout_height="match_parent"
         android:visibility="gone"
         android:layout_width="match_parent"/>
 

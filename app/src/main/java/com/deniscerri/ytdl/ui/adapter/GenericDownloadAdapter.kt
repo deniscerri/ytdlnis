@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.view.isVisible
 import androidx.paging.PagingDataAdapter
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.DiffUtil
@@ -71,14 +72,15 @@ class GenericDownloadAdapter(onItemClickListener: OnItemClickListener, activity:
 
         val duration = card.findViewById<TextView>(R.id.duration)
         duration.text = item.duration
+        duration.isVisible = item.duration != "-1"
 
         // TITLE  ----------------------------------
         val itemTitle = card.findViewById<TextView>(R.id.title)
-        var title = item.title
+        var title = item.title.ifEmpty { item.playlistTitle.ifEmpty { item.url } }
         if (title.length > 100) {
             title = title.substring(0, 40) + "..."
         }
-        itemTitle.text = title.ifEmpty { item.url }
+        itemTitle.text = title
 
         //DOWNLOAD TYPE -----------------------------
         val type = card.findViewById<TextView>(R.id.download_type)

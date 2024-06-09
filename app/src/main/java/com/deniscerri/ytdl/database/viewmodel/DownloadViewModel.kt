@@ -8,9 +8,12 @@ import android.content.res.Resources
 import android.util.DisplayMetrics
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.asFlow
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import androidx.media3.exoplayer.offline.Download
 import androidx.paging.PagingData
 import androidx.preference.PreferenceManager
 import androidx.work.Data
@@ -43,14 +46,21 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.last
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
 import java.util.Locale
 
@@ -65,7 +75,8 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
     val allDownloads : Flow<PagingData<DownloadItem>>
     val queuedDownloads : Flow<PagingData<DownloadItemSimple>>
     val activeDownloads : Flow<List<DownloadItem>>
-    val processingDownloads : Flow<List<DownloadItem>>
+    val allProcessingDownloads : Flow<List<DownloadItem>>
+    var mostRecentProcessingDownloads: Flow<List<DownloadItem>>
     val cancelledDownloads : Flow<PagingData<DownloadItemSimple>>
     val erroredDownloads : Flow<PagingData<DownloadItemSimple>>
     val savedDownloads : Flow<PagingData<DownloadItemSimple>>
@@ -104,11 +115,10 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         auto, audio, video, command
     }
 
-    private val urlsForAudioType = listOf(
-        "music",
-        "audio",
-        "soundcloud"
-    )
+
+    val processingDownloads = MediatorLiveData<List<DownloadItem>>(listOf())
+    var processingItemsFlow : ProcessingItemsJob? = null
+    var processingItems = MutableStateFlow(false)
 
     init {
         dbManager =  DBManager.getInstance(application)
@@ -133,7 +143,8 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         allDownloads = repository.allDownloads.flow
         queuedDownloads = repository.queuedDownloads.flow
         activeDownloads = repository.activeDownloads
-        processingDownloads = repository.processingDownloads
+        allProcessingDownloads = repository.processingDownloads
+        mostRecentProcessingDownloads = repository.getProcessingItemsFromID(0)
         savedDownloads = repository.savedDownloads.flow
         scheduledDownloads = repository.scheduledDownloads.flow
         cancelledDownloads = repository.cancelledDownloads.flow
@@ -285,8 +296,8 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         val cropThumb = sharedPreferences.getBoolean("crop_thumbnail", false)
 
         val customFileNameTemplate = when(historyItem.type) {
-            Type.audio -> sharedPreferences.getString("file_name_template_audio", "%(uploader)30B - %(title)120B")
-            Type.video -> sharedPreferences.getString("file_name_template", "%(uploader)30B - %(title)120B")
+            Type.audio -> sharedPreferences.getString("file_name_template_audio", "%(uploader).30B - %(title).170B")
+            Type.video -> sharedPreferences.getString("file_name_template", "%(uploader).30B - %(title).170B")
             else -> ""
         }
 
@@ -367,88 +378,83 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         var originItemIDs: List<Long>,
         var processingDownloadItemIDs: MutableList<Long> = mutableListOf()
     )
-
-    var processingItemsJob: MutableLiveData<ProcessingItemsJob?> = MutableLiveData(null)
-    var _filteredProcessingItems = MutableStateFlow<List<DownloadItem>>(listOf())
-    var filteredProcessingItems: StateFlow<List<DownloadItem>> = _filteredProcessingItems
-    private fun updateProcessingJobData(item: ProcessingItemsJob) = viewModelScope.launch {
-        processingItemsJob.postValue(item)
+    private fun updateProcessingJobData(item: ProcessingItemsJob?) {
+        processingItemsFlow = item
     }
 
     fun turnDownloadItemsToProcessingDownloads(itemIDs: List<Long>) = viewModelScope.launch(Dispatchers.IO){
-        processingItemsJob.postValue(ProcessingItemsJob(null, DownloadItem::class.java.toString(), itemIDs))
+        updateProcessingJobData(ProcessingItemsJob(null, DownloadItem::class.java.toString(), itemIDs))
         val job = viewModelScope.launch(Dispatchers.IO) {
+            processingItems.emit(true)
             try {
-                itemIDs.chunked(100).forEach { ids ->
-                    val items = repository.getAllItemsByIDs(ids)
-                    if (!isActive) {
-                        throw CancellationException()
-                    }
-                    items.forEach {
-                        it.id = 0
-                        it.status = DownloadRepository.Status.Processing.toString()
-                    }
+                itemIDs.forEachIndexed { idx, it ->
+                    val item = repository.getItemByID(it)
+                    if (!isActive) throw CancellationException()
 
-                    processingItemsJob.value?.apply {
-                        processingDownloadItemIDs.addAll(repository.insertAll(items))
+                    item.id = 0
+                    item.status = DownloadRepository.Status.Processing.toString()
+                    processingItemsFlow?.apply {
+                        val id = repository.insert(item)
+                        if (idx == 0) mostRecentProcessingDownloads = repository.getProcessingItemsFromID(id)
+                        processingDownloadItemIDs.add(id)
                         updateProcessingJobData(this)
                     }
                 }
-
+                processingItems.emit(false)
             } catch (e: Exception) {
-                processingItemsJob.value?.apply {
+                processingItemsFlow?.apply {
                     this.processingDownloadItemIDs.chunked(100).forEach {
                         repository.deleteAllWithIDs(it)
                     }
                 }
-                processingItemsJob.postValue(null)
+                updateProcessingJobData(null)
+                processingItems.emit(false)
             }
         }
-        processingItemsJob.postValue(ProcessingItemsJob(job, DownloadItem::class.java.toString(), itemIDs))
+        updateProcessingJobData(ProcessingItemsJob(job, DownloadItem::class.java.toString(), itemIDs))
     }
 
 
     fun turnResultItemsToProcessingDownloads(itemIDs: List<Long>, downloadNow: Boolean = false) = viewModelScope.launch(Dispatchers.IO) {
-        processingItemsJob.postValue(ProcessingItemsJob(null, ResultItem::class.java.toString(), itemIDs))
+        updateProcessingJobData(ProcessingItemsJob(null, ResultItem::class.java.toString(), itemIDs))
         val job = viewModelScope.launch(Dispatchers.IO) {
+            processingItems.emit(true)
             try {
-                itemIDs.chunked(100).forEach { ids ->
-                    val items = resultRepository.getAllByIDs(ids)
-                    val downloadItems = items.map {
-                        val preferredType = getDownloadType(url = it.url).toString()
-                        val tmp = createDownloadItemFromResult(result = it, givenType = Type.valueOf(
-                            preferredType
-                        ))
-                        tmp.status = DownloadRepository.Status.Processing.toString()
-                        tmp
-                    }
+                itemIDs.forEach { id ->
+                    val item = resultRepository.getItemByID(id) ?: return@forEach
+                    val preferredType = getDownloadType(url = item.url).toString()
+                    val downloadItem = createDownloadItemFromResult(result = item, givenType = Type.valueOf(
+                        preferredType
+                    ))
+                    downloadItem.status = DownloadRepository.Status.Processing.toString()
+
                     if (!isActive) {
                         throw CancellationException()
                     }
 
                     if (downloadNow) {
-                        downloadItems.forEach {
-                            it.status = DownloadRepository.Status.Queued.toString()
-                        }
-                        queueDownloads(downloadItems)
+                        downloadItem.status = DownloadRepository.Status.Queued.toString()
+                        queueDownloads(listOf(downloadItem))
                     }else{
-                        processingItemsJob.value?.apply {
-                            processingDownloadItemIDs.addAll(repository.insertAll(downloadItems))
+                        processingItemsFlow?.apply {
+                            processingDownloadItemIDs.add(repository.insert(downloadItem))
                             updateProcessingJobData(this)
                         }
                     }
                 }
+                processingItems.emit(false)
             }catch (e: Exception) {
-                processingItemsJob.value?.apply {
+                processingItemsFlow?.apply {
                     this.processingDownloadItemIDs.chunked(100).forEach {
                         repository.deleteAllWithIDs(it)
                     }
                 }
-                processingItemsJob.postValue(null)
+                updateProcessingJobData(null)
+                processingItems.emit(false)
             }
         }
 
-        processingItemsJob.postValue(ProcessingItemsJob(job, ResultItem::class.java.toString(), itemIDs))
+        updateProcessingJobData(ProcessingItemsJob(job, ResultItem::class.java.toString(), itemIDs))
     }
 
     fun insert(item: DownloadItem) = viewModelScope.launch(Dispatchers.IO){
@@ -498,12 +504,16 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
     }
 
     fun cancelActiveQueued() = viewModelScope.launch(Dispatchers.IO) {
-        processingItemsJob.value?.apply { this.job?.cancel(CancellationException()) }
+        processingItemsFlow?.apply { this.job?.cancel(CancellationException()) }
         repository.cancelActiveQueued()
     }
 
     fun getQueued() : List<DownloadItem> {
         return repository.getQueuedDownloads()
+    }
+
+    fun getScheduled() : List<DownloadItem> {
+        return repository.getScheduledDownloads()
     }
 
     fun getCancelled() : List<DownloadItem> {

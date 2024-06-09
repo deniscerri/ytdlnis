@@ -394,8 +394,7 @@
     <string name="minute">Minute</string>
     <string name="second">Second</string>
     <string name="milliseconds">Milliseconds</string>
-    <string name="format_importance_audio">Format Importance Order (Audio)</string>
-    <string name="format_importance_video">Format Importance Order (Video)</string>
+    <string name="format_importance">Format Importance Order</string>
     <string name="format_importance_note">Adjust format element importance. This order will only be used when the app fetches the formats in the download card and auto-selects the format!</string>
     <string name="no_audio">Video with no Audio</string>
     <string name="download_archive_folder">Download Archive Folder</string>

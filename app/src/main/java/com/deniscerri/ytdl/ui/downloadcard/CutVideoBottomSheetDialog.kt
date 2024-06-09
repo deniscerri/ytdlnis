@@ -498,7 +498,7 @@ class CutVideoBottomSheetDialog(private val _item: DownloadItem? = null, private
             suggestedChapters.visibility = View.VISIBLE
             suggestedChips.removeAllViews()
             chapters!!.forEach {
-                val chip = layoutInflater.inflate(R.layout.suggestion_chip, chipGroup, false) as Chip
+                val chip = layoutInflater.inflate(R.layout.suggestion_chip, suggestedChips, false) as Chip
                 chip.text = it.title
                 chip.chipBackgroundColor = ColorStateList.valueOf(MaterialColors.getColor(requireContext(), R.attr.colorSecondaryContainer, Color.BLACK))
                 chip.isCheckedIconVisible = false
@@ -514,9 +514,12 @@ class CutVideoBottomSheetDialog(private val _item: DownloadItem? = null, private
                 //replace existing chip to enable click events
                 val idx = selectedCuts.indexOfFirst { c -> c.contains(it.title) }
                 if (idx > -1){
-                    val chipForDeletion = chipGroup.children.firstOrNull { cc -> (cc as Chip).text == it.title }
-                    chipGroup.removeView(chipForDeletion)
-                    createChapterChip(it, idx)
+                    val chipForDeletion = chipGroup.children.firstOrNull { cc -> (cc as Chip).text.contains(it.title) }
+                    chipForDeletion?.apply {
+                        chipGroup.removeView(chipForDeletion)
+                        createChapterChip(it, idx)
+                    }
+
                 }
             }
         }

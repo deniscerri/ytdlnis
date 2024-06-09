@@ -915,10 +915,13 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
         queriesConstraint?.isVisible = queriesChipGroup?.childCount!! > 0
 
         searchSuggestionsAdapter?.getList()?.apply {
-            if (this.first().type == SearchSuggestionType.CLIPBOARD){
-                val newList = this.toMutableList().drop(1)
-                searchSuggestionsAdapter?.submitList(newList)
+            if (this.isNotEmpty()) {
+                if (this.first().type == SearchSuggestionType.CLIPBOARD){
+                    val newList = this.toMutableList().drop(1)
+                    searchSuggestionsAdapter?.submitList(newList)
+                }
             }
+
         }
     }
 

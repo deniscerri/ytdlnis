@@ -125,6 +125,10 @@ class ResultRepository(private val resultDao: ResultDao, private val context: Co
         resultDao.update(item)
     }
 
+    fun getItemByID(id: Long) : ResultItem? {
+        return resultDao.getResultByID(id)
+    }
+
     fun getItemByURL(url: String): ResultItem? {
         return resultDao.getResultByURL(url)
     }
@@ -178,6 +182,7 @@ class ResultRepository(private val resultDao: ResultDao, private val context: Co
                 val info = getResultsFromSource(downloadItem.url, resetResults = false, addToResults = false, singleItem = true).first()
                 if (downloadItem.title.isEmpty()) downloadItem.title = info.title
                 if (downloadItem.author.isEmpty()) downloadItem.author = info.author
+                if (downloadItem.playlistTitle.isEmpty() && downloadItem.playlistTitle != "ytdlnis-Search") downloadItem.playlistTitle = info.playlistTitle
                 downloadItem.duration = info.duration
                 downloadItem.website = info.website
                 if (downloadItem.thumb.isEmpty()) downloadItem.thumb = info.thumb

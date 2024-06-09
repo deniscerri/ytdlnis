@@ -171,6 +171,7 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
                                         "settings" -> json.add("settings", backupSettings(preferences))
                                         "downloads" -> json.add("downloads", backupHistory())
                                         "queued" -> json.add("queued", backupQueuedDownloads() )
+                                        "scheduled" -> json.add("scheduled", backupScheduledDownloads() )
                                         "cancelled" -> json.add("cancelled", backupCancelledDownloads() )
                                         "errored" -> json.add("errored", backupErroredDownloads() )
                                         "saved" -> json.add("saved", backupSavedDownloads() )
@@ -269,6 +270,20 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
         runCatching {
             val items = withContext(Dispatchers.IO) {
                 downloadViewModel.getQueued()
+            }
+            val arr = JsonArray()
+            items.forEach {
+                arr.add(JsonParser.parseString(Gson().toJson(it)).asJsonObject)
+            }
+            return arr
+        }
+        return JsonArray()
+    }
+
+    private suspend fun backupScheduledDownloads() : JsonArray {
+        runCatching {
+            val items = withContext(Dispatchers.IO) {
+                downloadViewModel.getScheduled()
             }
             val arr = JsonArray()
             items.forEach {
@@ -491,6 +506,25 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
                         }
                     }.onFailure {
                         errorMessage.append("\n QUEUED DOWNLOADS RESTORE FAILED: \n ${it.message}")
+                    }
+
+                    //scheduled downloads restore
+                    kotlin.runCatching {
+                        if(json.has("scheduled")){
+                            val items = json.getAsJsonArray("scheduled")
+                            val scheduled = mutableListOf<DownloadItem>()
+                            items.forEach {
+                                val item = Gson().fromJson(it.toString().replace("^\"|\"$", ""), DownloadItem::class.java)
+                                item.id = 0L
+                                scheduled.add(item)
+                            }
+                            if (scheduled.isNotEmpty()) {
+                                finalMessage.append("${getString(R.string.scheduled)}: ${scheduled.count()}\n")
+                                withContext(Dispatchers.IO){downloadViewModel.queueDownloads(scheduled)}
+                            }
+                        }
+                    }.onFailure {
+                        errorMessage.append("\n SCHEDULED DOWNLOADS RESTORE FAILED: \n ${it.message}")
                     }
 
                     //cancelled downloads restore

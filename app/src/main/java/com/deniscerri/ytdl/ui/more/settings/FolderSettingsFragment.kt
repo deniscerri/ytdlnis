@@ -142,9 +142,9 @@ class FolderSettingsFragment : BaseSettingsFragment() {
         }
 
         videoFilenameTemplate?.title = "${getString(R.string.file_name_template)} [${getString(R.string.video)}]"
-        videoFilenameTemplate?.summary = preferences.getString("file_name_template", "%(uploader)s - %(title)s")
+        videoFilenameTemplate?.summary = preferences.getString("file_name_template", "%(uploader).30B - %(title).170B")
         audioFilenameTemplate?.title = "${getString(R.string.file_name_template)} [${getString(R.string.audio)}]"
-        audioFilenameTemplate?.summary = preferences.getString("file_name_template_audio", "%(uploader)s - %(title)s")
+        audioFilenameTemplate?.summary = preferences.getString("file_name_template_audio", "%(uploader).30B - %(title).170B")
 
         videoFilenameTemplate?.setOnPreferenceClickListener {
             UiUtil.showFilenameTemplateDialog(requireActivity(), videoFilenameTemplate?.summary.toString() ?: "", "${getString(R.string.file_name_template)} [${getString(R.string.video)}]") {

@@ -109,8 +109,20 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
         return downloadDao.getDownloadById(id)
     }
 
+    fun getProcessingItemsFromID(id: Long) : Flow<List<DownloadItem>> {
+        return downloadDao.getProcessingItemsFromID(id)
+    }
+
+    fun getProcessingItemsBetweenIDs(first: Long, last:Long) : List<DownloadItem> {
+        return downloadDao.getProcessingItemsBetweenIDs(first, last)
+    }
+
     fun getAllItemsByIDs(ids : List<Long>) : List<DownloadItem>{
         return downloadDao.getDownloadsByIds(ids)
+    }
+
+    fun getAllItemsByIDsFlow(ids: List<Long>) : Flow<List<DownloadItem>> {
+         return downloadDao.getDownloadsByIdsFlow(ids)
     }
 
     fun getActiveDownloads() : List<DownloadItem> {
@@ -131,6 +143,10 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
 
     fun getQueuedDownloads() : List<DownloadItem> {
         return downloadDao.getQueuedDownloadsList()
+    }
+
+    fun getScheduledDownloads() : List<DownloadItem> {
+        return downloadDao.getScheduledDownloadsList()
     }
 
     fun getCancelledDownloads() : List<DownloadItem> {
@@ -210,8 +226,9 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
             val currentTime = System.currentTimeMillis()
             var delay = 0L
             if (queuedItems.isNotEmpty()){
-                delay = if (queuedItems[0].downloadStartTime != 0L){
-                    queuedItems[0].downloadStartTime.minus(currentTime)
+                val earliestStart = queuedItems.minBy { it.downloadStartTime }
+                delay = if (earliestStart.downloadStartTime != 0L){
+                    earliestStart.downloadStartTime.minus(currentTime)
                 } else 0
                 if (delay <= 60000L) delay = 0L
             }

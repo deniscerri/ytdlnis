@@ -51,6 +51,7 @@ class ProcessingSettingsFragment : BaseSettingsFragment() {
 
 
         formatImportanceAudio?.apply {
+            title = "${getString(R.string.format_importance)} [${getString(R.string.audio)}]"
             val items = requireContext().getStringArray(R.array.format_importance_audio)
             val itemValues = requireContext().getStringArray(R.array.format_importance_audio_values).toSet()
             val prefVideo = prefs.getString("format_importance_audio", itemValues.joinToString(","))!!
@@ -62,7 +63,7 @@ class ProcessingSettingsFragment : BaseSettingsFragment() {
                     Pair(it, items[itemValues.indexOf(it)])
                 }.toMutableList()
 
-                showFormatImportanceDialog(getString(R.string.format_importance_audio), itms) { new ->
+                showFormatImportanceDialog(title.toString(), itms) { new ->
                     editor.putString("format_importance_audio", new.joinToString(",") { it.first }).apply()
                     formatImportanceAudio.summary = new.map { it.second }.mapIndexed { index, s -> "${index + 1}. $s" }.joinToString("\n")
                 }
@@ -71,6 +72,7 @@ class ProcessingSettingsFragment : BaseSettingsFragment() {
         }
 
         formatImportanceVideo?.apply {
+            title = "${getString(R.string.format_importance)} [${getString(R.string.video)}]"
             val items = requireContext().getStringArray(R.array.format_importance_video)
             val itemValues = requireContext().getStringArray(R.array.format_importance_video_values).toSet()
             val prefVideo = prefs.getString("format_importance_video", itemValues.joinToString(","))!!
@@ -82,7 +84,7 @@ class ProcessingSettingsFragment : BaseSettingsFragment() {
                     Pair(it, items[itemValues.indexOf(it)])
                 }.toMutableList()
 
-                showFormatImportanceDialog(getString(R.string.format_importance_video), itms) {new ->
+                showFormatImportanceDialog(title.toString(), itms) {new ->
                     editor.putString("format_importance_video", new.joinToString(",") { it.first }).apply()
                     formatImportanceVideo.summary = new.map { it.second }.mapIndexed { index, s -> "${index + 1}. $s" }.joinToString("\n")
                 }

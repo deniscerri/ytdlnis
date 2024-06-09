@@ -191,7 +191,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:paddingHorizontal="10dp"
-                    android:text=":"
+                    android:text="-"
                     android:textSize="20sp"
                     android:textStyle="bold" />
 

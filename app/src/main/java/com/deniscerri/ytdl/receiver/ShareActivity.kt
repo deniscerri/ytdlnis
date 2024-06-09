@@ -98,7 +98,7 @@ class ShareActivity : BaseActivity() {
 //            val params = window.attributes
 //            params.alpha = 0f
 //            window.attributes = params
-//            setContentView(R.layout.activity_share)
+            setContentView(R.layout.activity_share)
 
         }else{
             window.run {

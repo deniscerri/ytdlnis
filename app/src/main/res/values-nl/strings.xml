@@ -331,8 +331,7 @@
     <string name="update_ytdl_stable">Stabiele versie van yt-dlp</string>
     <string name="minute">Minuut</string>
     <string name="second">Seconde</string>
-    <string name="format_importance_audio">Prioriteit van audio­formaten</string>
-    <string name="format_importance_video">Prioriteit van video­formaten</string>
+    <string name="format_importance">Prioriteit formaten</string>
     <string name="no_audio">Video zonder audio</string>
     <string name="location">Locatie</string>
     <string name="get_new_uploads">Alleen nieuwe uploads ophalen</string>
