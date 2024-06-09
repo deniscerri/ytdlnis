@@ -11,7 +11,7 @@
     </string-array>
 
     <string-array name="audio_containers_values">
-        <item>Default</item>
+        <item></item>
         <item>mp3</item>
         <item>m4a</item>
         <item>aac</item>
@@ -32,7 +32,7 @@
     </string-array>
 
     <string-array name="video_containers_values">
-        <item>Default</item>
+        <item></item>
         <item>mp4</item>
         <item>webm</item>
         <item>mkv</item>
@@ -67,11 +67,21 @@
 
     <string-array name="audio_formats">
         <item>best</item>
+        <item>192kbps</item>
+        <item>160kbps</item>
+        <item>128kbps</item>
+        <item>96kbps</item>
+        <item>64kbps</item>
         <item>worst</item>
     </string-array>
 
     <string-array name="audio_formats_values">
         <item>ba</item>
+        <item>192kbps_ytdlnisgeneric</item>
+        <item>160kbps_ytdlnisgeneric</item>
+        <item>128kbps_ytdlnisgeneric</item>
+        <item>96kbps_ytdlnisgeneric</item>
+        <item>64kbps_ytdlnisgeneric</item>
         <item>wa</item>
     </string-array>
 
@@ -799,6 +809,7 @@
         <item>@string/settings</item>
         <item>@string/downloads</item>
         <item>@string/in_queue</item>
+        <item>@string/scheduled</item>
         <item>@string/cancelled</item>
         <item>@string/errored</item>
         <item>@string/saved</item>
@@ -813,6 +824,7 @@
         <item>settings</item>
         <item>downloads</item>
         <item>queued</item>
+        <item>scheduled</item>
         <item>cancelled</item>
         <item>errored</item>
         <item>saved</item>

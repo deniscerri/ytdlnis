@@ -260,7 +260,6 @@
     <string name="move_bottom">கீழே செல்லுங்கள்</string>
     <string name="scheduled">திட்டமிடப்பட்ட</string>
     <string name="clear_scheduled">தெளிவான திட்டமிடப்பட்டுள்ளது</string>
-    <string name="format_importance_video">வடிவமைப்பு முக்கியத்துவம் வரிசை (வீடியோ)</string>
     <string name="you_are_in_latest_version">அண்மைக் கால பதிப்பைப் பயன்படுத்துதல்</string>
     <string name="ytdl_already_updating">புதிய பதிப்பை நிறுவுதல்</string>
     <string name="ytdl_updating_started">புதிய பதிப்பைப் பதிவிறக்குகிறது</string>
@@ -310,7 +309,7 @@
     <string name="minute">நிமிடங்கள்</string>
     <string name="second">இரண்டாவது</string>
     <string name="milliseconds">மில்லி விநாடிகள்</string>
-    <string name="format_importance_audio">வடிவமைப்பு முக்கியத்துவம் வரிசை (ஆடியோ)</string>
+    <string name="format_importance">வடிவமைப்பு முக்கியத்துவம் வரிசை</string>
     <string name="no_download_fragments">துண்டுகளாக பதிவிறக்கம் செய்ய வேண்டாம்</string>
     <string name="no_download_fragments_summary">.Part கோப்புகளைப் பயன்படுத்த வேண்டாம் மற்றும் வெளியீட்டு கோப்பில் நேரடியாக எழுதுங்கள்</string>
     <string name="concurrent_fragments">ஒரே நேரத்தில் துண்டுகள்</string>

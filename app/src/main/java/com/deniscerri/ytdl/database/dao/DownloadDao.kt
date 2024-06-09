@@ -83,6 +83,9 @@ interface DownloadDao {
     @Query("SELECT * FROM downloads WHERE status='Queued' ORDER BY downloadStartTime, id")
     fun getQueuedDownloadsList() : List<DownloadItem>
 
+    @Query("SELECT * FROM downloads WHERE status='Scheduled' ORDER BY downloadStartTime, id")
+    fun getScheduledDownloadsList() : List<DownloadItem>
+
     @Query("SELECT id FROM downloads WHERE status='Queued' ORDER BY id")
     fun getQueuedDownloadsListIDs() : List<Long>
 
@@ -122,6 +125,15 @@ interface DownloadDao {
 
     @Query("SELECT * FROM downloads WHERE id IN (:ids)")
     fun getDownloadsByIds(ids: List<Long>) : List<DownloadItem>
+
+    @Query("SELECT * FROM downloads WHERE status='Processing' AND id >=:id")
+    fun getProcessingItemsFromID(id: Long) : Flow<List<DownloadItem>>
+
+    @Query("SELECT * FROM downloads WHERE status='Processing' AND id >=:id and id<=:id2")
+    fun getProcessingItemsBetweenIDs(id: Long, id2: Long) : List<DownloadItem>
+
+    @Query("SELECT * FROM downloads WHERE id IN (:ids)")
+    fun getDownloadsByIdsFlow(ids: List<Long>) : Flow<List<DownloadItem>>
 
     @Query("SELECT id FROM downloads ORDER BY id DESC LIMIT 1")
     fun getLastDownloadId(): Long

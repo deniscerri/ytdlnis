@@ -23,9 +23,14 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat.startActivity
 import androidx.preference.PreferenceManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import com.deniscerri.ytdl.BuildConfig
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.models.GithubRelease
+import com.deniscerri.ytdl.ui.adapter.ChangelogAdapter
+import com.deniscerri.ytdl.util.Extensions.enableFastScroll
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
@@ -166,69 +171,23 @@ class UpdateUtil(var context: Context) {
 
     fun showChangeLog(activity: Activity){
         runCatching {
-            val scrollView = ScrollView(activity)
-
-            val linearLayout = LinearLayout(activity)
-            linearLayout.orientation = LinearLayout.VERTICAL
-
-            val layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT
-            )
-
-            layoutParams.setMargins(10, 10, 10, 0)
-            scrollView.layoutParams = layoutParams
-            scrollView.addView(linearLayout)
             val releases = getGithubReleases()
+
+            val view = activity.layoutInflater.inflate(R.layout.generic_list, null)
+            val adapter = ChangelogAdapter(activity)
+            val recycler = view.findViewById<RecyclerView>(R.id.download_recyclerview)
+            recycler.layoutManager = LinearLayoutManager(activity)
+            recycler.adapter = adapter
+            adapter.submitList(releases)
+            recycler.enableFastScroll()
 
             val changeLogDialog = MaterialAlertDialogBuilder(context)
                 .setTitle(activity.getString(R.string.changelog))
-                .setView(scrollView)
+                .setView(view)
                 .setIcon(R.drawable.ic_chapters)
                 .setNegativeButton(context.resources.getString(R.string.dismiss)) { _: DialogInterface?, _: Int -> }
             Handler(Looper.getMainLooper()).post {
                 changeLogDialog.show()
-            }
-
-            CoroutineScope(Dispatchers.IO).launch {
-                releases.forEach {
-                    (activity.layoutInflater.inflate(R.layout.changelog_item, null) as MaterialCardView).apply {
-                        this.layoutParams = layoutParams
-                        findViewById<TextView>(R.id.version).text = it.tag_name
-                        findViewById<TextView>(R.id.date).text =  SimpleDateFormat(
-                            DateFormat.getBestDateTimePattern(
-                                Locale.getDefault(), "ddMMMyyyy - HHmm"), Locale.getDefault()).format(it.published_at.time)
-
-                        val mdText = findViewById<TextView>(R.id.content)
-                        val mw = Markwon.builder(context).usePlugin(object: AbstractMarkwonPlugin() {
-                            override fun configureConfiguration(builder: MarkwonConfiguration.Builder) {
-                                builder.linkResolver { view, link ->
-                                    val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
-                                    startActivity(context, browserIntent, Bundle())
-                                }
-                            }
-                        }).build()
-                        mw.setMarkdown(mdText, it.body)
-
-
-                        val assetGroup = findViewById<ChipGroup>(R.id.assets)
-                        it.assets.forEachIndexed { idx, c ->
-                            val tmp = activity.layoutInflater.inflate(R.layout.filter_chip, assetGroup, false) as Chip
-                            tmp.isCheckable = false
-                            tmp.layoutParams = layoutParams
-                            tmp.text = c.name
-                            tmp.id = idx
-                            tmp.setOnClickListener {
-                                val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(c.browser_download_url))
-                                startActivity(context, browserIntent, Bundle())
-                            }
-                            assetGroup!!.addView(tmp)
-                        }
-
-                        withContext(Dispatchers.Main){
-                            linearLayout.addView(this@apply)
-                        }
-                    }
-                }
             }
 
         }.onFailure {

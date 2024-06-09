@@ -163,7 +163,7 @@
 
     <PreferenceCategory android:title="@string/format">
         <ListPreference
-            android:defaultValue="Default"
+            android:defaultValue=""
             android:entries="@array/audio_containers"
             android:entryValues="@array/audio_containers_values"
             android:icon="@drawable/ic_code"
@@ -172,7 +172,7 @@
             app:title="@string/audio_format" />
 
         <ListPreference
-            android:defaultValue="Default"
+            android:defaultValue=""
             android:entries="@array/video_containers"
             android:entryValues="@array/video_containers_values"
             android:icon="@drawable/ic_code"
@@ -258,12 +258,12 @@
         <Preference
             android:icon="@drawable/ic_format"
             android:key="format_importance_audio"
-            app:title="@string/format_importance_audio" />
+            app:title="@string/format_importance" />
 
         <Preference
             android:icon="@drawable/ic_format"
             android:key="format_importance_video"
-            app:title="@string/format_importance_video" />
+            app:title="@string/format_importance" />
 
     </PreferenceCategory>
 

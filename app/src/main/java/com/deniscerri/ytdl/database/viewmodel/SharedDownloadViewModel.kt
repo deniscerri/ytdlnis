@@ -178,8 +178,8 @@ class SharedDownloadViewModel(private val context: Context) {
         if(type == Type.command && commandTemplateDao.getTotalNumber() == 0) type = Type.video
 
         val customFileNameTemplate = when(type) {
-            Type.audio -> sharedPreferences.getString("file_name_template_audio", "%(uploader)s - %(title)s")
-            Type.video -> sharedPreferences.getString("file_name_template", "%(uploader)s - %(title)s")
+            Type.audio -> sharedPreferences.getString("file_name_template_audio", "%(uploader).30B - %(title).170B")
+            Type.video -> sharedPreferences.getString("file_name_template", "%(uploader).30B - %(title).170B")
             else -> ""
         }
 
@@ -288,7 +288,7 @@ class SharedDownloadViewModel(private val context: Context) {
         val prefAudio = sharedPreferences.getString("format_importance_audio", itemValues.joinToString(","))!!
 
         prefAudio.split(",").forEachIndexed { idx, s ->
-            var importance = (itemValues.size - idx) * 10
+            val importance = (itemValues.size - idx) * 10
             when(s) {
                 "id" -> {
                     requirements.add {it: Format -> if (audioFormatIDPreference.contains(it.format_id)) importance else 0}

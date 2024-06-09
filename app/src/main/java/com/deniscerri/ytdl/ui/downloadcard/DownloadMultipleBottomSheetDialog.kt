@@ -100,8 +100,6 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
     private lateinit var currentDownloadIDs: List<Long>
     private var processingItemsCount : Int = 0
 
-    private lateinit var jobData: DownloadViewModel.ProcessingItemsJob
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         downloadViewModel = ViewModelProvider(requireActivity())[DownloadViewModel::class.java]
@@ -174,57 +172,56 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
         shimmerTitle = view.findViewById(R.id.shimmer_loading_title)
         shimmerSubtitle = view.findViewById(R.id.shimmer_loading_subtitle)
 
-        downloadViewModel.processingItemsJob.observe(this) {
-            it?.apply {
-                lifecycleScope.launch {
-                    jobData = it
-                    processingItemsCount = it.processingDownloadItemIDs.size
-                    count.text = "${processingItemsCount} ${getString(R.string.selected)}"
-
-                    val loading = it.originItemIDs.size != processingItemsCount
-                    toggleLoadingShimmerTitle(loading)
-                    bottomAppBar.menu.children.forEach { m -> m.isEnabled = !loading }
-                    if (!loading){
-                        continueInBackgroundSnackBar.dismiss()
-                    }
-
-                    downloadViewModel.processingDownloads.map { p -> p.filter { pd -> jobData.processingDownloadItemIDs.contains(pd.id) } }.collectLatest { items ->
-                        listAdapter.submitList(items)
-                        updateFileSize(items.map { it2 -> it2.format.filesize })
-
-                        if (items.isNotEmpty()){
-                            if (items.all { it2 -> it2.type == items[0].type }) {
-                                bottomAppBar.menu[1].icon?.alpha = 255
-                                if (items[0].type != DownloadViewModel.Type.command) {
-                                    bottomAppBar.menu[3].icon?.alpha = 255
-                                }
-                            } else {
-                                bottomAppBar.menu[1].icon?.alpha = 30
-                                bottomAppBar.menu[3].icon?.alpha = 30
-                            }
-
-                            val type = items.first().type
-
-                            when(type){
-                                DownloadViewModel.Type.audio -> {
-                                    preferredDownloadType.setIcon(R.drawable.baseline_audio_file_24)
-                                }
-                                DownloadViewModel.Type.video -> {
-                                    preferredDownloadType.setIcon(R.drawable.baseline_video_file_24)
-
-                                }
-                                DownloadViewModel.Type.command -> {
-                                    preferredDownloadType.setIcon(R.drawable.baseline_insert_drive_file_24)
-                                }
-
-                                else -> {}
-                            }
-
-                        }
-                    }
+        lifecycleScope.launch {
+            downloadViewModel.processingItems.collectLatest {
+                val loading = it
+                toggleLoadingShimmerTitle(loading)
+                bottomAppBar.menu.children.forEach { m -> m.isEnabled = !loading }
+                if (!loading){
+                    continueInBackgroundSnackBar.dismiss()
                 }
             }
         }
+
+        lifecycleScope.launch {
+            downloadViewModel.mostRecentProcessingDownloads.collectLatest { items ->
+                processingItemsCount = items.size
+                count.text = "${processingItemsCount} ${getString(R.string.selected)}"
+                listAdapter.submitList(items)
+                updateFileSize(items.map { it2 -> it2.format.filesize })
+
+                if (items.isNotEmpty()){
+                    if (items.all { it2 -> it2.type == items[0].type }) {
+                        bottomAppBar.menu[1].icon?.alpha = 255
+                        if (items[0].type != DownloadViewModel.Type.command) {
+                            bottomAppBar.menu[3].icon?.alpha = 255
+                        }
+                    } else {
+                        bottomAppBar.menu[1].icon?.alpha = 30
+                        bottomAppBar.menu[3].icon?.alpha = 30
+                    }
+
+                    val type = items.first().type
+
+                    when(type){
+                        DownloadViewModel.Type.audio -> {
+                            preferredDownloadType.setIcon(R.drawable.baseline_audio_file_24)
+                        }
+                        DownloadViewModel.Type.video -> {
+                            preferredDownloadType.setIcon(R.drawable.baseline_video_file_24)
+
+                        }
+                        DownloadViewModel.Type.command -> {
+                            preferredDownloadType.setIcon(R.drawable.baseline_insert_drive_file_24)
+                        }
+
+                        else -> {}
+                    }
+
+                }
+            }
+        }
+
 
         scheduleBtn.setOnClickListener{
             fun initSchedule(processingFinished: Boolean) {
@@ -237,9 +234,11 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                             downloadViewModel.deleteAllWithID(currentDownloadIDs)
                         }
 
-                        jobData.job?.cancel(CancellationException())
-                        jobData.job = null
-                        downloadProcessDownloadsInBackground(jobData, processingFinished)
+                        getProcessingItemsData()?.apply {
+                            this.job?.cancel(CancellationException())
+                            this.job = null
+                            downloadProcessDownloadsInBackground(this, processingFinished)
+                        }
 
                         val date = SimpleDateFormat(DateFormat.getBestDateTimePattern(Locale.getDefault(), "ddMMMyyyy - HHmm"), Locale.getDefault()).format(cal.timeInMillis)
                         Toast.makeText(context, getString(R.string.download_rescheduled_to) + " " + date, Toast.LENGTH_LONG).show()
@@ -268,9 +267,11 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                         downloadViewModel.deleteAllWithID(currentDownloadIDs)
                     }
 
-                    jobData.job?.cancel(CancellationException())
-                    jobData.job = null
-                    downloadProcessDownloadsInBackground(jobData, processingFinished)
+                    getProcessingItemsData()?.apply {
+                        this.job?.cancel(CancellationException())
+                        this.job = null
+                        downloadProcessDownloadsInBackground(this, processingFinished)
+                    }
                     dismiss()
                 }
             }
@@ -295,10 +296,12 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                 lifecycleScope.launch{
                     withContext(Dispatchers.IO){
                         downloadViewModel.deleteAllWithID(currentDownloadIDs)
-                        downloadViewModel.moveProcessingToSavedCategory(jobData.processingDownloadItemIDs)
+                        downloadViewModel.moveProcessingToSavedCategory(getProcessingDownloadItemIDs())
                     }
-                    jobData.job?.cancel(CancellationException())
-                    jobData.job = null
+                    getProcessingItemsData()?.apply {
+                        this.job?.cancel(CancellationException())
+                        this.job = null
+                    }
                     dismiss()
                 }
             }
@@ -309,13 +312,13 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
         val formatListener = object : OnFormatClickListener {
             override fun onFormatClick(selectedFormats: List<FormatTuple>) {
                 CoroutineScope(Dispatchers.IO).launch {
-                    downloadViewModel.updateProcessingFormat(jobData.processingDownloadItemIDs, selectedFormats)
+                    downloadViewModel.updateProcessingFormat(getProcessingDownloadItemIDs(), selectedFormats)
                 }
             }
 
             override fun onFormatsUpdated(allFormats: List<List<Format>>) {
                 CoroutineScope(Dispatchers.IO).launch {
-                    downloadViewModel.updateProcessingAllFormats(jobData.processingDownloadItemIDs, allFormats)
+                    downloadViewModel.updateProcessingAllFormats(getProcessingDownloadItemIDs(), allFormats)
                 }
             }
 
@@ -323,10 +326,12 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
             override fun onContinueOnBackground() {
                 requireActivity().lifecycleScope.launch {
                     withContext(Dispatchers.IO){
-                        downloadViewModel.continueUpdatingFormatsOnBackground(jobData.processingDownloadItemIDs)
+                        downloadViewModel.continueUpdatingFormatsOnBackground(getProcessingDownloadItemIDs())
                     }
-                    jobData.job?.cancel(CancellationException())
-                    jobData.job = null
+                    getProcessingItemsData()?.apply {
+                        this.job?.cancel(CancellationException())
+                        this.job = null
+                    }
                     dismiss()
                 }
             }
@@ -364,7 +369,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
 
                         audio!!.setOnClickListener {
                             CoroutineScope(Dispatchers.IO).launch {
-                                downloadViewModel.updateProcessingType(jobData.processingDownloadItemIDs, DownloadViewModel.Type.audio)
+                                downloadViewModel.updateProcessingType(getProcessingDownloadItemIDs(), DownloadViewModel.Type.audio)
                                 withContext(Dispatchers.Main){
                                     preferredDownloadType.setIcon(R.drawable.baseline_audio_file_24)
                                     bottomAppBar.menu[1].icon?.alpha = 255
@@ -376,7 +381,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
 
                         video!!.setOnClickListener {
                             CoroutineScope(Dispatchers.IO).launch{
-                                downloadViewModel.updateProcessingType(jobData.processingDownloadItemIDs, DownloadViewModel.Type.video)
+                                downloadViewModel.updateProcessingType(getProcessingDownloadItemIDs(), DownloadViewModel.Type.video)
                                 withContext(Dispatchers.Main){
                                     preferredDownloadType.setIcon(R.drawable.baseline_video_file_24)
                                     bottomAppBar.menu[1].icon?.alpha = 255
@@ -388,7 +393,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
 
                         command!!.setOnClickListener {
                             CoroutineScope(Dispatchers.IO).launch{
-                                downloadViewModel.updateProcessingType(jobData.processingDownloadItemIDs, DownloadViewModel.Type.command)
+                                downloadViewModel.updateProcessingType(getProcessingDownloadItemIDs(), DownloadViewModel.Type.command)
                                 withContext(Dispatchers.Main){
                                     preferredDownloadType.setIcon(R.drawable.baseline_insert_drive_file_24)
                                     bottomAppBar.menu[1].icon?.alpha = 255
@@ -412,7 +417,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                 R.id.format -> {
                     lifecycleScope.launch {
                         val res = withContext(Dispatchers.IO){
-                            downloadViewModel.checkIfAllProcessingItemsHaveSameType(jobData.processingDownloadItemIDs,)
+                            downloadViewModel.checkIfAllProcessingItemsHaveSameType(getProcessingDownloadItemIDs())
                         }
                         if (!res.first){
                             Toast.makeText(requireContext(), getString(R.string.format_filtering_hint), Toast.LENGTH_SHORT).show()
@@ -431,12 +436,12 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                                     )
 
                                     CoroutineScope(Dispatchers.IO).launch {
-                                        downloadViewModel.updateProcessingCommandFormat(jobData.processingDownloadItemIDs, format)
+                                        downloadViewModel.updateProcessingCommandFormat(getProcessingDownloadItemIDs(), format)
                                     }
                                 }
                             }else{
                                 val items = withContext(Dispatchers.IO){
-                                    downloadViewModel.getAllByIDs(jobData.processingDownloadItemIDs)
+                                    downloadViewModel.getAllByIDs(getProcessingDownloadItemIDs())
                                 }
                                 val flatFormatCollection = items.map { it.allFormats }.flatten()
                                 val commonFormats = withContext(Dispatchers.IO){
@@ -460,7 +465,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                 R.id.more -> {
                     lifecycleScope.launch {
                         val res = withContext(Dispatchers.IO){
-                            downloadViewModel.checkIfAllProcessingItemsHaveSameType(jobData.processingDownloadItemIDs)
+                            downloadViewModel.checkIfAllProcessingItemsHaveSameType(getProcessingDownloadItemIDs())
                         }
                         if (!res.first) {
                             Toast.makeText(
@@ -481,7 +486,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                                     sheetView.findViewById<View>(R.id.adjust).setPadding(padding,padding,padding,padding)
 
                                     val items = withContext(Dispatchers.IO){
-                                        downloadViewModel.getAllByIDs(jobData.processingDownloadItemIDs)
+                                        downloadViewModel.getAllByIDs(getProcessingDownloadItemIDs())
                                     }
 
                                     UiUtil.configureAudio(
@@ -562,7 +567,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                                     sheetView.findViewById<View>(R.id.adjust).setPadding(padding,padding,padding,padding)
 
                                     val items = withContext(Dispatchers.IO){
-                                        downloadViewModel.getAllByIDs(jobData.processingDownloadItemIDs)
+                                        downloadViewModel.getAllByIDs(getProcessingDownloadItemIDs())
                                     }
 
                                     UiUtil.configureVideo(
@@ -700,7 +705,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
             }
 
             CoroutineScope(Dispatchers.IO).launch {
-                downloadViewModel.updateProcessingDownloadPath(jobData.processingDownloadItemIDs, result.data?.data.toString())
+                downloadViewModel.updateProcessingDownloadPath(getProcessingDownloadItemIDs(), result.data?.data.toString())
             }
 
             val path = FileUtil.formatPath(result.data!!.data.toString())
@@ -832,9 +837,11 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
     }
 
     override fun onDismiss(dialog: DialogInterface) {
-        if (jobData.job != null){
-            jobData.job?.cancel(CancellationException())
-            downloadViewModel.deleteAllWithID(jobData.processingDownloadItemIDs)
+        getProcessingItemsData()?.apply {
+            if (this.job != null){
+                this.job?.cancel(CancellationException())
+                downloadViewModel.deleteAllWithID(this.processingDownloadItemIDs)
+            }
         }
         super.onDismiss(dialog)
     }
@@ -915,6 +922,14 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                 )
             }
         }
+
+    private fun getProcessingDownloadItemIDs() : List<Long> {
+        return downloadViewModel.processingItemsFlow?.processingDownloadItemIDs ?: listOf()
+    }
+
+    private fun getProcessingItemsData() : DownloadViewModel.ProcessingItemsJob? {
+        return downloadViewModel.processingItemsFlow
+    }
 
     private fun downloadProcessDownloadsInBackground(jobData: DownloadViewModel.ProcessingItemsJob, processingFinished: Boolean, timeInMillis: Long = 0){
         Intent(requireActivity(), ProcessDownloadsInBackgroundService::class.java).also { intent ->

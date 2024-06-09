@@ -394,8 +394,7 @@
     <string name="no_audio">ڤیدیۆی بێ دەنگ</string>
     <string name="download_archive_folder">فۆڵدەری ئەرشیف دابەزێنە</string>
     <string name="process_downloads_background">"هێشتا دابەزاندنەکان لە بارکردندان. بەردەوام بە لە پرۆسێسکردنیان لە پاشبنەمادا و دەست بکە بە دابەزاندن؟ "</string>
-    <string name="format_importance_audio">ڕێکخستنی گرنگی فۆرمات (دەنگ)</string>
-    <string name="format_importance_video">ڕێکخستنی گرنگی فۆرمات (ڤیدیۆ)</string>
+    <string name="format_importance">ڕێکخستنی گرنگی فۆرمات</string>
     <string name="format_importance_note">گرنگی توخمەکانی فۆرمات ڕێکبخە. ئەم فەرمانە تەنها کاتێک بەکاردەهێنرێت کە ئەپەکە فۆرماتەکانی ناو کارتی دابەزاندنەکە دەهێنێت و فۆرماتەکە بە شێوەیەکی ئۆتۆماتیکی هەڵدەبژێرێت!</string>
     <string name="location">شوێن</string>
     <string name="enable_alarm_permission">پێویستە مۆڵەتی SCHEDULE_EXACT_ALARM لە ڕێکخستنەکانی ئەپەکەدا چالاک بکەیت.</string>

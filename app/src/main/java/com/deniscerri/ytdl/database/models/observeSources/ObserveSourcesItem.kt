@@ -35,5 +35,7 @@ data class ObserveSourcesItem(
     @ColumnInfo(defaultValue = "0")
     var getOnlyNewUploads: Boolean,
     var retryMissingDownloads: Boolean,
+    @ColumnInfo(defaultValue = "[]")
+    var ignoredLinks: MutableList<String>,
     var alreadyProcessedLinks : MutableList<String>
 ) : Parcelable

@@ -5,6 +5,7 @@ import android.app.Dialog
 import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
+import android.text.method.DigitsKeyListener
 import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.MenuItem
@@ -106,7 +107,9 @@ class SelectPlaylistItemsDialog : BottomSheetDialogFragment(), PlaylistAdapter.O
         count.text = "0 ${resources.getString(R.string.selected)}"
 
         fromTextInput = view.findViewById(R.id.from_textinput)
+        fromTextInput.editText!!.keyListener = DigitsKeyListener.getInstance("0123456789")
         toTextInput = view.findViewById(R.id.to_textinput)
+        toTextInput.editText!!.keyListener = DigitsKeyListener.getInstance("0123456789")
 
 
         fromTextInput.editText!!.doAfterTextChanged { _text ->

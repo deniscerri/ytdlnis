@@ -58,7 +58,7 @@ class ObserveSourceWorker(
             .filter { result ->
                 //if first run and get new items only is preferred then dont get anything on first run
                 if (item.getOnlyNewUploads && item.runCount == 0){
-                    item.alreadyProcessedLinks.add(result.url)
+                    item.ignoredLinks.add(result.url)
                     false
                 }else{
                     true
@@ -66,6 +66,9 @@ class ObserveSourceWorker(
             }
             .filter { result ->
                 val history = historyRepo.getAllByURL(result.url)
+
+                !item.ignoredLinks.contains(result.url) &&
+
                 if (item.retryMissingDownloads){
                     //all items that are not present in history
                     history.none { hi -> hi.downloadPath.any { path -> FileUtil.exists(path) } }

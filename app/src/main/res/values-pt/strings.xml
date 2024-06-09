@@ -388,11 +388,10 @@
     <string name="move_bottom">Mover para baixo</string>
     <string name="scheduled">Agendado</string>
     <string name="clear_scheduled">Limpar agendamento</string>
-    <string name="format_importance_video">Ordem preferencial do formato (vídeo)</string>
+    <string name="format_importance">Ordem preferencial do formato</string>
     <string name="minute">Minuto</string>
     <string name="second">Segundo</string>
     <string name="milliseconds">Milissegundos</string>
-    <string name="format_importance_audio">Ordem preferencial do formato (áudio)</string>
     <string name="no_audio">Vídeo sem áudio</string>
     <string name="location">Localização</string>
 </resources>

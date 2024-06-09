@@ -394,8 +394,7 @@
     <string name="minute">Dakika</string>
     <string name="second">Saniye</string>
     <string name="milliseconds">Milisaniye</string>
-    <string name="format_importance_audio">Biçim Önem Sırası (Ses)</string>
-    <string name="format_importance_video">Biçim Önem Sırası (Video)</string>
+    <string name="format_importance">Biçim Önem Sırası</string>
     <string name="format_importance_note">Biçim öğesinin önemini ayarlayın. Bu sıra yalnızca uygulama indirme kartındaki formatları alıp formatı otomatik seçtiğinde kullanılacaktır!</string>
     <string name="no_audio">Video ama ses olmadan</string>
     <string name="download_archive_folder">Arşiv Klasörünü İndir</string>

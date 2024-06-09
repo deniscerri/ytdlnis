@@ -112,7 +112,7 @@ object UiUtil {
         else if (formatNote == "worst") formatNote = context.getString(R.string.worst_quality)
 
         var container = chosenFormat.container
-        if (container == "Default") container = context.getString(R.string.defaultValue)
+        if (container == "Default" || container.isBlank()) container = context.getString(R.string.defaultValue)
 
         formatCard.findViewById<TextView>(R.id.container).text = container.uppercase()
         formatCard.findViewById<TextView>(R.id.format_note).text = formatNote.uppercase()
@@ -580,14 +580,14 @@ object UiUtil {
         bottomSheet.requestWindowFeature(Window.FEATURE_NO_TITLE)
         bottomSheet.setContentView(R.layout.history_item_details_bottom_sheet)
         bottomSheet.findViewById<TextView>(R.id.bottom_sheet_title)?.apply {
-            text = item.title.ifEmpty { "`${context.getString(R.string.defaultValue)}`" }
+            text = item.title.ifEmpty { item.playlistTitle.ifEmpty {  "`${context.getString(R.string.defaultValue)}`" } }
             setOnLongClickListener{
                 showFullTextDialog(context, text.toString(), context.getString(R.string.title))
                 true
             }
         }
         bottomSheet.findViewById<TextView>(R.id.bottom_sheet_author)?.apply {
-            text = item.author.ifEmpty { "`${context.getString(R.string.defaultValue)}`" }
+            text = item.author
             setOnLongClickListener{
                 showFullTextDialog(context, text.toString(), context.getString(R.string.author))
                 true

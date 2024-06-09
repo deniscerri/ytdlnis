@@ -59,14 +59,14 @@
         android:icon="@drawable/ic_textformat"
         app:key="file_name_template"
         app:useSimpleSummaryProvider="true"
-        app:defaultValue="%(uploader)30B - %(title)120B"
+        app:defaultValue="%(uploader).30B - %(title).170B"
         app:title="@string/file_name_template" />
 
     <Preference
         android:icon="@drawable/ic_textformat"
         app:key="file_name_template_audio"
         app:useSimpleSummaryProvider="true"
-        app:defaultValue="%(uploader)30B - %(title)120B"
+        app:defaultValue="%(uploader).30B - %(title).170B"
         app:title="@string/file_name_template" />
 
     <SwitchPreferenceCompat

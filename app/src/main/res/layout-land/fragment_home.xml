@@ -20,15 +20,14 @@
             <HorizontalScrollView
                 android:layout_width="wrap_content"
                 android:scrollbars="none"
+                android:paddingHorizontal="10dp"
                 android:layout_height="wrap_content">
 
                 <com.google.android.material.chip.ChipGroup
                     android:id="@+id/providers"
-                    android:layout_margin="10dp"
+                    android:layout_marginTop="5dp"
                     app:singleSelection="true"
                     app:chipSpacingVertical="-10dp"
-                    android:paddingEnd="20dp"
-                    android:paddingStart="0dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:singleLine="true" />

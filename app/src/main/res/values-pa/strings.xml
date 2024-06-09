@@ -391,8 +391,7 @@
     <string name="minute">ਮਿੰਟ</string>
     <string name="second">ਸਕਿੰਟ</string>
     <string name="milliseconds">ਮਿਲੀਸਕਿੰਟ</string>
-    <string name="format_importance_audio">ਫਾਰਮੈਟ ਮਹੱਤਵ ਕ੍ਰਮ (ਆਡੀਓ)</string>
-    <string name="format_importance_video">ਫਾਰਮੈਟ ਮਹੱਤਵ ਕ੍ਰਮ (ਵੀਡੀਓ)</string>
+    <string name="format_importance">ਫਾਰਮੈਟ ਮਹੱਤਵ ਕ੍ਰਮ</string>
     <string name="no_audio">ਬਿਨਾਂ ਆਡੀਓ ਦੇ ਵੀਡੀਓ</string>
     <string name="download_archive_folder">ਡਾਊਨਲੋਡ ਲਈ ਆਰਕਾਈਵ ਫੋਲਡਰ</string>
     <string name="format_importance_note">ਫਾਰਮੈਟ ਤੱਤਾਂ ਦੀ ਮਹੱਤਤਾ ਨੂੰ ਵਿਵਸਥਿਤ ਕਰੋ। ਇਹ ਕ੍ਰਮ ਸਿਰਫ਼ ਉਦੋਂ ਹੀ ਵਰਤਿਆ ਜਾਵੇਗਾ ਜਦੋਂ ਐਪ ਡਾਉਨਲੋਡ ਕਾਰਡ ਵਿੱਚ ਫਾਰਮੈਟਾਂ ਨੂੰ ਪ੍ਰਾਪਤ ਕਰਦਾ ਹੈ ਅਤੇ ਫਾਰਮੈਟ ਨੂੰ ਸਵੈਚਲਿਤ ਤੌਰ \'ਤੇ ਚੁਣਦਾ ਹੈ!</string>

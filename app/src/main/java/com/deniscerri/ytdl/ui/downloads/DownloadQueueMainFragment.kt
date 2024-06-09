@@ -39,6 +39,7 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.yausername.youtubedl_android.YoutubeDL
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -288,8 +289,6 @@ class DownloadQueueMainFragment : Fragment(){
                 val binder = service as ProcessDownloadsInBackgroundService.LocalBinder
                 mService = binder.service
                 mBound = true
-
-                mService.cancelAllProcessingJobs()
             }
 
             override fun onServiceDisconnected(arg0: ComponentName) {
@@ -299,6 +298,7 @@ class DownloadQueueMainFragment : Fragment(){
 
         Intent(requireActivity(), ProcessDownloadsInBackgroundService::class.java).also { intent ->
             intent.putExtra("binding", true)
+            intent.putExtra("cancel", true)
             requireActivity().bindService(intent, connection, Context.BIND_AUTO_CREATE)
         }
     }

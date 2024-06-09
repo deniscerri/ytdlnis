@@ -63,6 +63,7 @@
             android:configChanges="smallestScreenSize|layoutDirection|locale|orientation|screenSize"
             android:excludeFromRecents="true"
             android:exported="true"
+            android:taskAffinity=""
             android:launchMode="singleInstance"
             android:theme="@style/Theme.BottomSheet">
             <intent-filter>

@@ -390,8 +390,7 @@
     <string name="clear_scheduled">Planlaşdırılanı Təmizlə</string>
     <string name="minute">Dəqiqə</string>
     <string name="second">Saniyə</string>
-    <string name="format_importance_audio">Format Vacibliyi Sırası (Audio)</string>
-    <string name="format_importance_video">Format Vacibliyi Sırası (Video)</string>
+    <string name="format_importance">Format Vacibliyi Sırası</string>
     <string name="format_importance_note">Format elementinin vacibliyini tənzimləyin. Bu düzülüş yalnız tətbiq yükləmə kartındakı formatları əldə etdikdə və formatı avtomatik seçdikdə istifadə olunacaq!</string>
     <string name="no_audio">Səs olmayan video</string>
     <string name="download_archive_folder">Yükləmə Arxivi Qovluğu</string>

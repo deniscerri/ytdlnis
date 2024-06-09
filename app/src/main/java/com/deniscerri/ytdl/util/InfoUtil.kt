@@ -648,7 +648,7 @@ class InfoUtil(private val context: Context) {
         for (result in results) {
             if (result.isNullOrBlank()) continue
             val jsonObject = JSONObject(result)
-            val title = jsonObject.getStringByAny("track", "alt_title", "title", "webpage_url_basename")
+            var title = jsonObject.getStringByAny("alt_title", "title", "webpage_url_basename")
             if (title == "[Private video]" || title == "[Deleted video]") continue
 
             var author = jsonObject.getStringByAny("uploader", "channel", "playlist_uploader", "uploader_id")
@@ -678,7 +678,8 @@ class InfoUtil(private val context: Context) {
                 }
             }
 
-            val website = jsonObject.getStringByAny("ie_key", "extractor_key", "extractor")
+            var website = jsonObject.getStringByAny("ie_key", "extractor_key", "extractor")
+            if (website == "Generic" || website == "HTML5MediaEmbed") website = jsonObject.getStringByAny("webpage_url_domain")
             var playlistTitle = jsonObject.getStringByAny("playlist_title")
             var playlistURL: String? = ""
             var playlistIndex: Int? = null
@@ -722,6 +723,13 @@ class InfoUtil(private val context: Context) {
                     jsonObject.getStringByAny("webpage_url", "original_url", "url", )
                     jsonObject.getString("webpage_url")
                 }
+            }
+
+            val type = jsonObject.getStringByAny("_type")
+            if (type == "playlist" && playlistTitle.isEmpty()) {
+                playlistTitle = title
+                title = ""
+                author = ""
             }
 
             val res = ResultItem(0,
@@ -977,8 +985,8 @@ class InfoUtil(private val context: Context) {
         val concurrentFragments = sharedPreferences.getInt("concurrent_fragments", 1)
         if (concurrentFragments > 1) request.addOption("-N", concurrentFragments)
 
-        val retries = sharedPreferences.getString("--retries", "")!!
-        val fragmentRetries = sharedPreferences.getString("--fragment_retries", "")!!
+        val retries = sharedPreferences.getString("retries", "")!!
+        val fragmentRetries = sharedPreferences.getString("fragment_retries", "")!!
 
         if(retries.isNotEmpty()) request.addOption("--retries", retries)
         if(fragmentRetries.isNotEmpty()) request.addOption("--fragment-retries", fragmentRetries)
@@ -991,8 +999,6 @@ class InfoUtil(private val context: Context) {
             request.addOption("--buffer-size", bufferSize)
             request.addOption("--no-resize-buffer")
         }
-
-        request.addOption("--socket-timeout", 60)
 
         val sponsorblockURL = sharedPreferences.getString("sponsorblock_url", "")!!
         if (sponsorblockURL.isNotBlank()) request.addOption("--sponsorblock-api", sponsorblockURL)
@@ -1017,15 +1023,15 @@ class InfoUtil(private val context: Context) {
             request.addOption("--keep-fragments")
         }
 
-        if (sharedPreferences.getBoolean("no_part", false)){
-            request.addOption("--no-part")
-        }
-
         val embedMetadata = sharedPreferences.getBoolean("embed_metadata", true)
         val thumbnailFormat = sharedPreferences.getString("thumbnail_format", "jpg")
         var filenameTemplate = downloadItem.customFileNameTemplate
 
         if(downloadItem.type != DownloadViewModel.Type.command){
+            if (sharedPreferences.getBoolean("no_part", false)){
+                request.addOption("--no-part")
+            }
+
             request.addOption("--trim-filenames",  254 - downDir.absolutePath.length)
 
             if (downloadItem.SaveThumb) {
@@ -1068,7 +1074,7 @@ class InfoUtil(private val context: Context) {
                 request.addCommands(listOf("--replace-in-metadata", "video:uploader", ".+", downloadItem.author.take(30)))
             }
 
-            request.addOption("--parse-metadata", "uploader:(?P<uploader>.+)(?: - Topic)$")
+            request.addOption("--parse-metadata", "uploader:^(?P<uploader>.*?)(?:(?= - Topic)|$)")
 
             if (embedMetadata){
                 request.addOption("--parse-metadata", "%(uploader,channel,creator,artist|null)s:%(uploader)s")
@@ -1084,7 +1090,7 @@ class InfoUtil(private val context: Context) {
                     }
                 }
                 filenameTemplate = if (filenameTemplate.isBlank()){
-                    "%(section_title&{} |)s%(title)s"
+                    "%(section_title&{} |)s%(title).170B"
                 }else{
                     "%(section_title&{} |)s$filenameTemplate"
                 }
@@ -1119,6 +1125,9 @@ class InfoUtil(private val context: Context) {
                     audioQualityId = "ba/b"
                 }else if (listOf(context.getString(R.string.worst_quality), "wa", "worst").contains(audioQualityId)){
                     audioQualityId = "wa/w"
+                }else if(audioQualityId.contains("kbps_ytdlnisgeneric")){
+                    request.addOption("--match-filter", "abr<=${audioQualityId.split("kbps")[0]}")
+                    audioQualityId = ""
                 }
 
 
@@ -1150,7 +1159,7 @@ class InfoUtil(private val context: Context) {
                 if(ext.isNotBlank()){
                     if(!ext.matches("(webm)|(Default)|(${context.getString(R.string.defaultValue)})".toRegex()) && supportedContainers.contains(ext)){
                         request.addOption("--audio-format", ext)
-                        formatSorting.append(",ext::$ext")
+                        formatSorting.append(",aext:$ext")
                     }
                 }
 
@@ -1164,14 +1173,14 @@ class InfoUtil(private val context: Context) {
 
                     if (embedMetadata){
                         request.addOption("--embed-metadata")
-                        request.addOption("--parse-metadata", "artist:(?P<meta_album_artist>[^,]+)")
-                        request.addOption("--parse-metadata", "%(album_artist,meta_album_artist,uploader|)s:%(album_artist)s")
+                        request.addOption("--parse-metadata", "%(artist,uploader)s:^(?P<meta_album_artist>[^,]*)")
+                        request.addOption("--parse-metadata", "%(album_artist,meta_album_artist|)s:%(album_artist)s")
 
                         request.addOption("--parse-metadata", "description:(?:Released on: )(?P<dscrptn_year>\\d{4})")
                         request.addOption("--parse-metadata", "%(dscrptn_year,release_year,release_date>%Y,upload_date>%Y)s:%(meta_date)s")
 
                         if (downloadItem.playlistTitle.isNotEmpty()) {
-                            request.addOption("--parse-metadata", "%(album,playlist,title)s:%(meta_album)s")
+                            request.addOption("--parse-metadata", "%(album,title)s:%(meta_album)s")
                             request.addOption("--parse-metadata", "%(track_number,playlist_index)d:%(track_number)s")
                         } else {
                             request.addOption("--parse-metadata", "%(album,title)s:%(meta_album)s")
@@ -1239,6 +1248,8 @@ class InfoUtil(private val context: Context) {
                         }
                     }
                 }
+                var acont = sharedPreferences.getString("audio_format", "")!!
+                if (acont == "Default") acont = ""
 
                 //format logic
                 var videoF = downloadItem.format.format_id
@@ -1258,6 +1269,11 @@ class InfoUtil(private val context: Context) {
                 }.joinToString("+").ifBlank { "ba" }
                 val preferredAudioLanguage = sharedPreferences.getString("audio_language", "")!!
                 if (downloadItem.videoPreferences.removeAudio) audioF = ""
+
+                if(audioF.contains("kbps_ytdlnisgeneric")){
+                    request.addOption("--match-filter", "abr<=${audioF.split("kbps")[0]}")
+                    audioF = ""
+                }
 
                 val f = StringBuilder()
 
@@ -1371,7 +1387,8 @@ class InfoUtil(private val context: Context) {
                     if (sharedPreferences.getBoolean("prefer_smaller_formats", false)) append(",+size")
                     if (vCodecPref.isNotBlank()) append(",vcodec:$vCodecPref")
                     if (aCodecPref.isNotBlank()) append(",acodec:$aCodecPref")
-                    if (cont.isNotBlank()) append(",ext:$cont:")
+                    if (cont.isNotBlank()) append(",vext:$cont")
+                    if (acont.isNotBlank()) append(",aext:$acont")
                     if (this.isNotBlank()){
                         request.addOption("-S", "+hasaud$this")
                     }
@@ -1381,14 +1398,7 @@ class InfoUtil(private val context: Context) {
                 request.addOption("-f", f.toString().replace("/$".toRegex(), ""))
 
                 if (downloadItem.videoPreferences.writeSubs){
-                    val subFormat = sharedPreferences.getString("sub_format", "srt")
-
                     request.addOption("--write-subs")
-                    if(subFormat!!.isNotBlank()){
-                        request.addOption("--sub-format", "${subFormat}/best")
-                        request.addOption("--convert-subtitles", subFormat ?: "srt")
-                    }
-
                 }
 
                 if (downloadItem.videoPreferences.embedSubs) {
@@ -1400,6 +1410,11 @@ class InfoUtil(private val context: Context) {
                 }
 
                 if (downloadItem.videoPreferences.embedSubs || downloadItem.videoPreferences.writeSubs || downloadItem.videoPreferences.writeAutoSubs){
+                    val subFormat = sharedPreferences.getString("sub_format", "srt")
+                    if(subFormat!!.isNotBlank()){
+                        request.addOption("--sub-format", "${subFormat}/best")
+                        request.addOption("--convert-subtitles", subFormat)
+                    }
                     request.addOption("--sub-langs", downloadItem.videoPreferences.subsLanguages.ifEmpty { "en.*,.*-orig" })
                 }
 

@@ -392,8 +392,7 @@
     <string name="minute">دقيقة</string>
     <string name="second">ثانية</string>
     <string name="milliseconds">ملّي ثانية</string>
-    <string name="format_importance_audio">ترتيب الأولوية في التنسيق (الصوت)</string>
-    <string name="format_importance_video">ترتيب الأولوية في التنسيق (الفيديو)</string>
+    <string name="format_importance">ترتيب الأولوية في التنسيق</string>
     <string name="no_audio">فيديو بدون صوت</string>
     <string name="download_archive_folder">مجلد أرشيف التنزيل</string>
     <string name="location">المسار</string>

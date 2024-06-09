@@ -296,7 +296,15 @@ object FileUtil {
     }
 
     fun getDownloadArchivePath(context: Context) : String {
-        val folder = PreferenceManager.getDefaultSharedPreferences(context).getString("download_archive_path", context.filesDir.absolutePath + "/")!!
+        var folder = PreferenceManager.getDefaultSharedPreferences(context).getString("download_archive_path", "")!!
+        if (folder == "") {
+            val externalPath = context.getExternalFilesDir(null)
+            folder =  if (externalPath == null){
+                context.cacheDir.absolutePath + File.separator
+            }else{
+                externalPath.absolutePath + File.separator
+            }
+        }
         return "${formatPath(folder)}download_archive.txt"
     }
 

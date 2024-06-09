@@ -391,8 +391,7 @@
     <string name="second">Секунд</string>
     <string name="milliseconds">Милисекунде</string>
     <string name="minute">Минут</string>
-    <string name="format_importance_audio">Редослед важности формата (аудио)</string>
-    <string name="format_importance_video">Редослед важности формата (видео)</string>
+    <string name="format_importance">Редослед важности формата</string>
     <string name="format_importance_note">Подесите важност елемента формата. Овај налог ће се користити само када апликација преузме формате на картици за преузимање и аутоматски изабере формат!</string>
     <string name="no_audio">Видео без звука</string>
     <string name="process_downloads_background">"Преузимања се и даље учитавају. Наставити с обрађивањем преузимања у позадини и започети преузимање? "</string>

@@ -391,8 +391,7 @@
     <string name="second">सेकेंड</string>
     <string name="minute">मिनट</string>
     <string name="milliseconds">मिलीसेकेंड</string>
-    <string name="format_importance_audio">प्रारूप महत्व क्रम (ऑडियो)</string>
-    <string name="format_importance_video">प्रारूप महत्व क्रम (वीडियो)</string>
+    <string name="format_importance">प्रारूप महत्व क्रम</string>
     <string name="format_importance_note">प्रारूप तत्व महत्व को समायोजित करें। इस आदेश का उपयोग केवल तभी किया जाएगा जब ऐप डाउनलोड कार्ड में प्रारूप लाएगा और प्रारूप का स्वतः चयन करेगा!</string>
     <string name="no_audio">बिना ऑडियो वाला वीडियो</string>
     <string name="download_archive_folder">संग्रह फ़ोल्डर डाउनलोड करें</string>

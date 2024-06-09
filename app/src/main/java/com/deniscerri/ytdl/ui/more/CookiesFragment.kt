@@ -15,7 +15,9 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.RelativeLayout
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -30,9 +32,11 @@ import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.models.CookieItem
 import com.deniscerri.ytdl.database.viewmodel.CookieViewModel
 import com.deniscerri.ytdl.ui.adapter.CookieAdapter
+import com.deniscerri.ytdl.util.Extensions.enableTextHighlight
 import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.util.UiUtil
 import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.card.MaterialCardView
 import com.google.android.material.chip.Chip
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.materialswitch.MaterialSwitch
@@ -114,7 +118,7 @@ class CookiesFragment : Fragment(), CookieAdapter.OnItemClickListener {
     private fun initChips() {
         val new = view?.findViewById<Chip>(R.id.newCookie)
         new?.setOnClickListener {
-            showDialog("")
+            showDialog(null)
         }
     }
 
@@ -168,22 +172,25 @@ class CookiesFragment : Fragment(), CookieAdapter.OnItemClickListener {
         }
     }
 
-    private fun showDialog(url: String){
+    private fun showDialog(item: CookieItem?){
         lifecycleScope.launch {
-            val item = withContext(Dispatchers.IO){
-                cookiesViewModel.getByURL(url)
-            }
-
-
             val builder = MaterialAlertDialogBuilder(requireContext())
             builder.setTitle(getString(R.string.cookies))
-            val inputLayout = layoutInflater.inflate(R.layout.textinput, null)
-            val editText = inputLayout.findViewById<EditText>(R.id.url_edittext)
-            inputLayout.findViewById<TextInputLayout>(R.id.url_textinput).hint = "URL"
-            val text = if (url.isNullOrBlank()) "https://" else url
+            val layout = layoutInflater.inflate(R.layout.cookie_details, null)
+            val editText = layout.findViewById<EditText>(R.id.url_edittext)
+            layout.findViewById<TextInputLayout>(R.id.url_textinput).hint = "URL"
+            val text = item?.url ?: "https://"
             editText.setText(text)
             editText.setSelection(editText.text.length)
-            builder.setView(inputLayout)
+            val current = layout.findViewById<MaterialCardView>(R.id.current)
+            current.isVisible = item != null
+            item?.apply {
+                current.findViewById<TextView>(R.id.currentText).apply {
+                    setText(item.content)
+                    enableTextHighlight()
+                }
+            }
+            builder.setView(layout)
 
             item?.apply {
                 builder.setNeutralButton(
@@ -194,7 +201,7 @@ class CookiesFragment : Fragment(), CookieAdapter.OnItemClickListener {
             }
 
             builder.setPositiveButton(
-                getString(R.string.get_cookies)
+                if (item == null) getString(R.string.get_cookies) else getString(R.string.update)
             ) { dialog: DialogInterface?, which: Int ->
                 val myIntent = Intent(requireContext(), WebViewActivity::class.java)
                 myIntent.putExtra("url", editText.text.toString())
@@ -220,12 +227,8 @@ class CookiesFragment : Fragment(), CookieAdapter.OnItemClickListener {
 
     }
 
-    companion object {
-        private const val TAG = "CookiesActivity"
-    }
-
     override fun onItemClick(cookie: CookieItem) {
-        showDialog(cookie.url)
+        showDialog(cookie)
     }
 
     override fun onSelected(cookie: CookieItem) {

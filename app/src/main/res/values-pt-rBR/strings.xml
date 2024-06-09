@@ -388,14 +388,13 @@
     <string name="clear_scheduled">Limpar downloads agendados</string>
     <string name="copy_url">Copiar URL</string>
     <string name="move_top">Mover para cima</string>
-    <string name="format_importance_video">Ordem de importância do formato (vídeo)</string>
+    <string name="format_importance">Ordem de importância do formato</string>
     <string name="minute">Minuto(s)</string>
     <string name="second">Segundo(s)</string>
     <string name="milliseconds">Milissegundo(s)</string>
     <string name="location">Localização</string>
     <string name="download_archive_folder">Pasta para arquivamento de downloads</string>
     <string name="no_audio">Vídeo sem áudio</string>
-    <string name="format_importance_audio">Ordem de importância do formato (áudio)</string>
     <string name="enable_alarm_permission">Você precisa habilitar a permissão SCHEDULE_EXACT_ALARM nas configurações do aplicativo.</string>
     <string name="format_importance_note">Ajuste a importância do elemento de formato. Essa ordem só será usada quando o aplicativo buscar os formatos no cartão de download e selecionar automaticamente o formato!</string>
     <string name="process_downloads_background">"Os downloads ainda estão sendo carregados. Continuar processando-os em segundo plano e iniciar o download? "</string>

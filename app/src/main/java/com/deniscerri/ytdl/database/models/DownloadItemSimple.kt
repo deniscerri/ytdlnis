@@ -11,6 +11,7 @@ data class DownloadItemSimple(
     var id: Long,
     var url: String,
     var title: String,
+    var playlistTitle: String,
     var author: String,
     var thumb: String,
     var duration: String,

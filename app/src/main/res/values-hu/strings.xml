@@ -377,8 +377,7 @@
     <string name="display_over_apps">Megjelenés alkalmazások felett</string>
     <string name="display_over_apps_summary">A letöltés kártya mindig legfelül lesz. Kapcsold be, ha a jelenlegi alkalmazást bezárja, hogy a kártya megjelenjen</string>
     <string name="hour">Óra</string>
-    <string name="format_importance_audio">Formátum fontossági sorrend (Hang)</string>
-    <string name="format_importance_video">Formátum fontossági sorrend (Videó)</string>
+    <string name="format_importance">Formátum fontossági sorrend</string>
     <string name="no_audio">Videó, hang nélkül</string>
     <string name="download_archive_folder">Letöltési archívum mappa</string>
     <string name="enable_alarm_permission">Engedélyezned kell a SCHEDULE_EXACT_ALARM engedélyt a beállításokban.</string>

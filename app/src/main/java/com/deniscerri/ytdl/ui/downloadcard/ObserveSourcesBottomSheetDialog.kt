@@ -523,6 +523,11 @@ class ObserveSourcesBottomSheetDialog : BottomSheetDialogFragment() {
                         mutableListOf()
                     }else{
                         currentItem?.alreadyProcessedLinks ?: mutableListOf()
+                    },
+                    ignoredLinks = if (resetProcessedLinks.isChecked || !getOnlyNewUploads.isChecked){
+                        mutableListOf()
+                    }else{
+                        currentItem?.ignoredLinks ?: mutableListOf()
                     }
                 )
 
