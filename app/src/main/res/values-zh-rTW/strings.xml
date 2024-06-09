@@ -391,7 +391,7 @@
     <string name="minute">分鐘</string>
     <string name="milliseconds">毫秒</string>
     <string name="format_importance_video">格式重要性順序（影片）</string>
-    <string name="process_downloads_background">"下載仍在加載中。繼續在背景處理它們並開始下載嗎？ "</string>
+    <string name="process_downloads_background">"下載仍在載入中。繼續在背景處理它們並開始下載？ "</string>
     <string name="second">秒</string>
     <string name="format_importance_audio">格式重要性順序（音訊）</string>
     <string name="download_archive_folder">下載存檔資料夾</string>
