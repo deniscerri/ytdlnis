@@ -388,4 +388,15 @@
     <string name="copy_url">Sao chép URL</string>
     <string name="disabled">Vô hiệu</string>
     <string name="clear_scheduled">Dọn dẹp Lịch trình</string>
+    <string name="minute">Phút</string>
+    <string name="second">Giây</string>
+    <string name="milliseconds">Mili-giây</string>
+    <string name="format_importance_video">Định dạng theo thứ tự quan trọng (Video)</string>
+    <string name="format_importance_audio">Định dạng theo thứ tự quan trọng (Âm thanh)</string>
+    <string name="format_importance_note">Điều chỉnh định dạng theo tầm quan trọng của phần tử. Thứ tự này sẽ được sử dụng khi ứng dụng tìm nạp các định dạng trong thẻ tải xuống và tự động chọn định dạng!</string>
+    <string name="no_audio">Video không âm thanh</string>
+    <string name="enable_alarm_permission">Bạn cần cho phép quyền SCHEDULE_EXACT_ALARM trong cài đặt ứng dụng.</string>
+    <string name="download_archive_folder">Tải xuống thư mục lưu trữ</string>
+    <string name="location">Vị trí</string>
+    <string name="process_downloads_background">"Vẫn đang trong quá trình tải xuống. Bạn muốn bắt đầu tải về và tiếp tục trong chế độ nền không? "</string>
 </resources>
