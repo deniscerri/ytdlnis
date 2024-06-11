@@ -2,7 +2,7 @@
 <resources>
     <string name="remove_results">Kosongkan Hasil</string>
     <string name="updating">Pemutakhiran</string>
-    <string name="you_are_in_latest_version">Menggunakan versi terbaru</string>
+    <string name="you_are_in_latest_version">Versi yang terkini sedang digunakan</string>
     <string name="confirm_delete_history_desc">Hapus seluruh riwayat, secara permanen</string>
     <string name="confirm_delete_history">Konfirmasikan</string>
     <string name="search_history_hint">Telusuri dari Riwayat</string>
@@ -17,7 +17,7 @@
     <string name="home">Beranda</string>
     <string name="directories">Folder</string>
     <string name="music_directory">Folder Musik</string>
-    <string name="ytdl_update_hint">Berguna apabila Anda mengalami masalah saat mengunduh</string>
+    <string name="ytdl_update_hint">Berguna apabila kamu mengalami masalah saat mengunduh</string>
     <string name="video_directory">Folder Video</string>
     <string name="update_ytdl">Pasang yt-dlp versi yang baru</string>
     <string name="source_code">Kode Sumber</string>
@@ -29,7 +29,7 @@
     <string name="ok">Oke</string>
     <string name="cancel">Batalkan</string>
     <string name="more">Selengkapnya</string>
-    <string name="update_app">Periksa pembaruan</string>
+    <string name="update_app">Periksa pemutakhiran</string>
     <string name="version">Versi</string>
     <string name="downloading_update">Mengunduh versi yang baru</string>
     <string name="command_directory">Folder Perintah Kustom</string>
@@ -365,7 +365,7 @@
     <string name="thumbnail_format">Format Keluku (Thumbnail)</string>
     <string name="get_new_uploads">Dapatkan Unggahan Baru Saja</string>
     <string name="also_download_audio">Unduh Juga sebagai Audio</string>
-    <string name="scroll_down">Gulir ke Bawah</string>
+    <string name="scroll_down">Gulir Hingga ke Paling Bawah</string>
     <string name="text_size">Ukuran Teks</string>
     <string name="add">Tambahkan</string>
     <string name="back">Kembali</string>
@@ -383,20 +383,21 @@
     <string name="move_top">Pindahkan ke Atas</string>
     <string name="minute">Menit</string>
     <string name="second">Detik</string>
-    <string name="format_importance_note">Sesuaikan kepentingan elemen format. Urutan ini hanya akan digunakan ketika aplikasi mengambil format dalam kartu unduhan dan otomatis memilih format!</string>
+    <string name="format_importance_note">Sesuaikan tingkat pentingnya elemen format. Urutan ini hanya akan digunakan ketika aplikasi mengambil format-format di kartu unduhan dan memilih format tersebut secara otomatis!</string>
     <string name="format_importance_audio">Urutan Prioritas Format (Audio)</string>
     <string name="format_importance_video">Urutan Prioritas Format (Video)</string>
     <string name="no_audio">Video Tanpa Audio</string>
     <string name="download_archive_folder">Folder Arsip Unduhan</string>
     <string name="location">Lokasi</string>
-    <string name="enable_alarm_permission">Anda perlu mengaktifkan izin SCHEDULE_EXACT_ALARM dalam pengaturan aplikasi.</string>
+    <string name="enable_alarm_permission">Kamu perlu mengaktifkan perizinan SCHEDULE_EXACT_ALARM di dalam setelan aplikasi.</string>
     <string name="process_downloads_background">"Unduhan sedang dimuat. Lanjutkan memproses dalam latar belakang dan mulai mengunduh? "</string>
     <string name="disabled">Dinonaktifkan</string>
-    <string name="subtitles">Subtitel</string>
+    <string name="subtitles">Takarir (Subtitle)</string>
     <string name="prevent_duplicate_downloads">Cegah Unduhan Duplikat</string>
-    <string name="prevent_duplicate_url_type">URL &amp; Tipe Unduhan</string>
+    <string name="prevent_duplicate_url_type">URL &amp; Jenis Unduhan</string>
     <string name="prevent_duplicate_config">Konfigurasi Penuh</string>
     <string name="move_bottom">Pindahkan ke Bawah</string>
     <string name="scheduled">Dijadwalkan</string>
-    <string name="clear_scheduled">Bersihkan Terjadwal</string>
+    <string name="clear_scheduled">Kosongkan yang Dijadwalkan</string>
+    <string name="format_importance">Urutan Tingkat Pentingnya Format</string>
 </resources>
