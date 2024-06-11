@@ -257,7 +257,24 @@ class SelectPlaylistItemsDialog : BottomSheetDialogFragment(), PlaylistAdapter.O
 
 
     private fun checkRanges(start: String, end: String) : Boolean {
-        return start.isNotBlank() && end.isNotBlank()
+        fromTextInput.error = ""
+        toTextInput.error = ""
+
+        if (start.isBlank() || end.isBlank()) return false
+
+        val startValid = start.toInt() >= 0
+        val endValid = end.toInt() <= resultItemIDs.size
+
+        if (!startValid) {
+            fromTextInput.editText?.setText("")
+            fromTextInput.error = "Invalid Number"
+        }
+        if (!endValid) {
+            toTextInput.editText?.setText("")
+            toTextInput.error = "Invalid Number"
+        }
+
+        return startValid && endValid
     }
 
     private fun reset(){

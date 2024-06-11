@@ -38,9 +38,9 @@ interface DownloadDao {
 
 
     @Query("""
-        SELECT DISTINCT type from downloads where status = 'Processing' and id in (:ids)
+        SELECT DISTINCT type from downloads where status = 'Processing'
     """)
-    fun getProcessingDownloadTypes(ids: List<Long>) : List<String>
+    fun getProcessingDownloadTypes() : List<String>
 
 
     @Query("UPDATE downloads set status = 'Processing' WHERE id in (:ids)")
@@ -55,6 +55,12 @@ interface DownloadDao {
 
     @Query("SELECT * FROM downloads WHERE status = 'Processing'")
     fun getProcessingDownloadsList() : List<DownloadItem>
+
+    @Query("UPDATE downloads set downloadStartTime=:time, status='Scheduled' WHERE status ='Processing'")
+    suspend fun updateProcessingDownloadTime(time: Long)
+
+    @Query("UPDATE downloads set downloadPath=:path WHERE status ='Processing'")
+    suspend fun updateProcessingDownloadPath(path: String)
 
     @Query("SELECT * FROM downloads WHERE status='Active'")
     suspend fun getActiveDownloadsList() : List<DownloadItem>
@@ -125,12 +131,6 @@ interface DownloadDao {
 
     @Query("SELECT * FROM downloads WHERE id IN (:ids)")
     fun getDownloadsByIds(ids: List<Long>) : List<DownloadItem>
-
-    @Query("SELECT * FROM downloads WHERE status='Processing' AND id >=:id")
-    fun getProcessingItemsFromID(id: Long) : Flow<List<DownloadItem>>
-
-    @Query("SELECT * FROM downloads WHERE status='Processing' AND id >=:id and id<=:id2")
-    fun getProcessingItemsBetweenIDs(id: Long, id2: Long) : List<DownloadItem>
 
     @Query("SELECT * FROM downloads WHERE id IN (:ids)")
     fun getDownloadsByIdsFlow(ids: List<Long>) : Flow<List<DownloadItem>>
@@ -231,8 +231,8 @@ interface DownloadDao {
     @Query("Update downloads SET status='Queued', downloadStartTime = 0 WHERE id in (:list)")
     suspend fun reQueueDownloadItems(list: List<Long>)
 
-    @Query("Update downloads SET status='Saved' WHERE status='Processing' and id in (:ids)")
-    fun updateProcessingtoSavedStatus(ids: List<Long>)
+    @Query("Update downloads SET status='Saved' WHERE status='Processing'")
+    suspend fun updateProcessingtoSavedStatus()
 
     @Transaction
     suspend fun putAtTopOfTheQueue(existingIDs: List<Long>){

@@ -1,0 +1,8 @@
+## Shortest changelog ever
+
+- Fixed multiple download card issues. Processing them in the background was not a good idea for most users as it was confusing and users thought it wasnt doing anything. It led to duplicate downloads
+Usually playlist downloads dont really have 4000 items in them so background. If you have one, just enable quick download and consider the whole playlist as a single item. :)
+
+- Some users had issues with the display over apps perm. Since that perm ended up not doing anything to the revanced issue, i removed it
+
+Had to push this out since multiple download card was almost broken

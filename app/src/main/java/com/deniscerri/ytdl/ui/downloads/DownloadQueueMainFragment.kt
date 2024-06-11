@@ -29,7 +29,6 @@ import com.deniscerri.ytdl.MainActivity
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.repository.DownloadRepository
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
-import com.deniscerri.ytdl.services.ProcessDownloadsInBackgroundService
 import com.deniscerri.ytdl.util.Extensions.createBadge
 import com.deniscerri.ytdl.util.NotificationUtil
 import com.deniscerri.ytdl.util.UiUtil
@@ -266,7 +265,6 @@ class DownloadQueueMainFragment : Fragment(){
     }
 
     private fun cancelAllDownloads() {
-        cancelBackgroundProcessingDownloads()
         workManager.cancelAllWorkByTag("download")
         lifecycleScope.launch {
             val notificationUtil = NotificationUtil(requireContext())
@@ -278,28 +276,6 @@ class DownloadQueueMainFragment : Fragment(){
                 notificationUtil.cancelDownloadNotification(id.toInt())
             }
             downloadViewModel.cancelActiveQueued()
-        }
-    }
-
-    private fun cancelBackgroundProcessingDownloads(){
-        val connection = object : ServiceConnection {
-            private lateinit var mService: ProcessDownloadsInBackgroundService
-            private var mBound: Boolean = false
-            override fun onServiceConnected(className: ComponentName, service: IBinder) {
-                val binder = service as ProcessDownloadsInBackgroundService.LocalBinder
-                mService = binder.service
-                mBound = true
-            }
-
-            override fun onServiceDisconnected(arg0: ComponentName) {
-                mBound = false
-            }
-        }
-
-        Intent(requireActivity(), ProcessDownloadsInBackgroundService::class.java).also { intent ->
-            intent.putExtra("binding", true)
-            intent.putExtra("cancel", true)
-            requireActivity().bindService(intent, connection, Context.BIND_AUTO_CREATE)
         }
     }
 }

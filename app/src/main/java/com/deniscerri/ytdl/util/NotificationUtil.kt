@@ -26,7 +26,6 @@ import com.deniscerri.ytdl.receiver.CancelDownloadNotificationReceiver
 import com.deniscerri.ytdl.receiver.CancelWorkReceiver
 import com.deniscerri.ytdl.receiver.PauseDownloadNotificationReceiver
 import com.deniscerri.ytdl.receiver.ResumeActivity
-import com.deniscerri.ytdl.services.ProcessDownloadsInBackgroundService
 import com.deniscerri.ytdl.util.Extensions.toBitmap
 import java.io.File
 
@@ -641,36 +640,6 @@ class NotificationUtil(var context: Context) {
             .clearActions()
 
         notificationManager.notify(QUERY_PROCESS_FINISHED_NOTIFICATION_ID, notificationBuilder.build())
-    }
-
-    fun createProcessingDownloads() : Notification{
-        val notificationBuilder = getBuilder(DOWNLOAD_MISC_CHANNEL_ID)
-
-        val intent = Intent(context, ProcessDownloadsInBackgroundService::class.java)
-        intent.putExtra("binding", true)
-        intent.putExtra("cancel", true)
-        val cancelNotificationPendingIntent = PendingIntent.getService(
-            context,
-            System.currentTimeMillis().toInt(),
-            intent,
-            PendingIntent.FLAG_IMMUTABLE
-        )
-
-        notificationBuilder
-            .setContentTitle(resources.getString(R.string.processing))
-            .setSmallIcon(R.drawable.ic_app_icon)
-            .setLargeIcon(
-                BitmapFactory.decodeResource(
-                    resources,
-                    R.drawable.ic_app_icon
-                )
-            )
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-            .clearActions()
-            .addAction(0, resources.getString(R.string.cancel), cancelNotificationPendingIntent)
-
-        return notificationBuilder.build()
     }
 
     companion object {

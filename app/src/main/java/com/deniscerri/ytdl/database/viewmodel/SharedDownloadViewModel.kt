@@ -321,7 +321,7 @@ class SharedDownloadViewModel(private val context: Context) {
         val prefVideo = sharedPreferences.getString("format_importance_video", itemValues.joinToString(","))!!
 
         prefVideo.split(",").forEachIndexed { idx, s ->
-            val importance = (itemValues.size - idx) * 10
+            var importance = (itemValues.size - idx) * 10
 
             when(s) {
                 "id" -> {
@@ -345,8 +345,9 @@ class SharedDownloadViewModel(private val context: Context) {
                                     for(i in 0..preferenceIndex){
                                         removeAt(0)
                                     }
-                                    add(0, preference)
+                                    requirements.add { it: Format -> if (it.format_note.contains(preference, ignoreCase = true)) importance else 0 }
                                     forEachIndexed { index, res ->
+                                        if (index >= 2) importance = 0
                                         requirements.add { it: Format -> if (it.format_note.contains(res, ignoreCase = true)) (importance - index - 1) else 0 }
                                     }
                                 }

@@ -3,8 +3,11 @@ package com.deniscerri.ytdl.database.repository
 import android.annotation.SuppressLint
 import android.content.Context
 import android.net.ConnectivityManager
+import android.os.Handler
 import android.os.Looper
+import android.text.format.DateFormat
 import android.widget.Toast
+import androidx.core.os.postDelayed
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.preference.PreferenceManager
@@ -28,6 +31,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import java.io.File
+import java.text.SimpleDateFormat
+import java.util.Locale
 import java.util.concurrent.TimeUnit
 
 
@@ -109,14 +114,6 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
         return downloadDao.getDownloadById(id)
     }
 
-    fun getProcessingItemsFromID(id: Long) : Flow<List<DownloadItem>> {
-        return downloadDao.getProcessingItemsFromID(id)
-    }
-
-    fun getProcessingItemsBetweenIDs(first: Long, last:Long) : List<DownloadItem> {
-        return downloadDao.getProcessingItemsBetweenIDs(first, last)
-    }
-
     fun getAllItemsByIDs(ids : List<Long>) : List<DownloadItem>{
         return downloadDao.getDownloadsByIds(ids)
     }
@@ -135,6 +132,10 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
 
     fun getActiveAndQueuedDownloads() : List<DownloadItem> {
         return downloadDao.getActiveAndQueuedDownloadsList()
+    }
+
+    suspend fun updateProcessingDownloadTime(time: Long) {
+        downloadDao.updateProcessingDownloadTime(time)
     }
 
     fun getActiveAndQueuedDownloadIDs() : List<Long> {
@@ -258,12 +259,23 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
 
         }
 
+        val handler = Handler(Looper.getMainLooper())
+
         val isCurrentNetworkMetered = (context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager).isActiveNetworkMetered
         if (!allowMeteredNetworks && isCurrentNetworkMetered){
-            Looper.prepare().run {
+            handler.postDelayed({
                 Toast.makeText(context, context.getString(R.string.metered_network_download_start_info), Toast.LENGTH_LONG).show()
-            }
+            }, 0)
         }
+
+        val first = queuedItems.first()
+        if (first.downloadStartTime > 0L) {
+            val date = SimpleDateFormat(DateFormat.getBestDateTimePattern(Locale.getDefault(), "ddMMMyyyy - HHmm"), Locale.getDefault()).format(queuedItems.first().downloadStartTime)
+            handler.postDelayed({
+                Toast.makeText(context, context.getString(R.string.download_rescheduled_to) + " " + date, Toast.LENGTH_LONG).show()
+            }, 0)
+        }
+
     }
 
 }

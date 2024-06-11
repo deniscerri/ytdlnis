@@ -18,10 +18,6 @@
     <uses-permission android:name="android.permission.ACTION_OPEN_DOCUMENT" />
     <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
-<!--    for display over apps-->
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-
 <!--    alarm scheduler-->
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/>
 
@@ -433,8 +429,6 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
-        <service android:name=".services.ProcessDownloadsInBackgroundService" android:exported="false" />
 
         <service
             android:name="androidx.appcompat.app.AppLocalesMetadataHolderService"

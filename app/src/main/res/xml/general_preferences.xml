@@ -62,6 +62,7 @@
             app:defaultValue="false"
             android:icon="@drawable/baseline_layers_24"
             android:key="display_over_apps"
+            app:isPreferenceVisible="false"
             app:summary="@string/display_over_apps_summary"
             app:title="@string/display_over_apps" />
 
