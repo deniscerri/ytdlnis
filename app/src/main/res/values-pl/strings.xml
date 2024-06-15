@@ -397,4 +397,5 @@
     <string name="move_bottom">Przesuń na dół</string>
     <string name="move_top">Przesuń na szczyt</string>
     <string name="process_downloads_background">"Pliki do pobrania wciąż się ładują. Kontynuować ich przetwarzanie w tle i rozpocząć pobieranie? "</string>
+    <string name="format_importance">Kolejność istotności formatów</string>
 </resources>
