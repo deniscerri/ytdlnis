@@ -388,4 +388,12 @@
     <string name="copy_url">URL 복사</string>
     <string name="scheduled">예정</string>
     <string name="clear_scheduled">예약 취소</string>
+    <string name="minute">분</string>
+    <string name="milliseconds">밀리초</string>
+    <string name="second">초</string>
+    <string name="download_archive_folder">다은로드 아카이브 폴더</string>
+    <string name="no_audio">다운로드 아카이브 폴더</string>
+    <string name="process_downloads_background">"다운로드가 아직 진행중입니다. 백그라운드에서 계속 다운로드하시겠습니까? "</string>
+    <string name="location">위치</string>
+    <string name="format_importance">포멧 중요도 순서</string>
 </resources>
