@@ -1,2 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="remove_results">Tyhjennä tulokset</string>
+    <string name="home">Koti</string>
+    <string name="ytdl_update_hint">Hyödyllinen jos latauksissa on ongelmia</string>
+    <string name="about">Tietoja</string>
+    <string name="source_code">Lähdekoodi</string>
+    <string name="worst_quality">Huonoin laatu</string>
+    <string name="best_quality">Paras laatu</string>
+    <string name="search">Haku</string>
+    <string name="remove_all">Poista kaikki</string>
+    <string name="download_all">Lataa kaikki</string>
+    <string name="settings">Asetukset</string>
+    <string name="directories">Kansiot</string>
+    <string name="music_directory">Musiikki</string>
+    <string name="video_directory">Videot</string>
+    <string name="updating">Päivitetään</string>
+    <string name="update_ytdl">Asenna uusi versio yt-dlp:stä</string>
+</resources>
