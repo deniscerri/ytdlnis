@@ -180,7 +180,6 @@
     <string name="terminal">Terminaali</string>
     <string name="remove_search_history">Tyhjennä hakuhistoria</string>
     <string name="enable_mtime">Ota mtime käyttöön</string>
-    <string name="enable_mtime_summary"></string>
     <string name="import_from_clipboard">Liitä leikepöydältä</string>
     <string name="error_updating_formats">Ongelma formaatteja päivittäessä!</string>
     <string name="log_downloads_summary">Tee lokitiedosto jokaiselle lataukselle</string>
