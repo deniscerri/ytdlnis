@@ -82,7 +82,7 @@
 - Material You interface
 - Theming options
 - Backup and restore features. (Almost everything can be backed up)
-- MVVM Architecture w/ WorkManager
+- MVVM Architecture w/ AlarmManager
 
 ## 📲 Screenshots
 
@@ -106,7 +106,7 @@
 
 Join our [Telegram Channel](https://t.me/ytdlnis) or [Discord](https://discord.gg/WW3KYWxAPm) for discussion, announcements, and releases!
 
-## 🔑 Connect with ReVanced
+## 🔑 Connect with ReVanced and LibreTube
 
 The App's package name is "com.deniscerri.ytdl"
 
