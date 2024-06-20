@@ -71,7 +71,7 @@
 - Material You görünüşü
 - Tema seçimləri
 - Nüsxələmə və bərpa xüsusiyyətləri. (Təqribən, hər şey nüsxələnə bilər)
-- MVVM Architecture w/ AlarmManager
+- MVVM Architecture w/ WorkManager
 
 ## 📲 Ekran görüntüləri
 
