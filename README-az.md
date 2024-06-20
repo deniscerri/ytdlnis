@@ -71,7 +71,7 @@
 - Material You görünüşü
 - Tema seçimləri
 - Nüsxələmə və bərpa xüsusiyyətləri. (Təqribən, hər şey nüsxələnə bilər)
-- MVVM Architecture w/ WorkManager
+- MVVM Architecture w/ AlarmManager
 
 ## 📲 Ekran görüntüləri
 
@@ -95,7 +95,7 @@
 
 Müzakirə, elanlar və buraxılışlar üçün [Telegram Kanalımıza](https://t.me/ytdlnis) və ya [Discord](https://discord.gg/WW3KYWxAPm) qoşulun!
 
-## 🔑 ReVanced ilə bağlantı yarat
+## 🔑 ReVanced və LibreTube ilə bağlantı yarat
 
 Tətbiqin paket adı "com.deniscerri.ytdl"
 
