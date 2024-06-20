@@ -82,7 +82,7 @@
 - Material You interface
 - Theming options
 - Backup and restore features. (Almost everything can be backed up)
-- MVVM Architecture w/ AlarmManager
+- MVVM Architecture w/ WorkManager
 
 ## 📲 Screenshots
 
