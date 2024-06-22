@@ -110,6 +110,12 @@ Join our [Telegram Channel](https://t.me/ytdlnis) or [Discord](https://discord.g
 
 The App's package name is "com.deniscerri.ytdl"
 
+Libre Tube           https://github.com/deniscerri/ytdlnis/assets/149590337/254eb6f3-606e-4ab3-884b-caaf3093fe0a
+
+ReVanced
+
+https://github.com/deniscerri/ytdlnis/assets/149590337/67a220e5-f810-41a7-8a77-e3cb51d11247
+
 ## 📝 Help Translate on Weblate
 <a href="https://hosted.weblate.org/engage/ytdlnis/">
 <img src="https://hosted.weblate.org/widgets/ytdlnis/-/strings/open-graph.png" alt="Translation status" />
