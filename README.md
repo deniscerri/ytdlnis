@@ -102,7 +102,7 @@
 <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/13.png" width="90%" />
 </div>
 
-## 💬 Contact
+## ☎️ Contact
 
 Join our [Telegram Channel](https://t.me/ytdlnis) or [Discord](https://discord.gg/WW3KYWxAPm) for discussion, announcements, and releases!
 
