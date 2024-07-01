@@ -1,0 +1,25 @@
+## Incognito right in the download card
+Now you can enable incognito on the go and prevent the download from creating a history record of it when its finished. If incognito mode is on, it will be enabled by default
+
+## Observe Sources Sync
+Now you can enable sync in observe sources when the app will match every video with what it has downloaded so far. So that if you delete a record from the playlist, the app will do the same
+
+## Customizable Home Screen for Mobile
+Now you can select which screens you can show in the bottom navigation. Home and More are essential so they cant be removed.
+Available screens: Home, Downloads, Queue, Terminal, More
+You can also select the label visibility of the bottom navigation
+
+## Active and Queued Combined
+Instead of swiping to see the queued items, now they are in the same screen when queued are right below the active items
+
+- Prevented the user from spamming pause and resume making the app confused in such a short period of time
+- Re-implemented format importance sorting in the app, resembling the yt-dlp one
+- Added feature to keep screen on while the video plays in the cut player
+- Fixed app not adding a fallback to bestaudio when downloading audio formats using a format id
+- Made the app limiting titles to 180 characters instead of 120
+- Hid free space label in command mode if the app cant read the folder
+- Fixed app still using the cache folder when the app has all files access but the folder didn't exist
+- Added ability to swap format source from piped to yt-dlp if the item is a youtube video
+- Added a feature to choose if you want to restore the backup or erase everything from the app and start fresh with just the saved data
+- Moved some youtube-focused settings to their own category in the general settings
+- Other small things here and there
