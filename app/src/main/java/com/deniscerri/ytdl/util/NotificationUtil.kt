@@ -424,7 +424,7 @@ class NotificationUtil(var context: Context) {
                 .setContentTitle(title)
                 .setStyle(NotificationCompat.BigTextStyle().bigText(contentText))
                 .clearActions()
-                .addAction(0, resources.getString(R.string.pause), pauseNotificationPendingIntent)
+                //.addAction(0, resources.getString(R.string.pause), pauseNotificationPendingIntent)
                 .addAction(0, resources.getString(R.string.cancel), cancelNotificationPendingIntent)
             notificationManager.notify(id, notificationBuilder.build())
         } catch (e: Exception) {
@@ -469,6 +469,11 @@ class NotificationUtil(var context: Context) {
     fun cancelDownloadNotification(id: Int) {
         notificationManager.cancel(id)
     }
+
+    fun cancelErroredNotification(id: Int) {
+        notificationManager.cancel(DOWNLOAD_ERRORED_NOTIFICATION_ID + id)
+    }
+
     fun createMoveCacheFilesNotification(pendingIntent: PendingIntent?, downloadMiscChannelId: String): Notification {
         val notificationBuilder = getBuilder(downloadMiscChannelId)
 

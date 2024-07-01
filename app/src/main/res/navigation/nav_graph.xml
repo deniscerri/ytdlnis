@@ -36,6 +36,9 @@
         <action
             android:id="@+id/action_homeFragment_to_downloadsAlreadyExistDialog"
             app:destination="@id/downloadsAlreadyExistDialog" />
+        <action
+            android:id="@+id/action_homeFragment_to_terminalActivity"
+            app:destination="@id/terminalActivity" />
     </fragment>
     <fragment
         android:id="@+id/historyFragment"

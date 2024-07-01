@@ -96,6 +96,9 @@ class GenericDownloadAdapter(onItemClickListener: OnItemClickListener, activity:
             )
         }
 
+        val incognitoLabel = card.findViewById<MaterialButton>(R.id.incognitoLabel)
+        incognitoLabel.isVisible = item.incognito
+
         val formatNote = card.findViewById<TextView>(R.id.format_note)
         if (item.format.format_note == "?" || item.format.format_note == "") formatNote!!.visibility =
             View.GONE

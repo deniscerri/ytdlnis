@@ -83,6 +83,9 @@ interface CommandTemplateDao {
     @Query("DELETE FROM templateShortcuts WHERE id=:itemId")
     suspend fun deleteShortcut(itemId: Long)
 
+    @Query("DELETE FROM templateShortcuts")
+    suspend fun deleteAllShortcuts()
+
     @Update
     suspend fun update(item: CommandTemplate)
 }

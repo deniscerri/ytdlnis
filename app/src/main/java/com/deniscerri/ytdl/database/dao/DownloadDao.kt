@@ -50,8 +50,6 @@ interface DownloadDao {
     @Query("SELECT * FROM downloads WHERE status = 'Processing' ORDER BY id LIMIT 1")
     fun getFirstProcessingDownload() : DownloadItem
 
-    @Query("SELECT * FROM downloads WHERE status='Active'")
-    fun getActiveAndPausedDownloadsList() : List<DownloadItem>
 
     @Query("SELECT * FROM downloads WHERE status = 'Processing'")
     fun getProcessingDownloadsList() : List<DownloadItem>
@@ -63,12 +61,12 @@ interface DownloadDao {
     suspend fun updateProcessingDownloadPath(path: String)
 
     @Query("SELECT * FROM downloads WHERE status='Active'")
-    suspend fun getActiveDownloadsList() : List<DownloadItem>
+    fun getActiveDownloadsList() : List<DownloadItem>
 
     @Query("SELECT * FROM downloads WHERE status in('Active','Queued', 'Scheduled')")
     fun getActiveAndQueuedDownloadsList() : List<DownloadItem>
-    @Query("UPDATE downloads SET status='Queued' where status in ('Active', 'QueuedPaused', 'ActivePaused')")
-    suspend fun resetActivePausedItems()
+    @Query("UPDATE downloads SET status='Queued' where status = 'Active'")
+    suspend fun resetActiveToQueued()
 
     @Query("SELECT id FROM downloads WHERE status in('Active','Queued')")
     fun getActiveAndQueuedDownloadIDs() : List<Long>
@@ -102,8 +100,6 @@ interface DownloadDao {
     @Query("SELECT * FROM downloads WHERE status='Cancelled' ORDER BY id DESC")
     fun getCancelledDownloadsList() : List<DownloadItem>
 
-    @Query("SELECT * FROM downloads WHERE status LIKE '%Paused%'")
-    fun getPausedDownloadsList() : List<DownloadItem>
     @RewriteQueriesToDropUnusedColumns
     @Query("SELECT * FROM downloads WHERE status='Error' ORDER BY id DESC")
     fun getErroredDownloads() : PagingSource<Int, DownloadItemSimple>
@@ -158,6 +154,9 @@ interface DownloadDao {
 
     @Query("DELETE FROM downloads WHERE status='Error'")
     suspend fun deleteErrored()
+
+    @Query("DELETE FROM downloads WHERE status='Queued'")
+    suspend fun deleteQueued()
 
     @Query("DELETE FROM downloads WHERE status='Saved'")
     suspend fun deleteSaved()
@@ -269,10 +268,16 @@ interface DownloadDao {
     @Query("Update downloads set id=:newId where id=:id")
     suspend fun updateDownloadID(id: Long, newId: Long)
 
-
     @Query("SELECT id from downloads WHERE id > :item1 AND id < :item2 AND status in (:statuses) ORDER BY id DESC")
     fun getIDsBetweenTwoItems(item1: Long, item2: Long, statuses: List<String>) : List<Long>
 
     @Query("SELECT id from downloads WHERE id > :item1 AND id < :item2 AND status in('Scheduled') ORDER BY downloadStartTime, id")
     fun getScheduledIDsBetweenTwoItems(item1: Long, item2: Long) : List<Long>
+
+
+    @Query("UPDATE downloads set incognito=:incognito WHERE status='Processing'")
+    suspend fun updateProcessingIncognito(incognito: Boolean)
+
+    @Query("SELECT COUNT(id) FROM downloads WHERE status='Processing' AND incognito='1'")
+    fun getProcessingAsIncognitoCount(): Int
 }

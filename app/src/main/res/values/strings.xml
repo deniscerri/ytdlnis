@@ -401,4 +401,11 @@
     <string name="location">Location</string>
     <string name="enable_alarm_permission">You need to enable the SCHEDULE_EXACT_ALARM permission in the app settings.</string>
     <string name="process_downloads_background">"Downloads are still loading. Continue processing them in the background and start downloading? "</string>
+    <string name="navigation_bar">Navigation Bar</string>
+    <string name="label_visibility">Label Visibility</string>
+    <string name="always">Always</string>
+    <string name="sync_with_source">Sync With Source</string>
+    <string name="queue">Queue</string>
+    <string name="reset">Reset</string>
+    <string name="restore_info">Press \'Restore\' to merge the saved data with your current data.\nPress \'Reset\' to erase and only use the saved data in the file.</string>
 </resources>

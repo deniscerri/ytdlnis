@@ -33,15 +33,9 @@
             android:key="auto_update_ytdlp"
             app:title="@string/auto_update_ytdlp" />
 
-        <ListPreference
-            android:defaultValue="yt-dlp"
-            android:entries="@array/formats_source"
-            android:entryValues="@array/formats_source_values"
-            android:icon="@drawable/baseline_manage_search_24"
-            app:key="formats_source"
-            app:useSimpleSummaryProvider="true"
-            app:title="@string/format_source" />
+    </PreferenceCategory>
 
+    <PreferenceCategory android:title="@string/format">
         <ListPreference
             android:defaultValue="filesize"
             android:entries="@array/format_ordering"
@@ -67,14 +61,6 @@
             android:key="update_formats"
             app:summary="@string/update_formats_summary"
             app:title="@string/update_formats" />
-
-        <Preference
-            android:icon="@drawable/ic_dns"
-            app:key="piped_instance"
-            app:defaultValue=""
-            android:summary="@string/piped_instance_summary"
-            app:title="@string/piped_instance" />
-
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/app">

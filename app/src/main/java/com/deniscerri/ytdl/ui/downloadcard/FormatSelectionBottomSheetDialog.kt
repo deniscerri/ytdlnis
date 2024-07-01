@@ -21,6 +21,7 @@ import com.deniscerri.ytdl.database.models.Format
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel.Type
 import com.deniscerri.ytdl.database.viewmodel.ResultViewModel
+import com.deniscerri.ytdl.util.FormatSorter
 import com.deniscerri.ytdl.util.InfoUtil
 import com.deniscerri.ytdl.util.UiUtil
 import com.facebook.shimmer.ShimmerFrameLayout
@@ -28,12 +29,14 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.card.MaterialCardView
+import com.google.android.material.chip.Chip
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.regex.Pattern
 
 
 class FormatSelectionBottomSheetDialog(private val _items: List<DownloadItem?>? = null, private var _formats: List<List<Format>>? = null, private val _listener: OnFormatClickListener? = null) : BottomSheetDialogFragment() {
@@ -65,6 +68,8 @@ class FormatSelectionBottomSheetDialog(private val _items: List<DownloadItem?>? 
     private lateinit var items: List<DownloadItem?>
     private lateinit var formats: List<List<Format>>
     private lateinit var listener: OnFormatClickListener
+
+    private var currentFormatSource : String? = null
 
     enum class FormatSorting {
         filesize, container, codec, id
@@ -157,6 +162,31 @@ class FormatSelectionBottomSheetDialog(private val _items: List<DownloadItem?>? 
         val refreshBtn = view.findViewById<Button>(R.id.format_refresh)
         if (!hasGenericFormats || items.isEmpty() || items.first()?.url?.isEmpty() == true) refreshBtn.visibility = View.GONE
 
+        val formatSourceLinear = view.findViewById<MaterialCardView>(R.id.formatSourceLinear)
+        val formatSourceGroup = view.findViewById<RadioGroup>(R.id.format_source_group)
+        val youtubeURLMatcher = Pattern.compile("((^(https?)://)?(www.)?(m.)?youtu(.be)?)|(^(https?)://(www.)?piped.video)")
+        val canSwitch = items.all { youtubeURLMatcher.matcher(it!!.url).find() }
+        if (canSwitch) {
+            val availableSources = resources.getStringArray(R.array.formats_source)
+            val availableSourcesValues = resources.getStringArray(R.array.formats_source_values)
+            val currentSource = sharedPreferences.getString("formats_source", "yt-dlp")
+            formatSourceLinear.isVisible = true
+            availableSources.forEachIndexed { idx, it ->
+                val radio = RadioButton(requireContext())
+                val tag = availableSourcesValues[idx]
+                radio.text = it
+                radio.tag = tag
+                radio.setOnClickListener { compoundButton ->
+                    formatSourceGroup.clearCheck()
+                    formatSourceGroup.check(compoundButton.id)
+
+                    currentFormatSource = compoundButton.tag.toString()
+                    refreshBtn.performClick()
+                }
+                formatSourceGroup.addView(radio)
+            }
+            formatSourceGroup.check(formatSourceGroup.children.firstOrNull { it.tag == currentSource }!!.id)
+        }
 
         refreshBtn.setOnClickListener {
            lifecycleScope.launch {
@@ -172,6 +202,7 @@ class FormatSelectionBottomSheetDialog(private val _items: List<DownloadItem?>? 
 
                chosenFormats = emptyList()
                refreshBtn.isEnabled = false
+               formatSourceLinear.isVisible = false
                formatListLinearLayout.visibility = View.GONE
                shimmers.visibility = View.VISIBLE
                shimmers.startShimmer()
@@ -182,7 +213,7 @@ class FormatSelectionBottomSheetDialog(private val _items: List<DownloadItem?>? 
                            formatCollection.clear()
                            kotlin.runCatching {
                                val res = withContext(Dispatchers.IO){
-                                   infoUtil.getFormats(items.first()!!.url)
+                                   infoUtil.getFormats(items.first()!!.url, currentFormatSource)
                                }
                                res.filter { it.format_note != "storyboard" }
                                chosenFormats = if (items.first()?.type == Type.audio) {
@@ -215,7 +246,7 @@ class FormatSelectionBottomSheetDialog(private val _items: List<DownloadItem?>? 
                                refreshBtn.text = progress
                            }
                            withContext(Dispatchers.IO){
-                               infoUtil.getFormatsMultiple(items.map { it!!.url }) {
+                               infoUtil.getFormatsMultiple(items.map { it!!.url }, currentFormatSource) {
                                    if (isActive) {
                                        lifecycleScope.launch(Dispatchers.Main) {
                                            formatCollection.add(it)
@@ -259,6 +290,7 @@ class FormatSelectionBottomSheetDialog(private val _items: List<DownloadItem?>? 
                        withContext(Dispatchers.Main){
                            shimmers.visibility = View.GONE
                            shimmers.stopShimmer()
+                           formatSourceLinear.isVisible = canSwitch
                            filterBtn.isVisible = !hasGenericFormats
                            addFormatsToView()
                            refreshBtn.isVisible = hasGenericFormats
@@ -271,6 +303,7 @@ class FormatSelectionBottomSheetDialog(private val _items: List<DownloadItem?>? 
                            refreshBtn.text = getString(R.string.update_formats)
                            formatListLinearLayout.visibility = View.VISIBLE
                            shimmers.visibility = View.GONE
+                           formatSourceLinear.isVisible = canSwitch
                            shimmers.stopShimmer()
 
                            e.printStackTrace()
@@ -393,23 +426,16 @@ class FormatSelectionBottomSheetDialog(private val _items: List<DownloadItem?>? 
             FormatSorting.filesize -> chosenFormats
         }
 
+        val formatSorter = FormatSorter(requireContext())
+
         //filter category
         when(filterBy){
             FormatCategory.ALL -> {}
             FormatCategory.SUGGESTED -> {
                 finalFormats = if (items.first()?.type == Type.audio){
-                    val req = downloadViewModel.getPreferredAudioRequirements()
-                    finalFormats
-                        .filter { f -> req.sumOf{req -> req(f)} >= 1 }
-                        .sortedByDescending { f -> req.sumOf{req -> req(f)} }
-                        .ifEmpty { listOf(downloadViewModel.getFormat(finalFormats, Type.audio)) }
+                    formatSorter.sortAudioFormats(finalFormats)
                 }else{
-                    val req = downloadViewModel.getPreferredVideoRequirements()
-                    req.addAll(downloadViewModel.getPreferredAudioRequirements())
-                    finalFormats
-                        .filter { f -> req.sumOf { req -> req(f) } >= 1 }
-                        .sortedByDescending { f -> req.sumOf { req -> req(f) } }
-                        .ifEmpty { listOf(downloadViewModel.getFormat(finalFormats, Type.video)) }
+                    formatSorter.sortVideoFormats(finalFormats)
                 }
             }
             FormatCategory.SMALLEST -> {

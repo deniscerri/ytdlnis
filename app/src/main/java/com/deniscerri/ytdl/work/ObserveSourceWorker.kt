@@ -1,6 +1,7 @@
 package com.deniscerri.ytdl.work
 
 import android.content.Context
+import android.util.Log
 import androidx.preference.PreferenceManager
 import androidx.work.Constraints
 import androidx.work.CoroutineWorker
@@ -54,7 +55,27 @@ class ObserveSourceWorker(
         val foregroundInfo = ForegroundInfo(workerID, notification)
         setForegroundAsync(foregroundInfo)
 
-        val res = runCatching { infoUtil.getFromYTDL(item.url).toList() }.getOrElse { listOf() }
+        val list = kotlin.runCatching {
+            infoUtil.getFromYTDL(item.url)
+        }.onFailure {
+            Log.e("observe", it.toString())
+        }.getOrElse { listOf() }
+
+        if (list.isNotEmpty() && item.syncWithSource && item.alreadyProcessedLinks.isNotEmpty()){
+            val processedLinks = item.alreadyProcessedLinks
+            val incomingLinks = list.map { it.url }
+
+            val linksNotPresentAnymore = processedLinks.filter { !incomingLinks.contains(it) }
+            linksNotPresentAnymore.forEach {
+                val historyItems = historyRepo.getAllByURL(it)
+                historyItems.filter { h -> h.type == item.downloadItemTemplate.type }.forEach { h ->
+                    historyRepo.delete(h, true)
+                }
+            }
+        }
+
+
+        val res = list
             .filter { result ->
                 //if first run and get new items only is preferred then dont get anything on first run
                 if (item.getOnlyNewUploads && item.runCount == 0){
@@ -83,7 +104,6 @@ class ObserveSourceWorker(
             }
 
         val items = mutableListOf<DownloadItem>()
-
         res.forEach {
             val string = Gson().toJson(item.downloadItemTemplate, DownloadItem::class.java)
             val downloadItem = Gson().fromJson(string, DownloadItem::class.java)
@@ -116,9 +136,9 @@ class ObserveSourceWorker(
                 alarmScheduler.schedule()
             }
 
-            if (items.any { it.playlistTitle.isEmpty() } && items.size > 1){
-                items.forEachIndexed { index, it -> it.playlistTitle = "Various[${index+1}]" }
-            }
+//            if (items.any { it.playlistTitle.isEmpty() } && items.size > 1){
+//                items.forEachIndexed { index, it -> it.playlistTitle = "Various[${index+1}]" }
+//            }
 
             items.forEach {
                 it.status = DownloadRepository.Status.Queued.toString()

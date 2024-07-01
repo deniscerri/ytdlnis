@@ -125,10 +125,8 @@ class DownloadsAlreadyExistDialog : BottomSheetDialogFragment(), AlreadyExistsAd
 
 
     override fun onEditItem(alreadyExistsItem: AlreadyExistsItem, position: Int) {
-        val resultItem = downloadViewModel.createResultItemFromDownload(alreadyExistsItem.downloadItem)
         val onItemUpdated = object: ConfigureDownloadBottomSheetDialog.OnDownloadItemUpdateListener {
             override fun onDownloadItemUpdate(
-                resultItemID: Long,
                 item: DownloadItem
             ) {
                 val currentIndex = duplicates.indexOf(alreadyExistsItem)
@@ -138,7 +136,7 @@ class DownloadsAlreadyExistDialog : BottomSheetDialogFragment(), AlreadyExistsAd
                 adapter.notifyItemChanged(position)
             }
         }
-        val bottomSheet = ConfigureDownloadBottomSheetDialog(resultItem, alreadyExistsItem.downloadItem, onItemUpdated)
+        val bottomSheet = ConfigureDownloadBottomSheetDialog(alreadyExistsItem.downloadItem, onItemUpdated)
         bottomSheet.show(requireActivity().supportFragmentManager, "configureDownloadSingleSheet")
     }
 

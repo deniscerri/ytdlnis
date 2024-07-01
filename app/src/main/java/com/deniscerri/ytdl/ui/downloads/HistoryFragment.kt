@@ -48,6 +48,7 @@ import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.database.viewmodel.HistoryViewModel
 import com.deniscerri.ytdl.ui.adapter.HistoryAdapter
 import com.deniscerri.ytdl.util.Extensions.enableFastScroll
+import com.deniscerri.ytdl.util.NavbarUtil
 import com.deniscerri.ytdl.util.UiUtil
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.MaterialToolbar
@@ -200,8 +201,8 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
         initChips()
     }
 
-    private fun scrollToTop() {
-        recyclerView!!.scrollToPosition(0)
+    fun scrollToTop() {
+        recyclerView.scrollToPosition(0)
         Handler(Looper.getMainLooper()).post {
             (topAppBar!!.parent as AppBarLayout).setExpanded(
                 true,
@@ -239,6 +240,8 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
             }
         })
         topAppBar!!.setOnClickListener { scrollToTop() }
+        val showingDownloadQueue = NavbarUtil.getNavBarItems(requireContext()).any { n -> n.itemId == R.id.downloadQueueMainFragment && n.isVisible }
+        topAppBar!!.menu.findItem(R.id.download_queue).isVisible = !showingDownloadQueue
         topAppBar!!.setOnMenuItemClickListener { m: MenuItem ->
             when (m.itemId) {
                 R.id.remove_history -> {
@@ -402,7 +405,7 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
         val websites = mutableListOf<String>()
         val websiteFilter = historyViewModel.websiteFilter.value
         for (item in list){
-            if (!websites.contains(item.website.lowercase())) websites.add(item.website.lowercase())
+            if (!websites.contains(item.website)) websites.add(item.website)
         }
         websiteGroup!!.removeAllViews()
         if (websites.size <= 1) {

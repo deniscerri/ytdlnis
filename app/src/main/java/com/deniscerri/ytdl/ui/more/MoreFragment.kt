@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.TextView
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -20,6 +21,7 @@ import com.deniscerri.ytdl.database.repository.DownloadRepository
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.ui.more.settings.SettingsActivity
 import com.deniscerri.ytdl.ui.more.terminal.TerminalActivity
+import com.deniscerri.ytdl.util.NavbarUtil
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -63,6 +65,9 @@ class MoreFragment : Fragment() {
         terminateApp = view.findViewById(R.id.terminate)
         settings = view.findViewById(R.id.settings)
 
+        val showingTerminal = NavbarUtil.getNavBarItems(requireContext()).any { n -> n.itemId == R.id.terminalActivity && n.isVisible }
+        terminal.isVisible = !showingTerminal
+
         terminal.setOnClickListener {
             val intent = Intent(context, TerminalActivity::class.java)
             startActivity(intent)
@@ -75,6 +80,9 @@ class MoreFragment : Fragment() {
         commandTemplates.setOnClickListener {
             findNavController().navigate(R.id.commandTemplatesFragment)
         }
+
+        val showingDownloadQueue = NavbarUtil.getNavBarItems(requireContext()).any { n -> n.itemId == R.id.downloadQueueMainFragment && n.isVisible }
+        downloadQueue.isVisible = !showingDownloadQueue
 
         downloadQueue.setOnClickListener {
             findNavController().navigate(R.id.downloadQueueMainFragment)

@@ -384,8 +384,7 @@
     <string name="minute">Menit</string>
     <string name="second">Detik</string>
     <string name="format_importance_note">Sesuaikan kepentingan elemen format. Urutan ini hanya akan digunakan ketika aplikasi mengambil format dalam kartu unduhan dan otomatis memilih format!</string>
-    <string name="format_importance_audio">Urutan Prioritas Format (Audio)</string>
-    <string name="format_importance_video">Urutan Prioritas Format (Video)</string>
+    <string name="format_importance">Urutan Prioritas Format</string>
     <string name="no_audio">Video Tanpa Audio</string>
     <string name="download_archive_folder">Folder Arsip Unduhan</string>
     <string name="location">Lokasi</string>

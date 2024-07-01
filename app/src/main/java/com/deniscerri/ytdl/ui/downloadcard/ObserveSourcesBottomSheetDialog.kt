@@ -40,6 +40,7 @@ import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel.Type
 import com.deniscerri.ytdl.database.viewmodel.HistoryViewModel
 import com.deniscerri.ytdl.database.viewmodel.ObserveSourcesViewModel
 import com.deniscerri.ytdl.database.viewmodel.ResultViewModel
+import com.deniscerri.ytdl.util.Extensions.TextWithSubtitle
 import com.deniscerri.ytdl.util.InfoUtil
 import com.deniscerri.ytdl.util.UiUtil
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -98,6 +99,7 @@ class ObserveSourcesBottomSheetDialog : BottomSheetDialogFragment() {
     private lateinit var endsAfterNr: TextInputLayout
     private lateinit var retryMissingDownloads: MaterialSwitch
     private lateinit var getOnlyNewUploads: MaterialSwitch
+    private lateinit var syncWithSource: MaterialSwitch
     private lateinit var resetProcessedLinks: MaterialSwitch
 
 
@@ -262,8 +264,13 @@ class ObserveSourcesBottomSheetDialog : BottomSheetDialogFragment() {
         endsAfterNr = view.findViewById(R.id.after_nr)
         retryMissingDownloads = view.findViewById(R.id.retry_missing_downloads)
         getOnlyNewUploads = view.findViewById(R.id.get_new_uploads)
+        syncWithSource = view.findViewById(R.id.sync_with_source)
         resetProcessedLinks = view.findViewById(R.id.reset_processed_links)
         okButton = view.findViewById(R.id.okButton)
+
+//        getOnlyNewUploads.text = TextWithSubtitle(getString(R.string.get_new_uploads), getString(R.string.get_new_uploads))
+//        syncWithSource.text = TextWithSubtitle(getString(R.string.sync_with_source), getString(R.string.sync_with_source))
+//        resetProcessedLinks.text = TextWithSubtitle(getString(R.string.reset_processed_links), getString(R.string.reset_processed_links))
 
         title.editText!!.setText(currentItem?.name ?: "")
         title.editText?.doAfterTextChanged { checkIfValid() }
@@ -469,6 +476,7 @@ class ObserveSourcesBottomSheetDialog : BottomSheetDialogFragment() {
 
         retryMissingDownloads.isChecked = currentItem?.retryMissingDownloads ?: false
         getOnlyNewUploads.isChecked = currentItem?.getOnlyNewUploads ?: false
+        syncWithSource.isChecked = currentItem?.syncWithSource ?: false
         resetProcessedLinks.isVisible = currentItem != null
 
         if (currentItem != null) okButton.text = getString(R.string.update)
@@ -518,6 +526,7 @@ class ObserveSourcesBottomSheetDialog : BottomSheetDialogFragment() {
                     endsAfterCount = endsAfterCount,
                     runCount = 0,
                     getOnlyNewUploads = getOnlyNewUploads.isChecked,
+                    syncWithSource = syncWithSource.isChecked,
                     retryMissingDownloads = retryMissingDownloads.isChecked,
                     alreadyProcessedLinks = if (resetProcessedLinks.isChecked){
                         mutableListOf()

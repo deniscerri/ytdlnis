@@ -70,7 +70,7 @@ class DownloadWorker(
         if (currentWork.count{it.state == WorkInfo.State.RUNNING} > 1) return Result.success()
 
         // this is needed for observe sources call, so it wont create result items
-        val createResultItem = inputData.getBoolean("createResultItem", true)
+        //val createResultItem = inputData.getBoolean("createResultItem", true)
 
         val confTmp = Configuration(context.resources.configuration)
         val currLang = sharedPreferences.getString("app_language", "")!!.ifEmpty { Locale.getDefault().language }.split("-")
@@ -134,7 +134,7 @@ class DownloadWorker(
 
                     val downloadLocation = downloadItem.downloadPath
                     val keepCache = sharedPreferences.getBoolean("keep_cache", false)
-                    val logDownloads = sharedPreferences.getBoolean("log_downloads", false) && !sharedPreferences.getBoolean("incognito", false)
+                    val logDownloads = sharedPreferences.getBoolean("log_downloads", false) && !downloadItem.incognito
 
 
                     val commandString = infoUtil.parseYTDLRequestString(request)
@@ -162,6 +162,7 @@ class DownloadWorker(
                     val eventBus = EventBus.getDefault()
 
                     runCatching {
+                        YoutubeDL.getInstance().destroyProcessById(downloadItem.id.toString())
                         YoutubeDL.getInstance().execute(request, downloadItem.id.toString()){ progress, _, line ->
                             eventBus.post(WorkerProgress(progress.toInt(), line, downloadItem.id))
                             val title: String = downloadItem.title.ifEmpty { downloadItem.url }
@@ -242,8 +243,7 @@ class DownloadWorker(
                             FileUtil.deleteConfigFiles(request)
 
                             //put download in history
-                            val incognito = sharedPreferences.getBoolean("incognito", false)
-                            if (!incognito) {
+                            if (!downloadItem.incognito) {
                                 if (request.hasOption("--download-archive") && finalPaths == listOf(context.getString(R.string.unfound_file))) {
                                     handler.postDelayed({
                                         Toast.makeText(context, resources.getString(R.string.download_already_exists), Toast.LENGTH_LONG).show()
@@ -264,7 +264,7 @@ class DownloadWorker(
 
                                         val historyItem = HistoryItem(0,
                                             downloadItem.url,
-                                            downloadItem.title.ifEmpty { downloadItem.playlistTitle },
+                                            downloadItem.title,
                                             downloadItem.author,
                                             downloadItem.duration,
                                             downloadItem.thumb,

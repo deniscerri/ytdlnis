@@ -597,58 +597,11 @@ class ResultCardDetailsDialog : BottomSheetDialogFragment(), GenericDownloadAdap
 
         cancelActiveDownload(itemID)
     }
-    override fun onPauseClick(itemID: Long, action: ActiveDownloadAdapter.ActiveDownloadAction, position: Int) {
-        lifecycleScope.launch {
-            val item = withContext(Dispatchers.IO){
-                downloadViewModel.getItemByID(itemID)
-            }
-            when(action){
-                ActiveDownloadAdapter.ActiveDownloadAction.Pause -> {
-                    lifecycleScope.launch {
-                        cancelItem(itemID.toInt())
-                        item.status = DownloadRepository.Status.ActivePaused.toString()
-                        withContext(Dispatchers.IO){
-                            downloadViewModel.updateDownload(item)
-                        }
-                        activeAdapter.notifyItemChanged(position)
-                    }
-                }
-                ActiveDownloadAdapter.ActiveDownloadAction.Resume -> {
-                    lifecycleScope.launch {
-                        item.status = DownloadRepository.Status.Queued.toString()
-                        withContext(Dispatchers.IO){
-                            downloadViewModel.updateDownload(item)
-                        }
-                        activeAdapter.notifyItemChanged(position)
-
-                        val queue = if (activeCount > 1) listOf(item)
-                        else withContext(Dispatchers.IO){
-                            val list = downloadViewModel.getQueued().toMutableList()
-                            list.map { it.status = DownloadRepository.Status.Queued.toString() }
-                            list.add(0, item)
-                            list
-                        }
-
-                        runBlocking {
-                            downloadViewModel.queueDownloads(queue)
-                        }
-                    }
-                }
-            }
-
-        }
-    }
     override fun onCardClick() {
         this.dismiss()
         findNavController().navigate(
             R.id.downloadQueueMainFragment
         )
-    }
-
-    private fun cancelItem(id: Int){
-        YoutubeDL.getInstance().destroyProcessById(id.toString())
-        WorkManager.getInstance(requireContext()).cancelAllWorkByTag(id.toString())
-        notificationUtil.cancelDownloadNotification(id)
     }
 
     private fun cancelActiveDownload(itemID: Long){

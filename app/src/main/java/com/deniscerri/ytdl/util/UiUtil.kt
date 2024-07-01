@@ -56,6 +56,7 @@ import com.deniscerri.ytdl.database.models.CommandTemplate
 import com.deniscerri.ytdl.database.models.DownloadItem
 import com.deniscerri.ytdl.database.models.Format
 import com.deniscerri.ytdl.database.models.HistoryItem
+import com.deniscerri.ytdl.database.models.RestoreAppDataItem
 import com.deniscerri.ytdl.database.models.TemplateShortcut
 import com.deniscerri.ytdl.database.repository.DownloadRepository
 import com.deniscerri.ytdl.database.viewmodel.CommandTemplateViewModel
@@ -96,6 +97,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
+import kotlinx.serialization.json.JsonObject
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -580,15 +582,15 @@ object UiUtil {
         bottomSheet.requestWindowFeature(Window.FEATURE_NO_TITLE)
         bottomSheet.setContentView(R.layout.history_item_details_bottom_sheet)
         bottomSheet.findViewById<TextView>(R.id.bottom_sheet_title)?.apply {
-            text = item.title.ifEmpty { item.playlistTitle.ifEmpty {  "`${context.getString(R.string.defaultValue)}`" } }
-            setOnLongClickListener{
+            text = item.title.ifEmpty { item.url.ifEmpty { item.playlistTitle.ifEmpty {  "`${context.getString(R.string.defaultValue)}`" } } }
+            setOnLongClickListener {
                 showFullTextDialog(context, text.toString(), context.getString(R.string.title))
                 true
             }
         }
         bottomSheet.findViewById<TextView>(R.id.bottom_sheet_author)?.apply {
             text = item.author
-            setOnLongClickListener{
+            setOnLongClickListener {
                 showFullTextDialog(context, text.toString(), context.getString(R.string.author))
                 true
             }
@@ -761,15 +763,17 @@ object UiUtil {
         bottomSheet.setContentView(R.layout.history_item_details_bottom_sheet)
 
         bottomSheet.findViewById<TextView>(R.id.bottom_sheet_title)?.apply {
-            text = item!!.title
-            setOnClickListener{
+            text = item!!.title.ifEmpty { item.url }
+            setOnLongClickListener{
                 showFullTextDialog(context, text.toString(), context.getString(R.string.title))
+                true
             }
         }
         bottomSheet.findViewById<TextView>(R.id.bottom_sheet_author)?.apply {
             text = item!!.author
-            setOnClickListener{
+            setOnLongClickListener{
                 showFullTextDialog(context, text.toString(), context.getString(R.string.author))
+                true
             }
         }
 

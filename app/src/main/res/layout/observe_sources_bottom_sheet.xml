@@ -494,6 +494,13 @@
                     android:text="@string/get_new_uploads"/>
 
                 <com.google.android.material.materialswitch.MaterialSwitch
+                    android:id="@+id/sync_with_source"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:checked="false"
+                    android:text="@string/sync_with_source"/>
+
+                <com.google.android.material.materialswitch.MaterialSwitch
                     android:id="@+id/retry_missing_downloads"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

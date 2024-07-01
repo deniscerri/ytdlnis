@@ -17,6 +17,8 @@ import android.graphics.drawable.shapes.OvalShape
 import android.media.MediaMetadataRetriever
 import android.media.MediaMetadataRetriever.METADATA_KEY_DURATION
 import android.net.Uri
+import android.text.Html
+import android.text.Spanned
 import android.util.DisplayMetrics
 import android.util.TypedValue
 import android.view.MotionEvent
@@ -30,6 +32,7 @@ import android.widget.TextView
 import androidx.annotation.Px
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
+import androidx.core.text.HtmlCompat
 import androidx.core.view.updateLayoutParams
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.withStarted
@@ -466,6 +469,11 @@ object Extensions {
     fun DownloadItem.setAsScheduling(timeInMillis: Long) {
         status = DownloadRepository.Status.Scheduled.toString()
         downloadStartTime = timeInMillis
+    }
+
+    fun TextWithSubtitle(title: String, subtitle: String) : Spanned {
+        return HtmlCompat.fromHtml("<b><big>" + title + "</big></b>" +  "<br />" +
+                "<small>" + subtitle + "</small>" + "<br />", HtmlCompat.FROM_HTML_MODE_LEGACY)
     }
 
 }

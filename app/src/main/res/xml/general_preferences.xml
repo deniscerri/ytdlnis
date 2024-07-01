@@ -69,7 +69,7 @@
 
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/misc">
+    <PreferenceCategory android:title="YouTube">
         <SwitchPreferenceCompat
             android:widgetLayout="@layout/preferece_material_switch"
             app:defaultValue="true"
@@ -84,7 +84,24 @@
             android:summary="@string/api_key_summary"
             app:title="@string/api_key" />
 
+        <ListPreference
+            android:defaultValue="yt-dlp"
+            android:entries="@array/formats_source"
+            android:entryValues="@array/formats_source_values"
+            android:icon="@drawable/baseline_manage_search_24"
+            app:key="formats_source"
+            app:useSimpleSummaryProvider="true"
+            app:title="@string/format_source" />
 
+        <Preference
+            android:icon="@drawable/ic_dns"
+            app:key="piped_instance"
+            app:defaultValue=""
+            android:summary="@string/piped_instance_summary"
+            app:title="@string/piped_instance" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/misc">
         <ListPreference
             android:defaultValue=""
             android:entries="@array/countries"
@@ -95,14 +112,28 @@
             app:key="locale"
             app:title="@string/preferred_locale" />
 
-        <ListPreference
+        <Preference
             android:defaultValue="Home"
-            android:entries="@array/start_destination"
-            android:entryValues="@array/start_destination_values"
             app:icon="@drawable/baseline_add_to_home_screen_24"
             app:useSimpleSummaryProvider="true"
             app:key="start_destination"
+            app:isPreferenceVisible="false"
             app:title="@string/preferred_home_screen" />
+
+        <Preference
+            android:defaultValue="Home,History,More"
+            android:icon="@drawable/baseline_home_filled_24"
+            android:key="navigation_bar"
+            android:title="@string/preferred_home_screen" />
+
+        <ListPreference
+            android:defaultValue="always"
+            android:entries="@array/label_visibility"
+            android:entryValues="@array/label_visibility_values"
+            android:icon="@drawable/baseline_disabled_visible_24"
+            app:key="label_visibility"
+            app:useSimpleSummaryProvider="true"
+            app:title="@string/label_visibility" />
 
         <ListPreference
             android:defaultValue="ytsearch"
@@ -157,4 +188,5 @@
             app:key="ignore_battery"
             app:title="@string/ignore_battery_optimization" />
     </PreferenceCategory>
+
 </PreferenceScreen>

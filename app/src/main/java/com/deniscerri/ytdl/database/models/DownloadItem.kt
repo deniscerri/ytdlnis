@@ -42,5 +42,7 @@ data class DownloadItem(
     @ColumnInfo(defaultValue = "")
     var playlistURL: String? = "",
     @ColumnInfo(defaultValue = "")
-    var playlistIndex: Int? = null
+    var playlistIndex: Int? = null,
+    @ColumnInfo(defaultValue = "0")
+    var incognito: Boolean = false
 ) : Parcelable

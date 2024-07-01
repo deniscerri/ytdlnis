@@ -7,7 +7,7 @@
         <SwitchPreferenceCompat
             android:widgetLayout="@layout/preferece_material_switch"
             app:defaultValue="false"
-            android:icon="@drawable/ic_incognito"
+            android:icon="@drawable/ic_nightly"
             android:key="incognito"
             app:summary="@string/incognito_summary"
             app:title="@string/incognito" />

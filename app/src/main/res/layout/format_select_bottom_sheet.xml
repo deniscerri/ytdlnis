@@ -166,6 +166,44 @@
                         android:orientation="vertical" />
                 </LinearLayout>
 
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/formatSourceLinear"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:visibility="gone"
+                    android:layout_margin="10dp"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/format_source_label"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:maxLines="2"
+                            android:layout_marginHorizontal="20dp"
+                            android:layout_marginTop="10dp"
+                            android:singleLine="false"
+                            android:text="@string/format_source"
+                            android:textSize="12sp" />
+
+                        <RadioGroup
+                            android:id="@+id/format_source_group"
+                            android:layout_marginHorizontal="20dp"
+                            android:checkedButton="@+id/radio_button_1"
+                            android:layout_width="match_parent"
+                            android:layout_marginBottom="10dp"
+                            android:layout_height="wrap_content">
+
+                        </RadioGroup>
+
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
             </LinearLayout>
 
         </androidx.core.widget.NestedScrollView>
@@ -197,6 +235,8 @@
             </LinearLayout>
 
         </com.facebook.shimmer.ShimmerFrameLayout>
+
+
 
     </LinearLayout>
 

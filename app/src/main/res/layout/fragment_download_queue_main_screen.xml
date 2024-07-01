@@ -12,7 +12,7 @@
         android:fitsSystemWindows="true">
 
         <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/logs_toolbar"
+            android:id="@+id/downloads_toolbar"
             android:elevation="0dp"
             app:title="@string/download_queue"
             app:menu="@menu/download_queue_menu"

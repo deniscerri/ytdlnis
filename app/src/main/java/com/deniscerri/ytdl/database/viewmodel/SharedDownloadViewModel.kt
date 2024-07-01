@@ -29,6 +29,7 @@ import com.deniscerri.ytdl.database.repository.ResultRepository
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel.Type
 import com.deniscerri.ytdl.util.Extensions.toListString
 import com.deniscerri.ytdl.util.FileUtil
+import com.deniscerri.ytdl.util.FormatSorter
 import com.deniscerri.ytdl.util.InfoUtil
 import com.deniscerri.ytdl.work.AlarmScheduler
 import com.google.gson.Gson
@@ -230,13 +231,18 @@ class SharedDownloadViewModel(private val context: Context) {
             resultItem.formats,
             downloadPath!!, resultItem.website,
             "",
-            resultItem.playlistTitle,
+            if (resultItem.playlistTitle == resultRepository.YTDLNIS_SEARCH) "" else resultItem.playlistTitle,
             audioPreferences,
             videoPreferences,
             extraCommands,
             customFileNameTemplate!!,
             saveThumb,
-            DownloadRepository.Status.Queued.toString(), 0, null, playlistURL = resultItem.playlistURL, playlistIndex = resultItem.playlistIndex
+            DownloadRepository.Status.Queued.toString(),
+            0,
+            null,
+            playlistURL = resultItem.playlistURL,
+            playlistIndex = resultItem.playlistIndex,
+            incognito = sharedPreferences.getBoolean("incognito", false)
         )
 
     }
@@ -281,7 +287,7 @@ class SharedDownloadViewModel(private val context: Context) {
 
     }
 
-    private fun getPreferredAudioRequirements(): MutableList<(Format) -> Int> {
+    fun getPreferredAudioRequirements(): MutableList<(Format) -> Int> {
         val requirements: MutableList<(Format) -> Int> = mutableListOf()
 
         val itemValues = resources.getStringArray(R.array.format_importance_audio_values).toSet()
@@ -345,9 +351,8 @@ class SharedDownloadViewModel(private val context: Context) {
                                     for(i in 0..preferenceIndex){
                                         removeAt(0)
                                     }
-                                    requirements.add { it: Format -> if (it.format_note.contains(preference, ignoreCase = true)) importance else 0 }
+                                    add(0, preference)
                                     forEachIndexed { index, res ->
-                                        if (index >= 2) importance = 0
                                         requirements.add { it: Format -> if (it.format_note.contains(res, ignoreCase = true)) (importance - index - 1) else 0 }
                                     }
                                 }
@@ -381,8 +386,10 @@ class SharedDownloadViewModel(private val context: Context) {
                 return cloneFormat (
                     try {
                         val theFormats = formats.filter { it.vcodec.isBlank() || it.vcodec == "none" }
-                        val requirements = getPreferredAudioRequirements()
-                        theFormats.maxByOrNull { f -> requirements.sumOf{ req -> req(f)} } ?: throw Exception()
+                        FormatSorter(context).sortAudioFormats(theFormats).first()
+//
+//                        val requirements = getPreferredAudioRequirements()
+//                        theFormats.maxByOrNull { f -> requirements.sumOf{ req -> req(f)} } ?: throw Exception()
                     }catch (e: Exception){
                         bestAudioFormat
                     }
@@ -395,24 +402,27 @@ class SharedDownloadViewModel(private val context: Context) {
                         val theFormats = formats.filter { it.vcodec.isNotBlank() && it.vcodec != "none" }.ifEmpty {
                             defaultVideoFormats.sortedByDescending { it.filesize }
                         }
-                        when (videoQualityPreference) {
-                            "worst" -> {
-                                theFormats.last()
-                            }
-                            else /*best*/ -> {
-                                val requirements = getPreferredVideoRequirements()
-                                theFormats.run {
-                                    if (sharedPreferences.getBoolean("prefer_smaller_formats", false)){
-                                        sortedBy { it.filesize }.maxByOrNull { f -> requirements.sumOf { req -> req(f) } } ?: throw Exception()
-                                    }else{
-                                        sortedByDescending { it.filesize }.maxByOrNull { f ->
-                                            val summ = requirements.sumOf { req -> req(f) }
-                                            summ
-                                        } ?: throw Exception()
-                                    }
-                                }
-                            }
-                        }
+
+                        FormatSorter(context).sortVideoFormats(theFormats).first()
+//
+//                        when (videoQualityPreference) {
+//                            "worst" -> {
+//                                theFormats.last()
+//                            }
+//                            else /*best*/ -> {
+//                                val requirements = getPreferredVideoRequirements()
+//                                theFormats.run {
+//                                    if (sharedPreferences.getBoolean("prefer_smaller_formats", false)){
+//                                        sortedBy { it.filesize }.maxByOrNull { f -> requirements.sumOf { req -> req(f) } } ?: throw Exception()
+//                                    }else{
+//                                        sortedByDescending { it.filesize }.maxByOrNull { f ->
+//                                            val summ = requirements.sumOf { req -> req(f) }
+//                                            summ
+//                                        } ?: throw Exception()
+//                                    }
+//                                }
+//                            }
+//                        }
                     }catch (e: Exception){
                         bestVideoFormat
                     }

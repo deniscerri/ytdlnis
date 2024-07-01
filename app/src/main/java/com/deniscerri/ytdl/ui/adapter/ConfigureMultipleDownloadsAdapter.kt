@@ -88,6 +88,10 @@ class ConfigureMultipleDownloadsAdapter(onItemClickListener: OnItemClickListener
             formatNote.visibility = View.GONE
         }
 
+
+        val incognitoLabel = card.findViewById<MaterialButton>(R.id.incognitoLabel)
+        incognitoLabel.isVisible = item.incognito
+
         val codec = card.findViewById<TextView>(R.id.codec)
         val codecText =
             if (item.format.encoding != "") {
@@ -160,7 +164,8 @@ class ConfigureMultipleDownloadsAdapter(onItemClickListener: OnItemClickListener
                 return oldItem.title == newItem.title &&
                     oldItem.author == newItem.author &&
                     oldItem.type == newItem.type &&
-                    oldItem.format == newItem.format
+                    oldItem.format == newItem.format &&
+                    oldItem.incognito == newItem.incognito
             }
         }
     }

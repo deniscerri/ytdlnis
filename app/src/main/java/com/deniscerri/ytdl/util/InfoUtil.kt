@@ -439,18 +439,26 @@ class InfoUtil(private val context: Context) {
         return query!!
     }
 
-    fun getFormats(url: String) : List<Format> {
+    fun getFormats(url: String, source : String? = null) : List<Format> {
         
-        val p = Pattern.compile("^(https?)://(www.)?youtu(.be)?")
+        val p = Pattern.compile("((^(https?)://)?(www.)?(m.)?youtu(.be)?)|(^(https?)://(www.)?piped.video)")
         val m = p.matcher(url)
-        val formatSource = sharedPreferences.getString("formats_source", "yt-dlp")
+        val formatSource = source ?: sharedPreferences.getString("formats_source", "yt-dlp")
         if (m.find() && formatSource == "piped"){
-            return try {
+            try {
                 val id = getIDFromYoutubeURL(url)
                 val res = genericRequest("$pipedURL/streams/$id")
-                if (res.length() == 0) getFromYTDL(url)[0]
-                val item = createVideoFromPipedJSON(res, "https://youtube.com/watch?v=$id")
-                item!!.formats
+                if (res.length() == 0) {
+                    return if (source != null) {
+                        listOf()
+                    }else {
+                        getFormatsFromYTDL(url)
+                    }
+                }else {
+                    val item = createVideoFromPipedJSON(res, "https://youtube.com/watch?v=$id")
+                    return item!!.formats
+                }
+
             }catch(e: Exception) {
                 if (e is CancellationException) throw e
                 return getFormatsFromYTDL(url)
@@ -505,7 +513,7 @@ class InfoUtil(private val context: Context) {
         return parseYTDLFormats(jsonArray)
     }
 
-    fun getFormatsMultiple(urls: List<String>, progress: (progress: List<Format>) -> Unit){
+    fun getFormatsMultiple(urls: List<String>, source: String? = null, progress: (progress: List<Format>) -> Unit){
         val urlsFile = File(context.cacheDir, "urls.txt")
         urlsFile.delete()
         urlsFile.createNewFile()
@@ -513,8 +521,8 @@ class InfoUtil(private val context: Context) {
             urlsFile.appendText(it+"\n")
         }
 
-        val formatSource = sharedPreferences.getString("formats_source", "yt-dlp")
-        val p = Pattern.compile("^(https?)://(www.)?youtu(.be)?")
+        val formatSource = source ?: sharedPreferences.getString("formats_source", "yt-dlp")
+        val p = Pattern.compile("((^(https?)://)?(www.)?(m.)?youtu(.be)?)|(^(https?)://(www.)?piped.video)")
         val allYoutubeLinks = urls.any {p.matcher(it).find() }
         if (formatSource == "yt-dlp" || !allYoutubeLinks){
             try {
@@ -678,7 +686,7 @@ class InfoUtil(private val context: Context) {
                 }
             }
 
-            var website = jsonObject.getStringByAny("ie_key", "extractor_key", "extractor")
+            var website = jsonObject.getStringByAny("extractor_key", "extractor","ie_key")
             if (website == "Generic" || website == "HTML5MediaEmbed") website = jsonObject.getStringByAny("webpage_url_domain")
             var playlistTitle = jsonObject.getStringByAny("playlist_title")
             var playlistURL: String? = ""
@@ -728,8 +736,6 @@ class InfoUtil(private val context: Context) {
             val type = jsonObject.getStringByAny("_type")
             if (type == "playlist" && playlistTitle.isEmpty()) {
                 playlistTitle = title
-                title = ""
-                author = ""
             }
 
             val res = ResultItem(0,
@@ -758,32 +764,34 @@ class InfoUtil(private val context: Context) {
         if (formatsInJSON != null) {
             for (f in formatsInJSON.length() - 1 downTo 0){
                 val format = formatsInJSON.getJSONObject(f)
-                if (format.has("filesize")){
-                    if (format.get("filesize") == "None"){
+                kotlin.runCatching {
+                    if (format.get("filesize").toString() == "None") {
                         format.remove("filesize")
-                        if (format.has("filesize_approx") && format.get("filesize_approx") != "None"){
-                            format.put("filesize", format.getInt("filesize_approx"))
-                        }else{
-                            format.put("filesize", 0)
-                        }
                     }
-                    try{
-                        val size = format.get("filesize").toString().toFloat()
-                        format.remove("filesize")
-                        format.put("filesize", size)
-                    }catch (ignored: Exception){}
                 }
 
-                if (format.has("filesize_approx")){
-                    if (format.get("filesize_approx") == "None"){
+                kotlin.runCatching {
+                    if (format.get("filesize_approx").toString() == "None") {
                         format.remove("filesize_approx")
-                        format.put("filesize_approx", 0)
+                    }
+                }
+
+                kotlin.runCatching {
+                    if (!format.has("filesize")) {
+                        format.put("filesize", 0)
+                    }
+                }
+
+                kotlin.runCatching {
+                    if(format.get("format_note").toString() == "null"){
+                        format.remove("format_note")
                     }
                 }
 
                 val formatProper = Gson().fromJson(format.toString(), Format::class.java)
-
+                Log.e("NOTE", format.toString())
                 if (formatProper.format_note == null) continue
+
                 if (format.has("format_note")){
                     if (!formatProper!!.format_note.contains("audio only", true)) {
                         formatProper.format_note = format.getString("format_note")
@@ -947,14 +955,17 @@ class InfoUtil(private val context: Context) {
     }
 
     @SuppressLint("RestrictedApi")
-    fun buildYoutubeDLRequest(downloadItem: DownloadItem) : YoutubeDLRequest{
-        val request = if (downloadItem.playlistURL.isNullOrBlank() || downloadItem.playlistTitle.isBlank()){
+    fun buildYoutubeDLRequest(downloadItem: DownloadItem) : YoutubeDLRequest {
+        lateinit var request : YoutubeDLRequest
+
+        val matchFilter = mutableListOf<String>()
+        request = if (downloadItem.playlistURL.isNullOrBlank() || downloadItem.playlistTitle.isBlank()){
             YoutubeDLRequest(downloadItem.url)
         }else{
             YoutubeDLRequest(downloadItem.playlistURL!!).apply {
                 if(downloadItem.playlistIndex == null){
                     val matchPortion = downloadItem.url.split("/").last().split("=").last().split("&").first()
-                    addOption("--match-filter", "id~='${matchPortion}'")
+                    matchFilter.add("id~='${matchPortion}'")
                 }else{
                     addOption("-I", "${downloadItem.playlistIndex!!}:${downloadItem.playlistIndex}")
                 }
@@ -964,7 +975,8 @@ class InfoUtil(private val context: Context) {
         val type = downloadItem.type
 
         val downDir : File
-        if (!sharedPreferences.getBoolean("cache_downloads", true) && File(FileUtil.formatPath(downloadItem.downloadPath)).canWrite()){
+        val canWrite = File(FileUtil.formatPath(downloadItem.downloadPath)).canWrite() || sharedPreferences.getBoolean("access_all_files", false)
+        if (!sharedPreferences.getBoolean("cache_downloads", true) && canWrite){
             downDir = File(FileUtil.formatPath(downloadItem.downloadPath))
             request.addOption("--no-quiet")
             request.addOption("--no-simulate")
@@ -1066,7 +1078,7 @@ class InfoUtil(private val context: Context) {
             }
 
             if(downloadItem.title.isNotBlank()){
-                request.addCommands(listOf("--replace-in-metadata", "video:title", ".+", downloadItem.title.take(120)))
+                request.addCommands(listOf("--replace-in-metadata", "video:title", ".+", downloadItem.title.take(180)))
             }
 
 
@@ -1092,7 +1104,7 @@ class InfoUtil(private val context: Context) {
                 filenameTemplate = if (filenameTemplate.isBlank()){
                     "%(section_title&{} |)s%(title).170B"
                 }else{
-                    "%(section_title&{} |)s$filenameTemplate"
+                    "%(section_title&{} |)s $filenameTemplate"
                 }
                 if (downloadItem.downloadSections.split(";").size > 1){
                     filenameTemplate = "%(autonumber)d. $filenameTemplate [%(section_start>%H∶%M∶%S)s]"
@@ -1126,8 +1138,10 @@ class InfoUtil(private val context: Context) {
                 }else if (listOf(context.getString(R.string.worst_quality), "wa", "worst").contains(audioQualityId)){
                     audioQualityId = "wa/w"
                 }else if(audioQualityId.contains("kbps_ytdlnisgeneric")){
-                    request.addOption("--match-filter", "abr<=${audioQualityId.split("kbps")[0]}")
+                    matchFilter.add("abr<=${audioQualityId.split("kbps")[0]}")
                     audioQualityId = ""
+                }else{
+                    audioQualityId += "/ba/b"
                 }
 
 
@@ -1271,7 +1285,7 @@ class InfoUtil(private val context: Context) {
                 if (downloadItem.videoPreferences.removeAudio) audioF = ""
 
                 if(audioF.contains("kbps_ytdlnisgeneric")){
-                    request.addOption("--match-filter", "abr<=${audioF.split("kbps")[0]}")
+                    matchFilter.add("abr<=${audioF.split("kbps")[0]}")
                     audioF = ""
                 }
 
@@ -1450,6 +1464,10 @@ class InfoUtil(private val context: Context) {
             }
 
             else -> {}
+        }
+
+        if (matchFilter.isNotEmpty()) {
+            request.addOption("--match-filter", matchFilter.joinToString(" & "))
         }
 
         if (downloadItem.extraCommands.isNotBlank() && downloadItem.type != DownloadViewModel.Type.command){

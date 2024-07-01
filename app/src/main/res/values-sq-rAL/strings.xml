@@ -397,4 +397,5 @@
     <string name="location">Vendi</string>
     <string name="enable_alarm_permission">Duhet të aktivizoni lejen SCHEDULE_EXACT_ALARM në cilësimet e aplikacionit.</string>
     <string name="process_downloads_background">Shkarkimet janë ende duke u ngarkuar. Vazhdoni t\'i përpunoni ato në sfond dhe të filloni shkarkimin?</string>
+    <string name="queue">Rradha</string>
 </resources>

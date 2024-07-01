@@ -22,4 +22,5 @@ data class DownloadItemSimple(
     var type: DownloadViewModel.Type,
     @ColumnInfo(defaultValue = "0")
     var downloadStartTime: Long,
+    var incognito: Boolean = false
 )

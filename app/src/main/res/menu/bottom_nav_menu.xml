@@ -4,10 +4,22 @@
     <item android:title="@string/home"
         android:icon="@drawable/ic_home"
         android:id="@+id/homeFragment"/>
+
     <item android:title="@string/downloads"
         android:icon="@drawable/ic_downloads"
         android:id="@+id/historyFragment"/>
+
     <item android:title="@string/more"
         android:icon="@drawable/ic_more"
         android:id="@+id/moreFragment"/>
+
+    <item android:title="@string/queue"
+        android:icon="@drawable/baseline_downloading_24"
+        android:visible="false"
+        android:id="@+id/downloadQueueMainFragment"/>
+
+    <item android:title="@string/terminal"
+        android:icon="@drawable/ic_terminal"
+        android:visible="false"
+        android:id="@+id/terminalActivity"/>
 </menu>

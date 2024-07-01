@@ -73,7 +73,7 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
     val scheduledDownloadsCount : Flow<Int> = downloadDao.getDownloadsCountByStatusFlow(listOf(Status.Scheduled).toListString())
 
     enum class Status {
-        Active, ActivePaused, Queued, Error, Cancelled, Saved, Processing, Scheduled
+        Active, Queued, Error, Cancelled, Saved, Processing, Scheduled
     }
 
     suspend fun insert(item: DownloadItem) : Long {
@@ -118,12 +118,8 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
         return downloadDao.getDownloadsByIds(ids)
     }
 
-    fun getAllItemsByIDsFlow(ids: List<Long>) : Flow<List<DownloadItem>> {
-         return downloadDao.getDownloadsByIdsFlow(ids)
-    }
-
     fun getActiveDownloads() : List<DownloadItem> {
-        return downloadDao.getActiveAndPausedDownloadsList()
+        return downloadDao.getActiveDownloadsList()
     }
 
     fun getProcessingDownloads() : List<DownloadItem> {
@@ -154,10 +150,6 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
         return downloadDao.getCancelledDownloadsList()
     }
 
-    fun getPausedDownloads() : List<DownloadItem> {
-        return downloadDao.getPausedDownloadsList()
-    }
-
     fun getErroredDownloads() : List<DownloadItem> {
         return downloadDao.getErroredDownloadsList()
     }
@@ -180,6 +172,10 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
         val errored = getErroredDownloads()
         downloadDao.deleteErrored()
         deleteCache(errored)
+    }
+
+    suspend fun deleteQueued() {
+        downloadDao.deleteQueued()
     }
 
     suspend fun deleteSaved(){
@@ -238,7 +234,7 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
             val workConstraints = Constraints.Builder()
             if (!allowMeteredNetworks) workConstraints.setRequiredNetworkType(NetworkType.UNMETERED)
             else {
-                workConstraints.setRequiredNetworkType(NetworkType.CONNECTED)
+                //workConstraints.setRequiredNetworkType(NetworkType.CONNECTED)
             }
 
             val workRequest = OneTimeWorkRequestBuilder<DownloadWorker>()
@@ -268,12 +264,14 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
             }, 0)
         }
 
-        val first = queuedItems.first()
-        if (first.downloadStartTime > 0L) {
-            val date = SimpleDateFormat(DateFormat.getBestDateTimePattern(Locale.getDefault(), "ddMMMyyyy - HHmm"), Locale.getDefault()).format(queuedItems.first().downloadStartTime)
-            handler.postDelayed({
-                Toast.makeText(context, context.getString(R.string.download_rescheduled_to) + " " + date, Toast.LENGTH_LONG).show()
-            }, 0)
+        if (queuedItems.isNotEmpty()) {
+            val first = queuedItems.first()
+            if (first.downloadStartTime > 0L) {
+                val date = SimpleDateFormat(DateFormat.getBestDateTimePattern(Locale.getDefault(), "ddMMMyyyy - HHmm"), Locale.getDefault()).format(queuedItems.first().downloadStartTime)
+                handler.postDelayed({
+                    Toast.makeText(context, context.getString(R.string.download_rescheduled_to) + " " + date, Toast.LENGTH_LONG).show()
+                }, 0)
+            }
         }
 
     }

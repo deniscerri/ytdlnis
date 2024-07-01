@@ -21,11 +21,9 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.models.DownloadItem
-import com.deniscerri.ytdl.database.models.ResultItem
 import com.deniscerri.ytdl.database.viewmodel.CommandTemplateViewModel
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel.Type
-import com.deniscerri.ytdl.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdl.util.UiUtil
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -36,21 +34,19 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class ConfigureDownloadBottomSheetDialog(private var result: ResultItem, private val currentDownloadItem: DownloadItem, private val listener: OnDownloadItemUpdateListener) : BottomSheetDialogFragment() {
+class ConfigureDownloadBottomSheetDialog(private val currentDownloadItem: DownloadItem, private val listener: OnDownloadItemUpdateListener) : BottomSheetDialogFragment() {
     private lateinit var tabLayout: TabLayout
     private lateinit var viewPager2: ViewPager2
     private lateinit var fragmentAdapter : DownloadFragmentAdapter
     private lateinit var downloadViewModel: DownloadViewModel
-    private lateinit var resultViewModel: ResultViewModel
     private lateinit var commandTemplateViewModel: CommandTemplateViewModel
     private lateinit var behavior: BottomSheetBehavior<View>
     private lateinit var onDownloadItemUpdateListener: OnDownloadItemUpdateListener
     private lateinit var sharedPreferences : SharedPreferences
-
+    private var incognito: Boolean = currentDownloadItem.incognito
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
-        resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]
         commandTemplateViewModel = ViewModelProvider(requireActivity())[CommandTemplateViewModel::class.java]
         onDownloadItemUpdateListener = listener
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
@@ -100,7 +96,7 @@ class ConfigureDownloadBottomSheetDialog(private var result: ResultItem, private
         }
 
         //check if the item has formats and its audio-only
-        val isAudioOnly = result.formats.isNotEmpty() && result.formats.none { !it.format_note.contains("audio") }
+        val isAudioOnly = currentDownloadItem.allFormats.isNotEmpty() && currentDownloadItem.allFormats.none { !it.format_note.contains("audio") }
         if (isAudioOnly){
             (tabLayout.getChildAt(0) as? ViewGroup)?.getChildAt(1)?.isClickable = true
             (tabLayout.getChildAt(0) as? ViewGroup)?.getChildAt(1)?.alpha = 0.3f
@@ -111,7 +107,7 @@ class ConfigureDownloadBottomSheetDialog(private var result: ResultItem, private
         fragmentAdapter = DownloadFragmentAdapter(
             fragmentManager,
             lifecycle,
-            result,
+            null,
             currentDownloadItem
         )
         viewPager2.adapter = fragmentAdapter
@@ -194,24 +190,39 @@ class ConfigureDownloadBottomSheetDialog(private var result: ResultItem, private
         val ok = view.findViewById<Button>(R.id.bottom_sheet_ok)
         ok!!.setOnClickListener {
             val item = getDownloadItem()
-            onDownloadItemUpdateListener.onDownloadItemUpdate(result.id, item)
+            onDownloadItemUpdateListener.onDownloadItemUpdate(item)
             dismiss()
         }
 
         val link = view.findViewById<Button>(R.id.bottom_sheet_link)
-        link.text = result.url
+        link.text = currentDownloadItem.url
         link.setOnClickListener{
-            UiUtil.openLinkIntent(requireContext(), result.url)
+            UiUtil.openLinkIntent(requireContext(), currentDownloadItem.url)
         }
         link.setOnLongClickListener{
-            UiUtil.copyLinkToClipBoard(requireContext(), result.url)
+            UiUtil.copyLinkToClipBoard(requireContext(), currentDownloadItem.url)
             true
         }
+
+        val incognitoBtn = view.findViewById<Button>(R.id.bottomsheet_incognito)
+        incognitoBtn.alpha = if (incognito) 1f else 0.3f
+        incognitoBtn.setOnClickListener {
+            if (incognito) {
+                it.alpha = 0.3f
+            }else{
+                it.alpha = 1f
+            }
+
+            incognito = !incognito
+            val onOff = if (incognito) getString(R.string.ok) else getString(R.string.disabled)
+            Toast.makeText(requireContext(), "${getString(R.string.incognito)}: $onOff", Toast.LENGTH_SHORT).show()
+        }
+
 
     }
 
     private fun getDownloadItem(selectedTabPosition: Int = tabLayout.selectedTabPosition) : DownloadItem{
-        return when(selectedTabPosition){
+        val item =  when(selectedTabPosition){
             0 -> {
                 val f = fragmentManager?.findFragmentByTag("f0") as DownloadAudioFragment
                 f.downloadItem.apply { id = currentDownloadItem.id }
@@ -225,6 +236,8 @@ class ConfigureDownloadBottomSheetDialog(private var result: ResultItem, private
                 f.downloadItem.apply { id = currentDownloadItem.id }
             }
         }
+        item.incognito = incognito
+        return item
     }
 
 
@@ -261,7 +274,7 @@ class ConfigureDownloadBottomSheetDialog(private var result: ResultItem, private
 
 
     interface OnDownloadItemUpdateListener {
-        fun onDownloadItemUpdate(resultItemID: Long, item: DownloadItem)
+        fun onDownloadItemUpdate(item: DownloadItem)
     }
 
     override fun onCancel(dialog: DialogInterface) {

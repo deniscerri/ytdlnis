@@ -199,9 +199,10 @@ class DownloadCommandFragment(private val resultItem: ResultItem? = null, privat
                 }
 
                 freeSpace = view.findViewById(R.id.freespace)
-                freeSpace.text = String.format(getString(R.string.freespace) + ": " + FileUtil.convertFileSize(
-                    File(FileUtil.formatPath(downloadItem.downloadPath)).freeSpace
-                ))
+                val free = FileUtil.convertFileSize(
+                    File(FileUtil.formatPath(downloadItem.downloadPath)).freeSpace)
+                freeSpace.text = String.format( getString(R.string.freespace) + ": " + free)
+                if (free == "?") freeSpace.visibility = View.GONE
 
                 val shortcutCount = withContext(Dispatchers.IO){
                     commandTemplateViewModel.getTotalShortcutNumber()

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.DialogInterface
 import android.content.SharedPreferences
+import android.content.res.ColorStateList
 import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
@@ -17,7 +18,9 @@ import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.core.content.edit
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -85,6 +88,7 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
     private lateinit var result: ResultItem
     private lateinit var type: Type
     private var currentDownloadItem: DownloadItem? = null
+    private var incognito: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -113,6 +117,7 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
         }
         result = res
         currentDownloadItem = dwl
+        incognito = currentDownloadItem?.incognito ?: sharedPreferences.getBoolean("incognito", false)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -424,6 +429,20 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
             (updateItem.parent as LinearLayout).visibility = View.GONE
         }
 
+        val incognitoBtn = view.findViewById<Button>(R.id.bottomsheet_incognito)
+        incognitoBtn.alpha = if (incognito) 1f else 0.3f
+        incognitoBtn.setOnClickListener {
+            if (incognito) {
+                it.alpha = 0.3f
+            }else{
+                it.alpha = 1f
+            }
+
+            incognito = !incognito
+            val onOff = if (incognito) getString(R.string.ok) else getString(R.string.disabled)
+            Toast.makeText(requireContext(), "${getString(R.string.incognito)}: $onOff", Toast.LENGTH_SHORT).show()
+        }
+
 
         //update in the background if there is no data
         if(result.title.isEmpty() && currentDownloadItem == null && !sharedPreferences.getBoolean("quick_download", false) && type != Type.command){
@@ -604,7 +623,7 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
     }
 
     private fun getDownloadItem(selectedTabPosition: Int = tabLayout.selectedTabPosition) : DownloadItem {
-        return when(selectedTabPosition){
+        val item =  when(selectedTabPosition){
             0 -> {
                 val f = fragmentManager?.findFragmentByTag("f0") as DownloadAudioFragment
                 f.downloadItem
@@ -618,6 +637,9 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
                 f.downloadItem
             }
         }
+
+        item.incognito = incognito
+        return item
     }
 
     private fun getAlsoAudioDownloadItem(finished: (it: DownloadItem) -> Unit) {

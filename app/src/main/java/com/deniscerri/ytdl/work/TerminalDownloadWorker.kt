@@ -80,7 +80,7 @@ class TerminalDownloadWorker(
         val noCache = !sharedPreferences.getBoolean("cache_downloads", true) && File(FileUtil.formatPath(commandPath)).canWrite()
 
         if (!noCache){
-            request.addOption("-P", FileUtil.getCachePath(context) + "/TERMINAL/" + itemId)
+            request.addOption("-P", FileUtil.getCachePath(context) + "TERMINAL/" + itemId)
         }else if (!request.hasOption("-P")){
             request.addOption("-P", FileUtil.formatPath(commandPath))
         }

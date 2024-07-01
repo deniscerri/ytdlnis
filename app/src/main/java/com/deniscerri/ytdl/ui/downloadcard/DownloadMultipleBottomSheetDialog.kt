@@ -167,11 +167,11 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                     if (items.all { it2 -> it2.type == items[0].type }) {
                         bottomAppBar.menu[1].icon?.alpha = 255
                         if (items[0].type != DownloadViewModel.Type.command) {
-                            bottomAppBar.menu[3].icon?.alpha = 255
+                            bottomAppBar.menu[4].icon?.alpha = 255
                         }
                     } else {
                         bottomAppBar.menu[1].icon?.alpha = 30
-                        bottomAppBar.menu[3].icon?.alpha = 30
+                        bottomAppBar.menu[4].icon?.alpha = 30
                     }
 
                     val type = items.first().type
@@ -270,8 +270,51 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
             }
         }
 
+        lifecycleScope.launch {
+            val allIncognito = withContext(Dispatchers.IO){
+                downloadViewModel.areAllProcessingIncognito()
+            }
+
+            bottomAppBar.menu.children.first { it.itemId == R.id.incognito }.icon!!.apply {
+                alpha = if (allIncognito){
+                    255
+                }else{
+                    30
+                }
+            }
+
+        }
+
+
         bottomAppBar.setOnMenuItemClickListener { m: MenuItem ->
             when (m.itemId) {
+                R.id.incognito -> {
+                    lifecycleScope.launch {
+                        if (m.icon!!.alpha == 255) {
+                            bottomAppBar.menu[3].isEnabled = false
+                            withContext(Dispatchers.IO) {
+                                downloadViewModel.updateProcessingIncognito(false)
+                                withContext(Dispatchers.Main){
+                                    m.icon!!.alpha = 30
+                                    m.isEnabled = true
+                                }
+                            }
+                            bottomAppBar.menu[3].icon?.alpha = 30
+                            bottomAppBar.menu[3].isEnabled = true
+                            Toast.makeText(requireContext(), "${getString(R.string.incognito)}: ${getString(R.string.disabled)}", Toast.LENGTH_SHORT).show()
+                        }else{
+                            bottomAppBar.menu[3].isEnabled = false
+                            withContext(Dispatchers.IO) {
+                                downloadViewModel.updateProcessingIncognito(true)
+                                withContext(Dispatchers.Main){
+                                }
+                            }
+                            bottomAppBar.menu[3].icon?.alpha = 255
+                            bottomAppBar.menu[3].isEnabled = true
+                            Toast.makeText(requireContext(), "${getString(R.string.incognito)}: ${getString(R.string.ok)}", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
                 R.id.folder -> {
                     val intent = Intent(Intent.ACTION_OPEN_DOCUMENT_TREE)
                     intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
@@ -306,7 +349,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                                 withContext(Dispatchers.Main){
                                     preferredDownloadType.setIcon(R.drawable.baseline_audio_file_24)
                                     bottomAppBar.menu[1].icon?.alpha = 255
-                                    bottomAppBar.menu[3].icon?.alpha = 255
+                                    bottomAppBar.menu[4].icon?.alpha = 255
                                     bottomSheet.cancel()
                                 }
                             }
@@ -318,7 +361,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                                 withContext(Dispatchers.Main){
                                     preferredDownloadType.setIcon(R.drawable.baseline_video_file_24)
                                     bottomAppBar.menu[1].icon?.alpha = 255
-                                    bottomAppBar.menu[3].icon?.alpha = 255
+                                    bottomAppBar.menu[4].icon?.alpha = 255
                                     bottomSheet.cancel()
                                 }
                             }
@@ -330,7 +373,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                                 withContext(Dispatchers.Main){
                                     preferredDownloadType.setIcon(R.drawable.baseline_insert_drive_file_24)
                                     bottomAppBar.menu[1].icon?.alpha = 255
-                                    bottomAppBar.menu[3].icon?.alpha = 30
+                                    bottomAppBar.menu[4].icon?.alpha = 30
                                     bottomSheet.cancel()
                                 }
                             }
@@ -728,11 +771,8 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                 downloadViewModel.getItemByID(id)
             }
 
-            val resultItem = withContext(Dispatchers.IO){
-                resultViewModel.getItemByURL(downloadItem.url)!!
-            }
             if (parentFragmentManager.findFragmentByTag("configureDownloadSingleSheet") == null){
-                val bottomSheet = ConfigureDownloadBottomSheetDialog(resultItem, downloadItem, this@DownloadMultipleBottomSheetDialog)
+                val bottomSheet = ConfigureDownloadBottomSheetDialog(downloadItem, this@DownloadMultipleBottomSheetDialog)
                 bottomSheet.show(parentFragmentManager, "configureDownloadSingleSheet")
             }
         }
@@ -771,7 +811,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
     override fun onClick(p0: View?) {
     }
 
-    override fun onDownloadItemUpdate(resultItemID: Long, item: DownloadItem) {
+    override fun onDownloadItemUpdate(item: DownloadItem) {
         lifecycleScope.launch {
             withContext(Dispatchers.IO){
                 downloadViewModel.updateDownload(item)

@@ -55,13 +55,6 @@ class UpdateSettingsFragment : BaseSettingsFragment() {
                 true
             }
 
-        findPreference<Preference>("piped_instance")?.setOnPreferenceClickListener {
-            UiUtil.showPipedInstancesDialog(requireActivity(), preferences.getString("piped_instance", "")!!){
-                editor.putString("piped_instance", it)
-                editor.apply()
-            }
-            true
-        }
 
         findPreference<Preference>("changelog")?.setOnPreferenceClickListener {
             lifecycleScope.launch(Dispatchers.IO) {

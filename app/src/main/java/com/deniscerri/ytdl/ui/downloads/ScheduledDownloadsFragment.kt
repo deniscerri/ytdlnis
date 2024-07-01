@@ -112,11 +112,8 @@ class ScheduledDownloadsFragment : Fragment(), ScheduledDownloadAdapter.OnItemCl
     override fun onActionButtonClick(itemID: Long) {
         lifecycleScope.launch {
             runCatching {
-                val item = withContext(Dispatchers.IO){
-                    downloadViewModel.getItemByID(itemID)
-                }
                 withContext(Dispatchers.IO){
-                    downloadViewModel.resetScheduleTimeForItemsAndStartDownload(listOf(item.id))
+                    downloadViewModel.resetScheduleTimeForItemsAndStartDownload(listOf(itemID))
                 }
             }.onFailure {
                 Toast.makeText(requireContext(), it.message, Toast.LENGTH_LONG).show()

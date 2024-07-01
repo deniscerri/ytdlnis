@@ -10,7 +10,7 @@ import com.deniscerri.ytdl.database.models.ResultItem
 class DownloadFragmentAdapter (
     fragmentManager : FragmentManager,
     lifecycle : Lifecycle,
-    private var result: ResultItem,
+    private var result: ResultItem?,
     private var downloadItem: DownloadItem?,
     private var nonSpecific: Boolean = false
 ) : FragmentStateAdapter(fragmentManager, lifecycle) {
@@ -24,8 +24,8 @@ class DownloadFragmentAdapter (
     }
 
     fun setTitleAuthor(t: String, a: String){
-        result.title = t
-        result.author = a
+        result?.title = t
+        result?.author = a
         downloadItem?.title = t
         downloadItem?.author = a
     }

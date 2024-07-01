@@ -37,5 +37,7 @@ data class ObserveSourcesItem(
     var retryMissingDownloads: Boolean,
     @ColumnInfo(defaultValue = "[]")
     var ignoredLinks: MutableList<String>,
-    var alreadyProcessedLinks : MutableList<String>
+    var alreadyProcessedLinks : MutableList<String>,
+    @ColumnInfo(defaultValue = "0")
+    var syncWithSource: Boolean
 ) : Parcelable

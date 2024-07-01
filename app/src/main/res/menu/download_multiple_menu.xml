@@ -22,6 +22,12 @@
         android:icon="@drawable/baseline_folder_24"
         app:showAsAction="always"/>
 
+    <item
+        android:id="@+id/incognito"
+        android:title="@string/incognito"
+        android:icon="@drawable/ic_nightly"
+        app:showAsAction="always"/>
+
 
     <item
         android:id="@+id/more"

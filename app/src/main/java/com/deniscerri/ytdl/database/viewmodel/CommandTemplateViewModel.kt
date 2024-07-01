@@ -111,6 +111,10 @@ class CommandTemplateViewModel(private val application: Application) : AndroidVi
         repository.deleteShortcut(item)
     }
 
+    fun deleteAllShortcuts() = viewModelScope.launch(Dispatchers.IO) {
+        repository.deleteAllShortcuts()
+    }
+
     fun deleteAll() = viewModelScope.launch(Dispatchers.IO) {
         repository.deleteAll()
     }

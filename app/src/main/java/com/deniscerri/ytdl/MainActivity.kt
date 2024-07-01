@@ -42,9 +42,13 @@ import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdl.ui.BaseActivity
 import com.deniscerri.ytdl.ui.HomeFragment
+import com.deniscerri.ytdl.ui.downloads.DownloadQueueMainFragment
+import com.deniscerri.ytdl.ui.downloads.HistoryFragment
 import com.deniscerri.ytdl.ui.more.settings.SettingsActivity
 import com.deniscerri.ytdl.util.CrashListener
 import com.deniscerri.ytdl.util.FileUtil
+import com.deniscerri.ytdl.util.NavbarUtil
+import com.deniscerri.ytdl.util.NavbarUtil.applyNavBarStyle
 import com.deniscerri.ytdl.util.ThemeUtil
 import com.deniscerri.ytdl.util.UpdateUtil
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -125,26 +129,39 @@ class MainActivity : BaseActivity() {
             }
         }
 
-        if (savedInstanceState == null){
-            val graph = navController.navInflater.inflate(R.navigation.nav_graph)
-            graph.setStartDestination(R.id.homeFragment)
-            when(preferences.getString("start_destination", "")) {
-                "History" -> graph.setStartDestination(R.id.historyFragment)
-                "More" -> if (navigationView is NavigationBarView) graph.setStartDestination(R.id.moreFragment)
-            }
-
-            navController.graph = graph
-        }
+        NavbarUtil.init(this)
 
         if (navigationView is NavigationBarView){
+            if (savedInstanceState == null){
+                val graph = navController.navInflater.inflate(R.navigation.nav_graph)
+                graph.setStartDestination(NavbarUtil.getStartFragmentId(this))
+                navController.graph = graph
+            }
+            (navigationView as NavigationBarView).applyNavBarStyle()
+
+            val showingDownloadQueue = NavbarUtil.getNavBarItems(this).any { n -> n.itemId == R.id.downloadQueueMainFragment && n.isVisible }
+
             (navigationView as NavigationBarView).setupWithNavController(navController)
             (navigationView as NavigationBarView).setOnItemReselectedListener {
                 when (it.itemId) {
                     R.id.homeFragment -> {
-                        (navHostFragment.childFragmentManager.primaryNavigationFragment!! as HomeFragment).scrollToTop()
+                        kotlin.runCatching {
+                            (navHostFragment.childFragmentManager.primaryNavigationFragment!! as HomeFragment).scrollToTop()
+                        }
                     }
                     R.id.historyFragment -> {
-                        navController.navigate(R.id.downloadQueueMainFragment)
+                        if(!showingDownloadQueue) {
+                            navController.navigate(R.id.downloadQueueMainFragment)
+                        }else{
+                            kotlin.runCatching {
+                                (navHostFragment.childFragmentManager.primaryNavigationFragment!! as HistoryFragment).scrollToTop()
+                            }
+                        }
+                    }
+                    R.id.downloadQueueMainFragment -> {
+                        kotlin.runCatching {
+                            (navHostFragment.childFragmentManager.primaryNavigationFragment!! as DownloadQueueMainFragment).scrollToActive()
+                        }
                     }
                     R.id.moreFragment -> {
                         val intent = Intent(context, SettingsActivity::class.java)
@@ -153,7 +170,11 @@ class MainActivity : BaseActivity() {
                 }
             }
 
-            val activeDownloadsBadge = (navigationView as NavigationBarView).getOrCreateBadge(R.id.historyFragment)
+            val activeDownloadsBadge = if (showingDownloadQueue) {
+                (navigationView as NavigationBarView).getOrCreateBadge(R.id.downloadQueueMainFragment)
+            }else{
+                (navigationView as NavigationBarView).getOrCreateBadge(R.id.historyFragment)
+            }
             lifecycleScope.launch {
                 downloadViewModel.activeDownloadsCount.collectLatest {
                     if (it == 0) {
@@ -220,12 +241,14 @@ class MainActivity : BaseActivity() {
             (navigationView as NavigationView).getHeaderView(0).findViewById<TextView>(R.id.title).text = ThemeUtil.getStyledAppName(this)
         }
 
+        val showingNavbarItems = NavbarUtil.getNavBarItems(this).filter { it.isVisible }.map { it.itemId }
         navController.addOnDestinationChangedListener { _, destination, _ ->
             Handler(Looper.getMainLooper()).post {
                 if (navigationView is NavigationBarView){
-                    when(destination.id){
-                        R.id.homeFragment, R.id.historyFragment, R.id.moreFragment -> showBottomNavigation()
-                        else -> hideBottomNavigation()
+                    if (showingNavbarItems.contains(destination.id)) {
+                        showBottomNavigation()
+                    }else{
+                        hideBottomNavigation()
                     }
                 }
             }

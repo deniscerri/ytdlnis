@@ -76,21 +76,9 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
 
     val alreadyExistsUiState: MutableStateFlow<List<SharedDownloadViewModel.AlreadyExistsIDs>>
 
-    private var bestVideoFormat : Format
-    private var bestAudioFormat : Format
-    private var defaultVideoFormats : MutableList<Format>
-
-    private val videoQualityPreference: String
-    private val formatIDPreference: List<String>
-    private val audioFormatIDPreference: List<String>
-    private val resources : Resources
     private var extraCommandsForAudio: String = ""
     private var extraCommandsForVideo: String = ""
 
-    private var audioContainer: String?
-    private var videoContainer: String?
-    private var videoCodec: String?
-    private var audioCodec: String?
     private val dao: DownloadDao
     private val historyRepository: HistoryRepository
     private val resultRepository: ResultRepository
@@ -137,37 +125,6 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
             }
         }
 
-        videoQualityPreference = sharedPreferences.getString("video_quality", application.getString(R.string.best_quality)).toString()
-        formatIDPreference = sharedPreferences.getString("format_id", "").toString().split(",").filter { it.isNotEmpty() }
-        audioFormatIDPreference = sharedPreferences.getString("format_id_audio", "").toString().split(",").filter { it.isNotEmpty() }
-
-        val confTmp = Configuration(application.resources.configuration)
-        confTmp.setLocale(Locale(sharedPreferences.getString("app_language", "en")!!))
-        val metrics = DisplayMetrics()
-        resources = Resources(application.assets, metrics, confTmp)
-
-
-        videoContainer = sharedPreferences.getString("video_format",  "Default")
-        defaultVideoFormats = infoUtil.getGenericVideoFormats(resources)
-        bestVideoFormat = defaultVideoFormats.first()
-
-        audioContainer = sharedPreferences.getString("audio_format", "mp3")
-        bestAudioFormat = if (audioFormatIDPreference.isEmpty()){
-            infoUtil.getGenericAudioFormats(resources).first()
-        }else{
-            Format(
-                audioFormatIDPreference.first().split("+").first(),
-                audioContainer!!,
-                "",
-                "",
-                "",
-                0,
-                audioFormatIDPreference.first().split("+").first()
-            )
-        }
-
-        videoCodec = sharedPreferences.getString("video_codec", "")
-        audioCodec = sharedPreferences.getString("audio_codec", "")
     }
 
     fun deleteDownload(id: Long) = viewModelScope.launch(Dispatchers.IO) {
@@ -325,14 +282,26 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
             container,
             "",
             ArrayList(),
-            path, historyItem.website, "", "", audioPreferences, videoPreferences, extraCommands, customFileNameTemplate!!, saveThumb, DownloadRepository.Status.Queued.toString(), 0, null
+            path,
+            historyItem.website,
+            "",
+            "",
+            audioPreferences,
+            videoPreferences,
+            extraCommands,
+            customFileNameTemplate!!,
+            saveThumb,
+            DownloadRepository.Status.Queued.toString(),
+            0,
+            null,
+            incognito = sharedPreferences.getBoolean("incognito", false)
         )
 
     }
 
 
     fun getPreferredAudioRequirements(): MutableList<(Format) -> Int> {
-        return sharedDownloadViewModel.getPreferredVideoRequirements()
+        return sharedDownloadViewModel.getPreferredAudioRequirements()
     }
 
     //requirement and importance
@@ -371,7 +340,7 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
             try {
                 itemIDs.forEachIndexed { idx, it ->
                     val item = repository.getItemByID(it)
-                    if (!isActive) throw CancellationException()
+                    if (processingItemsFlow?.job?.isCancelled == true) throw CancellationException()
 
                     item.id = 0
                     item.status = DownloadRepository.Status.Processing.toString()
@@ -383,11 +352,7 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
                 }
                 processingItems.emit(false)
             } catch (e: Exception) {
-                processingItemsFlow?.apply {
-                    this.processingDownloadItemIDs.chunked(100).forEach {
-                        repository.deleteAllWithIDs(it)
-                    }
-                }
+                deleteProcessing()
                 updateProcessingJobData(null)
                 processingItems.emit(false)
             }
@@ -399,6 +364,7 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
     fun turnResultItemsToProcessingDownloads(itemIDs: List<Long>, downloadNow: Boolean = false) = viewModelScope.launch(Dispatchers.IO) {
         updateProcessingJobData(ProcessingItemsJob(null, ResultItem::class.java.toString(), itemIDs))
         val job = viewModelScope.launch(Dispatchers.IO) {
+            repository.deleteProcessing()
             processingItems.emit(true)
             try {
                 itemIDs.forEach { id ->
@@ -409,7 +375,7 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
                     ))
                     downloadItem.status = DownloadRepository.Status.Processing.toString()
 
-                    if (!isActive) {
+                    if (processingItemsFlow?.job?.isCancelled == true) {
                         throw CancellationException()
                     }
 
@@ -425,11 +391,7 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
                 }
                 processingItems.emit(false)
             }catch (e: Exception) {
-                processingItemsFlow?.apply {
-                    this.processingDownloadItemIDs.chunked(100).forEach {
-                        repository.deleteAllWithIDs(it)
-                    }
-                }
+                deleteProcessing()
                 updateProcessingJobData(null)
                 processingItems.emit(false)
             }
@@ -470,6 +432,10 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
 
     fun deleteErrored() = viewModelScope.launch(Dispatchers.IO) {
         repository.deleteErrored()
+    }
+
+    fun deleteQueued() = viewModelScope.launch(Dispatchers.IO) {
+        repository.deleteQueued()
     }
 
     fun deleteSaved() = viewModelScope.launch(Dispatchers.IO) {
@@ -513,7 +479,11 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
     }
 
     fun getActiveDownloadsCount() : Int {
-        return dao.getDownloadsCountByStatus(listOf(DownloadRepository.Status.Active, DownloadRepository.Status.ActivePaused).toListString())
+        return dao.getDownloadsCountByStatus(listOf(DownloadRepository.Status.Active).toListString())
+    }
+
+    fun getActiveQueuedDownloadsCount() : Int {
+        return dao.getDownloadsCountByStatus(listOf(DownloadRepository.Status.Active, DownloadRepository.Status.Queued).toListString())
     }
 
     fun getQueuedDownloadsCount() : Int {
@@ -529,8 +499,8 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         repository.startDownloadWorker(emptyList(), application)
     }
 
-    suspend fun resetActivePaused() {
-        dbManager.downloadDao.resetActivePausedItems()
+    suspend fun resetActiveToQueued() {
+        dbManager.downloadDao.resetActiveToQueued()
     }
 
     suspend fun startDownloadWorker(list: List<DownloadItem>){
@@ -749,6 +719,14 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
 
     fun getScheduledIDsBetweenTwoItems(item1: Long, item2: Long) : List<Long> {
         return dao.getScheduledIDsBetweenTwoItems(item1, item2)
+    }
+
+    suspend fun updateProcessingIncognito(incognito: Boolean) {
+        dao.updateProcessingIncognito(incognito)
+    }
+
+    fun areAllProcessingIncognito() : Boolean {
+        return dao.getProcessingAsIncognitoCount() > 0
     }
 
 

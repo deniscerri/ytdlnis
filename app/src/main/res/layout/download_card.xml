@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView android:id="@+id/download_card_view"
+<com.google.android.material.card.MaterialCardView xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/download_card_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:backgroundTint="@android:color/transparent"
@@ -39,6 +40,23 @@
             app:layout_constraintTop_toTopOf="parent"
             app:shapeAppearance="@style/ShapeAppearanceOverlay.Avatar" />
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/incognitoLabel"
+            style="?attr/materialIconButtonStyle"
+            android:layout_width="20dp"
+            android:height="20dp"
+            android:clickable="false"
+            android:focusable="false"
+            android:visibility="gone"
+            android:layout_margin="5dp"
+            android:layout_height="wrap_content"
+            android:minHeight="0dp"
+            android:padding="0dp"
+            app:cornerRadius="10dp"
+            app:icon="@drawable/ic_nightly"
+            app:iconTint="?attr/colorAccent"
+            app:layout_constraintEnd_toEndOf="@+id/downloads_image_view"
+            app:layout_constraintTop_toTopOf="@+id/downloads_image_view" />
 
         <TextView
             android:id="@+id/duration"

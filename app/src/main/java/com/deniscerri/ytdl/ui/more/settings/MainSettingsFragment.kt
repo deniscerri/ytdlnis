@@ -1,17 +1,24 @@
 package com.deniscerri.ytdl.ui.more.settings
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.util.LayoutDirection
 import android.util.Log
+import android.view.Gravity
 import android.view.View
+import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.edit
 import androidx.core.os.LocaleListCompat
@@ -24,6 +31,7 @@ import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
+import com.afollestad.materialdialogs.utils.MDUtil.getStringArray
 import com.deniscerri.ytdl.BuildConfig
 import com.deniscerri.ytdl.MainActivity
 import com.deniscerri.ytdl.R
@@ -31,6 +39,7 @@ import com.deniscerri.ytdl.database.models.CommandTemplate
 import com.deniscerri.ytdl.database.models.CookieItem
 import com.deniscerri.ytdl.database.models.DownloadItem
 import com.deniscerri.ytdl.database.models.HistoryItem
+import com.deniscerri.ytdl.database.models.RestoreAppDataItem
 import com.deniscerri.ytdl.database.models.observeSources.ObserveSourcesItem
 import com.deniscerri.ytdl.database.models.SearchHistoryItem
 import com.deniscerri.ytdl.database.models.TemplateShortcut
@@ -42,13 +51,17 @@ import com.deniscerri.ytdl.database.viewmodel.ObserveSourcesViewModel
 import com.deniscerri.ytdl.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdl.util.UiUtil
 import com.deniscerri.ytdl.util.UpdateUtil
+import com.google.android.material.chip.Chip
+import com.google.android.material.chip.ChipGroup
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.textfield.TextInputLayout
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -418,11 +431,7 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
                             Intent.FLAG_GRANT_WRITE_URI_PERMISSION
                 )
             }
-
             lifecycleScope.launch {
-                val preferences =
-                    PreferenceManager.getDefaultSharedPreferences(requireContext())
-
                 runCatching {
                     val ip = requireContext().contentResolver.openInputStream(result.data!!.data!!)
                     val r = BufferedReader(InputStreamReader(ip))
@@ -432,308 +441,148 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
                         total.append(line).append('\n')
                     }
 
+                    //PARSE RESTORE JSON
                     val json = Gson().fromJson(total.toString(), JsonObject::class.java)
-                    val finalMessage = StringBuilder("")
-                    val errorMessage = StringBuilder("")
+                    val restoreData = RestoreAppDataItem()
+                    val parsedDataMessage = StringBuilder()
 
-                    //preference restore
-                    kotlin.runCatching {
-                        if(json.has("settings")){
-                            PreferenceManager.getDefaultSharedPreferences(requireContext()).edit(commit = true){
-                                clear()
-                                val prefs = json.getAsJsonArray("settings")
-                                prefs.forEach {
-                                    val key : String = it.asJsonObject.get("key").toString().replace("\"", "")
-                                    when(it.asJsonObject.get("type").toString().replace("\"", "")){
-                                        "String" -> {
-                                            val value = it.asJsonObject.get("value").toString().replace("\"", "")
-                                            putString(key, value)
-                                        }
-                                        "Boolean" -> {
-                                            val value = it.asJsonObject.get("value").toString().replace("\"", "").toBoolean()
-                                            Log.e("REST", value.toString())
-                                            Log.e("REST", key)
-                                            putBoolean(key, value)
-                                        }
-                                        "Int" -> {
-                                            val value = it.asJsonObject.get("value").toString().replace("\"", "").toInt()
-                                            putInt(key, value)
-                                        }
-                                        "HashSet" -> {
-                                            val value = it.asJsonObject.get("value").toString().replace("(\")|(\\[)|(])|([ \\t])".toRegex(), "").split(",")
-                                            putStringSet(key, value.toHashSet())
-                                        }
-                                    }
-                                }
-                                finalMessage.append("${getString(R.string.settings)}: ${prefs.count()}\n")
-                            }
-                        }
-                    }.onFailure {
-                        errorMessage.append("\n PREFERENCE RESTORE FAILED: \n ${it.message}")
+                    if (json.has("settings")) {
+                        restoreData.settings = json.getAsJsonArray("settings")
+                        parsedDataMessage.appendLine("${getString(R.string.settings)}: ${restoreData.settings!!.size()}")
                     }
 
-                    //history restore
-                    kotlin.runCatching {
-                        if(json.has("downloads")){
-                            val items = json.getAsJsonArray("downloads")
-                            items.forEach {
-                                val item = Gson().fromJson(it.toString().replace("^\"|\"$", ""), HistoryItem::class.java)
-                                item.id = 0L
-                                withContext(Dispatchers.IO){
-                                    historyViewModel.insert(item)
-                                }
-                            }
-                            finalMessage.append("${getString(R.string.downloads)}: ${items.count()}\n")
+                    if (json.has("downloads")) {
+                        restoreData.downloads = json.getAsJsonArray("downloads").map {
+                            val item =
+                                Gson().fromJson(it.toString().replace("^\"|\"$", ""), HistoryItem::class.java)
+                            item.id = 0L
+                            item
                         }
-                    }.onFailure {
-                        errorMessage.append("\n HISTORY RESTORE FAILED: \n ${it.message}")
+                        parsedDataMessage.appendLine("${getString(R.string.downloads)}: ${restoreData.downloads!!.size}")
+
                     }
 
-                    //queued downloads restore
-                    kotlin.runCatching {
-                        if(json.has("queued")){
-                            val items = json.getAsJsonArray("queued")
-                            val queued = mutableListOf<DownloadItem>()
-                            items.forEach {
-                                val item = Gson().fromJson(it.toString().replace("^\"|\"$", ""), DownloadItem::class.java)
-                                item.id = 0L
-                                queued.add(item)
-                            }
-                            if (queued.isNotEmpty()) {
-                                finalMessage.append("${getString(R.string.in_queue)}: ${queued.count()}\n")
-                                withContext(Dispatchers.IO){downloadViewModel.queueDownloads(queued)}
-                            }
+                    if (json.has("queued")) {
+                        restoreData.queued = json.getAsJsonArray("queued").map {
+                            val item =
+                                Gson().fromJson(it.toString().replace("^\"|\"$", ""), DownloadItem::class.java)
+                            item.id = 0L
+                            item
                         }
-                    }.onFailure {
-                        errorMessage.append("\n QUEUED DOWNLOADS RESTORE FAILED: \n ${it.message}")
+                        parsedDataMessage.appendLine("${getString(R.string.queue)}: ${restoreData.queued!!.size}")
                     }
 
-                    //scheduled downloads restore
-                    kotlin.runCatching {
-                        if(json.has("scheduled")){
-                            val items = json.getAsJsonArray("scheduled")
-                            val scheduled = mutableListOf<DownloadItem>()
-                            items.forEach {
-                                val item = Gson().fromJson(it.toString().replace("^\"|\"$", ""), DownloadItem::class.java)
-                                item.id = 0L
-                                scheduled.add(item)
-                            }
-                            if (scheduled.isNotEmpty()) {
-                                finalMessage.append("${getString(R.string.scheduled)}: ${scheduled.count()}\n")
-                                withContext(Dispatchers.IO){downloadViewModel.queueDownloads(scheduled)}
-                            }
+                    if (json.has("scheduled")) {
+                        restoreData.scheduled = json.getAsJsonArray("scheduled").map {
+                            val item =
+                                Gson().fromJson(it.toString().replace("^\"|\"$", ""), DownloadItem::class.java)
+                            item.id = 0L
+                            item
                         }
-                    }.onFailure {
-                        errorMessage.append("\n SCHEDULED DOWNLOADS RESTORE FAILED: \n ${it.message}")
+                        parsedDataMessage.appendLine("${getString(R.string.scheduled)}: ${restoreData.scheduled!!.size}")
                     }
 
-                    //cancelled downloads restore
-                    kotlin.runCatching {
-                        if(json.has("cancelled")){
-                            val items = json.getAsJsonArray("cancelled")
-                            val cancelled = mutableListOf<DownloadItem>()
-                            items.forEach {
-                                val item = Gson().fromJson(it.toString().replace("^\"|\"$", ""), DownloadItem::class.java)
-                                item.id = 0L
-                                cancelled.add(item)
-
-                            }
-
-                            cancelled.asReversed().forEach { f ->
-                                withContext(Dispatchers.IO){
-                                    downloadViewModel.insert(f)
-                                }
-                            }
-
-                            if(cancelled.isNotEmpty()){
-                                finalMessage.append("${getString(R.string.cancelled)}: ${cancelled.count()}\n")
-                            }
+                    if (json.has("cancelled")) {
+                        restoreData.cancelled = json.getAsJsonArray("cancelled").map {
+                            val item =
+                                Gson().fromJson(it.toString().replace("^\"|\"$", ""), DownloadItem::class.java)
+                            item.id = 0L
+                            item
                         }
-                    }.onFailure {
-                        errorMessage.append("\n CANCELLED DOWNLOADS RESTORE FAILED: \n ${it.message}")
+                        parsedDataMessage.appendLine("${getString(R.string.cancelled)}: ${restoreData.cancelled!!.size}")
                     }
 
-                    //erorred downloads restore
-                    kotlin.runCatching {
-                        if(json.has("errored")){
-                            val items = json.getAsJsonArray("errored")
-                            val errored = mutableListOf<DownloadItem>()
-                            items.forEach {
-                                val item = Gson().fromJson(it.toString().replace("^\"|\"$", ""), DownloadItem::class.java)
-                                item.id = 0L
-                                errored.add(item)
-
-                            }
-
-                            errored.asReversed().forEach { f ->
-                                withContext(Dispatchers.IO){
-                                    downloadViewModel.insert(f)
-                                }
-                            }
-
-                            if(errored.isNotEmpty()){
-                                finalMessage.append("${getString(R.string.errored)}: ${errored.count()}\n")
-                            }
+                    if (json.has("errored")) {
+                        restoreData.errored = json.getAsJsonArray("errored").map {
+                            val item =
+                                Gson().fromJson(it.toString().replace("^\"|\"$", ""), DownloadItem::class.java)
+                            item.id = 0L
+                            item
                         }
-                    }.onFailure {
-                        errorMessage.append("\n ERRORED DOWNLOADS RESTORE FAILED: \n ${it.message}")
+                        parsedDataMessage.appendLine("${getString(R.string.errored)}: ${restoreData.errored!!.size}")
                     }
 
-                    //saved downloads restore
-                    kotlin.runCatching {
-                        if(json.has("saved")){
-                            val items = json.getAsJsonArray("saved")
-                            val saved = mutableListOf<DownloadItem>()
-                            items.forEach {
-                                val item = Gson().fromJson(it.toString().replace("^\"|\"$", ""), DownloadItem::class.java)
-                                item.id = 0L
-                                saved.add(item)
-
-                            }
-
-                            saved.asReversed().forEach { f ->
-                                withContext(Dispatchers.IO){
-                                    downloadViewModel.insert(f)
-                                }
-                            }
-
-                            if(saved.isNotEmpty()){
-                                finalMessage.append("${getString(R.string.saved)}: ${saved.count()}\n")
-                            }
+                    if (json.has("saved")) {
+                        restoreData.saved = json.getAsJsonArray("saved").map {
+                            val item =
+                                Gson().fromJson(it.toString().replace("^\"|\"$", ""), DownloadItem::class.java)
+                            item.id = 0L
+                            item
                         }
-                    }.onFailure {
-                        errorMessage.append("\n SAVED DOWNLOADS RESTORE FAILED: \n ${it.message}")
+                        parsedDataMessage.appendLine("${getString(R.string.saved)}: ${restoreData.saved!!.size}")
                     }
 
-                    //cookies restore
-                    kotlin.runCatching {
-                        if(json.has("cookies")){
-                            val items = json.getAsJsonArray("cookies")
-                            items.forEach {
-                                val item = Gson().fromJson(it.toString().replace("^\"|\"$", ""), CookieItem::class.java)
-                                item.id = 0L
-                                withContext(Dispatchers.IO){
-                                    cookieViewModel.insert(item)
-                                }
-                            }
-                            if(items.count() > 0){
-                                finalMessage.append("${getString(R.string.cookies)}: ${items.count()}\n")
-                            }
+                    if (json.has("cookies")) {
+                        restoreData.cookies = json.getAsJsonArray("cookies").map {
+                            val item =
+                                Gson().fromJson(it.toString().replace("^\"|\"$", ""), CookieItem::class.java)
+                            item.id = 0L
+                            item
                         }
-                    }.onFailure {
-                        errorMessage.append("\n COOKIES RESTORE FAILED: \n ${it.message}")
+                        parsedDataMessage.appendLine("${getString(R.string.cookies)}: ${restoreData.cookies!!.size}")
                     }
 
-                    //command template restore
-                    kotlin.runCatching {
-                        if(json.has("templates")){
-                            val items = json.getAsJsonArray("templates")
-                            val templates = mutableListOf<CommandTemplate>()
-                            items.forEach {
-                                val item = Gson().fromJson(it.toString().replace("^\"|\"$", ""), CommandTemplate::class.java)
-                                item.id = 0L
-                                templates.add(item)
-
-                            }
-
-                            templates.asReversed().forEach { t ->
-                                withContext(Dispatchers.IO){
-                                    commandTemplateViewModel.insert(t)
-                                }
-                            }
-
-                            if(items.count() > 0){
-                                finalMessage.append("${getString(R.string.command_templates)}: ${items.count()}\n")
-                            }
+                    if (json.has("templates")) {
+                        restoreData.templates = json.getAsJsonArray("templates").map {
+                            val item = Gson().fromJson(
+                                it.toString().replace("^\"|\"$", ""),
+                                CommandTemplate::class.java
+                            )
+                            item.id = 0L
+                            item
                         }
-                    }.onFailure {
-                        errorMessage.append("\n COMMAND TEMPLATE RESTORE FAILED: \n ${it.message}")
+                        parsedDataMessage.appendLine("${getString(R.string.command_templates)}: ${restoreData.templates!!.size}")
                     }
 
-                    //shortcuts restore
-                    kotlin.runCatching {
-                        if(json.has("shortcuts")){
-                            val items = json.getAsJsonArray("shortcuts")
-                            items.forEach {
-                                val item = Gson().fromJson(it.toString().replace("^\"|\"$", ""), TemplateShortcut::class.java)
-                                item.id = 0L
-                                withContext(Dispatchers.IO){
-                                    commandTemplateViewModel.insertShortcut(item)
-                                }
-                            }
-                            if(items.count() > 0){
-                                finalMessage.append("${getString(R.string.shortcuts)}: ${items.count()}\n")
-                            }
+                    if (json.has("shortcuts")) {
+                        restoreData.shortcuts = json.getAsJsonArray("shortcuts").map {
+                            val item = Gson().fromJson(
+                                it.toString().replace("^\"|\"$", ""),
+                                TemplateShortcut::class.java
+                            )
+                            item.id = 0L
+                            item
                         }
-                    }.onFailure {
-                        errorMessage.append("\n COMMAND SHORTCUTS RESTORE FAILED: \n ${it.message}")
+
+                        parsedDataMessage.appendLine("${getString(R.string.shortcuts)}: ${restoreData.shortcuts!!.size}")
+
                     }
 
-
-                    //search history restore
-                    kotlin.runCatching {
-                        if(json.has("search_history")){
-                            val items = json.getAsJsonArray("search_history")
-                            items.forEach {
-                                val item = Gson().fromJson(it.toString().replace("^\"|\"$", ""), SearchHistoryItem::class.java)
-                                withContext(Dispatchers.IO){
-                                    resultViewModel.addSearchQueryToHistory(item.query)
-                                }
-                            }
-                            if(items.count() > 0){
-                                finalMessage.append("${getString(R.string.search_history)}: ${items.count()}\n")
-                            }
+                    if (json.has("search_history")) {
+                        restoreData.searchHistory = json.getAsJsonArray("search_history").map {
+                            val item = Gson().fromJson(
+                                it.toString().replace("^\"|\"$", ""),
+                                SearchHistoryItem::class.java
+                            )
+                            item.id = 0L
+                            item
                         }
-                    }.onFailure {
-                        errorMessage.append("\n SEARCH HISTORY RESTORE FAILED: \n ${it.message}")
+
+                        parsedDataMessage.appendLine("${getString(R.string.search_history)}: ${restoreData.searchHistory!!.size}")
                     }
 
-                    //observe sources restore
-                    kotlin.runCatching {
-                        if(json.has("observe_sources")){
-                            val items = json.getAsJsonArray("observe_sources")
-                            items.forEach {
-                                val item = Gson().fromJson(it.toString().replace("^\"|\"$", ""), ObserveSourcesItem::class.java)
-                                withContext(Dispatchers.IO){
-                                    item.id = 0L
-                                    observeSourcesViewModel.insert(item)
-                                }
-                            }
+                    if (json.has("observe_sources")) {
+                        restoreData.observeSources = json.getAsJsonArray("observe_sources").map {
+                            val item = Gson().fromJson(
+                                it.toString().replace("^\"|\"$", ""),
+                                ObserveSourcesItem::class.java
+                            )
+                            item.id = 0L
+                            item
                         }
-                    }.onFailure {
-                        errorMessage.append("\n SEARCH HISTORY RESTORE FAILED: \n ${it.message}")
+
+                        parsedDataMessage.appendLine("${getString(R.string.observe_sources)}: ${restoreData.observeSources!!.size}")
                     }
 
-                    if (finalMessage.isEmpty()) throw Exception("")
-
-                    val builder = MaterialAlertDialogBuilder(requireContext())
-                    builder.setTitle(getString(R.string.restore))
-                    builder.setMessage("${getString(R.string.restore_complete)}\n $finalMessage \n $errorMessage")
-                    builder.setPositiveButton(
-                        getString(R.string.restart)
-                    ) { _: DialogInterface?, _: Int ->
-                        val intent = Intent(requireContext(), MainActivity::class.java)
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                        startActivity(intent)
-                        requireActivity().finishAffinity()
-                        if(json.has("settings")){
-                            AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(preferences.getString("app_language", "en")))
+                    showAppRestoreInfoDialog(
+                        onMerge = {
+                            restoreData(restoreData,parsedDataMessage.toString())
+                        },
+                        onReset =  {
+                            restoreData(restoreData,parsedDataMessage.toString(), true)
                         }
-                        activity?.finishAffinity()
-                    }
+                    )
 
-                    // handle the negative button of the alert dialog
-                    builder.setNegativeButton(
-                        getString(R.string.cancel)
-                    ) { _: DialogInterface?, _: Int ->
-                        if(json.has("settings")){
-                            AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(preferences.getString("app_language", "en")))
-                        }
-                    }
-
-                    val dialog = builder.create()
-                    dialog.show()
                 }.onFailure {
                     it.printStackTrace()
                     Snackbar.make(requireView(), getString(R.string.couldnt_parse_file), Snackbar.LENGTH_LONG).show()
@@ -743,4 +592,185 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
         }
     }
 
+
+
+    @SuppressLint("RestrictedApi")
+    private fun showAppRestoreInfoDialog(onMerge: () -> Unit, onReset: () -> Unit){
+        val builder = MaterialAlertDialogBuilder(requireContext())
+        builder.setTitle(getString(R.string.restore))
+        builder.setMessage(getString(R.string.restore_info))
+
+        builder.setNegativeButton(getString(R.string.cancel)) { dialog : DialogInterface?, _: Int ->
+            dialog?.dismiss()
+        }
+
+        builder.setPositiveButton(getString(R.string.restore)) { dialog : DialogInterface?, _: Int ->
+            onMerge()
+            dialog?.dismiss()
+        }
+
+        builder.setNeutralButton(getString(R.string.reset)) { dialog : DialogInterface?, _: Int ->
+            onReset()
+            dialog?.dismiss()
+        }
+
+
+        val dialog = builder.create()
+        dialog.show()
+        dialog.getButton(AlertDialog.BUTTON_NEUTRAL).gravity = Gravity.START
+    }
+
+    private fun restoreData(data: RestoreAppDataItem, restoreDataMessage: String, resetData: Boolean = false) = lifecycleScope.launch {
+        data.settings?.apply {
+            val prefs = this
+            PreferenceManager.getDefaultSharedPreferences(requireContext()).edit(commit = true){
+                clear()
+                prefs.forEach {
+                    val key : String = it.asJsonObject.get("key").toString().replace("\"", "")
+                    when(it.asJsonObject.get("type").toString().replace("\"", "")){
+                        "String" -> {
+                            val value = it.asJsonObject.get("value").toString().replace("\"", "")
+                            putString(key, value)
+                        }
+                        "Boolean" -> {
+                            val value = it.asJsonObject.get("value").toString().replace("\"", "").toBoolean()
+                            Log.e("REST", value.toString())
+                            Log.e("REST", key)
+                            putBoolean(key, value)
+                        }
+                        "Int" -> {
+                            val value = it.asJsonObject.get("value").toString().replace("\"", "").toInt()
+                            putInt(key, value)
+                        }
+                        "HashSet" -> {
+                            val value = it.asJsonObject.get("value").toString().replace("(\")|(\\[)|(])|([ \\t])".toRegex(), "").split(",")
+                            putStringSet(key, value.toHashSet())
+                        }
+                    }
+                }
+            }
+        }
+
+
+        data.downloads?.apply {
+            withContext(Dispatchers.IO){
+                if (resetData) historyViewModel.deleteAll(false)
+                data.downloads!!.forEach {
+                    historyViewModel.insert(it)
+                }
+            }
+        }
+
+        data.queued?.apply {
+            withContext(Dispatchers.IO){
+                if (resetData) downloadViewModel.deleteQueued()
+                data.queued!!.forEach {
+                    downloadViewModel.insert(it)
+                }
+                downloadViewModel.queueDownloads(listOf())
+            }
+        }
+
+        data.cancelled?.apply {
+            withContext(Dispatchers.IO){
+                if (resetData) downloadViewModel.deleteCancelled()
+                data.cancelled!!.forEach {
+                    downloadViewModel.insert(it)
+                }
+            }
+        }
+
+        data.errored?.apply {
+            withContext(Dispatchers.IO){
+                if (resetData) downloadViewModel.deleteErrored()
+                data.errored!!.forEach {
+                    downloadViewModel.insert(it)
+                }
+            }
+        }
+
+        data.saved?.apply {
+            withContext(Dispatchers.IO){
+                if (resetData) downloadViewModel.deleteSaved()
+                data.saved!!.forEach {
+                    downloadViewModel.insert(it)
+                }
+            }
+        }
+
+        data.cookies?.apply {
+            withContext(Dispatchers.IO){
+                if (resetData) cookieViewModel.deleteAll()
+                data.cookies!!.forEach {
+                    cookieViewModel.insert(it)
+                }
+            }
+        }
+
+        data.templates?.apply {
+            withContext(Dispatchers.IO){
+                if (resetData) commandTemplateViewModel.deleteAll()
+                data.templates!!.forEach {
+                    commandTemplateViewModel.insert(it)
+                }
+            }
+        }
+
+        data.shortcuts?.apply {
+            withContext(Dispatchers.IO){
+                if (resetData) commandTemplateViewModel.deleteAllShortcuts()
+                data.shortcuts!!.forEach {
+                    commandTemplateViewModel.insertShortcut(it)
+                }
+            }
+        }
+
+        data.searchHistory?.apply {
+            withContext(Dispatchers.IO){
+                if (resetData) resultViewModel.deleteAllSearchQueryHistory()
+                data.searchHistory!!.forEach {
+                    resultViewModel.addSearchQueryToHistory(it.query)
+                }
+            }
+        }
+
+        data.observeSources?.apply {
+            withContext(Dispatchers.IO){
+                if (resetData) observeSourcesViewModel.deleteAll()
+                data.observeSources!!.forEach {
+                    observeSourcesViewModel.insert(it)
+                }
+            }
+        }
+        val preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
+
+        val builder = MaterialAlertDialogBuilder(requireContext())
+        builder.setTitle(getString(R.string.restore))
+        builder.setMessage("${getString(R.string.restore_complete)}\n $restoreDataMessage")
+        builder.setPositiveButton(
+            getString(R.string.restart)
+        ) { _: DialogInterface?, _: Int ->
+            val intent = Intent(requireContext(), MainActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent)
+            requireActivity().finishAffinity()
+            if(data.settings != null){
+                AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(preferences.getString("app_language", "en")))
+            }
+            activity?.finishAffinity()
+        }
+
+        // handle the negative button of the alert dialog
+        builder.setNegativeButton(
+            getString(R.string.cancel)
+        ) { _: DialogInterface?, _: Int ->
+            if(data.settings != null){
+                AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(preferences.getString("app_language", "en")))
+            }
+        }
+
+        val dialog = builder.create()
+        dialog.show()
+    }
 }

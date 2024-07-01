@@ -60,6 +60,10 @@ class CommandTemplateRepository(private val commandDao: CommandTemplateDao) {
         commandDao.deleteShortcut(item.id)
     }
 
+    suspend fun deleteAllShortcuts() {
+        commandDao.deleteAllShortcuts()
+    }
+
     suspend fun deleteAll(){
         commandDao.deleteAll()
     }
