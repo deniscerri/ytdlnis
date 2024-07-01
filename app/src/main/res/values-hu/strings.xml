@@ -397,6 +397,5 @@
     <string name="milliseconds">Milliszekundum</string>
     <string name="format_importance_note">Formátum fontosságának beállítása. Ez a sorrend csak akkor lesz használatos, amikor az alkalmazás a letöltési kártyán lévő formátumokat lekérdezi, és automatikusan kiválasztja a formátumot!</string>
     <string name="location">Hely</string>
-    <string name="process_downloads_background">"Letöltés még tölt.
-\nFolytassa a feldolgozást a háttérben és elkezdje a letöltést? "</string>
+    <string name="process_downloads_background">"Letöltés még tölt. Folytatod a feldolgozást a háttérben és elkezded a letöltést? "</string>
 </resources>

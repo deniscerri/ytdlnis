@@ -191,7 +191,7 @@
     <string name="save_subs_desc">Salvar arquivo de legenda na pasta de download</string>
     <string name="invert_selected">Inverter seleção</string>
     <string name="download_over_metered_networks_summary">Faça o download usando qualquer tipo de rede. Caso contrário, espera por uma rede Wi-Fi</string>
-    <string name="download_over_metered_networks">Download através da rede móvel</string>
+    <string name="download_over_metered_networks">Download via dados móveis</string>
     <string name="confirm_delete_cookies_desc">Todas os cookies serão excluídos</string>
     <string name="delete_all_cookies">Excluir todos os cookies</string>
     <string name="get_cookies">Obter Cookies</string>
@@ -381,8 +381,8 @@
     <string name="disabled">Desabilitado</string>
     <string name="subtitles">Legendas</string>
     <string name="prevent_duplicate_downloads">Evitar downloads duplicados</string>
-    <string name="prevent_duplicate_url_type">URL &amp; Tipo de download</string>
-    <string name="prevent_duplicate_config">Configuração completa</string>
+    <string name="prevent_duplicate_url_type">URL e tipo de download</string>
+    <string name="prevent_duplicate_config">Configuração total</string>
     <string name="move_bottom">Mover para baixo</string>
     <string name="scheduled">Agendado</string>
     <string name="clear_scheduled">Limpar downloads agendados</string>
@@ -392,8 +392,8 @@
     <string name="minute">Minuto(s)</string>
     <string name="second">Segundo(s)</string>
     <string name="milliseconds">Milissegundo(s)</string>
-    <string name="location">Localização</string>
-    <string name="download_archive_folder">Pasta para arquivamento de downloads</string>
+    <string name="location">Local</string>
+    <string name="download_archive_folder">Pasta para o arquivamento de downloads</string>
     <string name="no_audio">Vídeo sem áudio</string>
     <string name="enable_alarm_permission">Você precisa habilitar a permissão SCHEDULE_EXACT_ALARM nas configurações do aplicativo.</string>
     <string name="format_importance_note">Ajuste a importância do elemento de formato. Essa ordem só será usada quando o aplicativo buscar os formatos no cartão de download e selecionar automaticamente o formato!</string>
