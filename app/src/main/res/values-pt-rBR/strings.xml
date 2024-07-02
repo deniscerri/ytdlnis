@@ -283,7 +283,7 @@
     <string name="use_extra_commands_summary">Para downloads de áudio/vídeo. Adicionar comandos extras junto com a configuração da GUI</string>
     <string name="current">Comando atual</string>
     <string name="orange">Laranja</string>
-    <string name="show_terminal">Mostrar Terminal no menu de compartilhamento</string>
+    <string name="show_terminal">Mostrar \'Terminal\' no menu de compartilhamento</string>
     <string name="extra_command">Comando extra</string>
     <string name="write_description">Salvar descrição</string>
     <string name="use_cookies">Usar Cookies</string>
