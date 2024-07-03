@@ -398,4 +398,12 @@
     <string name="enable_alarm_permission">Debe activar el permiso SCHEDULE_EXACT_ALARM en la configuración de la aplicación.</string>
     <string name="process_downloads_background">"Las descargas aún se están cargando. ¿Continuar procesándolos en segundo plano y comenzar a descargarlos? "</string>
     <string name="minute">Minuto</string>
+    <string name="restore_info">Presione ‘Restaurar’ para fusionar los datos guardados con sus datos actuales.
+\nPresione ‘Restablecer’ para borrar y usar únicamente los datos guardados en el archivo.</string>
+    <string name="queue">Cola</string>
+    <string name="label_visibility">Visibilidad de la etiqueta</string>
+    <string name="always">Siempre</string>
+    <string name="navigation_bar">Barra de navegación</string>
+    <string name="sync_with_source">Sincronizar con la fuente</string>
+    <string name="reset">Restablecer</string>
 </resources>
