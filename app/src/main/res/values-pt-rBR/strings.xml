@@ -140,7 +140,7 @@
     <string name="preferred_download_type">Tipo de download preferido</string>
     <string name="confirm_delete_logs_desc">Toda a lista de logs será excluída.</string>
     <string name="select">Selecionar</string>
-    <string name="selected">selecionado(s)</string>
+    <string name="selected">Selecionado</string>
     <string name="all_items_selected">Todos os itens selecionados</string>
     <string name="access_all_directories">Permitir acesso a todos os diretórios</string>
     <string name="access_all_directories_summary">Permitir que o aplicativo faça downloads em diretórios restritos por padrão</string>
@@ -398,4 +398,12 @@
     <string name="enable_alarm_permission">Você precisa habilitar a permissão SCHEDULE_EXACT_ALARM nas configurações do aplicativo.</string>
     <string name="format_importance_note">Ajuste a importância do elemento de formato. Essa ordem só será usada quando o aplicativo buscar os formatos no cartão de download e selecionar automaticamente o formato!</string>
     <string name="process_downloads_background">"Os downloads ainda estão sendo carregados. Continuar processando-os em segundo plano e iniciar o download? "</string>
+    <string name="always">Sempre</string>
+    <string name="reset">Redefinir</string>
+    <string name="queue">Central</string>
+    <string name="navigation_bar">Barra de navegação</string>
+    <string name="sync_with_source">Sincronizar com a fonte</string>
+    <string name="restore_info">Pressione \'Restaurar\' para mesclar os dados salvos com os dados atuais.
+\nPressione \'Redefinir\' para apagar e usar apenas os dados salvos no arquivo.</string>
+    <string name="label_visibility">Visibilidade dos textos</string>
 </resources>
