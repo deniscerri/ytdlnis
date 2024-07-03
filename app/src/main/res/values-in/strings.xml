@@ -132,7 +132,7 @@
     <string name="enable_mtime">Aktifkan mtime</string>
     <string name="error_updating_formats">Galat dalam memutakhirkan format!</string>
     <string name="log_downloads">Log Unduhan</string>
-    <string name="log_downloads_summary">Membuat berkas rekam-catat bagi setiap unduhan</string>
+    <string name="log_downloads_summary">Membuat berkas log bagi setiap unduhan</string>
     <string name="download_queue">Antrean Unduhan</string>
     <string name="running">Berjalan</string>
     <string name="command">Perintah</string>
@@ -398,4 +398,12 @@
     <string name="scheduled">Dijadwalkan</string>
     <string name="clear_scheduled">Kosongkan yang Dijadwalkan</string>
     <string name="format_importance">Urutan Tingkat Pentingnya Format</string>
+    <string name="reset">Setel Ulang</string>
+    <string name="always">Selalu</string>
+    <string name="navigation_bar">Bilah Navigasi</string>
+    <string name="label_visibility">Visibilitas Label</string>
+    <string name="sync_with_source">Sinkronkan dengan Sumbernya</string>
+    <string name="queue">Antrean</string>
+    <string name="restore_info">Tekan \'Pulihkan\' untuk menggabungkan data yang tersimpan dengan data Anda yang saat ini.
+\nTekan \'Setel Ulang\' untuk melenyapkan dan hanya mempergunakan data yang tersimpan di dalam berkas.</string>
 </resources>
