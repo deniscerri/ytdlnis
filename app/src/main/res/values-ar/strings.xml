@@ -398,4 +398,12 @@
     <string name="location">المسار</string>
     <string name="enable_alarm_permission">تحتاج إلى تمكين إذن SCHEDULE_EXACT_ALARM في إعدادات التطبيق.</string>
     <string name="process_downloads_background">"التنزيلات لا تزال قيد المعالجة. هل تريد الاستمرار في معالجتها في الخلفية وبدء التنزيل؟ "</string>
+    <string name="navigation_bar">شريط التنقل</string>
+    <string name="sync_with_source">المزامنة مع المصدر</string>
+    <string name="always">دائمًا</string>
+    <string name="label_visibility">رؤية التسمية</string>
+    <string name="queue">الطابور</string>
+    <string name="reset">صفّر</string>
+    <string name="restore_info">اضغط على \"استعادة\" لدمج البيانات المحفوظة مع بياناتك الحالية.
+\nاضغط على \"صفّر\" لمسح البيانات المحفوظة في الملف واستخدامها فقط.</string>
 </resources>
