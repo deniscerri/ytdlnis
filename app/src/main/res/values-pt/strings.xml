@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="search_hint">Pesquisar ou inserir URL</string>
-    <string name="failed_download">Não foi possível descarregar o ficheiro</string>
-    <string name="ytdl_updating_started">A descarregar nova versão</string>
+    <string name="failed_download">Não foi possível baixar o arquivo</string>
+    <string name="ytdl_updating_started">Baixando nova versão</string>
     <string name="video">Vídeo</string>
-    <string name="download_notification_channel_name">Ficheiros descarregados</string>
-    <string name="download_notification_channel_description">Notificação que mostra o progresso das descargas dos ficheiros</string>
+    <string name="download_notification_channel_name">Downloads de arquivos</string>
+    <string name="download_notification_channel_description">Notificação mostrando o andamento do download de arquivos de áudio e vídeo</string>
     <string name="search_history_hint">Pesquisar no histórico</string>
     <string name="ytdl_already_updating">A instalar nova versão</string>
     <string name="embed_thumb">Imagens das miniaturas</string>
     <string name="ok">OK</string>
     <string name="you_are_in_latest_version">Está a utilizar a versão mais recente</string>
-    <string name="confirm_delete_history_desc">Eliminar todo o histórico, de forma permanente</string>
+    <string name="confirm_delete_history_desc">Excluir todo o histórico, de forma permanente</string>
     <string name="confirm_delete_history">Confirmação</string>
     <string name="command_directory">Pasta do comando personalizado</string>
     <string name="add_chapters">Capítulos em vídeos</string>
@@ -27,7 +27,7 @@
     <string name="music_directory">Pasta de música</string>
     <string name="video_directory">Pasta de vídeo</string>
     <string name="updating">Atualizações</string>
-    <string name="ytdl_update_hint">Útil se tiver problemas ao descarregar</string>
+    <string name="ytdl_update_hint">Útil se você tiver problemas para fazer download</string>
     <string name="update_ytdl">Instalar nova versão de yt-dlp</string>
     <string name="about">Acerca</string>
     <string name="source_code">Código fonte</string>
@@ -37,7 +37,7 @@
     <string name="embed_thumb_summary">Utilizar miniatura como imagem</string>
     <string name="ytld_update_success">Nova versão instalada</string>
     <string name="embed_subs_summary">Adicionar legendas aos vídeos</string>
-    <string name="downloading">A descarregar</string>
+    <string name="downloading">Baixando</string>
     <string name="Remove">Remover</string>
     <string name="cancel">Cancelar</string>
     <string name="limit_rate">Taxa limite</string>
@@ -54,11 +54,11 @@
     <string name="remove_deleted">Remover eliminadas</string>
     <string name="sort_by">Ordem</string>
     <string name="Open_File">Abrir ficheiro</string>
-    <string name="download_all">Descarregar tudo</string>
+    <string name="download_all">Baixar tudo</string>
     <string name="couldnt_find_apk">Não foi possível encontrar um APK adequado</string>
-    <string name="downloading_update">A descarregar nova versão</string>
+    <string name="downloading_update">Baixando nova versão</string>
     <string name="audio">Áudio</string>
-    <string name="save_thumb">Guardar miniatura</string>
+    <string name="save_thumb">Salvar miniatura</string>
     <string name="save_thumb_summary">Guardar miniatura na pasta de descargas</string>
     <string name="cancel_task">Cancelar descarga</string>
     <string name="run_command">Executar comando</string>
@@ -114,9 +114,9 @@
     <string name="monochrome">Monocromático</string>
     <string name="purple">Roxo</string>
     <string name="swipe_gestures">Gestos</string>
-    <string name="aria2_summary">Utilizar aria2c para descarregar vídeos</string>
-    <string name="limit_rate_summary">Taxa máxima para descargas (em bytes por segundo), por exemplo, 50K ou 4,2M</string>
-    <string name="concurrent_fragments_summary">Número de fragmentos de um vídeo nativo DASH/HLS a descarregar em simultâneo</string>
+    <string name="aria2_summary">Use aria2c como downloader em vez do padrão</string>
+    <string name="limit_rate_summary">Taxa máxima de download (em bytes por segundo), por ex. 50K ou 4,2M</string>
+    <string name="concurrent_fragments_summary">Número de fragmentos de um vídeo nativo DASH/HLS para download simultâneo</string>
     <string name="concurrent_fragments">Fragmentos em simultâneo</string>
     <string name="sponsorblock_sponsors">Patrocinadores</string>
     <string name="sponsorblock_intro">Introdução</string>
