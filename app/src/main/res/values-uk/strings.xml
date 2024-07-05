@@ -398,4 +398,12 @@
     <string name="download_archive_folder">Завантажити папку архіву</string>
     <string name="location">Розташування</string>
     <string name="enable_alarm_permission">Вам потрібно включити роздільну здатність SCHEDULE_EXACT_ALARM в установках програми.</string>
+    <string name="navigation_bar">Панель навігації</string>
+    <string name="restore_info">Натисніть «Відновити», щоб об\'єднати збережені дані з поточними.
+\nНатисніть «Скинути» , щоб стерти та використовувати лише збережені дані у файлі.</string>
+    <string name="label_visibility">Видимість мітки</string>
+    <string name="always">Завжди</string>
+    <string name="sync_with_source">Синхронізуватися з джерелом</string>
+    <string name="queue">Черга</string>
+    <string name="reset">Скинути</string>
 </resources>

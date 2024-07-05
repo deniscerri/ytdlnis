@@ -398,4 +398,12 @@
     <string name="update_app_beta_summary">Meld u aan voor het bèta­programma. Bèta­versies kunnen problemen bevatten.</string>
     <string name="archive">Archief downloaden [Gebruik het download­archief­bestand van yt-dlp om dubbele downloads te voorkomen in plaats van de ingebouwde functionaliteit]</string>
     <string name="display_over_apps_summary">Zorg ervoor dat de download­kaart altĳd bovenaan wordt weer­gegeven. Schakel dit in als de momenteel actieve app wordt gesloten wanneer de download­kaart verschĳnt</string>
+    <string name="navigation_bar">Navigatie­balk</string>
+    <string name="label_visibility">Label­zichtbaarheid</string>
+    <string name="always">Altĳd</string>
+    <string name="sync_with_source">Synchroniseren met bron</string>
+    <string name="queue">Wachtrĳ</string>
+    <string name="reset">Resetten</string>
+    <string name="restore_info">Druk op ‘Herstellen’ om de opgeslagen gegevens samen te voegen met uw huidige gegevens.
+\nDruk op ‘Resetten’ om de opgeslagen gegevens in het bestand te wissen en alleen te gebruiken.</string>
 </resources>
