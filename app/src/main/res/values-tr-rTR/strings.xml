@@ -401,4 +401,12 @@
     <string name="location">Konum</string>
     <string name="enable_alarm_permission">Uygulama ayarlarında SCHEDULE_EXACT_ALARM iznini etkinleştirmeniz gerekir.</string>
     <string name="process_downloads_background">"İndirmeler hala devam ediyor. Bunları arka planda işlemeye devam edip indirmeye başlamak ister misiniz? "</string>
+    <string name="navigation_bar">Gezinti Çubuğu</string>
+    <string name="label_visibility">Etiket Görünürlüğü</string>
+    <string name="always">Her zaman</string>
+    <string name="queue">Kuyruk</string>
+    <string name="reset">Sıfırla</string>
+    <string name="sync_with_source">Kaynak ile Senkronize Et</string>
+    <string name="restore_info">Kayıtlı verileri mevcut verilerinizle birleştirmek için \'Geri Yükle\'ye basın.
+\nDosyadaki kayıtlı verileri silmek ve yalnızca kullanmak için \'Sıfırla\'ya basın.</string>
 </resources>
