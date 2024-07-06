@@ -147,7 +147,7 @@
     <string name="copy_log">Kopírovat protokol</string>
     <string name="socks5_proxy">Socks5 Proxy URL</string>
     <string name="edit">Editovat</string>
-    <string name="restore">Obnovení</string>
+    <string name="restore">Obnovit</string>
     <string name="update">Aktualizace</string>
     <string name="video_quality">Kvalita videa</string>
     <string name="template">Šablona</string>
@@ -398,4 +398,12 @@
     <string name="format_importance_note">Upravte důležitost prvku formátu. Toto pořadí se použije pouze tehdy, když aplikace načte formáty na kartě stahování a automaticky vybere formát!</string>
     <string name="no_audio">Video bez zvuku</string>
     <string name="download_archive_folder">Stáhnout archivní složku</string>
+    <string name="navigation_bar">Navigační lišta</string>
+    <string name="label_visibility">Viditelnost štítků</string>
+    <string name="always">Vždy</string>
+    <string name="queue">Fronta</string>
+    <string name="reset">Resetovat</string>
+    <string name="sync_with_source">Synchronizovat se zdrojem</string>
+    <string name="restore_info">Stisknutím tlačítka \"Obnovit\" sloučíte uložená data s aktuálními daty.
+\nStisknutím tlačítka \"Resetovat\" vymažete a budete používat pouze uložená data v souboru.</string>
 </resources>
