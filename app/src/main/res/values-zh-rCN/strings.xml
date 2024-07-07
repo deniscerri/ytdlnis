@@ -398,4 +398,12 @@
     <string name="process_downloads_background">"仍在加载下载。继续在后台处理它们并开始下载吗？ "</string>
     <string name="minute">分钟</string>
     <string name="second">秒</string>
+    <string name="sync_with_source">和源同步</string>
+    <string name="navigation_bar">导航栏</string>
+    <string name="label_visibility">标签可见性</string>
+    <string name="always">始终</string>
+    <string name="queue">队列</string>
+    <string name="reset">重置</string>
+    <string name="restore_info">按下 “恢复” 将保存的数据和当前数据合并。
+\n按下“重置”擦除并只使用文件内保存的数据。</string>
 </resources>

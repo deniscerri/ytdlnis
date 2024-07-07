@@ -398,4 +398,12 @@
     <string name="location">位置</string>
     <string name="format_importance_note">調整格式元素的重要性。這個順序只會在應用程式在下載卡片中抓取格式並自動選擇格式時使用！</string>
     <string name="no_audio">無音訊的影片</string>
+    <string name="reset">重置</string>
+    <string name="navigation_bar">導航欄</string>
+    <string name="label_visibility">標籤顯示</string>
+    <string name="always">總是顯示</string>
+    <string name="sync_with_source">與來源同步</string>
+    <string name="queue">佇列</string>
+    <string name="restore_info">按「還原」將保存的資料與當前資料合併。
+\n按「重置」將清除並僅使用文件中保存的資料。</string>
 </resources>

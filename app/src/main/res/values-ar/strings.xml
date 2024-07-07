@@ -17,7 +17,7 @@
     <string name="failed_download">تعذّر تنزيل الملف</string>
     <string name="download_notification_channel_description">إشعار يُظهر مستوى التقدم في تنزيل ملفات الصوت والفيديو</string>
     <string name="download_notification_channel_name">تنزيلات الملفات</string>
-    <string name="ok">حسنًا</string>
+    <string name="ok">تم</string>
     <string name="ytdl_already_updating">يتم تثبيت أحدث إصدار</string>
     <string name="ytdl_updating_started">بحث/تحميل أحدث إصدار</string>
     <string name="cancel">إلغاء</string>
@@ -160,7 +160,7 @@
     <string name="restart">إعادة التشغيل</string>
     <string name="confirm_delete_logs_desc">إزالة السجلات بالكامل.</string>
     <string name="select">اختيار</string>
-    <string name="selected">مُحدّد</string>
+    <string name="selected">المحددة</string>
     <string name="all_items_selected">تم تحديد كل العناصر</string>
     <string name="access_all_directories">السماح بالوصول إلى كل المجلدات</string>
     <string name="access_all_directories_summary">السماح بتنزيل التطبيق على المجلدات المقيدة إفتراضيًا</string>
@@ -345,7 +345,7 @@
     <string name="set_time">ضبط الوقت</string>
     <string name="starts">الابتداء</string>
     <string name="ends">الانتهاء</string>
-    <string name="never">عدم الإيقاف</string>
+    <string name="never">إطلاقًا</string>
     <string name="after">بعد</string>
     <string name="occurrences">تشغيلات</string>
     <string name="day">يوم</string>
@@ -398,4 +398,12 @@
     <string name="location">المسار</string>
     <string name="enable_alarm_permission">تحتاج إلى تمكين إذن SCHEDULE_EXACT_ALARM في إعدادات التطبيق.</string>
     <string name="process_downloads_background">"التنزيلات لا تزال قيد المعالجة. هل تريد الاستمرار في معالجتها في الخلفية وبدء التنزيل؟ "</string>
+    <string name="navigation_bar">شريط التنقل</string>
+    <string name="sync_with_source">المزامنة مع المصدر</string>
+    <string name="always">دائمًا</string>
+    <string name="label_visibility">إظهار التسمية</string>
+    <string name="queue">جدول التنزيلات</string>
+    <string name="reset">إعادة تعيين</string>
+    <string name="restore_info">انقر على \"استعادة نسخة احتياطية\" لدمج بيانات النسخة الاحتياطية مع البيانات الحالية إن وجدت.
+\nأو انقر على \"اعادة تعيين\" لاستعادة بيانات النسخة الاحتياطية مع إزالة البيانات الحالية إن وجدت.</string>
 </resources>

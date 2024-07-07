@@ -398,4 +398,12 @@
     <string name="download_archive_folder">Фолдер архиве преузимања</string>
     <string name="location">Локација</string>
     <string name="enable_alarm_permission">Морате да омогућите дозволу SCHEDULE_EXACT_ALARM у подешавањима апликације.</string>
+    <string name="navigation_bar">Трака за навигацију</string>
+    <string name="sync_with_source">Синхронизуј с извором</string>
+    <string name="queue">Редослед</string>
+    <string name="reset">Ресетуј</string>
+    <string name="label_visibility">Видљивост ознаке</string>
+    <string name="always">Увек</string>
+    <string name="restore_info">Притисните „Врати“ да спојите сачуване податке с вашим тренутним подацима.
+\nПритисните „Ресетуј“ да избришете и користите само сачуване податке у фајлу.</string>
 </resources>
