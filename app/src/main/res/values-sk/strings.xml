@@ -398,4 +398,12 @@
     <string name="no_audio">Video bez zvuku</string>
     <string name="location">Umiestnenie</string>
     <string name="enable_alarm_permission">V nastaveniach aplikácie musíte povoliť oprávnenie SCHEDULE_EXACT_ALARM.</string>
+    <string name="navigation_bar">Navigačný panel</string>
+    <string name="sync_with_source">Synchronizovať so zdrojom</string>
+    <string name="reset">Resetovať</string>
+    <string name="label_visibility">Viditeľnosť štítkov</string>
+    <string name="always">Vždy</string>
+    <string name="restore_info">Stlačením tlačidla \"Obnoviť\" zlúčite uložené údaje s aktuálnymi údajmi.
+\nStlačením tlačidla \"Resetovať\" vymažete a budete používať len uložené údaje v súbore.</string>
+    <string name="queue">Pásmo</string>
 </resources>

@@ -398,4 +398,12 @@
     <string name="location">स्थान</string>
     <string name="enable_alarm_permission">आपको ऐप सेटिंग में SCHEDULE_EXACT_ALARM अनुमति सक्षम करनी होगी।</string>
     <string name="process_downloads_background">"डाउनलोड अभी भी लोड हो रहे हैं. उन्हें पृष्ठभूमि में संसाधित करना जारी रखें और डाउनलोड करना प्रारंभ करें? "</string>
+    <string name="navigation_bar">नेविगेशन बार</string>
+    <string name="label_visibility">लेबल दृश्यता</string>
+    <string name="sync_with_source">स्रोत के साथ समन्वयित करें</string>
+    <string name="queue">कतार</string>
+    <string name="reset">रीसेट करें</string>
+    <string name="always">हमेशा</string>
+    <string name="restore_info">सहेजे गए डेटा को अपने वर्तमान डेटा के साथ मर्ज करने के लिए \'पुनर्स्थापित करें\' दबाएं।
+\nफाइल में सहेजे गए डेटा को मिटाने और केवल उसका उपयोग करने के लिए \'रीसेट करें\' दबाएं।</string>
 </resources>
