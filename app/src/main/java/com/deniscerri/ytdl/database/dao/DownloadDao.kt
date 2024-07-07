@@ -1,5 +1,6 @@
 package com.deniscerri.ytdl.database.dao
 
+import android.util.Log
 import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Insert
@@ -25,7 +26,7 @@ interface DownloadDao {
     fun getActiveDownloads() : Flow<List<DownloadItem>>
 
     @Query("SELECT * FROM downloads WHERE status = 'Processing'")
-    fun getProcessingDownloads() : Flow<List<DownloadItem>>
+    fun getProcessingDownloads() : Flow<List<DownloadItemSimple>>
 
     @Query("SELECT COUNT(*) FROM downloads WHERE status in (:statuses)")
     fun getDownloadsCountFlow(statuses: List<String>) : Flow<Int>
@@ -54,14 +55,17 @@ interface DownloadDao {
     @Query("SELECT * FROM downloads WHERE status = 'Processing'")
     fun getProcessingDownloadsList() : List<DownloadItem>
 
-    @Query("UPDATE downloads set downloadStartTime=:time, status='Scheduled' WHERE status ='Processing'")
-    suspend fun updateProcessingDownloadTime(time: Long)
-
     @Query("UPDATE downloads set downloadPath=:path WHERE status ='Processing'")
     suspend fun updateProcessingDownloadPath(path: String)
 
     @Query("SELECT * FROM downloads WHERE status='Active'")
     fun getActiveDownloadsList() : List<DownloadItem>
+
+    @Query("SELECT * FROM downloads WHERE url=:url AND status='Processing'")
+    fun getProcessingDownloadsByUrl(url: String) : List<DownloadItem>
+
+    @Query("DELETE from downloads where status = 'Processing' AND url=:url")
+    suspend fun deleteProcessingByUrl(url: String)
 
     @Query("SELECT * FROM downloads WHERE status in('Active','Queued', 'Scheduled')")
     fun getActiveAndQueuedDownloadsList() : List<DownloadItem>
@@ -178,6 +182,13 @@ interface DownloadDao {
 
     @Upsert
     suspend fun update(item: DownloadItem)
+
+    @Transaction
+    suspend fun updateAll(list: List<DownloadItem>){
+        list.forEach {
+            update(it)
+        }
+    }
 
     @Query("UPDATE downloads set status=:status where id=:id")
     suspend fun setStatus(id: Long, status: String)

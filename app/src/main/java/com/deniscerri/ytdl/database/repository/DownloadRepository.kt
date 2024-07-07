@@ -26,6 +26,7 @@ import com.deniscerri.ytdl.database.models.DownloadItem
 import com.deniscerri.ytdl.database.models.DownloadItemSimple
 import com.deniscerri.ytdl.util.Extensions.toListString
 import com.deniscerri.ytdl.util.FileUtil
+import com.deniscerri.ytdl.work.AlarmScheduler
 import com.deniscerri.ytdl.work.DownloadWorker
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -42,7 +43,7 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
         pagingSourceFactory = {downloadDao.getAllDownloads()}
     )
     val activeDownloads : Flow<List<DownloadItem>> = downloadDao.getActiveDownloads().distinctUntilChanged()
-    val processingDownloads : Flow<List<DownloadItem>> = downloadDao.getProcessingDownloads().distinctUntilChanged()
+    val processingDownloads : Flow<List<DownloadItemSimple>> = downloadDao.getProcessingDownloads().distinctUntilChanged()
     val queuedDownloads : Pager<Int, DownloadItemSimple> = Pager(
         config = PagingConfig(pageSize = 20, initialLoadSize = 20, prefetchDistance = 1),
         pagingSourceFactory = {downloadDao.getQueuedDownloads()}
@@ -101,6 +102,10 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
         downloadDao.update(item)
     }
 
+    suspend fun updateAll(list: List<DownloadItem>) {
+        downloadDao.updateAll(list)
+    }
+
     suspend fun updateWithoutUpsert(item: DownloadItem){
         kotlin.runCatching { downloadDao.updateWithoutUpsert(item) }
     }
@@ -122,16 +127,20 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
         return downloadDao.getActiveDownloadsList()
     }
 
+    fun getProcessingDownloadsByUrl(url: String) : List<DownloadItem> {
+        return downloadDao.getProcessingDownloadsByUrl(url)
+    }
+
+    suspend fun deleteProcessingByUrl(url: String) {
+        downloadDao.deleteProcessingByUrl(url)
+    }
+
     fun getProcessingDownloads() : List<DownloadItem> {
         return downloadDao.getProcessingDownloadsList()
     }
 
     fun getActiveAndQueuedDownloads() : List<DownloadItem> {
         return downloadDao.getActiveAndQueuedDownloadsList()
-    }
-
-    suspend fun updateProcessingDownloadTime(time: Long) {
-        downloadDao.updateProcessingDownloadTime(time)
     }
 
     fun getActiveAndQueuedDownloadIDs() : List<Long> {
@@ -203,14 +212,6 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
         downloadDao.removeAllLogID()
     }
 
-    fun getFilteredProcessingDownloads(ids: List<Long>) : Flow<List<DownloadItem>> {
-        return downloadDao.getProcessingDownloads()
-            .map {
-                it.filter { ids.contains(it.id) }
-            }
-    }
-
-
     @SuppressLint("RestrictedApi")
     suspend fun startDownloadWorker(queuedItems: List<DownloadItem>, context: Context, inputData: Data.Builder = Data.Builder()) {
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
@@ -230,22 +231,22 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
                 if (delay <= 60000L) delay = 0L
             }
 
+            val useAlarmForScheduling = sharedPreferences.getBoolean("use_alarm_for_scheduling", false)
+
+            if (delay > 0L && useAlarmForScheduling) {
+                AlarmScheduler(context).scheduleAt(queuedItems.minBy { it.downloadStartTime }.downloadStartTime)
+                return
+            }
+
 
             val workConstraints = Constraints.Builder()
             if (!allowMeteredNetworks) workConstraints.setRequiredNetworkType(NetworkType.UNMETERED)
-            else {
-                //workConstraints.setRequiredNetworkType(NetworkType.CONNECTED)
-            }
 
             val workRequest = OneTimeWorkRequestBuilder<DownloadWorker>()
                 .addTag("download")
                 .setConstraints(workConstraints.build())
                 .setInitialDelay(delay, TimeUnit.MILLISECONDS)
                 .setInputData(inputData.build())
-
-            queuedItems.forEach {
-                workRequest.addTag(it.id.toString())
-            }
 
             workManager.enqueueUniqueWork(
                 System.currentTimeMillis().toString(),

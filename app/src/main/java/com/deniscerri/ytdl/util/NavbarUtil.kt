@@ -9,12 +9,9 @@ import android.view.MenuItem
 import android.widget.PopupMenu
 import androidx.core.view.forEach
 import androidx.core.view.get
-import androidx.core.view.isGone
 import androidx.preference.PreferenceManager
 import com.deniscerri.ytdl.R
 import com.google.android.material.navigation.NavigationBarView
-import com.google.android.material.navigation.NavigationView
-import java.util.*
 
 
 object NavbarUtil {
@@ -28,7 +25,7 @@ object NavbarUtil {
     private var navItems = mapOf(
         "Home" to R.id.homeFragment,
         "History" to R.id.historyFragment,
-        "Downloads" to R.id.downloadQueueMainFragment,
+        "Queue" to R.id.downloadQueueMainFragment,
         "Terminal" to R.id.terminalActivity,
         "More" to R.id.moreFragment
     )
@@ -36,10 +33,11 @@ object NavbarUtil {
     fun getStartFragmentId(context: Context) : Int {
         val pref = settings.getString("start_destination", "")!!
         val items = getDefaultNavBarItems(context)
+        val navBarHasPref = getNavBarPrefs().contains(items.indexOfFirst { it.itemId == navItems[pref] }.toString())
         return if (pref == "") {
             R.id.homeFragment
         }else {
-            items.firstOrNull { it.itemId == navItems[pref] }!!.itemId
+            items.firstOrNull { it.itemId == navItems[pref] && navBarHasPref }?.itemId ?: R.id.homeFragment
         }
     }
 
@@ -83,7 +81,7 @@ object NavbarUtil {
 
     private fun getNavBarPrefs(): List<String> {
         return settings
-            .getString("navigation_bar", "Home,History,More")!!
+            .getString("navigation_bar", "0,1,2,-3,-4")!!
             .split(",")
     }
 

@@ -86,13 +86,15 @@
             android:paddingHorizontal="10dp"
             android:paddingBottom="10dp"
             android:hint="@string/url"
+            app:endIconContentDescription="@string/import_from_clipboard"
             app:endIconMode="custom"
             app:endIconDrawable="@drawable/ic_clipboard"
             style="@style/Widget.Material3.TextInputLayout.FilledBox">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
-                android:inputType="text"
+                android:inputType="textMultiLine"
+                android:maxLines="3"
                 android:layout_height="wrap_content"
                 />
 

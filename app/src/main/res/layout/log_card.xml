@@ -188,6 +188,7 @@
                 android:padding="0dp"
                 app:cornerRadius="10dp"
                 app:icon="@drawable/ic_video"
+                android:contentDescription="@string/preferred_download_type"
                 app:iconTint="?attr/colorAccent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"

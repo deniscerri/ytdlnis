@@ -113,26 +113,28 @@ class ConfigureDownloadBottomSheetDialog(private val currentDownloadItem: Downlo
         viewPager2.adapter = fragmentAdapter
         viewPager2.isSaveFromParentEnabled = false
 
-        when(currentDownloadItem.type) {
-            Type.audio -> {
-                tabLayout.selectTab(tabLayout.getTabAt(0))
-                viewPager2.setCurrentItem(0, false)
-            }
-            Type.video -> {
-                if (isAudioOnly){
-                    tabLayout.getTabAt(0)!!.select()
+        view.post {
+            when(currentDownloadItem.type) {
+                Type.audio -> {
+                    tabLayout.selectTab(tabLayout.getTabAt(0))
                     viewPager2.setCurrentItem(0, false)
-                    Toast.makeText(context, getString(R.string.audio_only_item), Toast.LENGTH_SHORT).show()
-                }else{
-                    tabLayout.getTabAt(1)!!.select()
-                    viewPager2.setCurrentItem(1, false)
                 }
-            }
-            else -> {
-                tabLayout.selectTab(tabLayout.getTabAt(2))
-                viewPager2.postDelayed( {
-                    viewPager2.setCurrentItem(2, false)
-                }, 200)
+                Type.video -> {
+                    if (isAudioOnly){
+                        tabLayout.getTabAt(0)!!.select()
+                        viewPager2.setCurrentItem(0, false)
+                        Toast.makeText(context, getString(R.string.audio_only_item), Toast.LENGTH_SHORT).show()
+                    }else{
+                        tabLayout.getTabAt(1)!!.select()
+                        viewPager2.setCurrentItem(1, false)
+                    }
+                }
+                else -> {
+                    tabLayout.selectTab(tabLayout.getTabAt(2))
+                    viewPager2.postDelayed( {
+                        viewPager2.setCurrentItem(2, false)
+                    }, 200)
+                }
             }
         }
 

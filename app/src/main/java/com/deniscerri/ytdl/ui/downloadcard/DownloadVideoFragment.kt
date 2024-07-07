@@ -60,7 +60,9 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
     private lateinit var saveDir : TextInputLayout
     private lateinit var freeSpace : TextView
     private lateinit var infoUtil: InfoUtil
+
     private lateinit var genericVideoFormats: MutableList<Format>
+    private lateinit var genericAudioFormats: MutableList<Format>
 
     lateinit var downloadItem: DownloadItem
 
@@ -77,6 +79,7 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
         resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]
         infoUtil = InfoUtil(requireContext())
         genericVideoFormats = infoUtil.getGenericVideoFormats(requireContext().resources)
+        genericAudioFormats = infoUtil.getGenericAudioFormats(requireContext().resources)
         preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
         shownFields = preferences.getStringSet("modify_download_card", requireContext().getStringArray(R.array.modify_download_card_values).toSet())!!.toList()
         return fragmentView
@@ -234,34 +237,38 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
                 val chosenFormat = downloadItem.format
                 UiUtil.populateFormatCard(requireContext(), formatCard, chosenFormat, downloadItem.allFormats.filter { downloadItem.videoPreferences.audioFormatIDs.contains(it.format_id) })
                 val listener = object : OnFormatClickListener {
-                    override fun onFormatClick(item: List<FormatTuple>) {
-                        item.first().format?.apply {
+                    override fun onFormatClick(formatTuple: FormatTuple) {
+                        formatTuple.format?.apply {
                             downloadItem.format = this
                         }
                         downloadItem.videoPreferences.audioFormatIDs.clear()
-                        item.first().audioFormats?.map { it.format_id }?.let {
+                        formatTuple.audioFormats?.map { it.format_id }?.let {
                             downloadItem.videoPreferences.audioFormatIDs.addAll(it)
                         }
                         UiUtil.populateFormatCard(requireContext(), formatCard, downloadItem.format,
-                            if(downloadItem.videoPreferences.removeAudio) listOf() else item.first().audioFormats
+                            if(downloadItem.videoPreferences.removeAudio) listOf() else formatTuple.audioFormats
                         )
                     }
 
-                    override fun onFormatsUpdated(allFormats: List<List<Format>>) {
+                    override fun onFormatsUpdated(allFormats: List<Format>) {
                         lifecycleScope.launch {
                             withContext(Dispatchers.IO){
                                 resultItem?.apply {
                                     this.formats.removeAll(formats)
-                                    this.formats.addAll(allFormats.first().filter { !genericVideoFormats.contains(it) })
+                                    this.formats.addAll(allFormats.filter { !genericVideoFormats.contains(it) })
                                     resultViewModel.update(this)
                                     kotlin.runCatching {
                                         val f1 = fragmentManager?.findFragmentByTag("f0") as DownloadAudioFragment
                                         f1.updateUI(this)
                                     }
                                 }
+
+                                currentDownloadItem?.apply {
+                                    downloadViewModel.updateDownloadItemFormats(this.id, allFormats.filter { !genericVideoFormats.contains(it) })
+                                }
                             }
                         }
-                        formats = allFormats.first().filter { !genericVideoFormats.contains(it) }.toMutableList()
+                        formats = allFormats.filter { !genericVideoFormats.contains(it) }.toMutableList()
                         val preferredFormat = downloadViewModel.getFormat(formats, Type.video)
                         val preferredAudioFormats = downloadViewModel.getPreferredAudioFormats(formats)
                         downloadItem.format = preferredFormat
@@ -274,7 +281,7 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
                 }
                 formatCard.setOnClickListener{
                     if (parentFragmentManager.findFragmentByTag("formatSheet") == null){
-                        val bottomSheet = FormatSelectionBottomSheetDialog(listOf(downloadItem), listOf(formats.ifEmpty { genericVideoFormats }), listener)
+                        val bottomSheet = FormatSelectionBottomSheetDialog(listOf(downloadItem), listener)
                         bottomSheet.show(parentFragmentManager, "formatSheet")
                     }
                 }
@@ -413,6 +420,10 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
 
     @SuppressLint("RestrictedApi")
     fun updateSelectedAudioFormat(format: Format){
+        if (genericAudioFormats.contains(format)) {
+            return
+        }
+
         downloadItem.videoPreferences.audioFormatIDs.clear()
         downloadItem.videoPreferences.audioFormatIDs.addAll(arrayListOf(format.format_id))
         val formatCard = requireView().findViewById<MaterialCardView>(R.id.format_card_constraintLayout)

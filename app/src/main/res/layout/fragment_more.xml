@@ -70,6 +70,22 @@
                 app:drawableStartCompat="@drawable/ic_baseline_keyboard_arrow_right_24" />
 
             <TextView
+                android:id="@+id/downloads"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawablePadding="35dp"
+                android:textSize="16sp"
+                android:paddingVertical="15dp"
+                android:text="@string/downloads"
+                android:textStyle="bold"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?android:attr/selectableItemBackground"
+                android:paddingHorizontal="15dp"
+                app:drawableTint="?android:colorAccent"
+                app:drawableStartCompat="@drawable/ic_downloads" />
+
+            <TextView
                 android:id="@+id/download_queue"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

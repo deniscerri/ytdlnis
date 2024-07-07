@@ -258,13 +258,10 @@ class MainActivity : BaseActivity() {
         navigationView.visibilityChanged {
             if (it.isVisible){
                 val curr = navController.currentDestination?.id
-                if (curr != R.id.homeFragment && curr != R.id.historyFragment && curr != R.id.moreFragment) hideBottomNavigation()
+                if (!showingNavbarItems.contains(curr)) hideBottomNavigation()
             }
         }
 
-        when(preferences.getString("start_destination", "")) {
-            "Queue" -> if (savedInstanceState == null) navController.navigate(R.id.downloadQueueMainFragment)
-        }
 
         cookieViewModel.updateCookiesFile()
         val intent = intent

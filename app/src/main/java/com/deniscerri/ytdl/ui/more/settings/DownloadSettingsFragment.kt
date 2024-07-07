@@ -69,13 +69,29 @@ class DownloadSettingsFragment : BaseSettingsFragment() {
                 archivePathResultLauncher.launch(intent)
                 true
             }
+        val scheduler = AlarmScheduler(requireContext())
+
+        val useAlarmManagerInsteadOfWorkManager = findPreference<SwitchPreferenceCompat>("use_alarm_for_scheduling")
+        useAlarmManagerInsteadOfWorkManager?.setOnPreferenceChangeListener { preference, newValue ->
+            var allowChange = true
+            if (newValue as Boolean){
+                if (!scheduler.canSchedule() && Build.VERSION.SDK_INT >= 31){
+                    Intent().also { intent ->
+                        intent.action = Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM
+                        requireContext().startActivity(intent)
+                    }
+                    allowChange = false
+                }
+            }
+
+            allowChange
+        }
 
         val useScheduler = findPreference<SwitchPreferenceCompat>("use_scheduler")
         val scheduleStart = findPreference<Preference>("schedule_start")
         scheduleStart?.summary = preferences.getString("schedule_start", "00:00")
         val scheduleEnd = findPreference<Preference>("schedule_end")
         scheduleEnd?.summary = preferences.getString("schedule_end", "05:00")
-        val scheduler = AlarmScheduler(requireContext())
 
         useScheduler?.setOnPreferenceChangeListener { preference, newValue ->
             var allowChange = true

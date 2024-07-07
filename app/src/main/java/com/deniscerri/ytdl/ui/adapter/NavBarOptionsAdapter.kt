@@ -41,6 +41,9 @@ class NavBarOptionsAdapter(
         val noHome = listOf(R.id.terminalActivity)
         holder.binding.apply {
             title.text = item.title
+            title.contentDescription = item.title
+
+
             checkbox.isChecked = item.isVisible || essential.contains(item.itemId)
             checkbox.isEnabled = !essential.contains(item.itemId)
             home.setImageResource(
@@ -52,11 +55,8 @@ class NavBarOptionsAdapter(
                 if (!checkbox.isChecked || selectedHomeTabId == item.itemId) {
                     return@setOnClickListener
                 }
-                val oldSelection = items.indexOfFirst { it.itemId == selectedHomeTabId }
                 selectedHomeTabId = item.itemId
-                listOf(position, oldSelection).forEach {
-                    notifyItemChanged(it)
-                }
+                notifyDataSetChanged()
             }
             checkbox.setOnClickListener {
                 item.isVisible = checkbox.isChecked

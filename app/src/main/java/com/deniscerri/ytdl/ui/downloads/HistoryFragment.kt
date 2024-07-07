@@ -116,6 +116,14 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
         sortChip = view.findViewById(R.id.sortChip)
         selectedObjects = arrayListOf()
 
+        val isInNavBar = NavbarUtil.getNavBarItems(requireActivity()).any { n -> n.itemId == R.id.historyFragment && n.isVisible }
+        if (isInNavBar) {
+            topAppBar?.navigationIcon = null
+        }else{
+            mainActivity?.hideBottomNavigation()
+        }
+        topAppBar?.setNavigationOnClickListener { mainActivity?.onBackPressedDispatcher?.onBackPressed() }
+
 
         historyList = mutableListOf()
         allhistoryList = mutableListOf()

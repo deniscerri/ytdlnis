@@ -14,8 +14,11 @@
         <TextView
             android:layout_width="wrap_content"
             android:text="@string/sort_by"
-            android:textSize="12sp"
-            android:layout_margin="20dp"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="20dp"
             android:layout_height="wrap_content"/>
 
         <TextView

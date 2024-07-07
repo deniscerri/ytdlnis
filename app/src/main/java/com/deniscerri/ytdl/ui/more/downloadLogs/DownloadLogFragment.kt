@@ -34,6 +34,7 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 class DownloadLogFragment : Fragment() {
@@ -96,7 +97,9 @@ class DownloadLogFragment : Fragment() {
 
         CoroutineScope(Dispatchers.IO).launch {
             val logItem = logViewModel.getItemById(id!!)
-            topAppBar.title = logItem.title
+            withContext(Dispatchers.Main){
+                topAppBar.title = logItem.title
+            }
         }
 
         content.isFocusable = true

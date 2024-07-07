@@ -16,6 +16,7 @@
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/history_toolbar"
+            app:navigationIcon="@drawable/ic_back"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:title="@string/downloads"

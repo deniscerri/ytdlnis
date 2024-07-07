@@ -22,6 +22,21 @@ class AlarmScheduler(private val context: Context) {
     private val preferences = PreferenceManager.getDefaultSharedPreferences(context)
     private val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as? AlarmManager
 
+
+    fun scheduleAt(at: Long) {
+        alarmManager?.setExactAndAllowWhileIdle(
+            AlarmManager.RTC_WAKEUP,
+            at,
+            PendingIntent.getBroadcast(
+                context,
+                1,
+                Intent(context, ScheduleAlarmReceiver::class.java),
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            )
+        )
+    }
+
+
     @SuppressLint("ScheduleExactAlarm")
     fun schedule() {
         cancel()

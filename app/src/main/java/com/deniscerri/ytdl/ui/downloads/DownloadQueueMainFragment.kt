@@ -79,6 +79,8 @@ class DownloadQueueMainFragment : Fragment(){
         val isInNavBar = NavbarUtil.getNavBarItems(requireActivity()).any { n -> n.itemId == R.id.downloadQueueMainFragment && n.isVisible }
         if (isInNavBar) {
             topAppBar.navigationIcon = null
+        }else{
+            mainActivity.hideBottomNavigation()
         }
         topAppBar.setNavigationOnClickListener { mainActivity.onBackPressedDispatcher.onBackPressed() }
 
@@ -90,7 +92,7 @@ class DownloadQueueMainFragment : Fragment(){
             overScrollMode = View.OVER_SCROLL_NEVER
         }
 
-        val fragments = mutableListOf(ActiveDownloadsFragment(), /*QueuedDownloadsFragment(),*/ ScheduledDownloadsFragment(), CancelledDownloadsFragment(), ErroredDownloadsFragment(), SavedDownloadsFragment())
+        val fragments = mutableListOf(ActiveDownloadsFragment(), QueuedDownloadsFragment(), ScheduledDownloadsFragment(), CancelledDownloadsFragment(), ErroredDownloadsFragment(), SavedDownloadsFragment())
 
         fragmentAdapter = DownloadListFragmentAdapter(
             childFragmentManager,
@@ -104,11 +106,11 @@ class DownloadQueueMainFragment : Fragment(){
         TabLayoutMediator(tabLayout, viewPager2) { tab, position ->
             when (position) {
                 0 -> tab.text = getString(R.string.running)
-               // 1 -> tab.text = getString(R.string.in_queue)
-                1 -> tab.text = getString(R.string.scheduled)
-                2 -> tab.text = getString(R.string.cancelled)
-                3 -> tab.text = getString(R.string.errored)
-                4 -> tab.text = getString(R.string.saved)
+                1 -> tab.text = getString(R.string.in_queue)
+                2 -> tab.text = getString(R.string.scheduled)
+                3 -> tab.text = getString(R.string.cancelled)
+                4 -> tab.text = getString(R.string.errored)
+                5 -> tab.text = getString(R.string.saved)
             }
         }.attach()
 
@@ -130,13 +132,12 @@ class DownloadQueueMainFragment : Fragment(){
                 initMenu()
             }
         })
-        mainActivity.hideBottomNavigation()
         initMenu()
 
         if (arguments?.getString("tab") != null){
-            tabLayout.getTabAt(3)!!.select()
+            tabLayout.getTabAt(4)!!.select()
             viewPager2.postDelayed( {
-                viewPager2.setCurrentItem(3, false)
+                viewPager2.setCurrentItem(4, false)
                 val reconfigureID = arguments?.getLong("reconfigure")
                 reconfigureID?.apply {
                     notificationUtil.cancelErroredNotification(this.toInt())
@@ -166,30 +167,30 @@ class DownloadQueueMainFragment : Fragment(){
                     }
                 }
             }
-//            lifecycleScope.launch {
-//                downloadViewModel.queuedDownloadsCount.collectLatest {
-//                    tabLayout.getTabAt(1)?.apply {
-//                        createBadge(it)
-//                    }
-//                }
-//            }
             lifecycleScope.launch {
-                downloadViewModel.scheduledDownloadsCount.collectLatest {
+                downloadViewModel.queuedDownloadsCount.collectLatest {
                     tabLayout.getTabAt(1)?.apply {
                         createBadge(it)
                     }
                 }
             }
             lifecycleScope.launch {
-                downloadViewModel.cancelledDownloadsCount.collectLatest {
+                downloadViewModel.scheduledDownloadsCount.collectLatest {
                     tabLayout.getTabAt(2)?.apply {
                         createBadge(it)
                     }
                 }
             }
             lifecycleScope.launch {
-                downloadViewModel.erroredDownloadsCount.collectLatest {
+                downloadViewModel.cancelledDownloadsCount.collectLatest {
                     tabLayout.getTabAt(3)?.apply {
+                        createBadge(it)
+                    }
+                }
+            }
+            lifecycleScope.launch {
+                downloadViewModel.erroredDownloadsCount.collectLatest {
+                    tabLayout.getTabAt(4)?.apply {
                         removeBadge()
                         if (it > 0) createBadge(it)
                     }
@@ -197,7 +198,7 @@ class DownloadQueueMainFragment : Fragment(){
             }
             lifecycleScope.launch {
                 downloadViewModel.savedDownloadsCount.collectLatest {
-                    tabLayout.getTabAt(4)?.apply {
+                    tabLayout.getTabAt(5)?.apply {
                         removeBadge()
                         if (it > 0) createBadge(it)
                     }

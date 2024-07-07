@@ -184,7 +184,7 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
 
         //check if the item has formats and its audio-only
         val formats = result.formats
-        val isAudioOnly = formats.isNotEmpty() && formats.none { !it.format_note.contains("audio") }
+        var isAudioOnly = formats.isNotEmpty() && formats.none { !it.format_note.contains("audio") }
         if (isAudioOnly){
             (tabLayout.getChildAt(0) as? ViewGroup)?.getChildAt(1)?.isClickable = true
             (tabLayout.getChildAt(0) as? ViewGroup)?.getChildAt(1)?.alpha = 0.3f
@@ -216,26 +216,28 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
         viewPager2.adapter = fragmentAdapter
         viewPager2.isSaveFromParentEnabled = false
 
-        when(type) {
-            Type.audio -> {
-                tabLayout.getTabAt(0)!!.select()
-                viewPager2.setCurrentItem(0, false)
-            }
-            Type.video -> {
-                if (isAudioOnly){
+        view.post {
+            when(type) {
+                Type.audio -> {
                     tabLayout.getTabAt(0)!!.select()
                     viewPager2.setCurrentItem(0, false)
-                    Toast.makeText(context, getString(R.string.audio_only_item), Toast.LENGTH_SHORT).show()
-                }else{
-                    tabLayout.getTabAt(1)!!.select()
-                    viewPager2.setCurrentItem(1, false)
                 }
-            }
-            else -> {
-                tabLayout.getTabAt(2)!!.select()
-                viewPager2.postDelayed( {
-                    viewPager2.setCurrentItem(2, false)
-                }, 200)
+                Type.video -> {
+                    if (isAudioOnly){
+                        tabLayout.getTabAt(0)!!.select()
+                        viewPager2.setCurrentItem(0, false)
+                        Toast.makeText(context, getString(R.string.audio_only_item), Toast.LENGTH_SHORT).show()
+                    }else{
+                        tabLayout.getTabAt(1)!!.select()
+                        viewPager2.setCurrentItem(1, false)
+                    }
+                }
+                else -> {
+                    tabLayout.getTabAt(2)!!.select()
+                    viewPager2.postDelayed( {
+                        viewPager2.setCurrentItem(2, false)
+                    }, 200)
+                }
             }
         }
 
@@ -592,6 +594,15 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
             resultViewModel.updateFormatsResultData.collectLatest { formats ->
                 if (formats == null) return@collectLatest
                 kotlin.runCatching {
+                    isAudioOnly = formats.isNotEmpty() && formats.none { !it.format_note.contains("audio") }
+                    if (isAudioOnly){
+                        (tabLayout.getChildAt(0) as? ViewGroup)?.getChildAt(1)?.isClickable = true
+                        (tabLayout.getChildAt(0) as? ViewGroup)?.getChildAt(1)?.alpha = 0.3f
+                        Toast.makeText(context, getString(R.string.audio_only_item), Toast.LENGTH_SHORT).show()
+                        tabLayout.getTabAt(0)!!.select()
+                        viewPager2.setCurrentItem(0, false)
+                    }
+
                     lifecycleScope.launch {
                         withContext(Dispatchers.Main){
                             runCatching {

@@ -40,6 +40,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdl.App
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.models.DownloadItem
+import com.deniscerri.ytdl.database.models.Format
 import com.deniscerri.ytdl.database.models.observeSources.ObserveSourcesItem
 import com.deniscerri.ytdl.database.repository.DownloadRepository
 import com.deniscerri.ytdl.database.repository.ObserveSourcesRepository.EveryCategory
@@ -474,6 +475,10 @@ object Extensions {
     fun TextWithSubtitle(title: String, subtitle: String) : Spanned {
         return HtmlCompat.fromHtml("<b><big>" + title + "</big></b>" +  "<br />" +
                 "<small>" + subtitle + "</small>" + "<br />", HtmlCompat.FROM_HTML_MODE_LEGACY)
+    }
+
+    fun String.isYoutubeURL() : Boolean {
+        return Pattern.compile("((^(https?)://)?(www.)?(m.)?youtu(.be)?)|(^(https?)://(www.)?piped.video)").matcher(this).find()
     }
 
 }

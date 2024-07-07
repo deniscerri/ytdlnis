@@ -17,6 +17,7 @@
         android:layout_height="match_parent"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:paddingHorizontal="10dp"
+        android:contentDescription="@string/home"
         android:src="@drawable/ic_home_outlined"
         tools:ignore="ContentDescription" />
 
@@ -39,6 +40,7 @@
         android:gravity="center_vertical"
         android:paddingHorizontal="16dp"
         android:singleLine="true"
+        android:textDirection="locale"
         android:textColor="?android:attr/textColorPrimary"
         android:textSize="18sp"
         tools:text="Item" />

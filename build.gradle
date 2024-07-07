@@ -8,7 +8,7 @@ buildscript {
         appCompatVer = '1.6.1'
         junitVer = '4.13.2'
         androidJunitVer = '1.1.5'
-        espressoVer = '3.5.1'
+        espressoVer = '3.6.1'
         jacksonVer = '2.9.8'
         // supports java 1.6
         commonsIoVer = '2.5'

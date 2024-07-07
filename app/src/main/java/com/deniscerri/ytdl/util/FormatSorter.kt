@@ -57,33 +57,53 @@ class FormatSorter(private var context: Context) {
     fun sortAudioFormats(formats: List<Format>) : List<Format> {
         val orderPreferences = getAudioFormatImportance()
 
-        val fieldSorter: Comparator<Format> = Comparator { a, b ->
-            for (order in orderPreferences) {
-                when(order) {
-                    "smallsize" -> {
-                        (a.filesize).compareTo(b.filesize)
-                    }
-                    "id" -> {
-                        (audioFormatIDPreference.contains(b.format_id)).compareTo(audioFormatIDPreference.contains(a.format_id))
-                    }
-                    "language" -> {
-                        if (audioLanguagePreference.isBlank())  {
-                            0
+        val fieldSorter: Comparator<Format> = object : Comparator<Format> {
+            override fun compare(a: Format, b: Format): Int {
+                for (order in orderPreferences) {
+                    val comparison = when (order) {
+                        "smallsize" -> {
+                            (a.filesize).compareTo(b.filesize)
                         }
-                        else {
-                            (b.lang?.contains(audioLanguagePreference) == true).compareTo(a.lang?.contains(audioLanguagePreference) == true)
+
+                        "id" -> {
+                            (audioFormatIDPreference.contains(b.format_id)).compareTo(
+                                audioFormatIDPreference.contains(a.format_id)
+                            )
                         }
+
+                        "language" -> {
+                            if (audioLanguagePreference.isBlank()) {
+                                0
+                            } else {
+                                (b.lang?.contains(audioLanguagePreference) == true).compareTo(
+                                    a.lang?.contains(
+                                        audioLanguagePreference
+                                    ) == true
+                                )
+                            }
+                        }
+
+                        "codec" -> {
+                            ("^(${audioCodecPreference}).+$".toRegex(RegexOption.IGNORE_CASE)
+                                    .matches(b.acodec))
+                                    .compareTo(
+                                        "^(${audioCodecPreference}).+$".toRegex(RegexOption.IGNORE_CASE)
+                                            .matches(a.acodec)
+                                    )
+                        }
+
+                        "container" -> {
+                            (audioContainerPreference == b.container).compareTo(
+                                audioContainerPreference == a.container
+                            )
+                        }
+
+                        else -> 0
                     }
-                    "codec" -> {
-                        ("^(${audioCodecPreference}).+$".toRegex(RegexOption.IGNORE_CASE).matches(b.acodec))
-                                .compareTo("^(${audioCodecPreference}).+$".toRegex(RegexOption.IGNORE_CASE).matches(a.acodec))
-                    }
-                    "container" -> {
-                        (audioContainerPreference == b.container).compareTo(audioContainerPreference == a.container)
-                    }
+                    if (comparison != 0) return comparison
                 }
+                return 0
             }
-            0
         }
         return formats.sortedWith(fieldSorter)
     }
@@ -151,5 +171,102 @@ class FormatSorter(private var context: Context) {
 
         return formats.sortedWith(fieldSorter)
     }
+
+    //OLD CODE JUST FOR STORAGE / REFERENCE
+
+    /*
+    * fun getPreferredAudioRequirements(): MutableList<(Format) -> Int> {
+        val requirements: MutableList<(Format) -> Int> = mutableListOf()
+
+        val itemValues = resources.getStringArray(R.array.format_importance_audio_values).toSet()
+        val prefAudio = sharedPreferences.getString("format_importance_audio", itemValues.joinToString(","))!!
+
+        prefAudio.split(",").forEachIndexed { idx, s ->
+            val importance = (itemValues.size - idx) * 10
+            when(s) {
+                "id" -> {
+                    requirements.add {it: Format -> if (audioFormatIDPreference.contains(it.format_id)) importance else 0}
+                }
+                "language" -> {
+                    sharedPreferences.getString("audio_language", "")?.apply {
+                        if (this.isNotBlank()){
+                            requirements.add { it: Format -> if (it.lang?.contains(this) == true) importance else 0 }
+                        }
+                    }
+                }
+                "codec" -> {
+                    requirements.add {it: Format -> if ("^(${audioCodec}).+$".toRegex(RegexOption.IGNORE_CASE).matches(it.acodec)) importance else 0}
+                }
+                "container" -> {
+                    requirements.add {it: Format -> if (it.container == audioContainer) importance else 0 }
+                }
+            }
+        }
+
+        return requirements
+    }
+
+    //requirement and importance
+    @SuppressLint("RestrictedApi")
+    fun getPreferredVideoRequirements(): MutableList<(Format) -> Int> {
+        val requirements: MutableList<(Format) -> Int> = mutableListOf()
+
+        val itemValues = resources.getStringArray(R.array.format_importance_video_values).toSet()
+        val prefVideo = sharedPreferences.getString("format_importance_video", itemValues.joinToString(","))!!
+
+        prefVideo.split(",").forEachIndexed { idx, s ->
+            var importance = (itemValues.size - idx) * 10
+
+            when(s) {
+                "id" -> {
+                    requirements.add { it: Format -> if (formatIDPreference.contains(it.format_id)) importance else 0 }
+                }
+                "resolution" -> {
+                    context.getStringArray(R.array.video_formats_values)
+                        .filter { it.contains("_") }
+                        .map{ it.split("_")[0].dropLast(1)
+                        }.toMutableList().apply {
+                            when(videoQualityPreference) {
+                                "worst" -> {
+                                    requirements.add { it: Format -> if (it.format_note.contains("worst", ignoreCase = true)) (importance) else 0 }
+                                }
+                                "best" -> {
+                                    requirements.add { it: Format -> if (it.format_note.contains("best", ignoreCase = true)) (importance) else 0 }
+                                }
+                                else -> {
+                                    val preferenceIndex = this.indexOfFirst { videoQualityPreference.contains(it) }
+                                    val preference = this[preferenceIndex]
+                                    for(i in 0..preferenceIndex){
+                                        removeAt(0)
+                                    }
+                                    add(0, preference)
+                                    forEachIndexed { index, res ->
+                                        requirements.add { it: Format -> if (it.format_note.contains(res, ignoreCase = true)) (importance - index - 1) else 0 }
+                                    }
+                                }
+                            }
+
+                        }
+                }
+                "codec" -> {
+                    requirements.add { it: Format -> if ("^(${videoCodec})(.+)?$".toRegex(RegexOption.IGNORE_CASE).matches(it.vcodec)) importance else 0 }
+                }
+                "no_audio" -> {
+                    requirements.add { it: Format -> if (it.acodec == "none" || it.acodec == "") importance else 0 }
+                }
+                "container" -> {
+                    requirements.add { it: Format ->
+                        if (videoContainer == "mp4")
+                            if (it.container.equals("mpeg_4", true)) importance else 0
+                        else
+                            if (it.container.equals(videoContainer, true)) importance else 0
+                    }
+                }
+            }
+        }
+
+        return  requirements
+    }
+    * */
 
 }

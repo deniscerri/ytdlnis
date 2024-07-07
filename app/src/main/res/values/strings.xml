@@ -408,4 +408,6 @@
     <string name="queue">Queue</string>
     <string name="reset">Reset</string>
     <string name="restore_info">Press \'Restore\' to merge the saved data with your current data.\nPress \'Reset\' to erase and only use the saved data in the file.</string>
+    <string name="use_alarm_manager">Use AlarmManager instead of WorkManager for Scheduling</string>
+    <string name="use_alarm_manager_summary">Enable this if WorkManager is restricted by your device vendor or scheduled jobs are not too precise</string>
 </resources>

@@ -130,10 +130,10 @@ dependencies {
     implementation "com.github.yausername.youtubedl-android:library:$youtubedlAndroidVer"
     implementation "com.github.yausername.youtubedl-android:ffmpeg:$youtubedlAndroidVer"
     implementation "com.github.yausername.youtubedl-android:aria2c:$youtubedlAndroidVer"
-//
-//    implementation "io.github.junkfood02.youtubedl-android:library:0.16.0"
-//    implementation "io.github.junkfood02.youtubedl-android:ffmpeg:0.16.0"
-//    implementation "io.github.junkfood02.youtubedl-android:aria2c:0.16.0"
+
+//    implementation "io.github.junkfood02.youtubedl-android:library:0.16.1"
+//    implementation "io.github.junkfood02.youtubedl-android:ffmpeg:0.16.1"
+//    implementation "io.github.junkfood02.youtubedl-android:aria2c:0.16.1"
 
     implementation "androidx.appcompat:appcompat:$appCompatVer"
     implementation "androidx.constraintlayout:constraintlayout:2.1.4"
@@ -143,10 +143,10 @@ dependencies {
     implementation 'androidx.preference:preference-ktx:1.2.1'
     implementation "androidx.navigation:navigation-fragment-ktx:$navVer"
     implementation "androidx.navigation:navigation-ui-ktx:$navVer"
-    implementation 'androidx.core:core-ktx:1.12.0'
-    implementation 'androidx.test.ext:junit-ktx:1.1.5'
-    implementation 'androidx.compose.ui:ui-android:1.6.5'
-    implementation 'androidx.preference:preference:1.2.1'
+    implementation 'androidx.core:core-ktx:1.13.1'
+    implementation 'androidx.test.ext:junit-ktx:1.2.1'
+    implementation 'androidx.compose.ui:ui-android:1.6.8'
+    implementation 'androidx.preference:preference-ktx:1.2.1'
     testImplementation "junit:junit:$junitVer"
     androidTestImplementation "junit:junit:$junitVer"
     androidTestImplementation "androidx.test.ext:junit:$androidJunitVer"
@@ -167,10 +167,10 @@ dependencies {
     implementation "androidx.room:room-runtime:$roomVer"
     implementation "androidx.room:room-ktx:$roomVer"
     ksp "androidx.room:room-compiler:$roomVer"
-    implementation 'androidx.paging:paging-runtime-ktx:3.2.1'
+    implementation 'androidx.paging:paging-runtime-ktx:3.3.0'
     implementation "androidx.room:room-paging:$roomVer"
     androidTestImplementation "androidx.room:room-testing:$roomVer"
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.7.0'
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.8.3'
     implementation "androidx.compose.runtime:runtime:$composeVer"
     androidTestImplementation 'com.google.truth:truth:1.1.5'
 
@@ -182,7 +182,7 @@ dependencies {
 
     implementation 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0'
     implementation 'it.xabaras.android:recyclerview-swipedecorator:1.4'
-    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.8.2"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.8.3"
     implementation "com.github.Irineu333:Highlight-KT:1.0.4"
 
     // For media playback using ExoPlayer

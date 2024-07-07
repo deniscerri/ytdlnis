@@ -18,9 +18,9 @@ import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.models.AlreadyExistsItem
 import com.deniscerri.ytdl.database.models.DownloadItem
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
+import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel.AlreadyExistsIDs
 import com.deniscerri.ytdl.database.viewmodel.HistoryViewModel
 import com.deniscerri.ytdl.database.viewmodel.ResultViewModel
-import com.deniscerri.ytdl.database.viewmodel.SharedDownloadViewModel.AlreadyExistsIDs
 import com.deniscerri.ytdl.ui.adapter.AlreadyExistsAdapter
 import com.deniscerri.ytdl.util.Extensions.enableFastScroll
 import com.deniscerri.ytdl.util.UiUtil

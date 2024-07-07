@@ -164,6 +164,15 @@
         <SwitchPreferenceCompat
             android:widgetLayout="@layout/preferece_material_switch"
             app:defaultValue="false"
+            android:icon="@drawable/baseline_access_alarm_24"
+            android:key="use_alarm_for_scheduling"
+            android:summary="@string/use_alarm_manager_summary"
+            app:title="@string/use_alarm_manager" />
+
+
+        <SwitchPreferenceCompat
+            android:widgetLayout="@layout/preferece_material_switch"
+            app:defaultValue="false"
             android:icon="@drawable/ic_clock"
             android:key="use_scheduler"
             app:title="@string/use_scheduler" />

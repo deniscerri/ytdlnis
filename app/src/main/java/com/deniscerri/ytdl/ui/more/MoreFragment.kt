@@ -36,6 +36,7 @@ class MoreFragment : Fragment() {
     private lateinit var logs: TextView
     private lateinit var commandTemplates: TextView
     private lateinit var downloadQueue: TextView
+    private lateinit var downloads: TextView
     private lateinit var cookies: TextView
     private lateinit var observeSources: TextView
     private lateinit var terminateApp: TextView
@@ -59,14 +60,26 @@ class MoreFragment : Fragment() {
         terminal = view.findViewById(R.id.terminal)
         logs = view.findViewById(R.id.logs)
         commandTemplates = view.findViewById(R.id.command_templates)
+        downloads = view.findViewById(R.id.downloads)
         downloadQueue = view.findViewById(R.id.download_queue)
         cookies = view.findViewById(R.id.cookies)
         observeSources = view.findViewById(R.id.observe_sources)
         terminateApp = view.findViewById(R.id.terminate)
         settings = view.findViewById(R.id.settings)
 
-        val showingTerminal = NavbarUtil.getNavBarItems(requireContext()).any { n -> n.itemId == R.id.terminalActivity && n.isVisible }
+        var showingTerminal = false
+        var showingDownloads = false
+        var showingDownloadQueue = false
+
+        NavbarUtil.getNavBarItems(requireContext()).apply {
+            showingTerminal = any { n -> n.itemId == R.id.terminalActivity && n.isVisible }
+            showingDownloads = any { n -> n.itemId == R.id.historyFragment && n.isVisible }
+            showingDownloadQueue = any { n -> n.itemId == R.id.downloadQueueMainFragment && n.isVisible }
+        }
+
         terminal.isVisible = !showingTerminal
+        downloads.isVisible = !showingDownloads
+        downloadQueue.isVisible = !showingDownloadQueue
 
         terminal.setOnClickListener {
             val intent = Intent(context, TerminalActivity::class.java)
@@ -81,8 +94,9 @@ class MoreFragment : Fragment() {
             findNavController().navigate(R.id.commandTemplatesFragment)
         }
 
-        val showingDownloadQueue = NavbarUtil.getNavBarItems(requireContext()).any { n -> n.itemId == R.id.downloadQueueMainFragment && n.isVisible }
-        downloadQueue.isVisible = !showingDownloadQueue
+        downloads.setOnClickListener {
+            findNavController().navigate(R.id.historyFragment)
+        }
 
         downloadQueue.setOnClickListener {
             findNavController().navigate(R.id.downloadQueueMainFragment)

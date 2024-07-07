@@ -58,6 +58,7 @@
                     app:icon="@drawable/ic_music"
                     app:iconGravity="textStart"
                     app:iconPadding="0dp"
+                    android:contentDescription="@string/preferred_download_type"
                     app:iconSize="11dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
