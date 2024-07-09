@@ -406,4 +406,6 @@
     <string name="always">हमेशा</string>
     <string name="restore_info">सहेजे गए डेटा को अपने वर्तमान डेटा के साथ मर्ज करने के लिए \'पुनर्स्थापित करें\' दबाएं।
 \nफाइल में सहेजे गए डेटा को मिटाने और केवल उसका उपयोग करने के लिए \'रीसेट करें\' दबाएं।</string>
+    <string name="use_alarm_manager">शेड्यूलिंग के लिए WorkManager के बजाय AlarmManager का उपयोग करें</string>
+    <string name="use_alarm_manager_summary">यदि WorkManager आपके डिवाइस विक्रेता द्वारा प्रतिबंधित है या शेड्यूल किए गए कार्य बहुत सटीक नहीं हैं तो इसे सक्षम करें</string>
 </resources>
