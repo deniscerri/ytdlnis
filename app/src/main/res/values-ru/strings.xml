@@ -398,4 +398,12 @@
     <string name="no_audio">Видео без звука</string>
     <string name="enable_alarm_permission">Вам необходимо включить разрешение SCHEDULE_EXACT_ALARM в настройках приложения.</string>
     <string name="process_downloads_background">"Загрузки все еще загружаются. Продолжить их обработку в фоновом режиме и начать загрузку?. "</string>
+    <string name="navigation_bar">Панель навигации</string>
+    <string name="label_visibility">Видимость этикетки</string>
+    <string name="always">Всегда</string>
+    <string name="sync_with_source">Синхронизировать с источником</string>
+    <string name="queue">Очередь</string>
+    <string name="reset">Cбросить</string>
+    <string name="restore_info">Нажмите «Восстановить», чтобы объединить сохраненные данные с текущими данными.
+\nНажмите «Сброс», чтобы стереть и использовать только сохраненные данные в файле.</string>
 </resources>
