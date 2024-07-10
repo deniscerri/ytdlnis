@@ -406,4 +406,6 @@
     <string name="reset">重置</string>
     <string name="restore_info">按下 “恢复” 将保存的数据和当前数据合并。
 \n按下“重置”擦除并只使用文件内保存的数据。</string>
+    <string name="use_alarm_manager">使用闹铃管理器而非工作管理器安排任务</string>
+    <string name="use_alarm_manager_summary">如果工作管理器被设备厂商限制或安排好时间的任务不太精确，请启用这个</string>
 </resources>
