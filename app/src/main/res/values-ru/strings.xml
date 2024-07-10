@@ -406,4 +406,6 @@
     <string name="reset">Cбросить</string>
     <string name="restore_info">Нажмите «Восстановить», чтобы объединить сохраненные данные с текущими данными.
 \nНажмите «Сброс», чтобы стереть и использовать только сохраненные данные в файле.</string>
+    <string name="use_alarm_manager">Используйте AlarmManager вместо WorkManager для планирования</string>
+    <string name="use_alarm_manager_summary">Включите это, если WorkManager ограничен поставщиком вашего устройства или запланированные задания не слишком точны</string>
 </resources>
