@@ -381,11 +381,26 @@
     <string name="no_download_fragments_summary">Nu utilizați fișiere .part și scrieți direct în fișierul de ieșire</string>
     <string name="prefer_smaller_formats">Preferați formatele de dimensiuni mai mici</string>
     <string name="display_over_apps">Afișați peste aplicații</string>
-    <string name="hour">Ora</string>
+    <string name="hour">Oră</string>
     <string name="display_over_apps_summary">Faceți ca cardul de descărcare să se afișeze întotdeauna în partea de sus. Activați această opțiune dacă aplicația care rulează în prezent se închide când apare cardul de descărcare</string>
     <string name="dismiss">Respingeți</string>
     <string name="all">Toate</string>
     <string name="generic">Generic</string>
     <string name="format_filter">Filtru de format</string>
     <string name="cut_unavailable">Trebuie să actualizați datele articolului pentru a putea folosi funcția de tăiere</string>
+    <string name="always">Mereu</string>
+    <string name="label_visibility">Vizibilitate Etichete</string>
+    <string name="reset">Resetare</string>
+    <string name="queue">Coadă</string>
+    <string name="sync_with_source">Sincronizare cu Sursă</string>
+    <string name="minute">Minut</string>
+    <string name="no_audio">Video fără Audio</string>
+    <string name="second">Secundă</string>
+    <string name="download_archive_folder">Dosar Arhivă Descăcare</string>
+    <string name="format_importance_note"></string>
+    <string name="milliseconds">Milisecunde</string>
+    <string name="location">Locație</string>
+    <string name="process_downloads_background">"Descărcările nu sau încărcat încă. Să continui să procesezi în fundal și să începi descărcarea? "</string>
+    <string name="format_importance">Ordine Importanță Formatului</string>
+    <string name="navigation_bar">Bară de Navigare</string>
 </resources>
