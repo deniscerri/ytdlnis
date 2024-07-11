@@ -406,4 +406,6 @@
     <string name="navigation_bar">Barra de navegación</string>
     <string name="sync_with_source">Sincronizar con la fuente</string>
     <string name="reset">Restablecer</string>
+    <string name="use_alarm_manager">Utilizar AlarmManager en lugar de WorkManager para la programación</string>
+    <string name="use_alarm_manager_summary">Habilite esta opción si WorkManager está restringido por el proveedor de su dispositivo o si los trabajos programados no son demasiado precisos</string>
 </resources>
