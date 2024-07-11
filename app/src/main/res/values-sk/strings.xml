@@ -406,4 +406,6 @@
     <string name="restore_info">Stlačením tlačidla \"Obnoviť\" zlúčite uložené údaje s aktuálnymi údajmi.
 \nStlačením tlačidla \"Resetovať\" vymažete a budete používať len uložené údaje v súbore.</string>
     <string name="queue">Pásmo</string>
+    <string name="use_alarm_manager">Použiť AlarmManager namiesto WorkManageru na plánovanie</string>
+    <string name="use_alarm_manager_summary">Zapnite túto funkciu, ak je WorkManager obmedzený výrobcom zariadenia alebo ak naplánované úlohy nie sú príliš presné</string>
 </resources>
