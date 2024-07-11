@@ -406,4 +406,6 @@
     <string name="always">Həmişə</string>
     <string name="restore_info">Saxlanılan məlumatı cari məlumatlarınızla birləşdirmək üçün \"Bərpa et\" düyməsin basın.
 \nSilmək və yalnız faylda saxlanmış məlumatı istifadə etmək üçün \"Sıfırla\" düyməsini basın.</string>
+    <string name="use_alarm_manager">Planlaşdırma üçün WorkManager əvəzinə AlarmManager işlət</string>
+    <string name="use_alarm_manager_summary">WorkManager-ə cihaz başladıcı tərəfindən limit qoyulubsa və ya planlaşdırılan vəzifələr çox dəqiq deyilsə, bunu aktivləşdirin</string>
 </resources>
