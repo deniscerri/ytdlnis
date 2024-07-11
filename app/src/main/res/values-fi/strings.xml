@@ -267,4 +267,13 @@
     <string name="audio_only_item">Tällä kohteella on vain ääniformaatteja</string>
     <string name="move_temporary_files">Siirrä väliaikaiset tiedostot</string>
     <string name="move_temporary_files_summary">Siirrä välimuistissa olevat tiedostot latauskansioon</string>
+    <string name="search_hint">Hae tai Liitä URL</string>
+    <string name="format_source">Formaattien lähde</string>
+    <string name="material_you">Material You</string>
+    <string name="piped_instance_summary">Kirjoita PIPED API-palvelin, jota sovellus voi käyttää YouTube-kyselyihin ja -formaatteihin.</string>
+    <string name="fragment_retries">Osion uudestaanyritykset</string>
+    <string name="format_order">Formaattien järjestys</string>
+    <string name="enable_mtime_summary">Aseta HTTP-Last-Modified otsike tiedoston viimeisimmäksi muokkauspäiväksi</string>
+    <string name="custom_audio_quality">Käytä omavalintaista äänen laatua</string>
+    <string name="retries">Uudestaanyritykset</string>
 </resources>

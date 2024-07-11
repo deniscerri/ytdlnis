@@ -406,4 +406,6 @@
     <string name="sync_with_source">Синхронізуватися з джерелом</string>
     <string name="queue">Черга</string>
     <string name="reset">Скинути</string>
+    <string name="use_alarm_manager">Використовуйте AlarmManager замість WorkManager для планування</string>
+    <string name="use_alarm_manager_summary">Увімкніть це, якщо WorkManager обмежено постачальником вашого пристрою або заплановані завдання не надто точні</string>
 </resources>
