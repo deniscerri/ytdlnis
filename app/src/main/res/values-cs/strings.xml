@@ -388,7 +388,7 @@
     <string name="disabled">Zakázané</string>
     <string name="subtitles">Titulky</string>
     <string name="move_bottom">Přesunout dolů</string>
-    <string name="enable_alarm_permission">V nastavení aplikace je třeba povolit oprávnění SCHEDULE_EXACT_ALARM.</string>
+    <string name="enable_alarm_permission">V nastavení aplikace je nutné povolit oprávnění SCHEDULE_EXACT_ALARM.</string>
     <string name="process_downloads_background">"Stahované položky se stále načítají. Pokračovat v jejich zpracování na pozadí a zahájit stahování? "</string>
     <string name="minute">Minuta</string>
     <string name="format_importance">Pořadí důležitosti formátu</string>
@@ -406,4 +406,6 @@
     <string name="sync_with_source">Synchronizovat se zdrojem</string>
     <string name="restore_info">Stisknutím tlačítka \"Obnovit\" sloučíte uložená data s aktuálními daty.
 \nStisknutím tlačítka \"Resetovat\" vymažete a budete používat pouze uložená data v souboru.</string>
+    <string name="use_alarm_manager">Použít AlarmManager místo WorkManageru pro plánování</string>
+    <string name="use_alarm_manager_summary">Funkci povolte, pokud je WorkManager omezen výrobcem zařízení nebo pokud naplánované úlohy nejsou příliš přesné</string>
 </resources>
