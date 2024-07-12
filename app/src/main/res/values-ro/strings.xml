@@ -397,7 +397,6 @@
     <string name="no_audio">Video fără Audio</string>
     <string name="second">Secundă</string>
     <string name="download_archive_folder">Dosar Arhivă Descăcare</string>
-    <string name="format_importance_note"></string>
     <string name="milliseconds">Milisecunde</string>
     <string name="location">Locație</string>
     <string name="process_downloads_background">"Descărcările nu sau încărcat încă. Să continui să procesezi în fundal și să începi descărcarea? "</string>
