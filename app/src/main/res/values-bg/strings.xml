@@ -395,4 +395,13 @@
     <string name="no_audio">Видео без звук</string>
     <string name="location">Локация</string>
     <string name="process_downloads_background">"Все още има активни изтегляния. Продължаване на процеса на заден план и започване на изтегляне? "</string>
+    <string name="label_visibility">Видимост на етикет/и</string>
+    <string name="always">Винаги</string>
+    <string name="sync_with_source">Синхронизация с източник</string>
+    <string name="queue">Опашка</string>
+    <string name="reset">Reset</string>
+    <string name="use_alarm_manager">Исползвайте AlarmManager вместо WorkManager за планирания</string>
+    <string name="use_alarm_manager_summary">Включете това, само ако WorkManager е ограничен от издаделя на Вашето устройства или планираните задачи не са твърде точни</string>
+    <string name="restore_info">Натиснете \'Възстанови\', за да обедините запазените с Вашите данни.
+\nНатиснете \'Reset\', за да изтриете и да използвате само съхранените във файла данни.</string>
 </resources>
