@@ -308,7 +308,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
             arguments?.remove("showDownloadsWithUpdatedFormats")
             CoroutineScope(Dispatchers.IO).launch {
                 val ids = arguments?.getLongArray("downloadIds") ?: return@launch
-                downloadViewModel.turnDownloadItemsToProcessingDownloads(ids.toList())
+                downloadViewModel.turnDownloadItemsToProcessingDownloads(ids.toList(), deleteExisting = true)
                 withContext(Dispatchers.Main){
                     findNavController().navigate(R.id.downloadMultipleBottomSheetDialog2)
                 }

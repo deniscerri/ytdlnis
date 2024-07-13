@@ -161,7 +161,7 @@ class CookiesFragment : Fragment(), CookieAdapter.OnItemClickListener {
                         }else{
                             val snack = Snackbar.make(recyclerView, getString(R.string.backup_created_successfully), Snackbar.LENGTH_LONG)
                             snack.setAction(R.string.share) {
-                                UiUtil.shareFileIntent(requireContext(), listOf(f.absolutePath))
+                                FileUtil.shareFileIntent(requireContext(), listOf(f.absolutePath))
                             }
                             snack.show()
                         }

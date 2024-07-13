@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.core.content.edit
 import androidx.preference.PreferenceManager
 import com.deniscerri.ytdl.util.NotificationUtil
+import com.deniscerri.ytdl.util.ThemeUtil
 import com.yausername.aria2c.Aria2c
 import com.yausername.ffmpeg.FFmpeg
 import com.yausername.youtubedl_android.YoutubeDL
@@ -44,6 +45,7 @@ class App : Application() {
                 e.printStackTrace()
             }
         }
+        ThemeUtil.init(this)
     }
     @Throws(YoutubeDLException::class)
     private fun initLibraries() {

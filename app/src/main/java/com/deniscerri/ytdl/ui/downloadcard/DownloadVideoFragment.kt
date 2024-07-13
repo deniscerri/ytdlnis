@@ -257,10 +257,6 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
                                     this.formats.removeAll(formats)
                                     this.formats.addAll(allFormats.filter { !genericVideoFormats.contains(it) })
                                     resultViewModel.update(this)
-                                    kotlin.runCatching {
-                                        val f1 = fragmentManager?.findFragmentByTag("f0") as DownloadAudioFragment
-                                        f1.updateUI(this)
-                                    }
                                 }
 
                                 currentDownloadItem?.apply {

@@ -126,6 +126,8 @@ class ActiveDownloadsFragment : Fragment(), ActiveDownloadAdapter.OnItemClickLis
 
         pause.setOnClickListener {
             lifecycleScope.launch {
+                pause.isEnabled = false
+                delay(1000)
                 workManager.cancelAllWorkByTag("download")
                 val activeDownloadsList = withContext(Dispatchers.IO){
                     downloadViewModel.getActiveDownloads()
@@ -140,16 +142,15 @@ class ActiveDownloadsFragment : Fragment(), ActiveDownloadAdapter.OnItemClickLis
                 resume.isEnabled = false
                 resume.isVisible = true
                 activeDownloads.notifyDataSetChanged()
-                withContext(Dispatchers.Main){
-                    delay(1000)
-                    resume.isEnabled = true
-                }
+                resume.isEnabled = true
 
             }
         }
 
         resume.setOnClickListener {
             lifecycleScope.launch {
+                resume.isEnabled = false
+                delay(1000)
                 preferences.edit().putBoolean("paused_downloads", false).apply()
                 resume.isVisible = false
                 pause.isEnabled = false
@@ -159,11 +160,8 @@ class ActiveDownloadsFragment : Fragment(), ActiveDownloadAdapter.OnItemClickLis
                     downloadViewModel.startDownloadWorker(listOf())
                     withContext(Dispatchers.Main){
                         activeDownloads.notifyDataSetChanged()
+                        pause.isEnabled = true
                     }
-                }
-                withContext(Dispatchers.Main){
-                    delay(1000)
-                    pause.isEnabled = true
                 }
             }
         }
@@ -204,9 +202,6 @@ class ActiveDownloadsFragment : Fragment(), ActiveDownloadAdapter.OnItemClickLis
         requireActivity().runOnUiThread {
             try {
                 progressBar?.setProgressCompat(event.progress, true)
-                if (event.progress > 95) {
-                    pause.isEnabled = false
-                }
                 outputText?.text = event.output
             }catch (ignored: Exception) {}
         }

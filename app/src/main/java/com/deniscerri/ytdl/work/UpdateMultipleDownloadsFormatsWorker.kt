@@ -13,7 +13,7 @@ import com.deniscerri.ytdl.util.NotificationUtil
 import kotlinx.coroutines.runBlocking
 
 
-class UpdatePlaylistFormatsWorker(
+class UpdateMultipleDownloadsFormatsWorker(
     private val context: Context,
     workerParams: WorkerParameters
 ) : Worker(context, workerParams) {
@@ -38,7 +38,7 @@ class UpdatePlaylistFormatsWorker(
             ids.forEach {
                 if (!isStopped){
                     val d = dao.getDownloadById(it)
-                    val r = resDao.getResultByURL(d.url)!!
+                    val r = resDao.getResultByURL(d.url)
 
                     if (d.allFormats.isNotEmpty()){
                         count++
@@ -50,18 +50,18 @@ class UpdatePlaylistFormatsWorker(
                         d.allFormats.addAll(infoUtil.getFormats(d.url))
                         d.format = vm.getFormat(d.allFormats,d.type)
 
-                        r.formats.clear()
-                        r.formats.addAll(d.allFormats)
+                        r?.formats?.clear()
+                        r?.formats?.addAll(d.allFormats)
 
                         runBlocking {
-                            resDao.update(r)
+                            r?.apply { resDao.update(this) }
                             dao.update(d)
                         }
                     }
 
 
                     count++
-                    notificationUtil.updateFormatUpdateNotification(workID, UpdatePlaylistFormatsWorker::class.java.name, count, ids.size)
+                    notificationUtil.updateFormatUpdateNotification(workID, UpdateMultipleDownloadsFormatsWorker::class.java.name, count, ids.size)
                 }else{
                     throw Exception()
                 }
@@ -79,8 +79,4 @@ class UpdatePlaylistFormatsWorker(
         }
     }
 
-    override fun onStopped() {
-        Log.e("asd", "Asd")
-        super.onStopped()
-    }
 }

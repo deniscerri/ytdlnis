@@ -1,8 +1,11 @@
 package com.deniscerri.ytdl.util
 
+import android.app.Activity
+import android.app.Application
 import android.content.ComponentName
 import android.content.Context
 import android.content.pm.PackageManager
+import android.os.Bundle
 import android.text.Spanned
 import android.util.TypedValue
 import androidx.annotation.DrawableRes
@@ -11,11 +14,49 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.text.HtmlCompat
 import androidx.core.text.parseAsHtml
 import androidx.preference.PreferenceManager
+import androidx.test.runner.lifecycle.ActivityLifecycleCallback
+import androidx.test.runner.lifecycle.Stage
+import com.deniscerri.ytdl.MainActivity
 import com.deniscerri.ytdl.R
 import com.google.android.material.color.DynamicColors
 
 
 object ThemeUtil {
+
+    private val activities = mutableListOf<Activity>()
+
+    fun init(app: Application) {
+        app.registerActivityLifecycleCallbacks(object: Application.ActivityLifecycleCallbacks {
+            override fun onActivityCreated(p0: Activity, p1: Bundle?) {
+                activities.add(p0)
+            }
+
+            override fun onActivityStarted(p0: Activity) {
+
+            }
+
+            override fun onActivityResumed(p0: Activity) {
+
+            }
+
+            override fun onActivityPaused(p0: Activity) {
+
+            }
+
+            override fun onActivityStopped(p0: Activity) {
+
+            }
+
+            override fun onActivitySaveInstanceState(p0: Activity, p1: Bundle) {
+
+            }
+
+            override fun onActivityDestroyed(p0: Activity) {
+                activities.remove(p0)
+            }
+        })
+
+    }
 
     sealed class AppIcon(
         @DrawableRes val iconResource: Int,
@@ -32,7 +73,18 @@ object ThemeUtil {
         AppIcon.Dark
     )
 
-    fun updateTheme(activity: AppCompatActivity) {
+    fun recreateMain() {
+        activities.firstOrNull { it.javaClass == MainActivity::class.java }?.recreate()
+    }
+
+    fun updateThemes() {
+        activities.forEach {
+            updateTheme(it)
+            it.recreate()
+        }
+    }
+
+    fun updateTheme(activity: Activity) {
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity)
 
         //update accent

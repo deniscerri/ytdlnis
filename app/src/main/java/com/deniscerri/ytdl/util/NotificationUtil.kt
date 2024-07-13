@@ -546,7 +546,7 @@ class NotificationUtil(var context: Context) {
                 )
             )
             .setContentText("")
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setPriority(NotificationCompat.PRIORITY_LOW)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .setProgress(PROGRESS_MAX, PROGRESS_CURR, false)
             .setForegroundServiceBehavior(NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE)

@@ -11,6 +11,7 @@ import androidx.core.view.forEach
 import androidx.core.view.get
 import androidx.preference.PreferenceManager
 import com.deniscerri.ytdl.R
+import com.deniscerri.ytdl.util.NavbarUtil.applyNavBarStyle
 import com.google.android.material.navigation.NavigationBarView
 
 
@@ -95,7 +96,7 @@ object NavbarUtil {
         return navBarItems
     }
 
-    fun NavigationBarView.applyNavBarStyle(): Int {
+    fun NavigationBarView.setLabelVisibility() {
         val labelVisibilityMode = when (
             settings.getString("label_visibility", "always")
         ) {
@@ -105,6 +106,10 @@ object NavbarUtil {
             else -> NavigationBarView.LABEL_VISIBILITY_AUTO
         }
         this.labelVisibilityMode = labelVisibilityMode
+    }
+
+    fun NavigationBarView.applyNavBarStyle(): Int {
+        setLabelVisibility()
 
         val navBarItems = getNavBarItems(this.context)
 

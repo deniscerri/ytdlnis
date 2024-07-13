@@ -1,6 +1,5 @@
 package com.deniscerri.ytdl.database.viewmodel
 
-import android.annotation.SuppressLint
 import android.app.Application
 import android.content.SharedPreferences
 import android.content.res.Configuration
@@ -9,12 +8,9 @@ import android.os.Handler
 import android.os.Looper
 import android.os.Parcelable
 import android.util.DisplayMetrics
-import android.util.Log
 import android.widget.Toast
-import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
@@ -39,27 +35,24 @@ import com.deniscerri.ytdl.database.models.VideoPreferences
 import com.deniscerri.ytdl.database.repository.DownloadRepository
 import com.deniscerri.ytdl.database.repository.HistoryRepository
 import com.deniscerri.ytdl.database.repository.ResultRepository
-import com.deniscerri.ytdl.ui.downloadcard.FormatTuple
 import com.deniscerri.ytdl.ui.downloadcard.MultipleItemFormatTuple
 import com.deniscerri.ytdl.util.Extensions.toListString
 import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.util.FormatSorter
 import com.deniscerri.ytdl.util.InfoUtil
 import com.deniscerri.ytdl.work.AlarmScheduler
-import com.deniscerri.ytdl.work.UpdatePlaylistFormatsWorker
+import com.deniscerri.ytdl.work.UpdateMultipleDownloadsFormatsWorker
 import com.google.gson.Gson
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import kotlinx.parcelize.Parcelize
-import okhttp3.internal.format
 import java.io.File
 import java.util.Locale
 
@@ -539,18 +532,17 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
     }
 
 
-    fun turnDownloadItemsToProcessingDownloads(itemIDs: List<Long>) = viewModelScope.launch(Dispatchers.IO){
+    fun turnDownloadItemsToProcessingDownloads(itemIDs: List<Long>, deleteExisting : Boolean = false) = viewModelScope.launch(Dispatchers.IO){
         val job = viewModelScope.launch(Dispatchers.IO) {
             repository.deleteProcessing()
             processingItems.emit(true)
             try {
-                itemIDs.forEachIndexed { idx, it ->
+                itemIDs.forEach {
                     val item = repository.getItemByID(it)
                     if (processingItemsJob?.isCancelled == true) throw CancellationException()
-
-                    item.id = 0
+                    if (!deleteExisting) item.id = 0
                     item.status = DownloadRepository.Status.Processing.toString()
-                    repository.insert(item)
+                    repository.update(item)
                 }
                 processingItems.emit(false)
             } catch (e: Exception) {
@@ -1059,7 +1051,7 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         dao.updateProcessingtoSavedStatus()
 
         val id = System.currentTimeMillis().toInt()
-        val workRequest = OneTimeWorkRequestBuilder<UpdatePlaylistFormatsWorker>()
+        val workRequest = OneTimeWorkRequestBuilder<UpdateMultipleDownloadsFormatsWorker>()
             .setInputData(
                 Data.Builder()
                     .putLongArray("ids", ids.toLongArray())

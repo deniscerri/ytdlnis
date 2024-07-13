@@ -99,6 +99,17 @@
             app:defaultValue=""
             android:summary="@string/piped_instance_summary"
             app:title="@string/piped_instance" />
+
+
+
+        <SwitchPreferenceCompat
+            android:widgetLayout="@layout/preferece_material_switch"
+            app:defaultValue="false"
+            app:icon="@drawable/baseline_format_quote_24"
+            app:key="use_itemurl_instead_playlisturl"
+            app:summary="@string/use_item_url_not_playlist_summary"
+            app:title="@string/use_item_url_not_playlist" />
+
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/misc">

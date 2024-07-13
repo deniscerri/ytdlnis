@@ -283,29 +283,28 @@ class ResultCardDetailsDialog : BottomSheetDialogFragment(), GenericDownloadAdap
 
         lifecycleScope.launch {
             try {
-                val data : MutableList<String?>  = withContext(Dispatchers.IO){
+                val data = withContext(Dispatchers.IO) {
                     if (item.urls.isEmpty()) {
                         infoUtil.getStreamingUrlAndChapters(item.url)
-                    }else {
-                        item.urls.split("\n").toMutableList()
+                    }else{
+                        Pair(item.urls.split("\n"), null)
                     }
                 }
 
-                if (data.size > 1) data.removeFirst()
+                if (data.first.isEmpty()) throw Exception("No Data found!")
 
-                if (data.isEmpty()) throw Exception("No Streaming URL found!")
-                if (data.size == 2){
+                val urls = data.first
+                if (urls.size == 2){
                     val audioSource : MediaSource =
                         DefaultMediaSourceFactory(requireContext())
-                            .createMediaSource(MediaItem.fromUri(Uri.parse(data[0])))
+                            .createMediaSource(MediaItem.fromUri(Uri.parse(urls[0])))
                     val videoSource: MediaSource =
                         DefaultMediaSourceFactory(requireContext())
-                            .createMediaSource(MediaItem.fromUri(Uri.parse(data[1])))
+                            .createMediaSource(MediaItem.fromUri(Uri.parse(urls[1])))
                     player.setMediaSource(MergingMediaSource(videoSource, audioSource))
                 }else{
-                    player.addMediaItem(MediaItem.fromUri(Uri.parse(data[0])))
+                    player.addMediaItem(MediaItem.fromUri(Uri.parse(urls[0])))
                 }
-                player.addMediaItem(MediaItem.fromUri(Uri.parse(data[0])))
 
                 player.prepare()
                 player.play()

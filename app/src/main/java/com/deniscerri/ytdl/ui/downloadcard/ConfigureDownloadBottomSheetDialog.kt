@@ -108,8 +108,11 @@ class ConfigureDownloadBottomSheetDialog(private val currentDownloadItem: Downlo
             fragmentManager,
             lifecycle,
             null,
-            currentDownloadItem
+            currentDownloadItem,
+            isIncognito = incognito
         )
+
+
         viewPager2.adapter = fragmentAdapter
         viewPager2.isSaveFromParentEnabled = false
 
@@ -182,7 +185,7 @@ class ConfigureDownloadBottomSheetDialog(private val currentDownloadItem: Downlo
                         putString("last_used_download_type",
                             listOf(Type.audio, Type.video, Type.command)[position].toString())
                     }
-                    updateWhenSwitching()
+                    fragmentAdapter.updateWhenSwitching(viewPager2.currentItem)
                 }
             }
         })
@@ -216,6 +219,7 @@ class ConfigureDownloadBottomSheetDialog(private val currentDownloadItem: Downlo
             }
 
             incognito = !incognito
+            fragmentAdapter.isIncognito = incognito
             val onOff = if (incognito) getString(R.string.ok) else getString(R.string.disabled)
             Toast.makeText(requireContext(), "${getString(R.string.incognito)}: $onOff", Toast.LENGTH_SHORT).show()
         }
@@ -224,54 +228,7 @@ class ConfigureDownloadBottomSheetDialog(private val currentDownloadItem: Downlo
     }
 
     private fun getDownloadItem(selectedTabPosition: Int = tabLayout.selectedTabPosition) : DownloadItem{
-        val item =  when(selectedTabPosition){
-            0 -> {
-                val f = fragmentManager?.findFragmentByTag("f0") as DownloadAudioFragment
-                f.downloadItem.apply { id = currentDownloadItem.id }
-            }
-            1 -> {
-                val f = fragmentManager?.findFragmentByTag("f1") as DownloadVideoFragment
-                f.downloadItem.apply { id = currentDownloadItem.id }
-            }
-            else -> {
-                val f = fragmentManager?.findFragmentByTag("f2") as DownloadCommandFragment
-                f.downloadItem.apply { id = currentDownloadItem.id }
-            }
-        }
-        item.incognito = incognito
-        return item
-    }
-
-
-    private fun updateWhenSwitching(){
-        val prevDownloadItem = getDownloadItem(
-            if (viewPager2.currentItem == 1) 0 else 1
-        )
-        fragmentAdapter.setTitleAuthor(prevDownloadItem.title, prevDownloadItem.author)
-
-        when(viewPager2.currentItem){
-            0 -> {
-                kotlin.runCatching {
-                    val f = fragmentManager?.findFragmentByTag("f0") as DownloadAudioFragment
-                    f.updateTitleAuthor(prevDownloadItem.title, prevDownloadItem.author)
-                    f.updateSelectedAudioFormat(getDownloadItem(1).videoPreferences.audioFormatIDs.first())
-                }
-            }
-            1 -> {
-                kotlin.runCatching {
-                    val f = fragmentManager?.findFragmentByTag("f1") as DownloadVideoFragment
-                    f.updateTitleAuthor(prevDownloadItem.title, prevDownloadItem.author)
-                    f.updateSelectedAudioFormat(getDownloadItem(0).format)
-                }
-            }
-            2 -> {
-                kotlin.runCatching {
-                    val f = fragmentManager?.findFragmentByTag("f2") as DownloadCommandFragment
-                    f.updateTitleAuthor(prevDownloadItem.title, prevDownloadItem.author)
-                }
-            }
-            else -> {}
-        }
+        return fragmentAdapter.getDownloadItem(selectedTabPosition)
     }
 
 

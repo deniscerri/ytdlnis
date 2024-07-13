@@ -48,6 +48,7 @@ import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.database.viewmodel.HistoryViewModel
 import com.deniscerri.ytdl.ui.adapter.HistoryAdapter
 import com.deniscerri.ytdl.util.Extensions.enableFastScroll
+import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.util.NavbarUtil
 import com.deniscerri.ytdl.util.UiUtil
 import com.google.android.material.appbar.AppBarLayout
@@ -134,7 +135,6 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
                 requireActivity()
             )
         recyclerView = view.findViewById(R.id.recyclerviewhistorys)
-        recyclerView.adapter = historyAdapter
         recyclerView.enableFastScroll()
 
         val preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
@@ -165,6 +165,10 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
             historyAdapter!!.submitList(it)
             historyList = it
             scrollToTop()
+
+            if (recyclerView.adapter == null){
+                recyclerView.adapter = historyAdapter
+            }
         }
 
         historyViewModel.sortOrder.observe(viewLifecycleOwner){
@@ -552,7 +556,7 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
                     true
                 }
                 R.id.share -> {
-                    UiUtil.shareFileIntent(requireContext(), selectedObjects.map { it.downloadPath }.flatten())
+                    FileUtil.shareFileIntent(requireContext(), selectedObjects.map { it.downloadPath }.flatten())
                     clearCheckedItems()
                     actionMode?.finish()
                     true
@@ -677,7 +681,7 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
 
     override fun onButtonClick(itemID: Long, isPresent: Boolean) {
         if (isPresent){
-            UiUtil.shareFileIntent(requireContext(), historyList!!.first { it!!.id == itemID }!!.downloadPath)
+            FileUtil.shareFileIntent(requireContext(), historyList!!.first { it!!.id == itemID }!!.downloadPath)
         }
     }
     companion object {

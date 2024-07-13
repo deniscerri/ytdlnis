@@ -1,31 +1,50 @@
 package com.deniscerri.ytdl.util
 
+import android.R.attr.mimeType
+import android.app.Activity
+import android.content.ContentResolver
 import android.content.Context
+import android.content.Intent
 import android.media.MediaScannerConnection
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.provider.DocumentsContract
+import android.util.DisplayMetrics
 import android.util.Log
+import android.view.ViewGroup
+import android.view.Window
 import android.webkit.MimeTypeMap
+import android.widget.LinearLayout
+import android.widget.TextView
+import android.widget.Toast
+import androidx.core.content.FileProvider
 import androidx.core.net.toUri
+import androidx.core.view.isVisible
 import androidx.documentfile.provider.DocumentFile
 import androidx.preference.PreferenceManager
-import androidx.work.impl.utils.PreferenceUtils
 import com.anggrayudi.storage.callback.FileCallback
 import com.anggrayudi.storage.callback.FolderCallback
 import com.anggrayudi.storage.file.copyFolderTo
 import com.anggrayudi.storage.file.getAbsolutePath
 import com.anggrayudi.storage.file.moveFileTo
 import com.deniscerri.ytdl.App
+import com.deniscerri.ytdl.BuildConfig
+import com.deniscerri.ytdl.MainActivity
+import com.deniscerri.ytdl.R
+import com.deniscerri.ytdl.util.Extensions.getMediaDuration
+import com.deniscerri.ytdl.util.Extensions.toStringDuration
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.yausername.youtubedl_android.YoutubeDLRequest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.internal.closeQuietly
+import okhttp3.internal.lowercase
 import java.io.File
 import java.net.URLDecoder
 import java.nio.charset.StandardCharsets
 import java.nio.file.Files
+import java.nio.file.Path
 import java.nio.file.StandardCopyOption
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
@@ -325,6 +344,60 @@ object FileUtil {
         val digitGroups = (log10(s.toDouble()) / log10(1024.0)).toInt()
         val symbols = DecimalFormatSymbols(Locale.US)
         return "${DecimalFormat("#,##0.#", symbols).format(s / 1024.0.pow(digitGroups.toDouble()))} ${units[digitGroups]}"
+    }
+
+
+    fun openFileIntent(context: Context, downloadPath: String) {
+        val uri = FileProvider.getUriForFile(context, context.packageName + ".fileprovider", File(downloadPath))
+        println(uri)
+
+        if (uri == null){
+            Toast.makeText(context, "Error opening file!", Toast.LENGTH_SHORT).show()
+        }else{
+            val ext = downloadPath.substring(downloadPath.lastIndexOf(".") + 1).lowercase()
+            val mime = MimeTypeMap.getSingleton().getMimeTypeFromExtension(ext)
+
+            val intent = Intent(Intent.ACTION_VIEW)
+                .setDataAndType(uri, mime)
+                .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                .addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+
+            context.startActivity(intent)
+        }
+
+    }
+
+    fun shareFileIntent(context: Context, paths: List<String>){
+        val uris : ArrayList<Uri> = arrayListOf()
+        paths.runCatching {
+            this.forEach {path ->
+                val uri = DocumentFile.fromSingleUri(context, Uri.parse(path)).run{
+                    if (this?.exists() == true){
+                        this.uri
+                    }else if (File(path).exists()){
+                        FileProvider.getUriForFile(context, context.packageName + ".fileprovider",
+                            File(path))
+                    }else null
+                }
+                if (uri != null) uris.add(uri)
+            }
+
+        }
+
+        if (uris.isEmpty()){
+            Toast.makeText(context, "Error sharing files!", Toast.LENGTH_SHORT).show()
+        }else{
+            Intent().apply {
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                action = Intent.ACTION_SEND_MULTIPLE
+                putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris)
+                type = if (uris.size == 1) uris[0].let { context.contentResolver.getType(it) } ?: "media/*" else "*/*"
+                putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+            }.run{
+                context.startActivity(Intent.createChooser(this, context.getString(R.string.share)))
+            }
+        }
     }
 
 }

@@ -389,112 +389,6 @@ object UiUtil {
     }
 
 
-    fun openFileIntent(context: Context, downloadPath: String) {
-        val uri = downloadPath.runCatching {
-            DocumentFile.fromSingleUri(context, Uri.parse(downloadPath)).run{
-                if (this?.exists() == true){
-                    this.uri
-                }else if (File(this@runCatching).exists()){
-                    FileProvider.getUriForFile(context, context.packageName + ".fileprovider",
-                        File(this@runCatching))
-                }else null
-            }
-        }.getOrNull()
-
-        if (uri == null){
-            Toast.makeText(context, "Error opening file!", Toast.LENGTH_SHORT).show()
-        }else{
-            Intent().apply {
-                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                action = Intent.ACTION_VIEW
-                data = uri
-            }.run{
-                context.startActivity(this)
-            }
-        }
-    }
-
-    private fun openMultipleFilesIntent(context: Activity, path: List<String>){
-        val bottomSheet = BottomSheetDialog(context)
-        bottomSheet.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        bottomSheet.setContentView(R.layout.filepathlist)
-
-        val list = bottomSheet.findViewById<LinearLayout>(R.id.filepath_list)
-
-        list?.apply {
-            path.forEach {path ->
-                val file = File(path)
-                val item = context.layoutInflater.inflate(R.layout.filepath_card, list, false)
-                item.apply {
-                    findViewById<TextView>(R.id.file_name).text = file.nameWithoutExtension
-
-                    findViewById<TextView>(R.id.duration).apply {
-                        val duration = file.getMediaDuration(context)
-                        isVisible = duration > 0
-                        text = duration.toStringDuration(Locale.US)
-                    }
-
-
-                    findViewById<TextView>(R.id.filesize).text = FileUtil.convertFileSize(file.length())
-                    findViewById<TextView>(R.id.extension).text = file.extension.uppercase()
-                    if (!file.exists()){
-                        isEnabled = false
-                        alpha = 0.7f
-                    }
-                    isEnabled = file.exists()
-                    setOnClickListener {
-                        openFileIntent(context, path)
-                        bottomSheet.dismiss()
-                    }
-                }
-                list.addView(item)
-
-            }
-        }
-
-        bottomSheet.show()
-        val displayMetrics = DisplayMetrics()
-        context.windowManager.defaultDisplay.getMetrics(displayMetrics)
-        bottomSheet.behavior.peekHeight = displayMetrics.heightPixels
-        bottomSheet.window!!.setLayout(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.MATCH_PARENT
-        )
-    }
-
-    fun shareFileIntent(context: Context, paths: List<String>){
-        val uris : ArrayList<Uri> = arrayListOf()
-        paths.runCatching {
-            this.forEach {path ->
-                val uri = DocumentFile.fromSingleUri(context, Uri.parse(path)).run{
-                    if (this?.exists() == true){
-                        this.uri
-                    }else if (File(path).exists()){
-                        FileProvider.getUriForFile(context, context.packageName + ".fileprovider",
-                            File(path))
-                    }else null
-                }
-                if (uri != null) uris.add(uri)
-            }
-
-        }
-
-        if (uris.isEmpty()){
-            Toast.makeText(context, "Error sharing files!", Toast.LENGTH_SHORT).show()
-        }else{
-            Intent().apply {
-                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                action = Intent.ACTION_SEND_MULTIPLE
-                putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris)
-                type = if (uris.size == 1) uris[0].let { context.contentResolver.getType(it) } ?: "media/*" else "*/*"
-                putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
-            }.run{
-                context.startActivity(Intent.createChooser(this, context.getString(R.string.share)))
-            }
-        }
-    }
 
     fun showDatePickerOnly(fragmentManager: FragmentManager , onSubmit : (chosenDate: Calendar) -> Unit ){
         val date = Calendar.getInstance()
@@ -816,7 +710,7 @@ object UiUtil {
                 }
 
                 setOnClickListener {
-                    shareFileIntent(context, item.downloadPath)
+                    FileUtil.shareFileIntent(context, item.downloadPath)
                 }
             }
         }
@@ -903,7 +797,7 @@ object UiUtil {
         openFile!!.tag = item.id
         openFile.setOnClickListener{
             if (item.downloadPath.size == 1) {
-                openFileIntent(context, item.downloadPath.first())
+                FileUtil.openFileIntent(context, item.downloadPath.first())
             }else{
                 openMultipleFilesIntent(context, item.downloadPath)
             }
@@ -2045,5 +1939,53 @@ object UiUtil {
                 view.cardElevation = it.animatedValue as? Float ?: return@addUpdateListener
             }
         }
+    }
+
+    fun openMultipleFilesIntent(context: Activity, path: List<String>){
+        val bottomSheet = BottomSheetDialog(context)
+        bottomSheet.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        bottomSheet.setContentView(R.layout.filepathlist)
+
+        val list = bottomSheet.findViewById<LinearLayout>(R.id.filepath_list)
+
+        list?.apply {
+            path.forEach {path ->
+                val file = File(path)
+                val item = context.layoutInflater.inflate(R.layout.filepath_card, list, false)
+                item.apply {
+                    findViewById<TextView>(R.id.file_name).text = file.nameWithoutExtension
+
+                    findViewById<TextView>(R.id.duration).apply {
+                        val duration = file.getMediaDuration(context)
+                        isVisible = duration > 0
+                        text = duration.toStringDuration(Locale.US)
+                    }
+
+
+                    findViewById<TextView>(R.id.filesize).text = FileUtil.convertFileSize(file.length())
+                    findViewById<TextView>(R.id.extension).text = file.extension.uppercase()
+                    if (!file.exists()){
+                        isEnabled = false
+                        alpha = 0.7f
+                    }
+                    isEnabled = file.exists()
+                    setOnClickListener {
+                        FileUtil.openFileIntent(context, path)
+                        bottomSheet.dismiss()
+                    }
+                }
+                list.addView(item)
+
+            }
+        }
+
+        bottomSheet.show()
+        val displayMetrics = DisplayMetrics()
+        context.windowManager.defaultDisplay.getMetrics(displayMetrics)
+        bottomSheet.behavior.peekHeight = displayMetrics.heightPixels
+        bottomSheet.window!!.setLayout(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.MATCH_PARENT
+        )
     }
 }

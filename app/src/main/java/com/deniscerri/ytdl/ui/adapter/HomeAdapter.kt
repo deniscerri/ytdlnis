@@ -202,7 +202,8 @@ class HomeAdapter(onItemClickListener: OnItemClickListener, activity: Activity) 
     companion object {
         private val DIFF_CALLBACK: DiffUtil.ItemCallback<ResultItem> = object : DiffUtil.ItemCallback<ResultItem>() {
             override fun areItemsTheSame(oldItem: ResultItem, newItem: ResultItem): Boolean {
-                return oldItem.id === newItem.id
+                val ranged = arrayListOf(oldItem.id, newItem.id)
+                return ranged[0] == ranged[1]
             }
 
             override fun areContentsTheSame(oldItem: ResultItem, newItem: ResultItem): Boolean {

@@ -137,7 +137,7 @@ class UpdateUtil(var context: Context) {
                                 object : BroadcastReceiver() {
                                     override fun onReceive(context: Context?, intent: Intent) {
                                         context?.unregisterReceiver(this)
-                                        UiUtil.openFileIntent(context!!,
+                                        FileUtil.openFileIntent(context!!,
                                             Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)?.absolutePath +
                                                     File.separator + releaseVersion.name)
                                     }

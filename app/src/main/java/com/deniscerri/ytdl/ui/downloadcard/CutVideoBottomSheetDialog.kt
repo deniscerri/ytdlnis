@@ -180,38 +180,32 @@ class CutVideoBottomSheetDialog(private val _item: DownloadItem? = null, private
 
         lifecycleScope.launch {
             try {
-                val data : MutableList<String?>  = withContext(Dispatchers.IO){
+                val data = withContext(Dispatchers.IO) {
                     if (urls.isNullOrEmpty()) {
                         infoUtil.getStreamingUrlAndChapters(item.url)
-                    }else {
-                        urls.split("\n").toMutableList()
+                    }else{
+                        Pair(urls.split("\n"), chapters)
                     }
                 }
 
-                if (data.isEmpty()) throw Exception("No Data found!")
+                if (data.first.isEmpty()) throw Exception("No Data found!")
+
                 if (chapters!!.isEmpty() && urls!!.isBlank()){
-                    try{
-                        val listType: Type = object : TypeToken<List<ChapterItem>>() {}.type
-                        chapters = Gson().fromJson(data.first().toString(), listType)
-                        data.removeFirst()
-                    }catch (ignored: Exception) {
-                        data.removeFirst()
-                    }
+                    chapters = data.second
                 }
 
-                if (data.isEmpty()) throw Exception("No Streaming URL found!")
-                if (data.size == 2){
+                val urls = data.first
+                if (urls.size == 2){
                     val audioSource : MediaSource =
                         DefaultMediaSourceFactory(requireContext())
-                            .createMediaSource(fromUri(Uri.parse(data[0])))
+                            .createMediaSource(fromUri(Uri.parse(urls[0])))
                     val videoSource: MediaSource =
                         DefaultMediaSourceFactory(requireContext())
-                            .createMediaSource(fromUri(Uri.parse(data[1])))
+                            .createMediaSource(fromUri(Uri.parse(urls[1])))
                     player.setMediaSource(MergingMediaSource(videoSource, audioSource))
                 }else{
-                    player.addMediaItem(fromUri(Uri.parse(data[0])))
+                    player.addMediaItem(fromUri(Uri.parse(urls[0])))
                 }
-                player.addMediaItem(fromUri(Uri.parse(data[0])))
 
                 progress.visibility = View.GONE
                 populateSuggestedChapters()
@@ -221,6 +215,7 @@ class CutVideoBottomSheetDialog(private val _item: DownloadItem? = null, private
             }catch (e: Exception){
                 progress.visibility = View.GONE
                 frame.visibility = View.GONE
+                videoView.visibility = View.GONE
                 e.printStackTrace()
             }
         }

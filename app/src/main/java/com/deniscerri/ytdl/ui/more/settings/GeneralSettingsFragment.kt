@@ -89,7 +89,7 @@ class GeneralSettingsFragment : BaseSettingsFragment() {
         findPreference<Preference>("label_visibility")?.apply {
             isVisible = !resources.getBoolean(R.bool.uses_side_nav)
             setOnPreferenceChangeListener { preference, newValue ->
-                restartApp()
+                ThemeUtil.recreateMain()
                 true
             }
         }
@@ -162,7 +162,7 @@ class GeneralSettingsFragment : BaseSettingsFragment() {
                     .setPositiveButton(R.string.ok) { _, _ ->
                         NavbarUtil.setNavBarItems(adapter.items, requireContext())
                         NavbarUtil.setStartFragment(adapter.selectedHomeTabId)
-                        restartApp()
+                        ThemeUtil.recreateMain()
                     }
                     .setNegativeButton(R.string.cancel, null)
                     .show()
@@ -185,34 +185,18 @@ class GeneralSettingsFragment : BaseSettingsFragment() {
                         theme!!.summary = getString(R.string.light)
                     }
                 }
-                ThemeUtil.updateTheme(requireActivity() as AppCompatActivity)
-                val intent = Intent(requireContext(), MainActivity::class.java)
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                this.startActivity(intent)
-                requireActivity().finishAffinity()
+                ThemeUtil.updateThemes()
                 true
             }
         accent!!.summary = accent!!.entry
         accent!!.onPreferenceChangeListener =
             Preference.OnPreferenceChangeListener { _: Preference?, _: Any ->
-                ThemeUtil.updateTheme(requireActivity() as AppCompatActivity)
-                val intent = Intent(requireContext(), MainActivity::class.java)
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                this.startActivity(intent)
-                requireActivity().finishAffinity()
+                ThemeUtil.updateThemes()
                 true
             }
         highContrast!!.onPreferenceChangeListener =
             Preference.OnPreferenceChangeListener { _: Preference?, _: Any ->
-                ThemeUtil.updateTheme(requireActivity() as AppCompatActivity)
-                val intent = Intent(requireContext(), MainActivity::class.java)
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                this.startActivity(intent)
-                requireActivity().finishAffinity()
-
+                ThemeUtil.updateThemes()
                 true
             }
 

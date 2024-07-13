@@ -13,7 +13,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import java.util.regex.Pattern
 
 class ResultRepository(private val resultDao: ResultDao, private val context: Context) {
-    private val tag: String = "ResultRepository"
     val YTDLNIS_SEARCH = "YTDLNIS_SEARCH"
     val allResults : Flow<List<ResultItem>> = resultDao.getResults()
     var itemCount = MutableStateFlow(-1)

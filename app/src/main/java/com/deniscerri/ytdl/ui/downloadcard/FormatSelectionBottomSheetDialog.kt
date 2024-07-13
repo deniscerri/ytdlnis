@@ -220,6 +220,7 @@ class FormatSelectionBottomSheetDialog(
                        if (items.size == 1) {
                            kotlin.runCatching {
                                val res = infoUtil.getFormats(items.first()!!.url, currentFormatSource)
+                               if (!isActive) return@launch
                                res.filter { it.format_note != "storyboard" }
                                chosenFormats = if (items.first()?.type == Type.audio) {
                                    res.filter { it.format_note.contains("audio", ignoreCase = true) }
@@ -230,6 +231,8 @@ class FormatSelectionBottomSheetDialog(
 
                                formats.clear()
                                formats.addAll(res)
+
+
                                withContext(Dispatchers.Main){
                                    listener.onFormatsUpdated(res)
                                }

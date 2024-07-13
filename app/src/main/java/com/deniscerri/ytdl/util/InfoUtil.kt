@@ -929,13 +929,22 @@ class InfoUtil(private val context: Context) {
 
 
 
-    fun getStreamingUrlAndChapters(url: String) : MutableList<String?> {
+    fun getStreamingUrlAndChapters(url: String) : Pair<List<String>, List<ChapterItem>?> {
         try {
-            val p = Pattern.compile("(^(https?)://(www.)?(music.)?youtu(.be)?)|(^(https?)://(www.)?piped.video)")
-            val m = p.matcher(url)
+            if (url.isYoutubeURL()) {
+                val id = getIDFromYoutubeURL(url)
+                val res = genericRequest("$pipedURL/streams/$id")
+                if (res.length() == 0) {
+                    throw Exception()
+                }else{
+                    val item = createVideoFromPipedJSON(res, url)
+                    if (item!!.urls.isBlank()) throw Exception()
 
-            if (m.find()){
-                return getStreamingUrlAndChaptersFromPIPED(url)
+                    val urls = item.urls.split(",")
+                    val chapters = item.chapters
+                    return Pair(urls, chapters)
+                }
+
             }else{
                 throw Exception()
             }
@@ -943,7 +952,7 @@ class InfoUtil(private val context: Context) {
             try {
                 val request = YoutubeDLRequest(url)
                 request.addOption("--get-url")
-                request.addOption("--print", "%(chapters)s")
+                request.addOption("--print", "%(.{urls,chapters})s")
                 request.addOption("--skip-download")
                 request.addOption("-R", "1")
                 request.addOption("--socket-timeout", "5")
@@ -964,8 +973,6 @@ class InfoUtil(private val context: Context) {
                     }
                 }
 
-
-
                 val proxy = sharedPreferences.getString("proxy", "")
                 if (proxy!!.isNotBlank()){
                     request.addOption("--proxy", proxy)
@@ -975,36 +982,41 @@ class InfoUtil(private val context: Context) {
 
 
                 val youtubeDLResponse = YoutubeDL.getInstance().execute(request)
-                val results: Array<String?> = try {
-                    val lineSeparator = System.getProperty("line.separator")
-                    youtubeDLResponse.out.split(lineSeparator!!).toTypedArray()
-                } catch (e: Exception) {
-                    arrayOf(youtubeDLResponse.out)
+                val json = JSONObject(youtubeDLResponse.out)
+                val urls = if (json.has("urls")) {
+                    json.getString("urls").split("\n")
+                }else{
+                    listOf()
                 }
-                return results.filter { it!!.isNotEmpty() }.toMutableList()
+
+                val chapters = if (json.has("chapters")) {
+                    val arr = json.getJSONArray("chapters")
+                    val list = mutableListOf<ChapterItem>()
+                    for (i in 0 until arr.length()) {
+                        list.add(
+                            Gson().fromJson(arr.getJSONObject(i).toString(), ChapterItem::class.java)
+                        )
+                    }
+
+                    list
+                }else{
+                    listOf()
+                }
+
+                return Pair(urls, chapters)
+
             } catch (e: Exception) {
-                return mutableListOf()
+                return Pair(listOf(), listOf())
             }
         }
     }
 
-    private fun getStreamingUrlAndChaptersFromPIPED(url: String) : MutableList<String?> {
-        val id = getIDFromYoutubeURL(url)
-        val res = genericRequest("$pipedURL/streams/$id")
-        if (res.length() == 0) {
-            throw Exception()
-        }else{
-            val item = createVideoFromPipedJSON(res, url)
-            if (item!!.urls.isBlank()) throw Exception()
-            val list = mutableListOf<String?>(Gson().toJson(item.chapters))
-            list.addAll(item.urls.split(","))
-            return list
-        }
-    }
 
     @SuppressLint("RestrictedApi")
     fun buildYoutubeDLRequest(downloadItem: DownloadItem) : YoutubeDLRequest {
-        val request = if (downloadItem.playlistURL.isNullOrBlank() || downloadItem.playlistTitle.isBlank()){
+        val useItemURL = sharedPreferences.getBoolean("use_itemurl_instead_playlisturl", false)
+
+        val request = if (downloadItem.playlistURL.isNullOrBlank() || downloadItem.playlistTitle.isBlank() || useItemURL){
             YoutubeDLRequest(downloadItem.url)
         }else{
             YoutubeDLRequest(downloadItem.playlistURL!!).apply {
@@ -1015,6 +1027,10 @@ class InfoUtil(private val context: Context) {
                     addOption("-I", "${downloadItem.playlistIndex!!}:${downloadItem.playlistIndex}")
                 }
             }
+        }
+
+        if (downloadItem.playlistIndex != null && useItemURL) {
+            request.addOption("--parse-metadata", " ${downloadItem.playlistIndex}: %(playlist_index)s")
         }
 
         val type = downloadItem.type

@@ -49,6 +49,7 @@ import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.database.viewmodel.HistoryViewModel
 import com.deniscerri.ytdl.database.viewmodel.ObserveSourcesViewModel
 import com.deniscerri.ytdl.database.viewmodel.ResultViewModel
+import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.util.UiUtil
 import com.deniscerri.ytdl.util.UpdateUtil
 import com.google.android.material.chip.Chip
@@ -220,7 +221,7 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
                         saveFile.writeText(GsonBuilder().setPrettyPrinting().create().toJson(json))
                         val s = Snackbar.make(requireView(), getString(R.string.backup_created_successfully), Snackbar.LENGTH_LONG)
                         s.setAction(R.string.Open_File){
-                            UiUtil.openFileIntent(requireActivity(), saveFile.absolutePath)
+                            FileUtil.openFileIntent(requireActivity(), saveFile.absolutePath)
                         }
                         s.show()
                     }
