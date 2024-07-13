@@ -399,4 +399,11 @@
     <string name="enable_alarm_permission">ਤੁਹਾਨੂੰ ਐਪ ਸੈਟਿੰਗਾਂ ਵਿੱਚ SCHEDULE_EXACT_ALARM ਅਨੁਮਤੀ ਨੂੰ ਸਮਰੱਥ ਕਰਨ ਦੀ ਲੋੜ ਹੈ।</string>
     <string name="process_downloads_background">"ਡਾਊਨਲੋਡ ਹਾਲੇ ਵੀ ਲੋਡ ਹੋ ਰਹੇ ਹਨ। ਕੀ ਉਹਨਾਂ ਨੂੰ ਬੈਕਗ੍ਰਾਊਂਡ ਵਿੱਚ ਪ੍ਰੋਸੈਸ ਕਰਨਾ ਜਾਰੀ ਰੱਖਣਾ ਹੈ ਅਤੇ ਡਾਊਨਲੋਡ ਕਰਨਾ ਸ਼ੁਰੂ ਕਰਨਾ ਹੈ? "</string>
     <string name="navigation_bar">ਨੈਵੀਗੇਸ਼ਨ ਪੱਟੀ</string>
+    <string name="label_visibility">ਲੇਬਲ ਦਿਖਣਯੋਗਤਾ</string>
+    <string name="reset">ਰੀਸੈੱਟ ਕਰੋ</string>
+    <string name="always">ਹਮੇਸ਼ਾਂ</string>
+    <string name="queue">ਕਤਾਰ</string>
+    <string name="sync_with_source">ਸਰੋਤ ਨਾਲ ਸਿੰਕ ਕਰੋ</string>
+    <string name="restore_info">ਆਪਣੇ ਮੌਜੂਦਾ ਡੇਟਾ ਨਾਲ ਸੁਰੱਖਿਅਤ ਕੀਤੇ ਡੇਟਾ ਨੂੰ ਮਿਲਾਉਣ ਲਈ \'ਰੀਸਟੋਰ\' ਦਬਾਓ।
+\nਮਿਟਾਉਣ ਲਈ \'ਰੀਸੈੱਟ\' ਦਬਾਓ ਅਤੇ ਸਿਰਫ਼ ਫਾਈਲ ਵਿੱਚ ਸੁਰੱਖਿਅਤ ਕੀਤੇ ਡੇਟਾ ਦੀ ਵਰਤੋਂ ਕਰੋ।</string>
 </resources>

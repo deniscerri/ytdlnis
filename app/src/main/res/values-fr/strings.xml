@@ -65,7 +65,7 @@
     <string name="link_copied_to_clipboard">Lien copié dans le presse-papiers</string>
     <string name="api_key">Utiliser la clé API</string>
     <string name="api_key_summary">Recommandations vidéo de l\'API Youtube</string>
-    <string name="update_app_summary">Annoncer les nouvelles versions de l\'application lors de son ouverture</string>
+    <string name="update_app_summary">Annoncer les nouvelles versions de l\'application lors de son ouverture. Les données sont extraites du projet Github officiel</string>
     <string name="downloads">Téléchargements</string>
     <string name="remove_deleted">Supprimer les éléments supprimés</string>
     <string name="remove_duplicates">Supprimer les doublons</string>
@@ -80,7 +80,7 @@
     <string name="embed_subtitles">Intégrer les sous-titres</string>
     <string name="add_chapter">Ajouter des chapitres</string>
     <string name="show_download_card">Afficher les options de téléchargement</string>
-    <string name="download_card_summary">Paramètres de téléchargement des éléments</string>
+    <string name="download_card_summary">Modification des options de l\'élément avant le téléchargement. Désactiver cette option démarrera le téléchargement immédiatement</string>
     <string name="Open_File">Ouvrir le fichier</string>
     <string name="you_are_going_to_delete_multiple_items">Suppression de plusieurs éléments</string>
     <string name="delete_file_too">Supprimer le fichier de l\'appareil</string>
@@ -359,4 +359,8 @@
     <string name="generic">Générique</string>
     <string name="multiple_download_card">Téléchargement multiple</string>
     <string name="format_filter">Filtre de format</string>
+    <string name="swipe_gestures_download_card">Fonctionnalités de défilement dans la modale de téléchargement</string>
+    <string name="show_download_count">Montrer le total sur l\'écran de la file d\'attente des téléchargements</string>
+    <string name="archive">Télécharger l\'archive [Utiliser l\'archive de yt-dlp pour éviter les duplicatas de téléchargement au lieu d\'utiliser la fonctionnalité embarquée]</string>
+    <string name="disabled">Désactivé</string>
 </resources>

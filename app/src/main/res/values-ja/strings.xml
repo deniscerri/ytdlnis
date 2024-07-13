@@ -398,4 +398,5 @@
     <string name="location">場所</string>
     <string name="enable_alarm_permission">アプリの設定から SCHEDULE_EXACT_ALARM の権限を有効にする必要があります。</string>
     <string name="format_importance_note">形式の要素の重要度を調整します。この順序はアプリがダウンロードカード内で形式を取得し、形式を自動選択する際にみ使われます！</string>
+    <string name="always">常に</string>
 </resources>

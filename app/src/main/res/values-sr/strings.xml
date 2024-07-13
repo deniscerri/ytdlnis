@@ -406,4 +406,6 @@
     <string name="always">Увек</string>
     <string name="restore_info">Притисните „Врати“ да спојите сачуване податке с вашим тренутним подацима.
 \nПритисните „Ресетуј“ да избришете и користите само сачуване податке у фајлу.</string>
+    <string name="use_alarm_manager">Користите AlarmManager уместо WorkManager за планирање</string>
+    <string name="use_alarm_manager_summary">Омогућите ово ако је WorkManager ограничен од стране продавца уређаја или заказани послови нису превише прецизни</string>
 </resources>
