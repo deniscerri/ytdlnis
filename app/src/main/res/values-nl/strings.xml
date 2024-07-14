@@ -407,5 +407,7 @@
     <string name="restore_info">Druk op ‘Herstellen’ om de opgeslagen gegevens samen te voegen met uw huidige gegevens.
 \nDruk op ‘Resetten’ om de opgeslagen gegevens in het bestand te wissen en alleen te gebruiken.</string>
     <string name="use_alarm_manager">AlarmManager in plaats van WorkManager gebruiken voor planning</string>
-    <string name="use_alarm_manager_summary">Schakel dit in als WorkManager beperkt is door de leverancier van uw apparaat of als geplande taken niet al te nauwkeurig zijn</string>
+    <string name="use_alarm_manager_summary">Schakel dit in als WorkManager beperkt is door de leverancier van uw apparaat of als geplande taken niet al te nauwkeurig zĳn</string>
+    <string name="use_item_url_not_playlist">Item-URL gebruiken in plaats van afspeel­lĳst-URL</string>
+    <string name="use_item_url_not_playlist_summary">Handig voor offline afspeel­lĳsten van LibreTube die niet worden herkend door yt-dlp. Meta­gegevens van de afspeel­lĳst worden niet ingesloten als dit is ingeschakeld</string>
 </resources>
