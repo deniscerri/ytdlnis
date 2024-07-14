@@ -408,4 +408,6 @@
     <string name="reset">Restablecer</string>
     <string name="use_alarm_manager">Utilizar AlarmManager en lugar de WorkManager para la programación</string>
     <string name="use_alarm_manager_summary">Habilite esta opción si WorkManager está restringido por el proveedor de su dispositivo o si los trabajos programados no son demasiado precisos</string>
+    <string name="use_item_url_not_playlist">Utilizar la URL del artículo en lugar de la URL de la lista de reproducción</string>
+    <string name="use_item_url_not_playlist_summary">Útil para listas de reproducción sin conexión de Libretube que no son reconocidas por yt-dlp. Los metadatos de la lista de reproducción no se incrustarán con esta opción activada</string>
 </resources>
