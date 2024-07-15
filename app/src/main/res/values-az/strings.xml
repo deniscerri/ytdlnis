@@ -408,4 +408,6 @@
 \nSilmək və yalnız faylda saxlanmış məlumatı istifadə etmək üçün \"Sıfırla\" düyməsini basın.</string>
     <string name="use_alarm_manager">Planlaşdırma üçün WorkManager əvəzinə AlarmManager işlət</string>
     <string name="use_alarm_manager_summary">WorkManager-ə cihaz başladıcı tərəfindən limit qoyulubsa və ya planlaşdırılan vəzifələr çox dəqiq deyilsə, bunu aktivləşdirin</string>
+    <string name="use_item_url_not_playlist">Pleylist URL əvəzinə Element URL istifadə edin</string>
+    <string name="use_item_url_not_playlist_summary">yt-dlp vasitəsilə tanınmayan LibretTube oflayn oynatma siyahıları üçün lazımdır. Bu aktivləşdikdə pleylist üst məlumatı daxil edilməyəcək</string>
 </resources>
