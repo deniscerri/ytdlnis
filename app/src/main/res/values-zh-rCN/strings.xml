@@ -408,4 +408,6 @@
 \n按下“重置”擦除并只使用文件内保存的数据。</string>
     <string name="use_alarm_manager">使用闹铃管理器而非工作管理器安排任务</string>
     <string name="use_alarm_manager_summary">如果工作管理器被设备厂商限制或安排好时间的任务不太精确，请启用这个</string>
+    <string name="use_item_url_not_playlist">使用项目 URL 而非播放列表 URL</string>
+    <string name="use_item_url_not_playlist_summary">对于未被 yt-dlp 识别的 Libretube 离线播放列表有用。启用此选项后不会内嵌播放列表元数据</string>
 </resources>
