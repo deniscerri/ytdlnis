@@ -408,4 +408,6 @@
 \nПритисните „Ресетуј“ да избришете и користите само сачуване податке у фајлу.</string>
     <string name="use_alarm_manager">Користите AlarmManager уместо WorkManager за планирање</string>
     <string name="use_alarm_manager_summary">Омогућите ово ако је WorkManager ограничен од стране продавца уређаја или заказани послови нису превише прецизни</string>
+    <string name="use_item_url_not_playlist">Користи URL адресу предмета уместо URL адресе плејлисте</string>
+    <string name="use_item_url_not_playlist_summary">Корисно за Libretube офлајн плејлисте које yt-dlp не препознаје. Метаподаци плејлисте неће бити уграђени, ако је ово омогућено</string>
 </resources>
