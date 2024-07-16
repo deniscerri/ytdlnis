@@ -39,12 +39,8 @@ class LogRepository(private val logDao: LogDao) {
     }
 
     suspend fun update(line: String, id: Long){
-        runCatching {
-            val item = getItem(id) ?: return
-            val log = item.content ?: ""
-            item.content = log.appendLineToLog(line)
-            //item.content += "\n$line"
-            logDao.update(item)
+        kotlin.runCatching {
+            logDao.updateLog(line, id)
         }
     }
 

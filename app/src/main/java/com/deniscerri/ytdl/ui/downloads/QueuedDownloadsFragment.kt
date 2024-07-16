@@ -146,7 +146,7 @@ class QueuedDownloadsFragment : Fragment(), QueuedDownloadAdapter.OnItemClickLis
                 downloadViewModel.getItemByID(id)
             }
             val deleteDialog = MaterialAlertDialogBuilder(requireContext())
-            deleteDialog.setTitle(getString(R.string.you_are_going_to_delete) + " \"" + item.title + "\"!")
+            deleteDialog.setTitle(getString(R.string.you_are_going_to_delete) + " \"" + item.title.ifEmpty { item.url } + "\"!")
             deleteDialog.setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, _: Int -> dialogInterface.cancel() }
             deleteDialog.setPositiveButton(getString(R.string.ok)) { _: DialogInterface?, _: Int ->
                 item.status = DownloadRepository.Status.Cancelled.toString()
@@ -154,7 +154,7 @@ class QueuedDownloadsFragment : Fragment(), QueuedDownloadAdapter.OnItemClickLis
                     downloadViewModel.updateDownload(item)
                 }
 
-                Snackbar.make(queuedRecyclerView, getString(R.string.cancelled) + ": " + item.title, Snackbar.LENGTH_LONG)
+                Snackbar.make(queuedRecyclerView, getString(R.string.cancelled) + ": " + item.title.ifEmpty { item.url }, Snackbar.LENGTH_LONG)
                     .setAction(getString(R.string.undo)) {
                         lifecycleScope.launch(Dispatchers.IO) {
                             downloadViewModel.deleteDownload(item.id)

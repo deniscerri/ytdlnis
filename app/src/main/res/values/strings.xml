@@ -412,4 +412,6 @@
     <string name="use_alarm_manager_summary">Enable this if WorkManager is restricted by your device vendor or scheduled jobs are not too precise</string>
     <string name="use_item_url_not_playlist">Use Item URL instead of Playlist URL</string>
     <string name="use_item_url_not_playlist_summary">Useful for Libretube offline playlists that are not recognised by yt-dlp. Playlist metadata wont be embedded with this enabled</string>
+    <string name="recode_video">Recode Video</string>
+    <string name="recode_video_summary">Recodes the video file to the specified video format</string>
 </resources>

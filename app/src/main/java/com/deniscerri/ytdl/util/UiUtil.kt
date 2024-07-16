@@ -163,7 +163,7 @@ object UiUtil {
 
 
         var filesize = chosenFormat.filesize
-        if (!audioFormats.isNullOrEmpty()) filesize += audioFormats.sumOf { it.filesize }
+        if (!audioFormats.isNullOrEmpty() && filesize > 10L) filesize += audioFormats.sumOf { it.filesize }
         formatCard.findViewById<TextView>(R.id.file_size).apply {
             text = FileUtil.convertFileSize(filesize)
             setOnClickListener {
@@ -1130,28 +1130,17 @@ object UiUtil {
         saveAutoSubtitlesClicked: (Boolean) -> Unit,
         subtitleLanguagesSet: (String) -> Unit,
         removeAudioClicked: (Boolean) -> Unit,
+        recodeVideoClicked: (Boolean) -> Unit,
         alsoDownloadAsAudioClicked: (Boolean) -> Unit,
         extraCommandsClicked: () -> Unit
     ){
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
-
-        val embedSubs = view.findViewById<Chip>(R.id.embed_subtitles)
-        val saveSubtitles = view.findViewById<Chip>(R.id.save_subtitles)
-        val saveAutoSubtitles = view.findViewById<Chip>(R.id.save_auto_subtitles)
-        val subtitleLanguages = view.findViewById<Chip>(R.id.subtitle_languages)
-
-        embedSubs!!.isChecked = items.all { it.videoPreferences.embedSubs }
-        embedSubs.setOnClickListener {
-            subtitleLanguages.isEnabled = embedSubs.isChecked || saveSubtitles.isChecked
-            embedSubsClicked(embedSubs.isChecked)
-        }
 
         val addChapters = view.findViewById<Chip>(R.id.add_chapters)
         addChapters!!.isChecked = items.all { it.videoPreferences.addChapters }
         addChapters.setOnClickListener{
             addChaptersClicked(addChapters.isChecked)
         }
-
 
         val splitByChapters = view.findViewById<Chip>(R.id.split_by_chapters)
         if(items.size == 1 && items[0].downloadSections.isNotBlank()){
@@ -1182,6 +1171,111 @@ object UiUtil {
         saveThumbnail.setOnClickListener {
             saveThumbnailClicked(saveThumbnail.isChecked)
         }
+
+
+        val adjustSubtitles = view.findViewById<Chip>(R.id.adjust_subtitles)
+        adjustSubtitles.setOnClickListener {
+            val adjustSubtitleView = context.layoutInflater.inflate(R.layout.subtitle_download_preferences_dialog, null)
+            val embedSubs = adjustSubtitleView.findViewById<MaterialSwitch>(R.id.embed_subtitles)
+            val saveSubtitles = adjustSubtitleView.findViewById<MaterialSwitch>(R.id.save_subs)
+            val saveAutoSubtitles = adjustSubtitleView.findViewById<MaterialSwitch>(R.id.save_auto_subs)
+            val subtitleLanguages = adjustSubtitleView.findViewById<ConstraintLayout>(R.id.subtitle_languages)
+            val subtitleLanguagesDescription = adjustSubtitleView.findViewById<TextView>(R.id.subtitle)
+            subtitleLanguagesDescription.text = items.first().videoPreferences.subsLanguages
+            subtitleLanguages.isClickable = embedSubs.isChecked || saveSubtitles.isChecked
+
+            embedSubs!!.isChecked = items.all { it.videoPreferences.embedSubs }
+            embedSubs.setOnClickListener {
+                subtitleLanguages.isClickable = embedSubs.isChecked || saveSubtitles.isChecked
+                embedSubsClicked(embedSubs.isChecked)
+            }
+
+            if (items.all { it.videoPreferences.writeSubs}) {
+                saveSubtitles.isChecked = true
+                subtitleLanguages.visibility = View.VISIBLE
+            }
+
+            if (items.all { it.videoPreferences.writeAutoSubs}) {
+                saveAutoSubtitles.isChecked = true
+                subtitleLanguages.visibility = View.VISIBLE
+            }
+
+            saveSubtitles.setOnCheckedChangeListener { _, _ ->
+                subtitleLanguages.isClickable = embedSubs.isChecked || saveSubtitles.isChecked || saveAutoSubtitles.isChecked
+                saveSubtitlesClicked(saveSubtitles.isChecked)
+            }
+
+            saveAutoSubtitles.setOnCheckedChangeListener { _, _ ->
+                subtitleLanguages.isClickable = embedSubs.isChecked || saveSubtitles.isChecked || saveAutoSubtitles.isChecked
+                saveAutoSubtitlesClicked(saveAutoSubtitles.isChecked)
+            }
+
+            subtitleLanguages.isClickable = embedSubs.isChecked || saveSubtitles.isChecked
+            subtitleLanguages.setOnClickListener {
+                val currentSubtitleLang = if (items.size == 1 || items.all { it.videoPreferences.subsLanguages == items[0].videoPreferences.subsLanguages }){
+                    items[0].videoPreferences.subsLanguages
+                }else {
+                    ""
+                }.ifEmpty { sharedPreferences.getString("subs_lang", "en.*,.*-orig")!! }
+
+                showSubtitleLanguagesDialog(context, currentSubtitleLang){
+                    subtitleLanguagesSet(it)
+                    subtitleLanguagesDescription.text = it
+                }
+            }
+
+            val adjustSubtitleDialog = MaterialAlertDialogBuilder(context)
+                .setTitle(context.getString(R.string.subtitles))
+                .setView(adjustSubtitleView)
+                .setIcon(R.drawable.ic_subtitles)
+                .setNegativeButton(context.resources.getString(R.string.dismiss)) { _: DialogInterface?, _: Int -> }
+
+            adjustSubtitleDialog.show()
+        }
+
+        if (items.size == 1 && items.first().id == 0L){
+            val adjustAudio = view.findViewById<Chip>(R.id.adjust_audio)
+            adjustAudio.setOnClickListener {
+                val adjustAudioView = context.layoutInflater.inflate(R.layout.audio_download_preferences_dialog, null)
+                adjustAudioView.findViewById<MaterialSwitch>(R.id.remove_audio).apply {
+                    isChecked = items.first().videoPreferences.removeAudio
+                    setOnCheckedChangeListener { _, b ->
+                        removeAudioClicked(b)
+                    }
+                }
+
+                adjustAudioView.findViewById<MaterialSwitch>(R.id.also_download_audio).apply {
+                    isChecked = items.first().videoPreferences.alsoDownloadAsAudio
+                    setOnCheckedChangeListener { _, b ->
+                        alsoDownloadAsAudioClicked(b)
+                    }
+                }
+
+                val adjustAudioDialog = MaterialAlertDialogBuilder(context)
+                    .setTitle(context.getString(R.string.audio))
+                    .setView(adjustAudioView)
+                    .setIcon(R.drawable.ic_music)
+                    .setNegativeButton(context.resources.getString(R.string.dismiss)) { _: DialogInterface?, _: Int -> }
+
+                adjustAudioDialog.show()
+            }
+        }else{
+            val adjustAudio = view.findViewById<Chip>(R.id.adjust_audio)
+            adjustAudio.isVisible = false
+            val removeAudio = view.findViewById<Chip>(R.id.remove_audio)
+            removeAudio.isVisible = true
+            removeAudio.isChecked = items.all { it.videoPreferences.removeAudio }
+            removeAudio.setOnCheckedChangeListener { _, _ ->
+                removeAudioClicked(removeAudio.isChecked)
+            }
+        }
+
+        val recodeVideo = view.findViewById<Chip>(R.id.recode_video)
+        recodeVideo.isChecked = items.all { it.videoPreferences.recodeVideo }
+        recodeVideo.setOnCheckedChangeListener { _, _ ->
+            recodeVideoClicked(recodeVideo.isChecked)
+        }
+
 
         val sponsorBlock = view.findViewById<Chip>(R.id.sponsorblock_filters)
         sponsorBlock.isEnabled = sharedPreferences.getBoolean("use_sponsorblock", true)
@@ -1281,78 +1375,6 @@ object UiUtil {
             }
             showFilenameTemplateDialog(context, currentFilename) {
                 filenameTemplateSet(it)
-            }
-        }
-
-
-
-        items.forEach { it.videoPreferences.subsLanguages = sharedPreferences.getString("subs_lang", "en.*,.*-orig")!! }
-        if (items.all { it.videoPreferences.writeSubs}) {
-            saveSubtitles.isChecked = true
-            subtitleLanguages.visibility = View.VISIBLE
-        }
-
-        if (items.all { it.videoPreferences.writeAutoSubs}) {
-            saveAutoSubtitles.isChecked = true
-            subtitleLanguages.visibility = View.VISIBLE
-        }
-
-        saveSubtitles.setOnCheckedChangeListener { _, _ ->
-            subtitleLanguages.isEnabled = embedSubs.isChecked || saveSubtitles.isChecked || saveAutoSubtitles.isChecked
-            saveSubtitlesClicked(saveSubtitles.isChecked)
-        }
-
-        saveAutoSubtitles.setOnCheckedChangeListener { _, _ ->
-            subtitleLanguages.isEnabled = embedSubs.isChecked || saveSubtitles.isChecked || saveAutoSubtitles.isChecked
-            saveAutoSubtitlesClicked(saveAutoSubtitles.isChecked)
-        }
-
-        subtitleLanguages.isEnabled = embedSubs.isChecked || saveSubtitles.isChecked
-        subtitleLanguages.setOnClickListener {
-            val currentSubtitleLang = if (items.size == 1 || items.all { it.videoPreferences.subsLanguages == items[0].videoPreferences.subsLanguages }){
-                items[0].videoPreferences.subsLanguages
-            }else {
-                ""
-            }
-            showSubtitleLanguagesDialog(context, currentSubtitleLang){
-                subtitleLanguagesSet(it)
-            }
-        }
-
-        if (items.size == 1 && items.first().id == 0L){
-            val adjustAudio = view.findViewById<Chip>(R.id.adjust_audio)
-            adjustAudio.setOnClickListener {
-                val adjustAudioView = context.layoutInflater.inflate(R.layout.audio_download_preferences_dialog, null)
-                adjustAudioView.findViewById<MaterialSwitch>(R.id.remove_audio).apply {
-                    isChecked = items.first().videoPreferences.removeAudio
-                    setOnCheckedChangeListener { _, b ->
-                        removeAudioClicked(b)
-                    }
-                }
-
-                adjustAudioView.findViewById<MaterialSwitch>(R.id.also_download_audio).apply {
-                    isChecked = items.first().videoPreferences.alsoDownloadAsAudio
-                    setOnCheckedChangeListener { _, b ->
-                        alsoDownloadAsAudioClicked(b)
-                    }
-                }
-
-                val adjustAudioDialog = MaterialAlertDialogBuilder(context)
-                    .setTitle(context.getString(R.string.adjust_audio))
-                    .setView(adjustAudioView)
-                    .setIcon(R.drawable.ic_music)
-                    .setNegativeButton(context.resources.getString(R.string.dismiss)) { _: DialogInterface?, _: Int -> }
-
-                adjustAudioDialog.show()
-            }
-        }else{
-            val adjustAudio = view.findViewById<Chip>(R.id.adjust_audio)
-            adjustAudio.isVisible = false
-            val removeAudio = view.findViewById<Chip>(R.id.remove_audio)
-            removeAudio.isVisible = true
-            removeAudio.isChecked = items.all { it.videoPreferences.removeAudio }
-            removeAudio.setOnCheckedChangeListener { _, _ ->
-                removeAudioClicked(removeAudio.isChecked)
             }
         }
 
@@ -1849,7 +1871,7 @@ object UiUtil {
             withContext(Dispatchers.Main){
                 view.findViewById<View>(R.id.suggested).visibility = View.VISIBLE
                 chips.forEach {
-                    it.isChecked = editText.text.contains(it.text)
+                    it.isChecked = editText.text == it.text
                     chipGroup!!.addView(it)
                 }
 

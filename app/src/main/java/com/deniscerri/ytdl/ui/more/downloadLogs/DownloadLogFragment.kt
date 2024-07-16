@@ -84,7 +84,9 @@ class DownloadLogFragment : Fragment() {
             val clipboard: ClipboardManager =
                 mainActivity.getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
             clipboard.setText(content.text)
-            Snackbar.make(bottomAppBar, getString(R.string.copied_to_clipboard), Snackbar.LENGTH_LONG).show()
+            Snackbar.make(bottomAppBar, getString(R.string.copied_to_clipboard), Snackbar.LENGTH_LONG)
+                .setAnchorView(bottomAppBar)
+                .show()
         }
 
         val id = arguments?.getLong("logID")

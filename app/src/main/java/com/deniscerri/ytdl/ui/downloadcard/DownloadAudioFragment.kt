@@ -16,6 +16,7 @@ import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.ViewCompat
@@ -359,7 +360,8 @@ class DownloadAudioFragment(private var resultItem: ResultItem? = null, private 
 
     @SuppressLint("RestrictedApi")
     fun updateSelectedAudioFormat(formatID: String){
-        resultItem?.formats?.find { it.format_id == formatID }?.apply {
+        val formats = (resultItem?.formats ?: listOf()) + genericAudioFormats
+        formats.find { it.format_id == formatID }?.apply {
             downloadItem.format = this
             val formatCard = requireView().findViewById<MaterialCardView>(R.id.format_card_constraintLayout)
             UiUtil.populateFormatCard(requireContext(), formatCard, downloadItem.format, listOf())

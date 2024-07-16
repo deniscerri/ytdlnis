@@ -27,6 +27,7 @@ import com.deniscerri.ytdl.database.dao.DownloadDao
 import com.deniscerri.ytdl.database.models.AudioPreferences
 import com.deniscerri.ytdl.database.models.CommandTemplate
 import com.deniscerri.ytdl.database.models.DownloadItem
+import com.deniscerri.ytdl.database.models.DownloadItemConfigureMultiple
 import com.deniscerri.ytdl.database.models.DownloadItemSimple
 import com.deniscerri.ytdl.database.models.Format
 import com.deniscerri.ytdl.database.models.HistoryItem
@@ -68,7 +69,7 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
     val allDownloads : Flow<PagingData<DownloadItem>>
     val queuedDownloads : Flow<PagingData<DownloadItemSimple>>
     val activeDownloads : Flow<List<DownloadItem>>
-    val processingDownloads : Flow<List<DownloadItemSimple>>
+    val processingDownloads : Flow<List<DownloadItemConfigureMultiple>>
     val cancelledDownloads : Flow<PagingData<DownloadItemSimple>>
     val erroredDownloads : Flow<PagingData<DownloadItemSimple>>
     val savedDownloads : Flow<PagingData<DownloadItemSimple>>
@@ -211,6 +212,7 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         val embedSubs = sharedPreferences.getBoolean("embed_subtitles", false)
         val saveSubs = sharedPreferences.getBoolean("write_subtitles", false)
         val saveAutoSubs = sharedPreferences.getBoolean("write_auto_subtitles", false)
+        val recodeVideo = sharedPreferences.getBoolean("recode_video", false)
         val addChapters = sharedPreferences.getBoolean("add_chapters", false)
         val saveThumb = sharedPreferences.getBoolean("write_thumbnail", false)
         val embedThumb = sharedPreferences.getBoolean("embed_thumbnail", false)
@@ -250,7 +252,8 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
             ArrayList(sponsorblock),
             saveSubs,
             saveAutoSubs,
-            audioFormatIDs = preferredAudioFormats
+            audioFormatIDs = preferredAudioFormats,
+            recodeVideo = recodeVideo
         )
 
         val extraCommands = when(type){
@@ -383,6 +386,7 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         val embedSubs = sharedPreferences.getBoolean("embed_subtitles", false)
         val saveSubs = sharedPreferences.getBoolean("write_subtitles", false)
         val saveAutoSubs = sharedPreferences.getBoolean("write_auto_subtitles", false)
+        val recodeVideo = sharedPreferences.getBoolean("recode_video", false)
         val addChapters = sharedPreferences.getBoolean("add_chapters", false)
         val saveThumb = sharedPreferences.getBoolean("write_thumbnail", false)
         val embedThumb = sharedPreferences.getBoolean("embed_thumbnail", false)
@@ -416,7 +420,7 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         }
 
         val audioPreferences = AudioPreferences(embedThumb, cropThumb,false, ArrayList(sponsorblock!!))
-        val videoPreferences = VideoPreferences(embedSubs, addChapters, false, ArrayList(sponsorblock), saveSubs, saveAutoSubs)
+        val videoPreferences = VideoPreferences(embedSubs, addChapters, false, ArrayList(sponsorblock), saveSubs, saveAutoSubs, recodeVideo = recodeVideo)
         var path = defaultPath
         historyItem.downloadPath.first().apply {
             File(this).parent?.apply {
@@ -789,43 +793,36 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
             }
 
             //CHECK DUPLICATES
-            var alreadyExists = false
+            var isDuplicate = false
             if (checkDuplicate.isNotEmpty() && !ignoreDuplicates){
                 when(checkDuplicate){
                     "download_archive" -> {
                         if (downloadArchive.any { d -> it.url.contains(d) }){
-                            alreadyExists = true
-                            if (it.id == 0L) {
-                                it.status = DownloadRepository.Status.Processing.toString()
+                            isDuplicate = true
+                            if (it.id == 0L){
                                 val id = runBlocking {
                                     repository.insert(it)
                                 }
                                 it.id = id
                             }
-                            existingItemIDs.add(
-                                AlreadyExistsIDs(
-                                    it.id,
-                                    null
-                                )
-                            )
+                            it.status = DownloadRepository.Status.Duplicate.toString()
+                            repository.update(it)
+                            existingItemIDs.add(AlreadyExistsIDs(it.id,null))
                         }
                     }
                     "url_type" -> {
                         val existingDownload = activeAndQueuedDownloads.firstOrNull { a -> a.type == it.type && a.url == it.url  }
                         if (existingDownload != null){
-                            it.status = DownloadRepository.Status.Processing.toString()
-                            val id = runBlocking {
-                                repository.insert(it)
+                            isDuplicate = true
+                            if (it.id == 0L){
+                                val id = runBlocking {
+                                    repository.insert(it)
+                                }
+                                it.id = id
                             }
-                            it.id = id
-
-                            alreadyExists = true
-                            existingItemIDs.add(
-                                AlreadyExistsIDs(
-                                    it.id,
-                                    null
-                                )
-                            )
+                            it.status = DownloadRepository.Status.Duplicate.toString()
+                            repository.update(it)
+                            existingItemIDs.add(AlreadyExistsIDs(it.id,null))
                         }else{
                             //check if downloaded and file exists
                             val history = withContext(Dispatchers.IO){
@@ -837,17 +834,16 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
                             }
 
                             if (existingHistoryItem != null){
-                                alreadyExists = true
-                                it.status = DownloadRepository.Status.Processing.toString()
-                                val id = runBlocking {
-                                    repository.insert(it)
+                                isDuplicate = true
+                                if (it.id == 0L){
+                                    val id = runBlocking {
+                                        repository.insert(it)
+                                    }
+                                    it.id = id
                                 }
-                                existingItemIDs.add(
-                                    AlreadyExistsIDs(
-                                        id,
-                                        existingHistoryItem.id
-                                    )
-                                )
+                                it.status = DownloadRepository.Status.Duplicate.toString()
+                                repository.update(it)
+                                existingItemIDs.add(AlreadyExistsIDs(it.id,existingHistoryItem.id))
                             }
                         }
                     }
@@ -863,12 +859,16 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
                         }
 
                         if (existingDownload != null){
-                            it.status = DownloadRepository.Status.Processing.toString()
-                            val id = runBlocking {
-                                repository.insert(it)
+                            isDuplicate = true
+                            if (it.id == 0L){
+                                val id = runBlocking {
+                                    repository.insert(it)
+                                }
+                                it.id = id
                             }
-                            alreadyExists = true
-                            existingItemIDs.add(AlreadyExistsIDs(id, null))
+                            it.status = DownloadRepository.Status.Duplicate.toString()
+                            repository.update(it)
+                            existingItemIDs.add(AlreadyExistsIDs(it.id, null))
                         }else{
                             //check if downloaded and file exists
                             val history = withContext(Dispatchers.IO){
@@ -880,31 +880,30 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
                             }
 
                             if (existingHistoryItem != null){
-                                alreadyExists = true
-                                it.status = DownloadRepository.Status.Processing.toString()
-                                val id = runBlocking {
-                                    repository.insert(it)
+                                isDuplicate = true
+                                if (it.id == 0L){
+                                    val id = runBlocking {
+                                        repository.insert(it)
+                                    }
+                                    it.id = id
                                 }
-                                existingItemIDs.add(
-                                    AlreadyExistsIDs(
-                                        id,
-                                        existingHistoryItem.id
-                                    )
-                                )
+                                it.status = DownloadRepository.Status.Duplicate.toString()
+                                repository.update(it)
+                                existingItemIDs.add(AlreadyExistsIDs(it.id, existingHistoryItem.id))
                             }
                         }
                     }
                 }
             }
 
-            if (!alreadyExists){
+            if (!isDuplicate){
                 queuedItems.add(it)
             }
 
 
         }
 
-        repository.updateAll(queuedItems)
+        val queued = repository.updateAll(queuedItems)
 
         //if scheduler is on
         val useScheduler = sharedPreferences.getBoolean("use_scheduler", false)
@@ -919,12 +918,12 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
             }
         }else{
             if (!sharedPreferences.getBoolean("paused_downloads", false)) {
-                repository.startDownloadWorker(queuedItems, context)
+                repository.startDownloadWorker(queued, context)
             }
 
             if(!useScheduler){
                 CoroutineScope(Dispatchers.IO).launch {
-                    queuedItems.filter { it.downloadStartTime != 0L && (it.title.isEmpty() || it.author.isEmpty() || it.thumb.isEmpty()) }.forEach {
+                    queued.filter { it.downloadStartTime != 0L && (it.title.isEmpty() || it.author.isEmpty() || it.thumb.isEmpty()) }.forEach {
                         kotlin.runCatching {
                             resultRepository.updateDownloadItem(it)?.apply {
                                 repository.updateWithoutUpsert(this)
@@ -934,7 +933,7 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
                 }
             }else{
                 CoroutineScope(Dispatchers.IO).launch {
-                    queuedItems.filter { it.title.isEmpty() || it.author.isEmpty() || it.thumb.isEmpty() }.forEach {
+                    queued.filter { it.title.isEmpty() || it.author.isEmpty() || it.thumb.isEmpty() }.forEach {
                         kotlin.runCatching {
                             resultRepository.updateDownloadItem(it)?.apply {
                                 repository.updateWithoutUpsert(this)

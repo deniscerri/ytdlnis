@@ -86,7 +86,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/format_note">
+                app:layout_constraintTop_toBottomOf="@id/formatnote_formatid">
 
                 <HorizontalScrollView
                     android:layout_width="wrap_content"
@@ -113,7 +113,6 @@
                             android:clickable="false"
                             android:ellipsize="end"
                             android:gravity="center"
-                            android:maxLength="10"
                             android:minWidth="30dp"
                             android:paddingHorizontal="5dp"
                             android:textColor="@color/white"
@@ -180,12 +179,18 @@
                 android:clickable="false"
                 android:ellipsize="end"
                 android:gravity="bottom|end"
-                android:maxLength="10"
-                android:layout_marginEnd="5dp"
-                app:cornerRadius="10dp"
+                android:maxWidth="70dp"
+                android:maxLines="2"
                 app:layout_constraintBottom_toBottomOf="@+id/format_note"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.constraintlayout.widget.Barrier
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/formatnote_formatid"
+                app:barrierDirection="bottom"
+                app:constraint_referenced_ids="format_note, format_id" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

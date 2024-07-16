@@ -202,7 +202,7 @@ class InfoUtil(private val context: Context) {
                  Html.fromHtml(obj.getString("uploader").toString()).toString()
             }catch (e: Exception){
                 Html.fromHtml(obj.getString("uploaderName").toString()).toString()
-            }
+            }.replace(" - Topic", "")
 
             val duration = obj.getInt("duration").toStringDuration(Locale.US)
             val thumb = "https://i.ytimg.com/vi/$id/hqdefault.jpg"
@@ -658,8 +658,12 @@ class InfoUtil(private val context: Context) {
             }
         }
         val lang = sharedPreferences.getString("app_language", "en")
-        if (searchEngine == "ytsearch" && context.getStringArray(R.array.subtitle_langs).contains(lang)){
-            request.addOption("--extractor-args", "youtube:lang=$lang")
+        if (searchEngine == "ytsearch" || query.isYoutubeURL()) {
+            var extractorArgs = "player_client=default,mediaconnect,android"
+            if (context.getStringArray(R.array.subtitle_langs).contains(lang)) {
+                extractorArgs += ";lang=$lang"
+            }
+            request.addOption("--extractor-args", "youtube:$extractorArgs")
         }
 
         request.addOption("--flat-playlist")
@@ -708,7 +712,7 @@ class InfoUtil(private val context: Context) {
             val title = jsonObject.getStringByAny("alt_title", "title", "webpage_url_basename")
             if (title == "[Private video]" || title == "[Deleted video]") continue
 
-            var author = jsonObject.getStringByAny("uploader", "channel", "playlist_uploader", "uploader_id")
+            var author = jsonObject.getStringByAny("artist", "uploader", "channel", "playlist_uploader", "uploader_id")
             var duration = jsonObject.getIntByAny("duration").toString()
             if (duration != "-1"){
                 duration = jsonObject.getInt("duration").toStringDuration(Locale.US)
@@ -1179,6 +1183,15 @@ class InfoUtil(private val context: Context) {
             if (sharedPreferences.getBoolean("write_description", false)){
                 request.addOption("--write-description")
             }
+
+            if (downloadItem.url.isYoutubeURL()) {
+                var extractorArgs = "player_client=default,mediaconnect,android"
+                val lang = sharedPreferences.getString("app_language", "en")
+                if (context.getStringArray(R.array.subtitle_langs).contains(lang)) {
+                    extractorArgs += ";lang=$lang"
+                }
+                request.addOption("--extractor-args", "youtube:$extractorArgs")
+            }
         }
 
         if (sharedPreferences.getString("prevent_duplicate_downloads", "")!! == "download_archive"){
@@ -1234,7 +1247,7 @@ class InfoUtil(private val context: Context) {
                 }
 
                 if (abrSort.isNotBlank()){
-                    formatSorting.append(",abr~${abrSort}")
+                    formatSorting.append(",abr:${abrSort}")
                 }
 
                 if(ext.isNotBlank()){
@@ -1254,15 +1267,15 @@ class InfoUtil(private val context: Context) {
 
                     if (embedMetadata){
                         request.addOption("--embed-metadata")
-                        request.addOption("--parse-metadata", "%(artist,uploader)s:^(?P<meta_album_artist>[^,]*)")
+                        request.addOption("--parse-metadata", "%(artist,uploader|)s:^(?P<meta_album_artist>[^,]*)")
                         request.addOption("--parse-metadata", "%(album_artist,meta_album_artist|)s:%(album_artist)s")
 
                         request.addOption("--parse-metadata", "description:(?:Released on: )(?P<dscrptn_year>\\d{4})")
-                        request.addOption("--parse-metadata", "%(dscrptn_year,release_year,release_date>%Y,upload_date>%Y)s:%(meta_date)s")
+                        request.addOption("--parse-metadata", "%(dscrptn_year,release_year,release_date>%Y,upload_date>%Y)s:(?P<meta_date>\\d+)")
 
                         if (downloadItem.playlistTitle.isNotEmpty()) {
                             request.addOption("--parse-metadata", "%(album,title)s:%(meta_album)s")
-                            request.addOption("--parse-metadata", "%(track_number,playlist_index)d:%(track_number)s")
+                            request.addOption("--parse-metadata", "%(track_number,playlist_index)d:(?P<track_number>\\d+)")
                         } else {
                             request.addOption("--parse-metadata", "%(album,title)s:%(meta_album)s")
                         }
@@ -1320,8 +1333,14 @@ class InfoUtil(private val context: Context) {
                     supportedContainers.contains(outputContainer)
                 ){
                     cont = outputContainer
-                    request.addOption("--merge-output-format", outputContainer.lowercase())
-                    if (outputContainer != "webm") {
+
+                    if (downloadItem.videoPreferences.recodeVideo) {
+                        request.addOption("--recode-video", outputContainer.lowercase())
+                    }else{
+                        request.addOption("--merge-output-format", outputContainer.lowercase())
+                    }
+
+                    if (!listOf("webm", "avi", "flv").contains(outputContainer.lowercase())) {
                         val embedThumb = sharedPreferences.getBoolean("embed_thumbnail", false)
                         if (embedThumb) {
                             request.addOption("--embed-thumbnail")

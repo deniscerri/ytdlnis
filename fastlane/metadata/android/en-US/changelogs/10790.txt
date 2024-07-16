@@ -1,0 +1,66 @@
+TEMPORARY just to save changelog
+
+List is empty.
+
+kotlin.collections.CollectionsKt.first(SourceFile:2)
+com.deniscerri.ytdl.database.viewmodel.DownloadViewModel.checkIfAllProcessingItemsHaveSameType(Unknown Source:21)
+com.deniscerri.ytdl.ui.downloadcard.DownloadMultipleBottomSheetDialog$setupDialog$9$3$res$1.invokeSuspend(SourceFile:18)
+kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(SourceFile:9)
+kotlinx.coroutines.DispatchedTask.run(Unknown Source:96)
+androidx.work.Worker$2.run(SourceFile:39)
+kotlinx.coroutines.scheduling.TaskImpl.run(Unknown Source:2)
+kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(SourceFile:96)
+
+
+add option in download settings to use alarm manager instead of workmanager for scheduled tasks
+
+fix audio format importance
+
+When updating formats for multiple items, now the app remembers what items dont need new formats and skips them
+
+Move format source from the bottom of the format list to the filter bottom sheet
+
+Added ability for the app to update the result items formats when you update the download item formats if there are any results with the same url
+
+moved queue screen back in its separate tab due to performance issues
+
+format updating in the multiple download card now applies updates immediately on each item
+
+Update formats in background review. Also prevent from showing up every time it updates. Also delete saved after opening items n the multiple download card lol wtf. Also the notification. Change the title of notification to
+
+Can that other one under the Copy log be fixed, too?snackbar
+
+Bulk download shows size without audio fixed
+
+When selecting audio format add generic last
+
+Update ui crashes app from share activity
+
+add option to use video url instead of playlist url to avoid piped private playlist issue
+
+add write uri permission when opening files
+
+fix app still updating formats even though the user closed the format bottom sheet
+
+[BUG] Video title doesn't change in the download card #526
+
+fixed app fetching player urls and chapters from yt-dlp
+
+added ability to change theme without restarting the app. If the icon changes then the app will restart
+
+prevent avi and flv containers from embedding thumbnails
+
+Fixed Subs language preference isn't saved in the download card
+
+add player_client=default,mediaconnect,android extractor args when data fetching and downloading to show more formats
+
+Turned some metadata into digits
+-> --parse-metadata "%(track_number,playlist_index)d:(?P<track_number>\d+)" --parse-metadata "%(dscrptn_year,release_year,release_date>%Y,upload_date>%Y)s:(?P<meta_date>\d+)"
+
+Removed NA from meta album artist --parse-metadata "%(artist,uploader|)s:^(?P<meta_album_artist>[^,]*)"
+
+Add --recode-video toggle in the settings to use instead of --merge-output-format
+
+adjusted the "Adjust video" section in the download card and put all subtitle items together
+
+Fixed app not selecting an audio format to show in the format view in the download card after updating formats

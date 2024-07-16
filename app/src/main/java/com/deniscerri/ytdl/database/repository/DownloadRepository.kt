@@ -23,6 +23,7 @@ import com.deniscerri.ytdl.App
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.dao.DownloadDao
 import com.deniscerri.ytdl.database.models.DownloadItem
+import com.deniscerri.ytdl.database.models.DownloadItemConfigureMultiple
 import com.deniscerri.ytdl.database.models.DownloadItemSimple
 import com.deniscerri.ytdl.util.Extensions.toListString
 import com.deniscerri.ytdl.util.FileUtil
@@ -43,7 +44,7 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
         pagingSourceFactory = {downloadDao.getAllDownloads()}
     )
     val activeDownloads : Flow<List<DownloadItem>> = downloadDao.getActiveDownloads().distinctUntilChanged()
-    val processingDownloads : Flow<List<DownloadItemSimple>> = downloadDao.getProcessingDownloads().distinctUntilChanged()
+    val processingDownloads : Flow<List<DownloadItemConfigureMultiple>> = downloadDao.getProcessingDownloads().distinctUntilChanged()
     val queuedDownloads : Pager<Int, DownloadItemSimple> = Pager(
         config = PagingConfig(pageSize = 20, initialLoadSize = 20, prefetchDistance = 1),
         pagingSourceFactory = {downloadDao.getQueuedDownloads()}
@@ -74,7 +75,7 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
     val scheduledDownloadsCount : Flow<Int> = downloadDao.getDownloadsCountByStatusFlow(listOf(Status.Scheduled).toListString())
 
     enum class Status {
-        Active, Queued, Error, Cancelled, Saved, Processing, Scheduled
+        Active, Queued, Error, Cancelled, Saved, Processing, Scheduled, Duplicate
     }
 
     suspend fun insert(item: DownloadItem) : Long {
@@ -102,8 +103,8 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
         downloadDao.update(item)
     }
 
-    suspend fun updateAll(list: List<DownloadItem>) {
-        downloadDao.updateAll(list)
+    suspend fun updateAll(list: List<DownloadItem>) : List<DownloadItem> {
+        return downloadDao.updateAll(list)
     }
 
     suspend fun updateWithoutUpsert(item: DownloadItem){

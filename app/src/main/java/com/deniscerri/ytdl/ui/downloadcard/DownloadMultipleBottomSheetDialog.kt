@@ -31,6 +31,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.afollestad.materialdialogs.utils.MDUtil.getStringArray
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.models.DownloadItem
+import com.deniscerri.ytdl.database.models.DownloadItemConfigureMultiple
 import com.deniscerri.ytdl.database.models.Format
 import com.deniscerri.ytdl.database.viewmodel.CommandTemplateViewModel
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
@@ -161,7 +162,8 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                 processingItemsCount = items.size
                 count.text = "${processingItemsCount} ${getString(R.string.selected)}"
                 listAdapter.submitList(items)
-                updateFileSize(items.map { it2 -> it2.format.filesize })
+
+                updateFileSize(items)
 
                 if (items.isNotEmpty()){
                     if (items.all { it2 -> it2.type == items[0].type }) {
@@ -445,7 +447,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                                     bottomSheet.requestWindowFeature(Window.FEATURE_NO_TITLE)
                                     bottomSheet.setContentView(R.layout.adjust_audio)
                                     val sheetView = bottomSheet.findViewById<View>(android.R.id.content)!!
-                                    sheetView.findViewById<View>(R.id.adjust).setPadding(padding,padding,padding,padding)
+                                    sheetView.findViewById<View>(R.id.adjust).setPadding(10,padding,10,padding)
 
                                     val items = withContext(Dispatchers.IO){
                                         downloadViewModel.getProcessingDownloads()
@@ -526,7 +528,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                                     bottomSheet.requestWindowFeature(Window.FEATURE_NO_TITLE)
                                     bottomSheet.setContentView(R.layout.adjust_video)
                                     val sheetView = bottomSheet.findViewById<View>(android.R.id.content)!!
-                                    sheetView.findViewById<View>(R.id.adjust).setPadding(padding,padding,padding,padding)
+                                    sheetView.findViewById<View>(R.id.adjust).setPadding(10,padding,10,padding)
 
                                     val items = withContext(Dispatchers.IO){
                                         downloadViewModel.getProcessingDownloads()
@@ -584,6 +586,10 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                                         },
                                         removeAudioClicked = {checked ->
                                             items.forEach { it.videoPreferences.removeAudio = checked }
+                                            CoroutineScope(Dispatchers.IO).launch { items.forEach { downloadViewModel.updateDownload(it) } }
+                                        },
+                                        recodeVideoClicked = {checked ->
+                                            items.forEach { it.videoPreferences.recodeVideo = checked }
                                             CoroutineScope(Dispatchers.IO).launch { items.forEach { downloadViewModel.updateDownload(it) } }
                                         },
                                         alsoDownloadAsAudioClicked = {},
@@ -645,14 +651,30 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
         bottomAppBar.menu.children.forEach { m -> m.isEnabled = !loading }
     }
 
-    private fun updateFileSize(items: List<Long>){
-        if (items.all { it > 5L }){
-            val size = FileUtil.convertFileSize(items.sum())
-            if (size != "?"){
-                filesize.visibility = View.VISIBLE
-                filesize.text = "${getString(R.string.file_size)}: >~ $size"
+    private fun updateFileSize(items: List<DownloadItemConfigureMultiple>){
+        val fileSizes = mutableListOf<Long>()
+        items.forEach {
+            if (it.type == DownloadViewModel.Type.video){
+                if (it.format.filesize <= 5L) {
+                    fileSizes.add(0)
+                }else{
+                    val preferredAudioFormatIDs = it.videoPreferences.audioFormatIDs
+                    val audioFormatSize = if (it.videoPreferences.removeAudio) {
+                        0
+                    }else{
+                        it.allFormats
+                            .filter { f -> preferredAudioFormatIDs.contains(f.format_id) }
+                            .sumOf { f -> f.filesize }
+                    }
+                    fileSizes.add(it.format.filesize + audioFormatSize)
+                }
             }
+        }
 
+        if (fileSizes.all { it > 5L }){
+            val size = FileUtil.convertFileSize(fileSizes.sum())
+            filesize.isVisible = size != "?"
+            filesize.text = "${getString(R.string.file_size)}: >~ $size"
         }else{
             filesize.visibility = View.GONE
         }

@@ -11,6 +11,7 @@ import androidx.room.Transaction
 import androidx.room.Update
 import androidx.room.Upsert
 import com.deniscerri.ytdl.database.models.DownloadItem
+import com.deniscerri.ytdl.database.models.DownloadItemConfigureMultiple
 import com.deniscerri.ytdl.database.models.DownloadItemSimple
 import com.deniscerri.ytdl.database.models.Format
 import com.deniscerri.ytdl.database.repository.DownloadRepository
@@ -25,8 +26,9 @@ interface DownloadDao {
     @Query("SELECT * FROM downloads WHERE status='Active'")
     fun getActiveDownloads() : Flow<List<DownloadItem>>
 
+    @RewriteQueriesToDropUnusedColumns
     @Query("SELECT * FROM downloads WHERE status = 'Processing'")
-    fun getProcessingDownloads() : Flow<List<DownloadItemSimple>>
+    fun getProcessingDownloads() : Flow<List<DownloadItemConfigureMultiple>>
 
     @Query("SELECT COUNT(*) FROM downloads WHERE status in (:statuses)")
     fun getDownloadsCountFlow(statuses: List<String>) : Flow<Int>
@@ -181,13 +183,17 @@ interface DownloadDao {
     suspend fun deleteSingleProcessing(id: Long)
 
     @Upsert
-    suspend fun update(item: DownloadItem)
+    suspend fun update(item: DownloadItem) : Long
 
     @Transaction
-    suspend fun updateAll(list: List<DownloadItem>){
+    suspend fun updateAll(list: List<DownloadItem>) : List<DownloadItem> {
+        val toReturn = mutableListOf<DownloadItem>()
         list.forEach {
-            update(it)
+            it.id = update(it)
+            toReturn.add(it)
         }
+
+        return toReturn
     }
 
     @Query("UPDATE downloads set status=:status where id=:id")

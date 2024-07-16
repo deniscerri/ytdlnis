@@ -27,12 +27,12 @@
             app:singleLine="true">
 
             <com.google.android.material.chip.Chip
-                android:id="@+id/embed_subtitles"
+                android:id="@+id/save_thumbnail"
                 style="@style/Widget.Material3.Chip.Filter.Elevated"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checked="false"
-                android:text="@string/embed_subtitles" />
+                android:text="@string/save_thumb" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/add_chapters"
@@ -57,14 +57,43 @@
     </HorizontalScrollView>
 
     <HorizontalScrollView
-        android:scrollbars="none"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
 
         <com.google.android.material.chip.ChipGroup
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:singleLine="true">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/adjust_subtitles"
+                style="@style/Widget.Material3.Chip.Assist.Elevated"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/subtitles"
+                app:chipIconVisible="true"
+                app:chipIcon="@drawable/ic_subtitles"
+                android:minWidth="30dp"
+                app:cornerRadius="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/remove_audio"
+                style="@style/Widget.Material3.Chip.Filter.Elevated"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:minWidth="30dp"
+                android:text="@string/remove_audio"
+                android:visibility="gone"
+                app:cornerRadius="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/adjust_audio"
@@ -82,75 +111,13 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <com.google.android.material.chip.Chip
-                android:id="@+id/remove_audio"
-                android:visibility="gone"
-                style="@style/Widget.Material3.Chip.Filter.Elevated"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@string/remove_audio"
-                android:minWidth="30dp"
-                app:cornerRadius="10dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/save_thumbnail"
+                android:id="@+id/recode_video"
                 style="@style/Widget.Material3.Chip.Filter.Elevated"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checked="false"
-                android:text="@string/save_thumb" />
+                android:text="@string/recode_video" />
 
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/save_subtitles"
-                style="@style/Widget.Material3.Chip.Filter.Elevated"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@string/save_subs"
-                android:minWidth="30dp"
-                app:cornerRadius="10dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-
-
-
-        </com.google.android.material.chip.ChipGroup>
-
-    </HorizontalScrollView>
-
-    <HorizontalScrollView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:scrollbars="none">
-
-        <com.google.android.material.chip.ChipGroup
-            android:scrollbars="none"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/save_auto_subtitles"
-                style="@style/Widget.Material3.Chip.Filter.Elevated"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="false"
-                android:text="@string/save_auto_subs"/>
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/subtitle_languages"
-                style="@style/Widget.Material3.Chip.Assist.Elevated"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:enabled="false"
-                android:checked="false"
-                android:text="@string/subtitle_languages"/>
 
         </com.google.android.material.chip.ChipGroup>
 
@@ -196,21 +163,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <com.google.android.material.chip.Chip
-                android:id="@+id/cut"
-                style="@style/Widget.Material3.Chip.Assist.Elevated"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                app:chipIconVisible="true"
-                app:chipIcon="@drawable/ic_cut"
-                android:minWidth="30dp"
-                android:text="@string/cut"
-                app:cornerRadius="10dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
         </com.google.android.material.chip.ChipGroup>
 
     </HorizontalScrollView>
@@ -227,7 +179,6 @@
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/extra_commands"
-                android:visibility="gone"
                 style="@style/Widget.Material3.Chip.Assist.Elevated"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -236,6 +187,21 @@
                 app:chipIconVisible="true"
                 app:chipIcon="@drawable/ic_terminal"
                 android:minWidth="30dp"
+                app:cornerRadius="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/cut"
+                style="@style/Widget.Material3.Chip.Assist.Elevated"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                app:chipIconVisible="true"
+                app:chipIcon="@drawable/ic_cut"
+                android:minWidth="30dp"
+                android:text="@string/cut"
                 app:cornerRadius="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

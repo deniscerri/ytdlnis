@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.isVisible
@@ -104,6 +105,9 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
                         thumb = resultItem!!.thumb
                         website = resultItem!!.website
                         url = resultItem!!.url
+                        videoPreferences.apply {
+                            audioFormatIDs = downloadViewModel.getPreferredAudioFormats(allFormats)
+                        }
                     }
                 }else if (currentDownloadItem != null){
                     val string = Gson().toJson(currentDownloadItem, DownloadItem::class.java)
@@ -376,6 +380,9 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
                                 downloadItem.videoPreferences.removeAudio = it
                                 UiUtil.populateFormatCard(requireContext(), formatCard, downloadItem.format, if (it) listOf() else downloadItem.allFormats.filter { downloadItem.videoPreferences.audioFormatIDs.contains(it.format_id) })
                             },
+                            recodeVideoClicked = {
+                                downloadItem.videoPreferences.recodeVideo = it
+                            },
                             alsoDownloadAsAudioClicked = {
                                 downloadItem.videoPreferences.alsoDownloadAsAudio = it
                             },
@@ -416,7 +423,7 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
 
     @SuppressLint("RestrictedApi")
     fun updateSelectedAudioFormat(format: Format){
-        if (genericAudioFormats.contains(format)) {
+        if (downloadItem.videoPreferences.audioFormatIDs.contains(format.format_id)) {
             return
         }
 

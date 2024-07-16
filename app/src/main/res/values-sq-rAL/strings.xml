@@ -358,6 +358,7 @@
     <string name="day">Ditë</string>
     <string name="month">Muaj</string>
     <string name="archive">Arkiva e Shkarkimeve [Përdor skedarin e arkivës të yt-dlp për të parandaluar shkarkimet duplicate]</string>
+    <string name="disabled">Fikur</string>
     <string name="swipe_gestures_download_card">Gjestet e rrëshqitjes në kartën e shkarkimit</string>
     <string name="show_download_count">Shfaq numrat në faqen e rradhës së shkarkimeve</string>
     <string name="also_download_audio">Shkarko Gjithashtu si Audio</string>
@@ -397,5 +398,17 @@
     <string name="location">Vendi</string>
     <string name="enable_alarm_permission">Duhet të aktivizoni lejen SCHEDULE_EXACT_ALARM në cilësimet e aplikacionit.</string>
     <string name="process_downloads_background">Shkarkimet janë ende duke u ngarkuar. Vazhdoni t\'i përpunoni ato në sfond dhe të filloni shkarkimin?</string>
+    <string name="navigation_bar">Navigimi</string>
+    <string name="label_visibility">Pamja e Titujve në Navigim</string>
+    <string name="always">Gjithmonë</string>
+    <string name="sync_with_source">Sinkronizo Me Burimin</string>
     <string name="queue">Rradha</string>
+    <string name="reset">Rivendos</string>
+    <string name="use_alarm_manager">Përdor AlarmManager në vend të WorkManager për Skedulim</string>
+    <string name="use_alarm_manager_summary">Aktivizo këtë ku WorkManager është i limituar në paisje ose punët e skeduluara nuk ekzekutohen në kohë</string>
+    <string name="use_item_url_not_playlist">Përdor URL e videos në vend të URL së playlist</string>
+    <string name="use_item_url_not_playlist_summary">E dobishme për playlistet Libretube qe nuk njihen nga yt-dlp. Metadata e playlist nuk do te shtohen dot kur ky opsion është i aktivizuar</string>
+    <string name="recode_video">Rikodo Videon</string>
+    <string name="recode_video_summary">Rikodon skedarin e videos sipas formatit të cilësuar nga përdoruesi</string>
+    <string name="restore_info">Shtyp \'Rikthe\' për të kombinuar të dhënat e ruajtura me të dhënat aktuale. Shtyp \'Rivendos\' për të fshirë gjithçka dhe vetëm përdor të dhënat e ruajtura në skedar.</string>
 </resources>

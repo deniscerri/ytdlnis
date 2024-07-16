@@ -179,7 +179,9 @@ class DownloadWorker(
                             }
                         }
                     }.onSuccess {
-                        resultRepo.updateDownloadItem(downloadItem)
+                        resultRepo.updateDownloadItem(downloadItem)?.apply {
+                            dao.updateWithoutUpsert(this)
+                        }
                         val wasQuickDownloaded = resultDao.getCountInt() == 0
                         runBlocking {
                             var finalPaths : MutableList<String>?

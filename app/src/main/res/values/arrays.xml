@@ -26,9 +26,9 @@
         <item>mp4</item>
         <item>webm</item>
         <item>mkv</item>
+        <item>mov</item>
         <item>avi</item>
         <item>flv</item>
-        <item>mov</item>
     </string-array>
 
     <string-array name="video_containers_values">
@@ -36,9 +36,9 @@
         <item>mp4</item>
         <item>webm</item>
         <item>mkv</item>
+        <item>mov</item>
         <item>avi</item>
         <item>flv</item>
-        <item>mov</item>
     </string-array>
 
     <string-array name="video_formats">

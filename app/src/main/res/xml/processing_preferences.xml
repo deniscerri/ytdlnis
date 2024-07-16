@@ -180,6 +180,15 @@
             app:useSimpleSummaryProvider="true"
             app:title="@string/video_format" />
 
+        <SwitchPreferenceCompat
+            android:widgetLayout="@layout/preferece_material_switch"
+            app:defaultValue="false"
+            app:icon="@drawable/baseline_video_metadata"
+            app:key="recode_video"
+            android:summary="@string/recode_video_summary"
+            app:title="@string/recode_video" />
+
+
         <ListPreference
             android:defaultValue=""
             android:entries="@array/video_codec"

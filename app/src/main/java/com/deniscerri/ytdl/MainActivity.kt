@@ -273,9 +273,14 @@ class MainActivity : BaseActivity() {
                     if(DBManager.getInstance(this@MainActivity).downloadDao.getDownloadsCountByStatus(listOf("Active", "Queued")) == 0){
                         if (UpdateUtil(this@MainActivity).updateYoutubeDL() == YoutubeDL.UpdateStatus.DONE) {
                             val version = YoutubeDL.getInstance().version(context)
-                            Snackbar.make(findViewById(R.id.frame_layout),
+                            val snack = Snackbar.make(findViewById(R.id.frame_layout),
                                 this@MainActivity.getString(R.string.ytld_update_success) + " [${version}]",
-                                Snackbar.LENGTH_LONG).show()
+                                Snackbar.LENGTH_LONG)
+
+                            if (navigationView is BottomNavigationView) {
+                                snack.setAnchorView(navigationView)
+                            }
+                            snack.show()
                         }
                     }
                 }
