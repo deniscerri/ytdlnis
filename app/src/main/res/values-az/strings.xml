@@ -410,4 +410,6 @@
     <string name="use_alarm_manager_summary">WorkManager-ə cihaz başladıcı tərəfindən limit qoyulubsa və ya planlaşdırılan vəzifələr çox dəqiq deyilsə, bunu aktivləşdirin</string>
     <string name="use_item_url_not_playlist">Pleylist URL əvəzinə Element URL istifadə edin</string>
     <string name="use_item_url_not_playlist_summary">yt-dlp vasitəsilə tanınmayan LibreTube oflayn oynatma siyahıları üçün lazımdır. Bu aktivləşdikdə pleylist üst məlumatı daxil edilməyəcək</string>
+    <string name="recode_video">Videonu yenidən kodla</string>
+    <string name="recode_video_summary">Video faylı təyin edilmiş video formatına yenidən kodlayır</string>
 </resources>
