@@ -410,4 +410,6 @@
     <string name="use_alarm_manager_summary">Schakel dit in als WorkManager beperkt is door de leverancier van uw apparaat of als geplande taken niet al te nauwkeurig zĳn</string>
     <string name="use_item_url_not_playlist">Item-URL gebruiken in plaats van afspeel­lĳst-URL</string>
     <string name="use_item_url_not_playlist_summary">Handig voor offline afspeel­lĳsten van LibreTube die niet worden herkend door yt-dlp. Meta­gegevens van de afspeel­lĳst worden niet ingesloten als dit is ingeschakeld</string>
+    <string name="recode_video">Video hercoderen</string>
+    <string name="recode_video_summary">Hercodeert het video­bestand naar het opgegeven video­formaat</string>
 </resources>
