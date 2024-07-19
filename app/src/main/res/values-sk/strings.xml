@@ -410,4 +410,6 @@
     <string name="use_alarm_manager_summary">Zapnite túto funkciu, ak je WorkManager obmedzený výrobcom zariadenia alebo ak naplánované úlohy nie sú príliš presné</string>
     <string name="use_item_url_not_playlist_summary">Užitočné pre offline zoznamy skladieb Libretube, ktoré yt-dlp nerozpoznáva. Metadáta playlistu nebudú vložené, ak je táto funkcia zapnutá</string>
     <string name="use_item_url_not_playlist">Použiť URL položky namiesto URL playlistu</string>
+    <string name="recode_video">Prekódovať video</string>
+    <string name="recode_video_summary">Prekóduje videosúbor do určeného formátu videa</string>
 </resources>
