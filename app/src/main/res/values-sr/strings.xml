@@ -410,4 +410,6 @@
     <string name="use_alarm_manager_summary">Омогућите ово ако је WorkManager ограничен од стране продавца уређаја или заказани послови нису превише прецизни</string>
     <string name="use_item_url_not_playlist">Користи URL адресу предмета уместо URL адресе плејлисте</string>
     <string name="use_item_url_not_playlist_summary">Корисно за Libretube офлајн плејлисте које yt-dlp не препознаје. Метаподаци плејлисте неће бити уграђени, ако је ово омогућено</string>
+    <string name="recode_video">Рекодирај видео снимак</string>
+    <string name="recode_video_summary">Рекодира фајл видео снимка у наведени формат видео снимка</string>
 </resources>
