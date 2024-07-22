@@ -3,7 +3,7 @@
     <string name="music_directory">Hudební složka</string>
     <string name="update_ytdl">Nainstalovat novou verzi yt-dlp</string>
     <string name="directories">Složky</string>
-    <string name="search_hint">Hledat nebo vložit odkaz</string>
+    <string name="search_hint">Hledat nebo vložit URL adresu</string>
     <string name="source_code">Zdrojový kód</string>
     <string name="remove_all">Odstranit vše</string>
     <string name="video_directory">Video složka</string>
@@ -408,4 +408,8 @@
 \nStisknutím tlačítka \"Resetovat\" vymažete a budete používat pouze uložená data v souboru.</string>
     <string name="use_alarm_manager">Použít AlarmManager místo WorkManageru pro plánování</string>
     <string name="use_alarm_manager_summary">Funkci povolte, pokud je WorkManager omezen výrobcem zařízení nebo pokud naplánované úlohy nejsou příliš přesné</string>
+    <string name="use_item_url_not_playlist">Použít URL položky místo URL playlistu</string>
+    <string name="use_item_url_not_playlist_summary">Užitečné pro offline playlisty Libretube, které nejsou rozpoznány yt-dlp. Metadata playlistu nebudou vložena, pokud je tato funkce povolena</string>
+    <string name="recode_video">Překódovat video</string>
+    <string name="recode_video_summary">Překóduje videosoubor do zadaného formátu videa</string>
 </resources>

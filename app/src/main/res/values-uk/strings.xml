@@ -408,4 +408,8 @@
     <string name="reset">Скинути</string>
     <string name="use_alarm_manager">Використовуйте AlarmManager замість WorkManager для планування</string>
     <string name="use_alarm_manager_summary">Увімкніть це, якщо WorkManager обмежено постачальником вашого пристрою або заплановані завдання не надто точні</string>
+    <string name="use_item_url_not_playlist">Використовуйте URL елемента замість URL списку відтворення</string>
+    <string name="use_item_url_not_playlist_summary">Корисно для списків відтворення Libretube без мережі, які не розпізнаються yt-dlp. Метадані списку відтворення не буде вбудовано, якщо увімкнено цей параметр</string>
+    <string name="recode_video">Перекодувати відео</string>
+    <string name="recode_video_summary">Перекодує відеофайл у вказаний відеоформат</string>
 </resources>

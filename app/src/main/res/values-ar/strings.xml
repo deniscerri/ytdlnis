@@ -406,4 +406,6 @@
     <string name="reset">إعادة تعيين</string>
     <string name="restore_info">انقر على \"استعادة نسخة احتياطية\" لدمج بيانات النسخة الاحتياطية مع البيانات الحالية إن وجدت.
 \nأو انقر على \"اعادة تعيين\" لاستعادة بيانات النسخة الاحتياطية مع إزالة البيانات الحالية إن وجدت.</string>
+    <string name="use_alarm_manager">استخدم AlarmManager بدلاً من WorkManager للجدولة</string>
+    <string name="use_alarm_manager_summary">فعّل هذا إذا كان WorkManager مقيدًا من قبل بائع جهازك أو إذا كانت المهام المجدولة ليست دقيقة جدًا</string>
 </resources>
