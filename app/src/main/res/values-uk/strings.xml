@@ -12,9 +12,9 @@
     <string name="directories">Папки</string>
     <string name="home">Головна</string>
     <string name="download_all">Завантажити все</string>
-    <string name="settings">Параметри</string>
-    <string name="music_directory">Папка \"Музика\"</string>
-    <string name="video_directory">Папка \"Відео\"</string>
+    <string name="settings">Налаштування</string>
+    <string name="music_directory">Папка Музика</string>
+    <string name="video_directory">Папка Відео</string>
     <string name="search_hint">Пошук або вставка URL-адреси</string>
     <string name="updating">Оновлення</string>
     <string name="ytdl_already_updating">Встановлення нової версії</string>
