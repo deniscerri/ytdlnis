@@ -6,6 +6,7 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.interaction.DragInteraction
 import androidx.core.content.edit
 import androidx.preference.ListPreference
 import androidx.preference.Preference
@@ -13,12 +14,14 @@ import androidx.preference.PreferenceManager
 import androidx.preference.SwitchPreferenceCompat
 import androidx.work.Constraints
 import androidx.work.ExistingWorkPolicy
+import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.util.UiUtil
 import com.deniscerri.ytdl.work.AlarmScheduler
+import com.deniscerri.ytdl.work.CleanUpLeftoverDownloads
 import com.deniscerri.ytdl.work.DownloadWorker
 import java.util.Calendar
 import java.util.concurrent.TimeUnit
@@ -69,6 +72,42 @@ class DownloadSettingsFragment : BaseSettingsFragment() {
                 archivePathResultLauncher.launch(intent)
                 true
             }
+
+        val workManager = WorkManager.getInstance(requireContext())
+        val cleanupLeftoverDownloads = findPreference<Preference>("cleanup_leftover_downloads")
+        cleanupLeftoverDownloads?.setOnPreferenceChangeListener { preference, newValue ->
+            var nextTime : Calendar? = Calendar.getInstance()
+            when(newValue) {
+                "daily" ->  nextTime?.add(Calendar.DAY_OF_WEEK, 1)
+                "weekly" -> nextTime?.add(Calendar.DAY_OF_WEEK, 7)
+                "monthly" -> nextTime?.add(Calendar.MONTH, 1)
+                else -> nextTime = null
+            }
+
+            if (nextTime == null) workManager.cancelAllWorkByTag("cleanup_leftover_downloads")
+            else {
+                val workConstraints = Constraints.Builder()
+                val allowMeteredNetworks = preferences.getBoolean("metered_networks", true)
+                if (!allowMeteredNetworks) workConstraints.setRequiredNetworkType(NetworkType.UNMETERED)
+
+                val delay = nextTime.timeInMillis.minus(System.currentTimeMillis())
+
+                val workRequest = OneTimeWorkRequestBuilder<CleanUpLeftoverDownloads>()
+                    .addTag("cleanup_leftover_downloads")
+                    .setConstraints(workConstraints.build())
+                    .setInitialDelay(delay, TimeUnit.MILLISECONDS)
+
+                workManager.enqueueUniqueWork(
+                    System.currentTimeMillis().toString(),
+                    ExistingWorkPolicy.REPLACE,
+                    workRequest.build()
+                )
+            }
+
+            true
+        }
+
+
         val scheduler = AlarmScheduler(requireContext())
 
         val useAlarmManagerInsteadOfWorkManager = findPreference<SwitchPreferenceCompat>("use_alarm_for_scheduling")

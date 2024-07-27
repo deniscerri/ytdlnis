@@ -39,6 +39,7 @@ import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel.Type
 import com.deniscerri.ytdl.database.viewmodel.HistoryViewModel
 import com.deniscerri.ytdl.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdl.receiver.ShareActivity
+import com.deniscerri.ytdl.ui.BaseActivity
 import com.deniscerri.ytdl.util.InfoUtil
 import com.deniscerri.ytdl.util.UiUtil
 import com.facebook.shimmer.ShimmerFrameLayout
@@ -80,6 +81,7 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
     private lateinit var title : View
     private lateinit var shimmerLoadingSubtitle : ShimmerFrameLayout
     private lateinit var subtitle : View
+    private lateinit var parentActivity: BaseActivity
 
 
     private lateinit var result: ResultItem
@@ -95,7 +97,6 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
         commandTemplateViewModel = ViewModelProvider(requireActivity())[CommandTemplateViewModel::class.java]
         infoUtil = InfoUtil(requireContext())
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
-
         val res: ResultItem?
         val dwl: DownloadItem?
 
@@ -131,6 +132,7 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
         view = LayoutInflater.from(context).inflate(R.layout.download_bottom_sheet, null)
         dialog.setContentView(view)
         dialog.window?.navigationBarColor = SurfaceColors.SURFACE_1.getColor(requireActivity())
+        parentActivity = activity as BaseActivity
 
         dialog.setOnShowListener {
             behavior = BottomSheetBehavior.from(view.parent as View)
@@ -331,21 +333,34 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
                         audioDownloadItem.status = DownloadRepository.Status.Scheduled.toString()
                         itemsToQueue.add(audioDownloadItem)
 
-                        runBlocking {
-                            downloadViewModel.queueDownloads(itemsToQueue)
-                            val date = SimpleDateFormat(DateFormat.getBestDateTimePattern(Locale.getDefault(), "ddMMMyyyy - HHmm"), Locale.getDefault()).format(item.downloadStartTime)
-                            Toast.makeText(context, getString(R.string.download_rescheduled_to) + " " + date, Toast.LENGTH_LONG).show()
+                        lifecycleScope.launch {
+                            val result = withContext(Dispatchers.IO){
+                                downloadViewModel.queueDownloads(itemsToQueue)
+                            }
+
+                            if (result.message.isNotBlank()){
+                                Toast.makeText(requireContext(), result.message, Toast.LENGTH_LONG).show()
+                            }
+
+                            withContext(Dispatchers.Main){
+                                handleDuplicatesAndDismiss(result.duplicateDownloadIDs)
+                            }
                         }
-                        dismiss()
                     }
                 }else{
-                    runBlocking {
-                        downloadViewModel.queueDownloads(listOf(item))
-                        val date = SimpleDateFormat(DateFormat.getBestDateTimePattern(Locale.getDefault(), "ddMMMyyyy - HHmm"), Locale.getDefault()).format(item.downloadStartTime)
-                        Toast.makeText(context, getString(R.string.download_rescheduled_to) + " " + date, Toast.LENGTH_LONG).show()
-                    }
-                    dismiss()
+                    lifecycleScope.launch {
+                        val result = withContext(Dispatchers.IO){
+                            downloadViewModel.queueDownloads(listOf(item))
+                        }
 
+                        if (result.message.isNotBlank()){
+                            Toast.makeText(requireContext(), result.message, Toast.LENGTH_LONG).show()
+                        }
+
+                        withContext(Dispatchers.Main){
+                            handleDuplicatesAndDismiss(result.duplicateDownloadIDs)
+                        }
+                    }
                 }
 
             }
@@ -365,15 +380,17 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
                         itemsToQueue.add(it)
 
                         runBlocking {
-                            downloadViewModel.queueDownloads(itemsToQueue)
+                            val result = downloadViewModel.queueDownloads(itemsToQueue)
+                            withContext(Dispatchers.Main){
+                                handleDuplicatesAndDismiss(result.duplicateDownloadIDs)
+                            }
                         }
-                        dismiss()
                     }
                 }else{
-                    runBlocking {
+                    val result = withContext(Dispatchers.IO) {
                         downloadViewModel.queueDownloads(listOf(item))
                     }
-                    dismiss()
+                    handleDuplicatesAndDismiss(result.duplicateDownloadIDs)
                 }
             }
         }
@@ -441,7 +458,7 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
             incognito = !incognito
             fragmentAdapter.isIncognito = incognito
             val onOff = if (incognito) getString(R.string.ok) else getString(R.string.disabled)
-            Toast.makeText(requireContext(), "${getString(R.string.incognito)}: $onOff", Toast.LENGTH_SHORT).show()
+            Snackbar.make(incognitoBtn, "${getString(R.string.incognito)}: $onOff", Snackbar.LENGTH_SHORT).show()
         }
 
 
@@ -585,6 +602,23 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
         }
 
         lifecycleScope.launch {
+            launch{
+                downloadViewModel.alreadyExistsUiState.collectLatest { res ->
+                    if (res.isNotEmpty() && activity is ShareActivity){
+                        withContext(Dispatchers.Main){
+                            val bundle = bundleOf(
+                                Pair("duplicates", ArrayList(res))
+                            )
+                            delay(500)
+                            findNavController().navigate(R.id.action_downloadBottomSheetDialog_to_downloadsAlreadyExistDialog2, bundle)
+                        }
+                        downloadViewModel.alreadyExistsUiState.value = mutableListOf()
+                    }
+                }
+            }
+        }
+
+        lifecycleScope.launch {
             resultViewModel.updateFormatsResultData.collectLatest { formats ->
                 if (formats == null) return@collectLatest
                 kotlin.runCatching {
@@ -684,6 +718,14 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
             resultViewModel.cancelUpdateItemData()
             resultViewModel.cancelUpdateFormatsItemData()
             super.onDismiss(dialog)
+        }
+    }
+
+    private fun handleDuplicatesAndDismiss(res: List<DownloadViewModel.AlreadyExistsIDs>) {
+        if (activity is ShareActivity && res.isNotEmpty()) {
+            //let the lifecycle listener handle it
+        }else{
+            dismiss()
         }
     }
 }

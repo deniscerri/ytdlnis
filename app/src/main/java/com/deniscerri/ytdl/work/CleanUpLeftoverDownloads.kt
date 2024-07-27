@@ -1,0 +1,42 @@
+package com.deniscerri.ytdl.work
+
+import android.content.Context
+import androidx.work.CoroutineWorker
+import androidx.work.ForegroundInfo
+import androidx.work.WorkerParameters
+import com.deniscerri.ytdl.App
+import com.deniscerri.ytdl.R
+import com.deniscerri.ytdl.database.DBManager
+import com.deniscerri.ytdl.database.repository.DownloadRepository
+import com.deniscerri.ytdl.util.FileUtil
+import com.deniscerri.ytdl.util.NotificationUtil
+import com.google.android.material.snackbar.Snackbar
+import java.io.File
+
+
+class CleanUpLeftoverDownloads(
+    private val context: Context,
+    workerParams: WorkerParameters
+) : CoroutineWorker(context, workerParams) {
+    override suspend fun doWork(): Result {
+        val notificationUtil = NotificationUtil(App.instance)
+        val id = System.currentTimeMillis().toInt()
+
+        val notification = notificationUtil.createDeletingLeftoverDownloadsNotification()
+        val foregroundInfo = ForegroundInfo(id, notification)
+        setForegroundAsync(foregroundInfo)
+
+        val dbManager = DBManager.getInstance(context)
+        val downloadRepo = DownloadRepository(dbManager.downloadDao)
+        downloadRepo.deleteCancelled()
+        downloadRepo.deleteErrored()
+
+        val activeDownloadCount = downloadRepo.getActiveDownloadsCount()
+        if (activeDownloadCount == 0){
+            File(FileUtil.getCachePath(context)).deleteRecursively()
+        }
+
+        return Result.success()
+    }
+
+}

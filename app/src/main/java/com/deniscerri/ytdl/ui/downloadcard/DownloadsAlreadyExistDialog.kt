@@ -10,6 +10,7 @@ import android.os.Build
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.View
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceManager
@@ -28,6 +29,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.elevation.SurfaceColors
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -102,10 +104,17 @@ class DownloadsAlreadyExistDialog : BottomSheetDialogFragment(), AlreadyExistsAd
 
         view.findViewById<MaterialButton>(R.id.bottomsheet_download_button).setOnClickListener {
             CoroutineScope(Dispatchers.IO).launch {
-                downloadViewModel.deleteProcessing()
+                downloadViewModel.deleteWithDuplicateStatus()
                 val items = duplicates.map { it.downloadItem }
                 items.forEach { it.id = 0 }
-                downloadViewModel.queueDownloads(items, true)
+                val result = downloadViewModel.queueDownloads(items, true)
+                if (result.message.isNotBlank()){
+                    lifecycleScope.launch {
+                        withContext(Dispatchers.Main) {
+                            Toast.makeText(requireContext(), result.message, Toast.LENGTH_LONG).show()
+                        }
+                    }
+                }
                 withContext(Dispatchers.Main){
                     dismiss()
                 }
@@ -117,8 +126,7 @@ class DownloadsAlreadyExistDialog : BottomSheetDialogFragment(), AlreadyExistsAd
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
         CoroutineScope(Dispatchers.IO).launch {
-            downloadViewModel.deleteProcessing()
-            downloadViewModel.deleteAllWithID(duplicates.map { it.downloadItem.id })
+            downloadViewModel.deleteWithDuplicateStatus()
         }
     }
 

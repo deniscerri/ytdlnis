@@ -221,7 +221,7 @@ class ConfigureDownloadBottomSheetDialog(private val currentDownloadItem: Downlo
             incognito = !incognito
             fragmentAdapter.isIncognito = incognito
             val onOff = if (incognito) getString(R.string.ok) else getString(R.string.disabled)
-            Toast.makeText(requireContext(), "${getString(R.string.incognito)}: $onOff", Toast.LENGTH_SHORT).show()
+            Snackbar.make(incognitoBtn, "${getString(R.string.incognito)}: $onOff", Snackbar.LENGTH_SHORT).show()
         }
 
 

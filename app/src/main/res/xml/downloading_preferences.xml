@@ -145,6 +145,15 @@
             app:summary="@string/log_downloads_summary"
             app:title="@string/log_downloads" />
 
+        <ListPreference
+            android:defaultValue=""
+            android:entries="@array/cleanup_leftover_downloads"
+            android:entryValues="@array/cleanup_leftover_downloads_values"
+            android:icon="@drawable/baseline_delete_24"
+            app:key="cleanup_leftover_downloads"
+            app:useSimpleSummaryProvider="true"
+            app:title="@string/cleanup_leftover_downloads" />
+
         <EditTextPreference
             app:key="retries"
             android:icon="@drawable/ic_retries"

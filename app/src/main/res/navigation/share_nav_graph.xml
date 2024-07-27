@@ -12,6 +12,12 @@
             app:launchSingleTop="true"
             app:popUpTo="@id/downloadBottomSheetDialog"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_downloadBottomSheetDialog_to_downloadsAlreadyExistDialog2"
+            app:destination="@id/downloadsAlreadyExistDialog2"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/downloadBottomSheetDialog"
+            app:popUpToInclusive="true" />
     </dialog>
     <dialog
         android:id="@+id/selectPlaylistItemsDialog"
@@ -33,7 +39,14 @@
     <dialog
         android:id="@+id/downloadMultipleBottomSheetDialog"
         android:name="com.deniscerri.ytdl.ui.downloadcard.DownloadMultipleBottomSheetDialog"
-        android:label="DownloadMultipleBottomSheetDialog" />
+        android:label="DownloadMultipleBottomSheetDialog" >
+        <action
+            android:id="@+id/action_downloadMultipleBottomSheetDialog_to_downloadsAlreadyExistDialog2"
+            app:destination="@id/downloadsAlreadyExistDialog2"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/downloadMultipleBottomSheetDialog"
+            app:popUpToInclusive="true" />
+    </dialog>
     <dialog
         android:id="@+id/downloadsAlreadyExistDialog2"
         android:name="com.deniscerri.ytdl.ui.downloadcard.DownloadsAlreadyExistDialog"

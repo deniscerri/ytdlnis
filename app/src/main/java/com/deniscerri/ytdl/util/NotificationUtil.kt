@@ -474,6 +474,27 @@ class NotificationUtil(var context: Context) {
         notificationManager.cancel(DOWNLOAD_ERRORED_NOTIFICATION_ID + id)
     }
 
+    fun createDeletingLeftoverDownloadsNotification() : Notification {
+        val notificationBuilder = getBuilder(DOWNLOAD_MISC_CHANNEL_ID)
+
+        return notificationBuilder
+            .setContentTitle(resources.getString(R.string.cleanup_leftover_downloads))
+            .setCategory(Notification.CATEGORY_EVENT)
+            .setSmallIcon(R.drawable.ic_launcher_foreground_large)
+            .setLargeIcon(
+                BitmapFactory.decodeResource(
+                    resources,
+                    R.drawable.ic_launcher_foreground_large
+                )
+            )
+            .setContentText("")
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+            .setForegroundServiceBehavior(NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE)
+            .clearActions()
+            .build()
+    }
+
     fun createMoveCacheFilesNotification(pendingIntent: PendingIntent?, downloadMiscChannelId: String): Notification {
         val notificationBuilder = getBuilder(downloadMiscChannelId)
 

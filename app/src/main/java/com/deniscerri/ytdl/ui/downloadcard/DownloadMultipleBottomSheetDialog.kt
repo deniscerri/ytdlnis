@@ -19,11 +19,13 @@ import android.view.Window
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.os.bundleOf
 import androidx.core.view.children
 import androidx.core.view.get
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -37,6 +39,8 @@ import com.deniscerri.ytdl.database.viewmodel.CommandTemplateViewModel
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.database.viewmodel.HistoryViewModel
 import com.deniscerri.ytdl.database.viewmodel.ResultViewModel
+import com.deniscerri.ytdl.receiver.ShareActivity
+import com.deniscerri.ytdl.ui.BaseActivity
 import com.deniscerri.ytdl.ui.adapter.ConfigureMultipleDownloadsAdapter
 import com.deniscerri.ytdl.util.Extensions.enableFastScroll
 import com.deniscerri.ytdl.util.FileUtil
@@ -56,6 +60,7 @@ import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -80,6 +85,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
     private lateinit var shimmerTitle: ShimmerFrameLayout
     private lateinit var shimmerSubtitle: ShimmerFrameLayout
     private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var parentActivity: BaseActivity
 
     private lateinit var currentDownloadIDs: List<Long>
     private var processingItemsCount : Int = 0
@@ -103,6 +109,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
         val view = LayoutInflater.from(context).inflate(R.layout.download_multiple_bottom_sheet, null)
         dialog.setContentView(view)
         dialog.window?.navigationBarColor = SurfaceColors.SURFACE_1.getColor(requireActivity())
+        parentActivity = activity as BaseActivity
 
         dialog.setOnShowListener {
             behavior = BottomSheetBehavior.from(view.parent as View)
@@ -204,9 +211,20 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                 lifecycleScope.launch {
                     withContext(Dispatchers.IO){
                         downloadViewModel.deleteAllWithID(currentDownloadIDs)
-                        downloadViewModel.updateProcessingDownloadTimeAndQueueScheduled(cal.timeInMillis)
+                        val result = downloadViewModel.updateProcessingDownloadTimeAndQueueScheduled(cal.timeInMillis)
+                        if (result.message.isNotBlank()){
+                            lifecycleScope.launch {
+                                withContext(Dispatchers.Main) {
+                                    Toast.makeText(requireContext(), result.message, Toast.LENGTH_LONG).show()
+                                }
+                            }
+                        }
+
+                        withContext(Dispatchers.Main){
+                            handleDuplicatesAndDismiss(result.duplicateDownloadIDs)
+                            dismiss()
+                        }
                     }
-                    dismiss()
                 }
             }
         }
@@ -216,9 +234,20 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
             lifecycleScope.launch {
                 withContext(Dispatchers.IO){
                     downloadViewModel.deleteAllWithID(currentDownloadIDs)
-                    downloadViewModel.queueProcessingDownloads()
+                    val result = downloadViewModel.queueProcessingDownloads()
+                    if (result.message.isNotBlank()){
+                        lifecycleScope.launch {
+                            withContext(Dispatchers.Main) {
+                                Toast.makeText(requireContext(), result.message, Toast.LENGTH_LONG).show()
+                            }
+                        }
+                    }
+
+                    withContext(Dispatchers.Main){
+                        handleDuplicatesAndDismiss(result.duplicateDownloadIDs)
+                        dismiss()
+                    }
                 }
-                dismiss()
             }
         }
 
@@ -282,6 +311,23 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                 }
             }
 
+        }
+
+        lifecycleScope.launch {
+            launch{
+                downloadViewModel.alreadyExistsUiState.collectLatest { res ->
+                    if (res.isNotEmpty() && activity is ShareActivity){
+                        withContext(Dispatchers.Main){
+                            val bundle = bundleOf(
+                                Pair("duplicates", ArrayList(res))
+                            )
+                            delay(500)
+                            findNavController().navigate(R.id.action_downloadMultipleBottomSheetDialog_to_downloadsAlreadyExistDialog2, bundle)
+                        }
+                        downloadViewModel.alreadyExistsUiState.value = mutableListOf()
+                    }
+                }
+            }
         }
 
 
@@ -909,6 +955,14 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                 )
             }
         }
+
+    private fun handleDuplicatesAndDismiss(res: List<DownloadViewModel.AlreadyExistsIDs>) {
+        if (activity is ShareActivity && res.isNotEmpty()) {
+            //let the lifecycle listener handle it
+        }else{
+            dismiss()
+        }
+    }
 
 }
 

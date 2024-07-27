@@ -164,10 +164,11 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
         historyViewModel.getFilteredList().observe(viewLifecycleOwner) {
             historyAdapter!!.submitList(it)
             historyList = it
-            scrollToTop()
 
             if (recyclerView.adapter == null){
                 recyclerView.adapter = historyAdapter
+            }else{
+                scrollToTop()
             }
         }
 

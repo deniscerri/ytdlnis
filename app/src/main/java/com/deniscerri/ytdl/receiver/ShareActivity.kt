@@ -213,18 +213,6 @@ class ShareActivity : BaseActivity() {
                     }
                     this@ShareActivity.finish()
                 }
-
-                downloadViewModel.alreadyExistsUiState.collectLatest { res ->
-                    if (res.isNotEmpty()){
-                        withContext(Dispatchers.Main){
-                            val bundle = bundleOf(
-                                Pair("duplicates", res)
-                            )
-                            navController.navigate(R.id.downloadsAlreadyExistDialog2, bundle)
-                        }
-                        downloadViewModel.alreadyExistsUiState.value = mutableListOf()
-                    }
-                }
             }
         }
     }

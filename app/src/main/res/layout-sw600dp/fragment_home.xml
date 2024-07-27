@@ -157,7 +157,7 @@
             android:layout_height="wrap_content"
             android:scrollbars="none"
             android:clipToPadding="false"
-            android:paddingBottom="100dp"
+            android:paddingBottom="200dp"
             app:spanCount="2"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             />

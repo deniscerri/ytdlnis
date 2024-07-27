@@ -11,6 +11,8 @@ import android.os.Environment
 import android.provider.Settings
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.preference.Preference
 import androidx.preference.PreferenceManager
 import androidx.preference.SwitchPreferenceCompat
@@ -19,10 +21,14 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import com.deniscerri.ytdl.R
+import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.util.UiUtil
 import com.deniscerri.ytdl.work.MoveCacheFilesWorker
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
 
 
@@ -43,6 +49,7 @@ class FolderSettingsFragment : BaseSettingsFragment() {
     private lateinit var preferences: SharedPreferences
     private lateinit var editor: SharedPreferences.Editor
 
+    private lateinit var downloadViewModel: DownloadViewModel
     private var activeDownloadCount = 0
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
@@ -50,6 +57,7 @@ class FolderSettingsFragment : BaseSettingsFragment() {
 
         preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
         editor = preferences.edit()
+        downloadViewModel = ViewModelProvider(requireActivity())[DownloadViewModel::class.java]
 
         musicPath = findPreference("music_path")
         videoPath = findPreference("video_path")
@@ -166,13 +174,18 @@ class FolderSettingsFragment : BaseSettingsFragment() {
         clearCache!!.summary = "(${FileUtil.convertFileSize(cacheSize)}) ${resources.getString(R.string.clear_temporary_files_summary)}"
         clearCache!!.onPreferenceClickListener =
             Preference.OnPreferenceClickListener {
-                if (activeDownloadCount == 0){
-                    File(FileUtil.getCachePath(requireContext())).deleteRecursively()
-                    Snackbar.make(requireView(), getString(R.string.cache_cleared), Snackbar.LENGTH_SHORT).show()
-                    cacheSize = File(FileUtil.getCachePath(requireContext())).walkBottomUp().fold(0L) { acc, file -> acc + file.length() }
-                    clearCache!!.summary = "(${FileUtil.convertFileSize(cacheSize)}) ${resources.getString(R.string.clear_temporary_files_summary)}"
-                }else{
-                    Snackbar.make(requireView(), getString(R.string.downloads_running_try_later), Snackbar.LENGTH_SHORT).show()
+                lifecycleScope.launch {
+                    activeDownloadCount = withContext(Dispatchers.IO){
+                        downloadViewModel.getActiveDownloadsCount()
+                    }
+                    if (activeDownloadCount == 0){
+                        File(FileUtil.getCachePath(requireContext())).deleteRecursively()
+                        Snackbar.make(requireView(), getString(R.string.cache_cleared), Snackbar.LENGTH_SHORT).show()
+                        cacheSize = File(FileUtil.getCachePath(requireContext())).walkBottomUp().fold(0L) { acc, file -> acc + file.length() }
+                        clearCache!!.summary = "(${FileUtil.convertFileSize(cacheSize)}) ${resources.getString(R.string.clear_temporary_files_summary)}"
+                    }else{
+                        Snackbar.make(requireView(), getString(R.string.downloads_running_try_later), Snackbar.LENGTH_SHORT).show()
+                    }
                 }
                 true
             }

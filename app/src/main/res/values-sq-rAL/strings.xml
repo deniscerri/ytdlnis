@@ -411,4 +411,7 @@
     <string name="recode_video">Rikodo Videon</string>
     <string name="recode_video_summary">Rikodon skedarin e videos sipas formatit të cilësuar nga përdoruesi</string>
     <string name="restore_info">Shtyp \'Rikthe\' për të kombinuar të dhënat e ruajtura me të dhënat aktuale. Shtyp \'Rivendos\' për të fshirë gjithçka dhe vetëm përdor të dhënat e ruajtura në skedar.</string>
+    <string name="daily">Çdo ditë</string>
+    <string name="weekly">Çdo javë</string>
+    <string name="monthly">Çdo muaj</string>
 </resources>

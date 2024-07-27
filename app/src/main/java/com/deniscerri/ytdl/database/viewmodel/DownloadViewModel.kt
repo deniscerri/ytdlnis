@@ -638,6 +638,10 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         repository.deleteProcessing()
     }
 
+    fun deleteWithDuplicateStatus() = viewModelScope.launch(Dispatchers.IO) {
+        repository.deleteWithDuplicateStatus()
+    }
+
     suspend fun deleteAllWithID(ids: List<Long>) {
         repository.deleteAllWithIDs(ids)
     }
@@ -671,7 +675,7 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
     }
 
     fun getActiveDownloadsCount() : Int {
-        return dao.getDownloadsCountByStatus(listOf(DownloadRepository.Status.Active).toListString())
+        return repository.getActiveDownloadsCount()
     }
 
     fun getActiveQueuedDownloadsCount() : Int {
@@ -761,12 +765,17 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         repository.startDownloadWorker(emptyList(), application)
     }
 
-    suspend fun queueProcessingDownloads(){
+    suspend fun queueProcessingDownloads() : QueueDownloadsResult {
         val processingItems = repository.getProcessingDownloads()
-        queueDownloads(processingItems)
+        return queueDownloads(processingItems)
     }
 
-    suspend fun queueDownloads(items: List<DownloadItem>, ignoreDuplicates : Boolean = false) {
+    data class QueueDownloadsResult(
+        var message: String,
+        var duplicateDownloadIDs : List<AlreadyExistsIDs>
+    )
+
+    suspend fun queueDownloads(items: List<DownloadItem>, ignoreDuplicates : Boolean = false) : QueueDownloadsResult {
         val context = App.instance
         val alarmScheduler = AlarmScheduler(context)
         val queuedItems = mutableListOf<DownloadItem>()
@@ -788,9 +797,12 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         }
 
         items.forEach {
-            if (it.status != DownloadRepository.Status.Scheduled.toString()) {
+            if (it.downloadStartTime > 0) {
+                it.status = DownloadRepository.Status.Scheduled.toString()
+            }else{
                 it.status = DownloadRepository.Status.Queued.toString()
             }
+
 
             //CHECK DUPLICATES
             var isDuplicate = false
@@ -903,22 +915,23 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
 
         }
 
-        val queued = repository.updateAll(queuedItems)
+        val result = QueueDownloadsResult("", listOf())
 
         //if scheduler is on
         val useScheduler = sharedPreferences.getBoolean("use_scheduler", false)
         if (useScheduler && !alarmScheduler.isDuringTheScheduledTime()){
             if (alarmScheduler.canSchedule()){
+                repository.updateAll(queuedItems)
                 alarmScheduler.schedule()
             }else{
                 sharedPreferences.edit().putBoolean("use_scheduler", false).apply()
-                Handler(Looper.getMainLooper()).post {
-                    Toast.makeText(context, context.getString(R.string.enable_alarm_permission), Toast.LENGTH_LONG).show()
-                }
+                result.message = context.getString(R.string.enable_alarm_permission)
             }
         }else{
+            val queued = repository.updateAll(queuedItems)
+
             if (!sharedPreferences.getBoolean("paused_downloads", false)) {
-                repository.startDownloadWorker(queued, context)
+                result.message = repository.startDownloadWorker(queued, context).getOrElse { "" }
             }
 
             if(!useScheduler){
@@ -947,7 +960,10 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
 
         if (existingItemIDs.isNotEmpty()){
             alreadyExistsUiState.value = existingItemIDs.toList()
+            result.duplicateDownloadIDs = existingItemIDs.toList()
         }
+
+        return result
     }
 
     fun getQueuedCollectedFileSize() : Long {
@@ -1077,13 +1093,13 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         }
     }
 
-    suspend fun updateProcessingDownloadTimeAndQueueScheduled(time: Long) {
+    suspend fun updateProcessingDownloadTimeAndQueueScheduled(time: Long) : QueueDownloadsResult {
         val processing = repository.getProcessingDownloads()
         processing.forEach {
             it.downloadStartTime = time
             it.status = DownloadRepository.Status.Scheduled.toString()
         }
-        queueDownloads(processing)
+        return queueDownloads(processing)
     }
 
     fun checkIfAllProcessingItemsHaveSameType() : Pair<Boolean, Type> {

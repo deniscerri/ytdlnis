@@ -414,4 +414,8 @@
     <string name="use_item_url_not_playlist_summary">Useful for Libretube offline playlists that are not recognised by yt-dlp. Playlist metadata wont be embedded with this enabled</string>
     <string name="recode_video">Recode Video</string>
     <string name="recode_video_summary">Recodes the video file to the specified video format</string>
+    <string name="daily">Daily</string>
+    <string name="weekly">Weekly</string>
+    <string name="monthly">Monthly</string>
+    <string name="cleanup_leftover_downloads">Clean-up leftover downloads (cancelled, errored)</string>
 </resources>

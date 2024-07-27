@@ -504,7 +504,10 @@ class FormatSelectionBottomSheetDialog(
                 finalFormats = if (items.first()?.type == Type.audio){
                     formatSorter.sortAudioFormats(finalFormats)
                 }else{
-                    formatSorter.sortVideoFormats(finalFormats)
+                    val audioFormats = finalFormats.filter {  it.vcodec.isBlank() || it.vcodec == "none" }
+                    val videoFormats = finalFormats.filter {  it.vcodec.isNotBlank() && it.vcodec != "none" }
+
+                    formatSorter.sortVideoFormats(videoFormats) + formatSorter.sortAudioFormats(audioFormats)
                 }
             }
             FormatCategory.SMALLEST -> {

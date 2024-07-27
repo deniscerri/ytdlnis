@@ -170,6 +170,9 @@ interface DownloadDao {
     @Query("DELETE FROM downloads WHERE status='Processing'")
     suspend fun deleteProcessing()
 
+    @Query("DELETE FROM downloads WHERE status='Duplicate'")
+    suspend fun deleteWithDuplicateStatus()
+
     @Query("DELETE FROM downloads WHERE status='Scheduled'")
     suspend fun deleteScheduled()
 

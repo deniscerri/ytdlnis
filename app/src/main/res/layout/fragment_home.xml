@@ -92,8 +92,7 @@
             android:layout_height="wrap_content"
             android:scrollbars="none"
             android:clipToPadding="false"
-            android:paddingBottom="100dp"
-
+            android:paddingBottom="200dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             />
 

@@ -64,3 +64,24 @@ Add --recode-video toggle in the settings to use instead of --merge-output-forma
 adjusted the "Adjust video" section in the download card and put all subtitle items together
 
 Fixed app not selecting an audio format to show in the format view in the download card after updating formats
+
+download_rescheduled_to shows up twice, one in original language and one in english
+
+It's very difficult to tap on video icon for the video at the bottom
+
+#529
+
+https://www.instagram.com/reel/C9zTRlONU6G/?igsh=MWJ1djBhYjdscG5wMw== chooses smallest format
+
+Limit audio id length
+
+Remember scroll position in history tab
+
+Make piped not fetch mix playlists
+
+turn incognito toast to snackbar
+
+duplicate dialog crash app when in share activity because the activity closes too early
+
+4. In videos with multiple languages, previously, when I entered the suggested tab, all audios in my preferred language were displayed at the top, with the lowest quality. However, this no longer happens, and now I need to search among multiple languages (again, I'm not entirely sure about this, but it's challenging to compare with a previous version since I no longer have access to older app versions)
+

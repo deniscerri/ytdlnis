@@ -1475,4 +1475,18 @@
         <item>never</item>
     </string-array>
 
+    <string-array name="cleanup_leftover_downloads">
+        <item>@string/disabled</item>
+        <item>@string/daily</item>
+        <item>@string/weekly</item>
+        <item>@string/monthly</item>
+    </string-array>
+
+    <string-array name="cleanup_leftover_downloads_values">
+        <item></item>
+        <item>daily</item>
+        <item>weekly</item>
+        <item>monthly</item>
+    </string-array>
+
 </resources>

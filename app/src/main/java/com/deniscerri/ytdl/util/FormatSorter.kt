@@ -142,11 +142,10 @@ class FormatSorter(private var context: Context) {
 
                                     val aIndex = videoResolutionOrder.indexOfFirst { a.format_note.contains(it, ignoreCase = true) }
                                     val bIndex = videoResolutionOrder.indexOfFirst { b.format_note.contains(it, ignoreCase = true) }
-
                                     if (aIndex > preferenceIndex || bIndex > preferenceIndex) {
                                         -1
                                     }else if(aIndex == -1 && bIndex == -1){
-                                        -1
+                                        0
                                     }else{
                                         bIndex.compareTo(aIndex)
                                     }
@@ -168,7 +167,6 @@ class FormatSorter(private var context: Context) {
                 return 0
             }
         }
-
         return formats.sortedWith(fieldSorter)
     }
 

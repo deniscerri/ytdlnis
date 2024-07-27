@@ -174,6 +174,10 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
         deleteCache(cancelled)
     }
 
+    fun getActiveDownloadsCount() : Int {
+        return downloadDao.getDownloadsCountByStatus(listOf(Status.Active).toListString())
+    }
+
     suspend fun deleteScheduled() {
         downloadDao.deleteScheduled()
     }
@@ -196,6 +200,10 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
         downloadDao.deleteProcessing()
     }
 
+    suspend fun deleteWithDuplicateStatus() {
+        downloadDao.deleteWithDuplicateStatus()
+    }
+
     suspend fun deleteAllWithIDs(ids: List<Long>){
         downloadDao.deleteAllWithIDs(ids)
 
@@ -214,7 +222,7 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
     }
 
     @SuppressLint("RestrictedApi")
-    suspend fun startDownloadWorker(queuedItems: List<DownloadItem>, context: Context, inputData: Data.Builder = Data.Builder()) {
+    suspend fun startDownloadWorker(queuedItems: List<DownloadItem>, context: Context, inputData: Data.Builder = Data.Builder()) : Result<String> {
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
         val allowMeteredNetworks = sharedPreferences.getBoolean("metered_networks", true)
         val workManager = WorkManager.getInstance(context)
@@ -236,7 +244,7 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
 
             if (delay > 0L && useAlarmForScheduling) {
                 AlarmScheduler(context).scheduleAt(queuedItems.minBy { it.downloadStartTime }.downloadStartTime)
-                return
+                return Result.success("")
             }
 
 
@@ -256,26 +264,22 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
             )
 
         }
-
-        val handler = Handler(Looper.getMainLooper())
+        val message = StringBuilder()
 
         val isCurrentNetworkMetered = (context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager).isActiveNetworkMetered
         if (!allowMeteredNetworks && isCurrentNetworkMetered){
-            handler.postDelayed({
-                Toast.makeText(context, context.getString(R.string.metered_network_download_start_info), Toast.LENGTH_LONG).show()
-            }, 0)
+            message.appendLine(context.getString(R.string.metered_network_download_start_info))
         }
 
         if (queuedItems.isNotEmpty()) {
             val first = queuedItems.first()
             if (first.downloadStartTime > 0L) {
                 val date = SimpleDateFormat(DateFormat.getBestDateTimePattern(Locale.getDefault(), "ddMMMyyyy - HHmm"), Locale.getDefault()).format(queuedItems.first().downloadStartTime)
-                handler.postDelayed({
-                    Toast.makeText(context, context.getString(R.string.download_rescheduled_to) + " " + date, Toast.LENGTH_LONG).show()
-                }, 0)
+                message.appendLine(context.getString(R.string.download_rescheduled_to) + " " + date)
             }
         }
 
+        return Result.success(message.toString())
     }
 
 }
