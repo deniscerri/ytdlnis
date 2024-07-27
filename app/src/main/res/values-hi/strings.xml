@@ -408,4 +408,8 @@
 \nफाइल में सहेजे गए डेटा को मिटाने और केवल उसका उपयोग करने के लिए \'रीसेट करें\' दबाएं।</string>
     <string name="use_alarm_manager">शेड्यूलिंग के लिए WorkManager के बजाय AlarmManager का उपयोग करें</string>
     <string name="use_alarm_manager_summary">यदि WorkManager आपके डिवाइस विक्रेता द्वारा प्रतिबंधित है या शेड्यूल किए गए कार्य बहुत सटीक नहीं हैं तो इसे सक्षम करें</string>
+    <string name="use_item_url_not_playlist_summary">Libretube ऑफ़लाइन प्लेलिस्ट के लिए उपयोगी है जो yt-dlp द्वारा पहचाने नहीं जाते हैं। इस सक्षम के साथ प्लेलिस्ट मेटाडेटा एम्बेड नहीं किया जाएगा</string>
+    <string name="use_item_url_not_playlist">प्लेलिस्ट URL के बजाय आइटम URL का उपयोग करें</string>
+    <string name="recode_video">वीडियो पुनःकोड करें</string>
+    <string name="recode_video_summary">वीडियो फ़ाइल को निर्दिष्ट वीडियो प्रारूप में पुनःकोडित करता है</string>
 </resources>
