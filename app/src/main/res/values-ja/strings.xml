@@ -409,4 +409,6 @@
     <string name="restore_info">復元は、保存済みデータと現在のデータを統合します。
 \n初期化は、消去しファイル中の保存済みデータのみを使用します。</string>
     <string name="reset">初期化</string>
+    <string name="recode_video_summary">動画ファイルを指定の動画形式で再エンコード</string>
+    <string name="recode_video">動画を再エンコード</string>
 </resources>
