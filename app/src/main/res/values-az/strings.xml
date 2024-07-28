@@ -412,4 +412,8 @@
     <string name="use_item_url_not_playlist_summary">yt-dlp vasitəsilə tanınmayan LibreTube oflayn oynatma siyahıları üçün lazımdır. Bu aktivləşdikdə pleylist üst məlumatı daxil edilməyəcək</string>
     <string name="recode_video">Videonu yenidən kodla</string>
     <string name="recode_video_summary">Video faylı təyin edilmiş video formatına yenidən kodlayır</string>
+    <string name="daily">Gündəlik</string>
+    <string name="weekly">Həftəlik</string>
+    <string name="monthly">Aylıq</string>
+    <string name="cleanup_leftover_downloads">Qalan yükləmələri təmizlə (ləğv edilmiş, xətalı)</string>
 </resources>
