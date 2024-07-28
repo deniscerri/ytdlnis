@@ -28,6 +28,7 @@ import android.view.ViewOutlineProvider
 import android.view.animation.Interpolator
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.ScrollView
 import android.widget.TextView
 import androidx.annotation.Px
 import androidx.core.content.ContextCompat
@@ -139,6 +140,15 @@ object Extensions {
             .build()
     }
 
+    fun ScrollView.enableFastScroll() {
+        val drawable = ShapeDrawable(OvalShape())
+        drawable.paint.color = context.getColor(android.R.color.transparent)
+
+        FastScrollerBuilder(this)
+            .useMd2Style()
+            .setTrackDrawable(drawable)
+            .build()
+    }
     fun File.getMediaDuration(context: Context): Int {
         return kotlin.runCatching {
             if (!exists()) return 0
@@ -251,20 +261,20 @@ object Extensions {
         }
     }
 
-    fun String.appendLineToLog(line: String): String {
-        val lines = this.split("\n")
-        if (!lines.takeLast(3).contains(line)){
-            //clean dublicate progress + add newline
-            var newLine = line
-            if (newLine.contains("[download")) {
-                newLine = "[download]" + line.split("[download]").last()
-            }
-
-            return lines.dropLastWhile { it.contains("[download") }.joinToString("\n") + "\n${newLine}"
-        }
-
-        return this
-    }
+//    fun String.appendLineToLog(line: String): String {
+//        val lines = this.split("\n")
+//        if (!lines.takeLast(3).contains(line)){
+//            //clean dublicate progress + add newline
+//            var newLine = line
+//            if (newLine.contains("[download")) {
+//                newLine = "[download]" + line.split("[download]").last()
+//            }
+//
+//            return lines.dropLastWhile { it.contains("[download") }.joinToString("\n") + "\n${newLine}"
+//        }
+//
+//        return this
+//    }
 
     fun ImageView.loadThumbnail(hideThumb: Boolean, imageURL: String){
         if(!hideThumb){

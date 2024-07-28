@@ -1015,6 +1015,14 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         }
     }
 
+    suspend fun updateProcessingContainer(cont: String) {
+        var container = ""
+        if (cont != resources.getString(R.string.defaultValue)) {
+            container = cont
+        }
+        dao.updateProcessingContainer(container)
+    }
+
     suspend fun updateProcessingDownloadPath(path: String){
         dao.updateProcessingDownloadPath(path)
     }
@@ -1109,6 +1117,11 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         }
 
         return Pair(types.size == 1, Type.valueOf(types.first()))
+    }
+
+    fun checkIfAllProcessingItemsHaveSameContainer() : Pair<Boolean, String> {
+        val containers = dao.getProcessingDownloadContainers()
+        return Pair(containers.size == 1, containers.first())
     }
 
 

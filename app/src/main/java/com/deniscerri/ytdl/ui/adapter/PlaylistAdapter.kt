@@ -27,7 +27,7 @@ import java.util.*
 class PlaylistAdapter(onItemClickListener: OnItemClickListener, activity: Activity) : ListAdapter<ResultItem?, PlaylistAdapter.ViewHolder>(AsyncDifferConfig.Builder(
     DIFF_CALLBACK
 ).build()) {
-    private val checkedItems: ArrayList<String>
+    private val checkedItems: ArrayList<Long>
     private val onItemClickListener: OnItemClickListener
     private val activity: Activity
     private val sharedPreferences: SharedPreferences
@@ -70,9 +70,9 @@ class PlaylistAdapter(onItemClickListener: OnItemClickListener, activity: Activi
 
         // CHECKBOX ----------------------------------
         val check = card.findViewById<CheckBox>(R.id.checkBox)
-        check.isChecked = checkedItems.contains(item.url)
+        check.isChecked = checkedItems.contains(item.id)
         check.setOnClickListener {
-            checkCard(check.isChecked, item.url)
+            checkCard(check.isChecked, item.id)
         }
 
         card.setOnClickListener {
@@ -80,25 +80,25 @@ class PlaylistAdapter(onItemClickListener: OnItemClickListener, activity: Activi
         }
     }
 
-    private fun checkCard(isChecked: Boolean, itemURL: String) {
+    private fun checkCard(isChecked: Boolean, id: Long) {
         if (isChecked) {
-            checkedItems.add(itemURL)
+            checkedItems.add(id)
         } else {
-            checkedItems.remove(itemURL)
+            checkedItems.remove(id)
         }
-        onItemClickListener.onCardSelect(itemURL, isChecked, checkedItems)
+        onItemClickListener.onCardSelect(id, isChecked, checkedItems)
     }
 
     interface OnItemClickListener {
-        fun onCardSelect(itemURL: String, isChecked: Boolean, checkedItems: List<String>)
+        fun onCardSelect(itemID: Long, isChecked: Boolean, checkedItems: List<Long>)
     }
 
     @SuppressLint("NotifyDataSetChanged")
     fun clearCheckeditems() {
         for (i in 0 until itemCount){
             val item = getItem(i)
-            if (checkedItems.find { it == item?.url } != null){
-                checkedItems.remove(item?.url)
+            if (checkedItems.find { it == item?.id } != null){
+                checkedItems.remove(item?.id)
                 notifyItemChanged(i)
             }
         }
@@ -109,15 +109,15 @@ class PlaylistAdapter(onItemClickListener: OnItemClickListener, activity: Activi
         checkedItems.clear()
         for (i in 0 until itemCount){
             val item = getItem(i)
-            checkedItems.add(item!!.url)
+            checkedItems.add(item!!.id)
             notifyItemChanged(i)
         }
     }
 
     fun invertSelected(items: List<ResultItem?>?){
-        val invertedList = mutableListOf<String>()
+        val invertedList = mutableListOf<Long>()
         items?.forEach {
-            if (!checkedItems.contains(it!!.url)) invertedList.add(it.url)
+            if (!checkedItems.contains(it!!.id)) invertedList.add(it.id)
         }
         checkedItems.clear()
         checkedItems.addAll(invertedList)
@@ -128,19 +128,19 @@ class PlaylistAdapter(onItemClickListener: OnItemClickListener, activity: Activi
         checkedItems.clear()
         if (start == end ){
             val item = getItem(start)
-            checkedItems.add(item!!.url)
+            checkedItems.add(item!!.id)
             notifyItemChanged(start)
         }else{
             for (i in start..end){
                 val item = getItem(i)
-                checkedItems.add(item!!.url)
+                checkedItems.add(item!!.id)
                 notifyItemChanged(i)
             }
         }
 
     }
 
-    fun getCheckedItems() : List<String>{
+    fun getCheckedItems() : List<Long>{
         return checkedItems
     }
 

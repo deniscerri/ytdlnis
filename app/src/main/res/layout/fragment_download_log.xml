@@ -38,7 +38,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ScrollView
+        <me.zhanghai.android.fastscroll.FastScrollScrollView
             android:id="@+id/content_scrollview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -65,7 +65,7 @@
 
             </LinearLayout>
 
-        </ScrollView>
+        </me.zhanghai.android.fastscroll.FastScrollScrollView>
 
     </FrameLayout>
 

@@ -88,11 +88,12 @@ class TerminalDownloadWorker(
 
         val logDownloads = sharedPreferences.getBoolean("log_downloads", false) && !sharedPreferences.getBoolean("incognito", false)
 
+        val initialLogDetails = "Terminal Task\n" +
+                "Command: \n ${command}\n\n"
         val logItem = LogItem(
             0,
             "Terminal Task",
-            "Terminal Task\n" +
-                    "Command: \n ${command}\n\n",
+            initialLogDetails,
             Format(),
             DownloadViewModel.Type.command,
             System.currentTimeMillis(),
@@ -139,8 +140,7 @@ class TerminalDownloadWorker(
                     }
                 }
             }
-
-            if (logDownloads) logRepo.update(it.out, logItem.id)
+            if (logDownloads) logRepo.update(initialLogDetails + "\n" + it.out, logItem.id, true)
             dao.updateLog(it.out, itemId.toLong())
             notificationUtil.cancelDownloadNotification(itemId)
             delay(1000)

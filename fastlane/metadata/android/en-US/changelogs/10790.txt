@@ -1,87 +1,43 @@
-TEMPORARY just to save changelog
+# What's Changed
 
-List is empty.
-
-kotlin.collections.CollectionsKt.first(SourceFile:2)
-com.deniscerri.ytdl.database.viewmodel.DownloadViewModel.checkIfAllProcessingItemsHaveSameType(Unknown Source:21)
-com.deniscerri.ytdl.ui.downloadcard.DownloadMultipleBottomSheetDialog$setupDialog$9$3$res$1.invokeSuspend(SourceFile:18)
-kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(SourceFile:9)
-kotlinx.coroutines.DispatchedTask.run(Unknown Source:96)
-androidx.work.Worker$2.run(SourceFile:39)
-kotlinx.coroutines.scheduling.TaskImpl.run(Unknown Source:2)
-kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(SourceFile:96)
-
-
-add option in download settings to use alarm manager instead of workmanager for scheduled tasks
-
-fix audio format importance
-
-When updating formats for multiple items, now the app remembers what items dont need new formats and skips them
-
-Move format source from the bottom of the format list to the filter bottom sheet
-
-Added ability for the app to update the result items formats when you update the download item formats if there are any results with the same url
-
-moved queue screen back in its separate tab due to performance issues
-
-format updating in the multiple download card now applies updates immediately on each item
-
-Update formats in background review. Also prevent from showing up every time it updates. Also delete saved after opening items n the multiple download card lol wtf. Also the notification. Change the title of notification to
-
-Can that other one under the Copy log be fixed, too?snackbar
-
-Bulk download shows size without audio fixed
-
-When selecting audio format add generic last
-
-Update ui crashes app from share activity
-
-add option to use video url instead of playlist url to avoid piped private playlist issue
-
-add write uri permission when opening files
-
-fix app still updating formats even though the user closed the format bottom sheet
-
-[BUG] Video title doesn't change in the download card #526
-
-fixed app fetching player urls and chapters from yt-dlp
-
-added ability to change theme without restarting the app. If the icon changes then the app will restart
-
-prevent avi and flv containers from embedding thumbnails
-
-Fixed Subs language preference isn't saved in the download card
-
-add player_client=default,mediaconnect,android extractor args when data fetching and downloading to show more formats
-
-Turned some metadata into digits
+- Fix App crashing with exception "com.deniscerri.ytdl.database.viewmodel.DownloadViewModel.checkIfAllProcessingItemsHaveSameType(Unknown Source:21)..."
+- Added option in download settings to use AlarmManager instead of WorkManager for scheduled downloads to improve accuracy
+- When updating formats for multiple items, now the app remembers what items don't need new formats and skips them to save time and data
+- Moved format source from the bottom of the format list to the filter bottom sheet
+- Added ability for the app to update the result items formats when you update the download item formats if there are any results with the same url
+- Moved "In Queue" screen back in its separate tab due to recyclerview performance issues
+- Format updating in multiple download card now applies updates immediately on each item
+- Deleted saved downloads after a format update in the background after the user decided to open for review
+- App now shows the actual predicted filesize along with the audio size when downloading videos in the multiple download card. Also in single download mode when the audio size is known but the video size is unknown the app wont show the audio size only, it wont show anything
+- Made snackbar show up above the copy log button
+- Fixed App crashing when updating fragments in the download card while in the Share Activity
+- Added a setting to use the video url instead of the playlist url to download. The app used playlist url and then indexes to get the video to take advantage of playlist metadata. Some users have been using libretube playlists that cant be recognised properly by yt-dlp. Turn this option if this affects you
+- Added Write URI Permission when opening files
+- Fixed App still updating formats even though the user closed the format bottom sheet
+- Fixed App keeping old video titles in the download card #526
+- Refactored code on how to fetch player url and chapters from yt-dlp in the cut bottom sheet
+- Added ability to change the theme accent without restarting the app. If you change light/dark mode the app is supposed to restart because the icon activity changes aswell
+- Prevented AVI and FLV containers from embedding thumbnails
+- Fixed Subs Language preference not being saved in the download card
+- Added player_client=default,mediaconnect,android extractor args when data fetching and downloading to use more formats
+- Turned some metadata into digits
 -> --parse-metadata "%(track_number,playlist_index)d:(?P<track_number>\d+)" --parse-metadata "%(dscrptn_year,release_year,release_date>%Y,upload_date>%Y)s:(?P<meta_date>\d+)"
 
-Removed NA from meta album artist --parse-metadata "%(artist,uploader|)s:^(?P<meta_album_artist>[^,]*)"
-
-Add --recode-video toggle in the settings to use instead of --merge-output-format
-
-adjusted the "Adjust video" section in the download card and put all subtitle items together
-
-Fixed app not selecting an audio format to show in the format view in the download card after updating formats
-
-download_rescheduled_to shows up twice, one in original language and one in english
-
-It's very difficult to tap on video icon for the video at the bottom
-
-#529
-
-https://www.instagram.com/reel/C9zTRlONU6G/?igsh=MWJ1djBhYjdscG5wMw== chooses smallest format
-
-Limit audio id length
-
-Remember scroll position in history tab
-
-Make piped not fetch mix playlists
-
-turn incognito toast to snackbar
-
-duplicate dialog crash app when in share activity because the activity closes too early
-
-4. In videos with multiple languages, previously, when I entered the suggested tab, all audios in my preferred language were displayed at the top, with the lowest quality. However, this no longer happens, and now I need to search among multiple languages (again, I'm not entirely sure about this, but it's challenging to compare with a previous version since I no longer have access to older app versions)
-
+- Removed NA from meta album artist --parse-metadata "%(artist,uploader|)s:^(?P<meta_album_artist>[^,]*)"
+- Added --recode-video toggle in the settings to use instead of --merge-output-format
+- Also added that preference as a button in the adjust video in the download card
+- Adjusted the "Adjust video" section in the download card and bundled some common items together to save space
+- Fixed app not selecting an audio format to show in the format view in the download card after updating formats
+- Fixed app showing when the download will start up when you queue up a scheduled download
+- Made home recyclerview bottom padding bigger to avoid the FABs
+- Fixed Issue #529
+- App now remembers the scroll position in the download history tab
+- Made piped api not fetch data when fed mix playlists
+- Turned the incognito toast to a snackbar in the download card
+- Fixed duplicate dialog crashing app when in share activity
+- Fixed issue of app not showing audio formats of preferred language at the top when selecting the suggested filter
+- Added a feature to delete cancelled downloads, errored downloads and download cache older than a certain period. You can select daily, weekly, monthly.
+- Added ability to change the container in the multiple download card
+- Fixed App issues with download logs
+- Added preferred language in the format sorter in yt-dlp
+- More other small changes i forgor what i fixed

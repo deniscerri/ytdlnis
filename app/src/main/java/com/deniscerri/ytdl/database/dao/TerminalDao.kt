@@ -5,7 +5,6 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Transaction
 import com.deniscerri.ytdl.database.models.TerminalItem
-import com.deniscerri.ytdl.util.Extensions.appendLineToLog
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -29,10 +28,15 @@ interface TerminalDao {
     @Query("SELECT * FROM terminalDownloads WHERE id=:id LIMIT 1")
     fun getTerminalById(id: Long) : TerminalItem?
     @Transaction
-    suspend fun updateLog(line: String, id: Long){
+    suspend fun updateLog(line: String, id: Long, resetLog : Boolean = false){
         val t = getTerminalById(id) ?: return
-        val log = t.log ?: ""
-        updateTerminalLog(log.appendLineToLog(line), id)
+        var log = t.log ?: ""
+        if (resetLog) {
+            log = line.lines().joinToString("\n")
+        }else{
+            log += "\n${line}"
+        }
+        updateTerminalLog(log, id)
     }
 
     @Insert

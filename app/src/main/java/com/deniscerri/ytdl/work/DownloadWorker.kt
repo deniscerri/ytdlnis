@@ -97,11 +97,15 @@ class DownloadWorker(
 
             val running = ArrayList(runningYTDLInstances)
             val useScheduler = sharedPreferences.getBoolean("use_scheduler", false)
-            if (items.isEmpty() && running.isEmpty()) WorkManager.getInstance(context).cancelWorkById(this@DownloadWorker.id)
+            if (items.isEmpty() && running.isEmpty()) {
+                WorkManager.getInstance(context).cancelWorkById(this@DownloadWorker.id)
+                return@collect
+            }
 
             if (useScheduler){
                 if (items.none{it.downloadStartTime > 0L} && running.isEmpty() && !alarmScheduler.isDuringTheScheduledTime()) {
                     WorkManager.getInstance(context).cancelWorkById(this@DownloadWorker.id)
+                    return@collect
                 }
             }
             val concurrentDownloads = sharedPreferences.getInt("concurrent_downloads", 1) - running.size
@@ -138,15 +142,16 @@ class DownloadWorker(
 
 
                     val commandString = infoUtil.parseYTDLRequestString(request)
-                    val logString = StringBuilder("\n ${commandString}\n\n")
+                    val initialLogDetails = "Downloading:\n" +
+                            "Title: ${downloadItem.title}\n" +
+                            "URL: ${downloadItem.url}\n" +
+                            "Type: ${downloadItem.type}\n" +
+                            "Command: \n $commandString \n\n"
+                    val logString = StringBuilder(initialLogDetails)
                     val logItem = LogItem(
                         0,
                         downloadItem.title.ifBlank { downloadItem.url },
-                        "Downloading:\n" +
-                                "Title: ${downloadItem.title}\n" +
-                                "URL: ${downloadItem.url}\n" +
-                                "Type: ${downloadItem.type}\n" +
-                                "Command: $logString",
+                        logString.toString(),
                         downloadItem.format,
                         downloadItem.type,
                         System.currentTimeMillis(),
@@ -182,7 +187,7 @@ class DownloadWorker(
                         resultRepo.updateDownloadItem(downloadItem)?.apply {
                             dao.updateWithoutUpsert(this)
                         }
-                        val wasQuickDownloaded = resultDao.getCountInt() == 0
+                        //val wasQuickDownloaded = resultDao.getCountInt() == 0
                         runBlocking {
                             var finalPaths : MutableList<String>?
 
@@ -304,7 +309,7 @@ class DownloadWorker(
                             dao.delete(downloadItem.id)
 
                             if (logDownloads){
-                                logRepo.update(it.out, logItem.id)
+                                logRepo.update(initialLogDetails + "\n" + it.out, logItem.id, true)
                             }
                         }
 

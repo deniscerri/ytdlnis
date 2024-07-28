@@ -7,7 +7,6 @@ import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
 import com.deniscerri.ytdl.database.models.LogItem
-import com.deniscerri.ytdl.util.Extensions.appendLineToLog
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -41,10 +40,15 @@ interface LogDao {
     suspend fun updateLogContent(l: String, id: Long)
 
     @Transaction
-    suspend fun updateLog(line: String, id: Long) {
+    suspend fun updateLog(line: String, id: Long, resetLog: Boolean = false) {
         val l = getByID(id) ?: return
-        val log = l.content ?: ""
-        updateLogContent(log.appendLineToLog(line), id)
+        var log = l.content ?: ""
+        if (resetLog) {
+            log = line.lines().joinToString("\n")
+        }else{
+            log += "\n${line}"
+        }
+        updateLogContent(log, id)
     }
 
     @Update(onConflict = OnConflictStrategy.REPLACE)

@@ -187,6 +187,27 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
+
+                    <TextView
+                        android:id="@+id/container"
+                        style="@style/Widget.Material3.FloatingActionButton.Large.Secondary"
+                        android:layout_width="wrap_content"
+                        android:visibility="gone"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="5dp"
+                        android:background="@drawable/rounded_corner"
+                        android:backgroundTint="?attr/colorSecondary"
+                        android:clickable="false"
+                        android:gravity="center"
+                        android:minWidth="30dp"
+                        android:paddingHorizontal="5dp"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        app:cornerRadius="10dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
                     <TextView
                         android:id="@+id/codec"
                         style="@style/Widget.Material3.FloatingActionButton.Large.Secondary"

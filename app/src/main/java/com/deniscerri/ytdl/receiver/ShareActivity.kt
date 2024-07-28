@@ -33,6 +33,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceManager
 import com.deniscerri.ytdl.MainActivity
 import com.deniscerri.ytdl.R
+import com.deniscerri.ytdl.database.models.ResultItem
 import com.deniscerri.ytdl.database.viewmodel.CookieViewModel
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.database.viewmodel.HistoryViewModel
@@ -185,13 +186,18 @@ class ShareActivity : BaseActivity() {
             val command = intent.getStringExtra("COMMAND") ?: ""
 
             lifecycleScope.launch {
-                var result = withContext(Dispatchers.IO){
-                    resultViewModel.getItemByURL(inputQuery)
+                val result: ResultItem
+                val existingResults = withContext(Dispatchers.IO){
+                    resultViewModel.getAllByURL(inputQuery)
                 }
-                if (result == null) {
+
+                if (existingResults.isEmpty() || existingResults.size > 1) {
                     resultViewModel.deleteAll()
                     result = downloadViewModel.createEmptyResultItem(inputQuery)
+                }else{
+                    result = existingResults.first()
                 }
+
                 val downloadType = DownloadViewModel.Type.valueOf(type ?: downloadViewModel.getDownloadType(url = result.url).toString())
                 if (sharedPreferences.getBoolean("download_card", true) && !background){
                     val bundle = Bundle()

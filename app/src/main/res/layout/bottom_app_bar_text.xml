@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Button xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/Widget.Material3.Button.TextButton"
+    android:id="@+id/bottom_app_bar_text"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:textAllCaps="true"
+    android:minHeight="0dp"
+    android:minWidth="0dp"
+    android:textColor="?android:colorAccent"
+    android:textStyle="bold"
+    android:textSize="15sp"/>

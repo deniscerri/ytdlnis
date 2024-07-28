@@ -23,6 +23,12 @@
         app:showAsAction="always"/>
 
     <item
+        android:id="@+id/container"
+        android:title="@string/container"
+        app:actionLayout="@layout/bottom_app_bar_text"
+        app:showAsAction="always"/>
+
+    <item
         android:id="@+id/incognito"
         android:title="@string/incognito"
         android:icon="@drawable/ic_nightly"

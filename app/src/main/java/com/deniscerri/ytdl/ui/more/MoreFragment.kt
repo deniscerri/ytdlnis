@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceManager
+import androidx.work.WorkManager
 import com.deniscerri.ytdl.MainActivity
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.repository.DownloadRepository
@@ -22,11 +23,14 @@ import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.ui.more.settings.SettingsActivity
 import com.deniscerri.ytdl.ui.more.terminal.TerminalActivity
 import com.deniscerri.ytdl.util.NavbarUtil
+import com.deniscerri.ytdl.util.NotificationUtil
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.yausername.youtubedl_android.YoutubeDL
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import kotlin.system.exitProcess
 
 class MoreFragment : Fragment() {
@@ -125,28 +129,40 @@ class MoreFragment : Fragment() {
                     doNotShowAgain = compoundButton.isChecked
                 }
 
+                val workManager = WorkManager.getInstance(requireContext())
+                val notificationUtil = NotificationUtil(requireContext())
+
                 terminateDialog.setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, _: Int -> dialogInterface.cancel() }
                 terminateDialog.setPositiveButton(getString(R.string.ok)) { diag: DialogInterface?, _: Int ->
-                    runBlocking {
-                        val job : Job = lifecycleScope.launch(Dispatchers.IO) {
-                            val activeDownloads = downloadViewModel.getActiveDownloads().toMutableList()
-                            activeDownloads.map { it.status = DownloadRepository.Status.Queued.toString() }
-                            activeDownloads.forEach {
-                                downloadViewModel.updateDownload(it)
-                            }
+                    lifecycleScope.launch {
+                        val activeDownloads = withContext(Dispatchers.IO){
+                            downloadViewModel.getActiveDownloadsCount()
                         }
-                        runBlocking {
-                            job.join()
-                            if (doNotShowAgain){
-                                mainSharedPreferencesEditor.putBoolean("ask_terminate_app", false)
-                                mainSharedPreferencesEditor.commit()
+                        if (activeDownloads > 0) {
+                            workManager.cancelAllWorkByTag("download")
+                            val activeDownloadsList = withContext(Dispatchers.IO){
+                                downloadViewModel.getActiveDownloads()
                             }
-                            mainActivity.finishAndRemoveTask()
-                            mainActivity.finishAffinity()
-                            exitProcess(0)
-                        }
-                    }
 
+                            activeDownloadsList.forEach {
+                                it.status = DownloadRepository.Status.Queued.toString()
+                                YoutubeDL.getInstance().destroyProcessById(it.id.toString())
+                                notificationUtil.cancelDownloadNotification(it.id.toInt())
+                                withContext(Dispatchers.IO) {
+                                    downloadViewModel.updateDownload(it)
+                                }
+                            }
+                            mainSharedPreferencesEditor.putBoolean("paused_downloads", true).apply()
+                        }
+
+                        if (doNotShowAgain){
+                            mainSharedPreferencesEditor.putBoolean("ask_terminate_app", false).apply()
+                        }
+                        mainSharedPreferencesEditor.commit()
+                        mainActivity.finishAndRemoveTask()
+                        mainActivity.finishAffinity()
+                        exitProcess(0)
+                    }
                 }
                 terminateDialog.show()
             }else{

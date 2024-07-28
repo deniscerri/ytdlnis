@@ -55,7 +55,6 @@ class SelectPlaylistItemsDialog : BottomSheetDialogFragment(), PlaylistAdapter.O
     private lateinit var selectBetween: MenuItem
 
     private lateinit var resultItemIDs: List<Long>
-    private lateinit var itemURLs: List<String>
     private var items = listOf<ResultItem>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -179,9 +178,9 @@ class SelectPlaylistItemsDialog : BottomSheetDialogFragment(), PlaylistAdapter.O
             ok.isEnabled = false
             lifecycleScope.launch(Dispatchers.IO) {
                 val checkedItems = listAdapter.getCheckedItems()
-                val checkedResultItems = items.filter { item -> checkedItems.contains(item.url) }
+                val checkedResultItems = items.filter { item -> checkedItems.contains(item.id) }
                 if (checkedResultItems.size == 1){
-                    val resultItem = resultViewModel.getItemByURL(checkedResultItems[0].url)!!
+                    val resultItem = resultViewModel.getByID(checkedResultItems[0].id)!!
                     withContext(Dispatchers.Main){
                         findNavController().navigate(R.id.action_selectPlaylistItemsDialog_to_downloadBottomSheetDialog, bundleOf(
                             Pair("result", resultItem),
@@ -223,8 +222,8 @@ class SelectPlaylistItemsDialog : BottomSheetDialogFragment(), PlaylistAdapter.O
                     if(selectedItems.size != 2){
                         m.isVisible = false
                     }else{
-                        val item2 = itemURLs.indexOf(selectedItems.last())
-                        val item1 = itemURLs.indexOf(selectedItems.first())
+                        val item2 = resultItemIDs.indexOf(selectedItems.last())
+                        val item1 = resultItemIDs.indexOf(selectedItems.first())
                         if(item1 > item2) listAdapter.checkRange(item2, item1)
                         else listAdapter.checkRange(item1, item2)
                         count.text = "${listAdapter.getCheckedItems().size} ${resources.getString(R.string.selected)}"
@@ -249,7 +248,7 @@ class SelectPlaylistItemsDialog : BottomSheetDialogFragment(), PlaylistAdapter.O
                 toTextInput.isEnabled = !isLoading
 
                 items = it
-                itemURLs = items.map { itm -> itm.url }
+                resultItemIDs = items.map { itm -> itm.id }
             }
         }
 
@@ -284,7 +283,7 @@ class SelectPlaylistItemsDialog : BottomSheetDialogFragment(), PlaylistAdapter.O
     }
 
 
-    override fun onCardSelect(itemURL: String, isChecked: Boolean, checkedItems: List<String>) {
+    override fun onCardSelect(itemID: Long, isChecked: Boolean, checkedItems: List<Long>) {
         if (checkedItems.size == items.size){
             count.text = "(${listAdapter.getCheckedItems().size}) ${resources.getString(R.string.all_items_selected)} "
         }else{
@@ -302,8 +301,8 @@ class SelectPlaylistItemsDialog : BottomSheetDialogFragment(), PlaylistAdapter.O
                 val size = checkedItems.size
                 if(size != 2) false
                 else {
-                    val item1 = itemURLs.indexOf(checkedItems.first())
-                    val item2 = itemURLs.indexOf(checkedItems.last())
+                    val item1 = resultItemIDs.indexOf(checkedItems.first())
+                    val item2 = resultItemIDs.indexOf(checkedItems.last())
 
                     (item1-item2).absoluteValue > 1
                 }

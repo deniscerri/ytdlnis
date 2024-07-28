@@ -167,12 +167,17 @@ class ActiveDownloadsFragment : Fragment(), ActiveDownloadAdapter.OnItemClickLis
         }
 
         lifecycleScope.launch {
-            val activeQueuedDownloadsCount = withContext(Dispatchers.IO) {
-                downloadViewModel.getActiveQueuedDownloadsCount()
+            val activeCount = withContext(Dispatchers.IO) {
+                downloadViewModel.getActiveDownloadsCount()
             }
+
+            val queuedCount = withContext(Dispatchers.IO) {
+                downloadViewModel.getQueuedDownloadsCount()
+            }
+
             val pausedDownloads = preferences.getBoolean("paused_downloads", false)
-            pause.isVisible = activeQueuedDownloadsCount > 0 && !pausedDownloads
-            resume.isVisible = activeQueuedDownloadsCount > 0 && pausedDownloads
+            pause.isVisible = (queuedCount > 0 || activeCount > 0) && !pausedDownloads
+            resume.isVisible = (queuedCount > 0 || activeCount > 0) && pausedDownloads
         }
 
         lifecycleScope.launch {

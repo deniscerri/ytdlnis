@@ -45,6 +45,7 @@ import com.deniscerri.ytdl.ui.adapter.HomeAdapter
 import com.deniscerri.ytdl.ui.adapter.SearchSuggestionsAdapter
 import com.deniscerri.ytdl.util.Extensions.enableFastScroll
 import com.deniscerri.ytdl.util.InfoUtil
+import com.deniscerri.ytdl.util.NotificationUtil
 import com.deniscerri.ytdl.util.ThemeUtil
 import com.deniscerri.ytdl.util.UiUtil
 import com.facebook.shimmer.ShimmerFrameLayout
@@ -84,6 +85,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
     private var clipboardFab: ExtendedFloatingActionButton? = null
     private var homeFabs: LinearLayout? = null
     private var infoUtil: InfoUtil? = null
+    private var notificationUtil: NotificationUtil? = null
     private var downloadQueue: ArrayList<ResultItem>? = null
 
     private lateinit var resultViewModel : ResultViewModel
@@ -121,6 +123,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
         mainActivity = activity as MainActivity?
         quickLaunchSheet = false
         infoUtil = InfoUtil(requireContext())
+        notificationUtil = NotificationUtil(requireContext())
         selectedObjects = arrayListOf()
         return fragmentView
     }
@@ -306,6 +309,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
         }
 
         if (arguments?.getBoolean("showDownloadsWithUpdatedFormats") == true){
+            notificationUtil?.cancelDownloadNotification(NotificationUtil.FORMAT_UPDATING_FINISHED_NOTIFICATION_ID)
             arguments?.remove("showDownloadsWithUpdatedFormats")
             CoroutineScope(Dispatchers.IO).launch {
                 val ids = arguments?.getLongArray("downloadIds") ?: return@launch

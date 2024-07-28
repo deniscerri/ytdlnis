@@ -13,6 +13,7 @@ data class DownloadItemConfigureMultiple(
     var title: String,
     var thumb: String,
     var duration: String,
+    var container: String,
     var format: Format,
     var allFormats: MutableList<Format>,
     var audioPreferences: AudioPreferences,

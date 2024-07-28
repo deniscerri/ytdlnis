@@ -175,6 +175,14 @@ class ResultViewModel(private val application: Application) : AndroidViewModel(a
         return repository.getItemByURL(url)
     }
 
+    fun getAllByURL(url: String) : List<ResultItem> {
+        return repository.getAllByURL(url)
+    }
+
+    fun getByID(id: Long) : ResultItem? {
+        return repository.getItemByID(id)
+    }
+
     fun addSearchQueryToHistory(query: String) = viewModelScope.launch(Dispatchers.IO) {
         val allQueries = searchHistoryRepository.getAll()
         if (allQueries.none { it.query == query }){

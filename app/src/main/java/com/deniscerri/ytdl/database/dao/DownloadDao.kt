@@ -45,6 +45,11 @@ interface DownloadDao {
     """)
     fun getProcessingDownloadTypes() : List<String>
 
+    @Query("""
+        SELECT DISTINCT container from downloads where status = 'Processing'
+    """)
+    fun getProcessingDownloadContainers() : List<String>
+
 
     @Query("UPDATE downloads set status = 'Processing' WHERE id in (:ids)")
     suspend fun updateItemsToProcessing(ids: List<Long>)
@@ -59,6 +64,9 @@ interface DownloadDao {
 
     @Query("UPDATE downloads set downloadPath=:path WHERE status ='Processing'")
     suspend fun updateProcessingDownloadPath(path: String)
+
+    @Query("UPDATE downloads set container=:cont WHERE status ='Processing'")
+    suspend fun updateProcessingContainer(cont: String)
 
     @Query("SELECT * FROM downloads WHERE status='Active'")
     fun getActiveDownloadsList() : List<DownloadItem>

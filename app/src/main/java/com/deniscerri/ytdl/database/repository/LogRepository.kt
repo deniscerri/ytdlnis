@@ -2,7 +2,6 @@ package com.deniscerri.ytdl.database.repository
 
 import com.deniscerri.ytdl.database.dao.LogDao
 import com.deniscerri.ytdl.database.models.LogItem
-import com.deniscerri.ytdl.util.Extensions.appendLineToLog
 import kotlinx.coroutines.flow.Flow
 
 class LogRepository(private val logDao: LogDao) {
@@ -38,9 +37,9 @@ class LogRepository(private val logDao: LogDao) {
         return logDao.getByID(id)
     }
 
-    suspend fun update(line: String, id: Long){
+    suspend fun update(line: String, id: Long, resetLog: Boolean = false){
         kotlin.runCatching {
-            logDao.updateLog(line, id)
+            logDao.updateLog(line, id, resetLog)
         }
     }
 

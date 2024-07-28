@@ -20,10 +20,12 @@ import androidx.core.view.get
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceManager
 import com.deniscerri.ytdl.MainActivity
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.viewmodel.LogViewModel
+import com.deniscerri.ytdl.util.Extensions.enableFastScroll
 import com.deniscerri.ytdl.util.Extensions.enableTextHighlight
 import com.deniscerri.ytdl.util.Extensions.setCustomTextSize
 import com.google.android.material.appbar.MaterialToolbar
@@ -104,8 +106,14 @@ class DownloadLogFragment : Fragment() {
             }
         }
 
-        content.isFocusable = true
-        content.enableTextHighlight()
+        lifecycleScope.launch(Dispatchers.IO){
+            content.isFocusable = true
+            content.enableTextHighlight()
+        }
+
+        contentScrollView.enableFastScroll()
+
+
         val slider = view.findViewById<Slider>(R.id.textsize_seekbar)
         bottomAppBar?.setOnMenuItemClickListener { m: MenuItem ->
             when(m.itemId){

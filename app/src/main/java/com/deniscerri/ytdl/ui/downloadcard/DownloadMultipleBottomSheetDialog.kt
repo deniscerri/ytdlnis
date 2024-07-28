@@ -16,12 +16,12 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
+import android.widget.PopupMenu
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.os.bundleOf
 import androidx.core.view.children
-import androidx.core.view.get
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -90,6 +90,9 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
     private lateinit var currentDownloadIDs: List<Long>
     private var processingItemsCount : Int = 0
 
+    private lateinit var containerBtn : MenuItem
+    private lateinit var containerTextView: TextView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         downloadViewModel = ViewModelProvider(requireActivity())[DownloadViewModel::class.java]
@@ -145,10 +148,16 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
             itemTouchHelper.attachToRecyclerView(recyclerView)
         }
 
-        scheduleBtn = view.findViewById<MaterialButton>(R.id.bottomsheet_schedule_button)
-        downloadBtn = view.findViewById<MaterialButton>(R.id.bottomsheet_download_button)
+        scheduleBtn = view.findViewById(R.id.bottomsheet_schedule_button)
+        downloadBtn = view.findViewById(R.id.bottomsheet_download_button)
         bottomAppBar = view.findViewById(R.id.bottomAppBar)
+
         val preferredDownloadType = bottomAppBar.menu.findItem(R.id.preferred_download_type)
+        val formatBtn = bottomAppBar.menu.findItem(R.id.format)
+        val moreBtn = bottomAppBar.menu.findItem(R.id.more)
+        containerBtn = bottomAppBar.menu.findItem(R.id.container)
+        containerTextView = containerBtn.actionView as TextView
+        val incognitoBtn = bottomAppBar.menu.findItem(R.id.incognito)
 
         filesize = view.findViewById(R.id.filesize)
         count = view.findViewById(R.id.count)
@@ -167,20 +176,28 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
         lifecycleScope.launch {
             downloadViewModel.processingDownloads.collectLatest { items ->
                 processingItemsCount = items.size
-                count.text = "${processingItemsCount} ${getString(R.string.selected)}"
+                count.text = "$processingItemsCount ${getString(R.string.selected)}"
                 listAdapter.submitList(items)
 
                 updateFileSize(items)
 
                 if (items.isNotEmpty()){
                     if (items.all { it2 -> it2.type == items[0].type }) {
-                        bottomAppBar.menu[1].icon?.alpha = 255
+                        formatBtn.icon?.alpha = 255
                         if (items[0].type != DownloadViewModel.Type.command) {
-                            bottomAppBar.menu[4].icon?.alpha = 255
+                            moreBtn.icon?.alpha = 255
                         }
+
+                        containerBtn.isVisible = items.first().type != DownloadViewModel.Type.command
                     } else {
-                        bottomAppBar.menu[1].icon?.alpha = 30
-                        bottomAppBar.menu[4].icon?.alpha = 30
+                        formatBtn.icon?.alpha = 30
+                        moreBtn.icon?.alpha = 30
+                    }
+
+                    if (items.all { it.container == items[0].container }) {
+                        setContainerText(items[0].container)
+                    }else{
+                        setContainerText("")
                     }
 
                     val type = items.first().type
@@ -191,10 +208,10 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                         }
                         DownloadViewModel.Type.video -> {
                             preferredDownloadType.setIcon(R.drawable.baseline_video_file_24)
-
                         }
                         DownloadViewModel.Type.command -> {
                             preferredDownloadType.setIcon(R.drawable.baseline_insert_drive_file_24)
+                            setContainerText("")
                         }
 
                         else -> {}
@@ -303,7 +320,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                 downloadViewModel.areAllProcessingIncognito()
             }
 
-            bottomAppBar.menu.children.first { it.itemId == R.id.incognito }.icon!!.apply {
+            incognitoBtn.icon!!.apply {
                 alpha = if (allIncognito){
                     255
                 }else{
@@ -336,7 +353,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                 R.id.incognito -> {
                     lifecycleScope.launch {
                         if (m.icon!!.alpha == 255) {
-                            bottomAppBar.menu[3].isEnabled = false
+                            incognitoBtn.isEnabled = false
                             withContext(Dispatchers.IO) {
                                 downloadViewModel.updateProcessingIncognito(false)
                                 withContext(Dispatchers.Main){
@@ -344,18 +361,18 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                                     m.isEnabled = true
                                 }
                             }
-                            bottomAppBar.menu[3].icon?.alpha = 30
-                            bottomAppBar.menu[3].isEnabled = true
+                            incognitoBtn.icon?.alpha = 30
+                            incognitoBtn.isEnabled = true
                             Toast.makeText(requireContext(), "${getString(R.string.incognito)}: ${getString(R.string.disabled)}", Toast.LENGTH_SHORT).show()
                         }else{
-                            bottomAppBar.menu[3].isEnabled = false
+                            incognitoBtn.isEnabled = false
                             withContext(Dispatchers.IO) {
                                 downloadViewModel.updateProcessingIncognito(true)
                                 withContext(Dispatchers.Main){
                                 }
                             }
-                            bottomAppBar.menu[3].icon?.alpha = 255
-                            bottomAppBar.menu[3].isEnabled = true
+                            incognitoBtn.icon?.alpha = 255
+                            incognitoBtn.isEnabled = true
                             Toast.makeText(requireContext(), "${getString(R.string.incognito)}: ${getString(R.string.ok)}", Toast.LENGTH_SHORT).show()
                         }
                     }
@@ -393,10 +410,20 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                                 downloadViewModel.updateProcessingType(DownloadViewModel.Type.audio)
                                 withContext(Dispatchers.Main){
                                     preferredDownloadType.setIcon(R.drawable.baseline_audio_file_24)
-                                    bottomAppBar.menu[1].icon?.alpha = 255
-                                    bottomAppBar.menu[4].icon?.alpha = 255
+                                    formatBtn.icon?.alpha = 255
+                                    moreBtn.icon?.alpha = 255
                                     bottomSheet.cancel()
                                 }
+
+                                val res = downloadViewModel.checkIfAllProcessingItemsHaveSameContainer()
+                                withContext(Dispatchers.Main) {
+                                    if (!res.first) {
+                                        setContainerText("")
+                                    }else{
+                                        setContainerText(res.second)
+                                    }
+                                }
+
                             }
                         }
 
@@ -405,9 +432,18 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                                 downloadViewModel.updateProcessingType(DownloadViewModel.Type.video)
                                 withContext(Dispatchers.Main){
                                     preferredDownloadType.setIcon(R.drawable.baseline_video_file_24)
-                                    bottomAppBar.menu[1].icon?.alpha = 255
-                                    bottomAppBar.menu[4].icon?.alpha = 255
+                                    formatBtn.icon?.alpha = 255
+                                    moreBtn.icon?.alpha = 255
                                     bottomSheet.cancel()
+                                }
+
+                                val res = downloadViewModel.checkIfAllProcessingItemsHaveSameContainer()
+                                withContext(Dispatchers.Main) {
+                                    if (!res.first) {
+                                        setContainerText("")
+                                    }else{
+                                        setContainerText(res.second)
+                                    }
                                 }
                             }
                         }
@@ -417,10 +453,12 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                                 downloadViewModel.updateProcessingType(DownloadViewModel.Type.command)
                                 withContext(Dispatchers.Main){
                                     preferredDownloadType.setIcon(R.drawable.baseline_insert_drive_file_24)
-                                    bottomAppBar.menu[1].icon?.alpha = 255
-                                    bottomAppBar.menu[4].icon?.alpha = 30
+                                    formatBtn.icon?.alpha = 255
+                                    moreBtn.icon?.alpha = 30
                                     bottomSheet.cancel()
+                                    containerBtn.isVisible = false
                                 }
+
                             }
                         }
 
@@ -674,6 +712,41 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                 }
             }
             true
+        }
+
+        containerTextView.setOnClickListener {
+            lifecycleScope.launch {
+                val res = withContext(Dispatchers.IO){
+                    downloadViewModel.checkIfAllProcessingItemsHaveSameType()
+                }
+                if (!res.first){
+                    Toast.makeText(requireContext(), getString(R.string.format_filtering_hint), Toast.LENGTH_SHORT).show()
+                }else{
+                    val popup = PopupMenu(activity, containerTextView)
+                    when(res.second) {
+                        DownloadViewModel.Type.audio -> resources.getStringArray(R.array.audio_containers)
+                        //video
+                        else -> resources.getStringArray(R.array.video_containers)
+                    }.forEach {
+                        popup.menu.add(it)
+                    }
+
+                    popup.setOnMenuItemClickListener { mm ->
+                        val container = mm.title
+                        lifecycleScope.launch {
+                            withContext(Dispatchers.IO){
+                                downloadViewModel.updateProcessingContainer(container.toString())
+                            }
+                        }
+                        setContainerText(container.toString())
+                        true
+                    }
+
+                    popup.show()
+                }
+
+
+            }
         }
 
     }
@@ -962,6 +1035,22 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
         }else{
             dismiss()
         }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun setContainerText(cont: String?) {
+        if (cont == null) {
+            containerBtn.isVisible = false
+            return
+        }
+
+        if (cont == getString(R.string.defaultValue) || cont.isEmpty()) {
+            containerTextView.text = ".ext"
+            return
+        }else{
+            containerTextView.text = cont
+        }
+        containerBtn.isVisible = true
     }
 
 }

@@ -112,6 +112,10 @@ class ConfigureMultipleDownloadsAdapter(onItemClickListener: OnItemClickListener
             codec.text = codecText
         }
 
+        val container = card.findViewById<TextView>(R.id.container)
+        container.isVisible = item.container.isNotBlank()
+        container.text = item.container.uppercase()
+
         val fileSize = card.findViewById<TextView>(R.id.file_size)
         val fileSizeReadable = if(item.type != DownloadViewModel.Type.video){
             FileUtil.convertFileSize(item.format.filesize)
@@ -185,6 +189,7 @@ class ConfigureMultipleDownloadsAdapter(onItemClickListener: OnItemClickListener
             override fun areContentsTheSame(oldItem: DownloadItemConfigureMultiple, newItem: DownloadItemConfigureMultiple): Boolean {
                 return oldItem.title == newItem.title &&
                     oldItem.type == newItem.type &&
+                    oldItem.container == newItem.container &&
                     oldItem.videoPreferences == newItem.videoPreferences &&
                     oldItem.format == newItem.format &&
                     oldItem.incognito == newItem.incognito
