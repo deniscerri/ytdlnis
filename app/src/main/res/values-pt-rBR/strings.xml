@@ -409,7 +409,7 @@
     <string name="use_alarm_manager">Usar \'AlarmManager\' em vez de \'WorkManager\' para agendamento</string>
     <string name="use_alarm_manager_summary">Habilite isto se o \"WorkManager\" for restrito pelo fornecedor do seu dispositivo ou se as tarefas agendadas não forem muito precisas</string>
     <string name="use_item_url_not_playlist">Usar URL do item em vez do URL da playlist</string>
-    <string name="use_item_url_not_playlist_summary">Útil para playlists offline do Libretube que não são reconhecidas pelo yt-dlp. Os metadados da playlist não serão adicionados com esta opção ativada</string>
+    <string name="use_item_url_not_playlist_summary">Útil para playlists offline do LibreTube que não são reconhecidas pelo yt-dlp. Os metadados da playlist não serão adicionados com esta opção ativada</string>
     <string name="recode_video_summary">Recodifica o arquivo de vídeo para o formato especificado</string>
     <string name="recode_video">Recodificar vídeo</string>
     <string name="daily">Diariamente</string>
