@@ -411,4 +411,8 @@
     <string name="reset">初期化</string>
     <string name="recode_video_summary">動画ファイルを指定の動画形式で再エンコード</string>
     <string name="recode_video">動画を再エンコード</string>
+    <string name="cleanup_leftover_downloads">残っているダウンロード削除 (キャンセル済みやエラーの)</string>
+    <string name="daily">毎日</string>
+    <string name="weekly">毎週</string>
+    <string name="monthly">毎月</string>
 </resources>
