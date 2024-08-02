@@ -412,4 +412,8 @@
     <string name="use_item_url_not_playlist">Použiť URL položky namiesto URL playlistu</string>
     <string name="recode_video">Prekódovať video</string>
     <string name="recode_video_summary">Prekóduje videosúbor do určeného formátu videa</string>
+    <string name="daily">Denne</string>
+    <string name="weekly">Týždenne</string>
+    <string name="monthly">Mesačne</string>
+    <string name="cleanup_leftover_downloads">Vyčistiť zvyšky sťahovania (zrušené, chybné)</string>
 </resources>
