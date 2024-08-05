@@ -412,4 +412,8 @@
     <string name="use_item_url_not_playlist_summary">Полезно для автономных плейлистов Libretube, которые не распознаются yt-dlp. Метаданные плейлиста не будут встроены, если эта функция включена</string>
     <string name="recode_video">Перекодировать видео</string>
     <string name="recode_video_summary">Перекодирует видеофайл в указанный видеоформат</string>
+    <string name="daily">Ежедневно</string>
+    <string name="weekly">Еженедельно</string>
+    <string name="monthly">Ежемесячно</string>
+    <string name="cleanup_leftover_downloads">Очистка оставшихся загрузок (отмененных, с ошибками)</string>
 </resources>

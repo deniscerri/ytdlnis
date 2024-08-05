@@ -412,4 +412,8 @@
     <string name="use_item_url_not_playlist">प्लेलिस्ट URL के बजाय आइटम URL का उपयोग करें</string>
     <string name="recode_video">वीडियो पुनःकोड करें</string>
     <string name="recode_video_summary">वीडियो फ़ाइल को निर्दिष्ट वीडियो प्रारूप में पुनःकोडित करता है</string>
+    <string name="daily">दैनिक</string>
+    <string name="weekly">साप्ताहिक</string>
+    <string name="monthly">मासिक</string>
+    <string name="cleanup_leftover_downloads">बचे हुए डाउनलोड को साफ़ करें (रद्द, त्रुटिपूर्ण)</string>
 </resources>

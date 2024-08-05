@@ -412,4 +412,8 @@
     <string name="use_item_url_not_playlist_summary">Útil para listas de reproducción sin conexión de Libretube que no son reconocidas por yt-dlp. Los metadatos de la lista de reproducción no se incrustarán con esta opción activada</string>
     <string name="recode_video">Recodificar video</string>
     <string name="recode_video_summary">Recodifica el archivo de vídeo al formato de vídeo especificado</string>
+    <string name="daily">Diariamente</string>
+    <string name="weekly">Semanalmente</string>
+    <string name="monthly">Mensual</string>
+    <string name="cleanup_leftover_downloads">Limpiar descargas restantes (canceladas, con errores)</string>
 </resources>

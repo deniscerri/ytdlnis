@@ -412,4 +412,8 @@
     <string name="use_item_url_not_playlist_summary">مفيد لقوائم التشغيل Libretube غير المتصلة بالإنترنت والتي لم يتعرف عليها yt-dlp. لن يتم تضمين البيانات الوصفية لقائمة التشغيل مع تمكين هذا</string>
     <string name="recode_video">إعادة ترميز الفيديو</string>
     <string name="recode_video_summary">يعيد ترميز ملف الفيديو إلى تنسيق الفيديو المحدد</string>
+    <string name="daily">يوميًا</string>
+    <string name="weekly">أسبوعيًا</string>
+    <string name="monthly">شهريًا</string>
+    <string name="cleanup_leftover_downloads">نظِف التنزيلات المتبقية (الملغاة، التي بها خطأ)</string>
 </resources>

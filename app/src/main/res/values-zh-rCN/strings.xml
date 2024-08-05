@@ -412,4 +412,8 @@
     <string name="use_item_url_not_playlist_summary">对于未被 yt-dlp 识别的 Libretube 离线播放列表有用。启用此选项后不会内嵌播放列表元数据</string>
     <string name="recode_video_summary">重编码视频文件到指定的视频格式</string>
     <string name="recode_video">重新编码视频</string>
+    <string name="daily">每天</string>
+    <string name="weekly">每周</string>
+    <string name="monthly">每月</string>
+    <string name="cleanup_leftover_downloads">清理剩余下载（被取消，出错）</string>
 </resources>
