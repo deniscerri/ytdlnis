@@ -412,4 +412,8 @@
     <string name="use_item_url_not_playlist">השתמש בקישור של פריט במקום בקישור של רשימת ההשמעה</string>
     <string name="recode_video_summary">מקודד מחדש את קובץ הוידאו לפורמט הוידאו שצוין</string>
     <string name="recode_video">קודד מחדש את הוידאו</string>
+    <string name="daily">יום יומי</string>
+    <string name="weekly">שבועי</string>
+    <string name="monthly">חודשי</string>
+    <string name="cleanup_leftover_downloads">ניקוי שאריות הורדות (בוטלו, שגיאה)</string>
 </resources>
