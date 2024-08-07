@@ -412,4 +412,8 @@
     <string name="use_item_url_not_playlist_summary">Корисно за Libretube офлајн плејлисте које yt-dlp не препознаје. Метаподаци плејлисте неће бити уграђени, ако је ово омогућено</string>
     <string name="recode_video">Рекодирај видео снимак</string>
     <string name="recode_video_summary">Рекодира фајл видео снимка у наведени формат видео снимка</string>
+    <string name="daily">Дневно</string>
+    <string name="weekly">Недељно</string>
+    <string name="monthly">Месечно</string>
+    <string name="cleanup_leftover_downloads">Очистите преостала преузимања (отказана, с грешком)</string>
 </resources>

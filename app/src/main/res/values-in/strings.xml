@@ -414,4 +414,6 @@
     <string name="daily">Tiap hari</string>
     <string name="use_item_url_not_playlist">Gunakan URL Butir, bukannya URL Daftar Putar</string>
     <string name="use_item_url_not_playlist_summary">Berguna untuk daftar putar luring (offline) LibreTube yang tidak dikenali oleh yt-dlp. Metadata daftar putar tidak akan ditanamkan kalau preferensi ini diaktifkan</string>
+    <string name="recode_video_summary">Mengkodekan ulang file video ke format video yang ditentukan</string>
+    <string name="recode_video">Rekodekan Video</string>
 </resources>
