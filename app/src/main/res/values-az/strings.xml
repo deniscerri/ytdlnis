@@ -320,7 +320,7 @@
     <string name="errored_downloads">Problemli Yükləmələr</string>
     <string name="preferred_audio_language">Üstünlük Verilən Səs Dili</string>
     <string name="errored_download_notification_channel_description">Nasaz yükləmələr üçün bildiriş</string>
-    <string name="buffer_size_summary">Yükləmə buferi ölçüsü, məsələn, 1024 və ya 16K (standart olaraq 1024-dür)</string>
+    <string name="buffer_size_summary">Yükləmə buferi həcmi, məsələn, 1024 və ya 16K (standart olaraq 1024-dür)</string>
     <string name="ytdl_source">yt-dlp Mənbə</string>
     <string name="buffer_size">Bufer həcmi</string>
     <string name="update_ytdl_stable">yt-dlp-nin sabit versiyası</string>
