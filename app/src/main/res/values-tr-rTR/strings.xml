@@ -411,4 +411,12 @@
 \nDosyadaki kayıtlı verileri silmek ve yalnızca kullanmak için \'Sıfırla\'ya basın.</string>
     <string name="use_alarm_manager">Zamanlama için WorkManager yerine AlarmManager kullanın</string>
     <string name="use_alarm_manager_summary">WorkManager cihaz satıcınız tarafından kısıtlanmışsa veya zamanlanmış işler çok hassas değilse bunu etkinleştirin</string>
+    <string name="daily">Günlük</string>
+    <string name="weekly">Haftalık</string>
+    <string name="monthly">Aylık</string>
+    <string name="cleanup_leftover_downloads">Artık indirmeleri temizleme (iptal edildi, hatalı)</string>
+    <string name="use_item_url_not_playlist">Çalma Listesi URL\'si yerine Öge URL\'sini kullanın</string>
+    <string name="use_item_url_not_playlist_summary">yt-dlp tarafından tanınmayan Libretube çevrimdışı çalma listeleri için kullanışlıdır. Bu etkinleştirildiğinde çalma listesi meta verileri gömülmeyecektir</string>
+    <string name="recode_video">Videoyu tekrar kodla</string>
+    <string name="recode_video_summary">Video dosyasını belirtilen video formatına yeniden kodlar</string>
 </resources>

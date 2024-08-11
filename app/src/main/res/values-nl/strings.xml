@@ -412,4 +412,8 @@
     <string name="use_item_url_not_playlist_summary">Handig voor offline afspeel­lĳsten van LibreTube die niet worden herkend door yt-dlp. Meta­gegevens van de afspeel­lĳst worden niet ingesloten als dit is ingeschakeld</string>
     <string name="recode_video">Video hercoderen</string>
     <string name="recode_video_summary">Hercodeert het video­bestand naar het opgegeven video­formaat</string>
+    <string name="cleanup_leftover_downloads">Overgebleven downloads opschonen (geannuleerd, foutief)</string>
+    <string name="daily">Dagelĳks</string>
+    <string name="weekly">Wekelĳks</string>
+    <string name="monthly">Maandelĳks</string>
 </resources>

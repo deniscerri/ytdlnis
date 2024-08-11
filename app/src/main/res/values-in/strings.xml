@@ -7,7 +7,7 @@
     <string name="confirm_delete_history">Konfirmasikan</string>
     <string name="search_history_hint">Telusuri dari Riwayat</string>
     <string name="no_results">Tidak Ada Hasil</string>
-    <string name="remove_all">Bersihkan Semua</string>
+    <string name="remove_all">Tiadakan Semua</string>
     <string name="download_all">Unduh Semua</string>
     <string name="settings">Setelan</string>
     <string name="search">Telusuri</string>
@@ -25,7 +25,7 @@
     <string name="ytld_update_success">Versi yang baru terpasang</string>
     <string name="ytdl_already_updating">Memasang versi yang baru</string>
     <string name="ytdl_updating_started">Mengunduh versi yang baru</string>
-    <string name="Remove">Bersihkan</string>
+    <string name="Remove">Tiadakan</string>
     <string name="ok">Oke</string>
     <string name="cancel">Batalkan</string>
     <string name="more">Selengkapnya</string>
@@ -87,7 +87,7 @@
     <string name="delete_file_too">Hapus berkas dari perangkat</string>
     <string name="delete_files_too">Hapus berkas-berkas dari perangkat</string>
     <string name="run_command">Jalankan Perintah</string>
-    <string name="remove_deleted">Bersihkan yang Dihapus</string>
+    <string name="remove_deleted">Tiadakan yang Dihapus</string>
     <string name="sponsorblock_nonmusic">Bagian Non-Musik dan Di Luar Topik</string>
     <string name="sponsorblock_sponsors">Sponsor</string>
     <string name="sponsorblock_intro">Intro</string>
@@ -95,7 +95,7 @@
     <string name="sponsorblock_promos">Promo Diri Sendiri</string>
     <string name="api_key_summary">Rekomendasi Video dari API YouTube</string>
     <string name="update_app_summary">Beri tahu versi aplikasi yang baru saat aplikasi dibuka. Data tersebut diambil dari Repositori Github resmi</string>
-    <string name="remove_duplicates">Bersihkan Duplikat</string>
+    <string name="remove_duplicates">Tiadakan Duplikat</string>
     <string name="sort_by">Penyortiran</string>
     <string name="incognito_summary">Unduh tanpa menambahkannya ke riwayat</string>
     <string name="configure_download">Sesuaikan Pengunduhan</string>
@@ -406,4 +406,14 @@
     <string name="queue">Antrean</string>
     <string name="restore_info">Tekan \'Pulihkan\' untuk menggabungkan data yang tersimpan dengan data Anda yang saat ini.
 \nTekan \'Setel Ulang\' untuk melenyapkan dan hanya mempergunakan data yang tersimpan di dalam berkas.</string>
+    <string name="weekly">Tiap pekan</string>
+    <string name="monthly">Tiap bulan</string>
+    <string name="cleanup_leftover_downloads">Bersihkan sisa unduhan (yang dibatalkan, galat)</string>
+    <string name="use_alarm_manager">Gunakan AlarmManager, bukannya WorkManager untuk Penjadwalan</string>
+    <string name="use_alarm_manager_summary">Aktifkan ini jika WorkManager dibatasi oleh vendor perangkatmu atau penjadwalan tugas tidak terlalu tepat waktu</string>
+    <string name="daily">Tiap hari</string>
+    <string name="use_item_url_not_playlist">Gunakan URL Butir, bukannya URL Daftar Putar</string>
+    <string name="use_item_url_not_playlist_summary">Berguna untuk daftar putar luring (offline) LibreTube yang tidak dikenali oleh yt-dlp. Metadata daftar putar tidak akan ditanamkan kalau preferensi ini diaktifkan</string>
+    <string name="recode_video_summary">Mengkodekan ulang file video ke format video yang ditentukan</string>
+    <string name="recode_video">Rekodekan Video</string>
 </resources>
