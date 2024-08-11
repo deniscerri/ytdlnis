@@ -400,4 +400,9 @@ object FileUtil {
         }
     }
 
+    fun hasAllFilesAccess() : Boolean {
+        if (Build.VERSION.SDK_INT < 30) return true
+        return Environment.isExternalStorageManager()
+    }
+
 }

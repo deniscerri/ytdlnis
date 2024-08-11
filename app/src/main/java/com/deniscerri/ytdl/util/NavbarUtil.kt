@@ -35,6 +35,7 @@ object NavbarUtil {
         val pref = settings.getString("start_destination", "")!!
         val items = getDefaultNavBarItems(context)
         val navBarHasPref = getNavBarPrefs().contains(items.indexOfFirst { it.itemId == navItems[pref] }.toString())
+        println("START FRAGMENT: $pref")
         return if (pref == "") {
             R.id.homeFragment
         }else {

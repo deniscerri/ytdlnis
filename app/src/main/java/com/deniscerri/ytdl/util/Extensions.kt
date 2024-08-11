@@ -261,20 +261,27 @@ object Extensions {
         }
     }
 
-//    fun String.appendLineToLog(line: String): String {
-//        val lines = this.split("\n")
-//        if (!lines.takeLast(3).contains(line)){
-//            //clean dublicate progress + add newline
-//            var newLine = line
-//            if (newLine.contains("[download")) {
-//                newLine = "[download]" + line.split("[download]").last()
-//            }
-//
-//            return lines.dropLastWhile { it.contains("[download") }.joinToString("\n") + "\n${newLine}"
-//        }
-//
-//        return this
-//    }
+    fun String.appendLineToLog(line: String = ""): String {
+        val lines = this.lines().toMutableList()
+        val finishingProgressLinesRegex = Pattern.compile("\\[download]\\h+(100%|[a-zA-Z])")
+
+        if (line.isNotBlank()) {
+            var newLine = ""
+            val newLines = line.lines()
+            if (!lines.takeLast(3).any { newLines.contains(it) }) {
+                lines.addAll(newLines.dropLast(1))
+                newLine = "\n${newLines.last()}"
+            }
+
+            return lines.dropLastWhile {
+                it.contains("[download") && !finishingProgressLinesRegex.matcher(it).find()
+            }.joinToString("\n") + newLine
+        }
+
+        return lines.filterNot {
+            it.contains("[download") && !finishingProgressLinesRegex.matcher(it).find()
+        }.joinToString("\n")
+    }
 
     fun ImageView.loadThumbnail(hideThumb: Boolean, imageURL: String){
         if(!hideThumb){

@@ -53,6 +53,7 @@ import com.deniscerri.ytdl.util.InfoUtil
 import com.deniscerri.ytdl.util.NotificationUtil
 import com.deniscerri.ytdl.util.UiUtil
 import com.deniscerri.ytdl.util.VideoPlayerUtil
+import com.deniscerri.ytdl.work.DownloadWorker
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -72,6 +73,9 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -86,8 +90,7 @@ class ResultCardDetailsDialog : BottomSheetDialogFragment(), GenericDownloadAdap
 
     private lateinit var activeAdapter: ActiveDownloadMinifiedAdapter
     private lateinit var queuedAdapter: GenericDownloadAdapter
-    private var activeCount: Int = 0
-    
+
     private lateinit var downloadManager: DownloadManager
 
     private lateinit var sharedPreferences: SharedPreferences
@@ -97,6 +100,7 @@ class ResultCardDetailsDialog : BottomSheetDialogFragment(), GenericDownloadAdap
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         infoUtil = InfoUtil(requireActivity())
+        notificationUtil = NotificationUtil(requireActivity())
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
         resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]
         downloadManager = requireContext().getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
@@ -234,12 +238,6 @@ class ResultCardDetailsDialog : BottomSheetDialogFragment(), GenericDownloadAdap
                         queuedRecycler.visibility = View.VISIBLE
                     }
                 }
-            }
-        }
-
-        lifecycleScope.launch {
-            downloadViewModel.activeDownloadsCount.collectLatest {
-                activeCount = it
             }
         }
 
@@ -482,21 +480,42 @@ class ResultCardDetailsDialog : BottomSheetDialogFragment(), GenericDownloadAdap
 
     override fun onCancelClick(itemID: Long) {
         lifecycleScope.launch {
-            if (activeCount == 1){
-                val queue = withContext(Dispatchers.IO){
-                    val list = downloadViewModel.getQueued().toMutableList()
-                    list.map { it.status = DownloadRepository.Status.Queued.toString() }
-                    list
-                }
+            YoutubeDL.getInstance().destroyProcessById(itemID.toString())
+            notificationUtil.cancelDownloadNotification(itemID.toInt())
 
-                runBlocking {
-                    downloadViewModel.queueDownloads(queue)
+            val item = withContext(Dispatchers.IO){
+                downloadViewModel.getItemByID(itemID)
+            }
+            item.status = DownloadRepository.Status.Cancelled.toString()
+            withContext(Dispatchers.IO){
+                downloadViewModel.updateDownload(item)
+            }
+
+            val activeCount = withContext(Dispatchers.IO){
+                downloadViewModel.getActiveDownloadsCount()
+            }
+
+            if (activeCount == 0){
+                val queuedCount = withContext(Dispatchers.IO){
+                    downloadViewModel.getQueuedDownloadsCount()
+                }
+                if (queuedCount == 0) {
+                    sharedPreferences.edit().putBoolean("paused_downloads", false).apply()
                 }
             }
 
-        }
+            if (activeCount == 1){
+                val queue = withContext(Dispatchers.IO){
+                    downloadViewModel.getQueued()
+                }
 
-        cancelActiveDownload(itemID)
+                if (!sharedPreferences.getBoolean("paused_downloads", false)){
+                    runBlocking {
+                        downloadViewModel.queueDownloads(queue)
+                    }
+                }
+            }
+        }
     }
     override fun onCardClick() {
         this.dismiss()
@@ -505,22 +524,29 @@ class ResultCardDetailsDialog : BottomSheetDialogFragment(), GenericDownloadAdap
         )
     }
 
-    private fun cancelActiveDownload(itemID: Long){
-        lifecycleScope.launch {
-            val id = itemID.toInt()
-            YoutubeDL.getInstance().destroyProcessById(id.toString())
-            notificationUtil.cancelDownloadNotification(id)
+    //dont remove
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onDownloadProgressEvent(event: DownloadWorker.WorkerProgress) {
+        val progressBar = requireView().findViewWithTag<LinearProgressIndicator>("${event.downloadItemID}##progress")
+        val outputText = requireView().findViewWithTag<TextView>("${event.downloadItemID}##output")
 
-            withContext(Dispatchers.IO){
-                downloadViewModel.getItemByID(itemID)
-            }.let {
-                it.status = DownloadRepository.Status.Cancelled.toString()
-                lifecycleScope.launch(Dispatchers.IO){
-                    downloadViewModel.updateDownload(it)
-                }
-            }
+        requireActivity().runOnUiThread {
+            try {
+                progressBar?.setProgressCompat(event.progress, true)
+                outputText?.text = event.output
+            }catch (ignored: Exception) {}
         }
+    }
 
+
+    override fun onStart() {
+        super.onStart()
+        EventBus.getDefault().register(this)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        EventBus.getDefault().unregister(this)
     }
 
 }

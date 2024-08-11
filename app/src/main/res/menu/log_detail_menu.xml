@@ -12,7 +12,6 @@
     <item
         android:id="@+id/scroll_down"
         android:title="@string/scroll_down"
-        android:visible="false"
         android:icon="@drawable/ic_down"
         app:showAsAction="always" />
 

@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.res.Resources
-import android.content.res.Resources.NotFoundException
 import android.os.Handler
 import android.os.Looper
 import android.text.Html
@@ -43,7 +42,6 @@ import java.lang.reflect.Type
 import java.net.HttpURLConnection
 import java.net.URL
 import java.util.*
-import java.util.regex.Pattern
 
 
 class InfoUtil(private val context: Context) {
@@ -168,6 +166,13 @@ class InfoUtil(private val context: Context) {
     fun getYoutubeVideo(url: String): List<ResultItem>? {
         val theURL = url.replace("\\?list.*".toRegex(), "")
         try{
+            //TODO NEWPIPE TEST
+//            val extractor = ServiceList.YouTube.getStreamExtractor(url)
+//            extractor.fetchPage()
+//            val extractor2 = ServiceList.YouTube.getPlaylistExtractor(url)
+//            extractor2.fetchPage()
+//            var info = extractor2.getPage(extractor2.initialPage.nextPage)
+
             val id = getIDFromYoutubeURL(theURL)
             val res = genericRequest("$pipedURL/streams/$id")
             if (res.length() == 0) {
@@ -678,7 +683,7 @@ class InfoUtil(private val context: Context) {
         }
         val lang = sharedPreferences.getString("app_language", "en")
         if (searchEngine == "ytsearch" || query.isYoutubeURL()) {
-            var extractorArgs = "player_client=default,mediaconnect,android"
+            var extractorArgs = "player_client=default,mediaconnect"
             if (context.getStringArray(R.array.subtitle_langs).contains(lang)) {
                 extractorArgs += ";lang=$lang"
             }
@@ -1034,6 +1039,12 @@ class InfoUtil(private val context: Context) {
         }
     }
 
+    private fun MutableList<String>.addOption(vararg options: String) {
+        options.forEach {
+            this.add(it)
+        }
+    }
+
 
     @SuppressLint("RestrictedApi")
     fun buildYoutubeDLRequest(downloadItem: DownloadItem) : YoutubeDLRequest {
@@ -1052,14 +1063,16 @@ class InfoUtil(private val context: Context) {
             }
         }
 
+        val metadataCommands = mutableListOf<String>()
+
         if (downloadItem.playlistIndex != null && useItemURL) {
-            request.addOption("--parse-metadata", " ${downloadItem.playlistIndex}: %(playlist_index)s")
+            metadataCommands.addOption("--parse-metadata", " ${downloadItem.playlistIndex}: %(playlist_index)s")
         }
 
         val type = downloadItem.type
 
         val downDir : File
-        val canWrite = File(FileUtil.formatPath(downloadItem.downloadPath)).canWrite() || sharedPreferences.getBoolean("access_all_files", false)
+        val canWrite = File(FileUtil.formatPath(downloadItem.downloadPath)).canWrite()
         if (!sharedPreferences.getBoolean("cache_downloads", true) && canWrite){
             downDir = File(FileUtil.formatPath(downloadItem.downloadPath))
             request.addOption("--no-quiet")
@@ -1162,18 +1175,14 @@ class InfoUtil(private val context: Context) {
             }
 
             if(downloadItem.title.isNotBlank()){
-                request.addCommands(listOf("--replace-in-metadata", "video:title", ".+", downloadItem.title.take(180)))
+                metadataCommands.addOption("--replace-in-metadata", "title", ".+", downloadItem.title.take(180))
+                metadataCommands.addOption("--parse-metadata", "%(title)s:%(meta_title)s")
             }
 
 
             if (downloadItem.author.isNotBlank()){
-                request.addCommands(listOf("--replace-in-metadata", "video:uploader", ".+", downloadItem.author.take(30)))
-            }
-
-            request.addOption("--parse-metadata", "uploader:^(?P<uploader>.*?)(?:(?= - Topic)|$)")
-
-            if (embedMetadata){
-                request.addOption("--parse-metadata", "%(uploader,channel,creator,artist|null)s:%(uploader)s")
+                metadataCommands.addOption("--replace-in-metadata", "uploader", ".+", downloadItem.author.take(30))
+                metadataCommands.addOption("--parse-metadata", "%(uploader)s:%(artist)s")
             }
 
             if (downloadItem.downloadSections.isNotBlank()){
@@ -1196,7 +1205,7 @@ class InfoUtil(private val context: Context) {
             }
 
             if (sharedPreferences.getBoolean("use_audio_quality", false)){
-                request.addOption("--audio-quality", sharedPreferences.getInt("audio_quality", 0))
+                request.addOption("--audio-quality", sharedPreferences.getInt("audio_quality", 0).toString())
             }
 
             if (sharedPreferences.getBoolean("write_description", false)){
@@ -1204,7 +1213,7 @@ class InfoUtil(private val context: Context) {
             }
 
             if (downloadItem.url.isYoutubeURL()) {
-                var extractorArgs = "player_client=default,mediaconnect,android"
+                var extractorArgs = "player_client=default,mediaconnect"
                 val lang = sharedPreferences.getString("app_language", "en")
                 if (context.getStringArray(R.array.subtitle_langs).contains(lang)) {
                     extractorArgs += ";lang=$lang"
@@ -1261,7 +1270,7 @@ class InfoUtil(private val context: Context) {
                 }
                 request.addOption("-x")
 
-                val formatSorting = StringBuilder("hasaud")
+                val formatSorting = StringBuilder("hasaud,size")
 
                 if (aCodecPref.isNotBlank()){
                     formatSorting.append(",acodec:$aCodecPref")
@@ -1285,31 +1294,46 @@ class InfoUtil(private val context: Context) {
                 request.addOption("-P", downDir.absolutePath)
                 request.addOption("-S", formatSorting.toString())
 
+                metadataCommands.addOption("--parse-metadata", """%(uploader,artist,channel,creator|null)s:^(?P<uploader>.*?)(?:(?= - Topic)|$)""")
+
                 if (downloadItem.audioPreferences.splitByChapters && downloadItem.downloadSections.isBlank()){
                     request.addOption("--split-chapters")
                     request.addOption("-o", "chapter:%(section_title)s.%(ext)s")
                 }else{
 
                     if (embedMetadata){
-                        request.addOption("--embed-metadata")
-                        request.addOption("--parse-metadata", "%(artist,uploader|)s:^(?P<meta_album_artist>[^,]*)")
-                        request.addOption("--parse-metadata", "%(album_artist,meta_album_artist|)s:%(album_artist)s")
+                        metadataCommands.addOption("--embed-metadata")
 
-                        request.addOption("--parse-metadata", "description:(?:Released on: )(?P<dscrptn_year>\\d{4})")
-                        request.addOption("--parse-metadata", "%(dscrptn_year,release_year,release_date>%Y,upload_date>%Y)s:(?P<meta_date>\\d+)")
+                        val emptyAuthor = downloadItem.author.isEmpty()
+                        val usePlaylistMetadata = sharedPreferences.getBoolean("playlist_as_album", true)
 
-                        if (downloadItem.playlistTitle.isNotEmpty()) {
-                            request.addOption("--parse-metadata", "%(album,title)s:%(meta_album)s")
-                            request.addOption("--parse-metadata", "%(track_number,playlist_index)d:(?P<track_number>\\d+)")
-                        } else {
-                            request.addOption("--parse-metadata", "%(album,title)s:%(meta_album)s")
+                        if (emptyAuthor) {
+                            if (usePlaylistMetadata) {
+                                metadataCommands.addOption("--parse-metadata", "%(playlist_uploader,artist,uploader|)s:^(?P<first_artist>.*?)(?:(?=,\\s+)|$)")
+                            }else{
+                                metadataCommands.addOption("--parse-metadata", "%(artist,uploader|)s:^(?P<first_artist>.*?)(?:(?=,\\s+)|$)")
+                            }
+                        }else{
+                            if (usePlaylistMetadata) {
+                                metadataCommands.addOption("--parse-metadata", "%(playlist_uploader,artist|)s:^(?P<first_artist>.*?)(?:(?=,\\s+)|$)")
+                            }else{
+                                metadataCommands.addOption("--parse-metadata", "%(artist|)s:^(?P<first_artist>.*?)(?:(?=,\\s+)|$)")
+                            }
                         }
+
+
+                        metadataCommands.addOption("--parse-metadata", "description:(?:Released on: )(?P<dscrptn_year>\\d{4})")
+                        metadataCommands.addOption("--parse-metadata", "%(dscrptn_year,release_year,release_date>%Y,upload_date>%Y)s:(?P<meta_date>\\d+)")
+                        metadataCommands.addOption("--parse-metadata", "%(album_artist,first_artist|)s:%(album_artist)s")
+                        metadataCommands.addOption("--parse-metadata", "%(track_number,playlist_index)d:(?P<track_number>\\d+)")
+
+
                     }
 
                     val cropThumb = downloadItem.audioPreferences.cropThumb ?: sharedPreferences.getBoolean("crop_thumbnail", true)
                     if (downloadItem.audioPreferences.embedThumb){
-                        request.addOption("--embed-thumbnail")
-                        if (!request.hasOption("--convert-thumbnails")) request.addOption("--convert-thumbnails", thumbnailFormat!!)
+                        metadataCommands.addOption("--embed-thumbnail")
+                        if (!request.hasOption("--convert-thumbnails")) metadataCommands.addOption("--convert-thumbnails", thumbnailFormat!!)
 
                         val thumbnailConfig = StringBuilder("")
                         val cropConfig = """-vf crop=\"'if(gt(ih,iw),iw,ih)':'if(gt(iw,ih),ih,iw)'\"""""
@@ -1326,7 +1350,7 @@ class InfoUtil(private val context: Context) {
                             runCatching {
                                 val config = File(context.cacheDir.absolutePath + "/config" + downloadItem.id + "##ffmpegCrop.txt")
                                 config.writeText(thumbnailConfig.toString())
-                                request.addOption("--config", config.absolutePath)
+                                metadataCommands.addOption("--config", config.absolutePath)
                             }
                         }
 
@@ -1339,6 +1363,8 @@ class InfoUtil(private val context: Context) {
 
             }
             DownloadViewModel.Type.video -> {
+                metadataCommands.addOption("--parse-metadata", """%(uploader,channel,creator,artist|null)s:^(?P<uploader>.*?)(?:(?= - Topic)|$)""")
+
                 val supportedContainers = context.resources.getStringArray(R.array.video_containers)
 
                 if (downloadItem.videoPreferences.addChapters) {
@@ -1359,7 +1385,8 @@ class InfoUtil(private val context: Context) {
                 ){
                     cont = outputContainer
 
-                    if (downloadItem.videoPreferences.recodeVideo) {
+                    val cantRecode = listOf("avi")
+                    if (downloadItem.videoPreferences.recodeVideo && !cantRecode.contains(cont)) {
                         request.addOption("--recode-video", outputContainer.lowercase())
                     }else{
                         request.addOption("--merge-output-format", outputContainer.lowercase())
@@ -1368,7 +1395,7 @@ class InfoUtil(private val context: Context) {
                     if (!listOf("webm", "avi", "flv").contains(outputContainer.lowercase())) {
                         val embedThumb = sharedPreferences.getBoolean("embed_thumbnail", false)
                         if (embedThumb) {
-                            request.addOption("--embed-thumbnail")
+                            metadataCommands.addOption("--embed-thumbnail")
                             if (!request.hasOption("--convert-thumbnails")) request.addOption("--convert-thumbnails", thumbnailFormat!!)
                         }
                     }
@@ -1382,7 +1409,6 @@ class InfoUtil(private val context: Context) {
                 var audioF = downloadItem.videoPreferences.audioFormatIDs.map { f ->
                     val format = downloadItem.allFormats.find { it.format_id == f }
                     format?.run {
-                        println(format_id)
                         if (this.format_id.matches(".*-[0-9]+".toRegex())) {
                             if (!this.lang.isNullOrBlank() && this.lang != "None") {
                                 "ba[format_id~='^(${this.format_id.split("-")[0]})'][language^=${this.lang}]"
@@ -1591,7 +1617,9 @@ class InfoUtil(private val context: Context) {
             )
         }
 
-
+        if (metadataCommands.isNotEmpty()){
+            request.addCommands(metadataCommands)
+        }
         return request
     }
 

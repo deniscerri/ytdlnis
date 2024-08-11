@@ -38,7 +38,7 @@
             app:layout_constraintHorizontal_weight="0.3"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:shapeAppearance="@style/ShapeAppearanceOverlay.Avatar" />
+            app:shapeAppearance="@style/ShapeAppearanceOverlay.Avatar2" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/incognitoLabel"

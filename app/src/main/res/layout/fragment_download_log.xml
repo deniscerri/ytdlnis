@@ -1,31 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.deniscerri.ytdl.ui.more.terminal.TerminalActivity">
+    android:layout_height="match_parent">
 
     <com.google.android.material.appbar.AppBarLayout
-        android:layout_width="match_parent"
+        android:id="@+id/appbarlayout"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:liftOnScroll="false"
         android:background="@android:color/transparent"
-        android:fitsSystemWindows="true">
+        android:fitsSystemWindows="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:liftOnScroll="false">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/title"
-            android:elevation="0dp"
             android:layout_width="match_parent"
-            app:navigationIcon="@drawable/ic_back"
+            android:layout_height="match_parent"
+            android:elevation="0dp"
             app:navigationContentDescription="@string/back"
-            android:layout_height="match_parent"/>
+            app:navigationIcon="@drawable/ic_back" />
 
         <com.google.android.material.slider.Slider
-            android:visibility="gone"
             android:id="@+id/textsize_seekbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/appbar" />
@@ -34,34 +36,45 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <FrameLayout
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:id="@+id/frameLayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/coordinatorLayout3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appbarlayout">
 
         <me.zhanghai.android.fastscroll.FastScrollScrollView
             android:id="@+id/content_scrollview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:clipToPadding="false"
-            >
+            android:clipToPadding="false">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="150dp"
                 android:focusableInTouchMode="true"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/content"
-                    android:padding="10dp"
-                    android:fontFamily="monospace"
-                    android:textSize="15sp"
-                    android:gravity="bottom"
-                    android:scrollbars="none"
+                <HorizontalScrollView
                     android:layout_width="wrap_content"
-                    android:textIsSelectable="true"
-                    android:layout_height="wrap_content" />
+                    android:id="@+id/horizontalscroll_output"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/content"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="monospace"
+                        android:gravity="bottom"
+                        android:padding="10dp"
+                        android:scrollbars="none"
+                        android:textIsSelectable="true"
+                        android:textSize="15sp" />
+
+                </HorizontalScrollView>
+
+
 
             </LinearLayout>
 
@@ -69,27 +82,41 @@
 
     </FrameLayout>
 
-    <include layout="@layout/no_results"
-        android:visibility="gone" />
-
-    <com.google.android.material.bottomappbar.BottomAppBar
-        android:id="@+id/bottomAppBar"
-        android:layout_width="match_parent"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/coordinatorLayout3"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        style="@style/Widget.Material3.BottomAppBar"
-        app:menu="@menu/log_detail_menu"
-        />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/copy_log"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="@string/copy_log"
-        android:text="@string/copy_log"
-        app:layout_anchor="@id/bottomAppBar"
-        app:icon="@drawable/ic_copy"/>
+        <com.google.android.material.bottomappbar.BottomAppBar
+            android:id="@+id/bottomAppBar"
+            style="@style/Widget.Material3.BottomAppBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            app:layout_constraintBottom_toBottomOf="@+id/frameLayout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:menu="@menu/log_detail_menu" />
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/copy_log"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/copy_log"
+            android:text="@string/copy_log"
+            app:icon="@drawable/ic_copy"
+            app:layout_anchor="@id/bottomAppBar" />
 
 
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+    <include
+        layout="@layout/no_results"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/appbarlayout"
+        app:layout_constraintBottom_toTopOf="@+id/coordinatorLayout3"
+        app:layout_constraintEnd_toEndOf="@+id/frameLayout" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

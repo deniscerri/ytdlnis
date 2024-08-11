@@ -120,7 +120,6 @@
                             android:textStyle="bold"
                             app:cornerRadius="10dp"
                             app:drawableStartCompat="@drawable/ic_music_formatcard"
-                            app:drawableTint="@color/white"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"  />
@@ -173,6 +172,7 @@
             <TextView
                 android:id="@+id/format_id"
                 android:layout_width="0dp"
+                android:minWidth="70dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"

@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.content.res.Resources
+import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.os.Parcelable
@@ -148,7 +149,16 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
 
 
         val confTmp = Configuration(application.resources.configuration)
-        confTmp.setLocale(Locale(sharedPreferences.getString("app_language", "en")!!))
+        val locale = if (Build.VERSION.SDK_INT < 33) {
+            sharedPreferences.getString("app_language", "")!!.ifEmpty { Locale.getDefault().language }
+        }else{
+            Locale.getDefault().language
+        }.run {
+            split("-")
+        }.run {
+            if (this.size == 1) Locale(this[0]) else Locale(this[0], this[1])
+        }
+        confTmp.setLocale(locale)
         val metrics = DisplayMetrics()
         resources = Resources(application.assets, metrics, confTmp)
     }
@@ -245,6 +255,7 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
 
 
         val preferredAudioFormats = getPreferredAudioFormats(resultItem.formats)
+        val subsLanguages = sharedPreferences.getString("subs_lang", "en.*,.*-orig")!!
 
         val videoPreferences = VideoPreferences(
             embedSubs,
@@ -252,6 +263,7 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
             ArrayList(sponsorblock),
             saveSubs,
             saveAutoSubs,
+            subsLanguages,
             audioFormatIDs = preferredAudioFormats,
             recodeVideo = recodeVideo
         )
@@ -354,8 +366,8 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
             val format = getFormat(it.allFormats, type)
             it.format = format
 
-            var updatedDownloadPath: String = ""
-            var container: String = ""
+            var updatedDownloadPath = ""
+            var container = ""
 
             when(type){
                 Type.audio -> {
@@ -363,11 +375,11 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
                     container = sharedPreferences.getString("audio_format", "")!!
                 }
                 Type.video -> {
-                    updatedDownloadPath = sharedPreferences.getString("music_path", FileUtil.getDefaultAudioPath())!!
-                    container = sharedPreferences.getString("audio_format", "")!!
+                    updatedDownloadPath = sharedPreferences.getString("video_path", FileUtil.getDefaultVideoPath())!!
+                    container = sharedPreferences.getString("video_format", "")!!
                 }
                 Type.command -> {
-                    updatedDownloadPath = sharedPreferences.getString("music_path", FileUtil.getDefaultAudioPath())!!
+                    updatedDownloadPath = sharedPreferences.getString("command_path", FileUtil.getDefaultCommandPath())!!
                     container = ""
                 }
                 else -> {
@@ -391,6 +403,7 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         val saveThumb = sharedPreferences.getBoolean("write_thumbnail", false)
         val embedThumb = sharedPreferences.getBoolean("embed_thumbnail", false)
         val cropThumb = sharedPreferences.getBoolean("crop_thumbnail", false)
+        val subsLanguages = sharedPreferences.getString("subs_lang", "en.*,.*-orig")!!
 
         val customFileNameTemplate = when(historyItem.type) {
             Type.audio -> sharedPreferences.getString("file_name_template_audio", "%(uploader).30B - %(title).170B")
@@ -420,7 +433,7 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         }
 
         val audioPreferences = AudioPreferences(embedThumb, cropThumb,false, ArrayList(sponsorblock!!))
-        val videoPreferences = VideoPreferences(embedSubs, addChapters, false, ArrayList(sponsorblock), saveSubs, saveAutoSubs, recodeVideo = recodeVideo)
+        val videoPreferences = VideoPreferences(embedSubs, addChapters, false, ArrayList(sponsorblock), saveSubs, saveAutoSubs, subsLanguages, recodeVideo = recodeVideo)
         var path = defaultPath
         historyItem.downloadPath.first().apply {
             File(this).parent?.apply {
@@ -930,9 +943,12 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         }else{
             val queued = repository.updateAll(queuedItems)
 
-            if (!sharedPreferences.getBoolean("paused_downloads", false)) {
-                result.message = repository.startDownloadWorker(queued, context).getOrElse { "" }
+            if (sharedPreferences.getBoolean("paused_downloads", true)) {
+                sharedPreferences.edit().putBoolean("paused_downloads", false).apply()
+                resetActiveToQueued()
             }
+
+            result.message = repository.startDownloadWorker(queued, context).getOrElse { "" }
 
             if(!useScheduler){
                 CoroutineScope(Dispatchers.IO).launch {

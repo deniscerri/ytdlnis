@@ -34,7 +34,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:paddingVertical="10dp"
-        android:layout_height="80dp">
+        android:layout_height="wrap_content">
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/downloads_image_view"
@@ -49,13 +49,12 @@
             app:layout_constraintEnd_toStartOf="@+id/download_item_data"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:shapeAppearance="@style/ShapeAppearanceOverlay.Avatar" />
+            app:shapeAppearance="@style/ShapeAppearanceOverlay.Avatar2" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/download_item_data"
             android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_height="wrap_content"
             app:layout_constraintEnd_toStartOf="@+id/options"
             app:layout_constraintStart_toEndOf="@+id/downloads_image_view"
             app:layout_constraintTop_toTopOf="parent"
@@ -66,7 +65,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
-                android:maxLines="2"
+                android:maxLines="1"
                 android:paddingHorizontal="5dp"
                 android:scrollbars="none"
                 android:textSize="15sp"
@@ -76,11 +75,11 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <HorizontalScrollView
+                android:id="@+id/horizontalScrollView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="bottom"
                 android:scrollbars="none"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
@@ -90,26 +89,29 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
 
+
                     <TextView
                         android:id="@+id/download_type"
+                        style="@style/Widget.Material3.FloatingActionButton.Large.Secondary"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="5dp"
                         android:background="@drawable/rounded_corner"
-                        android:backgroundTint="?attr/colorPrimaryContainer"
+                        android:backgroundTint="?attr/colorSecondary"
                         android:clickable="false"
+                        android:ellipsize="end"
                         android:gravity="center"
+                        android:maxLength="17"
+                        android:minWidth="30dp"
                         android:paddingHorizontal="5dp"
-                        android:textColor="@color/white"
-                        android:textSize="12sp"
                         android:textStyle="bold"
                         app:cornerRadius="10dp"
                         app:drawableStartCompat="@drawable/ic_music_formatcard"
-                        app:drawableTint="@color/white"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintVertical_bias="0.0" />
-
 
                     <TextView
                         android:id="@+id/file_size"
@@ -123,7 +125,6 @@
                         android:gravity="center"
                         android:minWidth="30dp"
                         android:paddingHorizontal="5dp"
-                        android:textSize="12sp"
                         android:textStyle="bold"
                         app:cornerRadius="10dp"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -142,10 +143,8 @@
                         android:ellipsize="end"
                         android:gravity="center"
                         android:maxLength="17"
-                        android:maxLines="1"
                         android:minWidth="30dp"
                         android:paddingHorizontal="5dp"
-                        android:textSize="12sp"
                         android:textStyle="bold"
                         app:cornerRadius="10dp"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -161,10 +160,11 @@
                         android:background="@drawable/rounded_corner"
                         android:backgroundTint="?attr/colorSecondary"
                         android:clickable="false"
+                        android:ellipsize="end"
                         android:gravity="center"
+                        android:maxLength="17"
                         android:minWidth="30dp"
                         android:paddingHorizontal="5dp"
-                        android:textSize="12sp"
                         android:textStyle="bold"
                         app:cornerRadius="10dp"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -172,11 +172,23 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
 
-
                 </LinearLayout>
 
 
             </HorizontalScrollView>
+
+            <TextView
+                android:id="@+id/output"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="monospace"
+                android:maxLines="2"
+                android:ellipsize="end"
+                android:layout_margin="5dp"
+                android:textSize="13sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

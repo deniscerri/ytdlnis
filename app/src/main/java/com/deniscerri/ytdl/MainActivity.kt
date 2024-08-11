@@ -2,6 +2,7 @@ package com.deniscerri.ytdl
 
 import android.Manifest
 import android.app.ActionBar.LayoutParams
+import android.content.ComponentName
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -32,6 +33,7 @@ import androidx.fragment.app.FragmentContainerView
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
@@ -290,9 +292,6 @@ class MainActivity : BaseActivity() {
 
             }
         }
-
-
-
     }
     override fun onSaveInstanceState(savedInstanceState: Bundle) {
         super.onSaveInstanceState(savedInstanceState)
@@ -442,6 +441,8 @@ class MainActivity : BaseActivity() {
                 e.printStackTrace()
             }
         }else if (action == Intent.ACTION_VIEW){
+            navController.popBackStack(navController.graph.startDestinationId, true)
+
             when(intent.getStringExtra("destination")){
                 "Downloads" -> {
                     navController.navigate(R.id.historyFragment)

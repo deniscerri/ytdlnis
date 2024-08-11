@@ -81,16 +81,13 @@ class FolderSettingsFragment : BaseSettingsFragment() {
             editor.putString("command_path", FileUtil.getDefaultCommandPath())
         }
 
-        if((VERSION.SDK_INT >= 30 && Environment.isExternalStorageManager()) ||
-            VERSION.SDK_INT < 30) {
+        if (FileUtil.hasAllFilesAccess()) {
             accessAllFiles!!.isVisible = false
             cacheDownloads!!.isEnabled = true
         }else{
             editor.putBoolean("cache_downloads", true).apply()
             cacheDownloads!!.isEnabled = false
         }
-
-        editor.apply()
 
         musicPath!!.summary = FileUtil.formatPath(preferences.getString("music_path", "")!!)
         musicPath!!.onPreferenceClickListener =

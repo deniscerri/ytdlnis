@@ -90,6 +90,14 @@
             app:summary="@string/crop_thumb_summary"
             app:title="@string/crop_thumb" />
 
+        <SwitchPreferenceCompat
+            android:widgetLayout="@layout/preferece_material_switch"
+            app:defaultValue="true"
+            app:icon="@drawable/baseline_album_24"
+            app:key="playlist_as_album"
+            app:summary="@string/playlist_as_album_summary"
+            app:title="@string/playlist_as_album" />
+
     </PreferenceCategory>
 
 

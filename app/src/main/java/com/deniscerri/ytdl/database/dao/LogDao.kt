@@ -7,6 +7,7 @@ import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
 import com.deniscerri.ytdl.database.models.LogItem
+import com.deniscerri.ytdl.util.Extensions.appendLineToLog
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -43,10 +44,10 @@ interface LogDao {
     suspend fun updateLog(line: String, id: Long, resetLog: Boolean = false) {
         val l = getByID(id) ?: return
         var log = l.content ?: ""
-        if (resetLog) {
-            log = line.lines().joinToString("\n")
+        log = if (resetLog) {
+            line.appendLineToLog()
         }else{
-            log += "\n${line}"
+            log.appendLineToLog(line)
         }
         updateLogContent(log, id)
     }

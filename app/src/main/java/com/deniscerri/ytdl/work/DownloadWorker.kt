@@ -1,9 +1,12 @@
 package com.deniscerri.ytdl.work
 
 import android.annotation.SuppressLint
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import android.content.res.Configuration
 import android.content.res.Resources
+import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.util.DisplayMetrics
@@ -20,6 +23,7 @@ import androidx.work.await
 import androidx.work.workDataOf
 import com.afollestad.materialdialogs.utils.MDUtil.getStringArray
 import com.deniscerri.ytdl.App
+import com.deniscerri.ytdl.MainActivity
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.DBManager
 import com.deniscerri.ytdl.database.models.HistoryItem
@@ -73,15 +77,28 @@ class DownloadWorker(
         //val createResultItem = inputData.getBoolean("createResultItem", true)
 
         val confTmp = Configuration(context.resources.configuration)
-        val currLang = sharedPreferences.getString("app_language", "")!!.ifEmpty { Locale.getDefault().language }.split("-")
-        confTmp.setLocale(if (currLang.size == 1) Locale(currLang[0]) else Locale(currLang[0], currLang[1]))
+        val locale = if (Build.VERSION.SDK_INT < 33) {
+            sharedPreferences.getString("app_language", "")!!.ifEmpty { Locale.getDefault().language }
+        }else{
+            Locale.getDefault().language
+        }.run {
+            split("-")
+        }.run {
+            if (this.size == 1) Locale(this[0]) else Locale(this[0], this[1])
+        }
+        confTmp.setLocale(locale)
         val metrics = DisplayMetrics()
         val resources = Resources(context.assets, metrics, confTmp)
 
-        val pendingIntent = NavDeepLinkBuilder(context)
-            .setGraph(R.navigation.nav_graph)
-            .setDestination(R.id.downloadQueueMainFragment)
-            .createPendingIntent()
+        val openQueueIntent = Intent(context, MainActivity::class.java)
+        openQueueIntent.setAction(Intent.ACTION_VIEW)
+        openQueueIntent.putExtra("destination", "Queue")
+        val openDownloadQueue = PendingIntent.getActivity(
+            context,
+            1000000000,
+            openQueueIntent,
+            PendingIntent.FLAG_IMMUTABLE
+        )
 
         val workNotif = notificationUtil.createDefaultWorkerNotification()
         val foregroundInfo = ForegroundInfo(1000000000, workNotif)
@@ -112,7 +129,7 @@ class DownloadWorker(
             val eligibleDownloads = items.take(if (concurrentDownloads < 0) 0 else concurrentDownloads).filter {  it.id !in running }
 
             eligibleDownloads.forEach{downloadItem ->
-                val notification = notificationUtil.createDownloadServiceNotification(pendingIntent, downloadItem.title.ifEmpty { downloadItem.url }, downloadItem.id.toInt())
+                val notification = notificationUtil.createDownloadServiceNotification(openDownloadQueue, downloadItem.title.ifEmpty { downloadItem.url })
                 notificationUtil.notify(downloadItem.id.toInt(), notification)
 
                 CoroutineScope(Dispatchers.IO).launch {
@@ -189,7 +206,7 @@ class DownloadWorker(
                         }
                         //val wasQuickDownloaded = resultDao.getCountInt() == 0
                         runBlocking {
-                            var finalPaths : MutableList<String>?
+                            var finalPaths = mutableListOf<String>()
 
                             if (noCache){
                                 eventBus.post(WorkerProgress(100, "Scanning Files", downloadItem.id))
@@ -212,9 +229,6 @@ class DownloadWorker(
                                 finalPaths.sortBy { File(it).lastModified() }
                                 finalPaths = finalPaths.distinct().toMutableList()
                                 FileUtil.scanMedia(finalPaths, context)
-                                if (finalPaths.isEmpty()){
-                                    finalPaths = mutableListOf(context.getString(R.string.unfound_file))
-                                }
                             }else{
                                 //move file from internal to set download directory
                                 eventBus.post(WorkerProgress(100, "Moving file to ${FileUtil.formatPath(downloadLocation)}", downloadItem.id))
@@ -227,11 +241,8 @@ class DownloadWorker(
 
                                     if (finalPaths.isNotEmpty()){
                                         eventBus.post(WorkerProgress(100, "Moved file to ${FileUtil.formatPath(downloadLocation)}", downloadItem.id))
-                                    }else{
-                                        finalPaths = mutableListOf(context.getString(R.string.unfound_file))
                                     }
                                 }catch (e: Exception){
-                                    finalPaths = mutableListOf(context.getString(R.string.unfound_file))
                                     e.printStackTrace()
                                     handler.postDelayed({
                                         Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
@@ -246,51 +257,52 @@ class DownloadWorker(
                                 add("description")
                                 add("txt")
                             }
-                            finalPaths = finalPaths?.filter { path -> !nonMediaExtensions.any { path.endsWith(it) } }?.toMutableList()
+                            finalPaths = finalPaths.filter { path -> !nonMediaExtensions.any { path.endsWith(it) } }.toMutableList()
+                            if (finalPaths.isEmpty()){
+                                finalPaths = mutableListOf(context.getString(R.string.unfound_file))
+                            }
                             FileUtil.deleteConfigFiles(request)
 
                             //put download in history
                             if (!downloadItem.incognito) {
-                                if (request.hasOption("--download-archive") && finalPaths == listOf(context.getString(R.string.unfound_file))) {
+                                if (request.hasOption("--download-archive") && finalPaths.isEmpty()) {
                                     handler.postDelayed({
                                         Toast.makeText(context, resources.getString(R.string.download_already_exists), Toast.LENGTH_LONG).show()
                                     }, 100)
                                 }else{
                                     val unixTime = System.currentTimeMillis() / 1000
-                                    finalPaths?.apply {
-                                        this.first().apply {
-                                            val file = File(this)
-                                            var duration = downloadItem.duration
-                                            val d = file.getMediaDuration(context)
-                                            if (d > 0) duration = d.toStringDuration(Locale.US)
+                                    finalPaths.first().apply {
+                                        val file = File(this)
+                                        var duration = downloadItem.duration
+                                        val d = file.getMediaDuration(context)
+                                        if (d > 0) duration = d.toStringDuration(Locale.US)
 
-                                            downloadItem.format.filesize = file.length()
-                                            downloadItem.format.container = file.extension
-                                            downloadItem.duration = duration
-                                        }
-
-                                        val historyItem = HistoryItem(0,
-                                            downloadItem.url,
-                                            downloadItem.title,
-                                            downloadItem.author,
-                                            downloadItem.duration,
-                                            downloadItem.thumb,
-                                            downloadItem.type,
-                                            unixTime,
-                                            this,
-                                            downloadItem.website,
-                                            downloadItem.format,
-                                            downloadItem.id,
-                                            commandString)
-                                        historyDao.insert(historyItem)
+                                        downloadItem.format.filesize = file.length()
+                                        downloadItem.format.container = file.extension
+                                        downloadItem.duration = duration
                                     }
+
+                                    val historyItem = HistoryItem(0,
+                                        downloadItem.url,
+                                        downloadItem.title,
+                                        downloadItem.author,
+                                        downloadItem.duration,
+                                        downloadItem.thumb,
+                                        downloadItem.type,
+                                        unixTime,
+                                        finalPaths,
+                                        downloadItem.website,
+                                        downloadItem.format,
+                                        downloadItem.id,
+                                        commandString)
+                                    historyDao.insert(historyItem)
 
                                 }
                             }
 
                             notificationUtil.cancelDownloadNotification(downloadItem.id.toInt())
                             notificationUtil.createDownloadFinished(
-                                downloadItem.id, downloadItem.title, downloadItem.type,  if (finalPaths?.first().equals(context.getString(R.string.unfound_file))) null else finalPaths, resources
+                                downloadItem.id, downloadItem.title, downloadItem.type,  if (finalPaths.first().equals(context.getString(R.string.unfound_file))) null else finalPaths, resources
                             )
 
 //                            if (wasQuickDownloaded && createResultItem){

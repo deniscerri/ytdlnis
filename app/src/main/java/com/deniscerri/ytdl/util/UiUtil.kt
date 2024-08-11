@@ -103,6 +103,7 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 import java.util.Queue
+import java.util.function.Predicate
 
 
 object UiUtil {
@@ -862,14 +863,16 @@ object UiUtil {
             true
         }
 
-        if (format.format_id.isBlank()) formatIdParent?.visibility = View.GONE
+        fun String?.doesntExist() : Boolean { return this.isNullOrBlank() || this == "None"}
+
+        if (format.format_id.doesntExist()) formatIdParent?.visibility = View.GONE
         else {
             formatIdParent?.findViewById<TextView>(R.id.format_id_value)?.text = format.format_id
             formatIdParent?.setOnClickListener(clicker)
             formatIdParent?.setOnLongClickListener(longClicker)
         }
 
-        if (format.url.isNullOrBlank()) formatURLParent?.visibility = View.GONE
+        if (format.url.doesntExist()) formatURLParent?.visibility = View.GONE
         else {
             formatURLParent?.findViewById<TextView>(R.id.format_url_value)?.text = format.url
             formatURLParent?.setOnClickListener(clicker)
@@ -877,7 +880,7 @@ object UiUtil {
         }
 
 
-        if (format.container.isBlank()) containerParent?.visibility = View.GONE
+        if (format.container.doesntExist()) containerParent?.visibility = View.GONE
         else {
             containerParent?.findViewById<TextView>(R.id.container_value)?.text = format.container
             containerParent?.setOnClickListener(clicker)
@@ -893,7 +896,7 @@ object UiUtil {
                 format.acodec.uppercase()
             }
 
-        if (codecField.isBlank()) codecParent?.visibility = View.GONE
+        if (codecField.doesntExist()) codecParent?.visibility = View.GONE
         else {
             codecParent?.findViewById<TextView>(R.id.codec_value)?.text = codecField
             codecParent?.setOnClickListener(clicker)
@@ -907,28 +910,28 @@ object UiUtil {
             filesizeParent?.setOnLongClickListener(longClicker)
         }
 
-        if (format.format_note.isBlank()) formatnoteParent?.visibility = View.GONE
+        if (format.format_note.doesntExist()) formatnoteParent?.visibility = View.GONE
         else {
             formatnoteParent?.findViewById<TextView>(R.id.format_note_value)?.text = format.format_note
             formatnoteParent?.setOnClickListener(clicker)
             formatnoteParent?.setOnLongClickListener(longClicker)
         }
 
-        if (format.fps.isNullOrBlank() || format.fps == "0") fpsParent?.visibility = View.GONE
+        if (format.fps.doesntExist() || format.fps == "0") fpsParent?.visibility = View.GONE
         else {
             fpsParent?.findViewById<TextView>(R.id.fps_value)?.text = format.fps
             fpsParent?.setOnClickListener(clicker)
             fpsParent?.setOnLongClickListener(longClicker)
         }
 
-        if (format.asr.isNullOrBlank()) asrParent?.visibility = View.GONE
+        if (format.asr.doesntExist()) asrParent?.visibility = View.GONE
         else {
             asrParent?.findViewById<TextView>(R.id.asr_value)?.text = format.asr
             asrParent?.setOnClickListener(clicker)
             asrParent?.setOnLongClickListener(longClicker)
         }
 
-        if (format.tbr.isNullOrBlank()) bitrateParent?.visibility = View.GONE
+        if (format.tbr.doesntExist()) bitrateParent?.visibility = View.GONE
         else{
             bitrateParent?.findViewById<TextView>(R.id.bitrate_value)?.text = format.tbr
             bitrateParent?.setOnClickListener(clicker)
@@ -990,7 +993,21 @@ object UiUtil {
             val chips = mutableListOf<Chip>()
             context.getStringArray(R.array.subtitle_langs).forEachIndexed { index, s ->
                 val tmp = context.layoutInflater.inflate(R.layout.filter_chip, chipGroup, false) as Chip
-                tmp.text = Locale(s).displayLanguage
+                s.split("-", ".*").run {
+                    if (s.endsWith(".*")) {
+                        val name = "${Locale(this[0]).displayName} (${context.getString(R.string.all)})"
+                        tmp.text = name
+                    }else{
+                        if (this.size == 1) {
+                            Locale(this[0])
+                        } else {
+                            Locale(this[0], this[1])
+                        }.apply {
+                            tmp.text = this.displayName
+                        }
+                    }
+                }
+
                 tmp.tag = s
                 tmp.id = index
 
@@ -1564,24 +1581,20 @@ object UiUtil {
     }
 
 
-
-    fun handleResultResponse(context: Activity, it: ResultViewModel.ResultsUiState, closed: () -> Unit){
-        val title = context.getString(it.errorMessage!!.first)
-        val message = it.errorMessage!!.second
-
+    fun handleNoResults(context: Activity, message: String, continueAnyway: Boolean = false, continued: () -> Unit, closed: () -> Unit) {
         val errDialog = MaterialAlertDialogBuilder(context)
-            .setTitle(title)
+            .setTitle(R.string.no_results)
             .setMessage(message)
 
-        for (a in it.actions!!){
-            when(a.second){
-                ResultViewModel.ResultAction.COPY_LOG -> {
-                    errDialog.setPositiveButton(a.first) { d:DialogInterface?, _:Int ->
-                        val clipboard: ClipboardManager = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                        clipboard.setText(message)
-                        d?.dismiss()
-                    }
-                }
+        errDialog.setPositiveButton(R.string.copy_log) { d:DialogInterface?, _:Int ->
+            val clipboard: ClipboardManager = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+            clipboard.setText(message)
+            d?.dismiss()
+        }
+
+        if (continueAnyway) {
+            errDialog.setNeutralButton(R.string.continue_anyway) {d: DialogInterface?, _:Int ->
+                continued()
             }
         }
 

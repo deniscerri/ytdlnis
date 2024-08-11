@@ -86,6 +86,7 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
 
     private lateinit var result: ResultItem
     private lateinit var type: Type
+    private var disableUpdateData : Boolean = false
     private var currentDownloadItem: DownloadItem? = null
     private var incognito: Boolean = false
 
@@ -108,6 +109,7 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
             dwl = arguments?.getParcelable<DownloadItem>("downloadItem")
         }
         type = arguments?.getSerializable("type") as Type
+        disableUpdateData = arguments?.getBoolean("disableUpdateData") == true
 
         if (res == null){
             dismiss()
@@ -429,13 +431,11 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
             }
 
             //if auto-update after the card is open is off
-            if (result.title.isEmpty() && currentDownloadItem == null) {
-                if(sharedPreferences.getBoolean("quick_download", false)) {
-                    (updateItem.parent as LinearLayout).visibility = View.VISIBLE
-                    updateItem.setOnClickListener {
-                        (updateItem.parent as LinearLayout).visibility = View.GONE
-                        initUpdateData()
-                    }
+            if (result.title.isEmpty() && currentDownloadItem == null && sharedPreferences.getBoolean("quick_download", false)) {
+                (updateItem.parent as LinearLayout).visibility = View.VISIBLE
+                updateItem.setOnClickListener {
+                    (updateItem.parent as LinearLayout).visibility = View.GONE
+                    initUpdateData()
                 }
             }else{
                 (updateItem.parent as LinearLayout).visibility = View.GONE
@@ -463,24 +463,28 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
 
 
         //update in the background if there is no data
-        if(result.title.isEmpty() && currentDownloadItem == null && !sharedPreferences.getBoolean("quick_download", false) && type != Type.command){
-            initUpdateData()
-        }else {
-            val usingGenericFormatsOrEmpty = result.formats.isEmpty() || result.formats.any { it.format_note.contains("ytdlnisgeneric") }
-            if (usingGenericFormatsOrEmpty && sharedPreferences.getBoolean("update_formats", false) && !sharedPreferences.getBoolean("quick_download", false)){
-                initUpdateFormats(result)
+        if (!disableUpdateData) {
+            if(result.title.isEmpty() && currentDownloadItem == null && !sharedPreferences.getBoolean("quick_download", false) && type != Type.command){
+                initUpdateData()
+            }else {
+                val usingGenericFormatsOrEmpty = result.formats.isEmpty() || result.formats.any { it.format_note.contains("ytdlnisgeneric") }
+                if (usingGenericFormatsOrEmpty && sharedPreferences.getBoolean("update_formats", false) && !sharedPreferences.getBoolean("quick_download", false)){
+                    initUpdateFormats(result)
+                }
             }
         }
+
+
 
 
 
         lifecycleScope.launch {
             resultViewModel.uiState.collectLatest { res ->
                 if (res.errorMessage != null){
-                    kotlin.runCatching { UiUtil.handleResultResponse(requireActivity(), res, closed = {
+                    kotlin.runCatching { UiUtil.handleNoResults(requireActivity(), res.errorMessage!!, true, continued = {}, closed = {
                         dismiss()
                     }) }
-                    resultViewModel.uiState.update {it.copy(errorMessage  = null, actions  = null) }
+                    resultViewModel.uiState.update {it.copy(errorMessage  = null) }
                 }
             }
         }

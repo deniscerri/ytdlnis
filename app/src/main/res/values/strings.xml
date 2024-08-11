@@ -418,4 +418,7 @@
     <string name="weekly">Weekly</string>
     <string name="monthly">Monthly</string>
     <string name="cleanup_leftover_downloads">Clean-up leftover downloads (cancelled, errored)</string>
+    <string name="continue_anyway">Continue Anyway</string>
+    <string name="playlist_as_album">Use Playlist Name as Album Metadata</string>
+    <string name="playlist_as_album_summary">If Album Metadata is not present, use playlist name instead</string>
 </resources>

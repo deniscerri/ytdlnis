@@ -114,6 +114,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
     private var appBarLayout: AppBarLayout? = null
     private var materialToolbar: MaterialToolbar? = null
     private var loadingItems: Boolean = false
+    private var queryList = mutableListOf<String>()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -255,8 +256,28 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
             launch{
                 resultViewModel.uiState.collectLatest { res ->
                     if (res.errorMessage != null){
-                        kotlin.runCatching { UiUtil.handleResultResponse(requireActivity(), res, closed ={}) }
-                        resultViewModel.uiState.update {it.copy(errorMessage  = null, actions  = null) }
+                        val isSingleQueryAndURL = queryList.size == 1 && Patterns.WEB_URL.matcher(queryList.first()).matches()
+
+                        kotlin.runCatching { UiUtil.handleNoResults(requireActivity(), res.errorMessage!!, continueAnyway = isSingleQueryAndURL, continued = {
+                            lifecycleScope.launch {
+                                if (sharedPreferences!!.getBoolean("download_card", true)) {
+                                    withContext(Dispatchers.Main){
+                                        showSingleDownloadSheet(
+                                            resultItem = downloadViewModel.createEmptyResultItem(queryList.first()),
+                                            type = DownloadViewModel.Type.valueOf(sharedPreferences!!.getString("preferred_download_type", "video")!!),
+                                            disableUpdateData = true
+                                        )
+                                    }
+                                } else {
+                                    val downloadItem = downloadViewModel.createDownloadItemFromResult(
+                                        result = downloadViewModel.createEmptyResultItem(queryList.first()),
+                                        givenType = DownloadViewModel.Type.valueOf(sharedPreferences!!.getString("preferred_download_type", "video")!!)
+                                    )
+                                    downloadViewModel.queueDownloads(listOf(downloadItem))
+                                }
+                            }
+                        }, closed = {}) }
+                        resultViewModel.uiState.update {it.copy(errorMessage  = null) }
                     }
 
                     loadingItems = res.processing
@@ -270,9 +291,9 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
                         shimmerCards!!.stopShimmer()
                         shimmerCards!!.visibility = GONE
                         if (resultsList!!.size > 1 && resultsList!![0]!!.playlistTitle.isNotEmpty()){
-                            this@HomeFragment.downloadAllFab!!.visibility = VISIBLE
+                            downloadAllFab!!.visibility = VISIBLE
                         }else{
-                            this@HomeFragment.downloadAllFab!!.visibility = GONE
+                            downloadAllFab!!.visibility = GONE
                         }
                     }
                 }
@@ -602,7 +623,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
 
     private fun initSearch(searchView: SearchView){
 
-        val queryList = mutableListOf<String>()
+        queryList = mutableListOf()
         if (queriesChipGroup!!.childCount > 0){
             queriesChipGroup!!.children.forEach {
                 val query = (it as Chip).text.toString().trim {it2 -> it2 <= ' '}
@@ -689,7 +710,8 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
     @SuppressLint("RestrictedApi")
     private fun showSingleDownloadSheet(
         resultItem: ResultItem,
-        type: DownloadViewModel.Type
+        type: DownloadViewModel.Type,
+        disableUpdateData : Boolean = false
     ){
         if(findNavController().currentBackStack.value.firstOrNull {it.destination.id == R.id.downloadBottomSheetDialog} == null &&
             findNavController().currentDestination?.id == R.id.homeFragment
@@ -698,6 +720,9 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
             val bundle = Bundle()
             bundle.putParcelable("result", resultItem)
             bundle.putSerializable("type", downloadViewModel.getDownloadType(type, resultItem.url))
+            if (disableUpdateData) {
+                bundle.putBoolean("disableUpdateData", true)
+            }
             findNavController().navigate(R.id.downloadBottomSheetDialog, bundle)
         }
     }

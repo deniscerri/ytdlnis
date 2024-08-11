@@ -76,6 +76,10 @@ class ActiveDownloadMinifiedAdapter(onItemClickListener: OnItemClickListener, ac
         progressBar.progress = 0
         progressBar.isIndeterminate = true
 
+        //OUTPUT ------------------------------------------------------------
+        val output = card.findViewById<TextView>(R.id.output)
+        output.tag = "${item.id}##output"
+
         // TITLE  ----------------------------------
         val itemTitle = card.findViewById<TextView>(R.id.title)
         var title = item.title.ifEmpty { item.playlistTitle.ifEmpty { item.url } }
@@ -131,8 +135,8 @@ class ActiveDownloadMinifiedAdapter(onItemClickListener: OnItemClickListener, ac
             popup.menuInflater.inflate(R.menu.active_downloads_minified, popup.menu)
             if (Build.VERSION.SDK_INT > 27) popup.menu.setGroupDividerEnabled(true)
 
-            val pause = popup.menu[0]
-            val resume = popup.menu[1]
+//            val pause = popup.menu[0]
+//            val resume = popup.menu[1]
 //
 //            if (paused){
 //                pause.isVisible = false

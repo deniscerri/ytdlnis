@@ -774,6 +774,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
         val fileSizes = mutableListOf<Long>()
         items.forEach {
             if (it.type == DownloadViewModel.Type.video){
+                println(it.format.filesize)
                 if (it.format.filesize <= 5L) {
                     fileSizes.add(0)
                 }else{
@@ -787,6 +788,8 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                     }
                     fileSizes.add(it.format.filesize + audioFormatSize)
                 }
+            }else if (it.type == DownloadViewModel.Type.audio){
+                fileSizes.add(it.format.filesize)
             }
         }
 

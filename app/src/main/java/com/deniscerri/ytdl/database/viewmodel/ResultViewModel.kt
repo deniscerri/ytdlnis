@@ -22,11 +22,16 @@ import com.deniscerri.ytdl.database.repository.SearchHistoryRepository
 import com.deniscerri.ytdl.util.InfoUtil
 import com.deniscerri.ytdl.util.NotificationUtil
 import com.yausername.youtubedl_android.YoutubeDLException
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Semaphore
+import kotlinx.coroutines.sync.withPermit
 import java.util.concurrent.CancellationException
 
 
@@ -40,18 +45,13 @@ class ResultViewModel(private val application: Application) : AndroidViewModel(a
     private val dao: ResultDao
     data class ResultsUiState(
         var processing: Boolean,
-        var errorMessage: Pair<Int, String>?,
-        var actions: MutableList<Pair<Int, ResultAction>>?
+        var errorMessage: String?,
+        var canContinueOnError: Boolean = false
     )
-
-    enum class ResultAction {
-        COPY_LOG
-    }
 
     val uiState: MutableStateFlow<ResultsUiState> = MutableStateFlow(ResultsUiState(
         processing = false,
         errorMessage = null,
-        actions = null
     ))
 
 
@@ -63,7 +63,8 @@ class ResultViewModel(private val application: Application) : AndroidViewModel(a
     var updateFormatsResultData: MutableStateFlow<MutableList<Format>?> = MutableStateFlow(null)
     private var updateFormatsResultDataJob: Job? = null
 
-    var parsingQueries: Job? = null
+    private var parsingQueries: Job? = null
+    private var parsingQueriesJobList : MutableList<Job> = mutableListOf()
 
     private val sharedPreferences: SharedPreferences
 
@@ -101,6 +102,7 @@ class ResultViewModel(private val application: Application) : AndroidViewModel(a
 
     fun cancelParsingQueries(){
         parsingQueries?.cancel(CancellationException())
+        parsingQueriesJobList.forEach { it.cancel(CancellationException()) }
         uiState.update {it.copy(processing = false)}
     }
 
@@ -110,23 +112,29 @@ class ResultViewModel(private val application: Application) : AndroidViewModel(a
         }
         val resetResults = inputQueries.size == 1
 
-        uiState.update {it.copy(processing = true, errorMessage = null, actions = null)}
+        uiState.update {it.copy(processing = true, errorMessage = null)}
         val res = mutableListOf<ResultItem?>()
-        inputQueries.forEach { inputQuery ->
-            try {
-                res.addAll(repository.getResultsFromSource(inputQuery, resetResults))
-            } catch (e: Exception) {
-                if (updateResultDataJob?.isCancelled == false || e is YoutubeDLException){
-                    uiState.update {it.copy(
-                        processing = false,
-                        errorMessage = Pair(R.string.no_results, e.message.toString()),
-                        actions = mutableListOf(Pair(R.string.copy_log, ResultAction.COPY_LOG))
-                    )}
-                    Log.e(tag, e.toString())
-                }
 
-            }
+        val requestSemaphore = Semaphore(10)
+        inputQueries.forEach { inputQuery ->
+            parsingQueriesJobList.add(viewModelScope.launch(Dispatchers.IO){
+                requestSemaphore.withPermit {
+                    try {
+                        res.addAll(repository.getResultsFromSource(inputQuery, resetResults))
+                    } catch (e: Exception) {
+                        if (updateResultDataJob?.isCancelled == false || e is YoutubeDLException){
+                            uiState.update {it.copy(
+                                processing = false,
+                                errorMessage = e.message.toString(),
+                            )}
+                            Log.e(tag, e.toString())
+                        }
+
+                    }
+                }
+            })
         }
+        parsingQueriesJobList.joinAll()
         if (!isForegrounded() && inputQueries.size > 1){
             notificationUtil.showQueriesFinished()
         }
@@ -279,17 +287,12 @@ class ResultViewModel(private val application: Application) : AndroidViewModel(a
                         uiState.update {
                             it.copy(
                                 processing = false,
-                                errorMessage = Pair(R.string.no_results, e.message.toString()),
-                                actions = mutableListOf(
-                                    Pair(
-                                        R.string.copy_log,
-                                        ResultAction.COPY_LOG
-                                    )
-                                )
+                                errorMessage = e.message.toString(),
                             )
                         }
                         Log.e(tag, e.toString())
                     }
+                    updatingFormats.emit(false)
                 }
             }
             updateFormatsResultDataJob?.start()

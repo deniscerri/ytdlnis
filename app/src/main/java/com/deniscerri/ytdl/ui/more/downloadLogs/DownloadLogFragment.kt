@@ -48,6 +48,9 @@ class DownloadLogFragment : Fragment() {
     private lateinit var logViewModel: LogViewModel
     private lateinit var sharedPreferences: SharedPreferences
 
+    private var autoScroll : Boolean = true
+    private var scrollDownBtn : MenuItem? = null
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -113,6 +116,7 @@ class DownloadLogFragment : Fragment() {
 
         contentScrollView.enableFastScroll()
 
+        scrollDownBtn = bottomAppBar?.menu?.children?.first { it.itemId == R.id.scroll_down }
 
         val slider = view.findViewById<Slider>(R.id.textsize_seekbar)
         bottomAppBar?.setOnMenuItemClickListener { m: MenuItem ->
@@ -124,16 +128,17 @@ class DownloadLogFragment : Fragment() {
                         scrollView.removeAllViews()
                         parent.removeView(scrollView)
                         parent.addView(content, 0)
-                        contentScrollView.setPadding(0,0,0,
-                            (requireContext().resources.displayMetrics.density * 150).toInt()
-                        )
+//                        contentScrollView.setPadding(0,0,0,
+//                            (requireContext().resources.displayMetrics.density * 150).toInt()
+//                        )
+                        updateAutoScrollState()
                     }else{
                         val parent = content.parent as ViewGroup
                         parent.removeView(content)
                         scrollView = HorizontalScrollView(requireContext())
-                        scrollView.setPadding(0,0,0,
-                            (requireContext().resources.displayMetrics.density * 150).toInt()
-                        )
+//                        scrollView.setPadding(0,0,0,
+//                            (requireContext().resources.displayMetrics.density * 150).toInt()
+//                        )
                         contentScrollView.setPadding(0,0,0,0)
                         scrollView.layoutParams = LinearLayout.LayoutParams(
                             ViewGroup.LayoutParams.MATCH_PARENT,
@@ -142,11 +147,13 @@ class DownloadLogFragment : Fragment() {
                         scrollView.addView(content)
                         scrollView.id = R.id.horizontalscroll_output
                         parent.addView(scrollView, 0)
+                        updateAutoScrollState()
                     }
                 }
 
                 R.id.scroll_down -> {
                     m.isVisible = false
+                    autoScroll = true
                     contentScrollView.fullScroll(View.FOCUS_DOWN)
                 }
 
@@ -171,9 +178,12 @@ class DownloadLogFragment : Fragment() {
         }
 
         contentScrollView.setOnScrollChangeListener { view, sx, sy, osx, osy ->
-            if (sy < osy){
-                bottomAppBar?.menu?.get(1)?.isVisible = contentScrollView.canScrollVertically(1)
-            }
+            updateAutoScrollState()
+        }
+
+        contentScrollView.setOnTouchListener { view, motionEvent ->
+            autoScroll = false
+            false
         }
 
 
@@ -185,14 +195,21 @@ class DownloadLogFragment : Fragment() {
                             content.setText(logItem.content, TextView.BufferType.SPANNABLE)
                             bottomAppBar?.menu?.get(1)?.isVisible = contentScrollView.canScrollVertically(1)
                         }
-                        if (!bottomAppBar.menu.children.first { it.itemId == R.id.scroll_down }.isVisible){
-                            content.scrollTo(0, content.height)
-                            contentScrollView.fullScroll(View.FOCUS_DOWN)
+                        if (autoScroll){
+                            //content.scrollTo(0, content.height)
+                            content.post {
+                                contentScrollView.fullScroll(View.FOCUS_DOWN)
+                            }
                         }
                     }
                 }
             }
         }
+    }
+
+    private fun updateAutoScrollState() {
+        val canVerticallyScroll = contentScrollView.canScrollVertically(1)
+        scrollDownBtn?.isVisible = canVerticallyScroll
     }
 
     companion object {

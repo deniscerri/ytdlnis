@@ -20,6 +20,7 @@ import androidx.core.content.FileProvider
 import androidx.core.os.bundleOf
 import androidx.documentfile.provider.DocumentFile
 import androidx.navigation.NavDeepLinkBuilder
+import com.deniscerri.ytdl.MainActivity
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.receiver.CancelDownloadNotificationReceiver
@@ -148,10 +149,8 @@ class NotificationUtil(var context: Context) {
     fun createDownloadServiceNotification(
         pendingIntent: PendingIntent?,
         title: String?,
-        itemID: Int,
     ): Notification {
         val notificationBuilder = getBuilder(DOWNLOAD_SERVICE_CHANNEL_ID)
-
 
         return notificationBuilder
             .setContentTitle(title)

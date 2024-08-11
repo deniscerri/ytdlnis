@@ -114,7 +114,7 @@ class FormatSelectionBottomSheetDialog(
             return
         }
 
-        items = _items.distinctBy { it!!.url }.toMutableList()
+        items = _items.toMutableList()
         if (items.size == 1) {
             formats = items.first()!!.allFormats
         }else{
@@ -192,8 +192,10 @@ class FormatSelectionBottomSheetDialog(
 
         refreshBtn.setOnClickListener {
            lifecycleScope.launch {
-               val itemsThatHaveFormats = items.filter { it!!.allFormats.isNotEmpty() }
-               val itemsWithMissingFormats = items.filter { it!!.allFormats.isEmpty() }.ifEmpty { items }
+               val distinctItems = items.distinctBy { it!!.url }
+
+               val itemsThatHaveFormats = distinctItems.filter { it!!.allFormats.isNotEmpty() }
+               val itemsWithMissingFormats = distinctItems.filter { it!!.allFormats.isEmpty() }.ifEmpty { distinctItems }
 
                if (itemsWithMissingFormats.size > 10){
                    continueInBackgroundSnackBar = Snackbar.make(view, R.string.update_formats_background, Snackbar.LENGTH_LONG)
@@ -238,11 +240,7 @@ class FormatSelectionBottomSheetDialog(
                                }
                            }.onFailure { err ->
                                withContext(Dispatchers.Main){
-                                   UiUtil.handleResultResponse(requireActivity(), ResultViewModel.ResultsUiState(
-                                       false,
-                                       Pair(R.string.no_results, err.message.toString()),
-                                       mutableListOf(Pair(R.string.copy_log, ResultViewModel.ResultAction.COPY_LOG))
-                                   ), closed = {})
+                                   UiUtil.handleNoResults(requireActivity(), err.message.toString(), false, continued = {}, closed = {})
                                }
                            }
 
@@ -270,9 +268,9 @@ class FormatSelectionBottomSheetDialog(
                                    }
                                }else{
                                    multipleFormatsListener.onFormatUpdated(it.url, it.formats)
-                                   items.firstOrNull { item -> item!!.url == it.url }?.apply {
-                                       allFormats.clear()
-                                       allFormats.addAll(it.formats)
+                                   items.filter { item -> item!!.url == it.url }.forEach { d ->
+                                       d?.allFormats?.clear()
+                                       d?.allFormats?.addAll(it.formats)
                                    }
                                    progressInt++
                                    lifecycleScope.launch(Dispatchers.Main) {
@@ -290,7 +288,7 @@ class FormatSelectionBottomSheetDialog(
                            val flatFormatCollection = formatCollection.flatten()
                            val commonFormats =
                                flatFormatCollection.groupingBy { it.format_id }.eachCount()
-                                   .filter { it.value == items.size }
+                                   .filter { it.value == distinctItems.size }
                                    .mapValues { flatFormatCollection.first { f -> f.format_id == it.key } }
                                    .map { it.value }
                            formats.addAll(commonFormats)
