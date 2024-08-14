@@ -416,4 +416,7 @@
     <string name="weekly">Həftəlik</string>
     <string name="monthly">Aylıq</string>
     <string name="cleanup_leftover_downloads">Qalan yükləmələri təmizlə (ləğv edilmiş, xətalı)</string>
+    <string name="continue_anyway">Yenə də davam et</string>
+    <string name="playlist_as_album">Albom Üst Məlumatı kimi Pleylist Adı istifadə et</string>
+    <string name="playlist_as_album_summary">Albom üst məlumatı yoxdursa, əvəzinə pleylist adı istifadə et</string>
 </resources>
