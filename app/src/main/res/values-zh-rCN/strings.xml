@@ -416,4 +416,7 @@
     <string name="weekly">每周</string>
     <string name="monthly">每月</string>
     <string name="cleanup_leftover_downloads">清理剩余下载（被取消，出错）</string>
+    <string name="continue_anyway">仍然继续</string>
+    <string name="playlist_as_album">将播放列表名用作专辑元数据</string>
+    <string name="playlist_as_album_summary">如果专辑元数据不存在，使用播放列表名</string>
 </resources>
