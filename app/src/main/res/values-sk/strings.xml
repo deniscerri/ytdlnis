@@ -416,4 +416,7 @@
     <string name="weekly">Týždenne</string>
     <string name="monthly">Mesačne</string>
     <string name="cleanup_leftover_downloads">Vyčistiť zvyšky sťahovania (zrušené, chybné)</string>
+    <string name="continue_anyway">Pokračovať ďalej</string>
+    <string name="playlist_as_album">Použiť názov playlistu ako metadáta albumu</string>
+    <string name="playlist_as_album_summary">Ak metadáta albumu nie sú k dispozícii, použije namiesto nich názov playlistu</string>
 </resources>
