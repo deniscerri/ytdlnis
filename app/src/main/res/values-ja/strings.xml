@@ -415,4 +415,7 @@
     <string name="daily">毎日</string>
     <string name="weekly">毎週</string>
     <string name="monthly">毎月</string>
+    <string name="continue_anyway">とにかく続行</string>
+    <string name="playlist_as_album_summary">アルバムのメタデータがなければ再生リスト名を使う</string>
+    <string name="playlist_as_album">再生リスト名をアルバムのメタデータに使用</string>
 </resources>
