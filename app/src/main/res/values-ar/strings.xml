@@ -416,4 +416,7 @@
     <string name="weekly">أسبوعيًا</string>
     <string name="monthly">شهريًا</string>
     <string name="cleanup_leftover_downloads">تنظيف التنزيلات المتبقية (الملغاة، المتعطلة)</string>
+    <string name="continue_anyway">متابعة على أي حال</string>
+    <string name="playlist_as_album">استخدام اسم قائمة التشغيل كمصدر للمعلومات الوصفية عن الألبوم</string>
+    <string name="playlist_as_album_summary">إذا كانت معلومات الألبوم غير موجودة، استخدم اسم قائمة التشغيل بدلاً من ذلك</string>
 </resources>
