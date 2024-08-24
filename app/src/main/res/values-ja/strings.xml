@@ -126,7 +126,7 @@
     <string name="update_template">テンプレートを更新</string>
     <string name="create">作成</string>
     <string name="preferred_download_type">優先するダウンロード種別</string>
-    <string name="selected">項目を選択</string>
+    <string name="selected">項目選択</string>
     <string name="redownload">再ダウンロード</string>
     <string name="select">選択</string>
     <string name="confirm_delete_logs_desc">すべてのログを完全に削除します。</string>
@@ -210,7 +210,7 @@
     <string name="metered_network_download_start_info">従量制ではないネットワークに接続するとダウンロードを開始</string>
     <string name="invert_selected">選択を反転</string>
     <string name="save_subs">字幕を保存</string>
-    <string name="save_subs_desc">字幕ファイルを書き込みます</string>
+    <string name="save_subs_desc">字幕ファイルを書き込む</string>
     <string name="subtitle_languages">字幕の言語</string>
     <string name="format_source">形式一覧の取得元</string>
     <string name="video_recommendations">おすすめの動画</string>
@@ -280,8 +280,8 @@
     <string name="saved">保存済み</string>
     <string name="clear_saved">保存済みの項目を消去</string>
     <string name="save_for_later">後でダウンロードを保存しますか\?</string>
-    <string name="write_description">詳細を保存</string>
-    <string name="write_description_summary">詳細のファイルを書き込みます</string>
+    <string name="write_description">説明文を保存</string>
+    <string name="write_description_summary">説明用のファイルを書き込む</string>
     <string name="extra_command">追加のコマンド</string>
     <string name="embed_metadata">メタデータを埋め込む</string>
     <string name="show_terminal">共有メニューにターミナルを表示する</string>
@@ -397,15 +397,15 @@
     <string name="no_audio">音声なし動画</string>
     <string name="location">場所</string>
     <string name="enable_alarm_permission">アプリの設定から SCHEDULE_EXACT_ALARM の権限を有効にする必要があります。</string>
-    <string name="format_importance_note">形式の要素の重要度を調整します。この順序はアプリがダウンロードカード内で形式を取得し、形式を自動選択する際にみ使われます！</string>
+    <string name="format_importance_note">形式の要素の重要度を調整します。この順序はアプリがダウンロードカード内で形式を取得し、形式を自動選択する際にのみ使われます！</string>
     <string name="always">常に</string>
     <string name="navigation_bar">ナビバー</string>
     <string name="label_visibility">ラベルの表示</string>
-    <string name="use_alarm_manager">時間管理に WorkManager の代わりに AlarmManager を使う</string>
+    <string name="use_alarm_manager">時間管理に WorkManager でなく AlarmManager を使う</string>
     <string name="use_alarm_manager_summary">WorkManager が提供者によりに制限されていたり、時間管理されたジョブの精度が良くないなら、これを有効にします</string>
     <string name="queue">キュー</string>
     <string name="use_item_url_not_playlist_summary">Libretube のオフライン再生リストは yt-dlp が認識できないため有用です。有効にすると、再生リストのメタデータは埋め込まれません</string>
-    <string name="use_item_url_not_playlist">再生リストのURLの代わりにアイテムのURLを使用</string>
+    <string name="use_item_url_not_playlist">再生リストのURLの代わりに個々の項目のURLを使用</string>
     <string name="restore_info">復元は、保存済みデータと現在のデータを統合します。
 \n初期化は、消去しファイル中の保存済みデータのみを使用します。</string>
     <string name="reset">初期化</string>
@@ -418,4 +418,5 @@
     <string name="continue_anyway">とにかく続行</string>
     <string name="playlist_as_album_summary">アルバムのメタデータがなければ再生リスト名を使う</string>
     <string name="playlist_as_album">再生リスト名をアルバムのメタデータに使用</string>
+    <string name="sync_with_source">監視先と同期</string>
 </resources>
