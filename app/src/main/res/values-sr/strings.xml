@@ -416,4 +416,7 @@
     <string name="weekly">Недељно</string>
     <string name="monthly">Месечно</string>
     <string name="cleanup_leftover_downloads">Очистите преостала преузимања (отказана, с грешком)</string>
+    <string name="playlist_as_album">Користи назив плејлисте као метаподатке албума</string>
+    <string name="continue_anyway">Ипак настави</string>
+    <string name="playlist_as_album_summary">Ако метаподаци албума нису доступни, користите назив плејлисте</string>
 </resources>

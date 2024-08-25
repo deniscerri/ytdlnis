@@ -416,4 +416,7 @@
     <string name="weekly">Semanalmente</string>
     <string name="cleanup_leftover_downloads">Limpar downloads restantes (cancelados, com erro)</string>
     <string name="monthly">Mensalmente</string>
+    <string name="continue_anyway">Continuar mesmo assim</string>
+    <string name="playlist_as_album">Usar nome da playlist como metadados do álbum</string>
+    <string name="playlist_as_album_summary">Se os metadados do álbum não estiverem presentes, use o nome da playlist</string>
 </resources>
