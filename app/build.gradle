@@ -11,7 +11,7 @@ def properties = new Properties()
 def versionMajor = 1
 def versionMinor = 7
 def versionPatch = 9
-def versionBuild = 0 // bump for dogfood builds, public betas, etc.
+def versionBuild = 1 // bump for dogfood builds, public betas, etc.
 def isBeta = false
 def versionExt = isBeta ? ".${versionBuild}-beta" : ""
 
