@@ -88,11 +88,16 @@
     static <1>$Companion Companion;
 }
 
-### Rules for NewPipeExtractor
-#-keep class org.schabi.newpipe.extractor.timeago.patterns.** { *; }
-#-keep class org.mozilla.javascript.** { *; }
-#-keep class org.mozilla.classfile.ClassFileWriter
-#-dontwarn org.mozilla.javascript.tools.**
+# Rules for NewPipeExtractor
+-keep class org.schabi.newpipe.extractor.timeago.patterns.** { *; }
+-keep class org.mozilla.javascript.** { *; }
+-keep class org.mozilla.classfile.ClassFileWriter
+-dontwarn org.mozilla.javascript.tools.**
+-dontwarn java.beans.BeanDescriptor
+-dontwarn java.beans.BeanInfo
+-dontwarn java.beans.IntrospectionException
+-dontwarn java.beans.Introspector
+-dontwarn java.beans.PropertyDescriptor
 
 -keepattributes RuntimeVisibleAnnotations,AnnotationDefault
 -dontobfuscate

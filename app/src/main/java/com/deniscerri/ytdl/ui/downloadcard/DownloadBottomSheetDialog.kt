@@ -7,7 +7,6 @@ import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
-import android.text.format.DateFormat
 import android.util.DisplayMetrics
 import android.util.Patterns
 import android.view.LayoutInflater
@@ -40,7 +39,6 @@ import com.deniscerri.ytdl.database.viewmodel.HistoryViewModel
 import com.deniscerri.ytdl.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdl.receiver.ShareActivity
 import com.deniscerri.ytdl.ui.BaseActivity
-import com.deniscerri.ytdl.util.InfoUtil
 import com.deniscerri.ytdl.util.UiUtil
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -60,8 +58,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
-import java.text.SimpleDateFormat
-import java.util.Locale
 
 
 class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
@@ -73,7 +69,6 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
     private lateinit var resultViewModel: ResultViewModel
     private lateinit var behavior: BottomSheetBehavior<View>
     private lateinit var commandTemplateViewModel : CommandTemplateViewModel
-    private lateinit var infoUtil: InfoUtil
     private lateinit var sharedPreferences : SharedPreferences
     private lateinit var updateItem : Button
     private lateinit var view: View
@@ -96,7 +91,6 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
         historyViewModel = ViewModelProvider(requireActivity())[HistoryViewModel::class.java]
         resultViewModel = ViewModelProvider(requireActivity())[ResultViewModel::class.java]
         commandTemplateViewModel = ViewModelProvider(requireActivity())[CommandTemplateViewModel::class.java]
-        infoUtil = InfoUtil(requireContext())
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
         val res: ResultItem?
         val dwl: DownloadItem?

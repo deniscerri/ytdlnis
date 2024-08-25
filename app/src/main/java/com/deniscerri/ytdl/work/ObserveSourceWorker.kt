@@ -21,8 +21,8 @@ import com.deniscerri.ytdl.database.repository.ObserveSourcesRepository
 import com.deniscerri.ytdl.database.repository.ResultRepository
 import com.deniscerri.ytdl.util.Extensions.calculateNextTimeForObserving
 import com.deniscerri.ytdl.util.FileUtil
-import com.deniscerri.ytdl.util.InfoUtil
 import com.deniscerri.ytdl.util.NotificationUtil
+import com.deniscerri.ytdl.util.extractors.YTDLPUtil
 import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -42,8 +42,8 @@ class ObserveSourceWorker(
         val resultsRepo = ResultRepository(dbManager.resultDao, App.instance)
         val historyRepo = HistoryRepository(dbManager.historyDao)
         val downloadRepo = DownloadRepository(dbManager.downloadDao)
+        val ytdlpUtil = YTDLPUtil(context)
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
-        val infoUtil = InfoUtil(context)
 
         val item = repo.getByID(sourceID)
         if (item.status == ObserveSourcesRepository.SourceStatus.STOPPED){
@@ -56,7 +56,7 @@ class ObserveSourceWorker(
         setForegroundAsync(foregroundInfo)
 
         val list = kotlin.runCatching {
-            infoUtil.getFromYTDL(item.url)
+            ytdlpUtil.getFromYTDL(item.url)
         }.onFailure {
             Log.e("observe", it.toString())
         }.getOrElse { listOf() }
@@ -142,8 +142,8 @@ class ObserveSourceWorker(
 
             items.forEach {
                 it.status = DownloadRepository.Status.Queued.toString()
-                val currentCommand = infoUtil.buildYoutubeDLRequest(it)
-                val parsedCurrentCommand = infoUtil.parseYTDLRequestString(currentCommand)
+                val currentCommand = ytdlpUtil.buildYoutubeDLRequest(it)
+                val parsedCurrentCommand = ytdlpUtil.parseYTDLRequestString(currentCommand)
                 val existingDownload = activeAndQueuedDownloads.firstOrNull{d ->
                     d.id = 0
                     d.logID = null

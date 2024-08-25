@@ -14,6 +14,9 @@ interface ResultDao {
     @Query("SELECT * FROM results order by id")
     fun getResults() : Flow<List<ResultItem>>
 
+    @Query("SELECT * FROM results WHERE playlistTitle LIKE '%' || :playlistName || '%'  order by id")
+    fun getResultsWithPlaylistName(playlistName: String) : List<ResultItem>
+
     @Query("SELECT COUNT(id) FROM results")
     fun getCount() : Flow<Int>
 

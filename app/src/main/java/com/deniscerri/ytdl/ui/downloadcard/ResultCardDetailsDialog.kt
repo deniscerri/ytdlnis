@@ -13,7 +13,6 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
-import android.text.format.DateFormat
 import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
@@ -21,8 +20,6 @@ import android.view.ViewGroup
 import android.view.Window
 import android.widget.Button
 import android.widget.TextView
-import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProvider
@@ -48,8 +45,6 @@ import com.deniscerri.ytdl.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdl.ui.adapter.ActiveDownloadMinifiedAdapter
 import com.deniscerri.ytdl.ui.adapter.GenericDownloadAdapter
 import com.deniscerri.ytdl.util.Extensions.setFullScreen
-import com.deniscerri.ytdl.util.FileUtil
-import com.deniscerri.ytdl.util.InfoUtil
 import com.deniscerri.ytdl.util.NotificationUtil
 import com.deniscerri.ytdl.util.UiUtil
 import com.deniscerri.ytdl.util.VideoPlayerUtil
@@ -58,7 +53,6 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.button.MaterialButton
-import com.google.android.material.chip.Chip
 import com.google.android.material.color.MaterialColors
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.elevation.SurfaceColors
@@ -76,13 +70,9 @@ import kotlinx.coroutines.withContext
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Locale
 
 
 class ResultCardDetailsDialog : BottomSheetDialogFragment(), GenericDownloadAdapter.OnItemClickListener, ActiveDownloadMinifiedAdapter.OnItemClickListener {
-    private lateinit var infoUtil: InfoUtil
     private lateinit var notificationUtil: NotificationUtil
     private lateinit var videoView: PlayerView
     private lateinit var downloadViewModel: DownloadViewModel
@@ -99,7 +89,6 @@ class ResultCardDetailsDialog : BottomSheetDialogFragment(), GenericDownloadAdap
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        infoUtil = InfoUtil(requireActivity())
         notificationUtil = NotificationUtil(requireActivity())
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
         resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]
@@ -283,7 +272,7 @@ class ResultCardDetailsDialog : BottomSheetDialogFragment(), GenericDownloadAdap
             try {
                 val data = withContext(Dispatchers.IO) {
                     if (item.urls.isEmpty()) {
-                        infoUtil.getStreamingUrlAndChapters(item.url)
+                        resultViewModel.getStreamingUrlAndChapters(item.url)
                     }else{
                         Pair(item.urls.split("\n"), null)
                     }

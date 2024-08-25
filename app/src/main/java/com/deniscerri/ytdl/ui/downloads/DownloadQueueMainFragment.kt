@@ -30,6 +30,7 @@ import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import com.google.gson.Gson
 import com.yausername.youtubedl_android.YoutubeDL
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
@@ -71,7 +72,9 @@ class DownloadQueueMainFragment : Fragment(){
         }else{
             mainActivity.hideBottomNavigation()
         }
-        topAppBar.setNavigationOnClickListener { mainActivity.onBackPressedDispatcher.onBackPressed() }
+        topAppBar.setNavigationOnClickListener {
+            mainActivity.onBackPressedDispatcher.onBackPressed()
+        }
 
         tabLayout = view.findViewById(R.id.download_tablayout)
         viewPager2 = view.findViewById(R.id.download_viewpager)
@@ -147,6 +150,8 @@ class DownloadQueueMainFragment : Fragment(){
                 }
             }, 200)
         }
+
+        arguments?.clear()
 
         if (sharedPreferences.getBoolean("show_count_downloads", false)){
             lifecycleScope.launch {

@@ -3,20 +3,13 @@ package com.deniscerri.ytdl.util
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
-import androidx.core.content.ContextCompat
-import androidx.core.content.contentValuesOf
+import android.content.res.Resources
 import androidx.preference.PreferenceManager
 import com.afollestad.materialdialogs.utils.MDUtil.getStringArray
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.models.Format
-import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
-import com.google.gson.Gson
-import com.google.gson.JsonObject
-import org.json.JSONObject
-import java.text.Normalizer.Form
-import java.util.regex.Pattern
 
-class FormatSorter(private var context: Context) {
+class FormatUtil(private var context: Context) {
     private val sharedPreferences : SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
     private val videoFormatIDPreference : List<String> = sharedPreferences.getString("format_id", "").toString().split(",").filter { it.isNotEmpty() }
     private val audioFormatIDPreference : List<String> = sharedPreferences.getString("format_id_audio", "").toString().split(",").filter { it.isNotEmpty() }
@@ -168,6 +161,53 @@ class FormatSorter(private var context: Context) {
             }
         }
         return formats.sortedWith(fieldSorter)
+    }
+
+    fun getGenericAudioFormats(resources: Resources) : MutableList<Format>{
+        val audioFormatIDPreference = sharedPreferences.getString("format_id_audio", "").toString().split(",").filter { it.isNotEmpty() }
+        val audioFormats = resources.getStringArray(R.array.audio_formats)
+        val audioFormatsValues = resources.getStringArray(R.array.audio_formats_values)
+        val formats = mutableListOf<Format>()
+        val containerPreference = sharedPreferences.getString("audio_format", "")
+        val acodecPreference = sharedPreferences.getString("audio_codec", "")!!.run {
+            if (this.isEmpty()){
+                resources.getString(R.string.defaultValue)
+            }else{
+                val audioCodecs = resources.getStringArray(R.array.audio_codec)
+                val audioCodecsValues = resources.getStringArray(R.array.audio_codec_values)
+                audioCodecs[audioCodecsValues.indexOf(this)]
+            }
+        }
+        audioFormats.forEachIndexed { idx, it -> formats.add(Format(audioFormatsValues[idx], containerPreference!!,"",acodecPreference!!, "",0, it)) }
+        audioFormatIDPreference.forEach { formats.add(Format(it, containerPreference!!,"",resources.getString(R.string.preferred_format_id), "",1, it)) }
+        return formats
+    }
+
+    fun getGenericVideoFormats(resources: Resources) : MutableList<Format>{
+        val formatIDPreference = sharedPreferences.getString("format_id", "").toString().split(",").filter { it.isNotEmpty() }
+        val videoFormatsValues = resources.getStringArray(R.array.video_formats_values)
+        val videoFormats = resources.getStringArray(R.array.video_formats)
+        val formats = mutableListOf<Format>()
+        val containerPreference = sharedPreferences.getString("video_format", "")
+        val audioCodecPreference = sharedPreferences.getString("audio_codec", "")!!.run {
+            if (this.isNotEmpty()){
+                val audioCodecs = resources.getStringArray(R.array.audio_codec)
+                val audioCodecsValues = resources.getStringArray(R.array.audio_codec_values)
+                audioCodecs[audioCodecsValues.indexOf(this)]
+            }else this
+        }
+        val videoCodecPreference = sharedPreferences.getString("video_codec", "")!!.run {
+            if (this.isEmpty()){
+                resources.getString(R.string.defaultValue)
+            }else{
+                val videoCodecs = resources.getStringArray(R.array.video_codec)
+                val videoCodecsValues = resources.getStringArray(R.array.video_codec_values)
+                videoCodecs[videoCodecsValues.indexOf(this)]
+            }
+        }
+        videoFormatsValues.forEachIndexed { index, it ->  formats.add(Format(it, containerPreference!!,videoCodecPreference,audioCodecPreference, "",0, videoFormats[index])) }
+        formatIDPreference.forEach { formats.add(Format(it, containerPreference!!,resources.getString(R.string.preferred_format_id),"", "",1, it)) }
+        return formats
     }
 
     //OLD CODE JUST FOR STORAGE / REFERENCE

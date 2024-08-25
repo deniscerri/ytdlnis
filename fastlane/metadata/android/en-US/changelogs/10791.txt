@@ -1,0 +1,46 @@
+# What's Changed
+
+## Newpipe Extractor
+
+Since Piped is currently broken and unusable, i implemented the NEWPIPE EXTRACTOR to replace it. This includes:
+- video queries
+- playlist queries
+- trending
+- searching
+- youtube channel queries
+- formats
+The speed is as fast as piped and seems to be working. Will use that for the forseeable future, until further notice
+
+## Home screen filtering
+
+This is a feature request that is long overdue. When implementing newpipe extractor i also coded in proper youtube channel parsing. Now items have their respective channel playlist name. So the app will show you filter chips if you have multiple playlist available.
+So you can filter between videos, shorts, livestreams and choose to just download those by long pressing etc etc.
+In case newpipe fails and it defaults to yt-dlp, proper channel playlist parsing is not yet possible.
+You can track the issue i have created here:
+https://github.com/yt-dlp/yt-dlp/issues/10827
+
+## Other fixes
+
+- Fixed app selecting all playlist items even though user selected a few, if the user is parsing an instagram post. (they all had the same url)
+- Fixed app not changing container label in the multiple download card when switching download type
+- Fixed app not being able to return to home after clicking the download notification
+- Added ability for the app to parse multiple urls at the same time. For now it will do 10 items at max
+- Added ability to show "Continue Anyway" in the error dialog so it will keep showing the download card in case you want to save it for later or schedule it
+- Added general subtitle variant codes with .*
+- Fixed app not applying the subtitle language label in the subtitle configuration dialog
+- Fixed app not showing the total format size when being in audio download type in the multiple downlod card
+- Fixed app not navigating to the download queue fragment to adjust the errored download? Couldnt reprod but reworked logic lmk
+- Fixed app still using original title for metadata even though the user changed it in the textfield
+- Slight fixes for artist parsing for ytm videos
+- Improved and simplified uploader parsing when quick downloading
+- Ignored the recode command when using avi container, because it doesnt support it
+- Prevented app selecting bad formats 233 and 234 when quick downloading
+- Fixed app not showing best quality and worst quality labels depending on the user language
+- Fixed app crashing when selecting formats of an instagram post with the same url
+
+## Note
+
+Some people are asking for the ability to not use cache while downloading in usb storage. This is an android limitation. Even though you might have all files access, android still doesnt consider usb storage as main storage and cant directly write to it. So i have to use caching and then transfer the file.
+If anyone is knowledgeable to pull this off, dm me on telegram and we can make it happen. :)
+
+I could've released this sooner but i have been busy :/

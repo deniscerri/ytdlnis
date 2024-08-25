@@ -7,10 +7,8 @@ import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.view.Window
 import android.widget.*
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.core.view.children
 import androidx.core.view.forEach
 import androidx.core.view.isVisible
@@ -24,25 +22,20 @@ import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel.Type
 import com.deniscerri.ytdl.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdl.util.Extensions.isYoutubeURL
-import com.deniscerri.ytdl.util.FormatSorter
-import com.deniscerri.ytdl.util.InfoUtil
+import com.deniscerri.ytdl.util.FormatUtil
 import com.deniscerri.ytdl.util.UiUtil
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.card.MaterialCardView
-import com.google.android.material.chip.Chip
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import okhttp3.internal.format
-import java.util.regex.Pattern
 
 
 class FormatSelectionBottomSheetDialog(
@@ -52,10 +45,11 @@ class FormatSelectionBottomSheetDialog(
 ) : BottomSheetDialogFragment() {
 
     private lateinit var behavior: BottomSheetBehavior<View>
-    private lateinit var infoUtil: InfoUtil
+    private lateinit var formatUtil: FormatUtil
     private lateinit var view: View
     private lateinit var continueInBackgroundSnackBar : Snackbar
     private lateinit var downloadViewModel: DownloadViewModel
+    private lateinit var resultViewModel: ResultViewModel
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var videoFormatList : LinearLayout
     private lateinit var audioFormatList : LinearLayout
@@ -95,11 +89,12 @@ class FormatSelectionBottomSheetDialog(
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        infoUtil = InfoUtil(requireActivity().applicationContext)
+        formatUtil = FormatUtil(requireContext())
         chosenFormats = listOf()
         selectedAudios = mutableListOf()
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
+        resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]
     }
 
 
@@ -133,8 +128,8 @@ class FormatSelectionBottomSheetDialog(
             multipleFormatsListener = this
         }
 
-        genericAudioFormats = infoUtil.getGenericAudioFormats(requireContext().resources)
-        genericVideoFormats = infoUtil.getGenericVideoFormats(requireContext().resources)
+        genericAudioFormats = formatUtil.getGenericAudioFormats(requireContext().resources)
+        genericVideoFormats = formatUtil.getGenericVideoFormats(requireContext().resources)
 
         sortBy = FormatSorting.valueOf(sharedPreferences.getString("format_order", "filesize")!!)
         filterBy = FormatCategory.valueOf(sharedPreferences.getString("format_filter", "ALL")!!)
@@ -221,7 +216,7 @@ class FormatSelectionBottomSheetDialog(
                        //simple download
                        if (items.size == 1) {
                            kotlin.runCatching {
-                               val res = infoUtil.getFormats(items.first()!!.url, currentFormatSource)
+                               val res = resultViewModel.getFormats(items.first()!!.url, currentFormatSource)
                                if (!isActive) return@launch
                                res.filter { it.format_note != "storyboard" }
                                chosenFormats = if (items.first()?.type == Type.audio) {
@@ -255,7 +250,7 @@ class FormatSelectionBottomSheetDialog(
                                refreshBtn.text = progress
                            }
 
-                           val res = infoUtil.getFormatsMultiple(itemsWithMissingFormats.map { it!!.url }, currentFormatSource) {
+                           val res = resultViewModel.getFormatsMultiple(itemsWithMissingFormats.map { it!!.url }, currentFormatSource) {
                                if (!isActive) return@getFormatsMultiple
 
                                if (it.unavailable) {
@@ -493,7 +488,7 @@ class FormatSelectionBottomSheetDialog(
             FormatSorting.filesize -> chosenFormats
         }
 
-        val formatSorter = FormatSorter(requireContext())
+        val formatSorter = FormatUtil(requireContext())
 
         //filter category
         when(filterBy){

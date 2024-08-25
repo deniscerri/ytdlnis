@@ -5,7 +5,7 @@ buildscript {
     ext {
         abiCodes = ['armeabi-v7a': 1, 'x86': 2, 'x86_64': 3, 'arm64-v8a': 4]
         // dependency versions
-        appCompatVer = '1.6.1'
+        appCompatVer = '1.7.0'
         junitVer = '4.13.2'
         androidJunitVer = '1.1.5'
         espressoVer = '3.6.1'
@@ -17,20 +17,21 @@ buildscript {
         youtubedlAndroidVer = "ed652962e5"
         youtubedlAndroidVerNoPyCrypto = "97bee6c0e8"
         oldytdlAndroidVer = "0.14.0"
-        workVer = "2.9.0"
+        workVer = "2.9.1"
         composeVer = '1.4.2'
         kotlinVer = "1.7.21"
         coroutineVer = '1.7.3'
         retrofitVer = "2.9.0"
         kodeinVer = "7.16.0"
         navVer = "2.7.7"
-        media3_version = "1.3.1"
+        media3_version = "1.4.0"
         agp_version = '8.1.0'
         agp_version1 = '7.4.2'
         roomVer = '2.5.2'
     }
     repositories {
         mavenCentral()
+        maven { url 'https://jitpack.io' }
         google()
     }
 

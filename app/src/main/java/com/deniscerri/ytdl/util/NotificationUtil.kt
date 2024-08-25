@@ -9,7 +9,6 @@ import android.app.TaskStackBuilder
 import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
@@ -17,7 +16,6 @@ import android.os.Bundle
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.FileProvider
-import androidx.core.os.bundleOf
 import androidx.documentfile.provider.DocumentFile
 import androidx.navigation.NavDeepLinkBuilder
 import com.deniscerri.ytdl.MainActivity
@@ -29,6 +27,7 @@ import com.deniscerri.ytdl.receiver.PauseDownloadNotificationReceiver
 import com.deniscerri.ytdl.receiver.ResumeActivity
 import com.deniscerri.ytdl.util.Extensions.toBitmap
 import java.io.File
+import kotlin.random.Random
 
 
 class NotificationUtil(var context: Context) {
@@ -339,22 +338,28 @@ class NotificationUtil(var context: Context) {
             .setArguments(bundle)
             .createPendingIntent()
 
-        val errorTabPendingIntent = NavDeepLinkBuilder(context)
-            .setGraph(R.navigation.nav_graph)
-            .setDestination(R.id.downloadQueueMainFragment)
-            .setArguments(bundleOf(Pair("tab", "error")))
-            .createPendingIntent()
+        val intent = Intent(context, MainActivity::class.java)
+        intent.setAction(Intent.ACTION_VIEW)
+        intent.putExtra("destination", "Queue")
+        intent.putExtra("tab", "error")
+        val errorTabPendingIntent = PendingIntent.getActivity(
+            context,
+            Random.nextInt(),
+            intent,
+            PendingIntent.FLAG_IMMUTABLE
+        )
 
-        val reconfigurePendingItent = NavDeepLinkBuilder(context)
-            .setGraph(R.navigation.nav_graph)
-            .setDestination(R.id.downloadQueueMainFragment)
-            .setArguments(
-                bundleOf(
-                    Pair("tab", "error"),
-                    Pair("reconfigure", id)
-                )
-            )
-            .createPendingIntent()
+        val intent2 = Intent(context, MainActivity::class.java)
+        intent2.setAction(Intent.ACTION_VIEW)
+        intent2.putExtra("reconfigure", id)
+        intent2.putExtra("tab", "error")
+        intent2.putExtra("destination", "Queue")
+        val reconfigurePendingItent = PendingIntent.getActivity(
+            context,
+            Random.nextInt(),
+            intent2,
+            PendingIntent.FLAG_IMMUTABLE
+        )
 
         notificationBuilder
             .setContentTitle("${res.getString(R.string.failed_download)}: $title")

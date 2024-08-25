@@ -9,7 +9,6 @@ import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.text.Editable
 import android.util.Log
 import android.util.Patterns
 import android.view.*
@@ -19,7 +18,6 @@ import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.os.bundleOf
 import androidx.core.view.children
 import androidx.core.view.forEach
@@ -38,13 +36,15 @@ import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.models.ResultItem
 import com.deniscerri.ytdl.database.models.SearchSuggestionItem
 import com.deniscerri.ytdl.database.models.SearchSuggestionType
+import com.deniscerri.ytdl.database.repository.ResultRepository
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.database.viewmodel.HistoryViewModel
 import com.deniscerri.ytdl.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdl.ui.adapter.HomeAdapter
 import com.deniscerri.ytdl.ui.adapter.SearchSuggestionsAdapter
+import com.deniscerri.ytdl.ui.downloads.HistoryFragment
+import com.deniscerri.ytdl.ui.downloads.HistoryFragment.Companion
 import com.deniscerri.ytdl.util.Extensions.enableFastScroll
-import com.deniscerri.ytdl.util.InfoUtil
 import com.deniscerri.ytdl.util.NotificationUtil
 import com.deniscerri.ytdl.util.ThemeUtil
 import com.deniscerri.ytdl.util.UiUtil
@@ -52,19 +52,15 @@ import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton
-import com.google.android.material.card.MaterialCardView
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.color.MaterialColors
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.android.material.search.SearchBar
 import com.google.android.material.search.SearchView
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
@@ -84,9 +80,11 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
     private var downloadAllFab: ExtendedFloatingActionButton? = null
     private var clipboardFab: ExtendedFloatingActionButton? = null
     private var homeFabs: LinearLayout? = null
-    private var infoUtil: InfoUtil? = null
     private var notificationUtil: NotificationUtil? = null
     private var downloadQueue: ArrayList<ResultItem>? = null
+
+    private lateinit var playlistNameFilterScrollView: HorizontalScrollView
+    private lateinit var playlistNameFilterChipGroup: ChipGroup
 
     private lateinit var resultViewModel : ResultViewModel
     private lateinit var downloadViewModel : DownloadViewModel
@@ -123,7 +121,6 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
         activity = getActivity()
         mainActivity = activity as MainActivity?
         quickLaunchSheet = false
-        infoUtil = InfoUtil(requireContext())
         notificationUtil = NotificationUtil(requireContext())
         selectedObjects = arrayListOf()
         return fragmentView
@@ -157,6 +154,8 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
         downloadSelectedFab = homeFabs!!.findViewById(R.id.download_selected_fab)
         downloadAllFab = homeFabs!!.findViewById(R.id.download_all_fab)
         clipboardFab = homeFabs!!.findViewById(R.id.copied_url_fab)
+        playlistNameFilterScrollView = view.findViewById(R.id.playlist_selection_chips_scrollview)
+        playlistNameFilterChipGroup = view.findViewById(R.id.playlist_selection_chips)
 
         runCatching { materialToolbar!!.title = ThemeUtil.getStyledAppName(requireContext()) }
 
@@ -186,7 +185,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
         val progressBar = view.findViewById<View>(R.id.progress)
 
         resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]
-        resultViewModel.items.observe(requireActivity()) {
+        resultViewModel.getFilteredList().observe(requireActivity()) {
             kotlin.runCatching {
                 homeAdapter!!.submitList(it)
                 resultsList = it
@@ -197,6 +196,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
                     }else{
                         downloadAllFab!!.visibility = GONE
                     }
+
                 }else if (resultViewModel.repository.itemCount.value == 1){
                     if (sharedPreferences!!.getBoolean("download_card", true)){
                         if(it.size == 1 && quickLaunchSheet && parentFragmentManager.findFragmentByTag("downloadSingleSheet") == null){
@@ -211,6 +211,14 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
                 }
                 quickLaunchSheet = true
             }
+        }
+
+        resultViewModel.items.observe(requireActivity()) {
+            updateMultiplePlaylistResults(it
+                .filter { it2 -> it2.playlistTitle != "" && it2.playlistTitle != "YTDLNIS_SEARCH" }
+                .map { it.playlistTitle }
+                .distinct()
+            )
         }
 
         initMenu()
@@ -523,13 +531,13 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
             val combinedList = mutableListOf<SearchSuggestionItem>()
 
             val history = withContext(Dispatchers.IO){
-                resultViewModel.getSearchHistory().map { it.query }.filter { it.contains(searchQuery) }
+                resultViewModel.getSearchHistory().map { it.query }.filter { it.contains(searchQuery, ignoreCase = true) }
             }.map {
                 SearchSuggestionItem(it, SearchSuggestionType.HISTORY)
             }
             val suggestions = if (sharedPreferences!!.getBoolean("search_suggestions", false)){
                 withContext(Dispatchers.IO){
-                    infoUtil!!.getSearchSuggestions(searchQuery)
+                    resultViewModel.getSearchSuggestions(searchQuery)
                 }
             }else{
                 emptyList()
@@ -780,6 +788,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
             mode!!.menuInflater.inflate(R.menu.main_menu_context, menu)
             mode.title = "${selectedObjects.size} ${getString(R.string.selected)}"
             searchBar!!.isEnabled = false
+            playlistNameFilterChipGroup.children.forEach { it.isEnabled = false }
             searchBar!!.menu.forEach { it.isEnabled = false }
             (activity as MainActivity).disableBottomNavigation()
             return true
@@ -877,6 +886,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
             (activity as MainActivity).enableBottomNavigation()
             clearCheckedItems()
             searchBar!!.isEnabled = true
+            playlistNameFilterChipGroup.children.forEach { it.isEnabled = true }
             searchBar!!.menu.forEach { it.isEnabled = true }
             searchBar?.expand(appBarLayout!!)
         }
@@ -969,5 +979,35 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
     override fun onSearchSuggestionAddToSearchBar(text: String) {
           searchView!!.editText.setText(text)
           searchView!!.editText.setSelection(searchView!!.editText.length())
+    }
+
+    private fun updateMultiplePlaylistResults(playlistTitles: List<String>) {
+        if (playlistTitles.isEmpty() || playlistTitles.size == 1) {
+            playlistNameFilterScrollView.isVisible = false
+            playlistNameFilterChipGroup.children.filter { it.tag != "all" }.forEach {
+                playlistNameFilterChipGroup.removeView(it)
+            }
+            return
+        }
+
+        playlistNameFilterChipGroup.children.first().setOnClickListener {
+            resultViewModel.setPlaylistFilter("")
+        }
+
+        for (t in playlistTitles) {
+            val exists = playlistNameFilterChipGroup.children.any { it.tag == t }
+            if (exists) continue
+
+            val tmp = layoutinflater!!.inflate(R.layout.filter_chip, playlistNameFilterChipGroup, false) as Chip
+            tmp.text = t
+            tmp.tag = t
+            tmp.setOnClickListener {
+                resultViewModel.setPlaylistFilter(t)
+            }
+
+            playlistNameFilterChipGroup.addView(tmp)
+        }
+
+        playlistNameFilterScrollView.isVisible = true
     }
 }

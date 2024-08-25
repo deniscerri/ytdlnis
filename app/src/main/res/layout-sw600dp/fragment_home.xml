@@ -150,12 +150,54 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <HorizontalScrollView
+            android:id="@+id/playlist_selection_chips_scrollview"
+            android:layout_width="wrap_content"
+            android:scrollbars="none"
+            android:visibility="gone"
+            app:layout_scrollFlags="scroll|enterAlways"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:paddingHorizontal="10dp"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.chip.ChipGroup
+                    android:layout_width="wrap_content"
+                    app:selectionRequired="false"
+                    android:id="@+id/playlist_selection_chips"
+                    app:singleSelection="true"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/all"
+                        style="@style/Widget.Material3.Chip.Filter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/all"
+                        android:tag="all"
+                        android:minWidth="30dp"
+                        android:checked="true"
+                        app:cornerRadius="10dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </com.google.android.material.chip.ChipGroup>
+
+            </LinearLayout>
+
+        </HorizontalScrollView>
+
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:id="@+id/recyclerViewHome"
             android:orientation="vertical"
             android:layout_height="wrap_content"
             android:scrollbars="none"
+            android:layout_below="@id/playlist_selection_chips_scrollview"
             android:clipToPadding="false"
             android:paddingBottom="200dp"
             app:spanCount="2"

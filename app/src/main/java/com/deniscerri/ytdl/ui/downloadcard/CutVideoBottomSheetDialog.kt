@@ -13,12 +13,11 @@ import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
-import android.view.Window
-import android.view.WindowManager
 import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.children
 import androidx.core.view.isVisible
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.media3.common.MediaItem.fromUri
 import androidx.media3.common.Player
@@ -31,17 +30,15 @@ import androidx.preference.PreferenceManager
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.models.ChapterItem
 import com.deniscerri.ytdl.database.models.DownloadItem
-import com.deniscerri.ytdl.util.Extensions
+import com.deniscerri.ytdl.database.viewmodel.CommandTemplateViewModel
+import com.deniscerri.ytdl.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdl.util.Extensions.convertToTimestamp
 import com.deniscerri.ytdl.util.Extensions.setTextAndRecalculateWidth
 import com.deniscerri.ytdl.util.Extensions.toStringDuration
 import com.deniscerri.ytdl.util.Extensions.toStringTimeStamp
-import com.deniscerri.ytdl.util.Extensions.toTimePeriodsArray
-import com.deniscerri.ytdl.util.InfoUtil
 import com.deniscerri.ytdl.util.UiUtil
 import com.deniscerri.ytdl.util.VideoPlayerUtil
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
@@ -52,26 +49,19 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.elevation.SurfaceColors
 import com.google.android.material.materialswitch.MaterialSwitch
 import com.google.android.material.slider.RangeSlider
-import com.google.android.material.textfield.TextInputLayout
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.lang.reflect.Type
 import java.util.*
-import kotlin.math.min
-import kotlin.properties.Delegates
 
 
 class CutVideoBottomSheetDialog(private val _item: DownloadItem? = null, private val urls : String? = null, private var chapters: List<ChapterItem>? = null, private val listener: VideoCutListener? = null) : BottomSheetDialogFragment() {
     private lateinit var behavior: BottomSheetBehavior<View>
-    private lateinit var infoUtil: InfoUtil
     private lateinit var player: ExoPlayer
-    
+    private lateinit var resultViewModel: ResultViewModel
     private lateinit var cutSection : ConstraintLayout
     private lateinit var durationText: TextView
     private lateinit var progress : ProgressBar
@@ -99,8 +89,8 @@ class CutVideoBottomSheetDialog(private val _item: DownloadItem? = null, private
     private lateinit var selectedCuts: MutableList<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]
         super.onCreate(savedInstanceState)
-        infoUtil = InfoUtil(requireActivity().applicationContext)
     }
 
 
@@ -182,7 +172,7 @@ class CutVideoBottomSheetDialog(private val _item: DownloadItem? = null, private
             try {
                 val data = withContext(Dispatchers.IO) {
                     if (urls.isNullOrEmpty()) {
-                        infoUtil.getStreamingUrlAndChapters(item.url)
+                        resultViewModel.getStreamingUrlAndChapters(item.url)
                     }else{
                         Pair(urls.split("\n"), chapters)
                     }

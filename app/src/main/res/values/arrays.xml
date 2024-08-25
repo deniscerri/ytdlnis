@@ -235,7 +235,7 @@
     </array>
 
     <array name="formats_source">
-        <item>PIPED [Youtube]</item>
+        <item>NewPipe</item>
         <item>yt-dlp</item>
     </array>
 

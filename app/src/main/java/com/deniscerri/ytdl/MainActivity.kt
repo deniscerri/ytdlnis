@@ -441,14 +441,30 @@ class MainActivity : BaseActivity() {
                 e.printStackTrace()
             }
         }else if (action == Intent.ACTION_VIEW){
-            navController.popBackStack(navController.graph.startDestinationId, true)
 
+            val navbarItems = NavbarUtil.getNavBarItems(this)
             when(intent.getStringExtra("destination")){
                 "Downloads" -> {
+                    if (navbarItems.any { n -> n.itemId == R.id.historyFragment && n.isVisible }) {
+                        navController.popBackStack(navController.graph.startDestinationId, true)
+                    }
                     navController.navigate(R.id.historyFragment)
                 }
                 "Queue" -> {
-                    navController.navigate(R.id.downloadQueueMainFragment)
+                    if (navbarItems.any { n -> n.itemId == R.id.downloadQueueMainFragment && n.isVisible }) {
+                        navController.popBackStack(navController.graph.startDestinationId, true)
+                    }
+
+                    val bundle = Bundle()
+                    intent.getStringExtra("tab")?.apply {
+                        bundle.putString("tab", this)
+                    }
+                    intent.getLongExtra("reconfigure", 0L).apply {
+                        if (this != 0L){
+                            bundle.putLong("reconfigure", this)
+                        }
+                    }
+                    navController.navigate(R.id.downloadQueueMainFragment, bundle)
                 }
                 "Search" -> {
                     val bundle = Bundle()

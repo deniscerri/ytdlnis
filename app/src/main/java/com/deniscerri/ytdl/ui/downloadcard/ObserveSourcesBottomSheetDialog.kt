@@ -40,8 +40,6 @@ import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel.Type
 import com.deniscerri.ytdl.database.viewmodel.HistoryViewModel
 import com.deniscerri.ytdl.database.viewmodel.ObserveSourcesViewModel
 import com.deniscerri.ytdl.database.viewmodel.ResultViewModel
-import com.deniscerri.ytdl.util.Extensions.TextWithSubtitle
-import com.deniscerri.ytdl.util.InfoUtil
 import com.deniscerri.ytdl.util.UiUtil
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -56,9 +54,7 @@ import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.hamcrest.core.Every
 import java.text.SimpleDateFormat
-import java.time.Month
 import java.util.Calendar
 import java.util.Locale
 
@@ -73,7 +69,6 @@ class ObserveSourcesBottomSheetDialog : BottomSheetDialogFragment() {
     private lateinit var resultViewModel: ResultViewModel
     private lateinit var behavior: BottomSheetBehavior<View>
     private lateinit var commandTemplateViewModel : CommandTemplateViewModel
-    private lateinit var infoUtil: InfoUtil
     private lateinit var sharedPreferences : SharedPreferences
     private lateinit var view: View
 
@@ -110,7 +105,6 @@ class ObserveSourcesBottomSheetDialog : BottomSheetDialogFragment() {
         historyViewModel = ViewModelProvider(requireActivity())[HistoryViewModel::class.java]
         resultViewModel = ViewModelProvider(requireActivity())[ResultViewModel::class.java]
         commandTemplateViewModel = ViewModelProvider(requireActivity())[CommandTemplateViewModel::class.java]
-        infoUtil = InfoUtil(requireContext())
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
 
         currentItem = if (Build.VERSION.SDK_INT >= 33){

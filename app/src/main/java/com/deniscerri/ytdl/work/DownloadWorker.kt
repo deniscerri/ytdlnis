@@ -12,7 +12,6 @@ import android.os.Looper
 import android.util.DisplayMetrics
 import android.util.Log
 import android.widget.Toast
-import androidx.navigation.NavDeepLinkBuilder
 import androidx.preference.PreferenceManager
 import androidx.work.CoroutineWorker
 import androidx.work.ForegroundInfo
@@ -20,7 +19,6 @@ import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import androidx.work.await
-import androidx.work.workDataOf
 import com.afollestad.materialdialogs.utils.MDUtil.getStringArray
 import com.deniscerri.ytdl.App
 import com.deniscerri.ytdl.MainActivity
@@ -34,8 +32,8 @@ import com.deniscerri.ytdl.database.repository.ResultRepository
 import com.deniscerri.ytdl.util.Extensions.getMediaDuration
 import com.deniscerri.ytdl.util.Extensions.toStringDuration
 import com.deniscerri.ytdl.util.FileUtil
-import com.deniscerri.ytdl.util.InfoUtil
 import com.deniscerri.ytdl.util.NotificationUtil
+import com.deniscerri.ytdl.util.extractors.YTDLPUtil
 import com.yausername.youtubedl_android.YoutubeDL
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -46,7 +44,6 @@ import kotlinx.coroutines.withContext
 import org.greenrobot.eventbus.EventBus
 import java.io.File
 import java.util.Locale
-import kotlin.random.Random
 
 
 class DownloadWorker(
@@ -58,11 +55,10 @@ class DownloadWorker(
         if (isStopped) return Result.success()
 
         val notificationUtil = NotificationUtil(App.instance)
-        val infoUtil = InfoUtil(context)
+        val ytdlpUtil = YTDLPUtil(context)
         val dbManager = DBManager.getInstance(context)
         val dao = dbManager.downloadDao
         val historyDao = dbManager.historyDao
-        val resultDao = dbManager.resultDao
         val logRepo = LogRepository(dbManager.logDao)
         val resultRepo = ResultRepository(dbManager.resultDao, context)
         val handler = Handler(Looper.getMainLooper())
@@ -135,7 +131,7 @@ class DownloadWorker(
                 CoroutineScope(Dispatchers.IO).launch {
                     val noCache = !sharedPreferences.getBoolean("cache_downloads", true) && File(FileUtil.formatPath(downloadItem.downloadPath)).canWrite()
 
-                    val request = infoUtil.buildYoutubeDLRequest(downloadItem)
+                    val request = ytdlpUtil.buildYoutubeDLRequest(downloadItem)
                     downloadItem.status = DownloadRepository.Status.Active.toString()
                     CoroutineScope(Dispatchers.IO).launch {
                         delay(1500)
@@ -158,7 +154,7 @@ class DownloadWorker(
                     val logDownloads = sharedPreferences.getBoolean("log_downloads", false) && !downloadItem.incognito
 
 
-                    val commandString = infoUtil.parseYTDLRequestString(request)
+                    val commandString = ytdlpUtil.parseYTDLRequestString(request)
                     val initialLogDetails = "Downloading:\n" +
                             "Title: ${downloadItem.title}\n" +
                             "URL: ${downloadItem.url}\n" +
@@ -258,9 +254,6 @@ class DownloadWorker(
                                 add("txt")
                             }
                             finalPaths = finalPaths.filter { path -> !nonMediaExtensions.any { path.endsWith(it) } }.toMutableList()
-                            if (finalPaths.isEmpty()){
-                                finalPaths = mutableListOf(context.getString(R.string.unfound_file))
-                            }
                             FileUtil.deleteConfigFiles(request)
 
                             //put download in history
@@ -270,39 +263,40 @@ class DownloadWorker(
                                         Toast.makeText(context, resources.getString(R.string.download_already_exists), Toast.LENGTH_LONG).show()
                                     }, 100)
                                 }else{
-                                    val unixTime = System.currentTimeMillis() / 1000
-                                    finalPaths.first().apply {
-                                        val file = File(this)
-                                        var duration = downloadItem.duration
-                                        val d = file.getMediaDuration(context)
-                                        if (d > 0) duration = d.toStringDuration(Locale.US)
+                                    if (finalPaths.isNotEmpty()) {
+                                        val unixTime = System.currentTimeMillis() / 1000
+                                        finalPaths.first().apply {
+                                            val file = File(this)
+                                            var duration = downloadItem.duration
+                                            val d = file.getMediaDuration(context)
+                                            if (d > 0) duration = d.toStringDuration(Locale.US)
 
-                                        downloadItem.format.filesize = file.length()
-                                        downloadItem.format.container = file.extension
-                                        downloadItem.duration = duration
+                                            downloadItem.format.filesize = file.length()
+                                            downloadItem.format.container = file.extension
+                                            downloadItem.duration = duration
+                                        }
+
+                                        val historyItem = HistoryItem(0,
+                                            downloadItem.url,
+                                            downloadItem.title,
+                                            downloadItem.author,
+                                            downloadItem.duration,
+                                            downloadItem.thumb,
+                                            downloadItem.type,
+                                            unixTime,
+                                            finalPaths,
+                                            downloadItem.website,
+                                            downloadItem.format,
+                                            downloadItem.id,
+                                            commandString)
+                                        historyDao.insert(historyItem)
                                     }
-
-                                    val historyItem = HistoryItem(0,
-                                        downloadItem.url,
-                                        downloadItem.title,
-                                        downloadItem.author,
-                                        downloadItem.duration,
-                                        downloadItem.thumb,
-                                        downloadItem.type,
-                                        unixTime,
-                                        finalPaths,
-                                        downloadItem.website,
-                                        downloadItem.format,
-                                        downloadItem.id,
-                                        commandString)
-                                    historyDao.insert(historyItem)
-
                                 }
                             }
 
                             notificationUtil.cancelDownloadNotification(downloadItem.id.toInt())
                             notificationUtil.createDownloadFinished(
-                                downloadItem.id, downloadItem.title, downloadItem.type,  if (finalPaths.first().equals(context.getString(R.string.unfound_file))) null else finalPaths, resources
+                                downloadItem.id, downloadItem.title, downloadItem.type,  if (finalPaths.isEmpty()) null else finalPaths, resources
                             )
 
 //                            if (wasQuickDownloaded && createResultItem){

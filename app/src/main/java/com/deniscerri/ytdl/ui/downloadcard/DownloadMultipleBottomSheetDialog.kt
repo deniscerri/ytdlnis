@@ -44,7 +44,6 @@ import com.deniscerri.ytdl.ui.BaseActivity
 import com.deniscerri.ytdl.ui.adapter.ConfigureMultipleDownloadsAdapter
 import com.deniscerri.ytdl.util.Extensions.enableFastScroll
 import com.deniscerri.ytdl.util.FileUtil
-import com.deniscerri.ytdl.util.InfoUtil
 import com.deniscerri.ytdl.util.UiUtil
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.material.bottomappbar.BottomAppBar
@@ -73,7 +72,6 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
     private lateinit var resultViewModel: ResultViewModel
     private lateinit var listAdapter : ConfigureMultipleDownloadsAdapter
     private lateinit var recyclerView: RecyclerView
-    private lateinit var infoUtil: InfoUtil
     private lateinit var behavior: BottomSheetBehavior<View>
     private lateinit var bottomAppBar: BottomAppBar
     private lateinit var filesize : TextView
@@ -100,7 +98,6 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
         resultViewModel = ViewModelProvider(requireActivity())[ResultViewModel::class.java]
         commandTemplateViewModel = ViewModelProvider(requireActivity())[CommandTemplateViewModel::class.java]
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
-        infoUtil = InfoUtil(requireContext())
 
         currentDownloadIDs = arguments?.getLongArray("currentDownloadIDs")?.toList() ?: listOf()
         processingItemsCount = currentDownloadIDs.size

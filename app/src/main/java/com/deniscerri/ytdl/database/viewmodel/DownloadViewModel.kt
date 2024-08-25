@@ -5,11 +5,8 @@ import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.content.res.Resources
 import android.os.Build
-import android.os.Handler
-import android.os.Looper
 import android.os.Parcelable
 import android.util.DisplayMetrics
-import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.asLiveData
@@ -40,8 +37,8 @@ import com.deniscerri.ytdl.database.repository.ResultRepository
 import com.deniscerri.ytdl.ui.downloadcard.MultipleItemFormatTuple
 import com.deniscerri.ytdl.util.Extensions.toListString
 import com.deniscerri.ytdl.util.FileUtil
-import com.deniscerri.ytdl.util.FormatSorter
-import com.deniscerri.ytdl.util.InfoUtil
+import com.deniscerri.ytdl.util.FormatUtil
+import com.deniscerri.ytdl.util.extractors.YTDLPUtil
 import com.deniscerri.ytdl.work.AlarmScheduler
 import com.deniscerri.ytdl.work.UpdateMultipleDownloadsFormatsWorker
 import com.google.gson.Gson
@@ -64,7 +61,8 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
     val repository : DownloadRepository
     private val sharedPreferences: SharedPreferences
     private val commandTemplateDao: CommandTemplateDao
-    private val infoUtil : InfoUtil
+    private val formatUtil = FormatUtil(application)
+    private val ytdlpUtil = YTDLPUtil(application)
     private val resources : Resources
 
     val allDownloads : Flow<PagingData<DownloadItem>>
@@ -122,7 +120,6 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         resultRepository = ResultRepository(dbManager.resultDao, application)
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(application)
         commandTemplateDao = DBManager.getInstance(application).commandTemplateDao
-        infoUtil = InfoUtil(application)
 
         activeDownloadsCount = repository.activeDownloadsCount
         queuedDownloadsCount = repository.queuedDownloadsCount
@@ -478,9 +475,9 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
                 return cloneFormat (
                     try {
                         val theFormats = formats.filter { it.vcodec.isBlank() || it.vcodec == "none" }
-                        FormatSorter(application).sortAudioFormats(theFormats).first()
+                        FormatUtil(application).sortAudioFormats(theFormats).first()
                     }catch (e: Exception){
-                        infoUtil.getGenericAudioFormats(resources).first()
+                        formatUtil.getGenericAudioFormats(resources).first()
                     }
                 )
 
@@ -489,12 +486,12 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
                 return cloneFormat(
                     try {
                         val theFormats = formats.filter { it.vcodec.isNotBlank() && it.vcodec != "none" }.ifEmpty {
-                            infoUtil.getGenericVideoFormats(resources).sortedByDescending { it.filesize }
+                            formatUtil.getGenericVideoFormats(resources).sortedByDescending { it.filesize }
                         }
 
-                        FormatSorter(application).sortVideoFormats(theFormats).first()
+                        FormatUtil(application).sortVideoFormats(theFormats).first()
                     }catch (e: Exception){
-                        infoUtil.getGenericVideoFormats(resources).first()
+                        formatUtil.getGenericVideoFormats(resources).first()
                     }
                 )
             }
@@ -529,7 +526,7 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         }
         if (preferredAudioFormats.isEmpty()){
             val audioF = getFormat(formats, Type.audio)
-            if (!infoUtil.getGenericAudioFormats(resources).contains(audioF)){
+            if (!formatUtil.getGenericAudioFormats(resources).contains(audioF)){
                 preferredAudioFormats.add(audioF.format_id)
             }
         }
@@ -873,8 +870,8 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
                         }
                     }
                     "config" -> {
-                        val currentCommand = infoUtil.buildYoutubeDLRequest(it)
-                        val parsedCurrentCommand = infoUtil.parseYTDLRequestString(currentCommand)
+                        val currentCommand = ytdlpUtil.buildYoutubeDLRequest(it)
+                        val parsedCurrentCommand = ytdlpUtil.parseYTDLRequestString(currentCommand)
                         val existingDownload = activeAndQueuedDownloads.firstOrNull{d ->
                             d.id = 0
                             d.logID = null

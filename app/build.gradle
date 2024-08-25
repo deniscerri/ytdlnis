@@ -95,6 +95,7 @@ android {
     }
 
     compileOptions {
+        coreLibraryDesugaringEnabled true
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
     }
@@ -126,7 +127,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-
+    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:2.0.4"
     implementation "com.github.yausername.youtubedl-android:library:$youtubedlAndroidVer"
     implementation "com.github.yausername.youtubedl-android:ffmpeg:$youtubedlAndroidVer"
     implementation "com.github.yausername.youtubedl-android:aria2c:$youtubedlAndroidVer"
@@ -170,7 +171,7 @@ dependencies {
     implementation 'androidx.paging:paging-runtime-ktx:3.3.0'
     implementation "androidx.room:room-paging:$roomVer"
     androidTestImplementation "androidx.room:room-testing:$roomVer"
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.8.3'
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.8.4'
     implementation "androidx.compose.runtime:runtime:$composeVer"
     androidTestImplementation 'com.google.truth:truth:1.1.5'
 
@@ -182,7 +183,7 @@ dependencies {
 
     implementation 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0'
     implementation 'it.xabaras.android:recyclerview-swipedecorator:1.4'
-    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.8.3"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.8.4"
     implementation "com.github.Irineu333:Highlight-KT:1.0.4"
 
     // For media playback using ExoPlayer
@@ -201,5 +202,5 @@ dependencies {
     implementation 'androidx.compose.material3:material3-android:1.2.1'
     implementation "io.noties.markwon:core:4.6.2"
     implementation("org.greenrobot:eventbus:3.3.1")
-    //implementation("com.github.TeamNewPipe:NewPipeExtractor:0.24.2")
+    implementation("com.github.TeamNewPipe:NewPipeExtractor:0.24.2")
 }

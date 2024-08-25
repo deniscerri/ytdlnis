@@ -7,6 +7,8 @@ import android.content.SharedPreferences
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.preference.PreferenceManager
@@ -14,18 +16,17 @@ import com.deniscerri.ytdl.App
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.DBManager
 import com.deniscerri.ytdl.database.dao.ResultDao
+import com.deniscerri.ytdl.database.models.ChapterItem
 import com.deniscerri.ytdl.database.models.Format
+import com.deniscerri.ytdl.database.models.HistoryItem
 import com.deniscerri.ytdl.database.models.ResultItem
 import com.deniscerri.ytdl.database.models.SearchHistoryItem
 import com.deniscerri.ytdl.database.repository.ResultRepository
 import com.deniscerri.ytdl.database.repository.SearchHistoryRepository
-import com.deniscerri.ytdl.util.InfoUtil
 import com.deniscerri.ytdl.util.NotificationUtil
 import com.yausername.youtubedl_android.YoutubeDLException
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.joinAll
@@ -40,7 +41,9 @@ class ResultViewModel(private val application: Application) : AndroidViewModel(a
     val repository : ResultRepository
     private val searchHistoryRepository : SearchHistoryRepository
     val items : LiveData<List<ResultItem>>
-    private val infoUtil: InfoUtil
+    private var _items = MediatorLiveData<List<ResultItem>>()
+    val playlistFilter = MutableLiveData("")
+
     private val notificationUtil: NotificationUtil
     private val dao: ResultDao
     data class ResultsUiState(
@@ -72,10 +75,29 @@ class ResultViewModel(private val application: Application) : AndroidViewModel(a
         dao = DBManager.getInstance(application).resultDao
         repository = ResultRepository(dao, getApplication<Application>().applicationContext)
         searchHistoryRepository = SearchHistoryRepository(DBManager.getInstance(application).searchHistoryDao)
+
         items = repository.allResults.asLiveData()
+        _items.addSource(items){
+            filter()
+        }
+        _items.addSource(playlistFilter) {
+            filter()
+        }
+
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(application)
-        infoUtil = InfoUtil(application)
         notificationUtil = NotificationUtil(application)
+    }
+
+    fun filter() = viewModelScope.launch(Dispatchers.IO){
+        _items.postValue(repository.getFiltered(playlistFilter.value ?: ""))
+    }
+
+    fun setPlaylistFilter(p: String){
+        playlistFilter.value = p
+    }
+
+    fun getFilteredList() : LiveData<List<ResultItem>> {
+        return _items
     }
 
     fun checkTrending() = viewModelScope.launch(Dispatchers.IO){
@@ -271,7 +293,7 @@ class ResultViewModel(private val application: Application) : AndroidViewModel(a
             updateFormatsResultDataJob = viewModelScope.launch(Dispatchers.IO) {
                 updatingFormats.emit(true)
                 try {
-                    val formats = infoUtil.getFormats(result.url)
+                    val formats = getFormats(result.url)
                     updatingFormats.emit(false)
                     formats.apply {
                         if (formats.isNotEmpty() && updateFormatsResultDataJob?.isCancelled == false) {
@@ -309,7 +331,34 @@ class ResultViewModel(private val application: Application) : AndroidViewModel(a
         }
     }
 
+    data class MultipleFormatProgress(
+        val url: String,
+        val formats: List<Format>,
+        val unavailable : Boolean = false,
+        val unavailableMessage: String = ""
+    )
+
+
+    fun getFormats(url: String, source: String? = null) : List<Format> {
+        return repository.getFormats(url, source)
+    }
+
+    suspend fun getFormatsMultiple(urls: List<String>, source: String? = null, progress: (progress: MultipleFormatProgress) -> Unit) : MutableList<MutableList<Format>> {
+        val res = repository.getFormatsMultiple(urls, source) {
+            progress(it)
+        }
+        return res
+    }
+
     fun getResultsBetweenTwoItems(item1: Long, item2: Long) : List<ResultItem>{
         return dao.getResultsBetweenTwoItems(item1, item2)
+    }
+
+    fun getSearchSuggestions(searchQuery: String) : ArrayList<String> {
+        return repository.getSearchSuggestions(searchQuery)
+    }
+
+    fun getStreamingUrlAndChapters(url: String) : Pair<List<String>, List<ChapterItem>?> {
+        return repository.getStreamingUrlAndChapters(url)
     }
 }

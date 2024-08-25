@@ -1,14 +1,13 @@
 package com.deniscerri.ytdl.work
 
 import android.content.Context
-import android.util.Log
 import androidx.work.ForegroundInfo
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.deniscerri.ytdl.App
 import com.deniscerri.ytdl.database.DBManager
+import com.deniscerri.ytdl.database.repository.ResultRepository
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
-import com.deniscerri.ytdl.util.InfoUtil
 import com.deniscerri.ytdl.util.NotificationUtil
 import kotlinx.coroutines.runBlocking
 
@@ -21,7 +20,7 @@ class UpdateMultipleDownloadsFormatsWorker(
         val dbManager = DBManager.getInstance(context)
         val dao = dbManager.downloadDao
         val resDao = dbManager.resultDao
-        val infoUtil = InfoUtil(context)
+        val resultRepo = ResultRepository(resDao, context)
         val vm = DownloadViewModel(App.instance)
         val notificationUtil = NotificationUtil(context)
         val ids = inputData.getLongArray("ids")!!.toMutableList()
@@ -47,7 +46,7 @@ class UpdateMultipleDownloadsFormatsWorker(
 
                     runCatching {
                         d.allFormats.clear()
-                        d.allFormats.addAll(infoUtil.getFormats(d.url))
+                        d.allFormats.addAll(resultRepo.getFormats(d.url))
                         d.format = vm.getFormat(d.allFormats,d.type)
 
                         r?.formats?.clear()

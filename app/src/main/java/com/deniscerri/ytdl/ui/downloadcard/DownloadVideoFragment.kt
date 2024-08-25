@@ -15,7 +15,6 @@ import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.isVisible
@@ -33,7 +32,7 @@ import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel.Type
 import com.deniscerri.ytdl.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdl.util.FileUtil
-import com.deniscerri.ytdl.util.InfoUtil
+import com.deniscerri.ytdl.util.FormatUtil
 import com.deniscerri.ytdl.util.UiUtil
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.snackbar.Snackbar
@@ -60,7 +59,6 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
     lateinit var author : TextInputLayout
     private lateinit var saveDir : TextInputLayout
     private lateinit var freeSpace : TextView
-    private lateinit var infoUtil: InfoUtil
 
     private lateinit var genericVideoFormats: MutableList<Format>
     private lateinit var genericAudioFormats: MutableList<Format>
@@ -78,9 +76,9 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
         activity = getActivity()
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
         resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]
-        infoUtil = InfoUtil(requireContext())
-        genericVideoFormats = infoUtil.getGenericVideoFormats(requireContext().resources)
-        genericAudioFormats = infoUtil.getGenericAudioFormats(requireContext().resources)
+        val formatUtil = FormatUtil(requireContext())
+        genericVideoFormats = formatUtil.getGenericVideoFormats(requireContext().resources)
+        genericAudioFormats = formatUtil.getGenericAudioFormats(requireContext().resources)
         preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
         shownFields = preferences.getStringSet("modify_download_card", requireContext().getStringArray(R.array.modify_download_card_values).toSet())!!.toList()
         return fragmentView

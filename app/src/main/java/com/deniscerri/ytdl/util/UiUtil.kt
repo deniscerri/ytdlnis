@@ -70,6 +70,8 @@ import com.deniscerri.ytdl.util.Extensions.enableFastScroll
 import com.deniscerri.ytdl.util.Extensions.enableTextHighlight
 import com.deniscerri.ytdl.util.Extensions.getMediaDuration
 import com.deniscerri.ytdl.util.Extensions.toStringDuration
+import com.deniscerri.ytdl.util.extractors.PipedApiUtil
+import com.deniscerri.ytdl.util.extractors.YTDLPUtil
 import com.google.android.material.badge.BadgeDrawable
 import com.google.android.material.badge.BadgeUtils
 import com.google.android.material.badge.ExperimentalBadgeUtils
@@ -567,10 +569,10 @@ object UiUtil {
         if (fileSizeReadable == "?") fileSize!!.visibility = View.GONE
         else fileSize!!.text = fileSizeReadable
 
-        val infoUtil = InfoUtil(context)
+        val ytdlpUtil = YTDLPUtil(context)
 
         command?.setOnClickListener {
-            showGeneratedCommand(context, infoUtil.parseYTDLRequestString(infoUtil.buildYoutubeDLRequest(item)))
+            showGeneratedCommand(context, ytdlpUtil.parseYTDLRequestString(ytdlpUtil.buildYoutubeDLRequest(item)))
         }
 
         val link = bottomSheet.findViewById<Button>(R.id.bottom_sheet_link)
@@ -1867,7 +1869,7 @@ object UiUtil {
         CoroutineScope(Dispatchers.IO).launch {
             val chipGroup = view.findViewById<ChipGroup>(R.id.filename_suggested_chipgroup)
             val chips = mutableListOf<Chip>()
-            val instances = InfoUtil(context).getPipedInstances().ifEmpty { return@launch }
+            val instances = PipedApiUtil(context).getPipedInstances().ifEmpty { return@launch }
             instances.forEach { s ->
                 val tmp = context.layoutInflater.inflate(R.layout.filter_chip, chipGroup, false) as Chip
                 tmp.text = s
