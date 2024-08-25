@@ -398,4 +398,25 @@
     <string name="move_top">Przesuń na szczyt</string>
     <string name="process_downloads_background">"Pliki do pobrania wciąż się ładują. Kontynuować ich przetwarzanie w tle i rozpocząć pobieranie? "</string>
     <string name="format_importance">Kolejność istotności formatów</string>
+    <string name="navigation_bar">Pasek nawigacji</string>
+    <string name="label_visibility">Widoczność etykiet</string>
+    <string name="always">Zawsze</string>
+    <string name="sync_with_source">Synchronizacja ze źródłem</string>
+    <string name="queue">Kolejka</string>
+    <string name="reset">Zresetuj</string>
+    <string name="playlist_as_album">Używanie nazwy listy odtwarzania jako metadanych albumu</string>
+    <string name="playlist_as_album_summary">Jeśli nie ma metadanych albumu, użyj nazwy listy odtwarzania</string>
+    <string name="cleanup_leftover_downloads">Czyszczenie pozostałości po pobraniu (anulowane, błędne)</string>
+    <string name="use_alarm_manager">Używanie AlarmManager zamiast WorkManager do tworzenia harmonogramów</string>
+    <string name="use_alarm_manager_summary">Włącz tę opcję, jeśli WorkManager jest ograniczony przez dostawcę urządzenia lub zaplanowane zadania nie są zbyt dokładne</string>
+    <string name="restore_info">Naciśnij przycisk „Restore” (Przywróć), aby połączyć zapisane dane z bieżącymi danymi.
+\nNaciśnij „Reset”, aby usunąć i używać tylko zapisanych danych w pliku.</string>
+    <string name="daily">Codziennie</string>
+    <string name="weekly">Co tydzień</string>
+    <string name="monthly">Co miesiąc</string>
+    <string name="continue_anyway">Tak czy inaczej, kontynuuj</string>
+    <string name="use_item_url_not_playlist">Użyj adresu URL elementu zamiast adresu URL listy odtwarzania</string>
+    <string name="use_item_url_not_playlist_summary">Przydatne dla list odtwarzania offline Libretube, które nie są rozpoznawane przez yt-dlp. Metadane listy odtwarzania nie zostaną osadzone po włączeniu tej opcji</string>
+    <string name="recode_video_summary">Przekodowuje plik wideo do określonego formatu wideo</string>
+    <string name="recode_video">Przekoduj Video</string>
 </resources>

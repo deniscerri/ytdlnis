@@ -416,4 +416,7 @@
     <string name="daily">Dagelĳks</string>
     <string name="weekly">Wekelĳks</string>
     <string name="monthly">Maandelĳks</string>
+    <string name="continue_anyway">Toch doorgaan</string>
+    <string name="playlist_as_album">Afspeellĳst­naam gebruiken als album­metagegevens</string>
+    <string name="playlist_as_album_summary">Als er geen album­metagegevens aanwezig zĳn, gebruik dan de naam van de afspeel­lĳst</string>
 </resources>

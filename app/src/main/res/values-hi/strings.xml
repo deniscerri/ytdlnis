@@ -416,4 +416,7 @@
     <string name="weekly">साप्ताहिक</string>
     <string name="monthly">मासिक</string>
     <string name="cleanup_leftover_downloads">बचे हुए डाउनलोड को साफ़ करें (रद्द, त्रुटिपूर्ण)</string>
+    <string name="continue_anyway">फिर भी जारी रखें</string>
+    <string name="playlist_as_album_summary">यदि एल्बम मेटाडेटा मौजूद नहीं है, तो इसके बजाय प्लेलिस्ट नाम का उपयोग करें</string>
+    <string name="playlist_as_album">एल्बम मेटाडेटा के रूप में प्लेलिस्ट नाम का उपयोग करें</string>
 </resources>

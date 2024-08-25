@@ -416,4 +416,7 @@
     <string name="weekly">Еженедельно</string>
     <string name="monthly">Ежемесячно</string>
     <string name="cleanup_leftover_downloads">Очистка оставшихся загрузок (отмененных, с ошибками)</string>
+    <string name="continue_anyway">Все равно продолжить</string>
+    <string name="playlist_as_album">Использовать название плейлиста в качестве метаданных альбома</string>
+    <string name="playlist_as_album_summary">Если метаданные альбома отсутствуют, вместо этого используйте имя списка воспроизведения</string>
 </resources>
