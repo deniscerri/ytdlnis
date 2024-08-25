@@ -419,4 +419,7 @@
     <string name="use_item_url_not_playlist_summary">yt-dlp tarafından tanınmayan Libretube çevrimdışı çalma listeleri için kullanışlıdır. Bu etkinleştirildiğinde çalma listesi meta verileri gömülmeyecektir</string>
     <string name="recode_video">Videoyu tekrar kodla</string>
     <string name="recode_video_summary">Video dosyasını belirtilen video formatına yeniden kodlar</string>
+    <string name="continue_anyway">Her Neyse Devam Et</string>
+    <string name="playlist_as_album">Çalma Listesi Adını Albüm Meta Verisi Olarak Kullanma</string>
+    <string name="playlist_as_album_summary">Albüm Meta Verileri mevcut değilse, bunun yerine çalma listesi adını kullanın</string>
 </resources>
