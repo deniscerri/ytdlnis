@@ -97,6 +97,7 @@
             android:icon="@drawable/ic_dns"
             app:key="piped_instance"
             app:defaultValue=""
+            app:isPreferenceVisible="false"
             android:summary="@string/piped_instance_summary"
             app:title="@string/piped_instance" />
 
