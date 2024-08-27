@@ -16,8 +16,8 @@
     <string name="download_notification_channel_name">Descargas de Archivos</string>
     <string name="download_notification_channel_description">Notificación que muestra el progreso de las descargas de archivos de audio y video</string>
     <string name="you_are_in_latest_version">Estás usando la última versión</string>
-    <string name="ytdl_already_updating">Instalando una nueva versión</string>
-    <string name="ytdl_updating_started">Descargando una nueva versión</string>
+    <string name="ytdl_already_updating">Installazione della nuova versione</string>
+    <string name="ytdl_updating_started">Download della nuova versione</string>
     <string name="Remove">Quitar</string>
     <string name="cancel">Cancelar</string>
     <string name="confirm_delete_history_desc">Borrar todo el historial, de forma permanente</string>
@@ -29,7 +29,7 @@
     <string name="version">Versión</string>
     <string name="command_directory">Directorio de Comandos Personalizados</string>
     <string name="couldnt_find_apk">No se pudo encontrar un instalador APK correcto</string>
-    <string name="downloading_update">Descargando una nueva versión</string>
+    <string name="downloading_update">Download della nuova versione</string>
     <string name="audio">Audio</string>
     <string name="video">Video</string>
     <string name="concurrent_fragments_summary">Número de fragmentos de un video DASH/HLS nativo para descargar a la vez</string>
@@ -41,7 +41,7 @@
     <string name="download_all">Descargar Todo</string>
     <string name="ytld_update_success">Se instaló la nueva versión</string>
     <string name="ok">Aceptar</string>
-    <string name="api_key_summary">Recomendaciones de los vídeos por la API de Youtube</string>
+    <string name="api_key_summary">Consigli video dall\'API di Youtube</string>
     <string name="run_command">Ejecutar Comando</string>
     <string name="embed_thumb">Portadas de las Miniaturas</string>
     <string name="command_download_notification_channel_description">Notificación que muestra el progreso de la descarga a través de un comando yt-dlp</string>
@@ -200,7 +200,7 @@
     <string name="subtitle_languages">Idiomas de los subtítulos</string>
     <string name="format_source">Formatos de la fuente</string>
     <string name="video_recommendations">Videos recomendados</string>
-    <string name="video_recommendations_summary">Obtener los vídeos recomendados de YouTube en la pantalla de inicio desde la API PIPED</string>
+    <string name="video_recommendations_summary">Obtenga videos de YouTube recomendados en la pantalla de inicio desde la API de PIPED</string>
     <string name="preferred_search_engine">Buscador favorito</string>
     <string name="preferred_search_engine_summary">El buscador para las búsquedas dentro de la aplicación</string>
     <string name="format_filtering_hint">Todos los artículos deben ser del mismo tipo para utilizar esta opción</string>
