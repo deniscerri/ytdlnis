@@ -200,7 +200,7 @@
     <string name="download_over_metered_networks">Завантажувати через мережі з обмеженнями</string>
     <string name="format_source">Джерело форматів</string>
     <string name="video_recommendations">Відеорекомендації</string>
-    <string name="video_recommendations_summary">Отримайте рекомендовані відео YouTube на головному екрані від PIPED API</string>
+    <string name="video_recommendations_summary">Отримайте рекомендовані відео YouTube на головному екрані з NewPipe Extractor</string>
     <string name="preferred_search_engine">Бажана пошукова система</string>
     <string name="preferred_search_engine_summary">Пошукова система в застосунку</string>
     <string name="format_filtering_hint">Для використання цієї опції всі елементи повинні бути одного типу</string>
