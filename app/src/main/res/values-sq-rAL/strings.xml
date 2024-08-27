@@ -200,7 +200,7 @@
     <string name="subtitle_languages">Gjuhet e Titrave</string>
     <string name="format_source">Burimi i Formateve</string>
     <string name="video_recommendations">Rekomendimet e Videove</string>
-    <string name="video_recommendations_summary">Merr videot e rekomanduara të YouTube në ekranin bazë nga PIPED API</string>
+    <string name="video_recommendations_summary">Merrni videot e rekomanduara të YouTube në ekranin bazë nga NewPipe Extractor</string>
     <string name="preferred_search_engine">Kërkuesi i Preferuar</string>
     <string name="preferred_search_engine_summary">Kërkuesi që do të përdoret për kërkimet në aplikacion</string>
     <string name="format_filtering_hint">Të gjithë elementet duhet të jenë të një i njëjti lloj për të përdorur këtë opsion</string>
@@ -397,7 +397,7 @@
     <string name="download_archive_folder">Skedari i arkivës së shkarkimeve</string>
     <string name="location">Vendi</string>
     <string name="enable_alarm_permission">Duhet të aktivizoni lejen SCHEDULE_EXACT_ALARM në cilësimet e aplikacionit.</string>
-    <string name="process_downloads_background">Shkarkimet janë ende duke u ngarkuar. Vazhdoni t\'i përpunoni ato në sfond dhe të filloni shkarkimin?</string>
+    <string name="process_downloads_background">"Shkarkimet janë ende duke u ngarkuar. Vazhdoni t\'i përpunoni ato në sfond dhe filloni shkarkimin? "</string>
     <string name="navigation_bar">Navigimi</string>
     <string name="label_visibility">Pamja e Titujve në Navigim</string>
     <string name="always">Gjithmonë</string>
@@ -410,8 +410,13 @@
     <string name="use_item_url_not_playlist_summary">E dobishme për playlistet Libretube qe nuk njihen nga yt-dlp. Metadata e playlist nuk do te shtohen dot kur ky opsion është i aktivizuar</string>
     <string name="recode_video">Rikodo Videon</string>
     <string name="recode_video_summary">Rikodon skedarin e videos sipas formatit të cilësuar nga përdoruesi</string>
-    <string name="restore_info">Shtyp \'Rikthe\' për të kombinuar të dhënat e ruajtura me të dhënat aktuale. Shtyp \'Rivendos\' për të fshirë gjithçka dhe vetëm përdor të dhënat e ruajtura në skedar.</string>
+    <string name="restore_info">Shtypni \"Rivendosni\" për të bashkuar të dhënat e ruajtura me të dhënat tuaja aktuale.
+\nShtypni \'Rivendos\' për të fshirë dhe për të përdorur vetëm të dhënat e ruajtura në skedar.</string>
     <string name="daily">Çdo ditë</string>
     <string name="weekly">Çdo javë</string>
     <string name="monthly">Çdo muaj</string>
+    <string name="continue_anyway">Vazhdo Gjithsesi</string>
+    <string name="playlist_as_album">Përdorni emrin e listës së luajtjes si të dhëna meta të albumit</string>
+    <string name="playlist_as_album_summary">Nëse të dhënat meta të albumit nuk janë të pranishme, përdorni emrin e listës së luajtjes</string>
+    <string name="cleanup_leftover_downloads">Shkarkimet e mbetura të pastrimit (të anuluara, të gabuara)</string>
 </resources>
