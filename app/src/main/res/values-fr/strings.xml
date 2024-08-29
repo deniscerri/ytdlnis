@@ -397,4 +397,9 @@
     <string name="scheduled">Prévu</string>
     <string name="no_audio">Vidéo sans audio</string>
     <string name="download_archive_folder">Télécharger le dossier d\'archive</string>
+    <string name="hour">Heure</string>
+    <string name="thumbnail_format">Format vignette</string>
+    <string name="scroll_down">Défiler vers le bas</string>
+    <string name="move_top">Déplacer au dessus</string>
+    <string name="move_bottom">Déplacer en bas</string>
 </resources>
