@@ -343,7 +343,7 @@
     <string name="ends">Endet</string>
     <string name="never">Nie</string>
     <string name="text_size">Textgröße</string>
-    <string name="after">Später</string>
+    <string name="after">Danach</string>
     <string name="add">Hinzufügen</string>
     <string name="back">Zurück</string>
     <string name="occurrences">Vorkommnisse</string>
@@ -385,7 +385,7 @@
     <string name="display_over_apps_summary">Downloadkarte immer im Vordergrund anzeigen. Diese Einstellung deaktivieren, falls sich die aktuell laufende App schließt, wenn die Downloadkarte angezeigt wird.</string>
     <string name="minute">Minute</string>
     <string name="second">Sekunde</string>
-    <string name="milliseconds">Millisekunde</string>
+    <string name="milliseconds">Millisekunden</string>
     <string name="location">Standort</string>
     <string name="no_audio">Video ohne Audio</string>
     <string name="wrap_text">Text umbrechen</string>
@@ -396,4 +396,27 @@
     <string name="multiple_download_card">Karte für mehrere Downloads</string>
     <string name="format_importance">Reihenfolge der Prioritäten anpassen</string>
     <string name="format_importance_note">Priorität des Elements anpassen. Diese Reihenfolge wird nur genutzt werden, wenn die App die Foamte in der Downloadkarte ausliest und das Format automatisch auswählt!</string>
+    <string name="navigation_bar">Navigationsleiste</string>
+    <string name="label_visibility">Sichtbarkeit der Beschriftung</string>
+    <string name="always">Immer</string>
+    <string name="sync_with_source">Mit Quelle abgleichen</string>
+    <string name="queue">Warteschlange</string>
+    <string name="reset">Zurücksetzen</string>
+    <string name="restore_info">\"Wiederherstellen\" klicken, um die gespeicherten Daten mit den aktuellen Daten zusammenzuführen.
+\n\"Zurücksetzen\" klicken, um die aktuellen Daten zu löschen und nur die gespeicherten daten zu nutzen.</string>
+    <string name="continue_anyway">Trotzdem fortfahren</string>
+    <string name="playlist_as_album">Playlistname als Metadaten für Album nutzen</string>
+    <string name="playlist_as_album_summary">Wenn Metadaten des Albums nicht verfügbar sind, stattdessen Playlistname nutzen</string>
+    <string name="daily">Täglich</string>
+    <string name="weekly">Wöchentlich</string>
+    <string name="monthly">Monatlich</string>
+    <string name="cleanup_leftover_downloads">Übrig gebliebene Downloads aufräumen (abgebrochene, fehlerhafte)</string>
+    <string name="use_alarm_manager_summary">Aktivieren, wenn der WorkManager vom Gerätehersteller beschränkt ist oder die Aufgaben nicht genau genug terminiert sind</string>
+    <string name="enable_alarm_permission">Die \"SCHEDULE_EXACT_ALARM \" Berechtigung muss in den App-Einstellungen aktiviert werden.</string>
+    <string name="process_downloads_background">"Downloads werden noch geladen. Im Hintergrund weiter verarbeiten und den Download starten? "</string>
+    <string name="recode_video">Video aufnehmen</string>
+    <string name="recode_video_summary">Nimmt die Videodatei im bestimmten Format auf</string>
+    <string name="use_alarm_manager">AlarmManager anstatt WorkManager für die Zeitplanung nutzen</string>
+    <string name="use_item_url_not_playlist">Die Element URL anstatt die Playlist URL nutzen</string>
+    <string name="use_item_url_not_playlist_summary">Nützlich für Libretube Offline-Wiedergabelisten, die von yt-dlp nicht erkannt werden. Wiedergabelisten-Metadaten werden nicht eingebettet, wenn diese Option aktiviert ist</string>
 </resources>
