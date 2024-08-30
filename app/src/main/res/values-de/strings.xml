@@ -381,7 +381,7 @@
     <string name="retry_missing_downloads">Fehlende Downloads erneut versuchen</string>
     <string name="dismiss">Ablehnen</string>
     <string name="cut_unavailable">Um das Schnittprogramm nutzen zu können, ist es nötig, zuerst die Daten in die richtige Reihenfolge zu bringen.</string>
-    <string name="on_time">An</string>
+    <string name="on_time">Zum Zeitpunkt</string>
     <string name="display_over_apps_summary">Downloadkarte immer im Vordergrund anzeigen. Diese Einstellung deaktivieren, falls sich die aktuell laufende App schließt, wenn die Downloadkarte angezeigt wird.</string>
     <string name="minute">Minute</string>
     <string name="second">Sekunde</string>
