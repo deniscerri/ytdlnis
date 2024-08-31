@@ -332,7 +332,7 @@ class NewPipeUtil(context: Context) {
                             container = it.format!!.name,
                             acodec = it.codec,
                             filesize = it.itagItem!!.contentLength,
-                            format_note = (it.audioTrackName ?: (it.itagItem?.getResolutionString() ?: ((it.bitrate / 1000).toString() + "k"))) + " Audio",
+                            format_note = (it.audioTrackName ?: (it.itagItem?.getResolutionString() ?: ((it.bitrate / 1000).toString() + "kbps"))) + " Audio",
                             lang = it.audioLocale?.language,
                             asr = it.itagItem!!.sampleRate.toString(),
                             url = it.content,

@@ -209,5 +209,5 @@ dependencies {
     implementation 'androidx.compose.material3:material3-android:1.2.1'
     implementation "io.noties.markwon:core:4.6.2"
     implementation("org.greenrobot:eventbus:3.3.1")
-    implementation("com.github.TeamNewPipe:NewPipeExtractor:0.24.2")
+    implementation("com.github.teamnewpipe:NewPipeExtractor:0.24.2")
 }
