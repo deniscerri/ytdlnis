@@ -388,12 +388,6 @@ class YTDLPUtil(private val context: Context) {
                 }
 
                 kotlin.runCatching {
-                    if (!format.has("filesize")) {
-                        format.put("filesize", 0)
-                    }
-                }
-
-                kotlin.runCatching {
                     if(format.get("format_note").toString() == "null"){
                         format.remove("format_note")
                     }
@@ -528,7 +522,11 @@ class YTDLPUtil(private val context: Context) {
     fun buildYoutubeDLRequest(downloadItem: DownloadItem) : YoutubeDLRequest {
         val useItemURL = sharedPreferences.getBoolean("use_itemurl_instead_playlisturl", false)
 
-        val request = if (downloadItem.playlistURL.isNullOrBlank() || downloadItem.playlistTitle.isBlank() || useItemURL){
+        val request = if (downloadItem.url.endsWith(".txt")) {
+            YoutubeDLRequest(listOf()).apply {
+                addOption("-a", downloadItem.url)
+            }
+        }else if (downloadItem.playlistURL.isNullOrBlank() || downloadItem.playlistTitle.isBlank() || useItemURL){
             YoutubeDLRequest(downloadItem.url)
         }else{
             YoutubeDLRequest(downloadItem.playlistURL!!).apply {

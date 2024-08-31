@@ -256,6 +256,7 @@ class TerminalFragment : Fragment() {
                         scrollView.removeAllViews()
                         parent.removeView(scrollView)
                         parent.addView(output, 0)
+                        sharedPreferences.edit().putBoolean("wrap_text_terminal", true).apply()
                     }else{
                         val parent = output?.parent as ViewGroup
                         parent.removeView(output)
@@ -267,6 +268,7 @@ class TerminalFragment : Fragment() {
                         scrollView.addView(output)
                         scrollView.id = R.id.horizontalscroll_output
                         parent.addView(scrollView, 0)
+                        sharedPreferences.edit().putBoolean("wrap_text_terminal", false).apply()
                     }
                 }
                 R.id.export_clipboard -> {
@@ -295,6 +297,12 @@ class TerminalFragment : Fragment() {
                 sharedPreferences.edit(true){
                     putFloat("terminal_zoom", value)
                 }
+            }
+        }
+
+        sharedPreferences.getBoolean("wrap_text_terminal", false).apply {
+            if (this){
+                bottomAppBar.menu.performIdentifierAction(R.id.wrap, 0)
             }
         }
     }

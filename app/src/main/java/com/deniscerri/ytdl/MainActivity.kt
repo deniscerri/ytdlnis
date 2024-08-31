@@ -29,6 +29,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.forEach
 import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
+import androidx.documentfile.provider.DocumentFile
 import androidx.fragment.app.FragmentContainerView
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -38,6 +39,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.preference.PreferenceManager
+import com.anggrayudi.storage.file.getAbsolutePath
 import com.deniscerri.ytdl.database.DBManager
 import com.deniscerri.ytdl.database.repository.DownloadRepository
 import com.deniscerri.ytdl.database.viewmodel.CookieViewModel
@@ -405,39 +407,45 @@ class MainActivity : BaseActivity() {
                     intent.getParcelableExtra(Intent.EXTRA_STREAM)
                 }
 
-                if (preferences.getString("preferred_download_type", "video") == "command"){
-                    val f = File(FileUtil.formatPath(uri?.path ?: ""))
-                    if (!f.exists()){
-                        Toast.makeText(context, "Couldn't read file", Toast.LENGTH_LONG).show()
+                var downloadType = DownloadViewModel.Type.valueOf(preferences.getString("preferred_download_type", "video")!!)
+                if (preferences.getBoolean("quick_download", false) || downloadType == DownloadViewModel.Type.command) {
+                    val docFile = DocumentFile.fromSingleUri(this, uri!!)
+                    if (docFile?.exists() == true){
+                        val bundle = Bundle()
+                        val path = docFile.getAbsolutePath(this)
+                        if (downloadType == DownloadViewModel.Type.auto) {
+                            downloadType = downloadViewModel.getDownloadType(null, path)
+                        }
+
+                        bundle.putParcelable("result", downloadViewModel.createEmptyResultItem(path))
+                        bundle.putSerializable("type", downloadType)
+                        navController.navigate(R.id.downloadBottomSheetDialog, bundle)
                         return
                     }
-                    val bundle = Bundle()
-                    bundle.putParcelable("result", downloadViewModel.createEmptyResultItem(f.absolutePath))
-                    bundle.putSerializable("type", DownloadViewModel.Type.command)
-                    navController.navigate(R.id.downloadBottomSheetDialog, bundle)
-                }else{
-                    val `is` = contentResolver.openInputStream(uri!!)
-                    val textBuilder = StringBuilder()
-                    val reader: Reader = BufferedReader(
-                        InputStreamReader(
-                            `is`, Charset.forName(
-                                StandardCharsets.UTF_8.name()
-                            )
+                }
+
+                val `is` = contentResolver.openInputStream(uri!!)
+                val textBuilder = StringBuilder()
+                val reader: Reader = BufferedReader(
+                    InputStreamReader(
+                        `is`, Charset.forName(
+                            StandardCharsets.UTF_8.name()
                         )
                     )
-                    var c: Int
-                    while (reader.read().also { c = it } != -1) {
-                        textBuilder.append(c.toChar())
-                    }
-                    val bundle = Bundle()
-                    bundle.putString("url", textBuilder.toString())
-                    navController.popBackStack(R.id.homeFragment, true)
-                    navController.navigate(
-                        R.id.homeFragment,
-                        bundle
-                    )
+                )
+                var c: Int
+                while (reader.read().also { c = it } != -1) {
+                    textBuilder.append(c.toChar())
                 }
+                val bundle = Bundle()
+                bundle.putString("url", textBuilder.toString())
+                navController.popBackStack(R.id.homeFragment, true)
+                navController.navigate(
+                    R.id.homeFragment,
+                    bundle
+                )
             } catch (e: Exception) {
+                Toast.makeText(context, "Couldn't read file", Toast.LENGTH_LONG).show()
                 e.printStackTrace()
             }
         }else if (action == Intent.ACTION_VIEW){

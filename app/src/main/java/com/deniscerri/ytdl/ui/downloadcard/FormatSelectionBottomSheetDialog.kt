@@ -41,6 +41,7 @@ import kotlinx.coroutines.withContext
 class FormatSelectionBottomSheetDialog(
     private val _items: List<DownloadItem?>? = null,
     private val _listener: OnFormatClickListener? = null,
+    private val canUpdate: Boolean = true,
     private val _multipleFormatsListener: OnMultipleFormatClickListener? = null
 ) : BottomSheetDialogFragment() {
 
@@ -180,7 +181,7 @@ class FormatSelectionBottomSheetDialog(
 
         refreshBtn = view.findViewById(R.id.format_refresh)
         filterBtn.isVisible = chosenFormats.isNotEmpty() || items.all { it!!.url.isYoutubeURL() }
-        if (!isMissingFormats || items.isEmpty() || items.first()?.url?.isEmpty() == true) {
+        if (!isMissingFormats || items.isEmpty() || items.first()?.url?.isEmpty() == true || !canUpdate) {
             refreshBtn.visibility = View.GONE
         }
 

@@ -110,7 +110,7 @@ import java.util.function.Predicate
 
 object UiUtil {
     @SuppressLint("SetTextI18n")
-    fun populateFormatCard(context: Context, formatCard : MaterialCardView, chosenFormat: Format, audioFormats: List<Format>?){
+    fun populateFormatCard(context: Context, formatCard : MaterialCardView, chosenFormat: Format, audioFormats: List<Format>? = null, showSize: Boolean = true){
         var formatNote = chosenFormat.format_note
         if (formatNote.isEmpty()) formatNote = context.getString(R.string.defaultValue)
         else if (formatNote == "best") formatNote = context.getString(R.string.best_quality)
@@ -168,7 +168,11 @@ object UiUtil {
         var filesize = chosenFormat.filesize
         if (!audioFormats.isNullOrEmpty() && filesize > 10L) filesize += audioFormats.sumOf { it.filesize }
         formatCard.findViewById<TextView>(R.id.file_size).apply {
-            text = FileUtil.convertFileSize(filesize)
+            if (showSize) {
+                text = FileUtil.convertFileSize(filesize)
+            }else{
+                text = "?"
+            }
             setOnClickListener {
                 formatCard.callOnClick()
             }
@@ -1015,16 +1019,14 @@ object UiUtil {
 
                 tmp.setOnClickListener {
                     val c = it as Chip
+                    val currentLanguages = editText.text.toString().split(",").filter { f -> f.isNotBlank() }.toMutableList()
                     if(!c.isChecked){
-                        editText.setText(editText.text.toString().replace(c.tag.toString(), "").removeSuffix(","))
+                        editText.setText(currentLanguages.filter { l -> l != c.tag }.joinToString(","))
                         editText.setSelection(editText.text.length)
                     }else{
-                        if (editText.text.isBlank()){
-                            editText.setText(c.tag.toString())
-                            editText.setSelection(editText.text.length)
-                        }else{
-                            editText.append(",${c.tag}")
-                        }
+                        currentLanguages.add(c.tag.toString())
+                        editText.setText(currentLanguages.joinToString(","))
+                        editText.setSelection(editText.text.length)
                     }
                 }
 
@@ -1143,6 +1145,7 @@ object UiUtil {
         saveThumbnailClicked: (Boolean) -> Unit,
         sponsorBlockItemsSet: (values: Array<String>, checkedItems: List<Boolean>) -> Unit,
         cutClicked: (VideoCutListener) -> Unit,
+        cutValueChanged: (String) -> Unit,
         cutDisabledClicked: () -> Unit,
         filenameTemplateSet: (String) -> Unit,
         saveSubtitlesClicked: (Boolean) -> Unit,
@@ -1346,7 +1349,7 @@ object UiUtil {
 
                     override fun onChangeCut(list: List<String>) {
                         if (list.isEmpty()){
-                            downloadItem.downloadSections = ""
+                            cutValueChanged("")
                             cut.text = context.getString(R.string.cut)
 
                             splitByChapters.isEnabled = true
@@ -1362,7 +1365,7 @@ object UiUtil {
                             list.forEach {
                                 value += "$it;"
                             }
-                            downloadItem.downloadSections = value
+                            cutValueChanged(value)
                             cut.text = value.dropLast(1)
 
                             splitByChapters.isEnabled = false
@@ -1419,6 +1422,7 @@ object UiUtil {
         sponsorBlockItemsSet: (Array<String>, List<Boolean>) -> Unit,
         cutClicked: (VideoCutListener) -> Unit,
         cutDisabledClicked: () -> Unit,
+        cutValueChanged: (String) -> Unit,
         extraCommandsClicked: () -> Unit
     ){
         val embedThumb = view.findViewById<Chip>(R.id.embed_thumb)
@@ -1508,7 +1512,7 @@ object UiUtil {
                 val cutVideoListener = object : VideoCutListener {
                     override fun onChangeCut(list: List<String>) {
                         if (list.isEmpty()){
-                            downloadItem.downloadSections = ""
+                            cutValueChanged("")
                             cut.text = context.getString(R.string.cut)
 
                             splitByChapters.isEnabled = true
@@ -1518,7 +1522,7 @@ object UiUtil {
                             list.forEach {
                                 value += "$it;"
                             }
-                            downloadItem.downloadSections = value
+                            cutValueChanged(value)
                             cut.text = value.dropLast(1)
 
                             splitByChapters.isEnabled = false

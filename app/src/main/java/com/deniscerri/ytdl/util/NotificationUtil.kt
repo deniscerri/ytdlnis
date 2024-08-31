@@ -119,6 +119,7 @@ class NotificationUtil(var context: Context) {
             )
             .setPriority(NotificationCompat.PRIORITY_LOW)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+            .setGroup(DOWNLOAD_RUNNING_NOTIFICATION_ID.toString())
             .setForegroundServiceBehavior(NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE)
             .clearActions()
             .build()
@@ -148,6 +149,7 @@ class NotificationUtil(var context: Context) {
     fun createDownloadServiceNotification(
         pendingIntent: PendingIntent?,
         title: String?,
+        group : Int = DOWNLOAD_RUNNING_NOTIFICATION_ID
     ): Notification {
         val notificationBuilder = getBuilder(DOWNLOAD_SERVICE_CHANNEL_ID)
 
@@ -167,6 +169,7 @@ class NotificationUtil(var context: Context) {
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .setProgress(PROGRESS_MAX, PROGRESS_CURR, true)
             .setContentIntent(pendingIntent)
+            .setGroup(group.toString())
             .setForegroundServiceBehavior(NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE)
             .clearActions()
             .build()
@@ -371,6 +374,7 @@ class NotificationUtil(var context: Context) {
                     R.drawable.ic_launcher_foreground_large
                 )
             )
+            .setGroup(DOWNLOAD_ERRORED_NOTIFICATION_ID.toString())
             .setContentIntent(errorTabPendingIntent)
             .setPriority(NotificationCompat.PRIORITY_MAX)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
@@ -427,6 +431,7 @@ class NotificationUtil(var context: Context) {
             notificationBuilder.setProgress(100, progress, (progress == 0 || progress == 100))
                 .setContentTitle(title)
                 .setStyle(NotificationCompat.BigTextStyle().bigText(contentText))
+                .setGroup(DOWNLOAD_RUNNING_NOTIFICATION_ID.toString())
                 .clearActions()
                 //.addAction(0, resources.getString(R.string.pause), pauseNotificationPendingIntent)
                 .addAction(0, resources.getString(R.string.cancel), cancelNotificationPendingIntent)
@@ -462,6 +467,7 @@ class NotificationUtil(var context: Context) {
             notificationBuilder.setProgress(100, progress, progress == 0)
                 .setContentTitle(title)
                 .setStyle(NotificationCompat.BigTextStyle().bigText(contentText))
+                .setGroup(DOWNLOAD_TERMINAL_RUNNING_NOTIFICATION_ID.toString())
                 .clearActions()
                 .addAction(0, resources.getString(R.string.cancel), cancelNotificationPendingIntent)
             notificationManager.notify(id, notificationBuilder.build())
@@ -686,6 +692,8 @@ class NotificationUtil(var context: Context) {
         const val DOWNLOAD_ERRORED_NOTIFICATION_ID =            60000
         const val FORMAT_UPDATING_FINISHED_NOTIFICATION_ID =    70000
         const val QUERY_PROCESS_FINISHED_NOTIFICATION_ID =      80000
+        const val DOWNLOAD_RUNNING_NOTIFICATION_ID =            90000
+        const val DOWNLOAD_TERMINAL_RUNNING_NOTIFICATION_ID =   99000
 
         private const val PROGRESS_MAX = 100
         private const val PROGRESS_CURR = 0

@@ -579,6 +579,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                                         },
                                         cutClicked = {},
                                         cutDisabledClicked = {},
+                                        cutValueChanged = {},
                                         extraCommandsClicked = {
                                             val callback = object : ExtraCommandsListener {
                                                 override fun onChangeExtraCommand(c: String) {
@@ -649,6 +650,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                                         },
                                         cutClicked = {},
                                         cutDisabledClicked = {},
+                                        cutValueChanged = {},
                                         filenameTemplateSet = { checked ->
                                             items.forEach { it.customFileNameTemplate = checked }
                                             CoroutineScope(Dispatchers.IO).launch { items.forEach { downloadViewModel.updateDownload(it) } }
@@ -846,8 +848,8 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
 
             audio!!.setOnClickListener {
                 lifecycleScope.launch {
-                    item = downloadViewModel.switchDownloadType(listOf(item), DownloadViewModel.Type.audio).first()
                     withContext(Dispatchers.IO){
+                        item = downloadViewModel.switchDownloadType(listOf(item), DownloadViewModel.Type.audio).first()
                         downloadViewModel.updateDownload(item)
                     }
                     bottomSheet.cancel()
@@ -856,8 +858,8 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
 
             video!!.setOnClickListener {
                 lifecycleScope.launch {
-                    item = downloadViewModel.switchDownloadType(listOf(item), DownloadViewModel.Type.video).first()
                     withContext(Dispatchers.IO){
+                        item = downloadViewModel.switchDownloadType(listOf(item), DownloadViewModel.Type.video).first()
                         downloadViewModel.updateDownload(item)
                     }
                     bottomSheet.cancel()
@@ -866,8 +868,8 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
 
             command!!.setOnClickListener {
                 lifecycleScope.launch {
-                    item = downloadViewModel.switchDownloadType(listOf(item), DownloadViewModel.Type.command).first()
                     withContext(Dispatchers.IO){
+                        item = downloadViewModel.switchDownloadType(listOf(item), DownloadViewModel.Type.command).first()
                         downloadViewModel.updateDownload(item)
                     }
                     bottomSheet.cancel()

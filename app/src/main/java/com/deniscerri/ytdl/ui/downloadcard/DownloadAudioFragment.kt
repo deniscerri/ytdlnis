@@ -219,12 +219,12 @@ class DownloadAudioFragment(private var resultItem: ResultItem? = null, private 
 
                 val formatCard = view.findViewById<MaterialCardView>(R.id.format_card_constraintLayout)
                 val chosenFormat = downloadItem.format
-                UiUtil.populateFormatCard(requireContext(), formatCard, chosenFormat, null)
+                UiUtil.populateFormatCard(requireContext(), formatCard, chosenFormat, null, showSize = downloadItem.downloadSections.isEmpty())
                 val listener = object : OnFormatClickListener {
                     override fun onFormatClick(formatTuple: FormatTuple) {
                         formatTuple.format?.apply {
                             downloadItem.format = this
-                            UiUtil.populateFormatCard(requireContext(), formatCard, this, null)
+                            UiUtil.populateFormatCard(requireContext(), formatCard, this, null, showSize = downloadItem.downloadSections.isEmpty())
                         }
                     }
 
@@ -245,12 +245,12 @@ class DownloadAudioFragment(private var resultItem: ResultItem? = null, private 
                         val preferredFormat = downloadViewModel.getFormat(formats, Type.audio)
                         downloadItem.format = preferredFormat
                         downloadItem.allFormats = formats
-                        UiUtil.populateFormatCard(requireContext(), formatCard, preferredFormat, null)
+                        UiUtil.populateFormatCard(requireContext(), formatCard, preferredFormat, null, showSize = downloadItem.downloadSections.isEmpty())
                     }
                 }
                 formatCard.setOnClickListener{
                     if (parentFragmentManager.findFragmentByTag("formatSheet") == null){
-                        val bottomSheet = FormatSelectionBottomSheetDialog(listOf(downloadItem), listener)
+                        val bottomSheet = FormatSelectionBottomSheetDialog(listOf(downloadItem), listener, canUpdate = !nonSpecific)
                         bottomSheet.show(parentFragmentManager, "formatSheet")
                     }
                 }
@@ -319,7 +319,7 @@ class DownloadAudioFragment(private var resultItem: ResultItem? = null, private 
                                 if(isUpdatingData){
                                     val snack = Snackbar.make(view, context.getString(R.string.please_wait), Snackbar.LENGTH_SHORT)
                                     snack.show()
-                                }else{
+                                }else if (!nonSpecific){
                                     val snack = Snackbar.make(view, context.getString(R.string.cut_unavailable), Snackbar.LENGTH_SHORT)
                                     snack.setAction(R.string.update){
                                         CoroutineScope(SupervisorJob()).launch(Dispatchers.IO) {
@@ -331,6 +331,10 @@ class DownloadAudioFragment(private var resultItem: ResultItem? = null, private 
                                     }
                                     snack.show()
                                 }
+                            },
+                            cutValueChanged = {
+                                downloadItem.downloadSections = it
+                                UiUtil.populateFormatCard(requireContext(), formatCard, downloadItem.format, showSize = downloadItem.downloadSections.isEmpty())
                             },
                             extraCommandsClicked = {
                                 val callback = object : ExtraCommandsListener {
@@ -358,7 +362,7 @@ class DownloadAudioFragment(private var resultItem: ResultItem? = null, private 
         formats.find { it.format_id == formatID }?.apply {
             downloadItem.format = this
             val formatCard = requireView().findViewById<MaterialCardView>(R.id.format_card_constraintLayout)
-            UiUtil.populateFormatCard(requireContext(), formatCard, downloadItem.format, listOf())
+            UiUtil.populateFormatCard(requireContext(), formatCard, downloadItem.format, listOf(), showSize = downloadItem.downloadSections.isEmpty())
         }
     }
 

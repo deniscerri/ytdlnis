@@ -267,16 +267,21 @@ object Extensions {
         val finishingProgressLinesRegex = Pattern.compile("\\[download]\\h+(100%|[a-zA-Z])")
 
         if (line.isNotBlank()) {
-            var newLine = ""
-            val newLines = line.lines()
-            if (!lines.takeLast(3).any { newLines.contains(it) }) {
-                lines.addAll(newLines.dropLast(1))
-                newLine = "\n${newLines.last()}"
+            var newline = ""
+            val newLines = line.lines().filter { !lines.contains(it) }
+            lines.addAll(newLines)
+            if (newLines.isNotEmpty()) {
+                newLines.last().apply {
+                    if (this.contains("[download")) {
+                        newline = "\n${this}"
+                    }
+                }
             }
 
-            return lines.dropLastWhile {
+
+            return lines.distinct().filterNot {
                 it.contains("[download") && !finishingProgressLinesRegex.matcher(it).find()
-            }.joinToString("\n") + newLine
+            }.joinToString("\n") + newline
         }
 
         return lines.filterNot {

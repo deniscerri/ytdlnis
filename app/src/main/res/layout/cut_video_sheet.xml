@@ -34,7 +34,6 @@
                 android:layout_height="match_parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:resize_mode="fixed_height"
-                app:useDefaultControls="true"
                 app:use_controller="false" />
 
             <androidx.constraintlayout.widget.ConstraintLayout

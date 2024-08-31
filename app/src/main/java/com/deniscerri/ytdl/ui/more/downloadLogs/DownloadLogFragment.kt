@@ -131,6 +131,7 @@ class DownloadLogFragment : Fragment() {
 //                        contentScrollView.setPadding(0,0,0,
 //                            (requireContext().resources.displayMetrics.density * 150).toInt()
 //                        )
+                        sharedPreferences.edit().putBoolean("wrap_text_log", true).apply()
                         updateAutoScrollState()
                     }else{
                         val parent = content.parent as ViewGroup
@@ -148,6 +149,7 @@ class DownloadLogFragment : Fragment() {
                         scrollView.id = R.id.horizontalscroll_output
                         parent.addView(scrollView, 0)
                         updateAutoScrollState()
+                        sharedPreferences.edit().putBoolean("wrap_text_log", false).apply()
                     }
                 }
 
@@ -186,6 +188,11 @@ class DownloadLogFragment : Fragment() {
             false
         }
 
+        sharedPreferences.getBoolean("wrap_text_log", false).apply {
+            if (this){
+                bottomAppBar.menu.performIdentifierAction(R.id.wrap, 0)
+            }
+        }
 
         logViewModel.getLogFlowByID(id!!).observe(viewLifecycleOwner){logItem ->
             kotlin.runCatching {
