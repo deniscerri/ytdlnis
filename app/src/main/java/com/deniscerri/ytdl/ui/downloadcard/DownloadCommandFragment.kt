@@ -55,6 +55,7 @@ class DownloadCommandFragment(private val resultItem: ResultItem? = null, privat
 
     lateinit var downloadItem: DownloadItem
 
+    @SuppressLint("RestrictedApi")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
