@@ -378,7 +378,7 @@
     <string name="display_over_apps">ਐਪਸ ਉੱਤੇ ਡਿਸਪਲੇ ਕਰੋ</string>
     <string name="display_over_apps_summary">ਡਾਉਨਲੋਡ ਕਾਰਡ ਨੂੰ ਹਮੇਸ਼ਾ ਹੋਰਨਾਂ ਐਪਾਂ ਦੇ ਉੱਪਰ ਪ੍ਰਦਰਸ਼ਿਤ ਕਰੋ। ਜੇਕਰ ਵਰਤਮਾਨ ਵਿੱਚ ਚੱਲ ਰਹੀ ਐਪ ਬੰਦ ਹੋ ਜਾਂਦੀ ਹੈ ਜਦੋਂ ਡਾਊਨਲੋਡ ਕਾਰਡ ਵਿਖਾਈ ਦਿੰਦਾ ਹੈ ਤਾਂ ਇਸ ਨੂੰ ਆਨ ਕਰੋ</string>
     <string name="hour">ਘੰਟਾ</string>
-    <string name="subtitles">ਸਿਰਲੇਖ</string>
+    <string name="subtitles">ਸਬਟਾਈਟਲ</string>
     <string name="prevent_duplicate_url_type">URL ਅਤੇ ਡਾਊਨਲੋਡ ਕਿਸਮ</string>
     <string name="prevent_duplicate_config">ਪੂਰੀ ਸੰਰਚਨਾ</string>
     <string name="move_bottom">ਹੇਠਾਂ ਜਾਓ</string>
@@ -406,4 +406,17 @@
     <string name="sync_with_source">ਸਰੋਤ ਨਾਲ ਸਿੰਕ ਕਰੋ</string>
     <string name="restore_info">ਆਪਣੇ ਮੌਜੂਦਾ ਡੇਟਾ ਨਾਲ ਸੁਰੱਖਿਅਤ ਕੀਤੇ ਡੇਟਾ ਨੂੰ ਮਿਲਾਉਣ ਲਈ \'ਰੀਸਟੋਰ\' ਦਬਾਓ।
 \nਮਿਟਾਉਣ ਲਈ \'ਰੀਸੈੱਟ\' ਦਬਾਓ ਅਤੇ ਸਿਰਫ਼ ਫਾਈਲ ਵਿੱਚ ਸੁਰੱਖਿਅਤ ਕੀਤੇ ਡੇਟਾ ਦੀ ਵਰਤੋਂ ਕਰੋ।</string>
+    <string name="continue_anyway">ਫੇਰ ਵੀ ਜਾਰੀ ਰੱਖੋ</string>
+    <string name="playlist_as_album">ਪਲੇਲਿਸਟ ਨਾਮ ਨੂੰ ਐਲਬਮ ਮੈਟਾਡੇਟਾ ਵਜੋਂ ਵਰਤੋ</string>
+    <string name="playlist_as_album_summary">ਜੇਕਰ ਐਲਬਮ ਮੈਟਾਡੇਟਾ ਮੌਜੂਦ ਨਹੀਂ ਹੈ, ਤਾਂ ਇਸਦੀ ਬਜਾਏ ਪਲੇਲਿਸਟ ਨਾਮ ਦੀ ਵਰਤੋਂ ਕਰੋ</string>
+    <string name="daily">ਰੋਜ਼ਾਨਾ</string>
+    <string name="weekly">ਹਫ਼ਤਾਵਾਰੀ</string>
+    <string name="monthly">ਮਹੀਨਾਵਾਰ</string>
+    <string name="cleanup_leftover_downloads">ਰੱਦ ਕੀਤੇ ਅਤੇ ਤਰੁੱਟੀਪੂਰਨ ਡਾਊਨਲੋਡਸ ਦੇ ਬਚੇ-ਖੁਚੇ ਅੰਸ਼ ਹਟਾਓ</string>
+    <string name="use_alarm_manager">ਸਮਾਂ-ਤਹਿ ਕਰਨ ਲਈ WorkManager ਦੀ ਬਜਾਏ AlarmManager ਦੀ ਵਰਤੋਂ ਕਰੋ</string>
+    <string name="use_alarm_manager_summary">ਇਸ ਨੂੰ ਸਮਰੱਥ ਬਣਾਓ ਜੇਕਰ ਤੁਹਾਡੇ ਡਿਵਾਈਸ ਵਿਕਰੇਤਾ ਦੁਆਰਾ WorkManager ਨੂੰ ਪ੍ਰਤਿਬੰਧਿਤ ਕੀਤਾ ਗਿਆ ਹੈ ਜਾਂ ਸ਼ਡਿਊਲ ਕੀਤੇ ਜੌਬ ਬਹੁਤ ਸਟੀਕ ਨਹੀਂ ਹਨ</string>
+    <string name="use_item_url_not_playlist">ਪਲੇਲਿਸਟ URL ਦੀ ਬਜਾਏ ਆਈਟਮ URL ਦੀ ਵਰਤੋਂ ਕਰੋ</string>
+    <string name="use_item_url_not_playlist_summary">Libretube ਆਫਲਾਈਨ ਪਲੇਲਿਸਟਾਂ ਲਈ ਉਪਯੋਗੀ ਜੋ yt-dlp ਦੁਆਰਾ ਮਾਨਤਾ ਪ੍ਰਾਪਤ ਨਹੀਂ ਹਨ। ਇਸਨੂੰ ਸਮਰੱਥ ਕਰਨ ਨਾਲ ਪਲੇਲਿਸਟ ਮੈਟਾਡੇਟਾ ਏਮਬੇਡ ਨਹੀਂ ਕੀਤਾ ਜਾਵੇਗਾ</string>
+    <string name="recode_video">ਵੀਡੀਓ ਰੀਕੋਡ ਕਰੋ</string>
+    <string name="recode_video_summary">ਵੀਡੀਓ ਫਾਈਲ ਨੂੰ ਨਿਸ਼ਚਿਤ ਵੀਡੀਓ ਫਾਰਮੈਟ ਵਿੱਚ ਰੀਕੋਡ ਕਰਦਾ ਹੈ</string>
 </resources>

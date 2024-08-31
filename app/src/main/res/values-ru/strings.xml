@@ -210,7 +210,7 @@
     <string name="preferred_format_id">Предпочитаемый ID формата</string>
     <string name="download_now">Загрузить сейчас</string>
     <string name="resume">Продолжить</string>
-    <string name="video_recommendations_summary">Получать рекомендации от YouTube на главном экране через Piped API</string>
+    <string name="video_recommendations_summary">Получайте рекомендуемые видео YouTube на главном экране с помощью NewPipe Extractor</string>
     <string name="copied_to_clipboard">Скопировано в буфер обмена</string>
     <string name="Theme">Тема</string>
     <string name="dark">Тёмная</string>
@@ -268,7 +268,7 @@
     <string name="move_temporary_files_summary">Переместить кэш в папку загрузок</string>
     <string name="custom_audio_quality">Выбор качества аудио</string>
     <string name="piped_instance">Экземпляр Piped</string>
-    <string name="piped_instance_summary">Укажите сервер Piped API, который будет использоваться для YouTube-запросов и получения форматов</string>
+    <string name="piped_instance_summary">Напишите PIPED API-сервер, который приложение сможет использовать для запросов и форматов YouTube</string>
     <string name="fragment_retries">Число повторов для фрагмента</string>
     <string name="retries">Число повторов</string>
     <string name="format_order">Порядок форматов</string>

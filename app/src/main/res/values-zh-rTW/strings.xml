@@ -408,4 +408,15 @@
 \n按「重置」將清除並僅使用文件中保存的資料。</string>
     <string name="use_alarm_manager">使用 AlarmManager 代替 WorkManager 來進行排程</string>
     <string name="use_alarm_manager_summary">如果您的設備廠商限制了 WorkManager 或排程的工作不需要太精確，請啟用此選項</string>
+    <string name="continue_anyway">繼續執行</string>
+    <string name="playlist_as_album">使用播放清單名稱作為專輯中繼資料</string>
+    <string name="playlist_as_album_summary">如果沒有專輯中繼資料，則使用播放清單名稱代替</string>
+    <string name="daily">每日</string>
+    <string name="weekly">每週</string>
+    <string name="monthly">每月</string>
+    <string name="cleanup_leftover_downloads">清理殘留的下載（取消或錯誤的下載）</string>
+    <string name="use_item_url_not_playlist">使用項目 URL 而非播放清單 URL</string>
+    <string name="use_item_url_not_playlist_summary">此功能適用於 Libretube 離線播放清單，這些清單無法被 yt-dlp 認識。啟用此選項後，播放清單的中繼資料將不會嵌入</string>
+    <string name="recode_video">重新編碼影片</string>
+    <string name="recode_video_summary">將影片檔案重新編碼為指定的影片格式</string>
 </resources>

@@ -372,7 +372,7 @@
     <string name="add_template_first">U moet ten­minste één opdracht­sjabloon aangemaakt hebben!</string>
     <string name="download_over_metered_networks_summary">Downloadt via elk netwerk­type. Wacht anders voor een ongemeten netwerk</string>
     <string name="metered_network_download_start_info">Download zal starten wanneer u bent verbonden met en ongemeten netwerk</string>
-    <string name="video_recommendations_summary">Ontvang aan­bevolen YouTube-video\'s op het start­scherm via de Piped-API</string>
+    <string name="video_recommendations_summary">Ontvang aan­bevolen YouTube-video\'s op het start­scherm</string>
     <string name="format_filtering_hint">Alle items moeten van hetzelfde type zĳn om deze optie te kunnen gebruiken</string>
     <string name="remember_download_type_summary">Selecteer het laatst geopende download­type voor het huidige item</string>
     <string name="buffer_size_summary">Grootte van download­buffer, bĳv. 1024 of 16k (standaard is 1024)</string>

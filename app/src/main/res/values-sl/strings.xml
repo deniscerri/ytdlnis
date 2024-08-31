@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="search">Išči</string>
+    <string name="home">Naslovna stran</string>
+    <string name="directories">Mape</string>
+    <string name="music_directory">Glasba</string>
+    <string name="video_directory">Posnetki</string>
+    <string name="updating">Posodobitev</string>
+    <string name="ytdl_update_hint">Uporabno, če imate težave s prenosom</string>
+    <string name="update_ytdl">Namestite novo različico yt-dlp</string>
+    <string name="about">O aplikaciji</string>
+    <string name="source_code">Izvorna koda</string>
+    <string name="search_hint">Išči ali vstavi URL</string>
+    <string name="failed_download">Datoteke ni bilo mogoče prenesti</string>
+    <string name="download_notification_channel_name">Prenosi datotek</string>
+    <string name="download_notification_channel_description">Obvestilo, ki prikazuje potek prenosa zvočnih in video datotek</string>
+    <string name="you_are_in_latest_version">Uporaba najnovejše različice</string>
+    <string name="ytld_update_success">Nova različica nameščena</string>
+    <string name="ytdl_updating_started">Prenašanje nove različice</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Prekliči</string>
+    <string name="confirm_delete_history_desc">Trajno izbriši celotno zgodovino</string>
+    <string name="confirm_delete_history">Potrdi</string>
+    <string name="search_history_hint">Iskanje iz zgodovine</string>
+    <string name="search_command_hint">Iskanje iz ukazov</string>
+    <string name="no_results">Ni rezultatov</string>
+    <string name="more">Več</string>
+    <string name="version">Različica</string>
+    <string name="command_directory">Mapa ukazov po meri</string>
+    <string name="couldnt_find_apk">Ni bilo mogoče najti ustreznega APK-ja</string>
+    <string name="downloading_update">Prenašanje nove različice</string>
+    <string name="audio">Zvok</string>
+    <string name="concurrent_fragments_summary">Število fragmentov izvornega videoposnetka DASH/HLS za sočasni prenos</string>
+    <string name="video">Videoposnetki</string>
+    <string name="worst_quality">Najnižja kvaliteta</string>
+    <string name="remove_results">Počisti rezultate</string>
+    <string name="best_quality">Najboljša kvaliteta</string>
+    <string name="remove_all">Izbriši vse</string>
+    <string name="download_all">Prenesi vse</string>
+    <string name="settings">Nastavitve</string>
+    <string name="ytdl_already_updating">Nameščanje nove različice</string>
+    <string name="Remove">Odstrani</string>
+    <string name="update_app">Preveri za posodobitve</string>
+</resources>

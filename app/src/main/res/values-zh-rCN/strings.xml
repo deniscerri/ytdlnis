@@ -229,7 +229,7 @@
     <string name="download_over_metered_networks_summary">使用任何网络类型下载。否则等待不按流量计费的网络</string>
     <string name="suggested">建议</string>
     <string name="share">分享</string>
-    <string name="video_recommendations_summary">使用 PIPED API 在主屏幕上获取 YouTube 视频推荐</string>
+    <string name="video_recommendations_summary">从 NewPipe 提取器在主屏幕上获得推荐的 YouTube 视频</string>
     <string name="copied_to_clipboard">复制到剪贴板</string>
     <string name="light">浅色</string>
     <string name="dark">深色</string>
