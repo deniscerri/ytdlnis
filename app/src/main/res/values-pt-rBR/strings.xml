@@ -184,7 +184,7 @@
     <string name="format_filtering_hint">Todos os itens devem ser do mesmo tipo para usar esta opção</string>
     <string name="preferred_search_engine_summary">O mecanismo de pesquisa a ser usado para pesquisas no aplicativo</string>
     <string name="preferred_search_engine">Mecanismo de pesquisa preferido</string>
-    <string name="video_recommendations_summary">Obter vídeos recomendados do YouTube na tela inicial a partir da API do servidor Piped</string>
+    <string name="video_recommendations_summary">Obter vídeos recomendados do YouTube na tela inicial a partir do \"NewPipe Extractor\"</string>
     <string name="video_recommendations">Recomendações de vídeo</string>
     <string name="format_source">Origem dos formatos</string>
     <string name="subtitle_languages">Idiomas das legendas</string>

@@ -240,7 +240,7 @@
     <string name="access_all_directories_summary">Consenti il download dell\'app nelle directory limitate per impostazione predefinita</string>
     <string name="in_queue">In coda</string>
     <string name="download_over_metered_networks_summary">Scarica utilizzando qualsiasi tipo di rete. Altrimenti attende rete illimitata</string>
-    <string name="video_recommendations_summary">Ottieni sulla schermata principale i video YouTube consigliati dall\'API PIPED</string>
+    <string name="video_recommendations_summary">Ottieni i video YouTube consigliati sulla schermata principale da NewPipe Extractor</string>
     <string name="light">Chiaro</string>
     <string name="quick_download">Download rapido</string>
     <string name="misc">Miscellanea</string>

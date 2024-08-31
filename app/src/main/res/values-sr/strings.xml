@@ -35,7 +35,7 @@
     <string name="music_directory">Фолдер за аудио снимке</string>
     <string name="warning">Упозорење</string>
     <string name="couldnt_find_apk">Није могуће пронаћи одговарајући APK</string>
-    <string name="video_recommendations_summary">Добијте препоручене YouTube видео снимке на почетном екрану с PIPED API-ја</string>
+    <string name="video_recommendations_summary">Добијте препоручене YouTube видео снимке на почетном екрану из NewPipe Extractor-а</string>
     <string name="codec">Кодек</string>
     <string name="select_backup_categories">Изаберите категорије резервне копије</string>
     <string name="ytdl_updating_started">Преузимање нове верзије</string>
