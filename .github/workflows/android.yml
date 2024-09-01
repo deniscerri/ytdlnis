@@ -1,5 +1,9 @@
 name: Android CI
 
+env:
+  # The name of the main module repository
+  main_project_module: app
+
 on:
   push:
     branches: [ "main" ]
@@ -12,6 +16,49 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - uses: actions/checkout@v3
+    - name: set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: 'corretto'
+        cache: gradle
+
+    - uses: gradle/gradle-build-action@v2
+      with:
+        gradle-version: 7.5
+    - name: Create base64 jks file
+      run: echo "${{ secrets.BASE_64_SIGNING_KEY }}" > app/release_keystore.txt
+    - name: Create jks file
+      run: base64 -d "app/release_keystore.txt" > app/release_keystore.jks
+    - name: Create Properties File
+      run: echo "${{ secrets.LOCAL_PROPERTIES }}" > local.properties
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+    - name: Build with Gradle
+      run: ./gradlew build
+    - name: Set current date as env variable
+      run: echo "date_today=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
+     # Create APK Debug
+    - name: Build apk debug project (APK)
+      run: ./gradlew assembleDebug
+    # Create APK Release
+    - name: Build apk release project (APK)
+      run: ./gradlew assemble
+   # Upload Artifact Build
+    # Noted For Output [main_project_module]/build/outputs/apk/debug/
+    - name: Upload APK Debug
+      uses: actions/upload-artifact@v3
+      with:
+        name: YTDLnis APK debug generated
+        path: ${{ env.main_project_module }}/build/outputs/apk/debug/
+
+    # Noted For Output [main_project_module]/build/outputs/apk/release/
+    - name: Upload APK Release
+      uses: actions/upload-artifact@v3
+      with:
+        name: YTDLnis APK release generated
+        path: ${{ env.main_project_module }}/build/outputs/apk/release/
     - name: send telegram message on push or pull
       uses: appleboy/telegram-action@master
       with:
@@ -24,20 +71,3 @@ jobs:
           Repository: ${{ github.repository }}
           
           See changes: https://github.com/${{ github.repository }}/commit/${{github.sha}}
-    - uses: actions/checkout@v3
-    - name: set up JDK 17
-      uses: actions/setup-java@v3
-      with:
-        java-version: '17'
-        distribution: 'corretto'
-        cache: gradle
-
-    - uses: gradle/gradle-build-action@v2
-      with:
-        gradle-version: 7.5
-    - name: Create Properties File
-      run: touch local.properties
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
-    - name: Build with Gradle
-      run: ./gradlew build
