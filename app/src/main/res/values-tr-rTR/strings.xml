@@ -9,7 +9,7 @@
     <string name="directories"> Klasörler</string>
     <string name="music_directory"> Müzik Klasörü</string>
     <string name="video_directory"> Video Klasörü</string>
-    <string name="updating">Güncelleniyor</string>
+    <string name="updating">Güncellemeler</string>
     <string name="ytdl_update_hint">İndirirken sorun yaşıyorsanız faydalıdır</string>
     <string name="update_ytdl">yt-dlp\'nin yeni sürümünü yükle</string>
     <string name="source_code">Kaynak Kodu</string>
@@ -43,7 +43,7 @@
     <string name="limit_rate">Limit Oranı</string>
     <string name="limit_rate_summary">Maksimum indirme hızı (saniye başına bayt cinsinden), örneğin 50K veya 4,2M</string>
     <string name="aria2_summary">Varsayılan yerine indirici olarak aria2c kullan</string>
-    <string name="processing">İşleniyor</string>
+    <string name="processing">İşlemeler</string>
     <string name="embed_subs_summary">Videoya altyazı ekle</string>
     <string name="embed_thumb">Küçük Resim Kapakları</string>
     <string name="embed_thumb_summary">Küçük resmi kapak resmi olarak kullan</string>
@@ -203,7 +203,7 @@
     <string name="ignore_battery_optimization">Pil Optimizasyonunu Yoksay</string>
     <string name="format_source">Format Kaynağı</string>
     <string name="video_recommendations">Video Önerileri</string>
-    <string name="video_recommendations_summary">PIPED API\'den ana ekranda önerilen YouTube videolarını al</string>
+    <string name="video_recommendations_summary">NewPipe Extractor\'dan önerilen YouTube videolarını ana ekranda al</string>
     <string name="preferred_search_engine">Tercih Edilen Arama Motoru</string>
     <string name="preferred_search_engine_summary">Uygulama içi aramalar için kullanılacak arama motoru</string>
     <string name="format_filtering_hint">Bu seçeneği kullanmak için tüm öğelerin aynı türde olması gerekir</string>
