@@ -27,10 +27,10 @@ jobs:
     - uses: gradle/gradle-build-action@v2
       with:
         gradle-version: 7.5
-    - name: Create jks.asc file
-      run: echo "${{ secrets.BASE_64_SIGNING_KEY }}" > release_keystore.jks.asc
+    - name: Create base64 jks file
+      run: echo "${{ secrets.BASE_64_SIGNING_KEY }}" > app/release_keystore.txt
     - name: Create jks file
-      run: gpg -d -passphrase "${{ secrets.BASE_64_SIGNING_KEY_PASSPHRASE }}" -batch release_keystore.jks.asc > app/release_keystore.jks
+      run: base64 -d "app/release_keystore.txt" > app/release_keystore.jks
     - name: Create Properties File
       run: echo "${{ secrets.LOCAL_PROPERTIES }}" > local.properties
     - name: Grant execute permission for gradlew
