@@ -31,7 +31,9 @@ jobs:
       run: echo "${{ secrets.BASE_64_SIGNING_KEY }}" > app/release_keystore.txt
     - name: Create jks file
       run: base64 -d "app/release_keystore.txt" > app/release_keystore.jks
-    - name: Create Properties File
+    - name: Create Blank Local Properties FIle
+      run: touch local.properties
+    - name: Create Keystore Properties File
       run: echo "${{ secrets.LOCAL_PROPERTIES }}" > keystore.properties
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
