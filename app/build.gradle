@@ -27,7 +27,7 @@ android {
     compileSdk 34
 
     try {
-        def propertiesFile = rootProject.file("local.properties")
+        def propertiesFile = rootProject.file("keystore.properties")
         if(propertiesFile.text != ""){
             properties.load(new FileInputStream(propertiesFile))
 

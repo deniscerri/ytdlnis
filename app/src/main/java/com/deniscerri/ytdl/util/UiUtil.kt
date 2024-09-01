@@ -6,13 +6,10 @@ import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.ClipData
-import android.content.ClipData.Item
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
-import android.content.res.ColorStateList
-import android.graphics.Canvas
 import android.net.Uri
 import android.os.Build
 import android.text.Editable
@@ -37,36 +34,26 @@ import androidx.annotation.OptIn
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
-import androidx.cardview.widget.CardView
-import androidx.compose.ui.graphics.Color
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.FileProvider
+import androidx.core.text.HtmlCompat
+import androidx.core.text.parseAsHtml
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
-import androidx.documentfile.provider.DocumentFile
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LifecycleOwner
 import androidx.preference.PreferenceManager
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.RecyclerView
 import com.afollestad.materialdialogs.utils.MDUtil.getStringArray
+import com.deniscerri.ytdl.MainActivity
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.models.CommandTemplate
 import com.deniscerri.ytdl.database.models.DownloadItem
 import com.deniscerri.ytdl.database.models.Format
 import com.deniscerri.ytdl.database.models.HistoryItem
-import com.deniscerri.ytdl.database.models.RestoreAppDataItem
 import com.deniscerri.ytdl.database.models.TemplateShortcut
 import com.deniscerri.ytdl.database.repository.DownloadRepository
 import com.deniscerri.ytdl.database.viewmodel.CommandTemplateViewModel
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
-import com.deniscerri.ytdl.database.viewmodel.HistoryViewModel
-import com.deniscerri.ytdl.database.viewmodel.ResultViewModel
-import com.deniscerri.ytdl.ui.adapter.AlreadyExistsAdapter
-import com.deniscerri.ytdl.ui.downloadcard.ConfigureDownloadBottomSheetDialog
 import com.deniscerri.ytdl.ui.downloadcard.VideoCutListener
-import com.deniscerri.ytdl.util.Extensions.enableFastScroll
 import com.deniscerri.ytdl.util.Extensions.enableTextHighlight
 import com.deniscerri.ytdl.util.Extensions.getMediaDuration
 import com.deniscerri.ytdl.util.Extensions.toStringDuration
@@ -75,7 +62,6 @@ import com.deniscerri.ytdl.util.extractors.YTDLPUtil
 import com.google.android.material.badge.BadgeDrawable
 import com.google.android.material.badge.BadgeUtils
 import com.google.android.material.badge.ExperimentalBadgeUtils
-import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
@@ -91,21 +77,18 @@ import com.google.android.material.materialswitch.MaterialSwitch
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.textfield.TextInputLayout.END_ICON_NONE
-import com.google.android.material.textfield.TextInputLayout.EndIconMode
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
+import com.yausername.youtubedl_android.YoutubeDL
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
-import kotlinx.serialization.json.JsonObject
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
-import java.util.Queue
-import java.util.function.Predicate
 
 
 object UiUtil {
@@ -1588,9 +1571,12 @@ object UiUtil {
 
 
     fun handleNoResults(context: Activity, message: String, continueAnyway: Boolean = false, continued: () -> Unit, closed: () -> Unit) {
+        val updateYTDLP = "<span  style='color:#d43c3b';>${context.getString(R.string.update_ytdl)}</span>"
+            .parseAsHtml(HtmlCompat.FROM_HTML_MODE_COMPACT)
+
         val errDialog = MaterialAlertDialogBuilder(context)
             .setTitle(R.string.no_results)
-            .setMessage(message)
+            .setMessage(message + "\n\n" + updateYTDLP)
 
         errDialog.setPositiveButton(R.string.copy_log) { d:DialogInterface?, _:Int ->
             val clipboard: ClipboardManager = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
@@ -1608,7 +1594,23 @@ object UiUtil {
             closed()
         }
 
-        errDialog.show()
+        val dialog = errDialog.show()
+        dialog.findViewById<View>(android.R.id.message)?.setOnClickListener {
+            dialog.cancel()
+            CoroutineScope(Dispatchers.IO).launch {
+                val res = UpdateUtil(context).updateYoutubeDL()
+                if (res == YoutubeDL.UpdateStatus.DONE) {
+                    val version = YoutubeDL.getInstance().version(context)
+                    withContext(Dispatchers.Main){
+                        Toast.makeText(context, context.getString(R.string.ytld_update_success) + " [${version}]", Toast.LENGTH_LONG).show()
+                    }
+                }else {
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(context, context.getString(R.string.you_are_in_latest_version), Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
     }
 
     fun showErrorDialog(context: Context, it: String){
