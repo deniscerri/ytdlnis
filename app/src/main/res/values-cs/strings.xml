@@ -97,7 +97,7 @@
     <string name="scheduling">Rozvrh</string>
     <string name="dont_ask_again">Neptat se znovu</string>
     <string name="warning">Upozornění</string>
-    <string name="video_recommendations_summary">Získejte doporučená videa YouTube na domovské obrazovce z rozhraní PIPED API</string>
+    <string name="video_recommendations_summary">Získejte doporučená videa YouTube na domovské obrazovce pomocí NewPipe Extractora</string>
     <string name="codec">Kodek</string>
     <string name="select_backup_categories">Výběr kategorií zálohování</string>
     <string name="downloads_running_try_later">Dělník pro stahování je spuštěn. Zkuste to později</string>
