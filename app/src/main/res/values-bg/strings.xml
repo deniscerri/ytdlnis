@@ -253,7 +253,7 @@
     <string name="save_subs">Запазване на субтитрите</string>
     <string name="save_subs_desc">Запазете субтитрите във файл</string>
     <string name="format_source">Източник формати</string>
-    <string name="video_recommendations_summary">Вземете препоръчани видеоклипове в YouTube на началния екран от PIPED API</string>
+    <string name="video_recommendations_summary">Вземете препоръчаните YouTube видеоклипове на началния екран от the NewPipe Extractor</string>
     <string name="preferred_search_engine">Предпочитана търсачка</string>
     <string name="preferred_search_engine_summary">Търсачката ще се използва за търсене в приложението</string>
     <string name="format_filtering_hint">Всички елементи трябва да са от един и същи тип, за да използвате тази опция</string>
@@ -404,4 +404,19 @@
     <string name="use_alarm_manager_summary">Включете това, само ако WorkManager е ограничен от издаделя на Вашето устройства или планираните задачи не са твърде точни</string>
     <string name="restore_info">Натиснете \'Възстанови\', за да обедините запазените с Вашите данни.
 \nНатиснете \'Reset\', за да изтриете и да използвате само съхранените във файла данни.</string>
+    <string name="navigation_bar">Лента за навигация</string>
+    <string name="continue_anyway">Продължете въпреки това</string>
+    <string name="playlist_as_album">Използвайте името на плейлиста, в качеството на метаданни на албума</string>
+    <string name="playlist_as_album_summary">Да се използва името на албума, ако липсват метаданни</string>
+    <string name="daily">Ежедневно</string>
+    <string name="weekly">Седмично</string>
+    <string name="monthly">Ежемесечно</string>
+    <string name="cleanup_leftover_downloads">Почистване на остатъците от изтегляния (отменени, с грешки)</string>
+    <string name="format_importance">Ред на важност на формата</string>
+    <string name="download_archive_folder">Изтегляне архивна папка</string>
+    <string name="use_item_url_not_playlist">Исползвайте URL-адреса на елемента вместо URL-адреса на плейлиста</string>
+    <string name="recode_video">Прекодиране на видео</string>
+    <string name="recode_video_summary">Перекодира видео файлът в указания видеоформат</string>
+    <string name="format_importance_note">Подреждане важността на елемента на формат. Това подреждане ще се използва, само когато приложението извлече форматите от картата за изтегляне и автоматично избере формата!</string>
+    <string name="use_item_url_not_playlist_summary">Полезно за офлайн плейлисти Libretube, които не се разпознават от yt-dlp. Метаданните на плейлиста няма да бъдат вградени, ако функция та е включена</string>
 </resources>
