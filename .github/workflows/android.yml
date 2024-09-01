@@ -27,8 +27,12 @@ jobs:
     - uses: gradle/gradle-build-action@v2
       with:
         gradle-version: 7.5
+    - name: Create jks.asc file
+      run: echo "${{ secrets.BASE_64_SIGNING_KEY }}" > release_keystore.jks.asc
+    - name: Create jks file
+      run: gpg -d -passphrase "${{ secrets.BASE_64_SIGNING_KEY_PASSPHRASE }}" -batch release_keystore.jks.asc > app/release_keystore.jks
     - name: Create Properties File
-      run: touch local.properties
+      run: echo "${{ secrets.LOCAL_PROPERTIES }}" > local.properties
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Build with Gradle
