@@ -12,18 +12,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: send telegram message on push or pull
-      uses: appleboy/telegram-action@master
-      with:
-        to: ${{ secrets.TELEGRAM_TO }}
-        token: ${{ secrets.TELEGRAM_TOKEN }}
-        message: |
-          ${{ github.actor }} created commit:
-          Commit message: ${{ github.event.commits[0].message }}
-          
-          Repository: ${{ github.repository }}
-          
-          See changes: https://github.com/${{ github.repository }}/commit/${{github.sha}}
     - uses: actions/checkout@v3
     - name: set up JDK 17
       uses: actions/setup-java@v3
@@ -41,3 +29,39 @@ jobs:
       run: chmod +x gradlew
     - name: Build with Gradle
       run: ./gradlew build
+    - name: Set current date as env variable
+      run: echo "date_today=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
+     # Create APK Debug
+    - name: Build apk debug project (APK)
+      run: ./gradlew assembleDebug
+    # Create APK Release
+    - name: Build apk release project (APK)
+      run: ./gradlew assemble
+   # Upload Artifact Build
+    # Noted For Output [main_project_module]/build/outputs/apk/debug/
+    - name: Upload APK Debug
+      uses: actions/upload-artifact@v3
+      with:
+        name: YTDLnis APK debug generated
+        path: ${{ env.main_project_module }}/build/outputs/apk/debug/
+
+    # Noted For Output [main_project_module]/build/outputs/apk/release/
+    - name: Upload APK Release - ${{ env.repository_name }}
+      uses: actions/upload-artifact@v3
+      with:
+        name: YTDLnis APK release generated
+        path: ${{ env.main_project_module }}/build/outputs/apk/release/
+    - name: send telegram message on push or pull
+      uses: appleboy/telegram-action@master
+      with:
+        to: ${{ secrets.TELEGRAM_TO }}
+        token: ${{ secrets.TELEGRAM_TOKEN }}
+        message: |
+          ${{ github.actor }} created commit:
+          Commit message: ${{ github.event.commits[0].message }}
+          
+          Repository: ${{ github.repository }}
+          
+          See changes: https://github.com/${{ github.repository }}/commit/${{github.sha}}
+          See generated debug apk: https://github.com/${{ github.repository }}/build/outputs/apk/debug/
+          See generated release apk: https://github.com/${{ github.repository }}/build/outputs/apk/release/
