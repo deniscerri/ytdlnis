@@ -32,7 +32,7 @@ jobs:
     - name: Create jks file
       run: base64 -d "app/release_keystore.txt" > app/release_keystore.jks
     - name: Create Properties File
-      run: echo "${{ secrets.LOCAL_PROPERTIES }}" > local.properties
+      run: echo "${{ secrets.LOCAL_PROPERTIES }}" > keystore.properties
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Build with Gradle
