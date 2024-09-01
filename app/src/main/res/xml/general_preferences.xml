@@ -85,6 +85,15 @@
             app:title="@string/api_key" />
 
         <ListPreference
+            android:defaultValue="NEWPIPE"
+            android:entries="@array/data_fetching_extractor_youtube"
+            android:entryValues="@array/data_fetching_extractor_youtube"
+            android:icon="@drawable/baseline_manage_search_24"
+            app:key="data_fetching_extractor_youtube"
+            app:useSimpleSummaryProvider="true"
+            app:title="@string/data_fetching_extractor_youtube" />
+
+        <ListPreference
             android:defaultValue="yt-dlp"
             android:entries="@array/formats_source"
             android:entryValues="@array/formats_source_values"

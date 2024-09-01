@@ -106,7 +106,7 @@ class ActiveDownloadAdapter(onItemClickListener: OnItemClickListener, activity: 
         sideDetails.add(item.container.uppercase().ifEmpty { item.format.container.uppercase() })
 
         val fileSize = FileUtil.convertFileSize(item.format.filesize)
-        if (fileSize != "?") sideDetails.add(fileSize)
+        if (fileSize != "?" && item.downloadSections.isBlank()) sideDetails.add(fileSize)
         formatDetailsChip.text = sideDetails.filter { it.isNotBlank() }.joinToString("  ·  ")
 
         //OUTPUT

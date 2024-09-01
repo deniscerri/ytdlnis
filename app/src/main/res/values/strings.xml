@@ -421,4 +421,5 @@
     <string name="continue_anyway">Continue Anyway</string>
     <string name="playlist_as_album">Use Playlist Name as Album Metadata</string>
     <string name="playlist_as_album_summary">If Album Metadata is not present, use playlist name instead</string>
+    <string name="data_fetching_extractor_youtube">Data Fetching Extractor (YouTube)</string>
 </resources>

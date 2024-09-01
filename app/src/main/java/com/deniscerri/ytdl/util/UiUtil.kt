@@ -1571,12 +1571,10 @@ object UiUtil {
 
 
     fun handleNoResults(context: Activity, message: String, continueAnyway: Boolean = false, continued: () -> Unit, closed: () -> Unit) {
-        val updateYTDLP = "<span  style='color:#d43c3b';>${context.getString(R.string.update_ytdl)}</span>"
-            .parseAsHtml(HtmlCompat.FROM_HTML_MODE_COMPACT)
 
         val errDialog = MaterialAlertDialogBuilder(context)
             .setTitle(R.string.no_results)
-            .setMessage(message + "\n\n" + updateYTDLP)
+            .setMessage(message)
 
         errDialog.setPositiveButton(R.string.copy_log) { d:DialogInterface?, _:Int ->
             val clipboard: ClipboardManager = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
@@ -1594,23 +1592,7 @@ object UiUtil {
             closed()
         }
 
-        val dialog = errDialog.show()
-        dialog.findViewById<View>(android.R.id.message)?.setOnClickListener {
-            dialog.cancel()
-            CoroutineScope(Dispatchers.IO).launch {
-                val res = UpdateUtil(context).updateYoutubeDL()
-                if (res == YoutubeDL.UpdateStatus.DONE) {
-                    val version = YoutubeDL.getInstance().version(context)
-                    withContext(Dispatchers.Main){
-                        Toast.makeText(context, context.getString(R.string.ytld_update_success) + " [${version}]", Toast.LENGTH_LONG).show()
-                    }
-                }else {
-                    withContext(Dispatchers.Main) {
-                        Toast.makeText(context, context.getString(R.string.you_are_in_latest_version), Toast.LENGTH_SHORT).show()
-                    }
-                }
-            }
-        }
+        errDialog.show()
     }
 
     fun showErrorDialog(context: Context, it: String){

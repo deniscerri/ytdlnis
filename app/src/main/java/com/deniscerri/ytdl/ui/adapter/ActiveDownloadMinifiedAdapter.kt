@@ -125,7 +125,7 @@ class ActiveDownloadMinifiedAdapter(onItemClickListener: OnItemClickListener, ac
 
         val fileSize = card.findViewById<TextView>(R.id.file_size)
         val fileSizeReadable = FileUtil.convertFileSize(item.format.filesize)
-        if (fileSizeReadable == "?") fileSize.visibility = View.GONE
+        if (fileSizeReadable == "?" && item.downloadSections.isNotBlank()) fileSize.visibility = View.GONE
         else fileSize.text = fileSizeReadable
 
         val menu = card.findViewById<View>(R.id.options)

@@ -9,6 +9,7 @@ import com.deniscerri.ytdl.database.models.Format
 import com.deniscerri.ytdl.database.models.ResultItem
 import com.deniscerri.ytdl.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdl.util.Extensions.toStringDuration
+import com.deniscerri.ytdl.util.extractors.IYoutubeExtractor
 import com.google.gson.Gson
 import kotlinx.serialization.Serializer
 import okhttp3.OkHttpClient
@@ -38,7 +39,7 @@ import org.schabi.newpipe.extractor.utils.ExtractorHelper
 import java.util.Locale
 import kotlin.coroutines.cancellation.CancellationException
 
-class NewPipeUtil(context: Context) {
+class NewPipeUtil(context: Context) : IYoutubeExtractor {
     private var sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
     private val countryCode = sharedPreferences.getString("locale", "")!!.ifEmpty { "US" }
     private val language = sharedPreferences.getString("app_language", "")!!.ifEmpty { "en" }
@@ -46,7 +47,7 @@ class NewPipeUtil(context: Context) {
         NewPipe.init(NewPipeDownloaderImpl(OkHttpClient.Builder()), Localization(language, countryCode))
     }
 
-    fun getVideoData(url : String) : Result<List<ResultItem>> {
+    override fun getVideoData(url : String) : Result<List<ResultItem>> {
         try {
             val streamInfo = StreamInfo.getInfo(NewPipe.getService(ServiceList.YouTube.serviceId), url)
             val vid = createVideoFromStream(streamInfo, url) ?: return Result.failure(Throwable())
@@ -56,7 +57,7 @@ class NewPipeUtil(context: Context) {
         }
     }
 
-    fun getFormats(url: String) : Result<List<Format> > {
+    override fun getFormats(url: String) : Result<List<Format> > {
         try {
             val streamInfo = StreamInfo.getInfo(NewPipe.getService(ServiceList.YouTube.serviceId), url)
             val vid = createVideoFromStream(streamInfo, url)
@@ -68,7 +69,7 @@ class NewPipeUtil(context: Context) {
         }
     }
 
-    fun getFormatsForAll(urls: List<String>, progress: (progress: ResultViewModel.MultipleFormatProgress) -> Unit) : Result<MutableList<MutableList<Format>>> {
+    override fun getFormatsForAll(urls: List<String>, progress: (progress: ResultViewModel.MultipleFormatProgress) -> Unit) : Result<MutableList<MutableList<Format>>> {
         return kotlin.runCatching {
             val formatCollection = mutableListOf<MutableList<Format>>()
             urls.forEach { url ->
@@ -85,7 +86,7 @@ class NewPipeUtil(context: Context) {
     }
 
     @Throws(JSONException::class)
-    fun search(query: String): Result<ArrayList<ResultItem>> {
+    override fun search(query: String): Result<ArrayList<ResultItem>> {
         try {
             val items = arrayListOf<ResultItem>()
             val res = SearchInfo.getInfo(NewPipe.getService(ServiceList.YouTube.serviceId),
@@ -111,7 +112,7 @@ class NewPipeUtil(context: Context) {
     }
 
     @Throws(JSONException::class)
-    fun searchMusic(query: String): Result<ArrayList<ResultItem>> {
+    override fun searchMusic(query: String): Result<ArrayList<ResultItem>> {
         try {
             val items = arrayListOf<ResultItem>()
             val res = SearchInfo.getInfo(NewPipe.getService(ServiceList.YouTube.serviceId),
@@ -135,7 +136,7 @@ class NewPipeUtil(context: Context) {
         }
     }
 
-    fun getStreamingUrlAndChapters(url: String) : Result<Pair<List<String>, List<ChapterItem>?>> {
+    override fun getStreamingUrlAndChapters(url: String) : Result<Pair<List<String>, List<ChapterItem>?>> {
         try {
             val streamInfo = StreamInfo.getInfo(NewPipe.getService(ServiceList.YouTube.serviceId), url)
             val item = createVideoFromStream(streamInfo, url)
@@ -148,7 +149,7 @@ class NewPipeUtil(context: Context) {
         }
     }
 
-    fun getChannelData(url: String, progress: (pagedResults: MutableList<ResultItem>) -> Unit) : Result<List<ResultItem>> {
+    override fun getChannelData(url: String, progress: (pagedResults: MutableList<ResultItem>) -> Unit) : Result<List<ResultItem>> {
         try {
             val req = ChannelInfo.getInfo(ServiceList.YouTube, url)
             println(Gson().toJson(req))
@@ -214,7 +215,7 @@ class NewPipeUtil(context: Context) {
         }
     }
 
-    fun getPlaylistData(playlistURL: String, progress: (pagedResults: MutableList<ResultItem>) -> Unit) : Result<List<ResultItem>> {
+    override suspend fun getPlaylistData(playlistURL: String, progress: (pagedResults: MutableList<ResultItem>) -> Unit) : Result<List<ResultItem>> {
         try {
             val totalItems = mutableListOf<ResultItem>()
             var nextPage : Page? = null
@@ -261,7 +262,7 @@ class NewPipeUtil(context: Context) {
     }
 
 
-     fun getTrending(): ArrayList<ResultItem> {
+    override fun getTrending(): ArrayList<ResultItem> {
         try {
             val items = arrayListOf<ResultItem>()
             val info = KioskInfo.getInfo(NewPipe.getService(ServiceList.YouTube.serviceId), "https://www.youtube.com/feed/trending")
@@ -434,7 +435,4 @@ class NewPipeUtil(context: Context) {
         query = el[0]
         return query!!
     }
-
-
-
 }
