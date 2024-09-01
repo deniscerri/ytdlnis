@@ -1,5 +1,9 @@
 name: Android CI
 
+env:
+  # The name of the main module repository
+  main_project_module: app
+
 on:
   push:
     branches: [ "main" ]
@@ -46,7 +50,7 @@ jobs:
         path: ${{ env.main_project_module }}/build/outputs/apk/debug/
 
     # Noted For Output [main_project_module]/build/outputs/apk/release/
-    - name: Upload APK Release - ${{ env.repository_name }}
+    - name: Upload APK Release
       uses: actions/upload-artifact@v3
       with:
         name: YTDLnis APK release generated
@@ -63,5 +67,3 @@ jobs:
           Repository: ${{ github.repository }}
           
           See changes: https://github.com/${{ github.repository }}/commit/${{github.sha}}
-          See generated debug apk: https://github.com/${{ github.repository }}/build/outputs/apk/debug/
-          See generated release apk: https://github.com/${{ github.repository }}/build/outputs/apk/release/
