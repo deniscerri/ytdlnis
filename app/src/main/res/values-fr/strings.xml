@@ -370,7 +370,7 @@
     <string name="queue">File d\'attente</string>
     <string name="reset">Réinitialiser</string>
     <string name="continue_anyway">Continuer</string>
-    <string name="my_filename_templates">Mes templates</string>
+    <string name="my_filename_templates">Mes modèles de nom de fichier</string>
     <string name="prefer_smaller_formats">Préfèrer les petits formats</string>
     <string name="display_over_apps">Afficher par-dessus les apps</string>
     <string name="minute">Minute</string>
@@ -402,4 +402,23 @@
     <string name="scroll_down">Défiler vers le bas</string>
     <string name="move_top">Déplacer au dessus</string>
     <string name="move_bottom">Déplacer en bas</string>
+    <string name="restore_info">Appuyez sur « Restaurer » pour fusionner les données sauvegardées avec vos données actuelles.
+\nAppuyez sur « Réinitialiser » pour effacer et n\'utiliser que les données enregistrées dans le fichier.</string>
+    <string name="playlist_as_album">Utilise le nom de la liste de lecture comme nom d\'album dans les métadonnées</string>
+    <string name="playlist_as_album_summary">Si les métadonnées de l\'album ne sont pas présentes, utilisez le nom de la liste de lecture</string>
+    <string name="display_over_apps_summary">Faites que la carte de téléchargement s\'affiche toujours en haut. Activez ceci si l\'application en cours de fonctionnement se ferme lorsque la carte de téléchargement apparaît</string>
+    <string name="no_download_fragments_summary">Ne pas utiliser de fichiers .part et écrire directement dans le fichier de sortie</string>
+    <string name="all_queries_finished">Toutes les requêtes ont été traitées</string>
+    <string name="cleanup_leftover_downloads">Efface les téléchargent restants (annulé, effacé)</string>
+    <string name="use_alarm_manager_summary">Activez ceci si WorkManager est limité par votre fournisseur d\'appareil ou les emplois programmés ne sont pas trop précis</string>
+    <string name="use_alarm_manager">Utilisez AlarmManager au lieu de WorkManager pour la planification</string>
+    <string name="prevent_duplicate_downloads">Éviter les doublons de téléchargement</string>
+    <string name="recode_video">Recoder la vidéo</string>
+    <string name="recode_video_summary">Reformate le fichier de la vidéo pour le format spécifié</string>
+    <string name="format_importance">Ordre d\'importance de format</string>
+    <string name="format_importance_note">Ajuste l\'ordre de priorité des formats. Cette ordre ne sera utilisée que lorsque l\'application récupère les formats dans la carte de téléchargement et sélectionne automatiquement le format !</string>
+    <string name="enable_alarm_permission">Vous devez activer la permission SCHEDULE_EXACT_ALARM dans les paramètres de l\'application.</string>
+    <string name="process_downloads_background">"Les téléchargements sont toujours en cours de chargement. Voulez-vous continuer à les charger en arrière-plan et commencer à télécharger ? "</string>
+    <string name="use_item_url_not_playlist_summary">Utile pour les playlists hors-ligne de Libretube qui ne sont pas reconnues par yt-dlp. Les métadonnées de la liste de lecture ne seront pas intégrées quand ceci est activé</string>
+    <string name="use_item_url_not_playlist">Utiliser l\'URL de l\'élément au lieu de celui de la liste de lecture</string>
 </resources>
