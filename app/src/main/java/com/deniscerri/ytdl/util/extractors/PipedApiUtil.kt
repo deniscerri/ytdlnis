@@ -15,11 +15,10 @@ import com.yausername.youtubedl_android.YoutubeDLException
 import kotlinx.coroutines.delay
 import org.json.JSONException
 import org.json.JSONObject
-import java.util.ArrayList
 import java.util.Locale
 import kotlin.coroutines.cancellation.CancellationException
 
-class PipedApiUtil(context: Context) : IYoutubeExtractor {
+class PipedApiUtil(context: Context) {
     private var sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
     private val countryCode = sharedPreferences.getString("locale", "")!!.ifEmpty { "US" }
     private val defaultPipedURL = "https://pipedapi.kavin.rocks/"
@@ -38,7 +37,7 @@ class PipedApiUtil(context: Context) : IYoutubeExtractor {
         return listOf()
     }
 
-    override fun getVideoData(url : String) : Result<List<ResultItem>> {
+    fun getVideoData(url : String) : Result<List<ResultItem>> {
         val id = getIDFromYoutubeURL(url)
         val res = NetworkUtil.genericRequest("$pipedURL/streams/$id")
         if (res.length() == 0) {
@@ -49,7 +48,7 @@ class PipedApiUtil(context: Context) : IYoutubeExtractor {
         return Result.success(listOf(vid))
     }
 
-    override fun getFormats(url: String) : Result<List<Format> > {
+    fun getFormats(url: String) : Result<List<Format> > {
         try {
             val id = getIDFromYoutubeURL(url)
             val res = NetworkUtil.genericRequest("$pipedURL/streams/$id")
@@ -67,7 +66,7 @@ class PipedApiUtil(context: Context) : IYoutubeExtractor {
         }
     }
 
-    override fun getFormatsForAll(urls: List<String>, progress: (progress: ResultViewModel.MultipleFormatProgress) -> Unit) : Result<MutableList<MutableList<Format>>> {
+    fun getFormatsForAll(urls: List<String>, progress: (progress: ResultViewModel.MultipleFormatProgress) -> Unit) : Result<MutableList<MutableList<Format>>> {
         return kotlin.runCatching {
             val formatCollection = mutableListOf<MutableList<Format>>()
             urls.forEach { url ->
@@ -88,7 +87,7 @@ class PipedApiUtil(context: Context) : IYoutubeExtractor {
     }
 
     @Throws(JSONException::class)
-    override fun search(query: String): Result<ArrayList<ResultItem>> {
+    fun search(query: String): Result<ArrayList<ResultItem>> {
         val items = arrayListOf<ResultItem>()
         val data = NetworkUtil.genericRequest("$pipedURL/search?q=$query&filter=videos&region=${countryCode}")
         val dataArray = data.getJSONArray("items")
@@ -107,7 +106,7 @@ class PipedApiUtil(context: Context) : IYoutubeExtractor {
     }
 
     @Throws(JSONException::class)
-    override fun searchMusic(query: String): Result<ArrayList<ResultItem>> {
+    fun searchMusic(query: String): Result<ArrayList<ResultItem>> {
         val items = arrayListOf<ResultItem>()
         val data = NetworkUtil.genericRequest("$pipedURL/search?q=$query=&filter=music_songs&region=${countryCode}")
         val dataArray = data.getJSONArray("items")
@@ -125,7 +124,7 @@ class PipedApiUtil(context: Context) : IYoutubeExtractor {
         return Result.success(items)
     }
 
-    override fun getStreamingUrlAndChapters(url: String) : Result<Pair<List<String>, List<ChapterItem>?>> {
+    fun getStreamingUrlAndChapters(url: String) : Result<Pair<List<String>, List<ChapterItem>?>> {
         val id = getIDFromYoutubeURL(url)
         val res = NetworkUtil.genericRequest("$pipedURL/streams/$id")
         if (res.length() == 0) {
@@ -140,7 +139,7 @@ class PipedApiUtil(context: Context) : IYoutubeExtractor {
         }
     }
 
-    override suspend fun getPlaylistData(id: String, progress: (pagedResults: MutableList<ResultItem>) -> Unit) : Result<List<ResultItem>> {
+    suspend fun getPlaylistData(id: String, progress: (pagedResults: MutableList<ResultItem>) -> Unit) : Result<List<ResultItem>> {
         val totalItems = mutableListOf<ResultItem>()
         val nextPageToken = ""
         var playlistName = ""
@@ -194,7 +193,7 @@ class PipedApiUtil(context: Context) : IYoutubeExtractor {
     }
 
 
-    override fun getTrending(): ArrayList<ResultItem> {
+    fun getTrending(): ArrayList<ResultItem> {
         val items = arrayListOf<ResultItem>()
         val url = "$pipedURL/trending?region=${countryCode}"
         val res = NetworkUtil.genericArrayRequest(url)
@@ -209,7 +208,7 @@ class PipedApiUtil(context: Context) : IYoutubeExtractor {
         return items
     }
 
-    override fun getChannelData(
+    fun getChannelData(
         url: String,
         progress: (pagedResults: MutableList<ResultItem>) -> Unit
     ): Result<List<ResultItem>> {

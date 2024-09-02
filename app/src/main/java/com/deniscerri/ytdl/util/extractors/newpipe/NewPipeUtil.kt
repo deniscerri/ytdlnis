@@ -9,7 +9,6 @@ import com.deniscerri.ytdl.database.models.Format
 import com.deniscerri.ytdl.database.models.ResultItem
 import com.deniscerri.ytdl.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdl.util.Extensions.toStringDuration
-import com.deniscerri.ytdl.util.extractors.IYoutubeExtractor
 import com.google.gson.Gson
 import kotlinx.serialization.Serializer
 import okhttp3.OkHttpClient
@@ -39,7 +38,7 @@ import org.schabi.newpipe.extractor.utils.ExtractorHelper
 import java.util.Locale
 import kotlin.coroutines.cancellation.CancellationException
 
-class NewPipeUtil(context: Context) : IYoutubeExtractor {
+class NewPipeUtil(context: Context) {
     private var sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
     private val countryCode = sharedPreferences.getString("locale", "")!!.ifEmpty { "US" }
     private val language = sharedPreferences.getString("app_language", "")!!.ifEmpty { "en" }
@@ -47,7 +46,7 @@ class NewPipeUtil(context: Context) : IYoutubeExtractor {
         NewPipe.init(NewPipeDownloaderImpl(OkHttpClient.Builder()), Localization(language, countryCode))
     }
 
-    override fun getVideoData(url : String) : Result<List<ResultItem>> {
+    fun getVideoData(url : String) : Result<List<ResultItem>> {
         try {
             val streamInfo = StreamInfo.getInfo(NewPipe.getService(ServiceList.YouTube.serviceId), url)
             val vid = createVideoFromStream(streamInfo, url) ?: return Result.failure(Throwable())
@@ -57,10 +56,10 @@ class NewPipeUtil(context: Context) : IYoutubeExtractor {
         }
     }
 
-    override fun getFormats(url: String) : Result<List<Format> > {
+    fun getFormats(url: String) : Result<List<Format> > {
         try {
             val streamInfo = StreamInfo.getInfo(NewPipe.getService(ServiceList.YouTube.serviceId), url)
-            val vid = createVideoFromStream(streamInfo, url)
+            val vid = createVideoFromStream(streamInfo, url, true)
             return Result.success(vid!!.formats)
         }catch(e: Exception) {
             println(e)
@@ -69,13 +68,14 @@ class NewPipeUtil(context: Context) : IYoutubeExtractor {
         }
     }
 
-    override fun getFormatsForAll(urls: List<String>, progress: (progress: ResultViewModel.MultipleFormatProgress) -> Unit) : Result<MutableList<MutableList<Format>>> {
+    fun getFormatsForAll(urls: List<String>, progress: (progress: ResultViewModel.MultipleFormatProgress) -> Unit) : Result<MutableList<MutableList<Format>>> {
         return kotlin.runCatching {
             val formatCollection = mutableListOf<MutableList<Format>>()
             urls.forEach { url ->
                 val streamInfo = StreamInfo.getInfo(NewPipe.getService(ServiceList.YouTube.serviceId), url)
-                createVideoFromStream(streamInfo, url).apply {
-                    formatCollection.add(this!!.formats)
+                createVideoFromStream(streamInfo, url, true).apply {
+                    if (this!!.formats.isEmpty()) return Result.failure(Throwable())
+                    formatCollection.add(this.formats)
                     progress(ResultViewModel.MultipleFormatProgress(url, this.formats))
                 }
             }
@@ -86,7 +86,7 @@ class NewPipeUtil(context: Context) : IYoutubeExtractor {
     }
 
     @Throws(JSONException::class)
-    override fun search(query: String): Result<ArrayList<ResultItem>> {
+    fun search(query: String): Result<ArrayList<ResultItem>> {
         try {
             val items = arrayListOf<ResultItem>()
             val res = SearchInfo.getInfo(NewPipe.getService(ServiceList.YouTube.serviceId),
@@ -112,7 +112,7 @@ class NewPipeUtil(context: Context) : IYoutubeExtractor {
     }
 
     @Throws(JSONException::class)
-    override fun searchMusic(query: String): Result<ArrayList<ResultItem>> {
+    fun searchMusic(query: String): Result<ArrayList<ResultItem>> {
         try {
             val items = arrayListOf<ResultItem>()
             val res = SearchInfo.getInfo(NewPipe.getService(ServiceList.YouTube.serviceId),
@@ -136,7 +136,7 @@ class NewPipeUtil(context: Context) : IYoutubeExtractor {
         }
     }
 
-    override fun getStreamingUrlAndChapters(url: String) : Result<Pair<List<String>, List<ChapterItem>?>> {
+    fun getStreamingUrlAndChapters(url: String) : Result<Pair<List<String>, List<ChapterItem>?>> {
         try {
             val streamInfo = StreamInfo.getInfo(NewPipe.getService(ServiceList.YouTube.serviceId), url)
             val item = createVideoFromStream(streamInfo, url)
@@ -149,7 +149,7 @@ class NewPipeUtil(context: Context) : IYoutubeExtractor {
         }
     }
 
-    override fun getChannelData(url: String, progress: (pagedResults: MutableList<ResultItem>) -> Unit) : Result<List<ResultItem>> {
+    fun getChannelData(url: String, progress: (pagedResults: MutableList<ResultItem>) -> Unit) : Result<List<ResultItem>> {
         try {
             val req = ChannelInfo.getInfo(ServiceList.YouTube, url)
             println(Gson().toJson(req))
@@ -215,7 +215,7 @@ class NewPipeUtil(context: Context) : IYoutubeExtractor {
         }
     }
 
-    override suspend fun getPlaylistData(playlistURL: String, progress: (pagedResults: MutableList<ResultItem>) -> Unit) : Result<List<ResultItem>> {
+    suspend fun getPlaylistData(playlistURL: String, progress: (pagedResults: MutableList<ResultItem>) -> Unit) : Result<List<ResultItem>> {
         try {
             val totalItems = mutableListOf<ResultItem>()
             var nextPage : Page? = null
@@ -262,7 +262,7 @@ class NewPipeUtil(context: Context) : IYoutubeExtractor {
     }
 
 
-    override fun getTrending(): ArrayList<ResultItem> {
+    fun getTrending(): ArrayList<ResultItem> {
         try {
             val items = arrayListOf<ResultItem>()
             val info = KioskInfo.getInfo(NewPipe.getService(ServiceList.YouTube.serviceId), "https://www.youtube.com/feed/trending")
@@ -322,7 +322,7 @@ class NewPipeUtil(context: Context) : IYoutubeExtractor {
             val formats : ArrayList<Format> = ArrayList()
 
 
-            if(sharedPreferences.getString("formats_source", "yt-dlp") == "piped" || ignoreFormatPreference){
+            if(sharedPreferences.getString("formats_source", "yt-dlp") == "newpipe" || ignoreFormatPreference){
                 if (stream.audioStreams.isNotEmpty()){
                     for (f in 0 until stream.audioStreams.size){
                         val it = stream.audioStreams[f]

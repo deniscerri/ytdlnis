@@ -89,7 +89,7 @@
             android:entries="@array/data_fetching_extractor_youtube"
             android:entryValues="@array/data_fetching_extractor_youtube"
             android:icon="@drawable/baseline_manage_search_24"
-            app:key="data_fetching_extractor_youtube"
+            app:key="youtube_data_fetching_extractor"
             app:useSimpleSummaryProvider="true"
             app:title="@string/data_fetching_extractor_youtube" />
 

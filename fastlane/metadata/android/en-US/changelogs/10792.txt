@@ -1,0 +1,4 @@
+# What's Changed
+
+- newpipe extractor general fixes
+- removed piped because its more annoying than anything, it doesnt work currently

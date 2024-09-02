@@ -235,13 +235,11 @@
     </array>
 
     <array name="formats_source">
-        <item>Piped</item>
         <item>NewPipe</item>
         <item>yt-dlp</item>
     </array>
 
     <array name="formats_source_values">
-        <item>piped</item>
         <item>newpipe</item>
         <item>yt-dlp</item>
     </array>
@@ -1499,7 +1497,6 @@
     <string-array name="data_fetching_extractor_youtube">
         <item>YT_DLP</item>
         <item>NEWPIPE</item>
-        <item>PIPED</item>
     </string-array>
 
 </resources>

@@ -16,7 +16,6 @@ import com.deniscerri.ytdl.util.Extensions.isYoutubeChannelURL
 import com.deniscerri.ytdl.util.Extensions.isYoutubeURL
 import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.util.extractors.GoogleApiUtil
-import com.deniscerri.ytdl.util.extractors.IYoutubeExtractor
 import com.deniscerri.ytdl.util.extractors.PipedApiUtil
 import com.deniscerri.ytdl.util.extractors.newpipe.NewPipeUtil
 import com.deniscerri.ytdl.util.extractors.YTDLPUtil
@@ -36,16 +35,12 @@ class ResultRepository(private val resultDao: ResultDao, private val context: Co
 
     private val youtubeApiUtil = YoutubeApiUtil(context)
     private val ytdlpUtil = YTDLPUtil(context)
-    private var youtubeExtractor: IYoutubeExtractor? = null
-    private var pipedUtil = PipedApiUtil(context)
-    private var newPipeUtil = NewPipeUtil(context)
+    private var newPipeUtil : NewPipeUtil? = null
     private val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 
     init {
-        youtubeExtractor = when(YoutubeExtractors.valueOf(sharedPreferences.getString("data_fetching_extractor_youtube", "PIPED")!!)) {
-            YoutubeExtractors.PIPED -> PipedApiUtil(context)
-            YoutubeExtractors.NEWPIPE -> NewPipeUtil(context)
-            else -> null
+        if (sharedPreferences.getString("youtube_data_fetching_extractor", "NEWPIPE") == "NEWPIPE") {
+            newPipeUtil = NewPipeUtil(context)
         }
     }
 
@@ -55,12 +50,6 @@ class ResultRepository(private val resultDao: ResultDao, private val context: Co
         YOUTUBE_CHANNEL,
         SEARCH_QUERY,
         YT_DLP
-    }
-
-    enum class YoutubeExtractors {
-        YT_DLP,
-        PIPED,
-        NEWPIPE
     }
 
     suspend fun insert(it: ResultItem){
@@ -76,7 +65,7 @@ class ResultRepository(private val resultDao: ResultDao, private val context: Co
         val items = if (sharedPreferences.getString("api_key", "")!!.isNotBlank()) {
             youtubeApiUtil.getTrending()
         }else{
-            youtubeExtractor?.getTrending() ?: listOf()
+            newPipeUtil?.getTrending() ?: listOf()
         }
 
         itemCount.value = items.size
@@ -88,7 +77,7 @@ class ResultRepository(private val resultDao: ResultDao, private val context: Co
     }
 
     fun getStreamingUrlAndChapters(url: String) : Pair<List<String>, List<ChapterItem>?> {
-        val extractorsTrial = youtubeExtractor?.getStreamingUrlAndChapters(url) ?: Result.failure(Throwable())
+        val extractorsTrial = newPipeUtil?.getStreamingUrlAndChapters(url) ?: Result.failure(Throwable())
         if (extractorsTrial.isFailure){
             val res = ytdlpUtil.getStreamingUrlAndChapters(url)
             return res.getOrDefault(Pair(listOf(""), null))
@@ -100,8 +89,8 @@ class ResultRepository(private val resultDao: ResultDao, private val context: Co
     suspend fun search(inputQuery: String, resetResults: Boolean, addToResults: Boolean) : ArrayList<ResultItem>{
         if (resetResults) deleteAll()
         val res = when(sharedPreferences.getString("search_engine", "ytsearch")) {
-            "ytsearch" -> youtubeExtractor?.search(inputQuery)
-            "ytsearchmusic" -> youtubeExtractor?.searchMusic(inputQuery)
+            "ytsearch" -> newPipeUtil?.search(inputQuery)
+            "ytsearchmusic" -> newPipeUtil?.searchMusic(inputQuery)
             else -> Result.failure(Throwable())
         }
 
@@ -124,7 +113,7 @@ class ResultRepository(private val resultDao: ResultDao, private val context: Co
 
     private suspend fun getYoutubeVideo(inputQuery: String, resetResults: Boolean, addToResults: Boolean) : List<ResultItem>{
         val theURL = inputQuery.replace("\\?list.*".toRegex(), "")
-        val ytExtractorRes = youtubeExtractor?.getVideoData(theURL)
+        val ytExtractorRes = newPipeUtil?.getVideoData(theURL)
 
         val res = if (ytExtractorRes?.isSuccess == true) {
             ytExtractorRes.getOrNull()!!
@@ -152,7 +141,7 @@ class ResultRepository(private val resultDao: ResultDao, private val context: Co
         val playlistURL = "https://youtube.com/playlist?list=${id}"
         if (resetResults) deleteAll()
         val items = mutableListOf<ResultItem>()
-        val ytExtractorResult = youtubeExtractor?.getPlaylistData(playlistURL) {
+        val ytExtractorResult = newPipeUtil?.getPlaylistData(playlistURL) {
             if (addToResults){
                 runBlocking {
                     val ids = resultDao.insertMultiple(it)
@@ -182,7 +171,7 @@ class ResultRepository(private val resultDao: ResultDao, private val context: Co
     private suspend fun getYoutubeChannel(url: String, resetResults: Boolean, addToResults: Boolean) : List<ResultItem>{
         if (resetResults) deleteAll()
         val items = mutableListOf<ResultItem>()
-        val ytExtractorResult = youtubeExtractor?.getChannelData(url) {
+        val ytExtractorResult = newPipeUtil?.getChannelData(url) {
             if (addToResults){
                 runBlocking {
                     val ids = resultDao.insertMultiple(it)
@@ -232,16 +221,8 @@ class ResultRepository(private val resultDao: ResultDao, private val context: Co
         val formatSource = source ?: sharedPreferences.getString("formats_source", "yt-dlp")
         val res = if (url.isYoutubeURL()) {
             when(formatSource) {
-                "piped" -> {
-                    val tmpRes = pipedUtil.getFormats(url)
-                    if (tmpRes.isFailure && source != null) {
-                        Result.success(listOf())
-                    }else{
-                        tmpRes
-                    }
-                }
                 "newpipe" -> {
-                    val tmpRes = newPipeUtil.getFormats(url)
+                    val tmpRes = NewPipeUtil(context).getFormats(url)
                     if (tmpRes.isFailure && source != null) {
                         Result.success(listOf())
                     }else{
@@ -266,22 +247,16 @@ class ResultRepository(private val resultDao: ResultDao, private val context: Co
         val allYoutubeLinks = urls.all { it.isYoutubeURL() }
 
         val res = when(formatSource) {
-            "piped" -> {
+            "newpipe" -> {
                 if (!allYoutubeLinks) {
                     Result.failure(Throwable())
                 }else{
-                    val res = pipedUtil.getFormatsForAll(urls) {
+                    val res = NewPipeUtil(context).getFormatsForAll(urls) {
                         progress(it)
                     }
                     res
                 }
 
-            }
-            "newpipe" -> {
-                val res = newPipeUtil.getFormatsForAll(urls) {
-                    progress(it)
-                }
-                res
             }
             else -> {
                 Result.failure(Throwable())
