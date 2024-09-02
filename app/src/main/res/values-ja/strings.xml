@@ -419,4 +419,5 @@
     <string name="playlist_as_album_summary">アルバムのメタデータがなければ再生リスト名を使う</string>
     <string name="playlist_as_album">再生リスト名をアルバムのメタデータに使用</string>
     <string name="sync_with_source">監視先と同期</string>
+    <string name="data_fetching_extractor_youtube">データ取得抽出ツール (YouTube)</string>
 </resources>
