@@ -419,4 +419,5 @@
     <string name="continue_anyway">Continuar mesmo assim</string>
     <string name="playlist_as_album">Usar nome da playlist como metadados do álbum</string>
     <string name="playlist_as_album_summary">Se os metadados do álbum não estiverem presentes, use o nome da playlist</string>
+    <string name="data_fetching_extractor_youtube">Extrator para busca de dados (YouTube)</string>
 </resources>
