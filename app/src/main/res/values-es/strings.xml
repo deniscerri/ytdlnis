@@ -29,7 +29,7 @@
     <string name="version">Versión</string>
     <string name="command_directory">Directorio de Comandos Personalizados</string>
     <string name="couldnt_find_apk">No se pudo encontrar un instalador APK correcto</string>
-    <string name="downloading_update">Download della nuova versione</string>
+    <string name="downloading_update">Descargar nueva versión</string>
     <string name="audio">Audio</string>
     <string name="video">Video</string>
     <string name="concurrent_fragments_summary">Número de fragmentos de un video DASH/HLS nativo para descargar a la vez</string>
