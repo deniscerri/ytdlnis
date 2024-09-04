@@ -419,4 +419,5 @@
     <string name="continue_anyway">Все равно продолжить</string>
     <string name="playlist_as_album">Использовать название плейлиста в качестве метаданных альбома</string>
     <string name="playlist_as_album_summary">Если метаданные альбома отсутствуют, вместо этого используйте имя списка воспроизведения</string>
+    <string name="data_fetching_extractor_youtube">Средство извлечения данных (YouTube)</string>
 </resources>
