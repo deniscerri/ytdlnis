@@ -419,4 +419,5 @@
     <string name="continue_anyway">Pokračovať ďalej</string>
     <string name="playlist_as_album">Použiť názov playlistu ako metadáta albumu</string>
     <string name="playlist_as_album_summary">Ak metadáta albumu nie sú k dispozícii, použije namiesto nich názov playlistu</string>
+    <string name="data_fetching_extractor_youtube">Extraktor načítaných dát (YouTube)</string>
 </resources>
