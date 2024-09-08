@@ -419,4 +419,5 @@
     <string name="use_item_url_not_playlist_summary">此功能適用於 Libretube 離線播放清單，這些清單無法被 yt-dlp 認識。啟用此選項後，播放清單的中繼資料將不會嵌入</string>
     <string name="recode_video">重新編碼影片</string>
     <string name="recode_video_summary">將影片檔案重新編碼為指定的影片格式</string>
+    <string name="data_fetching_extractor_youtube">資料擷取提取器（YouTube）</string>
 </resources>
