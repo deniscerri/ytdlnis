@@ -228,7 +228,7 @@
     <string name="split_by_chapters">依章節分割</string>
     <string name="confirm_delete_cookies_desc">永久刪除所有 Cookies</string>
     <string name="save_subs">儲存字幕</string>
-    <string name="video_recommendations_summary">在主畫面從 PIPED API 取得推薦的 YouTube 影片</string>
+    <string name="video_recommendations_summary">從 NewPipe 提取器中在主畫面上獲取推薦的 YouTube 影片</string>
     <string name="help_translate_summary">使用 Weblate 將此應用程式翻譯為您的語言</string>
     <string name="file_size">檔案大小</string>
     <string name="restart">重新啟動</string>
