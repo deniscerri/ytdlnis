@@ -291,7 +291,7 @@
     <string name="embed_metadata">Incluir metadados</string>
     <string name="embed_metadata_summary">Analisar e adicionar metadados no arquivo de áudio</string>
     <string name="auto_update_ytdlp">Atualização automática do yt-dlp</string>
-    <string name="use_sponsorblock">Usar SponsorBlock</string>
+    <string name="use_sponsorblock">Habilitar SponsorBlock</string>
     <string name="update_formats_background">Atualizar formatos em segundo plano</string>
     <string name="cache_first">Downloads em cache primeiro</string>
     <string name="cache_first_summary">Os arquivos de cache são baixados para o armazenamento interno e depois movidos para o diretório escolhido. Use isto quando você não puder salvar diretamente no armazenamento</string>
@@ -304,7 +304,7 @@
     <string name="preferred_video_codec">Codec de vídeo preferido</string>
     <string name="sponsorblock_api_url">URL da API SponsorBlock</string>
     <string name="loading">Carregando</string>
-    <string name="user_agent_header">Cabeçalho User-Agent</string>
+    <string name="user_agent_header">Habilitar cabeçalho \'User-Agent\'</string>
     <string name="remember_download_type">Lembrar tipo de download</string>
     <string name="remember_download_type_summary">Selecione o último tipo de download aberto para o item atual</string>
     <string name="schedule">Agendar</string>
