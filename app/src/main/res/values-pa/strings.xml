@@ -176,7 +176,7 @@
     <string name="save_subs">ਸਬਟਾਈਟਲ ਸੁਰੱਖਿਅਤ ਕਰੋ</string>
     <string name="format_source">ਫਾਰਮੈਟ ਸਰੋਤ</string>
     <string name="video_recommendations">ਵੀਡੀਓ ਸਿਫ਼ਾਰਿਸ਼ਾਂ</string>
-    <string name="video_recommendations_summary">PIPED API ਤੋਂ ਹੋਮ ਸਕ੍ਰੀਨ \'ਤੇ ਸਿਫ਼ਾਰਿਸ਼ ਕੀਤੇ YouTube ਵੀਡੀਓਜ਼ ਪ੍ਰਾਪਤ ਕਰੋ</string>
+    <string name="video_recommendations_summary">ਨਿਊਪਾਈਪ ਐਕਸਟਰੈਕਟਰ ਤੋਂ ਹੋਮ ਸਕ੍ਰੀਨ \'ਤੇ ਸਿਫ਼ਾਰਿਸ਼ ਕੀਤੇ YouTube ਵੀਡੀਓਜ਼ ਪ੍ਰਾਪਤ ਕਰੋ</string>
     <string name="preferred_search_engine_summary">ਐਪ ਵਿੱਚ ਵਰਤਣ ਲਈ ਖੋਜ ਇੰਜਣ</string>
     <string name="preferred_home_screen">ਤਰਜੀਹੀ ਹੋਮ ਸਕ੍ਰੀਨ</string>
     <string name="undo">ਵਾਪਿਸ</string>
@@ -419,4 +419,5 @@
     <string name="use_item_url_not_playlist_summary">Libretube ਆਫਲਾਈਨ ਪਲੇਲਿਸਟਾਂ ਲਈ ਉਪਯੋਗੀ ਜੋ yt-dlp ਦੁਆਰਾ ਮਾਨਤਾ ਪ੍ਰਾਪਤ ਨਹੀਂ ਹਨ। ਇਸਨੂੰ ਸਮਰੱਥ ਕਰਨ ਨਾਲ ਪਲੇਲਿਸਟ ਮੈਟਾਡੇਟਾ ਏਮਬੇਡ ਨਹੀਂ ਕੀਤਾ ਜਾਵੇਗਾ</string>
     <string name="recode_video">ਵੀਡੀਓ ਰੀਕੋਡ ਕਰੋ</string>
     <string name="recode_video_summary">ਵੀਡੀਓ ਫਾਈਲ ਨੂੰ ਨਿਸ਼ਚਿਤ ਵੀਡੀਓ ਫਾਰਮੈਟ ਵਿੱਚ ਰੀਕੋਡ ਕਰਦਾ ਹੈ</string>
+    <string name="data_fetching_extractor_youtube">ਡਾਟਾ ਪ੍ਰਾਪਤੀ ਐਕਸਟਰੈਕਟਰ (ਯੂਟਿਊਬ)</string>
 </resources>
