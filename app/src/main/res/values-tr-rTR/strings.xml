@@ -422,4 +422,5 @@
     <string name="continue_anyway">Her Neyse Devam Et</string>
     <string name="playlist_as_album">Çalma Listesi Adını Albüm Meta Verisi Olarak Kullanma</string>
     <string name="playlist_as_album_summary">Albüm Meta Verileri mevcut değilse, bunun yerine çalma listesi adını kullanın</string>
+    <string name="data_fetching_extractor_youtube">Veri Alma Çıkarıcı (YouTube)</string>
 </resources>
