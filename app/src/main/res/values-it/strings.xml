@@ -419,4 +419,5 @@
     <string name="recode_video">Ricodifica Video</string>
     <string name="recode_video_summary">Ricodifica il file video nel formato video specificato</string>
     <string name="process_downloads_background">"I download sono ancora in fase di caricamento. Continuare a elaborarli in background e iniziare il download? "</string>
+    <string name="data_fetching_extractor_youtube">Estrattore del recupero dei dati (Youtube)</string>
 </resources>
