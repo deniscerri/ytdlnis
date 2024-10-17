@@ -419,4 +419,5 @@
     <string name="continue_anyway">متابعة على أي حال</string>
     <string name="playlist_as_album">استخدام اسم قائمة التشغيل كمصدر للمعلومات الوصفية عن الألبوم</string>
     <string name="playlist_as_album_summary">إذا كانت معلومات الألبوم غير موجودة، استخدم اسم قائمة التشغيل بدلاً من ذلك</string>
+    <string name="data_fetching_extractor_youtube">مستخرج جلب البيانات (يوتيوب)</string>
 </resources>

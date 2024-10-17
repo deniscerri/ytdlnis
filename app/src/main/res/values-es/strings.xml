@@ -29,7 +29,7 @@
     <string name="version">Versión</string>
     <string name="command_directory">Directorio de Comandos Personalizados</string>
     <string name="couldnt_find_apk">No se pudo encontrar un instalador APK correcto</string>
-    <string name="downloading_update">Download della nuova versione</string>
+    <string name="downloading_update">Descargar nueva versión</string>
     <string name="audio">Audio</string>
     <string name="video">Video</string>
     <string name="concurrent_fragments_summary">Número de fragmentos de un video DASH/HLS nativo para descargar a la vez</string>
@@ -419,4 +419,5 @@
     <string name="continue_anyway">Continuar de todos modos</string>
     <string name="playlist_as_album">Usar el nombre de la lista de reproducción como metadatos del álbum</string>
     <string name="playlist_as_album_summary">Si los metadatos del álbum no están presentes, utiliza el nombre de la lista de reproducción en su lugar</string>
+    <string name="data_fetching_extractor_youtube">Extractor de recuperación de datos (YouTube)</string>
 </resources>

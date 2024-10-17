@@ -235,7 +235,7 @@
     <string name="share">साझा करें</string>
     <string name="save_subs">उपशीर्षक सहेजें</string>
     <string name="subtitle_languages">उपशीर्षक भाषाएँ</string>
-    <string name="video_recommendations_summary">PIPED API से गृह स्क्रीन पर अनुशंसित YouTube वीडियो प्राप्त करें</string>
+    <string name="video_recommendations_summary">NewPipe Extractor से होम स्क्रीन पर अनुशंसित YouTube वीडियो प्राप्त करें</string>
     <string name="preferred_search_engine">पसंदीदा खोज इंजन</string>
     <string name="format_filtering_hint">इस विकल्प का उपयोग करने के लिए सभी आइटम एक ही प्रकार के होने चाहिए</string>
     <string name="undo">पूर्ववत करें</string>
@@ -419,4 +419,5 @@
     <string name="continue_anyway">फिर भी जारी रखें</string>
     <string name="playlist_as_album_summary">यदि एल्बम मेटाडेटा मौजूद नहीं है, तो इसके बजाय प्लेलिस्ट नाम का उपयोग करें</string>
     <string name="playlist_as_album">एल्बम मेटाडेटा के रूप में प्लेलिस्ट नाम का उपयोग करें</string>
+    <string name="data_fetching_extractor_youtube">डेटा प्राप्ति Extractor (YouTube)</string>
 </resources>

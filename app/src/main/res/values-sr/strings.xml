@@ -419,4 +419,5 @@
     <string name="playlist_as_album">Користи назив плејлисте као метаподатке албума</string>
     <string name="continue_anyway">Ипак настави</string>
     <string name="playlist_as_album_summary">Ако метаподаци албума нису доступни, користите назив плејлисте</string>
+    <string name="data_fetching_extractor_youtube">Екстрактор прикупљања података (YouTube)</string>
 </resources>

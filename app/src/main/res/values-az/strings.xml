@@ -58,7 +58,7 @@
     <string name="run_command">Əmri İşlət</string>
     <string name="command_download_notification_channel_name">Əmr Yükləmələri</string>
     <string name="command_download_notification_channel_description">Yt-dlp əmri işlədərkən yükləmə irəliləyişi göstərən bildiriş</string>
-    <string name="items_left">sol element(lər)</string>
+    <string name="items_left">son element(lər)</string>
     <string name="history_is_empty">Tarixçə boşdur</string>
     <string name="you_are_going_to_delete">Silinir</string>
     <string name="url">URL</string>
@@ -394,11 +394,11 @@
     <string name="format_importance_note">Format elementinin vacibliyini tənzimləyin. Bu düzülüş yalnız tətbiq yükləmə kartındakı formatları əldə etdikdə və formatı avtomatik seçdikdə istifadə olunacaq!</string>
     <string name="no_audio">Səs olmayan video</string>
     <string name="download_archive_folder">Yükləmə Arxivi Qovluğu</string>
-    <string name="location">Məkan</string>
+    <string name="location">Yer</string>
     <string name="enable_alarm_permission">Siz tətbiq tənzimləmələrində \"SCHEDULE_EXACT_ALARM\" icazəsin aktivləşdirməlisiniz.</string>
     <string name="milliseconds">Milisaniyə</string>
     <string name="process_downloads_background">"Yükləmələr hələ də yüklənir. Onları arxa planda emal etməyə davam edib yükləməyə başlanılsın? "</string>
-    <string name="navigation_bar">Naviqasiya paneli</string>
+    <string name="navigation_bar">Fəaliyyət Paneli</string>
     <string name="label_visibility">Etiket Görünməsi</string>
     <string name="sync_with_source">Mənbəylə Sinxronizasiya</string>
     <string name="queue">Növbə</string>
@@ -419,4 +419,5 @@
     <string name="continue_anyway">Yenə də davam et</string>
     <string name="playlist_as_album">Albom Üst Məlumatı kimi Pleylist Adı istifadə et</string>
     <string name="playlist_as_album_summary">Albom üst məlumatı yoxdursa, əvəzinə pleylist adı istifadə et</string>
+    <string name="data_fetching_extractor_youtube">Məlumat Çıxarıcı (YouTube)</string>
 </resources>

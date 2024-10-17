@@ -228,7 +228,7 @@
     <string name="split_by_chapters">依章節分割</string>
     <string name="confirm_delete_cookies_desc">永久刪除所有 Cookies</string>
     <string name="save_subs">儲存字幕</string>
-    <string name="video_recommendations_summary">在主畫面從 PIPED API 取得推薦的 YouTube 影片</string>
+    <string name="video_recommendations_summary">從 NewPipe 提取器中在主畫面上獲取推薦的 YouTube 影片</string>
     <string name="help_translate_summary">使用 Weblate 將此應用程式翻譯為您的語言</string>
     <string name="file_size">檔案大小</string>
     <string name="restart">重新啟動</string>
@@ -419,4 +419,5 @@
     <string name="use_item_url_not_playlist_summary">此功能適用於 Libretube 離線播放清單，這些清單無法被 yt-dlp 認識。啟用此選項後，播放清單的中繼資料將不會嵌入</string>
     <string name="recode_video">重新編碼影片</string>
     <string name="recode_video_summary">將影片檔案重新編碼為指定的影片格式</string>
+    <string name="data_fetching_extractor_youtube">資料擷取提取器（YouTube）</string>
 </resources>

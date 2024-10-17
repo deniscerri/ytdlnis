@@ -419,4 +419,5 @@
     <string name="continue_anyway">Всеодно продовжити</string>
     <string name="playlist_as_album">Використовувати назву списку відтворення як метадані альбому</string>
     <string name="playlist_as_album_summary">Якщо метадані альбому відсутні, замість них використовуйте назву списку відтворення</string>
+    <string name="data_fetching_extractor_youtube">Засіб вилучення даних (YouTube)</string>
 </resources>

@@ -180,7 +180,7 @@
     <string name="subtitle_languages">Felirat nyelvek</string>
     <string name="format_source">Forrás formátumok</string>
     <string name="video_recommendations">Videó ajánlások</string>
-    <string name="video_recommendations_summary">Ajánlott YouTube-videók megjelenítése a kezdőképernyőn a PIPED API segítségével</string>
+    <string name="video_recommendations_summary">Ajánlott YouTube-videók megjelenítése a kezdőképernyőn a NewPipe Extractorral</string>
     <string name="preferred_search_engine">Kedvelt keresőmotor</string>
     <string name="preferred_search_engine_summary">Az alkalmazáson belüli keresésekhez használandó keresőmotor</string>
     <string name="preferred_home_screen">Előnyben részesített kezdőképernyő</string>
@@ -398,4 +398,26 @@
     <string name="format_importance_note">Formátum fontosságának beállítása. Ez a sorrend csak akkor lesz használatos, amikor az alkalmazás a letöltési kártyán lévő formátumokat lekérdezi, és automatikusan kiválasztja a formátumot!</string>
     <string name="location">Hely</string>
     <string name="process_downloads_background">"Letöltés még tölt. Folytatod a feldolgozást a háttérben és elkezded a letöltést? "</string>
+    <string name="navigation_bar">Navigációs Sáv</string>
+    <string name="label_visibility">Címke Láthatóság</string>
+    <string name="always">Mindig</string>
+    <string name="sync_with_source">Szinkronizáció a Forrással</string>
+    <string name="queue">Sor</string>
+    <string name="reset">Újraindítás</string>
+    <string name="continue_anyway">Folytatás mindenképp</string>
+    <string name="playlist_as_album">Playlist Név használata az Album Metadatában</string>
+    <string name="playlist_as_album_summary">Playlist név használata, ha nincs elérhető Album Metadata</string>
+    <string name="daily">Naponta</string>
+    <string name="weekly">Hetente</string>
+    <string name="monthly">Havonta</string>
+    <string name="cleanup_leftover_downloads">Megmaradt letöltések tisztítása (megszakított, hibás letöltések)</string>
+    <string name="use_alarm_manager">AlarmManager használata WorkManager helyett az Ütemezéshez</string>
+    <string name="use_alarm_manager_summary">Kapcsolja be, ha a WorkManager korlátozva van a készülékén, vagy ha az ütemezett feladatok nem pontosak</string>
+    <string name="use_item_url_not_playlist">Item URL használata Playlist URL helyett</string>
+    <string name="recode_video">Videó Újrakódolása</string>
+    <string name="recode_video_summary">Újrakódolja a videófájlt a megadott formátumra</string>
+    <string name="data_fetching_extractor_youtube">Adatszerző Extractor (YouTube)</string>
+    <string name="restore_info">Nyomja meg a \'Restore\' gombot hogy összeolvassza a lementett adatokat a jelenlegiekkel.
+\nNyomja meg a \'Reset\' gombot ha csak a lementett adatokat kívánja megtartani.</string>
+    <string name="use_item_url_not_playlist_summary">Hasznos tud lenni olyan Libretube offline playlistekhez, amelyeket a yt-dlp nem ismer fel. Ennek bekapcsolásával a playlistek metadatája nem fog beágyazódni</string>
 </resources>
