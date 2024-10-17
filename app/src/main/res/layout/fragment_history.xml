@@ -37,7 +37,6 @@
                 <LinearLayout
                     android:id="@+id/history_selection_chips"
                     android:layout_width="wrap_content"
-                    android:visibility="gone"
                     android:layout_height="wrap_content">
 
                     <com.google.android.material.chip.ChipGroup
@@ -57,16 +56,6 @@
                     </com.google.android.material.chip.ChipGroup>
 
                     <View style="@style/Divider.Vertical"/>
-
-
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/not_deleted_chip"
-                        style="@style/Widget.Material3.Chip.Filter"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/not_deleted"/>
-
-                    <View android:id="@+id/notdeleted_divider" style="@style/Divider.Vertical"/>
 
                     <com.google.android.material.chip.ChipGroup
                         android:layout_width="wrap_content"
@@ -94,17 +83,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/command"/>
-
-                    </com.google.android.material.chip.ChipGroup>
-
-                    <View android:id="@+id/website_divider" style="@style/Divider.Vertical"/>
-
-                    <com.google.android.material.chip.ChipGroup
-                        android:id="@+id/website_chip_group"
-                        app:selectionRequired="false"
-                        app:singleSelection="true"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
 
                     </com.google.android.material.chip.ChipGroup>
 

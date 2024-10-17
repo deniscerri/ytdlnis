@@ -40,6 +40,10 @@
 
     <PreferenceCategory android:title="@string/about" >
         <Preference
+            app:icon="@drawable/baseline_exit_to_app_24"
+            app:key="package_name"
+            app:title="@string/package_name" />
+        <Preference
             app:icon="@drawable/ic_discord"
             app:key="discord"
             app:summary="https://discord.gg/WW3KYWxAPm"

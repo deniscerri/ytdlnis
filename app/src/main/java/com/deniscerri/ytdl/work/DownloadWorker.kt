@@ -18,7 +18,6 @@ import androidx.work.ForegroundInfo
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
-import androidx.work.await
 import com.afollestad.materialdialogs.utils.MDUtil.getStringArray
 import com.deniscerri.ytdl.App
 import com.deniscerri.ytdl.MainActivity
@@ -38,6 +37,7 @@ import com.yausername.youtubedl_android.YoutubeDL
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
@@ -53,6 +53,13 @@ class DownloadWorker(
     @SuppressLint("RestrictedApi")
     override suspend fun doWork(): Result {
         if (isStopped) return Result.success()
+        val workManager = WorkManager.getInstance(context)
+        val currentWork = withContext(Dispatchers.IO) {
+            workManager.getWorkInfosByTag("download").get()
+        }
+        if (currentWork.count{it.state == WorkInfo.State.RUNNING} > 1) {
+            return Result.success()
+        }
 
         val notificationUtil = NotificationUtil(App.instance)
         val ytdlpUtil = YTDLPUtil(context)
@@ -66,10 +73,11 @@ class DownloadWorker(
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
         val time = System.currentTimeMillis() + 6000
         val queuedItems = dao.getQueuedScheduledDownloadsUntil(time)
-        val currentWork = WorkManager.getInstance(context).getWorkInfosByTag("download").await()
-        if (currentWork.count{it.state == WorkInfo.State.RUNNING} > 1) return Result.success()
+        val priorityItemIDs = inputData.getLongArray("priority_item_ids")!!.toMutableList()
+        val continueAfterPriorityIds = inputData.getBoolean("continue_after_priority_ids", true)
 
         // this is needed for observe sources call, so it wont create result items
+        // [removed]
         //val createResultItem = inputData.getBoolean("createResultItem", true)
 
         val confTmp = Configuration(context.resources.configuration)
@@ -100,8 +108,9 @@ class DownloadWorker(
         val foregroundInfo = ForegroundInfo(1000000000, workNotif)
         setForegroundAsync(foregroundInfo)
 
-        queuedItems.collect { items ->
-            if (isStopped) return@collect
+        queuedItems.collectLatest { items ->
+            if (this@DownloadWorker.isStopped) return@collectLatest
+
             runningYTDLInstances.clear()
             val activeDownloads = dao.getActiveDownloadsList()
             activeDownloads.forEach {
@@ -112,17 +121,28 @@ class DownloadWorker(
             val useScheduler = sharedPreferences.getBoolean("use_scheduler", false)
             if (items.isEmpty() && running.isEmpty()) {
                 WorkManager.getInstance(context).cancelWorkById(this@DownloadWorker.id)
-                return@collect
+                return@collectLatest
             }
 
             if (useScheduler){
                 if (items.none{it.downloadStartTime > 0L} && running.isEmpty() && !alarmScheduler.isDuringTheScheduledTime()) {
                     WorkManager.getInstance(context).cancelWorkById(this@DownloadWorker.id)
-                    return@collect
+                    return@collectLatest
                 }
             }
+
+            if (priorityItemIDs.isEmpty() && !continueAfterPriorityIds) {
+                WorkManager.getInstance(context).cancelWorkById(this@DownloadWorker.id)
+                return@collectLatest
+            }
+
             val concurrentDownloads = sharedPreferences.getInt("concurrent_downloads", 1) - running.size
-            val eligibleDownloads = items.take(if (concurrentDownloads < 0) 0 else concurrentDownloads).filter {  it.id !in running }
+            val eligibleDownloads = if (priorityItemIDs.isNotEmpty()) {
+                val tmp = priorityItemIDs.take(concurrentDownloads)
+                items.filter { it.id !in running && tmp.contains(it.id) }
+            }else{
+                items.take(concurrentDownloads).filter {  it.id !in running }
+            }
 
             eligibleDownloads.forEach{downloadItem ->
                 val notification = notificationUtil.createDownloadServiceNotification(openDownloadQueue, downloadItem.title.ifEmpty { downloadItem.url })
@@ -365,7 +385,10 @@ class DownloadWorker(
             }
 
             if (eligibleDownloads.isNotEmpty()){
-                eligibleDownloads.forEach { it.status = DownloadRepository.Status.Active.toString() }
+                eligibleDownloads.forEach {
+                    it.status = DownloadRepository.Status.Active.toString()
+                    priorityItemIDs.remove(it.id)
+                }
                 dao.updateMultiple(eligibleDownloads)
             }
         }

@@ -20,6 +20,7 @@ import android.net.Uri
 import android.text.Html
 import android.text.Spanned
 import android.util.DisplayMetrics
+import android.util.Patterns
 import android.util.TypedValue
 import android.view.MotionEvent
 import android.view.View
@@ -45,16 +46,22 @@ import com.deniscerri.ytdl.database.models.Format
 import com.deniscerri.ytdl.database.models.observeSources.ObserveSourcesItem
 import com.deniscerri.ytdl.database.repository.DownloadRepository
 import com.deniscerri.ytdl.database.repository.ObserveSourcesRepository.EveryCategory
+import com.deniscerri.ytdl.util.Extensions.isYoutubeChannelURL
 import com.deniscerri.ytdl.util.Extensions.isYoutubeURL
 import com.deniscerri.ytdl.util.Extensions.toTimePeriodsArray
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.tabs.TabLayout
+import com.google.gson.Gson
+import com.google.gson.JsonArray
 import com.neo.highlight.core.Highlight
 import com.neo.highlight.util.listener.HighlightTextWatcher
 import com.neo.highlight.util.scheme.ColorScheme
 import com.squareup.picasso.Picasso
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
+import kotlinx.serialization.json.Json
 import me.zhanghai.android.fastscroll.FastScrollerBuilder
 import org.json.JSONObject
 import java.io.File
@@ -212,7 +219,13 @@ object Extensions {
         tags.forEach {
             runCatching {
                 val tmp = this.getString(it)
-                if (tmp != "null") return tmp
+                if (tmp != "null") {
+                    return if (tmp.startsWith("[")) {
+                        Json.decodeFromString<List<String>>(tmp).joinToString(", ")
+                    }else{
+                        tmp
+                    }
+                }
             }
         }
 
@@ -508,4 +521,16 @@ object Extensions {
         return Pattern.compile("((^(https?)://)?(www.)?(m.)?youtu(.be)?(be.com))/@[a-zA-Z]+").matcher(this).find()
     }
 
+    fun String.isYoutubeWatchVideosURL() : Boolean {
+        return Pattern.compile("((^(https?)://)?(www.)?(m.)?youtu(.be)?(be.com))/watch_videos\\?video_ids=.*").matcher(this).find()
+    }
+
+    fun String.extractURL() : String {
+        val res = Pattern.compile("(http|ftp|https)://([\\w_-]+(?:\\.[\\w_-]+)+)([\\w.,@?^=%&:/~+#-]*[\\w@?^=%&/~+#-])").matcher(this)
+        return if (res.find()){
+            res.group()
+        }else{
+            this
+        }
+    }
 }

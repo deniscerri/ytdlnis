@@ -981,12 +981,14 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
           searchView!!.editText.setSelection(searchView!!.editText.length())
     }
 
+
     private fun updateMultiplePlaylistResults(playlistTitles: List<String>) {
+        playlistNameFilterChipGroup.children.filter { it.tag != "all" }.forEach {
+            playlistNameFilterChipGroup.removeView(it)
+        }
+
         if (playlistTitles.isEmpty() || playlistTitles.size == 1) {
             playlistNameFilterScrollView.isVisible = false
-            playlistNameFilterChipGroup.children.filter { it.tag != "all" }.forEach {
-                playlistNameFilterChipGroup.removeView(it)
-            }
             return
         }
 
@@ -995,9 +997,6 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
         }
 
         for (t in playlistTitles) {
-            val exists = playlistNameFilterChipGroup.children.any { it.tag == t }
-            if (exists) continue
-
             val tmp = layoutinflater!!.inflate(R.layout.filter_chip, playlistNameFilterChipGroup, false) as Chip
             tmp.text = t
             tmp.tag = t
@@ -1006,6 +1005,10 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
             }
 
             playlistNameFilterChipGroup.addView(tmp)
+        }
+
+        if (playlistNameFilterChipGroup.children.all { !(it as Chip).isChecked }) {
+            (playlistNameFilterChipGroup.children.first() as Chip).isChecked = true
         }
 
         playlistNameFilterScrollView.isVisible = true

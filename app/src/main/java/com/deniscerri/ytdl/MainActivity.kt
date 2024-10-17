@@ -16,6 +16,7 @@ import android.os.Handler
 import android.os.Looper
 import android.provider.Settings
 import android.util.Log
+import android.util.Patterns
 import android.view.View
 import android.view.WindowInsets
 import android.widget.CheckBox
@@ -51,6 +52,7 @@ import com.deniscerri.ytdl.ui.downloads.DownloadQueueMainFragment
 import com.deniscerri.ytdl.ui.downloads.HistoryFragment
 import com.deniscerri.ytdl.ui.more.settings.SettingsActivity
 import com.deniscerri.ytdl.util.CrashListener
+import com.deniscerri.ytdl.util.Extensions.extractURL
 import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.util.NavbarUtil
 import com.deniscerri.ytdl.util.NavbarUtil.applyNavBarStyle
@@ -183,7 +185,7 @@ class MainActivity : BaseActivity() {
                 (navigationView as NavigationBarView).getOrCreateBadge(R.id.historyFragment)
             }
             lifecycleScope.launch {
-                downloadViewModel.activeDownloadsCount.collectLatest {
+                downloadViewModel.activePausedDownloadsCount.collectLatest {
                     if (it == 0) {
                         activeDownloadsBadge.isVisible = false
                         activeDownloadsBadge.clearNumber()
@@ -438,7 +440,7 @@ class MainActivity : BaseActivity() {
                     textBuilder.append(c.toChar())
                 }
                 val bundle = Bundle()
-                bundle.putString("url", textBuilder.toString())
+                bundle.putString("url", textBuilder.toString().extractURL())
                 navController.popBackStack(R.id.homeFragment, true)
                 navController.navigate(
                     R.id.homeFragment,

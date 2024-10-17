@@ -3,6 +3,7 @@ package com.deniscerri.ytdl.database.repository
 import com.deniscerri.ytdl.database.DBManager.SORTING
 import com.deniscerri.ytdl.database.dao.HistoryDao
 import com.deniscerri.ytdl.database.models.HistoryItem
+import com.deniscerri.ytdl.database.viewmodel.HistoryViewModel
 import com.deniscerri.ytdl.util.FileUtil
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
@@ -26,41 +27,28 @@ class HistoryRepository(private val historyDao: HistoryDao) {
         return historyDao.getAllHistoryByURL(url)
     }
 
-    fun getFiltered(query : String, format : String, site : String, sortType: HistorySortType, sort: SORTING, notDeleted: Boolean) : List<HistoryItem> {
+    fun getFiltered(query : String, type : String, site : String, sortType: HistorySortType, sort: SORTING, statusFilter: HistoryViewModel.HistoryStatus) : List<HistoryItem> {
         var filtered = when(sortType){
-            HistorySortType.DATE ->  historyDao.getHistorySortedByID(query, format, site, sort.toString())
-            HistorySortType.TITLE ->  historyDao.getHistorySortedByTitle(query, format, site, sort.toString())
-            HistorySortType.AUTHOR ->  historyDao.getHistorySortedByAuthor(query, format, site, sort.toString())
+            HistorySortType.DATE ->  historyDao.getHistorySortedByID(query, type, site, sort.toString())
+            HistorySortType.TITLE ->  historyDao.getHistorySortedByTitle(query, type, site, sort.toString())
+            HistorySortType.AUTHOR ->  historyDao.getHistorySortedByAuthor(query, type, site, sort.toString())
             HistorySortType.FILESIZE ->  {
-                val items = historyDao.getHistorySortedByID(query, format, site, sort.toString())
+                val items = historyDao.getHistorySortedByID(query, type, site, sort.toString())
                 when(sort){
                     SORTING.DESC -> items.sortedByDescending { it.format.filesize }
                     SORTING.ASC -> items.sortedBy { it.format.filesize }
                 }
             }
         }
-        if(notDeleted){
-            filtered = filtered.filter { it.downloadPath.any { it2 -> FileUtil.exists(it2) } }
-        }
 
-        return filtered
-    }
-
-    fun getRecordsBetweenTwoItems(query : String, format : String, site : String, sortType: HistorySortType, sort: SORTING, notDeleted: Boolean) : List<HistoryItem> {
-        var filtered = when(sortType){
-            HistorySortType.DATE ->  historyDao.getHistorySortedByID(query, format, site, sort.toString())
-            HistorySortType.TITLE ->  historyDao.getHistorySortedByTitle(query, format, site, sort.toString())
-            HistorySortType.AUTHOR ->  historyDao.getHistorySortedByAuthor(query, format, site, sort.toString())
-            HistorySortType.FILESIZE ->  {
-                val items = historyDao.getHistorySortedByID(query, format, site, sort.toString())
-                when(sort){
-                    SORTING.DESC -> items.sortedByDescending { it.format.filesize }
-                    SORTING.ASC -> items.sortedBy { it.format.filesize }
-                }
+        when(statusFilter) {
+            HistoryViewModel.HistoryStatus.DELETED -> {
+                filtered = filtered.filter { it.downloadPath.any { it2 -> !FileUtil.exists(it2) } }
             }
-        }
-        if(notDeleted){
-            filtered = filtered.filter { it.downloadPath.any { it2 -> FileUtil.exists(it2) } }
+            HistoryViewModel.HistoryStatus.NOT_DELETED -> {
+                filtered = filtered.filter { it.downloadPath.any { it2 -> FileUtil.exists(it2) } }
+            }
+            else -> {}
         }
 
         return filtered

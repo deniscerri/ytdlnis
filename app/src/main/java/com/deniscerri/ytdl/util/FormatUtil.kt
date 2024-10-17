@@ -8,6 +8,7 @@ import androidx.preference.PreferenceManager
 import com.afollestad.materialdialogs.utils.MDUtil.getStringArray
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.models.Format
+import java.util.Collections
 
 class FormatUtil(private var context: Context) {
     private val sharedPreferences : SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
@@ -19,8 +20,13 @@ class FormatUtil(private var context: Context) {
     private val videoCodecPreference : String =  sharedPreferences.getString("video_codec", "").toString()
     private val audioContainerPreference : String = sharedPreferences.getString("audio_format", "").toString()
     private val videoContainerPreference : String = sharedPreferences.getString("video_format", "").toString()
-    @SuppressLint("RestrictedApi")
-    private val videoResolutionOrder = context.getStringArray(R.array.video_formats_values).filter { it.contains("_") }.map{ it.split("_")[0].dropLast(1) }.reversed()
+    private val videoResolutionOrder = context.getStringArray(R.array.video_formats_values)
+                                            .filter { it.contains("_") }
+                                            .map{ it.split("_")[0].dropLast(1) }.toMutableList().apply {
+                                                this.reverse()
+                                            }
+
+
     private val preferSmallerFormats = sharedPreferences.getBoolean("prefer_smaller_formats", false)
 
     @SuppressLint("RestrictedApi")

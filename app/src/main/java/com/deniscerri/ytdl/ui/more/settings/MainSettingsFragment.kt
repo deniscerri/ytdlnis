@@ -148,6 +148,14 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
         backup = findPreference("backup")
         restore = findPreference("restore")
 
+        findPreference<Preference>("package_name")?.apply {
+            summary = BuildConfig.APPLICATION_ID
+            setOnPreferenceClickListener {
+                UiUtil.copyToClipboard(summary.toString(), requireActivity())
+                true
+            }
+        }
+
         backup!!.onPreferenceClickListener =
             Preference.OnPreferenceClickListener {
                 val builder = MaterialAlertDialogBuilder(requireContext())

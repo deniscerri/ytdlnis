@@ -14,12 +14,14 @@ import com.deniscerri.ytdl.database.repository.HistoryRepository.HistorySortType
 import com.deniscerri.ytdl.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdl.util.Extensions.isYoutubeChannelURL
 import com.deniscerri.ytdl.util.Extensions.isYoutubeURL
+import com.deniscerri.ytdl.util.Extensions.isYoutubeWatchVideosURL
 import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.util.extractors.GoogleApiUtil
 import com.deniscerri.ytdl.util.extractors.PipedApiUtil
 import com.deniscerri.ytdl.util.extractors.newpipe.NewPipeUtil
 import com.deniscerri.ytdl.util.extractors.YTDLPUtil
 import com.deniscerri.ytdl.util.extractors.YoutubeApiUtil
+import com.yausername.youtubedl_android.YoutubeDLException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.runBlocking
@@ -46,6 +48,7 @@ class ResultRepository(private val resultDao: ResultDao, private val context: Co
 
     enum class SourceType {
         YOUTUBE_VIDEO,
+        YOUTUBE_WATCHVIDEOS,
         YOUTUBE_PLAYLIST,
         YOUTUBE_CHANNEL,
         SEARCH_QUERY,
@@ -111,6 +114,40 @@ class ResultRepository(private val resultDao: ResultDao, private val context: Co
         return items
     }
 
+    private suspend fun getYoutubeWatchVideos(inputQuery: String, resetResults: Boolean, addToResults: Boolean) : List<ResultItem> {
+        if (resetResults) deleteAll()
+
+        //throw YoutubeDLException("Youtube Watch Videos is not yet supported in data fetching. You can download it directly by clicking Continue Anyway or by Quick Downloading it!")
+        //TODO use below code after youtubedl-android has fixed issue #295 in their repo
+        val items = mutableListOf<ResultItem>()
+        val ytExtractorResult = newPipeUtil?.getPlaylistData(inputQuery) {
+            if (addToResults){
+                runBlocking {
+                    val ids = resultDao.insertMultiple(it)
+                    ids.forEachIndexed { index, id ->
+                        it[index].id = id
+                    }
+                }
+            }
+            items.addAll(it)
+        }
+        val response = if (ytExtractorResult?.isSuccess == true){
+            ytExtractorResult.getOrElse { items }
+        }else{
+            val res = ytdlpUtil.getFromYTDL(inputQuery)
+            if (addToResults) {
+                val ids = resultDao.insertMultiple(res)
+                ids.forEachIndexed { index, id ->
+                    res[index].id = id
+                }
+            }
+            res
+        }
+
+        itemCount.value = response.size
+        return response
+    }
+
     private suspend fun getYoutubeVideo(inputQuery: String, resetResults: Boolean, addToResults: Boolean) : List<ResultItem>{
         val theURL = inputQuery.replace("\\?list.*".toRegex(), "")
         val ytExtractorRes = newPipeUtil?.getVideoData(theURL)
@@ -157,9 +194,11 @@ class ResultRepository(private val resultDao: ResultDao, private val context: Co
             ytExtractorResult.getOrElse { items }
         }else{
             val res = ytdlpUtil.getFromYTDL(playlistURL)
-            val ids = resultDao.insertMultiple(res)
-            ids.forEachIndexed { index, id ->
-                res[index].id = id
+            if (addToResults) {
+                val ids = resultDao.insertMultiple(res)
+                ids.forEachIndexed { index, id ->
+                    res[index].id = id
+                }
             }
             res
         }
@@ -313,6 +352,9 @@ class ResultRepository(private val resultDao: ResultDao, private val context: Co
             SourceType.YOUTUBE_VIDEO -> {
                 getYoutubeVideo(inputQuery, resetResults, addToResults)
             }
+            SourceType.YOUTUBE_WATCHVIDEOS -> {
+                getYoutubeWatchVideos(inputQuery, resetResults, addToResults)
+            }
             SourceType.YOUTUBE_PLAYLIST -> {
                 if (singleItem){
                     getFromYTDLP(inputQuery, resetResults, addToResults, true)
@@ -345,6 +387,8 @@ class ResultRepository(private val resultDao: ResultDao, private val context: Co
                 type = SourceType.YOUTUBE_PLAYLIST
             }else if (inputQuery.isYoutubeChannelURL()) {
                 type = SourceType.YOUTUBE_CHANNEL
+            }else if (inputQuery.isYoutubeWatchVideosURL()) {
+                type = SourceType.YOUTUBE_WATCHVIDEOS
             }
         } else if (Patterns.WEB_URL.matcher(inputQuery).matches()) {
             type = SourceType.YT_DLP

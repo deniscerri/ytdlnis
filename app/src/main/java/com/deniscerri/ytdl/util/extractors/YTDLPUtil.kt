@@ -21,6 +21,7 @@ import com.deniscerri.ytdl.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdl.util.Extensions.getIntByAny
 import com.deniscerri.ytdl.util.Extensions.getStringByAny
 import com.deniscerri.ytdl.util.Extensions.isYoutubeURL
+import com.deniscerri.ytdl.util.Extensions.isYoutubeWatchVideosURL
 import com.deniscerri.ytdl.util.Extensions.toStringDuration
 import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.util.FormatUtil
@@ -51,7 +52,14 @@ class YTDLPUtil(private val context: Context) {
 
         val request : YoutubeDLRequest
         if (query.contains("http")){
-            request = YoutubeDLRequest(query)
+            if (query.isYoutubeWatchVideosURL()) {
+                request = YoutubeDLRequest(emptyList())
+                val config = File(context.cacheDir.absolutePath + "/config" + System.currentTimeMillis() + "##url.txt")
+                config.writeText(query)
+                request.addOption("--config", config.absolutePath)
+            }else{
+                request = YoutubeDLRequest(query)
+            }
         }else{
             request = YoutubeDLRequest(emptyList())
             when (searchEngine){
@@ -64,13 +72,8 @@ class YTDLPUtil(private val context: Context) {
                 }
             }
         }
-        val lang = sharedPreferences.getString("app_language", "en")
         if (searchEngine == "ytsearch" || query.isYoutubeURL()) {
-            var extractorArgs = "player_client=default,mediaconnect"
-            if (context.getStringArray(R.array.subtitle_langs).contains(lang)) {
-                extractorArgs += ";lang=$lang"
-            }
-            request.addOption("--extractor-args", "youtube:$extractorArgs")
+            request.addOption("--extractor-args", "youtube:${getYoutubeExtractorArgs()}")
         }
 
         request.addOption("--flat-playlist")
@@ -103,7 +106,7 @@ class YTDLPUtil(private val context: Context) {
         request.addOption("-P", FileUtil.getCachePath(context) + "/tmp")
 
 
-
+        println(parseYTDLRequestString(request))
         val youtubeDLResponse = YoutubeDL.getInstance().execute(request)
         val results: List<String?> = try {
             val lineSeparator = System.getProperty("line.separator")
@@ -119,7 +122,7 @@ class YTDLPUtil(private val context: Context) {
             val title = jsonObject.getStringByAny("alt_title", "title", "webpage_url_basename")
             if (title == "[Private video]" || title == "[Deleted video]") continue
 
-            var author = jsonObject.getStringByAny("artist", "uploader", "channel", "playlist_uploader", "uploader_id")
+            var author = jsonObject.getStringByAny("artists", "artist", "uploader", "channel", "playlist_uploader", "uploader_id")
             var duration = jsonObject.getIntByAny("duration").toString()
             if (duration != "-1"){
                 duration = jsonObject.getInt("duration").toStringDuration(Locale.US)
@@ -689,12 +692,7 @@ class YTDLPUtil(private val context: Context) {
             }
 
             if (downloadItem.url.isYoutubeURL()) {
-                var extractorArgs = "player_client=default,mediaconnect"
-                val lang = sharedPreferences.getString("app_language", "en")
-                if (context.getStringArray(R.array.subtitle_langs).contains(lang)) {
-                    extractorArgs += ";lang=$lang"
-                }
-                request.addOption("--extractor-args", "youtube:$extractorArgs")
+                request.addOption("--extractor-args", "youtube:${getYoutubeExtractorArgs()}")
             }
         }
 
@@ -1097,5 +1095,19 @@ class YTDLPUtil(private val context: Context) {
             request.addCommands(metadataCommands)
         }
         return request
+    }
+
+    private fun getYoutubeExtractorArgs() : String {
+        var extractorArgs = "player_client=default,mediaconnect"
+        val lang = sharedPreferences.getString("app_language", "en")
+        if (context.getStringArray(R.array.subtitle_langs).contains(lang)) {
+            extractorArgs += ";lang=$lang"
+        }
+        val poToken = sharedPreferences.getString("youtube_po_token", "")!!
+        if (poToken.isNotBlank()) {
+            extractorArgs += ";po_token=web+$poToken"
+        }
+
+        return extractorArgs
     }
 }

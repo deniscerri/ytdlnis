@@ -39,6 +39,7 @@ import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.database.viewmodel.HistoryViewModel
 import com.deniscerri.ytdl.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdl.ui.BaseActivity
+import com.deniscerri.ytdl.util.Extensions.extractURL
 import com.deniscerri.ytdl.util.ThemeUtil
 import com.deniscerri.ytdl.util.UiUtil
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -170,16 +171,12 @@ class ShareActivity : BaseActivity() {
             runCatching { supportFragmentManager.popBackStack() }
 
             quickDownload = intent.getBooleanExtra("quick_download", sharedPreferences.getBoolean("quick_download", false) || sharedPreferences.getString("preferred_download_type", "video") == "command")
-            val url = when(action){
+            val data = when(action){
                 Intent.ACTION_SEND -> intent.getStringExtra(Intent.EXTRA_TEXT)!!
                 else -> intent.dataString!!
             }
-            val matcher = Patterns.WEB_URL.matcher(url)
-            val inputQuery = if (matcher.find()){
-               matcher.group()
-            }else{
-                url
-            }
+
+            val inputQuery = data.extractURL()
 
             val type = intent.getStringExtra("TYPE")
             val background = intent.getBooleanExtra("BACKGROUND", false)

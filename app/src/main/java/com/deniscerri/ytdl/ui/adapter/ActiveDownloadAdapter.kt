@@ -71,8 +71,6 @@ class ActiveDownloadAdapter(onItemClickListener: OnItemClickListener, activity: 
         // PROGRESS BAR ----------------------------------------------------
         val progressBar = card.findViewById<LinearProgressIndicator>(R.id.progress)
         progressBar.tag = "${item.id}##progress"
-        progressBar.progress = 0
-        progressBar.isIndeterminate = true
 
         // TITLE  ----------------------------------
         val itemTitle = card.findViewById<TextView>(R.id.title)
@@ -122,39 +120,39 @@ class ActiveDownloadAdapter(onItemClickListener: OnItemClickListener, activity: 
         if (cancelButton.hasOnClickListeners()) cancelButton.setOnClickListener(null)
         cancelButton.setOnClickListener {onItemClickListener.onCancelClick(item.id)}
 
-//        val resumeButton = card.findViewById<MaterialButton>(R.id.active_download_resume)
-//        resumeButton.isEnabled = true
-//        if (resumeButton.hasOnClickListeners()) resumeButton.setOnClickListener(null)
-//        if (activePaused) {
-//            resumeButton.setIconResource(R.drawable.exomedia_ic_play_arrow_white)
-//            resumeButton.setOnClickListener {
-//                resumeButton.isEnabled = false
-//                onItemClickListener.onResumeClick(item.id)
-//            }
-//        }else {
-//            resumeButton.setIconResource(R.drawable.exomedia_ic_pause_white)
-//            resumeButton.setOnClickListener {
-//                resumeButton.isEnabled = false
-//                onItemClickListener.onPauseClick(item.id)
-//            }
-//        }
+        val resumeButton = card.findViewById<MaterialButton>(R.id.active_download_resume)
+        resumeButton.isEnabled = true
+        if (resumeButton.hasOnClickListeners()) resumeButton.setOnClickListener(null)
+        val isPaused = item.status == DownloadRepository.Status.Paused.toString()
+        if (isPaused) {
+            resumeButton.setIconResource(R.drawable.exomedia_ic_play_arrow_white)
+            resumeButton.setOnClickListener {
+                resumeButton.isEnabled = false
+                onItemClickListener.onResumeClick(item.id)
+            }
+        }else {
+            resumeButton.setIconResource(R.drawable.exomedia_ic_pause_white)
+            resumeButton.setOnClickListener {
+                resumeButton.isEnabled = false
+                onItemClickListener.onPauseClick(item.id)
+            }
+        }
 
-        if (sharedPreferences.getBoolean("paused_downloads", false)) {
+        if (isPaused) {
             progressBar.isIndeterminate = false
+            progressBar.progress = 0
             cancelButton.isEnabled = true
             output.text = activity.getString(R.string.exo_download_paused)
         }else{
-            progressBar.isIndeterminate = true
+            progressBar.isIndeterminate = progressBar.progress <= 0
             cancelButton.isEnabled = true
         }
     }
     interface OnItemClickListener {
         fun onCancelClick(itemID: Long)
         fun onOutputClick(item: DownloadItem)
-    }
-
-    enum class ActiveDownloadAction {
-        Resume, Pause
+        fun onPauseClick(itemID: Long)
+        fun onResumeClick(itemID: Long)
     }
 
     companion object {

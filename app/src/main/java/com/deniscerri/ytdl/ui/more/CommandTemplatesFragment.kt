@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.DialogInterface
+import android.content.SharedPreferences
 import android.graphics.Canvas
 import android.graphics.Color
 import android.os.Bundle
@@ -23,6 +24,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -43,6 +45,7 @@ import com.deniscerri.ytdl.util.UiUtil
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.chip.Chip
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
@@ -64,6 +67,7 @@ class CommandTemplatesFragment : Fragment(), TemplatesAdapter.OnItemClickListene
     private lateinit var mainActivity: MainActivity
     private lateinit var sortChip: Chip
     private lateinit var  selectedObjects: ArrayList<CommandTemplate>
+    private lateinit var preferences: SharedPreferences
     private var actionMode : ActionMode? = null
     private val jsonFormat = Json { prettyPrint = true }
 
@@ -95,7 +99,7 @@ class CommandTemplatesFragment : Fragment(), TemplatesAdapter.OnItemClickListene
         recyclerView = view.findViewById(R.id.template_recyclerview)
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = templatesAdapter
-        val preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
+        preferences =  PreferenceManager.getDefaultSharedPreferences(requireContext())
         if (preferences.getStringSet("swipe_gesture", requireContext().getStringArray(R.array.swipe_gestures_values).toSet())!!.toList().contains("templates")){
             val itemTouchHelper = ItemTouchHelper(simpleCallback)
             itemTouchHelper.attachToRecyclerView(recyclerView)
@@ -117,8 +121,8 @@ class CommandTemplatesFragment : Fragment(), TemplatesAdapter.OnItemClickListene
         commandTemplateViewModel.sortOrder.observe(viewLifecycleOwner){
             if (it != null){
                 when(it){
-                    SORTING.ASC -> sortChip.chipIcon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_down)
-                    SORTING.DESC -> sortChip.chipIcon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_up)
+                    SORTING.ASC -> sortChip.chipIcon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_up)
+                    SORTING.DESC -> sortChip.chipIcon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_down)
                 }
             }
         }
@@ -264,9 +268,10 @@ class CommandTemplatesFragment : Fragment(), TemplatesAdapter.OnItemClickListene
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onItemClick(commandTemplate: CommandTemplate, index: Int) {
         UiUtil.showCommandTemplateCreationOrUpdatingSheet(commandTemplate,mainActivity, this, commandTemplateViewModel, newTemplate = {
-            templatesAdapter.notifyItemChanged(index)
+            templatesAdapter.notifyDataSetChanged()
         }, {})
 
     }

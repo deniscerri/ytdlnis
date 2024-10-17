@@ -44,6 +44,8 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
         pagingSourceFactory = {downloadDao.getAllDownloads()}
     )
     val activeDownloads : Flow<List<DownloadItem>> = downloadDao.getActiveDownloads().distinctUntilChanged()
+    val activePausedDownloads : Flow<List<DownloadItem>> = downloadDao.getActiveAndPausedDownloads().distinctUntilChanged()
+    val pausedDownloads : Flow<List<DownloadItem>> = downloadDao.getPausedDownloads().distinctUntilChanged()
     val processingDownloads : Flow<List<DownloadItemConfigureMultiple>> = downloadDao.getProcessingDownloads().distinctUntilChanged()
     val queuedDownloads : Pager<Int, DownloadItemSimple> = Pager(
         config = PagingConfig(pageSize = 20, initialLoadSize = 20, prefetchDistance = 1),
@@ -67,15 +69,16 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
     )
 
     val activeDownloadsCount : Flow<Int> = downloadDao.getDownloadsCountByStatusFlow(listOf(Status.Active).toListString())
+    val activePausedDownloadsCount : Flow<Int> = downloadDao.getDownloadsCountByStatusFlow(listOf(Status.Active, Status.Paused).toListString())
     val queuedDownloadsCount : Flow<Int> = downloadDao.getDownloadsCountByStatusFlow(listOf(Status.Queued).toListString())
-    val activeQueuedDownloadsCount : Flow<Int> = downloadDao.getDownloadsCountByStatusFlow(listOf(Status.Active, Status.Queued).toListString())
+    val pausedDownloadsCount : Flow<Int> = downloadDao.getDownloadsCountByStatusFlow(listOf(Status.Paused).toListString())
     val cancelledDownloadsCount : Flow<Int> = downloadDao.getDownloadsCountByStatusFlow(listOf(Status.Cancelled).toListString())
     val erroredDownloadsCount : Flow<Int> = downloadDao.getDownloadsCountByStatusFlow(listOf(Status.Error).toListString())
     val savedDownloadsCount : Flow<Int> = downloadDao.getDownloadsCountByStatusFlow(listOf(Status.Saved).toListString())
     val scheduledDownloadsCount : Flow<Int> = downloadDao.getDownloadsCountByStatusFlow(listOf(Status.Scheduled).toListString())
 
     enum class Status {
-        Active, Queued, Error, Cancelled, Saved, Processing, Scheduled, Duplicate
+        Active, Paused, Queued, Error, Cancelled, Saved, Processing, Scheduled, Duplicate
     }
 
     suspend fun insert(item: DownloadItem) : Long {
@@ -222,48 +225,47 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
     }
 
     @SuppressLint("RestrictedApi")
-    suspend fun startDownloadWorker(queuedItems: List<DownloadItem>, context: Context, inputData: Data.Builder = Data.Builder()) : Result<String> {
+    fun startDownloadWorker(queuedItems: List<DownloadItem>, context: Context, continueAfterPriorityItems: Boolean = true) : Result<String> {
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
         val allowMeteredNetworks = sharedPreferences.getBoolean("metered_networks", true)
         val workManager = WorkManager.getInstance(context)
 
-        val currentWork = workManager.getWorkInfosByTag("download").await()
-        if (currentWork.size == 0 || currentWork.none{ it.state == WorkInfo.State.RUNNING } || (queuedItems.isNotEmpty() && queuedItems[0].downloadStartTime != 0L)){
-
-            val currentTime = System.currentTimeMillis()
-            var delay = 0L
-            if (queuedItems.isNotEmpty()){
-                val earliestStart = queuedItems.minBy { it.downloadStartTime }
-                delay = if (earliestStart.downloadStartTime != 0L){
-                    earliestStart.downloadStartTime.minus(currentTime)
-                } else 0
-                if (delay <= 60000L) delay = 0L
-            }
-
-            val useAlarmForScheduling = sharedPreferences.getBoolean("use_alarm_for_scheduling", false)
-
-            if (delay > 0L && useAlarmForScheduling) {
-                AlarmScheduler(context).scheduleAt(queuedItems.minBy { it.downloadStartTime }.downloadStartTime)
-                return Result.success("")
-            }
-
-
-            val workConstraints = Constraints.Builder()
-            if (!allowMeteredNetworks) workConstraints.setRequiredNetworkType(NetworkType.UNMETERED)
-
-            val workRequest = OneTimeWorkRequestBuilder<DownloadWorker>()
-                .addTag("download")
-                .setConstraints(workConstraints.build())
-                .setInitialDelay(delay, TimeUnit.MILLISECONDS)
-                .setInputData(inputData.build())
-
-            workManager.enqueueUniqueWork(
-                System.currentTimeMillis().toString(),
-                ExistingWorkPolicy.REPLACE,
-                workRequest.build()
-            )
-
+        val inputData = Data.Builder()
+        val currentTime = System.currentTimeMillis()
+        var delay = 0L
+        if (queuedItems.isNotEmpty()){
+            val earliestStart = queuedItems.minBy { it.downloadStartTime }
+            delay = if (earliestStart.downloadStartTime != 0L){
+                earliestStart.downloadStartTime.minus(currentTime)
+            } else 0
+            if (delay <= 60000L) delay = 0L
+            inputData.putLongArray("priority_item_ids", queuedItems.map { it.id }.toLongArray())
         }
+
+        val useAlarmForScheduling = sharedPreferences.getBoolean("use_alarm_for_scheduling", false)
+        if (delay > 0L && useAlarmForScheduling) {
+            AlarmScheduler(context).scheduleAt(queuedItems.minBy { it.downloadStartTime }.downloadStartTime)
+            return Result.success("")
+        }
+
+        val workConstraints = Constraints.Builder()
+        if (!allowMeteredNetworks) workConstraints.setRequiredNetworkType(NetworkType.UNMETERED)
+
+        inputData.putBoolean("continue_after_priority_ids", continueAfterPriorityItems)
+
+        val workRequest = OneTimeWorkRequestBuilder<DownloadWorker>()
+            .addTag("download")
+            .setConstraints(workConstraints.build())
+            .setInitialDelay(delay, TimeUnit.MILLISECONDS)
+            .setInputData(inputData.build())
+
+        workManager.enqueueUniqueWork(
+            System.currentTimeMillis().toString(),
+            ExistingWorkPolicy.REPLACE,
+            workRequest.build()
+        )
+
+
         val message = StringBuilder()
 
         val isCurrentNetworkMetered = (context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager).isActiveNetworkMetered

@@ -3,19 +3,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".MainActivity" >
 
-<!--    <group>-->
-<!--        <item-->
-<!--            android:id="@+id/pause"-->
-<!--            android:title="@string/pause"-->
-<!--            android:icon="@drawable/exomedia_ic_pause_white"-->
-<!--            app:showAsAction="ifRoom" />-->
+    <group>
+        <item
+            android:id="@+id/pause"
+            android:title="@string/pause"
+            android:icon="@drawable/exomedia_ic_pause_white"
+            app:showAsAction="ifRoom" />
 
-<!--        <item-->
-<!--            android:id="@+id/resume"-->
-<!--            android:title="@string/resume"-->
-<!--            android:icon="@drawable/exomedia_ic_play_arrow_white"-->
-<!--            app:showAsAction="ifRoom" />-->
-<!--    </group>-->
+        <item
+            android:id="@+id/resume"
+            android:title="@string/resume"
+            android:icon="@drawable/exomedia_ic_play_arrow_white"
+            app:showAsAction="ifRoom" />
+    </group>
 
     <item
         android:id="@+id/cancel"

@@ -2,11 +2,16 @@ package com.deniscerri.ytdl.ui.adapter
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.SharedPreferences
+import android.content.res.ColorStateList
+import android.graphics.Color
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.view.isVisible
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.AsyncDifferConfig
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -22,10 +27,12 @@ class TemplatesAdapter(onItemClickListener: OnItemClickListener, activity: Activ
     private val onItemClickListener: OnItemClickListener
     private val activity: Activity
     private val checkedItems: ArrayList<Long> = ArrayList()
+    private val sharedPreferences: SharedPreferences
 
     init {
         this.onItemClickListener = onItemClickListener
         this.activity = activity
+        this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity)
     }
 
     class ViewHolder(itemView: View, onItemClickListener: OnItemClickListener?) : RecyclerView.ViewHolder(itemView) {
@@ -43,18 +50,18 @@ class TemplatesAdapter(onItemClickListener: OnItemClickListener, activity: Activ
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = getItem(position)
+        val item = getItem(position)!!
         val card = holder.item
         card.popup()
 
         val title = card.findViewById<TextView>(R.id.title)
-        title.text = item?.title
+        title.text = item.title
 
         val content = card.findViewById<TextView>(R.id.content)
-        content.text = item?.content
+        content.text = item.content
 
         card.findViewById<TextView>(R.id.useInExtraCommands).apply {
-            isVisible = item!!.useAsExtraCommand
+            isVisible = item.useAsExtraCommand
             val extraAudio = if (item.useAsExtraCommandAudio) context.getString(R.string.audio) else null
             val extraVideo = if (item.useAsExtraCommandVideo) context.getString(R.string.video) else null
             val finalText = context.getString(R.string.extra_command) + " " + listOfNotNull(
@@ -64,7 +71,12 @@ class TemplatesAdapter(onItemClickListener: OnItemClickListener, activity: Activ
             text = finalText
         }
 
-        if (checkedItems.contains(item!!.id)) {
+        card.findViewById<TextView>(R.id.preferredTemplate).apply {
+            val preferred = sharedPreferences.getString("preferred_command_template", "")
+            isVisible = preferred == item.content
+        }
+
+        if (checkedItems.contains(item.id)) {
             card.isChecked = true
             card.strokeWidth = 5
         } else {

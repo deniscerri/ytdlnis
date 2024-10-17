@@ -145,14 +145,13 @@ class MoreFragment : Fragment() {
                             }
 
                             activeDownloadsList.forEach {
-                                it.status = DownloadRepository.Status.Queued.toString()
                                 YoutubeDL.getInstance().destroyProcessById(it.id.toString())
                                 notificationUtil.cancelDownloadNotification(it.id.toInt())
+                                it.status = DownloadRepository.Status.Paused.toString()
                                 withContext(Dispatchers.IO) {
                                     downloadViewModel.updateDownload(it)
                                 }
                             }
-                            mainSharedPreferencesEditor.putBoolean("paused_downloads", true).apply()
                         }
 
                         if (doNotShowAgain){

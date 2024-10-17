@@ -180,7 +180,7 @@ class ObserveSourceWorker(
             }
 
             if (!useScheduler || alarmScheduler.isDuringTheScheduledTime() || queuedItems.any { it.downloadStartTime > 0L } ){
-                downloadRepo.startDownloadWorker(queuedItems, context, Data.Builder().putBoolean("createResultItem", false))
+                downloadRepo.startDownloadWorker(queuedItems, context)
 
                 if(!useScheduler){
                     queuedItems.filter { it.downloadStartTime != 0L || (it.title.isEmpty() || it.author.isEmpty() || it.thumb.isEmpty()) }.forEach {

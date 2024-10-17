@@ -10,9 +10,17 @@ import androidx.lifecycle.viewModelScope
 import com.deniscerri.ytdl.database.DBManager
 import com.deniscerri.ytdl.database.DBManager.SORTING
 import com.deniscerri.ytdl.database.models.HistoryItem
+import com.deniscerri.ytdl.database.repository.DownloadRepository
 import com.deniscerri.ytdl.database.repository.HistoryRepository
 import com.deniscerri.ytdl.database.repository.HistoryRepository.HistorySortType
+import com.deniscerri.ytdl.util.Extensions
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.launch
 
 class HistoryViewModel(application: Application) : AndroidViewModel(application) {
@@ -20,36 +28,40 @@ class HistoryViewModel(application: Application) : AndroidViewModel(application)
     val sortOrder = MutableLiveData(SORTING.DESC)
     val sortType = MutableLiveData(HistorySortType.DATE)
     val websiteFilter = MutableLiveData("")
+    val statusFilter = MutableLiveData(HistoryStatus.UNSET)
     private val queryFilter = MutableLiveData("")
-    private val formatFilter = MutableLiveData("")
-    private val notDeletedFilter = MutableLiveData(false)
+    private val typeFilter = MutableLiveData("")
+
+    enum class HistoryStatus {
+        UNSET, DELETED, NOT_DELETED, ALL
+    }
 
     val allItems : LiveData<List<HistoryItem>>
     private var _items = MediatorLiveData<List<HistoryItem>>()
+
 
     init {
         val dao = DBManager.getInstance(application).historyDao
         repository = HistoryRepository(dao)
         allItems = repository.items.asLiveData()
-
         _items.addSource(allItems){
-            filter(queryFilter.value!!, formatFilter.value!!, websiteFilter.value!!, sortType.value!!, sortOrder.value!!, notDeletedFilter.value!!)
+            filter(queryFilter.value!!, typeFilter.value!!, websiteFilter.value!!, sortType.value!!, sortOrder.value!!, statusFilter.value!!)
         }
-        _items.addSource(formatFilter){
-            filter(queryFilter.value!!, formatFilter.value!!, websiteFilter.value!!, sortType.value!!, sortOrder.value!!, notDeletedFilter.value!!)
+        _items.addSource(typeFilter){
+            filter(queryFilter.value!!, typeFilter.value!!, websiteFilter.value!!, sortType.value!!, sortOrder.value!!, statusFilter.value!!)
         }
         _items.addSource(sortType){
-            filter(queryFilter.value!!, formatFilter.value!!, websiteFilter.value!!, sortType.value!!, sortOrder.value!!, notDeletedFilter.value!!)
+            filter(queryFilter.value!!, typeFilter.value!!, websiteFilter.value!!, sortType.value!!, sortOrder.value!!, statusFilter.value!!)
         }
         _items.addSource(websiteFilter){
-            filter(queryFilter.value!!, formatFilter.value!!, websiteFilter.value!!, sortType.value!!, sortOrder.value!!, notDeletedFilter.value!!)
+            filter(queryFilter.value!!, typeFilter.value!!, websiteFilter.value!!, sortType.value!!, sortOrder.value!!, statusFilter.value!!)
         }
         _items.addSource(queryFilter){
-            filter(queryFilter.value!!, formatFilter.value!!, websiteFilter.value!!, sortType.value!!, sortOrder.value!!, notDeletedFilter.value!!)
+            filter(queryFilter.value!!, typeFilter.value!!, websiteFilter.value!!, sortType.value!!, sortOrder.value!!, statusFilter.value!!)
         }
 
-        _items.addSource(notDeletedFilter){
-            filter(queryFilter.value!!, formatFilter.value!!, websiteFilter.value!!, sortType.value!!, sortOrder.value!!, notDeletedFilter.value!!)
+        _items.addSource(statusFilter){
+            filter(queryFilter.value!!, typeFilter.value!!, websiteFilter.value!!, sortType.value!!, sortOrder.value!!, statusFilter.value!!)
         }
 
     }
@@ -77,20 +89,24 @@ class HistoryViewModel(application: Application) : AndroidViewModel(application)
         queryFilter.value = filter
     }
 
-    fun setFormatFilter(filter: String){
-        formatFilter.value = filter
+    fun setTypeFilter(filter: String){
+        typeFilter.value = filter
     }
 
-    fun setNotDeleted(filter: Boolean){
-        notDeletedFilter.value = filter
+    fun setStatusFilter(status: HistoryStatus) {
+        statusFilter.value = status
     }
 
-    private fun filter(query : String, format : String, site : String, sortType: HistorySortType, sort: SORTING, notDeleted: Boolean) = viewModelScope.launch(Dispatchers.IO){
-        _items.postValue(repository.getFiltered(query, format, site, sortType, sort, notDeleted))
+    private fun filter(query : String, format : String, site : String, sortType: HistorySortType, sort: SORTING, statusFilter: HistoryStatus) = viewModelScope.launch(Dispatchers.IO){
+        _items.postValue(repository.getFiltered(query, format, site, sortType, sort, statusFilter))
     }
 
     fun getAll() : List<HistoryItem> {
         return repository.getAll()
+    }
+
+    fun getByID(id: Long) : HistoryItem {
+        return repository.getItem(id)
     }
 
     fun insert(item: HistoryItem) = viewModelScope.launch(Dispatchers.IO){
@@ -118,13 +134,14 @@ class HistoryViewModel(application: Application) : AndroidViewModel(application)
     }
 
     fun getRecordsBetweenTwoItems(item1: Long, item2: Long) : List<HistoryItem> {
-        val filtered = repository.getFiltered(queryFilter.value!!, formatFilter.value!!, websiteFilter.value!!, sortType.value!!, sortOrder.value!!, notDeletedFilter.value!!)
+        val filtered = repository.getFiltered(queryFilter.value!!, typeFilter.value!!, websiteFilter.value!!, sortType.value!!, sortOrder.value!!, statusFilter.value!!)
         val firstIndex = filtered.indexOfFirst { it.id == item1 }
         val secondIndex = filtered.indexOfFirst { it.id == item2 }
-        if(firstIndex > secondIndex) {
-            return filtered.filterIndexed { index, _ -> index in (secondIndex + 1) until firstIndex }
+
+        return if(firstIndex > secondIndex) {
+            filtered.filterIndexed { index, _ -> index in (secondIndex + 1) until firstIndex }
         }else{
-            return filtered.filterIndexed { index, _ -> index in (firstIndex + 1) until secondIndex }
+            filtered.filterIndexed { index, _ -> index in (firstIndex + 1) until secondIndex }
         }
     }
 

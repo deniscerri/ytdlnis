@@ -209,7 +209,7 @@ class DownloadQueueMainFragment : Fragment(){
                 when(m.itemId){
                     R.id.clear_queue -> {
                         showDeleteDialog {
-                            cancelAllDownloads()
+                            downloadViewModel.cancelAllDownloads()
                         }
                     }
                     R.id.clear_cancelled -> {
@@ -268,24 +268,6 @@ class DownloadQueueMainFragment : Fragment(){
             deleteClicked(true)
         }
         deleteDialog.show()
-    }
-
-    @SuppressLint("NotifyDataSetChanged")
-    private fun cancelAllDownloads() {
-        sharedPreferences.edit().putBoolean("paused_downloads", false).apply()
-        fragmentAdapter.notifyDataSetChanged()
-        workManager.cancelAllWorkByTag("download")
-        lifecycleScope.launch {
-            val notificationUtil = NotificationUtil(requireContext())
-            val activeAndQueued = withContext(Dispatchers.IO){
-                downloadViewModel.getActiveAndQueuedDownloadIDs()
-            }
-            activeAndQueued.forEach { id ->
-                YoutubeDL.getInstance().destroyProcessById(id.toString())
-                notificationUtil.cancelDownloadNotification(id.toInt())
-            }
-            downloadViewModel.cancelActiveQueued()
-        }
     }
 
     fun scrollToActive(){

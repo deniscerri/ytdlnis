@@ -182,9 +182,12 @@ object UiUtil {
         bottomSheet.requestWindowFeature(Window.FEATURE_NO_TITLE)
         bottomSheet.setContentView(R.layout.create_command_template)
 
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+
         val ok : Button = bottomSheet.findViewById(R.id.template_create)!!
         val title : TextInputLayout = bottomSheet.findViewById(R.id.title)!!
         val content : TextInputLayout = bottomSheet.findViewById(R.id.content)!!
+        val preferredCommandSwitch : MaterialSwitch = bottomSheet.findViewById(R.id.preferredCommandTemplateSwitch)!!
         val extraCommandsSwitch : MaterialSwitch = bottomSheet.findViewById(R.id.extraCommandsSwitch)!!
         val extraCommandsAudio : CheckBox = bottomSheet.findViewById(R.id.checkbox_audio)!!
         val extraCommandsVideo : CheckBox = bottomSheet.findViewById(R.id.checkbox_video)!!
@@ -248,6 +251,8 @@ object UiUtil {
         }
 
         if (item != null){
+            preferredCommandSwitch.isChecked = item.content == sharedPreferences.getString("preferred_command_template", "")
+
             extraCommandsSwitch.isChecked = item.useAsExtraCommand
             if (item.useAsExtraCommand){
                 extraCommandsAudio.isVisible = true
@@ -294,6 +299,13 @@ object UiUtil {
         }
 
         ok.setOnClickListener {
+            if (preferredCommandSwitch.isChecked) {
+                sharedPreferences.edit().putString("preferred_command_template", content.editText!!.text.toString()).apply()
+            }else if (sharedPreferences.getString("preferred_command_template", "") == item?.content){
+                sharedPreferences.edit().putString("preferred_command_template", "").apply()
+            }
+
+
             if (item == null){
                 val t = CommandTemplate(0, title.editText!!.text.toString(), content.editText!!.text.toString(), extraCommandsSwitch.isChecked, extraCommandsAudio.isChecked, extraCommandsVideo.isChecked)
                 commandTemplateViewModel.insert(t)
@@ -304,7 +316,6 @@ object UiUtil {
                 item.useAsExtraCommand = extraCommandsSwitch.isChecked
                 item.useAsExtraCommandAudio = extraCommandsAudio.isChecked
                 item.useAsExtraCommandVideo = extraCommandsVideo.isChecked
-                Log.e("aa", item.toString())
                 commandTemplateViewModel.update(item)
                 newTemplate(item)
             }
@@ -1037,7 +1048,7 @@ object UiUtil {
     }
 
 
-    suspend fun showCommandTemplates(activity: Activity, commandTemplateViewModel: CommandTemplateViewModel, itemSelected: (itemSelected: List<CommandTemplate>) -> Unit) {
+    suspend fun showCommandTemplates(activity: Activity, commandTemplateViewModel: CommandTemplateViewModel, onlyOne: Boolean = false, itemSelected: (itemSelected: List<CommandTemplate>) -> Unit) {
         val bottomSheet = BottomSheetDialog(activity)
         bottomSheet.requestWindowFeature(Window.FEATURE_NO_TITLE)
         bottomSheet.setContentView(R.layout.command_template_list)
@@ -1050,6 +1061,7 @@ object UiUtil {
         linearLayout!!.removeAllViews()
         val selectedItems = mutableListOf<CommandTemplate>()
         val ok = bottomSheet.findViewById<MaterialButton>(R.id.command_ok)
+        ok?.isVisible = !onlyOne
         ok?.isEnabled = list.size == 1
 
         list.forEach {template ->
@@ -1063,6 +1075,11 @@ object UiUtil {
                 }else{
                     selectedItems.add(template)
                     (it as MaterialCardView).isChecked = true
+                }
+
+                if (onlyOne) {
+                    itemSelected(listOf(template))
+                    bottomSheet.cancel()
                 }
 
                 ok?.isEnabled = selectedItems.isNotEmpty()

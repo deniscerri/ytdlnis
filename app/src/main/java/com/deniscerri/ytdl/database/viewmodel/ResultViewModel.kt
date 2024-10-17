@@ -33,6 +33,7 @@ import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Semaphore
 import kotlinx.coroutines.sync.withPermit
+import kotlinx.coroutines.withContext
 import java.util.concurrent.CancellationException
 
 
@@ -96,6 +97,14 @@ class ResultViewModel(private val application: Application) : AndroidViewModel(a
         playlistFilter.value = p
     }
 
+    private fun resetPlaylistFilter() = viewModelScope.launch(Dispatchers.Main) {
+        _items.removeSource(playlistFilter)
+        playlistFilter.value = ""
+        _items.addSource(playlistFilter) {
+            filter()
+        }
+    }
+
     fun getFilteredList() : LiveData<List<ResultItem>> {
         return _items
     }
@@ -133,7 +142,6 @@ class ResultViewModel(private val application: Application) : AndroidViewModel(a
             repository.itemCount.value = inputQueries.size
         }
         val resetResults = inputQueries.size == 1
-
         uiState.update {it.copy(processing = true, errorMessage = null)}
         val res = mutableListOf<ResultItem?>()
 
@@ -195,6 +203,7 @@ class ResultViewModel(private val application: Application) : AndroidViewModel(a
 
     suspend fun deleteAll() = viewModelScope.launch(Dispatchers.IO) {
         repository.deleteAll()
+        resetPlaylistFilter()
     }
 
     fun update(item: ResultItem) = viewModelScope.launch(Dispatchers.IO){

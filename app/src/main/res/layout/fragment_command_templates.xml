@@ -94,7 +94,6 @@
 
     </androidx.recyclerview.widget.RecyclerView>
 
-
     <include layout="@layout/no_results"
         android:visibility="gone" />
 

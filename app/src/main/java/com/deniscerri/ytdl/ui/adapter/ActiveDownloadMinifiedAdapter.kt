@@ -129,35 +129,35 @@ class ActiveDownloadMinifiedAdapter(onItemClickListener: OnItemClickListener, ac
         else fileSize.text = fileSizeReadable
 
         val menu = card.findViewById<View>(R.id.options)
-        //val paused = sharedPreferences.getBoolean("paused_downloads", false) || item.status == DownloadRepository.Status.ActivePaused.toString()
+        val paused = item.status == DownloadRepository.Status.Paused.toString()
         menu.setOnClickListener {
             val popup = PopupMenu(activity, it)
             popup.menuInflater.inflate(R.menu.active_downloads_minified, popup.menu)
             if (Build.VERSION.SDK_INT > 27) popup.menu.setGroupDividerEnabled(true)
 
-//            val pause = popup.menu[0]
-//            val resume = popup.menu[1]
-//
-//            if (paused){
-//                pause.isVisible = false
-//                resume.isVisible = true
-//            }else{
-//                pause.isVisible = true
-//                resume.isVisible = false
-//            }
+            val pause = popup.menu[0]
+            val resume = popup.menu[1]
+
+            if (paused){
+                pause.isVisible = false
+                resume.isVisible = true
+            }else{
+                pause.isVisible = true
+                resume.isVisible = false
+            }
 
             popup.setOnMenuItemClickListener { m ->
                 when(m.itemId){
-//                    R.id.pause -> {
-//                        onItemClickListener.onPauseClick(item.id, ActiveDownloadAdapter.ActiveDownloadAction.Pause, position)
-//                        if (progressBar.progress == 0) progressBar.isIndeterminate = false
-//                        popup.dismiss()
-//                    }
-//                    R.id.resume -> {
-//                        onItemClickListener.onPauseClick(item.id, ActiveDownloadAdapter.ActiveDownloadAction.Resume, position)
-//                        progressBar.isIndeterminate = true
-//                        popup.dismiss()
-//                    }
+                    R.id.pause -> {
+                        onItemClickListener.onPauseClick(item.id, position)
+                        if (progressBar.progress == 0) progressBar.isIndeterminate = false
+                        popup.dismiss()
+                    }
+                    R.id.resume -> {
+                        onItemClickListener.onResumeClick(item.id, position)
+                        progressBar.isIndeterminate = true
+                        popup.dismiss()
+                    }
                     R.id.cancel -> {
                         onItemClickListener.onCancelClick(item.id)
                         popup.dismiss()
@@ -170,7 +170,7 @@ class ActiveDownloadMinifiedAdapter(onItemClickListener: OnItemClickListener, ac
 
         }
 
-        progressBar.isIndeterminate = !sharedPreferences.getBoolean("paused_downloads", false)
+        progressBar.isIndeterminate = !paused
 
         card.setOnClickListener {
             onItemClickListener.onCardClick()
@@ -178,6 +178,8 @@ class ActiveDownloadMinifiedAdapter(onItemClickListener: OnItemClickListener, ac
     }
     interface OnItemClickListener {
         fun onCancelClick(itemID: Long)
+        fun onPauseClick(itemID: Long, position: Int)
+        fun onResumeClick(itemID: Long, position: Int)
         fun onCardClick()
     }
 

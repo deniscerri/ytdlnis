@@ -29,7 +29,9 @@ import androidx.appcompat.view.ActionMode
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
+import androidx.core.view.children
 import androidx.core.view.forEach
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -47,7 +49,9 @@ import com.deniscerri.ytdl.database.repository.HistoryRepository
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.database.viewmodel.HistoryViewModel
 import com.deniscerri.ytdl.ui.adapter.HistoryAdapter
+import com.deniscerri.ytdl.ui.downloadcard.FormatSelectionBottomSheetDialog.FormatCategory
 import com.deniscerri.ytdl.util.Extensions.enableFastScroll
+import com.deniscerri.ytdl.util.Extensions.isYoutubeURL
 import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.util.NavbarUtil
 import com.deniscerri.ytdl.util.UiUtil
@@ -85,9 +89,9 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
     private var uiHandler: Handler? = null
     private var noResults: RelativeLayout? = null
     private var selectionChips: LinearLayout? = null
-    private var websiteGroup: ChipGroup? = null
     private var historyList: List<HistoryItem?>? = null
     private var allhistoryList: List<HistoryItem?>? = null
+    private var websiteList: MutableList<String> = mutableListOf()
     private lateinit var selectedObjects: ArrayList<HistoryItem>
     private var actionMode : ActionMode? = null
 
@@ -112,7 +116,6 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
         topAppBar = view.findViewById(R.id.history_toolbar)
         noResults = view.findViewById(R.id.no_results)
         selectionChips = view.findViewById(R.id.history_selection_chips)
-        websiteGroup = view.findViewById(R.id.website_chip_group)
         uiHandler = Handler(Looper.getMainLooper())
         sortChip = view.findViewById(R.id.sortChip)
         selectedObjects = arrayListOf()
@@ -127,7 +130,6 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
 
 
         historyList = mutableListOf()
-        allhistoryList = mutableListOf()
 
         historyAdapter =
             HistoryAdapter(
@@ -149,14 +151,14 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
 
         historyViewModel = ViewModelProvider(this)[HistoryViewModel::class.java]
         historyViewModel.allItems.observe(viewLifecycleOwner) {
-            allhistoryList = it
             if(it.isEmpty()){
                 noResults!!.visibility = VISIBLE
                 selectionChips!!.visibility = GONE
-                websiteGroup!!.removeAllViews()
+                topAppBar!!.menu.children.firstOrNull { m -> m.itemId == R.id.filters }?.isVisible = false
             }else{
                 noResults!!.visibility = GONE
                 selectionChips!!.visibility = VISIBLE
+                topAppBar!!.menu.children.firstOrNull { m -> m.itemId == R.id.filters }?.isVisible = true
                 updateWebsiteChips(it)
             }
         }
@@ -306,6 +308,106 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
                         deleteDialog.show()
                     }
                 }
+                R.id.filters -> {
+                    val filterSheet = BottomSheetDialog(requireContext())
+                    filterSheet.requestWindowFeature(Window.FEATURE_NO_TITLE)
+                    filterSheet.setContentView(R.layout.history_other_filters_sheet)
+
+                    //format status
+                    val notDeleted = filterSheet.findViewById<TextView>(R.id.not_deleted)!!
+                    val deleted = filterSheet.findViewById<TextView>(R.id.deleted)!!
+                    when(historyViewModel.statusFilter.value) {
+                        HistoryViewModel.HistoryStatus.ALL -> {
+                            notDeleted.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_check,0,0,0)
+                            deleted.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_check,0,0,0)
+                        }
+                        HistoryViewModel.HistoryStatus.DELETED -> {
+                            notDeleted.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.empty,0,0,0)
+                            deleted.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_check,0,0,0)
+                        }
+                        HistoryViewModel.HistoryStatus.NOT_DELETED -> {
+                            notDeleted.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_check,0,0,0)
+                            deleted.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.empty,0,0,0)
+                        }
+                        else -> {}
+                    }
+
+                    notDeleted.setOnClickListener {
+                        val status = historyViewModel.statusFilter.value
+                        when (status) {
+                            HistoryViewModel.HistoryStatus.ALL -> {
+                                notDeleted.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.empty,0,0,0)
+                                historyViewModel.setStatusFilter(HistoryViewModel.HistoryStatus.DELETED)
+                            }
+                            HistoryViewModel.HistoryStatus.NOT_DELETED -> {
+                                notDeleted.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.empty,0,0,0)
+                                historyViewModel.setStatusFilter(HistoryViewModel.HistoryStatus.UNSET)
+                            }
+                            HistoryViewModel.HistoryStatus.DELETED -> {
+                                notDeleted.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_check,0,0,0)
+                                historyViewModel.setStatusFilter(HistoryViewModel.HistoryStatus.ALL)
+                            }
+                            else -> {
+                                notDeleted.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_check,0,0,0)
+                                historyViewModel.setStatusFilter(HistoryViewModel.HistoryStatus.NOT_DELETED)
+                            }
+                        }
+                    }
+                    deleted.setOnClickListener {
+                        val status = historyViewModel.statusFilter.value
+                        when (status) {
+                            HistoryViewModel.HistoryStatus.ALL -> {
+                                deleted.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.empty,0,0,0)
+                                historyViewModel.setStatusFilter(HistoryViewModel.HistoryStatus.NOT_DELETED)
+                            }
+                            HistoryViewModel.HistoryStatus.NOT_DELETED -> {
+                                deleted.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_check,0,0,0)
+                                historyViewModel.setStatusFilter(HistoryViewModel.HistoryStatus.ALL)
+                            }
+                            HistoryViewModel.HistoryStatus.DELETED -> {
+                                deleted.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.empty,0,0,0)
+                                historyViewModel.setStatusFilter(HistoryViewModel.HistoryStatus.UNSET)
+                            }
+                            else -> {
+                                deleted.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_check,0,0,0)
+                                historyViewModel.setStatusFilter(HistoryViewModel.HistoryStatus.DELETED)
+                            }
+                        }
+                    }
+
+                    if (websiteList.size < 2) {
+                        filterSheet.findViewById<View>(R.id.websiteFilters)?.isVisible = false
+                    }else{
+                        val websiteGroup = filterSheet.findViewById<ChipGroup>(R.id.websitesChipGroup)
+                        val websiteFilter = historyViewModel.websiteFilter.value
+
+                        for (i in websiteList.indices) {
+                            val w = websiteList[i]
+                            val tmp = layoutinflater!!.inflate(R.layout.filter_chip, websiteGroup, false) as Chip
+                            tmp.text = w
+                            tmp.id = i
+                            tmp.setOnClickListener {
+                                Log.e(TAG, tmp.isChecked.toString())
+                                if (tmp.isChecked) {
+                                    historyViewModel.setWebsiteFilter(tmp.text as String)
+                                    tmp.isChecked = true
+                                } else {
+                                    historyViewModel.setWebsiteFilter("")
+                                    tmp.isChecked = false
+                                }
+                            }
+                            if (w == websiteFilter){
+                                tmp.isChecked = true
+                            }
+                            websiteGroup!!.addView(tmp)
+                        }
+                    }
+
+                    val displayMetrics = DisplayMetrics()
+                    requireActivity().windowManager.defaultDisplay.getMetrics(displayMetrics)
+                    filterSheet.behavior.peekHeight = displayMetrics.heightPixels
+                    filterSheet.show()
+                }
             }
             true
         }
@@ -374,80 +476,43 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
         val audio = fragmentView!!.findViewById<Chip>(R.id.audio_chip)
         audio.setOnClickListener {
             if (audio.isChecked) {
-                historyViewModel.setFormatFilter("audio")
+                historyViewModel.setTypeFilter(DownloadViewModel.Type.audio.toString())
                 audio.isChecked = true
             } else {
-                historyViewModel.setFormatFilter("")
+                historyViewModel.setTypeFilter("")
                 audio.isChecked = false
             }
         }
         val video = fragmentView!!.findViewById<Chip>(R.id.video_chip)
         video.setOnClickListener {
             if (video.isChecked) {
-                historyViewModel.setFormatFilter("video")
+                historyViewModel.setTypeFilter(DownloadViewModel.Type.video.toString())
                 video.isChecked = true
             } else {
-                historyViewModel.setFormatFilter("")
+                historyViewModel.setTypeFilter("")
                 video.isChecked = false
             }
         }
         val command = fragmentView!!.findViewById<Chip>(R.id.command_chip)
         command.setOnClickListener {
             if (command.isChecked) {
-                historyViewModel.setFormatFilter("command")
+                historyViewModel.setTypeFilter(DownloadViewModel.Type.command.toString())
                 command.isChecked = true
             } else {
-                historyViewModel.setFormatFilter("")
+                historyViewModel.setTypeFilter("")
                 command.isChecked = false
             }
         }
 
-        val notDeleted = fragmentView!!.findViewById<Chip>(R.id.not_deleted_chip)
-        notDeleted.setOnClickListener {
-            if (notDeleted.isChecked) {
-                historyViewModel.setNotDeleted(true)
-                notDeleted.isChecked = true
-            } else {
-                historyViewModel.setNotDeleted(false)
-                notDeleted.isChecked = false
-            }
-        }
+
     }
 
     private fun updateWebsiteChips(list : List<HistoryItem>) {
-        val websites = mutableListOf<String>()
-        val websiteFilter = historyViewModel.websiteFilter.value
+        websiteList = mutableListOf()
         for (item in list){
-            if (!websites.contains(item.website)) websites.add(item.website)
+            if (item.website == "null" || item.website.isEmpty()) continue
+            if (!websiteList.contains(item.website)) websiteList.add(item.website)
         }
-        websiteGroup!!.removeAllViews()
-        if (websites.size <= 1) {
-            requireView().findViewById<View>(R.id.website_divider).visibility = GONE
-            return
-        }
-        //val websites = historyRecyclerViewAdapter!!.websites
-        for (i in websites.indices) {
-            val w = websites[i]
-            if (w == "null" || w.isEmpty()) continue
-            val tmp = layoutinflater!!.inflate(R.layout.filter_chip, websiteGroup, false) as Chip
-            tmp.text = w
-            tmp.id = i
-            tmp.setOnClickListener {
-                Log.e(TAG, tmp.isChecked.toString())
-                if (tmp.isChecked) {
-                    historyViewModel.setWebsiteFilter(tmp.text as String)
-                    tmp.isChecked = true
-                } else {
-                    historyViewModel.setWebsiteFilter("")
-                    tmp.isChecked = false
-                }
-            }
-            if (w == websiteFilter){
-                tmp.isChecked = true
-            }
-            websiteGroup!!.addView(tmp)
-        }
-         requireView().findViewById<View>(R.id.website_divider).visibility = VISIBLE
     }
 
     override fun onCardClick(itemID: Long, isPresent: Boolean) {

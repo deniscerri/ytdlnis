@@ -151,6 +151,8 @@ class NewPipeUtil(context: Context) {
 
     fun getChannelData(url: String, progress: (pagedResults: MutableList<ResultItem>) -> Unit) : Result<List<ResultItem>> {
         try {
+            //TODO BROKEN FOR NOW
+            return Result.failure(Throwable())
             val req = ChannelInfo.getInfo(ServiceList.YouTube, url)
             println(Gson().toJson(req))
             val items = mutableListOf<ResultItem>()
@@ -326,7 +328,7 @@ class NewPipeUtil(context: Context) {
                 if (stream.audioStreams.isNotEmpty()){
                     for (f in 0 until stream.audioStreams.size){
                         val it = stream.audioStreams[f]
-                        if (it.bitrate == 0) continue
+                        if (it.bitrate == 0 || listOf(599, 600).contains(it.itag)) continue
 
                         val formatObj = Format(
                             format_id = it.itag.toString(),

@@ -20,8 +20,10 @@ import android.view.ViewGroup
 import android.view.Window
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.net.toUri
 import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.media3.common.MediaItem
@@ -240,16 +242,21 @@ class ResultCardDetailsDialog : BottomSheetDialogFragment(), GenericDownloadAdap
             true
         }
 
+        downloadThumb.isVisible = item.thumb.isNotBlank()
         downloadThumb.setOnClickListener {
-            downloadManager.enqueue(
-                DownloadManager.Request(item.thumb.toUri())
-                    .setAllowedNetworkTypes(
-                        DownloadManager.Request.NETWORK_WIFI or
-                                DownloadManager.Request.NETWORK_MOBILE
-                    )
-                    .setAllowedOverRoaming(true)
-                    .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-                    .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "YTDLnis/" + item.title + ".jpg"))
+            runCatching {
+                downloadManager.enqueue(
+                    DownloadManager.Request(item.thumb.toUri())
+                        .setAllowedNetworkTypes(
+                            DownloadManager.Request.NETWORK_WIFI or
+                                    DownloadManager.Request.NETWORK_MOBILE
+                        )
+                        .setAllowedOverRoaming(true)
+                        .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+                        .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "YTDLnis/" + item.title + ".jpg"))
+            }.onFailure {
+                Toast.makeText(requireContext(), getString(R.string.failed_download), Toast.LENGTH_SHORT).show()
+            }
         }
 
         title.text = item.title
@@ -479,33 +486,24 @@ class ResultCardDetailsDialog : BottomSheetDialogFragment(), GenericDownloadAdap
             withContext(Dispatchers.IO){
                 downloadViewModel.updateDownload(item)
             }
-
-            val activeCount = withContext(Dispatchers.IO){
-                downloadViewModel.getActiveDownloadsCount()
-            }
-
-            if (activeCount == 0){
-                val queuedCount = withContext(Dispatchers.IO){
-                    downloadViewModel.getQueuedDownloadsCount()
-                }
-                if (queuedCount == 0) {
-                    sharedPreferences.edit().putBoolean("paused_downloads", false).apply()
-                }
-            }
-
-            if (activeCount == 1){
-                val queue = withContext(Dispatchers.IO){
-                    downloadViewModel.getQueued()
-                }
-
-                if (!sharedPreferences.getBoolean("paused_downloads", false)){
-                    runBlocking {
-                        downloadViewModel.queueDownloads(queue)
-                    }
-                }
-            }
         }
     }
+
+    override fun onPauseClick(itemID: Long, position: Int) {
+        lifecycleScope.launch {
+            YoutubeDL.getInstance().destroyProcessById(itemID.toString())
+            notificationUtil.cancelDownloadNotification(itemID.toInt())
+            withContext(Dispatchers.IO){
+                downloadViewModel.updateToStatus(itemID, DownloadRepository.Status.Paused)
+            }
+            activeAdapter.notifyItemChanged(position)
+        }
+    }
+
+    override fun onResumeClick(itemID: Long, position: Int) {
+        downloadViewModel.resumeDownload(itemID)
+    }
+
     override fun onCardClick() {
         this.dismiss()
         findNavController().navigate(

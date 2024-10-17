@@ -26,6 +26,15 @@ interface DownloadDao {
     @Query("SELECT * FROM downloads WHERE status='Active'")
     fun getActiveDownloads() : Flow<List<DownloadItem>>
 
+    @Query("SELECT * FROM downloads WHERE status='Active' or status = 'Paused' ORDER BY CASE WHEN status = 'Active' THEN 0 ELSE 1 END")
+    fun getActiveAndPausedDownloads() : Flow<List<DownloadItem>>
+
+    @Query("SELECT * FROM downloads WHERE status='Paused'")
+    fun getPausedDownloads() : Flow<List<DownloadItem>>
+
+    @Query("SELECT * FROM downloads WHERE status='Paused'")
+    fun getPausedDownloadsList() : List<DownloadItem>
+
     @RewriteQueriesToDropUnusedColumns
     @Query("SELECT * FROM downloads WHERE status = 'Processing'")
     fun getProcessingDownloads() : Flow<List<DownloadItemConfigureMultiple>>
@@ -79,10 +88,11 @@ interface DownloadDao {
 
     @Query("SELECT * FROM downloads WHERE status in('Active','Queued', 'Scheduled')")
     fun getActiveAndQueuedDownloadsList() : List<DownloadItem>
-    @Query("UPDATE downloads SET status='Queued' where status = 'Active'")
-    suspend fun resetActiveToQueued()
 
-    @Query("SELECT id FROM downloads WHERE status in('Active','Queued')")
+    @Query("UPDATE downloads SET status='Queued', downloadStartTime = -1 where status in ('Paused')")
+    suspend fun resetPausedToQueued()
+
+    @Query("SELECT id FROM downloads WHERE status in('Active','Queued', 'Paused')")
     fun getActiveAndQueuedDownloadIDs() : List<Long>
 
     @Query("SELECT * FROM downloads WHERE status in('Active','Queued')")
@@ -95,7 +105,11 @@ interface DownloadDao {
     @Query("SELECT format FROM downloads WHERE status='Queued'")
     fun getSelectedFormatFromQueued() : List<Format>
 
-    @Query("SELECT * FROM downloads WHERE downloadStartTime <= :currentTime and status in ('Queued', 'Scheduled') ORDER BY downloadStartTime, id LIMIT 20")
+    @Query("""
+        SELECT * FROM downloads 
+        WHERE downloadStartTime <= :currentTime and status in ('Queued', 'Scheduled') 
+        ORDER BY downloadStartTime, id
+    """)
     fun getQueuedScheduledDownloadsUntil(currentTime: Long) : Flow<List<DownloadItem>>
 
     @Query("SELECT * FROM downloads WHERE status='Queued' ORDER BY downloadStartTime, id")
@@ -187,7 +201,7 @@ interface DownloadDao {
     @Query("DELETE FROM downloads WHERE id in (:list)")
     suspend fun deleteAllWithIDs(list: List<Long>)
 
-    @Query("UPDATE downloads SET status='Cancelled' WHERE status in('Queued','Active', 'Scheduled')")
+    @Query("UPDATE downloads SET status='Cancelled' WHERE status in('Queued','Active', 'Scheduled', 'Paused')")
     suspend fun cancelActiveQueued()
 
     @Query("DELETE FROM downloads WHERE status='Processing' AND id=:id")
@@ -200,7 +214,11 @@ interface DownloadDao {
     suspend fun updateAll(list: List<DownloadItem>) : List<DownloadItem> {
         val toReturn = mutableListOf<DownloadItem>()
         list.forEach {
-            it.id = update(it)
+            if (it.id > 0) {
+                update(it)
+            }else{
+                it.id = insert(it)
+            }
             toReturn.add(it)
         }
 

@@ -1,11 +1,13 @@
 # YTDLnis Changelog
 
-> # 1.7.9.2
+> # 1.7.9.2 (2024-09)
 
 # What's Changed
 
 - newpipe extractor general fixes
+- fixed newpipe formats not working
 - removed piped because its more annoying than anything, it doesnt work currently
+  *shortest changelog wr*
 
 
 > # 1.7.9.1 (2024-09)

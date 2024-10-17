@@ -102,54 +102,60 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <com.google.android.material.materialswitch.MaterialSwitch
+                    android:id="@+id/preferredCommandTemplateSwitch"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginHorizontal="10dp"
+                    android:checked="false"
+                    android:text="@string/preferred_command_template"
+                    android:textSize="15sp"
+                    app:layout_constraintEnd_toEndOf="parent" />
 
-                <com.google.android.material.card.MaterialCardView
+                <View
+                    style="@style/Divider.Horizontal"
+                    android:layout_marginVertical="10dp" />
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:cardCornerRadius="20dp">
+                    android:layout_marginHorizontal="10dp"
+                    android:orientation="vertical">
+
+                    <com.google.android.material.materialswitch.MaterialSwitch
+                        android:id="@+id/extraCommandsSwitch"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:checked="false"
+                        android:text="@string/extra_command"
+                        android:textSize="15sp"
+                        app:layout_constraintEnd_toEndOf="parent" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="10dp"
-                        android:orientation="vertical">
+                        android:orientation="horizontal">
 
-                        <com.google.android.material.materialswitch.MaterialSwitch
-                            android:id="@+id/extraCommandsSwitch"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:checked="false"
-                            android:text="@string/extra_command"
-                            android:textSize="15sp"
-                            app:layout_constraintEnd_toEndOf="parent" />
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
+                        <CheckBox
+                            android:id="@+id/checkbox_audio"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal">
+                            android:layout_marginEnd="20dp"
+                            android:visibility="gone"
+                            android:checked="true"
+                            android:text="@string/audio" />
 
-                            <CheckBox
-                                android:id="@+id/checkbox_audio"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginEnd="20dp"
-                                android:visibility="gone"
-                                android:checked="true"
-                                android:text="@string/audio" />
-
-                            <CheckBox
-                                android:id="@+id/checkbox_video"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:checked="true"
-                                android:visibility="gone"
-                                android:text="@string/video" />
-
-                        </LinearLayout>
+                        <CheckBox
+                            android:id="@+id/checkbox_video"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:checked="true"
+                            android:visibility="gone"
+                            android:text="@string/video" />
 
                     </LinearLayout>
 
-                </com.google.android.material.card.MaterialCardView>
+                </LinearLayout>
 
                 <View
                     style="@style/Divider.Horizontal"

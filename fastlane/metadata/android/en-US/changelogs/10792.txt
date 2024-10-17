@@ -1,4 +1,6 @@
 # What's Changed
 
 - newpipe extractor general fixes
+- fixed newpipe formats not working
 - removed piped because its more annoying than anything, it doesnt work currently
+*shortest changelog wr*
