@@ -479,7 +479,7 @@ class FormatSelectionBottomSheetDialog(
             FormatSorting.id -> chosenFormats.sortedBy { it.format_id }
             FormatSorting.codec -> {
                 val codecOrder = resources.getStringArray(R.array.video_codec_values).toMutableList()
-                codecOrder.removeFirst()
+                codecOrder.removeAt(0)
                 chosenFormats.groupBy { format -> codecOrder.indexOfFirst { format.vcodec.matches("^(${it})(.+)?$".toRegex()) } }
 
                     .flatMap {
