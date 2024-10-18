@@ -1,6 +1,8 @@
 package com.deniscerri.ytdl.work
 
 import android.content.Context
+import android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE
+import android.os.Build
 import androidx.work.CoroutineWorker
 import androidx.work.ForegroundInfo
 import androidx.work.WorkerParameters
@@ -23,8 +25,11 @@ class CleanUpLeftoverDownloads(
         val id = System.currentTimeMillis().toInt()
 
         val notification = notificationUtil.createDeletingLeftoverDownloadsNotification()
-        val foregroundInfo = ForegroundInfo(id, notification)
-        setForegroundAsync(foregroundInfo)
+        if (Build.VERSION.SDK_INT > 33) {
+            setForegroundAsync(ForegroundInfo(id, notification, FOREGROUND_SERVICE_TYPE_SPECIAL_USE))
+        }else{
+            setForegroundAsync(ForegroundInfo(id, notification))
+        }
 
         val dbManager = DBManager.getInstance(context)
         val downloadRepo = DownloadRepository(dbManager.downloadDao)

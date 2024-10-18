@@ -1,6 +1,8 @@
 package com.deniscerri.ytdl.work
 
 import android.content.Context
+import android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE
+import android.os.Build
 import android.util.Log
 import androidx.preference.PreferenceManager
 import androidx.work.Constraints
@@ -52,8 +54,11 @@ class ObserveSourceWorker(
 
         val workerID = System.currentTimeMillis().toInt()
         val notification = notificationUtil.createObserveSourcesNotification(item.name)
-        val foregroundInfo = ForegroundInfo(workerID, notification)
-        setForegroundAsync(foregroundInfo)
+        if (Build.VERSION.SDK_INT > 33) {
+            setForegroundAsync(ForegroundInfo(workerID, notification, FOREGROUND_SERVICE_TYPE_SPECIAL_USE))
+        }else{
+            setForegroundAsync(ForegroundInfo(workerID, notification))
+        }
 
         val list = kotlin.runCatching {
             ytdlpUtil.getFromYTDL(item.url)

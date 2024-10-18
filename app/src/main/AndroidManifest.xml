@@ -23,6 +23,8 @@
 
 <!--    queueing processing downloads in the background-->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+<!--    foreground service permission for android 14 and up-->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
 
 
     <application
@@ -485,6 +487,10 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths" />
         </provider>
+
+        <service
+            android:name="androidx.work.impl.foreground.SystemForegroundService"
+            android:foregroundServiceType="specialUse"/>
     </application>
 
 </manifest>

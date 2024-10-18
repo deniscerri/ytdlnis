@@ -511,7 +511,7 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
         websiteList = mutableListOf()
         for (item in list){
             if (item.website == "null" || item.website.isEmpty()) continue
-            if (!websiteList.contains(item.website)) websiteList.add(item.website)
+            if (!websiteList.any { it.contentEquals(item.website, true) }) websiteList.add(item.website)
         }
     }
 

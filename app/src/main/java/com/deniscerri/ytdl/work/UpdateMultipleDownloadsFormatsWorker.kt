@@ -1,6 +1,8 @@
 package com.deniscerri.ytdl.work
 
 import android.content.Context
+import android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE
+import android.os.Build
 import androidx.work.ForegroundInfo
 import androidx.work.Worker
 import androidx.work.WorkerParameters
@@ -28,8 +30,12 @@ class UpdateMultipleDownloadsFormatsWorker(
         if (workID == 0) return Result.failure()
 
         val notification = notificationUtil.createFormatsUpdateNotification()
-        val foregroundInfo = ForegroundInfo(workID, notification)
-        setForegroundAsync(foregroundInfo)
+
+        if (Build.VERSION.SDK_INT > 33) {
+            setForegroundAsync(ForegroundInfo(workID, notification, FOREGROUND_SERVICE_TYPE_SPECIAL_USE))
+        }else{
+            setForegroundAsync(ForegroundInfo(workID, notification))
+        }
 
         var count = 0
 
