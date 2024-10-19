@@ -1495,6 +1495,11 @@
     </string-array>
 
     <string-array name="data_fetching_extractor_youtube">
+        <item>yt-dlp</item>
+        <item>NewPipe</item>
+    </string-array>
+
+    <string-array name="data_fetching_extractor_youtube_values">
         <item>YT_DLP</item>
         <item>NEWPIPE</item>
     </string-array>

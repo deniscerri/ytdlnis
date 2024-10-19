@@ -74,7 +74,7 @@ class DownloadWorker(
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
         val time = System.currentTimeMillis() + 6000
         val queuedItems = dao.getQueuedScheduledDownloadsUntil(time)
-        val priorityItemIDs = inputData.getLongArray("priority_item_ids")!!.toMutableList()
+        val priorityItemIDs = (inputData.getLongArray("priority_item_ids") ?: longArrayOf()).toMutableList()
         val continueAfterPriorityIds = inputData.getBoolean("continue_after_priority_ids", true)
 
         // this is needed for observe sources call, so it wont create result items

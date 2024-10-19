@@ -87,7 +87,7 @@
         <ListPreference
             android:defaultValue="NEWPIPE"
             android:entries="@array/data_fetching_extractor_youtube"
-            android:entryValues="@array/data_fetching_extractor_youtube"
+            android:entryValues="@array/data_fetching_extractor_youtube_values"
             android:icon="@drawable/baseline_manage_search_24"
             app:key="youtube_data_fetching_extractor"
             app:useSimpleSummaryProvider="true"

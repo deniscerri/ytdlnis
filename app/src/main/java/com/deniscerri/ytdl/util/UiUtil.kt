@@ -1637,6 +1637,16 @@ object UiUtil {
         deleteDialog.show()
     }
 
+    fun showGenericDeleteAllDialog(context: Context, accepted: () -> Unit){
+        val deleteDialog = MaterialAlertDialogBuilder(context)
+        deleteDialog.setTitle(context.getString(R.string.you_are_going_to_delete_multiple_items))
+        deleteDialog.setNegativeButton(context.getString(R.string.cancel)) { dialogInterface: DialogInterface, _: Int -> dialogInterface.cancel() }
+        deleteDialog.setPositiveButton(context.getString(R.string.ok)) { _: DialogInterface?, _: Int ->
+            accepted()
+        }
+        deleteDialog.show()
+    }
+
     fun showRemoveHistoryItemDialog(item: HistoryItem, context: Activity, delete: (item: HistoryItem, deleteFile: Boolean) -> Unit){
         val deleteFile = booleanArrayOf(false)
         val deleteDialog = MaterialAlertDialogBuilder(context)

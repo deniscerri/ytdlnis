@@ -416,7 +416,7 @@
     <string name="monthly">Aylık</string>
     <string name="cleanup_leftover_downloads">Artık indirmeleri temizleme (iptal edildi, hatalı)</string>
     <string name="use_item_url_not_playlist">Çalma Listesi URL\'si yerine Öge URL\'sini kullanın</string>
-    <string name="use_item_url_not_playlist_summary">yt-dlp tarafından tanınmayan Libretube çevrimdışı çalma listeleri için kullanışlıdır. Bu etkinleştirildiğinde çalma listesi meta verileri gömülmeyecektir</string>
+    <string name="use_item_url_not_playlist_summary">Bu etkinleştirildiğinde çalma listesi meta verileri gömülmeyecektir</string>
     <string name="recode_video">Videoyu tekrar kodla</string>
     <string name="recode_video_summary">Video dosyasını belirtilen video formatına yeniden kodlar</string>
     <string name="continue_anyway">Her Neyse Devam Et</string>

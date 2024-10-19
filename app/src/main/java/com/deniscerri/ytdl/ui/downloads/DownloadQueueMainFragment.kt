@@ -208,53 +208,14 @@ class DownloadQueueMainFragment : Fragment(){
             try{
                 when(m.itemId){
                     R.id.clear_all -> {
-                        showDeleteDialog {
+                        UiUtil.showGenericDeleteAllDialog(requireContext()) {
                             downloadViewModel.deleteAll()
                         }
                     }
                     R.id.clear_queue -> {
-                        showDeleteDialog {
+                        UiUtil.showGenericDeleteAllDialog(requireContext()) {
                             downloadViewModel.cancelAllDownloads()
                         }
-                    }
-                    R.id.clear_cancelled -> {
-                        showDeleteDialog {
-                            downloadViewModel.deleteCancelled()
-                        }
-                    }
-                    R.id.clear_scheduled -> {
-                        showDeleteDialog {
-                            downloadViewModel.deleteScheduled()
-                        }
-                    }
-                    R.id.clear_errored -> {
-                        showDeleteDialog {
-                            downloadViewModel.deleteErrored()
-                        }
-                    }
-                    R.id.clear_saved -> {
-                        showDeleteDialog {
-                            downloadViewModel.deleteSaved()
-                        }
-                    }
-                    R.id.copy_urls -> {
-                        lifecycleScope.launch {
-                            val tabStatus = mapOf(
-                                0 to listOf(DownloadRepository.Status.Active),
-                                1 to listOf(DownloadRepository.Status.Queued),
-                                2 to listOf(DownloadRepository.Status.Scheduled),
-                                3 to listOf(DownloadRepository.Status.Cancelled),
-                                4 to listOf(DownloadRepository.Status.Error),
-                                5 to listOf(DownloadRepository.Status.Saved),
-                            )
-                            tabStatus[tabLayout.selectedTabPosition]?.apply {
-                                val urls = withContext(Dispatchers.IO){
-                                    downloadViewModel.getURLsByStatus(this@apply)
-                                }
-                                UiUtil.copyToClipboard(urls.joinToString("\n"), requireActivity())
-                            }
-                        }
-
                     }
                 }
             }catch (e: Exception){
@@ -263,16 +224,6 @@ class DownloadQueueMainFragment : Fragment(){
 
             true
         }
-    }
-
-    private fun showDeleteDialog (deleteClicked: (deleteClicked: Boolean) -> Unit){
-        val deleteDialog = MaterialAlertDialogBuilder(requireContext())
-        deleteDialog.setTitle(getString(R.string.you_are_going_to_delete_multiple_items))
-        deleteDialog.setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, _: Int -> dialogInterface.cancel() }
-        deleteDialog.setPositiveButton(getString(R.string.ok)) { _: DialogInterface?, _: Int ->
-            deleteClicked(true)
-        }
-        deleteDialog.show()
     }
 
     fun scrollToActive(){

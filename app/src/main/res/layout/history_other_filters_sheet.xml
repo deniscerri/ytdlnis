@@ -10,6 +10,7 @@
     <LinearLayout
         android:id="@+id/format_filter_linear"
         android:layout_width="match_parent"
+        android:layout_marginBottom="20dp"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
@@ -66,7 +67,6 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
             android:layout_marginBottom="10dp"
-            android:layout_marginTop="20dp"
             android:text="@string/websites"
             android:textSize="14sp"
             android:textStyle="bold" />

@@ -28,7 +28,7 @@ class HistoryViewModel(application: Application) : AndroidViewModel(application)
     val sortOrder = MutableLiveData(SORTING.DESC)
     val sortType = MutableLiveData(HistorySortType.DATE)
     val websiteFilter = MutableLiveData("")
-    val statusFilter = MutableLiveData(HistoryStatus.UNSET)
+    val statusFilter = MutableLiveData(HistoryStatus.ALL)
     private val queryFilter = MutableLiveData("")
     private val typeFilter = MutableLiveData("")
 

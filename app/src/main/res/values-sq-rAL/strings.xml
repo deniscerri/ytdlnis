@@ -407,7 +407,7 @@
     <string name="use_alarm_manager">Përdor AlarmManager në vend të WorkManager për Skedulim</string>
     <string name="use_alarm_manager_summary">Aktivizo këtë ku WorkManager është i limituar në paisje ose punët e skeduluara nuk ekzekutohen në kohë</string>
     <string name="use_item_url_not_playlist">Përdor URL e videos në vend të URL së playlist</string>
-    <string name="use_item_url_not_playlist_summary">E dobishme për playlistet Libretube qe nuk njihen nga yt-dlp. Metadata e playlist nuk do te shtohen dot kur ky opsion është i aktivizuar</string>
+    <string name="use_item_url_not_playlist_summary">Metadata e playlist nuk do te shtohen dot kur ky opsion është i aktivizuar</string>
     <string name="recode_video">Rikodo Videon</string>
     <string name="recode_video_summary">Rikodon skedarin e videos sipas formatit të cilësuar nga përdoruesi</string>
     <string name="restore_info">Shtypni \"Rivendosni\" për të bashkuar të dhënat e ruajtura me të dhënat tuaja aktuale.

@@ -419,6 +419,6 @@
     <string name="format_importance_note">Ajuste l\'ordre de priorité des formats. Cette ordre ne sera utilisée que lorsque l\'application récupère les formats dans la carte de téléchargement et sélectionne automatiquement le format !</string>
     <string name="enable_alarm_permission">Vous devez activer la permission SCHEDULE_EXACT_ALARM dans les paramètres de l\'application.</string>
     <string name="process_downloads_background">"Les téléchargements sont toujours en cours de chargement. Voulez-vous continuer à les charger en arrière-plan et commencer à télécharger ? "</string>
-    <string name="use_item_url_not_playlist_summary">Utile pour les playlists hors-ligne de Libretube qui ne sont pas reconnues par yt-dlp. Les métadonnées de la liste de lecture ne seront pas intégrées quand ceci est activé</string>
+    <string name="use_item_url_not_playlist_summary">Les métadonnées de la liste de lecture ne seront pas intégrées quand ceci est activé</string>
     <string name="use_item_url_not_playlist">Utiliser l\'URL de l\'élément au lieu de celui de la liste de lecture</string>
 </resources>

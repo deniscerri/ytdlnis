@@ -684,7 +684,7 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
                                     }
 
                                     if (!deleteFile){
-                                        Snackbar.make(recyclerView, getString(R.string.you_are_going_to_delete) + ": " + deletedItem.title, Snackbar.LENGTH_LONG)
+                                        Snackbar.make(recyclerView, getString(R.string.you_are_going_to_delete) + ": " + deletedItem.title, Snackbar.LENGTH_INDEFINITE)
                                             .setAction(getString(R.string.undo)) {
                                                 historyViewModel.insert(deletedItem)
                                             }.show()

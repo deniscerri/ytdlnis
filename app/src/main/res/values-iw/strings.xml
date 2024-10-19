@@ -357,7 +357,7 @@
     <string name="save_auto_subs">שמור כתוביות אוטומטיות</string>
     <string name="display_over_apps_summary">‬הפוך את כרטיס ההורדה תמיד להופיע למעלה. הפעל זאת אם האפליקציה הפועלת כעת נסגרת כאשר כרטיס ההורדה מופיע</string>
     <string name="no_audio">וידאו ללא שמע</string>
-    <string name="use_item_url_not_playlist_summary">שימושי עבור רשימות השמעה לא מקוונות של Libretube שאינן מזוהות על ידי yt-dlp. מטא נתונים של רשימת השמעה לא יוטמעו כאשר זה מופעל</string>
+    <string name="use_item_url_not_playlist_summary"> מטא נתונים של רשימת השמעה לא יוטמעו כאשר זה מופעל</string>
     <string name="no_download_fragments">אל תוריד כפרגמנטים</string>
     <string name="no_download_fragments_summary">אל תשתמש בקבצי part. ותכתוב ישירות לקובץ הפלט</string>
     <string name="swipe_gestures_download_card">החלק תנועות בכרטיס ההורדה</string>

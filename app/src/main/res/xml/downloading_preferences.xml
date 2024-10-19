@@ -128,6 +128,12 @@
             app:summary="@string/buffer_size_summary"
             app:title="@string/buffer_size" />
 
+        <EditTextPreference
+            android:icon="@drawable/ic_clock"
+            app:key="socket_timeout"
+            android:summary="@string/socket_timeout_description"
+            app:title="@string/socket_timeout"/>
+
         <SwitchPreferenceCompat
             android:widgetLayout="@layout/preferece_material_switch"
             app:defaultValue="false"

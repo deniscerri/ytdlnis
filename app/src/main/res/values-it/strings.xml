@@ -415,7 +415,7 @@
     <string name="location">Posizione</string>
     <string name="enable_alarm_permission">È necessario abilitare l\'autorizzazione SCHEDULE_EXACT_ALARM nelle impostazioni dell\'app.</string>
     <string name="use_item_url_not_playlist">Usa l\'URL dell\'elemento invece dell\'URL della playlist</string>
-    <string name="use_item_url_not_playlist_summary">Utile per le playlist offline di Libretube che non sono riconosciute da yt-dlp. I metadati della playlist non saranno incorporati se questa opzione è abilitata</string>
+    <string name="use_item_url_not_playlist_summary">I metadati della playlist non saranno incorporati se questa opzione è abilitata</string>
     <string name="recode_video">Ricodifica Video</string>
     <string name="recode_video_summary">Ricodifica il file video nel formato video specificato</string>
     <string name="process_downloads_background">"I download sono ancora in fase di caricamento. Continuare a elaborarli in background e iniziare il download? "</string>

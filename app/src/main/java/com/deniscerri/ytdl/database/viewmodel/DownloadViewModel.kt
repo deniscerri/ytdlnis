@@ -754,6 +754,11 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         repository.startDownloadWorker(emptyList(), application)
     }
 
+    suspend fun resetScheduleItemForAllScheduledItemsAndStartDownload() = CoroutineScope(Dispatchers.IO).launch {
+        dbManager.downloadDao.resetScheduleTimeForAllScheduledItems()
+        repository.startDownloadWorker(emptyList(), application)
+    }
+
     suspend fun putAtTopOfQueue(ids: List<Long>) = CoroutineScope(Dispatchers.IO).launch{
         val downloads = dao.getQueuedDownloadsListIDs()
         val lastID = ids.maxOf { it }

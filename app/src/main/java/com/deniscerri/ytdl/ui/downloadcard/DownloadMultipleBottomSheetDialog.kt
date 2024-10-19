@@ -913,7 +913,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                     downloadViewModel.deleteDownload(id)
 
                     if (processingItemsCount > 0){
-                        Snackbar.make(recyclerView, getString(R.string.you_are_going_to_delete) + ": " + deletedItem.title, Snackbar.LENGTH_LONG)
+                        Snackbar.make(recyclerView, getString(R.string.you_are_going_to_delete) + ": " + deletedItem.title, Snackbar.LENGTH_INDEFINITE)
                             .setAction(getString(R.string.undo)) {
                                 lifecycleScope.launch(Dispatchers.IO) {
                                     processingItemsCount++
@@ -976,7 +976,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
 
 
                             if (processingItemsCount > 0) {
-                                Snackbar.make(recyclerView, getString(R.string.you_are_going_to_delete) + ": " + deletedItem.title, Snackbar.LENGTH_LONG)
+                                Snackbar.make(recyclerView, getString(R.string.you_are_going_to_delete) + ": " + deletedItem.title, Snackbar.LENGTH_INDEFINITE)
                                     .setAction(getString(R.string.undo)) {
                                         processingItemsCount++
                                         downloadViewModel.insert(deletedItem)

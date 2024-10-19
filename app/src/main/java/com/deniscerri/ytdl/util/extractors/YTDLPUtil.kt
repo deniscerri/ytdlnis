@@ -81,7 +81,8 @@ class YTDLPUtil(private val context: Context) {
         request.addOption("--skip-download")
         request.addOption("-R", "1")
         request.addOption("--compat-options", "manifest-filesize-approx")
-        request.addOption("--socket-timeout", "5")
+        val socketTimeout = sharedPreferences.getString("socket_timeout", "5")!!.ifEmpty { "5" }
+        request.addOption("--socket-timeout", socketTimeout)
 
         if (sharedPreferences.getBoolean("force_ipv4", false)){
             request.addOption("-4")
@@ -240,7 +241,8 @@ class YTDLPUtil(private val context: Context) {
             request.addOption("-a", urlsFile.absolutePath)
             request.addOption("--skip-download")
             request.addOption("-R", "1")
-            request.addOption("--socket-timeout", "5")
+            val socketTimeout = sharedPreferences.getString("socket_timeout", "5")!!.ifEmpty { "5" }
+            request.addOption("--socket-timeout", socketTimeout)
 
             if (sharedPreferences.getBoolean("force_ipv4", false)){
                 request.addOption("-4")
@@ -435,7 +437,8 @@ class YTDLPUtil(private val context: Context) {
             request.addOption("--print", "%(.{urls,chapters})s")
             request.addOption("--skip-download")
             request.addOption("-R", "1")
-            request.addOption("--socket-timeout", "5")
+            val socketTimeout = sharedPreferences.getString("socket_timeout", "5")!!.ifEmpty { "5" }
+            request.addOption("--socket-timeout", socketTimeout)
 
             if (sharedPreferences.getBoolean("force_ipv4", false)){
                 request.addOption("-4")
@@ -524,6 +527,7 @@ class YTDLPUtil(private val context: Context) {
     @SuppressLint("RestrictedApi")
     fun buildYoutubeDLRequest(downloadItem: DownloadItem) : YoutubeDLRequest {
         val useItemURL = sharedPreferences.getBoolean("use_itemurl_instead_playlisturl", false)
+        var isPlaylistItem = false
 
         val request = if (downloadItem.url.endsWith(".txt")) {
             YoutubeDLRequest(listOf()).apply {
@@ -532,6 +536,7 @@ class YTDLPUtil(private val context: Context) {
         }else if (downloadItem.playlistURL.isNullOrBlank() || downloadItem.playlistTitle.isBlank() || useItemURL){
             YoutubeDLRequest(downloadItem.url)
         }else{
+            isPlaylistItem = true
             YoutubeDLRequest(downloadItem.playlistURL!!).apply {
                 if(downloadItem.playlistIndex == null){
                     val matchPortion = downloadItem.url.split("/").last().split("=").last().split("&").first()
@@ -586,6 +591,11 @@ class YTDLPUtil(private val context: Context) {
         if (bufferSize.isNotBlank()){
             request.addOption("--buffer-size", bufferSize)
             request.addOption("--no-resize-buffer")
+        }
+
+        val socketTimeout = sharedPreferences.getString("socket_timeout", "")!!
+        if (socketTimeout.isNotBlank()) {
+            request.addOption("--socket-timeout", socketTimeout)
         }
 
         val sponsorblockURL = sharedPreferences.getString("sponsorblock_url", "")!!
@@ -801,9 +811,10 @@ class YTDLPUtil(private val context: Context) {
                         metadataCommands.addOption("--parse-metadata", "description:(?:Released on: )(?P<dscrptn_year>\\d{4})")
                         metadataCommands.addOption("--parse-metadata", "%(dscrptn_year,release_year,release_date>%Y,upload_date>%Y)s:(?P<meta_date>\\d+)")
                         metadataCommands.addOption("--parse-metadata", "%(album_artist,first_artist|)s:%(album_artist)s")
-                        metadataCommands.addOption("--parse-metadata", "%(track_number,playlist_index)d:(?P<track_number>\\d+)")
 
-
+                        if (isPlaylistItem) {
+                            metadataCommands.addOption("--parse-metadata", "%(track_number,playlist_index)d:(?P<track_number>\\d+)")
+                        }
                     }
 
                     val cropThumb = downloadItem.audioPreferences.cropThumb ?: sharedPreferences.getBoolean("crop_thumbnail", true)
@@ -1081,21 +1092,21 @@ class YTDLPUtil(private val context: Context) {
             else -> {}
         }
 
+        if (metadataCommands.isNotEmpty()){
+            request.addCommands(metadataCommands)
+        }
+
         if (downloadItem.extraCommands.isNotBlank() && downloadItem.type != DownloadViewModel.Type.command){
             val cache = File(FileUtil.getCachePath(context))
             cache.mkdirs()
             val conf = File(cache.absolutePath + "/${System.currentTimeMillis()}${UUID.randomUUID()}.txt")
             conf.createNewFile()
             conf.writeText(downloadItem.extraCommands)
-            request.addOption(
-                "--config-locations",
-                conf.absolutePath
-            )
+            val tmp = mutableListOf<String>()
+            tmp.addOption("--config-locations", conf.absolutePath)
+            request.addCommands(tmp)
         }
 
-        if (metadataCommands.isNotEmpty()){
-            request.addCommands(metadataCommands)
-        }
         return request
     }
 
@@ -1103,8 +1114,8 @@ class YTDLPUtil(private val context: Context) {
         val playerClient = sharedPreferences.getString("youtube_player_client", "default,mediaconnect")!!
             .ifEmpty { "default,mediaconnect" }
         val extractorArgs = mutableListOf<String>()
-        extractorArgs.add("player_client:${playerClient}")
-        val lang = sharedPreferences.getString("app_language", "en")
+        extractorArgs.add("player_client=${playerClient}")
+        val lang = Locale.getDefault().language
         if (context.getStringArray(R.array.subtitle_langs).contains(lang)) {
             extractorArgs.add("lang=$lang")
         }

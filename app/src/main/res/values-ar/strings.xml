@@ -409,7 +409,7 @@
     <string name="use_alarm_manager">استخدام AlarmManager بدلًا من WorkManager</string>
     <string name="use_alarm_manager_summary">يتعين تمكين هذا الخيار عندما تكون أداة الـ WorkManager مقيدًة من قبل مُصنِّع الجهاز أو إذا كانت المهام المجدولة ليست دقيقة جدًا</string>
     <string name="use_item_url_not_playlist">استخدام رابط العنصر بدلًا من رابط قائمة التشغيل</string>
-    <string name="use_item_url_not_playlist_summary">مفيد لقوائم تشغيل LibreTube غير المتصلة بالإنترنت والتي لا يتعرف عليها yt-dlp، لن يتم تضمين البيانات الوصفية لقائمة التشغيل مع تمكين هذا الخيار</string>
+    <string name="use_item_url_not_playlist_summary">لن يتم تضمين البيانات الوصفية لقائمة التشغيل مع تمكين هذا الخيار</string>
     <string name="recode_video">إعادة ترميز الفيديو</string>
     <string name="recode_video_summary">يعيد ترميز ملف الفيديو إلى تنسيق الفيديو المحدد</string>
     <string name="daily">يوميًا</string>

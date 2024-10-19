@@ -418,5 +418,5 @@
     <string name="recode_video_summary">Nimmt die Videodatei im bestimmten Format auf</string>
     <string name="use_alarm_manager">AlarmManager anstatt WorkManager für die Zeitplanung nutzen</string>
     <string name="use_item_url_not_playlist">Die Element URL anstatt die Playlist URL nutzen</string>
-    <string name="use_item_url_not_playlist_summary">Nützlich für Libretube Offline-Wiedergabelisten, die von yt-dlp nicht erkannt werden. Wiedergabelisten-Metadaten werden nicht eingebettet, wenn diese Option aktiviert ist</string>
+    <string name="use_item_url_not_playlist_summary">Wiedergabelisten-Metadaten werden nicht eingebettet, wenn diese Option aktiviert ist</string>
 </resources>

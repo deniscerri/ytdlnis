@@ -154,7 +154,7 @@ class QueuedDownloadsFragment : Fragment(), QueuedDownloadAdapter.OnItemClickLis
                     downloadViewModel.updateDownload(item)
                 }
 
-                Snackbar.make(queuedRecyclerView, getString(R.string.cancelled) + ": " + item.title.ifEmpty { item.url }, Snackbar.LENGTH_LONG)
+                Snackbar.make(queuedRecyclerView, getString(R.string.cancelled) + ": " + item.title.ifEmpty { item.url }, Snackbar.LENGTH_INDEFINITE)
                     .setAction(getString(R.string.undo)) {
                         lifecycleScope.launch(Dispatchers.IO) {
                             downloadViewModel.deleteDownload(item.id)

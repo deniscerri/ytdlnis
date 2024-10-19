@@ -240,7 +240,7 @@ class DownloadLogListFragment : Fragment(), DownloadLogsAdapter.OnItemClickListe
                                 logViewModel.getItemById(items[position].id)
                             }
                             logViewModel.delete(deletedItem)
-                            Snackbar.make(recyclerView, getString(R.string.you_are_going_to_delete) + ": " + deletedItem.title, Snackbar.LENGTH_LONG)
+                            Snackbar.make(recyclerView, getString(R.string.you_are_going_to_delete) + ": " + deletedItem.title, Snackbar.LENGTH_INDEFINITE)
                                 .setAction(getString(R.string.undo)) {
                                     lifecycleScope.launch(Dispatchers.IO){
                                         logViewModel.insert(deletedItem)

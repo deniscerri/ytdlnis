@@ -418,6 +418,6 @@
     <string name="recode_video">Прекодиране на видео</string>
     <string name="recode_video_summary">Перекодира видео файлът в указания видеоформат</string>
     <string name="format_importance_note">Подреждане важността на елемента на формат. Това подреждане ще се използва, само когато приложението извлече форматите от картата за изтегляне и автоматично избере формата!</string>
-    <string name="use_item_url_not_playlist_summary">Полезно за офлайн плейлисти Libretube, които не се разпознават от yt-dlp. Метаданните на плейлиста няма да бъдат вградени, ако функция та е включена</string>
+    <string name="use_item_url_not_playlist_summary">Метаданните на плейлиста няма да бъдат вградени, ако функция та е включена</string>
     <string name="data_fetching_extractor_youtube">Екстрактор за извличане на данни (YouTube)</string>
 </resources>

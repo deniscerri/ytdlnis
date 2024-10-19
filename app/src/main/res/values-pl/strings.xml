@@ -416,7 +416,7 @@
     <string name="monthly">Co miesiąc</string>
     <string name="continue_anyway">Tak czy inaczej, kontynuuj</string>
     <string name="use_item_url_not_playlist">Użyj adresu URL elementu zamiast adresu URL listy odtwarzania</string>
-    <string name="use_item_url_not_playlist_summary">Przydatne dla list odtwarzania offline Libretube, które nie są rozpoznawane przez yt-dlp. Metadane listy odtwarzania nie zostaną osadzone po włączeniu tej opcji</string>
+    <string name="use_item_url_not_playlist_summary">Metadane listy odtwarzania nie zostaną osadzone po włączeniu tej opcji</string>
     <string name="recode_video_summary">Przekodowuje plik wideo do określonego formatu wideo</string>
     <string name="recode_video">Przekoduj Video</string>
 </resources>

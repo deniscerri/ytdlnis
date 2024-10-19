@@ -14,10 +14,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemClickListener
+import android.widget.PopupMenu
 import android.widget.RelativeLayout
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -60,6 +64,11 @@ class ErroredDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickL
     private lateinit var adapter : GenericDownloadAdapter
     private var actionMode : ActionMode? = null
     private var totalSize: Int = 0
+
+    private lateinit var listHeader : ConstraintLayout
+    private lateinit var count : TextView
+    private lateinit var headerMenuBtn : TextView
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -72,7 +81,7 @@ class ErroredDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickL
         return fragmentView
     }
 
-    @SuppressLint("RestrictedApi")
+    @SuppressLint("RestrictedApi", "SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -100,8 +109,39 @@ class ErroredDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickL
             }
         }
 
+        listHeader = view.findViewById(R.id.list_header)
+        count = view.findViewById(R.id.count)
+        headerMenuBtn = view.findViewById(R.id.dropdown_menu)
+
+        headerMenuBtn.setOnClickListener {
+            val popup = PopupMenu(activity, it)
+            popup.menuInflater.inflate(R.menu.errored_header_menu, popup.menu)
+            popup.setOnMenuItemClickListener { m ->
+                when(m.itemId){
+                    R.id.delete_all -> {
+                        UiUtil.showGenericDeleteAllDialog(requireContext()) {
+                            downloadViewModel.deleteErrored()
+                        }
+                    }
+                    R.id.copy_urls -> {
+                        lifecycleScope.launch {
+                            val urls = withContext(Dispatchers.IO){
+                                downloadViewModel.getURLsByStatus(listOf(DownloadRepository.Status.Error))
+                            }
+                            UiUtil.copyToClipboard(urls.joinToString("\n"), requireActivity())
+                        }
+                    }
+                }
+                true
+            }
+
+            popup.show()
+        }
+
         downloadViewModel.getTotalSize(listOf(DownloadRepository.Status.Error)).observe(viewLifecycleOwner){
             totalSize = it
+            listHeader.isVisible = it > 0
+            count.text = "$it ${getString(R.string.items)}"
             noResults.visibility = if (it == 0) View.VISIBLE else View.GONE
         }
     }
@@ -334,7 +374,7 @@ class ErroredDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickL
                                 downloadViewModel.getItemByID(itemID)
                             }
                             downloadViewModel.deleteDownload(deletedItem.id)
-                            Snackbar.make(erroredRecyclerView, getString(R.string.you_are_going_to_delete) + ": " + deletedItem.title.ifEmpty { deletedItem.url }, Snackbar.LENGTH_LONG)
+                            Snackbar.make(erroredRecyclerView, getString(R.string.you_are_going_to_delete) + ": " + deletedItem.title.ifEmpty { deletedItem.url }, Snackbar.LENGTH_INDEFINITE)
                                 .setAction(getString(R.string.undo)) {
                                     downloadViewModel.insert(deletedItem)
                                 }.show()

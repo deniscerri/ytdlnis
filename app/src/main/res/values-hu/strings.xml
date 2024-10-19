@@ -419,5 +419,5 @@
     <string name="data_fetching_extractor_youtube">Adatszerző Extractor (YouTube)</string>
     <string name="restore_info">Nyomja meg a \'Restore\' gombot hogy összeolvassza a lementett adatokat a jelenlegiekkel.
 \nNyomja meg a \'Reset\' gombot ha csak a lementett adatokat kívánja megtartani.</string>
-    <string name="use_item_url_not_playlist_summary">Hasznos tud lenni olyan Libretube offline playlistekhez, amelyeket a yt-dlp nem ismer fel. Ennek bekapcsolásával a playlistek metadatája nem fog beágyazódni</string>
+    <string name="use_item_url_not_playlist_summary">Ennek bekapcsolásával a playlistek metadatája nem fog beágyazódni</string>
 </resources>

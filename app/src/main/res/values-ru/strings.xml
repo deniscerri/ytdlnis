@@ -409,7 +409,7 @@
     <string name="use_alarm_manager">Используйте AlarmManager вместо WorkManager для планирования</string>
     <string name="use_alarm_manager_summary">Включите это, если WorkManager ограничен поставщиком вашего устройства или запланированные задания не слишком точны</string>
     <string name="use_item_url_not_playlist">Используйте URL-адрес элемента вместо URL-адреса плейлиста</string>
-    <string name="use_item_url_not_playlist_summary">Полезно для автономных плейлистов Libretube, которые не распознаются yt-dlp. Метаданные плейлиста не будут встроены, если эта функция включена</string>
+    <string name="use_item_url_not_playlist_summary">Метаданные плейлиста не будут встроены, если эта функция включена</string>
     <string name="recode_video">Перекодировать видео</string>
     <string name="recode_video_summary">Перекодирует видеофайл в указанный видеоформат</string>
     <string name="daily">Ежедневно</string>

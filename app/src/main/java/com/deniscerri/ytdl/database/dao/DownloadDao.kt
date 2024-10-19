@@ -273,6 +273,9 @@ interface DownloadDao {
     @Query("UPDATE downloads SET downloadStartTime=0, status='Queued' where id in (:list)")
     suspend fun resetScheduleTimeForItems(list: List<Long>)
 
+    @Query("UPDATE downloads SET downloadStartTime=0, status='Queued' WHERE status = 'Scheduled'")
+    suspend fun resetScheduleTimeForAllScheduledItems()
+
     @Query("Update downloads SET status='Queued', downloadStartTime = 0 WHERE id in (:list)")
     suspend fun reQueueDownloadItems(list: List<Long>)
 

@@ -416,7 +416,7 @@
     <string name="use_alarm_manager">Sử dụng AlarmManager thay cho WorkManager trong phần Lên lịch để tải xuống</string>
     <string name="use_alarm_manager_summary">Hãy bật nếu WorkManager bị hạn chế bởi Nhà cung cấp thiết bị hoặc các công việc không được lên lịch chính xác</string>
     <string name="use_item_url_not_playlist">Dùng URL mục thay cho URL danh sách phát</string>
-    <string name="use_item_url_not_playlist_summary">Dùng cho danh sách phát ngoại tuyến Libretube không được yt-dlp nhận dạng. Nếu bật thì metadata của danh sách phát sẽ không được thêm vào tệp</string>
+    <string name="use_item_url_not_playlist_summary">Nếu bật thì metadata của danh sách phát sẽ không được thêm vào tệp</string>
     <string name="recode_video_summary">Mã hóa tệp video thành định dạng được chỉ định</string>
     <string name="recode_video">Mã hóa Video</string>
 </resources>

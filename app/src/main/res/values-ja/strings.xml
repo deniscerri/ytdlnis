@@ -404,7 +404,7 @@
     <string name="use_alarm_manager">時間管理に WorkManager でなく AlarmManager を使う</string>
     <string name="use_alarm_manager_summary">WorkManager が提供者によりに制限されていたり、時間管理されたジョブの精度が良くないなら、これを有効にします</string>
     <string name="queue">キュー</string>
-    <string name="use_item_url_not_playlist_summary">Libretube のオフライン再生リストは yt-dlp が認識できないため有用です。有効にすると、再生リストのメタデータは埋め込まれません</string>
+    <string name="use_item_url_not_playlist_summary">有効にすると、再生リストのメタデータは埋め込まれません</string>
     <string name="use_item_url_not_playlist">再生リストのURLの代わりに個々の項目のURLを使用</string>
     <string name="restore_info">復元は、保存済みデータと現在のデータを統合します。
 \n初期化は、消去しファイル中の保存済みデータのみを使用します。</string>

@@ -430,4 +430,7 @@
     <string name="deleted">Deleted</string>
     <string name="websites">Websites</string>
     <string name="other_youtube_extractor_args">Other YouTube Extractor Arguments</string>
+    <string name="items">item(s)</string>
+    <string name="socket_timeout">Socket Timeout</string>
+    <string name="socket_timeout_description">Time to wait before giving up, in seconds</string>
 </resources>
