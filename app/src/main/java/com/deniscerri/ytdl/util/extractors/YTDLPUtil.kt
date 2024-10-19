@@ -744,11 +744,13 @@ class YTDLPUtil(private val context: Context) {
                 }
                 request.addOption("-x")
 
-                val formatSorting = StringBuilder("hasaud,size")
+                val formatSorting = StringBuilder("hasaud")
 
                 if (abrSort.isNotBlank()){
                     formatSorting.append(",abr:${abrSort}")
                 }
+
+                formatSorting.append(",size")
 
                 if (aCodecPref.isNotBlank()){
                     formatSorting.append(",acodec:$aCodecPref")
@@ -1098,16 +1100,24 @@ class YTDLPUtil(private val context: Context) {
     }
 
     private fun getYoutubeExtractorArgs() : String {
-        var extractorArgs = "player_client=default,mediaconnect"
+        val playerClient = sharedPreferences.getString("youtube_player_client", "default,mediaconnect")!!
+            .ifEmpty { "default,mediaconnect" }
+        val extractorArgs = mutableListOf<String>()
+        extractorArgs.add("player_client:${playerClient}")
         val lang = sharedPreferences.getString("app_language", "en")
         if (context.getStringArray(R.array.subtitle_langs).contains(lang)) {
-            extractorArgs += ";lang=$lang"
+            extractorArgs.add("lang=$lang")
         }
         val poToken = sharedPreferences.getString("youtube_po_token", "")!!
         if (poToken.isNotBlank()) {
-            extractorArgs += ";po_token=web+$poToken"
+            extractorArgs.add("po_token=web+$poToken")
         }
 
-        return extractorArgs
+        val otherArgs = sharedPreferences.getString("youtube_other_extractor_args", "")!!
+        if (otherArgs.isNotBlank()) {
+            extractorArgs.add(otherArgs)
+        }
+
+        return extractorArgs.joinToString(";")
     }
 }

@@ -89,6 +89,10 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
         return downloadDao.insertAll(items)
     }
 
+    suspend fun deleteAll() {
+        downloadDao.deleteAll()
+    }
+
     suspend fun delete(id: Long){
         val item = getItemByID(id)
         downloadDao.delete(id)

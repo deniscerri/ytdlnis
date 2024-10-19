@@ -1247,7 +1247,16 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         }
     }
 
+    fun deleteAll() = viewModelScope.launch {
+        cancelAllDownloadsImpl()
+        repository.deleteAll()
+    }
+
     fun cancelAllDownloads() = viewModelScope.launch {
+        cancelAllDownloadsImpl()
+    }
+
+    private suspend fun cancelAllDownloadsImpl() {
         WorkManager.getInstance(application).cancelAllWorkByTag("download")
         val activeAndQueued = withContext(Dispatchers.IO){
             repository.getActiveAndQueuedDownloadIDs()

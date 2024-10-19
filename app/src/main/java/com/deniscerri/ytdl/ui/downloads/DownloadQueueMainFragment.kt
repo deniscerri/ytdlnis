@@ -207,6 +207,11 @@ class DownloadQueueMainFragment : Fragment(){
         topAppBar.setOnMenuItemClickListener { m: MenuItem ->
             try{
                 when(m.itemId){
+                    R.id.clear_all -> {
+                        showDeleteDialog {
+                            downloadViewModel.deleteAll()
+                        }
+                    }
                     R.id.clear_queue -> {
                         showDeleteDialog {
                             downloadViewModel.cancelAllDownloads()
