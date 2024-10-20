@@ -1,0 +1,50 @@
+name: Feature request
+description: Suggest features you want to add or suggest to modify existing features
+title: "[Feature] "
+labels: [enhancement]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to make us better!
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Describe the feature
+      description: A clear and concise description of what the feature is
+      placeholder: |
+        A Quick Settings tile to quick download from the clipboard, long press to open the download panel.
+    validations:
+      required: true
+
+  - type: textarea
+    id: reasons
+    attributes:
+      label: Reason for adding
+      description: Explain why this feature would be useful to you
+      placeholder: |
+        For devices that don't have the copy popup, quickly download the video/audio from the Quick Settings tile and save lots of time.
+    validations:
+      required: true
+
+  - type: textarea
+    id: examples
+    attributes:
+      label: Example(s)
+      description: Post screenshots/drawings/links/etc of the feature request, or proof-of-concept images about the feature
+      placeholder: |
+        anywhere_toggle.jpg
+        quicktiles_toggle.jpg
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional context
+      description: Add any other context about the feature here
+      placeholder: |
+        Existing solutions (code or repositories)
+    validations:
+      required: false
