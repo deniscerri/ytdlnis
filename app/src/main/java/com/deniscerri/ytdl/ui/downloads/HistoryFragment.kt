@@ -151,6 +151,7 @@ class HistoryFragment : Fragment(), HistoryAdapter.OnItemClickListener{
 
         historyViewModel = ViewModelProvider(this)[HistoryViewModel::class.java]
         historyViewModel.allItems.observe(viewLifecycleOwner) {
+            allhistoryList = it
             if(it.isEmpty()){
                 noResults!!.visibility = VISIBLE
                 selectionChips!!.visibility = GONE

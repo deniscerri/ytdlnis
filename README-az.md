@@ -10,7 +10,7 @@
 </div>
 
 <h3 align="center">
-	YTDLnis Android 6.0 və yuxarı üçün yt-dlp istifadə edən pulsuz və açıq mənbəli video/səs yükləyicidir.
+	YTDLnis Android 7.0 və yuxarı üçün yt-dlp istifadə edən pulsuz və açıq mənbəli video/səs yükləyicidir.
 </h3>
 
 <div align="center">

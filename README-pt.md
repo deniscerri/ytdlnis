@@ -10,7 +10,7 @@
 </div>
 
 <h3 align="center">
-	YTDLnis é um aplicativo gratuito e de código aberto para baixar vídeos/áudios usando yt-dlp disponível para o Android 6.0 e superior.
+	YTDLnis é um aplicativo gratuito e de código aberto para baixar vídeos/áudios usando yt-dlp disponível para o Android 7.0 e superior.
 </h3>
 
 <div align="center">

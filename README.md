@@ -20,10 +20,10 @@
 </div>
 
 <h3 align="center">
-	YTDLnis is a free and open source video/audio downloader using yt-dlp for Android 6.0 and above.
+	YTDLnis is a free and open source video/audio downloader using yt-dlp for Android 7.0 and above.
 </h3>
 <h4 align="center">
-	[Created by Denis Çerri. Currently being maintained by zaednasr]
+	Created by Denis Çerri
 </h4>
 
 <div align="center">

@@ -118,7 +118,7 @@ interface DownloadDao {
     @Query("SELECT * FROM downloads WHERE status='Scheduled' ORDER BY downloadStartTime, id")
     fun getScheduledDownloadsList() : List<DownloadItem>
 
-    @Query("SELECT id FROM downloads WHERE status='Queued' ORDER BY id")
+    @Query("SELECT id FROM downloads WHERE status='Queued' ORDER BY downloadStartTime, id")
     fun getQueuedDownloadsListIDs() : List<Long>
 
     @RewriteQueriesToDropUnusedColumns
@@ -289,8 +289,11 @@ interface DownloadDao {
 
         resetScheduleTimeForItems(existingIDs)
         existingIDs.forEach { updateDownloadID(it, -it) }
-        downloads.filter { !existingIDs.contains(it) }.reversed().forEach {
-            updateDownloadID(it, it + existingIDs.size)
+        downloads.filter { !existingIDs.contains(it) }.toMutableList().apply {
+            this.reverse()
+            this.forEach {
+                updateDownloadID(it, it + existingIDs.size)
+            }
         }
 
         existingIDs.forEachIndexed { idx, it ->
@@ -305,8 +308,11 @@ interface DownloadDao {
 
         resetScheduleTimeForItems(existingIDs)
         existingIDs.forEach { updateDownloadID(it, -it) }
-        downloads.filter { !existingIDs.contains(it) }.reversed().forEach {
-            updateDownloadID(it, it + existingIDs.size)
+        downloads.filter { !existingIDs.contains(it) }.toMutableList().apply {
+            this.reverse()
+            this.forEach {
+                updateDownloadID(it, it + existingIDs.size)
+            }
         }
 
         existingIDs.forEachIndexed { idx, it ->

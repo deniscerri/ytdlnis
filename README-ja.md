@@ -20,10 +20,10 @@
 </div>
 
 <h3 align="center">
-	YTDLnisは、Android 6.0以降に対応した、yt-dlpを使用した無料かつオープンソースのビデオ/オーディオダウンローダーです。
+	YTDLnisは、Android 7.0以降に対応した、yt-dlpを使用した無料かつオープンソースのビデオ/オーディオダウンローダーです。
 </h3>
 <h4 align="center">
-	[Denis Çerriによって作成されました。現在はzaednasrによってメンテナンスされています]
+	Denis Çerriによって作成されました
 </h4>
 
 <div align="center">

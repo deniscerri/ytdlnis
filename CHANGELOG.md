@@ -1,5 +1,28 @@
 # YTDLnis Changelog
 
+> # 1.8.0 (2024-10)
+
+# Notice
+
+This version has the updated python version 3.11. Due to yt-dlp's deprecation of python 3.8, this update had to be made, but at the same time support for Android 6 will be dropped. Android 6 users can still keep using the previous version until yt-dlp stops working in the future.
+
+# What's Changed
+
+- Re-added individual pause button for downloads
+- Added ability to set preferred command template
+- Added PO Token setting for youtube extractor arguments
+- Added customizable client for youtube extractor arguments
+- Added preference to add extra youtube extractor arguments
+- Added a header on cancelled/errored/scheduled/saved tabs to show the count and a dropdown menu to delete and copy urls instead of using the main queue screen menu
+- Fixed app not starting scheduled downloads with the resume button if there were no paused downloads, weird ik
+- Added Socket Timeout in Download Settings
+- Fixed app not adding extra commands in the very end of the command list
+- Fixed #580
+- Small fixes on the home screen channel tab filters
+- Fixed app crashing when pressing the thumbnail icon in the result card details. The icon is hidden if there is no thumbnail
+- Watch Videos playlist type link is supported for data fetching and downloading. 
+- Added ability to parse the "artists" tag when fetching data for ytm
+
 > # 1.7.9.2 (2024-09)
 
 # What's Changed

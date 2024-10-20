@@ -1,0 +1,8 @@
+# What's Changed
+
+- Update to Python 3.11, FFMpeg 7.0.1, Cryptodome-3.20.0, mutagen-1.47.0
+- Re-added individual pause button for downloads
+- Added ability to set preferred command template
+- Added youtube extractor argument preferences
+- Download Queue general fixes
+- Read the Github changelog for more info

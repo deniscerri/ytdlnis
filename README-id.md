@@ -10,7 +10,7 @@
 </div>
 
 <h3 align="center">
-	YTDLnis adalah pengunduh video/audio sumber terbuka dan gratis yang menggunakan yt-dlp bagi Android 6.0 ke atas.
+	YTDLnis adalah pengunduh video/audio sumber terbuka dan gratis yang menggunakan yt-dlp bagi Android 7.0 ke atas.
 </h3>
 
 <div align="center">

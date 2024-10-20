@@ -10,7 +10,7 @@
 </div>
 
 <h3 align="center">
-	YTDLnis është një shkarkues video/audio falas dhe me burim të hapur duke përdorur yt-dlp për Android 6.0 dhe më lart.
+	YTDLnis është një shkarkues video/audio falas dhe me burim të hapur duke përdorur yt-dlp për Android 7.0 dhe më lart.
 </h3>
 
 <div align="center">

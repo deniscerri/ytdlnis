@@ -176,7 +176,7 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
                 return@combine PausedAllDownloadsState.HIDDEN
             }else if (paused > 1 || (active == 0 && queued > 0) || (paused > 0 && active > 0)) {
                 return@combine PausedAllDownloadsState.RESUME
-            }else if (active > 1) {
+            }else if (active > 1 || (active > 0 && queued > 0)) {
                 return@combine PausedAllDownloadsState.PAUSE
             }else{
                 return@combine PausedAllDownloadsState.HIDDEN
@@ -767,12 +767,14 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
 
         //other ids that need to move around
         val takenPositions = mutableListOf<Long>()
-        for (dID in downloads.filter { !ids.contains(it) && it < lastID }.reversed()){
-            val newID = downloads.last { !newIDs.contains(it) && !takenPositions.contains(it) && it <= lastID }
-            takenPositions.add(newID)
-            dao.updateDownloadID(dID, newID)
+        downloads.filter { !ids.contains(it) && it < lastID }.toMutableList().apply {
+            this.reverse()
+            this.forEach { dID ->
+                val newID = downloads.last { !newIDs.contains(it) && !takenPositions.contains(it) && it <= lastID }
+                takenPositions.add(newID)
+                dao.updateDownloadID(dID, newID)
+            }
         }
-
         ids.forEachIndexed { idx, it ->
             dao.updateDownloadID(-it, newIDs[idx])
         }
@@ -782,7 +784,7 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
     suspend fun putAtBottomOfQueue(ids: List<Long>) = CoroutineScope(Dispatchers.IO).launch{
         val downloads = dao.getQueuedDownloadsListIDs()
         ids.forEach { dao.updateDownloadID(it, -it)}
-        val newIDs = downloads.sortedByDescending { it }.take(ids.size)
+        val newIDs = downloads.takeLast(ids.size)
 
         //other ids that need to move around
         val takenPositions = mutableListOf<Long>()
@@ -792,8 +794,11 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
             dao.updateDownloadID(dID, newID)
         }
 
-        ids.reversed().forEachIndexed { idx, it ->
-            dao.updateDownloadID(-it, newIDs[idx])
+        ids.toMutableList().apply {
+            this.reverse()
+            this.forEachIndexed { idx, it ->
+                dao.updateDownloadID(-it, newIDs[idx])
+            }
         }
     }
 
@@ -803,9 +808,12 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         dao.updateDownloadID(current, -current)
 
         if (current > id){
-            for (dID in downloads.filter { it in id until current }.reversed()){
-                val index = downloads.indexOf(dID)
-                dao.updateDownloadID(dID, downloads[index + 1])
+            downloads.filter { it in id until current }.toMutableList().apply {
+                this.reverse()
+                this.forEach { dID ->
+                    val index = downloads.indexOf(dID)
+                    dao.updateDownloadID(dID, downloads[index + 1])
+                }
             }
         }else{
             for (dID in downloads.filter { it in (current + 1)..id }){
