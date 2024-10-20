@@ -58,6 +58,8 @@ android {
             arg("room.schemaLocation", "$projectDir/schemas")
         }
 
+        vectorDrawables.generatedDensities = []
+
     }
 
     sourceSets {
