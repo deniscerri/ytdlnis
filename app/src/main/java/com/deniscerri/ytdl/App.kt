@@ -64,6 +64,7 @@ class App : Application() {
             PreferenceManager.setDefaultValues(this, R.xml.processing_preferences, true)
             PreferenceManager.setDefaultValues(this, R.xml.folders_preference, true)
             PreferenceManager.setDefaultValues(this, R.xml.updating_preferences, true)
+            PreferenceManager.setDefaultValues(this, R.xml.advanced_preferences, true)
             sp.edit().putInt("spl", SPL).apply()
         }
 

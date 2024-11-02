@@ -508,6 +508,7 @@ object UiUtil {
         btn?.setImageResource(typeImageResource)
 
         val time = bottomSheet.findViewById<Chip>(R.id.time)
+        val thumbnail = bottomSheet.findViewById<Chip>(R.id.thumbnail)
         val formatNote = bottomSheet.findViewById<Chip>(R.id.format_note)
         val container = bottomSheet.findViewById<Chip>(R.id.container_chip)
         val codec = bottomSheet.findViewById<Chip>(R.id.codec)
@@ -530,6 +531,14 @@ object UiUtil {
             }
             else -> {
                 time!!.visibility = View.GONE
+            }
+        }
+
+        thumbnail?.isVisible = item.thumb.isNotBlank()
+        thumbnail?.apply {
+            isVisible = item.thumb.isNotBlank()
+            setOnClickListener {
+                openLinkIntent(context, item.thumb)
             }
         }
 
@@ -717,6 +726,7 @@ object UiUtil {
         }
 
         val time = bottomSheet.findViewById<TextView>(R.id.time)
+        val thumbnail = bottomSheet.findViewById<TextView>(R.id.thumbnail)
         val formatNote = bottomSheet.findViewById<TextView>(R.id.format_note)
         val container = bottomSheet.findViewById<Chip>(R.id.container_chip)
         val codec = bottomSheet.findViewById<TextView>(R.id.codec)
@@ -729,6 +739,14 @@ object UiUtil {
         calendar.timeInMillis = item.time * 1000L
         time!!.text = SimpleDateFormat(DateFormat.getBestDateTimePattern(Locale.getDefault(), "ddMMMyyyy - HHmm"), Locale.getDefault()).format(calendar.time)
         time.isClickable = false
+
+        thumbnail?.isVisible = item.thumb.isNotBlank()
+        thumbnail?.apply {
+            isVisible = item.thumb.isNotBlank()
+            setOnClickListener {
+                openLinkIntent(context, item.thumb)
+            }
+        }
 
         if (item.type != DownloadViewModel.Type.command){
             if (item.format.format_note == "?" || item.format.format_note == "") formatNote!!.visibility =

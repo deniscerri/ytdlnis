@@ -92,6 +92,20 @@
                     android:focusable="true" />
 
                 <com.google.android.material.chip.Chip
+                    android:id="@+id/thumbnail"
+                    style="@style/Widget.Material3.FloatingActionButton.Large.Primary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:minWidth="30dp"
+                    app:chipIcon="@drawable/ic_image"
+                    app:cornerRadius="10dp"
+                    android:text="@string/thumbnail"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+                <com.google.android.material.chip.Chip
                     android:id="@+id/format_note"
                     style="@style/Widget.Material3.FloatingActionButton.Large.Primary"
                     android:layout_width="wrap_content"

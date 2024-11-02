@@ -41,5 +41,12 @@
         <action
             android:id="@+id/action_mainSettingsFragment_to_updateSettingsFragment"
             app:destination="@id/updateSettingsFragment" />
+        <action
+            android:id="@+id/action_mainSettingsFragment_to_advancedSettingsFragment"
+            app:destination="@id/advancedSettingsFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/advancedSettingsFragment"
+        android:name="com.deniscerri.ytdl.ui.more.settings.AdvancedSettingsFragment"
+        android:label="AdvancedSettingsFragment" />
 </navigation>

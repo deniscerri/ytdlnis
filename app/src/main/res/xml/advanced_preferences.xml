@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <EditTextPreference
+        android:defaultValue="default,mediaconnect"
+        android:icon="@drawable/ic_code"
+        android:key="youtube_player_client"
+        app:useSimpleSummaryProvider="true"
+        android:title="Player Client" />
+
+    <EditTextPreference
+        android:defaultValue=""
+        android:icon="@drawable/ic_code"
+        android:key="youtube_po_token"
+        app:useSimpleSummaryProvider="true"
+        android:title="PO Token" />
+
+    <EditTextPreference
+        android:defaultValue=""
+        android:icon="@drawable/ic_code"
+        android:key="youtube_other_extractor_args"
+        app:useSimpleSummaryProvider="true"
+        android:title="@string/other_youtube_extractor_args" />
+
+    <EditTextPreference
+        android:defaultValue=""
+        android:icon="@drawable/ic_terminal"
+        android:key="data_fetching_extra_commands"
+        app:useSimpleSummaryProvider="true"
+        android:title="@string/data_fetching_extra_commands" />
+
+</PreferenceScreen>

@@ -244,19 +244,7 @@ class ResultCardDetailsDialog : BottomSheetDialogFragment(), GenericDownloadAdap
 
         downloadThumb.isVisible = item.thumb.isNotBlank()
         downloadThumb.setOnClickListener {
-            runCatching {
-                downloadManager.enqueue(
-                    DownloadManager.Request(item.thumb.toUri())
-                        .setAllowedNetworkTypes(
-                            DownloadManager.Request.NETWORK_WIFI or
-                                    DownloadManager.Request.NETWORK_MOBILE
-                        )
-                        .setAllowedOverRoaming(true)
-                        .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-                        .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "YTDLnis/" + item.title + ".jpg"))
-            }.onFailure {
-                Toast.makeText(requireContext(), getString(R.string.failed_download), Toast.LENGTH_SHORT).show()
-            }
+            UiUtil.openLinkIntent(requireContext(), item.thumb)
         }
 
         title.text = item.title

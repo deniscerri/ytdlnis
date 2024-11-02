@@ -14,6 +14,7 @@ import android.widget.HorizontalScrollView
 import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.edit
 import androidx.core.view.children
 import androidx.core.view.get
@@ -103,9 +104,16 @@ class DownloadLogFragment : Fragment() {
         logViewModel = ViewModelProvider(this)[LogViewModel::class.java]
 
         CoroutineScope(Dispatchers.IO).launch {
-            val logItem = logViewModel.getItemById(id!!)
-            withContext(Dispatchers.Main){
-                topAppBar.title = logItem.title
+            runCatching {
+                val logItem = logViewModel.getItemById(id!!)
+                withContext(Dispatchers.Main){
+                    topAppBar.title = logItem.title
+                }
+            }.onFailure {
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(requireContext(), "Log is deleted!", Toast.LENGTH_SHORT).show()
+                    mainActivity.onBackPressedDispatcher.onBackPressed()
+                }
             }
         }
 

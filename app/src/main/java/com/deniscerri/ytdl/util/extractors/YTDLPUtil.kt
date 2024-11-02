@@ -106,6 +106,10 @@ class YTDLPUtil(private val context: Context) {
         }
         request.addOption("-P", FileUtil.getCachePath(context) + "/tmp")
 
+        val extraCommands = sharedPreferences.getString("data_fetching_extra_commands", "")!!
+        if (extraCommands.isNotBlank()){
+            request.addConfig(extraCommands)
+        }
 
         println(parseYTDLRequestString(request))
         val youtubeDLResponse = YoutubeDL.getInstance().execute(request)
@@ -267,6 +271,11 @@ class YTDLPUtil(private val context: Context) {
             }
             request.addOption("-P", FileUtil.getCachePath(context) + "/tmp")
 
+            val extraCommands = sharedPreferences.getString("data_fetching_extra_commands", "")!!
+            if (extraCommands.isNotBlank()){
+                request.addConfig(extraCommands)
+            }
+
             val txt = parseYTDLRequestString(request)
             println(txt)
 
@@ -360,7 +369,10 @@ class YTDLPUtil(private val context: Context) {
         }
         request.addOption("-P", FileUtil.getCachePath(context) + "/tmp")
 
-
+        val extraCommands = sharedPreferences.getString("data_fetching_extra_commands", "")!!
+        if (extraCommands.isNotBlank()){
+            request.addConfig(extraCommands)
+        }
 
         val res = YoutubeDL.getInstance().execute(request)
         val results: Array<String?> = try {
@@ -462,7 +474,10 @@ class YTDLPUtil(private val context: Context) {
             }
             request.addOption("-P", FileUtil.getCachePath(context) + "/tmp")
 
-
+            val extraCommands = sharedPreferences.getString("data_fetching_extra_commands", "")!!
+            if (extraCommands.isNotBlank()){
+                request.addConfig(extraCommands)
+            }
 
             val youtubeDLResponse = YoutubeDL.getInstance().execute(request)
             val json = JSONObject(youtubeDLResponse.out)
@@ -1130,5 +1145,14 @@ class YTDLPUtil(private val context: Context) {
         }
 
         return extractorArgs.joinToString(";")
+    }
+
+    private fun YoutubeDLRequest.addConfig(commandString: String) {
+        this.addOption(
+            "--config-locations",
+            File(context.cacheDir.absolutePath + "/${System.currentTimeMillis()}${UUID.randomUUID()}.txt").apply {
+                writeText(commandString)
+            }.absolutePath
+        )
     }
 }

@@ -128,6 +128,13 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
             true
         }
 
+        val advanced = findPreference<Preference>("advanced")
+        advanced?.summary = "PO Token$separator ${getString(R.string.other_youtube_extractor_args)}"
+        advanced?.setOnPreferenceClickListener {
+            navController.navigate(R.id.action_mainSettingsFragment_to_advancedSettingsFragment)
+            true
+        }
+
         //about section -------------------------
         updateUtil = UpdateUtil(requireContext())
 

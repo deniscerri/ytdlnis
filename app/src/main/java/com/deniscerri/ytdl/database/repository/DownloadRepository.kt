@@ -243,7 +243,7 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
                 earliestStart.downloadStartTime.minus(currentTime)
             } else 0
             if (delay <= 60000L) delay = 0L
-            inputData.putLongArray("priority_item_ids", queuedItems.map { it.id }.toLongArray())
+            inputData.putLongArray("priority_item_ids", queuedItems.take(20).map { it.id }.toLongArray())
         }
 
         val useAlarmForScheduling = sharedPreferences.getBoolean("use_alarm_for_scheduling", false)

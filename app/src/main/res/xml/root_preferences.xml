@@ -26,6 +26,11 @@
         app:icon="@drawable/ic_update"
         android:title="@string/updating"/>
 
+    <Preference
+        android:key="advanced"
+        app:icon="@drawable/baseline_settings_suggest_24"
+        android:title="@string/advanced"/>
+
     <PreferenceCategory android:title="@string/backup_restore">
         <Preference
             app:icon="@drawable/baseline_save_alt_24"

@@ -102,27 +102,6 @@
             app:useSimpleSummaryProvider="true"
             app:title="@string/format_source" />
 
-        <EditTextPreference
-            android:defaultValue="default,mediaconnect"
-            android:icon="@drawable/ic_code"
-            android:key="youtube_player_client"
-            app:useSimpleSummaryProvider="true"
-            android:title="Player Client" />
-
-        <EditTextPreference
-            android:defaultValue=""
-            android:icon="@drawable/ic_code"
-            android:key="youtube_po_token"
-            app:useSimpleSummaryProvider="true"
-            android:title="PO Token" />
-
-        <EditTextPreference
-            android:defaultValue=""
-            android:icon="@drawable/ic_code"
-            android:key="youtube_other_extractor_args"
-            app:useSimpleSummaryProvider="true"
-            android:title="@string/other_youtube_extractor_args" />
-
         <Preference
             android:icon="@drawable/ic_dns"
             app:key="piped_instance"
