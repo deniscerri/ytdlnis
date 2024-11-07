@@ -220,7 +220,7 @@ object Extensions {
             runCatching {
                 val tmp = this.getString(it)
                 if (tmp != "null") {
-                    return if (tmp.startsWith("[")) {
+                    return if (tmp.startsWith("[") && tmp.endsWith("]")) {
                         Json.decodeFromString<List<String>>(tmp).joinToString(", ")
                     }else{
                         tmp

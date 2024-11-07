@@ -55,6 +55,7 @@ class WebViewActivity : BaseActivity() {
             generateBtn = toolbar.findViewById(R.id.generate)
             webViewCompose = findViewById(R.id.webview_compose)
             cookieManager = CookieManager.getInstance()
+
             preferences = PreferenceManager.getDefaultSharedPreferences(this@WebViewActivity)
 
             webViewClient = object : AccompanistWebViewClient() {
@@ -62,12 +63,10 @@ class WebViewActivity : BaseActivity() {
                     super.onPageFinished(view, url)
                     kotlin.runCatching {
                         toolbar.title = view?.title ?: ""
-                        cookies = CookieManager.getInstance().getCookie(view?.url)
+                        cookies = cookieManager.getCookie(view?.url)
                     }
                 }
             }
-
-            cookieManager = CookieManager.getInstance()
 
             toolbar.setNavigationOnClickListener {
                 cookieManager.flush()
