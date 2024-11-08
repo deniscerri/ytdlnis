@@ -172,7 +172,7 @@
     <string name="freespace">Hapësirë e lirë</string>
     <string name="link_you_copied">Linku i kopjuar</string>
     <string name="restrict_filenames">Limito Titujt</string>
-    <string name="restrict_filenames_summary">Limito emrin e skedarit me vetëm me karakteret ASCII, dhe shmag \"&amp;\" dhe hapësirat në emrin e skedarit</string>
+    <string name="restrict_filenames_summary"><![CDATA[Kufizoni emrat e skedarëve vetëm në karaktere ASCII dhe shmangni \"&\" dhe hapësirat në emrat e skedarëve]]></string>
     <string name="kill_app">Ndalo Aplikacionin</string>
     <string name="confirm_terminate">Ndalon të gjithë shkarkimet dhe mbyll me forcë aplikacionin</string>
     <string name="end">Fundi</string>
