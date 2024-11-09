@@ -420,4 +420,16 @@
     <string name="playlist_as_album">Použiť názov playlistu ako metadáta albumu</string>
     <string name="playlist_as_album_summary">Ak metadáta albumu nie sú k dispozícii, použije namiesto nich názov playlistu</string>
     <string name="data_fetching_extractor_youtube">Extraktor načítaných dát (YouTube)</string>
+    <string name="socket_timeout_description">Čas čakania, kým to vzdáte, v sekundách</string>
+    <string name="advanced">Pokročilé</string>
+    <string name="other_youtube_extractor_args">Ďalšie argumenty YouTube extraktora</string>
+    <string name="socket_timeout">Časový limit</string>
+    <string name="items">položka(y)</string>
+    <string name="resume_all">Obnoviť všetko</string>
+    <string name="pause_all">Pozastaviť všetko</string>
+    <string name="package_name">Názov balíčka</string>
+    <string name="preferred_command_template">Preferovaná šablóna príkazu</string>
+    <string name="status">Stav</string>
+    <string name="deleted">Odstránené</string>
+    <string name="websites">Webové stránky</string>
 </resources>

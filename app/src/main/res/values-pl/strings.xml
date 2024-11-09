@@ -139,7 +139,7 @@
     <string name="delete_all_cookies">Usuń wszystkie pliki cookie</string>
     <string name="confirm_delete_cookies_desc">Usuń wszystkie pliki cookie na stałe</string>
     <string name="format_source">Źródło formatów</string>
-    <string name="video_recommendations_summary">Otrzymuj polecane filmy z YouTube na ekranie głównym z PIPED API</string>
+    <string name="video_recommendations_summary">Uzyskaj polecane filmy z YouTube na ekranie głównym z NewPipe Extractor</string>
     <string name="preferred_format_id">Preferowany identyfikator formatu</string>
     <string name="restrict_filenames">Ogranicz nazwy plików</string>
     <string name="metered_network_download_start_info">Pobieranie rozpocznie się, gdy połączysz się z siecią bez planu taryfowego</string>
@@ -265,7 +265,7 @@
     <string name="cancelled">Anulowane</string>
     <string name="access_all_directories_summary">Zezwól aplikacji na pobieranie do katalogów, które są domyślnie ograniczone</string>
     <string name="clear_temporary_files_summary">Usuń pliki pamięci podręcznej z pobrań zakończonych awarią, błędem bądź anulowaniem</string>
-    <string name="restrict_filenames_summary">Ogranicz nazwy plików do znaków ASCII i unikaj znaków „&amp;” oraz spacji w nazwach plików</string>
+    <string name="restrict_filenames_summary"><![CDATA[Ogranicz nazwy plików tylko do znaków ASCII i unikaj \„&\” i spacji w nazwach plików]]></string>
     <string name="confirm_terminate">Zatrzymuje wszystkie pobierania i wymusza zamknięcie aplikacji</string>
     <string name="download_over_metered_networks_summary">Umożliwia pobieranie przez dowolną sieć. Jeśli opcja nie jest wybrana, aplikacja czeka na sieć bez planu taryfowego</string>
     <string name="format_filtering_hint">Aby można było użyć tej opcji, wszystkie elementy muszą być tego samego typu</string>
@@ -389,7 +389,7 @@
     <string name="disabled">Wyłączone</string>
     <string name="subtitles">Napisy</string>
     <string name="prevent_duplicate_downloads">Zapobieganie pobieraniu duplikatów</string>
-    <string name="prevent_duplicate_url_type">Adres URL i typ pobierania</string>
+    <string name="prevent_duplicate_url_type"><![CDATA[URL i typ pobierania]]></string>
     <string name="prevent_duplicate_config">Pełna konfiguracja</string>
     <string name="copy_url">Kopiuj adres URL</string>
     <string name="scheduled">Zaplanowane</string>
@@ -419,4 +419,15 @@
     <string name="use_item_url_not_playlist_summary">Metadane listy odtwarzania nie zostaną osadzone po włączeniu tej opcji</string>
     <string name="recode_video_summary">Przekodowuje plik wideo do określonego formatu wideo</string>
     <string name="recode_video">Przekoduj Video</string>
+    <string name="socket_timeout_description">Czas oczekiwania przed rezygnacją w sekundach</string>
+    <string name="advanced">Zaawansowane</string>
+    <string name="data_fetching_extra_commands">Dodatkowe polecenia pobierania danych</string>
+    <string name="thumbnail">Miniatura</string>
+    <string name="items">element(y)</string>
+    <string name="pause_all">Zatrzymaj wszystko</string>
+    <string name="resume_all">Wznów wszystko</string>
+    <string name="package_name">Nazwa pakietu</string>
+    <string name="preferred_command_template">Preferowany szablon poleceń</string>
+    <string name="deleted">Usunięto</string>
+    <string name="websites">Strony internetowe</string>
 </resources>

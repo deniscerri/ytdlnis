@@ -243,7 +243,7 @@
     <string name="search">Претрага</string>
     <string name="keep_cache">Задржи фрагменте</string>
     <string name="file_size">Величина фајла</string>
-    <string name="restrict_filenames_summary">Ограничите називе фајлова само на ASCII знакове и избегавајте „&amp;“ и размаке у називима фајлова</string>
+    <string name="restrict_filenames_summary"><![CDATA[Ограничите називе фајлова само на ASCII знакове и избегавајте \"&\" и размаке у називима фајлова]]></string>
     <string name="auto">Аутоматски</string>
     <string name="configure_download">Прилагођавање преузимања</string>
     <string name="shortcuts">Пречице</string>
@@ -379,7 +379,7 @@
     <string name="hour">Час</string>
     <string name="display_over_apps">Приказуј преко апликација</string>
     <string name="subtitles">Титлови</string>
-    <string name="prevent_duplicate_url_type">URL адреса и тип преузимања</string>
+    <string name="prevent_duplicate_url_type"><![CDATA[URL адреса и тип преузимања]]></string>
     <string name="prevent_duplicate_config">Потпуна конфигурација</string>
     <string name="copy_url">Копирај URL адресу</string>
     <string name="move_bottom">Помери на дно</string>
@@ -420,4 +420,18 @@
     <string name="continue_anyway">Ипак настави</string>
     <string name="playlist_as_album_summary">Ако метаподаци албума нису доступни, користите назив плејлисте</string>
     <string name="data_fetching_extractor_youtube">Екстрактор прикупљања података (YouTube)</string>
+    <string name="socket_timeout">Временско ограничење сокета</string>
+    <string name="advanced">Напредно</string>
+    <string name="data_fetching_extra_commands">Додатне команде за прикупљање података</string>
+    <string name="thumbnail">Сличица</string>
+    <string name="preferred_command_template">Преферирани командни шаблон</string>
+    <string name="other_youtube_extractor_args">Остали YouTube Extractor аргументи</string>
+    <string name="status">Статус</string>
+    <string name="items">предмет(а)</string>
+    <string name="socket_timeout_description">Време за чекање пре одустајања, у секундама</string>
+    <string name="pause_all">Паузирај све</string>
+    <string name="resume_all">Настави све</string>
+    <string name="package_name">Назив пакета</string>
+    <string name="deleted">Избрисано</string>
+    <string name="websites">Веб-сајтови</string>
 </resources>

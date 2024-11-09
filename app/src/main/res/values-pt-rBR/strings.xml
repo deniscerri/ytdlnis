@@ -248,7 +248,7 @@
     <string name="kill_app">Encerrar Aplicativo</string>
     <string name="freespace">Espaço livre</string>
     <string name="dont_ask_again">Não perguntar novamente</string>
-    <string name="restrict_filenames_summary">Restringir nomes de arquivos apenas a caracteres ASCII e evite \"&amp;\" e espaços em nomes de arquivos</string>
+    <string name="restrict_filenames_summary"><![CDATA[Restringir nomes de arquivos apenas a caracteres ASCII e evite \"&\" e espaços em nomes de arquivos]]></string>
     <string name="template">Modelo</string>
     <string name="sponsorblock_nonmusic">Partes sem música e sem relação com o tema</string>
     <string name="container">Contêiner</string>
@@ -420,4 +420,18 @@
     <string name="playlist_as_album">Usar nome da playlist como metadados do álbum</string>
     <string name="playlist_as_album_summary">Se os metadados do álbum não estiverem presentes, use o nome da playlist</string>
     <string name="data_fetching_extractor_youtube">Extrator para busca de dados (YouTube)</string>
+    <string name="socket_timeout_description">Tempo de esperar antes de desistir, em segundos</string>
+    <string name="advanced">Avançado</string>
+    <string name="data_fetching_extra_commands">Comandos extras para busca de dados</string>
+    <string name="other_youtube_extractor_args">Outros argumentos do YouTube Extractor</string>
+    <string name="items">item(s)</string>
+    <string name="socket_timeout">Tempo limite do soquete</string>
+    <string name="thumbnail">Miniatura</string>
+    <string name="resume_all">Retomar todos</string>
+    <string name="preferred_command_template">Modelo de comando preferido</string>
+    <string name="websites">Sites</string>
+    <string name="pause_all">Pausar todos</string>
+    <string name="deleted">Excluído</string>
+    <string name="package_name">Nome do pacote</string>
+    <string name="status">Status</string>
 </resources>
