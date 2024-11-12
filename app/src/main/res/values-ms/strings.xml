@@ -35,6 +35,8 @@
     <string name="downloading_update">Memuat turun versi baharu...</string>
     <string name="audio">Audio</string>
     <string name="video">Video</string>
-    <string name="confirm_delete_history_desc">Padamkan keseluruhan sejarah, secara kekal.</string>
+    <string name="confirm_delete_history_desc">Padam keseluruhan sejarah secara kekal</string>
     <string name="command_directory">Folder Perintah Tersendiri</string>
+    <string name="embed_subs_summary">Tambahkan sari kata ke dalam video</string>
+    <string name="downloading">Memuat turun</string>
 </resources>
