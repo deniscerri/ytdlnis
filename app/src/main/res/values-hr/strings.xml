@@ -2,5 +2,4 @@
 <resources>
     <string name="worst_quality">Najgora kvaliteta</string>
     <string name="best_quality">Najbolja kvaliteta</string>
-    <string name="data_fetching_extra_commands"></string>
 </resources>
