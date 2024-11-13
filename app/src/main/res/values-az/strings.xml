@@ -172,7 +172,7 @@
     <string name="best_quality">Ən Yaxşı Keyfiyyət</string>
     <string name="worst_quality">Ən Pis Keyfiyyət</string>
     <string name="restrict_filenames">Fayl adların məhdudlaşdır</string>
-    <string name="restrict_filenames_summary">Fayl adların ancaq ASCII simvollarıyla məhdudlaşdır və fayl adlarında \"&amp;\" və boşluqlar yaratma</string>
+    <string name="restrict_filenames_summary"><![CDATA[Fayl adların ancaq ASCII simvollarıyla məhdudlaşdır və fayl adlarında \"&"\ və boşluqlar yaratma]]></string>
     <string name="kill_app">Tətbiqi Dayandır</string>
     <string name="confirm_terminate">Bütün yükləmələri dayandırır və tətbiqi zorla bağlayır</string>
     <string name="dont_ask_again">Təkrar soruşma</string>
@@ -381,7 +381,7 @@
     <string name="disabled">Qeyri-aktiv</string>
     <string name="subtitles">Titrlər</string>
     <string name="prevent_duplicate_downloads">Eyni Yükləmələrin Qarşısını Al</string>
-    <string name="prevent_duplicate_url_type">URL və Yükləmə Növü</string>
+    <string name="prevent_duplicate_url_type"><![CDATA[URL və Yükləmə Növü]]></string>
     <string name="prevent_duplicate_config">Tam Konfiqurasiya</string>
     <string name="copy_url">URL-i Köçür</string>
     <string name="move_top">Yuxarıya keçin</string>
@@ -409,7 +409,7 @@
     <string name="use_alarm_manager">Planlaşdırma üçün WorkManager əvəzinə AlarmManager işlət</string>
     <string name="use_alarm_manager_summary">WorkManager-ə cihaz başladıcı tərəfindən limit qoyulubsa və ya planlaşdırılan vəzifələr çox dəqiq deyilsə, bunu aktivləşdirin</string>
     <string name="use_item_url_not_playlist">Pleylist URL əvəzinə Element URL istifadə edin</string>
-    <string name="use_item_url_not_playlist_summary">yt-dlp vasitəsilə tanınmayan LibreTube oflayn oynatma siyahıları üçün lazımdır. Bu aktivləşdikdə pleylist üst məlumatı daxil edilməyəcək</string>
+    <string name="use_item_url_not_playlist_summary">Bu aktivləşdikdə pleylist üst məlumatı yerləşdirilməyəcək</string>
     <string name="recode_video">Videonu yenidən kodla</string>
     <string name="recode_video_summary">Video faylı təyin edilmiş video formatına yenidən kodlayır</string>
     <string name="daily">Gündəlik</string>
@@ -420,4 +420,18 @@
     <string name="playlist_as_album">Albom Üst Məlumatı kimi Pleylist Adı istifadə et</string>
     <string name="playlist_as_album_summary">Albom üst məlumatı yoxdursa, əvəzinə pleylist adı istifadə et</string>
     <string name="data_fetching_extractor_youtube">Məlumat Çıxarıcı (YouTube)</string>
+    <string name="items">element</string>
+    <string name="socket_timeout">Uzun Vaxt Çıxışı</string>
+    <string name="data_fetching_extra_commands">Məlumat Alınması Əlavə Əmrləri</string>
+    <string name="thumbnail">Miniatür</string>
+    <string name="other_youtube_extractor_args">Digər YouTube Extractor Hissəcikləri</string>
+    <string name="socket_timeout_description">Bitirməzdən əvvəl saniyə ilə gözləmək vaxtı</string>
+    <string name="advanced">Qabaqcıl</string>
+    <string name="pause_all">Hamısın Dayandır</string>
+    <string name="status">Vəziyyət</string>
+    <string name="deleted">Silindi</string>
+    <string name="websites">Veb saytlar</string>
+    <string name="package_name">Paket Adı</string>
+    <string name="resume_all">Hamısına Davam</string>
+    <string name="preferred_command_template">Üstünlük Verilən Əmr Şablonu</string>
 </resources>

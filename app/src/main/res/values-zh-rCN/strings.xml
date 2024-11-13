@@ -116,7 +116,7 @@
     <string name="edit">编辑</string>
     <string name="shortcuts_desc">使用常用命令创建模板</string>
     <string name="cancelled">已取消</string>
-    <string name="confirm_delete_logs_desc">永久删除全部日志列表</string>
+    <string name="confirm_delete_logs_desc">永久删除全部日志列表。</string>
     <string name="preferred_download_type_summary">下载卡片默认开启的类型</string>
     <string name="restart">重新开始</string>
     <string name="metered_network_download_start_info">一旦您连接到不按流量计费的网络，下载就会开始</string>
@@ -217,7 +217,7 @@
     <string name="cache_cleared">临时文件已清除</string>
     <string name="ytdl_version">yt-dlp 版本</string>
     <string name="link_you_copied">您复制的链接</string>
-    <string name="restrict_filenames_summary">将文件名限制为仅 ASCII 字符，并避免在文件名中使用“&amp;”和空格</string>
+    <string name="restrict_filenames_summary"><![CDATA[将文件名限制为仅 ASCII 字符，并避免在文件名中使用\"&\"和空格]]></string>
     <string name="kill_app">结束应用</string>
     <string name="confirm_terminate">停止所有下载并强制关闭应用</string>
     <string name="new_cut">新剪辑</string>
@@ -297,7 +297,7 @@
     <string name="cache_first_summary">先将下载文件缓存到内部存储，然后移动到您选择的目录（当您无法直接写入存储时使用此选项）</string>
     <string name="cache_first">移动下载缓存</string>
     <string name="use_scheduler">按计划下载</string>
-    <string name="update_app_beta_summary">加入测试计划，可能会遇到错误</string>
+    <string name="update_app_beta_summary">加入测试计划，可能会遇到故障。</string>
     <string name="update_app_beta">测试版本</string>
     <string name="auto">自动</string>
     <string name="preferred_audio_codec">首选音频编解码器</string>
@@ -390,11 +390,11 @@
     <string name="move_bottom">移到底部</string>
     <string name="milliseconds">毫秒</string>
     <string name="format_importance">格式优先级</string>
-    <string name="format_importance_note">调整格式优先（仅用在下载卡片中获取格式并自动选择格式时)</string>
+    <string name="format_importance_note">调整格式元素重要性顺序。仅用于当应用在下载卡片中获取格式并自动选择格式时！</string>
     <string name="no_audio">没有声音的视频</string>
     <string name="download_archive_folder">下载档案文件夹</string>
     <string name="location">位置</string>
-    <string name="enable_alarm_permission">你需要在应用设置中启用 SCHEDULE_EXACT_ALARM 权限</string>
+    <string name="enable_alarm_permission">你需要在应用设置中启用 SCHEDULE_EXACT_ALARM 权限。</string>
     <string name="process_downloads_background">"继续在后台加载它们并开始下载吗？ "</string>
     <string name="minute">分钟</string>
     <string name="second">秒</string>
@@ -404,7 +404,7 @@
     <string name="always">始终</string>
     <string name="queue">队列</string>
     <string name="reset">重置</string>
-    <string name="restore_info">按下 “恢复” 将保存的数据和当前数据合并\n按下“重置”擦除并只使用文件内保存的数据</string>
+    <string name="restore_info">按下 “恢复” 将保存的数据和当前数据合并。\n按下“重置”擦除并只使用文件内保存的数据。</string>
     <string name="use_alarm_manager">使用闹铃管理器而非工作管理器安排任务</string>
     <string name="use_alarm_manager_summary">如果工作管理器被限制或安排时间不精确，请启用这个</string>
     <string name="use_item_url_not_playlist">使用项目 URL 而非播放列表 URL</string>
@@ -419,4 +419,18 @@
     <string name="playlist_as_album">将播放列表名用作专辑元数据</string>
     <string name="playlist_as_album_summary">如果专辑元数据不存在，使用播放列表名</string>
     <string name="data_fetching_extractor_youtube">数据获取提取工具（YouTube）</string>
+    <string name="data_fetching_extra_commands">数据获取的额外命令</string>
+    <string name="thumbnail">缩略图</string>
+    <string name="items">项目</string>
+    <string name="other_youtube_extractor_args">其他 YouTube 提取器变量</string>
+    <string name="socket_timeout">Socket 超时</string>
+    <string name="socket_timeout_description">放弃前等待多久，单位为秒</string>
+    <string name="advanced">高级</string>
+    <string name="pause_all">全部暂停</string>
+    <string name="resume_all">全部恢复</string>
+    <string name="package_name">包名</string>
+    <string name="preferred_command_template">首选的命令行模板</string>
+    <string name="deleted">已删除</string>
+    <string name="websites">网站</string>
+    <string name="status">状态</string>
 </resources>

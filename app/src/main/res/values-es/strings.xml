@@ -172,7 +172,7 @@
     <string name="best_quality">Mejor Calidad</string>
     <string name="worst_quality">Peor Calidad</string>
     <string name="restrict_filenames">Restringir nombres de archivos</string>
-    <string name="restrict_filenames_summary">Limite los nombres de los archivos a caracteres ASCII y evite \"&amp;\" y espacios en los nombres de archivo</string>
+    <string name="restrict_filenames_summary"><![CDATA[Restringe los nombres de archivo a sólo caracteres ASCII y evita \"&\" y espacios en los nombres de archivo]]></string>
     <string name="kill_app">Terminar la aplicación</string>
     <string name="confirm_terminate">Detiene todas las descargas y fuerza el cierre de la aplicación</string>
     <string name="dont_ask_again">No vuelvas a preguntar</string>
@@ -381,7 +381,7 @@
     <string name="disabled">Desactivado</string>
     <string name="subtitles">Subtítulos</string>
     <string name="prevent_duplicate_downloads">Evitar descargas duplicadas</string>
-    <string name="prevent_duplicate_url_type">URL y tipo de descarga</string>
+    <string name="prevent_duplicate_url_type"><![CDATA[URL y Tipo de descarga]]></string>
     <string name="prevent_duplicate_config">Configuración completa</string>
     <string name="copy_url">Copiar la URL</string>
     <string name="move_top">Mover de primero</string>
@@ -420,4 +420,18 @@
     <string name="playlist_as_album">Usar el nombre de la lista de reproducción como metadatos del álbum</string>
     <string name="playlist_as_album_summary">Si los metadatos del álbum no están presentes, utiliza el nombre de la lista de reproducción en su lugar</string>
     <string name="data_fetching_extractor_youtube">Extractor de recuperación de datos (YouTube)</string>
+    <string name="socket_timeout">Tiempo de espera del socket</string>
+    <string name="items">artículo(s)</string>
+    <string name="advanced">Avanzado</string>
+    <string name="other_youtube_extractor_args">Otros argumentos del extractor de YouTube</string>
+    <string name="socket_timeout_description">Tiempo de espera antes de abandonar, en segundos</string>
+    <string name="data_fetching_extra_commands">Comandos adicionales para la obtención de datos</string>
+    <string name="thumbnail">Miniaturas</string>
+    <string name="pause_all">Pausar todo</string>
+    <string name="resume_all">Reanudar todo</string>
+    <string name="package_name">Nombre del paquete</string>
+    <string name="preferred_command_template">Plantilla preferida del comando</string>
+    <string name="status">Estado</string>
+    <string name="deleted">Eliminado</string>
+    <string name="websites">Páginas web</string>
 </resources>

@@ -172,7 +172,7 @@
     <string name="freespace">Hapësirë e lirë</string>
     <string name="link_you_copied">Linku i kopjuar</string>
     <string name="restrict_filenames">Limito Titujt</string>
-    <string name="restrict_filenames_summary">Limito emrin e skedarit me vetëm me karakteret ASCII, dhe shmag \"&amp;\" dhe hapësirat në emrin e skedarit</string>
+    <string name="restrict_filenames_summary"><![CDATA[Kufizoni emrat e skedarëve vetëm në karaktere ASCII dhe shmangni \"&\" dhe hapësirat në emrat e skedarëve]]></string>
     <string name="kill_app">Ndalo Aplikacionin</string>
     <string name="confirm_terminate">Ndalon të gjithë shkarkimet dhe mbyll me forcë aplikacionin</string>
     <string name="end">Fundi</string>
@@ -419,4 +419,19 @@
     <string name="playlist_as_album">Përdorni emrin e listës së luajtjes si të dhëna meta të albumit</string>
     <string name="playlist_as_album_summary">Nëse të dhënat meta të albumit nuk janë të pranishme, përdorni emrin e listës së luajtjes</string>
     <string name="cleanup_leftover_downloads">Shkarkimet e mbetura të pastrimit (të anuluara, të gabuara)</string>
+    <string name="resume_all">Resume All</string>
+    <string name="data_fetching_extractor_youtube">Ekstraktuesi i marrjes së të dhënave (YouTube)</string>
+    <string name="thumbnail">Fotoja</string>
+    <string name="pause_all">Ndalo të gjitha</string>
+    <string name="package_name">Emri i paketës</string>
+    <string name="status">Statusi</string>
+    <string name="deleted">Fshirë</string>
+    <string name="websites">Faqet e internetit</string>
+    <string name="other_youtube_extractor_args">Argumenta te tjere per Ekstraktorin e YouTube</string>
+    <string name="items">send(e)</string>
+    <string name="advanced">Avancuar</string>
+    <string name="socket_timeout">Timeout Socket</string>
+    <string name="socket_timeout_description">Koha për të pritur përpara se të dorëzohet, në sekonda</string>
+    <string name="data_fetching_extra_commands">Komandat Ekstra per marrjen e të dhënave</string>
+    <string name="preferred_command_template">Modeli i komandës së preferuar</string>
 </resources>
