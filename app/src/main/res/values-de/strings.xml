@@ -419,4 +419,11 @@
     <string name="use_alarm_manager">AlarmManager anstatt WorkManager für die Zeitplanung nutzen</string>
     <string name="use_item_url_not_playlist">Die Element URL anstatt die Playlist URL nutzen</string>
     <string name="use_item_url_not_playlist_summary">Wiedergabelisten-Metadaten werden nicht eingebettet, wenn diese Option aktiviert ist</string>
+    <string name="other_youtube_extractor_args">Andere YouTube Extraktor Argumente</string>
+    <string name="socket_timeout">Socket-Timeout</string>
+    <string name="socket_timeout_description">Wartezeit vor dem Aufgeben in Sekunden</string>
+    <string name="advanced">Erweitert</string>
+    <string name="data_fetching_extra_commands">Zusätzliche Befehle zum Abrufen von Daten</string>
+    <string name="items">Element(e)</string>
+    <string name="thumbnail">Vorschaubild</string>
 </resources>
