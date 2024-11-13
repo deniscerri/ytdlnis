@@ -2,6 +2,11 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <Preference
+        app:icon="@drawable/ic_info"
+        app:key="version"
+        app:title="@string/version"/>
+
     <PreferenceCategory android:title="@string/source">
 
         <Preference
@@ -35,34 +40,6 @@
 
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/format">
-        <ListPreference
-            android:defaultValue="filesize"
-            android:entries="@array/format_ordering"
-            android:entryValues="@array/format_ordering_values"
-            android:icon="@drawable/baseline_sort_24"
-            app:key="format_order"
-            app:useSimpleSummaryProvider="true"
-            app:title="@string/format_order" />
-
-        <ListPreference
-            android:defaultValue="ALL"
-            android:entries="@array/format_filtering"
-            android:entryValues="@array/format_filtering_values"
-            android:icon="@drawable/baseline_filter_alt_24"
-            app:key="format_filter"
-            app:useSimpleSummaryProvider="true"
-            app:title="@string/format_filter" />
-
-        <SwitchPreferenceCompat
-            android:widgetLayout="@layout/preferece_material_switch"
-            app:defaultValue="true"
-            android:icon="@drawable/ic_format"
-            android:key="update_formats"
-            app:summary="@string/update_formats_summary"
-            app:title="@string/update_formats" />
-    </PreferenceCategory>
-
     <PreferenceCategory android:title="@string/app">
 
         <SwitchPreferenceCompat
@@ -90,14 +67,35 @@
             app:icon="@drawable/ic_chapters"
             app:key="changelog"
             app:title="@string/changelog" />
+    </PreferenceCategory>
 
 
-        <Preference
-            app:icon="@drawable/ic_info"
-            app:key="version"
-            app:title="@string/version"/>
+    <PreferenceCategory android:title="@string/format">
+        <ListPreference
+            android:defaultValue="filesize"
+            android:entries="@array/format_ordering"
+            android:entryValues="@array/format_ordering_values"
+            android:icon="@drawable/baseline_sort_24"
+            app:key="format_order"
+            app:useSimpleSummaryProvider="true"
+            app:title="@string/format_order" />
 
+        <ListPreference
+            android:defaultValue="ALL"
+            android:entries="@array/format_filtering"
+            android:entryValues="@array/format_filtering_values"
+            android:icon="@drawable/baseline_filter_alt_24"
+            app:key="format_filter"
+            app:useSimpleSummaryProvider="true"
+            app:title="@string/format_filter" />
 
+        <SwitchPreferenceCompat
+            android:widgetLayout="@layout/preferece_material_switch"
+            app:defaultValue="true"
+            android:icon="@drawable/ic_format"
+            android:key="update_formats"
+            app:summary="@string/update_formats_summary"
+            app:title="@string/update_formats" />
     </PreferenceCategory>
 
 </PreferenceScreen>

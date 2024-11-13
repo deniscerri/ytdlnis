@@ -49,6 +49,12 @@ class UpdateSettingsFragment : BaseSettingsFragment() {
             true
         }
 
+
+        ytdlVersion!!.setOnPreferenceClickListener {
+            initYTDLUpdate(editor)
+            true
+        }
+        
         updateYTDL!!.onPreferenceClickListener =
             Preference.OnPreferenceClickListener {
                 initYTDLUpdate(editor)

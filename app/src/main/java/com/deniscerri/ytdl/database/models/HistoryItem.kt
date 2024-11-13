@@ -20,6 +20,8 @@ data class HistoryItem(
     val website: String,
     val format: Format,
     @ColumnInfo(defaultValue = "0")
+    val filesize: Long = 0,
+    @ColumnInfo(defaultValue = "0")
     val downloadId: Long,
     @ColumnInfo(defaultValue = "")
     val command: String = ""

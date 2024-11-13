@@ -113,8 +113,8 @@ class DownloadWorker(
             setForegroundAsync(ForegroundInfo(notificationID, workNotif))
         }
 
-        queuedItems.collectLatest { items ->
-            if (this@DownloadWorker.isStopped) return@collectLatest
+        queuedItems.collect { items ->
+            if (this@DownloadWorker.isStopped) return@collect
 
             runningYTDLInstances.clear()
             val activeDownloads = dao.getActiveDownloadsList()
@@ -126,19 +126,19 @@ class DownloadWorker(
             val useScheduler = sharedPreferences.getBoolean("use_scheduler", false)
             if (items.isEmpty() && running.isEmpty()) {
                 WorkManager.getInstance(context).cancelWorkById(this@DownloadWorker.id)
-                return@collectLatest
+                return@collect
             }
 
             if (useScheduler){
                 if (items.none{it.downloadStartTime > 0L} && running.isEmpty() && !alarmScheduler.isDuringTheScheduledTime()) {
                     WorkManager.getInstance(context).cancelWorkById(this@DownloadWorker.id)
-                    return@collectLatest
+                    return@collect
                 }
             }
 
             if (priorityItemIDs.isEmpty() && !continueAfterPriorityIds) {
                 WorkManager.getInstance(context).cancelWorkById(this@DownloadWorker.id)
-                return@collectLatest
+                return@collect
             }
 
             val concurrentDownloads = sharedPreferences.getInt("concurrent_downloads", 1) - running.size
@@ -312,6 +312,7 @@ class DownloadWorker(
                                             finalPaths,
                                             downloadItem.website,
                                             downloadItem.format,
+                                            downloadItem.format.filesize,
                                             downloadItem.id,
                                             commandString)
                                         historyDao.insert(historyItem)

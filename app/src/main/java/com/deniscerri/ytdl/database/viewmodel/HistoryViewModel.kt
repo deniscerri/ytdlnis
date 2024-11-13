@@ -6,68 +6,109 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
+import androidx.lifecycle.switchMap
 import androidx.lifecycle.viewModelScope
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
+import androidx.paging.filter
 import com.deniscerri.ytdl.database.DBManager
 import com.deniscerri.ytdl.database.DBManager.SORTING
 import com.deniscerri.ytdl.database.models.HistoryItem
-import com.deniscerri.ytdl.database.repository.DownloadRepository
 import com.deniscerri.ytdl.database.repository.HistoryRepository
 import com.deniscerri.ytdl.database.repository.HistoryRepository.HistorySortType
 import com.deniscerri.ytdl.util.Extensions
+import com.deniscerri.ytdl.util.FileUtil
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.buffer
+import kotlinx.coroutines.flow.cache
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flattenMerge
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class HistoryViewModel(application: Application) : AndroidViewModel(application) {
     private val repository : HistoryRepository
-    val sortOrder = MutableLiveData(SORTING.DESC)
-    val sortType = MutableLiveData(HistorySortType.DATE)
-    val websiteFilter = MutableLiveData("")
-    val statusFilter = MutableLiveData(HistoryStatus.ALL)
-    private val queryFilter = MutableLiveData("")
-    private val typeFilter = MutableLiveData("")
+    val sortOrder = MutableStateFlow(SORTING.DESC)
+    val sortType = MutableStateFlow(HistorySortType.DATE)
+    val websiteFilter = MutableStateFlow("")
+    val statusFilter = MutableStateFlow(HistoryStatus.ALL)
+    private val queryFilter = MutableStateFlow("")
+    private val typeFilter = MutableStateFlow("")
 
     enum class HistoryStatus {
         UNSET, DELETED, NOT_DELETED, ALL
     }
 
-    val allItems : LiveData<List<HistoryItem>>
     private var _items = MediatorLiveData<List<HistoryItem>>()
 
+    var paginatedItems : Flow<PagingData<HistoryItem>>
+    var websites : Flow<List<String>>
+    var totalCount : Flow<Int>
+
+    data class HistoryFilters(
+        var type: String = "",
+        var sortType: HistorySortType = HistorySortType.DATE,
+        var sortOrder: SORTING = SORTING.DESC,
+        var query: String = "",
+        var status: HistoryStatus = HistoryStatus.ALL,
+        var website: String = ""
+    )
 
     init {
         val dao = DBManager.getInstance(application).historyDao
         repository = HistoryRepository(dao)
-        allItems = repository.items.asLiveData()
-        _items.addSource(allItems){
-            filter(queryFilter.value!!, typeFilter.value!!, websiteFilter.value!!, sortType.value!!, sortOrder.value!!, statusFilter.value!!)
-        }
-        _items.addSource(typeFilter){
-            filter(queryFilter.value!!, typeFilter.value!!, websiteFilter.value!!, sortType.value!!, sortOrder.value!!, statusFilter.value!!)
-        }
-        _items.addSource(sortType){
-            filter(queryFilter.value!!, typeFilter.value!!, websiteFilter.value!!, sortType.value!!, sortOrder.value!!, statusFilter.value!!)
-        }
-        _items.addSource(websiteFilter){
-            filter(queryFilter.value!!, typeFilter.value!!, websiteFilter.value!!, sortType.value!!, sortOrder.value!!, statusFilter.value!!)
-        }
-        _items.addSource(queryFilter){
-            filter(queryFilter.value!!, typeFilter.value!!, websiteFilter.value!!, sortType.value!!, sortOrder.value!!, statusFilter.value!!)
-        }
+        websites = repository.websites
+        totalCount = repository.count
 
-        _items.addSource(statusFilter){
-            filter(queryFilter.value!!, typeFilter.value!!, websiteFilter.value!!, sortType.value!!, sortOrder.value!!, statusFilter.value!!)
-        }
+        val filters = listOf(dao.getAllHistory(), sortOrder, sortType, websiteFilter, statusFilter, queryFilter, typeFilter)
+        paginatedItems = combine(filters) { f ->
+            val sortOrder = f[1] as SORTING
+            val sortType = f[2] as HistorySortType
+            val website = f[3] as String
+            val status = f[4] as HistoryStatus
+            val query = f[5] as String
+            val type = f[6] as String
 
-    }
+            var pager = Pager(
+                config = PagingConfig(pageSize = 20, initialLoadSize = 20, prefetchDistance = 1),
+                pagingSourceFactory = {
+                    repository.getPaginatedSource(query, type, website, sortType, sortOrder)
+                }
+            ).flow
 
-    fun getFilteredList() : LiveData<List<HistoryItem>>{
-        return _items
+            when(status) {
+                HistoryStatus.DELETED -> {
+                    pager = pager.map {
+                        it.filter { it2 ->
+                            it2.downloadPath.any { it3 ->
+                                !FileUtil.exists(it3)
+                            }
+                        }
+                    }
+                }
+                HistoryStatus.NOT_DELETED -> {
+                    pager = pager.map {
+                        it.filter { it2 ->
+                            it2.downloadPath.any { it3 ->
+                                FileUtil.exists(it3)
+                            }
+                        }
+                    }
+                }
+                else -> {}
+            }
+
+            pager
+        }.flatMapLatest { it }
     }
 
     fun setSorting(sort: HistorySortType){
@@ -98,7 +139,8 @@ class HistoryViewModel(application: Application) : AndroidViewModel(application)
     }
 
     private fun filter(query : String, format : String, site : String, sortType: HistorySortType, sort: SORTING, statusFilter: HistoryStatus) = viewModelScope.launch(Dispatchers.IO){
-        _items.postValue(repository.getFiltered(query, format, site, sortType, sort, statusFilter))
+
+
     }
 
     fun getAll() : List<HistoryItem> {

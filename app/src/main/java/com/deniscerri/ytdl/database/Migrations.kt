@@ -5,6 +5,8 @@ import androidx.room.DeleteTable
 import androidx.room.migration.AutoMigrationSpec
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.deniscerri.ytdl.database.models.Format
+import com.google.gson.Gson
 
 
 object Migrations {
@@ -28,6 +30,19 @@ object Migrations {
 //        Migration(17, 18 ){ database ->
 //            database.execSQL("ALTER TABLE `sources` ADD COLUMN `syncWithSource` INTEGER NOT NULL DEFAULT 0")
 //        }
+
+        //add filesizes to history
+        Migration(20, 21) { database ->
+            val cursor = database.query("SELECT * FROM history")
+            while(cursor.moveToNext()) {
+                kotlin.runCatching {
+                    val id = cursor.getLong(cursor.getColumnIndex("id"))
+                    val format = cursor.getString(cursor.getColumnIndex("format"))
+                    val parsed = Gson().fromJson(format, Format::class.java)
+                    database.execSQL("UPDATE history SET filesize = ${parsed.filesize} WHERE id = $id")
+                }
+            }
+        }
     )
 
     @DeleteTable.Entries(

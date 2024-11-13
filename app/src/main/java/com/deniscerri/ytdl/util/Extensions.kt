@@ -46,9 +46,6 @@ import com.deniscerri.ytdl.database.models.Format
 import com.deniscerri.ytdl.database.models.observeSources.ObserveSourcesItem
 import com.deniscerri.ytdl.database.repository.DownloadRepository
 import com.deniscerri.ytdl.database.repository.ObserveSourcesRepository.EveryCategory
-import com.deniscerri.ytdl.util.Extensions.isYoutubeChannelURL
-import com.deniscerri.ytdl.util.Extensions.isYoutubeURL
-import com.deniscerri.ytdl.util.Extensions.toTimePeriodsArray
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.tabs.TabLayout
@@ -59,6 +56,7 @@ import com.neo.highlight.util.listener.HighlightTextWatcher
 import com.neo.highlight.util.scheme.ColorScheme
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
@@ -526,11 +524,43 @@ object Extensions {
     }
 
     fun String.extractURL() : String {
-        val res = Pattern.compile("(http|ftp|https)://([\\w_-]+(?:\\.[\\w_-]+)+)([\\w.,@?^=%&:/~+#-]*[\\w@?^=%&/~+#-])").matcher(this)
-        return if (res.find()){
+        val res =
+            Pattern.compile("(http|ftp|https)://([\\w_-]+(?:\\.[\\w_-]+)+)([\\w.,@?^=%&:/~+#-]*[\\w@?^=%&/~+#-])")
+                .matcher(this)
+        return if (res.find()) {
             res.group()
-        }else{
+        } else {
             this
         }
+    }
+
+    fun String.isURL(): Boolean {
+        return Pattern.compile("(http|ftp|https)://([\\w_-]+(?:\\.[\\w_-]+)+)([\\w.,@?^=%&:/~+#-]*[\\w@?^=%&/~+#-])").matcher(this).find()
+    }
+
+    fun <T1, T2, T3, T4, T5, T6, T7, R> combine(
+        flow: Flow<T1>,
+        flow2: Flow<T2>,
+        flow3: Flow<T3>,
+        flow4: Flow<T4>,
+        flow5: Flow<T5>,
+        flow6: Flow<T6>,
+        flow7: Flow<T7>,
+        transform: suspend (T1, T2, T3, T4, T5, T6, T7) -> R
+    ): Flow<R> = combine(
+        flow,
+        combine(flow2, flow3, ::Pair),
+        combine(flow4, flow5, ::Pair),
+        combine(flow6, flow7, ::Pair),
+    ) { t1, t2, t3, t4, ->
+        transform(
+            t1,
+            t2.first,
+            t2.second,
+            t3.first,
+            t3.second,
+            t4.first,
+            t4.second
+        )
     }
 }

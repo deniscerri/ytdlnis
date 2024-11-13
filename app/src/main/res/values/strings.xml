@@ -434,6 +434,6 @@
     <string name="socket_timeout">Socket Timeout</string>
     <string name="socket_timeout_description">Time to wait before giving up, in seconds</string>
     <string name="advanced">Advanced</string>
-    <string name="data_fetching_extra_commands">Data Fetching Extra Commands</string>
+    <string name="data_fetching_extra_command">Data Fetching Extra Command</string>
     <string name="thumbnail">Thumbnail</string>
 </resources>

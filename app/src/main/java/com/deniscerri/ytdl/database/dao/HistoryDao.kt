@@ -1,10 +1,12 @@
 package com.deniscerri.ytdl.database.dao
 
+import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
+import com.deniscerri.ytdl.database.models.DownloadItem
 import com.deniscerri.ytdl.database.models.HistoryItem
 import kotlinx.coroutines.flow.Flow
 
@@ -30,8 +32,43 @@ interface HistoryDao {
     fun getHistorySortedByAuthor(query : String, type : String, site : String, sort : String) : List<HistoryItem>
 
 
+
+    @Query("SELECT * FROM history WHERE (title LIKE '%'||:query||'%' OR author LIKE '%'||:query||'%') AND type LIKE '%'||:type||'%' AND website LIKE '%'||:site||'%' ORDER BY " +
+            "CASE WHEN :sort = 'ASC' THEN id END ASC," +
+            "CASE WHEN :sort = 'DESC' THEN id END DESC," +
+            "CASE WHEN :sort = '' THEN id END DESC ")
+    fun getHistorySortedByIDPaginated(query : String, type : String, site : String, sort : String) : PagingSource<Int, HistoryItem>
+
+    @Query("SELECT * FROM history WHERE (title LIKE '%'||:query||'%' OR author LIKE '%'||:query||'%') AND type LIKE '%'||:type||'%' AND website LIKE '%'||:site||'%' ORDER BY " +
+            "CASE WHEN :sort = 'ASC' THEN title END ASC," +
+            "CASE WHEN :sort = 'DESC' THEN title END DESC," +
+            "CASE WHEN :sort = '' THEN title END DESC ")
+    fun getHistorySortedByTitlePaginated(query : String, type : String, site : String, sort : String) : PagingSource<Int, HistoryItem>
+
+    @Query("SELECT * FROM history WHERE (title LIKE '%'||:query||'%' OR author LIKE '%'||:query||'%') AND type LIKE '%'||:type||'%' AND website LIKE '%'||:site||'%' ORDER BY " +
+            "CASE WHEN :sort = 'ASC' THEN author END ASC," +
+            "CASE WHEN :sort = 'DESC' THEN author END DESC," +
+            "CASE WHEN :sort = '' THEN author END DESC ")
+    fun getHistorySortedByAuthorPaginated(query : String, type : String, site : String, sort : String) : PagingSource<Int, HistoryItem>
+
+    @Query("SELECT * FROM history WHERE (title LIKE '%'||:query||'%' OR author LIKE '%'||:query||'%') AND type LIKE '%'||:type||'%' AND website LIKE '%'||:site||'%' ORDER BY " +
+            "CASE WHEN :sort = 'ASC' THEN filesize END ASC," +
+            "CASE WHEN :sort = 'DESC' THEN filesize END DESC," +
+            "CASE WHEN :sort = '' THEN filesize END DESC ")
+    fun getHistorySortedByFilesizePaginated(query : String, type : String, site : String, sort : String) : PagingSource<Int, HistoryItem>
+
+
     @Query("SELECT * FROM history")
     fun getAllHistory() : Flow<List<HistoryItem>>
+
+    @Query("SELECT DISTINCT website FROM history")
+    fun getWebsites() : Flow<List<String>>
+
+    @Query("SELECT COUNT(*) FROM history")
+    fun getCount() : Flow<Int>
+
+    @Query("SELECT * FROM history")
+    fun getAllHistoryPaginated() : PagingSource<Int, HistoryItem>
 
     @Query("SELECT * FROM history")
     fun getAllHistoryList() : List<HistoryItem>

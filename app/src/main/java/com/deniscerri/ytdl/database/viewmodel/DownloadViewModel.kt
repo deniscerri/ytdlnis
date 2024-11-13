@@ -550,7 +550,7 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
                 }
 
                 return generateCommandFormat(
-                    c ?: CommandTemplate(0, "", preferredTemplateContent, useAsExtraCommand = false, useAsExtraCommandAudio = false, useAsExtraCommandVideo = false)
+                    c ?: CommandTemplate(0, "", preferredTemplateContent, useAsExtraCommand = false, useAsExtraCommandAudio = false, useAsExtraCommandVideo = false, useAsExtraCommandDataFetching = false)
                 )
             }
         }

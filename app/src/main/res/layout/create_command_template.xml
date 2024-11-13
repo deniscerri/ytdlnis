@@ -161,6 +161,20 @@
                     style="@style/Divider.Horizontal"
                     android:layout_marginVertical="10dp" />
 
+                <com.google.android.material.materialswitch.MaterialSwitch
+                    android:id="@+id/extraCommandDataFetching"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginHorizontal="10dp"
+                    android:checked="false"
+                    android:text="@string/data_fetching_extra_command"
+                    android:textSize="15sp"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+                <View
+                    style="@style/Divider.Horizontal"
+                    android:layout_marginVertical="10dp" />
+
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">

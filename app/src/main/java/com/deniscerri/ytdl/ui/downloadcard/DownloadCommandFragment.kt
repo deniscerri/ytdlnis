@@ -93,7 +93,7 @@ class DownloadCommandFragment(private val resultItem: ResultItem? = null, privat
             preferences.edit().putString("lastCommandTemplateUsed", downloadItem.format.format_note).apply()
 
             if (!Patterns.WEB_URL.matcher(downloadItem.url).matches() && downloadItem.url.endsWith(".txt")){
-                downloadItem.format = downloadViewModel.generateCommandFormat(CommandTemplate(0,"txt", "-a \"${downloadItem.url}\"", useAsExtraCommand = false, useAsExtraCommandAudio = false, useAsExtraCommandVideo = false))
+                downloadItem.format = downloadViewModel.generateCommandFormat(CommandTemplate(0,"txt", "-a \"${downloadItem.url}\"", useAsExtraCommand = false, useAsExtraCommandAudio = false, useAsExtraCommandVideo = false, useAsExtraCommandDataFetching = false))
                 downloadItem.url = ""
             }
 
@@ -249,7 +249,7 @@ class DownloadCommandFragment(private val resultItem: ResultItem? = null, privat
                                         0,
                                         "",
                                         chosenCommandView.editText!!.text.toString(),
-                                        useAsExtraCommand = false, useAsExtraCommandAudio = false, useAsExtraCommandVideo = false
+                                        useAsExtraCommand = false, useAsExtraCommandAudio = false, useAsExtraCommandVideo = false, useAsExtraCommandDataFetching = false
                                     )
                                 UiUtil.showCommandTemplateCreationOrUpdatingSheet(
                                     current, requireActivity(), viewLifecycleOwner, commandTemplateViewModel,

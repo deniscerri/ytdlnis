@@ -52,8 +52,6 @@ import com.deniscerri.ytdl.ui.downloads.DownloadQueueMainFragment
 import com.deniscerri.ytdl.ui.downloads.HistoryFragment
 import com.deniscerri.ytdl.ui.more.settings.SettingsActivity
 import com.deniscerri.ytdl.util.CrashListener
-import com.deniscerri.ytdl.util.Extensions.extractURL
-import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.util.NavbarUtil
 import com.deniscerri.ytdl.util.NavbarUtil.applyNavBarStyle
 import com.deniscerri.ytdl.util.ThemeUtil
@@ -440,7 +438,7 @@ class MainActivity : BaseActivity() {
                     textBuilder.append(c.toChar())
                 }
                 val bundle = Bundle()
-                bundle.putString("url", textBuilder.toString().extractURL())
+                bundle.putString("url", textBuilder.toString())
                 navController.popBackStack(R.id.homeFragment, true)
                 navController.navigate(
                     R.id.homeFragment,

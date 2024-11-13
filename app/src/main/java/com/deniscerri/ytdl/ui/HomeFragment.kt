@@ -45,6 +45,7 @@ import com.deniscerri.ytdl.ui.adapter.SearchSuggestionsAdapter
 import com.deniscerri.ytdl.ui.downloads.HistoryFragment
 import com.deniscerri.ytdl.ui.downloads.HistoryFragment.Companion
 import com.deniscerri.ytdl.util.Extensions.enableFastScroll
+import com.deniscerri.ytdl.util.Extensions.isURL
 import com.deniscerri.ytdl.util.NotificationUtil
 import com.deniscerri.ytdl.util.ThemeUtil
 import com.deniscerri.ytdl.util.UiUtil
@@ -231,7 +232,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
             val url = requireArguments().getString("url")
             if (inputQueries == null) inputQueries = mutableListOf()
             searchBar?.setText(url)
-            val argList = url!!.split("\n").toMutableList()
+            val argList = url!!.split("\n").filter { it.isURL() }.toMutableList()
             argList.removeAll(listOf("", null))
             inputQueries!!.addAll(argList)
         }

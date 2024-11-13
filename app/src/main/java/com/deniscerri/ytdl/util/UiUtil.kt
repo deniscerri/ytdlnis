@@ -191,6 +191,7 @@ object UiUtil {
         val extraCommandsSwitch : MaterialSwitch = bottomSheet.findViewById(R.id.extraCommandsSwitch)!!
         val extraCommandsAudio : CheckBox = bottomSheet.findViewById(R.id.checkbox_audio)!!
         val extraCommandsVideo : CheckBox = bottomSheet.findViewById(R.id.checkbox_video)!!
+        val extraCommandsDataFetchingSwitch : MaterialSwitch = bottomSheet.findViewById(R.id.extraCommandDataFetching)!!
         val shortcutsChipGroup : ChipGroup = bottomSheet.findViewById(R.id.shortcutsChipGroup)!!
         val editShortcuts : Button = bottomSheet.findViewById(R.id.edit_shortcuts)!!
 
@@ -252,6 +253,7 @@ object UiUtil {
 
         if (item != null){
             preferredCommandSwitch.isChecked = item.content == sharedPreferences.getString("preferred_command_template", "")
+            extraCommandsDataFetchingSwitch.isChecked = item.useAsExtraCommandDataFetching
 
             extraCommandsSwitch.isChecked = item.useAsExtraCommand
             if (item.useAsExtraCommand){
@@ -307,7 +309,7 @@ object UiUtil {
 
 
             if (item == null){
-                val t = CommandTemplate(0, title.editText!!.text.toString(), content.editText!!.text.toString(), extraCommandsSwitch.isChecked, extraCommandsAudio.isChecked, extraCommandsVideo.isChecked)
+                val t = CommandTemplate(0, title.editText!!.text.toString(), content.editText!!.text.toString(), extraCommandsSwitch.isChecked, extraCommandsAudio.isChecked, extraCommandsVideo.isChecked, extraCommandsDataFetchingSwitch.isChecked)
                 commandTemplateViewModel.insert(t)
                 newTemplate(t)
             }else{
@@ -316,6 +318,7 @@ object UiUtil {
                 item.useAsExtraCommand = extraCommandsSwitch.isChecked
                 item.useAsExtraCommandAudio = extraCommandsAudio.isChecked
                 item.useAsExtraCommandVideo = extraCommandsVideo.isChecked
+                item.useAsExtraCommandDataFetching = extraCommandsDataFetchingSwitch.isChecked
                 commandTemplateViewModel.update(item)
                 newTemplate(item)
             }
