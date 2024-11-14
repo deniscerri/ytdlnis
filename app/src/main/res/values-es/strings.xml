@@ -434,4 +434,5 @@
     <string name="status">Estado</string>
     <string name="deleted">Eliminado</string>
     <string name="websites">Páginas web</string>
+    <string name="data_fetching_extra_command">Comando adicional de obtención de datos</string>
 </resources>
