@@ -49,17 +49,15 @@
     </shortcut>
 
     <shortcut
-        android:shortcutId="newTemplate"
+        android:shortcutId="terminal"
         android:enabled="true"
         android:icon="@drawable/ic_terminal_red"
-        android:shortcutShortLabel="@string/new_template"
-        android:shortcutDisabledMessage="@string/new_template">
+        android:shortcutShortLabel="@string/terminal"
+        android:shortcutDisabledMessage="@string/terminal">
         <intent
-            android:action="android.intent.action.VIEW"
+            android:action="android.intent.category.DEFAULT"
             android:targetPackage="com.deniscerri.ytdl"
-            android:targetClass="com.deniscerri.ytdl.receiver.TransparentActivity">
-
-            <extra android:name="action" android:value="NEW_TEMPLATE" />
+            android:targetClass="com.deniscerri.ytdl.ui.more.terminal.TerminalActivity">
 
         </intent>
     </shortcut>

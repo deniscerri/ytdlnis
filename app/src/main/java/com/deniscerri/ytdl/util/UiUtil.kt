@@ -10,6 +10,7 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Build
 import android.text.Editable
@@ -413,7 +414,7 @@ object UiUtil {
         datePicker.show(fragmentManager, "datepicker")
     }
 
-    fun showDatePicker(fragmentManager: FragmentManager , onSubmit : (chosenDate: Calendar) -> Unit ){
+    fun showDatePicker(fragmentManager: FragmentManager , preferences: SharedPreferences, onSubmit : (chosenDate: Calendar) -> Unit ){
         val currentDate = Calendar.getInstance()
         currentDate.timeInMillis = (currentDate.timeInMillis - (currentDate.timeInMillis % 1800000)) + 1800000
         val date = Calendar.getInstance()
@@ -430,38 +431,35 @@ object UiUtil {
         datePicker.addOnPositiveButtonClickListener{
             date.timeInMillis = it
 
-
-            val timepicker = MaterialTimePicker.Builder()
-                .setTimeFormat(TimeFormat.CLOCK_24H)
-                .setHour(currentDate.get(Calendar.HOUR_OF_DAY))
-                .setMinute(currentDate.get(Calendar.MINUTE))
-                .build()
-
-            timepicker.addOnPositiveButtonClickListener{
-                date[Calendar.HOUR_OF_DAY] = timepicker.hour
-                date[Calendar.MINUTE] = timepicker.minute
+            showTimePicker(fragmentManager, preferences) { chosenTime ->
+                date[Calendar.HOUR_OF_DAY] = chosenTime[Calendar.HOUR_OF_DAY]
+                date[Calendar.MINUTE] = chosenTime[Calendar.MINUTE]
                 onSubmit(date)
             }
-            timepicker.show(fragmentManager, "timepicker")
 
         }
         datePicker.show(fragmentManager, "datepicker")
     }
 
-    fun showTimePicker(fragmentManager: FragmentManager , onSubmit : (chosenTime: Calendar) -> Unit ){
+    fun showTimePicker(fragmentManager: FragmentManager , preferences: SharedPreferences, onSubmit : (chosenTime: Calendar) -> Unit ){
         val currentDate = Calendar.getInstance()
         currentDate.timeInMillis = (currentDate.timeInMillis - (currentDate.timeInMillis % 1800000)) + 1800000
         val date = Calendar.getInstance()
 
+        val lastTime = preferences.getString("latest_timepicker_date", "${currentDate.get(Calendar.HOUR_OF_DAY)}:${currentDate.get(Calendar.MINUTE)}")!!
+        val hour = lastTime.split(":")[0].toInt()
+        val minute = lastTime.split(":")[1].toInt()
+
         val timepicker = MaterialTimePicker.Builder()
             .setTimeFormat(TimeFormat.CLOCK_24H)
-            .setHour(currentDate.get(Calendar.HOUR_OF_DAY))
-            .setMinute(currentDate.get(Calendar.MINUTE))
+            .setHour(hour)
+            .setMinute(minute)
             .build()
 
         timepicker.addOnPositiveButtonClickListener{
             date[Calendar.HOUR_OF_DAY] = timepicker.hour
             date[Calendar.MINUTE] = timepicker.minute
+            preferences.edit().putString("latest_timepicker_date", "${timepicker.hour}:${timepicker.minute}").apply()
             onSubmit(date)
         }
         timepicker.show(fragmentManager, "timepicker")

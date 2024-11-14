@@ -151,8 +151,7 @@ class NewPipeUtil(context: Context) {
 
     fun getChannelData(url: String, progress: (pagedResults: MutableList<ResultItem>) -> Unit) : Result<List<ResultItem>> {
         try {
-            //TODO BROKEN FOR NOW
-            return Result.failure(Throwable())
+            //return Result.failure(Throwable())
             val req = ChannelInfo.getInfo(ServiceList.YouTube, url)
             println(Gson().toJson(req))
             val items = mutableListOf<ResultItem>()

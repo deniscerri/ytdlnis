@@ -309,7 +309,7 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
 
 
         scheduleBtn.setOnClickListener{
-            UiUtil.showDatePicker(fragmentManager) {
+            UiUtil.showDatePicker(fragmentManager, sharedPreferences) {
                 lifecycleScope.launch {
                     resultViewModel.cancelUpdateItemData()
                     resultViewModel.cancelUpdateFormatsItemData()

@@ -84,6 +84,7 @@ class HistoryPaginatedAdapter(onItemClickListener: OnItemClickListener, activity
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position) ?: return
         val card = holder.cardView
+        holder.itemView.tag = item.id.toString()
         card.tag = item.id.toString()
         card.popup()
 
@@ -147,7 +148,7 @@ class HistoryPaginatedAdapter(onItemClickListener: OnItemClickListener, activity
         if (btn.hasOnClickListeners()) btn.setOnClickListener(null)
         btn.isClickable = filesPresent
 
-        if (checkedItems.contains(item.id)) {
+        if ((checkedItems.contains(item.id) && !inverted) || (!checkedItems.contains(item.id) && inverted)) {
             card.isChecked = true
             card.strokeWidth = 5
         } else {
@@ -156,12 +157,12 @@ class HistoryPaginatedAdapter(onItemClickListener: OnItemClickListener, activity
         }
         val finalFilePresent = filesPresent
         card.setOnLongClickListener {
-            checkCard(card, item.id)
+            checkCard(card, item.id, position)
             true
         }
         card.setOnClickListener {
             if (checkedItems.size > 0) {
-                checkCard(card, item.id)
+                checkCard(card, item.id, position)
             } else {
                 onItemClickListener.onCardClick(item.id, finalFilePresent)
             }
@@ -208,7 +209,7 @@ class HistoryPaginatedAdapter(onItemClickListener: OnItemClickListener, activity
         }
     }
 
-    private fun checkCard(card: MaterialCardView, itemID: Long) {
+    private fun checkCard(card: MaterialCardView, itemID: Long, position: Int) {
         if (card.isChecked) {
             card.strokeWidth = 0
             if (inverted) checkedItems.add(itemID)
@@ -219,13 +220,13 @@ class HistoryPaginatedAdapter(onItemClickListener: OnItemClickListener, activity
             else checkedItems.add(itemID)
         }
         card.isChecked = !card.isChecked
-        onItemClickListener.onCardSelect(itemID, card.isChecked)
+        onItemClickListener.onCardSelect(card.isChecked, position)
     }
 
     interface OnItemClickListener {
-        fun onCardClick(itemID: Long, isPresent: Boolean)
-        fun onButtonClick(itemID: Long, isPresent: Boolean)
-        fun onCardSelect(itemID: Long, isChecked: Boolean)
+        fun onButtonClick(itemID: Long, filePresent: Boolean)
+        fun onCardClick(itemID: Long, filePresent: Boolean)
+        fun onCardSelect(isChecked: Boolean, position: Int)
     }
 
     companion object {

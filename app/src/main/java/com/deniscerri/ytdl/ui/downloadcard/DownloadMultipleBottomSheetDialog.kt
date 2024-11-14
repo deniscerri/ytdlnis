@@ -220,7 +220,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
 
 
         scheduleBtn.setOnClickListener{
-            UiUtil.showDatePicker(parentFragmentManager) { cal ->
+            UiUtil.showDatePicker(parentFragmentManager, preferences) { cal ->
                 toggleLoading(true)
                 lifecycleScope.launch {
                     withContext(Dispatchers.IO){

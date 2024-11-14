@@ -315,7 +315,7 @@ class ObserveSourcesBottomSheetDialog : BottomSheetDialogFragment() {
                 isFocusable = false
                 isClickable = false
                 setOnClickListener{
-                    UiUtil.showTimePicker(fragmentManager){
+                    UiUtil.showTimePicker(fragmentManager, sharedPreferences){
                         everyTime.editText?.setText(
                             SimpleDateFormat(DateFormat.getBestDateTimePattern(Locale.getDefault(), "HHmm"), Locale.getDefault()).format(it.timeInMillis)
                         )

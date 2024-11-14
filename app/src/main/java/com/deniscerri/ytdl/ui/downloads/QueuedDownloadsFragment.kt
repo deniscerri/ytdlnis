@@ -4,6 +4,7 @@ import android.animation.AnimatorSet
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.DialogInterface
+import android.content.SharedPreferences
 import android.graphics.Canvas
 import android.graphics.Color
 import android.os.Bundle
@@ -66,6 +67,7 @@ class QueuedDownloadsFragment : Fragment(), QueuedDownloadAdapter.OnItemClickLis
     private lateinit var notificationUtil: NotificationUtil
     private lateinit var fileSize: TextView
     private lateinit var dragHandleToggle: TextView
+    private lateinit var sharedPreferences: SharedPreferences
     private var totalSize: Int = 0
     private var actionMode : ActionMode? = null
 
@@ -84,6 +86,7 @@ class QueuedDownloadsFragment : Fragment(), QueuedDownloadAdapter.OnItemClickLis
     @SuppressLint("SetTextI18n", "RestrictedApi")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
         fileSize = view.findViewById(R.id.filesize)
         dragHandleToggle = view.findViewById(R.id.drag)
         val itemTouchHelper = ItemTouchHelper(queuedDragDropHelper)
@@ -473,7 +476,7 @@ class QueuedDownloadsFragment : Fragment(), QueuedDownloadAdapter.OnItemClickLis
                     }
                 },
                 scheduleButtonClick = {downloadItem ->
-                    UiUtil.showDatePicker(parentFragmentManager) {
+                    UiUtil.showDatePicker(parentFragmentManager, sharedPreferences) {
                         Toast.makeText(context, getString(R.string.download_rescheduled_to) + " " + it.time, Toast.LENGTH_LONG).show()
                         downloadViewModel.deleteDownload(downloadItem.id)
                         downloadItem.downloadStartTime = it.timeInMillis

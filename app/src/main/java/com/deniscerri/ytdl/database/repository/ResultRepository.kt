@@ -118,7 +118,6 @@ class ResultRepository(private val resultDao: ResultDao, private val context: Co
         if (resetResults) deleteAll()
 
         //throw YoutubeDLException("Youtube Watch Videos is not yet supported in data fetching. You can download it directly by clicking Continue Anyway or by Quick Downloading it!")
-        //TODO use below code after youtubedl-android has fixed issue #295 in their repo
         val items = mutableListOf<ResultItem>()
         val ytExtractorResult = newPipeUtil?.getPlaylistData(inputQuery) {
             if (addToResults){

@@ -33,6 +33,7 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class HistoryViewModel(application: Application) : AndroidViewModel(application) {
@@ -52,7 +53,7 @@ class HistoryViewModel(application: Application) : AndroidViewModel(application)
 
     var paginatedItems : Flow<PagingData<HistoryItem>>
     var websites : Flow<List<String>>
-    var totalCount : Flow<Int>
+    var totalCount = MutableStateFlow(0)
 
     data class HistoryFilters(
         var type: String = "",
@@ -67,7 +68,6 @@ class HistoryViewModel(application: Application) : AndroidViewModel(application)
         val dao = DBManager.getInstance(application).historyDao
         repository = HistoryRepository(dao)
         websites = repository.websites
-        totalCount = repository.count
 
         val filters = listOf(dao.getAllHistory(), sortOrder, sortType, websiteFilter, statusFilter, queryFilter, typeFilter)
         paginatedItems = combine(filters) { f ->
@@ -107,6 +107,10 @@ class HistoryViewModel(application: Application) : AndroidViewModel(application)
                 else -> {}
             }
 
+            withContext(Dispatchers.IO) {
+                totalCount.value = repository.getFilteredIDs(query, type, website, sortType, sortOrder, status).count()
+            }
+
             pager
         }.flatMapLatest { it }
     }
@@ -138,9 +142,16 @@ class HistoryViewModel(application: Application) : AndroidViewModel(application)
         statusFilter.value = status
     }
 
-    private fun filter(query : String, format : String, site : String, sortType: HistorySortType, sort: SORTING, statusFilter: HistoryStatus) = viewModelScope.launch(Dispatchers.IO){
+    fun getIDsBetweenTwoItems(firstID: Long, secondID: Long): List<Long> {
+        val ids = repository.getFilteredIDs(queryFilter.value, typeFilter.value, websiteFilter.value, sortType.value, sortOrder.value, statusFilter.value)
+        val firstIndex = ids.indexOf(firstID)
+        val secondIndex = ids.indexOf(secondID)
+        return ids.filterIndexed {index, _ -> index in (firstIndex + 1) until secondIndex }
+    }
 
-
+    fun getItemIDsNotPresentIn(not: List<Long>) : List<Long> {
+        val ids = repository.getFilteredIDs(queryFilter.value, typeFilter.value, websiteFilter.value, sortType.value, sortOrder.value, statusFilter.value)
+        return ids.filter { !not.contains(it) }
     }
 
     fun getAll() : List<HistoryItem> {
@@ -159,6 +170,14 @@ class HistoryViewModel(application: Application) : AndroidViewModel(application)
         repository.delete(item, deleteFile)
     }
 
+    fun deleteAllWithIDs(ids: List<Long>, deleteFile: Boolean = false) = viewModelScope.launch(Dispatchers.IO) {
+        repository.deleteAllWithIDs(ids, deleteFile)
+    }
+
+    fun getDownloadPathsFromIDs(ids: List<Long>) : List<List<String>> {
+        return repository.getDownloadPathsFromIDs(ids)
+    }
+
     fun deleteAll(deleteFile: Boolean = false) = viewModelScope.launch(Dispatchers.IO) {
         repository.deleteAll(deleteFile)
     }
@@ -173,18 +192,6 @@ class HistoryViewModel(application: Application) : AndroidViewModel(application)
 
     fun clearDeleted() = viewModelScope.launch(Dispatchers.IO) {
         repository.clearDeletedHistory()
-    }
-
-    fun getRecordsBetweenTwoItems(item1: Long, item2: Long) : List<HistoryItem> {
-        val filtered = repository.getFiltered(queryFilter.value!!, typeFilter.value!!, websiteFilter.value!!, sortType.value!!, sortOrder.value!!, statusFilter.value!!)
-        val firstIndex = filtered.indexOfFirst { it.id == item1 }
-        val secondIndex = filtered.indexOfFirst { it.id == item2 }
-
-        return if(firstIndex > secondIndex) {
-            filtered.filterIndexed { index, _ -> index in (secondIndex + 1) until firstIndex }
-        }else{
-            filtered.filterIndexed { index, _ -> index in (firstIndex + 1) until secondIndex }
-        }
     }
 
 }

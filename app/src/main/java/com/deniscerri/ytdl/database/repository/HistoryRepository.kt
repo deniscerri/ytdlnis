@@ -35,19 +35,17 @@ class HistoryRepository(private val historyDao: HistoryDao) {
         return historyDao.getAllHistoryByURL(url)
     }
 
+    data class HistoryIDsAndPaths(
+        val id: Long,
+        val downloadPath: List<String>
+    )
 
-    fun getFiltered(query : String, type : String, site : String, sortType: HistorySortType, sort: SORTING, statusFilter: HistoryViewModel.HistoryStatus) : List<HistoryItem> {
+    fun getFilteredIDs (query : String, type : String, site : String, sortType: HistorySortType, sort: SORTING, statusFilter: HistoryViewModel.HistoryStatus) : List<Long> {
         var filtered = when(sortType){
-            HistorySortType.DATE ->  historyDao.getHistorySortedByID(query, type, site, sort.toString())
-            HistorySortType.TITLE ->  historyDao.getHistorySortedByTitle(query, type, site, sort.toString())
-            HistorySortType.AUTHOR ->  historyDao.getHistorySortedByAuthor(query, type, site, sort.toString())
-            HistorySortType.FILESIZE ->  {
-                val items = historyDao.getHistorySortedByID(query, type, site, sort.toString())
-                when(sort){
-                    SORTING.DESC -> items.sortedByDescending { it.format.filesize }
-                    SORTING.ASC -> items.sortedBy { it.format.filesize }
-                }
-            }
+            HistorySortType.DATE ->  historyDao.getHistoryIDsSortedByID(query, type, site, sort.toString())
+            HistorySortType.TITLE ->  historyDao.getHistoryIDsSortedByTitle(query, type, site, sort.toString())
+            HistorySortType.AUTHOR ->  historyDao.getHistoryIDsSortedByAuthor(query, type, site, sort.toString())
+            HistorySortType.FILESIZE -> historyDao.getHistoryIDsSortedByFilesize(query, type, site, sort.toString())
         }
 
         when(statusFilter) {
@@ -59,8 +57,7 @@ class HistoryRepository(private val historyDao: HistoryDao) {
             }
             else -> {}
         }
-
-        return filtered
+        return filtered.map { it.id }
     }
 
     fun getPaginatedSource(query : String, type : String, site : String, sortType: HistorySortType, sort: SORTING) : PagingSource<Int, HistoryItem> {
@@ -99,6 +96,26 @@ class HistoryRepository(private val historyDao: HistoryDao) {
             }
         }
         historyDao.deleteAll()
+    }
+
+    suspend fun deleteAllWithIDs(ids: List<Long>, deleteFile: Boolean = false){
+        if (deleteFile){
+            historyDao.getAllHistoryByIDs(ids).forEach { item ->
+                item.downloadPath.forEach {
+                    FileUtil.deleteFile(it)
+                }
+            }
+        }
+        historyDao.deleteAllByIDs(ids)
+    }
+
+    data class HistoryItemDownloadPaths(
+        val downloadPath: List<String>
+    )
+
+    fun getDownloadPathsFromIDs(ids: List<Long>) : List<List<String>> {
+        val res = historyDao.getDownloadPathsFromIDs(ids)
+        return res.map { it.downloadPath }
     }
 
     suspend fun deleteDuplicates(){

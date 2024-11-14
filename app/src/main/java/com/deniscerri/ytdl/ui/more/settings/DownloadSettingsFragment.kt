@@ -35,17 +35,6 @@ class DownloadSettingsFragment : BaseSettingsFragment() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.downloading_preferences, rootKey)
         val preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
-
-        findPreference<Preference>("prevent_duplicate_downloads")?.apply {
-            //TODO transitioning code, delete after couple releases
-            if (preferences.getBoolean("download_archive", false)){
-                preferences.edit(commit = true){
-                    putBoolean("download_archive", false).apply()
-                    putString("prevent_duplicate_downloads", "download_archive")
-                }
-            }
-        }
-
         val rememberDownloadType = findPreference<SwitchPreferenceCompat>("remember_download_type")
         val downloadType = findPreference<ListPreference>("preferred_download_type")
         downloadType?.isEnabled = rememberDownloadType?.isChecked == false
@@ -163,7 +152,7 @@ class DownloadSettingsFragment : BaseSettingsFragment() {
         }
 
         scheduleStart?.setOnPreferenceClickListener {
-            UiUtil.showTimePicker(parentFragmentManager){
+            UiUtil.showTimePicker(parentFragmentManager, preferences){
                 val hr = it.get(Calendar.HOUR_OF_DAY)
                 val mn = it.get(Calendar.MINUTE)
                 val formattedTime = String.format("%02d", hr) + ":" + String.format("%02d", mn)
@@ -176,7 +165,7 @@ class DownloadSettingsFragment : BaseSettingsFragment() {
         }
 
         scheduleEnd?.setOnPreferenceClickListener {
-            UiUtil.showTimePicker(parentFragmentManager){
+            UiUtil.showTimePicker(parentFragmentManager, preferences){
                 val hr = it.get(Calendar.HOUR_OF_DAY)
                 val mn = it.get(Calendar.MINUTE)
                 val formattedTime = String.format("%02d", hr) + ":" + String.format("%02d", mn)

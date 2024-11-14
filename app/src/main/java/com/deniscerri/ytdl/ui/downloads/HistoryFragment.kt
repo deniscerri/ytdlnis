@@ -48,6 +48,7 @@ import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.database.viewmodel.HistoryViewModel
 import com.deniscerri.ytdl.ui.adapter.HistoryPaginatedAdapter
 import com.deniscerri.ytdl.util.Extensions.enableFastScroll
+import com.deniscerri.ytdl.util.Extensions.toListString
 import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.util.NavbarUtil
 import com.deniscerri.ytdl.util.UiUtil
@@ -523,14 +524,10 @@ class HistoryFragment : Fragment(), HistoryPaginatedAdapter.OnItemClickListener{
         }
     }
 
-    override fun onCardSelect(itemID: Long, isChecked: Boolean) {
+    override fun onCardSelect(isChecked: Boolean, position: Int) {
         lifecycleScope.launch {
-            val item = withContext(Dispatchers.IO) {
-                historyViewModel.getByID(itemID)
-            }
-
-            if (actionMode == null) actionMode = (activity as AppCompatActivity?)!!.startSupportActionMode(contextualActionBar)
             val selectedObjects = historyAdapter.getSelectedObjectsCount(totalCount)
+            if (actionMode == null) actionMode = (activity as AppCompatActivity?)!!.startSupportActionMode(contextualActionBar)
             actionMode?.apply {
                 if (selectedObjects == 0){
                     this.finish()
@@ -538,13 +535,26 @@ class HistoryFragment : Fragment(), HistoryPaginatedAdapter.OnItemClickListener{
                     actionMode?.title = "$selectedObjects ${getString(R.string.selected)}"
                     this.menu.findItem(R.id.select_between).isVisible = false
                     if(selectedObjects == 2){
-                        //TODO
-//                        val selectedIDs = contextualActionBar.getSelectedIDs().sortedBy { it }
-//                        val resultsInMiddle = withContext(Dispatchers.IO){
-//                            historyViewModel.getRecordsBetweenTwoItems(selectedIDs.first().id, selectedIDs.last().id)
-//                        }.toMutableList()
-//                        this.menu.findItem(R.id.select_between).isVisible = resultsInMiddle.isNotEmpty()
+                        val selectedIDs = contextualActionBar.getSelectedIDs().sortedBy { it }
+                        val idsInMiddle = withContext(Dispatchers.IO){
+                            historyViewModel.getIDsBetweenTwoItems(selectedIDs.first(), selectedIDs.last())
+                        }
+                        this.menu.findItem(R.id.select_between).isVisible = idsInMiddle.isNotEmpty()
                     }
+                }
+            }
+
+            if (isChecked) {
+                if (actionMode == null){
+                    actionMode = (getActivity() as AppCompatActivity?)!!.startSupportActionMode(contextualActionBar)
+                }else{
+                    actionMode!!.title = "$selectedObjects ${getString(R.string.selected)}"
+                }
+            }
+            else {
+                actionMode?.title = "$selectedObjects ${getString(R.string.selected)}"
+                if (selectedObjects == 0){
+                    actionMode?.finish()
                 }
             }
         }
@@ -573,66 +583,63 @@ class HistoryFragment : Fragment(), HistoryPaginatedAdapter.OnItemClickListener{
         ): Boolean {
             return when (item!!.itemId) {
                 R.id.select_between -> {
-                    //TODO
-//                    lifecycleScope.launch {
-//                        val selectedIDs = selectedObjects.sortedBy { it.id }
-//                        val resultsInMiddle = withContext(Dispatchers.IO){
-//                            historyViewModel.getRecordsBetweenTwoItems(selectedIDs.first().id, selectedIDs.last().id)
-//                        }.toMutableList()
-//                        if (resultsInMiddle.isNotEmpty()){
-//                            selectedObjects.addAll(resultsInMiddle)
-//                            historyAdapter.checkMultipleItems(selectedObjects.map { it.id })
-//                            actionMode?.title = "${selectedObjects.count()} ${getString(R.string.selected)}"
-//                        }
-//                        mode?.menu?.findItem(R.id.select_between)?.isVisible = false
-//                    }
+                    lifecycleScope.launch {
+                        val selectedIDs = getSelectedIDs().sortedBy { it }
+                        val idsInMiddle = withContext(Dispatchers.IO){
+                            historyViewModel.getIDsBetweenTwoItems(selectedIDs.first(), selectedIDs.last())
+                        }.toMutableList()
+                        idsInMiddle.addAll(selectedIDs)
+                        if (idsInMiddle.isNotEmpty()){
+                            historyAdapter.checkMultipleItems(idsInMiddle)
+                            actionMode?.title = "${idsInMiddle.count()} ${getString(R.string.selected)}"
+                        }
+                        mode?.menu?.findItem(R.id.select_between)?.isVisible = false
+                    }
                     true
                 }
                 R.id.delete_results -> {
-                    //TODO
-//                    val deleteFile = booleanArrayOf(false)
-//                    val deleteDialog = MaterialAlertDialogBuilder(fragmentContext!!)
-//                    deleteDialog.setTitle(getString(R.string.you_are_going_to_delete_multiple_items))
-//                    deleteDialog.setMultiChoiceItems(
-//                        arrayOf(getString(R.string.delete_files_too)),
-//                        booleanArrayOf(false)
-//                    ) { _: DialogInterface?, _: Int, b: Boolean -> deleteFile[0] = b }
-//                    deleteDialog.setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, _: Int -> dialogInterface.cancel() }
-//                    deleteDialog.setPositiveButton(getString(R.string.ok)) { _: DialogInterface?, _: Int ->
-//                        for (obj in selectedObjects){
-//                            historyViewModel.delete(obj, deleteFile[0])
-//                        }
-//                        clearCheckedItems()
-//                        actionMode?.finish()
-//                    }
-//                    deleteDialog.show()
+                    val deleteFile = booleanArrayOf(false)
+                    val deleteDialog = MaterialAlertDialogBuilder(fragmentContext!!)
+                    deleteDialog.setTitle(getString(R.string.you_are_going_to_delete_multiple_items))
+                    deleteDialog.setMultiChoiceItems(
+                        arrayOf(getString(R.string.delete_files_too)),
+                        booleanArrayOf(false)
+                    ) { _: DialogInterface?, _: Int, b: Boolean -> deleteFile[0] = b }
+                    deleteDialog.setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, _: Int -> dialogInterface.cancel() }
+                    deleteDialog.setPositiveButton(getString(R.string.ok)) { _: DialogInterface?, _: Int ->
+                        lifecycleScope.launch {
+                            val selectedObjects = getSelectedIDs()
+                            historyAdapter.clearCheckedItems()
+                            historyViewModel.deleteAllWithIDs(selectedObjects, deleteFile[0])
+                            actionMode?.finish()
+                        }
+                    }
+                    deleteDialog.show()
                     true
                 }
                 R.id.share -> {
-                    //TODO
-//                    FileUtil.shareFileIntent(requireContext(), selectedObjects.map { it.downloadPath }.flatten())
-//                    clearCheckedItems()
-//                    actionMode?.finish()
+                    lifecycleScope.launch {
+                        val selectedObjects = getSelectedIDs()
+                        val paths = withContext(Dispatchers.IO){
+                            historyViewModel.getDownloadPathsFromIDs(selectedObjects)
+                        }
+                        FileUtil.shareFileIntent(requireContext(), paths.flatten())
+                        historyAdapter.clearCheckedItems()
+                        actionMode?.finish()
+                    }
                     true
                 }
                 R.id.select_all -> {
-                    //TODO
-//                    historyAdapter.checkAll()
-//                    historyList?.forEach { selectedObjects.add(it!!) }
-//                    mode?.title = "(${selectedObjects.size}) ${resources.getString(R.string.all_items_selected)}"
+                    historyAdapter.checkAll()
+                    val selectedCount = historyAdapter.getSelectedObjectsCount(totalCount)
+                    mode?.title = "(${selectedCount}) ${resources.getString(R.string.all_items_selected)}"
                     true
                 }
                 R.id.invert_selected -> {
-                    //TODO
-//                    historyAdapter.invertSelected()
-//                    val invertedList = arrayListOf<HistoryItem>()
-//                    historyList?.forEach {
-//                        if (!selectedObjects.contains(it)!!) invertedList.add(it!!)
-//                    }
-//                    selectedObjects.clear()
-//                    selectedObjects.addAll(invertedList)
-//                    actionMode!!.title = "${selectedObjects.size} ${getString(R.string.selected)}"
-//                    if (invertedList.isEmpty()) actionMode?.finish()
+                    historyAdapter.invertSelected()
+                    val selectedCount = historyAdapter.getSelectedObjectsCount(totalCount)
+                    actionMode?.title = "$selectedCount ${getString(R.string.selected)}"
+                    if (selectedCount == 0) actionMode?.finish()
                     true
                 }
                 else -> false
@@ -647,15 +654,13 @@ class HistoryFragment : Fragment(), HistoryPaginatedAdapter.OnItemClickListener{
         }
 
         suspend fun getSelectedIDs() : List<Long>{
-            //TODO
-//            return if (historyAdapter.inverted || historyAdapter.checkedItems.isEmpty()) {
-//                withContext(Dispatchers.IO){
-//                    historyViewModel.getItemIDsNotPresentIn(historyAdapter.checkedItems.toList())
-//                }
-//            }else{
-//                historyAdapter.checkedItems.toList()
-//            }
-            return listOf()
+            return if (historyAdapter.inverted || historyAdapter.checkedItems.isEmpty()){
+                withContext(Dispatchers.IO){
+                    historyViewModel.getItemIDsNotPresentIn(historyAdapter.checkedItems.toList())
+                }
+            }else{
+                historyAdapter.checkedItems.toList()
+            }
         }
     }
 
