@@ -434,4 +434,5 @@
     <string name="deleted">Удалено</string>
     <string name="websites">Веб-сайты</string>
     <string name="preferred_command_template">Предпочтительный шаблон команды</string>
+    <string name="data_fetching_extra_command">Дополнительная команда получения данных</string>
 </resources>
