@@ -434,4 +434,5 @@
     <string name="deleted">Excluído</string>
     <string name="package_name">Nome do pacote</string>
     <string name="status">Status</string>
+    <string name="data_fetching_extra_command">Comando extra para busca de dados</string>
 </resources>

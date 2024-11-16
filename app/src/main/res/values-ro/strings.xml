@@ -12,14 +12,14 @@
     <string name="ytdl_update_hint">Util dacă aveți probleme la descărcare</string>
     <string name="update_ytdl">Instalează o nouă versiune de yt-dlp</string>
     <string name="source_code">Codul sursă</string>
-    <string name="search_hint">Caută sau Introduce adresa URL</string>
+    <string name="search_hint">Caută sau Introdu adresa URL</string>
     <string name="failed_download">Nu s-a putut descărca fișierul</string>
     <string name="download_notification_channel_name">Fișiere Descărcate</string>
     <string name="worst_quality">Cea mai scăzută calitate</string>
     <string name="search">Căutare</string>
     <string name="directories">Dosare</string>
     <string name="music_directory">Dosar de muzică</string>
-    <string name="you_are_in_latest_version">Utilizezi cea mai recentă versiune al aplicației</string>
+    <string name="you_are_in_latest_version">Utilizezi cea mai recentă versiune a aplicației</string>
     <string name="ytld_update_success">Noua versiune a aplicației a fost instalată cu succes</string>
     <string name="ytdl_already_updating">Instalez noua versiune</string>
     <string name="ytdl_updating_started">Se descarcă versiunea nouă</string>
@@ -52,7 +52,7 @@
     <string name="embed_subs_summary">Adaugă subtitrări în videoclip</string>
     <string name="add_chapters_summary">Marcați segmentele YouTube / SponsorBlock ca capitole pentru videoclip</string>
     <string name="shortcuts">Scurtături</string>
-    <string name="save_thumb_summary">Salvați miniatura în folderul de descărcare</string>
+    <string name="save_thumb_summary">Salvați miniatura în dosarul de descărcare</string>
     <string name="logs">Jurnale</string>
     <string name="file_name_template">Șablon de nume de fișier</string>
     <string name="language">Limba</string>
@@ -158,7 +158,7 @@
     <string name="remove_downloading">Anulați descărcările</string>
     <string name="incognito_summary">Descărcați fără a adăuga la istoric</string>
     <string name="author">Autor</string>
-    <string name="download">Descarca</string>
+    <string name="download">Descarcă</string>
     <string name="video_quality">Calitate video</string>
     <string name="embed_subtitles">Încorporați subtitrări</string>
     <string name="add_chapter">Adăugați capitole</string>
@@ -402,4 +402,9 @@
     <string name="process_downloads_background">"Descărcările nu sau încărcat încă. Să continui să procesezi în fundal și să începi descărcarea? "</string>
     <string name="format_importance">Ordine Importanță Formatului</string>
     <string name="navigation_bar">Bară de Navigare</string>
+    <string name="thumbnail">Miniatură</string>
+    <string name="advanced">Avansat</string>
+    <string name="daily">Zilnic</string>
+    <string name="weekly">Săptămânal</string>
+    <string name="monthly">Lunar</string>
 </resources>
