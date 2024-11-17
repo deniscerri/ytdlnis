@@ -422,7 +422,6 @@
     <string name="data_fetching_extractor_youtube">Екстрактор прикупљања података (YouTube)</string>
     <string name="socket_timeout">Временско ограничење сокета</string>
     <string name="advanced">Напредно</string>
-    <string name="data_fetching_extra_command">Додатне команде за прикупљање података</string>
     <string name="thumbnail">Сличица</string>
     <string name="preferred_command_template">Преферирани командни шаблон</string>
     <string name="other_youtube_extractor_args">Остали YouTube Extractor аргументи</string>

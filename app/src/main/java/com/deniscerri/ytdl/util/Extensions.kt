@@ -17,10 +17,8 @@ import android.graphics.drawable.shapes.OvalShape
 import android.media.MediaMetadataRetriever
 import android.media.MediaMetadataRetriever.METADATA_KEY_DURATION
 import android.net.Uri
-import android.text.Html
 import android.text.Spanned
 import android.util.DisplayMetrics
-import android.util.Patterns
 import android.util.TypedValue
 import android.view.MotionEvent
 import android.view.View
@@ -42,7 +40,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdl.App
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.models.DownloadItem
-import com.deniscerri.ytdl.database.models.Format
 import com.deniscerri.ytdl.database.models.observeSources.ObserveSourcesItem
 import com.deniscerri.ytdl.database.repository.DownloadRepository
 import com.deniscerri.ytdl.database.repository.ObserveSourcesRepository.EveryCategory
@@ -56,7 +53,6 @@ import com.neo.highlight.util.listener.HighlightTextWatcher
 import com.neo.highlight.util.scheme.ColorScheme
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
@@ -68,7 +64,6 @@ import java.util.Calendar
 import java.util.Locale
 import java.util.regex.Pattern
 import kotlin.math.abs
-import kotlin.math.min
 
 
 object Extensions {

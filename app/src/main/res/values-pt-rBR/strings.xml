@@ -422,7 +422,6 @@
     <string name="data_fetching_extractor_youtube">Extrator para busca de dados (YouTube)</string>
     <string name="socket_timeout_description">Tempo de esperar antes de desistir, em segundos</string>
     <string name="advanced">Avançado</string>
-    <string name="data_fetching_extra_command">Comandos extras para busca de dados</string>
     <string name="other_youtube_extractor_args">Outros argumentos do YouTube Extractor</string>
     <string name="items">item(s)</string>
     <string name="socket_timeout">Tempo limite de Socket</string>

@@ -419,7 +419,6 @@
     <string name="recode_video">காணொளியை மறுபரிசீலனை செய்யுங்கள்</string>
     <string name="websites">வலைத்தளங்கள்</string>
     <string name="advanced">மேம்பட்ட</string>
-    <string name="data_fetching_extra_command">கூடுதல் கட்டளைகளைப் பெறும் தரவு</string>
     <string name="thumbnail">சிறுபடம்</string>
     <string name="items">உருப்படி (கள்)</string>
     <string name="socket_timeout">சாக்கெட் நேரம் முடிந்தது</string>

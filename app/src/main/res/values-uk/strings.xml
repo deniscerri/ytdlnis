@@ -426,7 +426,6 @@
     <string name="socket_timeout">Тайм-аут сокету</string>
     <string name="advanced">Додатково</string>
     <string name="thumbnail">Мініатюра</string>
-    <string name="data_fetching_extra_command">Додаткові команди отримання даних</string>
     <string name="preferred_command_template">Переважний шаблон команди</string>
     <string name="status">Статус</string>
     <string name="pause_all">Зупинити все</string>
