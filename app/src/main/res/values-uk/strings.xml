@@ -434,4 +434,5 @@
     <string name="package_name">Ім\'я пакету</string>
     <string name="deleted">Видалено</string>
     <string name="websites">Веб-сайти</string>
+    <string name="data_fetching_extra_command">Додаткова команда отримання даних</string>
 </resources>

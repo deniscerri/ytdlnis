@@ -434,4 +434,5 @@
     <string name="other_youtube_extractor_args">معطيات أخرى لمستخرج اليوتيوب</string>
     <string name="socket_timeout">مهلة المقبس</string>
     <string name="pause_all">إيقاف الكل مؤقتًا</string>
+    <string name="data_fetching_extra_command">أمر جلب البيانات الإضافي</string>
 </resources>
