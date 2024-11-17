@@ -18,9 +18,13 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.LocaleListCompat
+import androidx.core.text.HtmlCompat
+import androidx.core.text.parseAsHtml
 import androidx.core.view.forEach
 import androidx.navigation.fragment.findNavController
+import androidx.preference.EditTextPreference
 import androidx.preference.ListPreference
+import androidx.preference.MultiSelectListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceManager
 import androidx.preference.SwitchPreferenceCompat
@@ -35,6 +39,7 @@ import com.deniscerri.ytdl.databinding.NavOptionsItemBinding
 import com.deniscerri.ytdl.ui.adapter.NavBarOptionsAdapter
 import com.deniscerri.ytdl.util.NavbarUtil
 import com.deniscerri.ytdl.util.ThemeUtil
+import com.deniscerri.ytdl.util.ThemeUtil.getThemeColor
 import com.deniscerri.ytdl.util.UiUtil
 import com.deniscerri.ytdl.util.UpdateUtil
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -43,15 +48,6 @@ import java.util.Locale
 
 class GeneralSettingsFragment : BaseSettingsFragment() {
     override val title: Int = R.string.general
-
-    private var language: ListPreference? = null
-    private var theme: ListPreference? = null
-    private var accent: ListPreference? = null
-    private var highContrast: SwitchPreferenceCompat? = null
-    private var locale: ListPreference? = null
-    private var showTerminalShareIcon: SwitchPreferenceCompat? = null
-    private var ignoreBatteryOptimization: Preference? = null
-    private var displayOverApps: SwitchPreferenceCompat? = null
     private lateinit var preferences: SharedPreferences
 
     private var updateUtil: UpdateUtil? = null
@@ -71,20 +67,16 @@ class GeneralSettingsFragment : BaseSettingsFragment() {
             }
         }
 
-        language = findPreference("app_language")
-        theme = findPreference("ytdlnis_theme")
-        accent = findPreference("theme_accent")
-        highContrast = findPreference("high_contrast")
-        locale = findPreference("locale")
-        showTerminalShareIcon = findPreference("show_terminal")
-
-        if(language!!.value == null) language!!.value = Locale.getDefault().language
-
-        language!!.onPreferenceChangeListener =
-            Preference.OnPreferenceChangeListener { _: Preference?, newValue: Any ->
+        findPreference<ListPreference>("app_language")?.apply {
+            if (value == null) {
+                value = Locale.getDefault().language
+                summary = Locale.getDefault().displayLanguage
+            }
+            setOnPreferenceChangeListener { _, newValue ->
                 AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(newValue.toString()))
                 true
             }
+        }
 
         findPreference<Preference>("label_visibility")?.apply {
             isVisible = !resources.getBoolean(R.bool.uses_side_nav)
@@ -96,6 +88,9 @@ class GeneralSettingsFragment : BaseSettingsFragment() {
 
         findPreference<Preference>("navigation_bar")?.apply {
             isVisible = !resources.getBoolean(R.bool.uses_side_nav)
+            if (isVisible) {
+                summary = NavbarUtil.getNavBarItems(requireContext()).filter { it.isVisible }.map { it.title }.joinToString(", ")
+            }
             setOnPreferenceClickListener {
                 val binding = requireActivity().layoutInflater.inflate(R.layout.simple_options_recycler, null)
                 val options = NavbarUtil.getNavBarItems(requireContext())
@@ -162,6 +157,7 @@ class GeneralSettingsFragment : BaseSettingsFragment() {
                     .setPositiveButton(R.string.ok) { _, _ ->
                         NavbarUtil.setNavBarItems(adapter.items, requireContext())
                         NavbarUtil.setStartFragment(adapter.selectedHomeTabId)
+                        summary = adapter.items.filter { it.isVisible }.map { it.title }.joinToString(", ")
                         ThemeUtil.recreateMain()
                     }
                     .setNegativeButton(R.string.cancel, null)
@@ -170,38 +166,44 @@ class GeneralSettingsFragment : BaseSettingsFragment() {
             }
         }
 
-
-        theme!!.summary = theme!!.entry
-        theme!!.onPreferenceChangeListener =
-            Preference.OnPreferenceChangeListener { _: Preference?, newValue: Any ->
-                when(newValue){
+        findPreference<ListPreference>("ytdlnis_theme")?.apply {
+            summary = entry
+            setOnPreferenceChangeListener { _, newValue ->
+                summary = when(newValue){
                     "System" -> {
-                        theme!!.summary = getString(R.string.system)
+                        getString(R.string.system)
                     }
+
                     "Dark" -> {
-                        theme!!.summary = getString(R.string.dark)
+                        getString(R.string.dark)
                     }
+
                     else -> {
-                        theme!!.summary = getString(R.string.light)
+                        getString(R.string.light)
                     }
                 }
                 ThemeUtil.updateThemes()
                 true
             }
-        accent!!.summary = accent!!.entry
-        accent!!.onPreferenceChangeListener =
-            Preference.OnPreferenceChangeListener { _: Preference?, _: Any ->
-                ThemeUtil.updateThemes()
-                true
-            }
-        highContrast!!.onPreferenceChangeListener =
-            Preference.OnPreferenceChangeListener { _: Preference?, _: Any ->
-                ThemeUtil.updateThemes()
-                true
-            }
+        }
 
-        showTerminalShareIcon!!.onPreferenceChangeListener =
-            Preference.OnPreferenceChangeListener { pref: Preference?, _: Any ->
+        findPreference<ListPreference>("theme_accent")?.apply {
+            summary = entry
+            setOnPreferenceChangeListener { _, _ ->
+                ThemeUtil.updateThemes()
+                true
+            }
+        }
+
+        findPreference<SwitchPreferenceCompat>("high_contrast")?.apply {
+            setOnPreferenceChangeListener { _, _ ->
+                ThemeUtil.updateThemes()
+                true
+            }
+        }
+
+        findPreference<SwitchPreferenceCompat>("show_terminal")?.apply {
+            setOnPreferenceChangeListener { pref, _ ->
                 val packageManager = requireContext().packageManager
                 val aliasComponentName = ComponentName(requireContext(), "com.deniscerri.ytdl.terminalShareAlias")
                 if ((pref as SwitchPreferenceCompat).isChecked){
@@ -215,11 +217,11 @@ class GeneralSettingsFragment : BaseSettingsFragment() {
                 }
                 true
             }
+        }
 
-        displayOverApps = findPreference("display_over_apps")
-        displayOverApps?.isChecked = Settings.canDrawOverlays(requireContext())
-        displayOverApps?.onPreferenceClickListener =
-            Preference.OnPreferenceClickListener {
+        findPreference<SwitchPreferenceCompat>("display_over_apps")?.apply {
+            isChecked = Settings.canDrawOverlays(requireContext())
+            setOnPreferenceChangeListener { _, _ ->
                 runCatching {
                     val i = Intent(
                         Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
@@ -231,16 +233,17 @@ class GeneralSettingsFragment : BaseSettingsFragment() {
                 }
                 true
             }
+        }
 
-        ignoreBatteryOptimization = findPreference("ignore_battery")
-        ignoreBatteryOptimization!!.onPreferenceClickListener =
-            Preference.OnPreferenceClickListener {
+        findPreference<Preference>("ignore_battery")?.apply {
+            setOnPreferenceClickListener {
                 val intent = Intent()
                 intent.action = Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS
                 intent.data = Uri.parse("package:" + requireContext().packageName)
                 startActivity(intent)
                 true
             }
+        }
 
         findPreference<Preference>("piped_instance")?.setOnPreferenceClickListener {
             UiUtil.showPipedInstancesDialog(requireActivity(), preferences.getString("piped_instance", "")!!){
@@ -249,13 +252,87 @@ class GeneralSettingsFragment : BaseSettingsFragment() {
             }
             true
         }
+
+        findPreference<MultiSelectListPreference>("hide_thumbnails")?.apply {
+            summary = values.joinToString(", ") { entries[entryValues.indexOf(it)] }
+            setOnPreferenceChangeListener { _, newValues ->
+                summary = (newValues as Set<*>).joinToString(", ") { entries[entryValues.indexOf(it)] }
+                true
+            }
+        }
+
+        findPreference<MultiSelectListPreference>("modify_download_card")?.apply {
+            summary = values.joinToString(", ") { entries[entryValues.indexOf(it)] }
+            setOnPreferenceChangeListener { _, newValues ->
+                summary = (newValues as Set<*>).joinToString(", ") { entries[entryValues.indexOf(it)] }
+                true
+            }
+        }
+
+        findPreference<EditTextPreference>("api_key")?.apply {
+            val s = getString(R.string.api_key_summary)
+            summary = if (text.isNullOrBlank()) {
+                s
+            }else {
+                "${s}\n[${text}]"
+            }
+            setOnPreferenceChangeListener { _, newValue ->
+                summary = if ((newValue as String?).isNullOrBlank()) {
+                    s
+                }else {
+                    "${s}\n[${newValue}]"
+                }
+                true
+            }
+        }
+
+        findPreference<ListPreference>("search_engine")?.apply {
+            val s = getString(R.string.preferred_search_engine_summary)
+            summary = if (value.isNullOrBlank()) {
+                s
+            }else {
+                "${s}\n[${entries[entryValues.indexOf(value)]}]"
+            }
+            setOnPreferenceChangeListener { _, newValue ->
+                summary = if ((newValue as String?).isNullOrBlank()) {
+                    s
+                }else {
+                    "${s}\n[${entries[entryValues.indexOf(newValue)]}]"
+                }
+                true
+            }
+        }
+
+        findPreference<MultiSelectListPreference>("swipe_gesture")?.apply {
+            val s = getString(R.string.preferred_search_engine_summary)
+            if (values.size == entries.size) {
+                summary = "${s}\n[${getString(R.string.all)}]"
+            }else if (values.size > 0) {
+                val indexes = entryValues.mapIndexed { index, _ -> index }
+                summary = "${s}\n[${entries.filterIndexed { index, _ -> indexes.contains(index) }.joinToString(", ")}]"
+            }else{
+                summary = s
+            }
+            setOnPreferenceChangeListener { _, newValue ->
+                val newValues = newValue as Set<*>
+                if (newValues.size == entries.size) {
+                    summary = "${s}\n[${getString(R.string.all)}]"
+                }else if (newValues.isNotEmpty()) {
+                    val indexes = newValues.mapIndexed { index, _ -> index }
+                    summary = "${s}\n[${entries.filterIndexed { index, _ -> indexes.contains(index) }.joinToString(", ")}]"
+                }else{
+                    summary = s
+                }
+                true
+            }
+        }
     }
 
     override fun onResume() {
         val packageName: String = requireContext().packageName
         val pm = requireContext().applicationContext.getSystemService(Context.POWER_SERVICE) as PowerManager
         if (pm.isIgnoringBatteryOptimizations(packageName)) {
-            ignoreBatteryOptimization!!.isVisible = false
+            findPreference<Preference>("ignore_battery")?.isVisible = false
         }
         super.onResume()
     }

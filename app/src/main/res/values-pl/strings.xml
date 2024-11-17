@@ -421,7 +421,7 @@
     <string name="recode_video">Przekoduj Video</string>
     <string name="socket_timeout_description">Czas oczekiwania przed rezygnacją w sekundach</string>
     <string name="advanced">Zaawansowane</string>
-    <string name="data_fetching_extra_commands">Dodatkowe polecenia pobierania danych</string>
+    <string name="data_fetching_extra_command">Dodatkowe polecenia pobierania danych</string>
     <string name="thumbnail">Miniatura</string>
     <string name="items">element(y)</string>
     <string name="pause_all">Zatrzymaj wszystko</string>

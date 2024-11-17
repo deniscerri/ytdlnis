@@ -423,7 +423,7 @@
     <string name="socket_timeout">Socket-Timeout</string>
     <string name="socket_timeout_description">Wartezeit vor dem Aufgeben in Sekunden</string>
     <string name="advanced">Erweitert</string>
-    <string name="data_fetching_extra_commands">Zusätzliche Befehle zum Abrufen von Daten</string>
+    <string name="data_fetching_extra_command">Zusätzliche Befehle zum Abrufen von Daten</string>
     <string name="items">Element(e)</string>
     <string name="thumbnail">Vorschaubild</string>
 </resources>

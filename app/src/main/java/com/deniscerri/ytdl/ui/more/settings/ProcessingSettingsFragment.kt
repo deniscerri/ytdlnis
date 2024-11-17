@@ -91,6 +91,40 @@ class ProcessingSettingsFragment : BaseSettingsFragment() {
                 true
             }
         }
+
+        findPreference<EditTextPreference>("format_id")?.apply {
+            val s = getString(R.string.preferred_format_id_summary)
+            summary = if (text.isNullOrBlank()) {
+                s
+            }else {
+                "${s}\n[${text}]"
+            }
+            setOnPreferenceChangeListener { _, newValue ->
+                summary = if ((newValue as String?).isNullOrBlank()) {
+                    s
+                }else {
+                    "${s}\n[${newValue}]"
+                }
+                true
+            }
+        }
+
+        findPreference<EditTextPreference>("format_id_audio")?.apply {
+            val s = getString(R.string.preferred_format_id_summary)
+            summary = if (text.isNullOrBlank()) {
+                s
+            }else {
+                "${s}\n[${text}]"
+            }
+            setOnPreferenceChangeListener { _, newValue ->
+                summary = if ((newValue as String?).isNullOrBlank()) {
+                    s
+                }else {
+                    "${s}\n[${newValue}]"
+                }
+                true
+            }
+        }
     }
 
 

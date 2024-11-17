@@ -120,6 +120,7 @@ class NotificationUtil(var context: Context) {
             .setPriority(NotificationCompat.PRIORITY_LOW)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .setGroup(DOWNLOAD_RUNNING_NOTIFICATION_ID.toString())
+            .setGroupSummary(true)
             .setForegroundServiceBehavior(NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE)
             .clearActions()
             .build()
@@ -433,7 +434,7 @@ class NotificationUtil(var context: Context) {
                 .setStyle(NotificationCompat.BigTextStyle().bigText(contentText))
                 .setGroup(DOWNLOAD_RUNNING_NOTIFICATION_ID.toString())
                 .clearActions()
-                //.addAction(0, resources.getString(R.string.pause), pauseNotificationPendingIntent)
+                .addAction(0, resources.getString(R.string.pause), pauseNotificationPendingIntent)
                 .addAction(0, resources.getString(R.string.cancel), cancelNotificationPendingIntent)
             notificationManager.notify(id, notificationBuilder.build())
         } catch (e: Exception) {

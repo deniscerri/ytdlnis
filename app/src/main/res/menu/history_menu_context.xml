@@ -23,6 +23,12 @@
         android:title="@string/share" />
 
     <item
+        android:id="@+id/redownload"
+        android:icon="@drawable/baseline_share_24"
+        app:showAsAction="ifRoom"
+        android:title="@string/redownload" />
+
+    <item
         android:id="@+id/select_all"
         android:title="@string/select_all"
         app:showAsAction="never" />

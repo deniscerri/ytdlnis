@@ -1126,15 +1126,22 @@ class YTDLPUtil(private val context: Context) {
     }
 
     private fun getYoutubeExtractorArgs() : String {
-        val playerClient = sharedPreferences.getString("youtube_player_client", "default,mediaconnect")!!
-            .ifEmpty { "default,mediaconnect" }
+        val playerClient = sharedPreferences.getString("youtube_player_client", "default,mediaconnect")!!.split(",").filter { it.isNotBlank() }.toMutableList()
         val extractorArgs = mutableListOf<String>()
-        extractorArgs.add("player_client=${playerClient}")
+
+        val poToken = sharedPreferences.getString("youtube_po_token", "")!!
+        if (poToken.isNotBlank() && !playerClient.contains("web")) {
+            playerClient.add("web")
+        }
+
+        if (playerClient.isNotEmpty()){
+            extractorArgs.add("player_client=${playerClient.joinToString(",")}")
+        }
+
         val lang = Locale.getDefault().language
         if (context.getStringArray(R.array.subtitle_langs).contains(lang)) {
             extractorArgs.add("lang=$lang")
         }
-        val poToken = sharedPreferences.getString("youtube_po_token", "")!!
         if (poToken.isNotBlank()) {
             extractorArgs.add("po_token=web+$poToken")
         }

@@ -423,7 +423,7 @@
     <string name="items">أغراض/غرض</string>
     <string name="socket_timeout_description">وقت الانتظار قبل الاستسلام، في ثوانٍ</string>
     <string name="advanced">متقدم</string>
-    <string name="data_fetching_extra_commands">أوامر إضافية لجلب البيانات</string>
+    <string name="data_fetching_extra_command">أوامر إضافية لجلب البيانات</string>
     <string name="thumbnail">الصورة المصغرة</string>
     <string name="package_name">اسم الحزمة</string>
     <string name="websites">مواقع الويب</string>

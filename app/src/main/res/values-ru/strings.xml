@@ -426,7 +426,7 @@
     <string name="socket_timeout_description">Время подождать, прежде чем сдаться, в секундах</string>
     <string name="other_youtube_extractor_args">Другие аргументы в пользу экстрактора YouTube</string>
     <string name="socket_timeout">Тайм-аут сокета</string>
-    <string name="data_fetching_extra_commands">Дополнительные команды получения данных</string>
+    <string name="data_fetching_extra_command">Дополнительные команды получения данных</string>
     <string name="pause_all">Приостановить все</string>
     <string name="resume_all">Возобновить все</string>
     <string name="package_name">Имя пакета</string>

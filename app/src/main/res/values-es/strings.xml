@@ -425,7 +425,7 @@
     <string name="advanced">Avanzado</string>
     <string name="other_youtube_extractor_args">Otros argumentos del extractor de YouTube</string>
     <string name="socket_timeout_description">Tiempo de espera antes de abandonar, en segundos</string>
-    <string name="data_fetching_extra_commands">Comandos adicionales para la obtención de datos</string>
+    <string name="data_fetching_extra_command">Comandos adicionales para la obtención de datos</string>
     <string name="thumbnail">Miniaturas</string>
     <string name="pause_all">Pausar todo</string>
     <string name="resume_all">Reanudar todo</string>

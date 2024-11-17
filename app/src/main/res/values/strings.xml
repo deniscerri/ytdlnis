@@ -436,4 +436,5 @@
     <string name="advanced">Advanced</string>
     <string name="data_fetching_extra_command">Data Fetching Extra Command</string>
     <string name="thumbnail">Thumbnail</string>
+    <string name="data_fetching_extra_command_summary">Enable command templates to be used for data fetching as extra commands</string>
 </resources>

@@ -225,6 +225,14 @@ class ResultRepository(private val resultDao: ResultDao, private val context: Co
             ytExtractorResult.getOrElse { items }
         }else{
             val res = ytdlpUtil.getFromYTDL(url)
+            //TODO REMOVE THIS WHEN YT-DLP FIXES ISSUE #10827
+            res.forEach {
+                it.apply {
+                    playlistTitle = ""
+                    playlistURL = ""
+                    playlistIndex = 0
+                }
+            }
             val ids = resultDao.insertMultiple(res)
             ids.forEachIndexed { index, id ->
                 res[index].id = id

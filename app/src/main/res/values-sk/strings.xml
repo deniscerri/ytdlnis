@@ -433,5 +433,5 @@
     <string name="deleted">Odstránené</string>
     <string name="websites">Webové stránky</string>
     <string name="thumbnail">Miniatúra</string>
-    <string name="data_fetching_extra_commands">Doplnkové príkazy na načítanie údajov</string>
+    <string name="data_fetching_extra_command">Doplnkové príkazy na načítanie údajov</string>
 </resources>

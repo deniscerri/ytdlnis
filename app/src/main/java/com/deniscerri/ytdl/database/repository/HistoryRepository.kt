@@ -35,6 +35,10 @@ class HistoryRepository(private val historyDao: HistoryDao) {
         return historyDao.getAllHistoryByURL(url)
     }
 
+    fun getAllByIDs(ids: List<Long>) : List<HistoryItem> {
+        return historyDao.getAllHistoryByIDs(ids)
+    }
+
     data class HistoryIDsAndPaths(
         val id: Long,
         val downloadPath: List<String>

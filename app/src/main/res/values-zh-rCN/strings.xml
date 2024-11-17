@@ -419,7 +419,7 @@
     <string name="playlist_as_album">将播放列表名用作专辑元数据</string>
     <string name="playlist_as_album_summary">如果专辑元数据不存在，使用播放列表名</string>
     <string name="data_fetching_extractor_youtube">数据获取提取工具（YouTube）</string>
-    <string name="data_fetching_extra_commands">数据获取的额外命令</string>
+    <string name="data_fetching_extra_command">数据获取的额外命令</string>
     <string name="thumbnail">缩略图</string>
     <string name="items">项目</string>
     <string name="other_youtube_extractor_args">其他 YouTube 提取器变量</string>

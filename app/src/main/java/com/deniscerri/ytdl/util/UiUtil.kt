@@ -196,6 +196,8 @@ object UiUtil {
         val shortcutsChipGroup : ChipGroup = bottomSheet.findViewById(R.id.shortcutsChipGroup)!!
         val editShortcuts : Button = bottomSheet.findViewById(R.id.edit_shortcuts)!!
 
+        extraCommandsDataFetchingSwitch.isVisible = sharedPreferences.getBoolean("enable_data_fetching_extra_commands", false)
+
         if (item != null){
             title.editText!!.setText(item.title)
             content.editText!!.setText(item.content)
@@ -254,7 +256,7 @@ object UiUtil {
 
         if (item != null){
             preferredCommandSwitch.isChecked = item.content == sharedPreferences.getString("preferred_command_template", "")
-            extraCommandsDataFetchingSwitch.isChecked = item.useAsExtraCommandDataFetching
+            extraCommandsDataFetchingSwitch.isChecked = item.useAsExtraCommandDataFetching && extraCommandsDataFetchingSwitch.isVisible
 
             extraCommandsSwitch.isChecked = item.useAsExtraCommand
             if (item.useAsExtraCommand){

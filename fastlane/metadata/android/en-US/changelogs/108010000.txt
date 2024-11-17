@@ -1,0 +1,9 @@
+# What's Changed
+
+- Download History Pagination
+- Delete All option for each screen in download queue
+- Added Terminal Shortcut
+- Grouped Download Notifications
+- Advanced Settings
+- Crash Fixes
+- Read the Github changelog for more info

@@ -616,6 +616,39 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         processingItemsJob = job
     }
 
+    fun turnHistoryItemsToProcessingDownloads(itemIDs: List<Long>, downloadNow: Boolean = false) = viewModelScope.launch(Dispatchers.IO) {
+        val job = viewModelScope.launch(Dispatchers.IO) {
+            repository.deleteProcessing()
+            processingItems.emit(true)
+            try {
+                val toInsert = mutableListOf<DownloadItem>()
+                itemIDs.forEach {
+                    val item = historyRepository.getItem(it)
+                    val downloadItem = createDownloadItemFromHistory(item)
+                    downloadItem.status = DownloadRepository.Status.Processing.toString()
+
+                    if (processingItemsJob?.isCancelled == true) {
+                        throw CancellationException()
+                    }
+
+                    if (downloadNow) {
+                        downloadItem.status = DownloadRepository.Status.Queued.toString()
+                        queueDownloads(listOf(downloadItem))
+                    }else{
+                        toInsert.add(downloadItem)
+                        //repository.insert(downloadItem)
+                    }
+                }
+                repository.insertAll(toInsert)
+                processingItems.emit(false)
+            } catch (e: Exception) {
+                deleteProcessing()
+                processingItems.emit(false)
+            }
+        }
+        processingItemsJob = job
+    }
+
 
     fun turnResultItemsToProcessingDownloads(itemIDs: List<Long>, downloadNow: Boolean = false) = viewModelScope.launch(Dispatchers.IO) {
         val job = viewModelScope.launch(Dispatchers.IO) {

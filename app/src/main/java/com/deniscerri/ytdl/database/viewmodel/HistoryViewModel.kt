@@ -146,7 +146,11 @@ class HistoryViewModel(application: Application) : AndroidViewModel(application)
         val ids = repository.getFilteredIDs(queryFilter.value, typeFilter.value, websiteFilter.value, sortType.value, sortOrder.value, statusFilter.value)
         val firstIndex = ids.indexOf(firstID)
         val secondIndex = ids.indexOf(secondID)
-        return ids.filterIndexed {index, _ -> index in (firstIndex + 1) until secondIndex }
+        return if (firstIndex > secondIndex) {
+            ids.filterIndexed {index, _ -> index < firstIndex && index > secondIndex }
+        }else {
+            ids.filterIndexed {index, _ -> index > firstIndex && index < secondIndex }
+        }
     }
 
     fun getItemIDsNotPresentIn(not: List<Long>) : List<Long> {

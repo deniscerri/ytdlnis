@@ -1,5 +1,28 @@
 # YTDLnis Changelog
 
+> # 1.8.1 (2024-11)
+
+# What's Changed
+
+- Implemented pagination in the History screen to help with large lists
+- Added delete all for each page in the download queue screen
+- Added accessing Terminal from the shortcuts menu of the app
+- Made the download notifications grouped together
+- Fixed app crashing when pressing the log of a download but the log has been deleted
+- Fixed app crashing when queueing long list of items in the download queue
+- Added ability to mass re-download items from the history screen
+- Made the app remember the last used scheduled time so it can suggest you that time for the next download
+- #618, made all preferences with a description show their values
+- Fixed bug that prevented app from loading all urls from text file
+
+# Advanced Settings
+
+Added a new category for more advanced users and moved the extractor argument settings there.
+- Added ability to make command templates usable while fetching data in the home screen. They will be appended to the data fetching command as an extra command in the end. Enable the toggle in the advanced settings to be able to configure your templates for it
+- When PO Token is set, the app now adds the web extractor argument for youtube. I forgor...
+  (If you want to set more PO tokens for other player clients i guess set them in the other extractor argument text preference, and also modify the player client. The separate PO Token preference applies it only for the web player client)
+
+
 > # 1.8.0 (2024-10)
 
 # Notice

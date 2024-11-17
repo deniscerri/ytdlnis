@@ -422,7 +422,7 @@
     <string name="data_fetching_extractor_youtube">Məlumat Çıxarıcı (YouTube)</string>
     <string name="items">element</string>
     <string name="socket_timeout">Uzun Vaxt Çıxışı</string>
-    <string name="data_fetching_extra_commands">Məlumat Alınması Əlavə Əmrləri</string>
+    <string name="data_fetching_extra_command">Məlumat Alınması Əlavə Əmrləri</string>
     <string name="thumbnail">Miniatür</string>
     <string name="other_youtube_extractor_args">Digər YouTube Extractor Hissəcikləri</string>
     <string name="socket_timeout_description">Bitirməzdən əvvəl saniyə ilə gözləmək vaxtı</string>

@@ -3,6 +3,7 @@ package com.deniscerri.ytdl.ui.downloads
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.DialogInterface
+import android.content.SharedPreferences
 import android.graphics.Canvas
 import android.graphics.Color
 import android.os.Bundle
@@ -85,6 +86,7 @@ class HistoryFragment : Fragment(), HistoryPaginatedAdapter.OnItemClickListener{
     private lateinit var uiHandler: Handler
     private lateinit var noResults: RelativeLayout
     private lateinit var selectionChips: LinearLayout
+    private lateinit var sharedPreferences: SharedPreferences
     private var websiteList: MutableList<String> = mutableListOf()
     private var totalCount = 0
     private var actionMode : ActionMode? = null
@@ -104,6 +106,7 @@ class HistoryFragment : Fragment(), HistoryPaginatedAdapter.OnItemClickListener{
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
         fragmentContext = context
         layoutinflater = LayoutInflater.from(context)
         topAppBar = view.findViewById(R.id.history_toolbar)
@@ -626,6 +629,31 @@ class HistoryFragment : Fragment(), HistoryPaginatedAdapter.OnItemClickListener{
                         FileUtil.shareFileIntent(requireContext(), paths.flatten())
                         historyAdapter.clearCheckedItems()
                         actionMode?.finish()
+                    }
+                    true
+                }
+                R.id.redownload -> {
+                    lifecycleScope.launch {
+                        val selectedObjects = getSelectedIDs()
+                        historyAdapter.clearCheckedItems()
+                        actionMode?.finish()
+                        if (selectedObjects.size == 1) {
+                            val tmp = withContext(Dispatchers.IO) {
+                                historyViewModel.getByID(selectedObjects.first())
+                            }
+
+                            findNavController().navigate(R.id.downloadBottomSheetDialog, bundleOf(
+                                Pair("result", downloadViewModel.createResultItemFromHistory(tmp)),
+                                Pair("type", tmp.type)
+                            ))
+                        }else {
+                            val showDownloadCard = sharedPreferences.getBoolean("download_card", true)
+                            downloadViewModel.turnHistoryItemsToProcessingDownloads(selectedObjects, downloadNow = !showDownloadCard)
+                            actionMode?.finish()
+                            if (showDownloadCard){
+                                findNavController().navigate(R.id.downloadMultipleBottomSheetDialog2)
+                            }
+                        }
                     }
                     true
                 }

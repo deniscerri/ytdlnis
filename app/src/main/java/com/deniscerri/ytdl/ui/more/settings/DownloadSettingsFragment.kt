@@ -8,6 +8,7 @@ import android.provider.Settings
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.interaction.DragInteraction
 import androidx.core.content.edit
+import androidx.preference.EditTextPreference
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceManager
@@ -175,6 +176,92 @@ class DownloadSettingsFragment : BaseSettingsFragment() {
                 scheduler.schedule()
             }
             true
+        }
+
+
+        findPreference<EditTextPreference>("proxy")?.apply {
+            val s = getString(R.string.socks5_proxy_summary)
+            summary = if (text.isNullOrBlank()) {
+                s
+            }else {
+                "${s}\n[${text}]"
+            }
+            setOnPreferenceChangeListener { _, newValue ->
+                summary = if ((newValue as String?).isNullOrBlank()) {
+                    s
+                }else {
+                    "${s}\n[${newValue}]"
+                }
+                true
+            }
+        }
+
+        findPreference<ListPreference>("preferred_download_type")?.apply {
+            val s = getString(R.string.preferred_download_type_summary)
+            summary = if (value.isNullOrBlank()) {
+                s
+            }else {
+                "${s}\n[${entries[entryValues.indexOf(value)]}]"
+            }
+            setOnPreferenceChangeListener { _, newValue ->
+                summary = if ((newValue as String?).isNullOrBlank()) {
+                    s
+                }else {
+                    "${s}\n[${entries[entryValues.indexOf(newValue)]}]"
+                }
+                true
+            }
+        }
+
+        findPreference<EditTextPreference>("limit_rate")?.apply {
+            val s = getString(R.string.limit_rate_summary)
+            summary = if (text.isNullOrBlank()) {
+                s
+            }else {
+                "${s}\n[${text}]"
+            }
+            setOnPreferenceChangeListener { _, newValue ->
+                summary = if ((newValue as String?).isNullOrBlank()) {
+                    s
+                }else {
+                    "${s}\n[${newValue}]"
+                }
+                true
+            }
+        }
+
+        findPreference<EditTextPreference>("buffer_size")?.apply {
+            val s = getString(R.string.limit_rate_summary)
+            summary = if (text.isNullOrBlank()) {
+                s
+            }else {
+                "${s}\n[${text}]"
+            }
+            setOnPreferenceChangeListener { _, newValue ->
+                summary = if ((newValue as String?).isNullOrBlank()) {
+                    s
+                }else {
+                    "${s}\n[${newValue}]"
+                }
+                true
+            }
+        }
+
+        findPreference<EditTextPreference>("socket_timeout")?.apply {
+            val s = getString(R.string.limit_rate_summary)
+            summary = if (text.isNullOrBlank()) {
+                s
+            }else {
+                "${s}\n[${text}]"
+            }
+            setOnPreferenceChangeListener { _, newValue ->
+                summary = if ((newValue as String?).isNullOrBlank()) {
+                    s
+                }else {
+                    "${s}\n[${newValue}]"
+                }
+                true
+            }
         }
     }
 

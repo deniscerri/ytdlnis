@@ -432,6 +432,6 @@
     <string name="advanced">Avancuar</string>
     <string name="socket_timeout">Timeout Socket</string>
     <string name="socket_timeout_description">Koha për të pritur përpara se të dorëzohet, në sekonda</string>
-    <string name="data_fetching_extra_commands">Komandat Ekstra per marrjen e të dhënave</string>
+    <string name="data_fetching_extra_command">Komandat Ekstra per marrjen e të dhënave</string>
     <string name="preferred_command_template">Modeli i komandës së preferuar</string>
 </resources>

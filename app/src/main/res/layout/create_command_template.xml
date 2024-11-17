@@ -171,9 +171,6 @@
                     android:textSize="15sp"
                     app:layout_constraintEnd_toEndOf="parent" />
 
-                <View
-                    style="@style/Divider.Horizontal"
-                    android:layout_marginVertical="10dp" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
