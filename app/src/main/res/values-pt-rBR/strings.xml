@@ -434,4 +434,5 @@
     <string name="package_name">Nome do pacote</string>
     <string name="status">Status</string>
     <string name="data_fetching_extra_command">Comando extra para busca de dados</string>
+    <string name="data_fetching_extra_command_summary">Permitir que os modelos de comando sejam usados para busca de dados a partir de comandos extras</string>
 </resources>
