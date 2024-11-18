@@ -419,4 +419,13 @@
     <string name="continue_anyway">Toch doorgaan</string>
     <string name="playlist_as_album">Afspeellĳst­naam gebruiken als album­metagegevens</string>
     <string name="playlist_as_album_summary">Als er geen album­metagegevens aanwezig zĳn, gebruik dan de naam van de afspeel­lĳst</string>
+    <string name="advanced">Geavanceerd</string>
+    <string name="thumbnail">Miniatuur</string>
+    <string name="socket_timeout">Socket-time-out</string>
+    <string name="status">Status</string>
+    <string name="deleted">Verwĳderd</string>
+    <string name="pause_all">Alles pauzeren</string>
+    <string name="resume_all">Alles hervatten</string>
+    <string name="package_name">Pakket­naam</string>
+    <string name="websites">Websites</string>
 </resources>
