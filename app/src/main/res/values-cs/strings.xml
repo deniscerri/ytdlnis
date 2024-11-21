@@ -434,4 +434,5 @@
     <string name="deleted">Odstraněno</string>
     <string name="websites">Webové stránky</string>
     <string name="data_fetching_extra_command">Doplňkové příkazy pro načítání dat</string>
+    <string name="data_fetching_extra_command_summary">Povolí použití šablon příkazů pro načítání dat jako doplňkových příkazů</string>
 </resources>
