@@ -433,4 +433,5 @@
     <string name="websites">网站</string>
     <string name="status">状态</string>
     <string name="data_fetching_extra_command">数据获取的额外命令</string>
+    <string name="data_fetching_extra_command_summary">将获取数据的命令模板作为附加命令开启</string>
 </resources>
