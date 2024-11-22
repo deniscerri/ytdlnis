@@ -434,4 +434,5 @@
     <string name="socket_timeout_description">Koha për të pritur përpara se të dorëzohet, në sekonda</string>
     <string name="data_fetching_extra_command">Komandat Ekstra per marrjen e të dhënave</string>
     <string name="preferred_command_template">Modeli i komandës së preferuar</string>
+    <string name="data_fetching_extra_command_summary">Aktivizo shabllonet e komandave që do të përdoren për marrjen e të dhënave si komanda shtesë</string>
 </resources>
