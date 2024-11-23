@@ -381,7 +381,7 @@
     <string name="no_download_fragments_summary">Mos përdorni skedarë .part dhe shkruani direkt në skedarin dalës</string>
     <string name="subtitles">Titrat</string>
     <string name="prevent_duplicate_downloads">Parandalo Shkarkimet Duplikate</string>
-    <string name="prevent_duplicate_url_type">URL dhe Tipi i Shkarkimit</string>
+    <string name="prevent_duplicate_url_type"><![CDATA[URL &Lloji i shkarkimit]]></string>
     <string name="prevent_duplicate_config">Konfigurimi i plotë</string>
     <string name="copy_url">Kopjo URL</string>
     <string name="move_top">Vendose në fillim</string>
