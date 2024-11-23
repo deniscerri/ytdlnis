@@ -421,7 +421,7 @@
     <string name="recode_video">Mã hóa Video</string>
     <string name="other_youtube_extractor_args">Tranh luận giữa các trình trích xuất</string>
     <string name="items">Vật phấm</string>
-    <string name="socket_timeout">Hết thời gian chờ</string>
+    <string name="socket_timeout">Hết thời gian chờ (có vấn đề với gói tin hoặc mạng)</string>
     <string name="socket_timeout_description">Hãy đợi một chút trước khi bỏ cuộc, quá trình đang được thực hiện trong giây lát</string>
     <string name="advanced">Nâng cao</string>
     <string name="pause_all">Tạm dừng tất cả</string>
@@ -430,6 +430,9 @@
     <string name="preferred_command_template">Mẫu lệnh ưa thích</string>
     <string name="status">Trạng thái</string>
     <string name="deleted">Đã xoá</string>
-    <string name="websites">Trang web</string>
+    <string name="websites">Các trang webs</string>
     <string name="data_fetching_extractor_youtube">Trình trích xuất dữ liệu (từ Youtube)</string>
+    <string name="thumbnail">Ảnh bìa</string>
+    <string name="data_fetching_extra_command">Lệnh bổ sung để lấy dữ liệu</string>
+    <string name="data_fetching_extra_command_summary">Dùng mẫu lệnh để lấy dữ liệu như tập lệnh bổ sung</string>
 </resources>
