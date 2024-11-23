@@ -434,4 +434,5 @@
     <string name="socket_timeout">مهلة المقبس</string>
     <string name="pause_all">إيقاف الكل مؤقتًا</string>
     <string name="data_fetching_extra_command">أمر جلب البيانات الإضافي</string>
+    <string name="data_fetching_extra_command_summary">فعّل قوالب الأوامر لاستخدامها في جلب البيانات كأوامر إضافية</string>
 </resources>
