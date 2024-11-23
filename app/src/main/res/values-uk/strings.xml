@@ -434,4 +434,5 @@
     <string name="deleted">Видалено</string>
     <string name="websites">Веб-сайти</string>
     <string name="data_fetching_extra_command">Додаткова команда отримання даних</string>
+    <string name="data_fetching_extra_command_summary">Увімкнути використання шаблонів команд для отримання даних як додаткових команд</string>
 </resources>

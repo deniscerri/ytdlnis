@@ -434,4 +434,6 @@
     <string name="package_name">Paket Adı</string>
     <string name="resume_all">Hamısına Davam</string>
     <string name="preferred_command_template">Üstünlük Verilən Əmr Şablonu</string>
+    <string name="data_fetching_extra_command">Məlumat Alınması Əlavə Əmri</string>
+    <string name="data_fetching_extra_command_summary">Əlavə əmrlər kimi məlumat alınmasında istifadə ediləcək əmr şablonların işə sal</string>
 </resources>

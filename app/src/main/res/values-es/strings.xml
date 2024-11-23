@@ -434,4 +434,5 @@
     <string name="deleted">Eliminado</string>
     <string name="websites">Páginas web</string>
     <string name="data_fetching_extra_command">Comando adicional de obtención de datos</string>
+    <string name="data_fetching_extra_command_summary">Habilitar plantillas de comandos que se utilizarán para la obtención de datos como comandos adicionales</string>
 </resources>

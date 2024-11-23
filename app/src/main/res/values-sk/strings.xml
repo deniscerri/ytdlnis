@@ -434,4 +434,5 @@
     <string name="websites">Webové stránky</string>
     <string name="thumbnail">Miniatúra</string>
     <string name="data_fetching_extra_command">Doplnkové príkazy na načítanie údajov</string>
+    <string name="data_fetching_extra_command_summary">Povolí šablóny príkazov, ktoré budú použité na načítanie údajov ako doplnkové príkazy</string>
 </resources>
