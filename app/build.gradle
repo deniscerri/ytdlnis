@@ -3,8 +3,9 @@ plugins {
     id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin' version '2.0.1'
     id 'org.jetbrains.kotlin.android'
     id 'com.google.devtools.ksp'
-    id "org.jetbrains.kotlin.plugin.serialization" version "1.8.10"
-    id "org.jetbrains.kotlin.plugin.parcelize" version "1.8.10"
+    id "org.jetbrains.kotlin.plugin.serialization" version "2.0.21"
+    id "org.jetbrains.kotlin.plugin.parcelize" version "2.0.21"
+    id "org.jetbrains.kotlin.plugin.compose" version "2.0.21"
 }
 
 def properties = new Properties()
@@ -101,6 +102,7 @@ android {
 
     buildFeatures {
         viewBinding true
+        buildConfig true
         compose true
     }
 
@@ -195,7 +197,7 @@ dependencies {
     implementation 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0'
     implementation 'it.xabaras.android:recyclerview-swipedecorator:1.4'
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.8.6"
-    implementation "com.github.Irineu333:Highlight-KT:1.0.4"
+    implementation "com.neoutils.highlight:highlight-view:2.2.0"
 
     // For media playback using ExoPlayer
     implementation("androidx.media3:media3-exoplayer:$media3_version")

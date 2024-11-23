@@ -725,6 +725,18 @@ class YTDLPUtil(private val context: Context) {
             request.addOption("--download-archive", FileUtil.getDownloadArchivePath(context))
         }
 
+        if (!sharedPreferences.getBoolean("disable_write_info_json", false)) {
+            val infoJsonFile = downDir.walkTopDown().firstOrNull { it.name == "${downloadItem.id}.info.json" }
+            //ignore info file if its older than 5 hours. puny measure to prevent expired formats in some cases
+            if (infoJsonFile == null || System.currentTimeMillis() - infoJsonFile.lastModified() > (1000 * 60 * 60 * 5)) {
+                request.addOption("--write-info-json")
+                request.addOption("--no-clean-info-json")
+                request.addOption("-o", "infojson:${downloadItem.id}")
+            }else {
+                request.addOption("--load-info-json", infoJsonFile.absolutePath)
+            }
+        }
+
         val preferredAudioCodec = sharedPreferences.getString("audio_codec", "")!!
         val aCodecPrefIndex = context.getStringArray(R.array.audio_codec_values).indexOf(preferredAudioCodec)
         val aCodecPref = runCatching { context.getStringArray(R.array.audio_codec_values_ytdlp)[aCodecPrefIndex] }.getOrElse { "" }

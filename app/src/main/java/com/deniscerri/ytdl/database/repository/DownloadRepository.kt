@@ -123,6 +123,10 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
         downloadDao.setStatus(id, status.toString())
     }
 
+    suspend fun setDownloadStatusMultiple(ids: List<Long>, status: Status) {
+        downloadDao.setStatusMultiple(ids, status.toString())
+    }
+
     fun getItemByID(id: Long) : DownloadItem {
         return downloadDao.getDownloadById(id)
     }

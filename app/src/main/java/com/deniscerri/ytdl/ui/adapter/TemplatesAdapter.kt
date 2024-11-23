@@ -71,6 +71,10 @@ class TemplatesAdapter(onItemClickListener: OnItemClickListener, activity: Activ
             text = finalText
         }
 
+        card.findViewById<TextView>(R.id.dataFetchingExtraCommands).apply {
+            isVisible = item.useAsExtraCommandDataFetching
+        }
+
         card.findViewById<TextView>(R.id.preferredTemplate).apply {
             val preferred = sharedPreferences.getString("preferred_command_template", "")
             isVisible = preferred == item.content
@@ -165,7 +169,8 @@ class TemplatesAdapter(onItemClickListener: OnItemClickListener, activity: Activ
                         oldItem.content == newItem.content &&
                         oldItem.useAsExtraCommand == newItem.useAsExtraCommand &&
                         oldItem.useAsExtraCommandAudio == newItem.useAsExtraCommandAudio &&
-                        oldItem.useAsExtraCommandVideo == newItem.useAsExtraCommandVideo
+                        oldItem.useAsExtraCommandVideo == newItem.useAsExtraCommandVideo &&
+                        oldItem.useAsExtraCommandDataFetching == newItem.useAsExtraCommandDataFetching
             }
         }
     }

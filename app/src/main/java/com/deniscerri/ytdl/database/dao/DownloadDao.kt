@@ -228,6 +228,9 @@ interface DownloadDao {
     @Query("UPDATE downloads set status=:status where id=:id")
     suspend fun setStatus(id: Long, status: String)
 
+    @Query("UPDATE downloads set status=:status where id IN (:ids)")
+    suspend fun setStatusMultiple(ids: List<Long>, status: String)
+
     @Update
     suspend fun updateWithoutUpsert(item: DownloadItem)
 

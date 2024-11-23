@@ -1268,9 +1268,7 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         }
         delay(1000)
         isPausingResuming = false
-        activeDownloadsList.forEach {
-            repository.setDownloadStatus(it.id, DownloadRepository.Status.Paused)
-        }
+        repository.setDownloadStatusMultiple(activeDownloadsList.map { it.id }, DownloadRepository.Status.Paused)
         pausedAllDownloads.value = PausedAllDownloadsState.RESUME
     }
 

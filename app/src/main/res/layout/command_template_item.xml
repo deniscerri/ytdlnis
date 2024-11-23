@@ -41,64 +41,75 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/title" />
 
-        <HorizontalScrollView
-            android:layout_width="wrap_content"
-            android:scrollbars="none"
+        <com.google.android.material.chip.ChipGroup
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/content"
             app:layout_constraintHorizontal_bias="0.0"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/preferredTemplate"
+                style="@style/Widget.Material3.FloatingActionButton.Large.Primary"
+                android:visibility="gone"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_corner"
+                android:backgroundTint="?attr/colorPrimaryContainer"
+                android:clickable="false"
+                android:gravity="center"
+                android:minWidth="30dp"
+                android:paddingHorizontal="5dp"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                app:cornerRadius="10dp"
+                android:text="@string/preferred_command_template"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
 
-                <TextView
-                    android:id="@+id/preferredTemplate"
-                    style="@style/Widget.Material3.FloatingActionButton.Large.Primary"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="5dp"
-                    android:background="@drawable/rounded_corner"
-                    android:backgroundTint="?attr/colorPrimaryContainer"
-                    android:clickable="false"
-                    android:gravity="center"
-                    android:visibility="gone"
-                    android:minWidth="30dp"
-                    android:paddingHorizontal="5dp"
-                    android:textSize="12sp"
-                    android:textStyle="bold"
-                    app:cornerRadius="10dp"
-                    android:text="@string/preferred_command_template"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"/>
+            <TextView
+                android:id="@+id/useInExtraCommands"
+                style="@style/Widget.Material3.FloatingActionButton.Large.Secondary"
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/extra_command"
+                android:background="@drawable/rounded_corner"
+                android:backgroundTint="?attr/colorSecondaryContainer"
+                android:clickable="false"
+                android:gravity="center"
+                android:minWidth="30dp"
+                android:paddingHorizontal="5dp"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                app:cornerRadius="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/useInExtraCommands"
-                    style="@style/Widget.Material3.FloatingActionButton.Large.Secondary"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    android:layout_marginEnd="5dp"
-                    android:text="@string/extra_command"
-                    android:background="@drawable/rounded_corner"
-                    android:backgroundTint="?attr/colorSecondaryContainer"
-                    android:clickable="false"
-                    android:gravity="center"
-                    android:minWidth="30dp"
-                    android:paddingHorizontal="5dp"
-                    android:textSize="12sp"
-                    android:textStyle="bold"
-                    app:cornerRadius="10dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:id="@+id/dataFetchingExtraCommands"
+                style="@style/Widget.Material3.FloatingActionButton.Large.Tertiary"
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/data_fetching_extra_command"
+                android:background="@drawable/rounded_corner"
+                android:backgroundTint="?attr/colorTertiaryContainer"
+                android:clickable="false"
+                android:gravity="center"
+                android:minWidth="30dp"
+                android:paddingHorizontal="5dp"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                app:cornerRadius="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-            </LinearLayout>
-
-        </HorizontalScrollView>
+        </com.google.android.material.chip.ChipGroup>
 
 
 

@@ -46,11 +46,12 @@ import com.deniscerri.ytdl.database.repository.ObserveSourcesRepository.EveryCat
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.tabs.TabLayout
-import com.google.gson.Gson
-import com.google.gson.JsonArray
-import com.neo.highlight.core.Highlight
-import com.neo.highlight.util.listener.HighlightTextWatcher
-import com.neo.highlight.util.scheme.ColorScheme
+import com.neoutils.highlight.core.Highlight
+import com.neoutils.highlight.core.scheme.TextColorScheme
+import com.neoutils.highlight.core.util.Match
+import com.neoutils.highlight.core.util.UiColor
+import com.neoutils.highlight.view.extension.toSpannedString
+import com.neoutils.highlight.view.text.HighlightTextWatcher
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
@@ -72,28 +73,27 @@ object Extensions {
         return (metrics.density * px).toInt()
     }
 
-    private var textHighLightSchemes = listOf(
-        ColorScheme(Pattern.compile("([\"'])(?:\\\\1|.)*?\\1"), Color.parseColor("#FC8500")),
-        ColorScheme(Pattern.compile("yt-dlp"), Color.parseColor("#77eb09")),
-        ColorScheme(Pattern.compile("(https?://(?:www\\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|www\\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|https?://(?:www\\.|(?!www))[a-zA-Z0-9]+\\.[^\\s]{2,}|www\\.[a-zA-Z0-9]+\\.[^\\s]{2,})"), Color.parseColor("#b5942f")),
-        ColorScheme(Pattern.compile("\\d+(\\.\\d)?%"), Color.parseColor("#43a564"))
+    private var textHighlightSchemes = listOf(
+        TextColorScheme(regex = "([\"'])(?:\\\\1|.)*?\\1".toRegex(), match = Match.fully(UiColor.Hex("#FC8500"))),
+        TextColorScheme(regex = "yt-dlp".toRegex(), match = Match.fully(UiColor.Hex("#77eb09"))),
+        TextColorScheme(regex = "(https?://(?:www\\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|www\\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|https?://(?:www\\.|(?!www))[a-zA-Z0-9]+\\.[^\\s]{2,}|www\\.[a-zA-Z0-9]+\\.[^\\s]{2,})".toRegex(), match = Match.fully(UiColor.Hex("#b5942f"))),
+        TextColorScheme(regex = "\\d+(\\.\\d)?%".toRegex(), match = Match.fully(UiColor.Hex("#43a564"))),
     )
+
 
     fun View.enableTextHighlight(){
         if (this is EditText || this is TextView){
             //init syntax highlighter
-            val highlight = Highlight()
-            val highlightWatcher = HighlightTextWatcher()
+            val highlight = Highlight(textHighlightSchemes)
+            val highlightWatcher = HighlightTextWatcher(highlight)
 
-            highlight.addScheme(
-                *textHighLightSchemes.map { it }.toTypedArray()
-            )
-            highlightWatcher.addScheme(
-                *textHighLightSchemes.map { it }.toTypedArray()
-            )
-
-            highlight.setSpan(this as TextView)
-            this.addTextChangedListener(highlightWatcher)
+            if (this is EditText) {
+                this.addTextChangedListener(highlightWatcher)
+                this.setText(highlight.toSpannedString(this.text.toString()))
+            }else if (this is TextView) {
+                this.addTextChangedListener(highlightWatcher)
+                this.text = highlight.toSpannedString(this.text.toString())
+            }
         }
     }
 
