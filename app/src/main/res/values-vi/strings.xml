@@ -419,4 +419,17 @@
     <string name="use_item_url_not_playlist_summary">Nếu bật thì metadata của danh sách phát sẽ không được thêm vào tệp</string>
     <string name="recode_video_summary">Mã hóa tệp video thành định dạng được chỉ định</string>
     <string name="recode_video">Mã hóa Video</string>
+    <string name="other_youtube_extractor_args">Tranh luận giữa các trình trích xuất</string>
+    <string name="items">Vật phấm</string>
+    <string name="socket_timeout">Hết thời gian chờ</string>
+    <string name="socket_timeout_description">Hãy đợi một chút trước khi bỏ cuộc, quá trình đang được thực hiện trong giây lát</string>
+    <string name="advanced">Nâng cao</string>
+    <string name="pause_all">Tạm dừng tất cả</string>
+    <string name="resume_all">Tiếp tục tải tất cả</string>
+    <string name="package_name">Tên package (gói)</string>
+    <string name="preferred_command_template">Mẫu lệnh ưa thích</string>
+    <string name="status">Trạng thái</string>
+    <string name="deleted">Đã xoá</string>
+    <string name="websites">Trang web</string>
+    <string name="data_fetching_extractor_youtube">Trình trích xuất dữ liệu (từ Youtube)</string>
 </resources>
