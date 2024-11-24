@@ -67,7 +67,7 @@
     <string name="audio_quality">Calidad de Audio</string>
     <string name="audio_quality_summary">0 (mejor) 10 (peor)</string>
     <string name="command_download_notification_channel_name">Descargas de Comandos</string>
-    <string name="history_is_empty">la historia esta vacia</string>
+    <string name="history_is_empty">El historial está vacío</string>
     <string name="api_key">Usar llave API</string>
     <string name="link_copied_to_clipboard">Vínculo copiado al portapapeles</string>
     <string name="update_app_summary">Anunciar nuevas versiones de la aplicación cuando se abre. Los datos se extraen del repositorio oficial de Github</string>
@@ -89,8 +89,8 @@
     <string name="delete_file_too">Eliminar el archivo del dispositivo</string>
     <string name="you_are_going_to_delete_multiple_items">Eliminación de varios elementos</string>
     <string name="delete_files_too">Eliminar los archivos del dispositivo</string>
-    <string name="request_permission_desc">Esta aplicación necesita Permisos de Archivo para guardar descargas en este dispositivo</string>
-    <string name="exit_app">Salir de la Aplicación</string>
+    <string name="request_permission_desc">Esta aplicación necesita Permisos de Almacenamiento para guardar descargas en este dispositivo</string>
+    <string name="exit_app">Salir de la aplicación</string>
     <string name="sponsorblock_sponsors">Patrocinadores</string>
     <string name="sponsorblock_outro">Cierre</string>
     <string name="sponsorblock_nonmusic">Partes Sin Música y Ajenas al Tema</string>
@@ -109,9 +109,9 @@
     <string name="logs">Registros</string>
     <string name="date_added">Fecha de adición</string>
     <string name="update_ytdl_nightly">Version Diaria de yt-dlp</string>
-    <string name="file_name_template">Patrón de Nombre de Archivo</string>
+    <string name="file_name_template">Plantilla con nombres de archivos</string>
     <string name="language">Idioma</string>
-    <string name="command_templates">Patrónes de Comandos</string>
+    <string name="command_templates">Plantillas de Comandos</string>
     <string name="terminal">Terminal</string>
     <string name="format">Formato</string>
     <string name="select_format">Elegir Formato</string>
@@ -120,7 +120,7 @@
     <string name="enable_mtime_summary">Coloca el encabezado HTTP Last-Modified como la hora de última modificación</string>
     <string name="log_downloads">Registros de Descargas</string>
     <string name="log_downloads_summary">Crea un archivo con un registro para cada descarga</string>
-    <string name="download_queue">Fila de Descargas</string>
+    <string name="download_queue">Cola de descargas</string>
     <string name="running">Ejecutando</string>
     <string name="command">Comando</string>
     <string name="import_from_clipboard">Importar del Portapapeles</string>
@@ -190,7 +190,7 @@
     <string name="new_cut">Nuevo corte</string>
     <string name="cookies">Cookies</string>
     <string name="get_cookies">Obtener las Cookies</string>
-    <string name="delete_all_cookies">Borrar toda las Cookies</string>
+    <string name="delete_all_cookies">Borrar toda las cookies</string>
     <string name="download_over_metered_networks">Descargar en redes móviles</string>
     <string name="metered_network_download_start_info">La descarga comenzará cuando te conectes a una red sin límitesde datos</string>
     <string name="download_over_metered_networks_summary">Descarga utilizando cualquier tipo de red. De lo contrario, espera una red sin límite de datos</string>
@@ -224,7 +224,7 @@
     <string name="accents">Acentos</string>
     <string name="high_contrast">Contraste alto</string>
     <string name="pure_theme_summary">Tema blanco y negro puro</string>
-    <string name="material_you">Material</string>
+    <string name="material_you">Material You</string>
     <string name="blue">Azul</string>
     <string name="red">Rojo</string>
     <string name="green">Verde</string>
