@@ -34,6 +34,8 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:paddingHorizontal="10dp"
+            android:divider="@drawable/divider_10dp"
+            android:showDividers="middle"
             android:baselineAligned="false">
 
             <com.google.android.material.textfield.TextInputLayout
@@ -41,7 +43,7 @@
                 style="@style/Widget.Material3.TextInputLayout.FilledBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="40"
+                android:layout_weight="45"
                 android:hint="@string/author">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -60,7 +62,6 @@
                 android:layout_weight="45"
                 android:labelFor="@id/container_textview"
                 android:hint="@string/container"
-                android:paddingStart="10dp"
                 android:paddingEnd="0dp">
 
                 <AutoCompleteTextView

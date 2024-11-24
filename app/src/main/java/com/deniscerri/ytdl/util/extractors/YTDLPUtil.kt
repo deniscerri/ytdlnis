@@ -37,6 +37,7 @@ import org.json.JSONObject
 import java.io.File
 import java.lang.reflect.Type
 import java.net.URLEncoder
+import java.security.MessageDigest
 import java.util.ArrayList
 import java.util.Locale
 import java.util.UUID
@@ -138,7 +139,33 @@ class YTDLPUtil(private val context: Context) {
             val title = jsonObject.getStringByAny("alt_title", "title", "webpage_url_basename")
             if (title == "[Private video]" || title == "[Deleted video]") continue
 
-            var author = jsonObject.getStringByAny("artists", "artist", "uploader", "channel", "playlist_uploader", "uploader_id")
+
+            var playlistTitle = jsonObject.getStringByAny("playlist_title")
+            var playlistURL: String? = ""
+            var playlistIndex: Int? = null
+
+            if(playlistTitle.removeSurrounding("\"") == query) playlistTitle = ""
+
+            if (playlistTitle.isNotBlank()){
+                playlistURL = jsonObject.getStringByAny("playlist_webpage_url").ifEmpty { query }
+                kotlin.runCatching { playlistIndex = jsonObject.getInt("playlist_index") }
+            }
+            val url = if (jsonObject.has("url") && results.size > 1){
+                jsonObject.getString("url")
+            }else{
+                if (Patterns.WEB_URL.matcher(query).matches() && playlistURL?.isEmpty() == true){
+                    query
+                }else{
+                    jsonObject.getStringByAny("webpage_url", "original_url", "url", )
+                    jsonObject.getString("webpage_url")
+                }
+            }
+
+            val authorTags = mutableListOf("uploader", "channel", "playlist_uploader", "uploader_id")
+            if (url.isYoutubeURL()) {
+                authorTags.addAll(0, listOf("artists", "artist"))
+            }
+            var author = jsonObject.getStringByAny(*authorTags.map { it }.toTypedArray())
             var duration = jsonObject.getIntByAny("duration").toString()
             if (duration != "-1"){
                 duration = jsonObject.getInt("duration").toStringDuration(Locale.US)
@@ -167,16 +194,7 @@ class YTDLPUtil(private val context: Context) {
 
             var website = jsonObject.getStringByAny("extractor_key", "extractor","ie_key")
             if (website == "Generic" || website == "HTML5MediaEmbed") website = jsonObject.getStringByAny("webpage_url_domain")
-            var playlistTitle = jsonObject.getStringByAny("playlist_title")
-            var playlistURL: String? = ""
-            var playlistIndex: Int? = null
 
-            if(playlistTitle.removeSurrounding("\"") == query) playlistTitle = ""
-
-            if (playlistTitle.isNotBlank()){
-                playlistURL = jsonObject.getStringByAny("playlist_webpage_url").ifEmpty { query }
-                kotlin.runCatching { playlistIndex = jsonObject.getInt("playlist_index") }
-            }
 
             val formatsInJSON = if (jsonObject.has("formats") && jsonObject.get("formats") is JSONArray) jsonObject.getJSONArray("formats") else null
             val formats : ArrayList<Format> = parseYTDLFormats(formatsInJSON)
@@ -201,16 +219,7 @@ class YTDLPUtil(private val context: Context) {
                 urls = urlList.joinToString("\n")
             }
 
-            val url = if (jsonObject.has("url") && results.size > 1){
-                jsonObject.getString("url")
-            }else{
-                if (Patterns.WEB_URL.matcher(query).matches() && playlistURL?.isEmpty() == true){
-                    query
-                }else{
-                    jsonObject.getStringByAny("webpage_url", "original_url", "url", )
-                    jsonObject.getString("webpage_url")
-                }
-            }
+
 
             val type = jsonObject.getStringByAny("_type")
             if (type == "playlist" && playlistTitle.isEmpty()) {
@@ -536,6 +545,7 @@ class YTDLPUtil(private val context: Context) {
             this.add(it)
         }
     }
+    @OptIn(ExperimentalStdlibApi::class)
     @SuppressLint("RestrictedApi")
     fun buildYoutubeDLRequest(downloadItem: DownloadItem) : YoutubeDLRequest {
         val useItemURL = sharedPreferences.getBoolean("use_itemurl_instead_playlisturl", false)
@@ -723,8 +733,8 @@ class YTDLPUtil(private val context: Context) {
         }
 
         if (!sharedPreferences.getBoolean("disable_write_info_json", false)) {
-            val cachePath = "${FileUtil.getCachePath(context)}/infojsons"
-            val infoJsonName = downloadItem.url.replace("/", "")
+            val cachePath = "${FileUtil.getCachePath(context)}infojsons"
+            val infoJsonName = MessageDigest.getInstance("MD5").digest(downloadItem.url.toByteArray()).toHexString()
 
             val infoJsonFile = File(cachePath).walkTopDown().firstOrNull { it.name == "${infoJsonName}.info.json" }
             //ignore info file if its older than 5 hours. puny measure to prevent expired formats in some cases
@@ -807,7 +817,10 @@ class YTDLPUtil(private val context: Context) {
                 request.addOption("-P", downDir.absolutePath)
                 request.addOption("-S", formatSorting.toString())
 
-                metadataCommands.addOption("--parse-metadata", """%(artists,artist,uploader,channel,creator|null)l:^(?P<uploader>.*?)(?:(?= - Topic)|$)""")
+                val useArtistTags = if (downloadItem.url.isYoutubeURL()) "artists,artist," else ""
+                if (downloadItem.author.isBlank()) {
+                    metadataCommands.addOption("--parse-metadata", """%(${useArtistTags}uploader,channel,creator|null)l:^(?P<uploader>.*?)(?:(?= - Topic)|$)""")
+                }
 
                 if (downloadItem.audioPreferences.splitByChapters && downloadItem.downloadSections.isBlank()){
                     request.addOption("--split-chapters")
@@ -835,9 +848,9 @@ class YTDLPUtil(private val context: Context) {
                         }
 
 
+                        metadataCommands.addOption("--parse-metadata", "%(album_artist,first_artist|)s:%(album_artist)s")
                         metadataCommands.addOption("--parse-metadata", "description:(?:Released on: )(?P<dscrptn_year>\\d{4})")
                         metadataCommands.addOption("--parse-metadata", "%(dscrptn_year,release_year,release_date>%Y,upload_date>%Y)s:(?P<meta_date>\\d+)")
-                        metadataCommands.addOption("--parse-metadata", "%(album_artist,first_artist|)s:%(album_artist)s")
 
                         if (isPlaylistItem) {
                             metadataCommands.addOption("--parse-metadata", "%(track_number,playlist_index)d:(?P<track_number>\\d+)")
@@ -877,7 +890,10 @@ class YTDLPUtil(private val context: Context) {
 
             }
             DownloadViewModel.Type.video -> {
-                metadataCommands.addOption("--parse-metadata", """%(uploader,channel,creator,artist|null)s:^(?P<uploader>.*?)(?:(?= - Topic)|$)""")
+                val useArtistTags = if (downloadItem.url.isYoutubeURL()) "artists,artist," else ""
+                if (downloadItem.author.isBlank()) {
+                    metadataCommands.addOption("--parse-metadata", """%(${useArtistTags}uploader,channel,creator|null)l:^(?P<uploader>.*?)(?:(?= - Topic)|$)""")
+                }
 
                 val supportedContainers = context.resources.getStringArray(R.array.video_containers)
 
