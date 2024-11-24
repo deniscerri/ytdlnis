@@ -230,7 +230,7 @@
     <string name="download_over_metered_networks_summary">किसी भी नेटवर्क प्रकार का उपयोग करके डाउनलोड करें। अन्यथा अमीटरयुक्त नेटवर्क की प्रतीक्षा करता है</string>
     <string name="restart">पुनः आरंभ करें</string>
     <string name="file_size">फ़ाइल का साइज़</string>
-    <string name="restrict_filenames_summary">फ़ाइल नामों को केवल ASCII वर्णों तक सीमित करें, और फ़ाइल नामों में \"&amp;\" और रिक्त स्थान से बचें</string>
+    <string name="restrict_filenames_summary"><![CDATA[फ़ाइल नामों को केवल ASCII वर्णों तक सीमित करें, और फ़ाइल नामों में \"&\" और रिक्त स्थान से बचें]]></string>
     <string name="confirm_terminate">सभी डाउनलोड बंद कर देता है और ऐप को ज़बरदस्ती बंद कर देता है</string>
     <string name="share">साझा करें</string>
     <string name="save_subs">उपशीर्षक सहेजें</string>
