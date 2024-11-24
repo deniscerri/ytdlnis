@@ -62,6 +62,7 @@ jobs:
         name: YTDLnis APK release generated
         path: ${{ env.main_project_module }}/build/outputs/apk/release/
     - name: send telegram message on push or pull
+      continue-on-error: true
       uses: appleboy/telegram-action@master
       with:
         to: ${{ secrets.TELEGRAM_TO }}
