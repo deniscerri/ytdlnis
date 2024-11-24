@@ -435,4 +435,6 @@
     <string name="status">Status</string>
     <string name="data_fetching_extra_command">Comando extra para busca de dados</string>
     <string name="data_fetching_extra_command_summary">Permitir que os modelos de comando sejam usados para busca de dados a partir de comandos extras</string>
+    <string name="disable_write_info_json">Desativar salvamento de informações Json</string>
+    <string name="disable_write_info_json_summary">(Não recomendado) Cada vez que você reiniciar/continuar o download, o yt-dlp baixará novamente os dados json dos servidores.</string>
 </resources>
