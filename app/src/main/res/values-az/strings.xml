@@ -435,4 +435,6 @@
     <string name="preferred_command_template">Üstünlük Verilən Əmr Şablonu</string>
     <string name="data_fetching_extra_command">Məlumat Alınması Əlavə Əmri</string>
     <string name="data_fetching_extra_command_summary">Əlavə əmrlər kimi məlumat alınmasında istifadə ediləcək əmr şablonların işə sal</string>
+    <string name="disable_write_info_json">Məlumat Json-u Yazmağı Qapat</string>
+    <string name="disable_write_info_json_summary">(Tövsiyə edilmir) Hər dəfə yükləməni təkrar başlatdığınızda/davam etdirdiyinizdə yt-dlp serverlərdən json məlumatını yenidən endirəcək.</string>
 </resources>
