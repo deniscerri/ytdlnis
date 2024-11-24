@@ -299,6 +299,9 @@ object FileUtil {
             request.getArguments("--config-locations")?.forEach {
                 if (it != null) File(it).delete()
             }
+            request.getArguments("-o")?.firstOrNull { it?.startsWith("infojson:") == true }?.apply {
+                File(this.removePrefix("infojson:")).delete()
+            }
         }
     }
 

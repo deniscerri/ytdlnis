@@ -20,13 +20,9 @@
             app:summary="@string/ytdl_update_hint"
             app:title="@string/update_ytdl" />
 
-        <ListPreference
-            android:defaultValue="stable"
-            android:entries="@array/ytdlp_source"
-            android:entryValues="@array/ytdlp_source_values"
+        <Preference
             android:icon="@drawable/baseline_source_24"
-            app:key="ytdlp_source"
-            app:useSimpleSummaryProvider="true"
+            app:key="ytdlp_source_label"
             app:title="@string/ytdl_source" />
 
 

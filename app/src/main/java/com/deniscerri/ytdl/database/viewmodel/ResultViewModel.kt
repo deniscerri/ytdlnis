@@ -18,7 +18,6 @@ import com.deniscerri.ytdl.database.DBManager
 import com.deniscerri.ytdl.database.dao.ResultDao
 import com.deniscerri.ytdl.database.models.ChapterItem
 import com.deniscerri.ytdl.database.models.Format
-import com.deniscerri.ytdl.database.models.HistoryItem
 import com.deniscerri.ytdl.database.models.ResultItem
 import com.deniscerri.ytdl.database.models.SearchHistoryItem
 import com.deniscerri.ytdl.database.repository.ResultRepository
@@ -33,7 +32,6 @@ import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Semaphore
 import kotlinx.coroutines.sync.withPermit
-import kotlinx.coroutines.withContext
 import java.util.concurrent.CancellationException
 
 
@@ -116,16 +114,25 @@ class ResultViewModel(private val application: Application) : AndroidViewModel(a
                 item.playlistTitle == getApplication<App>().getString(R.string.trendingPlaylist)
                 && item.creationTime < (System.currentTimeMillis() / 1000) - 86400
             ){
-                getTrending()
+                getHomeRecommendations()
             }
         }catch (e : Exception){
             e.printStackTrace()
-            getTrending()
+            getHomeRecommendations()
         }
     }
-    fun getTrending() = viewModelScope.launch(Dispatchers.IO){
-        if (sharedPreferences.getBoolean("home_recommendations", false)){
-            repository.updateTrending()
+    fun getHomeRecommendations() = viewModelScope.launch(Dispatchers.IO){
+        if (!sharedPreferences.getString("youtube_home_recommendations", "").isNullOrBlank()){
+            kotlin.runCatching {
+                uiState.update {it.copy(processing = true)}
+                repository.getHomeRecommendations()
+                uiState.update {it.copy(processing = false)}
+            }.onFailure { t ->
+                uiState.update {it.copy(
+                    processing = false,
+                    errorMessage =  t.message.toString(),
+                )}
+            }
         }else{
             deleteAll()
         }

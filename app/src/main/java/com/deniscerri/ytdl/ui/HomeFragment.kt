@@ -36,14 +36,11 @@ import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.models.ResultItem
 import com.deniscerri.ytdl.database.models.SearchSuggestionItem
 import com.deniscerri.ytdl.database.models.SearchSuggestionType
-import com.deniscerri.ytdl.database.repository.ResultRepository
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.database.viewmodel.HistoryViewModel
 import com.deniscerri.ytdl.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdl.ui.adapter.HomeAdapter
 import com.deniscerri.ytdl.ui.adapter.SearchSuggestionsAdapter
-import com.deniscerri.ytdl.ui.downloads.HistoryFragment
-import com.deniscerri.ytdl.ui.downloads.HistoryFragment.Companion
 import com.deniscerri.ytdl.util.Extensions.enableFastScroll
 import com.deniscerri.ytdl.util.Extensions.isURL
 import com.deniscerri.ytdl.util.NotificationUtil
@@ -67,7 +64,6 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.util.*
 import kotlin.collections.ArrayList
 
 
@@ -497,7 +493,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
                             resultViewModel.cancelParsingQueries()
                         }
                     }
-                    resultViewModel.getTrending()
+                    resultViewModel.getHomeRecommendations()
                     selectedObjects = ArrayList()
                     searchBar!!.setText("")
                     downloadAllFab!!.visibility = GONE

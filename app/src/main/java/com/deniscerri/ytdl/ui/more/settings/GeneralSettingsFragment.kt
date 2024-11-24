@@ -269,7 +269,29 @@ class GeneralSettingsFragment : BaseSettingsFragment() {
             }
         }
 
+        findPreference<ListPreference>("youtube_home_recommendations")?.apply {
+            val s = getString(R.string.video_recommendations_summary)
+            summary = if (value.isNullOrBlank()) {
+                s
+            }else {
+                "${s}\n[${entries[entryValues.indexOf(value)]}]"
+            }
+            setOnPreferenceChangeListener { _, newValue ->
+                summary = if ((newValue as String?).isNullOrBlank()) {
+                    s
+                }else {
+                    "${s}\n[${entries[entryValues.indexOf(newValue)]}]"
+                }
+
+                if (newValue == "yt_api") {
+                    findPreference<EditTextPreference>("api_key")?.isVisible = true
+                }
+                true
+            }
+        }
+
         findPreference<EditTextPreference>("api_key")?.apply {
+            isVisible = preferences.getString("youtube_home_recommendations", "") == "yt_api"
             val s = getString(R.string.api_key_summary)
             summary = if (text.isNullOrBlank()) {
                 s

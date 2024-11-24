@@ -3,25 +3,19 @@ package com.deniscerri.ytdl.database.repository
 import android.content.Context
 import android.util.Patterns
 import androidx.preference.PreferenceManager
-import com.deniscerri.ytdl.database.DBManager.SORTING
 import com.deniscerri.ytdl.database.dao.ResultDao
 import com.deniscerri.ytdl.database.models.ChapterItem
 import com.deniscerri.ytdl.database.models.DownloadItem
 import com.deniscerri.ytdl.database.models.Format
-import com.deniscerri.ytdl.database.models.HistoryItem
 import com.deniscerri.ytdl.database.models.ResultItem
-import com.deniscerri.ytdl.database.repository.HistoryRepository.HistorySortType
 import com.deniscerri.ytdl.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdl.util.Extensions.isYoutubeChannelURL
 import com.deniscerri.ytdl.util.Extensions.isYoutubeURL
 import com.deniscerri.ytdl.util.Extensions.isYoutubeWatchVideosURL
-import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.util.extractors.GoogleApiUtil
-import com.deniscerri.ytdl.util.extractors.PipedApiUtil
 import com.deniscerri.ytdl.util.extractors.newpipe.NewPipeUtil
 import com.deniscerri.ytdl.util.extractors.YTDLPUtil
 import com.deniscerri.ytdl.util.extractors.YoutubeApiUtil
-import com.yausername.youtubedl_android.YoutubeDLException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.runBlocking
@@ -37,14 +31,8 @@ class ResultRepository(private val resultDao: ResultDao, private val context: Co
 
     private val youtubeApiUtil = YoutubeApiUtil(context)
     private val ytdlpUtil = YTDLPUtil(context)
-    private var newPipeUtil : NewPipeUtil? = null
+    private var newPipeUtil = NewPipeUtil(context)
     private val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
-
-    init {
-        if (sharedPreferences.getString("youtube_data_fetching_extractor", "NEWPIPE") == "NEWPIPE") {
-            newPipeUtil = NewPipeUtil(context)
-        }
-    }
 
     enum class SourceType {
         YOUTUBE_VIDEO,
@@ -55,6 +43,8 @@ class ResultRepository(private val resultDao: ResultDao, private val context: Co
         YT_DLP
     }
 
+    private fun isUsingNewPipeExtractorDataFetching() = sharedPreferences.getString("youtube_data_fetching_extractor", "NEWPIPE") == "NEWPIPE"
+
     suspend fun insert(it: ResultItem){
         resultDao.insert(it)
     }
@@ -63,12 +53,17 @@ class ResultRepository(private val resultDao: ResultDao, private val context: Co
         return resultDao.getFirstResult()
     }
 
-    suspend fun updateTrending(){
+    suspend fun getHomeRecommendations(){
         deleteAll()
-        val items = if (sharedPreferences.getString("api_key", "")!!.isNotBlank()) {
-            youtubeApiUtil.getTrending()
-        }else{
-            newPipeUtil?.getTrending() ?: listOf()
+        val category = sharedPreferences.getString("youtube_home_recommendations", "")
+        val items = when(category) {
+            "newpipe" -> newPipeUtil.getTrending()
+            "yt_api" -> youtubeApiUtil.getTrending()
+            "yt_dlp_watch_later" -> ytdlpUtil.getYoutubeWatchLater()
+            "yt_dlp_recommendations" -> ytdlpUtil.getYoutubeRecommendations()
+            "yt_dlp_liked" -> ytdlpUtil.getYoutubeLikedVideos()
+            "yt_dlp_watch_history" -> ytdlpUtil.getYoutubeWatchHistory()
+            else -> arrayListOf()
         }
 
         itemCount.value = items.size
@@ -80,24 +75,28 @@ class ResultRepository(private val resultDao: ResultDao, private val context: Co
     }
 
     fun getStreamingUrlAndChapters(url: String) : Pair<List<String>, List<ChapterItem>?> {
-        val extractorsTrial = newPipeUtil?.getStreamingUrlAndChapters(url) ?: Result.failure(Throwable())
-        if (extractorsTrial.isFailure){
+        val newPipeTrial = if (isUsingNewPipeExtractorDataFetching()) {
+            newPipeUtil.getStreamingUrlAndChapters(url)
+        }else {
+            Result.failure(Throwable())
+        }
+        if (newPipeTrial.isFailure){
             val res = ytdlpUtil.getStreamingUrlAndChapters(url)
             return res.getOrDefault(Pair(listOf(""), null))
         }
 
-        return extractorsTrial.getOrNull()!!
+        return newPipeTrial.getOrNull()!!
     }
 
     suspend fun search(inputQuery: String, resetResults: Boolean, addToResults: Boolean) : ArrayList<ResultItem>{
         if (resetResults) deleteAll()
         val res = when(sharedPreferences.getString("search_engine", "ytsearch")) {
-            "ytsearch" -> newPipeUtil?.search(inputQuery)
-            "ytsearchmusic" -> newPipeUtil?.searchMusic(inputQuery)
+            "ytsearch" -> newPipeUtil.search(inputQuery)
+            "ytsearchmusic" -> newPipeUtil.searchMusic(inputQuery)
             else -> Result.failure(Throwable())
         }
 
-        val items = if (res?.isSuccess == true) {
+        val items = if (res.isSuccess) {
             res.getOrNull()!!
         }else{
             //fallback to yt-dlp
@@ -119,19 +118,24 @@ class ResultRepository(private val resultDao: ResultDao, private val context: Co
 
         //throw YoutubeDLException("Youtube Watch Videos is not yet supported in data fetching. You can download it directly by clicking Continue Anyway or by Quick Downloading it!")
         val items = mutableListOf<ResultItem>()
-        val ytExtractorResult = newPipeUtil?.getPlaylistData(inputQuery) {
-            if (addToResults){
-                runBlocking {
-                    val ids = resultDao.insertMultiple(it)
-                    ids.forEachIndexed { index, id ->
-                        it[index].id = id
+        val newpipeExtractorResult = if (isUsingNewPipeExtractorDataFetching()) {
+            newPipeUtil.getPlaylistData(inputQuery) {
+                if (addToResults){
+                    runBlocking {
+                        val ids = resultDao.insertMultiple(it)
+                        ids.forEachIndexed { index, id ->
+                            it[index].id = id
+                        }
                     }
                 }
+                items.addAll(it)
             }
-            items.addAll(it)
+        }else {
+            Result.failure(Throwable())
         }
-        val response = if (ytExtractorResult?.isSuccess == true){
-            ytExtractorResult.getOrElse { items }
+
+        val response = if (newpipeExtractorResult.isSuccess){
+            newpipeExtractorResult.getOrElse { items }
         }else{
             val res = ytdlpUtil.getFromYTDL(inputQuery)
             if (addToResults) {
@@ -149,10 +153,14 @@ class ResultRepository(private val resultDao: ResultDao, private val context: Co
 
     private suspend fun getYoutubeVideo(inputQuery: String, resetResults: Boolean, addToResults: Boolean) : List<ResultItem>{
         val theURL = inputQuery.replace("\\?list.*".toRegex(), "")
-        val ytExtractorRes = newPipeUtil?.getVideoData(theURL)
+        val newpipeExtractorResult = if (isUsingNewPipeExtractorDataFetching()) {
+            newPipeUtil.getVideoData(theURL)
+        }else {
+            Result.failure(Throwable())
+        }
 
-        val res = if (ytExtractorRes?.isSuccess == true) {
-            ytExtractorRes.getOrNull()!!
+        val res = if (newpipeExtractorResult.isSuccess) {
+            newpipeExtractorResult.getOrNull()!!
         }else{
             ytdlpUtil.getFromYTDL(inputQuery)
         }
@@ -177,19 +185,23 @@ class ResultRepository(private val resultDao: ResultDao, private val context: Co
         val playlistURL = "https://youtube.com/playlist?list=${id}"
         if (resetResults) deleteAll()
         val items = mutableListOf<ResultItem>()
-        val ytExtractorResult = newPipeUtil?.getPlaylistData(playlistURL) {
-            if (addToResults){
-                runBlocking {
-                    val ids = resultDao.insertMultiple(it)
-                    ids.forEachIndexed { index, id ->
-                        it[index].id = id
+        val ytExtractorResult = if (isUsingNewPipeExtractorDataFetching()){
+            newPipeUtil.getPlaylistData(playlistURL) {
+                if (addToResults){
+                    runBlocking {
+                        val ids = resultDao.insertMultiple(it)
+                        ids.forEachIndexed { index, id ->
+                            it[index].id = id
+                        }
                     }
                 }
+                items.addAll(it)
             }
-            items.addAll(it)
+        }else {
+            Result.failure(Throwable())
         }
 
-        val response = if (ytExtractorResult?.isSuccess == true){
+        val response = if (ytExtractorResult.isSuccess){
             ytExtractorResult.getOrElse { items }
         }else{
             val res = ytdlpUtil.getFromYTDL(playlistURL)
@@ -209,30 +221,26 @@ class ResultRepository(private val resultDao: ResultDao, private val context: Co
     private suspend fun getYoutubeChannel(url: String, resetResults: Boolean, addToResults: Boolean) : List<ResultItem>{
         if (resetResults) deleteAll()
         val items = mutableListOf<ResultItem>()
-        val ytExtractorResult = newPipeUtil?.getChannelData(url) {
-            if (addToResults){
-                runBlocking {
-                    val ids = resultDao.insertMultiple(it)
-                    ids.forEachIndexed { index, id ->
-                        it[index].id = id
+        val ytExtractorResult = if (isUsingNewPipeExtractorDataFetching()) {
+            newPipeUtil.getChannelData(url) {
+                if (addToResults){
+                    runBlocking {
+                        val ids = resultDao.insertMultiple(it)
+                        ids.forEachIndexed { index, id ->
+                            it[index].id = id
+                        }
                     }
                 }
+                items.addAll(it)
             }
-            items.addAll(it)
+        }else {
+            Result.failure(Throwable())
         }
 
-        val response = if (ytExtractorResult?.isSuccess == true){
+        val response = if (ytExtractorResult.isSuccess){
             ytExtractorResult.getOrElse { items }
         }else{
             val res = ytdlpUtil.getFromYTDL(url)
-            //TODO REMOVE THIS WHEN YT-DLP FIXES ISSUE #10827
-            res.forEach {
-                it.apply {
-                    playlistTitle = ""
-                    playlistURL = ""
-                    playlistIndex = 0
-                }
-            }
             val ids = resultDao.insertMultiple(res)
             ids.forEachIndexed { index, id ->
                 res[index].id = id

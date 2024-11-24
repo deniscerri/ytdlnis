@@ -19,6 +19,7 @@ import android.text.format.DateFormat
 import android.util.DisplayMetrics
 import android.util.Log
 import android.view.Gravity
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
@@ -28,6 +29,8 @@ import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.LinearLayout
+import android.widget.PopupMenu
+import android.widget.RadioButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.DimenRes
@@ -38,7 +41,9 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.text.HtmlCompat
 import androidx.core.text.parseAsHtml
+import androidx.core.view.children
 import androidx.core.view.isVisible
+import androidx.core.widget.doAfterTextChanged
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LifecycleOwner
@@ -2056,6 +2061,141 @@ object UiUtil {
         val displayMetrics = DisplayMetrics()
         context.windowManager.defaultDisplay.getMetrics(displayMetrics)
         bottomSheet.behavior.peekHeight = displayMetrics.heightPixels
+        bottomSheet.window!!.setLayout(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.MATCH_PARENT
+        )
+    }
+
+    private fun showAddEditCustomYTDLPSource(context: Activity, title: String = "", repo: String = "", created: (title: String, repo: String) -> Unit) {
+        val builder = MaterialAlertDialogBuilder(context)
+        builder.setTitle(context.getString(R.string.new_source))
+        val view = context.layoutInflater.inflate(R.layout.create_ytdlp_sources, null)
+        val titleTextInput = view.findViewById<TextInputLayout>(R.id.title_textinput).editText!!
+        val repoTextInput = view.findViewById<TextInputLayout>(R.id.repo_textinput).editText!!
+        titleTextInput.setText(title)
+        repoTextInput.setText(repo)
+        builder.setView(view)
+        builder.setPositiveButton(context.getString(R.string.add)) { _: DialogInterface?, _: Int ->
+            val t = titleTextInput.text.toString()
+            val r = repoTextInput.text.toString()
+            created(t, r)
+        }
+
+        // handle the negative button of the alert dialog
+        builder.setNegativeButton(
+            context.getString(R.string.cancel)
+        ) { _: DialogInterface?, _: Int -> }
+
+        val dialog = builder.create()
+        dialog.show()
+
+        val createBtn = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+        createBtn.isEnabled = titleTextInput.text.toString().isNotBlank() && repoTextInput.text.toString().isNotBlank()
+        titleTextInput.doAfterTextChanged {
+            createBtn.isEnabled = titleTextInput.text.toString().isNotBlank() && repoTextInput.text.toString().isNotBlank()
+        }
+
+        repoTextInput.doAfterTextChanged {
+            createBtn.isEnabled = titleTextInput.text.toString().isNotBlank() && repoTextInput.text.toString().isNotBlank()
+        }
+
+        val imm = context.getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager
+        repoTextInput.postDelayed({
+            repoTextInput.requestFocus()
+            imm.showSoftInput(repoTextInput, 0)
+        }, 300)
+    }
+
+    fun showYTDLSourceBottomSheet(context: Activity, preferences: SharedPreferences, selectedSource: (title: String, repo: String) -> Unit) {
+        val bottomSheet = BottomSheetDialog(context)
+        bottomSheet.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        bottomSheet.setContentView(R.layout.ytdlp_sources_list)
+
+        val list = preferences.getStringSet("custom_ytdlp_sources", emptySet())!!.toMutableList()
+        val parentView = bottomSheet.findViewById<LinearLayout>(R.id.sourcesList)!!
+
+        bottomSheet.findViewById<View>(R.id.add)?.apply {
+            setOnClickListener {
+                showAddEditCustomYTDLPSource(context) { title, repo ->
+                    list.add("${title}___${repo}")
+                    preferences.edit().putStringSet("custom_ytdlp_sources", list.toSet()).apply()
+                    bottomSheet.dismiss()
+                    selectedSource(title, repo)
+                }
+            }
+        }
+
+        val defaultSourceTitles = context.getStringArray(R.array.ytdlp_source)
+        val defaultSourceValues = context.getStringArray(R.array.ytdlp_source_values)
+        val tmp = list.toMutableList()
+        tmp.addAll(0, defaultSourceTitles.mapIndexed { index, s -> "${s}___${defaultSourceValues[index]}" })
+        tmp.forEach { s ->
+            val title = s.split("___")[0]
+            val source = s.split("___")[1]
+            val isEditable = !defaultSourceValues.contains(source)
+            val child = LayoutInflater.from(context).inflate(R.layout.custom_ytdlp_source, null)
+            child.findViewById<MaterialCardView>(R.id.sampleCustomSource).setOnClickListener {
+                bottomSheet.dismiss()
+                selectedSource(title, source)
+            }
+
+            child.findViewById<TextView>(R.id.sampleTitle).apply {
+                text = title
+            }
+            child.findViewById<RadioButton>(R.id.sampleRadioBtn).apply {
+                isChecked = preferences.getString("ytdlp_source", "stable") == source
+                setOnClickListener {
+                    bottomSheet.dismiss()
+                    selectedSource(title, source)
+                }
+            }
+            child.findViewById<TextView>(R.id.sampleRepo).text = source
+            child.findViewById<View>(R.id.options).apply {
+                isVisible = isEditable
+                setOnClickListener {
+                    val popup = PopupMenu(context, it)
+                    popup.menuInflater.inflate(R.menu.custom_ytdlp_source_menu, popup.menu)
+                    popup.setOnMenuItemClickListener { m ->
+                        when (m.itemId) {
+                            R.id.edit -> {
+                                popup.dismiss()
+                                showAddEditCustomYTDLPSource(context, title, source) { nt, nr ->
+                                    child.findViewById<TextView>(R.id.sampleTitle).text = nt
+                                    child.findViewById<TextView>(R.id.sampleRepo).text = nr
+                                    val index = list.indexOf(s)
+                                    list[index] = "${nt}___${nr}"
+                                    preferences.edit().putStringSet("custom_ytdlp_sources", list.toSet()).apply()
+                                    if (child.findViewById<RadioButton>(R.id.sampleRadioBtn).isChecked) {
+                                        selectedSource(nt, nr)
+                                    }
+                                }
+                            }
+
+                            R.id.remove -> {
+                                popup.dismiss()
+                                showGenericDeleteDialog(context, title) {
+                                    list.remove(s)
+                                    preferences.edit()
+                                        .putStringSet("custom_ytdlp_sources", list.toSet()).apply()
+                                    if (child.findViewById<RadioButton>(R.id.sampleRadioBtn).isChecked) {
+                                        parentView.children.first().performClick()
+                                    }
+                                    parentView.removeView(child)
+                                }
+                            }
+                        }
+                        true
+                    }
+                    popup.show()
+                }
+            }
+
+            parentView.addView(child)
+        }
+
+        bottomSheet.show()
+        bottomSheet.behavior.state = BottomSheetBehavior.STATE_EXPANDED
         bottomSheet.window!!.setLayout(
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.MATCH_PARENT

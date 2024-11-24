@@ -29,13 +29,6 @@
             app:strokeWidth="0dp"
             android:layout_margin="10dp">
 
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/result_image_view"
-                android:adjustViewBounds="true"
-                android:scaleType="centerCrop"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
             <com.google.android.material.progressindicator.LinearProgressIndicator
                 android:id="@+id/download_progress"
                 android:layout_width="match_parent"
@@ -71,9 +64,6 @@
                         android:paddingTop="10dp"
                         android:paddingEnd="10dp"
                         android:scrollbars="none"
-                        android:shadowColor="@color/black"
-                        android:shadowDx="4"
-                        android:shadowDy="4"
                         android:shadowRadius="2"
                         android:textColor="#FFF"
                         android:textSize="17sp"
@@ -89,9 +79,6 @@
                         android:paddingStart="10dp"
                         android:paddingEnd="10dp"
                         android:scrollbars="none"
-                        android:shadowColor="@color/black"
-                        android:shadowDx="4"
-                        android:shadowDy="4"
                         android:shadowRadius="1.5"
                         android:textColor="#FFF"
                         android:textSize="12sp"

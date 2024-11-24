@@ -204,7 +204,7 @@
     <string name="subtitle_languages">Subtitle languages</string>
     <string name="format_source">Formats Source</string>
     <string name="video_recommendations">Video Recommendations</string>
-    <string name="video_recommendations_summary">Get recommended YouTube videos on the home screen from the NewPipe Extractor</string>
+    <string name="video_recommendations_summary">Get recommended YouTube videos on the home screen</string>
     <string name="preferred_search_engine">Preferred Search Engine</string>
     <string name="preferred_search_engine_summary">The search engine to use for in-app searches</string>
     <string name="format_filtering_hint">All items must be of the same type to use this option</string>
@@ -439,4 +439,8 @@
     <string name="data_fetching_extra_command_summary">Enable command templates to be used for data fetching as extra commands</string>
     <string name="disable_write_info_json">Disable Write Info Json</string>
     <string name="disable_write_info_json_summary">(Not Recommended) Every time you restart / resume the download, yt-dlp will re-download json data from the servers.</string>
+    <string name="ytdlp_watch_later">YT-DLP Youtube Watch Later (needs cookies)</string>
+    <string name="ytdlp_recommnedations">YT-DLP Youtube Recommendations (needs cookies)</string>
+    <string name="ytdlp_liked">YT-DLP Youtube Liked Videos (needs cookies)</string>
+    <string name="ytdlp_watch_history">YT-DLP Youtube Watch History (needs cookies)</string>
 </resources>

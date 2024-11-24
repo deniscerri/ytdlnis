@@ -36,6 +36,7 @@ import org.json.JSONArray
 import org.json.JSONObject
 import java.io.File
 import java.lang.reflect.Type
+import java.net.URLEncoder
 import java.util.ArrayList
 import java.util.Locale
 import java.util.UUID
@@ -45,9 +46,43 @@ class YTDLPUtil(private val context: Context) {
     private val formatUtil = FormatUtil(context)
     private val handler = Handler(Looper.getMainLooper())
 
+    private fun YoutubeDLRequest.applyDefaultOptionsForFetchingData() {
+        addOption("--skip-download")
+        addOption("-R", "1")
+        addOption("--compat-options", "manifest-filesize-approx")
+        val socketTimeout = sharedPreferences.getString("socket_timeout", "5")!!.ifEmpty { "5" }
+        addOption("--socket-timeout", socketTimeout)
+
+        if (sharedPreferences.getBoolean("force_ipv4", false)){
+            addOption("-4")
+        }
+
+        if (sharedPreferences.getBoolean("use_cookies", false)){
+            FileUtil.getCookieFile(context){
+                addOption("--cookies", it)
+            }
+
+            val useHeader = sharedPreferences.getBoolean("use_header", false)
+            val header = sharedPreferences.getString("useragent_header", "")
+            if (useHeader && !header.isNullOrBlank()){
+                addOption("--add-header","User-Agent:${header}")
+            }
+        }
+
+        val proxy = sharedPreferences.getString("proxy", "")
+        if (proxy!!.isNotBlank()){
+            addOption("--proxy", proxy)
+        }
+        addOption("-P", FileUtil.getCachePath(context) + "/tmp")
+
+        val extraCommands = sharedPreferences.getString("data_fetching_extra_commands", "")!!
+        if (extraCommands.isNotBlank()){
+            addConfig(extraCommands)
+        }
+    }
+
     @SuppressLint("RestrictedApi")
     fun getFromYTDL(query: String, singleItem: Boolean = false): ArrayList<ResultItem> {
-        val items = arrayListOf<ResultItem>()
         val searchEngine = sharedPreferences.getString("search_engine", "ytsearch")
 
         val request : YoutubeDLRequest
@@ -78,38 +113,7 @@ class YTDLPUtil(private val context: Context) {
 
         request.addOption("--flat-playlist")
         request.addOption(if (singleItem) "-J" else "-j")
-        request.addOption("--skip-download")
-        request.addOption("-R", "1")
-        request.addOption("--compat-options", "manifest-filesize-approx")
-        val socketTimeout = sharedPreferences.getString("socket_timeout", "5")!!.ifEmpty { "5" }
-        request.addOption("--socket-timeout", socketTimeout)
-
-        if (sharedPreferences.getBoolean("force_ipv4", false)){
-            request.addOption("-4")
-        }
-
-        if (sharedPreferences.getBoolean("use_cookies", false)){
-            FileUtil.getCookieFile(context){
-                request.addOption("--cookies", it)
-            }
-
-            val useHeader = sharedPreferences.getBoolean("use_header", false)
-            val header = sharedPreferences.getString("useragent_header", "")
-            if (useHeader && !header.isNullOrBlank()){
-                request.addOption("--add-header","User-Agent:${header}")
-            }
-        }
-
-        val proxy = sharedPreferences.getString("proxy", "")
-        if (proxy!!.isNotBlank()){
-            request.addOption("--proxy", proxy)
-        }
-        request.addOption("-P", FileUtil.getCachePath(context) + "/tmp")
-
-        val extraCommands = sharedPreferences.getString("data_fetching_extra_commands", "")!!
-        if (extraCommands.isNotBlank()){
-            request.addConfig(extraCommands)
-        }
+        request.applyDefaultOptionsForFetchingData()
 
         println(parseYTDLRequestString(request))
         val youtubeDLResponse = YoutubeDL.getInstance().execute(request)
@@ -121,6 +125,13 @@ class YTDLPUtil(private val context: Context) {
         }.filter { it.isNotBlank() }.apply {
             if (this.isEmpty()) throw Exception("Command Used: \n yt-dlp ${parseYTDLRequestString(request)}")
         }
+
+        return parseYTDLPListResults(results, query)
+    }
+
+    private fun parseYTDLPListResults(results: List<String?>, query: String = "") : ArrayList<ResultItem> {
+        val items = arrayListOf<ResultItem>()
+
         for (result in results) {
             if (result.isNullOrBlank()) continue
             val jsonObject = JSONObject(result)
@@ -163,7 +174,7 @@ class YTDLPUtil(private val context: Context) {
             if(playlistTitle.removeSurrounding("\"") == query) playlistTitle = ""
 
             if (playlistTitle.isNotBlank()){
-                playlistURL = query
+                playlistURL = jsonObject.getStringByAny("playlist_webpage_url").ifEmpty { query }
                 kotlin.runCatching { playlistIndex = jsonObject.getInt("playlist_index") }
             }
 
@@ -223,9 +234,85 @@ class YTDLPUtil(private val context: Context) {
 
             items.add(res)
         }
-        return items
+
+        return items;
     }
 
+    fun getYoutubeWatchLater() : ArrayList<ResultItem> {
+        val request = YoutubeDLRequest(listOf())
+        request.addOption("--extractor-args", "youtube:${getYoutubeExtractorArgs()}")
+        request.addOption( "-j")
+        request.addOption("--flat-playlist")
+        request.applyDefaultOptionsForFetchingData()
+        request.addOption(":ytwatchlater")
+        val youtubeDLResponse = YoutubeDL.getInstance().execute(request)
+        val results: List<String?> = try {
+            val lineSeparator = System.getProperty("line.separator")
+            youtubeDLResponse.out.split(lineSeparator!!)
+        } catch (e: Exception) {
+            listOf(youtubeDLResponse.out)
+        }.filter { it.isNotBlank() }.apply {
+            if (this.isEmpty()) return arrayListOf()
+        }
+        return parseYTDLPListResults(results)
+    }
+
+    fun getYoutubeRecommendations() : ArrayList<ResultItem> {
+        val request = YoutubeDLRequest(listOf())
+        request.addOption("--extractor-args", "youtube:${getYoutubeExtractorArgs()}")
+        request.addOption( "-j")
+        request.addOption("--flat-playlist")
+        request.applyDefaultOptionsForFetchingData()
+        request.addOption(":ytrec")
+        val youtubeDLResponse = YoutubeDL.getInstance().execute(request)
+        val results: List<String?> = try {
+            val lineSeparator = System.getProperty("line.separator")
+            youtubeDLResponse.out.split(lineSeparator!!)
+        } catch (e: Exception) {
+            listOf(youtubeDLResponse.out)
+        }.filter { it.isNotBlank() }.apply {
+            if (this.isEmpty()) return arrayListOf()
+        }
+        return parseYTDLPListResults(results)
+    }
+
+    fun getYoutubeLikedVideos() : ArrayList<ResultItem> {
+        val request = YoutubeDLRequest(listOf())
+        request.addOption("--extractor-args", "youtube:${getYoutubeExtractorArgs()}")
+        request.addOption( "-j")
+        request.addOption("--flat-playlist")
+        request.applyDefaultOptionsForFetchingData()
+        request.addOption(":ytfav")
+        val youtubeDLResponse = YoutubeDL.getInstance().execute(request)
+        val results: List<String?> = try {
+            val lineSeparator = System.getProperty("line.separator")
+            youtubeDLResponse.out.split(lineSeparator!!)
+        } catch (e: Exception) {
+            listOf(youtubeDLResponse.out)
+        }.filter { it.isNotBlank() }.apply {
+            if (this.isEmpty()) return arrayListOf()
+        }
+        return parseYTDLPListResults(results)
+    }
+
+    fun getYoutubeWatchHistory() : ArrayList<ResultItem> {
+        val request = YoutubeDLRequest(listOf())
+        request.addOption("--extractor-args", "youtube:${getYoutubeExtractorArgs()}")
+        request.addOption( "-j")
+        request.addOption("--flat-playlist")
+        request.applyDefaultOptionsForFetchingData()
+        request.addOption(":ythis")
+        val youtubeDLResponse = YoutubeDL.getInstance().execute(request)
+        val results: List<String?> = try {
+            val lineSeparator = System.getProperty("line.separator")
+            youtubeDLResponse.out.split(lineSeparator!!)
+        } catch (e: Exception) {
+            listOf(youtubeDLResponse.out)
+        }.filter { it.isNotBlank() }.apply {
+            if (this.isEmpty()) return arrayListOf()
+        }
+        return parseYTDLPListResults(results)
+    }
 
     suspend fun getFormatsForAll(urls: List<String>, progress: (progress: ResultViewModel.MultipleFormatProgress) -> Unit) : Result<MutableList<MutableList<Format>>>  {
         val formatCollection = mutableListOf<MutableList<Format>>()
@@ -243,38 +330,7 @@ class YTDLPUtil(private val context: Context) {
             val request = YoutubeDLRequest(emptyList())
             request.addOption("--print", "formats")
             request.addOption("-a", urlsFile.absolutePath)
-            request.addOption("--skip-download")
-            request.addOption("-R", "1")
-            val socketTimeout = sharedPreferences.getString("socket_timeout", "5")!!.ifEmpty { "5" }
-            request.addOption("--socket-timeout", socketTimeout)
-
-            if (sharedPreferences.getBoolean("force_ipv4", false)){
-                request.addOption("-4")
-            }
-
-            if (sharedPreferences.getBoolean("use_cookies", false)){
-                FileUtil.getCookieFile(context){
-                    request.addOption("--cookies", it)
-                }
-
-                val useHeader = sharedPreferences.getBoolean("use_header", false)
-                val header = sharedPreferences.getString("useragent_header", "")
-                if (useHeader && !header.isNullOrBlank()){
-                    request.addOption("--add-header","User-Agent:${header}")
-                }
-            }
-
-
-            val proxy = sharedPreferences.getString("proxy", "")
-            if (proxy!!.isNotBlank()){
-                request.addOption("--proxy", proxy)
-            }
-            request.addOption("-P", FileUtil.getCachePath(context) + "/tmp")
-
-            val extraCommands = sharedPreferences.getString("data_fetching_extra_commands", "")!!
-            if (extraCommands.isNotBlank()){
-                request.addConfig(extraCommands)
-            }
+            request.applyDefaultOptionsForFetchingData()
 
             val txt = parseYTDLRequestString(request)
             println(txt)
@@ -343,36 +399,7 @@ class YTDLPUtil(private val context: Context) {
         val request = YoutubeDLRequest(url)
         request.addOption("--print", "%(formats)s")
         request.addOption("--print", "%(duration)s")
-        request.addOption("--skip-download")
-        request.addOption("-R", "1")
-        request.addOption("--compat-options", "manifest-filesize-approx")
-
-        if (sharedPreferences.getBoolean("force_ipv4", false)){
-            request.addOption("-4")
-        }
-
-        if (sharedPreferences.getBoolean("use_cookies", false)){
-            FileUtil.getCookieFile(context){
-                request.addOption("--cookies", it)
-            }
-
-            val useHeader = sharedPreferences.getBoolean("use_header", false)
-            val header = sharedPreferences.getString("useragent_header", "")
-            if (useHeader && !header.isNullOrBlank()){
-                request.addOption("--add-header","User-Agent:${header}")
-            }
-        }
-
-        val proxy = sharedPreferences.getString("proxy", "")
-        if (proxy!!.isNotBlank()) {
-            request.addOption("--proxy", proxy)
-        }
-        request.addOption("-P", FileUtil.getCachePath(context) + "/tmp")
-
-        val extraCommands = sharedPreferences.getString("data_fetching_extra_commands", "")!!
-        if (extraCommands.isNotBlank()){
-            request.addConfig(extraCommands)
-        }
+        request.applyDefaultOptionsForFetchingData()
 
         val res = YoutubeDL.getInstance().execute(request)
         val results: Array<String?> = try {
@@ -447,37 +474,7 @@ class YTDLPUtil(private val context: Context) {
             val request = YoutubeDLRequest(url)
             request.addOption("--get-url")
             request.addOption("--print", "%(.{urls,chapters})s")
-            request.addOption("--skip-download")
-            request.addOption("-R", "1")
-            val socketTimeout = sharedPreferences.getString("socket_timeout", "5")!!.ifEmpty { "5" }
-            request.addOption("--socket-timeout", socketTimeout)
-
-            if (sharedPreferences.getBoolean("force_ipv4", false)){
-                request.addOption("-4")
-            }
-
-            if (sharedPreferences.getBoolean("use_cookies", false)){
-                FileUtil.getCookieFile(context){
-                    request.addOption("--cookies", it)
-                }
-
-                val useHeader = sharedPreferences.getBoolean("use_header", false)
-                val header = sharedPreferences.getString("useragent_header", "")
-                if (useHeader && !header.isNullOrBlank()){
-                    request.addOption("--add-header","User-Agent:${header}")
-                }
-            }
-
-            val proxy = sharedPreferences.getString("proxy", "")
-            if (proxy!!.isNotBlank()){
-                request.addOption("--proxy", proxy)
-            }
-            request.addOption("-P", FileUtil.getCachePath(context) + "/tmp")
-
-            val extraCommands = sharedPreferences.getString("data_fetching_extra_commands", "")!!
-            if (extraCommands.isNotBlank()){
-                request.addConfig(extraCommands)
-            }
+            request.applyDefaultOptionsForFetchingData()
 
             val youtubeDLResponse = YoutubeDL.getInstance().execute(request)
             val json = JSONObject(youtubeDLResponse.out)
@@ -726,12 +723,15 @@ class YTDLPUtil(private val context: Context) {
         }
 
         if (!sharedPreferences.getBoolean("disable_write_info_json", false)) {
-            val infoJsonFile = downDir.walkTopDown().firstOrNull { it.name == "${downloadItem.id}.info.json" }
+            val cachePath = "${FileUtil.getCachePath(context)}/infojsons"
+            val infoJsonName = downloadItem.url.replace("/", "")
+
+            val infoJsonFile = File(cachePath).walkTopDown().firstOrNull { it.name == "${infoJsonName}.info.json" }
             //ignore info file if its older than 5 hours. puny measure to prevent expired formats in some cases
             if (infoJsonFile == null || System.currentTimeMillis() - infoJsonFile.lastModified() > (1000 * 60 * 60 * 5)) {
                 request.addOption("--write-info-json")
                 request.addOption("--no-clean-info-json")
-                request.addOption("-o", "infojson:${downloadItem.id}")
+                request.addOption("-o", "infojson:${cachePath}/${infoJsonName}")
             }else {
                 request.addOption("--load-info-json", infoJsonFile.absolutePath)
             }
@@ -807,7 +807,7 @@ class YTDLPUtil(private val context: Context) {
                 request.addOption("-P", downDir.absolutePath)
                 request.addOption("-S", formatSorting.toString())
 
-                metadataCommands.addOption("--parse-metadata", """%(uploader,artist,channel,creator|null)s:^(?P<uploader>.*?)(?:(?= - Topic)|$)""")
+                metadataCommands.addOption("--parse-metadata", """%(artists,artist,uploader,channel,creator|null)l:^(?P<uploader>.*?)(?:(?= - Topic)|$)""")
 
                 if (downloadItem.audioPreferences.splitByChapters && downloadItem.downloadSections.isBlank()){
                     request.addOption("--split-chapters")
@@ -1135,6 +1135,12 @@ class YTDLPUtil(private val context: Context) {
         }
 
         return request
+    }
+
+    fun getVersion() : String {
+        val req = YoutubeDLRequest(emptyList())
+        req.addOption("--version")
+        return YoutubeDL.getInstance().execute(req).out.trim()
     }
 
     private fun getYoutubeExtractorArgs() : String {

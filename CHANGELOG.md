@@ -14,6 +14,12 @@
 - Made the app remember the last used scheduled time so it can suggest you that time for the next download
 - #618, made all preferences with a description show their values
 - Fixed bug that prevented app from loading all urls from text file
+- Added ability to write info json when downloading so when you resume an
+
+## Custom yt-dlp source
+
+Now you can create your own yt-dlp source the app can update to. 
+The app is running yt-dlp --update-to user/repo@latest where user/repo is provided by you through the app. The default 3 sources are still there ofc.
 
 # Advanced Settings
 
@@ -21,6 +27,22 @@ Added a new category for more advanced users and moved the extractor argument se
 - Added ability to make command templates usable while fetching data in the home screen. They will be appended to the data fetching command as an extra command in the end. Enable the toggle in the advanced settings to be able to configure your templates for it
 - When PO Token is set, the app now adds the web extractor argument for youtube. I forgor...
   (If you want to set more PO tokens for other player clients i guess set them in the other extractor argument text preference, and also modify the player client. The separate PO Token preference applies it only for the web player client)
+
+## Write Info Json
+
+Added ability to write info json when downloading so when you resume and restart downloads, it will not download the webpage and player clients all over again. It will help prevent you making unnecessary calls to the server.
+On advanced settings you can turn this off if you want.
+I coded it be available for the next 5 hours. Considering formats tend to expire on some extractors, i dont want the download to be unusable. This is a rare use case, one of them being you starting a download, it saves the info json and you cancel it and you remember to start it again, maybe tomorrow lol. Formats most likely expired, download item is useless. So in that case it will redownload the the webpage and player clients again, and it will save a new info file aswell no problem.
+
+## More Home recommendation options
+
+Now you can select to have more youtube feeds in the home screen from yt-dlp 
+- watch later playlist
+- recommendations
+- liked videos
+- watch history
+
+Since the option has been overhauled to put every home recommendation option in a single list-view preference, the preference has been reset so u have to change it again if you had changed it
 
 
 > # 1.8.0 (2024-10)

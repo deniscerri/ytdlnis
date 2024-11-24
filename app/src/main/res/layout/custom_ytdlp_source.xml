@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView android:id="@+id/sampleCustomSource"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dp"
+    android:checkable="true"
+    android:clickable="true"
+    android:focusable="true"
+    android:backgroundTint="@android:color/transparent"
+    app:checkedIcon="@null"
+    app:shapeAppearance="@style/ShapeAppearanceOverlay.Avatar"
+    app:strokeWidth="0dp"
+    app:cardPreventCornerOverlap="true"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RadioButton
+            android:id="@+id/sampleRadioBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/sampleTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:clickable="false"
+            android:focusable="false"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/options"
+            app:layout_constraintStart_toEndOf="@id/sampleRadioBtn"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/sampleRepo"
+            android:layout_width="wrap_content"
+            android:clickable="false"
+            android:focusable="false"
+            app:layout_constraintHorizontal_bias="0.0"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toStartOf="@+id/options"
+            app:layout_constraintStart_toEndOf="@id/sampleRadioBtn"
+            app:layout_constraintTop_toBottomOf="@id/sampleTitle" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/options"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|center_vertical"
+            android:clickable="false"
+            android:focusable="false"
+            android:padding="16dp"
+            android:tintMode="src_in"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/baseline_more_vert_24"
+            app:tint="?attr/colorControlNormal"
+            tools:ignore="ContentDescription" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

@@ -1143,6 +1143,25 @@
         <item>master</item>
     </array>
 
+    <array name="video_recommendations">
+        <item>@string/disabled</item>
+        <item>NewPipe</item>
+        <item>Youtube API</item>
+        <item>@string/ytdlp_watch_later</item>
+        <item>@string/ytdlp_recommnedations</item>
+        <item>@string/ytdlp_liked</item>
+        <item>@string/ytdlp_watch_history</item>
+    </array>
+    
+    <array name="video_recommnedations_values">
+        <item></item>
+        <item>newpipe</item>
+        <item>yt_api</item>
+        <item>yt_dlp_watch_later</item>
+        <item>yt_dlp_recommendations</item>
+        <item>yt_dlp_liked</item>
+        <item>yt_dlp_watch_history</item>
+    </array>
 
     <!--below is for preferred audio language, not related to app's language-->
     <string-array name="language_codes">

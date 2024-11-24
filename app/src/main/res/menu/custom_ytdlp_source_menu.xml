@@ -1,0 +1,19 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".MainActivity" >
+
+    <item
+        android:id="@+id/edit"
+        android:title="@string/edit"
+        android:icon="@drawable/ic_edit"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/remove"
+        android:title="@string/Remove"
+        android:icon="@drawable/baseline_delete_24"
+        app:showAsAction="ifRoom" />
+
+</menu>
+

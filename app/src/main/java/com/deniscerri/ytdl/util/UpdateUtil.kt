@@ -14,44 +14,33 @@ import android.os.Bundle
 import android.os.Environment
 import android.os.Handler
 import android.os.Looper
-import android.text.format.DateFormat
 import android.text.method.LinkMovementMethod
 import android.util.Log
-import android.widget.LinearLayout
-import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat.startActivity
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import com.deniscerri.ytdl.BuildConfig
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.models.GithubRelease
 import com.deniscerri.ytdl.ui.adapter.ChangelogAdapter
 import com.deniscerri.ytdl.util.Extensions.enableFastScroll
-import com.google.android.material.card.MaterialCardView
-import com.google.android.material.chip.Chip
-import com.google.android.material.chip.ChipGroup
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.yausername.youtubedl_android.YoutubeDL
-import com.yausername.youtubedl_android.YoutubeDL.UpdateStatus
+import com.yausername.youtubedl_android.YoutubeDLRequest
 import io.noties.markwon.AbstractMarkwonPlugin
 import io.noties.markwon.Markwon
 import io.noties.markwon.MarkwonConfiguration
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
-import java.text.SimpleDateFormat
-import java.util.Locale
 
 
 class UpdateUtil(var context: Context) {
@@ -220,24 +209,35 @@ class UpdateUtil(var context: Context) {
         return json
     }
 
-    suspend fun updateYoutubeDL() : UpdateStatus? =
+    data class YTDLPUpdateResponse (
+        val status: YTDLPUpdateStatus,
+        val message: String = ""
+    )
+
+    enum class YTDLPUpdateStatus {
+        DONE, ALREADY_UP_TO_DATE, PROCESSING, ERROR
+    }
+
+    suspend fun updateYoutubeDL(c: String? = null) : YTDLPUpdateResponse =
         withContext(Dispatchers.IO){
             val sharedPreferences =
                  PreferenceManager.getDefaultSharedPreferences(context)
             if (updatingYTDL) {
-                UpdateStatus.ALREADY_UP_TO_DATE
+                YTDLPUpdateResponse(YTDLPUpdateStatus.PROCESSING)
             }
+
             updatingYTDL = true
 
-            val channelMap = mapOf(
-                "stable" to YoutubeDL.UpdateChannel._STABLE,
-                "nightly" to YoutubeDL.UpdateChannel._NIGHTLY,
-                "master" to YoutubeDL.UpdateChannel._MASTER,
-            )
-            val channel = sharedPreferences.getString("ytdlp_source", "nightly")
-            YoutubeDL.getInstance().updateYoutubeDL(context, channelMap[channel] ?: YoutubeDL.UpdateChannel._NIGHTLY).apply {
-                updatingYTDL = false
-            }
+            val channel = if (c.isNullOrBlank()) sharedPreferences.getString("ytdlp_source", "nightly") else c
+            val request = YoutubeDLRequest(emptyList())
+            request.addOption("--update-to", "${channel}@latest")
+
+            val res = YoutubeDL.getInstance().execute(request)
+            val out = res.out.split(System.getProperty("line.separator")).filter { it.isNotBlank() }.last()
+
+            if (out.contains("ERROR")) YTDLPUpdateResponse(YTDLPUpdateStatus.ERROR, out)
+            if (out.contains("yt-dlp is up to date")) YTDLPUpdateResponse(YTDLPUpdateStatus.ALREADY_UP_TO_DATE, out)
+            else YTDLPUpdateResponse(YTDLPUpdateStatus.DONE, out)
     }
 
     companion object {
