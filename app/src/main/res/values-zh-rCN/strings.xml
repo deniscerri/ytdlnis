@@ -434,4 +434,6 @@
     <string name="status">状态</string>
     <string name="data_fetching_extra_command">数据获取的额外命令</string>
     <string name="data_fetching_extra_command_summary">将获取数据的命令模板作为附加命令开启</string>
+    <string name="disable_write_info_json">停用写入信息 Json</string>
+    <string name="disable_write_info_json_summary">（不推荐）每次重启/恢复下载，yt-dlp 都会从服务器重新下载 json 数据。</string>
 </resources>
