@@ -435,4 +435,6 @@
     <string name="websites">Páginas web</string>
     <string name="data_fetching_extra_command">Comando adicional de obtención de datos</string>
     <string name="data_fetching_extra_command_summary">Habilitar plantillas de comandos que se utilizarán para la obtención de datos como comandos adicionales</string>
+    <string name="disable_write_info_json">Deshabilitar escribir información Json</string>
+    <string name="disable_write_info_json_summary">(No recomendado) Cada vez que reinicie/reanude la descarga, yt-dlp volverá a descargar los datos json desde los servidores.</string>
 </resources>
