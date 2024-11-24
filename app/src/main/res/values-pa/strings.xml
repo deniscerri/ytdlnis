@@ -156,7 +156,7 @@
     <string name="freespace">ਖਾਲੀ ਜਗ੍ਹਾ</string>
     <string name="link_you_copied">ਲਿੰਕ ਜੋ ਤੁਸੀਂ ਕਾਪੀ ਕੀਤਾ</string>
     <string name="restrict_filenames">ਫਾਈਲ ਦੇ ਨਾਵਾਂ ਨੂੰ ਪ੍ਰਤਿਬੰਧਿਤ ਕਰੋ</string>
-    <string name="restrict_filenames_summary">ਫਾਈਲ ਦੇ ਨਾਵਾਂ ਨੂੰ ਸਿਰਫ ASCII ਅੱਖਰਾਂ ਤੱਕ ਸੀਮਤ ਕਰੋ, ਅਤੇ ਫਾਈਲ ਨਾਵਾਂ ਵਿੱਚ \"&amp;\" ਅਤੇ ਖਾਲੀ ਥਾਂਵਾਂ ਤੋਂ ਬਚੋ</string>
+    <string name="restrict_filenames_summary"><![CDATA[ਫਾਈਲ ਦੇ ਨਾਵਾਂ ਨੂੰ ਸਿਰਫ ASCII ਅੱਖਰਾਂ ਤੱਕ ਸੀਮਤ ਕਰੋ, ਅਤੇ ਫਾਈਲ ਨਾਵਾਂ ਵਿੱਚ \"&\" ਅਤੇ ਖਾਲੀ ਥਾਂਵਾਂ ਤੋਂ ਬਚੋ]]></string>
     <string name="kill_app">ਐਪ ਬੰਦ ਕਰੋ</string>
     <string name="dont_ask_again">ਦੁਬਾਰਾ ਨਾ ਪੁੱਛੋ</string>
     <string name="end">ਸਮਾਪਤ</string>
