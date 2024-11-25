@@ -184,7 +184,7 @@
     <string name="format_filtering_hint">Todos os itens devem ser do mesmo tipo para usar esta opção</string>
     <string name="preferred_search_engine_summary">O mecanismo de pesquisa a ser usado para pesquisas no aplicativo</string>
     <string name="preferred_search_engine">Mecanismo de pesquisa preferido</string>
-    <string name="video_recommendations_summary">Obter vídeos recomendados do YouTube na tela inicial a partir do \"NewPipe Extractor\"</string>
+    <string name="video_recommendations_summary">Obter vídeos recomendados do YouTube na tela inicial</string>
     <string name="video_recommendations">Recomendações de vídeo</string>
     <string name="format_source">Origem dos formatos</string>
     <string name="subtitle_languages">Idiomas das legendas</string>
@@ -437,4 +437,8 @@
     <string name="data_fetching_extra_command_summary">Permitir que os modelos de comando sejam usados para busca de dados a partir de comandos extras</string>
     <string name="disable_write_info_json">Desativar salvamento de informações Json</string>
     <string name="disable_write_info_json_summary">(Não recomendado) Cada vez que você reiniciar/continuar o download, o yt-dlp baixará novamente os dados json dos servidores.</string>
+    <string name="ytdlp_recommnedations">YT-DLP - Recomendações do YouTube (precisa de cookies)</string>
+    <string name="ytdlp_liked">YT-DLP - Vídeos curtidos do YouTube (precisa de cookies)</string>
+    <string name="ytdlp_watch_later">YT-DLP - Assistir mais tarde no YouTube (precisa de cookies)</string>
+    <string name="ytdlp_watch_history">YT-DLP - Histórico de exibição do YouTube (precisa de cookies)</string>
 </resources>
