@@ -435,4 +435,6 @@
     <string name="websites">Веб-сајтови</string>
     <string name="data_fetching_extra_command">Додатна команда за прикупљање података</string>
     <string name="data_fetching_extra_command_summary">Омогућите да се командни шаблони користе за прикупљање података као додатне команде</string>
+    <string name="disable_write_info_json">Онемогући JSON за писање информација</string>
+    <string name="disable_write_info_json_summary">(Не препоручује се) Сваки пут када рестартујете/наставите преузимање, yt-dlp ће поново преузети json податке са сервера.</string>
 </resources>
