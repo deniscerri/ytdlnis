@@ -200,7 +200,7 @@
     <string name="subtitle_languages">Idiomas de los subtítulos</string>
     <string name="format_source">Formatos de la fuente</string>
     <string name="video_recommendations">Videos recomendados</string>
-    <string name="video_recommendations_summary">Obtenga videos de YouTube recomendados en la pantalla de inicio desde la API de PIPED</string>
+    <string name="video_recommendations_summary">Vídeos recomendados de YouTube en la pantalla de inicio</string>
     <string name="preferred_search_engine">Buscador favorito</string>
     <string name="preferred_search_engine_summary">El buscador para las búsquedas dentro de la aplicación</string>
     <string name="format_filtering_hint">Todos los artículos deben ser del mismo tipo para utilizar esta opción</string>
@@ -437,4 +437,8 @@
     <string name="data_fetching_extra_command_summary">Habilitar plantillas de comandos que se utilizarán para la obtención de datos como comandos adicionales</string>
     <string name="disable_write_info_json">Deshabilitar escribir información Json</string>
     <string name="disable_write_info_json_summary">(No recomendado) Cada vez que reinicie/reanude la descarga, yt-dlp volverá a descargar los datos json desde los servidores.</string>
+    <string name="ytdlp_watch_later">YT-DLP Youtube Ver más tarde (necesita cookies )</string>
+    <string name="ytdlp_recommnedations">Recomendaciones de Youtube de YT-DLP (necesita cookies )</string>
+    <string name="ytdlp_liked">Vídeos que me gustan en Youtube de YT-DLP (necesita cookies )</string>
+    <string name="ytdlp_watch_history">Historial de visualización de YouTube de YT-DLP (requiere cookies )</string>
 </resources>
