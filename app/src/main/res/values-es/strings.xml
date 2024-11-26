@@ -172,7 +172,7 @@
     <string name="best_quality">Mejor Calidad</string>
     <string name="worst_quality">Peor Calidad</string>
     <string name="restrict_filenames">Restringir nombres de archivos</string>
-    <string name="restrict_filenames_summary"><![CDATA[Restringe los nombres de archivo a sólo caracteres ASCII y evita \"&\" y espacios en los nombres de archivo]]></string>
+    <string name="restrict_filenames_summary">Restringe los nombres de archivo a sólo caracteres ASCII y evita \"&amp;\" y espacios en los nombres de archivo</string>
     <string name="kill_app">Terminar la aplicación</string>
     <string name="confirm_terminate">Detiene todas las descargas y fuerza el cierre de la aplicación</string>
     <string name="dont_ask_again">No vuelvas a preguntar</string>
@@ -381,7 +381,7 @@
     <string name="disabled">Desactivado</string>
     <string name="subtitles">Subtítulos</string>
     <string name="prevent_duplicate_downloads">Evitar descargas duplicadas</string>
-    <string name="prevent_duplicate_url_type"><![CDATA[URL y Tipo de descarga]]></string>
+    <string name="prevent_duplicate_url_type">URL y Tipo de descarga</string>
     <string name="prevent_duplicate_config">Configuración completa</string>
     <string name="copy_url">Copiar la URL</string>
     <string name="move_top">Mover de primero</string>

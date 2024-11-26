@@ -14,7 +14,8 @@
 - Made the app remember the last used scheduled time so it can suggest you that time for the next download
 - #618, made all preferences with a description show their values
 - Fixed bug that prevented app from loading all urls from text file
-- Added ability to write info json when downloading so when you resume an
+- Added ability to stop an observed source but not delete it
+- 
 
 ## Custom yt-dlp source
 

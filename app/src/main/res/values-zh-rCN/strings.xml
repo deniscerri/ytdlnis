@@ -217,7 +217,7 @@
     <string name="cache_cleared">临时文件已清除</string>
     <string name="ytdl_version">yt-dlp 版本</string>
     <string name="link_you_copied">您复制的链接</string>
-    <string name="restrict_filenames_summary"><![CDATA[将文件名限制为仅 ASCII 字符，并避免在文件名中使用\"&\"和空格]]></string>
+    <string name="restrict_filenames_summary">将文件名限制为仅 ASCII 字符，并避免在文件名中使用\"&amp;\"和空格</string>
     <string name="kill_app">结束应用</string>
     <string name="confirm_terminate">停止所有下载并强制关闭应用</string>
     <string name="new_cut">新剪辑</string>

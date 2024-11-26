@@ -243,7 +243,7 @@
     <string name="search">Претрага</string>
     <string name="keep_cache">Задржи фрагменте</string>
     <string name="file_size">Величина фајла</string>
-    <string name="restrict_filenames_summary"><![CDATA[Ограничите називе фајлова само на ASCII знакове и избегавајте \"&\" и размаке у називима фајлова]]></string>
+    <string name="restrict_filenames_summary">Ограничите називе фајлова само на ASCII знакове и избегавајте \"&amp;\" и размаке у називима фајлова</string>
     <string name="auto">Аутоматски</string>
     <string name="configure_download">Прилагођавање преузимања</string>
     <string name="shortcuts">Пречице</string>
@@ -379,7 +379,7 @@
     <string name="hour">Час</string>
     <string name="display_over_apps">Приказуј преко апликација</string>
     <string name="subtitles">Титлови</string>
-    <string name="prevent_duplicate_url_type"><![CDATA[URL адреса и тип преузимања]]></string>
+    <string name="prevent_duplicate_url_type">URL адреса и тип преузимања</string>
     <string name="prevent_duplicate_config">Потпуна конфигурација</string>
     <string name="copy_url">Копирај URL адресу</string>
     <string name="move_bottom">Помери на дно</string>

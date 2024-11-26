@@ -109,7 +109,7 @@
     <string name="freespace">வெற்று இடம்</string>
     <string name="link_you_copied">நீங்கள் நகலெடுத்த இணைப்பு</string>
     <string name="restrict_filenames">கோப்பு பெயர்களைக் கட்டுப்படுத்து</string>
-    <string name="restrict_filenames_summary"><![CDATA[கோப்புப் பெயர்களை ASCII எழுத்துகளுக்கு மட்டும் கட்டுப்படுத்தவும், மேலும் கோப்புப்பெயர்களில் \"&\" மற்றும் இடைவெளிகளைத் தவிர்க்கவும்]]></string>
+    <string name="restrict_filenames_summary">கோப்புப் பெயர்களை ASCII எழுத்துகளுக்கு மட்டும் கட்டுப்படுத்தவும், மேலும் கோப்புப்பெயர்களில் \"&amp;\" மற்றும் இடைவெளிகளைத் தவிர்க்கவும்</string>
     <string name="kill_app">பயன்பாட்டை நிறுத்து</string>
     <string name="confirm_terminate">எல்லா பதிவிறக்கங்களையும் நிறுத்தி, பயன்பாட்டை வலுக்கட்டாயமாக மூடுகிறது</string>
     <string name="dont_ask_again">மீண்டும் கேட்காதே</string>
@@ -253,7 +253,7 @@
     <string name="on_time">ஆன்</string>
     <string name="display_over_apps_summary">பதிவிறக்க அட்டையை எப்போதும் மேலே காண்பிக்கவும். பதிவிறக்க அட்டை காண்பிக்கப்படும் போது தற்போது இயங்கும் பயன்பாடு மூடப்பட்டால் இதை இயக்கவும்</string>
     <string name="hour">மணி</string>
-    <string name="prevent_duplicate_url_type"><![CDATA[முகவரி & பதிவிறக்கம் வகை]]></string>
+    <string name="prevent_duplicate_url_type">முகவரி &amp; பதிவிறக்கம் வகை</string>
     <string name="prevent_duplicate_config">முழு உள்ளமைவு</string>
     <string name="copy_url">முகவரியை நகலெடு</string>
     <string name="move_top">மேலே செல்</string>

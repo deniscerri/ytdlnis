@@ -235,7 +235,7 @@
     <string name="clear_temporary_files_summary">從崩潰/錯誤/取消的下載中刪除快取檔案</string>
     <string name="download_rescheduled_to">下載已重新安排至：</string>
     <string name="freespace">可用空間</string>
-    <string name="restrict_filenames_summary"><![CDATA[限制檔名只使用 ASCII 字元，避免在檔名中使用 \"&\" 和空格]]></string>
+    <string name="restrict_filenames_summary">限制檔名只使用 ASCII 字元，避免在檔名中使用 \"&amp;\" 和空格</string>
     <string name="cut">剪下</string>
     <string name="update_formats_summary">當下載卡片顯示時，立刻獲取可用的格式</string>
     <string name="download_over_metered_networks_summary">使用任何網路類型進行下載。否則等待非計量網路</string>
@@ -381,7 +381,7 @@
     <string name="disabled">關閉</string>
     <string name="subtitles">字幕</string>
     <string name="prevent_duplicate_downloads">防止重複下載</string>
-    <string name="prevent_duplicate_url_type"><![CDATA[URL 和下載類型]]></string>
+    <string name="prevent_duplicate_url_type">URL 和下載類型</string>
     <string name="prevent_duplicate_config">完整設定</string>
     <string name="copy_url">複製 URL</string>
     <string name="move_top">移至頂部</string>

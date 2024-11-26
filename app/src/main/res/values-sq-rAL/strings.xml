@@ -172,7 +172,7 @@
     <string name="freespace">Hapësirë e lirë</string>
     <string name="link_you_copied">Linku i kopjuar</string>
     <string name="restrict_filenames">Limito Titujt</string>
-    <string name="restrict_filenames_summary"><![CDATA[Kufizoni emrat e skedarëve vetëm në karaktere ASCII dhe shmangni \"&\" dhe hapësirat në emrat e skedarëve]]></string>
+    <string name="restrict_filenames_summary">Kufizoni emrat e skedarëve vetëm në karaktere ASCII dhe shmangni \"&amp;\" dhe hapësirat në emrat e skedarëve</string>
     <string name="kill_app">Ndalo Aplikacionin</string>
     <string name="confirm_terminate">Ndalon të gjithë shkarkimet dhe mbyll me forcë aplikacionin</string>
     <string name="end">Fundi</string>
@@ -381,7 +381,7 @@
     <string name="no_download_fragments_summary">Mos përdorni skedarë .part dhe shkruani direkt në skedarin dalës</string>
     <string name="subtitles">Titrat</string>
     <string name="prevent_duplicate_downloads">Parandalo Shkarkimet Duplikate</string>
-    <string name="prevent_duplicate_url_type"><![CDATA[URL &Lloji i shkarkimit]]></string>
+    <string name="prevent_duplicate_url_type">URL &amp; Lloji i shkarkimit</string>
     <string name="prevent_duplicate_config">Konfigurimi i plotë</string>
     <string name="copy_url">Kopjo URL</string>
     <string name="move_top">Vendose në fillim</string>

@@ -176,7 +176,7 @@
     <string name="freespace">Free space</string>
     <string name="link_you_copied">Link you copied</string>
     <string name="restrict_filenames">Restrict Filenames</string>
-    <string name="restrict_filenames_summary"><![CDATA[Restrict filenames to only ASCII characters, and avoid \"&\" and spaces in filenames]]></string>
+    <string name="restrict_filenames_summary">Restrict filenames to only ASCII characters, and avoid \"&amp;\" and spaces in filenames</string>
     <string name="kill_app">Terminate App</string>
     <string name="confirm_terminate">Stops all downloads and force closes the app</string>
     <string name="dont_ask_again">Don\'t ask again</string>
@@ -384,7 +384,7 @@
     <string name="hour">Hour</string>
     <string name="subtitles">Subtitles</string>
     <string name="prevent_duplicate_downloads">Prevent Duplicate Downloads</string>
-    <string name="prevent_duplicate_url_type"><![CDATA[URL & Download Type]]></string>
+    <string name="prevent_duplicate_url_type">URL &amp; Download Type</string>
     <string name="prevent_duplicate_config">Full Configuration</string>
     <string name="copy_url">Copy URL</string>
     <string name="move_top">Move to the Top</string>

@@ -50,7 +50,7 @@
                 android:layout_height="wrap_content"
                 android:autoLink="all"
                 android:text="@string/add"
-                app:icon="@drawable/ic_check"
+                app:icon="@drawable/ic_plus"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

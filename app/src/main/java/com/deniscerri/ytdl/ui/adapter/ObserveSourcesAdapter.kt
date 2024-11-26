@@ -17,6 +17,7 @@ import com.deniscerri.ytdl.database.models.observeSources.ObserveSourcesItem
 import com.deniscerri.ytdl.database.repository.ObserveSourcesRepository
 import com.deniscerri.ytdl.util.Extensions.calculateNextTimeForObserving
 import com.deniscerri.ytdl.util.Extensions.popup
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.chip.Chip
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -93,28 +94,34 @@ class ObserveSourcesAdapter(onItemClickListener: OnItemClickListener, activity: 
         progressBar.isVisible = false
 
         // BUTTON ----------------------------------
-        val btn = card.findViewById<FloatingActionButton>(R.id.search)
-        btn.isEnabled = true
+        val searchBtn = card.findViewById<MaterialButton>(R.id.search)
+        val pauseBtn = card.findViewById<MaterialButton>(R.id.pause_resume)
+        searchBtn.isEnabled = true
+        pauseBtn.isEnabled = true
         if (item.status == ObserveSourcesRepository.SourceStatus.STOPPED){
             info.isVisible = false
-            checkMissing.isVisible = false
+            searchBtn.isVisible = false
 
-            btn.setImageResource(R.drawable.exomedia_ic_play_arrow_white)
-            btn.setOnClickListener {
-                btn.isEnabled = false
-                progressBar.isVisible = true
-                progressBar.animate()
+            pauseBtn.setIconResource(R.drawable.exomedia_ic_play_arrow_white)
+            pauseBtn.setOnClickListener {
+                pauseBtn.isEnabled = false
                 onItemClickListener.onItemStart(item, position)
             }
         }else{
             info.isVisible = true
+            searchBtn.isVisible = true
 
-            btn.setImageResource(R.drawable.ic_search)
-            btn.setOnClickListener {
-                btn.isEnabled = false
+            searchBtn.setOnClickListener {
+                searchBtn.isEnabled = false
                 progressBar.isVisible = true
                 progressBar.animate()
                 onItemClickListener.onItemSearch(item)
+            }
+
+            pauseBtn.setIconResource(R.drawable.exomedia_ic_pause_white)
+            pauseBtn.setOnClickListener {
+                pauseBtn.isEnabled = false
+                onItemClickListener.onItemPaused(item, position)
             }
         }
 
@@ -132,6 +139,7 @@ class ObserveSourcesAdapter(onItemClickListener: OnItemClickListener, activity: 
 
         fun onItemSearch(item: ObserveSourcesItem)
         fun onItemStart(item: ObserveSourcesItem, position: Int)
+        fun onItemPaused(item: ObserveSourcesItem, position: Int)
         fun onItemClick(item: ObserveSourcesItem)
         fun onDelete(item: ObserveSourcesItem)
     }

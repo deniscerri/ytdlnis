@@ -153,7 +153,7 @@
     <string name="select">Вибрати</string>
     <string name="all_items_selected">Вибрано всі елементи</string>
     <string name="redownload">Повторне завантаження</string>
-    <string name="restrict_filenames_summary"><![CDATA[Обмежуйте імена файлів лише символами ASCII та уникайте \"&\" прогалини в іменах файлів]]></string>
+    <string name="restrict_filenames_summary">Обмежуйте імена файлів лише символами ASCII та уникайте \"&amp;\" прогалини в іменах файлів</string>
     <string name="selected">Вибрано</string>
     <string name="access_all_directories_summary">Дозволити застосунку завантажувати в каталоги, обмежених за замовчуванням</string>
     <string name="download_rescheduled_to">Завантаження перенесено на:</string>
@@ -381,7 +381,7 @@
     <string name="disabled">Вимкнено</string>
     <string name="subtitles">Субтитри</string>
     <string name="prevent_duplicate_downloads">Запобігання повторним завантаженням</string>
-    <string name="prevent_duplicate_url_type"><![CDATA[URL & Тип завантаження]]></string>
+    <string name="prevent_duplicate_url_type">URL &amp; Тип завантаження</string>
     <string name="prevent_duplicate_config">Повна конфігурація</string>
     <string name="copy_url">Копіювати URL</string>
     <string name="move_top">Перейти вгору</string>

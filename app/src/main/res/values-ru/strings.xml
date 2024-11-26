@@ -179,7 +179,7 @@
     <string name="share">Поделиться</string>
     <string name="confirm_delete_cookies_desc">Удалить все Cookies без возможности восстановления</string>
     <string name="restrict_filenames">Ограничение имён файлов</string>
-    <string name="restrict_filenames_summary"><![CDATA[Ограничивайте имена файлов только символами ASCII и избегайте \"&\" пробелы в именах файлов]]></string>
+    <string name="restrict_filenames_summary">Ограничивайте имена файлов только символами ASCII и избегайте \"&amp;\" пробелы в именах файлов</string>
     <string name="download_over_metered_networks">Загружать через сети с тарифным планом</string>
     <string name="metered_network_download_start_info">Загрузка начнется при подключении к безлимитной сети</string>
     <string name="kill_app">Завершить работу</string>
@@ -381,7 +381,7 @@
     <string name="disabled">Отключено</string>
     <string name="subtitles">Субтитры</string>
     <string name="prevent_duplicate_downloads">Предотвращение дублирования загрузок</string>
-    <string name="prevent_duplicate_url_type"><![CDATA[URL & Тип загрузки]]></string>
+    <string name="prevent_duplicate_url_type">URL &amp; Тип загрузки</string>
     <string name="prevent_duplicate_config">Полная конфигурация</string>
     <string name="copy_url">Копировать URL</string>
     <string name="move_top">Перейти вверх</string>

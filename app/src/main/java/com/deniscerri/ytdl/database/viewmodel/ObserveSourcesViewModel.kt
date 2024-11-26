@@ -12,8 +12,6 @@ import androidx.work.Data
 import androidx.work.ExistingWorkPolicy
 import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.PeriodicWorkRequest
-import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.deniscerri.ytdl.database.DBManager
 import com.deniscerri.ytdl.database.models.observeSources.ObserveSourcesItem
@@ -50,7 +48,7 @@ class ObserveSourcesViewModel(private val application: Application) : AndroidVie
         return repository.getByID(id)
     }
 
-    suspend fun insert(item: ObserveSourcesItem) : Long {
+    suspend fun insertUpdate(item: ObserveSourcesItem) : Long {
         if (item.id > 0) {
             repository.update(item)
             observeTask(item)
@@ -61,6 +59,12 @@ class ObserveSourcesViewModel(private val application: Application) : AndroidVie
         item.id = id
         if (id > 0) observeTask(item)
         return id
+    }
+
+    suspend fun stopObserving(item: ObserveSourcesItem) {
+        item.status = ObserveSourcesRepository.SourceStatus.STOPPED
+        repository.update(item)
+        cancelObservationTaskByID(item.id)
     }
 
     fun delete(item: ObserveSourcesItem) = viewModelScope.launch(Dispatchers.IO) {
@@ -81,7 +85,7 @@ class ObserveSourcesViewModel(private val application: Application) : AndroidVie
     }
 
     private fun cancelObservationTaskByID(id: Long){
-        workManager.cancelAllWorkByTag(id.toString())
+        workManager.cancelAllWorkByTag("observation_$id")
     }
 
 
@@ -136,7 +140,7 @@ class ObserveSourcesViewModel(private val application: Application) : AndroidVie
 
             val workRequest = OneTimeWorkRequestBuilder<ObserveSourceWorker>()
                 .addTag("observeSources")
-                .addTag(it.id.toString())
+                .addTag("observation_${it.id}")
                 .setConstraints(workConstraints.build())
                 .setInitialDelay(timeInMillis - System.currentTimeMillis(), TimeUnit.MILLISECONDS)
                 .setInputData(Data.Builder().putLong("id", it.id).build())

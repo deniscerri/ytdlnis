@@ -177,7 +177,7 @@
     <string name="ignore_battery_optimization">تجاهل تحسين البطارية</string>
     <string name="log_downloads_summary">إنشاء ملف سجل للتنزيل المكتمل</string>
     <string name="shortcuts_desc">طريقة وصول أسرع للأوامر كثيرة الاستخدام</string>
-    <string name="restrict_filenames_summary"><![CDATA[تقييد أسماء الملفات لتشمل أحرف ASCII فقط، وتجنب \"&\" والمسافات في أسماء الملفات]]></string>
+    <string name="restrict_filenames_summary">تقييد أسماء الملفات لتشمل أحرف ASCII فقط، وتجنب \"&amp;\" والمسافات في أسماء الملفات</string>
     <string name="add_chapters_summary">تعليم أجزاء مقطع اليوتيوب و/أو حاجب شرائح الإعلانات كفصول للفيديو</string>
     <string name="container">الصيغة</string>
     <string name="cut">قص</string>
@@ -381,7 +381,7 @@
     <string name="disabled">معطّل</string>
     <string name="subtitles">الترجمات</string>
     <string name="prevent_duplicate_downloads">منع التنزيلات المكررة</string>
-    <string name="prevent_duplicate_url_type"><![CDATA[عنوان URL ونوع التنزيل]]></string>
+    <string name="prevent_duplicate_url_type">عنوان URL ونوع التنزيل</string>
     <string name="prevent_duplicate_config">التكوين كاملًا</string>
     <string name="copy_url">نسخ الرابط</string>
     <string name="move_bottom">نقل للأسفل</string>

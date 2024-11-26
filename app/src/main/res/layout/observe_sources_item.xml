@@ -10,7 +10,7 @@
     <RelativeLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintDimensionRatio="H,2:1"
+        app:layout_constraintDimensionRatio="H,2.7:1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -43,48 +43,43 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <LinearLayout
+                <TextView
+                    android:id="@+id/title"
                     android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:dividerPadding="5dp"
-                    android:orientation="vertical"
-                    android:layout_marginEnd="10dp"
-                    app:layout_constraintBottom_toTopOf="@+id/search"
-                    app:layout_constraintEnd_toStartOf="@id/check_missing"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:paddingStart="10dp"
+                    android:paddingTop="10dp"
+                    android:paddingEnd="10dp"
+                    android:scrollbars="none"
+                    android:shadowRadius="2"
+                    android:textColor="#FFF"
+                    android:textSize="17sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toStartOf="@+id/check_missing"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                    <TextView
-                        android:id="@+id/title"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:ellipsize="end"
-                        android:maxLines="2"
-                        android:paddingStart="10dp"
-                        android:paddingTop="10dp"
-                        android:paddingEnd="10dp"
-                        android:scrollbars="none"
-                        android:shadowRadius="2"
-                        android:textColor="#FFF"
-                        android:textSize="17sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/url"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:ellipsize="end"
-                        android:gravity="bottom"
-                        android:maxLines="1"
-                        android:paddingStart="10dp"
-                        android:paddingEnd="10dp"
-                        android:scrollbars="none"
-                        android:shadowRadius="1.5"
-                        android:textColor="#FFF"
-                        android:textSize="12sp"
-                        android:textStyle="bold" />
-
-                </LinearLayout>
+                <TextView
+                    android:id="@+id/url"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:gravity="bottom"
+                    android:maxLines="1"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:scrollbars="none"
+                    android:shadowRadius="1.5"
+                    android:textColor="#FFF"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    app:layout_constraintVertical_bias="0.0"
+                    app:layout_constraintBottom_toTopOf="@+id/buttons"
+                    app:layout_constraintEnd_toStartOf="@+id/check_missing"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/title" />
 
 
                 <Button
@@ -98,7 +93,7 @@
                     android:padding="0dp"
                     android:minHeight="0dp"
                     app:icon="@drawable/ic_restore"
-                    app:layout_constraintBottom_toTopOf="@+id/search"
+                    app:layout_constraintBottom_toTopOf="@+id/buttons"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -107,26 +102,52 @@
                     style="@style/Widget.Material3.Chip.Assist.Elevated"
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
-                    android:layout_margin="10dp"
-                    app:chipMinTouchTargetSize="0dp"
+                    android:layout_margin="12dp"
                     app:chipIcon="@drawable/baseline_loop_24"
                     app:chipIconVisible="true"
+                    app:chipMinTouchTargetSize="0dp"
+                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/buttons"
                     app:layout_constraintStart_toStartOf="parent" />
 
 
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/search"
-                    style="@style/Widget.Material3.ExtendedFloatingActionButton.Icon.Secondary"
-                    android:layout_width="55dp"
-                    android:layout_height="55dp"
+                <LinearLayout
+                    android:id="@+id/buttons"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:layout_margin="10dp"
-                    app:elevation="0dp"
-                    android:elevation="0dp"
-                    app:borderWidth="0dp"
-                    android:src="@drawable/ic_search"
+                    android:orientation="horizontal"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent" />
+                    app:layout_constraintEnd_toEndOf="parent">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/pause_resume"
+                        style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:elevation="0dp"
+                        app:borderWidth="0dp"
+                        app:cornerRadius="10dp"
+                        app:elevation="0dp"
+                        app:icon="@drawable/exomedia_ic_pause_white"/>
+
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/search"
+                        style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:elevation="0dp"
+                        android:src="@drawable/ic_search"
+                        app:borderWidth="0dp"
+                        app:cornerRadius="10dp"
+                        app:elevation="0dp"
+                        app:icon="@drawable/ic_search"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
+
+                </LinearLayout>
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>

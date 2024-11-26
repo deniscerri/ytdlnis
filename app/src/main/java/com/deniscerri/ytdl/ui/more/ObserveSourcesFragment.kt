@@ -2,7 +2,6 @@ package com.deniscerri.ytdl.ui.more
 
 import android.annotation.SuppressLint
 import android.content.DialogInterface
-import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -153,11 +152,20 @@ class ObserveSourcesFragment : Fragment(), ObserveSourcesAdapter.OnItemClickList
             withContext(Dispatchers.IO){
                 item.status = ObserveSourcesRepository.SourceStatus.ACTIVE
                 item.runCount = 0
-                observeSourcesViewModel.insert(item)
+                observeSourcesViewModel.insertUpdate(item)
             }
             listAdapter.notifyItemChanged(position)
         }
 
+    }
+
+    override fun onItemPaused(item: ObserveSourcesItem, position: Int) {
+        lifecycleScope.launch {
+            withContext(Dispatchers.IO){
+                observeSourcesViewModel.stopObserving(item)
+            }
+            listAdapter.notifyItemChanged(position)
+        }
     }
 
     override fun onItemClick(item: ObserveSourcesItem) {

@@ -165,7 +165,7 @@ class YTDLPUtil(private val context: Context) {
             if (url.isYoutubeURL()) {
                 authorTags.addAll(0, listOf("artists", "artist"))
             }
-            var author = jsonObject.getStringByAny(*authorTags.map { it }.toTypedArray())
+            var author = jsonObject.getStringByAny(*authorTags.map { it }.toTypedArray()).removeSuffix(" - Topic")
             var duration = jsonObject.getIntByAny("duration").toString()
             if (duration != "-1"){
                 duration = jsonObject.getInt("duration").toStringDuration(Locale.US)
@@ -447,8 +447,9 @@ class YTDLPUtil(private val context: Context) {
                 }
 
                 val formatProper = Gson().fromJson(format.toString(), Format::class.java)
-                if (formatProper.format_note == null) continue
+                if (formatProper.format_note == null) formatProper.format_note = ""
 
+                val resolution = format.getString("resolution")
                 if (format.has("format_note")){
                     if (!formatProper!!.format_note.contains("audio only", true)) {
                         formatProper.format_note = format.getString("format_note")
@@ -457,12 +458,18 @@ class YTDLPUtil(private val context: Context) {
                             formatProper.format_note = format.getString("format_note").uppercase().removeSuffix("AUDIO") + " AUDIO"
                         }
                     }
+
+                    if (!resolution.isNullOrBlank() && resolution != "audio only") {
+                        formatProper.format_note = "${formatProper.format_note} (${resolution})"
+                    }
                 }
-                if (formatProper.format_note == "storyboard") continue
+
+                if (formatProper.format_note.contains("storyboard", ignoreCase = true)) continue
+
                 formatProper.container = format.getString("ext")
                 if (formatProper.tbr == "None") formatProper.tbr = ""
                 if (!formatProper.tbr.isNullOrBlank()){
-                    formatProper.tbr = formatProper.tbr + "k"
+                    formatProper.tbr += "k"
                 }
 
                 if(formatProper.vcodec.isNullOrEmpty() || formatProper.vcodec == "null"){
@@ -1173,8 +1180,12 @@ class YTDLPUtil(private val context: Context) {
         }
 
         val lang = Locale.getDefault().language
+        val langTag = Locale.getDefault().toLanguageTag()
         if (context.getStringArray(R.array.subtitle_langs).contains(lang)) {
             extractorArgs.add("lang=$lang")
+        }
+        if (context.getStringArray(R.array.subtitle_langs).contains(langTag)) {
+            extractorArgs.add("lang=$langTag")
         }
         if (poToken.isNotBlank()) {
             extractorArgs.add("po_token=web+$poToken")

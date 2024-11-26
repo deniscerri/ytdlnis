@@ -172,7 +172,7 @@
     <string name="best_quality">Ən Yaxşı Keyfiyyət</string>
     <string name="worst_quality">Ən Pis Keyfiyyət</string>
     <string name="restrict_filenames">Fayl adların məhdudlaşdır</string>
-    <string name="restrict_filenames_summary"><![CDATA[Fayl adların ancaq ASCII simvollarıyla məhdudlaşdır və fayl adlarında \"&"\ və boşluqlar yaratma]]></string>
+    <string name="restrict_filenames_summary">Fayl adların ancaq ASCII simvollarıyla məhdudlaşdır və fayl adlarında \"&amp;"\ və boşluqlar yaratma</string>
     <string name="kill_app">Tətbiqi Dayandır</string>
     <string name="confirm_terminate">Bütün yükləmələri dayandırır və tətbiqi zorla bağlayır</string>
     <string name="dont_ask_again">Təkrar soruşma</string>
@@ -381,7 +381,7 @@
     <string name="disabled">Qeyri-aktiv</string>
     <string name="subtitles">Titrlər</string>
     <string name="prevent_duplicate_downloads">Eyni Yükləmələrin Qarşısını Al</string>
-    <string name="prevent_duplicate_url_type"><![CDATA[URL və Yükləmə Növü]]></string>
+    <string name="prevent_duplicate_url_type">URL və Yükləmə Növü</string>
     <string name="prevent_duplicate_config">Tam Konfiqurasiya</string>
     <string name="copy_url">URL-i Köçür</string>
     <string name="move_top">Yuxarıya keçin</string>

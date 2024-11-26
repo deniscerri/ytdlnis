@@ -248,7 +248,7 @@
     <string name="kill_app">Encerrar Aplicativo</string>
     <string name="freespace">Espaço livre</string>
     <string name="dont_ask_again">Não perguntar novamente</string>
-    <string name="restrict_filenames_summary"><![CDATA[Restringir nomes de arquivos apenas a caracteres ASCII e evite \"&\" e espaços em nomes de arquivos]]></string>
+    <string name="restrict_filenames_summary">Restringir nomes de arquivos apenas a caracteres ASCII e evite \"&amp;\" e espaços em nomes de arquivos</string>
     <string name="template">Modelo</string>
     <string name="sponsorblock_nonmusic">Partes sem música e sem relação com o tema</string>
     <string name="container">Contêiner</string>

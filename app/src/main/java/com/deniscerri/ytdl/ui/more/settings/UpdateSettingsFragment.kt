@@ -134,7 +134,7 @@ class UpdateSettingsFragment : BaseSettingsFragment() {
 
     private fun setYTDLPVersion() {
         lifecycleScope.launch {
-            ytdlVersion!!.summary = ""
+            ytdlVersion!!.summary = getString(R.string.loading)
             val version = withContext(Dispatchers.IO){
                 ytdlpUtil.getVersion()
             }

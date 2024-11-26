@@ -535,7 +535,7 @@ class ObserveSourcesBottomSheetDialog : BottomSheetDialogFragment() {
                 )
 
                 withContext(Dispatchers.IO){
-                    observeSourcesViewModel.insert(observeItem)
+                    observeSourcesViewModel.insertUpdate(observeItem)
                 }
                 dismiss()
             }

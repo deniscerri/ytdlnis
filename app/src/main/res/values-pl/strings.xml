@@ -265,7 +265,7 @@
     <string name="cancelled">Anulowane</string>
     <string name="access_all_directories_summary">Zezwól aplikacji na pobieranie do katalogów, które są domyślnie ograniczone</string>
     <string name="clear_temporary_files_summary">Usuń pliki pamięci podręcznej z pobrań zakończonych awarią, błędem bądź anulowaniem</string>
-    <string name="restrict_filenames_summary"><![CDATA[Ogranicz nazwy plików tylko do znaków ASCII i unikaj \„&\” i spacji w nazwach plików]]></string>
+    <string name="restrict_filenames_summary">Ogranicz nazwy plików tylko do znaków ASCII i unikaj \„&amp;\” i spacji w nazwach plików</string>
     <string name="confirm_terminate">Zatrzymuje wszystkie pobierania i wymusza zamknięcie aplikacji</string>
     <string name="download_over_metered_networks_summary">Umożliwia pobieranie przez dowolną sieć. Jeśli opcja nie jest wybrana, aplikacja czeka na sieć bez planu taryfowego</string>
     <string name="format_filtering_hint">Aby można było użyć tej opcji, wszystkie elementy muszą być tego samego typu</string>
@@ -389,7 +389,7 @@
     <string name="disabled">Wyłączone</string>
     <string name="subtitles">Napisy</string>
     <string name="prevent_duplicate_downloads">Zapobieganie pobieraniu duplikatów</string>
-    <string name="prevent_duplicate_url_type"><![CDATA[URL i typ pobierania]]></string>
+    <string name="prevent_duplicate_url_type">URL i typ pobierania</string>
     <string name="prevent_duplicate_config">Pełna konfiguracja</string>
     <string name="copy_url">Kopiuj adres URL</string>
     <string name="scheduled">Zaplanowane</string>
