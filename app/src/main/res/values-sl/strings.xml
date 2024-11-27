@@ -41,4 +41,20 @@
     <string name="ytdl_already_updating">Nameščanje nove različice</string>
     <string name="Remove">Odstrani</string>
     <string name="update_app">Preveri za posodobitve</string>
+    <string name="limit_rate">Meja hitrosti nalaganja</string>
+    <string name="aria2_summary">Vporabi aria2c program za nalagamje namesto navadnega</string>
+    <string name="save_thumb">Shrani naslovno sliko</string>
+    <string name="downloading">Nalaganje</string>
+    <string name="limit_rate_summary">Maksimalna hitrost nalaganja (v bytih na sekundo) npr. 50K ali 4.2M</string>
+    <string name="processing">Procesiranje</string>
+    <string name="embed_subs_summary">Podnapisi v videoposnetku</string>
+    <string name="embed_thumb">Naslovna slika</string>
+    <string name="embed_thumb_summary">Vporabi naslovno sliko kot naslovno sliko naloženega videa/zvoka</string>
+    <string name="add_chapters">Poglavlja v videih</string>
+    <string name="add_chapters_summary">Uporabi Sponsorblock podatke kot poglavlja v videu</string>
+    <string name="save_thumb_summary">Shrani naslovno sliko v mapo z nalaganji</string>
+    <string name="audio_format">Zvočni format</string>
+    <string name="video_format">Video format</string>
+    <string name="audio_quality">Zvočna kvaliteta</string>
+    <string name="audio_quality_summary">04(najhujše) 10(najboljše)</string>
 </resources>
