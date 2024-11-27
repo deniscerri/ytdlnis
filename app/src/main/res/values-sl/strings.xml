@@ -57,4 +57,5 @@
     <string name="video_format">Video format</string>
     <string name="audio_quality">Zvočna kvaliteta</string>
     <string name="audio_quality_summary">04(najhujše) 10(najboljše)</string>
+    <string name="cancel_task">Prekliči nalogo</string>
 </resources>
