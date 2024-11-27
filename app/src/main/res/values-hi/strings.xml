@@ -15,7 +15,7 @@
     <string name="ytdl_update_hint">अगर आपको डाउनलोडिंग मैं समस्या है तो यह उपयोगी हो सकता है</string>
     <string name="update_ytdl">Yt-dlp का नया संस्करण स्थापित करें</string>
     <string name="about">ऐप के बारे में</string>
-    <string name="download_notification_channel_name">फ़ाइल डाउनलोड</string>
+    <string name="download_notification_channel_name">फ़ाइल डाउनलोडस</string>
     <string name="download_notification_channel_description">ऑडियो और वीडियो फ़ाइलों को डाउनलोड करने की प्रगति दिखाने वाली अधिसूचना</string>
     <string name="you_are_in_latest_version">नए संस्करण का उपयोग कर रहे हैं</string>
     <string name="ytld_update_success">नया संस्करण स्थापित कर लिया गया है</string>
@@ -112,7 +112,7 @@
     <string name="clear_errored">त्रुटिपूर्ण को साफ़ करें</string>
     <string name="split_by_chapters">अध्यायों द्वारा विभाजित</string>
     <string name="items_imported">आयातित वस्तुएँ</string>
-    <string name="clear_temporary_files_summary">क्रैश/त्रुटि/रद्द किए गए डाउनलोड से कैश की गई फ़ाइलें मिटाएं</string>
+    <string name="clear_temporary_files_summary">क्रैश हुए/त्रुटिपूर्ण/रद्द किए गए डाउनलोडस से कैश की गई फ़ाइलें मिटाएं</string>
     <string name="cache_cleared">अस्थायी फ़ाइलें साफ़ की गई</string>
     <string name="ytdl_version">yt-dlp संस्करण</string>
     <string name="freespace">खाली जगह</string>
@@ -208,7 +208,7 @@
     <string name="select_format">प्रारूप चुनें</string>
     <string name="search_suggestions">खोज सुझाव</string>
     <string name="search_suggestions_summary">Google से खोज सुझाव प्राप्त करें</string>
-    <string name="move_temporary_files_summary">कैचे की गई फ़ाइलों को डाउनलोड फ़ोल्डर में स्थानांतरित करें</string>
+    <string name="move_temporary_files_summary">कैश की गई फ़ाइलों को डाउनलोड फ़ोल्डर में स्थानांतरित करें</string>
     <string name="terminal">टर्मिनल</string>
     <string name="please_wait">कृपया प्रतीक्षा करें</string>
     <string name="download_queue">डाउनलोड कतार</string>
@@ -230,7 +230,7 @@
     <string name="download_over_metered_networks_summary">किसी भी नेटवर्क प्रकार का उपयोग करके डाउनलोड करें। अन्यथा अमीटरयुक्त नेटवर्क की प्रतीक्षा करता है</string>
     <string name="restart">पुनः आरंभ करें</string>
     <string name="file_size">फ़ाइल का साइज़</string>
-    <string name="restrict_filenames_summary">ਫਾਈਲ ਦੇ ਨਾਵਾਂ ਨੂੰ ਸਿਰਫ ASCII ਅੱਖਰਾਂ ਤੱਕ ਸੀਮਤ ਕਰੋ, ਅਤੇ ਫਾਈਲ ਨਾਵਾਂ ਵਿੱਚ \\\"&amp;\\\" ਅਤੇ ਖਾਲੀ ਥਾਂਵਾਂ ਤੋਂ ਬਚੋ</string>
+    <string name="restrict_filenames_summary">फ़ाइल नामों को केवल ASCII वर्णों तक सीमित रखें, तथा फ़ाइल नामों में \"&amp;\" और रिक्त स्थानों का प्रयोग न करें</string>
     <string name="confirm_terminate">सभी डाउनलोड बंद कर देता है और ऐप को ज़बरदस्ती बंद कर देता है</string>
     <string name="share">साझा करें</string>
     <string name="save_subs">उपशीर्षक सहेजें</string>
@@ -378,7 +378,7 @@
     <string name="display_over_apps">ऐप्स पर प्रदर्शित करें</string>
     <string name="display_over_apps_summary">डाउनलोड कार्ड को हमेशा शीर्ष पर प्रदर्शित करें। यदि डाउनलोड कार्ड दिखाई देने पर वर्तमान में चल रहा ऐप बंद हो जाए तो इसे चालू करें</string>
     <string name="hour">घंटा</string>
-    <string name="prevent_duplicate_url_type"><![CDATA[URL एवं डाउनलोड प्रकार]]></string>
+    <string name="prevent_duplicate_url_type">URL एवं डाउनलोड प्रकार</string>
     <string name="prevent_duplicate_config">पूर्ण विन्यास</string>
     <string name="move_top">शीर्ष पर ले जाएँ</string>
     <string name="scheduled">अनुसूचित</string>
@@ -394,7 +394,7 @@
     <string name="format_importance">प्रारूप महत्व क्रम</string>
     <string name="format_importance_note">प्रारूप तत्व महत्व को समायोजित करें। इस आदेश का उपयोग केवल तभी किया जाएगा जब ऐप डाउनलोड कार्ड में प्रारूप लाएगा और प्रारूप का स्वतः चयन करेगा!</string>
     <string name="no_audio">बिना ऑडियो वाला वीडियो</string>
-    <string name="download_archive_folder">संग्रह फ़ोल्डर डाउनलोड करें</string>
+    <string name="download_archive_folder">डाउनलोड का संग्रह फ़ोल्डर</string>
     <string name="location">स्थान</string>
     <string name="enable_alarm_permission">आपको ऐप सेटिंग में SCHEDULE_EXACT_ALARM अनुमति सक्षम करनी होगी।</string>
     <string name="process_downloads_background">"डाउनलोड अभी भी लोड हो रहे हैं. उन्हें पृष्ठभूमि में संसाधित करना जारी रखें और डाउनलोड करना प्रारंभ करें? "</string>
