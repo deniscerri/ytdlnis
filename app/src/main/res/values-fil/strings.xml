@@ -12,4 +12,21 @@
     <string name="worst_quality">Mababang Kalidad</string>
     <string name="ytdl_update_hint">Nakakatulong pag mayroon kang problema sa pagdo-download</string>
     <string name="best_quality">Mataas na Kalidad</string>
+    <string name="confirm_delete_history_desc">Tanggalin ang buong kasaysayan na permanente</string>
+    <string name="settings">Ang settings</string>
+    <string name="updating">Nag updating</string>
+    <string name="about">Tungkol sa</string>
+    <string name="source_code">Ang source code</string>
+    <string name="search_hint">Maghanap o ipasok ang URL</string>
+    <string name="failed_download">Hindi madownload ang file</string>
+    <string name="download_notification_channel_name">Mga pag-download ng file</string>
+    <string name="download_notification_channel_description">Notification na nagpapakita ng progreso ng pag-download ng mga audio at video files</string>
+    <string name="you_are_in_latest_version">Ginamit ang pinakabagong bersyon</string>
+    <string name="ytld_update_success">Naka-install ang bagong bersyon</string>
+    <string name="ytdl_already_updating">Pinag-install na ng bagong bersyon</string>
+    <string name="ytdl_updating_started">Nagda-download ng bagong bersyon</string>
+    <string name="Remove">Tanggalin</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Kanselahin</string>
+    <string name="confirm_delete_history">Kumpirmahin</string>
 </resources>
