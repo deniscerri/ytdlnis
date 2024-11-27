@@ -200,7 +200,7 @@
     <string name="subtitle_languages">Titr dilləri</string>
     <string name="format_source">Formatlar Mənbəsi</string>
     <string name="video_recommendations">Video Tövsiyələr</string>
-    <string name="video_recommendations_summary">Ev ekranında tövsiyə olunan YouTube videoların NewPipe Extractor-dan al</string>
+    <string name="video_recommendations_summary">Ev ekranında tövsiyə olunan YouTube videoların əldə et</string>
     <string name="preferred_search_engine">Üstünlük Verilən Axtarış Mühərrik</string>
     <string name="format_filtering_hint">Bu seçimi işlətmək üçün bütün elementlər eyni növdə olmalıdır</string>
     <string name="preferred_search_engine_summary">Tətbiqdaxili axtarışlar üçün istifadə edilməli axtarış mühərriki</string>
@@ -437,4 +437,8 @@
     <string name="data_fetching_extra_command_summary">Əlavə əmrlər kimi məlumat alınmasında istifadə ediləcək əmr şablonların işə sal</string>
     <string name="disable_write_info_json">Məlumat Json-u Yazmağı Qapat</string>
     <string name="disable_write_info_json_summary">(Tövsiyə edilmir) Hər dəfə yükləməni təkrar başlatdığınızda/davam etdirdiyinizdə yt-dlp serverlərdən json məlumatını yenidən endirəcək.</string>
+    <string name="ytdlp_watch_later">YT-DLP Youtube Sonra İzlə (məlumata ehtiyac var)</string>
+    <string name="ytdlp_recommnedations">YT-DLP Youtube Tövsiyələri (məlumata ehtiyac var)</string>
+    <string name="ytdlp_liked">YT-DLP Youtube Bəyənilən Videolar (məlumata ehtiyac var)</string>
+    <string name="ytdlp_watch_history">YT-DLP Youtube Baxış Tarixçəsi (məlumata ehtiyac var)</string>
 </resources>
