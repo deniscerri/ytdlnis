@@ -35,7 +35,7 @@
     <string name="music_directory">Фолдер за аудио снимке</string>
     <string name="warning">Упозорење</string>
     <string name="couldnt_find_apk">Није могуће пронаћи одговарајући APK</string>
-    <string name="video_recommendations_summary">Добијте препоручене YouTube видео снимке на почетном екрану из NewPipe Extractor-а</string>
+    <string name="video_recommendations_summary">Добијте препоручене YouTube видео снимке на почетном екрану</string>
     <string name="codec">Кодек</string>
     <string name="select_backup_categories">Изаберите категорије резервне копије</string>
     <string name="ytdl_updating_started">Преузимање нове верзије</string>
@@ -435,4 +435,10 @@
     <string name="websites">Веб-сајтови</string>
     <string name="data_fetching_extra_command">Додатна команда за прикупљање података</string>
     <string name="data_fetching_extra_command_summary">Омогућите да се командни шаблони користе за прикупљање података као додатне команде</string>
+    <string name="disable_write_info_json">Онемогући JSON за писање информација</string>
+    <string name="disable_write_info_json_summary">(Не препоручује се) Сваки пут када рестартујете/наставите преузимање, yt-dlp ће поново преузети json податке са сервера.</string>
+    <string name="ytdlp_recommnedations">YT-DLP YouTube „Препоруке“ (потребни су колачићи)</string>
+    <string name="ytdlp_watch_history">YT-DLP YouTube „Историја гледања“ (потребни су колачићи)</string>
+    <string name="ytdlp_liked">YT-DLP YouTube „Лајковани видеи“ (потребни су колачићи)</string>
+    <string name="ytdlp_watch_later">YT-DLP YouTube „За касније“ (потребни су колачићи)</string>
 </resources>

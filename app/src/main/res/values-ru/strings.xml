@@ -210,7 +210,7 @@
     <string name="preferred_format_id">Предпочитаемый ID формата</string>
     <string name="download_now">Загрузить сейчас</string>
     <string name="resume">Продолжить</string>
-    <string name="video_recommendations_summary">Получайте рекомендуемые видео YouTube на главном экране с помощью NewPipe Extractor</string>
+    <string name="video_recommendations_summary">Получайте рекомендуемые видео YouTube на главном экране</string>
     <string name="copied_to_clipboard">Скопировано в буфер обмена</string>
     <string name="Theme">Тема</string>
     <string name="dark">Тёмная</string>
@@ -434,4 +434,11 @@
     <string name="websites">Веб-сайты</string>
     <string name="preferred_command_template">Предпочтительный шаблон команды</string>
     <string name="data_fetching_extra_command">Дополнительная команда получения данных</string>
+    <string name="disable_write_info_json">Отключить запись информации в формате Json</string>
+    <string name="disable_write_info_json_summary">(Не рекомендуется) Каждый раз, когда вы перезапускаете/возобновляете загрузку, yt-dlp повторно загружает данные json с серверов.</string>
+    <string name="data_fetching_extra_command_summary">Включите использование шаблонов команд для выбора данных в качестве дополнительных команд</string>
+    <string name="ytdlp_recommnedations">Рекомендации YT-DLP для YouTube (требуются файлы cookie)</string>
+    <string name="ytdlp_liked">YT-DLP Видео с лайками на YouTube (требуются файлы cookie)</string>
+    <string name="ytdlp_watch_history">YT-DLP История просмотра на YouTube (требуются файлы cookie)</string>
+    <string name="ytdlp_watch_later">YT-DLP Посмотреть позже на YouTube (требуются файлы cookie)</string>
 </resources>

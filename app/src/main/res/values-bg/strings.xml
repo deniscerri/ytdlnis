@@ -253,7 +253,7 @@
     <string name="save_subs">Запазване на субтитрите</string>
     <string name="save_subs_desc">Запазете субтитрите във файл</string>
     <string name="format_source">Източник формати</string>
-    <string name="video_recommendations_summary">Вземете препоръчаните YouTube видеоклипове на началния екран от the NewPipe Extractor</string>
+    <string name="video_recommendations_summary">Вземете препоръчаните YouTube видеоклипове на началния екран</string>
     <string name="preferred_search_engine">Предпочитана търсачка</string>
     <string name="preferred_search_engine_summary">Търсачката ще се използва за търсене в приложението</string>
     <string name="format_filtering_hint">Всички елементи трябва да са от един и същи тип, за да използвате тази опция</string>
@@ -365,7 +365,7 @@
     <string name="downloads_running_try_later">Работещо изтегляне. Опитайте отново по-късно</string>
     <string name="ytdl_version">Версия yt-dlp</string>
     <string name="restrict_filenames">Ограничени имена на файловете</string>
-    <string name="restrict_filenames_summary">Ограничете имената на файлове само до ASCII знаци и избягвайте \"&amp;\" и интервалите в имената на файловете</string>
+    <string name="restrict_filenames_summary"><![CDATA[Ограничете имената на файлове само до ASCII знаци и избягвайте \"&\" и интервалите в имената на файловете]]></string>
     <string name="delete_files_too">Изтрийте файловете от устройството</string>
     <string name="piped_instance">Piped екземпляр</string>
     <string name="confirm_terminate">Спира всички изтегляния и принудително затваря приложението</string>
@@ -385,7 +385,7 @@
     <string name="clear_scheduled">Изчисти планираното</string>
     <string name="disabled">Забранено</string>
     <string name="prevent_duplicate_config">Предотврати дублираща конфигурация</string>
-    <string name="prevent_duplicate_url_type">URL &amp; Тип изтегляне</string>
+    <string name="prevent_duplicate_url_type"><![CDATA[URL & Тип изтегляне]]></string>
     <string name="subtitles">Субтитри</string>
     <string name="copy_url">Копиране URL</string>
     <string name="minute">Минута</string>
@@ -420,4 +420,25 @@
     <string name="format_importance_note">Подреждане важността на елемента на формат. Това подреждане ще се използва, само когато приложението извлече форматите от картата за изтегляне и автоматично избере формата!</string>
     <string name="use_item_url_not_playlist_summary">Метаданните на плейлиста няма да бъдат вградени, ако функция та е включена</string>
     <string name="data_fetching_extractor_youtube">Екстрактор за извличане на данни (YouTube)</string>
+    <string name="disable_write_info_json_summary">(Не се препоръчва) Всеки път, когато рестартирате/възобновите изтеглянето, yt-dlp ще изтегли отново json данни от сървърите.</string>
+    <string name="disable_write_info_json">Деактивиране на запис на информация Json</string>
+    <string name="other_youtube_extractor_args">Други аргументи в полза на YouTube екстрактора</string>
+    <string name="items">артикул(и)</string>
+    <string name="socket_timeout">Socket Тайм-аут</string>
+    <string name="socket_timeout_description">Време за изчакване, преди да се откажете, в секунди</string>
+    <string name="advanced">Допълнително</string>
+    <string name="thumbnail">Миниатюра</string>
+    <string name="pause_all">Пауза за всички</string>
+    <string name="resume_all">Възобновяване на всички поставени на пауза</string>
+    <string name="package_name">Име на пакета</string>
+    <string name="preferred_command_template">Предпочитан команден шаблон</string>
+    <string name="status">Статус</string>
+    <string name="deleted">Изтрит</string>
+    <string name="websites">Уебсайт</string>
+    <string name="data_fetching_extra_command">Дополнительна команда за получаване на данни</string>
+    <string name="ytdlp_liked">YT-DLP Youtube Харесвани видеоклипове (необходими са бисквитки)</string>
+    <string name="ytdlp_watch_history">YT-DLP Youtube История на гледане (необходими са бисквитки)</string>
+    <string name="data_fetching_extra_command_summary">Разрешете командни шаблони, които да се използват за извличане на данни, като допълнителни команди</string>
+    <string name="ytdlp_watch_later">YT-DLP Youtube Гледайте по-късно (необходими са бисквитки)</string>
+    <string name="ytdlp_recommnedations">YT-DLP Youtube препоръки (необходими са бисквитки)</string>
 </resources>

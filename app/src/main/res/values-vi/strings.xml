@@ -150,7 +150,7 @@
     <string name="all_items_selected">Tất cả các mục được chọn</string>
     <string name="access_all_directories_summary">Cho phép tải xuống ứng dụng trên các thư mục bị hạn chế theo mặc định</string>
     <string name="in_queue">Trong Hàng chờ</string>
-    <string name="clear_cancelled">Dọn dẹp Đã hủy</string>
+    <string name="clear_cancelled">Đã huỷ dọn dẹp</string>
     <string name="access_all_directories">Cho phép truy cập vào mọi thư mục</string>
     <string name="clear_errored">Dọn dẹp Bị lỗi</string>
     <string name="split_by_chapters">Chia theo chương</string>
@@ -386,7 +386,7 @@
     <string name="move_bottom">Chuyển xuống dưới</string>
     <string name="move_top">Chuyển lên trên</string>
     <string name="copy_url">Sao chép URL</string>
-    <string name="disabled">Vô hiệu</string>
+    <string name="disabled">Đã tắt</string>
     <string name="clear_scheduled">Dọn dẹp Lịch trình</string>
     <string name="minute">Phút</string>
     <string name="second">Giây</string>
@@ -435,4 +435,10 @@
     <string name="thumbnail">Ảnh bìa</string>
     <string name="data_fetching_extra_command">Lệnh bổ sung để lấy dữ liệu</string>
     <string name="data_fetching_extra_command_summary">Dùng mẫu lệnh để lấy dữ liệu như tập lệnh bổ sung</string>
+    <string name="disable_write_info_json_summary">(Không khuyến khích) Mỗi lần bạn khởi động lại hoặc tiếp tục tải xuống, yt-dlp sẽ tải lại dữ liệu tệp json từ máy chủ.</string>
+    <string name="disable_write_info_json">Tắt ghi tệp json</string>
+    <string name="ytdlp_watch_later">YT-DLP Youtube Xem sau (cần cookies)</string>
+    <string name="ytdlp_liked">YT-DLP Youtube Video đã thích (cần cookies)</string>
+    <string name="ytdlp_watch_history">YT-DLP Youtube Nhật ký xem (cần cookies)</string>
+    <string name="ytdlp_recommnedations">YT-DLP Youtube Đề xuất (cần cookies)</string>
 </resources>
