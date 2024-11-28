@@ -97,7 +97,7 @@
     <string name="scheduling">Rozvrh</string>
     <string name="dont_ask_again">Neptat se znovu</string>
     <string name="warning">Upozornění</string>
-    <string name="video_recommendations_summary">Získejte doporučená videa YouTube na domovské obrazovce pomocí NewPipe Extractora</string>
+    <string name="video_recommendations_summary">Zobrazíte doporučená videa YouTube na domovské obrazovce</string>
     <string name="codec">Kodek</string>
     <string name="select_backup_categories">Výběr kategorií zálohování</string>
     <string name="downloads_running_try_later">Dělník pro stahování je spuštěn. Zkuste to později</string>
@@ -421,7 +421,7 @@
     <string name="playlist_as_album_summary">Pokud metadata alba nejsou k dispozici, použije místo nich název playlistu</string>
     <string name="data_fetching_extractor_youtube">Extraktor načtených dat (YouTube)</string>
     <string name="items">položka(y)</string>
-    <string name="socket_timeout">Časový limit</string>
+    <string name="socket_timeout">Časový limit soketu</string>
     <string name="advanced">Pokročilé</string>
     <string name="other_youtube_extractor_args">Další argumenty YouTube extraktoru</string>
     <string name="socket_timeout_description">Doba čekání, než to vzdáte, v sekundách</string>
@@ -435,4 +435,10 @@
     <string name="websites">Webové stránky</string>
     <string name="data_fetching_extra_command">Doplňkové příkazy pro načítání dat</string>
     <string name="data_fetching_extra_command_summary">Povolí použití šablon příkazů pro načítání dat jako doplňkových příkazů</string>
+    <string name="disable_write_info_json_summary">(Nedoporučuje se) Při každém restartu/obnovení stahování bude yt-dlp znovu stahovat data json ze serverů.</string>
+    <string name="disable_write_info_json">Vypnout zápis údajů Json</string>
+    <string name="ytdlp_recommnedations">YT-DLP Youtube doporučené (potřebuje soubory cookie)</string>
+    <string name="ytdlp_watch_history">YT-DLP Youtube historie sledování (potřebuje soubory cookie)</string>
+    <string name="ytdlp_watch_later">YT-DLP Youtube sledovat později (vyžaduje soubory cookie)</string>
+    <string name="ytdlp_liked">YT-DLP Youtube oblíbená videa (potřebuje soubory cookie)</string>
 </resources>
